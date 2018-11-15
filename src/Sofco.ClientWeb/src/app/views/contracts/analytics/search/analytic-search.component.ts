@@ -184,8 +184,6 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     }
 
     searchCriteriaChange() {
-        this.serviceId = this.serviceId === "0" ? null : this.serviceId;
-        this.customerId = this.customerId === "0" ? null : this.customerId;
         const searchCriteria = {
             analyticId: this.analyticId,
             customerId: this.customerId,
@@ -237,16 +235,14 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     }
 
     clean() {
-        this.customerId = "0";
-        this.analyticId = "0";
-        this.serviceId = "0";
-        this.analyticStatusId = "0";
-        this.managerId = "0";
+        this.customerId = null;
+        this.analyticId = null;
+        this.serviceId = null;
+        this.analyticStatusId = null;
+        this.managerId = null;
 
         sessionStorage.removeItem('analyticSearchCriteria');
 
-        setTimeout(() => {
-            this.searchCriteriaChange();
-        }, 100);
+        this.searchCriteriaChange();
     }
 }

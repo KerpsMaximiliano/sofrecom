@@ -1,7 +1,10 @@
-﻿namespace Sofco.Core.Managers
+﻿using System.Collections.Generic;
+using Sofco.Domain.Models.WorkTimeManagement;
+
+namespace Sofco.Core.Managers
 {
     public interface IWorkTimeSendMailManager
     {
-        void SendEmail();
+        void SendEmail(List<WorkTime> workTimes);
     }
 }

@@ -4,6 +4,7 @@ using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.Rh.Rhpro;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Utils;
 using Sofco.Repository.Rh.Settings;
 
 namespace Sofco.Service.MapProfiles
@@ -64,6 +65,9 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.Percentage, s => s.MapFrom(x => x.BillingPercentage));
 
             CreateMap<Allocation, EmployeeAllocationModel>();
+
+            CreateMap<Employee, Option>()
+                .ForMember(d => d.Text, s => s.ResolveUsing(x => $"{x.EmployeeNumber} - {x.Name}"));
         }
 
         private string MapAddress(TigerEmployee item)

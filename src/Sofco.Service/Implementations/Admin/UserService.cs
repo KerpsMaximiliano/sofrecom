@@ -246,6 +246,14 @@ namespace Sofco.Service.Implementations.Admin
             {
                 model.ManagerId = employee.ManagerId.GetValueOrDefault();
                 model.ManagerDesc = employee.Manager.Name;
+
+                var authorizer = unitOfWork.UserApproverRepository.GetAuthorizerForLicenses(employee.Manager.UserName, employee.Id);
+
+                if (authorizer != null)
+                {
+                    model.AuthorizerId = authorizer.Id;
+                    model.AuthorizerDesc = authorizer.Name;
+                }
             }
 
             var allocationFirst = employee?.Allocations.FirstOrDefault();

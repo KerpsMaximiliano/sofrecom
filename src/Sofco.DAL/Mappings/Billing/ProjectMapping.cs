@@ -18,6 +18,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Project>().Property(_ => _.CurrencyId).HasMaxLength(200);
             builder.Entity<Project>().Property(_ => _.Integrator).HasMaxLength(200);
             builder.Entity<Project>().Property(_ => _.IntegratorId).HasMaxLength(200);
+            builder.Entity<Project>().Property(_ => _.PrincipalContactName).HasMaxLength(200);
         }
     }
 }

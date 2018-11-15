@@ -13,12 +13,7 @@
     </div>
 </div>
     
-<div class="wrapper wrapper-content animated fadeInUp">
-
-    <div class="alert alert-info">
-        <i class="fa fa-info-circle"></i>
-        {{ 'workTimeManagement.workTime.periodMessage' | translate }} <strong>{{ model.periodStartDate }}</strong> {{ 'and' | translate }} <strong>{{ model.periodEndDate }}</strong>. <strong>{{ 'workTimeManagement.workTime.actualPeriod' | translate }}</strong> 
-    </div>
+<div class="wrapper wrapper-content animated fadeInRight" id="contentWrapper">
 
     <div class="row">
         <div class="col-md-9">
@@ -59,9 +54,14 @@
                                             [attr.data-color]="draftTaskColor"
                                             [attr.data-taskId]="taskItem.taskId"
                                             [attr.data-analyticId]="taskItem.analyticId"
-                                            [attr.data-hours]="taskItem.hours">
+                                            [attr.data-hours]="taskItem.hours"
+                                            [attr.data-reference]="taskItem.reference"
+                                            (click)="showRecentEditModal(taskItem)">
                                             {{ taskItem.task }} - {{ taskItem.hours }} hs
                                         </div>
+                                        <a class="task-item-edit" (click)="showRecentEditModal(taskItem)">
+                                            <i class="fa fa-edit text-white"></i>
+                                        </a>
                                         <a class="task-item-close" (click)="removeTask(taskItem)">
                                             <i class="fa fa-close text-white"></i>
                                         </a>
@@ -77,7 +77,11 @@
 
             <h3 class="text-center">{{ 'workTimeManagement.workTime.resume' | translate }}</h3>
 
-            <dl class="dl-horizontal">
+            <div class="alert alert-info text-center">
+                {{ 'workTimeManagement.workTime.periodMessage' | translate }} <strong>{{ periodStartDateText }}</strong> {{ 'date_to' | translate }} <strong>{{ periodEndDateText }}</strong>.
+            </div>
+        
+            <dl class="dl-horizontal hours-resume">
                 <dt class="bg-primary">{{ 'workTimeManagement.workTime.approved' | translate }}</dt>
                 <dd class="bg-primary">{{ model?.resume?.hoursApproved }} hs</dd>
                 <dt class="bg-danger">{{ 'workTimeManagement.workTime.rejected' | translate }}</dt>
@@ -103,47 +107,74 @@
 <ng2-modal [config]="editModalConfig" #editModal (accept)="saveTask()" (delete)="deleteTask()">
 
     <form role="form">
-        <div class="form-group">
-            <select-two [label]="'workTimeManagement.analytic'" [(value)]="taskModel.analyticId" [options]="analytics" (valueChange)="showSaveTask()"></select-two>
-        </div>
-        <div class="form-group" *ngIf="!taskModel.isLicense">
-            <div class="row">
-                <div class="col-md-6">
-                    <select-two [label]="'ADMIN.category.title'" [(value)]="taskModel.categoryId" [options]="categories" (valueChange)="categoryChange()"></select-two>
-                </div>
-                <div class="col-md-6">
-                    <select-two [label]="'workTimeManagement.task'" [(value)]="taskModel.taskId" [options]="tasks" (valueChange)="showSaveTask()"></select-two>
-                </div>
+        <select-two [label]="'workTimeManagement.analytic'" [(value)]="taskModel.analyticId" [options]="analytics" (valueChange)="showSaveTask()"></select-two>
+
+        <div class="row" *ngIf="!taskModel.isLicense">
+            <div class="col-md-6">
+                <select-two [label]="'ADMIN.category.title'" [(value)]="taskModel.categoryId" [options]="categories" (valueChange)="categoryChange()"></select-two>
+            </div>
+            <div class="col-md-6">
+                <select-two [label]="'workTimeManagement.task'" [(value)]="taskModel.taskId" [options]="tasks" (valueChange)="showSaveTask()"></select-two>
             </div>
         </div>
-        <div class="form-group" *ngIf="taskModel.isLicense">
-            <div class="row">
-                <div class="col-md-6">
+
+        <div class="row" *ngIf="taskModel.isLicense">
+            <div class="col-md-6">
+                <div class="form-group">
                     <label class="control-label">{{'ADMIN.category.title' | translate }}</label>
                     <p>{{ taskModel.categoryDesc }}</p>
                 </div>
-                <div class="col-md-6">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label class="control-label">{{'workTimeManagement.task' | translate }}</label>
                     <p>{{ taskModel.taskDesc }}</p>
                 </div>
             </div>
         </div>
+
         <div class="form-group">
-            <div class="row">
-                <div class="col-md-6">
+            <label>{{'workTimeManagement.reference' | translate }}</label>
+            <input class="form-control" name="reference" [(ngModel)]="taskModel.reference" placeholder="{{'workTimeManagement.reference' | translate }}" maxlength="20"/>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>{{'workTimeManagement.date' | translate }}</label>
                     <date-picker #dateControl [(date)]="taskModel.date" (dateChange)="showSaveTask()"></date-picker>
                 </div>
-                <div class="col-md-4">
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
                     <label>{{'workTimeManagement.hours' | translate }}</label>
-                    <input id="hoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours">
+                    <input id="hoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="taskModel.hours"/>
                 </div>
             </div>
         </div>
+
         <div class="form-group">
             <label>{{'workTimeManagement.comments' | translate }}</label>
             <textarea class="form-control" name="comment" rows="5" [(ngModel)]="taskModel.userComment" placeholder="{{'workTimeManagement.comments' | translate }}" max="500"></textarea>
         </div>
     </form>
 </ng2-modal>
-    
+
+<ng2-modal [config]="editRecentTaskModalConfig" #editRecentTaskModal (accept)="saveRecentTask()" size="modal-sm">
+    <form role="form">
+        <div class="form-group">
+            <div class="row">
+                <label class="control-label">{{'workTimeManagement.task' | translate }}</label>
+                <p>{{ recentTaskModel.taskDesc }}</p>
+            </div>
+            <div class="row">
+                <label>{{'workTimeManagement.hours' | translate }}</label>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <input id="recentHoursControl" type="number" class="form-control" style="text-align: center" name="hours" [(ngModel)]="recentTaskModel.hours">
+                </div>
+            </div>
+        </div>
+    </form>
+</ng2-modal>

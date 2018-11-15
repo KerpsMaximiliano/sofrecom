@@ -41,6 +41,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     public licensesTypes: any[] = new Array();
 
     public licensesTypeId: any;
+    public employeeId: any;
 
     public startDate: Date = new Date();
     public endDate: Date = new Date();
@@ -59,8 +60,8 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     ngOnInit(): void {
         var data = JSON.parse(sessionStorage.getItem('lastLicenseQuery'));
 
-        this.getEmployees(data);
-        this.getLicenceTypes(data);
+        this.getEmployees();
+        this.getLicenceTypes();
 
         if(data){
             this.searchLastQuery(data);
@@ -76,34 +77,25 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         if(this.getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe();
     }
 
-    getEmployees(lastQuery){
+    getEmployees(){
         this.getEmployeesSubscrip = this.employeeService.getAll().subscribe(data => {
             this.resources = data;
-
-            setTimeout(() => {
-                if(lastQuery){
-                    $( "#employeeId" ).val(lastQuery.employeeId).trigger('change');
-                }
-            }, 0)
         });
     }
 
-    getLicenceTypes(lastQuery){
+    getLicenceTypes(){
         this.getLicenseTypeSubscrip = this.licenseService.getLicenceTypes().subscribe(data => {
 
+            var list = [];
             data.optionsWithPayment.forEach(element => {
-                this.licensesTypes.push(element);
+                list.push(element);
             });
 
             data.optionsWithoutPayment.forEach(element => {
-                this.licensesTypes.push(element);
+                list.push(element);
             });
 
-            setTimeout(() => {
-                if(lastQuery){
-                    this.licensesTypeId = lastQuery.licenseTypeId
-                }
-            }, 0)
+            this.licensesTypes = list;
         });
     }
 
@@ -118,7 +110,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
     newSearch(){
         var params = {
-            employeeId: $( "#employeeId" ).val(),
+            employeeId: this.employeeId,
             licenseTypeId: this.licensesTypeId
         }
 
@@ -151,8 +143,8 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
     clean(){
         sessionStorage.removeItem('lastLicenseQuery');
-        $( "#employeeId" ).val(0).trigger('change');;
-        this.licensesTypeId = 0;
+        this.employeeId = null;
+        this.licensesTypeId = null;
     }
 
     goToDetail(item){

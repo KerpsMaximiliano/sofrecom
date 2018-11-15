@@ -20,7 +20,7 @@ export class ExternalUserComponent implements OnInit, OnDestroy {
 
     @ViewChild('externalModal') externalModal;
     public externalModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "allocationManagement.resources.hoursByContract",
+        "allocationManagement.resources.createExternal",
         "externalModal",
         true,
         true,
@@ -29,8 +29,8 @@ export class ExternalUserComponent implements OnInit, OnDestroy {
     ); 
 
     public model = {
-        userId: 0,
-        managerId: 0,
+        userId: null,
+        managerId: null,
         countryCode: 54,
         areaCode: 11,
         hours: 8,

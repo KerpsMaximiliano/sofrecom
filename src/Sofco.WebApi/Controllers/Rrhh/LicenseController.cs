@@ -8,6 +8,7 @@ using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Common;
 using Sofco.Core.Services.Rrhh;
+using Sofco.Core.Services.Rrhh.Licenses;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Common;
@@ -21,18 +22,26 @@ namespace Sofco.WebApi.Controllers.Rrhh
     public class LicenseController : Controller
     {
         private readonly ILicenseTypeService licenseTypeService;
+        private readonly ILicenseFileService licenseFileService;
         private readonly ILicenseService licenseService;
         private readonly IFileService fileService;
         private readonly FileConfig fileConfig;
         private readonly IUserService userService;
 
-        public LicenseController(ILicenseTypeService licenseTypeService, ILicenseService licenseService, IFileService fileService, IUserService userService, IOptions<FileConfig> fileOptions)
+        public LicenseController(
+            ILicenseTypeService licenseTypeService,
+            ILicenseService licenseService,
+            IFileService fileService,
+            IUserService userService,
+            ILicenseFileService licenseFileService,
+            IOptions<FileConfig> fileOptions)
         {
             this.licenseTypeService = licenseTypeService;
             this.licenseService = licenseService;
             this.fileService = fileService;
             fileConfig = fileOptions.Value;
             this.userService = userService;
+            this.licenseFileService = licenseFileService;
         }
 
         [HttpGet("types")]
@@ -119,7 +128,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
             {
                 var file = Request.Form.Files.First();
 
-                response = await licenseService.AttachFile(id, response, file);
+                response = await licenseFileService.AttachFile(id, response, file);
             }
             else
             {
@@ -132,7 +141,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         [HttpDelete("file/{id}")]
         public IActionResult DeleteFile(int id)
         {
-            var response = licenseService.DeleteFile(id);
+            var response = licenseFileService.DeleteFile(id);
 
             return this.CreateResponse(response);
         }
@@ -171,7 +180,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         {
             try
             {
-                var response = licenseService.GetLicenseReport(parameters);
+                var response = licenseFileService.GetLicenseReport(parameters);
 
                 if (response.HasErrors())
                     return BadRequest(response);
@@ -190,7 +199,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         [Route("{id}/fileDelivered")]
         public IActionResult FileDelivered(int id)
         {
-            var response = licenseService.FileDelivered(id);
+            var response = licenseFileService.FileDelivered(id);
 
             return this.CreateResponse(response);
         }

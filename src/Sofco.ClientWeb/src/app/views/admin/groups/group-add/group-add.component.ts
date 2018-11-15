@@ -13,9 +13,9 @@ import { Group } from "../../../../models/admin/group";
 })
 export class GroupAddComponent implements OnInit, OnDestroy {
 
-  public group: Group = <Group>{};
+  public group: Group = new Group();
   private getRolesSubscrip: Subscription;
-  public roles;
+  public roles: any[] = new Array();
 
   constructor(private service: GroupService, 
     private messageService: MessageService,
@@ -26,7 +26,7 @@ export class GroupAddComponent implements OnInit, OnDestroy {
     this.getAllRoles();
   }
 
-  onSubmit(form){
+  onSubmit(){
     this.messageService.showLoading();
 
     this.group.active = true;

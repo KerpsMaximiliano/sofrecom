@@ -1,55 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Billing.PurchaseOrder;
-using Sofco.Core.Services.Billing;
-using Sofco.Core.StatusHandlers;
-using Sofco.Framework.ValidationHelpers.Billing;
+using Sofco.Core.Services.Billing.PurchaseOrder;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
-using File = Sofco.Domain.Models.Common.File;
-using PurchaseOrder = Sofco.Domain.Models.Billing.PurchaseOrder;
+using Sofco.Framework.ValidationHelpers.Billing;
+using PurchaseOrderDomain = Sofco.Domain.Models.Billing.PurchaseOrder;
 
-namespace Sofco.Service.Implementations.Billing
+namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 {
     public class PurchaseOrderService : IPurchaseOrderService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<PurchaseOrderService> logger;
-        private readonly FileConfig fileConfig;
         private readonly IUserData userData;
-        private readonly IPurchaseOrderStatusFactory purchaseOrderStatusFactory;
         private readonly IMapper mapper;
 
         public PurchaseOrderService(IUnitOfWork unitOfWork, 
             ILogMailer<PurchaseOrderService> logger, 
-            IOptions<FileConfig> fileOptions,
-            IPurchaseOrderStatusFactory purchaseOrderStatusFactory,
-            IUserData userData, IMapper mapper)
+            IUserData userData, 
+            IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
-            fileConfig = fileOptions.Value;
             this.userData = userData;
             this.mapper = mapper;
-            this.purchaseOrderStatusFactory = purchaseOrderStatusFactory;
         }
 
-        public Response<PurchaseOrder> Add(PurchaseOrderModel model)
+        public Response<PurchaseOrderDomain> Add(PurchaseOrderModel model)
         {
-            var response = new Response<PurchaseOrder>();
+            var response = new Response<PurchaseOrderDomain>();
 
             Validate(model, response);
 
@@ -99,7 +87,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response Update(PurchaseOrderModel model)
         {
-            var response = new Response<PurchaseOrder>();
+            var response = new Response<PurchaseOrderDomain>();
 
             PurchaseOrderValidationHelper.Exist(response, model, unitOfWork);
 
@@ -120,8 +108,11 @@ namespace Sofco.Service.Implementations.Billing
 
                 domain.Histories.Add(history);
 
-                domain.Status = PurchaseOrderStatus.Draft;
-
+                if (domain.Status == PurchaseOrderStatus.Reject)
+                {
+                    domain.Status = PurchaseOrderStatus.Draft;
+                }
+                
                 var aux = domain.PurchaseOrderAnalytics.ToList();
 
                 foreach (var orderAnalytic in aux)
@@ -155,128 +146,10 @@ namespace Sofco.Service.Implementations.Billing
 
             return response;
         }
-
-        public Response MakeAdjustment(int id, IList<PurchaseOrderAmmountDetailModel> details)
-        {
-            var response = new Response();
-
-            var purchaseOrder = PurchaseOrderValidationHelper.Find(id, response, unitOfWork);
-            PurchaseOrderValidationHelper.ValidateAdjustmentAmmount(response, details);
-
-            if (response.HasErrors()) return response;
-
-            try
-            {
-                purchaseOrder.Status = PurchaseOrderStatus.Closed;
-                purchaseOrder.Adjustment = true;
-                unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
-                unitOfWork.PurchaseOrderRepository.UpdateAdjustment(purchaseOrder);
-
-                foreach (var detail in purchaseOrder.AmmountDetails)
-                {
-                    var modelDetail = details.SingleOrDefault(x => x.CurrencyId == detail.CurrencyId);
-
-                    if (modelDetail == null) continue;
-
-                    detail.Adjustment = modelDetail.Adjustment;
-                    unitOfWork.PurchaseOrderRepository.UpdateDetail(detail);
-                }
-
-                unitOfWork.Save();
-                response.AddSuccess(Resources.Billing.PurchaseOrder.UpdateSuccess);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            return response;
-        }
-
-        public Response ChangeStatus(int id, PurchaseOrderStatusParams model)
-        {
-            var response = new Response();
-
-            var purchaseOrder = PurchaseOrderValidationHelper.FindLite(id, response, unitOfWork);
-
-            if (response.HasErrors()) return response;
-
-            var statusHandler = purchaseOrderStatusFactory.GetInstance(purchaseOrder.Status);
-
-            try
-            {
-                // Validate Status
-                statusHandler.Validate(response, model, purchaseOrder);
-
-                if (response.HasErrors()) return response;
-
-                var history = GetHistory(purchaseOrder, model);
-
-                // Update Status
-                statusHandler.Save(purchaseOrder, model);
-
-                // Add History
-                history.To = purchaseOrder.Status;
-                unitOfWork.PurchaseOrderRepository.AddHistory(history);
-
-                // Save
-                unitOfWork.Save();
-                response.AddSuccess(statusHandler.GetSuccessMessage(model));
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Billing.PurchaseOrder.CannotChangeStatus);
-            }
-
-            try
-            {
-                if (response.HasErrors()) return response;
-                statusHandler.SendMail(purchaseOrder, model);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddWarning(Resources.Common.ErrorSendMail);
-            }
-
-            return response;
-        }
-
+                
         public ICollection<PurchaseOrderHistory> GetHistories(int id)
         {
             return unitOfWork.PurchaseOrderRepository.GetHistories(id);
-        }
-
-        public Response Close(int id, PurchaseOrderStatusParams model)
-        {
-            var response = new Response();
-
-            var purchaseOrder = PurchaseOrderValidationHelper.FindLite(id, response, unitOfWork);
-
-            if (response.HasErrors()) return response;
-
-            PurchaseOrderValidationHelper.Close(response, purchaseOrder);
-
-            if (response.HasErrors()) return response;
-
-            try
-            {
-                purchaseOrder.Status = PurchaseOrderStatus.Closed;
-                unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
-
-                unitOfWork.Save();
-
-                response.AddSuccess(Resources.Billing.PurchaseOrder.CloseSuccess);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            return response;
         }
 
         public Response<IList<PurchaseOrderPendingModel>> GetPendings()
@@ -299,7 +172,7 @@ namespace Sofco.Service.Implementations.Billing
             var commUserIds = GetCommercialUsers(currentUser);
             var operUserIds = GetOperationUsers(currentUser);
 
-            var result = new List<PurchaseOrder>();
+            var result = new List<PurchaseOrderDomain>();
 
             foreach (var purchaseOrder in purchaseOrders)
             {
@@ -355,7 +228,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private PurchaseOrderHistory GetHistory(PurchaseOrder purchaseOrder, PurchaseOrderStatusParams model)
+        private PurchaseOrderHistory GetHistory(PurchaseOrderDomain purchaseOrder, PurchaseOrderStatusParams model)
         {
             var history = new PurchaseOrderHistory
             {
@@ -369,111 +242,28 @@ namespace Sofco.Service.Implementations.Billing
             return history;
         }
 
-        public async Task<Response<File>> AttachFile(int purchaseOrderId, Response<File> response, IFormFile file, string userName)
+        public Response<PurchaseOrderDomain> GetById(int id)
         {
-            var purchaseOrder = PurchaseOrderValidationHelper.Find(purchaseOrderId, response, unitOfWork);
-
-            if (response.HasErrors()) return response;
-
-            var fileToAdd = new File();
-            var lastDotIndex = file.FileName.LastIndexOf('.');
-
-            fileToAdd.FileName = file.FileName;
-            fileToAdd.FileType = file.FileName.Substring(lastDotIndex);
-            fileToAdd.InternalFileName = Guid.NewGuid();
-            fileToAdd.CreationDate = DateTime.UtcNow;
-            fileToAdd.CreatedUser = userName;
-
-            purchaseOrder.File = fileToAdd;
-
-            try
-            {
-                var fileName = $"{fileToAdd.InternalFileName.ToString()}{fileToAdd.FileType}";
-
-                using (var fileStream = new FileStream(Path.Combine(fileConfig.PurchaseOrdersPath, fileName), FileMode.Create))
-                {
-                    await file.CopyToAsync(fileStream);
-                }
-
-                unitOfWork.FileRepository.Insert(fileToAdd);
-                unitOfWork.PurchaseOrderRepository.Update(purchaseOrder);
-                unitOfWork.Save();
-
-                response.Data = fileToAdd;
-                response.AddSuccess(Resources.Billing.PurchaseOrder.FileAdded);
-            }
-            catch (Exception e)
-            {
-                response.AddError(Resources.Common.SaveFileError);
-                logger.LogError(e);
-            }
-
-            return response;
-        }
-
-        public Response<PurchaseOrder> GetById(int id)
-        {
-            var response = new Response<PurchaseOrder>();
+            var response = new Response<PurchaseOrderDomain>();
 
             response.Data = PurchaseOrderValidationHelper.FindWithAnalytic(id, response, unitOfWork);
 
             return response;
         }
 
-        public Response DeleteFile(int id)
-        {
-            var response = new Response();
-
-            var purchaseOrder = PurchaseOrderValidationHelper.Find(id, response, unitOfWork);
-
-            if (purchaseOrder.File == null)
-            {
-                response.AddError(Resources.Common.FileNotFound);
-                return response;
-            }
-
-            try
-            {
-                var file = purchaseOrder.File;
-                purchaseOrder.File = null;
-                purchaseOrder.FileId = null;
-
-                unitOfWork.PurchaseOrderRepository.Update(purchaseOrder);
-                unitOfWork.FileRepository.Delete(file);
-
-                var fileName = $"{file.InternalFileName.ToString()}{file.FileType}";
-                var path = Path.Combine(fileConfig.PurchaseOrdersPath, fileName);
-
-                if (System.IO.File.Exists(path))
-                {
-                    System.IO.File.Delete(path);
-                }
-
-                unitOfWork.Save();
-                response.AddSuccess(Resources.Common.FileDeleted);
-            }
-            catch (Exception e)
-            {
-                response.AddError(Resources.Common.GeneralError);
-                logger.LogError(e);
-            }
-
-            return response;
-        }
-
-        public IList<PurchaseOrder> GetByService(string serviceId)
+        public IList<PurchaseOrderDomain> GetByService(string serviceId)
         {
             return unitOfWork.PurchaseOrderRepository.GetByService(serviceId);
         }
 
-        public IList<PurchaseOrder> GetByServiceLite(string serviceId, string opportunityNumber)
+        public IList<PurchaseOrderDomain> GetByServiceLite(string serviceId, string opportunityNumber)
         {
             var list = unitOfWork.PurchaseOrderRepository.GetByServiceLite(serviceId);
 
             return list.Where(x => !string.IsNullOrWhiteSpace(x.Proposal) && x.Proposal.Contains(opportunityNumber)).ToList();
         }
 
-        private void Validate(PurchaseOrderModel model, Response<PurchaseOrder> response)
+        private void Validate(PurchaseOrderModel model, Response<PurchaseOrderDomain> response)
         {
             PurchaseOrderValidationHelper.ValidateNumber(response, model, unitOfWork);
             PurchaseOrderValidationHelper.ValidateAnalytic(response, model);
@@ -485,9 +275,9 @@ namespace Sofco.Service.Implementations.Billing
             PurchaseOrderValidationHelper.ValidateAmmount(response, model.AmmountDetails);
         }
 
-        private List<PurchaseOrderPendingModel> Translate(List<PurchaseOrder> purchaseOrders)
+        private List<PurchaseOrderPendingModel> Translate(List<PurchaseOrderDomain> purchaseOrders)
         {
-            return mapper.Map<List<PurchaseOrder>, List<PurchaseOrderPendingModel>>(purchaseOrders);
+            return mapper.Map<List<PurchaseOrderDomain>, List<PurchaseOrderPendingModel>>(purchaseOrders);
         }
 
         private bool IsCompliance(UserLiteModel currentUser)
@@ -546,7 +336,7 @@ namespace Sofco.Service.Implementations.Billing
             return result;
         }
 
-        private bool CanAddOperationPurchaseOrder(PurchaseOrder purchaseOrder, List<int> userIds)
+        private bool CanAddOperationPurchaseOrder(PurchaseOrderDomain purchaseOrder, List<int> userIds)
         {
             return purchaseOrder.PurchaseOrderAnalytics
                     .Where(s => s.Analytic != null)

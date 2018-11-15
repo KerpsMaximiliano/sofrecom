@@ -23,8 +23,11 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     public users: any[] = new Array();
     public proposals: any[] = new Array();
 
-    public customerId: string = "0";
-    public serviceId: string = "0";
+    public customerId: string = null;
+    public serviceId: string = null;
+
+    public isReadOnly: boolean = false;
+    public isEnableForDaf: boolean = false;
 
     getOptionsSubscrip: Subscription;
     getCostCenterOptionsSubscrip: Subscription;
@@ -128,6 +131,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
     customerChange(){
         this.model.clientExternalId = this.customerId;
+        this.proposals= [];
 
         var customers = this.customers.filter(x => x.id == this.customerId);
 
@@ -135,10 +139,10 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
             this.model.clientExternalName = customers[0].text;
         }
 
-        this.serviceId = "0";
+        this.serviceId = null;
         this.services = [];
 
-        if(this.customerId != "0"){
+        if(this.customerId){
             this.getServices();
         }
     }
@@ -157,6 +161,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
     serviceChange(){
         this.model.serviceId = this.serviceId;
+        this.proposals= [];
 
         var services = this.services.filter(x => x.id == this.serviceId);
 

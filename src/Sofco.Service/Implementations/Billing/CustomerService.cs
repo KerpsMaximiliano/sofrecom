@@ -10,6 +10,7 @@ using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Utils;
+using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -27,6 +28,7 @@ namespace Sofco.Service.Implementations.Billing
             ILogMailer<CustomerService> logger,
             IUnitOfWork unitOfWork,
             ISolfacDelegateData solfacDelegateData,
+            ICrmHttpClient crmHttpClient,
             ICustomerUpdateJobService customerUpdateJobService)
         {
             this.customerData = customerData;

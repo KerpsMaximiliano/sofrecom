@@ -50,7 +50,7 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
 
         this.hito.month = today.getMonth()+1;
         this.hito.startDate = today;
-        this.hito.moneyId = '1';
+        this.hito.moneyId = 1;
         this.hito.projectId = hito.projectId;
         this.hito.managerId = hito.managerId;
         this.hito.opportunityId = hito.opportunityId;

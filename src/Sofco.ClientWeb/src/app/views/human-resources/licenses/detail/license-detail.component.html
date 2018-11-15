@@ -15,10 +15,10 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="btn-right">
-                <button class="btn btn-success btn-outline dim" (click)="fileDelivered()" *ngIf="menuService.userIsRrhh && !model.hasCertificate && model.certificateRequired"> 
+                <button class="btn btn-success btn-outline dim" (click)="fileDelivered()" *ngIf="fileDeliveredVisible()"> 
                     {{'rrhh.license.fileDelivered' | translate }}
                 </button>
-
+ 
                 <status-auth-pending [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-auth-pending>
                 <status-pending [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)" [certificateRequired]="model.certificateRequired" [hasCertificate]="model.hasCertificate"></status-pending>
                 <status-reject [licenseId]="model.id" [employeeId]="model.employeeId" [status]="model.statusName" (updateStatus)="updateStatus($event)" (history)="history.getHistories(model.id)"></status-reject>

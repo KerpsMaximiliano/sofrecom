@@ -5,7 +5,7 @@ import { DataTableService } from "../../../services/common/datatable.service";
 import { WorktimeService } from "../../../services/worktime-management/worktime.service";
 import { EmployeeService } from "../../../services/allocation-management/employee.service";
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
-import { CustomerService } from "../../../services/billing/customer.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 declare var $: any;
 
@@ -22,7 +22,6 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
 
     public resources: any[] = new Array<any>();
     public analytics: any[] = new Array<any>();
-    public customers: any[] = new Array<any>();
     public managers: any[] = new Array<any>();
     public statuses: any[] = new Array<any>();
 
@@ -38,22 +37,21 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     public searchModel = {
         startDate: null,
         endDate: null,
-        status: 0,
-        clientId: 0,
-        managerId: 0,
-        analyticId: 0,
-        employeeId: 0
+        status: null,
+        managerId: null,
+        analyticId: null,
+        employeeId: null
     };
 
     constructor(private messageService: MessageService,
         private worktimeService: WorktimeService,
+        private menuService: MenuService,
         private analyticService: AnalyticService,
-        private customerService: CustomerService,
         private employeeService: EmployeeService,
         private dataTableService: DataTableService){}
 
     ngOnInit(): void {
-        this.getCustomers();
+        this.getAnalytics();
         this.getResources();
         this.getManagers();
         this.getStatus();
@@ -63,10 +61,6 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         if(data){
             this.searchModel = data;
             this.search();
-
-            if(data.clientId && data.clientId != ''){
-                this.getAnalytics();
-            }
         }
     }
 
@@ -92,28 +86,38 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     }
 
     getResources(){
-        this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(data => {
-            this.resources = data;
-        });
+        if(this.canSeeManagers()){
+            this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(res => {
+                this.resources = res;
+            });
+        }
+        else{
+            this.getResourcesSubscrip = this.employeeService.getEmployeesOptionByCurrentManager().subscribe(res => {
+                this.resources = res.data;
+            });
+        }
     }
 
     getAnalytics(){
-        this.getAnalyticSubscrip = this.analyticService.getClientId(this.searchModel.clientId).subscribe(
-            data => {
-                this.analytics = data;
+        this.getAnalyticSubscrip = this.analyticService.getByManager().subscribe(
+            response => {
+                this.analytics = response.data;
             });
     }
 
-    getCustomers(){
-        this.getCustomerSubscrip = this.customerService.getOptions().subscribe(res => {
-            this.customers = res.data;
-        });
-    }
-
     search(){
+        var model = {
+            startDate: this.searchModel.startDate,
+            endDate: this.searchModel.endDate,
+            status: this.searchModel.status ? this.searchModel.status : 0,
+            managerId: this.searchModel.managerId,
+            analyticId: this.searchModel.analyticId,
+            employeeId: this.searchModel.employeeId
+        };
+
         this.messageService.showLoading();
 
-        this.searchSubscrip = this.worktimeService.search(this.searchModel).subscribe(response => {
+        this.searchSubscrip = this.worktimeService.search(model).subscribe(response => {
             this.data = response.data;
 
             this.initGrid();
@@ -178,15 +182,18 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         $('.datepicker').val('');
         
         this.searchModel = {
-            startDate: '',
-            endDate: '',
-            status: 0,
-            clientId: 0,
-            managerId: 0,
-            analyticId: 0,
-            employeeId: 0
+            startDate: null,
+            endDate: null,
+            status: null,
+            managerId: null,
+            analyticId: null,
+            employeeId: null
         };
 
         sessionStorage.removeItem('lastWorktimeSearchQuery')
+    }
+
+    canSeeManagers(){
+        return this.menuService.userIsDirector || this.menuService.userIsRrhh || this.menuService.userIsCdg;
     }
 }

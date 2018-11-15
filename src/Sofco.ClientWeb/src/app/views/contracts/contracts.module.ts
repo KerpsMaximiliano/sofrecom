@@ -36,6 +36,7 @@ import { AllocationAssingTableModule } from '../allocation-management/allocation
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
 import { AddCloseDateComponent } from 'app/views/contracts/closeDates/add/closeDate-add.component';
 import { CloseDateService } from 'app/services/human-resources/closeDate.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { CloseDateService } from 'app/services/human-resources/closeDate.service
     NumbersOnlyModule,
     Ng2ModalModule,
     PCheckModule,
-    ContractsRouter
+    ContractsRouter,
+    NgSelectModule
   ],
   providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, CustomerService, ServiceService, CloseDateService ],
   exports: [],

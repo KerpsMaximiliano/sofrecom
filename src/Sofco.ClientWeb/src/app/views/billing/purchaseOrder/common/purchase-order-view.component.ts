@@ -52,7 +52,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        const excelColumns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        const excelColumns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
         const title = `OrdenesDeCompra-${moment(new Date()).format("YYYYMMDD")}`;
 
@@ -68,7 +68,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
                 self.customizeExcelExportData(data);
             },
             columnDefs: [
-                { "targets": [ 1,10,11 ], "visible": false, "searchable": false },
+                { "targets": [ 1,11,12 ], "visible": false, "searchable": false },
                 { "aTargets": [5], "sType": "date-uk"},
             ]
         }
@@ -167,9 +167,10 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
     customizeExcelExportData(data) {
         const self = this;
         const idPos = 1;
-        const receptionDatePos = 3;
-        const ammountNumberPos = 6;
-        const balanceNumberPos = 7;
+        const receptionDatePos = 4;
+        const statusTextPos = 5;
+        const ammountNumberPos = 7;
+        const balanceNumberPos = 8;
         data.header.splice(0, 2);
         const dataBody = data.body;
         const result = [];
@@ -179,8 +180,9 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             dataBodyItem.splice(0, 2);
             const item = self.data.find(x => x.id == itemId);
             if(item === undefined) continue;
-            dataBodyItem[receptionDatePos] = moment(item.receptionDate).format("YYYY-MM-DD");
-            dataBodyItem[ammountNumberPos] = item.ammount;
+            const statusText = dataBodyItem[statusTextPos];
+            dataBodyItem[receptionDatePos] = this.getReceptionDate(statusText, item);
+            dataBodyItem[ammountNumberPos] = this.getAmmount(statusText, item);
             dataBodyItem[balanceNumberPos] = item.balance;
             result.push(dataBodyItem);
             const details = item.details;
@@ -193,6 +195,20 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             });
         };
         data.body = result;
+    }
+
+    getReceptionDate(statusText, item):any {
+        if(statusText.indexOf(this.adjustmentSuffix)>-1){
+            return moment(item.adjustmentDate).format("YYYY-MM-DD")
+        }
+        return moment(item.receptionDate).format("YYYY-MM-DD");
+    }
+
+    getAmmount(statusText, item):Number {
+        if(statusText.indexOf(this.adjustmentSuffix)>-1){
+            return item.adjustment;
+        }
+        return item.ammount;
     }
 
     getExportSubHeader() {
@@ -227,12 +243,15 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
 
     createPurchaseOrderAdjustment(data): PurchaseOrderBalanceModel {
         const item = new PurchaseOrderBalanceModel();
+        item.id = data.id;
         item.number = data.number + this.adjustmentSuffix;
+        item.title = data.title;
         item.clientExternalName = data.clientExternalName;
         item.currencyText = data.currencyText;
         item.ammount = data.adjustment;
         item.statusId = data.statusId;
         item.statusText = this.i18nService.translateByKey(data.statusText) + this.adjustmentSuffix;
+        item.receptionDate = data.adjustmentDate;
         return item;
     }
 

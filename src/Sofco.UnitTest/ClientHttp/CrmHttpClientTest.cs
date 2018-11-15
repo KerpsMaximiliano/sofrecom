@@ -27,14 +27,14 @@ namespace Sofco.UnitTest.ClientHttp
         [Test]
         public void ShouldPassGetMany()
         {
-            baseHttpClientMock.Setup(s => s.GetMany<string>(string.Empty))
+            baseHttpClientMock.Setup(s => s.GetMany<string>(string.Empty, null))
                 .Returns(new Result<List<string>>());
 
             var actual = sut.GetMany<string>(string.Empty);
 
             Assert.False(actual.HasErrors);
 
-            baseHttpClientMock.Verify(s => s.GetMany<string>(It.IsAny<string>()), Times.Once);
+            baseHttpClientMock.Verify(s => s.GetMany<string>(It.IsAny<string>(), null), Times.Once);
         }
     }
 }

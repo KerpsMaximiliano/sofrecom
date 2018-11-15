@@ -6,6 +6,7 @@ import { PurchaseOrderService } from '../../../../services/billing/purchaseOrder
 import { MenuService } from '../../../../services/admin/menu.service';
 import { PurchaseOrderViewComponent } from '../common/purchase-order-view.component';
 import { PurchaseOrderViewFilterComponent } from '../common/purchase-order-view-filter.component';
+import * as FileSaver from "file-saver";
 
 @Component({
   selector: 'purchase-order-search',
@@ -61,5 +62,17 @@ export class PurchaseOrderSearchComponent implements OnDestroy {
 
     viewFilterChange(data) {
         this.getReport(data);
+    }
+
+    export(){
+        this.messageService.showLoading();
+
+        this.purchaseOrderService.createReport().subscribe(file => {
+            this.messageService.closeLoading();
+            FileSaver.saveAs(file, `Reporte Ordenes de compra.xlsx`);
+        },
+        err => {
+            this.messageService.closeLoading();
+        });
     }
 }

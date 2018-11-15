@@ -24,7 +24,7 @@ namespace Sofco.Service.Http
             var request = new HttpRequestMessage
             {
                 Method = verb,
-                RequestUri = new Uri(urlPath),
+                RequestUri = new Uri(urlPath)
             };
 
             return request;
@@ -101,9 +101,14 @@ namespace Sofco.Service.Http
             return GetResult<T>(requestMessage);
         }
 
-        public Result<List<T>> GetMany<T>(string urlPath)
+        public Result<List<T>> GetMany<T>(string urlPath, string token = null)
         {
             var requestMessage = BuildRequest(urlPath, HttpMethod.Get);
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                requestMessage.Headers.Add("Authorization", "Bearer " + token);
+            }
 
             return GetResult<List<T>>(requestMessage);
         }

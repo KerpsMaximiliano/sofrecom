@@ -15,6 +15,6 @@ namespace Sofco.Core.Models.Billing
 
         public IList<Option> PaymentTerms { get; set; }
 
-        public IList<Option> PurchaseOrders { get; set; }
+        public IList<ListItem<string>> PurchaseOrders { get; set; }
     }
 }

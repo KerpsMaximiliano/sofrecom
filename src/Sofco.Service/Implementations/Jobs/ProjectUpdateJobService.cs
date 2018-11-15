@@ -81,7 +81,7 @@ namespace Sofco.Service.Implementations.Jobs
             }
             catch (Exception e)
             {
-                logger.LogError($"Error modificacion proyecto: {crmProject.Nombre}", e);
+                logger.LogError($"Error modificación proyecto: {crmProject.Nombre}", e);
             }
         }
 
@@ -122,6 +122,8 @@ namespace Sofco.Service.Implementations.Jobs
             project.Integrator = crmProject.Integrator;
             project.IntegratorId = crmProject.IntegratorId;
             project.Active = true;
+            project.PrincipalContactId = crmProject.PrincipalContactId;
+            project.PrincipalContactName = crmProject.PrincipalContactName;
         }
     }
 }

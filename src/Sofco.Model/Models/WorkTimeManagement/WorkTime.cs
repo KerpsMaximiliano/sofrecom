@@ -34,5 +34,7 @@ namespace Sofco.Domain.Models.WorkTimeManagement
         public string ApprovalComment { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public string Reference { get; set; }
     }
 }

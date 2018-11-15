@@ -1,9 +1,15 @@
 <button class="btn btn-primary" (click)="externalModal.show()"> Crear Externo <i class="fa fa-plus"></i></button>
 
 <ng2-modal [config]="externalModalConfig" #externalModal (accept)="add()">
-    <select-two [label]="'allocationManagement.resources.user'" [(value)]="model.userId" [options]="users"></select-two>
+    <div class="form-group">
+        <label class="control-label">{{ 'allocationManagement.resources.user' | translate }}</label>
+        <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="model.userId"></ng-select>
+    </div>
 
-    <select-two [label]="'allocationManagement.resources.manager'" [(value)]="model.managerId" [options]="managers"></select-two>
+    <div class="form-group">
+        <label class="control-label">{{ 'allocationManagement.resources.manager' | translate }}</label>
+        <ng-select [items]="managers" bindLabel="text" bindValue="id" [(ngModel)]="model.managerId"></ng-select>
+    </div>
 
     <div class="form-group">
         <label class="control-label">{{'allocationManagement.resources.businessHours' | translate }} </label>

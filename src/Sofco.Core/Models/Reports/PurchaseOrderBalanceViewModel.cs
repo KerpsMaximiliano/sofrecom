@@ -11,6 +11,8 @@ namespace Sofco.Core.Models.Reports
 
         public string Number { get; set; }
 
+        public string Title { get; set; }
+
         public string Proposal { get; set; }
 
         public string ClientExternalName { get; set; }
@@ -22,6 +24,8 @@ namespace Sofco.Core.Models.Reports
         public decimal Ammount { get; set; }
 
         public decimal Adjustment { get; set; }
+
+        public DateTime AdjustmentDate { get; set; }
 
         public int StatusId { get; set; }
 

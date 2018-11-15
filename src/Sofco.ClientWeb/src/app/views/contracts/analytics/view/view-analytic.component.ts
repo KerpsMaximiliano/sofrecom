@@ -47,10 +47,10 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         $('input').attr('disabled', 'disabled');
         $('textarea').attr('disabled', 'disabled');
         $('select').attr('disabled', 'disabled');
+        this.form.isReadOnly = true;
 
         if(this.menuService.hasFunctionality('CONTR', 'DAF-EDIT-ANA')){
-            $('#softwareLaw select').removeAttr('disabled');
-            $('#activity select').removeAttr('disabled');
+            this.form.isEnableForDaf = true;
         }
     }
 

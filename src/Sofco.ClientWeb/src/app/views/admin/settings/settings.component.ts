@@ -65,7 +65,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.serviceSubscrip = this.service.save(this.settings).subscribe(
-      d => { this.settings = d.data; this.saveResponseHandler(); },
+      d => { this.settings = d.data; this.loading = false; this.saveResponseHandler(); },
       err => this.loading = false);
   }
 
@@ -93,7 +93,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.messageService.showLoading();
 
     this.licenseTypesSubscrip = this.service.saveItem(item).subscribe(
-      response => { this.messageService.closeLoading(); },
+      response => { this.messageService.closeLoading(); this.messageService.succes('ADMIN.settings.saveSuccess'); },
       err => this.messageService.closeLoading());
   }
 }

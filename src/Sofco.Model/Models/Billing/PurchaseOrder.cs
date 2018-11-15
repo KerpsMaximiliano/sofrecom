@@ -39,6 +39,8 @@ namespace Sofco.Domain.Models.Billing
 
         public bool Adjustment { get; set; }
 
+        public DateTime? AdjustmentDate { get; set; }
+
         public string FicheDeSignature { get; set; }
 
         public string PaymentForm { get; set; }

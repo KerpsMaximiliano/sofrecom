@@ -29,6 +29,7 @@ export class PurchaseOrderViewFilterComponent implements OnInit, OnDestroy {
     public customers: Option[] = new Array<Option>();
     public statuses: Option[] = new Array<Option>();
 
+    public customerId: any;
     public analyticId: any;
     public opportunityId: any;
     public purchaseOrderId: any;
@@ -39,8 +40,8 @@ export class PurchaseOrderViewFilterComponent implements OnInit, OnDestroy {
     public dateFilter = true;
     public filterByDates = true;
 
-    public customerId = "0";
-    public statusId = "1";
+    public statusId: number = 1;
+    
     public year;
 
     suscription: Subscription;
@@ -121,17 +122,14 @@ export class PurchaseOrderViewFilterComponent implements OnInit, OnDestroy {
     }
 
     searchCriteriaChange() {
-        this.customerId = this.customerId === "0" ? null : this.customerId;
-        this.statusId = this.statusId === "0" ? null : this.statusId;
-        this.analyticId = this.analyticId === "0" ? null : this.analyticId;
-        this.projectManagerId = this.projectManagerId === "0" ? null : this.projectManagerId;
-        this.commercialManagerId = this.commercialManagerId === "0" ? null : this.commercialManagerId;
         this.startDate = null;
         this.endDate = null;
+
         if(this.dateRangePicker) {
             this.startDate = this.filterByDates ? this.dateRangePicker.start.toDate() : null;
             this.endDate = this.filterByDates ? this.dateRangePicker.end.toDate() : null;
         }
+
         const searchCriteria = {
             clientId: this.customerId,
             statusId: this.statusId,
@@ -172,11 +170,11 @@ export class PurchaseOrderViewFilterComponent implements OnInit, OnDestroy {
     }
 
     clean() {
-        this.customerId = "0";
-        this.analyticId = "0";
-        this.projectManagerId = "0";
-        this.commercialManagerId = "0";
-        this.statusId = "0";
+        this.customerId = null;
+        this.analyticId = null;
+        this.projectManagerId = null;
+        this.commercialManagerId = null;
+        this.statusId = null;
         this.filterByDates = true;
 
         sessionStorage.removeItem(this.storeSessionName);

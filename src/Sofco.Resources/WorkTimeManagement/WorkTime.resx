@@ -243,4 +243,31 @@
   <data name="FileEmpty" xml:space="preserve">
     <value>workTimeManagement/workTime.fileEmpty</value>
   </data>
+  <data name="InvalidAllocationAssignment" xml:space="preserve">
+    <value>workTimeManagement/workTime.invalidAllocationAssignment</value>
+  </data>
+  <data name="EndDateRequired" xml:space="preserve">
+    <value>workTimeManagement/workTime.endDateRequired</value>
+  </data>
+  <data name="StartDateRequired" xml:space="preserve">
+    <value>workTimeManagement/workTime.startDateRequired</value>
+  </data>
+  <data name="NoPendingHours" xml:space="preserve">
+    <value>workTimeManagement/workTime.noPendingHours</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Aprobada</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>Borrador</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>Licencia</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>Rechazada</value>
+  </data>
+  <data name="Sent" xml:space="preserve">
+    <value>Pendiente de aprobación</value>
+  </data>
 </root>

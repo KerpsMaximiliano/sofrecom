@@ -87,7 +87,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     var hour = sheet.GetValue(i, 5)?.ToString();
                     var comments = sheet.GetValue(i, 6)?.ToString();
 
-                    if (DateTime.TryParse(date, out var datetime)) date = datetime.ToString("d");
+                    if (IsValidDate(date, out var datetime)) date = datetime.ToString("dd/MM/yyyy");
                
                     var employee = Employees.SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNumber));
 
@@ -95,11 +95,11 @@ namespace Sofco.Framework.FileManager.WorkTime
 
                     if (!ValidateDate(response, employee, date, i, employeeNumber, employeeDesc)) continue;
 
-                    if (!ValidateHours(response, employee, date, settingHour, i, employeeNumber, employeeDesc, hour)) continue;
+                    if (!ValidateHours(response, employee, datetime, settingHour, i, employeeNumber, employeeDesc, hour)) continue;
 
                     if (!ValidateTask(response, taskId, i, employeeNumber, employeeDesc, date)) continue;
 
-                    AddWorkTime(analyticId, response, i, employeeNumber, employeeDesc, date, taskId, hour, comments, employee);
+                    AddWorkTime(analyticId, response, i, employeeNumber, employeeDesc, datetime, taskId, hour, comments, employee);
                 }
                 catch (Exception e)
                 {
@@ -136,13 +136,13 @@ namespace Sofco.Framework.FileManager.WorkTime
             }
         }
 
-        private void AddWorkTime(int analyticId, Response<IList<WorkTimeImportResult>> response, int i, string employeeNumber, string employeeDesc, string date, string taskId, string hour, string comments, Employee employee)
+        private void AddWorkTime(int analyticId, Response<IList<WorkTimeImportResult>> response, int i, string employeeNumber, string employeeDesc, DateTime date, string taskId, string hour, string comments, Employee employee)
         {
             var worktime = new Domain.Models.WorkTimeManagement.WorkTime();
 
             worktime.AnalyticId = analyticId;
             worktime.EmployeeId = employee.Id;
-            worktime.Date = Convert.ToDateTime(date);
+            worktime.Date = date;
             worktime.TaskId = Convert.ToInt32(taskId);
             worktime.Hours = Convert.ToDecimal(hour);
             worktime.CreationDate = DateTime.UtcNow;
@@ -169,7 +169,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                 }
                 else
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, date.ToString("dd/MM/yyyy"));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportUserWithEmailNull;
                     response.Data.Add(item);
                 }
@@ -191,21 +191,19 @@ namespace Sofco.Framework.FileManager.WorkTime
             return true;
         }
 
-        private bool ValidateHours(Response<IList<WorkTimeImportResult>> response, Employee employee, string date, Setting settingHour, int i,
+        private bool ValidateHours(Response<IList<WorkTimeImportResult>> response, Employee employee, DateTime datetime, Setting settingHour, int i,
             string employeeNumber, string employeeDesc, string hour)
         {
             if (employee != null)
             {
                 if (string.IsNullOrWhiteSpace(hour))
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportHoursNull;
                     response.Data.Add(item);
 
                     return false;
                 }
-
-                var datetime = Convert.ToDateTime(date);
 
                 var hoursAlreadyAdded = WorkTimesToAdd.Where(x => x.EmployeeId == employee.Id && x.Date.Date == datetime.Date).Sum(x => x.Hours);
 
@@ -218,7 +216,7 @@ namespace Sofco.Framework.FileManager.WorkTime
 
                 if (hours + Convert.ToDecimal(hour) + hoursAlreadyAdded > Convert.ToDecimal(settingHour.Value))
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportHoursExceed;
                     response.Data.Add(item);
 
@@ -247,9 +245,31 @@ namespace Sofco.Framework.FileManager.WorkTime
             return true;
         }
 
+        private bool IsValidDate(string date, out DateTime datetime)
+        {
+            datetime = DateTime.MinValue;
+
+            if (string.IsNullOrWhiteSpace(date)) return false;
+            if (date.Length != 10) return false;
+
+            var split = date.Split('/');
+            if (split.Length != 3) return false;
+
+            try
+            {
+                datetime = new DateTime(Convert.ToInt32(split[2]), Convert.ToInt32(split[1]), Convert.ToInt32(split[0]));
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         private bool ValidateDate(Response<IList<WorkTimeImportResult>> response, Employee employee, string date, int i, string employeeNumber, string employeeDesc)
         {
-            if (!DateTime.TryParse(date, out var datetime))
+            if (!IsValidDate(date, out var datetime))
             {
                 var item = FillItemResult(i, employeeNumber, employeeDesc, date);
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateNull;
@@ -264,7 +284,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     if (datetime.DayOfWeek == DayOfWeek.Saturday || datetime.DayOfWeek == DayOfWeek.Sunday ||
                         Holidays.Any(x => x.Date.Date == datetime.Date))
                     {
-                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("d"));
+                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                         item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateWrong;
                         response.Data.Add(item);
 
@@ -274,7 +294,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     if (employee.Licenses.Any(x =>
                         datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date))
                     {
-                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("d"));
+                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                         item.Error = Resources.WorkTimeManagement.WorkTime.ImportEmployeeWithLicense;
                         response.Data.Add(item);
 
@@ -283,7 +303,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                 }
                 else
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("d"));
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportDatesOutOfRange;
                     response.Data.Add(item);
 

@@ -2,6 +2,7 @@ export class PurchaseOrderBalanceModel {
     public id: number;
     public purchaseOrderId: number;
     public number: string;
+    public title: string;
     public clientExternalName: string;
     public currencyId: number;
     public currencyText: string;

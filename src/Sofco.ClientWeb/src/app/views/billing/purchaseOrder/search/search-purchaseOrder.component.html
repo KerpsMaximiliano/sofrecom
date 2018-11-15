@@ -22,6 +22,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="btn-right">
+                <button *ngIf="menuService.hasFunctionality('PUROR', 'REPORT')" class="btn btn-success btn-sm btn-outline dim" (click)="export()"> {{ 'ACTIONS.export' | translate }} <i class="fa fa-download"></i></button>
                 <button *ngIf="menuService.hasFunctionality('PUROR', 'ALTA')" class="btn btn-primary btn-outline dim btn-sm" (click)="goToAdd()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></button>
             </div>
         </div>

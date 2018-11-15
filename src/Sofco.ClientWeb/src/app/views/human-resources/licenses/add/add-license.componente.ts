@@ -83,6 +83,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                 this.model.managerDesc = userInfo.managerDesc;
                 this.model.sectorId = userInfo.sectorId;
                 this.model.sectorDesc = userInfo.sectorDesc;
+                this.model.authorizerId = userInfo.authorizerId;
+                this.model.authorizerDesc = userInfo.authorizerDesc;
 
                 this.userApplicantName = userInfo.name;
 
@@ -155,6 +157,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                     this.model.managerDesc = response.data.managerDesc;
                     this.model.sectorId = response.data.sectorId;
                     this.model.sectorDesc = response.data.sectorDesc;
+                    this.model.authorizerId = response.data.authorizerId;
+                    this.model.authorizerDesc = response.data.authorizerDesc;
 
                     this.checkMissingManager();
                 }
@@ -165,6 +169,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
                 this.model.managerDesc = null;
                 this.model.sectorId = null;
                 this.model.sectorDesc = null;
+                this.model.authorizerId = null;
+                this.model.authorizerDesc = null;
             });
     }
 
@@ -180,9 +186,12 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     add(){
         this.messageService.showLoading();
 
-        this.addSubscrip = this.licenseService.add(this.model).subscribe(data => {
+        this.addSubscrip = this.licenseService.add(this.model).subscribe(res => {
             this.messageService.closeLoading();
-            this.model.id = data.data;
+            this.model.id = res.data.id;
+            this.model.managerId = res.data.managerId;
+            this.model.managerDesc = res.data.managerDesc;
+            this.updateStorage();
             this.configUploader();
         },
         () => {
@@ -261,5 +270,12 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
 
         this.startDate.clean();
         this.endDate.clean();
+    }
+
+    updateStorage() {
+        const userInfo = UserInfoService.getUserInfo();
+        userInfo.managerId = this.model.managerId;
+        userInfo.managerDesc = this.model.managerDesc;
+        UserInfoService.setUserInfo(userInfo);
     }
 } 

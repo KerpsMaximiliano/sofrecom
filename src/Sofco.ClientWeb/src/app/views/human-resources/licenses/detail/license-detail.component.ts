@@ -10,6 +10,7 @@ import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { LicenseDetail } from "../../../../models/rrhh/licenseDetail";
 import * as FileSaver from "file-saver";
 import { AuthService } from "../../../../services/common/auth.service";
+import { LicenseStatus } from "../../../../models/enums/licenseStatus";
 
 @Component({
     selector: 'license-detail',
@@ -151,5 +152,14 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
         this.licenseService.exportFile(id).subscribe(file => {
             FileSaver.saveAs(file, name);
         });
+    }
+
+    fileDeliveredVisible(){
+        if(this.menuService.userIsRrhh && !this.model.hasCertificate && this.model.certificateRequired && 
+            (this.model.status == LicenseStatus.ApprovePending || this.model.status == LicenseStatus.Approved || this.model.status == LicenseStatus.AuthPending || this.model.status == LicenseStatus.Pending)){
+            return true;
+        }
+
+        return false;
     }
 } 

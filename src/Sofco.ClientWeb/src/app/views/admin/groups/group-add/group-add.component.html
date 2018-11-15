@@ -30,30 +30,31 @@
                     <h5>{{'ADMIN.GROUPS.ADD' | translate }}</h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <!--Description-->
-                                <div class="form-group">
-                                    <label class="control-label">{{'ADMIN.description' | translate }}</label>
-                                    <input type="text"  name="description"class="form-control" [(ngModel)]="group.description" #descripRef="ngModel" required> 
-                                </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!--Description-->
+                            <div class="form-group">
+                                <label class="control-label">{{'ADMIN.description' | translate }}</label>
+                                <input type="text" name="description" class="form-control" [(ngModel)]="group.description"> 
+                            </div>
 
-                                <!--Mail-->
-                                <div class="form-group">
-                                    <label class="control-label">{{'ADMIN.GROUPS.mail' | translate }}</label>
-                                    <input type="email" name="email" class="form-control" [(ngModel)]="group.email"> 
-                                </div>
+                            <!--Mail-->
+                            <div class="form-group">
+                                <label class="control-label">{{'ADMIN.GROUPS.mail' | translate }}</label>
+                                <input type="email" name="email" class="form-control" [(ngModel)]="group.email"> 
+                            </div>
 
-                                <select-two [label]="'ADMIN.GROUPS.rolAsigned'" [(value)]="group.roleId" [options]="roles"></select-two>
+                            <div class="form-group">
+                                <label class="control-label">{{ 'ADMIN.GROUPS.rolAsigned' | translate }}</label>
+                                <ng-select [items]="roles" bindLabel="text" bindValue="id" [(ngModel)]="group.roleId"></ng-select>
                             </div>
                         </div>
-        
-                        <hr class="hr-line-dashed">
+                    </div>
+    
+                    <hr class="hr-line-dashed">
 
-                        <button class="btn btn-primary" type="submit">{{'ACTIONS.ACCEPT' | translate }}</button>
-                        <button (click)="goToGroups()" class="btn btn-success"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
-                    </form>
+                    <button (click)="onSubmit()" class="btn btn-primary" type="button">{{'ACTIONS.ACCEPT' | translate }}</button>
+                    <button (click)="goToGroups()" class="btn btn-success"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
                 </div>
             </div>
         </div>

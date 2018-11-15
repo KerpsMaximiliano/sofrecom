@@ -8,6 +8,7 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
 using Sofco.Core.Models.Billing.PurchaseOrder;
 using Sofco.Core.Services.Billing;
+using Sofco.Core.Services.Billing.PurchaseOrder;
 using Sofco.Core.Services.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Common;
@@ -21,16 +22,26 @@ namespace Sofco.WebApi.Controllers.Billing
     public class PurchaseOrderController : Controller
     {
         private readonly IPurchaseOrderService purchaseOrderService;
+        private readonly IPurchaseOrderStatusService purchaseOrderStatusService;
+        private readonly IPurchaseOrderFileService purchaseOrderFileService;
         private readonly IFileService fileService;
         private readonly FileConfig fileConfig;
         private readonly ISessionManager sessionManager;
 
-        public PurchaseOrderController(IPurchaseOrderService purchaseOrderService, IFileService fileService, IOptions<FileConfig> fileOptions, ISessionManager sessionManager)
+        public PurchaseOrderController(
+            IPurchaseOrderService purchaseOrderService,
+            IFileService fileService,
+            IPurchaseOrderStatusService purchaseOrderStatusService,
+            IPurchaseOrderFileService purchaseOrderFileService,
+            IOptions<FileConfig> fileOptions,
+            ISessionManager sessionManager)
         {
             this.purchaseOrderService = purchaseOrderService;
             this.fileService = fileService;
             this.sessionManager = sessionManager;
             fileConfig = fileOptions.Value;
+            this.purchaseOrderStatusService = purchaseOrderStatusService;
+            this.purchaseOrderFileService = purchaseOrderFileService;
         }
 
         [HttpGet("{id}")]
@@ -71,7 +82,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpDelete("{id}/file")]
         public IActionResult DeleteFile(int id)
         {
-            var response = purchaseOrderService.DeleteFile(id);
+            var response = purchaseOrderFileService.DeleteFile(id);
 
             return this.CreateResponse(response);
         }
@@ -85,7 +96,7 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 var file = Request.Form.Files.First();
 
-                await purchaseOrderService.AttachFile(purchaseOrderId, response, file, sessionManager.GetUserName());
+                await purchaseOrderFileService.AttachFile(purchaseOrderId, response, file, sessionManager.GetUserName());
             }
             else
             {
@@ -105,6 +116,17 @@ namespace Sofco.WebApi.Controllers.Billing
 
             return File(response.Data, "application/octet-stream", string.Empty);
         }
+
+        [HttpGet("export")]
+        public IActionResult Export()
+        {
+            var response = purchaseOrderFileService.Export();
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
 
         [HttpGet("{id}/file")]
         public IActionResult GetFile(int id)
@@ -126,7 +148,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpPut("{id}/adjustment")]
         public IActionResult MakeAdjustment(int id, [FromBody] IList<PurchaseOrderAmmountDetailModel> details)
         {
-            var response = purchaseOrderService.MakeAdjustment(id, details);
+            var response = purchaseOrderStatusService.MakeAdjustment(id, details);
 
             return this.CreateResponse(response);
         }
@@ -135,7 +157,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody]PurchaseOrderStatusParams model)
         {
-            var response = purchaseOrderService.ChangeStatus(id, model);
+            var response = purchaseOrderStatusService.ChangeStatus(id, model);
 
             return this.CreateResponse(response);
         }
@@ -144,7 +166,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [Route("{id}/close")]
         public IActionResult Close(int id, [FromBody]PurchaseOrderStatusParams model)
         {
-            var response = purchaseOrderService.Close(id, model);
+            var response = purchaseOrderStatusService.Close(id, model);
 
             return this.CreateResponse(response);
         }

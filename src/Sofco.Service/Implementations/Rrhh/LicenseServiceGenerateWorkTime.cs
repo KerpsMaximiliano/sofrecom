@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Domain.Enums;
@@ -12,9 +14,12 @@ namespace Sofco.Service.Implementations.Rrhh
     {
         private readonly IUnitOfWork unitOfWork;
 
-        public LicenseGenerateWorkTimeService(IUnitOfWork unitOfWork)
+        private readonly AppSetting appSetting;
+
+        public LicenseGenerateWorkTimeService(IUnitOfWork unitOfWork, IOptions<AppSetting> appSetting)
         {
             this.unitOfWork = unitOfWork;
+            this.appSetting = appSetting.Value;
         }
 
         public void GenerateWorkTimes(License license)
@@ -31,7 +36,7 @@ namespace Sofco.Service.Implementations.Rrhh
 
             var user = unitOfWork.UserRepository.GetByEmail(license.Employee.Email);
 
-            var analyticBank = unitOfWork.AnalyticRepository.GetByTitle("492-00000");
+            var analyticBank = unitOfWork.AnalyticRepository.GetByTitle(appSetting.AnalyticBank);
 
             while (startDate.Date <= endDate.Date)
             {
@@ -50,7 +55,7 @@ namespace Sofco.Service.Implementations.Rrhh
                     var worktime = BuildWorkTime(license, startDate, user);
 
                     worktime.AnalyticId = analyticBank.Id;
-                    worktime.Hours = 8;
+                    worktime.Hours = license.Employee.BusinessHours;
 
                     unitOfWork.WorkTimeRepository.Insert(worktime);
                 }
@@ -61,7 +66,7 @@ namespace Sofco.Service.Implementations.Rrhh
                         var worktime = BuildWorkTime(license, startDate, user);
 
                         worktime.AnalyticId = analyticBank.Id;
-                        worktime.Hours = 8;
+                        worktime.Hours = license.Employee.BusinessHours;
 
                         unitOfWork.WorkTimeRepository.Insert(worktime);
                     }
@@ -74,7 +79,16 @@ namespace Sofco.Service.Implementations.Rrhh
                                 var worktime = BuildWorkTime(license, startDate, user);
 
                                 worktime.AnalyticId = allocation.AnalyticId;
-                                worktime.Hours = (8 * allocation.Percentage) / 100;
+
+                                if (allocationsInMonth.Count == 1)
+                                {
+                                    worktime.Hours = license.Employee.BusinessHours;
+                                }
+                                else
+                                {
+                                    worktime.Hours = (license.Employee.BusinessHours * allocation.Percentage) / 100;
+                                }
+                                
 
                                 unitOfWork.WorkTimeRepository.Insert(worktime);
                             }

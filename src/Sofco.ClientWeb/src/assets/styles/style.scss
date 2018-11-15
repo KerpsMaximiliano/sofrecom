@@ -1,9 +1,3 @@
-/*
- *
- *   INSPINIA - Responsive Admin Theme
- *   version 2.7.1
- *
-*/
 // Google Fonts
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
 
@@ -11,7 +5,7 @@
 @import "imports/variables";
 @import "imports/mixins";
 
-// INSPINIA Theme Elements
+// Theme Elements
 @import "imports/typography";
 @import "imports/navigation";
 @import "imports/top_navigation";
@@ -34,7 +28,7 @@
 // For demo only - config box style
 @import "imports/theme-config";
 
-// INSPINIA Skins
+// Skins
 @import "imports/skins";
 @import "imports/md-skin";
 
@@ -46,6 +40,10 @@
 @import "imports/custom";
 
 @import "node_modules/ladda/css/ladda";
+
+@import "node_modules/ngx-bootstrap/datepicker/bs-datepicker.scss";
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 // Clear layout on print mode
 @media print {
@@ -717,4 +715,20 @@ td.details-control {
 
 .full-width {
   width: 100%;
+}
+
+.task-empty-add {
+  float: right;
+  margin: 3px;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+bs-datepicker-container {
+  z-index: 999999!important;
+}
+
+.fc-day-grid-event .fc-content{
+  overflow: unset!important;
+  white-space: inherit!important;
 }

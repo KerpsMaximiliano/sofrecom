@@ -40,6 +40,13 @@ import { SettingsService } from './services/admin/settings.service';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpServiceInterceptor } from 'app/services/common/httpServiceInterceptor';
 
+import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { esLocale } from 'ngx-bootstrap/locale';
+import { defineLocale, TooltipModule } from 'ngx-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
+
+defineLocale('es', esLocale);
+
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http, "assets/i18n/", ".json");
 }
@@ -57,6 +64,10 @@ registerLocaleData(localeEs, 'es');
     HttpModule,
     LayoutsModule,
     AppviewsModule,
+    BsDatepickerModule.forRoot(),
+    DatepickerModule.forRoot(),
+    TooltipModule.forRoot(),
+    NgSelectModule,
     ToastrModule.forRoot(),
     appRouter,
     ChartsModule,

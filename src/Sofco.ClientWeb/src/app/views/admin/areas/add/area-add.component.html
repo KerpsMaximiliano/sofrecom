@@ -29,10 +29,13 @@
 
             <div class="row"> 
                 <div class="col-sm-6">
-                    <select-two [label]="'ADMIN.area.responsable'" [(value)]="responsableId" [options]="responsables"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'ADMIN.area.responsable' | translate }}</label>
+                        <ng-select [items]="responsables" bindLabel="text" bindValue="id" [(ngModel)]="responsableId"></ng-select>
+                    </div>
                 </div>
             </div>
-
+ 
             <hr class="hr-line-dashed">
 
             <button (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.ACCEPT' | translate }}</button>

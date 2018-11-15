@@ -18,10 +18,10 @@
 <div class="wrapper wrapper-content animated fadeInUp">
     <div class="row">
         <div class="col-lg-12">
-            <button class="btn btn-success btn-outline dim" (click)="cancel()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
+            <button class="btn btn-success btn-outline dim btn-sm" (click)="cancel()"><i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
 
             <div class="btn-right">
-                <button class="btn btn-primary btn-outline dim" (click)="save()" *ngIf="canSave()"> {{'ACTIONS.save' | translate }} <i class="fa fa-save"></i></button>
+                <button class="btn btn-primary btn-outline dim btn-sm" (click)="save()" *ngIf="canSave()"> {{'ACTIONS.save' | translate }} <i class="fa fa-save"></i></button>
 
                 <status-delete [solfacId]="solfacId" [status]="model.statusName" [customerId]="model.customerId" [serviceId]="model.serviceId" [projectId]="model.projectId"></status-delete>
             </div>
@@ -86,7 +86,8 @@
                     <!-- Plazo -->
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-sm-4">
-                            <select-two [label]="'billing.solfac.timeLimit'" [(value)]="model.paymentTermId" [options]="paymentTerms"></select-two>
+                            <label class="control-label">{{'billing.solfac.timeLimit' | translate }}</label>
+                            <input type="text" [(ngModel)]="model.paymentTerm" class="form-control"> 
                         </div>
 
                         <!-- Tipo de documento -->
@@ -113,14 +114,14 @@
                         </div>
 
                         <div class="col-sm-3">
-                            <select-two [label]="'billing.solfac.activity'" [(value)]="model.imputationNumber3" [options]="imputationNumbers"></select-two>
+                            <select-two [disabled]="activityDisabled" [label]="'billing.solfac.activity'" [(value)]="model.imputationNumber3" [options]="imputationNumbers"></select-two>
                         </div>
                     </div>
           
                     <!-- Numero de contrato -->
                     <div class="row">
                         <div class="col-lg-6 col-md-5 col-sm-5">
-                            <select-two [label]="'billing.solfac.contractNumber'" [(value)]="model.purchaseOrderId" [options]="purchaseOrders"></select-two>
+                            <select-two [label]="'billing.solfac.contractNumber'" [(value)]="model.purchaseOrderId" [options]="purchaseOrders" (valueChange)="purchaseOrderChange(model.purchaseOrderId)"></select-two>
                         </div>
                     </div>
 

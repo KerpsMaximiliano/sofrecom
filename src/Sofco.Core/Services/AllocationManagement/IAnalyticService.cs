@@ -1,7 +1,6 @@
 ﻿using System;
 using Sofco.Domain.Utils;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
@@ -20,11 +19,11 @@ namespace Sofco.Core.Services.AllocationManagement
 
         AnalyticOptions GetOptions();
 
-        Task<Response<Analytic>> Add(Analytic analytic);
+        Response<Analytic> Add(Analytic analytic);
 
         Response<string> GetNewTitle(int costCenterId);
 
-        Response<Analytic> Update(Analytic domain);
+        Response<Analytic> Update(AnalyticModel domain);
 
         Response Close(int analyticId, AnalyticStatus status);
 
@@ -45,5 +44,6 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<IList<SelectListModel>> GetOpportunities(int id);
 
         Response<List<Option>> GetByCurrentManager();
+        Response<Analytic> GetByTitle(string title);
     }
 }

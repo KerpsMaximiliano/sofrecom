@@ -6,8 +6,6 @@
 
         public int? ManagerId { get; set; }
 
-        public string ClientId { get; set; }
-
         public int? AnalyticId { get; set; }
 
         public int? EmployeeId { get; set; }

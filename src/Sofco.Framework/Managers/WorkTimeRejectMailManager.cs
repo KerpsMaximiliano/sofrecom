@@ -62,7 +62,9 @@ namespace Sofco.Framework.Managers
                 workTime.Date.ToString("dd/MM/yyyy"),
                 workTime.Hours,
                 workTime.ApprovalComment,
-                workTime.Employee.Name);
+                workTime.Employee.Name,
+                workTime.UserComment,
+                workTime.Reference);
 
             var recipients = new List<string>
             {

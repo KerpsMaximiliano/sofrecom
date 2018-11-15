@@ -2,9 +2,6 @@
 using Sofco.Core.Services.AllocationManagement;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.CrmServices;
@@ -15,10 +12,10 @@ using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Managers;
 using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
-using Sofco.Domain;
 using Sofco.Framework.MailData;
 using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Domain.Utils;
@@ -35,28 +32,30 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailSender mailSender;
         private readonly ILogMailer<AnalyticService> logger;
         private readonly EmailConfig emailConfig;
-        private readonly CrmConfig crmConfig;
         private readonly IMailBuilder mailBuilder;
         private readonly ICrmService crmService;
         private readonly IEmployeeData employeeData;
         private readonly IAnalyticFileManager analyticFileManager;
+        private readonly IAnalyticManager analyticManager;
         private readonly IUserData userData;
         private readonly IServiceData serviceData;
+        private readonly IRoleManager roleManager;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
-            IOptions<CrmConfig> crmOptions, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IServiceData serviceData,
-            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, IUserData userData)
+            IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IServiceData serviceData,
+            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, IUserData userData, IAnalyticManager analyticManager, IRoleManager roleManager)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
             this.logger = logger;
-            crmConfig = crmOptions.Value;
             emailConfig = emailOptions.Value;
             this.mailBuilder = mailBuilder;
             this.crmService = crmService;
             this.employeeData = employeeData;
             this.analyticFileManager = analyticFileManager;
             this.userData = userData;
+            this.analyticManager = analyticManager;
+            this.roleManager = roleManager;
             this.serviceData = serviceData;
         }
 
@@ -115,11 +114,29 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var currentUser = userData.GetCurrentUser();
 
-            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+            var analyticsByManagers = roleManager.HasFullAccess() 
+                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly() 
+                : unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
 
             var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
             return new Response<List<Option>> { Data = result };
+        }
+
+        public Response<Analytic> GetByTitle(string title)
+        {
+            var response = new Response<Analytic>();
+
+            var analytic = unitOfWork.AnalyticRepository.GetByTitle(title);
+
+            if (analytic == null)
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                return response;
+            }
+
+            response.Data = analytic;
+            return response;
         }
 
         public Response<List<AnalyticSearchViewModel>> Get(AnalyticSearchParameters searchParameters)
@@ -252,7 +269,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public async Task<Response<Analytic>> Add(Analytic analytic)
+        public Response<Analytic> Add(Analytic analytic)
         {
             var response = new Response<Analytic>();
 
@@ -299,9 +316,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
             {
-                await UpdateAnalyticOnCrm(response, analytic.Title, analytic.ServiceId);
+                var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
+                if (crmResponse.HasErrors())
+                {
+                    response.AddMessages(crmResponse.Messages);
+                }
             }
-            
+
             SendMail(analytic, response);
 
             return response;
@@ -333,11 +354,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<Analytic> Update(Analytic analytic)
+        public Response<Analytic> Update(AnalyticModel analyticModel)
         {
             var response = new Response<Analytic>();
 
-            AnalyticValidationHelper.Exist(response, unitOfWork.AnalyticRepository, analytic.Id);
+            var analytic = AnalyticValidationHelper.Find(response, unitOfWork, analyticModel.Id);
             AnalyticValidationHelper.CheckName(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
@@ -346,8 +367,16 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
+                analyticModel.UpdateDomain(analytic);
+
                 unitOfWork.AnalyticRepository.Update(analytic);
                 unitOfWork.Save();
+
+                var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
+                if (crmResponse.HasErrors())
+                {
+                    response.AddMessages(crmResponse.Messages);
+                }
 
                 response.AddSuccess(Resources.AllocationManagement.Analytic.UpdateSuccess);
             }
@@ -380,7 +409,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
+                if (status == AnalyticStatus.Close && !string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
                     var service = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
 
@@ -431,7 +460,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
-                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
+                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafAnalytic);
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
                 var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
                 var mailQuality = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);
@@ -462,32 +491,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 response.AddWarning(Resources.Common.ErrorSendMail);
                 logger.LogError(ex);
-            }
-        }
-
-        private async Task UpdateAnalyticOnCrm(Response response, string analytic, string serviceId)
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(crmConfig.Url);
-
-                var data = $"Analytic={analytic}";
-
-                var urlPath = $"/api/Service/{serviceId}/";
-
-                try
-                {
-                    var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
-
-                    var httpResponse = await client.PutAsync(urlPath, stringContent);
-
-                    httpResponse.EnsureSuccessStatusCode();
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(urlPath + "; data: " + data, ex);
-                    response.AddError(Resources.Common.ErrorSave);
-                }
             }
         }
 

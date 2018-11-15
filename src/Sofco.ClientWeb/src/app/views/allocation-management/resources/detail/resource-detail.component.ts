@@ -38,7 +38,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         businessHours: 0,
         businessHoursDescription: "",
         office: "",
-        managerId: 0,
+        managerId: null,
         billingPercentage: 0,
         holidaysPending: null
     }
@@ -112,7 +112,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.editModel.businessHoursDescription = response.data.businessHoursDescription;
             this.editModel.office = response.data.officeAddress;
             this.editModel.holidaysPending = response.data.holidaysPendingByLaw;
-            this.editModel.managerId = response.data.managerId;
+            this.editModel.managerId = response.data.managerId.toString();
             this.editModel.billingPercentage = response.data.percentage;
 
             this.messageService.closeLoading();
@@ -223,12 +223,17 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     getProfileHistories() {
         this.getSubscrip = this.employeeProfileHistoryService.getByEmployeeNumber(this.model.employeeNumber).subscribe(response => {
             this.profileHistories = this.mapProfileHistories(response.data);
+
+            var params = { selector: "#profileHistoryTable" };
+            this.dataTableService.initialize(params);
         });
     }
 
     mapProfileHistories(data:any[]) {
         const result = [];
         const self = this;
+
+        this.resolveReference(data);
 
         data.forEach(x => {
             const fields = JSON.parse(x.fields);
@@ -248,5 +253,26 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     lowerizeFirstLetter(txt) {
         return txt.charAt(0).toLowerCase() + txt.slice(1);
+    }
+
+    resolveReference(data:any[]) {
+        const self = this;
+
+        data.forEach(x => {
+            const fields = JSON.parse(x.fields);
+            fields.forEach(item => {
+                const key = self.lowerizeFirstLetter(item);
+                if(key === 'managerId')
+                {
+                    self.setManagerReference(x);
+                }
+            });
+        });
+    }
+
+    setManagerReference(item)
+    {
+        item.employeePrevious.managerId = item.employee.manager.name;
+        item.employee.managerId = item.employeePrevious.manager.name;
     }
 }

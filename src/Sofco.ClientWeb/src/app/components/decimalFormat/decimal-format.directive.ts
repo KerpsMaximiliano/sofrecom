@@ -1,5 +1,7 @@
 import { Directive, ElementRef, HostListener, NgModule } from '@angular/core';
 
+declare var navigator: any;
+
 @Directive({
  selector: '[decimalFormat]'
 })
@@ -26,8 +28,10 @@ export class DecimalFormatDirective {
         let current: string = this.el.nativeElement.value;
         let next: string = current.concat(event.key);
 
-        if (next && !String(next).match(this.regex)) {
-            event.preventDefault();
+        if(!(event.key == "v" && event.ctrlKey == true)){
+            if (next && !String(next).match(this.regex)) {
+                event.preventDefault();
+            }
         }
     }
 }

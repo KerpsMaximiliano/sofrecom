@@ -7,43 +7,42 @@ declare var swal: any;
 
 @Injectable()
 export class MessageService {
+    private successType = 0;
+    private errorType = 1;
+    private warningType = 2;
+
     constructor(private toastrService: ToastrService,
                 private i18nService: I18nService) {}
 
+
     showMessages(messages: Message[]) {
         messages.forEach((value, index) => {
-            const msg = this.i18nService.translate(value.folder, value.code);
-
-            switch (value.type) {
-                case 0: this.toastrService.success(msg); break;
-                case 1: this.toastrService.error(msg, 'Error'); break;
-                case 2: this.toastrService.warning(msg); break;
-            }
-        })
+            this.showMessage(this.i18nService.translate(value.folder, value.code), value.type);
+        });
     }
 
-    showError(message){
-        this.toastrService.error(this.i18nService.translateByKey(message));
+    showError(key){
+        this.showMessage(this.i18nService.translateByKey(key), this.errorType);
     }
 
-    showWarning(message){
-        this.toastrService.warning(this.i18nService.translateByKey(message));
+    showWarning(key){
+        this.showMessage(this.i18nService.translateByKey(key), this.warningType);
     }
 
-    succes(message){
-        this.toastrService.success(this.i18nService.translateByKey(message));
+    succes(key, config?: any){
+        this.showMessage(this.i18nService.translateByKey(key), this.successType, config);
     }
 
     showErrorByFolder(folder: any, code: string) {
-        this.toastrService.error(this.i18nService.translate(folder, code));
+        this.showMessage(this.i18nService.translate(folder, code), this.errorType);
     }
 
     showWarningByFolder(folder, code){
-        this.toastrService.warning(this.i18nService.translate(folder, code));
+        this.showMessage(this.i18nService.translate(folder, code), this.warningType);
     }
 
     showSuccessByFolder(folder, code){
-        this.toastrService.success(this.i18nService.translate(folder, code));
+        this.showMessage(this.i18nService.translate(folder, code), this.successType);
     }
 
     showLoading(){
@@ -66,5 +65,24 @@ export class MessageService {
 
     closeLoading(){
         swal.close();
+    }
+
+    getDefaultConfig(config?: any):any {
+        const option = {
+            closeButton: true
+        };
+        for(const key in config)
+        {
+            option[key] = config[key];
+        }
+        return option;
+    }
+
+    showMessage(msg, type:number, config?: any) {
+        switch (type) {
+            case this.successType: this.toastrService.success(msg, null, this.getDefaultConfig(config)); break;
+            case this.errorType: this.toastrService.error(msg, 'Error', this.getDefaultConfig(config)); break;
+            case this.warningType: this.toastrService.warning(msg, null, this.getDefaultConfig(config)); break;
+        }
     }
 }

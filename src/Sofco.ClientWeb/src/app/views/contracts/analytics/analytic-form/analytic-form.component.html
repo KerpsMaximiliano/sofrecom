@@ -2,7 +2,10 @@
     <div class="col-sm-7">
         <div class="row">
             <div class="col-sm-6">
-                <select-two [label]="'contracts.costCenter.title'" [(value)]="model.costCenterId" [options]="costCenters" (valueChange)="costCenterChange()" [disabled]="mode == 'edit'"></select-two>
+                <div class="form-group">
+                    <label class="control-label">{{ 'contracts.costCenter.title' | translate }}</label>
+                    <ng-select [items]="costCenters" bindLabel="text" bindValue="id" [(ngModel)]="model.costCenterId" (change)="costCenterChange()" [disabled]="isReadOnly"></ng-select>
+                </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
@@ -38,21 +41,25 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <select-two [label]="'allocationManagement.analytics.add.group'" [(value)]="model.clientGroupId" [options]="options?.clientGroups"></select-two>
+                <div class="form-group">
+                    <label class="control-label">{{ 'allocationManagement.analytics.add.group' | translate }}</label>
+                    <ng-select [items]="options?.clientGroups" bindLabel="text" bindValue="id" [(ngModel)]="model.clientGroupId" [disabled]="isReadOnly"></ng-select>
+                </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label class="control-label"> {{'allocationManagement.analytics.add.usersqv' | translate }} </label>
-                    <select select2 class="form-control" id="userId" multiple>
-                        <option *ngFor="let user of users" [value]="user?.id">{{ user.text }}</option>
-                    </select>
+                    <ng-select [items]="users" [multiple]="true" [closeOnSelect]="false" bindLabel="text" bindValue="id" [(ngModel)]="model.usersQv" [disabled]="isReadOnly"></ng-select>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6">
-                <select-two *ngIf="mode == 'new'" id="customer-select" [label]="'billing.solfac.client'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
+                <div class="form-group" *ngIf="mode == 'new'">
+                    <label class="control-label">{{ 'billing.solfac.client' | translate }}</label>
+                    <ng-select [items]="customers" bindLabel="text" bindValue="id" [(ngModel)]="customerId" (change)="customerChange()" [disabled]="isReadOnly"></ng-select>
+                </div>
 
                 <div *ngIf="mode != 'new'">
                     <label class="control-label">{{ 'billing.solfac.client' | translate }}</label>
@@ -60,7 +67,10 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <select-two *ngIf="mode == 'new'" id="service-select" [label]="'billing.solfac.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
+                <div class="form-group" *ngIf="mode == 'new'">
+                    <label class="control-label">{{ 'billing.solfac.service' | translate }}</label>
+                    <ng-select [items]="services" bindLabel="text" bindValue="id" [(ngModel)]="serviceId" (change)="serviceChange()" [disabled]="isReadOnly"></ng-select>
+                </div>
 
                 <div *ngIf="mode != 'new'">
                     <label class="control-label">{{ 'billing.solfac.service' | translate }}</label>
@@ -82,24 +92,48 @@
     </div>
 
     <div class="col-sm-5">
-        <select-two [label]="'allocationManagement.analytics.add.direction'" [(value)]="model.sectorId" [options]="options?.sectors"></select-two>
+        <div class="form-group">
+            <label class="control-label">{{ 'allocationManagement.analytics.add.direction' | translate }}</label>
+            <ng-select [items]="options?.sectors" bindLabel="text" bindValue="id" [(ngModel)]="model.sectorId" [disabled]="isReadOnly"></ng-select>
+        </div>
 
-        <select-two [label]="'allocationManagement.analytics.add.manager'" [(value)]="model.managerId" [options]="options?.managers"></select-two>
+        <div class="form-group">
+            <label class="control-label">{{ 'allocationManagement.analytics.add.manager' | translate }}</label>
+            <ng-select [items]="options?.managers" bindLabel="text" bindValue="id" [(ngModel)]="model.managerId" [disabled]="isReadOnly"></ng-select>
+        </div>
 
-        <select-two [label]="'allocationManagement.analytics.add.commercialManager'" [(value)]="model.commercialManagerId" [options]="options?.sellers"></select-two>
+        <div class="form-group">
+            <label class="control-label">{{ 'allocationManagement.analytics.add.commercialManager' | translate }}</label>
+            <ng-select [items]="options?.sellers" bindLabel="text" bindValue="id" [(ngModel)]="model.commercialManagerId" [disabled]="isReadOnly"></ng-select>
+        </div>
 
-        <select-two [label]="'allocationManagement.analytics.add.solution'" [(value)]="model.solutionId" [options]="options?.solutions"></select-two>
+        <div class="form-group">
+            <label class="control-label">{{ 'allocationManagement.analytics.add.solution' | translate }}</label>
+            <ng-select [items]="options?.solutions" bindLabel="text" bindValue="id" [(ngModel)]="model.solutionId" [disabled]="isReadOnly"></ng-select>
+        </div>
 
-        <select-two [label]="'allocationManagement.analytics.add.technology'" [(value)]="model.technologyId" [options]="options?.technologies"></select-two>
+        <div class="form-group">
+            <label class="control-label">{{ 'allocationManagement.analytics.add.technology' | translate }}</label>
+            <ng-select [items]="options?.technologies" bindLabel="text" bindValue="id" [(ngModel)]="model.technologyId" [disabled]="isReadOnly"></ng-select>
+        </div>
 
-        <select-two [label]="'allocationManagement.analytics.add.serviceType'" [(value)]="model.serviceTypeId" [options]="options?.serviceTypes"></select-two>
+        <div class="form-group">
+            <label class="control-label">{{ 'allocationManagement.analytics.add.serviceType' | translate }}</label>
+            <ng-select [items]="options?.serviceTypes" bindLabel="text" bindValue="id" [(ngModel)]="model.serviceTypeId" [disabled]="isReadOnly"></ng-select>
+        </div>
 
         <div class="row">
             <div class="col-sm-6">
-                <select-two id="softwareLaw" [label]="'allocationManagement.analytics.add.softwareLaw'" [(value)]="model.softwareLawId" [options]="options?.softwareLaws"></select-two>
+                <div class="form-group">
+                    <label class="control-label">{{ 'allocationManagement.analytics.add.softwareLaw' | translate }}</label>
+                    <ng-select [items]="options?.softwareLaws" bindLabel="text" bindValue="id" [(ngModel)]="model.softwareLawId" [disabled]="isReadOnly && !isEnableForDaf"></ng-select>
+                </div>
             </div>
             <div class="col-sm-6">
-                <select-two id="activity" [label]="'allocationManagement.analytics.add.activity'" [(value)]="model.activityId" [options]="options?.activities"></select-two>
+                <div class="form-group">
+                    <label class="control-label">{{ 'allocationManagement.analytics.add.activity' | translate }}</label>
+                    <ng-select [items]="options?.activities" bindLabel="text" bindValue="id" [(ngModel)]="model.activityId" [disabled]="isReadOnly && !isEnableForDaf"></ng-select>
+                </div>
             </div>
         </div>
     </div>

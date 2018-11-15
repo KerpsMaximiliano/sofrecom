@@ -8,6 +8,7 @@ using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Domain;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
@@ -39,7 +40,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var endDate = parameters.EndDate;
 
-            var workTimes = unitOfWork.WorkTimeRepository.GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.ServiceId));
+            var workTimes = unitOfWork.WorkTimeRepository.GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId));
 
             var models = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
@@ -56,6 +57,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
 
             resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
+
+            resumeModel.HoursApproved = resources.Sum(s => s.ApprovedHours);
 
             return result;
         }
@@ -89,16 +92,20 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var resume = workTimeResumeManager.GetResume(models, startDate, endDate);
 
-                var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDays(model.EmployeeId, startDate, endDate);
+                var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDaysForWorkTimeControl(model.EmployeeId, startDate, endDate);
 
                 var allocationAnalytic = allocations?.FirstOrDefault(s => s.AnalyticId == model.AnalyticId);
 
                 if (allocationAnalytic == null) continue;
 
                 resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
-                resource.RegisteredHours = resume.HoursApproved;
-                resource.LicenseHours = resume.HoursWithLicense;
-                resource.PendingHours = resource.BusinessHours - resource.RegisteredHours - resource.LicenseHours;
+                resource.ApprovedHours = item.Value.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours);
+                resource.LicenseHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
+                resource.SentHours = item.Value.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours);
+                resource.DraftHours = item.Value.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours);
+
+                resource.PendingHours = resource.BusinessHours - resource.ApprovedHours - resource.LicenseHours - resource.SentHours - resource.DraftHours;
+
                 resource.AllocationPercentage = allocationAnalytic.Percentage;
                 resource.Details = Translate(list.OrderBy(s => s.Date).ToList());
                 result.Add(resource);
@@ -107,21 +114,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return result;
         }
 
-        private List<int> GetAnalyticIds(Guid? serviceId)
+        private List<int> GetAnalyticIds(int? analyticId)
         {
-            if (!serviceId.HasValue)
-            {
-                var currentUser = userData.GetCurrentUser();
-
-                var ids = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id);
-
-                return ids.ToList();
-            }
-
-            var analytic = unitOfWork.AnalyticRepository
-                .GetByService(serviceId.Value.ToString());
-
-            return new List<int> {analytic?.Id ?? 0};
+            return analyticId.HasValue ? new List<int> {analyticId.Value} : new List<int>();
         }
 
         private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)

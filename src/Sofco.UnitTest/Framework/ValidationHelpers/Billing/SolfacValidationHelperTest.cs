@@ -61,7 +61,7 @@ namespace Sofco.UnitTest.Framework.ValidationHelpers.Billing
             {
                 DocumentTypeId = 1,
                 BuenosAiresPercentage = 100,
-                PaymentTermId = 1,
+                PaymentTerm = "Pago a 30 Días",
                 PurchaseOrderId = 1,
                 ImputationNumber1 = "1",
                 UserApplicantId = 1,

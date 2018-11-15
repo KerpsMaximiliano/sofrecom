@@ -25,6 +25,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public string ApprovalComment { get; set; }
 
+        public string Reference { get; set; }
+
         public WorkTimeStatus Status { get; set; }
 
         public WorkTime CreateDomain()
@@ -40,6 +42,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
             domain.Hours = Hours;
             domain.Source = WorkTimeSource.Manual.ToString();
             domain.UserComment = UserComment;
+            domain.Reference = Reference;
 
             domain.CreationDate = DateTime.UtcNow.Date;
             domain.Status = WorkTimeStatus.Draft;

@@ -12,7 +12,7 @@ import { TaskService } from "../../../../services/admin/task.service";
   export class TaskAddComponent implements OnInit, OnDestroy {
 
     public description: string;
-    public categoryId: number = 0;
+    public categoryId: number;
 
     public categories: any[] = new Array();
 

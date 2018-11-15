@@ -7,5 +7,7 @@ namespace Sofco.Core.Managers
     public interface IWorkTimeResumeManager
     {
         WorkTimeResumeModel GetResume(List<WorkTimeCalendarModel> calendarModels, DateTime startDate, DateTime endDate);
+
+        WorkTimeResumeModel GetCurrentPeriodResume();
     }
 }

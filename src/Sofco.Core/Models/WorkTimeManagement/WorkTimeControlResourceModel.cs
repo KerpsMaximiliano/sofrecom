@@ -14,14 +14,18 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public decimal BusinessHours { get; set; }
 
-        public decimal RegisteredHours { get; set; }
+        public decimal ApprovedHours { get; set; }
 
         public decimal LicenseHours { get; set; }
 
-        public decimal PendingHours { get; set; }
+        public decimal SentHours { get; set; }
+
+        public decimal DraftHours { get; set; }
 
         public decimal AllocationPercentage { get; set; }
 
         public List<WorkTimeControlResourceDetailModel> Details { get; set; }
+
+        public decimal PendingHours { get; set; }
     }
 }

@@ -10,6 +10,8 @@ namespace Sofco.Core.DAL.WorkTimeManagement
     {
         IList<WorkTime> Get(DateTime startDate, DateTime endDate, int currentUserId);
 
+        IList<WorkTime> GetByEmployeeId(DateTime startDate, DateTime endDate, int employeeId);
+
         IList<WorkTime> GetByAnalyticIds(DateTime startDate, DateTime endDate, List<int> analyticIds);
 
         IList<WorkTime> SearchApproved(WorktimeHoursApprovedParams model);
@@ -39,5 +41,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         void InsertBulk(IList<WorkTime> workTimesToAdd);
 
         void SendManagerHours(int id);
+
+        List<WorkTime> GetWorkTimeDraftByEmployeeId(int employeeId);
     }
 }

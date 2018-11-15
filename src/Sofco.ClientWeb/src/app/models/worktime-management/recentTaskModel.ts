@@ -7,4 +7,5 @@ export class RecentTaskModel {
     public taskId = 0;
     public task = "";
     public hours = 1;
+    public reference = "";
 }

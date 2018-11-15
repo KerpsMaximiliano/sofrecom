@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Sofco.Common.Domains;
 
 namespace Sofco.Service.Http.Interfaces
@@ -13,5 +14,7 @@ namespace Sofco.Service.Http.Interfaces
         Result<T> Post<T>(string urlPath, HttpContent content);
 
         Result<T> Put<T>(string urlPath, HttpContent content);
+
+        void GetAccessToken();
     }
 }

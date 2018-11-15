@@ -42,15 +42,25 @@
 
             <div class="row">
                 <div class="col-sm-4">
-                    <select-two [label]="'billing.invoice.account'" [(value)]="customerId" [options]="customers" (valueChange)="customerChange()"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.invoice.account' | translate }}</label>
+                        <ng-select [items]="customers" bindLabel="text" bindValue="id" [(ngModel)]="customerId" (change)="customerChange()"></ng-select>
+                    </div>
                 </div>
                 <div class="col-sm-4">
-                    <select-two [label]="'billing.invoice.service'" [(value)]="serviceId" [options]="services" (valueChange)="serviceChange()"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.invoice.service' | translate }}</label>
+                        <ng-select [items]="services" bindLabel="text" bindValue="id" [(ngModel)]="serviceId" (change)="serviceChange()"></ng-select>
+                    </div>
                 </div>
                 <div class="col-sm-4">
-                    <select-two [label]="'billing.invoice.project'" [(value)]="projectId" [options]="projects"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.invoice.project' | translate }}</label>
+                        <ng-select [items]="projects" bindLabel="text" bindValue="id" [(ngModel)]="projectId"></ng-select>
+                    </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
@@ -59,10 +69,16 @@
                     </div>
                 </div>
                 <div class="col-sm-4" *ngIf="showUserApplicantFilter()">
-                    <select-two [label]="'billing.invoice.user'" [(value)]="userApplicantId" [options]="userApplicants"></select-two>
+                    <div class="form-group">
+                        <label class="control-label">{{ 'billing.invoice.user' | translate }}</label>
+                        <ng-select [items]="userApplicants" bindLabel="text" bindValue="id" [(ngModel)]="userApplicantId"></ng-select>
+                    </div>
                 </div>
                 <div class="col-sm-4">
-                    <select-two [label]="'billing.invoice.status'" [(value)]="status" [options]="statuses"></select-two>
+                    <label class="control-label">{{ 'billing.solfac.status' | translate }}</label>
+                    <ng-select [(ngModel)]="status">
+                        <ng-option *ngFor="let item of statuses" [value]="item.id">{{ item.text | translate }}</ng-option>
+                    </ng-select>
                 </div>
             </div>
         </div>

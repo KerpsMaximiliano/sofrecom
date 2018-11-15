@@ -40,7 +40,7 @@ namespace Sofco.Framework.Helpers
                     continue;
                 }
 
-                if (valueA != null && valueB != null && valueA.ToString() != valueB.ToString())
+                if (valueA != null && valueB != null && !valueA.Equals(valueB))
                 {
                     modifiedFields.Add(propertyInfo.Name);
                 }

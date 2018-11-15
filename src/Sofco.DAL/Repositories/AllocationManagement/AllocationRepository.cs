@@ -37,7 +37,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             var employees = context.Allocations
                 .Include(x => x.Analytic)
-                .Where(x => x.Analytic.ServiceId.Equals(serviceId) && x.StartDate.Date == date.Date)
+                .Where(x => x.Analytic.ServiceId.Equals(serviceId) 
+                            && x.StartDate.Date == date.Date
+                            && x.Percentage > 0)
                 .Select(x => x.EmployeeId)
                 .Distinct()
                 .ToList();
@@ -61,9 +63,18 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Database.ExecuteSqlCommand("delete from app.allocations where releasedate = '0001-01-01 00:00:00.0000000'");
         }
 
-        public IList<Allocation> GetLastAllocationsForEmployee(int id, DateTime now)
+        public IList<Allocation> GetLastAllocationsForEmployee(int employeeId, DateTime date)
         {
-            return context.Allocations.Where(x => x.EmployeeId == id && x.StartDate.Date > now.Date).ToList();
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId
+                            && x.StartDate.Date > date.Date
+                            && x.Percentage > 0)
+                .ToList();
+        }
+
+        public DateTime GetStartDate(int analitycId)
+        {
+            return context.Allocations.Where(x => x.AnalyticId == analitycId).Min(x => x.StartDate);
         }
 
         public ICollection<Allocation> GetByEmployee(int id)
@@ -77,11 +88,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {
             return context.Allocations
-                .Where(x => x.EmployeeId == employeeId && x.StartDate >= startDate && x.StartDate <= endDate)
+                .Where(x => x.EmployeeId == employeeId
+                            && x.Percentage > 0
+                            && (x.StartDate.Date == startDate.Date
+                            || x.StartDate.Date == endDate.Date))
                 .ToList();
         }
 
-        public ICollection<Allocation> GetAllocationsForWorktimeReport(ReportParams parameters)
+        public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters)
         {
             var query = context.Allocations
                 .Include(x => x.Employee)
@@ -103,9 +117,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             if (parameters.ManagerId.HasValue && parameters.ManagerId > 0)
                 query = query.Where(x => x.Analytic.ManagerId.GetValueOrDefault() == parameters.ManagerId.Value);
-
-            if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
-                query = query.Where(x => x.Analytic.ClientExternalId == parameters.ClientId);
 
             return query.ToList();
         }
@@ -150,6 +161,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public void UpdatePercentage(Allocation allocation)
         {
             context.Entry(allocation).Property("Percentage").IsModified = true;
+        }
+
+        public ICollection<Allocation> GetAllocationsLiteBetweenDaysForWorkTimeControl(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId
+                            && x.Percentage > 0
+                            && (x.StartDate.Date >= startDate.Date
+                                || x.StartDate.Date <= endDate.Date))
+                .ToList();
         }
     }
 }

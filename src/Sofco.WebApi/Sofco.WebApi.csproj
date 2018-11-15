@@ -16,6 +16,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <CodeAnalysisRuleSet>Sofco.WebApi.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -43,6 +44,8 @@
     <Compile Remove="Migrations\20180906125928_UserApprover.Designer.cs" />
     <Compile Remove="Migrations\20180906130104_UserApprover.cs" />
     <Compile Remove="Migrations\20180906130104_UserApprover.Designer.cs" />
+    <Compile Remove="Migrations\20181009185719_ProjectContact.cs" />
+    <Compile Remove="Migrations\20181009185719_ProjectContact.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

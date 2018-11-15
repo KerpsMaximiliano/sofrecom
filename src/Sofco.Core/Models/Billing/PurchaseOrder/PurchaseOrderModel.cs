@@ -62,7 +62,10 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             FillData(domain, userName);
 
             domain.Status = PurchaseOrderStatus.Draft;
-       
+            domain.ClientExternalId = ClientExternalId;
+            domain.ClientExternalName = ClientExternalName;
+            domain.AreaId = AreaId;
+
             domain.Histories = new List<PurchaseOrderHistory>();
 
             domain.AmmountDetails = AmmountDetails.Where(x => x.Enable).Select(x => new PurchaseOrderAmmountDetail
@@ -80,11 +83,6 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         {
             FillData(domain, userName);
 
-            domain.Status = Status;
-
-            if (FileId > 0)
-                domain.FileId = FileId;
-
             foreach (var detail in AmmountDetails)
             {
                 var domainDetail = domain.AmmountDetails.SingleOrDefault(x => x.CurrencyId == detail.CurrencyId);
@@ -93,7 +91,11 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                 {
                     if (detail.Enable)
                     {
-                        domainDetail.Balance = detail.Balance;
+                        if (domainDetail.Ammount != detail.Ammount)
+                        {
+                            domainDetail.Balance += detail.Ammount - domainDetail.Ammount;
+                        }
+
                         domainDetail.Ammount = detail.Ammount;
                     }
                     else
@@ -119,12 +121,9 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         {
             domain.Title = Title;
             domain.Number = Number;
-            domain.ClientExternalId = ClientExternalId;
-            domain.ClientExternalName = ClientExternalName;
             domain.StartDate = StartDate;
             domain.EndDate = EndDate;
             domain.ReceptionDate = ReceptionDate;
-            domain.AreaId = AreaId;
             domain.Description = Description;
             domain.FicheDeSignature = FicheDeSignature;
             domain.PaymentForm = PaymentForm;

@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Common;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.Common;
 
 namespace Sofco.DAL.Repositories.Common

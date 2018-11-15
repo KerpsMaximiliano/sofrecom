@@ -12,7 +12,7 @@ import { SectorService } from "../../../../services/admin/sector.service";
 export class SectorAddComponent implements OnInit, OnDestroy {
 
     public text: string;
-    public responsableId: number = 0;
+    public responsableId: number;
 
     public responsables: any[] = new Array();
 

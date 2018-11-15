@@ -73,6 +73,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(new AnalyticModel(response.Data));
         }
 
+        [HttpGet("title/{title}")]
+        public IActionResult GetByTitle(string title)
+        {
+            var response = analyticService.GetByTitle(title);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return Ok(new AnalyticModel(response.Data));
+        }
+
         [HttpGet("formOptions")]
         public IActionResult GetFormOptions()
         {
@@ -100,9 +111,9 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Core.Models.AllocationManagement.AnalyticModel model)
+        public IActionResult Post([FromBody] AnalyticModel model)
         {
-            var response = await analyticService.Add(model.CreateDomain());
+            var response = analyticService.Add(model.CreateDomain());
 
             return this.CreateResponse(response);
         }
@@ -110,7 +121,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPut]
         public IActionResult Put([FromBody] AnalyticModel model)
         {
-            var response = analyticService.Update(model.CreateDomain());
+            var response = analyticService.Update(model);
 
             return this.CreateResponse(response);
         }

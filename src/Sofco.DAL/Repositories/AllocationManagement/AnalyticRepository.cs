@@ -29,7 +29,22 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> GetResources(int id)
         {
-            return context.Allocations.Where(x => x.AnalyticId == id).Include(x => x.Employee).Select(x => x.Employee).Distinct().ToList().AsReadOnly();
+            return context.Allocations.Where(x => x.AnalyticId == id && x.Percentage > 0 && !x.Employee.EndDate.HasValue)
+                .Include(x => x.Employee)
+                .Select(x => x.Employee)
+                .Distinct()
+                .ToList()
+                .AsReadOnly();
+        }
+
+        public IList<Employee> GetResources(int id, DateTime startDate, DateTime endDate)
+        {
+            return context.Allocations.Where(x => x.AnalyticId == id && x.Percentage > 0 && !x.Employee.EndDate.HasValue && (x.StartDate.Date == startDate || x.StartDate.Date == endDate))
+                .Include(x => x.Employee)
+                .Select(x => x.Employee)
+                .Distinct()
+                .ToList()
+                .AsReadOnly();
         }
 
         public Analytic GetLastAnalytic(int costCenterId)
@@ -131,8 +146,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId, int userId, DateTime dateFrom, DateTime dateTo)
         {
             var analyticsByAllocations = context.Allocations
-                .Where(x =>  x.EmployeeId == employeeId && x.Percentage > 0 &&
-                            (x.StartDate.Date == dateFrom || x.StartDate.Date == dateTo))
+                .Where(x =>  x.EmployeeId == employeeId 
+                             && x.Percentage > 0 
+                             && x.Analytic.Status == AnalyticStatus.Open 
+                             && (x.StartDate.Date == dateFrom || x.StartDate.Date == dateTo))
                 .Include(x => x.Analytic)
                 .Select(x => new Analytic
                 {
@@ -164,7 +181,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             IQueryable<Analytic> query = context.Analytics.Include(x => x.Activity);
 
-            if (searchCriteria.AnalyticId > 0)
+            if (searchCriteria.AnalyticId.HasValue && searchCriteria.AnalyticId.Value > 0)
             {
                 query = query.Where(x => x.Id == searchCriteria.AnalyticId);
             }
@@ -179,12 +196,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 query = query.Where(x => x.ServiceId == searchCriteria.ServiceId);
             }
 
-            if (searchCriteria.AnalyticStatusId > 0)
+            if (searchCriteria.AnalyticStatusId.HasValue && searchCriteria.AnalyticStatusId.Value > 0)
             {
                 query = query.Where(x => (int)x.Status == searchCriteria.AnalyticStatusId);
             }
 
-            if (searchCriteria.ManagerId > 0)
+            if (searchCriteria.ManagerId.HasValue && searchCriteria.ManagerId.Value > 0)
             {
                 query = query.Where(x => x.ManagerId == searchCriteria.ManagerId);
             }

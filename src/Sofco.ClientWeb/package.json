@@ -1,6 +1,6 @@
 {
   "name": "sofcoar",
-  "version": "1.43.90",
+  "version": "1.44.90",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,11 +8,11 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "azsof01wd-dev": "ng build --prod --env=azsof01wd-dev",
-    "azsof01wd-test": "ng build --prod --env=azsof01wd-test",
-    "azsof01wd-qa": "ng build --prod --env=azsof01wd-qa",
-    "azsof01wt": "ng build --prod --env=azsof01wt",
-    "azgap01wp": "ng build --prod --env=azgap01wp"
+    "azsof01wd-dev": "ng build --prod --configuration=azsof01wd-dev",
+    "azsof01wd-test": "ng build --prod --configuration=azsof01wd-test",
+    "azsof01wd-qa": "ng build --prod --configuration=azsof01wd-qa",
+    "azsof01wt": "ng build --prod --configuration=azsof01wt",
+    "azgap01wp": "ng build --prod --configuration=azgap01wp"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +26,7 @@
     "@angular/platform-browser-dynamic": "^6.0.9",
     "@angular/platform-server": "^6.0.9",
     "@angular/router": "^6.0.9",
+    "@ng-select/ng-select": "^2.11.2",
     "@ngx-translate/core": "^10.0.2",
     "@ngx-translate/http-loader": "^3.0.1",
     "@types/jqueryui": "^1.12.2",
@@ -67,7 +68,7 @@
     "ngx-bootstrap": "^3.0.1",
     "ngx-inactivity": "^1.0.1",
     "ngx-toastr": "^8.1.1",
-    "npm": "^6.1.0",
+    "npm": "^6.4.1",
     "pdfmake": "^0.1.36",
     "peity": "^3.3.0",
     "pretty-checkbox": "^3.0.3",
@@ -80,7 +81,8 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular/cli": "^1.7.3",
+    "@angular-devkit/build-angular": "~0.8.0",
+    "@angular/cli": "^6.2.3",
     "@angular/compiler-cli": "^6.0.9",
     "@types/datatables.net": "^1.10.8",
     "@types/jasmine": "2.5.38",
@@ -89,13 +91,13 @@
     "codelyzer": "~2.0.0",
     "jasmine-core": "~2.5.2",
     "jasmine-spec-reporter": "~3.2.0",
-    "karma": "~1.4.1",
+    "karma": "^3.0.0",
     "karma-chrome-launcher": "~2.0.0",
     "karma-cli": "~1.0.1",
     "karma-coverage-istanbul-reporter": "^0.2.0",
     "karma-jasmine": "^1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "protractor": "~5.1.0",
+    "protractor": "^5.4.1",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
     "typescript": "^2.7.2"

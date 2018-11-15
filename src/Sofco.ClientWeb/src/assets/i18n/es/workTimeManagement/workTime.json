@@ -12,7 +12,7 @@
     "approverAdded": "Autorizador agregado exitosamente",
     "approverDeleted": "Autorizador eliminado exitosamente",
     "userCommentMaxLengthError": "El comentario excede los 500 carácteres.",
-    "hoursMaxError": "La suma total de horas supera lo establecido de {0} horas por dia.",
+    "hoursMaxError": "La suma total de horas supera lo establecido al total de horas por día",
     "approvedSuccess": "Horas aprobadas correctamente",
     "workTimeNotFound": "Horas no encontradas",
     "cannotChangeStatus": "No se puede cambiar el estado",
@@ -39,5 +39,7 @@
     "importDatesOutOfRange": "La fecha no corresponde al periodo en curso",
     "importEmployeeWithLicense": "Recurso con licencia cargada",
     "importUserWithEmailNull": "El recurso no posee mail. Comunicarse con gaps@sofrecom.com.ar",
-    "fileEmpty": "El archivo importado no contiene registros"
+    "fileEmpty": "El archivo importado no contiene registros",
+    "invalidAllocationAssignment": "El recurso no está asignado a la analítica seleccionada en el periodo vigente.",
+    "noPendingHours": "No se registraron horas pendientes."
 } 

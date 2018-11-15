@@ -18,7 +18,7 @@
             "ADD": "Agregar Rol",
             "addModule": "Asignar Módulos",
             "addFunctionality": "Asignar Funcionalidades",
-            "GRID": {
+            "GRID": { 
                 "id": "Id",
                 "description": "Descripción",
                 "active": "Activo",
@@ -132,7 +132,8 @@
             "jobsSettingTitle": "Parámetros de Jobs",
             "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes).",
             "WorkingHoursPerDaysMax": "Tope jornada laboral",
-            "CloseMonth": "Dia del cierre del mes"
+            "CloseMonth": "Dia del cierre del mes",
+            "ValidatePeriodCloseMonth": "Validar fecha de cierre"
         }
     },
     "billing":{
@@ -569,6 +570,7 @@
             "businessHoursDescription": "Horario",
             "businessHoursModal": "Actualizacion horas por contrato",
             "hoursByContract": "Editar datos perfil",
+            "createExternal": "Crear usuario externo",
             "dateFrom": "Fecha Desde",
             "dateTo": "Fecha Hasta",
             "startDate": "Fecha Ingreso",
@@ -583,12 +585,17 @@
                 "employeeNumber": "Legajo",
                 "profile": "Perfil",
                 "office": "Oficina",
+                "officeAddress": "Oficina",
                 "manager": "Superior",
+                "managerId": "Superior",
+                "businessHours": "Jornada Laboral",
+                "businessHoursDescription": "Horario",
                 "examDaysTaken": "Días examen tomados",
                 "technology": "Tecnologia",
                 "startDate" :"Inicio",
                 "releaseDate": "Liberación",
                 "percentage": "Facturabilidad",
+                "billingPercentage": "Facturabilidad (%)",
                 "start": "Ingreso",
                 "birthday": "Fecha de nacimiento",
                 "address": "Dirección",
@@ -604,6 +611,8 @@
                 "phoneAreaCode": "Código de área",
                 "phoneNumber": "Teléfono",
                 "email": "Email",
+                "holidaysPending": "Vacaciones Pendientes (habiles)",
+                "holidaysPendingByLaw": "Vacaciones Pendientes",
                 "seniority": "Seniority"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha.",
@@ -881,6 +890,7 @@
     "myActions": "Mis Acciones",
     "errors": "Errores",
     "and": "y",
+    "date_to": "al",
     "report":{
         "title": "Reporte",
         "solfacs": {
@@ -904,7 +914,8 @@
         "hoursPending": "Horas Pendientes de Aprobación",
         "hoursApproved": "Horas Aprobadas",
         "analytic": "Analitica-Servicio",
-        "employee": "Legajo-Nombre",
+        "employeeNumber": "Legajo",
+        "employee": "Recurso",
         "task":"Tarea",
         "date": "Fecha",
         "hours": "Horas",
@@ -912,6 +923,7 @@
         "status": "Estado",
         "monthYear": "Mes-Año",
         "month": "Periodo",
+        "reference": "Referencia",
         "workTime": {
             "title": "Cargar Horas",
             "calendar": "Calendario",
@@ -927,8 +939,7 @@
             "workingHours": "Horas Laborales",
             "currentHoursToDate": "Horas a la fecha",
             "resumeLicense": "No laborable",
-            "periodMessage": "Las horas que se permiten cargar deben estar comprendidas entra el",
-            "actualPeriod": "(Periodo Actual)"
+            "periodMessage": "Período de carga vigente: "
         },
         "report": {
             "title": "Insumido vs Previsto",
@@ -998,9 +1009,11 @@
             "employeeNumber": "Legajo",
             "employeeName": "Nombre",
             "businessHours": "Horas laborables",
-            "registeredHours": "Horas cargadas",
+            "approvedHours": "Horas aprobadas",
             "licenseHours": "Horas licencias",
-            "pendingHours": "Horas pendientes"
+            "sentHours": "Horas pendientes de aprobación",
+            "draftHours": "Horas en borrador",
+            "pendingHours": "Horas pendientes de carga"
         }
     },
     "months": {

@@ -132,7 +132,8 @@
 			"jobsSettingTitle": "Parameters of Jobs",
 			"LicenseCertificatePendingDayOfMonth": "Notification of certificates not delivered (day of the month).",
 			"WorkingHoursPerDaysMax": "Top working day",
-			"CloseMonth": "Day of the close of the month"
+			"CloseMonth": "Day of the close of the month",
+			"ValidatePeriodCloseMonth": "Validate close month"
 		}
 	},
 	"billing":{
@@ -867,6 +868,9 @@
 	"Between50And75": "> 50 and <75",
 	"Between75And99": "> 75 and <99",
 	"myActions": "My Actions",
+    "errors": "Errors",
+    "and": "and",
+    "date_to": "to",
 	"report": {
 		"title": "Report",
 		"solfacs": {
@@ -898,6 +902,7 @@
 		"status": "State",
 		"monthYear": "Month-Year",
 		"month": "Month",
+		"reference": "Reference",
 		"workTime": {
 			"title": "Load Hours",
 			"calendar": "Calendar",
@@ -912,7 +917,8 @@
 			"totalResume": "Total summary",
 			"workingHours": "Working Hours",
 			"currentHoursToDate": "Hours to date",
-			"resumeLicense": "Not working"
+			"resumeLicense": "Not working",
+            "periodMessage": "Current period:"
 		},
 		"report": {
 			"title": "Estimated vs Consumed",

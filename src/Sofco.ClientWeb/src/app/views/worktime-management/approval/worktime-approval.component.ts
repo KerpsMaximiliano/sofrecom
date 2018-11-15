@@ -5,8 +5,10 @@ import { Subscription } from "rxjs";
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { WorktimeService } from "../../../services/worktime-management/worktime.service";
 import { Ng2ModalConfig } from "../../../components/modal/ng2modal-config";
+import { DateRangePickerComponent } from "app/components/date-range-picker/date-range-picker.component";
 
 declare var $: any;
+declare var moment: any;
 
 @Component({
     selector: 'app-worktime-approval',
@@ -32,11 +34,14 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     indexToRemove: number;
 
     public isMultipleSelection = false;
+    public filterByDates = false;
 
     @ViewChild('commentsModal') commentsModal;
 
     @ViewChild('statusApprove') statusApprove;
     @ViewChild('statusReject') statusReject;
+
+    @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
 
     public commentsModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "comments",
@@ -71,11 +76,13 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         if(data){
             this.analyticId = data.analyticId;
             this.employeeId = data.employeeId;
+            this.filterByDates = data.filterByDates;
 
-            if(data.month > 0 && data.year > 0){
-                $('#monthyear').val(data.month + '-' + data.year);
+            if(this.filterByDates){
+                this.dateRangePicker.start = moment(data.startDate);
+                this.dateRangePicker.start = moment(data.endDate);
             }
-
+            
             if(this.employeeId > 0){
                 this.getEmployees();
             }
@@ -102,18 +109,16 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     clean() {
         sessionStorage.removeItem('lastWorktimeQuery');
-     
+        this.employees = [];
         this.analyticId = 0;
         this.employeeId = 0;
-        $('#monthyear').val('');
+        this.filterByDates = false;
     }
 
     searchPending(){
         var json = {
             analyticId : this.analyticId,
-            employeeId : this.employeeId,
-            month : 0,
-            year : 0
+            employeeId : this.employeeId
         }
 
         this.messageService.showLoading();
@@ -126,7 +131,14 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
                 return item;
             });
 
-            var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+            var options = { selector: "#hoursPending", 
+                            scrollX: true, 
+                            columns: [1, 2, 3, 4, 5, 6],
+                            title: `Horas-Pendientes-${moment(new Date()).format("YYYYMMDD")}`,
+                            withExport: true,
+                            columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] 
+                          };
+
             this.initGrid(options);
 
             sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
@@ -140,16 +152,9 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         var json = {
             analyticId : this.analyticId,
             employeeId : this.employeeId,
-            month : 0,
-            year : 0
-        }
-
-        var monthYear = $('#monthyear').val();
-
-        if(monthYear && monthYear != ''){
-            var monthYearSplitted = monthYear.split('-');
-            json.month = monthYearSplitted[0];
-            json.year = monthYearSplitted[1];
+            startDate :  this.filterByDates ? this.dateRangePicker.start.toDate() : null,
+            endDate:  this.filterByDates ? this.dateRangePicker.end.toDate() : null,
+            filterByDates: this.filterByDates
         }
 
         this.messageService.showLoading();
@@ -159,7 +164,14 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
             this.hoursApproved = response.data;
 
-            var options = { selector: "#hoursApproved", scrollX: true, columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] };
+            var options = { selector: "#hoursApproved", 
+                scrollX: true, 
+                columns: [0, 1, 2, 3, 4, 5, 7],
+                title: `Horas-Aprobadas-${moment(new Date()).format("YYYYMMDD")}`,
+                withExport: true,
+                columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] 
+            };
+
             this.initGrid(options);
 
             sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
@@ -191,7 +203,14 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
 
     removeItem(){
         this.hoursPending.splice(this.indexToRemove, 1);
-        var options = { selector: "#hoursPending", scrollX: true, columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ] };
+        var options = { selector: "#hoursPending", 
+            scrollX: true, 
+            columns: [1, 2, 3, 4, 5, 6],
+            title: `Horas-Pendientes-${moment(new Date()).format("YYYYMMDD")}`,
+            withExport: true,
+            columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ]
+        };
+
         this.initGrid(options);
     }
 
