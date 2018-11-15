@@ -234,7 +234,13 @@ export class SolfacComponent implements OnInit, OnDestroy {
     getOptions() {
       const project = JSON.parse(sessionStorage.getItem('projectDetail'));
 
-      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId"), project.opportunityNumber).subscribe(data => {
+      var opportunityNumber = "0";
+
+      if(project){
+        opportunityNumber = project.opportunityNumber;
+      }
+
+      this.getOptionsSubs = this.solfacService.getOptions(sessionStorage.getItem("serviceId"), opportunityNumber).subscribe(data => {
         this.currencies = data.currencies;
         this.provinces = data.provinces;
         this.documentTypes = data.documentTypes;
