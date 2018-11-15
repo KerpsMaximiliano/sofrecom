@@ -82,10 +82,10 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Include(x => x.Type)
                 .Where(x => x.Status == LicenseStatus.Approved || x.Status == LicenseStatus.ApprovePending);
 
-            if (parameters.EmployeeId > 0)
+            if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
                 query = query.Where(x => x.EmployeeId == parameters.EmployeeId);
 
-            if (parameters.LicenseTypeId > 0)
+            if (parameters.LicenseTypeId.HasValue && parameters.LicenseTypeId > 0)
                 query = query.Where(x => x.TypeId == parameters.LicenseTypeId);
 
             return query.ToList();
