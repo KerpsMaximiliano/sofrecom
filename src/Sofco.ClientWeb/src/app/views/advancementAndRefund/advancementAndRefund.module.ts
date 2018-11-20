@@ -14,15 +14,11 @@ import { Ng2ModalModule } from "../../components/modal/ng2modal.module";
 import { ButtonsModule, BsDatepickerModule } from "ngx-bootstrap";
 import { AdvancementAndRefundRouter } from "./advancementAndRefund.router";
 import { ReactiveFormsModule } from '@angular/forms';
-import { AdvancementAddComponent } from "app/views/advancementAndRefund/advancement/add/advancement-add.component";
-import { AdvancementFormComponent } from "app/views/advancementAndRefund/advancement/form/advancement-form.component";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { UtilsService } from "app/services/common/utils.service";
-import { UserService } from "app/services/admin/user.service";
+import { AdvancementDetailComponent } from "./advancement/detail/advancement-detail.componet";
  
 @NgModule({
-    declarations: [],
+    declarations: [AdvancementDetailComponent],
 
     imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                     TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, 

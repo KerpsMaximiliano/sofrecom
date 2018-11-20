@@ -7,5 +7,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
     {
         bool Exist(int id);
         Advancement GetById(int id);
+        Advancement GetFullById(int id);
     }
 }

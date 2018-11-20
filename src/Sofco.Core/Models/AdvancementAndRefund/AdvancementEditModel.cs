@@ -10,13 +10,23 @@ namespace Sofco.Core.Models.AdvancementAndRefund
         public AdvancementEditModel(Advancement advancement)
         {
             Id = advancement.Id;
+
             UserApplicantId = advancement.UserApplicantId;
+            UserApplicantDesc = advancement.UserApplicant?.Name;
+
             PaymentForm = advancement.PaymentForm;
             Type = advancement.Type;
+
             AdvancementReturnFormId = advancement.AdvancementReturnFormId;
+            AdvancementReturnFormDesc = advancement.AdvancementReturnForm?.Text;
+
             StartDateReturn = advancement.StartDateReturn;
+
             AnalyticId = advancement.AnalyticId;
+            AnalyticDesc = $"{advancement.Analytic?.Title}-{advancement.Analytic?.Name}";
+
             CurrencyId = advancement.CurrencyId;
+            CurrencyDesc = advancement.Currency?.Text;
 
             Details = new List<AdvancementDetailModel>();
 
@@ -46,6 +56,14 @@ namespace Sofco.Core.Models.AdvancementAndRefund
         public int AnalyticId { get; set; }
 
         public int CurrencyId { get; set; }
+
+        public string CurrencyDesc { get; set; }
+
+        public string AnalyticDesc { get; set; }
+
+        public string AdvancementReturnFormDesc { get; set; }
+
+        public string UserApplicantDesc { get; set; }
 
         public IList<AdvancementDetailModel> Details { get; set; }
     }

@@ -73,7 +73,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         {
             var response = new Response<AdvancementEditModel>();
 
-            var advancement = unitOfWork.AdvancementRepository.GetById(id);
+            var advancement = unitOfWork.AdvancementRepository.GetFullById(id);
 
             if (advancement == null)
             {

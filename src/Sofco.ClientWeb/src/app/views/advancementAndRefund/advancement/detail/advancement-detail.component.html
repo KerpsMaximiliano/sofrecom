@@ -1,0 +1,103 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'advancement.addTitle' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'advancement.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'advancement.detail' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <dl class="dl-horizontal">
+                        <dt class="font-16"><i class="fa fa-battery-half"></i> {{'advancement.status' | translate }}:</dt>
+                        <dd><label class="label label-warning font-16">Borrador</label></dd>
+                    </dl>
+
+                    <dl class="dl-horizontal font-14">
+                        <dt><i class="fa fa-user"></i> {{'advancement.userApplicant' | translate }}:</dt>
+                        <dd>{{ model?.userApplicantDesc }}</dd>
+                    </dl>
+        
+                    <dl class="dl-horizontal font-14">
+                        <dt><i class="fa fa-file-o"></i> {{'advancement.analytic' | translate }}:</dt>
+                        <dd>{{ model?.analyticDesc }}</dd>
+                    </dl>
+
+                    <dl class="dl-horizontal font-14">
+                        <dt><i class="fa fa-money"></i> {{'advancement.currency' | translate }}:</dt>
+                        <dd>{{ model?.currencyDesc }}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <dl class="dl-horizontal font-14 dl-xl">
+                        <dt><i class="fa fa-bars"></i> {{'advancement.type' | translate }}:</dt>
+                        <dd>
+                            <span *ngIf="model?.type == 1">{{ 'advancement.salary' | translate }}</span>
+                            <span *ngIf="model?.type == 2">{{ 'advancement.viaticum' | translate }}</span>
+                        </dd>
+                    </dl>
+
+                    <dl class="dl-horizontal font-14 dl-xl">
+                        <dt><i class="fa fa-bank"></i> {{'advancement.paymentForm' | translate }}:</dt>
+                        <dd>
+                            <span *ngIf="model?.paymentForm == 1">{{ 'advancement.ownBank' | translate }}</span>
+                            <span *ngIf="model?.paymentForm == 2">{{ 'advancement.others' | translate }}</span>
+                        </dd>
+                    </dl>
+
+                    <dl class="dl-horizontal font-14 dl-xl">
+                        <dt><i class="fa fa-calendar"></i> {{'advancement.startDateReturn' | translate }}:</dt>
+                        <dd> {{ model?.startDateReturn | date: 'dd/MM/yyyy' }}</dd>
+                    </dl>
+        
+                    <dl class="dl-horizontal font-14 dl-xl">
+                        <dt><i class="fa fa-refresh"></i> {{'advancement.advancementReturnForm' | translate }}:</dt>
+                        <dd>{{ model?.advancementReturnFormDesc }}</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <hr class="hr-line-dashed">
+                </div>
+            </div>
+            
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <h3><i class="fa fa-cogs"></i> {{ 'advancement.details' | translate }}</h3>
+
+                    <table class="table table-striped dataTable" role="grid">
+                        <thead>
+                            <tr>
+                                <th><i class="fa fa-calendar"></i> {{ 'advancement.date' | translate }}</th>
+                                <th><i class="fa fa-cog"></i> {{ 'advancement.description' | translate }}</th>
+                                <th><i class="fa fa-money"></i> {{ 'advancement.ammount' | translate }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let detail of model?.details">
+                                <td>{{ detail.date | date: 'dd/MM/yyyy' }}</td>
+                                <td class="text-ellipsis">{{ detail.description }}</td>
+                                <td class="text-ellipsis">{{ detail.ammount | currency: '$' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,11 @@
-CREATE OR ALTER VIEW report.PurchaseOrderBalanceView AS
+/****** Object:  View [report].[PurchaseOrderBalanceView]    Script Date: 16/11/2018 02:47:14 p.m. ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE   VIEW [report].[PurchaseOrderBalanceView] AS
 SELECT
 	CAST(row_number() OVER (ORDER BY po.Number) AS INT) AS Id,
 	po.Number,
@@ -17,7 +24,7 @@ SELECT
 	po.ReceptionDate,
 	po.AdjustmentDate,
 	IIF(poad.AdjustmentBalance IS NULL, 
-		poad.Ammount - SUM(IIF(hit.Total IS NULL, 0, hit.Total))
+		poad.Ammount - SUM(IIF(sf.TotalAmount IS NULL, 0, sf.TotalAmount))
 		, poad.AdjustmentBalance)
 	 as Balance,
 	STRING_AGG(an.Id, ';') as AnalyticIds,
@@ -43,3 +50,6 @@ GROUP BY
 	fil.FileName, poad.CurrencyId, cur.Text, Ammount, po.ReceptionDate, 
 	po.Status, poad.Adjustment, poad.AdjustmentBalance, po.Proposal,
 	po.AdjustmentDate, po.Title
+GO
+
+

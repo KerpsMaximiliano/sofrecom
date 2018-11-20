@@ -14,6 +14,7 @@ namespace Sofco.DAL.Mappings.AdvancementAndRefund
             builder.Entity<Advancement>().HasMany(x => x.Details).WithOne(x => x.Advancement).HasForeignKey(x => x.AdvancementId);
             builder.Entity<Advancement>().HasOne(x => x.Currency).WithMany(x => x.Advancements).HasForeignKey(x => x.CurrencyId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Advancement>().HasOne(x => x.AdvancementReturnForm).WithMany(x => x.Advancements).HasForeignKey(x => x.AdvancementReturnFormId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Advancement>().HasOne(x => x.Status).WithMany(x => x.Advancements).HasForeignKey(x => x.StatusId).OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<AdvancementDetail>().HasKey(t => t.Id);
             builder.Entity<AdvancementDetail>().Property(x => x.Description).HasMaxLength(400);

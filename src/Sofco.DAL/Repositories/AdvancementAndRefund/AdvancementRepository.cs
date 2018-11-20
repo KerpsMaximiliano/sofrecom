@@ -21,5 +21,16 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
             return context.Advancements.Include(x => x.Details).SingleOrDefault(x => x.Id == id);
         }
+
+        public Advancement GetFullById(int id)
+        {
+            return context.Advancements
+                .Include(x => x.Analytic)
+                .Include(x => x.Currency)
+                .Include(x => x.AdvancementReturnForm)
+                .Include(x => x.UserApplicant)
+                .Include(x => x.Details)
+                .SingleOrDefault(x => x.Id == id);
+        }
     }
 }

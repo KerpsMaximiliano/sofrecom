@@ -17,6 +17,8 @@ namespace Sofco.DAL.Mappings.Workflow
 
             builder.Entity<WorkflowState>().HasOne(x => x.CreatedBy).WithMany(x => x.WorkflowStates).HasForeignKey(x => x.CreatedById).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkflowState>().HasOne(x => x.ModifiedBy).WithMany(x => x.WorkflowStates2).HasForeignKey(x => x.ModifiedById).OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<WorkflowState>().HasMany(x => x.Advancements).WithOne(x => x.Status).HasForeignKey(x => x.StatusId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
