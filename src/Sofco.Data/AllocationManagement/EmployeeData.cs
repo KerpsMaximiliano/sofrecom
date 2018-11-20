@@ -11,6 +11,8 @@ namespace Sofco.Data.AllocationManagement
     {
         private const string EmployeeByEmailCacheKey = "urn:employees:email:{0}";
 
+        private const string EmployeeByIdCacheKey = "urn:employees:id:{0}";
+
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
 
         private readonly ICacheManager cacheManager;
@@ -32,6 +34,13 @@ namespace Sofco.Data.AllocationManagement
 
             return cacheManager.Get(string.Format(EmployeeByEmailCacheKey, email),
                 () => unitOfWork.EmployeeRepository.GetSingle(x => x.Email == email),
+                cacheExpire);
+        }
+
+        public Employee GetByEmployeeId(int employeeId)
+        {
+            return cacheManager.Get(string.Format(EmployeeByIdCacheKey, employeeId),
+                () => unitOfWork.EmployeeRepository.GetById(employeeId),
                 cacheExpire);
         }
     }

@@ -19,9 +19,9 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         private readonly IEmployeeService employeeService;
         private readonly IUserService userService;
 
-        public EmployeeController(IEmployeeService employeeServ, IUserService userService)
+        public EmployeeController(IEmployeeService employeeService, IUserService userService)
         {
-            employeeService = employeeServ;
+            this.employeeService = employeeService;
             this.userService = userService;
         }
 
@@ -90,10 +90,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
-        [HttpPost("sendUnsubscribeNotification/{employeeName}")]
-        public IActionResult SendUnsubscribeNotification(string employeeName, [FromBody] UnsubscribeNotificationParams parameters)
+        [HttpPost("sendUnsubscribeNotification")]
+        public IActionResult SendUnsubscribeNotification([FromBody] EmployeeEndNotificationModel model)
         {
-            var response = employeeService.SendUnsubscribeNotification(employeeName, parameters);
+            var response = employeeService.SendUnsubscribeNotification(model);
 
             return this.CreateResponse(response);
         }

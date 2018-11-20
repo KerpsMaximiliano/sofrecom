@@ -11,6 +11,7 @@ using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Managers.AllocationManagement;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Framework.MailData;
@@ -35,8 +36,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly ISessionManager sessionManager;
         private readonly IEmployeeData employeeData;
         private readonly IUserData userData;
+        private readonly IEmployeeEndNotificationManager employeeEndNotificationManager;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData, IEmployeeEndNotificationManager employeeEndNotificationManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -46,6 +48,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.sessionManager = sessionManager;
             this.employeeData = employeeData;
             this.userData = userData;
+            this.employeeEndNotificationManager = employeeEndNotificationManager;
             emailConfig = emailOptions.Value;
         }
 
@@ -85,9 +88,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters)
+        public Response SendUnsubscribeNotification(EmployeeEndNotificationModel model)
         {
-            parameters.UserName = sessionManager.GetUserName();
+            var currentUser = userData.GetCurrentUser();
+
+            model.ApplicantUserId = currentUser.Id;
+            model.UserName = currentUser.UserName;
+
+            var employeeName = model.EmployeeName;
 
             var response = new Response();
 
@@ -97,21 +105,26 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 return response;
             }
 
-            var manager = unitOfWork.UserRepository.GetSingle(x => x.UserName.Equals(parameters.UserName));
+            var manager = unitOfWork.UserRepository.GetSingle(x => x.UserName.Equals(model.UserName));
 
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
-            parameters.Receipents.Add(mailRrhh);
+            model.Recipients.Add(mailRrhh);
 
             try
             {
                 var email = mailBuilder.GetEmail(new EmployeeEndNotificationData
                 {
-                    Recipients = parameters.Receipents.ToList(),
-                    Message = string.Format(MailMessageResource.EmployeeEndNotification, employeeName, manager.Name, parameters.EndDate.ToString("dd/MM/yyyy"))
+                    Recipients = model.Recipients.ToList(),
+                    Message = string.Format(MailMessageResource.EmployeeEndNotification, 
+                        employeeName, 
+                        manager.Name, 
+                        model.EndDate.ToString("dd/MM/yyyy"))
                 });
 
                 mailSender.Send(email);
+
+                employeeEndNotificationManager.Save(model);
 
                 response.AddSuccess(Resources.Common.MailSent);
             }

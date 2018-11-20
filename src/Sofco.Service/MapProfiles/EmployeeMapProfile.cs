@@ -15,6 +15,8 @@ namespace Sofco.Service.MapProfiles
 
         private const string ArCountry = "Argentina";
 
+        private const char ListSeparator = ';';
+
         public EmployeeMapProfile()
         {
             CreateMap<TigerEmployee, Employee>()
@@ -68,6 +70,13 @@ namespace Sofco.Service.MapProfiles
 
             CreateMap<Employee, Option>()
                 .ForMember(d => d.Text, s => s.ResolveUsing(x => $"{x.EmployeeNumber} - {x.Name}"));
+
+            CreateMap<EmployeeEndNotificationModel, EmployeeEndNotification>()
+                .ForMember(d => d.Recipients, s => s.MapFrom(x => string.Join(ListSeparator.ToString(), x.Recipients)));
+
+            CreateMap<EmployeeEndNotification, EmployeeEndNotificationModel>()
+                .ForMember(d => d.Recipients, s => s.MapFrom(x => x.Recipients.Split(ListSeparator)))
+                .ForMember(d => d.CreatedDate, s => s.MapFrom(x => x.Created));
         }
 
         private string MapAddress(TigerEmployee item)

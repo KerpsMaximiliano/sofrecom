@@ -135,12 +135,14 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
     }
 
     sendUnsubscribeNotification(){
-        var json = {
-            receipents: $('#userId').val(),
+        const model = {
+            employeeId: this.resourceSelected.id,
+            employeeName: this.resourceSelected.name,
+            recipients: $('#userId').val(),
             endDate: this.endDate
-        }
+        };
 
-        this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, json).subscribe(data => {
+        this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(model).subscribe(data => {
             this.confirmModal.hide();
         },
         error => this.confirmModal.hide());

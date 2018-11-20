@@ -30,7 +30,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
-    ); 
+    );
 
     @ViewChild('categoriesModal') categoriesModal;
     public categoriesModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -40,7 +40,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
-    ); 
+    );
 
     @ViewChild('allocationsModal') allocationsModal;
     public allocationsModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -50,7 +50,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
-    ); 
+    );
 
     public model: any[] = new Array<any>();
     public resources: any[] = new Array<any>();
@@ -146,12 +146,14 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     }
 
     sendUnsubscribeNotification() {
-        const json = {
-            receipents: $('#userId').val(),
+        const model = {
+            employeeId: this.resourceSelected.id,
+            employeeName: this.resourceSelected.name,
+            recipients: $('#userId').val(),
             endDate: this.endDate
-        }
+        };
 
-        this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(this.resourceSelected.name, json).subscribe(data => {
+        this.getAllEmployeesSubscrip = this.employeeService.sendUnsubscribeNotification(model).subscribe(data => {
             this.confirmModal.hide();
         },
         () => this.confirmModal.hide());
@@ -353,7 +355,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
         this.allocationsSubscrip = this.allocationService.addMassive(json).subscribe(file => {
             this.allocationsModal.hide();
-            
+
             if(file.size > 0){
                 this.messageService.showWarningByFolder('allocationManagement/allocation', 'employeeWithErrors');
                 FileSaver.saveAs(file, 'asignaciones con error.xlsx');
@@ -383,4 +385,4 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
         this.categoriesModal.show();
     }
-} 
+}

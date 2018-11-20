@@ -74,6 +74,7 @@ namespace Sofco.DAL
         private ILicenseTypeRepository licenseTypeRepository;
         private IEmployeeSyncActionRepository employeeSyncActionRepository;
         private IEmployeeHistoryRepository employeeHistoryRepository;
+        private IEmployeeEndNotificationRepository employeeEndNotificationRepository;
         private IHealthInsuranceRepository healthInsuranceRepository;
         private IPrepaidHealthRepository prepaidHealthRepository;
         private IEmployeeProfileHistoryRepository employeeProfileHistoryRepository;
@@ -162,6 +163,9 @@ namespace Sofco.DAL
 
         public IEmployeeHistoryRepository EmployeeHistoryRepository =>
             employeeHistoryRepository ?? (employeeHistoryRepository = new EmployeeHistoryRepository(context));
+
+        public IEmployeeEndNotificationRepository EmployeeEndNotificationRepository =>
+            employeeEndNotificationRepository ?? (employeeEndNotificationRepository = new EmployeeEndNotificationRepository(context));
 
         public IHealthInsuranceRepository HealthInsuranceRepository =>
             healthInsuranceRepository ?? (healthInsuranceRepository = new HealthInsuranceRepository(context));
