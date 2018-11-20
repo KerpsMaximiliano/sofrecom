@@ -48,8 +48,8 @@ export class EmployeeService {
     return this.http.post<any>(`${this.baseUrl}/employees/search/unemployees`, model);
   }
 
-  sendUnsubscribeNotification(employeeName, json){
-    return this.http.post<any>(`${this.baseUrl}/employees/sendUnsubscribeNotification/${employeeName}`, json);
+  sendUnsubscribeNotification(model){
+    return this.http.post<any>(`${this.baseUrl}/employees/sendUnsubscribeNotification/`, model);
   }
 
   finalizeExtraHolidays(id){
@@ -82,5 +82,9 @@ export class EmployeeService {
 
   getEmployeesOptionByCurrentManager(){
     return this.http.get<any>(`${this.baseUrl}/employees/currentManager/options`);
+  }
+
+  getEmployeeEndNotification(model){
+    return this.http.post<any>(`${this.baseUrl}/employees/endNotifications`, model);
   }
 }
