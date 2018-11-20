@@ -123,5 +123,8 @@ export function appSettingFactory(service: AppSettingService) {
 }
 
 export function getDatepickerConfig(): BsDatepickerConfig {
-  return Object.assign(new BsDatepickerConfig(), { containerClass: 'theme-dark-blue', showWeekNumbers: false });
+  return Object.assign(new BsDatepickerConfig(), { containerClass: 'theme-dark-blue', 
+                                                   showWeekNumbers: false,
+                                                   dateInputFormat: 'DD/MM/YYYY'
+                                                 });
 }

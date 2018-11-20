@@ -26,6 +26,40 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
                 return response;
             }
 
+            ValidateCommonDate(model, response);
+
+            return response;
+        }
+
+        public Response ValidateUpdate(AdvancementModel model)
+        {
+            var response = new Response();
+
+            if (model == null)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.NullModel);
+                return response;
+            }
+
+            ValidateIfExist(model, response);
+
+            if (response.HasErrors()) return response;
+
+            ValidateCommonDate(model, response);
+
+            return response;
+        }
+
+        private void ValidateIfExist(AdvancementModel model, Response response)
+        {
+            if (!unitOfWork.AdvancementRepository.Exist(model.Id))
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.NotFound);
+            }
+        }
+
+        private void ValidateCommonDate(AdvancementModel model, Response response)
+        {
             ValidateUser(model, response);
             ValidatePaymentForm(model, response);
             ValidateType(model, response);
@@ -34,8 +68,6 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             ValidateAnalytic(model, response);
             ValidateCurrency(model, response);
             ValidateDetails(model, response);
-
-            return response;
         }
 
         private void ValidateDetails(AdvancementModel model, Response response)

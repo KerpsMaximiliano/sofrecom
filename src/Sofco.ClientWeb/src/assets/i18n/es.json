@@ -1040,6 +1040,7 @@
     "advancement": {
         "addTitle": "Solicitud Adelanto",
         "add": "Solicitud",
+        "edit": "Edición Solicitud",
         "title": "Adelantos",
         "userApplicant": "Solicitante",
         "analytic": "Analitica",
@@ -1047,7 +1048,7 @@
         "type": "Tipo de Adelanto",
         "ownBank": "Cuenta Sueldo",
         "others": "Otros",
-        "salary": "Salario",
+        "salary": "Sueldo",
         "viaticum": "Viatico",
         "startDateReturn": "Fecha Aproximada de Devolución",
         "advancementReturnForm": "Forma de Devolución",

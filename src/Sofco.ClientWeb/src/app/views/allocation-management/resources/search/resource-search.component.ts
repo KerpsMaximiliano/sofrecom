@@ -10,6 +10,7 @@ import { UserService } from "../../../../services/admin/user.service";
 import { CategoryService } from "../../../../services/admin/category.service";
 import { AllocationService } from "../../../../services/allocation-management/allocation.service";
 import * as FileSaver from "file-saver";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
 
 declare var moment: any;
 declare var $: any;
@@ -96,6 +97,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
                 public menuService: MenuService,
                 private messageService: MessageService,
                 private employeeService: EmployeeService,
+                private analyticService: AnalyticService,
                 private allocationService: AllocationService,
                 private usersService: UserService,
                 private categoryService: CategoryService,
@@ -160,7 +162,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics(){
-        this.getAnalyticSubscrip = this.employeeService.getAnalytics(this.menuService.user.id).subscribe(
+        this.getAnalyticSubscrip = this.analyticService.getOptions().subscribe(
             data => {
                 this.analytics = data;
 

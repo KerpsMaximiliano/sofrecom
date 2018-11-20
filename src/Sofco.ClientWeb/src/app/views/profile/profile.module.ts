@@ -29,9 +29,10 @@ import { AdvancementAddComponent } from 'app/views/advancementAndRefund/advancem
 import { AdvancementFormComponent } from 'app/views/advancementAndRefund/advancement/form/advancement-form.component';
 import { UtilsService } from 'app/services/common/utils.service';
 import { AdvancementService } from 'app/services/advancement-and-refund/advancement.service';
+import { AdvancementEditComponent } from '../advancementAndRefund/advancement/edit/advancement-edit.component';
 
 @NgModule({
-  declarations: [ WorkTimeComponent, AdvancementAddComponent, AdvancementFormComponent ],
+  declarations: [ WorkTimeComponent, AdvancementAddComponent, AdvancementFormComponent, AdvancementEditComponent ],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, ProfileRouter,

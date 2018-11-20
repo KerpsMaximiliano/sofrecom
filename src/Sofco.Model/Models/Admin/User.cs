@@ -48,5 +48,26 @@ namespace Sofco.Domain.Models.Admin
         public ICollection<Employee> Employees { get; set; }
 
         public IList<Advancement> Advancements { get; set; }
+
+        public IList<Workflow.Workflow> Workflows { get; set; }
+        public IList<Workflow.Workflow> Workflows2 { get; set; }
+
+        public IList<Workflow.WorkflowReadAccess> WorkflowReadAccesses { get; set; }
+        public IList<Workflow.WorkflowReadAccess> WorkflowReadAccesses2 { get; set; }
+
+        public IList<Workflow.WorkflowState> WorkflowStates { get; set; }
+        public IList<Workflow.WorkflowState> WorkflowStates2 { get; set; }
+
+        public IList<Workflow.WorkflowStateAccess> WorkflowStateAccesses { get; set; }
+        public IList<Workflow.WorkflowStateAccess> WorkflowStateAccesses2 { get; set; }
+
+        public IList<Workflow.WorkflowStateNotifier> WorkflowStateNotifiers { get; set; }
+        public IList<Workflow.WorkflowStateNotifier> WorkflowStateNotifiers2 { get; set; }
+
+        public IList<Workflow.WorkflowStateTransition> WorkflowStateTransitions { get; set; }
+        public IList<Workflow.WorkflowStateTransition> WorkflowStateTransitions2 { get; set; }
+
+        public IList<Workflow.WorkflowType> WorkflowTypes2 { get; set; }
+        public IList<Workflow.WorkflowType> WorkflowTypes { get; set; }
     }
 }

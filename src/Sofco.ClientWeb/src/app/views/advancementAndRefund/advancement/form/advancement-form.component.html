@@ -85,7 +85,7 @@
             </div>
         </div>
 
-        <div class="col-md-6" *ngIf="mode == 'viaticum'">
+        <div class="col-md-6" *ngIf="type == 'viaticum'">
             <button class="btn btn-success m-t-md">{{ 'advancement.addDetail' | translate }} <i class="fa fa-plus"></i></button>
         </div>
     </div>
@@ -104,8 +104,8 @@
         <tbody>
             <tr *ngFor="let detail of detailForms; let i = index" class="pointer">
                 <td>{{ detail.controls.date.value | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ detail.controls.description.value }}</td>
-                <td>{{ detail.controls.ammount.value | currency: '$' }}</td>
+                <td class="column-lg text-ellipsis">{{ detail.controls.description.value }}</td>
+                <td class="column-md text-ellipsis">{{ detail.controls.ammount.value | currency: '$' }}</td>
                 <td class="text-center column-xs">
                     <button class="btn btn-sm fa fa-pencil btn-warning" (click)="editDetail(detail)"></button>
                     <button class="btn btn-sm fa fa-trash btn-danger" *ngIf="detailForms.length > 1"></button>
@@ -115,7 +115,7 @@
     </table>   
 </form>
 
-<ng2-modal [config]="addDetailModalConfig" #addDetailModal (accept)="saveDetail()" [isSaveEnabled]="detailModalForm.valid">
+<ng2-modal [config]="addDetailModalConfig" #addDetailModal (accept)="saveDetail()" (close)="onCancelDetail()" [isSaveEnabled]="detailModalForm.valid">
     <form [formGroup]="detailModalForm">   
         <div class="form-group" [ngClass]="getClassProperty(detailModalForm, 'date')">
             <label class="control-label">{{ 'advancement.date' | translate }}</label>

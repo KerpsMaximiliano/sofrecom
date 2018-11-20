@@ -13,4 +13,12 @@ export class AdvancementService {
     add(model){
         return this.http.post<any>(`${this.baseUrl}/advancement`, model);
     }
+
+    edit(model){
+        return this.http.put<any>(`${this.baseUrl}/advancement`, model);
+    }
+
+    get(id){
+        return this.http.get<any>(`${this.baseUrl}/advancement/${id}`);
+    }
 }

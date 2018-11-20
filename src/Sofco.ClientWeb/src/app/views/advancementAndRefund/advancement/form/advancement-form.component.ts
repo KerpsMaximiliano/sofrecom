@@ -31,10 +31,13 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     public userApplicantName: string;
 
     @Input() mode: string;
+    @Input() type: string;
 
     public form: Advancement;
     public detailForms: AdvancementDetail[];
     public detailModalForm: AdvancementDetail;
+
+    private detailAux: AdvancementDetail;
 
     getCurrenciesSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
@@ -57,14 +60,7 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
             this.userApplicantName = userInfo.name;
         }
 
-        if(this.mode == 'salary'){
-            var item = new AdvancementDetail();
-            item.controls.date.setValue(new Date());
-            item.controls.description.setValue('Adelanto Sueldo');
-            item.controls.ammount.setValue(0);
-            this.detailForms.push(item);
-        }
-
+        this.setFirstDetail();
         this.getCurrencies();
         this.getAnalytics();
         this.getAdvancementReturnForms();
@@ -74,6 +70,16 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
         if(this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if(this.getAnalyticsSubscrip) this.getAnalyticsSubscrip.unsubscribe();
         if(this.getAdvancementReturnFormsSubscrip) this.getAdvancementReturnFormsSubscrip.unsubscribe();
+    }
+
+    setFirstDetail(){
+      if(this.type == 'salary' && this.mode == 'add'){
+            var item = new AdvancementDetail();
+            item.controls.date.setValue(new Date());
+            item.controls.description.setValue('Adelanto Sueldo');
+            item.controls.ammount.setValue(0);
+            this.detailForms.push(item);
+        }
     }
 
     getCurrencies(){
@@ -95,12 +101,29 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     }
 
     editDetail(detail){
+        this.detailAux = new AdvancementDetail();
+        this.detailAux.controls.date.setValue(detail.controls.date.value);
+        this.detailAux.controls.description.setValue(detail.controls.description.value);
+        this.detailAux.controls.ammount.setValue(detail.controls.ammount.value);
+
         this.detailModalForm = detail;
         this.addDetailModal.show();
     }
 
     saveDetail(){
+        this.detailAux = new AdvancementDetail();;
+        this.detailModalForm = new AdvancementDetail();;
+
         this.addDetailModal.hide();
+    }
+
+    onCancelDetail(){
+        this.detailModalForm.controls.date.setValue(this.detailAux.controls.date.value);
+        this.detailModalForm.controls.description.setValue(this.detailAux.controls.description.value);
+        this.detailModalForm.controls.ammount.setValue(this.detailAux.controls.ammount.value);
+
+        this.detailAux = new AdvancementDetail();
+        this.detailModalForm = new AdvancementDetail();
     }
 
     getClassProperty(form, property){
@@ -124,6 +147,16 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
         if(this.form.valid && this.detailForms.every(x => x.valid)) return true;
         
         return false;
+    }
+
+    setModel(domain){
+        this.form = new Advancement(domain);
+
+        if(domain.details && domain.details.length > 0){
+            domain.details.forEach(x => {
+                this.detailForms.push(new AdvancementDetail(x));
+            });
+        }
     }
 
     getModel(){

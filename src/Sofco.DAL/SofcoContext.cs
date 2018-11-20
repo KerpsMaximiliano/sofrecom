@@ -6,6 +6,7 @@ using Sofco.DAL.Mappings.Billing;
 using Sofco.DAL.Mappings.Common;
 using Sofco.DAL.Mappings.Rrhh;
 using Sofco.DAL.Mappings.Utils;
+using Sofco.DAL.Mappings.Workflow;
 using Sofco.DAL.Mappings.WorkTimeManagement;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AdvancementAndRefund;
@@ -15,6 +16,7 @@ using Sofco.Domain.Utils;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.DAL
@@ -112,6 +114,17 @@ namespace Sofco.DAL
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
         public DbSet<AdvancementReturnForm> AdvancementReturnForms { get; set; }
 
+        //Workflow
+
+        public DbSet<UserSource> UserSources { get; set; }
+        public DbSet<Workflow> Workflows { get; set; }
+        public DbSet<WorkflowReadAccess> WorkflowReadAccesses { get; set; }
+        public DbSet<WorkflowState> WorkflowStates { get; set; }
+        public DbSet<WorkflowStateAccess> WorkflowStateAccesses { get; set; }
+        public DbSet<WorkflowStateNotifier> WorkflowStateNotifiers { get; set; }
+        public DbSet<WorkflowStateTransition> WorkflowStateTransitions { get; set; }
+        public DbSet<WorkflowType> WorkflowTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -159,6 +172,14 @@ namespace Sofco.DAL
             builder.MapCloseDate();
             builder.MapAdvancement();
             builder.MapEmployeeEndNotification();
+            builder.MapUserSource();
+            builder.MapWorkflow();
+            builder.MapWorkflowReadAccess();
+            builder.MapWorkflowState();
+            builder.MapWorkflowStateAccess();
+            builder.MapWorkflowStateNotifier();
+            builder.MapWorkflowStateTransition();
+            builder.MapWorkflowType();
         }
     }
 }

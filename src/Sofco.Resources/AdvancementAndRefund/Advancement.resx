@@ -147,6 +147,9 @@
   <data name="MustHaveOneDetail" xml:space="preserve">
     <value>advancementAndRefund/advancement.mustHaveOneDetail</value>
   </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>advancementAndRefund/advancement.notFound</value>
+  </data>
   <data name="NullModel" xml:space="preserve">
     <value>advancementAndRefund/advancement.nullModel</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="TypeRequired" xml:space="preserve">
     <value>advancementAndRefund/advancement.typeRequired</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>advancementAndRefund/advancement.updateSuccess</value>
   </data>
   <data name="UserApplicantRequired" xml:space="preserve">
     <value>advancementAndRefund/advancement.userApplicantRequired</value>
