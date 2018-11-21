@@ -12,7 +12,7 @@ IF [%1] == [] SET WORKSPACE_PATH=C:\Projects\Sofcoar
 
 cd "%WORKSPACE_PATH%"
 
-cmd /c dotnet publish "%WORKSPACE_PATH%\src\Sofco.%PROJECT_NAME%" -c debug --output "%PUBLISH_PATH%\Sofco.%PROJECT_NAME%"
+cmd /c dotnet publish "%WORKSPACE_PATH%\src\Sofco.%PROJECT_NAME%" -c release --output "%PUBLISH_PATH%\Sofco.%PROJECT_NAME%"
 
 "%MSDEPLOY_PATH%\msdeploy.exe" -source:manifest="%WORKSPACE_PATH%\build\Azgap01wp.%PROJECT_NAME%.SourceManifest.xml" -dest:package="%PUBLISH_PATH%\%PROJECT_NAME%.zip" -verb:sync -retryAttempts:20 -disablerule:BackupRule
 
