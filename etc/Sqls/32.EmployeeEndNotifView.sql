@@ -1,6 +1,6 @@
 DECLARE @FuncModuleId Int = (SELECT id FROM app.Modules WHERE Code = 'ALLOC');
 
-IF (NOT EXISTS (SELECT 1 FROM app.Functionalities WHERE Code = 'ALLOC'))
+IF (NOT EXISTS (SELECT 1 FROM app.Functionalities WHERE Code = 'EMPLOYEE_END_NOTIF'))
 BEGIN
 	INSERT INTO app.Functionalities  (Active, [Description], Code, ModuleId) 
 	VALUES (1, 'Solicitudes bajas', 'EMPLOYEE_END_NOTIF', @FuncModuleId);
