@@ -17,6 +17,8 @@ using Sofco.Framework.StatusHandlers.Invoice;
 using Sofco.Framework.StatusHandlers.License;
 using Sofco.Framework.StatusHandlers.PurchaseOrder;
 using Sofco.Framework.StatusHandlers.Solfac;
+using Sofco.Service.Crm.HttpClients;
+using Sofco.Service.Crm.HttpClients.Interfaces;
 using StackExchange.Redis;
 
 namespace Sofco.WebApi.Infrastructures
@@ -69,6 +71,10 @@ namespace Sofco.WebApi.Infrastructures
                 .SingleInstance();
 
             builder.RegisterType<HttpClient>()
+                .SingleInstance();
+
+            builder.RegisterType<CrmApiHttpClient>()
+                .As<ICrmApiHttpClient>()
                 .SingleInstance();
 
             builder.RegisterType<SolfacStatusFactory>().As<ISolfacStatusFactory>();

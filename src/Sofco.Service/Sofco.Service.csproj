@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Sofco.Model\Sofco.Domain.csproj" />
     <ProjectReference Include="..\Sofco.Repository.Rh\Sofco.Repository.Rh.csproj" />
     <ProjectReference Include="..\Sofco.Resources\Sofco.Resources.csproj" />
+    <ProjectReference Include="..\Sofco.Service.Crm\Sofco.Service.Crm.csproj" />
     <ProjectReference Include="..\Sofco.Service.Http\Sofco.Service.Http.csproj" />
   </ItemGroup>
 

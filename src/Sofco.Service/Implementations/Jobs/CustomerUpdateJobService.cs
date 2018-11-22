@@ -8,6 +8,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Crm.Billing;
 using Sofco.Domain.Models.Billing;
+using Sofco.Service.Crm.Interfaces;
 using Sofco.Service.Http.Interfaces;
 
 namespace Sofco.Service.Implementations.Jobs
@@ -19,6 +20,7 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly CrmConfig crmConfig;
         private readonly ILogMailer<CustomerUpdateJobService> logger;
         private readonly ICustomerData customerData;
+        private readonly ICrmAccountService crmAccountService;
 
         private IList<int> IdsAdded { get; set; }
 
@@ -26,12 +28,14 @@ namespace Sofco.Service.Implementations.Jobs
             ICrmHttpClient client, 
             ICustomerData customerData,
             IOptions<CrmConfig> crmOptions, 
-            ILogMailer<CustomerUpdateJobService> logger)
+            ILogMailer<CustomerUpdateJobService> logger, 
+            ICrmAccountService crmAccountService)
         {
             this.unitOfWork = unitOfWork;
             this.client = client;
             crmConfig = crmOptions.Value;
             this.logger = logger;
+            this.crmAccountService = crmAccountService;
             this.customerData = customerData;
 
             IdsAdded = new List<int>();
@@ -39,6 +43,8 @@ namespace Sofco.Service.Implementations.Jobs
 
         public void Execute()
         {
+            var list = crmAccountService.GetAll();
+
             var url = $"{crmConfig.Url}/api/account";
 
             var result = client.GetMany<CrmCustomer>(url);
