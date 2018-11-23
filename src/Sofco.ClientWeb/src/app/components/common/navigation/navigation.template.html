@@ -72,6 +72,7 @@
             <li [ngClass]="{active: activeRoute('licenses/managers')}" *ngIf="menuService.hasFunctionality('CTRLI', 'AUTH')"><a [routerLink]="['/rrhh/licenses/managers']">{{'rrhh.licenses' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('licenses/views')}" *ngIf="menuService.hasFunctionality('CTRLI', 'LIC_VIEW_DELEGATE')"><a [routerLink]="['/rrhh/licenses/views/delegates']">{{'rrhh.license.delegate.viewTitle' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('workTimeApproval/delegate')}" *ngIf="menuService.hasFunctionality('ALLOC', 'TAPDE')"><a [routerLink]="['/allocationManagement/workTimeApproval/delegate']">{{'allocationManagement.workTimeApproval.delegate.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('endNotification')}" *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE_END_NOTIF')"><a [routerLink]="['/rrhh/endNotification']">{{'rrhh.endNotification.title' | translate }}</a></li>
         </ul>
       </li> 
 

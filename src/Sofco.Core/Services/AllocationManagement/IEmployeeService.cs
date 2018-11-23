@@ -15,7 +15,7 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response<ICollection<Employee>> Search(EmployeeSearchParams parameters);
 
-        Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters);
+        Response SendUnsubscribeNotification(EmployeeEndNotificationModel model);
 
         Response<EmployeeProfileModel> GetProfile(int id);
 

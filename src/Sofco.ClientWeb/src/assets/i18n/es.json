@@ -775,6 +775,14 @@
             "closeDay": "Dia de Cierre",
             "dateRange": "Fechas Desde - Hasta",
             "default": "Dia de cierre por defecto"
+        },
+        "endNotification": {
+            "title": "Notificaciones de Bajas",
+            "employeeName": "Nombre",
+            "employeeNumber": "Legajo",
+            "applicantName": "Solicitante",
+            "createdDate": "Fecha de carga",
+            "endDate": "Fecha de baja"
         }
     },
     "ACTIONS":{

@@ -75,6 +75,7 @@ namespace Sofco.DAL
         public DbSet<EmployeeHistory> EmployeeHistory { get; set; }
         public DbSet<HealthInsurance> HealthInsurances { get; set; }
         public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
+        public DbSet<EmployeeEndNotification> EmployeeEndNotifications { get; set; }
 
         // Work Time Management
         public DbSet<WorkTime> WorkTimes { get; set; }
@@ -169,6 +170,7 @@ namespace Sofco.DAL
             builder.MapProject();
             builder.MapCloseDate();
             builder.MapAdvancement();
+            builder.MapEmployeeEndNotification();
             builder.MapUserSource();
             builder.MapWorkflow();
             builder.MapWorkflowReadAccess();

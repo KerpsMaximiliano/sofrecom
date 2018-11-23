@@ -53,6 +53,7 @@ namespace Sofco.Core.DAL
         IEmployeeSyncActionRepository EmployeeSyncActionRepository { get; }
         IEmployeeHistoryRepository EmployeeHistoryRepository { get; }
         IEmployeeProfileHistoryRepository EmployeeProfileHistoryRepository { get; }
+        IEmployeeEndNotificationRepository EmployeeEndNotificationRepository { get; }
         IHealthInsuranceRepository HealthInsuranceRepository { get; }
         IPrepaidHealthRepository PrepaidHealthRepository { get; }
 
