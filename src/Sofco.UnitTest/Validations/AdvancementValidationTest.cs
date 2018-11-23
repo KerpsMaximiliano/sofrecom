@@ -70,8 +70,6 @@ namespace Sofco.UnitTest.Validations
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.StartDateReturnRequired)));
 
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AnalyticRequired)));
-
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyRequired)));
 
             model = GetInvalidModel();
@@ -82,13 +80,9 @@ namespace Sofco.UnitTest.Validations
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyNotFound)));
 
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AllocationManagement.Analytic.NotFound)));
-
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormNotFound)));
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Admin.User.NotFound)));
-
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.DateItemRequired)));
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.DescriptionItemRequired)));
 

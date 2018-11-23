@@ -186,7 +186,7 @@ namespace Sofco.UnitTest.Services.Billing
 
             response = sut.ChangeStatus(12, model);
 
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.UserSectorWrong)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.UserAreaWrong)));
 
             response = sut.ChangeStatus(13, model);
 
