@@ -11,6 +11,8 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string EmployeeName { get; set; }
 
+        public string EmployeeNumber { get; set; }
+
         public IList<string> Recipients { get; set; }
 
         public DateTime CreatedDate { get; set; }
