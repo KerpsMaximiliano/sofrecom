@@ -43,7 +43,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         public void Execute()
         {
-            var list = crmAccountService.GetAll();
+            var list = crmAccountService.GetById(new Guid("93bec8b8-24e1-e811-a953-000d3ac06054"));
 
             var url = $"{crmConfig.Url}/api/account";
 

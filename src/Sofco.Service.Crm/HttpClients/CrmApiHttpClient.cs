@@ -35,11 +35,12 @@ namespace Sofco.Service.Crm.HttpClients
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            httpClient.DefaultRequestHeaders.Add("Prefer", "odata.include-annotations=\"OData.Community.Display.V1.FormattedValue\"");
         }
 
         public Result<T> Get<T>(string urlPath)
         {
-            throw new NotImplementedException();
+            return GetResult<T>(urlPath, HttpMethod.Get);
         }
 
         public Result<List<T>> GetMany<T>(string urlPath)
@@ -62,10 +63,6 @@ namespace Sofco.Service.Crm.HttpClients
             var webApiUrl = new Uri("https://login.microsoftonline.com/31d7c510-2e1a-4b74-b0fe-8996a7a23a4d/oauth2/token");
 
             var requestToken = new HttpClient();
-            requestToken.DefaultRequestHeaders.Add("Resource", Resource);
-            requestToken.DefaultRequestHeaders.Add("client_id", ClientId);
-            requestToken.DefaultRequestHeaders.Add("client_secret", ClientSecret);
-            requestToken.DefaultRequestHeaders.Add("grant_type", "client_credentials");
 
             var pairs = new Dictionary<string, string>
             {
@@ -117,6 +114,11 @@ namespace Sofco.Service.Crm.HttpClients
             if (typeof(TResult) == typeof(string))
             {
                 return (TResult)(object)resultText;
+            }
+
+            if (typeof(TResult) == typeof(JObject))
+            {
+                return (TResult)(object)JObject.Parse(resultText);
             }
 
             return jsonSerializerSettings == null ?
