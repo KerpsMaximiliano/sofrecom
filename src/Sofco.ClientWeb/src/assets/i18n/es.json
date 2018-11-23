@@ -779,6 +779,7 @@
         "endNotification": {
             "title": "Notificaciones de Bajas",
             "employeeName": "Nombre",
+            "employeeNumber": "Legajo",
             "applicantName": "Solicitante",
             "createdDate": "Fecha de carga",
             "endDate": "Fecha de baja"

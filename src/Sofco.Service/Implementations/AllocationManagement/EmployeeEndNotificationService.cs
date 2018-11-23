@@ -48,7 +48,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             result.ForEach(x =>
             {
-                x.EmployeeName = employeeData.GetByEmployeeId(x.EmployeeId).Name;
+                var employee = employeeData.GetByEmployeeId(x.EmployeeId);
+
+                x.EmployeeName = employee.Name;
+                x.EmployeeNumber = employee.EmployeeNumber;
                 x.ApplicantName = userData.GetById(x.ApplicantUserId).Name;
             });
 

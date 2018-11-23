@@ -70,19 +70,21 @@
                     <thead>
                         <tr>
                             <th></th>
+                            <th class="column-sm">{{'rrhh.endNotification.employeeNumber' | translate }}</th>
                             <th class="column-md">{{'rrhh.endNotification.employeeName' | translate }}</th>
                             <th class="column-md">{{'rrhh.endNotification.applicantName' | translate }}</th>
-                            <th class="column-md">{{'rrhh.endNotification.endDate' | translate }}</th>
-                            <th class="column-md">{{'rrhh.endNotification.createdDate' | translate }}</th>
+                            <th class="column-xs">{{'rrhh.endNotification.endDate' | translate }}</th>
+                            <th class="column-xs">{{'rrhh.endNotification.createdDate' | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of data">
                             <td>{{ item.id }}</td>
-                            <td class="column-lg">{{ item.employeeName }}</td>
-                            <td class="column-lg">{{ item.applicantName }}</td>
-                            <td class="column-lg">{{ item.endDate | date:'dd/MM/yyyy' }}</td>
-                            <td class="column-lg">{{ item.createdDate | date:'dd/MM/yyyy' }}</td>
+                            <td class="column-sm">{{ item.employeeNumber }}</td>
+                            <td class="column-md">{{ item.employeeName }}</td>
+                            <td class="column-md">{{ item.applicantName }}</td>
+                            <td class="column-xs">{{ item.endDate | date:'dd/MM/yyyy' }}</td>
+                            <td class="column-xs">{{ item.createdDate | date:'dd/MM/yyyy' }}</td>
                         </tr>
                     </tbody>
                 </table>       
