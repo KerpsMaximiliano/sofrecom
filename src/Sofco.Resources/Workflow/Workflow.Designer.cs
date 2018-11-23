@@ -80,20 +80,20 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a workflow/workflow.nextStateNull.
-        /// </summary>
-        public static string NextStateNull {
-            get {
-                return ResourceManager.GetString("NextStateNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.parametersNull.
         /// </summary>
         public static string ParametersNull {
             get {
                 return ResourceManager.GetString("ParametersNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.transitionParametersNull.
+        /// </summary>
+        public static string TransitionParametersNull {
+            get {
+                return ResourceManager.GetString("TransitionParametersNull", resourceCulture);
             }
         }
         
@@ -112,15 +112,6 @@ namespace Sofco.Resources.Workflow {
         public static string UserHasNoAccess {
             get {
                 return ResourceManager.GetString("UserHasNoAccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Busca una cadena traducida similar a workflow/workflow.workflowNull.
-        /// </summary>
-        public static string WorkflowNull {
-            get {
-                return ResourceManager.GetString("WorkflowNull", resourceCulture);
             }
         }
     }

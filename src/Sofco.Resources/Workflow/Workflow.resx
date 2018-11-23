@@ -123,19 +123,16 @@
   <data name="EntityNull" xml:space="preserve">
     <value>workflow/workflow.entityNull</value>
   </data>
-  <data name="NextStateNull" xml:space="preserve">
-    <value>workflow/workflow.nextStateNull</value>
-  </data>
   <data name="ParametersNull" xml:space="preserve">
     <value>workflow/workflow.parametersNull</value>
+  </data>
+  <data name="TransitionParametersNull" xml:space="preserve">
+    <value>workflow/workflow.transitionParametersNull</value>
   </data>
   <data name="TransitionSuccess" xml:space="preserve">
     <value>workflow/workflow.transitionSuccess</value>
   </data>
   <data name="UserHasNoAccess" xml:space="preserve">
     <value>workflow/workflow.userHasNoAccess</value>
-  </data>
-  <data name="WorkflowNull" xml:space="preserve">
-    <value>workflow/workflow.workflowNull</value>
   </data>
 </root>

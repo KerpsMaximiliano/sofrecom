@@ -139,11 +139,9 @@ namespace Sofco.UnitTest.Services.Billing
 
             Assert.True(response.HasErrors());
 
-            var notFoundCode = Resources.Billing.PurchaseOrder.NotFound.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(notFoundCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.NotFound)));
 
-            var ammountRequiredCode = Resources.Billing.PurchaseOrder.AmmountRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(ammountRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.AmmountRequired)));
         }
 
         [Test]
@@ -167,42 +165,38 @@ namespace Sofco.UnitTest.Services.Billing
         public void ShouldValidateChangeStatus()
         {
             var model = new PurchaseOrderStatusParams();
-            var commentsRequiredCode = Resources.Billing.PurchaseOrder.CommentsRequired.Split('.')[1];
-            var userSectorWrongCode = Resources.Billing.PurchaseOrder.UserSectorWrong.Split('.')[1];
-            var userAreaWrongCode = Resources.Billing.PurchaseOrder.UserAreaWrong.Split('.')[1];
 
             var response = sut.ChangeStatus(10, model);
 
-            var fileRequiredCode = Resources.Billing.PurchaseOrder.FileRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(fileRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.FileRequired)));
 
             model.MustReject = true;
 
             response = sut.ChangeStatus(11, model);
 
-            Assert.True(response.Messages.Any(x => x.Code.Equals(commentsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.CommentsRequired)));
 
             model.MustReject = true;
 
             response = sut.ChangeStatus(12, model);
 
-            Assert.True(response.Messages.Any(x => x.Code.Equals(commentsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.CommentsRequired)));
 
             model.MustReject = false;
 
             response = sut.ChangeStatus(12, model);
 
-            Assert.True(response.Messages.Any(x => x.Code.Equals(userAreaWrongCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.UserSectorWrong)));
 
             response = sut.ChangeStatus(13, model);
 
-            Assert.True(response.Messages.Any(x => x.Code.Equals(userSectorWrongCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.UserSectorWrong)));
 
             model.MustReject = true;
 
             response = sut.ChangeStatus(14, model);
 
-            Assert.True(response.Messages.Any(x => x.Code.Equals(commentsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.CommentsRequired)));
         }
 
         [Test]

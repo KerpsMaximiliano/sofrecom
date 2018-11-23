@@ -8,6 +8,7 @@ using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -70,6 +71,18 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Include(x => x.WorkTimes)
                 .Include(x => x.Licenses)
                 .Where(x => ids.Contains(x.Id)).ToList();
+        }
+
+        public IList<Sector> GetAnalyticsWithSector(int employeeId)
+        {
+            var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).Date;
+
+            return context.Allocations
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Sector)
+                .Where(x => x.EmployeeId == employeeId && x.StartDate.Date == today)
+                .Select(x => x.Analytic.Sector)
+                .ToList();
         }
 
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
@@ -279,7 +292,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public Employee GetByEmail(string email)
         {
-            return context.Employees.SingleOrDefault(x => x.Email == email);
+            return context.Employees.Include(x => x.Manager).SingleOrDefault(x => x.Email == email);
         }
 
         public Employee GetUserInfo(string email)

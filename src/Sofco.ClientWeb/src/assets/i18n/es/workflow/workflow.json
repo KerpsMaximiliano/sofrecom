@@ -1,0 +1,8 @@
+{
+    "cannotDoTransition": "No se puede avanzar al estado seleccionado",
+    "parametersNull": "Alguno de los parametros es incorrecto",
+    "transitionParametersNull": "No se pudieron recuperar los estados posibles",
+    "transitionSuccess": "La transaccion fue realizada exitosamente",
+    "entityNull": "La entidad no existe",
+    "userHasNoAccess": "No tiene permisos para realizar esta acción"
+}

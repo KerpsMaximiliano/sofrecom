@@ -21,4 +21,8 @@ export class AdvancementService {
     get(id){
         return this.http.get<any>(`${this.baseUrl}/advancement/${id}`);
     }
+
+    getAllInProcess(){
+        return this.http.get<any>(`${this.baseUrl}/advancement/inProcess`);
+    }
 }

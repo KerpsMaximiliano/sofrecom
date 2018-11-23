@@ -2,10 +2,10 @@
 {
     public class WorkflowChangeStatusParameters
     {
-        public int? WorkflowId { get; set; }
+        public int WorkflowId { get; set; }
 
-        public int? NextStateId { get; set; }
+        public int NextStateId { get; set; }
 
-        public int? EntityId { get; set; }
+        public int EntityId { get; set; }
     }
 }

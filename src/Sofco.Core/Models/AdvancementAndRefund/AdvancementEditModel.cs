@@ -9,7 +9,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund
     {
         public AdvancementEditModel(Advancement advancement)
         {
-            Id = advancement.Id;
+            Id = advancement.Id; 
 
             UserApplicantId = advancement.UserApplicantId;
             UserApplicantDesc = advancement.UserApplicant?.Name;
@@ -22,23 +22,15 @@ namespace Sofco.Core.Models.AdvancementAndRefund
 
             StartDateReturn = advancement.StartDateReturn;
 
-            AnalyticId = advancement.AnalyticId;
-            AnalyticDesc = $"{advancement.Analytic?.Title}-{advancement.Analytic?.Name}";
-
             CurrencyId = advancement.CurrencyId;
             CurrencyDesc = advancement.Currency?.Text;
 
-            Details = new List<AdvancementDetailModel>();
+            StatusId = advancement.StatusId;
+            StatusDesc = advancement.Status?.Name;
+            WorkflowStateType = advancement.Status?.Type;
 
-            foreach (var detail in advancement.Details)
-            {
-                var item = new AdvancementDetailModel();
-                item.Date = detail.Date;
-                item.Ammount = detail.Ammount;
-                item.Description = detail.Description;
-
-                Details.Add(item);
-            }
+            Description = advancement.Description;
+            Ammount = advancement.Ammount;
         }
 
         public int Id { get; set; }
@@ -49,22 +41,26 @@ namespace Sofco.Core.Models.AdvancementAndRefund
 
         public AdvancementType Type { get; set; }
 
+        public WorkflowStateType? WorkflowStateType { get; set; }
+
         public int AdvancementReturnFormId { get; set; }
 
         public DateTime StartDateReturn { get; set; }
-
-        public int AnalyticId { get; set; }
 
         public int CurrencyId { get; set; }
 
         public string CurrencyDesc { get; set; }
 
-        public string AnalyticDesc { get; set; }
-
         public string AdvancementReturnFormDesc { get; set; }
 
         public string UserApplicantDesc { get; set; }
 
-        public IList<AdvancementDetailModel> Details { get; set; }
+        public string StatusDesc { get; set; }
+
+        public int StatusId { get; set; }
+
+        public string Description { get; set; }
+
+        public decimal Ammount { get; set; }
     }
 }

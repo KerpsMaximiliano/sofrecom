@@ -22,6 +22,14 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             this.workflowService = workflowService;
         }
 
+        [HttpGet("inProcess")]
+        public IActionResult GetAll()
+        {
+            var response = advancementService.GetAllInProcess();
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -46,10 +54,18 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
-        [HttpPost]
-        public IActionResult DoTransition(WorkflowChangeStatusParameters parameters)
+        [HttpPost("transition")]
+        public IActionResult DoTransition([FromBody] WorkflowChangeStatusParameters parameters)
         {
             var response = workflowService.DoTransition<Advancement>(parameters);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("possibleTransitions")]
+        public IActionResult GetPossibleTransitions([FromBody] TransitionParameters parameters)
+        {
+            var response = workflowService.GetPossibleTransitions<Advancement>(parameters);
 
             return this.CreateResponse(response);
         }

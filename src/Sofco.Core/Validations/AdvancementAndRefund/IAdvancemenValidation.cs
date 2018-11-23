@@ -5,7 +5,7 @@ namespace Sofco.Core.Validations.AdvancementAndRefund
 {
     public interface IAdvancemenValidation
     {
-        Response ValidateAdd(AdvancementModel model);
+        void ValidateAdd(AdvancementModel model, Response response);
         Response ValidateUpdate(AdvancementModel model);
     }
 }

@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { TranslateModule } from "@ngx-translate/core";
-import { NgSelectModule } from "@ng-select/ng-select";
 import { FileUploadModule } from "ng2-file-upload";
 import { Ng2DatatablesModule } from "../../components/datatables/ng2-datatables.module";
 import { RouterModule } from "@angular/router";
@@ -16,15 +15,18 @@ import { AdvancementAndRefundRouter } from "./advancementAndRefund.router";
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { AdvancementDetailComponent } from "./advancement/detail/advancement-detail.componet";
+import { AdvacementFormModule } from "./advancement/form/advancement-form.module";
+import { WorkflowModule } from "app/components/workflow/workflow.module";
+import { AdvancementListInProcessComponent } from "./advancement/list-in-process/list-in-process.component";
  
 @NgModule({
-    declarations: [AdvancementDetailComponent],
+    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent ],
 
-    imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, 
-                    NgSelectModule, AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule],
+    imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
+                   TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
+                   AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule ],
 
-    providers   : [AdvancementService],
+    providers   : [ AdvancementService ],
 
     exports     : []
 })

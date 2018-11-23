@@ -26,16 +26,15 @@ import { ButtonsModule } from '../../components/buttons/buttons.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { AdvancementAddComponent } from 'app/views/advancementAndRefund/advancement/add/advancement-add.component';
-import { AdvancementFormComponent } from 'app/views/advancementAndRefund/advancement/form/advancement-form.component';
 import { UtilsService } from 'app/services/common/utils.service';
 import { AdvancementService } from 'app/services/advancement-and-refund/advancement.service';
-import { AdvancementEditComponent } from '../advancementAndRefund/advancement/edit/advancement-edit.component';
+import { AdvacementFormModule } from '../advancementAndRefund/advancement/form/advancement-form.module';
 
 @NgModule({
-  declarations: [ WorkTimeComponent, AdvancementAddComponent, AdvancementFormComponent, AdvancementEditComponent ],
+  declarations: [ WorkTimeComponent, AdvancementAddComponent ],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, ProfileRouter,
+                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, ProfileRouter, AdvacementFormModule,
                  IboxtoolsModule, ResourceDetailModule, AddLicenseModule, ButtonsModule, NgSelectModule, ReactiveFormsModule, BsDatepickerModule],
 
   providers   : [LicenseService, EmployeeService, AnalyticService, TaskService, WorktimeService, AdvancementService, UtilsService],

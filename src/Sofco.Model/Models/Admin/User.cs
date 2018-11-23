@@ -48,6 +48,7 @@ namespace Sofco.Domain.Models.Admin
         public ICollection<Employee> Employees { get; set; }
 
         public IList<Advancement> Advancements { get; set; }
+        public IList<Advancement> Advancements2 { get; set; }
 
         public IList<Workflow.Workflow> Workflows { get; set; }
         public IList<Workflow.Workflow> Workflows2 { get; set; }

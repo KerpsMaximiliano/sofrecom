@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AdvancementAndRefund;
@@ -19,6 +20,8 @@ namespace Sofco.Domain.Models.Workflow
         public User CreatedBy { get; set; }
         public int ModifiedById { get; set; }
         public User ModifiedBy { get; set; }
+
+        public WorkflowStateType Type { get; set; }
 
         public IList<Advancement> Advancements { get; set; }
     }
