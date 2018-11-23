@@ -7,7 +7,7 @@ BEGIN
 END
 
 DECLARE @FuncId Int = (SELECT Id FROM app.Functionalities WHERE Code = 'EMPLOYEE_END_NOTIF')
-DECLARE @RrhhRoleId Int = (SELECT Id from app.Roles WHERE Description = 'RRHH')
+DECLARE @RrhhRoleId Int = (SELECT Id from app.Roles WHERE Code = 'RRHH')
 DECLARE @MangerRoleId Int = (SELECT Id from app.Roles WHERE Description = 'Gerente')
 DECLARE @DirectorRoleId Int = (SELECT Id from app.Roles WHERE Description = 'Director')
 DECLARE @PmoRoleId Int = (SELECT Id from app.Roles WHERE Description = 'PMO')
