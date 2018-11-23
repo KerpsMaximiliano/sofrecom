@@ -59,8 +59,8 @@ namespace Sofco.DAL.Repositories.Workflow
             return !context.WorkflowStateTransitions
                 .Include(x => x.Workflow)
                 .Any(x => x.Workflow.Active &&
-                                      x.WorkflowId == workflowId &&
-                                      x.ActualWorkflowStateId == actualStateId);
+                          x.WorkflowId == workflowId &&
+                          x.ActualWorkflowStateId == actualStateId);
         }
     }
 }

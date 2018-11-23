@@ -18,6 +18,7 @@ namespace Sofco.Domain.Utils
                 }
             }
 
+            Text = route;
             Type = type;
         }
 
