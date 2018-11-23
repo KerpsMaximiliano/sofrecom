@@ -118,7 +118,7 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
             Assert.False(actual.HasErrors());
 
             var firstMessage = actual.Messages.First();
-            var actualMessage = firstMessage.Folder + "." + firstMessage.Code;
+            var actualMessage = firstMessage.Text;
             var expectedMessage = Resources.WorkTimeManagement.WorkTime.ApprovedSuccess;
 
             Assert.AreEqual(expectedMessage, actualMessage);
@@ -145,7 +145,7 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
             Assert.True(actual.HasErrors());
 
             var firstMessage = actual.Messages.First(x => x.Type == MessageType.Error);
-            var actualMessage = firstMessage.Folder + "." + firstMessage.Code;
+            var actualMessage = firstMessage.Text;
             var expectedMessage = Resources.Common.ErrorSave;
 
             Assert.AreEqual(expectedMessage, actualMessage);

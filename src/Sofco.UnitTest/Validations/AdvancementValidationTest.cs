@@ -10,6 +10,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 using Sofco.Framework.Validations.AdvancementAndRefund;
 
 namespace Sofco.UnitTest.Validations
@@ -52,64 +53,48 @@ namespace Sofco.UnitTest.Validations
         [Test]
         public void ShouldValidate()
         {
-            var model = new AdvancementModel { Details = new List<AdvancementDetailModel>() };
+            var model = new AdvancementModel();
+            var response = new Response();
 
-            var response = sut.ValidateAdd(model);
+            sut.ValidateAdd(model, response);
 
             Assert.True(response.HasErrors());
 
-            var userIsRequiredCode = Resources.AdvancementAndRefund.Advancement.UserApplicantRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(userIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.UserApplicantRequired)));
 
-            var paymentFormIsRequiredCode = Resources.AdvancementAndRefund.Advancement.PaymentFormRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(paymentFormIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.PaymentFormRequired)));
 
-            var typeIsRequiredCode = Resources.AdvancementAndRefund.Advancement.TypeRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(typeIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.TypeRequired)));
 
-            var advancementReturnFormIsRequiredCode = Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(advancementReturnFormIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired)));
 
-            var startDateReturnIsRequiredCode = Resources.AdvancementAndRefund.Advancement.StartDateReturnRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(startDateReturnIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.StartDateReturnRequired)));
 
-            var analyticIsRequiredCode = Resources.AdvancementAndRefund.Advancement.AnalyticRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(analyticIsRequiredCode)));
-
-            var currencyRequiredCode = Resources.AdvancementAndRefund.Advancement.CurrencyRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(currencyRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyRequired)));
 
             model = GetInvalidModel();
-            model.Details.Add(GetInvalidDetail());
 
-            response = sut.ValidateAdd(model);
+            response = new Response();
 
-            var currencyNotFoundCode = Resources.AdvancementAndRefund.Advancement.CurrencyNotFound.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(currencyNotFoundCode)));
+            sut.ValidateAdd(model, response);
 
-            var analyticNotFoundCode = Resources.AllocationManagement.Analytic.NotFound.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(analyticNotFoundCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyNotFound)));
 
-            var advancementReturnFormNotFoundCode = Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormNotFound.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(advancementReturnFormNotFoundCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormNotFound)));
 
-            var userNotFoundCode = Resources.Admin.User.NotFound.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(userNotFoundCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Admin.User.NotFound)));
 
-            var dateItemRequiredCode = Resources.AdvancementAndRefund.Advancement.DateItemRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(dateItemRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.DescriptionItemRequired)));
 
-            var descriptionItemRequiredCode = Resources.AdvancementAndRefund.Advancement.DescriptionItemRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(descriptionItemRequiredCode)));
-
-            var ammountItemRequiredCode = Resources.AdvancementAndRefund.Advancement.AmmountItemRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(ammountItemRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AmmountItemRequired)));
         }
 
         [Test]
         public void ShouldPass()
         {
-            var response = sut.ValidateAdd(GetValidModel());
+            var response = new Response();
+
+            sut.ValidateAdd(GetValidModel(), response);
 
             Assert.False(response.HasErrors());
         }
@@ -124,18 +109,6 @@ namespace Sofco.UnitTest.Validations
                 AdvancementReturnFormId = 2,
                 StartDateReturn = DateTime.Now,
                 CurrencyId = 2,
-                AnalyticId = 2,
-                Details = new List<AdvancementDetailModel>()
-            };
-        }
-
-        private AdvancementDetailModel GetInvalidDetail()
-        {
-            return new AdvancementDetailModel
-            {
-                Date = null,
-                Description = string.Empty,
-                Ammount = 0
             };
         }
 
@@ -148,17 +121,9 @@ namespace Sofco.UnitTest.Validations
                 Type = AdvancementType.Salary,
                 AdvancementReturnFormId = 1,
                 StartDateReturn = DateTime.Today,
-                AnalyticId = 1,
                 CurrencyId = 1,
-                Details = new List<AdvancementDetailModel>
-                {
-                    new AdvancementDetailModel
-                    {
-                        Date = DateTime.Today,
-                        Description = "description",
-                        Ammount = 1
-                    }
-                }
+                Description = "description",
+                Ammount = 1
             };
         }
     }

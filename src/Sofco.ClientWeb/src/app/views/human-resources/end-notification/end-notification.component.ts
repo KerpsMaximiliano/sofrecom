@@ -147,12 +147,7 @@ export class EndNotificationComponent implements OnInit, OnDestroy {
     clean(){
         $('.datepicker').val('');
 
-        this.searchModel = {
-            startDate: null,
-            endDate: null,
-            applicantId: null,
-            employeeId: null
-        };
+        this.searchModel = this.getDefaultData();
 
         sessionStorage.removeItem(this.storageKey);
     }

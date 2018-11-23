@@ -1,12 +1,14 @@
 import { Routes, RouterModule } from "@angular/router";
 import { AuthGuard } from "../../guards/auth.guard";
-import { AdvancementAddComponent } from "app/views/advancementAndRefund/advancement/add/advancement-add.component";
+import { AdvancementDetailComponent } from "./advancement/detail/advancement-detail.componet";
+import { AdvancementListInProcessComponent } from "./advancement/list-in-process/list-in-process.component";
 
 const ADVANCEMENT_AND_REFUND_ROUTER: Routes = [
     {
         path: "advancement",
         children: [
-            { path: "add", component: AdvancementAddComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "ADD" } } 
+            { path: "search", component: AdvancementListInProcessComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "QUERY" }  },
+            { path: ":id", component: AdvancementDetailComponent, canActivate: [AuthGuard] }
         ]
     }
 ]

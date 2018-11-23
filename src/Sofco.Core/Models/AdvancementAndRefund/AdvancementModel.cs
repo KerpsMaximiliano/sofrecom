@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 
@@ -20,11 +18,11 @@ namespace Sofco.Core.Models.AdvancementAndRefund
 
         public DateTime? StartDateReturn { get; set; }
 
-        public int? AnalyticId { get; set; }
-
         public int? CurrencyId { get; set; }
 
-        public IList<AdvancementDetailModel> Details { get; set; }
+        public string Description { get; set; }
+
+        public decimal? Ammount { get; set; }
 
         public Advancement CreateDomain()
         {
@@ -35,20 +33,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund
             domain.Type = Type.GetValueOrDefault();
             domain.AdvancementReturnFormId = AdvancementReturnFormId.GetValueOrDefault();
             domain.StartDateReturn = StartDateReturn.GetValueOrDefault().Date;
-            domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
-
-            domain.Details = new List<AdvancementDetail>();
-
-            foreach (var detail in Details)
-            {
-                var item = new AdvancementDetail();
-                item.Date = detail.Date.GetValueOrDefault().Date;
-                item.Description = detail.Description;
-                item.Ammount = detail.Ammount.GetValueOrDefault();
-
-                domain.Details.Add(item);
-            }
+            domain.Description = Description;
+            domain.Ammount = Ammount.GetValueOrDefault();
 
             return domain;
         }
@@ -60,30 +47,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund
             advancement.Type = Type.GetValueOrDefault();
             advancement.AdvancementReturnFormId = AdvancementReturnFormId.GetValueOrDefault();
             advancement.StartDateReturn = StartDateReturn.GetValueOrDefault().Date;
-            advancement.AnalyticId = AnalyticId.GetValueOrDefault();
             advancement.CurrencyId = CurrencyId.GetValueOrDefault();
-
-            if (advancement.Type == AdvancementType.Salary)
-            {
-                var detail = Details.First();
-                var detailDomain = advancement.Details.First();
-
-                if (detail != null && detailDomain != null)
-                {
-                    detailDomain.Date = detail.Date.GetValueOrDefault();
-                    detailDomain.Description = detail.Description;
-                    detailDomain.Ammount = detail.Ammount.GetValueOrDefault();
-                }
-            }
+            advancement.Description = Description;
+            advancement.Ammount = Ammount.GetValueOrDefault();
         }
-    }
-
-    public class AdvancementDetailModel
-    {
-        public DateTime? Date { get; set; }
-
-        public string Description { get; set; }
-
-        public decimal? Ammount { get; set; }
     }
 }

@@ -18,12 +18,15 @@ namespace Sofco.Domain.Utils
                 }
             }
 
+            Text = route;
             Type = type;
         }
 
-        public string Folder { get; private set; }
+        public string Folder { get; set; }
 
-        public string Code { get; private set; }
+        public string Code { get; set; }
+
+        public string Text { get; set; }
 
         public MessageType Type { get; set; }
     }

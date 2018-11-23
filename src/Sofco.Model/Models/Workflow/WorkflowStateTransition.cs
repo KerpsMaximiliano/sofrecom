@@ -24,6 +24,8 @@ namespace Sofco.Domain.Models.Workflow
 
         public string ValidationCode { get; set; }
 
+        public string ConditionCode { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
         public int CreatedById { get; set; }

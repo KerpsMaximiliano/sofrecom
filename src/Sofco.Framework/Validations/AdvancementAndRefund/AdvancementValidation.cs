@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using Sofco.Core.DAL;
+﻿using Sofco.Core.DAL;
 using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
-using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.Validations.AdvancementAndRefund
@@ -16,19 +14,15 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             this.unitOfWork = unitOfWork;
         }
 
-        public Response ValidateAdd(AdvancementModel model)
+        public void ValidateAdd(AdvancementModel model, Response response)
         {
-            var response = new Response();
-
             if (model == null)
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.NullModel);
-                return response;
+                return;
             }
 
             ValidateCommonDate(model, response);
-
-            return response;
         }
 
         public Response ValidateUpdate(AdvancementModel model)
@@ -65,20 +59,9 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             ValidateType(model, response);
             ValidateAdvancementReturnForm(model, response);
             ValidateStartDateReturn(model, response);
-            ValidateAnalytic(model, response);
             ValidateCurrency(model, response);
-            ValidateDetails(model, response);
-        }
-
-        private void ValidateDetails(AdvancementModel model, Response response)
-        {
-            if (model.Type.HasValue)
-            {
-                if (model.Type == AdvancementType.Salary)
-                {
-                    ValidateAdvancementSalary(model, response);
-                }
-            }
+            ValidateDescription(model, response);
+            ValidateAmmount(model, response);
         }
 
         private void ValidateCurrency(AdvancementModel model, Response response)
@@ -93,46 +76,19 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             }
         }
 
-        private void ValidateAdvancementSalary(AdvancementModel model, Response response)
+        private void ValidateDescription(AdvancementModel model, Response response)
         {
-            if (!model.Details.Any() || model.Details.Count > 1)
-            {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.MustHaveOneDetail);
-            }
-            else
-            {
-                var item = model.Details.First();
-                ValidateItem(response, item);
-            }
-        }
-
-        private void ValidateItem(Response response, AdvancementDetailModel item)
-        {
-            if (!item.Date.HasValue)
-            {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.DateItemRequired);
-            }
-
-            if (string.IsNullOrWhiteSpace(item.Description))
+            if (string.IsNullOrWhiteSpace(model.Description))
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.DescriptionItemRequired);
             }
-
-            if (!item.Ammount.HasValue || item.Ammount.Value <= 0)
-            {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.AmmountItemRequired);
-            }
         }
 
-        private void ValidateAnalytic(AdvancementModel model, Response response)
+        private void ValidateAmmount(AdvancementModel model, Response response)
         {
-            if (!model.AnalyticId.HasValue || model.AnalyticId.Value <= 0)
+            if (!model.Ammount.HasValue || model.Ammount.Value <= 0)
             {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.AnalyticRequired);
-            }
-            else if (!unitOfWork.AnalyticRepository.Exist(model.AnalyticId.Value))
-            {
-                response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                response.AddError(Resources.AdvancementAndRefund.Advancement.AmmountItemRequired);
             }
         }
 

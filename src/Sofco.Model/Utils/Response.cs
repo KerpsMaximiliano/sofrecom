@@ -25,7 +25,8 @@ namespace Sofco.Domain.Utils
 
         public void AddError(string msg)
         {
-            Messages.Add(new Message(msg, MessageType.Error));
+            if (!Messages.Any(x => x.Text.Equals(msg)))
+                Messages.Add(new Message(msg, MessageType.Error));
         }
 
         public void AddWarning(string msg)

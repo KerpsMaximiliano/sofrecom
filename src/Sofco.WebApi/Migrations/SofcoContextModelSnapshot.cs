@@ -228,13 +228,26 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("AdvancementReturnFormId");
 
-                    b.Property<int>("AnalyticId");
+                    b.Property<decimal>("Ammount");
+
+                    b.Property<int?>("AnalyticId");
+
+                    b.Property<int?>("AuthorizerId");
+
+                    b.Property<DateTime>("CreationDate");
 
                     b.Property<int>("CurrencyId");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(400);
+
+                    b.Property<bool>("InWorkflowProcess");
 
                     b.Property<int>("PaymentForm");
 
                     b.Property<DateTime>("StartDateReturn");
+
+                    b.Property<int>("StatusId");
 
                     b.Property<int>("Type");
 
@@ -246,32 +259,15 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasIndex("AnalyticId");
 
+                    b.HasIndex("AuthorizerId");
+
                     b.HasIndex("CurrencyId");
+
+                    b.HasIndex("StatusId");
 
                     b.HasIndex("UserApplicantId");
 
                     b.ToTable("Advancements");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.AdvancementDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AdvancementId");
-
-                    b.Property<decimal>("Ammount");
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(400);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdvancementId");
-
-                    b.ToTable("AdvancementDetails");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>
@@ -1605,6 +1601,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(300);
 
+                    b.Property<int>("Type");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
@@ -1680,6 +1678,8 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("ActualWorkflowStateId");
+
+                    b.Property<string>("ConditionCode");
 
                     b.Property<DateTime>("CreatedAt");
 
@@ -2151,25 +2151,25 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("Advancements")
                         .HasForeignKey("AdvancementReturnFormId");
 
-                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic")
                         .WithMany("Advancements")
                         .HasForeignKey("AnalyticId");
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "Authorizer")
+                        .WithMany("Advancements2")
+                        .HasForeignKey("AuthorizerId");
 
                     b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
                         .WithMany("Advancements")
                         .HasForeignKey("CurrencyId");
 
+                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowState", "Status")
+                        .WithMany("Advancements")
+                        .HasForeignKey("StatusId");
+
                     b.HasOne("Sofco.Domain.Models.Admin.User", "UserApplicant")
                         .WithMany("Advancements")
                         .HasForeignKey("UserApplicantId");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.AdvancementDetail", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.AdvancementAndRefund.Advancement", "Advancement")
-                        .WithMany("Details")
-                        .HasForeignKey("AdvancementId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>

@@ -2,6 +2,7 @@ import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'advancement-add',
@@ -14,6 +15,7 @@ export class AdvancementAddComponent implements OnDestroy {
     addSubscrip: Subscription;
 
     constructor(private advancementService: AdvancementService, 
+                private router: Router,
                 private messageService: MessageService){}
                
     ngOnDestroy(): void {
@@ -27,6 +29,10 @@ export class AdvancementAddComponent implements OnDestroy {
 
         this.addSubscrip = this.advancementService.add(model).subscribe(response => {
             this.messageService.closeLoading();
+
+            setTimeout(() => {
+                this.router.navigate(['/advancementAndRefund/advancement/' + response.data]);
+            }, 500);
         },
         error => {
             this.messageService.closeLoading();

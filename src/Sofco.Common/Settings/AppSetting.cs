@@ -29,5 +29,9 @@
         public string LicenseViewCode { get; set; }
 
         public string AnalyticBank { get; set; }
+
+        public int WorkflowStatusDraft { get; set; }
+
+        public int AdvacementWorkflowId { get; set; }
     }
 }

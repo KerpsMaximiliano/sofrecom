@@ -32,6 +32,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<List<EmployeeEndNotificationModel>> Get(EmployeeEndNotificationParameters parameters)
         {
+            if (parameters == null)
+            {
+                parameters = new EmployeeEndNotificationParameters();
+            } 
+
             ResolverApplicantUser(parameters);
 
             var result = repository.GetByParameters(parameters);

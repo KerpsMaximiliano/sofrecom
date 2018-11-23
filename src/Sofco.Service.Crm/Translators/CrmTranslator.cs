@@ -41,7 +41,7 @@ namespace Sofco.Service.Crm.Translators
                 var key = propertyInfo.Name;
                 if (!keyMaps.ContainsKey(key)) continue;
 
-                var value = data[keyMaps[key]];
+                var value = data[keyMaps[key]].ToString();
 
                 var propertyType = propertyInfo.PropertyType;
 
@@ -57,12 +57,12 @@ namespace Sofco.Service.Crm.Translators
                             propertyInfo.SetValue(item, Convert.ToInt64(value), null);
                             break;
                         case TypeCode.String:
-                            propertyInfo.SetValue(item, value.ToString(), null);
+                            propertyInfo.SetValue(item, value, null);
                             break;
                         case TypeCode.Object:
                             if (propertyType == typeof(Guid) || propertyType == typeof(Guid?))
                             {
-                                propertyInfo.SetValue(item, Guid.Parse(value.ToString()), null);
+                                propertyInfo.SetValue(item, Guid.Parse(value), null);
                             }
                             break;
                         default:
@@ -72,7 +72,7 @@ namespace Sofco.Service.Crm.Translators
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Failed to set property value for type: "+ typeName + " - key: "+ key +" exception:"+ ex.Message);
+                    throw new Exception("Failed to set property value for type: "+ typeName + " - key: "+ key +" - exception:"+ ex.Message);
                 }
             }
         }

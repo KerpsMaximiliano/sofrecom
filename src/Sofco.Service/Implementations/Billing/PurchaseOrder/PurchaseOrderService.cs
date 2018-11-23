@@ -260,7 +260,14 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
         {
             var list = unitOfWork.PurchaseOrderRepository.GetByServiceLite(serviceId);
 
-            return list.Where(x => !string.IsNullOrWhiteSpace(x.Proposal) && x.Proposal.Contains(opportunityNumber)).ToList();
+            if (opportunityNumber.Equals("0"))
+            {
+                return list.ToList();
+            }
+            else
+            {
+                return list.Where(x => !string.IsNullOrWhiteSpace(x.Proposal) && x.Proposal.Contains(opportunityNumber)).ToList();
+            }
         }
 
         private void Validate(PurchaseOrderModel model, Response<PurchaseOrderDomain> response)

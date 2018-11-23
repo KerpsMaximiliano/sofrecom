@@ -1,5 +1,8 @@
 export const environment = {
   production: true,
   urlApi:  'https://gaps.sofrecom.com.ar/api',
-  crmCloseStatusCode: '979730000'
+  crmCloseStatusCode: '979730000',
+  advacementWorkflowId: 2,
+  draftWorkflowStateId: 8,
+  rejectedWorkflowStateId: 2
 };
