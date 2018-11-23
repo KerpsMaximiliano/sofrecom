@@ -161,12 +161,12 @@ export class EndNotificationComponent implements OnInit, OnDestroy {
         const idIndex = 0;
         const endDateIndex = 2;
         const createdDateIndex = 3;
-        data.header.splice(0, 2);
+        data.header.splice(0, 1);
         const dataBody = data.body;
         for(let index = 0; index < dataBody.length; index++) {
             const dataBodyItem = dataBody[index];
             const itemId = dataBodyItem[idIndex];
-            dataBodyItem.splice(0, 2);
+            dataBodyItem.splice(0, 1);
             const item = this.data.find(x => x.id == itemId);
             if(item === undefined) continue;
             dataBodyItem[createdDateIndex] = this.getCreatedDate(item);
