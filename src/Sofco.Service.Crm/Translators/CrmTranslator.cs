@@ -2,14 +2,25 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
+using Sofco.Service.Crm.TranslatorMaps.Interfaces;
+using Sofco.Service.Crm.Translators.Interfaces;
 
 namespace Sofco.Service.Crm.Translators
 {
-    public class CrmTranslator<T>
+    public class CrmTranslator<T, T2> : ICrmTranslator<T, T2> where T2 : ITranslatorMap, new()
     {
-        public T Translate(JObject data, Dictionary<string, string> keyMaps = null)
+        private T2 translatorMap;
+
+        public CrmTranslator()
+        {
+            translatorMap = new T2();
+        }
+
+        public T Translate(JObject data)
         {
             var item = data.ToObject<T>();
+
+            var keyMaps = translatorMap.KeyMaps();
 
             if (keyMaps != null)
             {

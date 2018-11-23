@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Sofco.Domain.Crm;
+using Sofco.Service.Crm.TranslatorMaps.Interfaces;
 
-namespace Sofco.Service.Crm.ModelMaps
+namespace Sofco.Service.Crm.TranslatorMaps
 {
-    public class CrmAccountModelMap
+    public class CrmAccountTranslatorMap : ITranslatorMap
     {
         private const string Id = "accountid";
 
@@ -25,28 +26,28 @@ namespace Sofco.Service.Crm.ModelMaps
 
         private const string PayTermCode = "paymenttermscode";
 
-        public static string GetSelects()
+        public static string KeySelects()
         {
             var list = new List<string>
             {
                 Name, Address, CityId, Contact, CountryId, Cuit, CurrencyId, OwnerId, PayTermCode
             };
 
-            return string.Join(",", list);
+            return string.Join(TranslatorMapConstant.SelectDelimiter, list);
         }
 
-        public static Dictionary<string, string> GetKeyMaps()
+        public Dictionary<string, string> KeyMaps()
         {
             return new Dictionary<string, string>
             {
                 {nameof(CrmAccount.Id), Id},
                 {nameof(CrmAccount.Name), Name},
                 {nameof(CrmAccount.Address), Address},
-                {nameof(CrmAccount.City), CityId + ModelMapConstant.ODataFormattedValue},
+                {nameof(CrmAccount.City), CityId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmAccount.Contact), Contact},
-                {nameof(CrmAccount.Country), CountryId + ModelMapConstant.ODataFormattedValue},
+                {nameof(CrmAccount.Country), CountryId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmAccount.Cuit), Cuit},
-                {nameof(CrmAccount.CurrencyDescription), CurrencyId + ModelMapConstant.ODataFormattedValue},
+                {nameof(CrmAccount.CurrencyDescription), CurrencyId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmAccount.OwnerId), OwnerId},
                 {nameof(CrmAccount.PaymentTermCode), PayTermCode}
             };
