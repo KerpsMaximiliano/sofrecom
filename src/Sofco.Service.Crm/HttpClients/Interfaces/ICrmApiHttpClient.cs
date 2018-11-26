@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using Sofco.Common.Domains;
 
 namespace Sofco.Service.Crm.HttpClients.Interfaces
@@ -7,8 +6,6 @@ namespace Sofco.Service.Crm.HttpClients.Interfaces
     public interface ICrmApiHttpClient
     {
         Result<T> Get<T>(string urlPath);
-
-        Result<List<T>> GetMany<T>(string urlPath);
 
         Result<T> Post<T>(string urlPath, HttpContent content);
 

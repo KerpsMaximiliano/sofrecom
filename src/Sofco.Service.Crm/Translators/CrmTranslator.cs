@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using Sofco.Service.Crm.TranslatorMaps.Interfaces;
@@ -9,6 +10,10 @@ namespace Sofco.Service.Crm.Translators
 {
     public class CrmTranslator<T, T2> : ICrmTranslator<T, T2> where T2 : ITranslatorMap, new()
     {
+        private const string ListKey = "value";
+
+        private const string ErrorMapMessage = "Failed to set property value for type: {0} - key: {1} - exception: {2}";
+
         private T2 translatorMap;
 
         public CrmTranslator()
@@ -30,6 +35,18 @@ namespace Sofco.Service.Crm.Translators
             return item;
         }
 
+        public List<T> TranslateList(JObject data)
+        {
+            var dataList = data[ListKey].Values<JObject>();
+
+            return dataList.Select(Translate).ToList();
+        }
+
+        public string KeySelects()
+        {
+            return translatorMap.KeySelects();
+        }
+
         private void TranslateMap(T item, JObject data, Dictionary<string, string> keyMaps)
         {
             var typeName = typeof(T).Name;
@@ -41,28 +58,37 @@ namespace Sofco.Service.Crm.Translators
                 var key = propertyInfo.Name;
                 if (!keyMaps.ContainsKey(key)) continue;
 
-                var value = data[keyMaps[key]].ToString();
+                var value = data[keyMaps[key]];
 
                 var propertyType = propertyInfo.PropertyType;
 
                 var typeCode = Type.GetTypeCode(propertyType);
+
+                var stringValue = value != null ? value.ToString() : string.Empty;
+
                 try
                 {
                     switch (typeCode)
                     {
                         case TypeCode.Int32:
-                            propertyInfo.SetValue(item, Convert.ToInt32(value), null);
+                            var intValue = stringValue != string.Empty ? value.Value<int>() : 0;
+
+                            propertyInfo.SetValue(item, intValue, null);
                             break;
-                        case TypeCode.Int64:
-                            propertyInfo.SetValue(item, Convert.ToInt64(value), null);
+                        case TypeCode.Decimal:
+                            var decimalValue = stringValue != string.Empty ? value.Value<decimal>() : 0;
+
+                            propertyInfo.SetValue(item, decimalValue, null);
                             break;
                         case TypeCode.String:
-                            propertyInfo.SetValue(item, value, null);
+                            propertyInfo.SetValue(item, stringValue, null);
                             break;
                         case TypeCode.Object:
                             if (propertyType == typeof(Guid) || propertyType == typeof(Guid?))
                             {
-                                propertyInfo.SetValue(item, Guid.Parse(value), null);
+                                var guidValue = value != null ? Guid.Parse(value.ToString()) : Guid.Empty;
+
+                                propertyInfo.SetValue(item, guidValue, null);
                             }
                             break;
                         default:
@@ -72,7 +98,7 @@ namespace Sofco.Service.Crm.Translators
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Failed to set property value for type: "+ typeName + " - key: "+ key +" - exception:"+ ex.Message);
+                    throw new Exception(string.Format(ErrorMapMessage, typeName, key, ex.Message));
                 }
             }
         }

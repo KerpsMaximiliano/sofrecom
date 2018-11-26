@@ -11,11 +11,15 @@ namespace Sofco.Service.Crm
 {
     public class CrmAccountService : ICrmAccountService
     {
+        private const string UrlPath = "accounts";
+
+        private const int IntegratorClientStatusCode = 717620000;
+
+        private const int DirectClientStatusCode = 717620001;
+
         private readonly ICrmApiHttpClient httpClient;
 
         private readonly ICrmTranslator<CrmAccount, CrmAccountTranslatorMap> translator;
-
-        private const string UrlPath = "accounts";
 
         public CrmAccountService(ICrmApiHttpClient httpClient, 
             ICrmTranslator<CrmAccount, CrmAccountTranslatorMap> translator)
@@ -26,28 +30,26 @@ namespace Sofco.Service.Crm
 
         public List<CrmAccount> GetAll()
         {
-            var result = httpClient.GetMany<CrmAccount>(UrlPath + GetQuery());
+            var result = httpClient.Get<JObject>(UrlPath + GetQuery());
 
-            return result.Data;
+            return translator.TranslateList(result.Data);
         }
 
         public CrmAccount GetById(Guid id)
         {
             var result = httpClient.Get<JObject>($"{UrlPath}({id})"+ GetQuery());
 
-            var crmAccount = Translate(result.Data);
-
-            return crmAccount;
+            return translator.Translate(result.Data);
         }
 
         private string GetQuery()
         {
-            return "?$select=" + CrmAccountTranslatorMap.KeySelects();
+            return "?$select=" + translator.KeySelects() +"&"+ GetFilters();
         }
 
-        private CrmAccount Translate(JObject data)
+        private string GetFilters()
         {
-            return translator.Translate(data);
+            return $"$filter=statuscode eq {IntegratorClientStatusCode} or statuscode eq {DirectClientStatusCode}";
         }
     }
 }

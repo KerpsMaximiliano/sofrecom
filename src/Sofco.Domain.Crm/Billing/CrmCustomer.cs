@@ -4,7 +4,7 @@
     {
         public string Id { get; set; }
 
-        public string Nombre { get; set; }
+        public string Name { get; set; }
 
         public string Telephone { get; set; }
 
@@ -18,7 +18,7 @@
 
         public string Country { get; set; }
 
-        public string CUIT { get; set; }
+        public string Cuit { get; set; }
 
         public string CurrencyId { get; set; }
 

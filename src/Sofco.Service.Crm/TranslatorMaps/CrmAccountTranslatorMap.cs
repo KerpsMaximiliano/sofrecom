@@ -12,7 +12,11 @@ namespace Sofco.Service.Crm.TranslatorMaps
 
         private const string Address = "address1_line1";
 
+        private const string PostalCode = "address1_postalcode";
+
         private const string CityId = "_as_cityid_value";
+
+        private const string ProvinceId = "_as_stateprovinceid_value";
 
         private const string Contact = "_primarycontactid_value";
 
@@ -26,15 +30,11 @@ namespace Sofco.Service.Crm.TranslatorMaps
 
         private const string PayTermCode = "paymenttermscode";
 
-        public static string KeySelects()
-        {
-            var list = new List<string>
-            {
-                Name, Address, CityId, Contact, CountryId, Cuit, CurrencyId, OwnerId, PayTermCode
-            };
+        private const string StateCode = "statecode";
 
-            return string.Join(TranslatorMapConstant.SelectDelimiter, list);
-        }
+        private const string Phone = "telephone1";
+
+        private const string RelCommercial = "statuscode";
 
         public Dictionary<string, string> KeyMaps()
         {
@@ -43,14 +43,32 @@ namespace Sofco.Service.Crm.TranslatorMaps
                 {nameof(CrmAccount.Id), Id},
                 {nameof(CrmAccount.Name), Name},
                 {nameof(CrmAccount.Address), Address},
+                {nameof(CrmAccount.PostalCode), PostalCode},
                 {nameof(CrmAccount.City), CityId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmAccount.Contact), Contact},
                 {nameof(CrmAccount.Country), CountryId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmAccount.Cuit), Cuit},
+                {nameof(CrmAccount.CurrencyId), CurrencyId},
                 {nameof(CrmAccount.CurrencyDescription), CurrencyId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmAccount.OwnerId), OwnerId},
-                {nameof(CrmAccount.PaymentTermCode), PayTermCode}
+                {nameof(CrmAccount.PaymentTermCode), PayTermCode},
+                {nameof(CrmAccount.PaymentTermDescription), PayTermCode + TranslatorMapConstant.ODataFormattedValue},
+                {nameof(CrmAccount.StatusCode), StateCode},
+                {nameof(CrmAccount.Telephone), Phone},
+                {nameof(CrmAccount.RelCommercial), RelCommercial},
+                {nameof(CrmAccount.Province), ProvinceId + TranslatorMapConstant.ODataFormattedValue}
             };
+        }
+
+        public string KeySelects()
+        {
+            var list = new List<string>
+            {
+                Name, Address, CityId, Contact, CountryId, Cuit, CurrencyId,
+                OwnerId, PayTermCode, Phone, PostalCode, StateCode, RelCommercial, ProvinceId
+            };
+
+            return string.Join(TranslatorMapConstant.SelectDelimiter, list);
         }
     }
 }

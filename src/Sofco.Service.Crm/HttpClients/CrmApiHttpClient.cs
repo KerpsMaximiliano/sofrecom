@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Sofco.Common.Domains;
 using Sofco.Service.Crm.HttpClients.Interfaces;
+using Sofco.Service.Crm.Settings;
 
 namespace Sofco.Service.Crm.HttpClients
 {
@@ -13,20 +16,16 @@ namespace Sofco.Service.Crm.HttpClients
     {
         private const string ErrorDelimiter = ";";
 
-        private const string Resource = "https://sofrecomdev.crm2.dynamics.com";
-
-        private const string ClientId = "5979a783-4e8a-42a6-acb9-c5f20da86520";
-
-        private const string ClientSecret = "gmup69BdV0BVvqtoRGZCQIX5ULXtSVEpX3mCItjS+AM=";
+        private readonly CrmSetting crmSetting;
 
         private readonly string accessToken = string.Empty;
 
         private readonly HttpClient httpClient;
 
-        private readonly string baseAddress = "https://sofrecomdev.api.crm2.dynamics.com/api/data/v9.0/";
-
-        public CrmApiHttpClient()
+        public CrmApiHttpClient(IOptions<CrmSetting> crmOptions)
         {
+            crmSetting = crmOptions.Value;
+
             if (accessToken == string.Empty)
             {
                 accessToken = GetAccessToken();
@@ -43,11 +42,6 @@ namespace Sofco.Service.Crm.HttpClients
             return GetResult<T>(urlPath, HttpMethod.Get);
         }
 
-        public Result<List<T>> GetMany<T>(string urlPath)
-        {
-            return GetResult<List<T>>(urlPath, HttpMethod.Get);
-        }
-
         public Result<T> Post<T>(string urlPath, HttpContent content)
         {
             return GetResult<T>(urlPath, HttpMethod.Post);
@@ -60,15 +54,15 @@ namespace Sofco.Service.Crm.HttpClients
 
         private string GetAccessToken()
         {
-            var webApiUrl = new Uri("https://login.microsoftonline.com/31d7c510-2e1a-4b74-b0fe-8996a7a23a4d/oauth2/token");
+            var webApiUrl = new Uri(crmSetting.UrlApiToken);
 
             var requestToken = new HttpClient();
 
             var pairs = new Dictionary<string, string>
             {
-                {"Resource", Resource},
-                {"client_id", ClientId},
-                {"client_secret", ClientSecret},
+                {"Resource", crmSetting.Resource},
+                {"client_id", crmSetting.ClientId},
+                {"client_secret", crmSetting.ClientSecret},
                 {"grant_type", "client_credentials"}
             };
 
@@ -85,9 +79,11 @@ namespace Sofco.Service.Crm.HttpClients
 
         private Result<TResult> GetResult<TResult>(string urlPath, HttpMethod httpMethod)
         {
-            var requestMessage = new HttpRequestMessage(httpMethod, baseAddress + urlPath);
+            var requestMessage = new HttpRequestMessage(httpMethod, crmSetting.UrlApi + urlPath);
 
             var response = httpClient.SendAsync(requestMessage).Result;
+
+            response = ProcessExpiredToken(response);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -99,7 +95,7 @@ namespace Sofco.Service.Crm.HttpClients
                                 + ErrorDelimiter +
                                 response.Content.ReadAsStringAsync().Result);
 
-                return result;
+                throw new Exception(string.Join(ErrorDelimiter, result.Errors));
             }
 
             var resultData = GetResponseResult<TResult>(response);
@@ -124,6 +120,22 @@ namespace Sofco.Service.Crm.HttpClients
             return jsonSerializerSettings == null ?
                 JsonConvert.DeserializeObject<TResult>(resultText)
                 : JsonConvert.DeserializeObject<TResult>(resultText, jsonSerializerSettings);
+        }
+
+        private HttpResponseMessage ProcessExpiredToken(HttpResponseMessage unauthorizedResponse)
+        {
+            if(unauthorizedResponse.IsSuccessStatusCode) return unauthorizedResponse;
+
+            if(unauthorizedResponse.StatusCode != HttpStatusCode.Unauthorized) return unauthorizedResponse;
+
+            httpClient.DefaultRequestHeaders.Authorization 
+                = new AuthenticationHeaderValue("Bearer", GetAccessToken());
+
+            var request = new HttpRequestMessage(
+                    unauthorizedResponse.RequestMessage.Method,
+                    unauthorizedResponse.RequestMessage.RequestUri);
+
+            return httpClient.SendAsync(request).Result;
         }
     }
 }
