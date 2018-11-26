@@ -33,5 +33,15 @@
         public int WorkflowStatusDraft { get; set; }
 
         public int AdvacementWorkflowId { get; set; }
+
+        public string SectorUserSource { get; set; }
+
+        public string ManagerUserSource { get; set; }
+
+        public string ApplicantUserSource { get; set; }
+
+        public string GroupUserSource { get; set; }
+
+        public string UserUserSource { get; set; }
     }
 }

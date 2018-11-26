@@ -167,7 +167,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
         private bool ValidateUserReadAccess(UserLiteModel currentUser, UserSource userSource, bool hasAccess)
         {
-            if (userSource.Code == "USER" && userSource.SourceId == currentUser.Id)
+            if (userSource.Code == settings.UserUserSource && userSource.SourceId == currentUser.Id)
             {
                 hasAccess = true;
             }
@@ -177,7 +177,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
         private bool ValidateGroupAccess(UserLiteModel currentUser, UserSource userSource, bool hasAccess)
         {
-            if (userSource.Code == "GROUP")
+            if (userSource.Code == settings.GroupUserSource)
             {
                 var user = unitOfWork.UserRepository.GetSingleWithUserGroup(x => x.Id == currentUser.Id);
                 var groups = user.UserGroups?.Select(x => x.Group).Distinct().ToList();
@@ -196,7 +196,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
         private bool ValidateManagerAccess(Advancement entity, WorkflowStateTransition transition, UserLiteModel currentUser)
         {
-            if (transition != null && transition.WorkflowStateAccesses != null && transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == "MANAGER"))
+            if (transition != null && transition.WorkflowStateAccesses != null && transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == settings.ManagerUserSource))
             {
                 if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
                 {
