@@ -4,6 +4,7 @@ import { MessageService } from "../../../../services/common/message.service";
 import { EmployeeService } from "../../../../services/allocation-management/employee.service";
 import { DataTableService } from "../../../../services/common/datatable.service";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import { Router } from "@angular/router";
 
 declare var $: any;
 
@@ -42,6 +43,7 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
     constructor(
         private messageService: MessageService,
         private employeeService: EmployeeService,
+        private router: Router,
         private dataTableService: DataTableService){}
 
     ngOnInit(): void {
@@ -114,5 +116,9 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
         else{
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         } 
+    }
+
+    goToProfile(resource){
+        this.router.navigate([`/allocationManagement/resources/${resource.id}`]);
     }
 }

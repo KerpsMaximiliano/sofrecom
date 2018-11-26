@@ -12,7 +12,7 @@ import { EndNotificationComponent } from "./end-notification/end-notification.co
 const RRHH_ROUTER: Routes = [
     { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
 
-    { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard] },
+    { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
 
     {
         path: "licenses",
