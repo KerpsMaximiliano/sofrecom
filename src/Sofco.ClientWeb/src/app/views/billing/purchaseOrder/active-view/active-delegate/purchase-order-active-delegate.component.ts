@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ErrorHandlerService } from '../../../../../services/common/errorHandler.service';
 import { DataTableService } from '../../../../../services/common/datatable.service';
 import { Router } from '@angular/router';
 import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
 import { PurchaseOrderActiveDelegateService } from '../../../../../services/billing/purchase-order-active-delegate.service';
+
+declare var moment: any;
 
 @Component({
     selector: 'app-purchase-order-active-delegate',
@@ -47,8 +48,11 @@ export class PurchaseOrderActiveDelegateComponent implements OnInit, OnDestroy {
 
     initTable() {
         this.dataTableService.destroy('#delegateTable');
-        this.dataTableService.initialize({
+        this.dataTableService.initialize({ 
             selector: '#delegateTable', 
+            columns: [0, 1, 2, 3, 4],
+            title: `Delegacion-orden-compra-activa-${moment(new Date()).format("YYYYMMDD")}`,
+            withExport: true,
             columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
             order: [[ 0, 'asc' ]]
         });

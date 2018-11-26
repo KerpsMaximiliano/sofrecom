@@ -93,25 +93,6 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var solfacToModif = new Domain.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
             unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
-
-            if (solfac.PurchaseOrder == null) return;
-
-            var detail = solfac.PurchaseOrder.AmmountDetails.SingleOrDefault(x => x.CurrencyId == solfac.CurrencyId);
-
-            if (detail != null)
-            {
-                var oldBalance = detail.Balance;
-
-                detail.Balance = detail.Balance - solfac.TotalAmount;
-                unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
-
-                if (oldBalance > 0 && detail.Balance <= 0)
-                {
-                    solfac.PurchaseOrder.Status = PurchaseOrderStatus.Consumed;
-                    unitOfWork.PurchaseOrderRepository.UpdateStatus(solfac.PurchaseOrder);
-                    SendMailForOcConsumed(solfac.PurchaseOrder);
-                }
-            }
         }
 
         public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac, string url)
@@ -131,35 +112,6 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), ocNumber);
         }
 
-        private void SendMailForOcConsumed(Domain.Models.Billing.PurchaseOrder purchaseOrder)
-        {
-            var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
-
-            var recipients = new List<string>();
-
-            foreach (var analytic in analytics)
-            {
-                if (analytic.Manager != null)
-                {
-                    recipients.Add(analytic.Manager.Email);
-                }
-            }
-
-            if (!recipients.Any()) return;
-
-            var subject = string.Format(Resources.Mails.MailSubjectResource.PurchaseOrderConsumed, purchaseOrder.Number);
-            var body = string.Format(Resources.Mails.MailMessageResource.PurchaseOrderConsumed, purchaseOrder.Number);
-
-            var data = new SolfacStatusData
-            {
-                Title = subject,
-                Message = body,
-                Recipients = recipients
-            };
-
-            var email = mailBuilder.GetEmail(data);
-            mailSender.Send(email);
-        }
 
         public void SendMail(Domain.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {

@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
 
+declare var moment: any;
+
 @Component({
     selector: 'app-solfac-delegate',
     templateUrl: './solfac-delegate.component.html'
@@ -47,10 +49,13 @@ export class SolfacDelegateComponent implements OnInit, OnDestroy {
         }
     }
 
-    initTable() {
+    initTable() { 
         this.dataTableService.destroy('#delegateTable');
         this.dataTableService.initialize({
             selector: '#delegateTable', 
+            columns: [0, 1, 2, 3, 4],
+            title: `Delegacion-Solfacs-${moment(new Date()).format("YYYYMMDD")}`,
+            withExport: true,
             columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
             order: [[ 0, 'asc' ]]
         });
