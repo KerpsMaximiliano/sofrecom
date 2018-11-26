@@ -77,7 +77,17 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var options = { selector: "#resourcesTable", columnDefs: [ {'aTargets': [1, 2], "sType": "date-uk"} ] };
+        var columns = [0, 1, 2, 3];
+        var title = `Recursos inactivos`;
+
+        var options = { 
+            selector: "#resourcesTable", 
+            columns: columns,
+            title: title,
+            withExport: true,
+            columnDefs: [ {'aTargets': [1, 2], "sType": "date-uk"} ] 
+        };
+
         this.dataTableService.destroy(options.selector); 
         this.dataTableService.initialize(options);
         this.gridIsVisible = true;
