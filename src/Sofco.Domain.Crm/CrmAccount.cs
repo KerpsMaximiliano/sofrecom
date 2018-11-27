@@ -1,8 +1,10 @@
-﻿namespace Sofco.Domain.Crm.Billing
+﻿using System;
+
+namespace Sofco.Domain.Crm
 {
-    public class CrmCustomer
+    public class CrmAccount
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
@@ -26,10 +28,14 @@
 
         public string Contact { get; set; }
 
-        public int? PaymentTermCode { get; set; }
+        public int PaymentTermCode { get; set; }
 
         public string PaymentTermDescription { get; set; }
 
-        public string OwnerId { get; set; }
+        public string StatusCode { get; set; }
+
+        public decimal RelCommercial { get; set; }
+
+        public Guid OwnerId { get; set; }
     }
 }
