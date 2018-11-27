@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.DAL;
+using Sofco.Service.Crm.Settings;
 using Sofco.Service.Settings;
 using Sofco.WebApi.Filters;
 using Sofco.WebApi.Infrastructures;
@@ -75,6 +76,7 @@ namespace Sofco.WebApi
             services.Configure<AzureAdConfig>(Configuration.GetSection("AzureAd"));
             services.Configure<FileConfig>(Configuration.GetSection("File"));
             services.Configure<AppSetting>(Configuration.GetSection("App"));
+            services.Configure<CrmSetting>(Configuration.GetSection("CRM"));
 
             services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
