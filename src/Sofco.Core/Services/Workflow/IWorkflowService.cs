@@ -7,7 +7,7 @@ namespace Sofco.Core.Services.Workflow
 {
     public interface IWorkflowService
     {
-        Response DoTransition<T>(WorkflowChangeStatusParameters parameters) where T : WorkflowEntity;
+        Response DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters) where TEntity : WorkflowEntity where THistory : WorkflowHistory;
         Response<IList<TransitionItemModel>> GetPossibleTransitions<T>(TransitionParameters parameters) where T : WorkflowEntity;
     }
 }

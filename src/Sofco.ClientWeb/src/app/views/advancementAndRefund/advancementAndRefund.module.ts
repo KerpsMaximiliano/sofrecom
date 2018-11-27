@@ -18,9 +18,10 @@ import { AdvancementDetailComponent } from "./advancement/detail/advancement-det
 import { AdvacementFormModule } from "./advancement/form/advancement-form.module";
 import { WorkflowModule } from "app/components/workflow/workflow.module";
 import { AdvancementListInProcessComponent } from "./advancement/list-in-process/list-in-process.component";
+import { AdvancementHistoryComponent } from "./advancement/history/advancement-histories.component";
  
 @NgModule({
-    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent ],
+    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,

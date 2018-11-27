@@ -9,9 +9,10 @@ using Sofco.Domain.Enums;
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20181126191044_AdvancementHistory")]
+    partial class AdvancementHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("app")
@@ -281,9 +282,11 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<int>("StatusFromId");
+                    b.Property<string>("StatusFrom")
+                        .HasMaxLength(150);
 
-                    b.Property<int>("StatusToId");
+                    b.Property<string>("StatusTo")
+                        .HasMaxLength(150);
 
                     b.Property<string>("UserName")
                         .HasMaxLength(100);
@@ -291,10 +294,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AdvancementId");
-
-                    b.HasIndex("StatusFromId");
-
-                    b.HasIndex("StatusToId");
 
                     b.ToTable("AdvancementHistories");
                 });
@@ -2207,14 +2206,6 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("Histories")
                         .HasForeignKey("AdvancementId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowState", "StatusFrom")
-                        .WithMany("AdvancementHistories")
-                        .HasForeignKey("StatusFromId");
-
-                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowState", "StatusTo")
-                        .WithMany("AdvancementHistories2")
-                        .HasForeignKey("StatusToId");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>

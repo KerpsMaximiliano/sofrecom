@@ -22,6 +22,10 @@ export class AdvancementService {
         return this.http.get<any>(`${this.baseUrl}/advancement/${id}`);
     }
 
+    getHistories(id){
+        return this.http.get<any>(`${this.baseUrl}/advancement/${id}/histories`);
+    }
+
     getAllInProcess(){
         return this.http.get<any>(`${this.baseUrl}/advancement/inProcess`);
     }

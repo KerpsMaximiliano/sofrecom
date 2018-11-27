@@ -15,6 +15,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
   
     @ViewChild('form') form;
     @ViewChild('workflow') workflow;
+    @ViewChild('history') history;
 
     public entityId: number;
     public actualStateId: number;
@@ -50,6 +51,8 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
                 this.entityId = response.data.id;
 
                 this.workflow.init(model);
+
+                this.history.getHistories(routeParams.id);
             }, 
             error => this.messageService.closeLoading());
         }

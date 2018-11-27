@@ -5,6 +5,7 @@ using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
+using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AdvancementAndRefund
 {
@@ -54,6 +55,14 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.UserSource)
                 .Where(x => x.Workflow.WorkflowTypeId == advacementWorkflowId)
                 .ToList();
+        }
+
+        public IList<AdvancementHistory> GetHistories(int id)
+        {
+            return context.AdvancementHistories
+                .Include(x => x.StatusFrom)
+                .Include(x => x.StatusTo)
+                .Where(x => x.AdvancementId == id).ToList();
         }
     }
 }

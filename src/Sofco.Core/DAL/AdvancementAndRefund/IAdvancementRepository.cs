@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.DAL.AdvancementAndRefund
 {
@@ -12,5 +14,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         Advancement GetFullById(int id);
         IList<Advancement> GetAllInProcess();
         IList<WorkflowReadAccess> GetWorkflowReadAccess(int advacementWorkflowId);
+        IList<AdvancementHistory> GetHistories(int id);
     }
 }
