@@ -266,7 +266,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                         var reportRow = new AllocationReportRow
                         {
-                            Manager = analytic?.Manager?.Name,
+                            Manager = employee.Manager?.Name,
                             Percentage = employee.BillingPercentage,
                             Profile = employee.Profile,
                             ResourceName = $"{employee.EmployeeNumber} - {employee.Name}",

@@ -7,6 +7,8 @@ import { DataTableService } from "../../../../services/common/datatable.service"
 import { I18nService } from "../../../../services/common/i18n.service";
 import { MessageService } from "../../../../services/common/message.service";
 
+declare var moment: any;
+
 @Component({
     selector: 'purchase-orders-pendings',
     templateUrl: './oc-pendings.component.html'
@@ -48,7 +50,10 @@ export class PurchaseOrderPendingsComponent implements OnInit, OnDestroy {
 
     initGrid(){
         var options = { 
-            selector: "#purchaseOrderTable",
+            selector: "#purchaseOrderTable", 
+            columns: [0, 1, 2, 3, 4],
+            title: `Ordenes-compra-pendientes-${moment(new Date()).format("YYYYMMDD")}`,
+            withExport: true,
             columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ],
         }
 

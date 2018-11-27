@@ -130,6 +130,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             IQueryable<Allocation> query = context.Allocations
                 .Include(x => x.Employee)
+                    .ThenInclude(x => x.Manager)
                 .Where(x => x.StartDate >= parameters.StartDate && x.StartDate <= parameters.EndDate);
 
             if (parameters.AnalyticIds.Any())
