@@ -1060,6 +1060,13 @@
         "description": "Concepto",
         "detail": "Detalle",
         "status": "Estado",
-        "ammount": "Monto"        
+        "ammount": "Monto",
+        "histories": {
+            "createdDate": "Fecha Creación",
+            "userName": "Usuario",
+            "comment": "Comentarios",
+            "statusFrom": "Estado inicial",
+            "statusTo": "Estado final"
+        }   
     }
 }  

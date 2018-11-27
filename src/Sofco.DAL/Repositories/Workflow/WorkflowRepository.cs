@@ -62,5 +62,10 @@ namespace Sofco.DAL.Repositories.Workflow
                           x.WorkflowId == workflowId &&
                           x.ActualWorkflowStateId == actualStateId);
         }
+
+        public void AddHistory<THistory>(THistory history) where THistory : WorkflowHistory
+        {
+            context.Set<THistory>().Add(history);
+        }
     }
 }

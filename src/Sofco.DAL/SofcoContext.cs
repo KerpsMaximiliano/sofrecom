@@ -89,6 +89,7 @@ namespace Sofco.DAL
 
         // Advancement and Refund
         public DbSet<Advancement> Advancements { get; set; }
+        public DbSet<AdvancementHistory> AdvancementHistories { get; set; }
 
         // Common
         public DbSet<File> Files { get; set; }

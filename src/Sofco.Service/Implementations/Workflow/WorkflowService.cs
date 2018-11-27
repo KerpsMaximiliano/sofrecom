@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -44,7 +45,9 @@ namespace Sofco.Service.Implementations.Workflow
             this.appSetting = appSettingsOptions.Value;
         }
 
-        public Response DoTransition<T>(WorkflowChangeStatusParameters parameters) where T : WorkflowEntity
+        public Response DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters)
+            where TEntity : WorkflowEntity 
+            where THistory : WorkflowHistory
         {
             var response = new Response();
 
@@ -53,7 +56,7 @@ namespace Sofco.Service.Implementations.Workflow
 
             if (response.HasErrors()) return response;
 
-            var entity = workflowRepository.GetEntity<T>(parameters.EntityId);
+            var entity = workflowRepository.GetEntity<TEntity>(parameters.EntityId);
 
             // Validate if entity exist
             if (entity == null)
@@ -109,7 +112,34 @@ namespace Sofco.Service.Implementations.Workflow
                 response.AddError(Resources.Common.ErrorSave);
             }
 
+            // Create history
+            CreateHistory<TEntity, THistory>(entity, transition, currentUser);
+
             return response;
+        }
+
+        private void CreateHistory<TEntity, THistory>(TEntity entity, WorkflowStateTransition transition, UserLiteModel currentUser)
+            where TEntity : WorkflowEntity
+            where THistory : WorkflowHistory
+        {
+            try
+            {
+                var history = (THistory)Activator.CreateInstance(typeof(THistory));
+
+                history.UserName = currentUser.Name;
+                history.CreatedDate = DateTime.UtcNow.Date;
+                history.StatusFromId = transition.ActualWorkflowStateId;
+                history.StatusToId = transition.NextWorkflowStateId;
+
+                history.SetEntityId(entity.Id);
+
+                workflowRepository.AddHistory(history);
+                workflowRepository.Save();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
         }
 
         private bool ValidateAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity)

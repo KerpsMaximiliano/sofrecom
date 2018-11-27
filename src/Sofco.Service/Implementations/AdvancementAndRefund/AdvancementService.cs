@@ -152,6 +152,17 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
+        public Response<IList<AdvancementHistoryModel>> GetHistories(int id)
+        {
+            var histories = unitOfWork.AdvancementRepository.GetHistories(id);
+
+            var response = new Response<IList<AdvancementHistoryModel>>();
+
+            response.Data = histories.Select(x => new AdvancementHistoryModel(x)).ToList();
+
+            return response;
+        }
+
         private bool HasReadAccess(IList<WorkflowReadAccess> readAccess, UserLiteModel currentUser)
         {
             var hasAccess = false;

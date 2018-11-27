@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Utils;
@@ -24,5 +25,7 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
         public string Description { get; set; }
 
         public decimal Ammount { get; set; }
+
+        public IList<AdvancementHistory> Histories { get; set; }
     }
 }

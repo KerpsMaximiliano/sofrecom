@@ -24,5 +24,9 @@ namespace Sofco.Domain.Models.Workflow
         public WorkflowStateType Type { get; set; }
 
         public IList<Advancement> Advancements { get; set; }
+
+        public IEnumerable<AdvancementHistory> AdvancementHistories { get; set; }
+
+        public IEnumerable<AdvancementHistory> AdvancementHistories2 { get; set; }
     }
 }
