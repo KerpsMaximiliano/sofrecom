@@ -109,19 +109,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        public Response<List<AdvancementListItem>> GetAllInProcess()
+        public Response<IList<AdvancementListItem>> GetAllInProcess()
         {
-            var response = new Response<List<AdvancementListItem>>();
+            var response = new Response<IList<AdvancementListItem>>();
             response.Data = new List<AdvancementListItem>();
 
             var currentUser = userData.GetCurrentUser();
 
-            var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email);
-            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
-            var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUser.Email);
-            var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUser.Email);
-
-            var hasAllAccess = hasDirectorGroup || hasRrhhGroup || hasGafGroup || hasDafGroup;
+            var hasAllAccess = HasAllAccess(currentUser);
 
             var advancements = unitOfWork.AdvancementRepository.GetAllInProcess();
 
@@ -161,6 +156,52 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             response.Data = histories.Select(x => new AdvancementHistoryModel(x)).ToList();
 
             return response;
+        }
+
+        public Response<IList<AdvancementListItem>> GetAllFinalized(AdvancementSearchFinalizedModel model)
+        {
+            var response = new Response<IList<AdvancementListItem>>();
+            response.Data = new List<AdvancementListItem>();
+
+            var currentUser = userData.GetCurrentUser();
+
+            var hasAllAccess = HasAllAccess(currentUser);
+            
+            var advancements = unitOfWork.AdvancementRepository.GetAllFinalized(settings.WorkflowStatusDraft, model);
+
+            if (hasAllAccess)
+            {
+                response.Data = advancements.Select(x => new AdvancementListItem(x)).ToList();
+            }
+            else
+            {
+                foreach (var advancement in advancements)
+                {
+                    foreach (var transition in advancement.Status.ActualTransitions)
+                    {
+                        if (ValidateManagerAccess(advancement, transition, currentUser))
+                        {
+                            if (response.Data.All(x => x.Id != advancement.Id))
+                            {
+                                response.Data.Add(new AdvancementListItem(advancement));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return response;
+        }
+
+        private bool HasAllAccess(UserLiteModel currentUser)
+        {
+            var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email);
+            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
+            var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUser.Email);
+            var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUser.Email);
+
+            var hasAllAccess = hasDirectorGroup || hasRrhhGroup || hasGafGroup || hasDafGroup;
+            return hasAllAccess;
         }
 
         private bool HasReadAccess(IList<WorkflowReadAccess> readAccess, UserLiteModel currentUser)

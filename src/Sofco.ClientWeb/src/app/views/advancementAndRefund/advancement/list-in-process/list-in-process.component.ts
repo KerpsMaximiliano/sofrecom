@@ -6,6 +6,8 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { Router } from "@angular/router";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
 
+declare var moment: any;
+
 @Component({
     selector: 'list-in-process',
     templateUrl: './list-in-process.component.html'
@@ -15,6 +17,7 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
     getSubscrip: Subscription;
 
     public model: any[] = new Array();
+    public modelFiltered: any[] = new Array();
 
     constructor(private advancementService: AdvancementService,
                 private datatableService: DataTableService,
@@ -28,6 +31,7 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
 
             this.model = response.data;
+            this.modelFiltered = response.data;
             this.initGrid();
         }, 
         error => this.messageService.closeLoading());
@@ -64,5 +68,60 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
             case WorkflowStateType.Success: return "label-primary";
             case WorkflowStateType.Danger: return "label-danger";
         }
+    }
+
+    search(parameters){
+        this.modelFiltered = [];
+
+        if(!parameters.resourceId && !parameters.typeId && !parameters.dateSince && !parameters.dateTo){
+            this.modelFiltered = this.model;
+        }
+        else{
+            for(var i = 0; i < this.model.length; i++){
+                var addItem = true;
+                var item = this.model[i];
+
+                if(parameters.resourceId && parameters.resourceId > 0){
+                    if(parameters.resourceId != item.userApplicantId){
+                        addItem = false;
+                    }
+                }
+
+                if(parameters.typeId && parameters.typeId > 0){
+                    if(parameters.typeId != item.type){
+                        addItem = false;
+                    }
+                }
+
+                if(parameters.dateSince){
+                    parameters.dateSince.setHours(0,0,0,0);
+
+                    if(moment(item.creationDate).toDate() < parameters.dateSince){
+                        addItem = false;
+                    }
+                }
+
+                if(parameters.dateTo){
+                    parameters.dateTo.setHours(0,0,0,0);
+
+                    if(parameters.dateSince){
+                        if(moment(item.creationDate).toDate() < parameters.dateSince || moment(item.creationDate).toDate() > parameters.dateTo){
+                            addItem = false;
+                        }
+                    }
+                    else{
+                        if(moment(item.creationDate).toDate() > parameters.dateTo){
+                            addItem = false;
+                        }
+                    }
+                }
+
+                if(addItem){
+                    this.modelFiltered.push(item);
+                }
+            }
+        }
+
+        this.initGrid();
     }
 }

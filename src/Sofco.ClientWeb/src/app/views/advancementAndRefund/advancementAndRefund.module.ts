@@ -19,15 +19,21 @@ import { AdvacementFormModule } from "./advancement/form/advancement-form.module
 import { WorkflowModule } from "app/components/workflow/workflow.module";
 import { AdvancementListInProcessComponent } from "./advancement/list-in-process/list-in-process.component";
 import { AdvancementHistoryComponent } from "./advancement/history/advancement-histories.component";
+import { AdvancementSearchComponent } from "./advancement/search/advancement-search.component";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { I18nService } from "app/services/common/i18n.service";
+import { UserService } from "app/services/admin/user.service";
+import { AdvancementListFinalizedComponent } from "./advancement/list-finalized/list-finalized.component";
  
 @NgModule({
-    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent ],
+    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent, 
+                    AdvancementSearchComponent, AdvancementListFinalizedComponent ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
-                   AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule ],
+                   AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule ],
 
-    providers   : [ AdvancementService ],
+    providers   : [ AdvancementService, UserService, I18nService ],
 
     exports     : []
 })

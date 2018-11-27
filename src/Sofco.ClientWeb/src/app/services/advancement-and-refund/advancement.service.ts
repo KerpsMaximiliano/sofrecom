@@ -29,4 +29,8 @@ export class AdvancementService {
     getAllInProcess(){
         return this.http.get<any>(`${this.baseUrl}/advancement/inProcess`);
     }
+
+    getAllFinalized(model){
+        return this.http.post<any>(`${this.baseUrl}/advancement/finalized`, model);
+    }
 }

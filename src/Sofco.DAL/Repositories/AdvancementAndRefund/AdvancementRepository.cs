@@ -2,7 +2,9 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AdvancementAndRefund;
+using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
@@ -63,6 +65,33 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.StatusFrom)
                 .Include(x => x.StatusTo)
                 .Where(x => x.AdvancementId == id).ToList();
+        }
+
+        public IList<Advancement> GetAllFinalized(int statusDraft, AdvancementSearchFinalizedModel model)
+        {
+            var query = context.Advancements
+                .Include(x => x.Currency)
+                .Include(x => x.UserApplicant)
+                .Include(x => x.Authorizer)
+                .Include(x => x.Status)
+                    .ThenInclude(x => x.ActualTransitions)
+                        .ThenInclude(x => x.WorkflowStateAccesses)
+                            .ThenInclude(x => x.UserSource)
+                .Where(x => !x.InWorkflowProcess && x.StatusId != statusDraft);
+
+            if (model.ResourceId.HasValue && model.ResourceId.Value > 0)
+                query = query.Where(x => x.UserApplicantId == model.ResourceId.Value);
+
+            if (model.TypeId.HasValue && model.TypeId.Value > 0)
+                query = query.Where(x => x.Type == (AdvancementType) model.TypeId.Value);
+
+            if (model.DateSince.HasValue)
+                query = query.Where(x => x.CreationDate.Date >= model.DateSince.Value.Date);
+
+            if (model.DateTo.HasValue)
+                query = query.Where(x => x.CreationDate.Date <= model.DateTo.Value.Date);
+
+            return query.ToList();
         }
     }
 }

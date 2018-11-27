@@ -30,6 +30,14 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
+        [HttpPost("finalized")]
+        public IActionResult GetAllFinalized([FromBody] AdvancementSearchFinalizedModel model)
+        {
+            var response = advancementService.GetAllFinalized(model);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {

@@ -15,5 +15,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         IList<Advancement> GetAllInProcess();
         IList<WorkflowReadAccess> GetWorkflowReadAccess(int advacementWorkflowId);
         IList<AdvancementHistory> GetHistories(int id);
+        IList<Advancement> GetAllFinalized(int statusDraft, AdvancementSearchFinalizedModel model);
     }
 }
