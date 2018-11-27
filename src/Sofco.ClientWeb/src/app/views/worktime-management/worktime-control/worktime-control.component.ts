@@ -146,7 +146,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
             "orderable": false,
             "data": null,
             "defaultContent": ''
-        }, 2, 3, 4, 5, 6, 7, 8, 9];
+        }, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
         const params = {
             selector: this.gridSelector,

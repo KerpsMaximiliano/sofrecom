@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Workflow;
@@ -23,12 +25,14 @@ namespace Sofco.Service.Implementations.Workflow
         private readonly IWorkflowConditionStateFactory workflowConditionStateFactory;
         private readonly IUnitOfWork unitOfWork;
         private readonly IWorkflowValidationStateFactory workflowValidationStateFactory;
+        private readonly AppSetting appSetting;
 
         public WorkflowService(IWorkflowRepository workflowRepository, 
             ILogMailer<WorkflowService> logger, 
             IUserData userData, 
             IUnitOfWork unitOfWork,
             IWorkflowValidationStateFactory workflowValidationStateFactory,
+            IOptions<AppSetting> appSettingsOptions,
             IWorkflowConditionStateFactory workflowConditionStateFactory)
         {
             this.workflowRepository = workflowRepository;
@@ -37,6 +41,7 @@ namespace Sofco.Service.Implementations.Workflow
             this.workflowConditionStateFactory = workflowConditionStateFactory;
             this.workflowValidationStateFactory = workflowValidationStateFactory;
             this.unitOfWork = unitOfWork;
+            this.appSetting = appSettingsOptions.Value;
         }
 
         public Response DoTransition<T>(WorkflowChangeStatusParameters parameters) where T : WorkflowEntity
@@ -107,7 +112,7 @@ namespace Sofco.Service.Implementations.Workflow
             return response;
         }
 
-        private bool ValidateAccess(Domain.Models.Workflow.WorkflowStateTransition transition, Core.Models.Admin.UserLiteModel currentUser, WorkflowEntity entity)
+        private bool ValidateAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity)
         {
             bool hasAccess = false;
 
@@ -126,7 +131,7 @@ namespace Sofco.Service.Implementations.Workflow
 
         private bool ValidateSectorAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
         {
-            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == "SECTOR"))
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.SectorUserSource))
             {
                 var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
 
@@ -141,9 +146,9 @@ namespace Sofco.Service.Implementations.Workflow
             return hasAccess;
         }
 
-        private bool ValidateManagerAccess(Domain.Models.Workflow.WorkflowStateTransition transition, Core.Models.Admin.UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
+        private bool ValidateManagerAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
         {
-            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == "MANAGER"))
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.ManagerUserSource))
             {
                 if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
                 {
@@ -163,9 +168,9 @@ namespace Sofco.Service.Implementations.Workflow
             return hasAccess;
         }
 
-        private bool ValidateApplicantAccess(Domain.Models.Workflow.WorkflowStateTransition transition, Core.Models.Admin.UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
+        private bool ValidateApplicantAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
         {
-            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == "APPLICANT" && entity.UserApplicantId == currentUser.Id))
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.ApplicantUserSource && entity.UserApplicantId == currentUser.Id))
             {
                 hasAccess = true;
             }
@@ -173,16 +178,16 @@ namespace Sofco.Service.Implementations.Workflow
             return hasAccess;
         }
 
-        private bool ValidateGroupAccess(Domain.Models.Workflow.WorkflowStateTransition transition, Core.Models.Admin.UserLiteModel currentUser, bool hasAccess)
+        private bool ValidateGroupAccess(WorkflowStateTransition transition, UserLiteModel currentUser, bool hasAccess)
         {
-            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == "GROUP"))
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.GroupUserSource))
             {
                 var user = unitOfWork.UserRepository.GetSingleWithUserGroup(x => x.Id == currentUser.Id);
                 var groups = user.UserGroups?.Select(x => x.Group).Distinct().ToList();
 
                 if (groups != null && groups.Any())
                 {
-                    if (transition.WorkflowStateAccesses.Any(x => groups.Any(u => u.Id == x.UserSource.SourceId) && x.UserSource.Code == "GROUP"))
+                    if (transition.WorkflowStateAccesses.Any(x => groups.Any(u => u.Id == x.UserSource.SourceId) && x.UserSource.Code == appSetting.GroupUserSource))
                     {
                         hasAccess = true;
                     }
@@ -192,9 +197,9 @@ namespace Sofco.Service.Implementations.Workflow
             return hasAccess;
         }
 
-        private bool ValidateUserAccess(Domain.Models.Workflow.WorkflowStateTransition transition, Core.Models.Admin.UserLiteModel currentUser, bool hasAccess)
+        private bool ValidateUserAccess(WorkflowStateTransition transition, UserLiteModel currentUser, bool hasAccess)
         {
-            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.SourceId == currentUser.Id && x.UserSource.Code == "USER"))
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.SourceId == currentUser.Id && x.UserSource.Code == appSetting.UserUserSource))
             {
                 hasAccess = true;
             }
@@ -257,7 +262,7 @@ namespace Sofco.Service.Implementations.Workflow
             return response;
         }
 
-        private void AddTransition(Response<IList<TransitionItemModel>> response, Domain.Models.Workflow.WorkflowStateTransition transition)
+        private void AddTransition(Response<IList<TransitionItemModel>> response, WorkflowStateTransition transition)
         {
             response.Data.Add(new TransitionItemModel
             {

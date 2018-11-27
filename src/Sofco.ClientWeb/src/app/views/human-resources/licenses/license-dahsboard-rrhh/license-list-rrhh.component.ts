@@ -10,6 +10,7 @@ import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 
 declare var $: any;
+declare var moment: any;
 
 @Component({
     selector: 'license-list-rrhh',
@@ -131,10 +132,15 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     initGrid(){
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 9];
+        var title = `Licencias-Aprobadas-${moment(new Date()).format("YYYYMMDD")}`;
+
         var params = {
             selector: "#licenseStatusApproved", 
-            order: [[ 3, "desc" ]],
-            columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
+            columns: columns,
+            title: title,
+            withExport: true,
+            columnDefs: [ {'aTargets': [4, 5, 6], "sType": "date-uk"} ]
         };
 
         this.datatableService.destroy(params.selector);

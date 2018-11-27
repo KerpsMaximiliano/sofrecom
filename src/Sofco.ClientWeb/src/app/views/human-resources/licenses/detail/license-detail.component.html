@@ -66,7 +66,7 @@
 
                         <div *ngIf="model.typeId == 13 || model.typeId == 14">
                             <dt>{{'rrhh.license.comments' | translate }}: </dt>
-                            <dd>{{ model.comments }}</dd>
+                            <dd class="text-word-break">{{ model.comments }}</dd>
                         </div>
 
                         <div [hidden]="model.typeId != 7">
