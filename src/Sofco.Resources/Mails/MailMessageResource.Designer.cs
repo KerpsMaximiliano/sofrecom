@@ -173,8 +173,9 @@ namespace Sofco.Resources.Mails {
         
         /// <summary>
         ///   Looks up a localized string similar to Tipo Licencia: {1}&lt;br/&gt;&lt;br/&gt;
-        ///RRHH, Autorizador, Recurso: &lt;br/&gt;
-        ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
+        ///{2}
+        ///RRHH, Autorizador: Recurso: &lt;br/&gt;
+        ///Se ha &lt;strong&gt;Aprobado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.&lt;br/&gt;.
         /// </summary>
         public static string LicenseApproveMessage {
             get {
@@ -183,11 +184,11 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tipo Licencia: {1}&lt;/br&gt;&lt;/br&gt;
-        ///RRHH: &lt;/br&gt;
+        ///   Looks up a localized string similar to Tipo Licencia: {1}&lt;br/&gt;&lt;br/&gt;
+        ///RRHH: &lt;br/&gt;
         ///Se ha &lt;strong&gt; Aprobado &lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
-        ///&lt;/br&gt;&lt;/br&gt;
-        ///Recurso: &lt;/br&gt;
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recurso: &lt;br/&gt;
         ///La licencia solicitada ha sido &lt;strong&gt; Aprobada &lt;/strong&gt; por su superior, falta aún la aprobación de RRHH, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;, recuerde presentar el original a RRHH..
         /// </summary>
         public static string LicenseApprovePendingMessage {
@@ -197,11 +198,12 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tipo Licencia: {2}&lt;/br&gt;&lt;/br&gt;
-        ///RRHH: &lt;/br&gt;
-        ///Se ha iniciado el proceso de aprobación de la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.&lt;/br&gt;&lt;/br&gt;
-        ///Autorizador: &lt;/br&gt;
-        ///El recurso: {1}, ha iniciado un proceso de autorización de licencia. Para autorizarla ingrese al siguiente  &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
+        ///   Looks up a localized string similar to Tipo Licencia: &lt;b&gt;{2}&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;
+        ///{3}
+        ///RRHH: &lt;br/&gt;
+        ///Se ha iniciado el proceso de aprobación de la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;
+        ///Autorizador: &lt;br/&gt;
+        ///El recurso: &lt;b&gt;{1}&lt;/b&gt;, ha iniciado un proceso de autorización de licencia. Para autorizarla ingrese al siguiente  &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
         /// </summary>
         public static string LicenseAuthPendingMessage {
             get {
@@ -210,13 +212,13 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tipo Licencia: {2}&lt;/br&gt;&lt;/br&gt;
-        ///RRHH: &lt;/br&gt;
-        ///Se ha &lt;strong&gt; Cancelado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
+        ///   Looks up a localized string similar to Tipo Licencia: &lt;b&gt;{2}&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;
+        ///RRHH: &lt;br/&gt;
+        ///Se ha &lt;strong&gt; Cancelado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.&lt;br/&gt;
         ///Motivo: {1}
-        ///&lt;/br&gt;&lt;/br&gt;
-        ///Recurso: &lt;/br&gt;
-        ///La licencia solicitada ha sido &lt;strong&gt; Cancelada&lt;/strong&gt;. Acceso a la licencia desde este &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recurso: &lt;br/&gt;
+        ///La licencia solicitada ha sido &lt;strong&gt; Cancelada&lt;/strong&gt;. Acceso a la licencia desde este &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.&lt;br/&gt;
         ///Motivo: {1}.
         /// </summary>
         public static string LicenseCancelledMessage {
@@ -226,12 +228,13 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tipo Licencia: {1}&lt;/br&gt;&lt;/br&gt;
-        ///RRHH: &lt;/br&gt;
-        ///Se ha &lt;strong&gt; Autorizado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
-        ///&lt;/br&gt;&lt;/br&gt;
-        ///Recurso: &lt;/br&gt;
-        ///La licencia solicitada ha sido &lt;strong&gt; Autorizada&lt;/strong&gt; por su superior, falta aún la aprobación de RRHH, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
+        ///   Looks up a localized string similar to Tipo Licencia: &lt;b&gt;{1}&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;
+        ///{2}
+        ///RRHH: &lt;br/&gt;
+        ///Se ha &lt;strong&gt;Autorizado&lt;/strong&gt; la siguiente solicitud de licencia &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. Corroborar la documentación necesaria para aprobar la misma.
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recurso: &lt;br/&gt;
+        ///La licencia solicitada ha sido &lt;strong&gt;Autorizada&lt;/strong&gt; por su superior, falta aún la aprobación de RRHH, si necesita adjuntar documentación a la misma, realícelo desde el siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;..
         /// </summary>
         public static string LicensePendingMessage {
             get {

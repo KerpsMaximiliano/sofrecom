@@ -63,9 +63,7 @@ namespace Sofco.Framework.StatusHandlers.License
         {
             var subject = string.Format(MailSubjectResource.LicenseCancelledTitle, license.Employee.Name);
             var body = string.Format(MailMessageResource.LicenseCancelledMessage, $"{emailConfig.SiteUrl}rrhh/licenses/{license.Id}/detail", parameters.Comment, license.Type.Description);
-
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
-
             var recipientsList = new List<string> { mailRrhh, license.Manager.Email, license.Employee.Email };
 
             recipientsList.AddRange(licenseApproverManager.GetEmailApproversByEmployeeId(license.EmployeeId));
