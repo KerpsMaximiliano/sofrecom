@@ -156,6 +156,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             if (response.HasErrors()) return response;
 
+            model.AnalyticIds = GetAnalyticIds(model.AnalyticId);
+
             var list = unitOfWork.WorkTimeRepository.SearchApproved(model);
 
             if (!list.Any())
@@ -439,6 +441,16 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             workTimeAdd.EmployeeId = currentEmployee.Id;
         }
+
+        private List<int> GetAnalyticIds(int? analyticId)
+        {
+            if (analyticId.HasValue && analyticId != 0) return new List<int> { analyticId.Value };
+
+            var currentUser = userData.GetCurrentUser();
+
+            return unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id).ToList();
+        }
+
     }
 }
 
