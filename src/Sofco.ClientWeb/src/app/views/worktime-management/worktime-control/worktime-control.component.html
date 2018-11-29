@@ -26,8 +26,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label">{{'workTimeManagement.worktimeControl.dateRange' | translate }}</label>
-                        <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker (change)="getData()"></date-range-picker>
+                        <select-two [label]="'workTimeManagement.month'" [(value)]="closeMonthId" [options]="closeMonths" (valueChange)="getData()"></select-two>
                     </div>
                 </div>
             </div>
@@ -78,7 +77,7 @@
                         <th>{{'workTimeManagement.report.allocationPercentage' | translate }}</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="model != null && model.resources != null">
                     <tr *ngFor="let item of model.resources">
                         <td [ngClass]="item.details.length > 0 ? 'details-control' : ''" style="width:20px">
                             <i [ngClass]="item.details.length > 0 ? 'fa fa-plus-square' : ''" [attr.data-id]="item.id"></i>
