@@ -5,7 +5,6 @@ import { WorktimeControlService } from '../../../services/worktime-management/wo
 import { I18nService } from '../../../services/common/i18n.service';
 import { DataTableService } from '../../../services/common/datatable.service';
 import { MenuService } from '../../../services/admin/menu.service';
-import { AnalyticService } from 'app/services/allocation-management/analytic.service';
 import { UtilsService } from 'app/services/common/utils.service';
 declare var $: any;
 declare var moment: any;
@@ -30,8 +29,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
   public closeMonths: any[];
   public closeMonthId: any;
 
-  constructor(private analyticService: AnalyticService,
-    private worktimeControlService: WorktimeControlService,
+  constructor(private worktimeControlService: WorktimeControlService,
     private utilsService: UtilsService,
     private messageService: MessageService,
     public menuService: MenuService,
@@ -46,16 +44,16 @@ export class WorkTimeControlComponent implements OnDestroy  {
     getAnalytics() {
         this.loading = true;
         this.messageService.showLoading();
-        this.subscription = this.analyticService.getByManager().subscribe(res => {
-        this.messageService.closeLoading();
-        this.analytics = this.sortAnalytics(res.data);
-        this.setAnalyticSelect();
-        this.getCloseMonths();
-      },
-      err => {
-        this.loading = false;
-        this.messageService.closeLoading();
-      });
+        this.subscription = this.worktimeControlService.GetAnalyticOptionsByCurrentManager().subscribe(res => {
+            this.messageService.closeLoading();
+            this.analytics = this.sortAnalytics(res.data);
+            this.setAnalyticSelect();
+            this.getCloseMonths();
+        },
+        err => {
+            this.loading = false;
+            this.messageService.closeLoading();
+        });
     }
 
     getCloseMonths(){

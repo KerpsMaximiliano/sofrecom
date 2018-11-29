@@ -68,6 +68,19 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return result;
         }
 
+        public Response<List<Option>> GetAnalyticOptionsByCurrentManager()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var analyticsByManagers = roleManager.IsDirector()
+                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly()
+                : unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+
+            var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+            return new Response<List<Option>> { Data = result };
+        }
+
         private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate, DateTime endDate)
         {
             var grouped = new Dictionary<string, List<WorkTime>>();
