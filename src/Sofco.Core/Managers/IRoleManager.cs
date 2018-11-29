@@ -8,5 +8,7 @@ namespace Sofco.Core.Managers
         List<Role> GetRoles();
 
         bool HasFullAccess();
+
+        bool IsDirector();
     }
 }

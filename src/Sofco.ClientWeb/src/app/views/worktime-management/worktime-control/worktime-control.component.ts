@@ -30,6 +30,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
   public gridSelector = '#gridTable';
   public startDate: Date;
   public endDate: Date;
+  public loading = false;
 
   @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
 
@@ -47,14 +48,17 @@ export class WorkTimeControlComponent implements OnDestroy  {
     }
 
     getAnalytics() {
-      this.messageService.showLoading();
-      this.subscription = this.analyticService.getByManager().subscribe(res => {
+        this.loading = true;
+        this.messageService.showLoading();
+        this.subscription = this.analyticService.getByManager().subscribe(res => {
         this.messageService.closeLoading();
         this.analytics = this.sortAnalytics(res.data);
         this.setAnalyticSelect();
+        this.getData();
       },
       err => {
-          this.messageService.closeLoading();
+        this.loading = false;
+        this.messageService.closeLoading();
       });
     }
 
@@ -128,14 +132,17 @@ export class WorkTimeControlComponent implements OnDestroy  {
             startDate: this.startDate,
             endDate: this.endDate
         };
+        this.loading = true;
         this.messageService.showLoading();
         this.subscription = this.worktimeControlService.getWorkTimeApproved(model).subscribe(res => {
+            this.loading = false;
             this.messageService.closeLoading();
             this.model = res.data;
             this.data = res.data.resources;
             this.initGrid();
         },
         err => {
+            this.loading = false;
             this.messageService.closeLoading();
         });
     }
