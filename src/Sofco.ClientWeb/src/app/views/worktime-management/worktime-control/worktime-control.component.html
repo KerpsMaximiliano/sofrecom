@@ -35,7 +35,8 @@
     </div>
 
     <div class="ibox float-e-margins">
-        <div class="ibox-content">
+        <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+            <spinner></spinner>
             <div class="row">
                 <div class="col-sm-6">
                     <dl class="dl-horizontal">
@@ -58,7 +59,8 @@
     </div>
 
     <div class="ibox float-e-margins">
-        <div class="ibox-content" *ngIf="model != null && model.resources != null">
+        <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+            <spinner></spinner>
             <table class="table table-striped" id="gridTable" width="100%">
                 <thead>
                     <tr>

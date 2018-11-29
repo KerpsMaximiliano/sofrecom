@@ -22,14 +22,17 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeResumeManager workTimeResumeManager;
 
+        private readonly IRoleManager roleManager;
+
         private readonly IMapper mapper;
 
-        public WorkTimeControlService(IUnitOfWork unitOfWork, IUserData userData, IWorkTimeResumeManager workTimeResumeManager, IMapper mapper)
+        public WorkTimeControlService(IUnitOfWork unitOfWork, IUserData userData, IWorkTimeResumeManager workTimeResumeManager, IMapper mapper, IRoleManager roleManager)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.workTimeResumeManager = workTimeResumeManager;
             this.mapper = mapper;
+            this.roleManager = roleManager;
         }
 
         public Response<WorkTimeControlModel> Get(WorkTimeControlParams parameters)
@@ -116,7 +119,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private List<int> GetAnalyticIds(int? analyticId)
         {
-            return analyticId.HasValue ? new List<int> {analyticId.Value} : new List<int>();
+            if (analyticId.HasValue) return new List<int> {analyticId.Value};
+
+            if(roleManager.IsDirector()) return unitOfWork.AnalyticRepository.GetAllOpenReadOnly().Select(s => s.Id).ToList();
+
+            var currentUser = userData.GetCurrentUser();
+
+            return unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id).ToList();
         }
 
         private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)
