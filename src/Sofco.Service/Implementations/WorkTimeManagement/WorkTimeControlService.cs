@@ -39,6 +39,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var result = new Response<WorkTimeControlModel>();
 
+            SetStartEndDateParameters(parameters);
+
             var startDate = parameters.StartDate;
 
             var endDate = parameters.EndDate;
@@ -145,6 +147,23 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         private WorkTimeControlResourceModel Translate(WorkTime workTime)
         {
             return mapper.Map<WorkTime, WorkTimeControlResourceModel>(workTime);
+        }
+
+        private void SetStartEndDateParameters(WorkTimeControlParams parameters)
+        {
+            if (!parameters.CloseMonthId.HasValue)
+            {
+                var currentCloseDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+                var period = currentCloseDates.GetPeriodIncludeDays();
+                parameters.StartDate = period.Item1.Date;
+                parameters.EndDate = period.Item2.Date;
+                return;
+            }
+
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeAndCurrent(parameters.CloseMonthId.Value);
+            parameters.StartDate = new DateTime(closeDates.Item2.Year, closeDates.Item2.Month, closeDates.Item2.Day + 1);
+            parameters.EndDate = new DateTime(closeDates.Item1.Year, closeDates.Item1.Month, closeDates.Item1.Day);
         }
     }
 }
