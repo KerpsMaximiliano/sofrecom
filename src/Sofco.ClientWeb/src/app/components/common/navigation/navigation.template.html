@@ -51,12 +51,12 @@
             <li [ngClass]="{active: activeRoute('closeDate')}" *ngIf="menuService.hasFunctionality('CONTR', 'CDADD')"><a [routerLink]="['/contracts/closeDate']">{{'rrhh.closeDate.title' | translate }}</a></li>
         </ul>
       </li> 
-
+ 
       <!-- ADVANCEMENT -->
       <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasAdvancementMenu()">
-        <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">Adelantos y Reintegros</span> <span class="fa arrow"></span> </a>
+        <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">{{'advancement.navigationTitle' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('advancementAndRefund')}">
-            <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasFunctionality('ADVAN', 'QUERY')"><a [routerLink]="['/advancementAndRefund/advancement/search']">Consulta</a></li>
+            <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasFunctionality('ADVAN', 'QUERY')"><a [routerLink]="['/advancementAndRefund/advancement/search']">{{'advancement.search' | translate }}</a></li>
         </ul>
       </li> 
  

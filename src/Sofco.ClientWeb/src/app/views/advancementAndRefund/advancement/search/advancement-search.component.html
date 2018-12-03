@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2> Listado de Adelantos </h2>
+        <h2> {{'advancement.listTitle' | translate }} </h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -9,7 +9,7 @@
                 {{'advancement.title' | translate }}
             </li>
             <li class="active">
-                <strong> Busqueda </strong>
+                <strong> {{'advancement.search' | translate }} </strong>
             </li>
         </ol>
     </div>
@@ -22,7 +22,7 @@
             <div class="panel-heading">
                 <h5 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()" style="display: block">
-                        <span>Parametros de busqueda</span>
+                        <span>{{'advancement.searchParameters' | translate }}</span>
                         <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
                     </a>
                 </h5>
@@ -32,25 +32,25 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="control-label">{{ 'allocationManagement.allocation.resources' | translate }}</label>
+                                <label class="control-label">{{'advancement.userApplicant' | translate }}</label>
                                 <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="resourceId"></ng-select>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label class="control-label">{{ 'allocationManagement.allocation.resources' | translate }}</label>
+                                <label class="control-label">{{ 'advancement.type' | translate }}</label>
                                 <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId"></ng-select>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="control-label">Fecha desde</label>
+                                <label class="control-label">{{ 'advancement.dateSince' | translate }}</label>
                                 <date-picker [(date)]="dateSince"></date-picker>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label class="control-label">Fecha Hasta</label>
+                                <label class="control-label">{{ 'advancement.dateTo' | translate }}</label>
                                 <date-picker [(date)]="dateTo"></date-picker>
                             </div>
                         </div>
@@ -68,8 +68,8 @@
 
     <div class="tabs-container">
         <ul class="nav nav-tabs">
-            <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="tabInProcess = true"> En proceso de aprobación </a></li>
-            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="tabInProcess = false"> Finalizados </a></li>
+            <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="tabInProcess = true"> {{ 'advancement.inProcess' | translate }} </a></li>
+            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="tabInProcess = false"> {{ 'advancement.finalized' | translate }} </a></li>
         </ul>
 
         <div class="tab-content">

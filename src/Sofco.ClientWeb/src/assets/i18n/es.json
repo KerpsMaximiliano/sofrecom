@@ -1039,6 +1039,7 @@
         "december": "Diciembre"
     },
     "advancement": {
+        "navigationTitle": "Adelantos y Reintegros",
         "addTitle": "Solicitud Adelanto",
         "add": "Solicitud",
         "edit": "Edición Solicitud",
@@ -1061,6 +1062,13 @@
         "detail": "Detalle",
         "status": "Estado",
         "ammount": "Monto",
+        "search": "Busqueda",
+        "finalized": "Finalizados",
+        "inProcess": "En proceso de aprobación",
+        "dateSince": "Fecha desde",
+        "dateTo": "Fecha hasta",
+        "searchParameters": "Parametros de busqueda",
+        "listTitle": "Listado de Adelantos",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",
