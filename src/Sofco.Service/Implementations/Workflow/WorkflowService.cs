@@ -27,6 +27,7 @@ namespace Sofco.Service.Implementations.Workflow
         private readonly IUnitOfWork unitOfWork;
         private readonly IWorkflowValidationStateFactory workflowValidationStateFactory;
         private readonly AppSetting appSetting;
+        private readonly IWorkflowNotificationFactory workflowNotificationFactory;
 
         public WorkflowService(IWorkflowRepository workflowRepository, 
             ILogMailer<WorkflowService> logger, 
@@ -34,6 +35,7 @@ namespace Sofco.Service.Implementations.Workflow
             IUnitOfWork unitOfWork,
             IWorkflowValidationStateFactory workflowValidationStateFactory,
             IOptions<AppSetting> appSettingsOptions,
+            IWorkflowNotificationFactory workflowNotificationFactory,
             IWorkflowConditionStateFactory workflowConditionStateFactory)
         {
             this.workflowRepository = workflowRepository;
@@ -43,6 +45,7 @@ namespace Sofco.Service.Implementations.Workflow
             this.workflowValidationStateFactory = workflowValidationStateFactory;
             this.unitOfWork = unitOfWork;
             this.appSetting = appSettingsOptions.Value;
+            this.workflowNotificationFactory = workflowNotificationFactory;
         }
 
         public Response DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters)
@@ -115,7 +118,17 @@ namespace Sofco.Service.Implementations.Workflow
             // Create history
             CreateHistory<TEntity, THistory>(entity, transition, currentUser);
 
+            // Send Notification
+            //SendNotification(entity, response, transition);
+
             return response;
+        }
+
+        private void SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition)
+        {
+            var notificationHandler = workflowNotificationFactory.GetInstance(transition.NotificationCode);
+
+            notificationHandler.Send(entity, response, transition);
         }
 
         private void CreateHistory<TEntity, THistory>(TEntity entity, WorkflowStateTransition transition, UserLiteModel currentUser)

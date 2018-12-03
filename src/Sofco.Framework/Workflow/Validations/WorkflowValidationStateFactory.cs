@@ -1,6 +1,6 @@
 ﻿using Sofco.Core.Validations.Workflow;
 
-namespace Sofco.Framework.Validations.Workflow.Validations
+namespace Sofco.Framework.Workflow.Validations
 {
     public class WorkflowValidationStateFactory : IWorkflowValidationStateFactory
     {

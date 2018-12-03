@@ -43,5 +43,11 @@
         public string GroupUserSource { get; set; }
 
         public string UserUserSource { get; set; }
+
+        public int CurrencyPesos { get; set; }
+
+        public int CurrencyDolares { get; set; }
+
+        public int CurrencyEuros { get; set; }
     }
 }
