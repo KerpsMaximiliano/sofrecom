@@ -67,5 +67,10 @@ namespace Sofco.DAL.Repositories.Workflow
         {
             context.Set<THistory>().Add(history);
         }
+
+        public IList<WorkflowStateNotifier> GetNotifiers(int actualStatusId, int parametersNextStateId, int parametersWorkflowId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
