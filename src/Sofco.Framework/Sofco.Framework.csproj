@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Sofco.Framework</AssemblyName>
     <PackageId>Sofco.Framework</PackageId>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -14,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Sofco.DAL\Sofco.DAL.csproj" />
     <ProjectReference Include="..\Sofco.Core\Sofco.Core.csproj" />
-    <ProjectReference Include="..\Sofco.Model\Sofco.Domain.csproj" />
     <ProjectReference Include="..\Sofco.Resources\Sofco.Resources.csproj" />
     <ProjectReference Include="..\Sofco.Domain.Crm\Sofco.Domain.Crm.csproj" />
     <ProjectReference Include="..\Sofco.Service.Http\Sofco.Service.Http.csproj" />
@@ -22,10 +20,10 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.1.1" />
-    <PackageReference Include="EPPlus.Core" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.2" />
-    <PackageReference Include="MailKit" Version="1.18.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.2" />
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.1" />
+    <PackageReference Include="MailKit" Version="2.1.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
   </ItemGroup>
 
 </Project>
