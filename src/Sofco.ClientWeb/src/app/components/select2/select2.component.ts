@@ -12,8 +12,9 @@ export class Select2Component implements OnInit{
 
     @Input() label: string;
     @Input() value: any;
-    @Input() disabled: boolean = false;
+    @Input() disabled = false;
     @Input() options: any[] = new Array();
+    @Input() firstOptionEmpty = true;
     @Output() valueChange = new EventEmitter<any>();
 
     constructor() {}

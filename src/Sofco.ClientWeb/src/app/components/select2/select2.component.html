@@ -1,7 +1,7 @@
 <div class="form-group">
     <label class="control-label"> {{ label | translate }} </label>
     <select #element select2 class="form-control">
-        <option value="0">Seleccione una opción</option>
+        <option value="0" *ngIf="firstOptionEmpty">Seleccione una opción</option>
         <option *ngFor="let option of options" [value]="option?.id">{{ option?.text | translate }}</option>
     </select>
 </div>
