@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Sofco.Data</AssemblyName>
     <PackageId>Sofco.Data</PackageId>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -15,7 +15,6 @@
     <ProjectReference Include="..\Sofco.Cache\Sofco.Cache.csproj" />
     <ProjectReference Include="..\Sofco.Core\Sofco.Core.csproj" />
     <ProjectReference Include="..\Sofco.Domain.Crm\Sofco.Domain.Crm.csproj" />
-    <ProjectReference Include="..\Sofco.Model\Sofco.Domain.csproj" />
     <ProjectReference Include="..\Sofco.Repository.Rh\Sofco.Repository.Rh.csproj" />
     <ProjectReference Include="..\Sofco.Service.Http\Sofco.Service.Http.csproj" />
   </ItemGroup>

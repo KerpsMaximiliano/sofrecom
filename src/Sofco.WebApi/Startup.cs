@@ -5,7 +5,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using log4net;
 using log4net.Config;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -62,23 +62,27 @@ namespace Sofco.WebApi
                 options.Filters.Add(new VersionHeaderFilter());
             });
 
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = string.Format(Configuration["AzureAd:AadInstance"],
+                        Configuration["AzureAd:Tenant"]);
+                    options.Audience = Configuration["AzureAd:Audience"];
+                });
+
             services.AddOptions();
             services.AddCors();
 
-            services.Configure<IISOptions>(options =>
-            {
-                options.AutomaticAuthentication = true;
-            });
-
-            // Config
             services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
             services.Configure<AzureAdConfig>(Configuration.GetSection("AzureAd"));
             services.Configure<FileConfig>(Configuration.GetSection("File"));
             services.Configure<AppSetting>(Configuration.GetSection("App"));
             services.Configure<CrmSetting>(Configuration.GetSection("CRM"));
-
-            services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -98,14 +102,7 @@ namespace Sofco.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                Authority = string.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAd:Tenant"]),
-                Audience = Configuration["AzureAd:Audience"]
-            });
-
+            app.UseAuthentication();
             app.UseCors(builder => builder.WithOrigins("*")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
