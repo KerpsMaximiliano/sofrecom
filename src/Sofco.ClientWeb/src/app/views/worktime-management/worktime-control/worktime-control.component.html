@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <select-two [label]="'workTimeManagement.month'" [(value)]="closeMonthId" [options]="closeMonths" (valueChange)="getData()"></select-two>
+                        <select-two [label]="'workTimeManagement.month'" [(value)]="closeMonthId" [firstOptionEmpty]="false" [options]="closeMonths" (valueChange)="getData()"></select-two>
                     </div>
                 </div>
             </div>
