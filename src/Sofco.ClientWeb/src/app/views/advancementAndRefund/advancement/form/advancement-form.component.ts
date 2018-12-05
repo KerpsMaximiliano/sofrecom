@@ -51,7 +51,7 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
             this.isReadOnly = true;
         }
 
-        this.setDefault();
+        this.form.controls.ammount.setValue(0);
         this.getCurrencies();
         this.getAdvancementReturnForms();
     }
@@ -60,13 +60,6 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
         if(this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if(this.getAnalyticsSubscrip) this.getAnalyticsSubscrip.unsubscribe();
         if(this.getAdvancementReturnFormsSubscrip) this.getAdvancementReturnFormsSubscrip.unsubscribe();
-    }
-
-    setDefault(){
-      if(this.type == 'salary' && this.mode == 'add'){
-            this.form.controls.description.setValue('Adelanto Sueldo');
-            this.form.controls.ammount.setValue(0);
-        }
     }
 
     getCurrencies(){

@@ -28,10 +28,8 @@ export class Advancement extends FormGroup {
             currencyId: new FormControl(domain && domain.currencyId || null, 
                 Validators.required),
 
-            description: new FormControl(domain && domain.description || null, [
-                Validators.required, 
-                Validators.maxLength(400)
-            ]),
+            description: new FormControl(domain && domain.description || null, 
+                Validators.maxLength(400)),
             
             ammount: new FormControl(domain && domain.ammount || null, [
                 Validators.required,
