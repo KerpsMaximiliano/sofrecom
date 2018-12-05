@@ -12,6 +12,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers.AllocationManagement;
+using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Framework.MailData;
@@ -418,6 +419,23 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var employees = unitOfWork.EmployeeRepository.GetByAnalyticIds(analytics.Select(x => x.Id).ToList());
 
             return new Response<List<Option>> {Data = Translate(employees.ToList())};
+        }
+
+        public Response<IList<EmployeeAdvancementDetail>> GetAdvancements(int id)
+        {
+            var response = new Response<IList<EmployeeAdvancementDetail>>();
+            response.Data = new List<EmployeeAdvancementDetail>();
+
+            var employee = unitOfWork.EmployeeRepository.Get(id);
+
+            if (employee != null)
+            {
+                var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
+
+                response.Data = unitOfWork.AdvancementRepository.GetByApplicant(user.Id).Select(x => new EmployeeAdvancementDetail(x)).ToList();
+            }
+
+            return response;
         }
 
         private EmployeeProfileModel GetEmployeeModel(Employee employee)

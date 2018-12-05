@@ -1069,6 +1069,7 @@
         "dateTo": "Fecha hasta",
         "searchParameters": "Parametros de busqueda",
         "listTitle": "Listado de Adelantos",
+        "creationDate": "Fecha de Creación",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",

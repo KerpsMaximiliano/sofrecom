@@ -1,5 +1,6 @@
 ﻿using Sofco.Domain.Utils;
 using System.Collections.Generic;
+using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.DTO;
@@ -38,5 +39,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response AddExternal(AddExternalModel model);
 
         Response<List<Option>> GetEmployeeOptionByCurrentManager();
+
+        Response<IList<EmployeeAdvancementDetail>> GetAdvancements(int id);
     }
 }

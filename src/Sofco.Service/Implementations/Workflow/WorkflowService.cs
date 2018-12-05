@@ -131,7 +131,7 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 var notificationHandler = workflowNotificationFactory.GetInstance(transition.NotificationCode);
 
-                notificationHandler.Send(entity, response, transition);
+                notificationHandler?.Send(entity, response, transition);
             }
         }
 

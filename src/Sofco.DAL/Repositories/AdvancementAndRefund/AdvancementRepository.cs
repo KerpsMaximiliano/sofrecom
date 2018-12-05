@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AdvancementAndRefund;
+using Sofco.Core.Models;
 using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Enums;
@@ -92,6 +93,15 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 query = query.Where(x => x.CreationDate.Date <= model.DateTo.Value.Date);
 
             return query.ToList();
+        }
+
+        public IList<Advancement> GetByApplicant(int id)
+        {
+            return context.Advancements
+                .Include(x => x.Currency)
+                .Include(x => x.Status)
+                .Where(x => x.UserApplicantId == id)
+                .OrderByDescending(x => x.CreationDate).ToList();
         }
     }
 }

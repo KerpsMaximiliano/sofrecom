@@ -87,4 +87,8 @@ export class EmployeeService {
   getEmployeeEndNotification(model){
     return this.http.post<any>(`${this.baseUrl}/employees/endNotifications`, model);
   }
+
+  getAdvancements(id){
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/advancements`);
+  }
 }

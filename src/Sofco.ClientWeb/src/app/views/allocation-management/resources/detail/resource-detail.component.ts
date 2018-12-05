@@ -11,6 +11,7 @@ import { UserInfoService } from "../../../../services/common/user-info.service";
 import { UserService } from "../../../../services/admin/user.service";
 import { EmployeeProfileHistoryService } from "../../../../services/allocation-management/employee-profile-history.service";
 import { I18nService } from "../../../../services/common/i18n.service";
+import { WorkflowStateType } from "app/models/enums/workflowStateType";
 
 @Component({
     selector: 'resource-detail',
@@ -47,6 +48,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     public tasks: any[] = new Array();
     public managers: any[] = new Array();
     public profileHistories: any[] = new Array();
+    public advancements: any[] = new Array();
 
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
@@ -88,6 +90,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             }
 
             this.getUsers();
+            this.getAdvancements();
             this.getProfile();
             this.getLicenses();
             this.getTasks();
@@ -133,6 +136,19 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     goToTimeSheet(){
         this.router.navigate([`/profile/workTime`]);
+    }
+
+    getAdvancements(){
+        this.getDataSubscrip = this.employeeService.getAdvancements(this.resourceId).subscribe(response => {
+            this.advancements = response.data;
+
+            var params = {
+                selector: "#advancementTable",
+                columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ]
+            };
+    
+            this.dataTableService.initialize(params);
+        });
     }
 
     getLicenses(){
@@ -274,5 +290,18 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     {
         item.employeePrevious.managerId = item.employee.manager.name;
         item.employee.managerId = item.employeePrevious.manager.name;
+    }
+
+    getStatusClass(type){
+        switch(type){
+            case WorkflowStateType.Info: return "label-success";
+            case WorkflowStateType.Warning: return "label-warning";
+            case WorkflowStateType.Success: return "label-primary";
+            case WorkflowStateType.Danger: return "label-danger";
+        }
+    }
+    
+    goToAdvancementDetail(item){
+        this.router.navigate(['/advancementAndRefund/advancement/' + item.id])
     }
 }

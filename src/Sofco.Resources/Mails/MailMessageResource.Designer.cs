@@ -462,7 +462,7 @@ namespace Sofco.Resources.Mails {
         
         /// <summary>
         ///   Busca una cadena traducida similar a Tipo de Adelanto: {0} &lt;br/&gt;&lt;br/&gt;
-        ///El Adelanto de {0} &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. se cambio del estado &lt;strong&gt;{2}&lt;/strong&gt; al estado &lt;strong&gt;{3}&lt;/strong&gt;..
+        ///El Adelanto de {0} &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; cambio del estado &lt;strong&gt;{2}&lt;/strong&gt; al estado &lt;strong&gt;{3}&lt;/strong&gt;..
         /// </summary>
         public static string WorkflowNotificationAdvancement {
             get {
