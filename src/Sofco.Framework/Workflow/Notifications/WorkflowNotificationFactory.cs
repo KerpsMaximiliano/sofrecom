@@ -29,11 +29,11 @@ namespace Sofco.Framework.Workflow.Notifications
             this.appSetting = appSetting.Value;
         }
 
-        public IWorkflowNotification GetInstance(string code)
+        public WorkflowNotification GetInstance(string code)
         {
             switch (code)
             {
-                case "ADVANCEMENT-DEFAULT": return new WorkflowNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork, workflowRepository);
+                case "ADVANCEMENT-DEFAULT": return new WorkflowAdvancementNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork, workflowRepository);
                 default: return null;
             }
         }

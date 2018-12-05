@@ -31,6 +31,8 @@ namespace Sofco.DAL.Repositories.Workflow
         {
             return context.WorkflowStateTransitions
                 .Include(x => x.Workflow)
+                .Include(x => x.ActualWorkflowState)
+                .Include(x => x.NextWorkflowState)
                 .Include(x => x.WorkflowStateAccesses).ThenInclude(x => x.UserSource)
                 .Include(x => x.WorkflowStateNotifiers).ThenInclude(x => x.UserSource)
                 .SingleOrDefault(x => x.Workflow.Active &&
@@ -66,11 +68,6 @@ namespace Sofco.DAL.Repositories.Workflow
         public void AddHistory<THistory>(THistory history) where THistory : WorkflowHistory
         {
             context.Set<THistory>().Add(history);
-        }
-
-        public IList<WorkflowStateNotifier> GetNotifiers(int actualStatusId, int parametersNextStateId, int parametersWorkflowId)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

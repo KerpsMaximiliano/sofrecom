@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.Mails {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.Mails {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Mails.MailMessageResource", typeof(MailMessageResource).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Mails.MailMessageResource", typeof(MailMessageResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -463,7 +462,7 @@ namespace Sofco.Resources.Mails {
         
         /// <summary>
         ///   Busca una cadena traducida similar a Tipo de Adelanto: {0} &lt;br/&gt;&lt;br/&gt;
-        ///El Adelanto de {0} &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. se cambio del estado {2} al estado {3}..
+        ///El Adelanto de {0} &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. se cambio del estado &lt;strong&gt;{2}&lt;/strong&gt; al estado &lt;strong&gt;{3}&lt;/strong&gt;..
         /// </summary>
         public static string WorkflowNotificationAdvancement {
             get {
