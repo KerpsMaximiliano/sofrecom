@@ -50,17 +50,6 @@
 
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group" [ngClass]="getClassProperty('currencyId')">
-                <label class="control-label"> {{ 'advancement.currency' | translate }} </label>
-                <ng-select [items]="currencies" bindValue="id" bindLabel="text" formControlName="currencyId"></ng-select>
-
-                <div class="form-control-feedback" *ngIf="hasErrors('currencyId')">
-                    <p *ngIf="hasError('currencyId', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','currencyRequired') }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
             <div class="form-group" [ngClass]="getClassProperty('ammount')">
                 <label class="control-label">{{ 'advancement.ammount' | translate }}</label>
                 <input type="number" decimalFormat class="form-control" formControlName="ammount">
@@ -69,6 +58,17 @@
                     <p *ngIf="hasError('ammount', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemRequired') }}</p>
                     <p *ngIf="hasError('ammount', 'max')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemMax') }}</p>
                     <p *ngIf="hasError('ammount', 'min')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemMin') }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="getClassProperty('currencyId')">
+                <label class="control-label"> {{ 'advancement.currency' | translate }} </label>
+                <ng-select [items]="currencies" bindValue="id" bindLabel="text" formControlName="currencyId"></ng-select>
+
+                <div class="form-control-feedback" *ngIf="hasErrors('currencyId')">
+                    <p *ngIf="hasError('currencyId', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','currencyRequired') }}</p>
                 </div>
             </div>
         </div>

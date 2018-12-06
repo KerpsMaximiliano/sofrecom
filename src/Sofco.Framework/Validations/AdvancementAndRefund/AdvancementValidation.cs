@@ -1,4 +1,5 @@
-﻿using Sofco.Core.DAL;
+﻿using System;
+using Sofco.Core.DAL;
 using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Utils;
@@ -22,7 +23,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
                 return;
             }
 
-            ValidateCommonDate(model, response);
+            ValidateCommonData(model, response);
         }
 
         public Response ValidateUpdate(AdvancementModel model)
@@ -39,7 +40,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
 
             if (response.HasErrors()) return response;
 
-            ValidateCommonDate(model, response);
+            ValidateCommonData(model, response);
 
             return response;
         }
@@ -52,7 +53,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             }
         }
 
-        private void ValidateCommonDate(AdvancementModel model, Response response)
+        private void ValidateCommonData(AdvancementModel model, Response response)
         {
             ValidateUser(model, response);
             ValidatePaymentForm(model, response);
@@ -97,6 +98,10 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             if (!model.StartDateReturn.HasValue)
             {
                 response.AddError(Resources.AdvancementAndRefund.Advancement.StartDateReturnRequired);
+            }
+            else if (model.StartDateReturn.Value.Date < DateTime.Today.Date)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.StartDateReturnLessThanToday);
             }
         }
 

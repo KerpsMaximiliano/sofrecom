@@ -18,5 +18,6 @@
     "descriptionItemMaxLength": "El concepto debe ser menor a 400 caracteres",
     "addSuccess": "La solicitud de adelanto de sueldo fue cargada exitosamente",
     "updateSuccess": "La solicitud de adelanto de sueldo fue actualizada exitosamente",
-    "notFound": "Solicitud de adelanto no encontrada"
+    "notFound": "Solicitud de adelanto no encontrada",
+    "startDateReturnLessThanToday": "La fecha aproximada de devolucion no puede ser menor a hoy"
 }

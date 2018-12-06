@@ -1058,7 +1058,7 @@
         "addDetail": "Agregar detalle",
         "details": "Detalles",
         "date": "Fecha",
-        "description": "Comentarios",
+        "description": "Detalle de concepto",
         "detail": "Detalle",
         "status": "Estado",
         "ammount": "Monto",
@@ -1069,6 +1069,7 @@
         "dateTo": "Fecha hasta",
         "searchParameters": "Parametros de busqueda",
         "listTitle": "Listado de Adelantos",
+        "updateDate": "Fecha de Modificación",
         "creationDate": "Fecha de Creación",
         "histories": {
             "createdDate": "Fecha Creación",

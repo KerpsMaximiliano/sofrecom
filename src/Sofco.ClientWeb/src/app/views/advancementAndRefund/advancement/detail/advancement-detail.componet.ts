@@ -88,7 +88,6 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
 
         this.editSubscrip = this.advancementService.edit(model).subscribe(response => {
             this.messageService.closeLoading();
-            this.goToProfile();
         },
         error => {
             this.messageService.closeLoading();
@@ -108,15 +107,5 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
                 this.back();
             }
         }
-    }
-
-    goToProfile(){
-        setTimeout(() => {
-            const userInfo = UserInfoService.getUserInfo();
-
-            if(userInfo && userInfo.employeeId){
-                this.router.navigate(['/profile/' + userInfo.employeeId]);
-            }
-        }, 500);
     }
 }
