@@ -80,6 +80,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Allocations
                 .Include(x => x.Analytic)
                     .ThenInclude(x => x.Sector)
+                        .ThenInclude(x => x.ResponsableUser)
                 .Where(x => x.EmployeeId == employeeId && x.StartDate.Date == today)
                 .Select(x => x.Analytic.Sector)
                 .ToList();

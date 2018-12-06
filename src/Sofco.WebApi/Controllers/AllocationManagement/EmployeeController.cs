@@ -152,6 +152,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
+        [HttpGet("{id}/advancements")]
+        public IActionResult GetAdvancements(int id)
+        {
+            var response = employeeService.GetAdvancements(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("external")]
         public IActionResult AddExternal([FromBody] AddExternalModel model)
         {

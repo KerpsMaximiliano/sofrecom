@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.Models;
 using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
@@ -16,5 +17,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         IList<WorkflowReadAccess> GetWorkflowReadAccess(int advacementWorkflowId);
         IList<AdvancementHistory> GetHistories(int id);
         IList<Advancement> GetAllFinalized(int statusDraft, AdvancementSearchFinalizedModel model);
+        IList<Advancement> GetByApplicant(int id);
     }
 }

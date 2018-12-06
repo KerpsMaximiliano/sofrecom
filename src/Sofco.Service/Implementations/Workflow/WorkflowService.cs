@@ -15,6 +15,7 @@ using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Workflow.Notifications;
 
 namespace Sofco.Service.Implementations.Workflow
 {
@@ -119,16 +120,19 @@ namespace Sofco.Service.Implementations.Workflow
             CreateHistory<TEntity, THistory>(entity, transition, currentUser);
 
             // Send Notification
-            //SendNotification(entity, response, transition);
+            SendNotification(entity, response, transition);
 
             return response;
         }
 
         private void SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition)
         {
-            var notificationHandler = workflowNotificationFactory.GetInstance(transition.NotificationCode);
+            if (!string.IsNullOrWhiteSpace(transition.NotificationCode))
+            {
+                var notificationHandler = workflowNotificationFactory.GetInstance(transition.NotificationCode);
 
-            notificationHandler.Send(entity, response, transition);
+                notificationHandler?.Send(entity, response, transition);
+            }
         }
 
         private void CreateHistory<TEntity, THistory>(TEntity entity, WorkflowStateTransition transition, UserLiteModel currentUser)

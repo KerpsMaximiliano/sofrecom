@@ -44,7 +44,7 @@ namespace Sofco.WebApi
                    options
                    .UseSqlServer(
                        Configuration.GetConnectionString("DefaultConnection"),
-                       b => b
+                       b => b.EnableRetryOnFailure()
                        .MigrationsAssembly("Sofco.WebApi")
                        .MigrationsHistoryTable(HistoryRepository.DefaultTableName, SofcoContext.AppSchemaName)));
 

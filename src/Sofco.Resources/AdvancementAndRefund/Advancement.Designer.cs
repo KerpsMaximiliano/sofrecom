@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.AdvancementAndRefund {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.AdvancementAndRefund {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.AdvancementAndRefund.Advancement", typeof(Advancement).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.AdvancementAndRefund.Advancement", typeof(Advancement).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -175,6 +174,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         public static string PaymentFormRequired {
             get {
                 return ResourceManager.GetString("PaymentFormRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.startDateReturnLessThanToday.
+        /// </summary>
+        public static string StartDateReturnLessThanToday {
+            get {
+                return ResourceManager.GetString("StartDateReturnLessThanToday", resourceCulture);
             }
         }
         
