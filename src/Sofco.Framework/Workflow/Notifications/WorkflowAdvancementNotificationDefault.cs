@@ -27,28 +27,21 @@ namespace Sofco.Framework.Workflow.Notifications
             this.emailConfig = emailConfig;
         }
 
-        public override void Send(WorkflowEntity entity, Response response, WorkflowStateTransition transition)
+        public override void Send(WorkflowEntity entity, WorkflowStateTransition transition)
         {
             if(!transition.WorkflowStateNotifiers.Any()) return;
+         
+            var advancement = (Advancement)entity;
 
-            try
-            {
-                var advancement = (Advancement)entity;
+            var subject = string.Format(MailSubjectResource.WorkflowNotificationAdvancement, entity.UserApplicant.Name);
 
-                var subject = string.Format(MailSubjectResource.WorkflowNotificationAdvancement, entity.UserApplicant.Name);
+            var body = string.Format(MailMessageResource.WorkflowNotificationAdvancement,
+                advancement.Type == AdvancementType.Salary ? "Sueldo" : "Viatico",
+                $"{emailConfig.SiteUrl}advancementAndRefund/advancement/{entity.Id}",
+                transition.ActualWorkflowState.Name,
+                transition.NextWorkflowState.Name);
 
-                var body = string.Format(MailMessageResource.WorkflowNotificationAdvancement,
-                    advancement.Type == AdvancementType.Salary ? "Sueldo" : "Viatico",
-                    $"{emailConfig.SiteUrl}advancementAndRefund/advancement/{entity.Id}",
-                    transition.ActualWorkflowState.Name,
-                    transition.NextWorkflowState.Name);
-
-                this.SendMail(subject, body, transition, entity);
-            }
-            catch (Exception e)
-            {
-                response.AddWarning(Resources.Common.ErrorSendMail);
-            }
+            this.SendMail(subject, body, transition, entity);
         }
     }
 }
