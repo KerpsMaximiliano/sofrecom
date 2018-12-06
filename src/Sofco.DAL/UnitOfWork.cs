@@ -214,17 +214,17 @@ namespace Sofco.DAL
 
         public void BeginTransaction()
         {
-            contextTransaction = context.Database.BeginTransaction();
+            //contextTransaction = context.Database.BeginTransaction();
         }
 
         public void Rollback()
         {
-            contextTransaction?.Rollback();
+            //contextTransaction?.Rollback();
         }
 
         public void Commit()
         {
-            contextTransaction?.Commit();
+            //contextTransaction?.Commit();
         }
     }
 }

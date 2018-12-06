@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Sofco.Service.Crm.TranslatorMaps.Interfaces;
 using Sofco.Service.Crm.Translators.Interfaces;
@@ -12,7 +13,7 @@ namespace Sofco.Service.Crm.Translators
     {
         private const string ListKey = "value";
 
-        private const string ErrorMapMessage = "Failed to set property value for type: {0} - key: {1} - exception: {2}";
+        private const string ErrorMapMessage = "Failed to set property value for type: {0} - key: {1} value:{2} source: {3}- exception: {4}";
 
         private T2 translatorMap;
 
@@ -86,10 +87,21 @@ namespace Sofco.Service.Crm.Translators
                         case TypeCode.Object:
                             if (propertyType == typeof(Guid) || propertyType == typeof(Guid?))
                             {
-                                var guidValue = value != null ? Guid.Parse(value.ToString()) : Guid.Empty;
+                                var guidValue = value != null 
+                                                && stringValue != string.Empty
+                                    ? Guid.Parse(value.ToString()) 
+                                    : Guid.Empty;
 
                                 propertyInfo.SetValue(item, guidValue, null);
                             }
+                            break;
+                        case TypeCode.DateTime:
+                            propertyInfo.SetValue(item, DateTime.Parse(stringValue), null);
+                            break;
+                        case TypeCode.Boolean:
+                            var boolValue = stringValue != string.Empty && bool.Parse(stringValue);
+
+                            propertyInfo.SetValue(item, boolValue, null);
                             break;
                         default:
                             propertyInfo.SetValue(item, value, null);
@@ -98,7 +110,9 @@ namespace Sofco.Service.Crm.Translators
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(string.Format(ErrorMapMessage, typeName, key, ex.Message));
+                    throw new Exception(string.Format(ErrorMapMessage, 
+                        typeName, key, value, JsonConvert.SerializeObject(item),
+                        ex.Message));
                 }
             }
         }

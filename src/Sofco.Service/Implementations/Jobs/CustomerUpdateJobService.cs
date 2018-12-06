@@ -20,7 +20,7 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly ICrmAccountService crmAccountService;
         private readonly IMapper mapper;
 
-        private IList<int> IdsAdded { get; set; }
+        private IList<int> IdsAdded { get; }
 
         public CustomerUpdateJobService(IUnitOfWork unitOfWork, 
             ICustomerData customerData,
@@ -67,11 +67,9 @@ namespace Sofco.Service.Implementations.Jobs
 
         private void Update(CrmCustomer crmCustomer, Customer customer)
         {
-            FillData(customer, crmCustomer);
-
             try
             {
-                unitOfWork.CustomerRepository.Update(customer);
+                unitOfWork.CustomerRepository.Update(Translate(crmCustomer, customer));
                 unitOfWork.Save();
 
                 IdsAdded.Add(customer.Id);
@@ -84,13 +82,9 @@ namespace Sofco.Service.Implementations.Jobs
 
         private void Create(CrmCustomer crmCustomer)
         {
-            var customer = new Customer();
-
-            FillData(customer, crmCustomer);
-
             try
             {
-                unitOfWork.CustomerRepository.Insert(customer);
+                unitOfWork.CustomerRepository.Insert(Translate(crmCustomer));
                 unitOfWork.Save();
             }
             catch (Exception e)
@@ -99,24 +93,15 @@ namespace Sofco.Service.Implementations.Jobs
             }
         }
 
-        private void FillData(Customer customer, CrmCustomer crmCustomer)
+        private Customer Translate(CrmCustomer data, Customer customer = null)
         {
-            customer.CrmId = crmCustomer.Id;
-            customer.Address = crmCustomer.Address;
-            customer.Cuit = crmCustomer.Cuit;
-            customer.City = crmCustomer.City;
-            customer.Contact = crmCustomer.Contact;
-            customer.Country = crmCustomer.Country;
-            customer.CurrencyDescription = crmCustomer.CurrencyDescription;
-            customer.CurrencyId = crmCustomer.CurrencyId;
-            customer.Name = crmCustomer.Name;
-            customer.PaymentTermCode = crmCustomer.PaymentTermCode;
-            customer.PaymentTermDescription = crmCustomer.PaymentTermDescription;
-            customer.PostalCode = crmCustomer.PostalCode;
-            customer.Province = crmCustomer.Province;
-            customer.Telephone = crmCustomer.Telephone;
-            customer.OwnerId = crmCustomer.OwnerId;
-            customer.Active = true;
+            customer = customer ?? new Customer();
+
+            var result = mapper.Map(data, customer);
+
+            result.Active = true;
+
+            return result;
         }
 
         private List<CrmCustomer> Translate(List<CrmAccount> data)

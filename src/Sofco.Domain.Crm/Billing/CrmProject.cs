@@ -6,7 +6,7 @@ namespace Sofco.Domain.Crm.Billing
     {
         public string Id { get; set; }
 
-        public string Nombre { get; set; }
+        public string Name { get; set; }
 
         public string AccountId { get; set; }
 
@@ -28,7 +28,7 @@ namespace Sofco.Domain.Crm.Billing
 
         public string OpportunityNumber { get; set; }
 
-        public decimal TotalAmmount { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public string ServiceType { get; set; }
 
@@ -55,7 +55,7 @@ namespace Sofco.Domain.Crm.Billing
 
         public string Integrator { get; set; }
 
-        public string IntegratorId { get; set; }
+        public Guid IntegratorId { get; set; }
 
         public string ServiceId { get; set; }
 
