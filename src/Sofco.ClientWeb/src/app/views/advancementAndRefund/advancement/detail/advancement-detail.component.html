@@ -33,7 +33,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="ibox">
                 <div class="ibox-content">
-                    <advancement-form #form [mode]="'detail'" [type]="'salary'"></advancement-form>
+                    <advancement-form #form [mode]="'detail'"></advancement-form>
                 </div>
                 <div class="ibox-footer text-center" *ngIf="canUpdate()">
                     <button [disabled]="!form.canSave()" (click)="update()" class="btn btn-primary" type="button">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>

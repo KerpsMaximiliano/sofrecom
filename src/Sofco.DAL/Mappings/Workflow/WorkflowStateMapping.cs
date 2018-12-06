@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Domain.Models.Workflow;
 
 namespace Sofco.DAL.Mappings.Workflow
@@ -11,6 +10,7 @@ namespace Sofco.DAL.Mappings.Workflow
             builder.Entity<WorkflowState>().HasKey(_ => _.Id);
 
             builder.Entity<WorkflowState>().Property(x => x.Name).HasMaxLength(300);
+            builder.Entity<WorkflowState>().Property(x => x.ActionName).HasMaxLength(300);
 
             builder.Entity<WorkflowState>().HasMany(x => x.ActualTransitions).WithOne(x => x.ActualWorkflowState).HasForeignKey(x => x.ActualWorkflowStateId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkflowState>().HasMany(x => x.NextTransitions).WithOne(x => x.NextWorkflowState).HasForeignKey(x => x.NextWorkflowStateId).OnDelete(DeleteBehavior.Restrict);

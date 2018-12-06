@@ -11,6 +11,8 @@ namespace Sofco.Domain.Models.Workflow
     {
         public string Name { get; set; }
 
+        public string ActionName { get; set; }
+
         public IList<WorkflowStateTransition> ActualTransitions { get; set; }
         public IList<WorkflowStateTransition> NextTransitions { get; set; }
 

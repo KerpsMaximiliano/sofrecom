@@ -19,7 +19,6 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     public userApplicantName: string;
 
     @Input() mode: string;
-    @Input() type: string;
 
     public status: string;
 

@@ -41,7 +41,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
                 this.form.setModel(response.data);
 
                 var model = {
-                    workflowId: environment.advacementWorkflowId,
+                    workflowId: response.data.type == 1 ? environment.advacementWorkflowId : environment.viaticumWorkflowId,
                     entityController: "advancement",
                     entityId: response.data.id,
                     actualStateId: response.data.statusId

@@ -25,6 +25,9 @@ namespace Sofco.Framework.Workflow.Conditions
             {
                 case "PENDING-APPROVE-MANAGER-TO-DIRECTOR": return new PendingApproveManagerToDirectorCondition(unitOfWork, userData, this.settings);
                 case "PENDING-APPROVE-MANAGER-TO-RRHH": return new PendingApproveManagerToRrhhCondition(unitOfWork, userData, this.settings);
+                case "PENDING-APPROVE-MANAGER-TO-DAF": return new PendingApproveManagerToDafCondition(unitOfWork, userData, this.settings);
+                case "PENDING-APPROVE-DIRECTOR-TO-DAF": return new PendingApproveDirectorToDafCondition(unitOfWork, this.settings);
+                case "PENDING-APPROVE-DIRECTOR-TO-DIRECTOR-GENERAL": return new PendingApproveDirectorToGeneralDirectorCondition(unitOfWork, this.settings);
                 default: return null;
             }
         }

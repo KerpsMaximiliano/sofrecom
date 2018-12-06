@@ -315,7 +315,7 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 WorkflowId = transition.WorkflowId,
                 NextStateId = transition.NextWorkflowStateId,
-                NextStateDescription = transition.NextWorkflowState.Name,
+                NextStateDescription = transition.NextWorkflowState.ActionName,
                 WorkFlowStateType = transition.NextWorkflowState.Type
             });
         }

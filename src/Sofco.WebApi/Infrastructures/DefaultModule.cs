@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using Autofac;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sofco.Common.Helpers;
 using Sofco.Common.Logger;

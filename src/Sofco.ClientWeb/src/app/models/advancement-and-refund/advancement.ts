@@ -29,7 +29,7 @@ export class Advancement extends FormGroup {
                 Validators.required),
 
             description: new FormControl(domain && domain.description || null, 
-                Validators.maxLength(400)),
+                Validators.maxLength(1000)),
             
             ammount: new FormControl(domain && domain.ammount || null, [
                 Validators.required,

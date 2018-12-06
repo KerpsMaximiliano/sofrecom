@@ -41,12 +41,12 @@ namespace Sofco.WebApi
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SofcoContext>(options =>
-                   options
-                   .UseSqlServer(
-                       Configuration.GetConnectionString("DefaultConnection"),
-                       b => b.EnableRetryOnFailure()
-                       .MigrationsAssembly("Sofco.WebApi")
-                       .MigrationsHistoryTable(HistoryRepository.DefaultTableName, SofcoContext.AppSchemaName)));
+                options
+                    .UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection"),
+                        b => b.EnableRetryOnFailure()
+                            .MigrationsAssembly("Sofco.WebApi")
+                            .MigrationsHistoryTable(HistoryRepository.DefaultTableName, SofcoContext.AppSchemaName)));
 
             services.AddMvc().AddJsonOptions(options =>
             {
