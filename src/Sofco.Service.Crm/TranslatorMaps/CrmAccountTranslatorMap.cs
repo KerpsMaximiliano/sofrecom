@@ -7,33 +7,19 @@ namespace Sofco.Service.Crm.TranslatorMaps
     public class CrmAccountTranslatorMap : ITranslatorMap
     {
         private const string Id = "accountid";
-
         private const string Name = "name";
-
         private const string Address = "address1_line1";
-
         private const string PostalCode = "address1_postalcode";
-
         private const string CityId = "_as_cityid_value";
-
         private const string ProvinceId = "_as_stateprovinceid_value";
-
         private const string Contact = "_primarycontactid_value";
-
         private const string CountryId = "_as_countryid_value";
-
         private const string Cuit = "as_governmentid";
-
         private const string CurrencyId = "_transactioncurrencyid_value";
-
         private const string OwnerId = "_ownerid_value";
-
         private const string PayTermCode = "paymenttermscode";
-
         private const string StateCode = "statecode";
-
         private const string Phone = "telephone1";
-
         private const string RelCommercial = "statuscode";
 
         public Dictionary<string, string> KeyMaps()
