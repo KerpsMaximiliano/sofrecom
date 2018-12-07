@@ -13,5 +13,6 @@
     "phoneRequired": "El telefono es requerido",
     "userRelated": "El usuario ya se encuentra en el sistema",
     "hoursRequired": "La jornada laboral es requerida",
+    "managerRequired": "El superior es requerido",
     "billingPercentageRequired": "El % de facturabilidad es requerido"
 }
