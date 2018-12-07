@@ -214,7 +214,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
     getRowDetailForma(item) {
         return '<tr>' +
             '<td>' + moment(item.date).format("DD/MM/YYYY") + '</td>' +
-            '<td>' + item.reference + '</td>' +
+            '<td>' + (item.reference != null ? item.reference :'')  + '</td>' +
             '<td>' + item.taskDescription + '</td>' +
             '<td>' + item.categoryDescription + '</td>' +
             '<td>' + item.registeredHours + '</td>' +
