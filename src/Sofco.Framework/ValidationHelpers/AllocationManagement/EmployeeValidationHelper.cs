@@ -99,5 +99,22 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 response.AddError(Resources.AllocationManagement.Employee.BillingPercentageRequired);
             }
         }
+
+        public static void ValidateManager(Response response, EmployeeBusinessHoursParams model, IUnitOfWork unitOfWork)
+        {
+            if (!model.ManagerId.HasValue || model.ManagerId.Value <= 0)
+            {
+                response.AddError(Resources.AllocationManagement.Employee.ManagerRequired);
+            }
+            else
+            {
+                var user = unitOfWork.UserRepository.Get(model.ManagerId.Value);
+
+                if (user == null)
+                {
+                    response.AddError(Resources.Admin.User.ManagerNotFound);
+                }
+            }
+        }
     }
 }

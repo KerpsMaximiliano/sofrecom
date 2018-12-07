@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sofco.Common.Settings;
-using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Mail;
 using Sofco.Domain.Interfaces;
-using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.Workflow;
-using Sofco.Domain.Utils;
 using Sofco.Framework.MailData;
 
 namespace Sofco.Framework.Workflow.Notifications
@@ -31,7 +28,7 @@ namespace Sofco.Framework.Workflow.Notifications
             this.appSetting = appSetting;
         }
 
-        public abstract void Send(WorkflowEntity entity, Response response, WorkflowStateTransition transition);
+        public abstract void Send(WorkflowEntity entity, WorkflowStateTransition transition);
 
         protected void SendMail(string subject, string body, WorkflowStateTransition transition, WorkflowEntity entity)
         {

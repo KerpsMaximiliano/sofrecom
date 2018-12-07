@@ -21,6 +21,7 @@ namespace Sofco.Core.Models.AllocationManagement
             Technology = domain.Technology;
             Percentage = domain.BillingPercentage;
             StartDate = domain.StartDate;
+            Manager = domain.Manager?.Name;
 
             if (domain.EmployeeCategories != null && domain.EmployeeCategories.Any())
                 Categories = domain.EmployeeCategories.Select(x => x.CategoryId).ToList();
@@ -43,6 +44,8 @@ namespace Sofco.Core.Models.AllocationManagement
         public decimal Percentage { get; set; }
 
         public bool Selected { get; set; }
+
+        public string Manager { get; set; }
 
         public DateTime StartDate { get; set; }
 

@@ -9,15 +9,14 @@
     "currencyRequired": "La moneda es requerida",
     "dateItemRequired": "La fecha es requerida",
     "descriptionItemRequired": "El concepto es requerido",
-    "mustHaveOneDetail": "El adelanto de sueldo solo debe contener un item",
     "nullModel": "Los datos del formulario son invalidos",
     "paymentFormRequired": "La forma de cobro es requerida",
     "startDateReturnRequired": "La fecha aproximada de devolución es requerida",
     "typeRequired": "El tipo de adelanto es requerido",
     "userApplicantRequired": "El solicitante es requerido",
     "descriptionItemMaxLength": "El concepto debe ser menor a 400 caracteres",
-    "addSuccess": "La solicitud de adelanto de sueldo fue cargada exitosamente",
-    "updateSuccess": "La solicitud de adelanto de sueldo fue actualizada exitosamente",
+    "addSuccess": "La solicitud de adelanto fue cargada exitosamente",
+    "updateSuccess": "La solicitud de adelanto fue actualizada exitosamente",
     "notFound": "Solicitud de adelanto no encontrada",
     "startDateReturnLessThanToday": "La fecha aproximada de devolucion no puede ser menor a hoy"
 }

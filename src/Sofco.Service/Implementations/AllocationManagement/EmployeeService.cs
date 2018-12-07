@@ -259,6 +259,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var stored = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
             EmployeeValidationHelper.ValidateBusinessHours(response, model);
             EmployeeValidationHelper.ValidateBillingPercentage(response, model);
+            EmployeeValidationHelper.ValidateManager(response, model, unitOfWork);
 
             if (response.HasErrors()) return response;
 

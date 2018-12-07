@@ -129,9 +129,16 @@ namespace Sofco.Service.Implementations.Workflow
         {
             if (!string.IsNullOrWhiteSpace(transition.NotificationCode))
             {
-                var notificationHandler = workflowNotificationFactory.GetInstance(transition.NotificationCode);
-
-                notificationHandler?.Send(entity, response, transition);
+                try
+                {
+                    var notificationHandler = workflowNotificationFactory.GetInstance(transition.NotificationCode);
+                    notificationHandler?.Send(entity, transition);
+                }
+                catch (Exception e)
+                {
+                    response.AddWarning(Resources.Common.ErrorSendMail);
+                    logger.LogError(e);
+                }
             }
         }
 
