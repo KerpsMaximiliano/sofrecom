@@ -8,30 +8,30 @@ export class Advancement extends FormGroup {
     private id: number;
     public workflowStateType: WorkflowStateType;
 
-    constructor(domain?) {
+    constructor(isReadonly: boolean, domain?) {
         super({
             userApplicantId: new FormControl(domain && domain.userApplicantId || null, 
                 Validators.required),
 
-            paymentForm: new FormControl(domain && domain.paymentForm.toString() || '1', 
+            paymentForm: new FormControl({value: domain && domain.paymentForm.toString() || '1', disabled: isReadonly}, 
                 Validators.required),
 
-            type: new FormControl(domain && domain.type.toString() || '1', 
+            type: new FormControl({value: domain && domain.type.toString() || '1', disabled: isReadonly}, 
                 Validators.required),
 
-            advancementReturnFormId: new FormControl(domain && domain.advancementReturnFormId || null, 
+            advancementReturnFormId: new FormControl({value: domain && domain.advancementReturnFormId || null, disabled: isReadonly}, 
                 Validators.required),
 
-            startDateReturn: new FormControl(domain && moment(domain.startDateReturn).toDate() || null, 
+            startDateReturn: new FormControl({value: domain && moment(domain.startDateReturn).toDate() || null, disabled: isReadonly}, 
                 Validators.required),
 
-            currencyId: new FormControl(domain && domain.currencyId || null, 
+            currencyId: new FormControl({value: domain && domain.currencyId || null, disabled: isReadonly}, 
                 Validators.required),
 
-            description: new FormControl(domain && domain.description || null, 
+            description: new FormControl({value: domain && domain.description || null, disabled: isReadonly}, 
                 Validators.maxLength(1000)),
             
-            ammount: new FormControl(domain && domain.ammount || null, [
+            ammount: new FormControl({value: domain && domain.ammount || null, disabled: isReadonly}, [
                 Validators.required,
                 Validators.max(1000000),
                 Validators.min(1)
