@@ -19,6 +19,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
 
     public entityId: number;
     public actualStateId: number;
+    public userApplicantId: number;
 
     getSubscrip: Subscription;
     editSubscrip: Subscription;
@@ -38,8 +39,6 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
             this.getSubscrip = this.advancementService.get(routeParams.id).subscribe(response => {
                 this.messageService.closeLoading();
 
-                this.form.setModel(response.data);
-
                 var model = {
                     workflowId: response.data.type == 1 ? environment.advacementWorkflowId : environment.viaticumWorkflowId,
                     entityController: "advancement",
@@ -49,6 +48,9 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
 
                 this.actualStateId = response.data.statusId;
                 this.entityId = response.data.id;
+                this.userApplicantId = response.data.userApplicantId;
+
+                this.form.setModel(response.data, this.canUpdate());
 
                 this.workflow.init(model);
 
@@ -73,7 +75,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
     
     canUpdate(){
         if(environment.draftWorkflowStateId == this.actualStateId || environment.rejectedWorkflowStateId == this.actualStateId){
-            if(this.form.userApplicantIdLogged == this.form.form.controls.userApplicantId.value){
+            if(this.form.userApplicantIdLogged == this.userApplicantId){
                 return true;
             }
         }

@@ -23,7 +23,6 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     public status: string;
 
     public form: Advancement;
-    public isReadOnly: boolean = false;
 
     getCurrenciesSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
@@ -33,7 +32,13 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
                 public i18nService: I18nService){}
 
     ngOnInit(): void {
-        this.form = new Advancement();
+        this.getCurrencies();
+        this.getAdvancementReturnForms();
+
+        if(this.mode == 'add'){
+            this.form = new Advancement(false);
+            this.form.controls.ammount.setValue(0);
+        }
 
         const userInfo = UserInfoService.getUserInfo();
     
@@ -45,14 +50,6 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
                 this.userApplicantName = userInfo.name;
             }
         }
-
-        if(this.mode == 'detail'){
-            this.isReadOnly = true;
-        }
-
-        this.form.controls.ammount.setValue(0);
-        this.getCurrencies();
-        this.getAdvancementReturnForms();
     }
 
     ngOnDestroy(): void {
@@ -96,12 +93,12 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    setModel(domain){
+    setModel(domain, isEdit){
         if(domain.statusId > 0){
             this.status = domain.statusDesc;
         }
 
-        this.form = new Advancement(domain);
+        this.form = new Advancement(!isEdit, domain);
 
         if(this.mode == 'detail'){
             this.userApplicantName = domain.userApplicantDesc;
