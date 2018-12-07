@@ -86,6 +86,18 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Where(x => x.Status == AnalyticStatus.Open).ToList();
         }
 
+        public List<AnalyticLiteModel> GetAllOpenAnalyticLite()
+        {
+            return context.Analytics
+                .Where(x => x.Status == AnalyticStatus.Open)
+                .Select(s => new AnalyticLiteModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Title = s.Title
+                }).ToList();
+        }
+
         public Analytic GetByService(string serviceId)
         {
             return context.Analytics.SingleOrDefault(x => x.ServiceId.Equals(serviceId));
@@ -141,6 +153,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 Title = s.Title
             }).FirstOrDefault();
 
+        }
+
+        public List<AnalyticLiteModel> GetAnalyticLiteByIds(List<int> ids)
+        {
+            return context.Analytics
+                .Where(s => ids.Contains(s.Id))
+                .Select(s => new AnalyticLiteModel { Id = s.Id, Name = s.Name, Title = s.Title })
+                .ToList();
         }
 
         public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId, int userId, DateTime dateFrom, DateTime dateTo)
