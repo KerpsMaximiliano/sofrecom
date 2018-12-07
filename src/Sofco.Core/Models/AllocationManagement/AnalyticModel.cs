@@ -70,7 +70,7 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public int? CommercialManagerId { get; set; }
 
-        public int SectorId { get; set; }
+        public int? SectorId { get; set; }
 
         public int? ManagerId { get; set; }
 
@@ -116,7 +116,7 @@ namespace Sofco.Core.Models.AllocationManagement
             domain.StartDateContract = StartDateContract.Date;
             domain.EndDateContract = EndDateContract.Date;
             domain.CommercialManagerId = CommercialManagerId;
-            domain.SectorId = SectorId;
+            domain.SectorId = SectorId.GetValueOrDefault();
             domain.ManagerId = ManagerId;
             domain.Proposal = Proposal;
             domain.SolutionId = SolutionId;

@@ -359,6 +359,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var response = new Response<Analytic>();
 
             var analytic = AnalyticValidationHelper.Find(response, unitOfWork, analyticModel.Id);
+
+            analyticModel.UpdateDomain(analytic);
+
             AnalyticValidationHelper.CheckName(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
@@ -367,15 +370,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                analyticModel.UpdateDomain(analytic);
-
                 unitOfWork.AnalyticRepository.Update(analytic);
                 unitOfWork.Save();
 
-                var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
-                if (crmResponse.HasErrors())
+                if (!string.IsNullOrWhiteSpace(analytic.ClientExternalId) &&
+                    !string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
-                    response.AddMessages(crmResponse.Messages);
+                    var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
+                    if (crmResponse.HasErrors())
+                    {
+                        response.AddMessages(crmResponse.Messages);
+                    }
                 }
 
                 response.AddSuccess(Resources.AllocationManagement.Analytic.UpdateSuccess);
