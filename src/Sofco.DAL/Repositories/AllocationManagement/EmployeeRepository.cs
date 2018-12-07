@@ -88,7 +88,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {
-            IQueryable<Employee> query = context.Employees;
+            IQueryable<Employee> query = context.Employees.Include(x => x.Manager);
 
             if (parameters.Unassigned)
             {
