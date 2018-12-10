@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -15,17 +16,20 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly ILogMailer<ServiceUpdateJobService> logger;
         private readonly IServiceData serviceData;
         private readonly ICrmServiceService crmServiceService;
+        private readonly IMapper mapper;
 
         private IList<int> IdsAdded { get; }
 
         public ServiceUpdateJobService(IUnitOfWork unitOfWork,
             IServiceData serviceData,
             ILogMailer<ServiceUpdateJobService> logger, 
-            ICrmServiceService crmServiceService)
+            ICrmServiceService crmServiceService, 
+            IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.crmServiceService = crmServiceService;
+            this.mapper = mapper;
             this.serviceData = serviceData;
 
             IdsAdded = new List<int>();
@@ -62,11 +66,9 @@ namespace Sofco.Service.Implementations.Jobs
 
         private void Update(CrmService crmService, Domain.Models.Billing.Service service)
         {
-            FillData(service, crmService);
-
             try
             {
-                unitOfWork.ServiceRepository.Update(service);
+                unitOfWork.ServiceRepository.Update(Translate(crmService, service));
                 unitOfWork.Save();
 
                 IdsAdded.Add(service.Id);
@@ -79,13 +81,9 @@ namespace Sofco.Service.Implementations.Jobs
 
         private void Create(CrmService crmService)
         {
-            var service = new Domain.Models.Billing.Service();
-
-            FillData(service, crmService);
-
             try
             {
-                unitOfWork.ServiceRepository.Insert(service);
+                unitOfWork.ServiceRepository.Insert(Translate(crmService));
                 unitOfWork.Save();
             }
             catch (Exception e)
@@ -94,25 +92,15 @@ namespace Sofco.Service.Implementations.Jobs
             }
         }
 
-        private void FillData(Domain.Models.Billing.Service service, CrmService crmService)
+        private Domain.Models.Billing.Service Translate(CrmService crmService, Domain.Models.Billing.Service service = null)
         {
-            service.CrmId = crmService.Id;
-            service.Name = crmService.Name;
-            service.AccountId = crmService.AccountId;
-            service.AccountName = crmService.AccountName;
-            service.Industry = crmService.Industry;
-            service.StartDate = crmService.StartDate;
-            service.EndDate = crmService.EndDate;
-            service.Manager = crmService.Manager;
-            service.ManagerId = crmService.ManagerId;
-            service.ServiceType = crmService.ServiceType;
-            service.ServiceTypeId = crmService.ServiceTypeId;
-            service.SolutionType = crmService.SolutionType;
-            service.SolutionTypeId = crmService.SolutionTypeId;
-            service.TechnologyType = crmService.TechnologyType;
-            service.TechnologyTypeId = crmService.TechnologyTypeId;
-            service.Analytic = crmService.Analytic;
+            service = service ?? new Domain.Models.Billing.Service();
+
+            mapper.Map(crmService, service);
+
             service.Active = true;
+
+            return service;
         }
     }
 }
