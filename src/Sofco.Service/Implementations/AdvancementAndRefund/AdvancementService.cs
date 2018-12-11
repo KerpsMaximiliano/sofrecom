@@ -190,6 +190,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 }
             }
 
+            if (!response.Data.Any())
+            {
+                response.AddWarning(Resources.Common.SearchNotFound);
+            }
+
             return response;
         }
 

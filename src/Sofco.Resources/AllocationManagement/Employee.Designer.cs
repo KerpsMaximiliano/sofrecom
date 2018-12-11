@@ -169,6 +169,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.officeRequired.
+        /// </summary>
+        public static string OfficeRequired {
+            get {
+                return ResourceManager.GetString("OfficeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employee.phoneRequired.
         /// </summary>
         public static string PhoneRequired {

@@ -73,7 +73,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var userName = applicantEmployee.Email.Split('@').First();
 
-            parameters.ApplicantUserId = userData.GetUserLiteByUserName(userName).Id;
+            parameters.ApplicantUserId = userData.GetUserLiteByUserName(userName)?.Id;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 
         public static void ValidateBusinessHours(Response response, EmployeeBusinessHoursParams model)
         {
-            if (model.BusinessHours < 1 || model.BusinessHours > 8)
+            if (model.BusinessHours.GetValueOrDefault() < 1 || model.BusinessHours.GetValueOrDefault() > 8)
             {
                 response.Messages.Add(new Message(Resources.AllocationManagement.Employee.BusinessHoursWrong, MessageType.Error));
             }
@@ -114,6 +114,14 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 {
                     response.AddError(Resources.Admin.User.ManagerNotFound);
                 }
+            }
+        }
+
+        public static void ValidateOffice(Response response, EmployeeBusinessHoursParams model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Office))
+            {
+                response.AddError(Resources.AllocationManagement.Employee.OfficeRequired);
             }
         }
     }

@@ -259,6 +259,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var stored = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
             EmployeeValidationHelper.ValidateBusinessHours(response, model);
             EmployeeValidationHelper.ValidateBillingPercentage(response, model);
+            EmployeeValidationHelper.ValidateOffice(response, model);
             EmployeeValidationHelper.ValidateManager(response, model, unitOfWork);
 
             if (response.HasErrors()) return response;
@@ -267,10 +268,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var employee = new Employee();
                 employee.Id = id;
-                employee.BusinessHours = model.BusinessHours;
+                employee.BusinessHours = model.BusinessHours.GetValueOrDefault();
                 employee.BusinessHoursDescription = model.BusinessHoursDescription;
                 employee.OfficeAddress = model.Office;
-                employee.HolidaysPendingByLaw = model.HolidaysPending;
+                employee.HolidaysPendingByLaw = model.HolidaysPending.GetValueOrDefault();
                 employee.ManagerId = model.ManagerId;
                 employee.BillingPercentage = model.BillingPercentage.GetValueOrDefault();
                 employee.HolidaysPending = CalculateHolidaysPending(model);
@@ -335,8 +336,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private int CalculateHolidaysPending(EmployeeBusinessHoursParams model)
         {
-            var daysPending = (model.HolidaysPending / 7) * 5;
-            var resto = model.HolidaysPending % 7;
+            var daysPending = (model.HolidaysPending.GetValueOrDefault() / 7) * 5;
+            var resto = model.HolidaysPending.GetValueOrDefault() % 7;
 
             if (resto < 6) daysPending += resto;
             if (resto == 6 || resto == 7) daysPending += 5;

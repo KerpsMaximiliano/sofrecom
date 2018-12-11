@@ -83,10 +83,10 @@ export class WorkflowComponent implements OnDestroy {
 
     getStatusClass(type){
         switch(type){
-            case WorkflowStateType.Info: return "btn-success btn-outline dim btn-sm";
-            case WorkflowStateType.Warning: return "btn-warning btn-outline dim btn-sm";
-            case WorkflowStateType.Success: return "btn-primary btn-outline dim btn-sm";
-            case WorkflowStateType.Danger: return "btn-danger btn-outline dim btn-sm";
+            case WorkflowStateType.Info: return "btn-success btn-outline dim btn-md";
+            case WorkflowStateType.Warning: return "btn-warning btn-outline dim btn-md";
+            case WorkflowStateType.Success: return "btn-primary btn-outline dim btn-md";
+            case WorkflowStateType.Danger: return "btn-danger btn-outline dim btn-md";
             default: return ""
         }
     }
