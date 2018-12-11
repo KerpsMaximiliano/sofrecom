@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -14,6 +15,8 @@ namespace Sofco.Service.Crm.HttpClients
 {
     public class CrmApiHttpClient : ICrmApiHttpClient
     {
+        private const string JsonMediaType = "application/json";
+
         private const string ErrorDelimiter = ";";
 
         private readonly CrmSetting crmSetting;
@@ -42,14 +45,19 @@ namespace Sofco.Service.Crm.HttpClients
             return GetResult<T>(urlPath, HttpMethod.Get);
         }
 
-        public Result<T> Post<T>(string urlPath, HttpContent content)
+        public Result<T> Post<T>(string urlPath, object data)
         {
-            return GetResult<T>(urlPath, HttpMethod.Post);
+            return GetResult<T>(urlPath, HttpMethod.Post, data);
         }
 
-        public Result<T> Put<T>(string urlPath, HttpContent content)
+        public Result<T> Put<T>(string urlPath, object data)
         {
-            return GetResult<T>(urlPath, HttpMethod.Put);
+            return GetResult<T>(urlPath, HttpMethod.Put, data);
+        }
+
+        public Result<T> Patch<T>(string urlPath, object data)
+        {
+            return GetResult<T>(urlPath, new HttpMethod("PATCH"), data);
         }
 
         private string GetAccessToken()
@@ -77,9 +85,16 @@ namespace Sofco.Service.Crm.HttpClients
             return token.ToString();
         }
 
-        private Result<TResult> GetResult<TResult>(string urlPath, HttpMethod httpMethod)
+        private Result<TResult> GetResult<TResult>(string urlPath, HttpMethod httpMethod, object data = null)
         {
             var requestMessage = new HttpRequestMessage(httpMethod, crmSetting.UrlApi + urlPath);
+
+            if (data != null)
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, JsonMediaType);
+
+                requestMessage.Content = content;
+            }
 
             var response = httpClient.SendAsync(requestMessage).Result;
 
@@ -96,6 +111,11 @@ namespace Sofco.Service.Crm.HttpClients
                                 response.Content.ReadAsStringAsync().Result);
 
                 throw new Exception(string.Join(ErrorDelimiter, result.Errors));
+            }
+
+            if (response.StatusCode == HttpStatusCode.NoContent)
+            {
+                return new Result<TResult>();
             }
 
             var resultData = GetResponseResult<TResult>(response);
