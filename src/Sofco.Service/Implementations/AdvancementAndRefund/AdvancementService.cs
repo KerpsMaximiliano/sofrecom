@@ -228,11 +228,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 i++;
             }
 
-            if (!response.Data)
-            {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.CannotLoad);
-            }
-
             return response;
         }
 
