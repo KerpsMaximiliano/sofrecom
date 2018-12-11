@@ -66,10 +66,6 @@ namespace Sofco.UnitTest.Validations
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.TypeRequired)));
 
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired)));
-
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.StartDateReturnRequired)));
-
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyRequired)));
 
             model = GetInvalidModel();
@@ -80,7 +76,7 @@ namespace Sofco.UnitTest.Validations
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyNotFound)));
 
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormNotFound)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired)));
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Admin.User.NotFound)));
 
@@ -107,7 +103,6 @@ namespace Sofco.UnitTest.Validations
                 PaymentForm = AdvancementPaymentForm.OwnBank,
                 Type = AdvancementType.Salary,
                 MonthsReturnId = 2,
-                StartDateReturn = DateTime.Now,
                 CurrencyId = 2,
             };
         }
@@ -120,7 +115,7 @@ namespace Sofco.UnitTest.Validations
                 PaymentForm = AdvancementPaymentForm.OwnBank,
                 Type = AdvancementType.Salary,
                 MonthsReturnId = 1,
-                StartDateReturn = DateTime.Today,
+                AdvancementReturnForm = "forma retorno",
                 CurrencyId = 1,
                 Description = "description",
                 Ammount = 1
