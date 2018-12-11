@@ -98,14 +98,14 @@ namespace Sofco.DAL.Repositories.Common
             return Context.Provinces.ToList().AsReadOnly();
         }
 
-        public IList<AdvancementReturnForm> GetAdvancementReturnForms()
+        public IList<MonthsReturn> GetMonthsReturn()
         {
-            return Context.AdvancementReturnForms.ToList().AsReadOnly();
+            return Context.MonthsReturns.ToList().AsReadOnly();
         }
 
-        public bool ExistAdvancementReturnForm(int id)
+        public bool ExistMonthReturn(int id)
         {
-            return Context.AdvancementReturnForms.Any(x => x.Id == id);
+            return Context.MonthsReturns.Any(x => x.Id == id);
         }
 
         public bool ExistCurrency(int id)

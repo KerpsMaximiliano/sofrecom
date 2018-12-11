@@ -32,7 +32,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
             return context.Advancements
                 .Include(x => x.Currency)
-                .Include(x => x.AdvancementReturnForm)
+                .Include(x => x.MonthsReturn)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Status)
                 .SingleOrDefault(x => x.Id == id);

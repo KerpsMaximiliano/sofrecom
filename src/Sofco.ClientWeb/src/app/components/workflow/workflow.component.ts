@@ -1,14 +1,18 @@
-import { OnDestroy, OnInit, Component, Input, EventEmitter, Output } from "@angular/core";
+import { OnDestroy, OnInit, Component, Input, EventEmitter, Output, ViewChild, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
 import { WorkflowService } from "app/services/workflow/workflow.service";
 import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
+import { WfRejectComponent } from "./templates/reject/wf-reject.component";
+import { Type } from "@angular/compiler/src/core";
 
 @Component({
     selector: 'workflow',
     templateUrl: './workflow.component.html'
 })
 export class WorkflowComponent implements OnDestroy {
+
+    @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
 
     public transitions: any[] = new Array();
 
@@ -20,7 +24,11 @@ export class WorkflowComponent implements OnDestroy {
 
     @Output() onSaveSuccess = new EventEmitter<any>();
 
+    hasRejectCode: boolean = false;
+    @ViewChild('wfreject') wfReject;
+
     constructor(private workflowService: WorkflowService,
+                private componentFactoryResolver: ComponentFactoryResolver,
                 private messageService: MessageService){}
 
     ngOnDestroy(): void {
@@ -32,7 +40,38 @@ export class WorkflowComponent implements OnDestroy {
         this.entityController = model.entityController;
 
         this.getTransitionsSubscrip = this.workflowService.getTransitions(model).subscribe(response => {
-            this.transitions = response.data;
+            this.transitions = response.data.filter(x => x.parameterCode == null);
+
+            var transitionsWithParameters = response.data.filter(x => x.parameterCode != null);
+
+            this.buildComponents(transitionsWithParameters);
+        });
+    } 
+
+    buildComponents(transitionsWithParameters){
+        transitionsWithParameters.forEach(item => {
+
+            var componentClass = this.getComponentClass(item.parameterCode);
+
+            if(!componentClass) return;
+
+            const componentFactory = this.componentFactoryResolver.resolveComponentFactory(componentClass);
+            const component = this.container.createComponent(componentFactory);
+        
+            var model = {
+                workflowId: item.workflowId,
+                nextStateId: item.nextStateId,
+                entityId: this.entityId,
+                entityController: this.entityController,
+                status: this.getStatusClass(item.workFlowStateType),
+                nextStateDescription: item.nextStateDescription
+            }
+
+            component.instance.onConfirm.subscribe(x => {
+                this.onTransitionCustomConfirm();
+            });
+            
+            component.instance.init(model);
         });
     }
 
@@ -52,13 +91,24 @@ export class WorkflowComponent implements OnDestroy {
         });
     }
 
+    onTransitionCustomConfirm(){
+        this.onSaveSuccess.emit();
+    }
+
     getStatusClass(type){
         switch(type){
-            case WorkflowStateType.Info: return "btn-success btn-outline dim btn-sm";
-            case WorkflowStateType.Warning: return "btn-warning btn-outline dim btn-sm";
-            case WorkflowStateType.Success: return "btn-primary btn-outline dim btn-sm";
-            case WorkflowStateType.Danger: return "btn-danger btn-outline dim btn-sm";
+            case WorkflowStateType.Info: return "btn-success btn-outline dim btn-md";
+            case WorkflowStateType.Warning: return "btn-warning btn-outline dim btn-md";
+            case WorkflowStateType.Success: return "btn-primary btn-outline dim btn-md";
+            case WorkflowStateType.Danger: return "btn-danger btn-outline dim btn-md";
             default: return ""
+        }
+    }
+
+    getComponentClass(type) : Type{
+        switch(type){
+            case "REJECT": return WfRejectComponent;
+            default: return null;
         }
     }
 }

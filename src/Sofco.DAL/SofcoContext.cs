@@ -112,7 +112,7 @@ namespace Sofco.DAL
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<Area> Areas { get; set; }
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
-        public DbSet<AdvancementReturnForm> AdvancementReturnForms { get; set; }
+        public DbSet<MonthsReturn> MonthsReturns { get; set; }
 
         //Workflow
 

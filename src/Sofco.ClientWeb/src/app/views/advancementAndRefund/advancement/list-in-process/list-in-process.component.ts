@@ -122,6 +122,10 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
             }
         }
 
+        if(this.modelFiltered.length == 0){
+            this.messageService.showWarningByFolder('common','searchNotFound');
+        }
+
         this.initGrid();
     }
 }

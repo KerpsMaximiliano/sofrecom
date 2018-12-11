@@ -236,7 +236,8 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AdvancementReturnFormId");
+                    b.Property<string>("AdvancementReturnForm")
+                        .HasMaxLength(200);
 
                     b.Property<decimal>("Ammount");
 
@@ -253,9 +254,11 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<bool>("InWorkflowProcess");
 
+                    b.Property<int?>("MonthsReturnId");
+
                     b.Property<int>("PaymentForm");
 
-                    b.Property<DateTime>("StartDateReturn");
+                    b.Property<DateTime?>("StartDateReturn");
 
                     b.Property<int>("StatusId");
 
@@ -265,13 +268,13 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdvancementReturnFormId");
-
                     b.HasIndex("AnalyticId");
 
                     b.HasIndex("AuthorizerId");
 
                     b.HasIndex("CurrencyId");
+
+                    b.HasIndex("MonthsReturnId");
 
                     b.HasIndex("StatusId");
 
@@ -1777,6 +1780,9 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("NotificationCode")
                         .HasMaxLength(50);
 
+                    b.Property<string>("ParameterCode")
+                        .HasMaxLength(50);
+
                     b.Property<string>("ValidationCode")
                         .HasMaxLength(50);
 
@@ -1974,20 +1980,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("UserGroup");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Utils.AdvancementReturnForm", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdvancementReturnForms");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Utils.Area", b =>
                 {
                     b.Property<int>("Id")
@@ -2085,6 +2077,20 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ImputationNumbers");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Utils.MonthsReturn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MonthsReturns");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Utils.PaymentTerm", b =>
@@ -2249,11 +2255,6 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.Advancement", b =>
                 {
-                    b.HasOne("Sofco.Domain.Utils.AdvancementReturnForm", "AdvancementReturnForm")
-                        .WithMany("Advancements")
-                        .HasForeignKey("AdvancementReturnFormId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic")
                         .WithMany("Advancements")
                         .HasForeignKey("AnalyticId");
@@ -2266,6 +2267,11 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
                         .WithMany("Advancements")
                         .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Utils.MonthsReturn", "MonthsReturn")
+                        .WithMany("Advancements")
+                        .HasForeignKey("MonthsReturnId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Sofco.Domain.Models.Workflow.WorkflowState", "Status")

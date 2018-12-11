@@ -14,9 +14,13 @@
     "startDateReturnRequired": "La fecha aproximada de devolución es requerida",
     "typeRequired": "El tipo de adelanto es requerido",
     "userApplicantRequired": "El solicitante es requerido",
-    "descriptionItemMaxLength": "El concepto debe ser menor a 400 caracteres",
+    "descriptionItemMaxLength": "El concepto debe ser menor a 1000 caracteres",
+    "advancementReturnFormMaxLength": "La forma de devolucion debe ser menor a 200 caracteres",
     "addSuccess": "La solicitud de adelanto fue cargada exitosamente",
     "updateSuccess": "La solicitud de adelanto fue actualizada exitosamente",
     "notFound": "Solicitud de adelanto no encontrada",
+    "monthsReturnNotFound": "Mes de devolucion no encontrado",
+    "monthsReturnRequired": "Mes de devolucion es requerido",
+    "cannotLoad": "Su superior no tiene privilegios para autorizar un adelanto de sueldo. Por favor comuniquese con recursos humanos",
     "startDateReturnLessThanToday": "La fecha aproximada de devolucion no puede ser menor a hoy"
 }

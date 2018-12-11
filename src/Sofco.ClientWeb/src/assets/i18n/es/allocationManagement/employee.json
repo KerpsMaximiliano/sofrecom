@@ -14,5 +14,6 @@
     "userRelated": "El usuario ya se encuentra en el sistema",
     "hoursRequired": "La jornada laboral es requerida",
     "managerRequired": "El superior es requerido",
+    "officeRequired": "La oficina es requerida",
     "billingPercentageRequired": "El % de facturabilidad es requerido"
 }

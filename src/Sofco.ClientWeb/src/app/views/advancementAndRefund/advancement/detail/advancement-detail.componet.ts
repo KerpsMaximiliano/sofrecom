@@ -74,9 +74,13 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
     }
     
     canUpdate(){
-        if(environment.draftWorkflowStateId == this.actualStateId || environment.rejectedWorkflowStateId == this.actualStateId){
-            if(this.form.userApplicantIdLogged == this.userApplicantId){
-                return true;
+        const userInfo = UserInfoService.getUserInfo();
+    
+        if(userInfo && userInfo.id && userInfo.name){
+            if(environment.draftWorkflowStateId == this.actualStateId || environment.rejectedWorkflowStateId == this.actualStateId){
+                if(userInfo.id == this.userApplicantId){
+                    return true;
+                }
             }
         }
 

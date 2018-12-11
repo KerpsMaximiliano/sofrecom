@@ -3,7 +3,7 @@ using Sofco.Domain.Models.AdvancementAndRefund;
 
 namespace Sofco.Domain.Utils
 {
-    public class AdvancementReturnForm : Option
+    public class MonthsReturn : Option
     {
         public IList<Advancement> Advancements { get; set; }
     } 

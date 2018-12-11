@@ -120,6 +120,9 @@
   <data name="CannotDoTransition" xml:space="preserve">
     <value>workflow/workflow.cannotDoTransition</value>
   </data>
+  <data name="CommentsRequired" xml:space="preserve">
+    <value>workflow/workflow.commentsRequired</value>
+  </data>
   <data name="EntityNull" xml:space="preserve">
     <value>workflow/workflow.entityNull</value>
   </data>

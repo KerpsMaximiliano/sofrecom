@@ -92,7 +92,7 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 var validatorHandler = workflowValidationStateFactory.GetInstance(transition.ValidationCode);
 
-                if (!validatorHandler.Validate(entity, response))
+                if (!validatorHandler.Validate(entity, response, parameters))
                 {
                     return response;
                 }
@@ -117,7 +117,7 @@ namespace Sofco.Service.Implementations.Workflow
             }
 
             // Create history
-            CreateHistory<TEntity, THistory>(entity, transition, currentUser);
+            CreateHistory<TEntity, THistory>(entity, transition, currentUser, parameters);
 
             // Send Notification
             SendNotification(entity, response, transition);
@@ -142,7 +142,8 @@ namespace Sofco.Service.Implementations.Workflow
             }
         }
 
-        private void CreateHistory<TEntity, THistory>(TEntity entity, WorkflowStateTransition transition, UserLiteModel currentUser)
+        private void CreateHistory<TEntity, THistory>(TEntity entity, WorkflowStateTransition transition,
+            UserLiteModel currentUser, WorkflowChangeStatusParameters parameters)
             where TEntity : WorkflowEntity
             where THistory : WorkflowHistory
         {
@@ -154,6 +155,11 @@ namespace Sofco.Service.Implementations.Workflow
                 history.CreatedDate = DateTime.UtcNow.Date;
                 history.StatusFromId = transition.ActualWorkflowStateId;
                 history.StatusToId = transition.NextWorkflowStateId;
+
+                if (parameters.Parameters.ContainsKey("comments"))
+                {
+                    history.Comment = parameters.Parameters["comments"];
+                }
 
                 history.SetEntityId(entity.Id);
 
@@ -323,7 +329,8 @@ namespace Sofco.Service.Implementations.Workflow
                 WorkflowId = transition.WorkflowId,
                 NextStateId = transition.NextWorkflowStateId,
                 NextStateDescription = transition.NextWorkflowState.ActionName,
-                WorkFlowStateType = transition.NextWorkflowState.Type
+                WorkFlowStateType = transition.NextWorkflowState.Type,
+                ParameterCode = transition.ParameterCode
             });
         }
     }

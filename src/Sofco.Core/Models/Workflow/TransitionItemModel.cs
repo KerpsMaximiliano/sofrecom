@@ -11,5 +11,7 @@ namespace Sofco.Core.Models.Workflow
         public string NextStateDescription { get; set; }
 
         public WorkflowStateType WorkFlowStateType { get; set; }
+
+        public string ParameterCode { get; set; }
     }
 }

@@ -4,5 +4,6 @@
     "transitionParametersNull": "No se pudieron recuperar los estados posibles",
     "transitionSuccess": "La transaccion fue realizada exitosamente",
     "entityNull": "La entidad no existe",
+    "commentsRequired": "Los comentarios son requeridos",
     "userHasNoAccess": "No tiene permisos para realizar esta acción"
 }

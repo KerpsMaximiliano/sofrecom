@@ -12,5 +12,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<IList<AdvancementListItem>> GetAllInProcess();
         Response<IList<AdvancementHistoryModel>> GetHistories(int id);
         Response<IList<AdvancementListItem>> GetAllFinalized(AdvancementSearchFinalizedModel model);
+        Response<bool> CanLoad();
     }
 }

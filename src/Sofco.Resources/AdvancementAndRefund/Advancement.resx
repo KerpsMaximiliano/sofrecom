@@ -132,6 +132,9 @@
   <data name="AnalyticRequired" xml:space="preserve">
     <value>advancementAndRefund/advancement.analyticRequired</value>
   </data>
+  <data name="CannotLoad" xml:space="preserve">
+    <value>advancementAndRefund/advancement.cannotLoad</value>
+  </data>
   <data name="CurrencyNotFound" xml:space="preserve">
     <value>advancementAndRefund/advancement.currencyNotFound</value>
   </data>
@@ -143,6 +146,12 @@
   </data>
   <data name="DescriptionItemRequired" xml:space="preserve">
     <value>advancementAndRefund/advancement.descriptionItemRequired</value>
+  </data>
+  <data name="MonthsReturnNotFound" xml:space="preserve">
+    <value>advancementAndRefund/advancement.monthsReturnNotFound</value>
+  </data>
+  <data name="MonthsReturnRequired" xml:space="preserve">
+    <value>advancementAndRefund/advancement.monthsReturnRequired</value>
   </data>
   <data name="MustHaveOneDetail" xml:space="preserve">
     <value>advancementAndRefund/advancement.mustHaveOneDetail</value>

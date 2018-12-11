@@ -33,4 +33,8 @@ export class AdvancementService {
     getAllFinalized(model){
         return this.http.post<any>(`${this.baseUrl}/advancement/finalized`, model);
     }
+
+    canLoad(){
+        return this.http.get<any>(`${this.baseUrl}/advancement/canLoad`);
+    }
 }

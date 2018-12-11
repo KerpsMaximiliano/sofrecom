@@ -24,8 +24,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly AppSetting settings;
         private readonly IUserData userData;
 
-        public AdvancementService(IUnitOfWork unitOfWork, 
-            ILogMailer<AdvancementService> logger, 
+        public AdvancementService(IUnitOfWork unitOfWork,
+            ILogMailer<AdvancementService> logger,
             IAdvancemenValidation validation,
             IUserData userData,
             IOptions<AppSetting> settingOptions)
@@ -166,7 +166,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var currentUser = userData.GetCurrentUser();
 
             var hasAllAccess = HasAllAccess(currentUser);
-            
+
             var advancements = unitOfWork.AdvancementRepository.GetAllFinalized(settings.WorkflowStatusDraft, model);
 
             if (hasAllAccess)
@@ -188,6 +188,44 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         }
                     }
                 }
+            }
+
+            if (!response.Data.Any())
+            {
+                response.AddWarning(Resources.Common.SearchNotFound);
+            }
+
+            return response;
+        }
+
+        public Response<bool> CanLoad()
+        {
+            var response = new Response<bool> { Data = false };
+
+            var user = userData.GetCurrentUser();
+
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(user.Email);
+
+            var analytics = unitOfWork.AnalyticRepository.GetAnalyticsByEmployee(employee.Id);
+
+            var i = 0;
+
+            while (!response.Data && i < analytics.Count)
+            {
+                if (employee.ManagerId.HasValue)
+                {
+                    if (analytics[i].ManagerId.GetValueOrDefault() == employee.ManagerId)
+                    {
+                        response.Data = true;
+                    }
+
+                    if (analytics[i].Sector.ResponsableUserId == employee.ManagerId)
+                    {
+                        response.Data = true;
+                    }
+                }
+
+                i++;
             }
 
             return response;

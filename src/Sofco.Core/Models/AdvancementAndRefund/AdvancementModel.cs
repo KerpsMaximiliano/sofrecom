@@ -14,13 +14,15 @@ namespace Sofco.Core.Models.AdvancementAndRefund
 
         public AdvancementType? Type { get; set; }
 
-        public int? AdvancementReturnFormId { get; set; }
+        public int? MonthsReturnId { get; set; }
 
         public DateTime? StartDateReturn { get; set; }
 
         public int? CurrencyId { get; set; }
 
         public string Description { get; set; }
+
+        public string AdvancementReturnForm { get; set; }
 
         public decimal? Ammount { get; set; }
 
@@ -31,25 +33,43 @@ namespace Sofco.Core.Models.AdvancementAndRefund
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.PaymentForm = PaymentForm.GetValueOrDefault();
             domain.Type = Type.GetValueOrDefault();
-            domain.AdvancementReturnFormId = AdvancementReturnFormId.GetValueOrDefault();
-            domain.StartDateReturn = StartDateReturn.GetValueOrDefault().Date;
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
             domain.Description = Description;
             domain.Ammount = Ammount.GetValueOrDefault();
 
+            if (domain.Type == AdvancementType.Salary)
+            {
+                domain.MonthsReturnId = MonthsReturnId.GetValueOrDefault();
+                domain.AdvancementReturnForm = AdvancementReturnForm;
+            }
+
+            if (domain.Type == AdvancementType.Viaticum)
+            {
+                domain.StartDateReturn = StartDateReturn.GetValueOrDefault().Date;
+            }
+
             return domain;
         }
 
-        public void UpdateDomain(Advancement advancement)
+        public void UpdateDomain(Advancement domain)
         {
-            advancement.UserApplicantId = UserApplicantId.GetValueOrDefault();
-            advancement.PaymentForm = PaymentForm.GetValueOrDefault();
-            advancement.Type = Type.GetValueOrDefault();
-            advancement.AdvancementReturnFormId = AdvancementReturnFormId.GetValueOrDefault();
-            advancement.StartDateReturn = StartDateReturn.GetValueOrDefault().Date;
-            advancement.CurrencyId = CurrencyId.GetValueOrDefault();
-            advancement.Description = Description;
-            advancement.Ammount = Ammount.GetValueOrDefault();
+            domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
+            domain.PaymentForm = PaymentForm.GetValueOrDefault();
+            domain.Type = Type.GetValueOrDefault();
+            domain.CurrencyId = CurrencyId.GetValueOrDefault();
+            domain.Description = Description;
+            domain.Ammount = Ammount.GetValueOrDefault();
+
+            if (domain.Type == AdvancementType.Salary)
+            {
+                domain.MonthsReturnId = MonthsReturnId.GetValueOrDefault();
+                domain.AdvancementReturnForm = AdvancementReturnForm;
+            }
+
+            if (domain.Type == AdvancementType.Viaticum)
+            {
+                domain.StartDateReturn = StartDateReturn.GetValueOrDefault().Date;
+            }
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using Sofco.Common.Domains;
+﻿using Sofco.Common.Domains;
 
 namespace Sofco.Service.Crm.HttpClients.Interfaces
 {
@@ -7,8 +6,10 @@ namespace Sofco.Service.Crm.HttpClients.Interfaces
     {
         Result<T> Get<T>(string urlPath);
 
-        Result<T> Post<T>(string urlPath, HttpContent content);
+        Result<T> Post<T>(string urlPath, object data);
 
-        Result<T> Put<T>(string urlPath, HttpContent content);
+        Result<T> Put<T>(string urlPath, object data);
+
+        Result<T> Patch<T>(string urlPath, object data);
     }
 }

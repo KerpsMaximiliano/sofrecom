@@ -46,7 +46,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 
         public string PaymentForm { get; set; }
 
-        public decimal Margin { get; set; }
+        public decimal? Margin { get; set; }
 
         public string Comments { get; set; }
 
@@ -127,7 +127,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             domain.Description = Description;
             domain.FicheDeSignature = FicheDeSignature;
             domain.PaymentForm = PaymentForm;
-            domain.Margin = Margin;
+            domain.Margin = Margin.GetValueOrDefault();
             domain.Comments = Comments;
             domain.Proposal = string.Join(";", ProposalIds);
 

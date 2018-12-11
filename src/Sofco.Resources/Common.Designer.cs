@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Common", typeof(Common).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Common", typeof(Common).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -157,6 +156,15 @@ namespace Sofco.Resources {
         public static string SaveFileError {
             get {
                 return ResourceManager.GetString("SaveFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a common.searchNotFound.
+        /// </summary>
+        public static string SearchNotFound {
+            get {
+                return ResourceManager.GetString("SearchNotFound", resourceCulture);
             }
         }
         

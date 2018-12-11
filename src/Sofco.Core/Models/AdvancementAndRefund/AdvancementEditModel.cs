@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 
@@ -17,9 +16,10 @@ namespace Sofco.Core.Models.AdvancementAndRefund
             PaymentForm = advancement.PaymentForm;
             Type = advancement.Type;
 
-            AdvancementReturnFormId = advancement.AdvancementReturnFormId;
-            AdvancementReturnFormDesc = advancement.AdvancementReturnForm?.Text;
+            MonthsReturnId = advancement.MonthsReturnId;
+            MonthsReturnDesc = advancement.MonthsReturn?.Text;
 
+            AdvancementReturnForm = advancement.AdvancementReturnForm;
             StartDateReturn = advancement.StartDateReturn;
 
             CurrencyId = advancement.CurrencyId;
@@ -43,15 +43,15 @@ namespace Sofco.Core.Models.AdvancementAndRefund
 
         public WorkflowStateType? WorkflowStateType { get; set; }
 
-        public int AdvancementReturnFormId { get; set; }
+        public int? MonthsReturnId { get; set; }
 
-        public DateTime StartDateReturn { get; set; }
+        public DateTime? StartDateReturn { get; set; }
 
         public int CurrencyId { get; set; }
 
         public string CurrencyDesc { get; set; }
 
-        public string AdvancementReturnFormDesc { get; set; }
+        public string AdvancementReturnForm { get; set; }
 
         public string UserApplicantDesc { get; set; }
 
@@ -60,6 +60,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund
         public int StatusId { get; set; }
 
         public string Description { get; set; }
+
+        public string MonthsReturnDesc { get; set; }
 
         public decimal Ammount { get; set; }
     }

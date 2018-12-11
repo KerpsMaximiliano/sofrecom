@@ -42,8 +42,8 @@ namespace Sofco.UnitTest.Validations
             utilsRepositoryMock.Setup(x => x.ExistCurrency(2)).Returns(false);
             analyticRepositoryMock.Setup(x => x.Exist(1)).Returns(true);
             analyticRepositoryMock.Setup(x => x.Exist(2)).Returns(false);
-            utilsRepositoryMock.Setup(x => x.ExistAdvancementReturnForm(1)).Returns(true);
-            utilsRepositoryMock.Setup(x => x.ExistAdvancementReturnForm(2)).Returns(false);
+            utilsRepositoryMock.Setup(x => x.ExistMonthReturn(1)).Returns(true);
+            utilsRepositoryMock.Setup(x => x.ExistMonthReturn(2)).Returns(false);
             userRepositoryMock.Setup(x => x.ExistById(1)).Returns(true);
             userRepositoryMock.Setup(x => x.ExistById(2)).Returns(false);
 
@@ -66,10 +66,6 @@ namespace Sofco.UnitTest.Validations
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.TypeRequired)));
 
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired)));
-
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.StartDateReturnRequired)));
-
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyRequired)));
 
             model = GetInvalidModel();
@@ -80,7 +76,7 @@ namespace Sofco.UnitTest.Validations
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyNotFound)));
 
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormNotFound)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired)));
 
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Admin.User.NotFound)));
 
@@ -106,8 +102,7 @@ namespace Sofco.UnitTest.Validations
                 UserApplicantId = 2,
                 PaymentForm = AdvancementPaymentForm.OwnBank,
                 Type = AdvancementType.Salary,
-                AdvancementReturnFormId = 2,
-                StartDateReturn = DateTime.Now,
+                MonthsReturnId = 2,
                 CurrencyId = 2,
             };
         }
@@ -119,8 +114,8 @@ namespace Sofco.UnitTest.Validations
                 UserApplicantId = 1,
                 PaymentForm = AdvancementPaymentForm.OwnBank,
                 Type = AdvancementType.Salary,
-                AdvancementReturnFormId = 1,
-                StartDateReturn = DateTime.Today,
+                MonthsReturnId = 1,
+                AdvancementReturnForm = "forma retorno",
                 CurrencyId = 1,
                 Description = "description",
                 Ammount = 1
