@@ -174,5 +174,17 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.AddError(Resources.Billing.PurchaseOrder.ProposalIsRequired);
             }
         }
+
+        public static void ValidateMargin(Response<PurchaseOrder> response, PurchaseOrderModel model)
+        {
+            if (!model.Margin.HasValue)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.MarginRequired);
+            }
+            else if(model.Margin.Value <= 0 || model.Margin.Value > 100)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.MarginWrong);
+            }
+        }
     }
 }
