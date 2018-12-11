@@ -1009,8 +1009,8 @@
         "worktimeControl": {
             "title": "Control de Horas",
             "dateRange": "Desde-Hasta",
-            "businessHoursTotal": "Total de horas laborables",
-            "registeredHoursTotal": "Total de horas cargadas",
+            "businessHoursTotal": "Total de horas cargadas",
+            "registeredHoursTotal": "Total de horas aprobadas",
             "licenseHoursTotal": "Total de horas de licencias",
             "pendingHoursTotal": "Horas pendientes de carga",
             "analytic": "Analítica",

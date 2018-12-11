@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using Sofco.Domain.Crm;
+using Sofco.Domain.Crm.Billing;
 using Sofco.Service.Crm.HttpClients.Interfaces;
 using Sofco.Service.Crm.Interfaces;
 using Sofco.Service.Crm.TranslatorMaps;
@@ -8,22 +8,22 @@ using Sofco.Service.Crm.Translators.Interfaces;
 
 namespace Sofco.Service.Crm
 {
-    public class CrmOpportunityService : ICrmOpportunityService
+    public class CrmServiceService : ICrmServiceService
     {
-        private const string UrlPath = "opportunities";
+        private const string UrlPath = "as_services";
 
         private readonly ICrmApiHttpClient httpClient;
 
-        private readonly ICrmTranslator<CrmOpportunity, CrmOpportunityTranslatorMap> translator;
+        private readonly ICrmTranslator<CrmService, CrmServiceTranslatorMap> translator;
 
-        public CrmOpportunityService(ICrmApiHttpClient httpClient, 
-            ICrmTranslator<CrmOpportunity, CrmOpportunityTranslatorMap> translator)
+        public CrmServiceService(ICrmApiHttpClient httpClient, 
+            ICrmTranslator<CrmService, CrmServiceTranslatorMap> translator)
         {
             this.httpClient = httpClient;
             this.translator = translator;
         }
 
-        public List<CrmOpportunity> GetAll()
+        public List<CrmService> GetAll()
         {
             var result = httpClient.Get<JObject>(UrlPath + GetQuery());
 
@@ -32,7 +32,12 @@ namespace Sofco.Service.Crm
 
         private string GetQuery()
         {
-            return "?$select=" + translator.KeySelects();
+            return "?$select=" + translator.KeySelects() + "&" + GetFilters();
+        }
+
+        private string GetFilters()
+        {
+            return "$filter=statuscode eq 1";
         }
     }
 }

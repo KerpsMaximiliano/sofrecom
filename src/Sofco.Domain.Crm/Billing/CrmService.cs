@@ -6,7 +6,7 @@ namespace Sofco.Domain.Crm.Billing
     { 
         public string Id { get; set; }
 
-        public string Nombre { get; set; }
+        public string Name { get; set; }
 
         public string AccountId { get; set; }
 
