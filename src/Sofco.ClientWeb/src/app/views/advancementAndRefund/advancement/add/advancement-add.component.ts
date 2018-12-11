@@ -38,7 +38,7 @@ export class AdvancementAddComponent implements OnInit, OnDestroy {
 
         this.addSubscrip = this.advancementService.canLoad().subscribe(response => {
             this.messageService.closeLoading();
-            this.canLoad = true;
+            this.canLoad = response.data;
         }, 
         error => {
             this.messageService.closeLoading();

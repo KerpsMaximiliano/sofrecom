@@ -190,6 +190,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 }
             }
 
+            if (!response.Data.Any())
+            {
+                response.AddWarning(Resources.Common.SearchNotFound);
+            }
+
             return response;
         }
 
@@ -221,11 +226,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 }
 
                 i++;
-            }
-
-            if (!response.Data)
-            {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.CannotLoad);
             }
 
             return response;

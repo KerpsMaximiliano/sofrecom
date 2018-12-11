@@ -16,7 +16,9 @@ import { FormsModule } from "@angular/forms";
 
     providers   : [ WorkflowService, MessageService ],
 
-    exports     : [ WorkflowComponent] 
+    exports     : [ WorkflowComponent],
+
+    entryComponents : [ WfRejectComponent ] 
 })
 
 export class WorkflowModule {} 

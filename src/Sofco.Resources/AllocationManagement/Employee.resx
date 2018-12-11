@@ -153,6 +153,9 @@
   <data name="NotFound" xml:space="preserve">
     <value>allocationManagement/employee.notFound</value>
   </data>
+  <data name="OfficeRequired" xml:space="preserve">
+    <value>allocationManagement/employee.officeRequired</value>
+  </data>
   <data name="PhoneRequired" xml:space="preserve">
     <value>allocationManagement/employee.phoneRequired</value>
   </data>
