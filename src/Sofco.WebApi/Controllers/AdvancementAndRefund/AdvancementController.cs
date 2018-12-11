@@ -85,5 +85,13 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("canLoad")]
+        public IActionResult CanLoad()
+        {
+            var response = advancementService.CanLoad();
+
+            return this.CreateResponse(response);
+        }
     }
 }

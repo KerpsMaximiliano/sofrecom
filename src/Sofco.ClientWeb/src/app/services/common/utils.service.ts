@@ -40,7 +40,7 @@ export class UtilsService {
     return this.http.get<any>(`${this.apiUrl}/userDelegateTypes`);
   }
 
-  getAdvancementReturnForms(): any {
-    return this.http.get<any>(`${this.apiUrl}/advancementReturnForms`);
+  getMonthsReturn(): any {
+    return this.http.get<any>(`${this.apiUrl}/monthsReturn`);
   }
 }

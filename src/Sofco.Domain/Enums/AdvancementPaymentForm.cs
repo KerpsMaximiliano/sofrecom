@@ -3,6 +3,6 @@
     public enum AdvancementPaymentForm
     {
         OwnBank = 1,
-        Others = 2
+        ForeignCurrency = 2
     }
 }

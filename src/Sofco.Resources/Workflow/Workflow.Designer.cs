@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.Workflow {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.Workflow {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Workflow.Workflow", typeof(Workflow).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Workflow.Workflow", typeof(Workflow).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -67,6 +66,15 @@ namespace Sofco.Resources.Workflow {
         public static string CannotDoTransition {
             get {
                 return ResourceManager.GetString("CannotDoTransition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.commentsRequired.
+        /// </summary>
+        public static string CommentsRequired {
+            get {
+                return ResourceManager.GetString("CommentsRequired", resourceCulture);
             }
         }
         

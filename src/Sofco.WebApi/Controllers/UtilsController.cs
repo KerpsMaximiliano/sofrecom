@@ -75,10 +75,10 @@ namespace Sofco.WebApi.Controllers
             return Ok(utilsService.GetUserDelegateType());
         }
 
-        [HttpGet("advancementReturnForms")]
-        public IActionResult GetAdvancementReturnForms()
+        [HttpGet("monthsReturn")]
+        public IActionResult GetMonthsReturn()
         {
-            return Ok(utilsService.GetAdvancementReturnForms());
+            return Ok(utilsService.GetMonthsReturn());
         }
     }
 }

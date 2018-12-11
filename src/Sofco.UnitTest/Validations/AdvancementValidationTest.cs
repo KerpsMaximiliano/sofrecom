@@ -42,8 +42,8 @@ namespace Sofco.UnitTest.Validations
             utilsRepositoryMock.Setup(x => x.ExistCurrency(2)).Returns(false);
             analyticRepositoryMock.Setup(x => x.Exist(1)).Returns(true);
             analyticRepositoryMock.Setup(x => x.Exist(2)).Returns(false);
-            utilsRepositoryMock.Setup(x => x.ExistAdvancementReturnForm(1)).Returns(true);
-            utilsRepositoryMock.Setup(x => x.ExistAdvancementReturnForm(2)).Returns(false);
+            utilsRepositoryMock.Setup(x => x.ExistMonthReturn(1)).Returns(true);
+            utilsRepositoryMock.Setup(x => x.ExistMonthReturn(2)).Returns(false);
             userRepositoryMock.Setup(x => x.ExistById(1)).Returns(true);
             userRepositoryMock.Setup(x => x.ExistById(2)).Returns(false);
 
@@ -106,7 +106,7 @@ namespace Sofco.UnitTest.Validations
                 UserApplicantId = 2,
                 PaymentForm = AdvancementPaymentForm.OwnBank,
                 Type = AdvancementType.Salary,
-                AdvancementReturnFormId = 2,
+                MonthsReturnId = 2,
                 StartDateReturn = DateTime.Now,
                 CurrencyId = 2,
             };
@@ -119,7 +119,7 @@ namespace Sofco.UnitTest.Validations
                 UserApplicantId = 1,
                 PaymentForm = AdvancementPaymentForm.OwnBank,
                 Type = AdvancementType.Salary,
-                AdvancementReturnFormId = 1,
+                MonthsReturnId = 1,
                 StartDateReturn = DateTime.Today,
                 CurrencyId = 1,
                 Description = "description",

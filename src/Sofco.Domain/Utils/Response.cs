@@ -4,7 +4,7 @@ using Sofco.Domain.Enums;
 
 namespace Sofco.Domain.Utils
 {
-    public class Response<T> : Response where T : class
+    public class Response<T> : Response
     {
         public T Data { get; set; }
     }

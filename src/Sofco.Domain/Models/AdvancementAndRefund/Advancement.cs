@@ -12,15 +12,17 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
 
         public AdvancementType Type { get; set; }
 
-        public int AdvancementReturnFormId { get; set; }
-        public AdvancementReturnForm AdvancementReturnForm { get; set; }
+        public int? MonthsReturnId { get; set; }
+        public MonthsReturn MonthsReturn { get; set; }
 
-        public DateTime StartDateReturn { get; set; }
+        public DateTime? StartDateReturn { get; set; }
 
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public string AdvancementReturnForm { get; set; }
 
         public string Description { get; set; }
 

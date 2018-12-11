@@ -92,9 +92,9 @@ namespace Sofco.Service.Implementations.Common
             }
         }
 
-        public IList<AdvancementReturnForm> GetAdvancementReturnForms()
+        public IList<MonthsReturn> GetMonthsReturn()
         {
-            return unitOfWork.UtilsRepository.GetAdvancementReturnForms();
+            return unitOfWork.UtilsRepository.GetMonthsReturn();
         }
 
         public IEnumerable<Option> GetYears()

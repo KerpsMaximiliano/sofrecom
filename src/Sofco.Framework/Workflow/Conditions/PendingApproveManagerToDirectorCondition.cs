@@ -34,7 +34,7 @@ namespace Sofco.Framework.Workflow.Conditions
 
             var advancement = (Advancement)entity;
 
-            var value = GetValueSetting(advancement.CurrencyId);
+            var value = GetValueSetting(advancement.CurrencyId); 
 
             if (advancement.Ammount > value)
             {

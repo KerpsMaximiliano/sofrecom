@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20181207180407_RefactorAdvancement2")]
+    partial class RefactorAdvancement2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,11 +256,11 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<bool>("InWorkflowProcess");
 
-                    b.Property<int?>("MonthsReturnId");
+                    b.Property<int>("MonthsReturnId");
 
                     b.Property<int>("PaymentForm");
 
-                    b.Property<DateTime?>("StartDateReturn");
+                    b.Property<DateTime>("StartDateReturn");
 
                     b.Property<int>("StatusId");
 
@@ -1778,9 +1780,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("NextWorkflowStateId");
 
                     b.Property<string>("NotificationCode")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("ParameterCode")
                         .HasMaxLength(50);
 
                     b.Property<string>("ValidationCode")

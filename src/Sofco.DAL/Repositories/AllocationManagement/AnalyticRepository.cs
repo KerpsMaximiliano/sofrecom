@@ -8,6 +8,7 @@ using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -63,7 +64,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             return context.Allocations
                 .Where(x => x.EmployeeId == employeeId && x.StartDate.Month == today.Month && x.StartDate.Year == today.Year)
-                .Include(x => x.Analytic).ThenInclude(x => x.Manager)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Manager)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Sector)
                 .Select(x => new Analytic
                 {
                     Id = x.Id,
@@ -71,6 +75,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     {
                         Id = x.Analytic.Manager.Id,
                         Email = x.Analytic.Manager.Email
+                    },
+                    Sector = new Sector
+                    {
+                        Id = x.Analytic.SectorId,
+                        ResponsableUserId = x.Analytic.Sector.ResponsableUserId
                     }
                 })
                 .ToList();

@@ -34,6 +34,6 @@ namespace Sofco.Core.Services.Common
 
         IEnumerable<Option> GetCloseMonths();
 
-        IList<AdvancementReturnForm> GetAdvancementReturnForms();
+        IList<MonthsReturn> GetMonthsReturn();
     }
 }

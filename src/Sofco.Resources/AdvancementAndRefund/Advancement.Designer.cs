@@ -106,6 +106,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.cannotLoad.
+        /// </summary>
+        public static string CannotLoad {
+            get {
+                return ResourceManager.GetString("CannotLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/advancement.currencyNotFound.
         /// </summary>
         public static string CurrencyNotFound {
@@ -138,6 +147,24 @@ namespace Sofco.Resources.AdvancementAndRefund {
         public static string DescriptionItemRequired {
             get {
                 return ResourceManager.GetString("DescriptionItemRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.monthsReturnNotFound.
+        /// </summary>
+        public static string MonthsReturnNotFound {
+            get {
+                return ResourceManager.GetString("MonthsReturnNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.monthsReturnRequired.
+        /// </summary>
+        public static string MonthsReturnRequired {
+            get {
+                return ResourceManager.GetString("MonthsReturnRequired", resourceCulture);
             }
         }
         

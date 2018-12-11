@@ -2,6 +2,7 @@
 using Sofco.Core.DAL;
 using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.Validations.AdvancementAndRefund
@@ -58,11 +59,28 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             ValidateUser(model, response);
             ValidatePaymentForm(model, response);
             ValidateType(model, response);
-            ValidateAdvancementReturnForm(model, response);
-            ValidateStartDateReturn(model, response);
             ValidateCurrency(model, response);
             ValidateDescription(model, response);
             ValidateAmmount(model, response);
+
+            if (model.Type.GetValueOrDefault() == AdvancementType.Viaticum)
+            {
+                ValidateStartDateReturn(model, response);
+            }
+
+            if (model.Type.GetValueOrDefault() == AdvancementType.Salary)
+            {
+                ValidateMonthReturn(model, response);
+                ValidateAdvancementReturnForm(model, response);
+            }
+        }
+
+        private void ValidateAdvancementReturnForm(AdvancementModel model, Response response)
+        {
+            if (string.IsNullOrWhiteSpace(model.AdvancementReturnForm))
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired);
+            }
         }
 
         private void ValidateCurrency(AdvancementModel model, Response response)
@@ -105,15 +123,15 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             }
         }
 
-        private void ValidateAdvancementReturnForm(AdvancementModel model, Response response)
+        private void ValidateMonthReturn(AdvancementModel model, Response response)
         {
-            if (!model.AdvancementReturnFormId.HasValue || model.AdvancementReturnFormId.Value <= 0)
+            if (!model.MonthsReturnId.HasValue || model.MonthsReturnId.Value <= 0)
             {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormRequired);
+                response.AddError(Resources.AdvancementAndRefund.Advancement.MonthsReturnRequired);
             }
-            else if (!unitOfWork.UtilsRepository.ExistAdvancementReturnForm(model.AdvancementReturnFormId.Value))
+            else if (!unitOfWork.UtilsRepository.ExistMonthReturn(model.MonthsReturnId.Value))
             {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.AdvancementReturnFormNotFound);
+                response.AddError(Resources.AdvancementAndRefund.Advancement.MonthsReturnNotFound);
             }
         }
 
