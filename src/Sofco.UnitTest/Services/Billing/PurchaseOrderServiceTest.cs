@@ -136,6 +136,7 @@ namespace Sofco.UnitTest.Services.Billing
                 ProposalIds = new []{ "1" },
                 ClientExternalId = "Client",
                 AreaId = 1,
+                Margin = 10,
                 StartDate = DateTime.Today,
                 EndDate = DateTime.Today.AddDays(1),
                 AmmountDetails = new List<PurchaseOrderAmmountDetailModel>
