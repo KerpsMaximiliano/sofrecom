@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sofco.Common\Sofco.Common.csproj" />
+    <ProjectReference Include="..\Sofco.Core\Sofco.Core.csproj" />
     <ProjectReference Include="..\Sofco.Domain.Crm\Sofco.Domain.Crm.csproj" />
   </ItemGroup>
 
