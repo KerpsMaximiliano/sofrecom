@@ -200,7 +200,7 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
                 this.currenciesFiltered = this.currencies.filter(x => x.id != environment.currencyPesosId);
             }
             else{
-                this.currenciesFiltered = this.currencies; 
+                this.currenciesFiltered = this.currencies.filter(x => x.id == environment.currencyPesosId);
             }
         }
     }
