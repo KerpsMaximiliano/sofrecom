@@ -50,25 +50,25 @@
 
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group" [ngClass]="getClassProperty('ammount')">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'ammount')">
                 <label class="control-label">{{ 'advancement.ammount' | translate }}</label>
                 <input type="number" decimalFormat class="form-control" formControlName="ammount">
     
-                <div class="form-control-feedback" *ngIf="hasErrors('ammount')">
-                    <p *ngIf="hasError('ammount', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemRequired') }}</p>
-                    <p *ngIf="hasError('ammount', 'max')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemMax') }}</p>
-                    <p *ngIf="hasError('ammount', 'min')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemMin') }}</p>
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'ammount')">
+                    <p *ngIf="formsService.hasError(form, 'ammount', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemRequired') }}</p>
+                    <p *ngIf="formsService.hasError(form, 'ammount', 'max')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemMax') }}</p>
+                    <p *ngIf="formsService.hasError(form, 'ammount', 'min')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemMin') }}</p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-6">
-            <div class="form-group" [ngClass]="getClassProperty('currencyId')">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'currencyId')">
                 <label class="control-label"> {{ 'advancement.currency' | translate }} </label>
                 <ng-select [items]="currenciesFiltered" bindValue="id" bindLabel="text" formControlName="currencyId"></ng-select>
 
-                <div class="form-control-feedback" *ngIf="hasErrors('currencyId')">
-                    <p *ngIf="hasError('currencyId', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','currencyRequired') }}</p>
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'currencyId')">
+                    <p *ngIf="formsService.hasError(form, 'currencyId', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','currencyRequired') }}</p>
                 </div>
             </div>
         </div>
@@ -76,46 +76,46 @@
 
     <div class="row">
         <div class="col-md-6" [hidden]="!isSalary">
-            <div class="form-group" [ngClass]="getClassProperty('monthsReturnId')">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'monthsReturnId')">
                 <label class="control-label"> {{ 'advancement.monthsReturn' | translate }} </label>
                 <ng-select [items]="monthsReturns" bindValue="id" bindLabel="text" formControlName="monthsReturnId"></ng-select>
 
-                <div class="form-control-feedback" *ngIf="hasErrors('monthsReturnId')">
-                    <p *ngIf="hasError('monthsReturnId', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','monthsReturnRequired') }}</p>
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'monthsReturnId')">
+                    <p *ngIf="formsService.hasError(form, 'monthsReturnId', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','monthsReturnRequired') }}</p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-6" [hidden]="isSalary">
-                <div class="form-group" [ngClass]="getClassProperty('startDateReturn')">
+                <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'startDateReturn')">
                     <label class="control-label">{{ 'advancement.startDateReturn' | translate }}</label>
                     <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="startDateReturn">
     
-                    <div class="form-control-feedback" *ngIf="hasErrors('startDateReturn')">
-                        <p *ngIf="hasError('startDateReturn', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','startDateReturnRequired') }}</p>
+                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'startDateReturn')">
+                        <p *ngIf="formsService.hasError(form, 'startDateReturn', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','startDateReturnRequired') }}</p>
                     </div>
                 </div>
             </div>
 
         <div class="col-md-6" [hidden]="!isSalary">
-            <div class="form-group" [ngClass]="getClassProperty('advancementReturnForm')">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'advancementReturnForm')">
                 <label class="control-label">{{ 'advancement.advancementReturnForm' | translate }}</label>
                 <input type="text" maxlength="200" class="form-control" formControlName="advancementReturnForm">
     
-                <div class="form-control-feedback" *ngIf="hasErrors('advancementReturnForm')">
-                    <p *ngIf="hasError('advancementReturnForm', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','advancementReturnFormRequired') }}</p>
-                    <p *ngIf="hasError('advancementReturnForm', 'maxLength')">{{ i18nService.translate('advancementAndRefund/advancement','advancementReturnFormMaxLength') }}</p>
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'advancementReturnForm')">
+                    <p *ngIf="formsService.hasError(form, 'advancementReturnForm', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','advancementReturnFormRequired') }}</p>
+                    <p *ngIf="formsService.hasError(form, 'advancementReturnForm', 'maxLength')">{{ i18nService.translate('advancementAndRefund/advancement','advancementReturnFormMaxLength') }}</p>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="form-group" [ngClass]="getClassProperty('description')">
+    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'description')">
         <label class="control-label">{{ 'advancement.description' | translate }}</label>
         <textarea rows="6" class="form-control" formControlName="description" maxlength="1000"></textarea>
 
-        <div class="form-control-feedback" *ngIf="hasErrors('description')">
-            <p *ngIf="hasError('description', 'maxLength')">{{ i18nService.translate('advancementAndRefund/advancement','descriptionItemMaxLength') }}</p>
+        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'description')">
+            <p *ngIf="formsService.hasError(form, 'description', 'maxLength')">{{ i18nService.translate('advancementAndRefund/advancement','descriptionItemMaxLength') }}</p>
         </div>
     </div>
 </form>
