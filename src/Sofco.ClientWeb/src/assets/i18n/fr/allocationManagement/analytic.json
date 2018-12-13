@@ -14,5 +14,6 @@
 	"updateSuccess": "Analytics mis à jour avec succès",
 	"closeSuccess": "Les analyses ont été fermées avec succès",
 	"serviceAlreadyRelated": "Il existe déjà une analyse liée au service",
-	"wrongMonthQuantity": "Les mois à afficher doivent être supérieurs ou égaux à 1 et inférieurs ou égaux à 36"
+	"wrongMonthQuantity": "Les mois à afficher doivent être supérieurs ou égaux à 1 et inférieurs ou égaux à 36",
+	"noCrmUpdateNullManagerId": "An update on CRM was not processed due to a missing ManagerId value."
 }
