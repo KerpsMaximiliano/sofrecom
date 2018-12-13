@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using Sofco.Domain.Crm.Billing;
+using Sofco.Domain.Crm;
 using Sofco.Service.Crm.HttpClients.Interfaces;
 using Sofco.Service.Crm.Interfaces;
 using Sofco.Service.Crm.TranslatorMaps;

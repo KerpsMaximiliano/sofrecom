@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Sofco.Common.Domains;
 using Sofco.Core.Logger;
-using Sofco.Domain.Crm.Billing;
+using Sofco.Domain.Crm;
 using Sofco.Service.Crm.HttpClients.Interfaces;
 using Sofco.Service.Crm.Interfaces;
+using Sofco.Service.Crm.Settings;
 using Sofco.Service.Crm.TranslatorMaps;
 using Sofco.Service.Crm.Translators.Interfaces;
 
@@ -21,12 +24,16 @@ namespace Sofco.Service.Crm
 
         private readonly ILogMailer<CrmServiceService> logger;
 
+        private readonly CrmSetting crmSetting;
+
         public CrmServiceService(ICrmApiHttpClient httpClient, 
-            ICrmTranslator<CrmService, CrmServiceTranslatorMap> translator, ILogMailer<CrmServiceService> logger)
+            ICrmTranslator<CrmService, CrmServiceTranslatorMap> translator, 
+            ILogMailer<CrmServiceService> logger, IOptions<CrmSetting> crmOptions)
         {
             this.httpClient = httpClient;
             this.translator = translator;
             this.logger = logger;
+            crmSetting = crmOptions.Value;
         }
 
         public List<CrmService> GetAll()
@@ -39,6 +46,11 @@ namespace Sofco.Service.Crm
         public Result ActivateService(Guid serviceId, bool activate = true)
         {
             var result = new Result();
+
+            if (serviceId == Guid.Empty)
+            {
+                return result;
+            }
 
             try
             {
@@ -63,6 +75,40 @@ namespace Sofco.Service.Crm
             return ActivateService(serviceId, false);
         }
 
+        public Result Update(CrmServiceUpdate crmServiceUpdate)
+        {
+            var result = new Result();
+
+            if (crmServiceUpdate.Id == Guid.Empty)
+            {
+                return result;
+            }
+
+            var serviceId = crmServiceUpdate.Id;
+
+            var content = new JObject { ["as_analitica"] = crmServiceUpdate.AnalyticTitle };
+
+            if (crmServiceUpdate.ManagerId.HasValue)
+            {
+                content["as_projectmanagerid@odata.bind"] = GetCrmUserUrl(crmServiceUpdate.ManagerId.Value);
+            }
+
+            try
+            {
+                httpClient.Patch<JObject>(UrlPath + "(" + serviceId + ")", content);
+            }
+            catch (Exception ex)
+            {
+                var msg = "CrmServiceId: " + serviceId + " - data: " + JsonConvert.SerializeObject(content);
+
+                logger.LogError(msg, ex);
+
+                result.AddError(msg);
+            }
+
+            return result;
+        }
+
         private string GetQuery()
         {
             return "?$select=" + translator.KeySelects() + "&" + GetFilters();
@@ -71,6 +117,11 @@ namespace Sofco.Service.Crm
         private string GetFilters()
         {
             return "$filter=statuscode eq 1";
+        }
+
+        private string GetCrmUserUrl(Guid crmUserId)
+        {
+            return crmSetting.UrlApi + "systemusers(" + crmUserId + ")";
         }
     }
 }

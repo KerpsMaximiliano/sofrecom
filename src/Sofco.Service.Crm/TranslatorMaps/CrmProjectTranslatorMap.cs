@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Sofco.Domain.Crm.Billing;
+using Sofco.Domain.Crm;
 using Sofco.Service.Crm.TranslatorMaps.Interfaces;
 
 namespace Sofco.Service.Crm.TranslatorMaps

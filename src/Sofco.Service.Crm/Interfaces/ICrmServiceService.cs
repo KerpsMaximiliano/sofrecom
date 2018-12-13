@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Domain.Crm.Billing;
+using Sofco.Domain.Crm;
 
 namespace Sofco.Service.Crm.Interfaces
 {
@@ -12,5 +12,7 @@ namespace Sofco.Service.Crm.Interfaces
         Result ActivateService(Guid serviceId, bool activate = true);
 
         Result DeactivateService(Guid serviceId);
+
+        Result Update(CrmServiceUpdate crmServiceUpdate);
     }
 }

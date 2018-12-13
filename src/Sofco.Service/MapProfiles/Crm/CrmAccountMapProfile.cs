@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Sofco.Domain.Crm;
-using Sofco.Domain.Crm.Billing;
+using Sofco.Domain.Crm;
 using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Service.MapProfiles.Crm

@@ -1,4 +1,4 @@
-﻿namespace Sofco.Domain.Crm.Billing
+﻿namespace Sofco.Domain.Crm
 {
     public class CrmCustomer
     {

@@ -138,6 +138,9 @@
   <data name="NameIsRequired" xml:space="preserve">
     <value>allocationManagement/analytic.nameIsRequired</value>
   </data>
+  <data name="NoCrmUpdateNullManagerId" xml:space="preserve">
+    <value>allocationManagement/analytic.noCrmUpdateNullManagerId</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>allocationManagement/analytic.notFound</value>
   </data>

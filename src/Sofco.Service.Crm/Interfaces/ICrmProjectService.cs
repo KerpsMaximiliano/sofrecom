@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Sofco.Domain.Crm.Billing;
+using Sofco.Domain.Crm;
 
 namespace Sofco.Service.Crm.Interfaces
 {
