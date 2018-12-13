@@ -156,7 +156,7 @@ namespace Sofco.Service.Implementations.Workflow
                 history.StatusFromId = transition.ActualWorkflowStateId;
                 history.StatusToId = transition.NextWorkflowStateId;
 
-                if (parameters.Parameters.ContainsKey("comments"))
+                if (parameters.Parameters != null && parameters.Parameters.ContainsKey("comments"))
                 {
                     history.Comment = parameters.Parameters["comments"];
                 }
