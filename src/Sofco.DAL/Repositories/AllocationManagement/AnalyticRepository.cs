@@ -71,6 +71,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Select(x => new Analytic
                 {
                     Id = x.Id,
+                    ManagerId = x.Analytic.ManagerId,
                     Manager = new User
                     {
                         Id = x.Analytic.Manager.Id,
