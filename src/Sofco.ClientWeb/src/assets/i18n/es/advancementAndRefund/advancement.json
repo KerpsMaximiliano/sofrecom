@@ -21,6 +21,6 @@
     "notFound": "Solicitud de adelanto no encontrada",
     "monthsReturnNotFound": "Mes de devolucion no encontrado",
     "monthsReturnRequired": "Mes de devolucion es requerido",
-    "cannotLoad": "Su superior no tiene privilegios para autorizar un adelanto de sueldo. Por favor comuniquese con recursos humanos",
+    "cannotLoad": "Su superior no tiene privilegios para autorizar un adelanto. Por favor comuniquese con recursos humanos",
     "startDateReturnLessThanToday": "La fecha aproximada de devolucion no puede ser menor a hoy"
 }

@@ -12,6 +12,7 @@ import { AdvancementFormComponent } from "./advancement-form.component";
 import { NgModule } from "@angular/core";
 import { UtilsService } from "app/services/common/utils.service";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { FormsService } from "app/services/forms/forms.service";
 
 @NgModule({
     imports: [
@@ -22,7 +23,7 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
         AdvancementFormComponent
     ],
     providers: [
-        UtilsService, AnalyticService
+        UtilsService, AnalyticService, FormsService
     ],
     exports: [
         AdvancementFormComponent

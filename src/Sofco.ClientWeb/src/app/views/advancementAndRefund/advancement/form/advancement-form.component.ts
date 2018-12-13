@@ -6,6 +6,7 @@ import { UserInfoService } from "app/services/common/user-info.service";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
 import { environment } from 'environments/environment'
 import { Advancement } from "app/models/advancement-and-refund/advancement";
+import { FormsService } from "app/services/forms/forms.service";
 
 @Component({
     selector: 'advancement-form',
@@ -36,6 +37,7 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     getMonthsReturnSubscrip: Subscription;
 
     constructor(private utilsService: UtilsService,
+                public formsService: FormsService,
                 public i18nService: I18nService){}
 
     ngOnInit(): void {
@@ -76,33 +78,8 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
         });
     }
 
-    getClassProperty(property){
-        if(!this.form || !this.form.controls[property]) return;
-
-        if(this.form.controls[property].invalid && (this.form.controls[property].dirty || this.form.controls[property].touched)) return 'has-error';
-        if(this.form.controls[property].valid && (this.form.controls[property].dirty || this.form.controls[property].touched)) return 'has-success';
-    }
-
-    hasErrors(property){
-        if(!this.form || !this.form.controls[property]) return;
-
-        if(this.form.controls[property].invalid && (this.form.controls[property].dirty || this.form.controls[property].touched)){
-            return this.form.controls[property].errors;
-        }
-
-        return false;
-    }
-
-    hasError(property, validation){
-        if(!this.form || !this.form.controls[property]) return;
-
-        return this.form.controls[property].errors[validation];
-    }
-
     canSave(){
-        if(this.form.valid) return true;
-        
-        return false;
+        return this.formsService.canSave(this.form);
     }
 
     setModel(domain, isEdit){
@@ -200,7 +177,7 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
                 this.currenciesFiltered = this.currencies.filter(x => x.id != environment.currencyPesosId);
             }
             else{
-                this.currenciesFiltered = this.currencies; 
+                this.currenciesFiltered = this.currencies.filter(x => x.id == environment.currencyPesosId);
             }
         }
     }
