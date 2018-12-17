@@ -30,5 +30,11 @@ namespace Sofco.Domain.Models.Workflow
         public IEnumerable<AdvancementHistory> AdvancementHistories { get; set; }
 
         public IEnumerable<AdvancementHistory> AdvancementHistories2 { get; set; }
+
+        public IEnumerable<Refund> Refunds { get; set; }
+
+        public IEnumerable<RefundHistory> RefundHistories { get; set; }
+
+        public IEnumerable<RefundHistory> RefundHistories2 { get; set; }
     }
 }

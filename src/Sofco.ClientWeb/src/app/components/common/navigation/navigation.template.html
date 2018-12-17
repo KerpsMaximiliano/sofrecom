@@ -57,6 +57,7 @@
         <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">{{'advancement.navigationTitle' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('advancementAndRefund')}">
             <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasFunctionality('ADVAN', 'QUERY')"><a [routerLink]="['/advancementAndRefund/advancement/search']">{{'advancement.search' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasFunctionality('ADVAN', 'QUERY-REFUND')"><a [routerLink]="['/advancementAndRefund/refund/search']">{{'refund.search' | translate }}</a></li>
         </ul>
       </li> 
  
@@ -96,6 +97,7 @@
           <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('PROFI', 'ALTA') && !isExternal"><a [routerLink]="['/profile/licenses/add']">{{ 'rrhh.license.load' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('workTime')}" *ngIf="menuService.hasFunctionality('PROFI', 'WORKT')"><a [routerLink]="['/profile/workTime']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('advancement')}" *ngIf="menuService.hasFunctionality('PROFI', 'ADD')"><a [routerLink]="['/profile/advancement/add']">{{'advancement.addTitle' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('refund')}" *ngIf="menuService.hasFunctionality('PROFI', 'ADD-REFUND')"><a [routerLink]="['/profile/refund/add']">{{'refund.addTitle' | translate }}</a></li>
         </ul>
       </li>
 

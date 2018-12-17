@@ -2,13 +2,11 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AdvancementAndRefund;
-using Sofco.Core.Models;
 using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
-using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AdvancementAndRefund
 {

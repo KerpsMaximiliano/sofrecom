@@ -86,9 +86,10 @@ namespace Sofco.Core.DAL
 
         #endregion
 
-        #region WorkTimeManagement
+        #region Advancements
 
         IAdvancementRepository AdvancementRepository { get; }
+        IRefundRepository RefundRepository { get; }
 
         #endregion
 

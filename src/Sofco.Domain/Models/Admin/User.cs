@@ -70,5 +70,8 @@ namespace Sofco.Domain.Models.Admin
 
         public IList<Workflow.WorkflowType> WorkflowTypes2 { get; set; }
         public IList<Workflow.WorkflowType> WorkflowTypes { get; set; }
+
+        public IList<Refund> Refunds { get; set; }
+        public IList<Refund> Refunds2 { get; set; }
     }
 }

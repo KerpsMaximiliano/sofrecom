@@ -104,9 +104,10 @@ namespace Sofco.DAL
 
         #endregion
 
-        #region WorkTimeManagement
+        #region Advancements
 
         private IAdvancementRepository advancementRepository;
+        private IRefundRepository refundRepository;
 
         #endregion
 
@@ -201,9 +202,10 @@ namespace Sofco.DAL
 
         #endregion
 
-        #region WorkTimeManagement
+        #region Advancements
 
         public IAdvancementRepository AdvancementRepository => advancementRepository ?? (advancementRepository = new AdvancementRepository(context));
+        public IRefundRepository RefundRepository => refundRepository ?? (refundRepository = new RefundRepository(context));
 
         #endregion
 

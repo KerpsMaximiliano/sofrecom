@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
-using Sofco.Core.Models;
 using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
-using Sofco.Domain.Utils;
 
 namespace Sofco.Core.DAL.AdvancementAndRefund
 {
