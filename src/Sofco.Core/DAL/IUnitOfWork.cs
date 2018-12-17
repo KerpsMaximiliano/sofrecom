@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
@@ -52,6 +53,7 @@ namespace Sofco.Core.DAL
         IEmployeeSyncActionRepository EmployeeSyncActionRepository { get; }
         IEmployeeHistoryRepository EmployeeHistoryRepository { get; }
         IEmployeeProfileHistoryRepository EmployeeProfileHistoryRepository { get; }
+        IEmployeeEndNotificationRepository EmployeeEndNotificationRepository { get; }
         IHealthInsuranceRepository HealthInsuranceRepository { get; }
         IPrepaidHealthRepository PrepaidHealthRepository { get; }
 
@@ -81,6 +83,13 @@ namespace Sofco.Core.DAL
         IWorkTimeRepository WorkTimeRepository { get; }
 
         IHolidayRepository HolidayRepository { get; }
+
+        #endregion
+
+        #region WorkTimeManagement
+
+        IAdvancementRepository AdvancementRepository { get; }
+
         #endregion
 
         void BeginTransaction();

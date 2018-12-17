@@ -732,3 +732,21 @@ bs-datepicker-container {
   overflow: unset!important;
   white-space: inherit!important;
 }
+
+.has-error {
+  .ng-select-container {
+    border-color: $red;
+  }
+}
+
+.has-success {
+  .ng-select-container {
+    border-color: $navy;
+  }
+}
+
+.form-control-feedback {
+  width: 100%!important;
+  position: initial!important;
+  text-align: left!important;
+}

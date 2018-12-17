@@ -26,6 +26,8 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         ICollection<Analytic> GetAllOpenReadOnly();
 
+        List<AnalyticLiteModel> GetAllOpenAnalyticLite();
+
         Analytic GetByService(string serviceId);
 
         List<Analytic> GetByServiceIds(List<string> serviceIds);
@@ -39,6 +41,8 @@ namespace Sofco.Core.DAL.AllocationManagement
         List<AnalyticLiteModel> GetAnalyticLiteByManagerId(int managerId);
 
         AnalyticLiteModel GetAnalyticLiteById(int id);
+
+        List<AnalyticLiteModel> GetAnalyticLiteByIds(List<int> ids);
 
         IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId, int userId, DateTime dateFrom, DateTime dateTo);
 

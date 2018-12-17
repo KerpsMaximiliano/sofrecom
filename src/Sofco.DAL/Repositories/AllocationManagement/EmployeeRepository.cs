@@ -8,6 +8,7 @@ using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -24,7 +25,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public new ICollection<Employee> GetAll()
         {
-            return context.Employees.Where(x => x.EndDate == null && !x.IsExternal).ToList();
+            return context.Employees.Include(x => x.Manager).Where(x => x.EndDate == null && !x.IsExternal).ToList();
         }
 
         public List<Employee> GetByEmployeeNumber(string[] employeeNumbers)
@@ -72,9 +73,22 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Where(x => ids.Contains(x.Id)).ToList();
         }
 
+        public IList<Sector> GetAnalyticsWithSector(int employeeId)
+        {
+            var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).Date;
+
+            return context.Allocations
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Sector)
+                        .ThenInclude(x => x.ResponsableUser)
+                .Where(x => x.EmployeeId == employeeId && x.StartDate.Date == today)
+                .Select(x => x.Analytic.Sector)
+                .ToList();
+        }
+
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {
-            IQueryable<Employee> query = context.Employees;
+            IQueryable<Employee> query = context.Employees.Include(x => x.Manager);
 
             if (parameters.Unassigned)
             {
@@ -279,7 +293,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public Employee GetByEmail(string email)
         {
-            return context.Employees.SingleOrDefault(x => x.Email == email);
+            return context.Employees.Include(x => x.Manager).SingleOrDefault(x => x.Email == email);
         }
 
         public Employee GetUserInfo(string email)

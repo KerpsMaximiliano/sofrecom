@@ -92,6 +92,11 @@ namespace Sofco.Service.Implementations.Common
             }
         }
 
+        public IList<MonthsReturn> GetMonthsReturn()
+        {
+            return unitOfWork.UtilsRepository.GetMonthsReturn();
+        }
+
         public IEnumerable<Option> GetYears()
         {
             for (int i = 2018; i < 2099; i++)

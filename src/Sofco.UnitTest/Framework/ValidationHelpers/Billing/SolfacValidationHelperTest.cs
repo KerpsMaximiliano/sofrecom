@@ -52,7 +52,7 @@ namespace Sofco.UnitTest.Framework.ValidationHelpers.Billing
 
             var actualMessage = response.Messages.First();
 
-            Assert.True(Resources.Billing.Solfac.CreditNoteTotalExceededError.Contains(actualMessage.Code));
+            Assert.True(Resources.Billing.Solfac.CreditNoteTotalExceededError.Equals(actualMessage.Text));
         }
 
         private Solfac GetSolfacData()

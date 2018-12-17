@@ -97,5 +97,20 @@ namespace Sofco.DAL.Repositories.Common
         {
             return Context.Provinces.ToList().AsReadOnly();
         }
+
+        public IList<MonthsReturn> GetMonthsReturn()
+        {
+            return Context.MonthsReturns.ToList().AsReadOnly();
+        }
+
+        public bool ExistMonthReturn(int id)
+        {
+            return Context.MonthsReturns.Any(x => x.Id == id);
+        }
+
+        public bool ExistCurrency(int id)
+        {
+            return Context.Currencies.Any(x => x.Id == id);
+        }
     }
 }

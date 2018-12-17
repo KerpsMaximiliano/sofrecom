@@ -8,6 +8,7 @@ using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -63,14 +64,23 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             return context.Allocations
                 .Where(x => x.EmployeeId == employeeId && x.StartDate.Month == today.Month && x.StartDate.Year == today.Year)
-                .Include(x => x.Analytic).ThenInclude(x => x.Manager)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Manager)
+                .Include(x => x.Analytic)
+                    .ThenInclude(x => x.Sector)
                 .Select(x => new Analytic
                 {
                     Id = x.Id,
+                    ManagerId = x.Analytic.ManagerId,
                     Manager = new User
                     {
                         Id = x.Analytic.Manager.Id,
                         Email = x.Analytic.Manager.Email
+                    },
+                    Sector = new Sector
+                    {
+                        Id = x.Analytic.SectorId,
+                        ResponsableUserId = x.Analytic.Sector.ResponsableUserId
                     }
                 })
                 .ToList();
@@ -84,6 +94,18 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public ICollection<Analytic> GetAllOpenReadOnly()
         {
             return context.Analytics.Where(x => x.Status == AnalyticStatus.Open).ToList();
+        }
+
+        public List<AnalyticLiteModel> GetAllOpenAnalyticLite()
+        {
+            return context.Analytics
+                .Where(x => x.Status == AnalyticStatus.Open)
+                .Select(s => new AnalyticLiteModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Title = s.Title
+                }).ToList();
         }
 
         public Analytic GetByService(string serviceId)
@@ -141,6 +163,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 Title = s.Title
             }).FirstOrDefault();
 
+        }
+
+        public List<AnalyticLiteModel> GetAnalyticLiteByIds(List<int> ids)
+        {
+            return context.Analytics
+                .Where(s => ids.Contains(s.Id))
+                .Select(s => new AnalyticLiteModel { Id = s.Id, Name = s.Name, Title = s.Title })
+                .ToList();
         }
 
         public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId, int userId, DateTime dateFrom, DateTime dateTo)

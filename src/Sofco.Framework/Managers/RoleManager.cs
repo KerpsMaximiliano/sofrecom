@@ -68,5 +68,15 @@ namespace Sofco.Framework.Managers
 
             return hasDirectorGroup || hasCommercialGroup || hasCdgGroup || hasDafGroup;
         }
+
+        public bool IsDirector()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email)
+                             || unitOfWork.SectorRepository.HasSector(currentUser.Id);
+
+            return isDirector;
+        }
     }
 }

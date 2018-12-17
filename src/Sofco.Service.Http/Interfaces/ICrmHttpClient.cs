@@ -14,7 +14,5 @@ namespace Sofco.Service.Http.Interfaces
         Result<T> Post<T>(string urlPath, HttpContent content);
 
         Result<T> Put<T>(string urlPath, HttpContent content);
-
-        void GetAccessToken();
     }
 }

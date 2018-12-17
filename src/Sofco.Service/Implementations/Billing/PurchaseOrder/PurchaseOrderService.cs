@@ -279,6 +279,7 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
             PurchaseOrderValidationHelper.ValidateArea(response, model);
             PurchaseOrderValidationHelper.ValidateCurrency(response, model);
             PurchaseOrderValidationHelper.ValidateDates(response, model);
+            PurchaseOrderValidationHelper.ValidateMargin(response, model);
             PurchaseOrderValidationHelper.ValidateAmmount(response, model.AmmountDetails);
         }
 

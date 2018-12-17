@@ -231,4 +231,10 @@
   <data name="ProposalIsRequired" xml:space="preserve">
     <value>billing/purchaseOrder.proposalIsRequired</value>
   </data>
+  <data name="MarginRequired" xml:space="preserve">
+    <value>billing/purchaseOrder.marginRequired</value>
+  </data>
+  <data name="MarginWrong" xml:space="preserve">
+    <value>billing/purchaseOrder.marginWrong</value>
+  </data>
 </root>

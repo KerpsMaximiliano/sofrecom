@@ -47,10 +47,12 @@ namespace Sofco.Framework.StatusHandlers.License
         public IMailData GetEmailData(Domain.Models.Rrhh.License license, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters)
         {
             var subject = string.Format(MailSubjectResource.LicenseWorkflowTitle, license.Employee.Name);
-            var body = string.Format(MailMessageResource.LicenseAuthPendingMessage, $"{emailConfig.SiteUrl}rrhh/licenses/{license.Id}/detail", license.Employee.Name, license.Type.Description);
-
+            var body = string.Format(MailMessageResource.LicenseAuthPendingMessage, 
+                $"{emailConfig.SiteUrl}rrhh/licenses/{license.Id}/detail", 
+                license.Employee.Name, 
+                license.Type.Description,
+                GetComments(license));
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
-
             var recipientsList = new List<string> { mailRrhh, license.Manager.Email, license.Employee.Email };
 
             recipientsList.AddRange(licenseApproverManager.GetEmailApproversByEmployeeId(license.EmployeeId));
@@ -63,6 +65,13 @@ namespace Sofco.Framework.StatusHandlers.License
             };
 
             return data;
+        }
+
+        private string GetComments(Domain.Models.Rrhh.License license)
+        {
+            if (string.IsNullOrEmpty(license.Comments)) return string.Empty;
+
+            return MailCommonResource.Comments + ": " + license.Comments +"<br/><br/>";
         }
     }
 }

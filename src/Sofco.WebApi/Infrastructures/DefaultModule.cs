@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using Autofac;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sofco.Common.Helpers;
 using Sofco.Common.Logger;
@@ -9,14 +10,13 @@ using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
-using Sofco.Core.StatusHandlers;
 using Sofco.DAL;
 using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
-using Sofco.Framework.StatusHandlers.Invoice;
-using Sofco.Framework.StatusHandlers.License;
-using Sofco.Framework.StatusHandlers.PurchaseOrder;
-using Sofco.Framework.StatusHandlers.Solfac;
+using Sofco.Service.Crm.HttpClients;
+using Sofco.Service.Crm.HttpClients.Interfaces;
+using Sofco.Service.Crm.Translators;
+using Sofco.Service.Crm.Translators.Interfaces;
 using StackExchange.Redis;
 
 namespace Sofco.WebApi.Infrastructures
@@ -29,6 +29,7 @@ namespace Sofco.WebApi.Infrastructures
         private const string ClientAssemblyEndName = "Client";
         private const string DataAssemblyEndName = "Data";
         private const string ValidationAssemblyEndName = "Validation";
+        private const string FactoryAssemblyEndName = "Factory";
 
         public IConfigurationRoot Configuration { get; set; }
 
@@ -56,6 +57,13 @@ namespace Sofco.WebApi.Infrastructures
                 .Where(s => s.Name.EndsWith(ValidationAssemblyEndName))
                 .AsImplementedInterfaces();
 
+            builder.RegisterGeneric(typeof(CrmTranslator<,>))
+                .As(typeof(ICrmTranslator<,>));
+
+            builder.RegisterAssemblyTypes(assemblies)
+                .Where(s => s.Name.EndsWith(FactoryAssemblyEndName))
+                .AsImplementedInterfaces();
+
             builder.RegisterType<MailBuilder>()
                 .As<IMailBuilder>();
 
@@ -71,10 +79,10 @@ namespace Sofco.WebApi.Infrastructures
             builder.RegisterType<HttpClient>()
                 .SingleInstance();
 
-            builder.RegisterType<SolfacStatusFactory>().As<ISolfacStatusFactory>();
-            builder.RegisterType<InvoiceStatusFactory>().As<IInvoiceStatusFactory>();
-            builder.RegisterType<LicenseStatusFactory>().As<ILicenseStatusFactory>();
-            builder.RegisterType<PurchaseOrderStatusFactory>().As<IPurchaseOrderStatusFactory>();
+            builder.RegisterType<CrmApiHttpClient>()
+                .As<ICrmApiHttpClient>()
+                .SingleInstance();
+
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
 
             RegisterRedisDependencies(builder);

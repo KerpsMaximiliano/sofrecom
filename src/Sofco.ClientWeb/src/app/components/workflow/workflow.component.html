@@ -1,0 +1,11 @@
+<btn-confirm *ngFor="let item of transitions" 
+    [class]="getStatusClass(item.workFlowStateType)" 
+    [text]="item.nextStateDescription" 
+    [icon]="'fa-arrow-right'" 
+    (onConfirm)="save(item)">
+</btn-confirm>  
+
+<ng-template #container>
+
+</ng-template>
+<!-- <wf-reject #wfreject *ngIf="hasRejectCode" (onConfirm)="onTransitionCustomConfirm()"></wf-reject> -->

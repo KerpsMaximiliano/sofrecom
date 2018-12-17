@@ -77,26 +77,19 @@ namespace Sofco.UnitTest.Services.Billing
 
             Assert.True(response.HasErrors());
 
-            var numberIsRequiredCode = Resources.Billing.PurchaseOrder.NumberIsRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(numberIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.NumberIsRequired)));
 
-            var analyticIsRequiredCode = Resources.Billing.PurchaseOrder.AnalyticIsRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(analyticIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.AnalyticIsRequired)));
 
-            var currencyIsRequiredCode = Resources.Billing.PurchaseOrder.CurrencyIsRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(currencyIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.CurrencyIsRequired)));
 
-            var clientIsRequiredCode = Resources.Billing.PurchaseOrder.ClientIsRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(clientIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.ClientIsRequired)));
 
-            var areaIsRequiredCode = Resources.Billing.PurchaseOrder.AreaIsRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(areaIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.AreaIsRequired)));
 
-            var datesRequiredCode = Resources.Billing.PurchaseOrder.DatesRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(datesRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.DatesRequired)));
 
-            var ammountRequiredCode = Resources.Billing.PurchaseOrder.AmmountRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(ammountRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.AmmountRequired)));
         }
 
         [Test]
@@ -126,14 +119,11 @@ namespace Sofco.UnitTest.Services.Billing
 
             Assert.True(response.HasErrors());
 
-            var numberAlreadyExistCode = Resources.Billing.PurchaseOrder.NumberAlreadyExist.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(numberAlreadyExistCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.NumberAlreadyExist)));
 
-            var currencyIsRequiredCode = Resources.Billing.PurchaseOrder.CurrencyIsRequired.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(currencyIsRequiredCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.CurrencyIsRequired)));
 
-            var endDateLessThanStartDateCode = Resources.Billing.PurchaseOrder.EndDateLessThanStartDate.Split('.')[1];
-            Assert.True(response.Messages.Any(x => x.Code.Equals(endDateLessThanStartDateCode)));
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.Billing.PurchaseOrder.EndDateLessThanStartDate)));
         }
 
         [Test]
@@ -146,6 +136,7 @@ namespace Sofco.UnitTest.Services.Billing
                 ProposalIds = new []{ "1" },
                 ClientExternalId = "Client",
                 AreaId = 1,
+                Margin = 10,
                 StartDate = DateTime.Today,
                 EndDate = DateTime.Today.AddDays(1),
                 AmmountDetails = new List<PurchaseOrderAmmountDetailModel>

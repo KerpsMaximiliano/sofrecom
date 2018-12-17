@@ -20,7 +20,6 @@ using Sofco.Service.Settings;
 using Sofco.Service.Settings.Jobs;
 using Sofco.WebJob.Filters;
 using Sofco.WebJob.Infrastructures;
-using Sofco.WebJob.Security;
 using Sofco.WebJob.Services;
 
 namespace Sofco.WebJob
@@ -80,9 +79,6 @@ namespace Sofco.WebJob
             loggerFactory.AddDebug();
 
             app.UseMvc();
-
-            app.UseBasicAuthentication(WebJobAuthenticationOptions.Config(Configuration["JobSetting:PanelUsername"],
-                Configuration["JobSetting:PanelPassword"]));
 
             app.UseHangfireDashboard(WebJobPath, new DashboardOptions
             {

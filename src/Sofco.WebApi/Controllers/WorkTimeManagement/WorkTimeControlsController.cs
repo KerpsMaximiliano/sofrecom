@@ -24,5 +24,13 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("analytics/options/currentManager")]
+        public IActionResult GetByCurrentManager()
+        {
+            var response = service.GetAnalyticOptionsByCurrentManager();
+
+            return this.CreateResponse(response);
+        }
     }
 }

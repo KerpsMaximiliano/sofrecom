@@ -775,6 +775,14 @@
             "closeDay": "Dia de Cierre",
             "dateRange": "Fechas Desde - Hasta",
             "default": "Dia de cierre por defecto"
+        },
+        "endNotification": {
+            "title": "Notificaciones de Bajas",
+            "employeeName": "Nombre",
+            "employeeNumber": "Legajo",
+            "applicantName": "Solicitante",
+            "createdDate": "Fecha de carga",
+            "endDate": "Fecha de baja"
         }
     },
     "ACTIONS":{
@@ -1001,8 +1009,8 @@
         "worktimeControl": {
             "title": "Control de Horas",
             "dateRange": "Desde-Hasta",
-            "businessHoursTotal": "Total de horas laborables",
-            "registeredHoursTotal": "Total de horas cargadas",
+            "businessHoursTotal": "Total de horas cargadas",
+            "registeredHoursTotal": "Total de horas aprobadas",
             "licenseHoursTotal": "Total de horas de licencias",
             "pendingHoursTotal": "Horas pendientes de carga",
             "analytic": "Analítica",
@@ -1029,5 +1037,47 @@
         "october": "Octubre",
         "november": "Noviembre",
         "december": "Diciembre"
+    },
+    "advancement": {
+        "navigationTitle": "Adelantos y Reintegros",
+        "addTitle": "Solicitud Adelanto",
+        "add": "Solicitud",
+        "edit": "Edición Solicitud",
+        "title": "Adelantos",
+        "userApplicant": "Solicitante",
+        "analytic": "Analitica",
+        "paymentForm": "Forma de cobro",
+        "type": "Tipo de Adelanto",
+        "ownBank": "Cuenta Sueldo",
+        "foreignCurrency": "Moneda extranjera",
+        "salary": "Sueldo",
+        "viaticum": "Viatico",
+        "startDateReturn": "Fecha Aproximada de Devolución",
+        "advancementReturnForm": "Forma de Devolución",
+        "currency":"Moneda",
+        "addDetail": "Agregar detalle",
+        "details": "Detalles",
+        "date": "Fecha",
+        "description": "Detalle de concepto",
+        "detail": "Detalle",
+        "status": "Estado",
+        "ammount": "Monto",
+        "search": "Busqueda",
+        "monthsReturn": "Mes de Devolución",
+        "finalized": "Finalizados",
+        "inProcess": "En proceso de aprobación",
+        "dateSince": "Fecha desde",
+        "dateTo": "Fecha hasta",
+        "searchParameters": "Parametros de busqueda",
+        "listTitle": "Listado de Adelantos",
+        "updateDate": "Fecha de Modificación",
+        "creationDate": "Fecha de Creación",
+        "histories": {
+            "createdDate": "Fecha Creación",
+            "userName": "Usuario",
+            "comment": "Comentarios",
+            "statusFrom": "Estado inicial",
+            "statusTo": "Estado final"
+        }   
     }
 }  

@@ -22,6 +22,9 @@
         "../node_modules/@angular/*"
       ]
     },
-    "module": "es2015"
+    "module": "es2015",
+    "angularCompilerOptions": {
+      "enableIvy": true
+    } 
   }
 }

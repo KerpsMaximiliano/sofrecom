@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Core.Models.WorkTimeManagement
 {
@@ -9,6 +10,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public DateTime? EndDate { get; set; }
 
         public bool FilterByDates { get; set; }
+
+        public List<int> AnalyticIds { get; set; }
     }
 
     public class WorktimeHoursPendingParams

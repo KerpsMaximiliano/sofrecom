@@ -42,7 +42,7 @@ namespace Sofco.UnitTest.Framework.ValidationHelpers.Admin
 
             Assert.NotNull(message);
 
-            Assert.AreEqual(nameof(Resources.AllocationManagement.Analytic.WrongMonthQuantity).ToUpper(), message.Code.ToUpper());
+            Assert.AreEqual(Resources.AllocationManagement.Analytic.WrongMonthQuantity.ToUpper(), message.Text.ToUpper());
         }
 
         [TestCase("1")]
@@ -78,7 +78,7 @@ namespace Sofco.UnitTest.Framework.ValidationHelpers.Admin
 
             Assert.NotNull(message);
 
-            Assert.AreEqual(nameof(Resources.Admin.Setting.WrongWorkingHoursPerDaysMax).ToUpper(), message.Code.ToUpper());
+            Assert.AreEqual(Resources.Admin.Setting.WrongWorkingHoursPerDaysMax.ToUpper(), message.Text.ToUpper());
         }
     }
 }

@@ -1,29 +1,23 @@
 ﻿using System;
-using System.Net.Http;
-using System.Text;
-using Microsoft.Extensions.Options;
-using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
-using Sofco.Core.Logger;
 using Sofco.Core.Managers;
+using Sofco.Domain.Crm;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
+using Sofco.Service.Crm.Interfaces;
 
 namespace Sofco.Framework.Managers
 {
     public class AnalyticManager : IAnalyticManager
     {
-        private readonly ILogMailer<AnalyticManager> logger;
-
-        private readonly CrmConfig crmConfig;
-
         private readonly IUserData userData;
 
-        public AnalyticManager(ILogMailer<AnalyticManager> logger, IOptions<CrmConfig> crmOptions, IUserData userData)
+        private readonly ICrmServiceService crmServiceService;
+
+        public AnalyticManager(IUserData userData, ICrmServiceService crmServiceService)
         {
-            this.logger = logger;
             this.userData = userData;
-            crmConfig = crmOptions.Value;
+            this.crmServiceService = crmServiceService;
         }
 
         public Response UpdateCrmAnalytic(Analytic analytic)
@@ -36,32 +30,24 @@ namespace Sofco.Framework.Managers
 
             var managerId = GetExternalManagerId(analytic);
 
-            using (var client = new HttpClient())
+            if (analytic.ManagerId.HasValue && !managerId.HasValue)
             {
-                client.BaseAddress = new Uri(crmConfig.Url);
+                response.AddError(Resources.AllocationManagement.Analytic.NoCrmUpdateNullManagerId);
 
-                var data = new StringBuilder($"Analytic={analyticTitle}");
+                return response;
+            }
 
-                if (managerId != null)
-                {
-                    data.Append($"&ManagerId={managerId}");
-                }
+            var dataUpdate = new CrmServiceUpdate
+            {
+                Id = new Guid(serviceId),
+                ManagerId = managerId,
+                AnalyticTitle = analyticTitle
+            };
 
-                var urlPath = $"/api/Service/{serviceId}/";
-
-                try
-                {
-                    var stringContent = new StringContent(data.ToString(), Encoding.UTF8, "application/x-www-form-urlencoded");
-
-                    var httpResponse = client.PutAsync(urlPath, stringContent).Result;
-
-                    httpResponse.EnsureSuccessStatusCode();
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(urlPath + "; data: " + data, ex);
-                    response.AddError(Resources.Common.ErrorSave);
-                }
+            var result = crmServiceService.Update(dataUpdate);
+            if (result.HasErrors)
+            {
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;

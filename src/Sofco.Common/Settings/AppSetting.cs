@@ -29,5 +29,23 @@
         public string LicenseViewCode { get; set; }
 
         public string AnalyticBank { get; set; }
+
+        public int WorkflowStatusDraft { get; set; }
+
+        public string SectorUserSource { get; set; }
+
+        public string ManagerUserSource { get; set; }
+
+        public string ApplicantUserSource { get; set; }
+
+        public string GroupUserSource { get; set; }
+
+        public string UserUserSource { get; set; }
+
+        public int CurrencyPesos { get; set; }
+
+        public int CurrencyDolares { get; set; }
+
+        public int CurrencyEuros { get; set; }
     }
 }

@@ -5,6 +5,7 @@ import { MenuService } from '../admin/menu.service';
 
 @Injectable()
 export class UtilsService {
+
   private apiUrl: string;
 
   constructor(private http: HttpClient, private service: Service, private menuService: MenuService) {
@@ -37,5 +38,9 @@ export class UtilsService {
 
   getUserDelegateTypes() {
     return this.http.get<any>(`${this.apiUrl}/userDelegateTypes`);
+  }
+
+  getMonthsReturn(): any {
+    return this.http.get<any>(`${this.apiUrl}/monthsReturn`);
   }
 }

@@ -1,0 +1,49 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'advancement.addTitle' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'advancement.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'advancement.detail' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <button type="button" class="btn btn-sm btn-outline dim btn-success" (click)="back()" *ngIf="canBack()">
+                <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }}
+            </button>
+
+            <div class="btn-right">
+                <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow></workflow>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <advancement-form #form [mode]="'detail'"></advancement-form>
+                </div>
+                <div class="ibox-footer text-center" *ngIf="canUpdate()">
+                    <button [disabled]="!form.canSave()" (click)="update()" class="btn btn-primary" type="button">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-content">
+            <advancement-history #history></advancement-history>
+        </div>
+    </div>
+</div>

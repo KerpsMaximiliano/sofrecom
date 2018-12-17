@@ -50,13 +50,12 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
 
         public IList<WorkTime> SearchApproved(WorktimeHoursApprovedParams parameters)
         {
-            IQueryable<WorkTime> query = context.WorkTimes.Include(x => x.Employee).Include(x => x.Analytic).Include(x => x.Task).Where(x => x.Status == WorkTimeStatus.Approved || x.Status == WorkTimeStatus.License);
+            var query = context.WorkTimes.Include(x => x.Employee).Include(x => x.Analytic).Include(x => x.Task).Where(x => x.Status == WorkTimeStatus.Approved || x.Status == WorkTimeStatus.License);
 
             if (parameters.EmployeeId > 0)
                 query = query.Where(x => x.EmployeeId == parameters.EmployeeId);
 
-            if (parameters.AnalyticId > 0)
-                query = query.Where(x => x.AnalyticId == parameters.AnalyticId);
+            query = query.Where(x => parameters.AnalyticIds.Contains(x.AnalyticId));
 
             if (parameters.FilterByDates)
             {

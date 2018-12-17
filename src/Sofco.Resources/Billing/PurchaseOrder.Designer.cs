@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.Billing {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.Billing {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Billing.PurchaseOrder", typeof(PurchaseOrder).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Billing.PurchaseOrder", typeof(PurchaseOrder).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -274,6 +273,24 @@ namespace Sofco.Resources.Billing {
         public static string ManagerIsRequired {
             get {
                 return ResourceManager.GetString("ManagerIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.marginRequired.
+        /// </summary>
+        public static string MarginRequired {
+            get {
+                return ResourceManager.GetString("MarginRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/purchaseOrder.marginWrong.
+        /// </summary>
+        public static string MarginWrong {
+            get {
+                return ResourceManager.GetString("MarginWrong", resourceCulture);
             }
         }
         

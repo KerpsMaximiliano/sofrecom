@@ -5,6 +5,7 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.Managers;
 using Sofco.Core.Managers.UserApprovers;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.Enums;
@@ -24,13 +25,16 @@ namespace Sofco.Framework.Managers.UserApprovers
 
         private readonly ISessionManager sessionManager;
 
-        public UserApproverManager(IUserData userData, IAnalyticData analyticData, IUserApproverEmployeeRepository repository, IUnitOfWork unitOfWork, ISessionManager sessionManager)
+        private readonly IRoleManager roleManager;
+
+        public UserApproverManager(IUserData userData, IAnalyticData analyticData, IUserApproverEmployeeRepository repository, IUnitOfWork unitOfWork, ISessionManager sessionManager, IRoleManager roleManager)
         {
             this.userData = userData;
             this.analyticData = analyticData;
             this.repository = repository;
             this.unitOfWork = unitOfWork;
             this.sessionManager = sessionManager;
+            this.roleManager = roleManager;
         }
 
         public List<UserApproverEmployee> GetByCurrentManager(UserApproverQuery query, UserApproverType type)
@@ -122,12 +126,7 @@ namespace Sofco.Framework.Managers.UserApprovers
 
         public bool IsDirector()
         {
-            var currentUser = userData.GetCurrentUser();
-
-            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email)
-                             || unitOfWork.SectorRepository.HasSector(currentUser.Id);
-
-            return isDirector;
+            return roleManager.IsDirector();
         }
     }
 }

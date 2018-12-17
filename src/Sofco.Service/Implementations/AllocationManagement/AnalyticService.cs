@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
-using Sofco.Core.CrmServices;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.Data.Billing;
@@ -17,7 +16,6 @@ using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.MailData;
-using Sofco.Framework.StatusHandlers.Analytic;
 using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Domain.Enums;
@@ -33,29 +31,31 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly ILogMailer<AnalyticService> logger;
         private readonly EmailConfig emailConfig;
         private readonly IMailBuilder mailBuilder;
-        private readonly ICrmService crmService;
         private readonly IEmployeeData employeeData;
         private readonly IAnalyticFileManager analyticFileManager;
         private readonly IAnalyticManager analyticManager;
         private readonly IUserData userData;
         private readonly IServiceData serviceData;
         private readonly IRoleManager roleManager;
+        private readonly IAnalyticCloseManager analyticCloseManager;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
             IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IServiceData serviceData,
-            ICrmService crmService, IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, IUserData userData, IAnalyticManager analyticManager, IRoleManager roleManager)
+            IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, 
+            IUserData userData, IAnalyticManager analyticManager, IRoleManager roleManager, 
+            IAnalyticCloseManager analyticCloseManager)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
             this.logger = logger;
             emailConfig = emailOptions.Value;
             this.mailBuilder = mailBuilder;
-            this.crmService = crmService;
             this.employeeData = employeeData;
             this.analyticFileManager = analyticFileManager;
             this.userData = userData;
             this.analyticManager = analyticManager;
             this.roleManager = roleManager;
+            this.analyticCloseManager = analyticCloseManager;
             this.serviceData = serviceData;
         }
 
@@ -359,6 +359,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var response = new Response<Analytic>();
 
             var analytic = AnalyticValidationHelper.Find(response, unitOfWork, analyticModel.Id);
+
+            analyticModel.UpdateDomain(analytic);
+
             AnalyticValidationHelper.CheckName(response, analytic);
             AnalyticValidationHelper.CheckDirector(response, analytic);
             AnalyticValidationHelper.CheckDates(response, analytic);
@@ -367,15 +370,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                analyticModel.UpdateDomain(analytic);
-
                 unitOfWork.AnalyticRepository.Update(analytic);
                 unitOfWork.Save();
 
-                var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
-                if (crmResponse.HasErrors())
+                if (!string.IsNullOrWhiteSpace(analytic.ClientExternalId) &&
+                    !string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
-                    response.AddMessages(crmResponse.Messages);
+                    var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
+                    if (crmResponse.HasErrors())
+                    {
+                        response.AddMessages(crmResponse.Messages);
+                    }
                 }
 
                 response.AddSuccess(Resources.AllocationManagement.Analytic.UpdateSuccess);
@@ -391,65 +396,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response Close(int analyticId, AnalyticStatus status)
         {
-            var response = new Response();
-            var analytic = AnalyticValidationHelper.Find(response, unitOfWork, analyticId);
-
-            if (response.HasErrors()) return response;
-
-            if (!string.IsNullOrWhiteSpace(analytic.ServiceId) && status == AnalyticStatus.Close)
-            {
-                var result = crmService.DesactivateService(new Guid(analytic.ServiceId));
-
-                if (result.HasErrors)
-                {
-                    response.AddError(Resources.Common.CrmGeneralError);
-                    return response;
-                }
-            }
-
-            try
-            {
-                if (status == AnalyticStatus.Close && !string.IsNullOrWhiteSpace(analytic.ServiceId))
-                {
-                    var service = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
-
-                    if (service != null)
-                    {
-                        service.Active = false;
-                        unitOfWork.ServiceRepository.UpdateActive(service);
-                    }
-                }
-
-                AnalyticStatusClose.Save(analytic, unitOfWork, response, status);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex);
-                response.AddError(Resources.Common.ErrorSave);
-
-                if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
-                {
-                    var result = crmService.ActivateService(new Guid(analytic.ServiceId));
-                    if (result.HasErrors)
-                    {
-                        response.AddError(Resources.Common.CrmGeneralError);
-                    }
-                }
-
-                return response;
-            }
-
-            try
-            {
-                AnalyticStatusClose.SendMail(response, analytic, emailConfig, mailSender, unitOfWork, mailBuilder);
-            }
-            catch (Exception ex)
-            {
-                response.AddWarning(Resources.Common.ErrorSendMail);
-                logger.LogError(ex);
-            }
-
-            return response;
+            return analyticCloseManager.Close(analyticId, status);
         }
 
         private void SendMail(Analytic analytic, Response response)

@@ -223,6 +223,16 @@ namespace Sofco.DAL.Repositories.Admin
                 .ToList();
         }
 
+        public bool HasGafGroup(string email)
+        {
+            var gafCode = emailConfig.GafCode;
+
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(email) && x.UserGroups.Any(s => s.Group.Code == gafCode));
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;

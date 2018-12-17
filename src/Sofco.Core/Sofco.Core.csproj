@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Sofco.Core</AssemblyName>
     <PackageId>Sofco.Core</PackageId>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -14,12 +13,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Sofco.Common\Sofco.Common.csproj" />
     <ProjectReference Include="..\Sofco.Domain.Crm\Sofco.Domain.Crm.csproj" />
-    <ProjectReference Include="..\Sofco.Model\Sofco.Domain.csproj" />
+    <ProjectReference Include="..\Sofco.Domain\Sofco.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EPPlus.Core" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="1.1.2" />
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -94,6 +94,13 @@ export class MenuService {
         return false;
     }
 
+    hasAdvancementMenu() {
+        if (this.hasModule("ADVAN")) {
+            return true;
+        }
+        return false;
+    }
+
     hasContractsMenu() {
         if (this.hasModule("CONTR")) {
             return true;

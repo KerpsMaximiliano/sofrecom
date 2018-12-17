@@ -4,6 +4,7 @@ using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
+using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
@@ -11,6 +12,7 @@ using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.DAL.Repositories.Admin;
+using Sofco.DAL.Repositories.AdvancementAndRefund;
 using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
@@ -72,6 +74,7 @@ namespace Sofco.DAL
         private ILicenseTypeRepository licenseTypeRepository;
         private IEmployeeSyncActionRepository employeeSyncActionRepository;
         private IEmployeeHistoryRepository employeeHistoryRepository;
+        private IEmployeeEndNotificationRepository employeeEndNotificationRepository;
         private IHealthInsuranceRepository healthInsuranceRepository;
         private IPrepaidHealthRepository prepaidHealthRepository;
         private IEmployeeProfileHistoryRepository employeeProfileHistoryRepository;
@@ -98,6 +101,12 @@ namespace Sofco.DAL
         private IWorkTimeRepository workTimeRepository;
         private IUserApproverRepository userApproverRepository;
         private IHolidayRepository holidayRepository;
+
+        #endregion
+
+        #region WorkTimeManagement
+
+        private IAdvancementRepository advancementRepository;
 
         #endregion
 
@@ -155,6 +164,9 @@ namespace Sofco.DAL
         public IEmployeeHistoryRepository EmployeeHistoryRepository =>
             employeeHistoryRepository ?? (employeeHistoryRepository = new EmployeeHistoryRepository(context));
 
+        public IEmployeeEndNotificationRepository EmployeeEndNotificationRepository =>
+            employeeEndNotificationRepository ?? (employeeEndNotificationRepository = new EmployeeEndNotificationRepository(context));
+
         public IHealthInsuranceRepository HealthInsuranceRepository =>
             healthInsuranceRepository ?? (healthInsuranceRepository = new HealthInsuranceRepository(context));
 
@@ -188,7 +200,13 @@ namespace Sofco.DAL
         public IHolidayRepository HolidayRepository => holidayRepository ?? (holidayRepository = new HolidayRepository(context));
 
         #endregion
-         
+
+        #region WorkTimeManagement
+
+        public IAdvancementRepository AdvancementRepository => advancementRepository ?? (advancementRepository = new AdvancementRepository(context));
+
+        #endregion
+
         public void Save()
         {
             context.SaveChanges();
@@ -196,17 +214,17 @@ namespace Sofco.DAL
 
         public void BeginTransaction()
         {
-            contextTransaction = context.Database.BeginTransaction();
+            //contextTransaction = context.Database.BeginTransaction();
         }
 
         public void Rollback()
         {
-            contextTransaction?.Rollback();
+            //contextTransaction?.Rollback();
         }
 
         public void Commit()
         {
-            contextTransaction?.Commit();
+            //contextTransaction?.Commit();
         }
     }
 }

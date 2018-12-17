@@ -57,5 +57,7 @@
         public string PrefixMailEnvironment { get; set; }
 
         public string AllowedMails { get; set; }
+
+        public string GafCode { get; set; }
     }
 }

@@ -33,5 +33,7 @@
     "cannotDelete": "No se puede eliminar en el estado actual",
     "userAreaWrong": "Solo el responsable de area seleccionado puede aprobar la orden de compra",
     "proposalIsRequired": "La propuesta es requerida",
+    "marginRequired": "El margen es requerido",
+    "marginWrong": "El margen debe ser mayor a 0 y menor a 100",
     "userSectorWrong": "Solo el responsable de sector seleccionado puede aprobar la orden de compra"
 } 

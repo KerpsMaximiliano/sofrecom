@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.AllocationManagement {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.AllocationManagement {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.AllocationManagement.Employee", typeof(Employee).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.AllocationManagement.Employee", typeof(Employee).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -143,6 +142,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.managerRequired.
+        /// </summary>
+        public static string ManagerRequired {
+            get {
+                return ResourceManager.GetString("ManagerRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employee.nameRequired.
         /// </summary>
         public static string NameRequired {
@@ -157,6 +165,15 @@ namespace Sofco.Resources.AllocationManagement {
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.officeRequired.
+        /// </summary>
+        public static string OfficeRequired {
+            get {
+                return ResourceManager.GetString("OfficeRequired", resourceCulture);
             }
         }
         

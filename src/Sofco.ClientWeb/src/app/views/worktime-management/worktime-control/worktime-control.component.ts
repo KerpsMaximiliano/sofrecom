@@ -2,11 +2,10 @@ import { Component, OnDestroy, ViewChild, } from '@angular/core';
 import { Subscription } from "rxjs";
 import { MessageService } from '../../../services/common/message.service';
 import { WorktimeControlService } from '../../../services/worktime-management/worktime-control.service';
-import { DateRangePickerComponent } from '../../../components/date-range-picker/date-range-picker.component';
 import { I18nService } from '../../../services/common/i18n.service';
 import { DataTableService } from '../../../services/common/datatable.service';
 import { MenuService } from '../../../services/admin/menu.service';
-import { AnalyticService } from 'app/services/allocation-management/analytic.service';
+import { UtilsService } from 'app/services/common/utils.service';
 declare var $: any;
 declare var moment: any;
 
@@ -24,17 +23,14 @@ export class WorkTimeControlComponent implements OnDestroy  {
   public analytics: any[] = new Array();
   public analyticId: string = null;
   public model: any;
-  public date = new Date();
-  public selectedDate = new Date();
   public data: any[] = new Array();
   public gridSelector = '#gridTable';
-  public startDate: Date;
-  public endDate: Date;
+  public loading = false;
+  public closeMonths: any[];
+  public closeMonthId: any;
 
-  @ViewChild('dateRangePicker') dateRangePicker:DateRangePickerComponent;
-
-  constructor(private analyticService: AnalyticService,
-    private worktimeControlService: WorktimeControlService,
+  constructor(private worktimeControlService: WorktimeControlService,
+    private utilsService: UtilsService,
     private messageService: MessageService,
     public menuService: MenuService,
     private datatableService: DataTableService,
@@ -43,19 +39,35 @@ export class WorkTimeControlComponent implements OnDestroy  {
 
     ngOnInit() {
       this.getAnalytics();
-      this.initControls();
     }
 
     getAnalytics() {
-      this.messageService.showLoading();
-      this.subscription = this.analyticService.getByManager().subscribe(res => {
-        this.messageService.closeLoading();
-        this.analytics = this.sortAnalytics(res.data);
-        this.setAnalyticSelect();
-      },
-      err => {
-          this.messageService.closeLoading();
-      });
+        this.loading = true;
+        this.messageService.showLoading();
+        this.subscription = this.worktimeControlService.GetAnalyticOptionsByCurrentManager().subscribe(res => {
+            this.messageService.closeLoading();
+            this.analytics = this.sortAnalytics(res.data);
+            this.setAnalyticSelect();
+            this.getCloseMonths();
+        },
+        err => {
+            this.loading = false;
+            this.messageService.closeLoading();
+        });
+    }
+
+    getCloseMonths(){
+        this.subscription = this.utilsService.getCloseMonths().subscribe(data => {
+            this.closeMonths = data;
+            this.setDefaultCloseMonth();
+        });
+    }
+
+    setDefaultCloseMonth(){
+        const data = this.closeMonths;
+        data.sort((a, b) => b.id - a.id);
+        this.closeMonthId = data[0].id;
+        this.getData();
     }
 
     setAnalyticSelect() {
@@ -76,66 +88,48 @@ export class WorkTimeControlComponent implements OnDestroy  {
           self.analyticId = item.id === this.nullId ? null : item.id;
           self.getData();
       });
-  }
+    }
 
-  sortAnalytics(data: Array<any>) {
+    sortAnalytics(data: Array<any>) {
       return data.sort(function (a, b) {
           return a.text.localeCompare(b.text);
         });
-  }
+    }
 
-  mapToSelect(data: Array<any>): Array<any> {
-      const result = new Array<any>();
-      result.push({id: this.nullId, text: ''});
-      data.forEach(s => {
-          const text = s[this.textKey];
-          result.push({
-              id: s[this.idKey],
-              text: text,
-              selected: false
-          });
-      });
-    return result;
-  }
+    mapToSelect(data: Array<any>): Array<any> {
+        const result = new Array<any>();
+        result.push({id: this.nullId, text: ''});
+        data.forEach(s => {
+            const text = s[this.textKey];
+            result.push({
+                id: s[this.idKey],
+                text: text,
+                selected: false
+            });
+        });
+        return result;
+    }
 
-  ngOnDestroy(): void {
-    if(this.subscription) this.subscription.unsubscribe();
-  }
-
-  initControls() {
-    const self = this;
-
-    $('#yearMonthControl').datepicker({
-        autoclose: true,
-        minViewMode: 1,
-        format: 'yyyy - mm'
-    }).on('changeDate', function(selected){
-        self.date = selected.date;
-        self.getData();
-    });
-    $('#yearMonthControl').datepicker('update', self.date);
-  }
+    ngOnDestroy(): void {
+        if(this.subscription) this.subscription.unsubscribe();
+    }
 
     getData() {
-        if(this.dateRangePicker) {
-            this.startDate = this.dateRangePicker.start.toDate();
-            this.endDate = this.dateRangePicker.end.toDate();
-            this.endDate.setHours(0,0,0,0);
-        }
-
         const model = {
             analyticId : this.analyticId,
-            startDate: this.startDate,
-            endDate: this.endDate
+            closeMonthId: this.closeMonthId
         };
+        this.loading = true;
         this.messageService.showLoading();
         this.subscription = this.worktimeControlService.getWorkTimeApproved(model).subscribe(res => {
+            this.loading = false;
             this.messageService.closeLoading();
             this.model = res.data;
             this.data = res.data.resources;
             this.initGrid();
         },
         err => {
+            this.loading = false;
             this.messageService.closeLoading();
         });
     }
@@ -146,7 +140,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
             "orderable": false,
             "data": null,
             "defaultContent": ''
-        }, 2, 3, 4, 5, 6, 7, 8, 9];
+        }, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
         const params = {
             selector: this.gridSelector,
@@ -220,7 +214,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
     getRowDetailForma(item) {
         return '<tr>' +
             '<td>' + moment(item.date).format("DD/MM/YYYY") + '</td>' +
-            '<td>' + item.reference + '</td>' +
+            '<td>' + (item.reference != null ? item.reference :'')  + '</td>' +
             '<td>' + item.taskDescription + '</td>' +
             '<td>' + item.categoryDescription + '</td>' +
             '<td>' + item.registeredHours + '</td>' +
