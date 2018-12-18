@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.Models.AdvancementAndRefund;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Validations.AdvancementAndRefund

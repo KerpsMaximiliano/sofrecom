@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sofco.Core.Models.AdvancementAndRefund
+namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 {
     public class AdvancementSearchFinalizedModel
     {

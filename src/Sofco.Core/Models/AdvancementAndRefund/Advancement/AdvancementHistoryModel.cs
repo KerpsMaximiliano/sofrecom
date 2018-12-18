@@ -1,7 +1,7 @@
 ﻿using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 
-namespace Sofco.Core.Models.AdvancementAndRefund
+namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 {
     public class AdvancementHistoryModel
     {

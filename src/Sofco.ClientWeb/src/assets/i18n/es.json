@@ -1088,7 +1088,7 @@
         "paymentForm": "Forma de cobro",
         "type": "Tipo de Adelanto",
         "ownBank": "Cuenta Sueldo",
-        "foreignCurrency": "Moneda extranjera",
+        "foreignCurrency": "Moneda extranjera", 
         "salary": "Sueldo",
         "viaticum": "Viatico",
         "startDateReturn": "Fecha Aproximada de Devolución",

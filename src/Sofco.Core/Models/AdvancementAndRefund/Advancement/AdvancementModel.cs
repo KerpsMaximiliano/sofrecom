@@ -1,8 +1,7 @@
 ﻿using System;
 using Sofco.Domain.Enums;
-using Sofco.Domain.Models.AdvancementAndRefund;
 
-namespace Sofco.Core.Models.AdvancementAndRefund
+namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 {
     public class AdvancementModel
     {
@@ -26,9 +25,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund
 
         public decimal? Ammount { get; set; }
 
-        public Advancement CreateDomain()
+        public Domain.Models.AdvancementAndRefund.Advancement CreateDomain()
         {
-            var domain = new Advancement();
+            var domain = new Domain.Models.AdvancementAndRefund.Advancement();
 
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.PaymentForm = PaymentForm.GetValueOrDefault();
@@ -51,7 +50,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund
             return domain;
         }
 
-        public void UpdateDomain(Advancement domain)
+        public void UpdateDomain(Domain.Models.AdvancementAndRefund.Advancement domain)
         {
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.PaymentForm = PaymentForm.GetValueOrDefault();
