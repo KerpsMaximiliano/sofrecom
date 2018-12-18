@@ -57,7 +57,7 @@
         <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">{{'advancement.navigationTitle' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('advancementAndRefund')}">
             <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasFunctionality('ADVAN', 'QUERY')"><a [routerLink]="['/advancementAndRefund/advancement/search']">{{'advancement.search' | translate }}</a></li>
-            <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasFunctionality('ADVAN', 'QUERY-REFUND')"><a [routerLink]="['/advancementAndRefund/refund/search']">{{'refund.search' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasFunctionality('ADVAN', 'REFUND-LIST-VIEW')"><a [routerLink]="['/advancementAndRefund/refund/search']">{{'refund.search' | translate }}</a></li>
         </ul>
       </li> 
  

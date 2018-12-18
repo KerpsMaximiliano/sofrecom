@@ -24,10 +24,11 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { I18nService } from "app/services/common/i18n.service";
 import { UserService } from "app/services/admin/user.service";
 import { AdvancementListFinalizedComponent } from "./advancement/list-finalized/list-finalized.component";
+import { RefundListComponent } from "./refund/list/refund-list.component";
  
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent, 
-                    AdvancementSearchComponent, AdvancementListFinalizedComponent ],
+                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundListComponent ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
