@@ -9,6 +9,7 @@ using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AdvancementAndRefund;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Validations.AdvancementAndRefund;

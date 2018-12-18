@@ -34,8 +34,9 @@ import { AdvacementFormModule } from '../advancementAndRefund/advancement/form/a
   declarations: [ WorkTimeComponent, AdvancementAddComponent ],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, ProfileRouter, AdvacementFormModule,
-                 IboxtoolsModule, ResourceDetailModule, AddLicenseModule, ButtonsModule, NgSelectModule, ReactiveFormsModule, BsDatepickerModule],
+                 TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, ProfileRouter, 
+                 AdvacementFormModule, IboxtoolsModule, ResourceDetailModule, AddLicenseModule, ButtonsModule, NgSelectModule, 
+                 ReactiveFormsModule, BsDatepickerModule],
 
   providers   : [LicenseService, EmployeeService, AnalyticService, TaskService, WorktimeService, AdvancementService, UtilsService],
   

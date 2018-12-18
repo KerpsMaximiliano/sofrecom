@@ -1,12 +1,11 @@
 ﻿using System;
 using Sofco.Domain.Enums;
-using Sofco.Domain.Models.AdvancementAndRefund;
 
-namespace Sofco.Core.Models.AdvancementAndRefund
+namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 {
     public class AdvancementListItem
     {
-        public AdvancementListItem(Advancement advancement)
+        public AdvancementListItem(Domain.Models.AdvancementAndRefund.Advancement advancement)
         {
             Id = advancement.Id;
 
