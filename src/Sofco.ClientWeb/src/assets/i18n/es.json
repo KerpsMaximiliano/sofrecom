@@ -1117,5 +1117,6 @@
             "comment": "Comentarios",
             "statusFrom": "Estado inicial",
             "statusTo": "Estado final"
-        }   
-}  
+        }
+    }
+}
