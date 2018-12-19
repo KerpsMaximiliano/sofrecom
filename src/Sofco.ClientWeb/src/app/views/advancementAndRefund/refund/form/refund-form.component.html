@@ -1,3 +1,8 @@
+<div class="alert alert-gaps-error" *ngIf="differentCurrenciesWereSelected">
+    <i class="fa fa-warning"></i>
+    {{ i18nService.translate('advancementAndRefund/refund','differentCurrencies') }}
+</div>
+
 <form [formGroup]="form" *ngIf="form">
 
     <div class="row">
@@ -7,7 +12,7 @@
                 <span style="font-size: 14px"> {{ userApplicantName }}</span>
         
                 <div class="form-control-feedback" *ngIf="form.controls.userApplicantId.invalid">
-                    <p>{{ i18nService.translate('advancementAndRefund/advancement','userApplicantRequired') }}</p>
+                    <p>{{ i18nService.translate('advancementAndRefund/refund','userApplicantRequired') }}</p>
                 </div>
             </div>
         </div>
@@ -16,36 +21,52 @@
         </div>
     </div>
 
-    <div class="form-group" [ngClass]="form.controls.currencyId.invalid ? 'has-error' : 'has-success'">
-        <label style="font-size: 15px"> {{'refund.currency' | translate }}: </label>
-        <span style="font-size: 14px"> {{ currencyDescription }}</span>
-
-        <div class="form-control-feedback" *ngIf="form.controls.currencyId.invalid">
-            <p>{{ i18nService.translate('advancementAndRefund/advancement','userApplicantRequired') }}</p>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'advancements')">
+                <label class="control-label"> {{ 'refund.advancements' | translate }} </label>
+                <ng-select [items]="advancements" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" formControlName="advancements" (change)="advancementsChanged()"></ng-select>
+        
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'advancements')">
+                    <p *ngIf="formsService.hasError(form, 'advancements', 'required')">{{ i18nService.translate('advancementAndRefund/refund','advancementRequired') }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <dl>
+                <dt><strong> {{'refund.currency' | translate }}: </strong></dt>
+                <dd> {{ currencyDescription }} </dd>
+            </dl>
         </div>
     </div>
 
-    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'advancements')">
-        <label class="control-label"> {{ 'refund.advancements' | translate }} </label>
-        <ng-select [items]="advancements" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" formControlName="advancements"></ng-select>
+    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'analyticId')">
+        <label class="control-label">{{ 'refund.contract' | translate }}</label>
+        <ng-select [items]="analytics" bindValue="id" bindLabel="text" formControlName="analyticId"></ng-select>
 
-        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'advancements')">
-            <p *ngIf="formsService.hasError(form, 'advancements', 'required')">{{ i18nService.translate('advancementAndRefund/refund','advancementRequired') }}</p>
+        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'analyticId')">
+            <p *ngIf="formsService.hasError(form, 'analyticId', 'required')">{{ i18nService.translate('advancementAndRefund/refund','analyticRequired') }}</p>
         </div>
     </div>
 
-    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'contract')">
-        <label class="control-label">{{ 'advancement.startDateReturn' | translate }}</label>
-        <input type="text" maxlength="200" class="form-control" formControlName="contract">
-
-        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'contract')">
-            <p *ngIf="formsService.hasError(form, 'contract', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','contractRequired') }}</p>
+    <div class="row">
+        <div class="col-xs-6">
+            <h2>{{ 'refund.details' | translate }}</h2>
+        </div>
+        <div class="col-xs-6 text-right">
+            <button type="button" class="btn btn-success btn-sm" (click)="addDetail()">
+                {{ 'ACTIONS.ADD' | translate }}
+                <i class="fa fa-plus"></i>
+            </button>
         </div>
     </div>
 
-    <h3>{{ 'refund.details' | translate }}</h3>
+    <div class="alert alert-gaps-info" style="margin-top: 10px" *ngIf="detailForms.length == 0">
+        <i class="fa fa-info-circle"></i>
+        {{ 'refund.noDetailsInfo' | translate }}
+    </div>
 
-    <table class="table table-striped dataTable" role="grid">
+    <table class="table table-striped dataTable" role="grid" *ngIf="detailForms.length > 0">
         <thead>
             <tr>
                 <th>{{ 'advancement.date' | translate }}</th>
@@ -57,47 +78,68 @@
         <tbody>
             <tr *ngFor="let detail of detailForms; let i = index" class="pointer">
                 <td>{{ detail.controls.creationDate.value | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ detail.controls.description.value }}</td>
+                <td class="column-xlg text-word-break">{{ detail.controls.description.value }}</td>
                 <td>{{ detail.controls.ammount.value | currency: '$' }}</td>
                 <td class="text-center column-xs">
-                    <button class="btn btn-sm fa fa-pencil btn-warning" (click)="editDetail(detail)"></button>
-                    <button class="btn btn-sm fa fa-trash btn-danger"></button>
+                    <button class="btn btn-sm fa fa-pencil btn-warning" (click)="editDetail(detail, i)"></button>
+                    <button class="btn btn-sm fa fa-trash btn-danger" (click)="removeDetail(i)"></button>
                 </td>
             </tr>
         </tbody>
     </table>   
-</form>
 
-<ng2-modal [config]="addDetailModalConfig" #addDetailModal (accept)="saveDetail()" [isSaveEnabled]="detailModalForm.valid">
-        <form [formGroup]="detailModalForm">   
-            <div class="form-group" [ngClass]="getClassProperty(detailModalForm, 'creationDate')">
-                <label class="control-label">{{ 'refund.date' | translate }}</label>
-                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="creationDate">
-    
-                <div class="form-control-feedback" *ngIf="hasErrors(detailModalForm, 'creationDate')">
-                    <p *ngIf="hasError(detailModalForm, 'creationDate', 'required')">{{ i18nService.translate('advancementAndRefund/refund','detailDateRequired') }}</p>
-                </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <dl>
+                <dt><strong> Total gastos: </strong></dt>
+                <dd> {{ refundSum }} {{ currencyDescription }} </dd>
+            </dl>
+        </div>
+        <div class="col-xs-4">
+            <dl>
+                <dt><strong> Total Adelantos: </strong></dt>
+                <dd> {{ advancementSum }} {{ currencyDescription }} </dd>
+            </dl>
+        </div>
+        <div class="col-xs-4">
+            <dl>
+                <dt><strong> Total a Reembolsar: </strong></dt>
+                <dd> {{ differenceSum }} {{ currencyDescription }} </dd>
+            </dl>
+        </div>
+    </div>
+</form> 
+
+<ng2-modal [config]="addDetailModalConfig" #addDetailModal (accept)="saveDetail()" (close)="onClose()" [isSaveEnabled]="detailModalForm.valid">
+    <form [formGroup]="detailModalForm">   
+        <div class="form-group" [ngClass]="formsService.getClassProperty(detailModalForm, 'creationDate')">
+            <label class="control-label">{{ 'refund.date' | translate }}</label>
+            <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="creationDate">
+
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(detailModalForm, 'creationDate')">
+                <p *ngIf="formsService.hasError(detailModalForm, 'creationDate', 'required')">{{ i18nService.translate('advancementAndRefund/refund','detailDateRequired') }}</p>
             </div>
-    
-            <div class="form-group" [ngClass]="getClassProperty(detailModalForm, 'description')">
-                <label class="control-label">{{ 'advancement.description' | translate }}</label>
-                <input type="text" class="form-control" formControlName="description">
-    
-                <div class="form-control-feedback" *ngIf="hasErrors(detailModalForm, 'description')">
-                    <p *ngIf="hasError(detailModalForm, 'description', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','detailDescriptionRequired') }}</p>
-                    <p *ngIf="hasError(detailModalForm, 'description', 'maxLength')">{{ i18nService.translate('advancementAndRefund/advancement','descriptionItemMaxLength') }}</p>
-                </div>
+        </div>
+
+        <div class="form-group" [ngClass]="formsService.getClassProperty(detailModalForm, 'description')">
+            <label class="control-label">{{ 'advancement.description' | translate }}</label>
+            <input type="text" class="form-control" formControlName="description">
+
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(detailModalForm, 'description')">
+                <p *ngIf="formsService.hasError(detailModalForm, 'description', 'required')">{{ i18nService.translate('advancementAndRefund/refund','detailDescriptionRequired') }}</p>
+                <p *ngIf="formsService.hasError(detailModalForm, 'description', 'maxLength')">{{ i18nService.translate('advancementAndRefund/refund','descriptionItemMaxLength') }}</p>
             </div>
-    
-            <div class="form-group" [ngClass]="getClassProperty(detailModalForm, 'ammount')">
-                <label class="control-label">{{ 'advancement.ammount' | translate }}</label>
-                <input type="number" decimalFormat class="form-control" formControlName="ammount">
-    
-                <div class="form-control-feedback" *ngIf="hasErrors(detailModalForm, 'ammount')">
-                    <p *ngIf="hasError(detailModalForm, 'ammount', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','detailAmmountRequired') }}</p>
-                    <p *ngIf="hasError(detailModalForm, 'ammount', 'max')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemMax') }}</p>
-                    <p *ngIf="hasError(detailModalForm, 'ammount', 'min')">{{ i18nService.translate('advancementAndRefund/advancement','ammountItemMin') }}</p>
-                </div>
+        </div>
+
+        <div class="form-group" [ngClass]="formsService.getClassProperty(detailModalForm, 'ammount')">
+            <label class="control-label">{{ 'advancement.ammount' | translate }}</label>
+            <input type="number" decimalFormat class="form-control" formControlName="ammount">
+
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(detailModalForm, 'ammount')">
+                <p *ngIf="formsService.hasError(detailModalForm, 'ammount', 'required')">{{ i18nService.translate('advancementAndRefund/refund','detailAmmountRequired') }}</p>
+                <p *ngIf="formsService.hasError(detailModalForm, 'ammount', 'max')">{{ i18nService.translate('advancementAndRefund/refund','ammountItemMax') }}</p>
+                <p *ngIf="formsService.hasError(detailModalForm, 'ammount', 'min')">{{ i18nService.translate('advancementAndRefund/refund','ammountItemMin') }}</p>
             </div>
-        </form>
-    </ng2-modal> 
+        </div>
+    </form>
+</ng2-modal> 

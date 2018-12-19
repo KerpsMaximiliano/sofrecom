@@ -13,6 +13,7 @@
     "updateSuccess": "El reintegro fue actualizado exitosamente",
     "notFound": "Reintegro no encontrada",
     "advancementRequired": "Se debe seleccionar al menos un adelanto",
-    "contractRequired": "El contrato es requerido",
-    "cannotLoad": "Su superior no tiene privilegios para autorizar un adelanto. Por favor comuniquese con recursos humanos"
+    "analyticRequired": "El contrato es requerido",
+    "differentCurrencies": "Se deben seleccionar adelantos del mismo tipo de moneda",
+    "cannotLoad": "Su superior no tiene privilegios para autorizar un reintegro. Por favor comuniquese con recursos humanos"
 }

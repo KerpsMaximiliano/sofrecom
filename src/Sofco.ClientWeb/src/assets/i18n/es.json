@@ -1061,7 +1061,7 @@
         "detail": "Detalle",
         "status": "Estado",
         "ammount": "Monto",
-        "search": "Busqueda",
+        "search": "Busqueda adelantos",
         "monthsReturn": "Mes de Devolución",
         "finalized": "Finalizados",
         "inProcess": "En proceso de aprobación",
@@ -1101,7 +1101,9 @@
         "detail": "Detalle",
         "status": "Estado",
         "ammount": "Monto",
-        "search": "Busqueda",
+        "contract": "Contrato",
+        "search": "Busqueda reintegros",
+        "advancements": "Adelantos",
         "monthsReturn": "Mes de Devolución",
         "finalized": "Finalizados",
         "inProcess": "En proceso de aprobación",
@@ -1111,6 +1113,7 @@
         "listTitle": "Listado de Adelantos",
         "updateDate": "Fecha de Modificación",
         "creationDate": "Fecha de Creación",
+        "noDetailsInfo": "No se han cargado detalles. Por favor agregue alguno para poder continuar",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",
@@ -1118,4 +1121,5 @@
             "statusFrom": "Estado inicial",
             "statusTo": "Estado final"
         }   
+    }
 }  

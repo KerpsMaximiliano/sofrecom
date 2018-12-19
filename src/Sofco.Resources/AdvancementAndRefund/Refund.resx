@@ -123,8 +123,8 @@
   <data name="AdvancementRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.advancementRequired</value>
   </data>
-  <data name="ContractRequired" xml:space="preserve">
-    <value>advancementAndRefund/refund.contractRequired</value>
+  <data name="AnalyticRequired" xml:space="preserve">
+    <value>advancementAndRefund/refund.analyticRequired</value>
   </data>
   <data name="DetailAmmountRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.detailAmmountRequired</value>

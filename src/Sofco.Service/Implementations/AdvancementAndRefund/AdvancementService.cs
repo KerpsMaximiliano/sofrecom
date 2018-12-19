@@ -231,6 +231,30 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
+        public Response<IList<AdvancementUnrelatedItem>> GetUnrelated()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var advancements = unitOfWork.AdvancementRepository.GetUnrelated(currentUser.Id);
+
+            var response = new Response<IList<AdvancementUnrelatedItem>>();
+            response.Data = new List<AdvancementUnrelatedItem>();
+
+            foreach (var advancement in advancements)
+            {
+                response.Data.Add(new AdvancementUnrelatedItem
+                {
+                    Id = advancement.Id,
+                    CurrencyId = advancement.CurrencyId,
+                    CurrencyText = advancement.Currency.Text,
+                    Ammount = advancement.Ammount,
+                    Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency.Text}"
+                });
+            }
+
+            return response;
+        }
+
         private bool HasAllAccess(UserLiteModel currentUser)
         {
             var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email);

@@ -84,14 +84,18 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
         {
             ValidateUser(model, response);
             ValidateCurrency(model, response);
-            ValidateContract(model, response);
+            ValidateAnalytic(model, response);
         }
 
-        private void ValidateContract(RefundModel model, Response response)
+        private void ValidateAnalytic(RefundModel model, Response response)
         {
-            if (string.IsNullOrWhiteSpace(model.Contract))
+            if (!model.AnalyticId.HasValue || model.AnalyticId.Value <= 0)
             {
-                response.AddError(Resources.AdvancementAndRefund.Refund.ContractRequired);
+                response.AddError(Resources.AdvancementAndRefund.Advancement.AnalyticRequired);
+            }
+            else if (!unitOfWork.AnalyticRepository.Exist(model.AnalyticId.Value))
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.NotFound);
             }
         }
 

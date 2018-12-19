@@ -102,5 +102,21 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Where(x => x.UserApplicantId == id)
                 .OrderByDescending(x => x.CreationDate).ToList();
         }
+
+        public IList<Advancement> GetUnrelated(int currentUserId)
+        {
+            var advancementIds = context.AdvancementRefunds
+                .Include(x => x.Advancement)
+                .Where(x => x.Advancement.UserApplicantId == currentUserId)
+                .Select(x => x.AdvancementId)
+                .ToList();
+
+            var advancements = context.Advancements
+                .Include(x => x.Currency)
+                .Where(x => x.UserApplicantId == currentUserId && !x.InWorkflowProcess && !advancementIds.Contains(x.Id))
+                .ToList();
+
+            return advancements;
+        }
     }
 }

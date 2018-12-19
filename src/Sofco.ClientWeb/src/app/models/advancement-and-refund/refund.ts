@@ -11,19 +11,29 @@ export class Refund extends FormGroup {
             userApplicantId: new FormControl(domain && domain.userApplicantId || null, 
                 Validators.required),
                 
-            currencyId: new FormControl({value: domain && domain.currencyId || null, disabled: isReadonly}, 
-                Validators.required),
+            currencyId: new FormControl({value: domain && domain.currencyId || null, disabled: isReadonly}),
 
             advancements: new FormControl({value: domain && domain.advancements || null, disabled: isReadonly}, 
                 Validators.required),
 
-            contract: new FormControl({value: domain && domain.contract || null, disabled: isReadonly}, 
-                Validators.maxLength(300)),
+            analyticId: new FormControl({value: domain && domain.analyticId || null, disabled: isReadonly},
+                Validators.required),
         });
 
         if(domain){
             this.id = domain.id || 0;
             this.workflowStateType = domain.workflowStateType;
+        }
+    } 
+
+    getModel(){
+        return {
+            id: this.id,
+            userApplicantId: this.controls.userApplicantId.value,
+            currencyId: this.controls.currencyId.value,
+            analyticId: this.controls.analyticId.value,
+            advancements: this.controls.advancements.value,
+            details: new Array()
         }
     }
 }

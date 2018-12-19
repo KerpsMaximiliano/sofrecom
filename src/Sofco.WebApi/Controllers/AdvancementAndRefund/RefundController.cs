@@ -15,11 +15,13 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
     {
         private readonly IRefundService refundService;
         private readonly IWorkflowService workflowService;
+        private readonly IAdvancementService advancementService;
 
-        public RefundController(IRefundService refundService, IWorkflowService workflowService)
+        public RefundController(IRefundService refundService, IWorkflowService workflowService, IAdvancementService advancementService)
         {
             this.refundService = refundService;
             this.workflowService = workflowService;
+            this.advancementService = advancementService;
         }
 
         [HttpPost]
@@ -42,6 +44,14 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         public IActionResult GetPossibleTransitions([FromBody] TransitionParameters parameters)
         {
             var response = workflowService.GetPossibleTransitions<Refund>(parameters);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("canLoad")]
+        public IActionResult CanLoad()
+        {
+            var response = advancementService.CanLoad();
 
             return this.CreateResponse(response);
         }

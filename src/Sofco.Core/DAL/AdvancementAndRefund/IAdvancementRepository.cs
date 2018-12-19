@@ -17,5 +17,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         IList<AdvancementHistory> GetHistories(int id);
         IList<Advancement> GetAllFinalized(int statusDraft, AdvancementSearchFinalizedModel model);
         IList<Advancement> GetByApplicant(int id);
+        IList<Advancement> GetUnrelated(int currentUserId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
@@ -7,6 +8,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
@@ -44,6 +46,12 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 var domain = model.CreateDomain();
                 domain.StatusId = settings.WorkflowStatusDraft;
+                domain.AdvancementRefunds = new List<AdvancementRefund>();
+
+                foreach (var advancement in model.Advancements)
+                {
+                    domain.AdvancementRefunds.Add(new AdvancementRefund { AdvancementId = advancement, Refund = domain });
+                }
 
                 unitOfWork.RefundRepository.Insert(domain);
                 unitOfWork.Save();
