@@ -36,12 +36,6 @@
                                 <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="resourceId"></ng-select>
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label class="control-label">{{ 'advancement.type' | translate }}</label>
-                                <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId"></ng-select>
-                            </div>
-                        </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="control-label">{{ 'advancement.dateSince' | translate }}</label>
@@ -52,6 +46,12 @@
                             <div class="form-group">
                                 <label class="control-label">{{ 'advancement.dateTo' | translate }}</label>
                                 <date-picker [(date)]="dateTo"></date-picker>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control-label">{{ 'refund.status' | translate }}</label>
+                                <ng-select [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateId"></ng-select>
                             </div>
                         </div>
                     </div>

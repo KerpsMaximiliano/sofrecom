@@ -45,5 +45,13 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("states")]
+        public IActionResult Get()
+        {
+            var response = refundService.GetStates();
+
+            return this.CreateResponse(response);
+        }
     }
 }

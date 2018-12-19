@@ -25,7 +25,8 @@ import { I18nService } from "app/services/common/i18n.service";
 import { UserService } from "app/services/admin/user.service";
 import { AdvancementListFinalizedComponent } from "./advancement/list-finalized/list-finalized.component";
 import { RefundListComponent } from "./refund/list/refund-list.component";
- 
+import { RefundService } from "app/services/advancement-and-refund/refund.service";
+
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent, 
                     AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundListComponent ],
@@ -34,7 +35,7 @@ import { RefundListComponent } from "./refund/list/refund-list.component";
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
                    AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule ],
 
-    providers   : [ AdvancementService, UserService, I18nService ],
+    providers   : [ AdvancementService, UserService, I18nService, RefundService ],
 
     exports     : []
 })
