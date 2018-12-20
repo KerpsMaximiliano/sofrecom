@@ -198,4 +198,7 @@
   <data name="WorkflowNotificationAdvancement" xml:space="preserve">
     <value>Solicitud de Adelanto - {0}</value>
   </data>
+  <data name="WorkflowNotificationRefund" xml:space="preserve">
+    <value>Solicitud de Reintegro - {0}</value>
+  </data>
 </root>

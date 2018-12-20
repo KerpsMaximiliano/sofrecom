@@ -370,4 +370,7 @@ Referencia: {7}
     <value>Tipo de Adelanto: {0} &lt;br/&gt;&lt;br/&gt;
 El Adelanto de {0} &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt; cambio del estado &lt;strong&gt;{2}&lt;/strong&gt; al estado &lt;strong&gt;{3}&lt;/strong&gt;.</value>
   </data>
+  <data name="WorkflowNotificationRefund" xml:space="preserve">
+    <value>El Reintegro &lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt; cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;.</value>
+  </data>
 </root>

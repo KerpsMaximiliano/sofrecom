@@ -471,6 +471,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a El Reintegro &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;..
+        /// </summary>
+        public static string WorkflowNotificationRefund {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationRefund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Se ha &lt;strong&gt; Rechazado&lt;/strong&gt; la siguiente hora enviada:
         ///&lt;br/&gt;&lt;br/&gt;
         ///Analítica: {0}

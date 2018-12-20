@@ -34,6 +34,7 @@ namespace Sofco.Framework.Workflow.Notifications
             switch (code)
             {
                 case "ADVANCEMENT-DEFAULT": return new WorkflowAdvancementNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork, workflowRepository);
+                case "REFUND-DEFAULT": return new WorkflowRefundNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork, workflowRepository);
                 default: return null;
             }
         }
