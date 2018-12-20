@@ -27,6 +27,10 @@ namespace Sofco.Framework.Workflow.Conditions
                 case "PENDING-APPROVE-MANAGER-TO-DAF": return new PendingApproveManagerToDafCondition(unitOfWork, userData, this.settings);
                 case "PENDING-APPROVE-DIRECTOR-TO-DAF": return new PendingApproveDirectorToDafCondition(unitOfWork, this.settings);
                 case "PENDING-APPROVE-DIRECTOR-TO-DIRECTOR-GENERAL": return new PendingApproveDirectorToGeneralDirectorCondition(unitOfWork, this.settings);
+                case "COMPLIANCE-TO-DIRECTOR": return new ComplianceToDirectorCondition(unitOfWork, this.settings);
+                case "COMPLIANCE-TO-DAF": return new ComplianceToDafCondition(unitOfWork, this.settings);
+                case "DIRECTOR-TO-GENERAL-DIRECTOR": return new DirectorToGeneralDirectorRefundCondition(unitOfWork, this.settings);
+                case "DIRECTOR-TO-DAF": return new DirectorToDafRefundCondition(unitOfWork, this.settings);
                 default: return null;
             }
         }

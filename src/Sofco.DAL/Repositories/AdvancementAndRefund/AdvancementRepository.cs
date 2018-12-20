@@ -113,7 +113,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             var advancements = context.Advancements
                 .Include(x => x.Currency)
-                .Where(x => x.UserApplicantId == currentUserId && !x.InWorkflowProcess && !advancementIds.Contains(x.Id))
+                .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && !x.InWorkflowProcess && !advancementIds.Contains(x.Id))
                 .ToList();
 
             return advancements;
