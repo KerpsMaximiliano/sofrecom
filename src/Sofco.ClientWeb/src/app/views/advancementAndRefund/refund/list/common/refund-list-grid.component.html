@@ -1,0 +1,25 @@
+<refund-list-filter #gridFilter controlId="{{ controlId }}"></refund-list-filter>
+
+<table class="table table-striped dataTable" role="grid" id="{{ 'gridTable-'+ controlId }}">
+    <thead>
+        <tr>
+            <th>{{ 'refund.applicationDate' | translate }}</th>
+            <th>{{ 'refund.userApplicant' | translate }}</th>
+            <th>{{ 'refund.authorizer' | translate }}</th>
+            <th>{{ 'refund.currency' | translate }}</th>
+            <th>{{ 'refund.reimbursedTotal' | translate }}</th>
+            <th>{{ 'refund.refundTotal' | translate }}</th>
+            <th>{{ 'refund.netReimbursed' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of modelFiltered" class="pointer" (click)="goToDetail(item)">
+            <td>{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+            <td class="column-lg text-ellipsis">{{ item.userApplicantDesc }}</td>
+            <td>{{ item.authorizerDesc }}</td>
+            <td>{{ item.currencyDesc }}</td>
+            <td>{{ item.ammount }}</td>
+            <td>{{ item.ammount }}</td>
+        </tr>
+    </tbody>
+</table>   

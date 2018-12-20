@@ -26,10 +26,13 @@ import { UserService } from "app/services/admin/user.service";
 import { AdvancementListFinalizedComponent } from "./advancement/list-finalized/list-finalized.component";
 import { RefundListComponent } from "./refund/list/refund-list.component";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
+import { RefundListFilterComponent } from "./refund/list/common/refund-list-filter.component";
+import { RefundListGridComponent } from "./refund/list/common/refund-list-grid.component";
 
 @NgModule({
-    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent, 
-                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundListComponent ],
+    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,
+                    AdvancementSearchComponent, AdvancementListFinalizedComponent,
+                    RefundListComponent, RefundListFilterComponent, RefundListGridComponent ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
@@ -40,4 +43,4 @@ import { RefundService } from "app/services/advancement-and-refund/refund.servic
     exports     : []
 })
 
-export class AdvancementAndRefundModule {} 
+export class AdvancementAndRefundModule {}
