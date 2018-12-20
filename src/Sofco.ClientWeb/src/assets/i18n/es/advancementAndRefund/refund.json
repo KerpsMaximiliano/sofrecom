@@ -11,7 +11,7 @@
     "descriptionItemMaxLength": "El concepto debe ser menor a 300 caracteres",
     "addSuccess": "El reintegro fue cargado exitosamente",
     "updateSuccess": "El reintegro fue actualizado exitosamente",
-    "notFound": "Reintegro no encontrada",
+    "notFound": "Reintegro no encontrado",
     "advancementRequired": "Se debe seleccionar al menos un adelanto",
     "analyticRequired": "El contrato es requerido",
     "differentCurrencies": "Se deben seleccionar adelantos del mismo tipo de moneda",

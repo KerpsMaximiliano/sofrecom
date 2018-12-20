@@ -115,6 +115,7 @@
         <textarea rows="6" class="form-control" formControlName="description" maxlength="1000"></textarea>
 
         <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'description')">
+            <p *ngIf="formsService.hasError(form, 'description', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','descriptionItemRequired') }}</p>
             <p *ngIf="formsService.hasError(form, 'description', 'maxLength')">{{ i18nService.translate('advancementAndRefund/advancement','descriptionItemMaxLength') }}</p>
         </div>
     </div>

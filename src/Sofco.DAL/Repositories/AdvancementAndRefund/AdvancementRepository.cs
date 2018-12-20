@@ -102,7 +102,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .OrderByDescending(x => x.CreationDate).ToList();
         }
 
-        public IList<Advancement> GetUnrelated(int currentUserId)
+        public IList<Advancement> GetUnrelated(int currentUserId, int workflowStatusDraftId)
         {
             var advancementIds = context.AdvancementRefunds
                 .Include(x => x.Advancement)
@@ -112,7 +112,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             var advancements = context.Advancements
                 .Include(x => x.Currency)
-                .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && !x.InWorkflowProcess && !advancementIds.Contains(x.Id))
+                .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && 
+                            !x.InWorkflowProcess && x.StatusId != workflowStatusDraftId && !advancementIds.Contains(x.Id))
                 .ToList();
 
             return advancements;

@@ -235,7 +235,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         {
             var currentUser = userData.GetCurrentUser();
 
-            var advancements = unitOfWork.AdvancementRepository.GetUnrelated(currentUser.Id);
+            var advancements = unitOfWork.AdvancementRepository.GetUnrelated(currentUser.Id, settings.WorkflowStatusDraft);
 
             var response = new Response<IList<AdvancementUnrelatedItem>>();
             response.Data = new List<AdvancementUnrelatedItem>();
