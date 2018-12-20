@@ -90,4 +90,23 @@ export class MessageService {
             case this.warningType: this.toastrService.warning(msg, null, defaultConfig); break;
         }
     }
+
+    showConfirm(callback){
+        swal({
+            title: `<h2> ${ this.i18nService.translateByKey('ACTIONS.confirmTitle')} </h2>`,
+            html: `<h3> ${ this.i18nService.translateByKey('ACTIONS.confirmBody')} </h3>`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            allowOutsideClick: false,
+            confirmButtonText: this.i18nService.translateByKey('ACTIONS.confirm'),
+        })
+        .then((result) => {
+            if (result.value) {
+                this.showLoading();
+                callback();
+            }
+        });
+    }
 }

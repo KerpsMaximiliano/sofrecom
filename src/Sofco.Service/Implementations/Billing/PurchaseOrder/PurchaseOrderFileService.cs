@@ -32,7 +32,7 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
         }
 
         public Response DeleteFile(int id)
-        {
+        { 
             var response = new Response();
 
             var purchaseOrder = PurchaseOrderValidationHelper.Find(id, response, unitOfWork);

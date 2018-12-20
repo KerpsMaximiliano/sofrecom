@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -9,6 +10,7 @@ using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
@@ -142,6 +144,55 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
             response.Data = new RefundEditModel(refund);
+
+            return response;
+        }
+
+        public Response DeleteFile(int id, int fileId)
+        {
+            var response = new Response();
+
+            var refundFile = unitOfWork.RefundRepository.GetFile(id, fileId);
+
+            if (refundFile == null)
+            {
+                response.AddError(Resources.Common.FileNotFound);
+                return response;
+            }
+
+            try
+            {
+                var file = refundFile.File;
+
+                unitOfWork.RefundRepository.DeleteFile(refundFile);
+
+                var fileName = $"{file.InternalFileName.ToString()}{file.FileType}";
+                var path = Path.Combine(fileConfig.RefundPath, fileName);
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+
+                unitOfWork.Save();
+                response.AddSuccess(Resources.Common.FileDeleted);
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.GeneralError);
+                logger.LogError(e);
+            }
+
+            return response;
+        }
+
+        public Response<IList<WorkflowHistoryModel>> GetHistories(int id)
+        {
+            var histories = unitOfWork.RefundRepository.GetHistories(id);
+
+            var response = new Response<IList<WorkflowHistoryModel>>();
+
+            response.Data = histories.Select(x => new WorkflowHistoryModel(x)).ToList();
 
             return response;
         }

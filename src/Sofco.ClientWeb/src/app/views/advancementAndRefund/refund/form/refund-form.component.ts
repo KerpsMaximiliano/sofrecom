@@ -28,6 +28,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public refundSum: number = 0;
     public differenceSum: number = 0;
 
+
+
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -56,6 +58,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public workflowStateType: WorkflowStateType;
 
     public differentCurrenciesWereSelected: boolean = false;
+    public canUpdate: boolean = false;
 
     getAdvancementsSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
@@ -69,6 +72,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         if(this.mode == 'add'){
             this.form = new Refund(false);
             this.setUserApplicant();
+            this.canUpdate = true;
         }
 
         this.detailForms = new Array();
@@ -165,6 +169,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         this.id = domain.id || 0;
         this.workflowStateType = domain.workflowStateType;
+        this.canUpdate = isEdit;
 
         this.form = new Refund(!isEdit, domain);
 

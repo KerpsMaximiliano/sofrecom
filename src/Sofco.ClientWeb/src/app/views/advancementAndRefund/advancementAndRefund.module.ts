@@ -27,10 +27,11 @@ import { AdvancementListFinalizedComponent } from "./advancement/list-finalized/
 import { RefundDetailComponent } from "./refund/detail/refund-detail.component";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { RefundFormModule } from "./refund/form/refund-form.module";
+import { RefundHistoryComponent } from "./refund/history/refund-history.component";
  
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent, 
-                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent ],
+                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundHistoryComponent ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, RefundFormModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,

@@ -18,8 +18,8 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
   
     @ViewChild('form') form;
     @ViewChild('selectedFile') selectedFile: any;
-    // @ViewChild('workflow') workflow;
-    // @ViewChild('history') history;
+    @ViewChild('workflow') workflow;
+    @ViewChild('history') history;
 
     public entityId: number;
     public actualStateId: number;
@@ -48,13 +48,6 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
             this.getSubscrip = this.refundService.get(routeParams.id).subscribe(response => {
                 this.messageService.closeLoading();
 
-                // var model = {
-                //     workflowId: response.data.type == 1 ? environment.advacementWorkflowId : environment.viaticumWorkflowId,
-                //     entityController: "advancement",
-                //     entityId: response.data.id,
-                //     actualStateId: response.data.statusId
-                // }
-
                 this.actualStateId = response.data.statusId;
                 this.entityId = response.data.id;
                 this.userApplicantId = response.data.userApplicantId;
@@ -67,9 +60,16 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
 
                 this.uploaderConfig();
 
-                // this.workflow.init(model);
+                var model = {
+                    workflowId: environment.refundWorkflowId,
+                    entityController: "refund",
+                    entityId: response.data.id,
+                    actualStateId: response.data.statusId
+                }
 
-                // this.history.getHistories(routeParams.id);
+                this.workflow.init(model);
+
+                this.history.getHistories(routeParams.id);
             }, 
             error => this.messageService.closeLoading());
         }
@@ -124,9 +124,9 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
             }
         }
         else{
-            if(this.canBack()){
-                this.back();
-            }
+            // if(this.canBack()){
+            //     this.back();
+            // }
         }
     }
 
@@ -173,5 +173,19 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
         }
   
         this.selectedFile.nativeElement.value = '';
+    }
+
+    removeFile(file, index){
+        this.messageService.showConfirm(() => {
+            this.editSubscrip = this.refundService.deleteFile(this.entityId, file.id).subscribe(
+                response => {
+                    this.messageService.closeLoading();
+                    this.files.splice(index, 1);
+                },
+                error => {
+                    this.messageService.closeLoading();
+                });
+
+        });
     }
 }

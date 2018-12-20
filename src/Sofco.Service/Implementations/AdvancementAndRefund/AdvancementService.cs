@@ -147,13 +147,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        public Response<IList<AdvancementHistoryModel>> GetHistories(int id)
+        public Response<IList<WorkflowHistoryModel>> GetHistories(int id)
         {
             var histories = unitOfWork.AdvancementRepository.GetHistories(id);
 
-            var response = new Response<IList<AdvancementHistoryModel>>();
+            var response = new Response<IList<WorkflowHistoryModel>>();
 
-            response.Data = histories.Select(x => new AdvancementHistoryModel(x)).ToList();
+            response.Data = histories.Select(x => new WorkflowHistoryModel(x)).ToList();
 
             return response;
         }

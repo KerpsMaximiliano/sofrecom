@@ -53,7 +53,7 @@
         <div class="col-xs-6">
             <h2>{{ 'refund.details' | translate }}</h2>
         </div>
-        <div class="col-xs-6 text-right">
+        <div class="col-xs-6 text-right" *ngIf="canUpdate">
             <button type="button" class="btn btn-success btn-sm" (click)="addDetail()">
                 {{ 'ACTIONS.ADD' | translate }}
                 <i class="fa fa-plus"></i>
@@ -72,7 +72,7 @@
                 <th>{{ 'advancement.date' | translate }}</th>
                 <th>{{ 'advancement.description' | translate }}</th>
                 <th>{{ 'advancement.ammount' | translate }}</th>
-                <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
+                <th *ngIf="canUpdate" class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
             </tr>
         </thead>
         <tbody>
@@ -80,7 +80,7 @@
                 <td>{{ detail.controls.creationDate.value | date: 'dd/MM/yyyy' }}</td>
                 <td class="column-xlg text-word-break">{{ detail.controls.description.value }}</td>
                 <td>{{ detail.controls.ammount.value | currency: '$' }}</td>
-                <td class="text-center column-xs">
+                <td *ngIf="canUpdate" class="text-center column-xs">
                     <button class="btn btn-sm fa fa-pencil btn-warning" (click)="editDetail(detail, i)"></button>
                     <button class="btn btn-sm fa fa-trash btn-danger" (click)="removeDetail(i)"></button>
                 </td>
@@ -88,22 +88,22 @@
         </tbody>
     </table>   
 
-    <div class="row">
+    <div class="row m-t-lg">
         <div class="col-xs-4">
             <dl>
-                <dt><strong> Total gastos: </strong></dt>
+                <dt><strong> {{ 'refund.refundSum' | translate }}: </strong></dt>
                 <dd> {{ refundSum }} {{ currencyDescription }} </dd>
             </dl>
         </div>
         <div class="col-xs-4">
             <dl>
-                <dt><strong> Total Adelantos: </strong></dt>
+                <dt><strong> {{ 'refund.advancementSum' | translate }}: </strong></dt>
                 <dd> {{ advancementSum }} {{ currencyDescription }} </dd>
             </dl>
         </div>
         <div class="col-xs-4">
             <dl>
-                <dt><strong> Total a Reembolsar: </strong></dt>
+                <dt><strong> {{ 'refund.differenceSum' | translate }}: </strong></dt>
                 <dd> {{ differenceSum }} {{ currencyDescription }} </dd>
             </dl>
         </div>

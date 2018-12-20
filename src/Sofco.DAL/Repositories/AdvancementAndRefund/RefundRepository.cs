@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.DAL.Repositories.Common;
@@ -30,6 +31,24 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Attachments)
                     .ThenInclude(x => x.File)
                 .SingleOrDefault(x => x.Id == id);
+        }
+
+        public RefundFile GetFile(int id, int fileId)
+        {
+            return context.RefundFiles.Include(x => x.File).SingleOrDefault(x => x.RefundId == id && x.FileId == fileId);
+        }
+
+        public void DeleteFile(RefundFile file)
+        {
+            context.RefundFiles.Remove(file);
+        }
+
+        public IList<RefundHistory> GetHistories(int id)
+        {
+            return context.RefundHistories
+                .Include(x => x.StatusFrom)
+                .Include(x => x.StatusTo)
+                .Where(x => x.RefundId == id).ToList();
         }
     }
 }
