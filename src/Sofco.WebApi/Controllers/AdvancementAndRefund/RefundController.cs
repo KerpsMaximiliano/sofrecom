@@ -102,5 +102,21 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("states")]
+        public IActionResult Get()
+        {
+            var response = refundService.GetStates();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("/list")]
+        public IActionResult GetList([FromBody] RefundListParameterModel model)
+        {
+            var response = refundService.GetByParameters(model);
+
+            return this.CreateResponse(response);
+        }
     }
 }

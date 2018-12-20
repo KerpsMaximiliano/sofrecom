@@ -1094,9 +1094,9 @@
         "description": "Detalle de concepto",
         "detail": "Detalle",
         "status": "Estado",
-        "ammount": "Monto",
+        "amount": "Monto",
+        "search": "Reintegros",
         "contract": "Contrato",
-        "search": "Busqueda reintegros",
         "advancements": "Adelantos",
         "finalized": "Finalizados",
         "inProcess": "En proceso de aprobación",
@@ -1106,6 +1106,11 @@
         "listTitle": "Listado de Reintegros",
         "updateDate": "Fecha de Modificación",
         "creationDate": "Fecha de Creación",
+        "applicationDate": "Fecha de solicitud",
+        "authorizer": "Superior",
+        "reimbursedTotal": "Total a Reembolsar",
+        "refundTotal": "Total adelanto",
+        "netReimbursed": "Neto a Reembolsar",
         "refundSum": "Total gastos",
         "advancementSum": "Total Adelantos",
         "differenceSum": "Total a Reembolsar",
@@ -1117,6 +1122,6 @@
             "comment": "Comentarios",
             "statusFrom": "Estado inicial",
             "statusTo": "Estado final"
-        }   
+        }
     }
-}  
+}

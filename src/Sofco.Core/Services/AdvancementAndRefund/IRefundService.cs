@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
+using Sofco.Core.Models.Workflow;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Utils;
 
@@ -12,7 +13,11 @@ namespace Sofco.Core.Services.AdvancementAndRefund
     {
         Response<string> Add(RefundModel model);
 
+        Response<List<WorkflowStateOptionModel>> GetStates();
+
         Task<Response<File>> AttachFile(int refundId, Response<File> response, IFormFile file);
+
+        Response<List<RefundListResultModel>> GetByParameters(RefundListParameterModel model);
 
         Response<RefundEditModel> Get(int id);
 

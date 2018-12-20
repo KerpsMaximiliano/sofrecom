@@ -47,5 +47,7 @@
         public int CurrencyDolares { get; set; }
 
         public int CurrencyEuros { get; set; }
+
+        public string RefundWorkflowTypeCode { get; set; }
     }
 }

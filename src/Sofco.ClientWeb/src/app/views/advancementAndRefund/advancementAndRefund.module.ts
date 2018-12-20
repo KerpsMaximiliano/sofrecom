@@ -24,14 +24,18 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { I18nService } from "app/services/common/i18n.service";
 import { UserService } from "app/services/admin/user.service";
 import { AdvancementListFinalizedComponent } from "./advancement/list-finalized/list-finalized.component";
+import { RefundListComponent } from "./refund/list/refund-list.component";
 import { RefundDetailComponent } from "./refund/detail/refund-detail.component";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
+import { RefundListFilterComponent } from "./refund/list/common/refund-list-filter.component";
+import { RefundListGridComponent } from "./refund/list/common/refund-list-grid.component";
 import { RefundFormModule } from "./refund/form/refund-form.module";
 import { RefundHistoryComponent } from "./refund/history/refund-history.component";
- 
+
 @NgModule({
-    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent, 
-                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundHistoryComponent ],
+    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,
+                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundHistoryComponent,
+                    RefundListComponent, RefundListFilterComponent, RefundListGridComponent ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, RefundFormModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
@@ -42,4 +46,4 @@ import { RefundHistoryComponent } from "./refund/history/refund-history.componen
     exports     : []
 })
 
-export class AdvancementAndRefundModule {} 
+export class AdvancementAndRefundModule {}
