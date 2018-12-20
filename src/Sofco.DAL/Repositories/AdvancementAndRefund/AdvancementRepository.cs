@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AdvancementAndRefund;
-using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Enums;
@@ -101,6 +100,22 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Status)
                 .Where(x => x.UserApplicantId == id)
                 .OrderByDescending(x => x.CreationDate).ToList();
+        }
+
+        public IList<Advancement> GetUnrelated(int currentUserId)
+        {
+            var advancementIds = context.AdvancementRefunds
+                .Include(x => x.Advancement)
+                .Where(x => x.Advancement.UserApplicantId == currentUserId)
+                .Select(x => x.AdvancementId)
+                .ToList();
+
+            var advancements = context.Advancements
+                .Include(x => x.Currency)
+                .Where(x => x.UserApplicantId == currentUserId && !x.InWorkflowProcess && !advancementIds.Contains(x.Id))
+                .ToList();
+
+            return advancements;
         }
     }
 }

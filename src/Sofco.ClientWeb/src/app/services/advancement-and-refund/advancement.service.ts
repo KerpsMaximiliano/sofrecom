@@ -22,6 +22,10 @@ export class AdvancementService {
         return this.http.get<any>(`${this.baseUrl}/advancement/${id}`);
     }
 
+    getUnrelated(){
+        return this.http.get<any>(`${this.baseUrl}/advancement/unrelated`);
+    }
+
     getHistories(id){
         return this.http.get<any>(`${this.baseUrl}/advancement/${id}/histories`);
     }

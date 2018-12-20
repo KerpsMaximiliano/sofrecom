@@ -26,7 +26,6 @@ export class RefundListFilterComponent implements OnInit {
 
     ngOnInit(): void {
         this.collapseSelector = "#collapse" + this.controlId;
-        console.log('--->--> ' + this.collapseSelector);
 
         this.getResources();
         this.getStates();

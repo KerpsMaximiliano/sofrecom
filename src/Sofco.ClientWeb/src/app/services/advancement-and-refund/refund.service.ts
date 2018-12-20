@@ -41,4 +41,12 @@ export class RefundService {
     getStates(){
         return this.http.get<any>(`${this.baseUrl}/refund/states`);
     }
+
+    getUrlForImportExcel(id){
+        return `${this.baseUrl}/refund/${id}/file`;
+    }
+
+    deleteFile(id, fileId){
+        return this.http.delete<any>(`${this.baseUrl}/refund/${id}/file/${fileId}`);
+    }
 }

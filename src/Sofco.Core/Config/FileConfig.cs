@@ -7,5 +7,6 @@
         public string LicensesPath { get; set; }
         public string InvoicesExcelPath { get; set; }
         public string InvoicesPdfPath { get; set; }
+        public string RefundPath { get; set; }
     }
 }

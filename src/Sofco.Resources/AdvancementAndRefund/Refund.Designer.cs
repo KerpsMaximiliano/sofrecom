@@ -79,11 +79,11 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a advancementAndRefund/refund.contractRequired.
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.analyticRequired.
         /// </summary>
-        public static string ContractRequired {
+        public static string AnalyticRequired {
             get {
-                return ResourceManager.GetString("ContractRequired", resourceCulture);
+                return ResourceManager.GetString("AnalyticRequired", resourceCulture);
             }
         }
         
@@ -111,6 +111,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         public static string DetailDescriptionRequired {
             get {
                 return ResourceManager.GetString("DetailDescriptionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.notFound.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
             }
         }
         

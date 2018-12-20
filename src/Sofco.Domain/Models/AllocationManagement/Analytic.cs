@@ -76,8 +76,6 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 
-        public ICollection<UserApprover> UserApprovers { get; set; }
-
-        public ICollection<Advancement> Advancements { get; set; }
+        public ICollection<Refund> Refunds { get; set; }
     }
 }

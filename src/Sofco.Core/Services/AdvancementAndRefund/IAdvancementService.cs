@@ -10,8 +10,9 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response Update(AdvancementModel model);
         Response<AdvancementEditModel> Get(int id);
         Response<IList<AdvancementListItem>> GetAllInProcess();
-        Response<IList<AdvancementHistoryModel>> GetHistories(int id);
+        Response<IList<WorkflowHistoryModel>> GetHistories(int id);
         Response<IList<AdvancementListItem>> GetAllFinalized(AdvancementSearchFinalizedModel model);
         Response<bool> CanLoad();
+        Response<IList<AdvancementUnrelatedItem>> GetUnrelated();
     }
 }

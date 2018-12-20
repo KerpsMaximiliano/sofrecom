@@ -47,6 +47,14 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
+        [HttpGet("unrelated")]
+        public IActionResult GetUnrelated(int id)
+        {
+            var response = advancementService.GetUnrelated();
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] AdvancementModel model)
         {

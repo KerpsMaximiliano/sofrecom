@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Services.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AdvancementAndRefund
@@ -15,11 +19,21 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
     {
         private readonly IRefundService refundService;
         private readonly IWorkflowService workflowService;
+        private readonly IAdvancementService advancementService;
 
-        public RefundController(IRefundService refundService, IWorkflowService workflowService)
+        public RefundController(IRefundService refundService, IWorkflowService workflowService, IAdvancementService advancementService)
         {
             this.refundService = refundService;
             this.workflowService = workflowService;
+            this.advancementService = advancementService;
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var response = refundService.Get(id);
+
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
@@ -42,6 +56,49 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         public IActionResult GetPossibleTransitions([FromBody] TransitionParameters parameters)
         {
             var response = workflowService.GetPossibleTransitions<Refund>(parameters);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("canLoad")]
+        public IActionResult CanLoad()
+        {
+            var response = advancementService.CanLoad();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("{refundId}/file")]
+        public async Task<IActionResult> File(int refundId)
+        {
+            var response = new Response<File>();
+
+            if (Request.Form.Files.Any())
+            {
+                var file = Request.Form.Files.First();
+
+                await refundService.AttachFile(refundId, response, file);
+            }
+            else
+            {
+                response.AddError(Resources.Common.SaveFileError);
+            }
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("{id}/file/{fileId}")]
+        public IActionResult DeleteFile(int id, int fileId)
+        {
+            var response = refundService.DeleteFile(id, fileId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/histories")]
+        public IActionResult GetHistories(int id)
+        {
+            var response = refundService.GetHistories(id);
 
             return this.CreateResponse(response);
         }

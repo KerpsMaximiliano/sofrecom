@@ -13,7 +13,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public int? CurrencyId { get; set; }
 
-        public string Contract { get; set; }
+        public int? AnalyticId { get; set; }
 
         public IList<int> Advancements { get; set; }
 
@@ -27,8 +27,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
+            domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.CreationDate = DateTime.UtcNow.Date;
-            domain.Contract = Contract;
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
 
             foreach (var detail in Details)
