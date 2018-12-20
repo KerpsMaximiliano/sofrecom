@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +10,15 @@ using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.AdvancementAndRefund;
+using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
+using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
+using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.Billing;
@@ -27,22 +32,31 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly ILogMailer<RefundService> logger;
         private readonly IRefundValidation validation;
         private readonly AppSetting settings;
-        private readonly IUserData userData;
+        private readonly IWorkflowStateRepository workflowStateRepository;
+        private readonly IMapper mapper;
         private readonly FileConfig fileConfig;
+        private readonly IRefundRepository refundRepository;
+        private readonly IUserData userData;
 
         public RefundService(IUnitOfWork unitOfWork,
             ILogMailer<RefundService> logger,
             IRefundValidation validation,
-            IUserData userData,
+            IOptions<AppSetting> settingOptions, 
+            IWorkflowStateRepository workflowStateRepository,
             IOptions<FileConfig> fileOptions,
-            IOptions<AppSetting> settingOptions)
+            IMapper mapper, 
+            IRefundRepository refundRepository, 
+            IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.validation = validation;
-            this.settings = settingOptions.Value;
+            this.workflowStateRepository = workflowStateRepository;
+            this.mapper = mapper;
+            this.refundRepository = refundRepository;
             this.userData = userData;
             fileConfig = fileOptions.Value;
+            settings = settingOptions.Value;
         }
 
         public Response<string> Add(RefundModel model)
@@ -195,6 +209,28 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             response.Data = histories.Select(x => new WorkflowHistoryModel(x)).ToList();
 
             return response;
+        }
+
+        public Response<List<WorkflowStateOptionModel>> GetStates()
+        {
+            var result = workflowStateRepository.GetStateByWorkflowTypeCode(settings.RefundWorkflowTypeCode);
+
+            return new Response<List<WorkflowStateOptionModel>>
+            {
+                Data = Translate(result)
+            };
+        }
+
+        public Response<List<RefundListResultModel>> GetByParameters(RefundListParameterModel model)
+        {
+            var result = refundRepository.GetByParameters(model);
+
+            return new Response<List<RefundListResultModel>>();
+        }
+
+        private List<WorkflowStateOptionModel> Translate(List<WorkflowState> data)
+        {
+            return mapper.Map<List<WorkflowState>, List<WorkflowStateOptionModel>>(data);
         }
     }
 }

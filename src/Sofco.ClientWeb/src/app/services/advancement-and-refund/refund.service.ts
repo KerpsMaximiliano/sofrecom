@@ -38,6 +38,10 @@ export class RefundService {
         return this.http.get<any>(`${this.baseUrl}/refund/canLoad`);
     }
 
+    getStates(){
+        return this.http.get<any>(`${this.baseUrl}/refund/states`);
+    }
+
     getUrlForImportExcel(id){
         return `${this.baseUrl}/refund/${id}/file`;
     }
