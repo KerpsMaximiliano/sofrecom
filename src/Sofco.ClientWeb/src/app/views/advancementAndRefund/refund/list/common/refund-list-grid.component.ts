@@ -4,7 +4,8 @@ import { I18nService } from "app/services/common/i18n.service";
 
 @Component({
     selector: 'refund-list-grid',
-    templateUrl: './refund-list-grid.component.html'
+    templateUrl: './refund-list-grid.component.html',
+    styleUrls: ['./refund-list-grid.component.scss']
 })
 export class RefundListGridComponent implements OnInit {
     @Input()

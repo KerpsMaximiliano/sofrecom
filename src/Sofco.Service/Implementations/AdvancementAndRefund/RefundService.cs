@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
@@ -23,19 +24,21 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly AppSetting settings;
         private readonly IWorkflowStateRepository workflowStateRepository;
         private readonly IMapper mapper;
+        private readonly IRefundRepository refundRepository;
 
         public RefundService(IUnitOfWork unitOfWork,
             ILogMailer<RefundService> logger,
             IRefundValidation validation,
             IOptions<AppSetting> settingOptions, 
             IWorkflowStateRepository workflowStateRepository,
-            IMapper mapper)
+            IMapper mapper, IRefundRepository refundRepository)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.validation = validation;
             this.workflowStateRepository = workflowStateRepository;
             this.mapper = mapper;
+            this.refundRepository = refundRepository;
             settings = settingOptions.Value;
         }
 
@@ -76,6 +79,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 Data = Translate(result)
             };
+        }
+
+        public Response<List<RefundListResultModel>> GetByParameters(RefundListParameterModel model)
+        {
+            var result = refundRepository.GetByParameters(model);
+
+            return new Response<List<RefundListResultModel>>();
         }
 
         private List<WorkflowStateOptionModel> Translate(List<WorkflowState> data)

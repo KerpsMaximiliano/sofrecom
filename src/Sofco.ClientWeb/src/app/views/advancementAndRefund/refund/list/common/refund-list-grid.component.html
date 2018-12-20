@@ -1,5 +1,8 @@
 <refund-list-filter #gridFilter controlId="{{ controlId }}"></refund-list-filter>
 
+<div class="ibox float-e-margins">
+        <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
+            <spinner></spinner>
 <table class="table table-striped dataTable" role="grid" id="{{ 'gridTable-'+ controlId }}">
     <thead>
         <tr>
@@ -22,4 +25,7 @@
             <td>{{ item.ammount }}</td>
         </tr>
     </tbody>
-</table>   
+</table>
+
+    </div>
+</div>

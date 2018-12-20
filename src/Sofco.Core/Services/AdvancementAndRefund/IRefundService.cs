@@ -10,5 +10,7 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<string> Add(RefundModel model);
 
         Response<List<WorkflowStateOptionModel>> GetStates();
+
+        Response<List<RefundListResultModel>> GetByParameters(RefundListParameterModel model);
     }
 }
