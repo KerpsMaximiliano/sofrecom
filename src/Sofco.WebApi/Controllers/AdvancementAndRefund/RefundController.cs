@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Services.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AdvancementAndRefund
@@ -22,6 +26,14 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             this.refundService = refundService;
             this.workflowService = workflowService;
             this.advancementService = advancementService;
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var response = refundService.Get(id);
+
+            return this.CreateResponse(response);
         }
 
         [HttpPost]
@@ -52,6 +64,25 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         public IActionResult CanLoad()
         {
             var response = advancementService.CanLoad();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("{refundId}/file")]
+        public async Task<IActionResult> File(int refundId)
+        {
+            var response = new Response<File>();
+
+            if (Request.Form.Files.Any())
+            {
+                var file = Request.Form.Files.First();
+
+                await refundService.AttachFile(refundId, response, file);
+            }
+            else
+            {
+                response.AddError(Resources.Common.SaveFileError);
+            }
 
             return this.CreateResponse(response);
         }

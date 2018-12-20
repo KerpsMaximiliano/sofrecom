@@ -93,7 +93,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         }
 
         public Response<AdvancementEditModel> Get(int id)
-        {
+        { 
             var response = new Response<AdvancementEditModel>();
 
             var advancement = unitOfWork.AdvancementRepository.GetFullById(id);
@@ -179,7 +179,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 {
                     foreach (var transition in advancement.Status.ActualTransitions)
                     {
-                        if (ValidateManagerAccess(advancement, transition, currentUser))
+                        if (ValidateManagerAccess(advancement, currentUser))
                         {
                             if (response.Data.All(x => x.Id != advancement.Id))
                             {
@@ -308,23 +308,30 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return hasAccess;
         }
 
+        private bool ValidateManagerAccess(Advancement entity, UserLiteModel currentUser)
+        {
+            if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
+            {
+                return true;
+            }
+            else
+            {
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+
+                if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private bool ValidateManagerAccess(Advancement entity, WorkflowStateTransition transition, UserLiteModel currentUser)
         {
             if (transition != null && transition.WorkflowStateAccesses != null && transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == settings.ManagerUserSource))
             {
-                if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
-                {
-                    return true;
-                }
-                else
-                {
-                    var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
-
-                    if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
-                    {
-                        return true;
-                    }
-                }
+                return ValidateManagerAccess(entity, currentUser);
             }
 
             return false;

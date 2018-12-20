@@ -111,7 +111,7 @@
 </form> 
 
 <ng2-modal [config]="addDetailModalConfig" #addDetailModal (accept)="saveDetail()" (close)="onClose()" [isSaveEnabled]="detailModalForm.valid">
-    <form [formGroup]="detailModalForm">   
+    <form [formGroup]="detailModalForm" *ngIf="detailModalForm">   
         <div class="form-group" [ngClass]="formsService.getClassProperty(detailModalForm, 'creationDate')">
             <label class="control-label">{{ 'refund.date' | translate }}</label>
             <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="creationDate">

@@ -13,7 +13,7 @@ export class Refund extends FormGroup {
                 
             currencyId: new FormControl({value: domain && domain.currencyId || null, disabled: isReadonly}),
 
-            advancements: new FormControl({value: domain && domain.advancements || null, disabled: isReadonly}, 
+            advancements: new FormControl({value: domain && domain.advancementIds || null, disabled: isReadonly}, 
                 Validators.required),
 
             analyticId: new FormControl({value: domain && domain.analyticId || null, disabled: isReadonly},

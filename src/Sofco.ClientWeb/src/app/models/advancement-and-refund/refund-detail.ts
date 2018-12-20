@@ -6,16 +6,16 @@ export class RefundDetail extends FormGroup {
     private id: number;
     private refundId: number;
 
-    constructor(isReadonly: boolean, domain?) {
+    constructor(domain?) {
         super({
-            creationDate: new FormControl({value: domain && moment(domain.creationDate).toDate() || null, disabled: isReadonly}, 
+            creationDate: new FormControl(domain && moment(domain.creationDate).toDate() || null, 
                 Validators.required),
 
-            description: new FormControl({value: domain && domain.description || null, disabled: isReadonly}, [
+            description: new FormControl(domain && domain.description || null, [
                 Validators.required,
                 Validators.maxLength(300)]),
 
-            ammount: new FormControl({value: domain && domain.ammount || null, disabled: isReadonly}, [
+            ammount: new FormControl(domain && domain.ammount || null, [
                 Validators.required,
                 Validators.max(1000000),
                 Validators.min(1)

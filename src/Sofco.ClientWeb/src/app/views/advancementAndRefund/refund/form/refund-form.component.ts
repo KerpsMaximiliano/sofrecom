@@ -68,11 +68,11 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         if(this.mode == 'add'){
             this.form = new Refund(false);
-            this.detailForms = new Array();
-            this.detailModalForm = new RefundDetail(false);
-
             this.setUserApplicant();
         }
+
+        this.detailForms = new Array();
+        this.detailModalForm = new RefundDetail();
 
         this.getAdvancementsUnrelated();
         this.getAnalytics();
@@ -96,7 +96,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     addDetail(){
-        var detail = new RefundDetail(false);
+        var detail = new RefundDetail();
         this.detailForms.push(detail);
         this.editDetail(detail, this.detailForms.length-1);
     }
@@ -112,7 +112,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     saveDetail(){
-        this.detailModalForm = new RefundDetail(false);
+        this.detailModalForm = new RefundDetail();
         this.addDetailModal.hide();
         this.calculateTotals();
     }
@@ -129,7 +129,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         detail.controls.description.setValue(this.detailFormAux.description);
         detail.controls.ammount.setValue(this.detailFormAux.ammount);
 
-        this.detailModalForm = new RefundDetail(false);
+        this.detailModalForm = new RefundDetail();
     }
 
     canSave(){
@@ -156,6 +156,34 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             this.form.controls.userApplicantId.setValue(userInfo.id);
             this.userApplicantName = userInfo.name;
         }
+    }
+
+    setModel(domain, isEdit){
+        if(domain.statusId > 0){
+            this.status = domain.statusDesc;
+        }
+
+        this.id = domain.id || 0;
+        this.workflowStateType = domain.workflowStateType;
+
+        this.form = new Refund(!isEdit, domain);
+
+        this.currencyDescription = domain.currencyDesc;
+
+        if(domain.details && domain.details.length > 0){
+            domain.details.forEach(detail => {
+                this.detailForms.push(new RefundDetail(detail));
+            });
+        }
+
+        if(domain.advancements && domain.advancements.length > 0){
+            domain.advancements.forEach(advancement => {
+                this.advancements.push(advancement);
+            });
+        }
+
+        this.userApplicantName = domain.userApplicantDesc;
+        this.calculateTotals();
     }
 
     getModel(){
