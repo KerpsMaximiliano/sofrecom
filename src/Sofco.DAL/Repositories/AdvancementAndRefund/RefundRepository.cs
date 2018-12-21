@@ -56,5 +56,15 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.StatusTo)
                 .Where(x => x.RefundId == id).ToList();
         }
+
+        public bool Exist(int id)
+        {
+            return context.Refunds.Any(x => x.Id == id);
+        }
+
+        public Refund GetById(int id)
+        {
+            return context.Refunds.Include(x => x.Details).Include(x => x.AdvancementRefunds).SingleOrDefault(x => x.Id == id);
+        }
     }
 }

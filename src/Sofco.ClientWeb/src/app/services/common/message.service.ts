@@ -104,7 +104,6 @@ export class MessageService {
         })
         .then((result) => {
             if (result.value) {
-                this.showLoading();
                 callback();
             }
         });

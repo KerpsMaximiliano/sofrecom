@@ -29,6 +29,35 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             ValidateAdvancements(model, response);
         }
 
+        public Response ValidateUpdate(RefundModel model)
+        {
+            var response = new Response();
+
+            if (model == null)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.NullModel);
+                return response;
+            }
+
+            ValidateIfExist(model, response);
+
+            if (response.HasErrors()) return response;
+
+            ValidateCommonData(model, response);
+            ValidateDetails(model, response);
+            ValidateAdvancements(model, response);
+
+            return response;
+        }
+
+        private void ValidateIfExist(RefundModel model, Response response)
+        {
+            if (!unitOfWork.RefundRepository.Exist(model.Id))
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.NotFound);
+            }
+        }
+
         private void ValidateAdvancements(RefundModel model, Response response)
         {
             if (!model.Advancements.Any())

@@ -140,5 +140,14 @@ namespace Sofco.Resources.AdvancementAndRefund {
                 return ResourceManager.GetString("NullModel", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
+            }
+        }
     }
 }

@@ -144,4 +144,7 @@
   <data name="NullModel" xml:space="preserve">
     <value>advancementAndRefund/refund.nullModel</value>
   </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>advancementAndRefund/refund.updateSuccess</value>
+  </data>
 </root>

@@ -118,12 +118,17 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     onTransitionSuccess(){
         const userInfo = UserInfoService.getUserInfo();
 
-        if(this.form.userApplicantIdLogged == this.form.form.controls.userApplicantId.value){
+        if(this.userApplicantId == this.form.form.controls.userApplicantId.value){
             if(userInfo && userInfo.employeeId){
                 this.router.navigate(['/profile/' + userInfo.employeeId]);
             }
         }
         else{
+            //todo: borrar cuando este terminada la busqueda
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+          
             // if(this.canBack()){
             //     this.back();
             // }
@@ -177,6 +182,8 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
 
     removeFile(file, index){
         this.messageService.showConfirm(() => {
+            this.messageService.showLoading();
+
             this.editSubscrip = this.refundService.deleteFile(this.entityId, file.id).subscribe(
                 response => {
                     this.messageService.closeLoading();

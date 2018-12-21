@@ -211,6 +211,38 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
+        public Response Update(RefundModel model)
+        {
+            var response = validation.ValidateUpdate(model);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var domain = unitOfWork.RefundRepository.GetById(model.Id);
+                model.UpdateDomain(domain);
+
+                domain.AdvancementRefunds = new List<AdvancementRefund>();
+
+                foreach (var advancement in model.Advancements)
+                {
+                    domain.AdvancementRefunds.Add(new AdvancementRefund { AdvancementId = advancement, Refund = domain });
+                }
+
+                unitOfWork.RefundRepository.Update(domain);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Refund.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(e);
+            }
+
+            return response;
+        }
+
         public Response<List<WorkflowStateOptionModel>> GetStates()
         {
             var result = workflowStateRepository.GetStateByWorkflowTypeCode(settings.RefundWorkflowTypeCode);

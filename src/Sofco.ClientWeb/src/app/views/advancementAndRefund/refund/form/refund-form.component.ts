@@ -9,6 +9,7 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { RefundDetail } from "app/models/advancement-and-refund/refund-detail";
 import { UserInfoService } from "app/services/common/user-info.service";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'refund-form',
@@ -65,6 +66,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     constructor(public formsService: FormsService,
         public advancementService: AdvancementService,
+        public messageService: MessageService,
         public analyticService: AnalyticService,
         public i18nService: I18nService){}
 
@@ -122,8 +124,10 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     removeDetail(index){
-        this.detailForms.splice(index, 1);
-        this.calculateTotals();
+        this.messageService.showConfirm(() => {
+            this.detailForms.splice(index, 1);
+            this.calculateTotals();
+        });
     }
 
     onClose(){

@@ -44,6 +44,14 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
+        [HttpPut]
+        public IActionResult Put([FromBody] RefundModel model)
+        {
+            var response = refundService.Update(model);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("transition")]
         public IActionResult DoTransition([FromBody] WorkflowChangeStatusParameters parameters)
         {

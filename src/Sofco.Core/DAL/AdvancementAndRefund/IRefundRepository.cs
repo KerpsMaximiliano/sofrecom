@@ -19,5 +19,9 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         void DeleteFile(RefundFile file);
 
         IList<RefundHistory> GetHistories(int id);
+
+        bool Exist(int id);
+
+        Refund GetById(int id);
     }
 }

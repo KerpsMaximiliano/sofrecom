@@ -38,6 +38,45 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
             return domain;
         }
+
+        public void UpdateDomain(Domain.Models.AdvancementAndRefund.Refund domain)
+        {
+            domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
+            domain.CurrencyId = CurrencyId.GetValueOrDefault();
+            domain.AnalyticId = AnalyticId.GetValueOrDefault();
+            domain.TotalAmmount = Details.Sum(x => x.Ammount);
+
+            foreach (var detail in Details)
+            {
+                if (detail.Id == 0)
+                {
+                    domain.Details.Add(detail.CreateDomain());
+                }
+                else
+                {
+                    var domainDetail = domain.Details.SingleOrDefault(x => x.Id == detail.Id);
+
+                    if (domainDetail != null)
+                    {
+                        domainDetail.Description = detail.Description;
+                        domainDetail.Ammount = detail.Ammount;
+                        domainDetail.CreationDate = detail.CreationDate.GetValueOrDefault();
+                    }
+                }
+            }
+
+            var detailsIds = Details.Select(x => x.Id).ToList();
+
+            if (detailsIds.Any())
+            {
+                var detailsToRemove = domain.Details.Where(x => !detailsIds.Contains(x.Id)).ToList();
+
+                foreach (var refundDetail in detailsToRemove)
+                {
+                    domain.Details.Remove(refundDetail);
+                }
+            }
+        }
     }
 
     public class RefundDetailModel
