@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { DataTableService } from "app/services/common/datatable.service";
 import { I18nService } from "app/services/common/i18n.service";
+import { RefundService } from "app/services/advancement-and-refund/refund.service";
+import { Subscription } from "rxjs";
 
 @Component({
     selector: 'refund-list-grid',
@@ -10,13 +12,36 @@ import { I18nService } from "app/services/common/i18n.service";
 export class RefundListGridComponent implements OnInit {
     @Input()
     public controlId = 'grid1';
+    @Input()
+    public inWorkflowProcess = true;
     public loading = false;
+    subscrip: Subscription;
+    public data:any[] = new Array<any>();
+    @ViewChild('gridFilter') gridFilter;
 
-    constructor(private datatableService: DataTableService,
+    constructor(private refundService: RefundService,
+        private datatableService: DataTableService,
         private i18nService: I18nService){}
 
     ngOnInit(): void {
-        this.initGrid();
+        this.getData();
+    }
+
+    getData() {
+        const model = this.getParameterModel();
+
+        this.subscrip = this.refundService.getAll(model).subscribe(res => {
+            this.data = res.data;
+            this.initGrid();
+        });
+    }
+
+    getParameterModel() {
+        return this.gridFilter.model !== undefined
+            ? this.gridFilter.model
+            : {
+                inWorkflowProcess: this.inWorkflowProcess
+            };
     }
 
     initGrid(){
