@@ -17,7 +17,7 @@ END
 DECLARE @GafRoleCode NVARCHAR(100) = 'GAF'
 IF (NOT EXISTS (SELECT Id from app.Roles WHERE Code = @GafRoleCode))
 BEGIN
-	UPDATE app.Roles SET Code = @GafRoleCode WHERE Description LIKE 'GAF';
+	UPDATE app.Roles SET Code = @GafRoleCode WHERE Description LIKE 'GAF%';
 END
 
 DECLARE @FuncId Int = (SELECT Id FROM app.Functionalities WHERE Code = @RefundListCode)
