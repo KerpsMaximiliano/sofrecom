@@ -49,4 +49,8 @@ export class RefundService {
     deleteFile(id, fileId){
         return this.http.delete<any>(`${this.baseUrl}/refund/${id}/file/${fileId}`);
     }
+
+    getAll(model){
+        return this.http.post<any>(`${this.baseUrl}/refund/search`, model);
+    }
 }

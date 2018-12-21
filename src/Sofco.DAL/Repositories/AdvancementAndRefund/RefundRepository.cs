@@ -14,9 +14,25 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
         }
 
-        public List<Refund> GetByParameters(RefundListParameterModel parameter)
+        public List<Refund> GetByParameters(RefundListParameterModel model)
         {
-            throw new System.NotImplementedException();
+            var query = context.Refunds
+                .Include(x => x.Currency)
+                .Include(x => x.UserApplicant)
+                .Include(x => x.Status)
+                .Include(x => x.Details)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Advancement)
+                .Where(s => s.CreationDate.Date >= model.DateSince.Value.Date
+                            && s.InWorkflowProcess == model.InWorkflowProcess);
+
+            if (model.DateTo.HasValue)
+                query = query.Where(x => x.CreationDate.Date <= model.DateTo.Value.Date);
+
+            if (model.UserApplicantId.HasValue && model.UserApplicantId.Value > 0)
+                query = query.Where(x => x.UserApplicantId == model.UserApplicantId.Value);
+
+            return query.ToList();
         }
 
         public void InsertFile(RefundFile refundFile)

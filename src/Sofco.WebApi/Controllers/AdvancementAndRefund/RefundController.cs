@@ -119,7 +119,7 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
-        [HttpPost("/list")]
+        [HttpPost("search")]
         public IActionResult GetList([FromBody] RefundListParameterModel model)
         {
             var response = refundService.GetByParameters(model);
