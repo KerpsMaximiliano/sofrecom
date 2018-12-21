@@ -177,14 +177,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 foreach (var advancement in advancements)
                 {
-                    foreach (var transition in advancement.Status.ActualTransitions)
+                    if (ValidateManagerAccess(advancement, currentUser))
                     {
-                        if (ValidateManagerAccess(advancement, currentUser))
+                        if (response.Data.All(x => x.Id != advancement.Id))
                         {
-                            if (response.Data.All(x => x.Id != advancement.Id))
-                            {
-                                response.Data.Add(new AdvancementListItem(advancement));
-                            }
+                            response.Data.Add(new AdvancementListItem(advancement));
                         }
                     }
                 }
@@ -235,7 +232,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         {
             var currentUser = userData.GetCurrentUser();
 
-            var advancements = unitOfWork.AdvancementRepository.GetUnrelated(currentUser.Id);
+            var advancements = unitOfWork.AdvancementRepository.GetUnrelated(currentUser.Id, settings.WorkflowStatusDraft);
 
             var response = new Response<IList<AdvancementUnrelatedItem>>();
             response.Data = new List<AdvancementUnrelatedItem>();

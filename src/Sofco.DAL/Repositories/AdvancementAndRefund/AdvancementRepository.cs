@@ -72,10 +72,6 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Authorizer)
-                .Include(x => x.Status)
-                    .ThenInclude(x => x.ActualTransitions)
-                        .ThenInclude(x => x.WorkflowStateAccesses)
-                            .ThenInclude(x => x.UserSource)
                 .Where(x => !x.InWorkflowProcess && x.StatusId != statusDraft);
 
             if (model.ResourceId.HasValue && model.ResourceId.Value > 0)
@@ -102,7 +98,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .OrderByDescending(x => x.CreationDate).ToList();
         }
 
-        public IList<Advancement> GetUnrelated(int currentUserId)
+        public IList<Advancement> GetUnrelated(int currentUserId, int workflowStatusDraftId)
         {
             var advancementIds = context.AdvancementRefunds
                 .Include(x => x.Advancement)
@@ -112,7 +108,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             var advancements = context.Advancements
                 .Include(x => x.Currency)
-                .Where(x => x.UserApplicantId == currentUserId && !x.InWorkflowProcess && !advancementIds.Contains(x.Id))
+                .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && 
+                            !x.InWorkflowProcess && x.StatusId != workflowStatusDraftId && !advancementIds.Contains(x.Id))
                 .ToList();
 
             return advancements;
