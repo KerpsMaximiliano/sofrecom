@@ -118,7 +118,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     onTransitionSuccess(){
         const userInfo = UserInfoService.getUserInfo();
 
-        if(this.userApplicantId == this.form.form.controls.userApplicantId.value){
+        if(userInfo.id == this.form.form.controls.userApplicantId.value){
             if(userInfo && userInfo.employeeId){
                 this.router.navigate(['/profile/' + userInfo.employeeId]);
             }
