@@ -1,4 +1,4 @@
-<refund-list-filter #gridFilter controlId="{{ controlId }}" inWorkflowProcess="{{ inWorkflowProcess }}" (valueChange)="getData()"></refund-list-filter>
+<refund-list-filter #gridFilter controlId="{{ controlId }}" [inWorkflowProcess]="inWorkflowProcess" (valueChange)="getData()"></refund-list-filter>
 
 <div class="ibox float-e-margins">
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
@@ -13,6 +13,7 @@
             <th class="column-sm">{{ 'refund.advancementSum' | translate }}</th>
             <th class="column-sm">{{ 'refund.refundSum' | translate }}</th>
             <th class="column-sm">{{ 'refund.differenceSum' | translate }}</th>
+            <th class="column-sm" *ngIf="inWorkflowProcess">{{ 'refund.status' | translate }}</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,9 @@
             <td>{{ item.advancementSum }}</td>
             <td>{{ item.refundSum }}</td>
             <td>{{ item.differenceSum }}</td>
+            <td *ngIf="inWorkflowProcess">
+                <label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusName }}</label>
+            </td>
         </tr>
     </tbody>
 </table>

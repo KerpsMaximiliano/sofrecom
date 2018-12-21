@@ -53,6 +53,9 @@ namespace Sofco.Core.DAL.Admin
         IList<User> GetExternalsFree();
 
         List<UserLiteModel> GetUserLiteByIds(List<int> userIds);
+
         bool HasGafGroup(string email);
+
+        List<UserLiteModel> GetUserLiteByEmails(List<string> emails);
     }
 }

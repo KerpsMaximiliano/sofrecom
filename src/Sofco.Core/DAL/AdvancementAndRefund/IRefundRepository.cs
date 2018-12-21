@@ -2,7 +2,6 @@
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Domain.Models.AdvancementAndRefund;
-using Sofco.Domain.Models.Common;
 
 namespace Sofco.Core.DAL.AdvancementAndRefund
 {

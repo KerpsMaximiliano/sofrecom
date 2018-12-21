@@ -20,6 +20,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Status)
+                    .ThenInclude(x => x.ActualTransitions)
                 .Include(x => x.Details)
                 .Include(x => x.AdvancementRefunds)
                     .ThenInclude(x => x.Advancement)
@@ -31,6 +32,11 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             if (model.UserApplicantId.HasValue && model.UserApplicantId.Value > 0)
                 query = query.Where(x => x.UserApplicantId == model.UserApplicantId.Value);
+
+            if (model.StateId.HasValue)
+            {
+                query = query.Where(x => x.StatusId == model.StateId);
+            }
 
             return query.ToList();
         }

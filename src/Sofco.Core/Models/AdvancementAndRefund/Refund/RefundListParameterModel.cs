@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 {
@@ -10,8 +11,10 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public DateTime? DateTo { get; set; }
 
-        public int WorkflowStateId { get; set; }
+        public int? StateId { get; set; }
 
         public bool InWorkflowProcess { get; set; }
+
+        public List<int> UserApplicantIds { get; set; }
     }
 }
