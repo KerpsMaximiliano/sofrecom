@@ -48,11 +48,18 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
 
         private void ValidateDetails(RefundModel model, Response response)
         {
-            foreach (var detail in model.Details)
+            if (!model.Details.Any())
             {
-                ValidateDate(detail, response);
-                ValidateAmmount(detail, response);
-                ValidateDescription(detail, response);
+                response.AddError(Resources.AdvancementAndRefund.Refund.DetailsRequired);
+            }
+            else
+            {
+                foreach (var detail in model.Details)
+                {
+                    ValidateDate(detail, response);
+                    ValidateAmmount(detail, response);
+                    ValidateDescription(detail, response);
+                }
             }
         }
 

@@ -115,6 +115,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.detailsRequired.
+        /// </summary>
+        public static string DetailsRequired {
+            get {
+                return ResourceManager.GetString("DetailsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/refund.notFound.
         /// </summary>
         public static string NotFound {
