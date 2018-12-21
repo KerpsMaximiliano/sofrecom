@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Subscription } from "rxjs";
 import { UserService } from "app/services/admin/user.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
@@ -10,14 +10,19 @@ import { RefundService } from "app/services/advancement-and-refund/refund.servic
 export class RefundListFilterComponent implements OnInit {
     @Input()
     public controlId = 'grid1';
+    @Input()
+    public model:any;
+    @Input()
+    public inWorkflowProcess = true;
     private collapseSelector = '#grid1';
-
     public resources: any[] = new Array<any>();
     public resourceId: number;
+    @Output()
+    valueChange = new EventEmitter<any>();
     public dateSince: Date;
     public dateTo: Date;
     public states: any[] = new Array<any>();
-    public typeId: number;
+    public stateId: number;
     getResourcesSubscrip: Subscription;
     subscrip: Subscription;
 
@@ -54,7 +59,6 @@ export class RefundListFilterComponent implements OnInit {
     getResources(){
         this.getResourcesSubscrip = this.userService.getOptions().subscribe(data => {
             this.resources = data;
-
         });
     }
 
@@ -66,17 +70,23 @@ export class RefundListFilterComponent implements OnInit {
 
     clean(){
         this.resourceId = null;
-        this.typeId = null;
+        this.stateId = null;
         this.dateSince = null;
         this.dateTo = null;
+        this.inWorkflowProcess = this.inWorkflowProcess;
+        this.search();
     }
 
     search(){
-        const model = {
-            resourceId: this.resourceId,
-            typeId: this.typeId,
+        this.model = {
+            userApplicantId: this.resourceId,
+            stateId: this.stateId,
             dateSince: this.dateSince,
-            dateTo: this.dateTo
+            dateTo: this.dateTo,
+            inWorkflowProcess: this.inWorkflowProcess
         }
+        this.valueChange.emit(this.model);
+
+        this.collapse();
     }
 }

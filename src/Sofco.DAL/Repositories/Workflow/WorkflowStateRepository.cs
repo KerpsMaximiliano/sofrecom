@@ -15,13 +15,7 @@ namespace Sofco.DAL.Repositories.Workflow
 
         public List<WorkflowState> GetStateByWorkflowTypeCode(string workflowTypeCode)
         {
-            // TODO: Remove Placeholder
-
-            return new List<WorkflowState>()
-            {
-                new WorkflowState { Name = "State1" },
-                new WorkflowState { Name = "State2" },
-            };
+            return new List<WorkflowState>();
         }
     }
 }

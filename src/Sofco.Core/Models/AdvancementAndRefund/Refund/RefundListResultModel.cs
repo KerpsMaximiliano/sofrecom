@@ -1,11 +1,25 @@
-﻿namespace Sofco.Core.Models.AdvancementAndRefund.Refund
+﻿using System;
+
+namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 {
     public class RefundListResultModel
     {
         public int Id { get; set; }
 
-        public int? UserApplicantId { get; set; }
+        public int UserApplicantId { get; set; }
 
-        public int? CurrencyId { get; set; }
+        public string UserApplicantName { get; set; }
+
+        public string ManagerName { get; set; }
+
+        public string CurrencyName { get; set; }
+
+        public DateTime CreationDate { get; set; }
+
+        public decimal AdvancementSum { get; set; }
+
+        public decimal RefundSum { get; set; }
+
+        public decimal DifferenceSum { get; set; }
     }
 }

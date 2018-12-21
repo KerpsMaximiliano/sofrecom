@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.Workflow;
@@ -18,6 +19,7 @@ using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
+using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
@@ -37,6 +39,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly FileConfig fileConfig;
         private readonly IRefundRepository refundRepository;
         private readonly IUserData userData;
+        private readonly IEmployeeData employeeData;
 
         public RefundService(IUnitOfWork unitOfWork,
             ILogMailer<RefundService> logger,
@@ -46,7 +49,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             IOptions<FileConfig> fileOptions,
             IMapper mapper, 
             IRefundRepository refundRepository, 
-            IUserData userData)
+            IUserData userData, IEmployeeData employeeData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -55,6 +58,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             this.mapper = mapper;
             this.refundRepository = refundRepository;
             this.userData = userData;
+            this.employeeData = employeeData;
             fileConfig = fileOptions.Value;
             settings = settingOptions.Value;
         }
@@ -223,14 +227,53 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
         public Response<List<RefundListResultModel>> GetByParameters(RefundListParameterModel model)
         {
+            ValidParameter(model);
+
             var result = refundRepository.GetByParameters(model);
 
-            return new Response<List<RefundListResultModel>>();
+            return new Response<List<RefundListResultModel>>
+            {
+                Data = Translate(result)
+            };
+        }
+
+        private void ValidParameter(RefundListParameterModel model)
+        {
+            if (!model.DateSince.HasValue)
+            {
+                model.DateSince = DateTime.UtcNow.AddYears(-1);
+            }
         }
 
         private List<WorkflowStateOptionModel> Translate(List<WorkflowState> data)
         {
             return mapper.Map<List<WorkflowState>, List<WorkflowStateOptionModel>>(data);
+        }
+
+        private List<RefundListResultModel> Translate(List<Refund> data)
+        {
+            var result = mapper.Map<List<Refund>, List<RefundListResultModel>>(data);
+
+            return ResolveManager(result);
+        }
+
+        private List<RefundListResultModel> ResolveManager(List<RefundListResultModel> models)
+        {
+            var userIds = models.Select(s => s.UserApplicantId).Distinct();
+
+            foreach (var userId in userIds)
+            {
+                var user = userData.GetById(userId);
+
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(user.Email);
+
+                foreach (var refundListResultModel in models.Where(s => s.UserApplicantId == userId))
+                {
+                    refundListResultModel.ManagerName = employee.Manager?.Name;
+                }
+            }
+
+            return models;
         }
     }
 }

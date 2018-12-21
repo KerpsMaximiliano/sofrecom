@@ -1,4 +1,4 @@
-<refund-list-filter #gridFilter controlId="{{ controlId }}"></refund-list-filter>
+<refund-list-filter #gridFilter controlId="{{ controlId }}" inWorkflowProcess="{{ inWorkflowProcess }}" (valueChange)="getData()"></refund-list-filter>
 
 <div class="ibox float-e-margins">
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
@@ -6,23 +6,24 @@
 <table class="table table-striped dataTable" role="grid" id="{{ 'gridTable-'+ controlId }}">
     <thead>
         <tr>
-            <th>{{ 'refund.applicationDate' | translate }}</th>
-            <th>{{ 'refund.userApplicant' | translate }}</th>
-            <th>{{ 'refund.authorizer' | translate }}</th>
-            <th>{{ 'refund.currency' | translate }}</th>
-            <th>{{ 'refund.reimbursedTotal' | translate }}</th>
-            <th>{{ 'refund.refundTotal' | translate }}</th>
-            <th>{{ 'refund.netReimbursed' | translate }}</th>
+            <th class="column-sm">{{ 'refund.applicationDate' | translate }}</th>
+            <th class="column-lg">{{ 'refund.userApplicant' | translate }}</th>
+            <th class="column-sm">{{ 'refund.superior' | translate }}</th>
+            <th class="column-sm">{{ 'refund.currency' | translate }}</th>
+            <th class="column-sm">{{ 'refund.advancementSum' | translate }}</th>
+            <th class="column-sm">{{ 'refund.refundSum' | translate }}</th>
+            <th class="column-sm">{{ 'refund.differenceSum' | translate }}</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of modelFiltered" class="pointer" (click)="goToDetail(item)">
-            <td>{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
-            <td class="column-lg text-ellipsis">{{ item.userApplicantDesc }}</td>
-            <td>{{ item.authorizerDesc }}</td>
-            <td>{{ item.currencyDesc }}</td>
-            <td>{{ item.ammount }}</td>
-            <td>{{ item.ammount }}</td>
+        <tr *ngFor="let item of data" class="pointer">
+            <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+            <td class="column-lg text-ellipsis">{{ item.userApplicantName }}</td>
+            <td>{{ item.managerName }}</td>
+            <td>{{ item.currencyName }}</td>
+            <td>{{ item.advancementSum }}</td>
+            <td>{{ item.refundSum }}</td>
+            <td>{{ item.differenceSum }}</td>
         </tr>
     </tbody>
 </table>
