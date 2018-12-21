@@ -14,7 +14,9 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.CurrencyName, x => x.MapFrom(_ => _.Currency.Text))
                 .ForMember(s => s.AdvancementSum, x => x.ResolveUsing(ResolveAdvancementSum))
                 .ForMember(s => s.RefundSum, x => x.ResolveUsing(ResolveRefundSum))
-                .ForMember(s => s.DifferenceSum, x => x.ResolveUsing(ResolveDifferenceSum));
+                .ForMember(s => s.DifferenceSum, x => x.ResolveUsing(ResolveDifferenceSum))
+                .ForMember(s => s.WorkflowStatusType, x => x.ResolveUsing(_ => _.Status?.Type))
+                .ForMember(s => s.StatusName, x => x.ResolveUsing(_ => _.Status?.Name));
         }
 
         private decimal ResolveAdvancementSum(Refund refund)

@@ -86,6 +86,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public IList<Employee> GetByManagerId(int managerId)
+        {
+            return context.Employees
+                .Where(x => x.ManagerId == managerId)
+                .ToList();
+        }
+
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {
             IQueryable<Employee> query = context.Employees.Include(x => x.Manager);

@@ -3,6 +3,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { I18nService } from "app/services/common/i18n.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { Subscription } from "rxjs";
+import { WorkflowStateType } from "app/models/enums/workflowStateType";
 
 @Component({
     selector: 'refund-list-grid',
@@ -63,5 +64,14 @@ export class RefundListGridComponent implements OnInit {
         this.datatableService.destroy(gridSelector);
 
         this.datatableService.initialize(params);
+    }
+
+    getStatusClass(type){
+        switch(type){
+            case WorkflowStateType.Info: return "label-success";
+            case WorkflowStateType.Warning: return "label-warning";
+            case WorkflowStateType.Success: return "label-primary";
+            case WorkflowStateType.Danger: return "label-danger";
+        }
     }
 }

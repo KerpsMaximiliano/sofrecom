@@ -1,4 +1,5 @@
 ﻿using System;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 {
@@ -21,5 +22,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public decimal RefundSum { get; set; }
 
         public decimal DifferenceSum { get; set; }
+
+        public WorkflowStateType? WorkflowStatusType { get; set; }
+
+        public string StatusName{ get; set; }
     }
 }

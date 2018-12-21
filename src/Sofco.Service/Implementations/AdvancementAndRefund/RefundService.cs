@@ -9,7 +9,6 @@ using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
-using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.Workflow;
@@ -19,11 +18,9 @@ using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
-using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
-using Sofco.Framework.ValidationHelpers.Billing;
 using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
@@ -39,7 +36,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly FileConfig fileConfig;
         private readonly IRefundRepository refundRepository;
         private readonly IUserData userData;
-        private readonly IEmployeeData employeeData;
 
         public RefundService(IUnitOfWork unitOfWork,
             ILogMailer<RefundService> logger,
@@ -49,7 +45,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             IOptions<FileConfig> fileOptions,
             IMapper mapper, 
             IRefundRepository refundRepository, 
-            IUserData userData, IEmployeeData employeeData)
+            IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -58,7 +54,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             this.mapper = mapper;
             this.refundRepository = refundRepository;
             this.userData = userData;
-            this.employeeData = employeeData;
             fileConfig = fileOptions.Value;
             settings = settingOptions.Value;
         }
@@ -229,12 +224,35 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         {
             ValidParameter(model);
 
+            if (!HasAllAccess())
+            {
+                model.UserApplicantIds = GetUserApplicantIdsByCurrentManager();
+            }
+
             var result = refundRepository.GetByParameters(model);
 
             return new Response<List<RefundListResultModel>>
             {
                 Data = Translate(result)
             };
+        }
+
+        private List<int> GetUserApplicantIdsByCurrentManager()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var employees = unitOfWork.EmployeeRepository.GetByManagerId(currentUser.Id);
+
+            var emails = employees
+                .Where(s => s.Email != string.Empty)
+                .Select(s => s.Email)
+                .Distinct()
+                .ToList();
+
+            return unitOfWork.UserRepository
+                .GetUserLiteByEmails(emails)
+                .Select(s => s.Id)
+                .ToList();
         }
 
         private void ValidParameter(RefundListParameterModel model)
@@ -274,6 +292,20 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
             return models;
+        }
+
+        private bool HasAllAccess()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email);
+            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
+            var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUser.Email);
+            var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUser.Email);
+
+            var hasAllAccess = hasDirectorGroup || hasRrhhGroup || hasGafGroup || hasDafGroup;
+
+            return hasAllAccess;
         }
     }
 }

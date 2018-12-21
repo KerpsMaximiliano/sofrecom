@@ -33,7 +33,9 @@ export class RefundListFilterComponent implements OnInit {
         this.collapseSelector = "#collapse" + this.controlId;
 
         this.getResources();
-        this.getStates();
+        if(this.inWorkflowProcess){
+            this.getStates();
+        }
     }
 
     collapse(){
