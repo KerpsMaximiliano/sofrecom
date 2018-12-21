@@ -29,8 +29,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public refundSum: number = 0;
     public differenceSum: number = 0;
 
-
-
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -60,6 +58,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     public differentCurrenciesWereSelected: boolean = false;
     public canUpdate: boolean = false;
+    public isNewDetail: boolean = true;
 
     getAdvancementsSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
@@ -102,12 +101,16 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     addDetail(){
-        var detail = new RefundDetail();
-        this.detailForms.push(detail);
-        this.editDetail(detail, this.detailForms.length-1);
+        this.isNewDetail = true;
+
+        this.addDetailModal.show();
+        // var detail = new RefundDetail();
+        // this.detailForms.push(detail);
+        // this.editDetail(detail, this.detailForms.length-1);
     }
 
     editDetail(detail, index){
+        this.isNewDetail = false;
         this.detailFormAux.creationDate = detail.controls.creationDate.value;
         this.detailFormAux.description = detail.controls.description.value;
         this.detailFormAux.ammount = detail.controls.ammount.value;
@@ -118,6 +121,11 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     saveDetail(){
+        if(this.isNewDetail){
+            let detail = this.detailModalForm;
+            this.detailForms.push(detail);
+        }
+
         this.detailModalForm = new RefundDetail();
         this.addDetailModal.hide();
         this.calculateTotals();
@@ -131,11 +139,13 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     onClose(){
-        var detail = this.detailForms[this.indexAux];
+        if(!this.isNewDetail){
+            var detail = this.detailForms[this.indexAux];
 
-        detail.controls.creationDate.setValue(this.detailFormAux.creationDate);
-        detail.controls.description.setValue(this.detailFormAux.description);
-        detail.controls.ammount.setValue(this.detailFormAux.ammount);
+            detail.controls.creationDate.setValue(this.detailFormAux.creationDate);
+            detail.controls.description.setValue(this.detailFormAux.description);
+            detail.controls.ammount.setValue(this.detailFormAux.ammount);
+        }
 
         this.detailModalForm = new RefundDetail();
     }
