@@ -30,7 +30,10 @@ export class RefundListGridComponent implements OnInit {
     getData() {
         const model = this.getParameterModel();
 
+
+        this.loading = true;
         this.subscrip = this.refundService.getAll(model).subscribe(res => {
+            this.loading = false;
             this.data = res.data;
             this.initGrid();
         });
