@@ -313,7 +313,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             foreach (var userId in userIds)
             {
-                var user = userData.GetById(userId);
+                var user = userData.GetUserLiteById(userId);
 
                 var employee = unitOfWork.EmployeeRepository.GetByEmail(user.Email);
 
