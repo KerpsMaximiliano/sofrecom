@@ -25,9 +25,9 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public status: string;
     public currencyDescription: string;
 
-    public advancementSum: number = 0;
-    public refundSum: number = 0;
-    public differenceSum: number = 0;
+    public advancementSum = 0;
+    public refundSum = 0;
+    public differenceSum = 0;
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -37,7 +37,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
-    ); 
+    );
 
     @Input() mode: string;
 
@@ -56,9 +56,9 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     private id: number;
     public workflowStateType: WorkflowStateType;
 
-    public differentCurrenciesWereSelected: boolean = false;
-    public canUpdate: boolean = false;
-    public isNewDetail: boolean = true;
+    public differentCurrenciesWereSelected = false;
+    public canUpdate = false;
+    public isNewDetail = true;
 
     getAdvancementsSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
@@ -104,9 +104,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         this.isNewDetail = true;
 
         this.addDetailModal.show();
-        // var detail = new RefundDetail();
-        // this.detailForms.push(detail);
-        // this.editDetail(detail, this.detailForms.length-1);
     }
 
     editDetail(detail, index){
@@ -122,7 +119,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     saveDetail(){
         if(this.isNewDetail){
-            let detail = this.detailModalForm;
+            const detail = this.detailModalForm;
             this.detailForms.push(detail);
         }
 
@@ -140,7 +137,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     onClose(){
         if(!this.isNewDetail){
-            var detail = this.detailForms[this.indexAux];
+            const detail = this.detailForms[this.indexAux];
 
             detail.controls.creationDate.setValue(this.detailFormAux.creationDate);
             detail.controls.description.setValue(this.detailFormAux.description);
@@ -151,11 +148,14 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     canSave(){
-        if(this.form.valid && this.detailForms.length > 0 && this.detailForms.every(x => x.valid) && !this.differentCurrenciesWereSelected) return true;
-        
+        if(this.form.valid
+            && this.detailForms.length > 0
+            && this.detailForms.every(x => x.valid)
+            && !this.differentCurrenciesWereSelected) return true;
+
         return false;
     }
-    
+
     getStatusClass(){
         switch(this.workflowStateType){
             case WorkflowStateType.Info: return "label-success";
@@ -167,7 +167,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     setUserApplicant(){
         const userInfo = UserInfoService.getUserInfo();
-    
+
         if(userInfo && userInfo.id && userInfo.name){
             this.userApplicantIdLogged = userInfo.id;
 
@@ -206,8 +206,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     getModel(){
-        var advancement = this.form.getModel();
-        
+        const advancement = this.form.getModel();
+
         this.detailForms.forEach(element => {
             advancement.details.push(element.getModel());
         });
@@ -224,7 +224,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         if(this.form.controls.advancements.value.length > 0){
             this.form.controls.advancements.value.forEach(element => {
-                var advancement = this.advancements.find(x => x.id == element);
+                const advancement = this.advancements.find(x => x.id == element);
 
                 if(advancement.ammount > 0){
                     this.advancementSum += advancement.ammount;
@@ -235,7 +235,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         if(this.detailForms.length > 0){
             this.detailForms.forEach(element => {
                 if(element.controls.ammount.value > 0){
-                    this.refundSum += element.controls.ammount.value;    
+                    this.refundSum += element.controls.ammount.value;
                 }
             });
         }
@@ -248,10 +248,10 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         if(this.form.controls.advancements.value.length > 0){
 
-            var advancement = this.advancements.find(x => x.id == this.form.controls.advancements.value[0]);
+            let advancement = this.advancements.find(x => x.id == this.form.controls.advancements.value[0]);
 
-            var currencyId = advancement.currencyId;
-            var currencyDescription = advancement.currencyText;
+            const currencyId = advancement.currencyId;
+            const currencyDescription = advancement.currencyText;
 
             this.form.controls.advancements.value.forEach(element => {
                 advancement = this.advancements.find(x => x.id == element);
