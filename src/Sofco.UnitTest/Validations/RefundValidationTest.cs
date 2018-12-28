@@ -69,7 +69,6 @@ namespace Sofco.UnitTest.Validations
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyRequired)));
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.UserApplicantRequired)));
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Refund.DetailsRequired)));
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Refund.AdvancementRequired)));
 
             model.Details = GetInvalidItems();
             model.AnalyticId = 2;
