@@ -12,16 +12,16 @@ import { RefundService } from "app/services/advancement-and-refund/refund.servic
 export class RefundAddComponent implements OnInit, OnDestroy {
     @ViewChild('form') form;
 
-    canLoad: boolean = true;
+    canLoad = true;
 
     addSubscrip: Subscription;
     canLoadSubscrip: Subscription;
 
-    constructor(private refundService: RefundService, 
+    constructor(private refundService: RefundService,
                 private router: Router,
                 public i18nService: I18nService,
                 private messageService: MessageService){}
-         
+
     ngOnInit(): void {
         this.checkIfCanLoad();
     }
@@ -37,7 +37,7 @@ export class RefundAddComponent implements OnInit, OnDestroy {
         this.addSubscrip = this.refundService.canLoad().subscribe(response => {
             this.messageService.closeLoading();
             this.canLoad = response.data;
-        }, 
+        },
         error => {
             this.messageService.closeLoading();
             this.canLoad = false;
@@ -45,7 +45,7 @@ export class RefundAddComponent implements OnInit, OnDestroy {
     }
 
     add(){
-        var model = this.form.getModel();
+        const model = this.form.getModel();
 
         this.messageService.showLoading();
 

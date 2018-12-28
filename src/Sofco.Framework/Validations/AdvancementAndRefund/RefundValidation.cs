@@ -60,12 +60,6 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
 
         private void ValidateAdvancements(RefundModel model, Response response)
         {
-            if (!model.Advancements.Any())
-            {
-                response.AddError(Resources.AdvancementAndRefund.Refund.AdvancementRequired);
-                return;
-            }
-
             foreach (var advancement in model.Advancements)
             {
                 if (!unitOfWork.AdvancementRepository.Exist(advancement))
