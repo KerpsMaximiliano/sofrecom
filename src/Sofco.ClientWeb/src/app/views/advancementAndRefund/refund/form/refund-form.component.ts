@@ -30,8 +30,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     public advancementSum = 0;
     public itemTotal = 0;
-    public companyRefund = "-";
-    public userRefund = "-";
+    public companyRefund = '-';
+    public userRefund = '-';
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -226,8 +226,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     calculateTotals(){
         this.advancementSum = 0;
         this.itemTotal = 0;
-        this.companyRefund = "-";
-        this.userRefund = "-";
+        this.companyRefund = '-';
+        this.userRefund = '-';
 
         if(this.differentCurrenciesWereSelected) return;
 
