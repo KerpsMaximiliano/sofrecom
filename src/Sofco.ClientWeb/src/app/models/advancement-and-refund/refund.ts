@@ -8,13 +8,11 @@ export class Refund extends FormGroup {
 
     constructor(isReadonly: boolean, domain?) {
         super({
-            userApplicantId: new FormControl(domain && domain.userApplicantId || null, 
-                Validators.required),
-                
+            userApplicantId: new FormControl(domain && domain.userApplicantId || null, Validators.required),
+
             currencyId: new FormControl({value: domain && domain.currencyId || null, disabled: isReadonly}),
 
-            advancements: new FormControl({value: domain && domain.advancementIds || null, disabled: isReadonly}, 
-                Validators.required),
+            advancements: new FormControl({value: domain && domain.advancementIds || null, disabled: isReadonly}),
 
             analyticId: new FormControl({value: domain && domain.analyticId || null, disabled: isReadonly},
                 Validators.required),
@@ -24,7 +22,7 @@ export class Refund extends FormGroup {
             this.id = domain.id || 0;
             this.workflowStateType = domain.workflowStateType;
         }
-    } 
+    }
 
     getModel(){
         return {

@@ -72,9 +72,12 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 domain.StatusId = settings.WorkflowStatusDraft;
                 domain.AdvancementRefunds = new List<AdvancementRefund>();
 
-                foreach (var advancement in model.Advancements)
+                if (model.Advancements != null)
                 {
-                    domain.AdvancementRefunds.Add(new AdvancementRefund { AdvancementId = advancement, Refund = domain });
+                    foreach (var advancement in model.Advancements)
+                    {
+                        domain.AdvancementRefunds.Add(new AdvancementRefund { AdvancementId = advancement, Refund = domain });
+                    }
                 }
 
                 unitOfWork.RefundRepository.Insert(domain);

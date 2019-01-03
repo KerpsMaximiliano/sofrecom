@@ -16,6 +16,8 @@ import { MessageService } from "app/services/common/message.service";
     templateUrl: './refund-form.component.html'
 })
 export class RefundFormComponent implements OnInit, OnDestroy {
+    private defaultCurrencyId = 1;
+    private defaultCurrencyDescription = "Pesos ($)";
 
     public advancements: any[] = new Array();
     public analytics: any[] = new Array();
@@ -23,7 +25,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public userApplicantIdLogged: number;
     public userApplicantName: string;
     public status: string;
-    public currencyDescription: string;
+    public currencyDescription: string = this.defaultCurrencyDescription;
 
     public advancementSum = 0;
     public refundSum = 0;
@@ -212,6 +214,10 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             advancement.details.push(element.getModel());
         });
 
+        if(advancement.advancements == null){
+            advancement.currencyId = this.defaultCurrencyId;
+        }
+
         return advancement;
     }
 
@@ -271,8 +277,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             }
         }
         else{
-            this.form.controls.currencyId.setValue(0);
-            this.currencyDescription = "";
+            this.form.controls.currencyId.setValue(this.defaultCurrencyId);
+            this.currencyDescription = this.defaultCurrencyDescription;
         }
 
         this.calculateTotals();
