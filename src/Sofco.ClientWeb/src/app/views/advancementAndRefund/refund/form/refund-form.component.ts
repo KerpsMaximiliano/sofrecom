@@ -13,9 +13,12 @@ import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'refund-form',
-    templateUrl: './refund-form.component.html'
+    templateUrl: './refund-form.component.html',
+    styleUrls: ['./refund-form.component.scss']
 })
 export class RefundFormComponent implements OnInit, OnDestroy {
+    private defaultCurrencyId = 1;
+    private defaultCurrencyDescription = "Pesos ($)";
 
     public advancements: any[] = new Array();
     public analytics: any[] = new Array();
@@ -23,11 +26,12 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public userApplicantIdLogged: number;
     public userApplicantName: string;
     public status: string;
-    public currencyDescription: string;
+    public currencyDescription: string = this.defaultCurrencyDescription;
 
     public advancementSum = 0;
-    public refundSum = 0;
-    public differenceSum = 0;
+    public itemTotal = 0;
+    public companyRefund = '-';
+    public userRefund = '-';
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -53,7 +57,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     private indexAux: number;
 
-    private id: number;
+    public id: number;
     public workflowStateType: WorkflowStateType;
 
     public differentCurrenciesWereSelected = false;
@@ -212,17 +216,23 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             advancement.details.push(element.getModel());
         });
 
+        if(advancement.advancements == null){
+            advancement.currencyId = this.defaultCurrencyId;
+        }
+
         return advancement;
     }
 
     calculateTotals(){
         this.advancementSum = 0;
-        this.refundSum = 0;
-        this.differenceSum = 0;
+        this.itemTotal = 0;
+        this.companyRefund = '-';
+        this.userRefund = '-';
 
         if(this.differentCurrenciesWereSelected) return;
 
-        if(this.form.controls.advancements.value.length > 0){
+        if(this.form.controls.advancements.value != null
+            && this.form.controls.advancements.value.length > 0){
             this.form.controls.advancements.value.forEach(element => {
                 const advancement = this.advancements.find(x => x.id == element);
 
@@ -235,12 +245,18 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         if(this.detailForms.length > 0){
             this.detailForms.forEach(element => {
                 if(element.controls.ammount.value > 0){
-                    this.refundSum += element.controls.ammount.value;
+                    this.itemTotal += element.controls.ammount.value;
                 }
             });
         }
 
-        this.differenceSum = this.advancementSum - this.refundSum;
+        const diffTotal = this.advancementSum - this.itemTotal;
+        this.companyRefund = this.hasAdvancements() && diffTotal > 0
+            ? Math.abs(diffTotal) +" "+ this.currencyDescription
+            : '-';
+        this.userRefund = diffTotal < 0
+            ? Math.abs(diffTotal) +" "+ this.currencyDescription
+            : '-';
     }
 
     advancementsChanged(){
@@ -271,10 +287,15 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             }
         }
         else{
-            this.form.controls.currencyId.setValue(0);
-            this.currencyDescription = "";
+            this.form.controls.currencyId.setValue(this.defaultCurrencyId);
+            this.currencyDescription = this.defaultCurrencyDescription;
         }
 
         this.calculateTotals();
+    }
+
+    hasAdvancements(){
+        return this.form.controls.advancements.value != null
+            && this.form.controls.advancements.value.length > 0;
     }
 }

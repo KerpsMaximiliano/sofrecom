@@ -6,6 +6,14 @@
 <form [formGroup]="form" *ngIf="form">
 
     <div class="row">
+        <div class="col-xs-6" *ngIf="id > 0">
+            <label class="refund-name">{{'refund.refundName' | translate }} #{{id}}</label>
+        </div>
+        <div class="col-md-6">
+            <label style="font-size: 15px" class="label pull-right" [ngClass]="getStatusClass()">{{ status }}</label>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-6">
             <div class="form-group" [ngClass]="form.controls.userApplicantId.invalid ? 'has-error' : 'has-success'">
                 <label style="font-size: 15px"> {{'refund.userApplicant' | translate }}: </label>
@@ -16,20 +24,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <label style="font-size: 15px" class="label pull-right" [ngClass]="getStatusClass()">{{ status }}</label>
-        </div>
     </div>
 
     <div class="row">
         <div class="col-md-8">
-            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'advancements')">
+            <div class="form-group">
                 <label class="control-label"> {{ 'refund.advancements' | translate }} </label>
                 <ng-select [items]="advancements" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" formControlName="advancements" (change)="advancementsChanged()"></ng-select>
-        
-                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'advancements')">
-                    <p *ngIf="formsService.hasError(form, 'advancements', 'required')">{{ i18nService.translate('advancementAndRefund/refund','advancementRequired') }}</p>
-                </div>
             </div>
         </div>
         <div class="col-md-4">
@@ -41,7 +42,7 @@
     </div>
 
     <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'analyticId')">
-        <label class="control-label">{{ 'refund.contract' | translate }}</label>
+        <label class="control-label">{{ 'refund.analytic' | translate }}</label>
         <ng-select [items]="analytics" bindValue="id" bindLabel="text" formControlName="analyticId"></ng-select>
 
         <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'analyticId')">
@@ -89,24 +90,32 @@
     </table>   
 
     <div class="row m-t-lg">
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <dl>
-                <dt><strong> {{ 'refund.refundSum' | translate }}: </strong></dt>
-                <dd> {{ refundSum }} {{ currencyDescription }} </dd>
+                <dt><strong>{{ 'refund.advancementSum' | translate }}:</strong></dt>
+                <dd *ngIf="hasAdvancements()">{{ advancementSum }} {{ currencyDescription }}</dd>
+                <dd *ngIf="!hasAdvancements()">-</dd>
             </dl>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <dl>
-                <dt><strong> {{ 'refund.advancementSum' | translate }}: </strong></dt>
-                <dd> {{ advancementSum }} {{ currencyDescription }} </dd>
+                <dt><strong>{{ 'refund.itemTotal' | translate }}:</strong></dt>
+                <dd>{{ itemTotal }} {{ currencyDescription }}</dd>
             </dl>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <dl>
-                <dt><strong> {{ 'refund.differenceSum' | translate }}: </strong></dt>
-                <dd> {{ differenceSum }} {{ currencyDescription }} </dd>
+                <dt><strong>{{ 'refund.companyRefund' | translate }}:</strong></dt>
+                <dd>{{ companyRefund }}</dd>
             </dl>
         </div>
+        <div class="col-xs-3">
+            <dl>
+                <dt><strong>{{ 'refund.userRefund' | translate }}:</strong></dt>
+                <dd>{{ userRefund }}</dd>
+            </dl>
+        </div>
+    
     </div>
 </form> 
 

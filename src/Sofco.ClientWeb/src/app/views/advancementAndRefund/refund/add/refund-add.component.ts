@@ -37,6 +37,7 @@ export class RefundAddComponent implements OnInit, OnDestroy {
         this.addSubscrip = this.refundService.canLoad().subscribe(response => {
             this.messageService.closeLoading();
             this.canLoad = response.data;
+            this.removeAnimated();
         },
         error => {
             this.messageService.closeLoading();
@@ -59,5 +60,11 @@ export class RefundAddComponent implements OnInit, OnDestroy {
         error => {
             this.messageService.closeLoading();
         });
+    }
+
+    removeAnimated() {
+        window.setTimeout(function(){
+            $("#contentWrapper").removeClass('fadeInRight').removeClass('animated')
+          }, 1000);
     }
 }
