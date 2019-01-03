@@ -228,7 +228,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         if(this.differentCurrenciesWereSelected) return;
 
-        if(this.form.controls.advancements.value.length > 0){
+        if(this.form.controls.advancements.value != null
+            && this.form.controls.advancements.value.length > 0){
             this.form.controls.advancements.value.forEach(element => {
                 const advancement = this.advancements.find(x => x.id == element);
 
