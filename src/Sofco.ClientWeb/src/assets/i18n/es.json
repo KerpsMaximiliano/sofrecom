@@ -1096,7 +1096,7 @@
         "status": "Estado",
         "amount": "Monto",
         "search": "Reintegros",
-        "contract": "Contrato",
+        "analytic": "Analítica",
         "advancements": "Adelantos",
         "finalized": "Finalizados",
         "inProcess": "En proceso de aprobación",

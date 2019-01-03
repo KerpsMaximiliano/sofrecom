@@ -37,7 +37,7 @@
     </div>
 
     <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'analyticId')">
-        <label class="control-label">{{ 'refund.contract' | translate }}</label>
+        <label class="control-label">{{ 'refund.analytic' | translate }}</label>
         <ng-select [items]="analytics" bindValue="id" bindLabel="text" formControlName="analyticId"></ng-select>
 
         <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'analyticId')">
