@@ -29,8 +29,9 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public currencyDescription: string = this.defaultCurrencyDescription;
 
     public advancementSum = 0;
-    public refundSum = 0;
-    public differenceSum = 0;
+    public itemTotal = 0;
+    public companyRefund = "-";
+    public userRefund = "-";
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -224,8 +225,9 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     calculateTotals(){
         this.advancementSum = 0;
-        this.refundSum = 0;
-        this.differenceSum = 0;
+        this.itemTotal = 0;
+        this.companyRefund = "-";
+        this.userRefund = "-";
 
         if(this.differentCurrenciesWereSelected) return;
 
@@ -243,12 +245,18 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         if(this.detailForms.length > 0){
             this.detailForms.forEach(element => {
                 if(element.controls.ammount.value > 0){
-                    this.refundSum += element.controls.ammount.value;
+                    this.itemTotal += element.controls.ammount.value;
                 }
             });
         }
 
-        this.differenceSum = this.advancementSum - this.refundSum;
+        const diffTotal = this.advancementSum - this.itemTotal;
+        this.companyRefund = this.hasAdvancements() && diffTotal > 0
+            ? Math.abs(diffTotal) +" "+ this.currencyDescription
+            : '-';
+        this.userRefund = diffTotal < 0
+            ? Math.abs(diffTotal) +" "+ this.currencyDescription
+            : '-';
     }
 
     advancementsChanged(){
@@ -284,5 +292,10 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         }
 
         this.calculateTotals();
+    }
+
+    hasAdvancements(){
+        return this.form.controls.advancements.value != null
+            && this.form.controls.advancements.value.length > 0;
     }
 }

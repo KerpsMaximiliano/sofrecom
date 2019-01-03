@@ -1110,9 +1110,10 @@
         "applicationDate": "Fecha de solicitud",
         "superior": "Superior",
         "refundTotal": "Total adelanto",
-        "refundSum": "Total a reembolsar",
-        "advancementSum": "Total Adelantos",
-        "differenceSum": "Total a Reembolsar",
+        "itemTotal": "Total items",
+        "advancementSum": "Total adelantos",
+        "companyRefund": "Reembolso empresa",
+        "userRefund": "Reembolso usuario",
         "files": "Archivos",
         "noDetailsInfo": "No se han cargado detalles. Por favor agregue alguno para poder continuar",
         "histories": {

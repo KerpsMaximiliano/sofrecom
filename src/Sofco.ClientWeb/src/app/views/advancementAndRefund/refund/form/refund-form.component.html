@@ -90,24 +90,32 @@
     </table>   
 
     <div class="row m-t-lg">
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <dl>
-                <dt><strong> {{ 'refund.refundSum' | translate }}: </strong></dt>
-                <dd> {{ refundSum }} {{ currencyDescription }} </dd>
+                <dt><strong>{{ 'refund.advancementSum' | translate }}:</strong></dt>
+                <dd *ngIf="hasAdvancements()">{{ advancementSum }} {{ currencyDescription }}</dd>
+                <dd *ngIf="!hasAdvancements()">-</dd>
             </dl>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <dl>
-                <dt><strong> {{ 'refund.advancementSum' | translate }}: </strong></dt>
-                <dd> {{ advancementSum }} {{ currencyDescription }} </dd>
+                <dt><strong>{{ 'refund.itemTotal' | translate }}:</strong></dt>
+                <dd>{{ itemTotal }} {{ currencyDescription }}</dd>
             </dl>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-3">
             <dl>
-                <dt><strong> {{ 'refund.differenceSum' | translate }}: </strong></dt>
-                <dd> {{ differenceSum }} {{ currencyDescription }} </dd>
+                <dt><strong>{{ 'refund.companyRefund' | translate }}:</strong></dt>
+                <dd>{{ companyRefund }}</dd>
             </dl>
         </div>
+        <div class="col-xs-3">
+            <dl>
+                <dt><strong>{{ 'refund.userRefund' | translate }}:</strong></dt>
+                <dd>{{ userRefund }}</dd>
+            </dl>
+        </div>
+    
     </div>
 </form> 
 
