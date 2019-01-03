@@ -6,6 +6,14 @@
 <form [formGroup]="form" *ngIf="form">
 
     <div class="row">
+        <div class="col-xs-6" *ngIf="id > 0">
+            <label class="refund-name">{{'refund.refundName' | translate }} #{{id}}</label>
+        </div>
+        <div class="col-md-6">
+            <label style="font-size: 15px" class="label pull-right" [ngClass]="getStatusClass()">{{ status }}</label>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-6">
             <div class="form-group" [ngClass]="form.controls.userApplicantId.invalid ? 'has-error' : 'has-success'">
                 <label style="font-size: 15px"> {{'refund.userApplicant' | translate }}: </label>
@@ -15,9 +23,6 @@
                     <p>{{ i18nService.translate('advancementAndRefund/refund','userApplicantRequired') }}</p>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <label style="font-size: 15px" class="label pull-right" [ngClass]="getStatusClass()">{{ status }}</label>
         </div>
     </div>
 

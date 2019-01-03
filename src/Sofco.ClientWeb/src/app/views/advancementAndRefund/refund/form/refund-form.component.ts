@@ -13,7 +13,8 @@ import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'refund-form',
-    templateUrl: './refund-form.component.html'
+    templateUrl: './refund-form.component.html',
+    styleUrls: ['./refund-form.component.scss']
 })
 export class RefundFormComponent implements OnInit, OnDestroy {
     private defaultCurrencyId = 1;
@@ -55,7 +56,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     private indexAux: number;
 
-    private id: number;
+    public id: number;
     public workflowStateType: WorkflowStateType;
 
     public differentCurrenciesWereSelected = false;

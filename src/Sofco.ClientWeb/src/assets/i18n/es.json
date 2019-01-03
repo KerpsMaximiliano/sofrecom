@@ -1084,6 +1084,7 @@
         "add": "Solicitud",
         "edit": "Edición Solicitud",
         "title": "Reintegros",
+        "refundName": "Reintegro",
         "userApplicant": "Solicitante",
         "ownBank": "Cuenta Sueldo",
         "foreignCurrency": "Moneda extranjera", 
