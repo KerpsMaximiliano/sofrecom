@@ -30,6 +30,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.CreationDate = DateTime.UtcNow.Date;
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
+            domain.InWorkflowProcess = true;
 
             foreach (var detail in Details)
             {
