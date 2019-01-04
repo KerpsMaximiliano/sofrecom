@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Domain.Models.AdvancementAndRefund;
@@ -13,8 +14,9 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.UserApplicantName, x => x.MapFrom(_ => _.UserApplicant.Name))
                 .ForMember(s => s.CurrencyName, x => x.MapFrom(_ => _.Currency.Text))
                 .ForMember(s => s.AdvancementSum, x => x.ResolveUsing(ResolveAdvancementSum))
-                .ForMember(s => s.RefundSum, x => x.ResolveUsing(ResolveRefundSum))
-                .ForMember(s => s.DifferenceSum, x => x.ResolveUsing(ResolveDifferenceSum))
+                .ForMember(s => s.RefundItemTotal, x => x.ResolveUsing(ResolveRefundItemTotal))
+                .ForMember(s => s.CompanyRefund, x => x.ResolveUsing(ResolveCompanyRefund))
+                .ForMember(s => s.UserRefund, x => x.ResolveUsing(ResolveUserRefund))
                 .ForMember(s => s.WorkflowStatusType, x => x.ResolveUsing(_ => _.Status?.Type))
                 .ForMember(s => s.StatusName, x => x.ResolveUsing(_ => _.Status?.Name));
         }
@@ -24,14 +26,34 @@ namespace Sofco.Service.MapProfiles
             return refund.AdvancementRefunds.Sum(x => x.Advancement.Ammount);
         }
 
-        private decimal ResolveRefundSum(Refund refund)
+        private decimal ResolveRefundItemTotal(Refund refund)
         {
             return refund.Details.Sum(x => x.Ammount);
         }
 
-        private decimal ResolveDifferenceSum(Refund refund)
+        private bool HasAdvancements(Refund refund)
         {
-            return refund.AdvancementRefunds.Sum(x => x.Advancement.Ammount) - refund.Details.Sum(x => x.Ammount);
+            return refund.AdvancementRefunds.Any();
+        }
+
+        private decimal ResolveCompanyRefund(Refund refund)
+        {
+            var diffTotal = refund.AdvancementRefunds
+                                .Sum(x => x.Advancement.Ammount) - refund.Details.Sum(x => x.Ammount);
+
+            return HasAdvancements(refund) && diffTotal > 0
+                ? Math.Abs(diffTotal)
+                : 0;
+        }
+
+        private decimal ResolveUserRefund(Refund refund)
+        {
+            var diffTotal = refund.AdvancementRefunds
+                                .Sum(x => x.Advancement.Ammount) - refund.Details.Sum(x => x.Ammount);
+
+            return diffTotal < 0
+                ? Math.Abs(diffTotal)
+                : 0;
         }
     }
 }

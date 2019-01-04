@@ -19,9 +19,11 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public decimal AdvancementSum { get; set; }
 
-        public decimal RefundSum { get; set; }
+        public decimal RefundItemTotal { get; set; }
 
-        public decimal DifferenceSum { get; set; }
+        public decimal CompanyRefund { get; set; }
+
+        public decimal UserRefund { get; set; }
 
         public WorkflowStateType? WorkflowStatusType { get; set; }
 
