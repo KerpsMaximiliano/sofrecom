@@ -4,6 +4,7 @@ import { MessageService } from "../../../../services/common/message.service";
 import { EmployeeService } from "../../../../services/allocation-management/employee.service";
 import { DataTableService } from "../../../../services/common/datatable.service";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
+import { Router } from "@angular/router";
 
 declare var $: any;
 
@@ -42,6 +43,7 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
     constructor(
         private messageService: MessageService,
         private employeeService: EmployeeService,
+        private router: Router,
         private dataTableService: DataTableService){}
 
     ngOnInit(): void {
@@ -75,7 +77,17 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var options = { selector: "#resourcesTable", columnDefs: [ {'aTargets': [1, 2], "sType": "date-uk"} ] };
+        var columns = [0, 1, 2, 3];
+        var title = `Recursos inactivos`;
+
+        var options = { 
+            selector: "#resourcesTable", 
+            columns: columns,
+            title: title,
+            withExport: true,
+            columnDefs: [ {'aTargets': [1, 2], "sType": "date-uk"} ] 
+        };
+
         this.dataTableService.destroy(options.selector); 
         this.dataTableService.initialize(options);
         this.gridIsVisible = true;
@@ -114,5 +126,9 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
         else{
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         } 
+    }
+
+    goToProfile(resource){
+        this.router.navigate([`/allocationManagement/resources/${resource.id}`]);
     }
 }

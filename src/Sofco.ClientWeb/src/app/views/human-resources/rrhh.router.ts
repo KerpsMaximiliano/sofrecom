@@ -7,11 +7,12 @@ import { LicenseListManager } from "./licenses/license-list-manager/license-list
 import { LicenseDetailComponent } from "./licenses/detail/license-detail.component";
 import { NewsComponent } from "./news/news.component";
 import { LicenseDelegateComponent } from "./licenses/license-delegate/license-delegate.component";
+import { EndNotificationComponent } from "./end-notification/end-notification.component";
 
 const RRHH_ROUTER: Routes = [
     { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
 
-    { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard] },
+    { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
 
     {
         path: "licenses",
@@ -23,6 +24,8 @@ const RRHH_ROUTER: Routes = [
           { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] }
         ]
     },
+
+    { path: "endNotification", component: EndNotificationComponent, canActivate: [AuthGuard] },
 ];
 
 export const RrhhRouter = RouterModule.forChild(RRHH_ROUTER);

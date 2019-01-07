@@ -83,23 +83,6 @@ namespace Sofco.Framework.StatusHandlers.Solfac
         {
             var solfacToModif = new Domain.Models.Billing.Solfac { Id = solfac.Id, Status = parameters.Status };
             unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
-
-            if (solfac.PurchaseOrder == null) return;
-
-            var detail = solfac.PurchaseOrder.AmmountDetails.SingleOrDefault(x => x.CurrencyId == solfac.CurrencyId);
-
-            if (detail != null)
-            {
-                var oldBalance = detail.Balance;
-                detail.Balance = detail.Balance + solfac.TotalAmount;
-                unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
-
-                if (oldBalance <= 0 && detail.Balance > 0)
-                {
-                    detail.PurchaseOrder.Status = PurchaseOrderStatus.Valid;
-                    unitOfWork.PurchaseOrderRepository.UpdateStatus(detail.PurchaseOrder);
-                }
-            }
         }
 
         public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac, string url)

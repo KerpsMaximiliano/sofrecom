@@ -3,9 +3,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
-using Sofco.Domain.Enums;
 
 namespace Sofco.WebApi.Migrations
 {
@@ -14,15 +13,18 @@ namespace Sofco.WebApi.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
+#pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("app")
-                .HasAnnotation("ProductVersion", "1.1.2")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Sofco.Domain.Models.Admin.Category", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -42,7 +44,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Admin.Functionality", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -66,7 +69,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Admin.Group", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -97,7 +101,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Admin.Module", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -117,7 +122,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Admin.Role", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -140,7 +146,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Admin.Setting", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Category");
 
@@ -166,7 +173,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Admin.Task", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -190,7 +198,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Admin.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -221,10 +230,95 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.Advancement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AdvancementReturnForm")
+                        .HasMaxLength(200);
+
+                    b.Property<decimal>("Ammount");
+
+                    b.Property<int?>("AnalyticId");
+
+                    b.Property<int?>("AuthorizerId");
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<int>("CurrencyId");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000);
+
+                    b.Property<bool>("InWorkflowProcess");
+
+                    b.Property<int?>("MonthsReturnId");
+
+                    b.Property<int>("PaymentForm");
+
+                    b.Property<DateTime?>("StartDateReturn");
+
+                    b.Property<int>("StatusId");
+
+                    b.Property<int>("Type");
+
+                    b.Property<int>("UserApplicantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnalyticId");
+
+                    b.HasIndex("AuthorizerId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("MonthsReturnId");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("UserApplicantId");
+
+                    b.ToTable("Advancements");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.AdvancementHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AdvancementId");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(400);
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<int>("StatusFromId");
+
+                    b.Property<int>("StatusToId");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvancementId");
+
+                    b.HasIndex("StatusFromId");
+
+                    b.HasIndex("StatusToId");
+
+                    b.ToTable("AdvancementHistories");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AnalyticId");
 
@@ -248,7 +342,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Analytic", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("ActivityId");
 
@@ -331,7 +426,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.CostCenter", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -352,7 +448,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Employee", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
                         .HasMaxLength(400);
@@ -451,7 +548,8 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeNumber")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[EmployeeNumber] IS NOT NULL");
 
                     b.HasIndex("ManagerId");
 
@@ -460,10 +558,35 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.EmployeeEndNotification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicantUserId");
+
+                    b.Property<DateTime?>("Created");
+
+                    b.Property<int>("EmployeeId");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<DateTime?>("Modified");
+
+                    b.Property<string>("Recipients")
+                        .HasMaxLength(500);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeEndNotifications");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.EmployeeHistory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("Created");
 
@@ -489,7 +612,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.EmployeeLicense", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("Created");
 
@@ -512,7 +636,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.EmployeeProfileHistory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("Created");
 
@@ -535,7 +660,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.EmployeeSyncAction", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("Created");
 
@@ -561,7 +687,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.HealthInsurance", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Code");
 
@@ -583,7 +710,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.LicenseType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("CertificateRequired");
 
@@ -604,7 +732,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.PrepaidHealth", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Amount");
 
@@ -627,7 +756,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Certificate", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClientExternalId")
                         .HasMaxLength(100);
@@ -657,7 +787,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Customer", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -714,7 +845,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Hito", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("Created")
                         .ValueGeneratedOnAddOrUpdate();
@@ -751,7 +883,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.HitoDetail", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("Created")
                         .ValueGeneratedOnAddOrUpdate();
@@ -779,7 +912,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Invoice", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccountName")
                         .HasMaxLength(100);
@@ -848,7 +982,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.InvoiceHistory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Comment");
 
@@ -874,7 +1009,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Project", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccountId")
                         .HasMaxLength(200);
@@ -935,7 +1071,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.PurchaseOrder", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Adjustment");
 
@@ -1020,7 +1157,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.PurchaseOrderHistory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Comment");
 
@@ -1046,7 +1184,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Service", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AccountId")
                         .HasMaxLength(200);
@@ -1101,7 +1240,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Solfac", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Analytic");
 
@@ -1214,7 +1354,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.SolfacAttachment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationDate");
 
@@ -1235,7 +1376,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Billing.SolfacHistory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Comment");
 
@@ -1261,7 +1403,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Common.File", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CreatedUser")
                         .HasMaxLength(50);
@@ -1285,7 +1428,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Common.UserApprover", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AnalyticId");
 
@@ -1317,7 +1461,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Common.UserDelegate", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("Created");
 
@@ -1343,7 +1488,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.CloseDate", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Day");
 
@@ -1359,7 +1505,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.License", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Comments")
                         .HasMaxLength(200);
@@ -1411,7 +1558,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.LicenseHistory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Comment");
 
@@ -1434,10 +1582,261 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("LicenseHistories");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.UserSource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("SourceId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserSources");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.Workflow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime>("ModifiedAt");
+
+                    b.Property<int>("ModifiedById");
+
+                    b.Property<string>("Version")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("WorkflowTypeId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("WorkflowTypeId");
+
+                    b.ToTable("Workflows");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowReadAccess", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<DateTime>("ModifiedAt");
+
+                    b.Property<int>("ModifiedById");
+
+                    b.Property<int>("UserSourceId");
+
+                    b.Property<int>("WorkflowId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("UserSourceId");
+
+                    b.HasIndex("WorkflowId");
+
+                    b.ToTable("WorkflowReadAccesses");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowState", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ActionName")
+                        .HasMaxLength(300);
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<DateTime>("ModifiedAt");
+
+                    b.Property<int>("ModifiedById");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(300);
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.ToTable("WorkflowStates");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowStateAccess", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<DateTime>("ModifiedAt");
+
+                    b.Property<int>("ModifiedById");
+
+                    b.Property<int>("UserSourceId");
+
+                    b.Property<int>("WorkflowStateTransitionId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("UserSourceId");
+
+                    b.HasIndex("WorkflowStateTransitionId");
+
+                    b.ToTable("WorkflowStateAccesses");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowStateNotifier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<DateTime>("ModifiedAt");
+
+                    b.Property<int>("ModifiedById");
+
+                    b.Property<int>("UserSourceId");
+
+                    b.Property<int>("WorkflowStateTransitionId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("UserSourceId");
+
+                    b.HasIndex("WorkflowStateTransitionId");
+
+                    b.ToTable("WorkflowStateNotifiers");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowStateTransition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ActualWorkflowStateId");
+
+                    b.Property<string>("ConditionCode");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<DateTime>("ModifiedAt");
+
+                    b.Property<int>("ModifiedById");
+
+                    b.Property<int>("NextWorkflowStateId");
+
+                    b.Property<string>("NotificationCode")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ParameterCode")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ValidationCode")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("WorkflowId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActualWorkflowStateId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("NextWorkflowStateId");
+
+                    b.HasIndex("WorkflowId");
+
+                    b.ToTable("WorkflowStateTransitions");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<DateTime>("ModifiedAt");
+
+                    b.Property<int>("ModifiedById");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(300);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.ToTable("WorkflowTypes");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.WorkTimeManagement.Holiday", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime?>("Created");
 
@@ -1457,7 +1856,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Models.WorkTimeManagement.WorkTime", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AnalyticId");
 
@@ -1583,7 +1983,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.Area", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -1606,7 +2007,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.ClientGroup", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1619,7 +2021,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.Currency", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CrmDevelopmentId")
                         .HasMaxLength(100);
@@ -1638,7 +2041,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.DocumentType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1651,7 +2055,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.EmployeeEndReason", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text");
 
@@ -1663,7 +2068,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.ImputationNumber", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(50);
@@ -1673,10 +2079,25 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("ImputationNumbers");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Utils.MonthsReturn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MonthsReturns");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Utils.PaymentTerm", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1689,7 +2110,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.Product", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1702,7 +2124,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.Province", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1715,7 +2138,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.PurchaseOrderOptions", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1728,7 +2152,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.Sector", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -1751,7 +2176,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.ServiceType", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1764,7 +2190,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.SoftwareLaw", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1777,7 +2204,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.Solution", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1790,7 +2218,8 @@ namespace Sofco.WebApi.Migrations
             modelBuilder.Entity("Sofco.Domain.Utils.Technology", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Text")
                         .HasMaxLength(60);
@@ -1822,6 +2251,56 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("Tasks")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.Advancement", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic")
+                        .WithMany("Advancements")
+                        .HasForeignKey("AnalyticId");
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "Authorizer")
+                        .WithMany("Advancements2")
+                        .HasForeignKey("AuthorizerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
+                        .WithMany("Advancements")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Utils.MonthsReturn", "MonthsReturn")
+                        .WithMany("Advancements")
+                        .HasForeignKey("MonthsReturnId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowState", "Status")
+                        .WithMany("Advancements")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "UserApplicant")
+                        .WithMany("Advancements")
+                        .HasForeignKey("UserApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.AdvancementHistory", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.AdvancementAndRefund.Advancement", "Advancement")
+                        .WithMany("Histories")
+                        .HasForeignKey("AdvancementId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowState", "StatusFrom")
+                        .WithMany("AdvancementHistories")
+                        .HasForeignKey("StatusFromId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowState", "StatusTo")
+                        .WithMany("AdvancementHistories2")
+                        .HasForeignKey("StatusToId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>
@@ -1891,7 +2370,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Domain.Utils.EmployeeEndReason", "TypeEndReason")
                         .WithMany("Employees")
-                        .HasForeignKey("TypeEndReasonId");
+                        .HasForeignKey("TypeEndReasonId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Certificate", b =>
@@ -1933,7 +2413,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany("Invoices")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Billing.InvoiceHistory", b =>
@@ -2009,7 +2490,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasOne("Sofco.Domain.Models.Admin.User", "UserApplicant")
                         .WithMany("Solfacs")
-                        .HasForeignKey("UserApplicantId");
+                        .HasForeignKey("UserApplicantId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Billing.SolfacAttachment", b =>
@@ -2050,11 +2532,13 @@ namespace Sofco.WebApi.Migrations
                 {
                     b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
                         .WithMany("Licenses")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Sofco.Domain.Models.Admin.User", "Manager")
                         .WithMany("Licenses")
-                        .HasForeignKey("ManagerId");
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Sofco.Domain.Utils.Sector", "Sector")
                         .WithMany("Licenses")
@@ -2080,23 +2564,168 @@ namespace Sofco.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.Workflow", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("Workflows")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
+                        .WithMany("Workflows2")
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowType", "WorkflowType")
+                        .WithMany("Workflows")
+                        .HasForeignKey("WorkflowTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowReadAccess", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("WorkflowReadAccesses")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
+                        .WithMany("WorkflowReadAccesses2")
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.UserSource", "UserSource")
+                        .WithMany("WorkflowReadAccesses")
+                        .HasForeignKey("UserSourceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.Workflow", "Workflow")
+                        .WithMany("WorkflowReadAccesses")
+                        .HasForeignKey("WorkflowId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowState", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("WorkflowStates")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
+                        .WithMany("WorkflowStates2")
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowStateAccess", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("WorkflowStateAccesses")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
+                        .WithMany("WorkflowStateAccesses2")
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.UserSource", "UserSource")
+                        .WithMany("WorkflowStateAccesses")
+                        .HasForeignKey("UserSourceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowStateTransition", "WorkflowStateTransition")
+                        .WithMany("WorkflowStateAccesses")
+                        .HasForeignKey("WorkflowStateTransitionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowStateNotifier", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("WorkflowStateNotifiers")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
+                        .WithMany("WorkflowStateNotifiers2")
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.UserSource", "UserSource")
+                        .WithMany("WorkflowStateNotifiers")
+                        .HasForeignKey("UserSourceId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowStateTransition", "WorkflowStateTransition")
+                        .WithMany("WorkflowStateNotifiers")
+                        .HasForeignKey("WorkflowStateTransitionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowStateTransition", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowState", "ActualWorkflowState")
+                        .WithMany("ActualTransitions")
+                        .HasForeignKey("ActualWorkflowStateId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("WorkflowStateTransitions")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
+                        .WithMany("WorkflowStateTransitions2")
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.WorkflowState", "NextWorkflowState")
+                        .WithMany("NextTransitions")
+                        .HasForeignKey("NextWorkflowStateId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Workflow.Workflow", "Workflow")
+                        .WithMany("Transitions")
+                        .HasForeignKey("WorkflowId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowType", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("WorkflowTypes")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
+                        .WithMany("WorkflowTypes2")
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.WorkTimeManagement.WorkTime", b =>
                 {
                     b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
                         .WithMany("WorkTimes")
-                        .HasForeignKey("AnalyticId");
+                        .HasForeignKey("AnalyticId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
                         .WithMany("WorkTimes")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Sofco.Domain.Models.Admin.Task", "Task")
                         .WithMany("WorkTimes")
-                        .HasForeignKey("TaskId");
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany("WorkTimes1")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Relationships.EmployeeCategory", b =>
@@ -2192,6 +2821,7 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("ResponsableUserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
+#pragma warning restore 612, 618
         }
     }
 }

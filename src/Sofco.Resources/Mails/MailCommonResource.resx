@@ -120,6 +120,9 @@
   <data name="Analytic" xml:space="preserve">
     <value>Analítica</value>
   </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comentarios</value>
+  </data>
   <data name="EmployeeActionDelete" xml:space="preserve">
     <value>Bajas</value>
   </data>

@@ -195,4 +195,7 @@
   <data name="WorkTimeReject" xml:space="preserve">
     <value>Horas Rechazadas - {0}</value>
   </data>
+  <data name="WorkflowNotificationAdvancement" xml:space="preserve">
+    <value>Solicitud de Adelanto - {0}</value>
+  </data>
 </root>

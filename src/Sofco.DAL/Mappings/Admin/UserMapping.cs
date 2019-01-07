@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Domain.Models.Admin;
 
 namespace Sofco.DAL.Mappings.Admin
@@ -20,6 +21,8 @@ namespace Sofco.DAL.Mappings.Admin
 
             builder.Entity<User>().HasMany(x => x.Licenses).WithOne(x => x.Manager).HasForeignKey(x => x.ManagerId);
             builder.Entity<User>().HasMany(x => x.Employees).WithOne(x => x.Manager).HasForeignKey(x => x.ManagerId);
+            builder.Entity<User>().HasMany(x => x.Advancements).WithOne(x => x.UserApplicant).HasForeignKey(x => x.UserApplicantId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<User>().HasMany(x => x.Advancements2).WithOne(x => x.Authorizer).HasForeignKey(x => x.AuthorizerId).OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<User>().HasIndex(x => new { x.UserName }).IsUnique();
         }

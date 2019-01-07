@@ -52,6 +52,14 @@
         </ul>
       </li> 
  
+      <!-- ADVANCEMENT -->
+      <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasAdvancementMenu()">
+        <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">{{'advancement.navigationTitle' | translate }}</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('advancementAndRefund')}">
+            <li [ngClass]="{active: activeRoute('advancementAndRefund')}" *ngIf="menuService.hasFunctionality('ADVAN', 'QUERY')"><a [routerLink]="['/advancementAndRefund/advancement/search']">{{'advancement.search' | translate }}</a></li>
+        </ul>
+      </li> 
+ 
       <!--ALLOCATIONS-->
       <li [ngClass]="{active: activeRoute('allocationManagement') || activeRoute('rrhh')}" *ngIf="menuService.hasAllocationManagementMenu() || menuService.hasFunctionality('CTRLI', 'QUERY') || menuService.hasFunctionality('CTRLI', 'AUTH')">
         <a href="#"><i class="fa fa-users"></i> <span class="nav-label">{{'allocationManagement.title' | translate }}</span> <span class="fa arrow"></span> </a>
@@ -64,6 +72,7 @@
             <li [ngClass]="{active: activeRoute('licenses/managers')}" *ngIf="menuService.hasFunctionality('CTRLI', 'AUTH')"><a [routerLink]="['/rrhh/licenses/managers']">{{'rrhh.licenses' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('licenses/views')}" *ngIf="menuService.hasFunctionality('CTRLI', 'LIC_VIEW_DELEGATE')"><a [routerLink]="['/rrhh/licenses/views/delegates']">{{'rrhh.license.delegate.viewTitle' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('workTimeApproval/delegate')}" *ngIf="menuService.hasFunctionality('ALLOC', 'TAPDE')"><a [routerLink]="['/allocationManagement/workTimeApproval/delegate']">{{'allocationManagement.workTimeApproval.delegate.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('endNotification')}" *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE_END_NOTIF')"><a [routerLink]="['/rrhh/endNotification']">{{'rrhh.endNotification.title' | translate }}</a></li>
         </ul>
       </li> 
 
@@ -86,17 +95,10 @@
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('profile')}">
           <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('PROFI', 'ALTA') && !isExternal"><a [routerLink]="['/profile/licenses/add']">{{ 'rrhh.license.load' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('workTime')}" *ngIf="menuService.hasFunctionality('PROFI', 'WORKT')"><a [routerLink]="['/profile/workTime']">{{'workTimeManagement.workTime.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('advancement')}" *ngIf="menuService.hasFunctionality('PROFI', 'ADD')"><a [routerLink]="['/profile/advancement/add']">{{'advancement.addTitle' | translate }}</a></li>
         </ul>
       </li>
 
-      <!--REPORT-->
-      <!-- <li [ngClass]="{active: activeRoute('report')}" *ngIf="menuService.hasReportMenu()">
-        <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'report.title' | translate }}</span> <span class="fa arrow"></span> </a>
-        <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('report')}">
-          <li [ngClass]="{active: activeRoute('solfacs')}" *ngIf="menuService.hasFunctionality('REPOR', 'REPOR')"><a [routerLink]="['/reports/solfacs']">{{'report.solfacs.title' | translate }}</a></li>
-        </ul>
-      </li> -->
-      
     </ul>
 
   </div>

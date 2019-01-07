@@ -5,6 +5,7 @@ using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.DAL.AllocationManagement
 {
@@ -55,5 +56,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate);
 
         IList<Employee> GetByAnalyticIds(List<int> analyticIds);
+
+        IList<Sector> GetAnalyticsWithSector(int employeeId);
     }
 }

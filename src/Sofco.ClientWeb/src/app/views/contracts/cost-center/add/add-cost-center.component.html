@@ -25,7 +25,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label"> {{ 'contracts.costCenter.add.code' | translate }}</label>
-                                <input type="number" min="0" max="999" class="form-control" [(ngModel)]="model.code"> 
+                                <input type="number" min="100" max="999" class="form-control" [(ngModel)]="model.code"> 
                             </div>
                         </div>
 
@@ -43,7 +43,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label class="control-label"> {{ 'contracts.costCenter.add.description' | translate }} </label>
-                                <input type="text" class="form-control" [(ngModel)]="model.description"> 
+                                <input type="text" maxlength="250" class="form-control" [(ngModel)]="model.description"> 
                             </div>
                         </div>
                     </div>

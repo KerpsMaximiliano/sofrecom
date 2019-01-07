@@ -5,6 +5,8 @@ import { Ng2ModalConfig } from '../../../../components/modal/ng2modal-config';
 import { Subscription } from 'rxjs';
 import { PurchaseOrderApprovalDelegateService } from '../../../../services/billing/purchase-order-approval-delegate.service';
 
+declare var moment: any;
+
 @Component({
     selector: 'app-purchase-order-approval-delegate',
     templateUrl: './purchase-order-approval-delegate.component.html'
@@ -47,7 +49,10 @@ export class PurchaseOrderApprovalDelegateComponent implements OnInit, OnDestroy
     initTable() {
         this.dataTableService.destroy('#delegateTable');
         this.dataTableService.initialize({
-            selector: '#delegateTable',
+            selector: '#delegateTable', 
+            columns: [0, 1, 2, 3, 4, 5],
+            title: `Delegacion-aprobacion-ordenes-compra-${moment(new Date()).format("YYYYMMDD")}`,
+            withExport: true,
             order: [[ 0, 'asc' ]],
             columnDefs: [ {"aTargets": [5], "sType": "date-uk"} ]
         });

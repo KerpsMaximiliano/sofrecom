@@ -75,21 +75,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         if(dataJson) this.fromProfile = dataJson.fromProfile;
 
         if(this.fromProfile){
-            const userInfo = UserInfoService.getUserInfo();
-
-            if(userInfo && userInfo.employeeId && userInfo.name){
-                this.model.employeeId = userInfo.employeeId;
-                this.model.managerId = userInfo.managerId;
-                this.model.managerDesc = userInfo.managerDesc;
-                this.model.sectorId = userInfo.sectorId;
-                this.model.sectorDesc = userInfo.sectorDesc;
-                this.model.authorizerId = userInfo.authorizerId;
-                this.model.authorizerDesc = userInfo.authorizerDesc;
-
-                this.userApplicantName = userInfo.name;
-
-                this.checkMissingManager();
-            }
+            this.initUserInfo();            
         } else {
             this.getEmployees();
             this.model.employeeId = '0';
@@ -105,6 +91,24 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         if(this.getSectorsSubscrip) this.getSectorsSubscrip.unsubscribe();
         if(this.deleteFileSubscrip) this.deleteFileSubscrip.unsubscribe();
         if(this.userSubscrip) this.userSubscrip.unsubscribe();
+    }
+
+    initUserInfo(){
+        const userInfo = UserInfoService.getUserInfo();
+
+        if(userInfo && userInfo.employeeId && userInfo.name){
+            this.model.employeeId = userInfo.employeeId;
+            this.model.managerId = userInfo.managerId;
+            this.model.managerDesc = userInfo.managerDesc;
+            this.model.sectorId = userInfo.sectorId;
+            this.model.sectorDesc = userInfo.sectorDesc;
+            this.model.authorizerId = userInfo.authorizerId;
+            this.model.authorizerDesc = userInfo.authorizerDesc;
+
+            this.userApplicantName = userInfo.name;
+
+            this.checkMissingManager();
+        }
     }
 
     back(){
@@ -256,20 +260,13 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     }
 
     refresh(){
-        this.model.startDate = null;
-        this.model.endDate = null;
-        this.model.comments = "";
-        this.model.daysQuantity = 0;
-        this.model.examDescription = "";
-        this.model.final = false;
-        this.model.parcial = false;
-        this.model.hasCertificate = false;
-        this.model.id = null;
-        this.model.withPayment = true;
-        this.model.typeId = 0;
+        this.model = new License();
 
-        this.startDate.clean();
-        this.endDate.clean();
+        if(this.fromProfile){
+            this.initUserInfo();            
+        } else {
+            this.model.employeeId = '0';
+        }
     }
 
     updateStorage() {

@@ -11,6 +11,8 @@ using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Managers.AllocationManagement;
+using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Framework.MailData;
@@ -35,8 +37,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly ISessionManager sessionManager;
         private readonly IEmployeeData employeeData;
         private readonly IUserData userData;
+        private readonly IEmployeeEndNotificationManager employeeEndNotificationManager;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData, IEmployeeEndNotificationManager employeeEndNotificationManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -46,6 +49,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.sessionManager = sessionManager;
             this.employeeData = employeeData;
             this.userData = userData;
+            this.employeeEndNotificationManager = employeeEndNotificationManager;
             emailConfig = emailOptions.Value;
         }
 
@@ -85,9 +89,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response SendUnsubscribeNotification(string employeeName, UnsubscribeNotificationParams parameters)
+        public Response SendUnsubscribeNotification(EmployeeEndNotificationModel model)
         {
-            parameters.UserName = sessionManager.GetUserName();
+            var currentUser = userData.GetCurrentUser();
+
+            model.ApplicantUserId = currentUser.Id;
+            model.UserName = currentUser.UserName;
+
+            var employeeName = model.EmployeeName;
 
             var response = new Response();
 
@@ -97,21 +106,26 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 return response;
             }
 
-            var manager = unitOfWork.UserRepository.GetSingle(x => x.UserName.Equals(parameters.UserName));
+            var manager = unitOfWork.UserRepository.GetSingle(x => x.UserName.Equals(model.UserName));
 
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
 
-            parameters.Receipents.Add(mailRrhh);
+            model.Recipients.Add(mailRrhh);
 
             try
             {
                 var email = mailBuilder.GetEmail(new EmployeeEndNotificationData
                 {
-                    Recipients = parameters.Receipents.ToList(),
-                    Message = string.Format(MailMessageResource.EmployeeEndNotification, employeeName, manager.Name, parameters.EndDate.ToString("dd/MM/yyyy"))
+                    Recipients = model.Recipients.ToList(),
+                    Message = string.Format(MailMessageResource.EmployeeEndNotification, 
+                        employeeName, 
+                        manager.Name, 
+                        model.EndDate.ToString("dd/MM/yyyy"))
                 });
 
                 mailSender.Send(email);
+
+                employeeEndNotificationManager.Save(model);
 
                 response.AddSuccess(Resources.Common.MailSent);
             }
@@ -245,6 +259,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var stored = EmployeeValidationHelper.Find(response, unitOfWork.EmployeeRepository, id);
             EmployeeValidationHelper.ValidateBusinessHours(response, model);
             EmployeeValidationHelper.ValidateBillingPercentage(response, model);
+            EmployeeValidationHelper.ValidateOffice(response, model);
+            EmployeeValidationHelper.ValidateManager(response, model, unitOfWork);
 
             if (response.HasErrors()) return response;
 
@@ -252,10 +268,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var employee = new Employee();
                 employee.Id = id;
-                employee.BusinessHours = model.BusinessHours;
+                employee.BusinessHours = model.BusinessHours.GetValueOrDefault();
                 employee.BusinessHoursDescription = model.BusinessHoursDescription;
                 employee.OfficeAddress = model.Office;
-                employee.HolidaysPendingByLaw = model.HolidaysPending;
+                employee.HolidaysPendingByLaw = model.HolidaysPending.GetValueOrDefault();
                 employee.ManagerId = model.ManagerId;
                 employee.BillingPercentage = model.BillingPercentage.GetValueOrDefault();
                 employee.HolidaysPending = CalculateHolidaysPending(model);
@@ -320,8 +336,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private int CalculateHolidaysPending(EmployeeBusinessHoursParams model)
         {
-            var daysPending = (model.HolidaysPending / 7) * 5;
-            var resto = model.HolidaysPending % 7;
+            var daysPending = (model.HolidaysPending.GetValueOrDefault() / 7) * 5;
+            var resto = model.HolidaysPending.GetValueOrDefault() % 7;
 
             if (resto < 6) daysPending += resto;
             if (resto == 6 || resto == 7) daysPending += 5;
@@ -405,6 +421,23 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var employees = unitOfWork.EmployeeRepository.GetByAnalyticIds(analytics.Select(x => x.Id).ToList());
 
             return new Response<List<Option>> {Data = Translate(employees.ToList())};
+        }
+
+        public Response<IList<EmployeeAdvancementDetail>> GetAdvancements(int id)
+        {
+            var response = new Response<IList<EmployeeAdvancementDetail>>();
+            response.Data = new List<EmployeeAdvancementDetail>();
+
+            var employee = unitOfWork.EmployeeRepository.Get(id);
+
+            if (employee != null)
+            {
+                var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
+
+                response.Data = unitOfWork.AdvancementRepository.GetByApplicant(user.Id).Select(x => new EmployeeAdvancementDetail(x)).ToList();
+            }
+
+            return response;
         }
 
         private EmployeeProfileModel GetEmployeeModel(Employee employee)

@@ -20,5 +20,8 @@ namespace Sofco.Core.DAL.Common
         IList<Sector> GetSectors();
         IList<EmployeeEndReason> GetEmployeeTypeEndReasons();
         IList<Area> GetAreas();
+        IList<MonthsReturn> GetMonthsReturn();
+        bool ExistMonthReturn(int id);
+        bool ExistCurrency(int currencyId);
     }
 }

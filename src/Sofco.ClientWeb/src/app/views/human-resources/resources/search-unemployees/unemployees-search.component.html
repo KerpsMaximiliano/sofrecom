@@ -70,6 +70,7 @@
                         <th class="column-sm">{{'allocationManagement.resources.endDate' | translate }}</th>
                         <th class="column-sm">{{'allocationManagement.resources.reason' | translate }}</th>
                         <th class="column-xs">{{'allocationManagement.resources.comments' | translate }}</th>
+                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,7 +80,10 @@
                         <td class="column-sm"> {{ resource.endDate | date:'dd/MM/yyyy' }}</td>
                         <td class="column-sm">{{ resource.endReasonType}}</td>
                         <td class="column-xs"><button *ngIf="resource.endReasonComments" (click)="showComments(resource)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button></td>
-                    </tr>
+                        <td class="column-sm text-center">
+                            <button title="{{'allocationManagement.resources.profile' | translate }}" class="btn btn-success btn-xs" (click)="goToProfile(resource)"><i class="fa fa-eye"></i></button>
+                        </td>
+                    </tr> 
                 </tbody>
             </table>       
         </div>

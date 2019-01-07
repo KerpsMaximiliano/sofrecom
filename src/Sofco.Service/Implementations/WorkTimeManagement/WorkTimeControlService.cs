@@ -5,10 +5,12 @@ using AutoMapper;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
+using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Domain;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
@@ -22,25 +24,31 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeResumeManager workTimeResumeManager;
 
+        private readonly IRoleManager roleManager;
+
         private readonly IMapper mapper;
 
-        public WorkTimeControlService(IUnitOfWork unitOfWork, IUserData userData, IWorkTimeResumeManager workTimeResumeManager, IMapper mapper)
+        public WorkTimeControlService(IUnitOfWork unitOfWork, IUserData userData, IWorkTimeResumeManager workTimeResumeManager, IMapper mapper, IRoleManager roleManager)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.workTimeResumeManager = workTimeResumeManager;
             this.mapper = mapper;
+            this.roleManager = roleManager;
         }
 
         public Response<WorkTimeControlModel> Get(WorkTimeControlParams parameters)
         {
             var result = new Response<WorkTimeControlModel>();
 
+            SetStartEndDateParameters(parameters);
+
             var startDate = parameters.StartDate;
 
             var endDate = parameters.EndDate;
 
-            var workTimes = unitOfWork.WorkTimeRepository.GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId));
+            var workTimes = unitOfWork.WorkTimeRepository
+                .GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId));
 
             var models = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
@@ -61,6 +69,17 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             resumeModel.HoursApproved = resources.Sum(s => s.ApprovedHours);
 
             return result;
+        }
+
+        public Response<List<Option>> GetAnalyticOptionsByCurrentManager()
+        {
+            var analyticsByManagers = roleManager.IsDirector()
+                ? unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite()
+                : GetAnalyticByManager();
+
+            var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+            return new Response<List<Option>> { Data = result };
         }
 
         private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate, DateTime endDate)
@@ -116,14 +135,20 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private List<int> GetAnalyticIds(int? analyticId)
         {
-            return analyticId.HasValue ? new List<int> {analyticId.Value} : new List<int>();
+            if (analyticId.HasValue) return new List<int> {analyticId.Value};
+
+            if(roleManager.IsDirector()) return unitOfWork.AnalyticRepository.GetAllOpenReadOnly().Select(s => s.Id).ToList();
+
+            return GetAnalyticByManager()
+                .Select(s => s.Id)
+                .ToList();
         }
 
         private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)
         {
-            var categoriyIds = workTimes.Select(s => s.Task.CategoryId).Distinct().ToList();
+            var categoryIds = workTimes.Select(s => s.Task.CategoryId).Distinct().ToList();
 
-            var categories = unitOfWork.CategoryRepository.GetByIds(categoriyIds);
+            var categories = unitOfWork.CategoryRepository.GetByIds(categoryIds);
 
             foreach (var workTime in workTimes)
             {
@@ -136,6 +161,43 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         private WorkTimeControlResourceModel Translate(WorkTime workTime)
         {
             return mapper.Map<WorkTime, WorkTimeControlResourceModel>(workTime);
+        }
+
+        private void SetStartEndDateParameters(WorkTimeControlParams parameters)
+        {
+            if (!parameters.CloseMonthId.HasValue)
+            {
+                var currentCloseDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+
+                var period = currentCloseDates.GetPeriodIncludeDays();
+                parameters.StartDate = period.Item1.Date;
+                parameters.EndDate = period.Item2.Date;
+                return;
+            }
+
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeAndCurrent(parameters.CloseMonthId.Value);
+            parameters.StartDate = new DateTime(closeDates.Item2.Year, closeDates.Item2.Month, closeDates.Item2.Day + 1);
+            parameters.EndDate = new DateTime(closeDates.Item1.Year, closeDates.Item1.Month, closeDates.Item1.Day);
+        }
+
+        private ICollection<AnalyticLiteModel> GetAnalyticByManager()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var analytics = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).ToList();
+
+            var userApprovers =
+                unitOfWork.UserApproverRepository.GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
+
+            if (!userApprovers.Any()) return analytics;
+
+            var delegatedAnalytics =
+                unitOfWork.AnalyticRepository.GetAnalyticLiteByIds(userApprovers.Select(s => s.AnalyticId)
+                    .ToList());
+
+            analytics.AddRange(delegatedAnalytics);
+
+            return analytics;
         }
     }
 }

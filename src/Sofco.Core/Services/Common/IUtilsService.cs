@@ -31,6 +31,9 @@ namespace Sofco.Core.Services.Common
         Response<List<AreaModel>> GetAreasByCurrentUser();
 
         List<object> GetUserDelegateType();
+
         IEnumerable<Option> GetCloseMonths();
+
+        IList<MonthsReturn> GetMonthsReturn();
     }
 }

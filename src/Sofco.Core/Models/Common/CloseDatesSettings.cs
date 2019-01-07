@@ -24,11 +24,11 @@ namespace Sofco.Core.Models.Common
             if (now.Day > CurrentCloseMonthDay)
             {
                 dateFrom = new DateTime(now.Year, now.Month, 1);
-                dateTo = new DateTime(now.Year, now.Month + 1, 1);
+                dateTo = new DateTime(now.Year, now.Month, 1).AddMonths(1);
             }
             else
             {
-                dateFrom = new DateTime(now.Year, now.Month - 1, 1);
+                dateFrom = new DateTime(now.Year, now.Month, 1).AddMonths(-1);
                 dateTo = new DateTime(now.Year, now.Month, 1);
             }
 
@@ -44,12 +44,12 @@ namespace Sofco.Core.Models.Common
 
             if (now.Day > CurrentCloseMonthDay)
             {
-                dateFrom = new DateTime(now.Year, now.Month, CurrentCloseMonthDay + 1);
-                dateTo = new DateTime(now.Year, now.Month + 1, NextCloseMonthDay);
+                dateFrom = new DateTime(now.Year, now.Month, CurrentCloseMonthDay).AddDays(1);
+                dateTo = new DateTime(now.Year, now.Month, NextCloseMonthDay).AddMonths(1);
             }
             else
             {
-                dateFrom = new DateTime(now.Year, now.Month - 1, BeforeCloseMonthDay + 1);
+                dateFrom = new DateTime(now.Year, now.Month, BeforeCloseMonthDay).AddMonths(-1).AddDays(1);
                 dateTo = new DateTime(now.Year, now.Month, CurrentCloseMonthDay);
             }
 

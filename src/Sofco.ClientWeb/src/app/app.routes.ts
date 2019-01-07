@@ -76,16 +76,11 @@ export const ROUTES:Routes = [
     loadChildren: 'app/views/worktime-management/worktime-management.module#WorkTimeManagementModule'
   },
 
-  // {
-  //   path: 'reports', component: BasicLayoutComponent,
-  //   children: [
-  //     {
-  //       path: 'solfacs', children:[
-  //         { path: "", component: SolfacReportComponent, canActivate: [AuthGuard], data: { module: "REPOR", functionality: "REPOR" } }
-  //       ]
-  //     }
-  //   ]
-  // },
+  {
+    path: 'advancementAndRefund', 
+    component: BasicLayoutComponent,
+    loadChildren: 'app/views/advancementAndRefund/advancementAndRefund.module#AdvancementAndRefundModule'
+  },
 
   // Handle all other routes
   { path: '**',  redirectTo: 'inicio' }

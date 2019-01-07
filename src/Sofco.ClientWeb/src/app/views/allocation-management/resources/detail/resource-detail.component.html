@@ -39,18 +39,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-sm-3" *ngIf="!isRrhh">
-                        <div class="widget-custom lazur-bg" >
-                            <div class="row vertical-align">
-                                <div class="col-xs-2">
-                                    <i class="fa fa-home fa-2x"></i>
-                                </div>
-                                <div class="col-xs-10 text-right">
-                                    <h4 class="font-bold">{{'allocationManagement.resources.homeOffice' | translate }}</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="col-sm-3" *ngIf="canAddLicense()">
                         <div class="widget-custom lazur-bg" (click)="goToLicenses()">
                             <div class="row vertical-align">
@@ -133,7 +121,8 @@
                     <li class=""><a data-toggle="tab" href="#tab-3"> {{'allocationManagement.resources.licenses' | translate }} </a></li>
                     <li class="" *ngIf="model?.history.length > 0"><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-5"> {{ 'ADMIN.task.title' | translate }} </a></li>
-                    <li class="" *ngIf="isRrhh"><a data-toggle="tab" href="#tab-6"> {{ 'allocationManagement.resources.profileHistoryGrid.name' | translate }} </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-6"> {{ 'advancement.title' | translate }} </a></li>
+                    <li class="" *ngIf="isRrhh"><a data-toggle="tab" href="#tab-7"> {{ 'allocationManagement.resources.profileHistoryGrid.name' | translate }} </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
@@ -282,7 +271,39 @@
                             </table>
                         </div>
                     </div>
-                    <div id="tab-6" class="tab-pane" *ngIf="isRrhh">
+                    <div id="tab-6" class="tab-pane">
+                        <div class="panel-body">
+                            <table class="table table-striped dataTable" role="grid" id="advancementTable">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'advancement.type' | translate }}</th>
+                                        <th>{{ 'advancement.paymentForm' | translate }}</th>
+                                        <th>{{ 'advancement.currency' | translate }}</th>
+                                        <th>{{ 'advancement.ammount' | translate }}</th>
+                                        <th>{{ 'advancement.creationDate' | translate }}</th>
+                                        <th>{{ 'advancement.status' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of advancements" class="pointer" (click)="goToAdvancementDetail(item)">
+                                        <td>
+                                            <span *ngIf="item.type == 1">{{ 'advancement.salary' | translate }}</span>
+                                            <span *ngIf="item.type == 2">{{ 'advancement.viaticum' | translate }}</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="item.paymentForm == 1">{{ 'advancement.ownBank' | translate }}</span>
+                                            <span *ngIf="item.paymentForm == 2">{{ 'advancement.others' | translate }}</span>
+                                        </td>
+                                        <td>{{ item.currencyDesc }}</td>
+                                        <td>{{ item.ammount }}</td>
+                                        <td>{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                                        <td><label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusDesc }}</label></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="tab-7" class="tab-pane" *ngIf="isRrhh">
                         <div class="panel-body">
                             <table class="table table-striped dataTable" role="grid" id="profileHistoryTable">
                                 <thead>

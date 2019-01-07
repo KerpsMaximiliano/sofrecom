@@ -5,7 +5,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using log4net;
 using log4net.Config;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.DAL;
+using Sofco.Service.Crm.Settings;
 using Sofco.Service.Settings;
 using Sofco.WebApi.Filters;
 using Sofco.WebApi.Infrastructures;
@@ -40,12 +41,12 @@ namespace Sofco.WebApi
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SofcoContext>(options =>
-                   options
-                   .UseSqlServer(
-                       Configuration.GetConnectionString("DefaultConnection"),
-                       b => b
-                       .MigrationsAssembly("Sofco.WebApi")
-                       .MigrationsHistoryTable(HistoryRepository.DefaultTableName, SofcoContext.AppSchemaName)));
+                options
+                    .UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection"),
+                        b => b.EnableRetryOnFailure()
+                            .MigrationsAssembly("Sofco.WebApi")
+                            .MigrationsHistoryTable(HistoryRepository.DefaultTableName, SofcoContext.AppSchemaName)));
 
             services.AddMvc().AddJsonOptions(options =>
             {
@@ -61,22 +62,27 @@ namespace Sofco.WebApi
                 options.Filters.Add(new VersionHeaderFilter());
             });
 
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = string.Format(Configuration["AzureAd:AadInstance"],
+                        Configuration["AzureAd:Tenant"]);
+                    options.Audience = Configuration["AzureAd:Audience"];
+                });
+
             services.AddOptions();
             services.AddCors();
 
-            services.Configure<IISOptions>(options =>
-            {
-                options.AutomaticAuthentication = true;
-            });
-
-            // Config
             services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
             services.Configure<AzureAdConfig>(Configuration.GetSection("AzureAd"));
             services.Configure<FileConfig>(Configuration.GetSection("File"));
             services.Configure<AppSetting>(Configuration.GetSection("App"));
-
-            services.AddAuthentication(sharedOptions => sharedOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme);
+            services.Configure<CrmSetting>(Configuration.GetSection("CRM"));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -96,14 +102,7 @@ namespace Sofco.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                Authority = string.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAd:Tenant"]),
-                Audience = Configuration["AzureAd:Audience"]
-            });
-
+            app.UseAuthentication();
             app.UseCors(builder => builder.WithOrigins("*")
                 .AllowAnyHeader()
                 .AllowAnyMethod()

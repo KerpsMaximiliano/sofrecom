@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Sofco.Resources</AssemblyName>
     <PackageId>Sofco.Resources</PackageId>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -66,6 +65,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>User.resx</DependentUpon>
+    </Compile>
+    <Compile Update="AdvancementAndRefund\Advancement.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Advancement.resx</DependentUpon>
     </Compile>
     <Compile Update="AllocationManagement\Allocation.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -172,6 +176,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>TigerReport.resx</DependentUpon>
     </Compile>
+    <Compile Update="Workflow\Workflow.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Workflow.resx</DependentUpon>
+    </Compile>
     <Compile Update="WorkTimeManagement\WorkTime.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -215,6 +224,10 @@
     <EmbeddedResource Update="Admin\User.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>User.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AdvancementAndRefund\Advancement.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Advancement.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\Allocation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -303,6 +316,10 @@
     <EmbeddedResource Update="Rrhh\TigerReport.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TigerReport.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Workflow\Workflow.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Workflow.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="WorkTimeManagement\WorkTime.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

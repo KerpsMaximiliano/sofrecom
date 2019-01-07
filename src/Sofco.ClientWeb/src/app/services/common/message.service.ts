@@ -10,6 +10,7 @@ export class MessageService {
     private successType = 0;
     private errorType = 1;
     private warningType = 2;
+    private ErrorTimeOut = 10000;
 
     constructor(private toastrService: ToastrService,
                 private i18nService: I18nService) {}
@@ -79,10 +80,14 @@ export class MessageService {
     }
 
     showMessage(msg, type:number, config?: any) {
+        const defaultConfig = this.getDefaultConfig(config);
         switch (type) {
-            case this.successType: this.toastrService.success(msg, null, this.getDefaultConfig(config)); break;
-            case this.errorType: this.toastrService.error(msg, 'Error', this.getDefaultConfig(config)); break;
-            case this.warningType: this.toastrService.warning(msg, null, this.getDefaultConfig(config)); break;
+            case this.successType: this.toastrService.success(msg, null, defaultConfig); break;
+            case this.errorType:
+                defaultConfig.timeOut = this.ErrorTimeOut;
+                this.toastrService.error(msg, 'Error', defaultConfig);
+            break;
+            case this.warningType: this.toastrService.warning(msg, null, defaultConfig); break;
         }
     }
 }
