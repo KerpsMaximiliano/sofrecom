@@ -129,6 +129,9 @@
   <data name="DetailAmmountRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.detailAmmountRequired</value>
   </data>
+  <data name="DetailDateInvalidRange" xml:space="preserve">
+    <value>advancementAndRefund/refund.detailDateInvalidRange</value>
+  </data>
   <data name="DetailDateRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.detailDateRequired</value>
   </data>
