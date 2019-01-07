@@ -5,6 +5,7 @@
     "currencyNotFound": "La moneda no existe",
     "currencyRequired": "La moneda es requerida",
     "detailDateRequired": "La fecha es requerida",
+    "detailDateInvalidRange": "La fecha no puede ser mayor al dia de hoy",
     "detailDescriptionRequired": "El concepto es requerido",
     "nullModel": "Los datos del formulario son invalidos",
     "userApplicantRequired": "El solicitante es requerido",

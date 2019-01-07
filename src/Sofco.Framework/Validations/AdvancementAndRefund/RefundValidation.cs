@@ -109,6 +109,12 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             if (!detail.CreationDate.HasValue)
             {
                 response.AddError(Resources.AdvancementAndRefund.Refund.DetailDateRequired);
+                return;
+            }
+
+            if (detail.CreationDate.Value.ToUniversalTime() > DateTime.UtcNow)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.DetailDateInvalidRange);
             }
         }
 

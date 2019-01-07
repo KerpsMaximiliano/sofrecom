@@ -1,5 +1,6 @@
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import * as moment from 'moment';
+import { FormValidationService } from "app/services/common/form-validation.service";
 
 export class RefundDetail extends FormGroup {
 
@@ -8,8 +9,9 @@ export class RefundDetail extends FormGroup {
 
     constructor(domain?) {
         super({
-            creationDate: new FormControl(domain && moment(domain.creationDate).toDate() || null, 
-                Validators.required),
+            creationDate: new FormControl(domain && moment(domain.creationDate).toDate() || null,
+                [Validators.required, FormValidationService.dateRangeValidator]
+                ),
 
             description: new FormControl(domain && domain.description || null, [
                 Validators.required,
