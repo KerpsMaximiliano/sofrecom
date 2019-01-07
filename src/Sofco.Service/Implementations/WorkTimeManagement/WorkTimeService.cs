@@ -165,6 +165,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
             }
 
+            list = ResolveDelegateResource(list.ToList());
+
             response.Data = list.Select(x => new HoursApprovedModel(x)).ToList();
 
             return response;
@@ -184,6 +186,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             {
                 response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
             }
+
+            list = ResolveDelegateResource(list.ToList());
 
             response.Data = list.Select(x => new HoursApprovedModel(x)).ToList();
 
@@ -451,6 +455,19 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id).ToList();
         }
 
+        private List<WorkTime> ResolveDelegateResource(List<WorkTime> workTimes)
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var userApprovers =
+                unitOfWork.UserApproverRepository.GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
+
+            if (!userApprovers.Any()) return workTimes;
+
+            var assignedEmployeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
+
+            return workTimes.Where(s => assignedEmployeeIds.Contains(s.EmployeeId)).ToList();
+        }
     }
 }
 
