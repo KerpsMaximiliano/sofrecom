@@ -48,7 +48,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var endDate = parameters.EndDate;
 
             var workTimes = unitOfWork.WorkTimeRepository
-                .GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId));
+                .GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId)).ToList();
+
+            workTimes = ResolveDelegateResource(workTimes);
 
             var models = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
@@ -198,6 +200,20 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             analytics.AddRange(delegatedAnalytics);
 
             return analytics;
+        }
+
+        private List<WorkTime> ResolveDelegateResource(List<WorkTime> workTimes)
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var userApprovers =
+                unitOfWork.UserApproverRepository.GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
+
+            if (!userApprovers.Any()) return workTimes;
+
+            var assignedEmployeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
+
+            return workTimes.Where(s => assignedEmployeeIds.Contains(s.EmployeeId)).ToList();
         }
     }
 }
