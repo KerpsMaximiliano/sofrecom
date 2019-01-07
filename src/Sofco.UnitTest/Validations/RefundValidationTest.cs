@@ -97,6 +97,21 @@ namespace Sofco.UnitTest.Validations
             Assert.False(response.HasErrors());
         }
 
+        [Test]
+        public void ShouldFailValidateDetailDate()
+        {
+            var model = GetInvalidModel();
+            model.Details = GetInvalidItems();
+            model.Details.First().CreationDate = DateTime.UtcNow.AddDays(1);
+
+            var response = new Response();
+
+            sut.ValidateAdd(model, response);
+
+            Assert.True(response.HasErrors());
+            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Refund.DetailDateInvalidRange)));
+        }
+
         private RefundModel GetValidModel()
         {
             return new RefundModel
