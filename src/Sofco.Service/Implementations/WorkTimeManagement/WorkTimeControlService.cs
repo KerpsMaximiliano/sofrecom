@@ -8,9 +8,7 @@ using Sofco.Core.Managers;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
-using Sofco.Domain;
 using Sofco.Domain.Enums;
-using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
@@ -48,9 +46,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var endDate = parameters.EndDate;
 
             var workTimes = unitOfWork.WorkTimeRepository
-                .GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId)).ToList();
+                .GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId))
+                .ToList();
 
-            workTimes = ResolveDelegateResource(workTimes);
+            workTimes.AddRange(AddDelegatedData(parameters));
 
             var models = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
@@ -77,7 +76,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             var analyticsByManagers = roleManager.IsDirector()
                 ? unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite()
-                : GetAnalyticByManager();
+                : GetAnalyticByManagerAndDelegated();
 
             var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
@@ -182,19 +181,23 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             parameters.EndDate = new DateTime(closeDates.Item1.Year, closeDates.Item1.Month, closeDates.Item1.Day);
         }
 
-        private ICollection<AnalyticLiteModel> GetAnalyticByManager()
+        private ICollection<AnalyticLiteModel> GetAnalyticByManagerAndDelegated()
         {
             var currentUser = userData.GetCurrentUser();
 
-            var analytics = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).ToList();
+            var analytics = unitOfWork.AnalyticRepository
+                .GetAnalyticLiteByManagerId(currentUser.Id)
+                .ToList();
 
             var userApprovers =
-                unitOfWork.UserApproverRepository.GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
+                unitOfWork.UserApproverRepository
+                    .GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
 
             if (!userApprovers.Any()) return analytics;
 
             var delegatedAnalytics =
-                unitOfWork.AnalyticRepository.GetAnalyticLiteByIds(userApprovers.Select(s => s.AnalyticId)
+                unitOfWork.AnalyticRepository
+                    .GetAnalyticLiteByIds(userApprovers.Select(s => s.AnalyticId)
                     .ToList());
 
             analytics.AddRange(delegatedAnalytics);
@@ -202,18 +205,42 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return analytics;
         }
 
-        private List<WorkTime> ResolveDelegateResource(List<WorkTime> workTimes)
+        private ICollection<AnalyticLiteModel> GetAnalyticByManager()
         {
             var currentUser = userData.GetCurrentUser();
 
+            return unitOfWork.AnalyticRepository
+                .GetAnalyticLiteByManagerId(currentUser.Id)
+                .ToList();
+        }
+
+        private List<WorkTime> AddDelegatedData(WorkTimeControlParams parameter)
+        {
+            var result = new List<WorkTime>();
+
+            var currentUser = userData.GetCurrentUser();
+
             var userApprovers =
-                unitOfWork.UserApproverRepository.GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
+                unitOfWork.UserApproverRepository
+                    .GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
 
-            if (!userApprovers.Any()) return workTimes;
+            if (parameter.AnalyticId.HasValue)
+            {
+                userApprovers = userApprovers
+                    .Where(s => s.AnalyticId == parameter.AnalyticId.Value)
+                    .ToList();
+            }
 
-            var assignedEmployeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
+            if (!userApprovers.Any()) return result;
 
-            return workTimes.Where(s => assignedEmployeeIds.Contains(s.EmployeeId)).ToList();
+            var employeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
+
+            result = unitOfWork
+                .WorkTimeRepository
+                .GetByEmployeeIds(parameter.StartDate, parameter.EndDate, employeeIds)
+                .ToList();
+
+            return result;
         }
     }
 }
