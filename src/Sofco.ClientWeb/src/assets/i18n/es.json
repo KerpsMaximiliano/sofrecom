@@ -1071,6 +1071,7 @@
         "listTitle": "Listado de Adelantos",
         "updateDate": "Fecha de Modificación",
         "creationDate": "Fecha de Creación",
+        "others": "Moneda extranjera",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",
