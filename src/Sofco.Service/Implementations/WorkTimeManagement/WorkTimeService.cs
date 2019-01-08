@@ -158,14 +158,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             model.AnalyticIds = GetAnalyticIds(model.AnalyticId);
 
-            var list = unitOfWork.WorkTimeRepository.SearchApproved(model);
+            var list = unitOfWork.WorkTimeRepository.SearchApproved(model).ToList();
+
+            list.AddRange(AddDelegatedData(model.AnalyticId, model.EmployeeId, WorkTimeStatus.Approved, list));
 
             if (!list.Any())
             {
                 response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
             }
-
-            list = ResolveDelegateResource(list.ToList());
 
             response.Data = list.Select(x => new HoursApprovedModel(x)).ToList();
 
@@ -180,14 +180,16 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var userIsDirector = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email);
             var userIsManager = unitOfWork.UserRepository.HasManagerGroup(currentUser.UserName);
 
-            var list = unitOfWork.WorkTimeRepository.SearchPending(model, userIsManager || userIsDirector, currentUser.Id);
+            var list = unitOfWork.WorkTimeRepository
+                .SearchPending(model, userIsManager || userIsDirector, currentUser.Id)
+                .ToList();
+
+            list.AddRange(AddDelegatedData(model.AnalyticId, model.EmployeeId, WorkTimeStatus.Sent, list));
 
             if (!list.Any())
             {
                 response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
             }
-
-            list = ResolveDelegateResource(list.ToList());
 
             response.Data = list.Select(x => new HoursApprovedModel(x)).ToList();
 
@@ -448,25 +450,61 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private List<int> GetAnalyticIds(int? analyticId)
         {
-            if (analyticId.HasValue && analyticId != 0) return new List<int> { analyticId.Value };
-
             var currentUser = userData.GetCurrentUser();
 
-            return unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id).ToList();
+            var availableAnalyticIds = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id).ToList();
+
+            if (!analyticId.HasValue || analyticId == 0) return availableAnalyticIds;
+
+            var selectedAnalyticId = analyticId.Value;
+
+            return availableAnalyticIds.Contains(selectedAnalyticId) 
+                ? new List<int> { selectedAnalyticId } 
+                : new List<int> ();
         }
 
-        private List<WorkTime> ResolveDelegateResource(List<WorkTime> workTimes)
+        private List<WorkTime> AddDelegatedData(int? analyticId, int? employeeId, WorkTimeStatus status, List<WorkTime> workTimes)
         {
+            var result = new List<WorkTime>();
+
             var currentUser = userData.GetCurrentUser();
 
             var userApprovers =
-                unitOfWork.UserApproverRepository.GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
+                unitOfWork.UserApproverRepository
+                    .GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
 
-            if (!userApprovers.Any()) return workTimes;
+            if (analyticId.HasValue && analyticId.Value > 0)
+            {
+                userApprovers = userApprovers
+                    .Where(s => s.AnalyticId == analyticId.Value)
+                    .ToList();
+            }
 
-            var assignedEmployeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
+            if (employeeId.HasValue && employeeId.Value > 0)
+            {
+                userApprovers = userApprovers
+                    .Where(s => s.EmployeeId == employeeId.Value)
+                    .ToList();
+            }
 
-            return workTimes.Where(s => assignedEmployeeIds.Contains(s.EmployeeId)).ToList();
+            if (!userApprovers.Any()) return result;
+
+            var employeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
+
+            var alreadyLoadedEmployeeIds = workTimes.Select(s => s.EmployeeId).Distinct();
+
+            employeeIds.RemoveAll(s => alreadyLoadedEmployeeIds.Contains(s));
+
+            result = unitOfWork
+                .WorkTimeRepository
+                .GetByEmployeeIds(employeeIds)
+                .ToList();
+
+            result = status != WorkTimeStatus.Approved 
+                ? result.Where(s => s.Status == status).ToList() 
+                : result.Where(s => s.Status == status || s.Status == WorkTimeStatus.License).ToList();
+
+            return result;
         }
     }
 }
