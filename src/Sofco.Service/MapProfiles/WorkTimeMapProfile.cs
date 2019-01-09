@@ -16,6 +16,7 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.Date, s => s.MapFrom(x => x.Date));
 
             CreateMap<WorkTime, WorkTimeControlResourceModel>()
+                .ForMember(d => d.Id, s => s.MapFrom(x => x.EmployeeId))
                 .ForMember(d => d.Analytic, s => s.MapFrom(x => x.Analytic.Title))
                 .ForMember(d => d.EmployeeName, s => s.MapFrom(x => x.Employee.Name))
                 .ForMember(d => d.EmployeeNumber, s => s.MapFrom(x => x.Employee.EmployeeNumber));

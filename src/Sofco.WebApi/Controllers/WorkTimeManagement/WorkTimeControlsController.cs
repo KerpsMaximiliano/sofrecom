@@ -32,5 +32,13 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpPost("{employeeId}/details")]
+        public IActionResult GetDetails(int employeeId, [FromBody] WorkTimeControlParams parameters)
+        {
+            var response = service.GetDetails(employeeId, parameters);
+
+            return this.CreateResponse(response);
+        }
     }
 }

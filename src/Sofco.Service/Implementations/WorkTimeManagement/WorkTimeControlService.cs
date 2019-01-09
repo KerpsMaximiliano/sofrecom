@@ -83,6 +83,30 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return new Response<List<Option>> { Data = result };
         }
 
+        public Response<WorkTimeControlResourceModel> GetDetails(int employeeId, WorkTimeControlParams parameters)
+        {
+            var result = new Response<WorkTimeControlResourceModel>();
+
+            SetStartEndDateParameters(parameters);
+
+            var startDate = parameters.StartDate;
+
+            var endDate = parameters.EndDate;
+
+            var workTimes = unitOfWork.WorkTimeRepository
+                .GetByEmployeeId(startDate, endDate, employeeId)
+                .OrderBy(s => s.Date)
+                .ToList();
+
+            result.Data = new WorkTimeControlResourceModel
+            {
+                Id = employeeId,
+                Details = Translate(workTimes)
+            };
+
+            return result;
+        }
+
         private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate, DateTime endDate)
         {
             var grouped = new Dictionary<string, List<WorkTime>>();
@@ -112,7 +136,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var resume = workTimeResumeManager.GetResume(models, startDate, endDate);
 
-                var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDaysForWorkTimeControl(model.EmployeeId, startDate, endDate);
+                var allocations = unitOfWork.AllocationRepository
+                    .GetAllocationsLiteBetweenDaysForWorkTimeControl(model.EmployeeId, startDate, endDate);
 
                 var allocationAnalytic = allocations?.FirstOrDefault(s => s.AnalyticId == model.AnalyticId);
 
@@ -123,11 +148,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 resource.LicenseHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
                 resource.SentHours = item.Value.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours);
                 resource.DraftHours = item.Value.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours);
-
                 resource.PendingHours = resource.BusinessHours - resource.ApprovedHours - resource.LicenseHours - resource.SentHours - resource.DraftHours;
-
                 resource.AllocationPercentage = allocationAnalytic.Percentage;
-                resource.Details = Translate(list.OrderBy(s => s.Date).ToList());
+                resource.DetailCount = list.Count;
                 result.Add(resource);
             }
 
