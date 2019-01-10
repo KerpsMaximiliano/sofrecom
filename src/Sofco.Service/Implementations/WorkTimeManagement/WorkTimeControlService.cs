@@ -49,7 +49,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 .GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId))
                 .ToList();
 
-            workTimes.AddRange(AddDelegatedData(parameters));
+            workTimes.AddRange(AddDelegatedData(parameters, workTimes));
 
             var models = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
@@ -159,13 +159,24 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private List<int> GetAnalyticIds(int? analyticId)
         {
-            if (analyticId.HasValue) return new List<int> {analyticId.Value};
+            var currentUser = userData.GetCurrentUser();
 
-            if(roleManager.IsDirector()) return unitOfWork.AnalyticRepository.GetAllOpenReadOnly().Select(s => s.Id).ToList();
-
-            return GetAnalyticByManager()
-                .Select(s => s.Id)
+            var availableAnalyticIds = unitOfWork.AnalyticRepository
+                .GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id)
                 .ToList();
+
+            if (analyticId.HasValue)
+            {
+                var selectedAnalyticId = analyticId.Value;
+
+                return availableAnalyticIds.Contains(selectedAnalyticId)
+                    ? new List<int> { selectedAnalyticId }
+                    : new List<int>();
+            }
+
+            return roleManager.IsDirector()
+                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly().Select(s => s.Id).ToList()
+                : availableAnalyticIds;
         }
 
         private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)
@@ -228,16 +239,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return analytics;
         }
 
-        private ICollection<AnalyticLiteModel> GetAnalyticByManager()
-        {
-            var currentUser = userData.GetCurrentUser();
-
-            return unitOfWork.AnalyticRepository
-                .GetAnalyticLiteByManagerId(currentUser.Id)
-                .ToList();
-        }
-
-        private List<WorkTime> AddDelegatedData(WorkTimeControlParams parameter)
+        private List<WorkTime> AddDelegatedData(WorkTimeControlParams parameter, List<WorkTime> workTimes)
         {
             var result = new List<WorkTime>();
 
@@ -257,6 +259,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             if (!userApprovers.Any()) return result;
 
             var employeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
+
+            var alreadyLoadedEmployeeIds = workTimes.Select(s => s.EmployeeId).Distinct();
+
+            employeeIds.RemoveAll(s => alreadyLoadedEmployeeIds.Contains(s));
 
             result = unitOfWork
                 .WorkTimeRepository
