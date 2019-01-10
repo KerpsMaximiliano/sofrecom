@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
@@ -18,10 +19,16 @@ namespace Sofco.Framework.Managers
 
         private readonly IUserData userData;
 
-        public WorkTimeResumeManager(IUnitOfWork unitOfWork, IUserData userData)
+        private readonly ISettingData settingData;
+
+        private readonly IHolidayData holidayData;
+
+        public WorkTimeResumeManager(IUnitOfWork unitOfWork, IUserData userData, ISettingData settingData, IHolidayData holidayData)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
+            this.settingData = settingData;
+            this.holidayData = holidayData;
         }
 
         public WorkTimeResumeModel GetResume(List<WorkTimeCalendarModel> calendarModels, DateTime startDateTime, DateTime endDateTime)
@@ -58,9 +65,9 @@ namespace Sofco.Framework.Managers
                 indexDate = indexDate.AddDays(1);
             }
 
-            var holidays = unitOfWork.HolidayRepository.Get(startDate.Year, startDate.Month);
+            var holidays = holidayData.Get(startDate.Year, startDate.Month);
 
-            holidays.AddRange(unitOfWork.HolidayRepository.Get(endDate.Year, endDate.Month));
+            holidays.AddRange(holidayData.Get(endDate.Year, endDate.Month));
 
             holidays = holidays.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
 
@@ -93,7 +100,7 @@ namespace Sofco.Framework.Managers
 
         private int GetMaxHourPerDay()
         {
-            var hourSetting = unitOfWork.SettingRepository.GetByKey(SettingConstant.WorkingHoursPerDaysMaxKey);
+            var hourSetting = settingData.GetByKey(SettingConstant.WorkingHoursPerDaysMaxKey);
 
             if (hourSetting == null) return DefaultMaxHourPerDay;
 
