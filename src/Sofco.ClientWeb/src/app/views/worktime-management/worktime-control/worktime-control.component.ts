@@ -26,6 +26,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
   public data: any[] = new Array();
   public gridSelector = '#gridTable';
   public loading = false;
+  public gridLoading = false;
   public closeMonths: any[];
   public closeMonthId: any;
 
@@ -44,7 +45,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
     getAnalytics() {
         this.loading = true;
         this.messageService.showLoading();
-        this.subscription = this.worktimeControlService.GetAnalyticOptionsByCurrentManager().subscribe(res => {
+        this.subscription = this.worktimeControlService.getAnalyticOptionsByCurrentManager().subscribe(res => {
             this.messageService.closeLoading();
             this.analytics = this.sortAnalytics(res.data);
             this.setAnalyticSelect();
@@ -159,11 +160,8 @@ export class WorkTimeControlComponent implements OnDestroy  {
         this.updateTableDetail();
     }
 
-    formatDetail( data ) {
-        const id = $(data[0]).data("id");
-        const item = <any>this.data.find(x => x.id == id);
-
-        const details = item != null ? item.details : [];
+    formatDetail(data) {
+        const details = data.details != null ? data.details : [];
 
         let tbody = "";
 
@@ -202,10 +200,8 @@ export class WorkTimeControlComponent implements OnDestroy  {
                     tdi.first().removeClass('fa-minus-square');
                     tdi.first().addClass('fa-plus-square');
                 } else {
-                    row.child(self.formatDetail(row.data())).show();
-                    tr.addClass('shown');
-                    tdi.first().removeClass('fa-plus-square');
-                    tdi.first().addClass('fa-minus-square');
+                    const employeeId = $(row.data()[0]).data("id");
+                    self.getDetails(employeeId);
                 }
             });
         });
@@ -219,5 +215,33 @@ export class WorkTimeControlComponent implements OnDestroy  {
             '<td>' + item.categoryDescription + '</td>' +
             '<td>' + item.registeredHours + '</td>' +
             '</tr>';
+    }
+
+    getDetails(employeeId){
+        const model = {
+            analyticId : this.analyticId,
+            closeMonthId: this.closeMonthId
+        };
+        this.gridLoading = true;
+        this.subscription = this.worktimeControlService.getDetails(employeeId, model).subscribe(res => {
+            this.gridLoading = false;
+            this.showDetail(res.data);
+        },
+        err => {
+            this.gridLoading = false;
+        });
+    }
+
+    showDetail(data){
+        const datatable = $(this.gridSelector).DataTable();
+        const tr = $("tr[data-id="+ data.id +"]");
+        const tdi = tr.find("i.fa");
+        const row = datatable.row(tr);
+        const htmlDetail = this.formatDetail(data);
+
+        row.child(htmlDetail).show();
+        tr.addClass('shown');
+        tdi.first().removeClass('fa-plus-square');
+        tdi.first().addClass('fa-minus-square');
     }
 }

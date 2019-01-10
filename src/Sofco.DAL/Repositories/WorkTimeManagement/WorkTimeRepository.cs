@@ -35,6 +35,9 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .Where(x => x.EmployeeId == employeeId 
                             && x.Date.Date >= startDate.Date 
                             && x.Date.Date <= endDate.Date)
+                .Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                .Include(x => x.Task)
                 .ToList();
         }
 
