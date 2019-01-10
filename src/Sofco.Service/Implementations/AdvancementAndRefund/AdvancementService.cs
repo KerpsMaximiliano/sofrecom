@@ -206,27 +206,20 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var employee = unitOfWork.EmployeeRepository.GetByEmail(user.Email);
 
-            var analytics = unitOfWork.AnalyticRepository.GetAnalyticsByEmployee(employee.Id);
+            var managerId = employee.ManagerId;
 
-            var i = 0;
+            var analytics = unitOfWork.AnalyticRepository.GetAllOpenReadOnly();
 
-            while (!response.Data && i < analytics.Count)
+            var sectors = unitOfWork.SectorRepository.GetAll();
+
+            if (analytics.Any(s => s.ManagerId == managerId) 
+                || sectors.Any(s => s.ResponsableUserId == managerId))
             {
-                if (employee.ManagerId.HasValue)
-                {
-                    if (analytics[i].ManagerId.GetValueOrDefault() == employee.ManagerId)
-                    {
-                        response.Data = true;
-                    }
+                response.Data = true;
 
-                    if (analytics[i].Sector.ResponsableUserId == employee.ManagerId)
-                    {
-                        response.Data = true;
-                    }
-                }
-
-                i++;
+                return response;
             }
+
 
             return response;
         }
