@@ -9,7 +9,5 @@ namespace Sofco.Core.Services.WorkTimeManagement
         Response<WorkTimeControlModel> Get(WorkTimeControlParams parameters);
 
         Response<List<Option>> GetAnalyticOptionsByCurrentManager();
-
-        Response<WorkTimeControlResourceModel> GetDetails(int employeeId, WorkTimeControlParams parameters);
     }
 }

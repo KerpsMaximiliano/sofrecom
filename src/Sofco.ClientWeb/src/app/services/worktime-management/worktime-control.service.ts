@@ -17,8 +17,4 @@ export class WorktimeControlService {
   getAnalyticOptionsByCurrentManager() {
     return this.http.get<any>(`${this.apiUrl}/analytics/options/currentManager`);
   }
-
-  getDetails(employeeId, model) {
-    return this.http.post<any>(`${this.apiUrl}/${employeeId}/details`, model);
-  }
 }

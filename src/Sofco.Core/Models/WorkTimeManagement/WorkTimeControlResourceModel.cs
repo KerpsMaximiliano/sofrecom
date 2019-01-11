@@ -4,7 +4,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
 {
     public class WorkTimeControlResourceModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Analytic { get; set; }
 

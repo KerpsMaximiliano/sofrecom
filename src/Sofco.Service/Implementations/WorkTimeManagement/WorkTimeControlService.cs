@@ -83,30 +83,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return new Response<List<Option>> { Data = result };
         }
 
-        public Response<WorkTimeControlResourceModel> GetDetails(int employeeId, WorkTimeControlParams parameters)
-        {
-            var result = new Response<WorkTimeControlResourceModel>();
-
-            SetStartEndDateParameters(parameters);
-
-            var startDate = parameters.StartDate;
-
-            var endDate = parameters.EndDate;
-
-            var workTimes = unitOfWork.WorkTimeRepository
-                .GetByEmployeeId(startDate, endDate, employeeId)
-                .OrderBy(s => s.Date)
-                .ToList();
-
-            result.Data = new WorkTimeControlResourceModel
-            {
-                Id = employeeId,
-                Details = Translate(workTimes)
-            };
-
-            return result;
-        }
-
         private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate, DateTime endDate)
         {
             var grouped = new Dictionary<string, List<WorkTime>>();
@@ -150,7 +126,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 resource.DraftHours = item.Value.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours);
                 resource.PendingHours = resource.BusinessHours - resource.ApprovedHours - resource.LicenseHours - resource.SentHours - resource.DraftHours;
                 resource.AllocationPercentage = allocationAnalytic.Percentage;
-                resource.DetailCount = list.Count;
+                var details = list.OrderBy(s => s.Date).ToList();
+                resource.Details = Translate(details);
+                resource.DetailCount = details.Count;
                 result.Add(resource);
             }
 
