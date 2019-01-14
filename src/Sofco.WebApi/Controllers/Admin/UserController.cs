@@ -65,6 +65,18 @@ namespace Sofco.WebApi.Controllers.Admin
         }
 
         [HttpGet]
+        [Route("managersAndDirectors")]
+        public IActionResult GetManagersAndDirectors()
+        {
+            var managers = userService.GetManagers();
+            var directors = userService.GetDirectors();
+
+            var users = managers.Union(directors).Distinct();
+
+            return Ok(users.Select(x => new UserSelectListItem { Id = x.Id.ToString(), Text = x.Name, ExternalId = x.ExternalManagerId }).OrderBy(x => x.Text));
+        }
+
+        [HttpGet]
         [Route("externalsFree")]
         public IActionResult GetExternalsFree()
         {

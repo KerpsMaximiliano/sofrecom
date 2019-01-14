@@ -44,5 +44,7 @@ namespace Sofco.Core.Services.Admin
         IList<User> GetExternalsFree();
 
         Response<UserModel> GetUserInfo(int employeeId);
+
+        ICollection<User> GetDirectors();
     }
 }

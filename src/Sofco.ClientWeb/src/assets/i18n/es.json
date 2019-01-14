@@ -491,7 +491,7 @@
                 "description": "Descripción",
                 "active": "Activo"
             }
-        }
+        } 
     },
     "allocationManagement": {
         "title": "Gestión de Recursos",
@@ -577,7 +577,8 @@
             "endDate": "Fecha Baja",
             "reason": "Motivo",
             "comments": "Comentarios",
-            "manager": "Superior",
+            "manager": "Superior (Gerente/Director)",
+            "hasCreditCard": "Tarjeta de Credito",
             "user": "Usuario",
             "grid": {
                 "name": "Nombre",

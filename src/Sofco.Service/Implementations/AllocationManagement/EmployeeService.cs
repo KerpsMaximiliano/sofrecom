@@ -252,7 +252,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response UpdateBusinessHours(int id, EmployeeBusinessHoursParams model)
+        public Response Update(int id, EmployeeBusinessHoursParams model)
         {
             var response = new Response();
 
@@ -275,6 +275,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.ManagerId = model.ManagerId;
                 employee.BillingPercentage = model.BillingPercentage.GetValueOrDefault();
                 employee.HolidaysPending = CalculateHolidaysPending(model);
+                employee.HasCreditCard = model.HasCreditCard;
 
                 unitOfWork.EmployeeRepository.UpdateBusinessHours(employee);
                 unitOfWork.Save();

@@ -128,10 +128,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
-        [HttpPut("{id}/businessHours")]
-        public IActionResult UpdateBusinessHours(int id, [FromBody] EmployeeBusinessHoursParams model)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] EmployeeBusinessHoursParams model)
         {
-            var response = employeeService.UpdateBusinessHours(id, model);
+            var response = employeeService.Update(id, model);
 
             return this.CreateResponse(response);
         }

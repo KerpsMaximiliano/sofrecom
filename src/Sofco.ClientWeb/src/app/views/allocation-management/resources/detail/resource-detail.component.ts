@@ -31,9 +31,11 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     ); 
 
     resourceId: number;
+    userLoggedId: number;
     public model: any;
 
     public isRrhh: boolean = false;
+    public isManager: boolean = false;
 
     public editModel = {
         businessHours: 0,
@@ -41,7 +43,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         office: "",
         managerId: null,
         billingPercentage: 0,
-        holidaysPending: null
+        holidaysPending: null,
+        hasCreditCard: false
     }
 
     public licenses: any[] = new Array();
@@ -87,6 +90,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
                     this.router.navigate([`/403`]);
                     return;
                 }
+
+                this.userLoggedId = userInfo.id;
             }
 
             this.getUsers();
@@ -117,6 +122,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.editModel.holidaysPending = response.data.holidaysPendingByLaw;
             this.editModel.managerId = response.data.managerId.toString();
             this.editModel.billingPercentage = response.data.percentage;
+            this.editModel.hasCreditCard = response.data.hasCreditCard;
 
             this.messageService.closeLoading();
             this.initGrid();
@@ -188,17 +194,18 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    updateBusinessHours(){
+    update(){
         var json = {
             businessHours: this.editModel.businessHours,
             businessHoursDescription: this.editModel.businessHoursDescription,
             holidaysPending: this.editModel.holidaysPending,
             office: this.editModel.office,
             billingPercentage: this.editModel.billingPercentage,
-            managerId: this.editModel.managerId
+            managerId: this.editModel.managerId,
+            hasCreditCard: this.editModel.hasCreditCard
         };
 
-        this.finalizeExtraHolidaysSubscrip = this.employeeService.updateBusinessHours(this.resourceId, json).subscribe(data => {
+        this.finalizeExtraHolidaysSubscrip = this.employeeService.put(this.resourceId, json).subscribe(data => {
             this.businessHoursModal.hide();
 
             setTimeout(() => {
@@ -221,7 +228,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     }
 
     getUsers(){
-        this.getManagersSubscript = this.userService.getOptions().subscribe(response => {
+        this.getManagersSubscript = this.userService.getManagersAndDirectors().subscribe(response => {
             this.managers = response;
         });
     }
@@ -303,5 +310,9 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     
     goToAdvancementDetail(item){
         this.router.navigate(['/advancementAndRefund/advancement/' + item.id])
+    }
+
+    userLoggedIsManager(){
+        return this.editModel.managerId == this.userLoggedId;
     }
 }

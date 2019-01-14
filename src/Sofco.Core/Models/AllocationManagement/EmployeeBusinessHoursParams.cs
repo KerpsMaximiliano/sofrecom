@@ -13,5 +13,7 @@
         public int? ManagerId { get; set; }
 
         public decimal? BillingPercentage { get; set; }
+
+        public bool HasCreditCard { get; set; }
     }
 }

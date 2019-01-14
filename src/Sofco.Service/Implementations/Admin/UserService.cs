@@ -216,6 +216,11 @@ namespace Sofco.Service.Implementations.Admin
             return SetUserInfo(employee.Email, response);
         }
 
+        public ICollection<User> GetDirectors()
+        {
+            return unitOfWork.UserRepository.GetDirectors();
+        }
+
         public Response<UserModel> GetUserInfo()
         {
             var email = sessionManager.GetUserEmail();
