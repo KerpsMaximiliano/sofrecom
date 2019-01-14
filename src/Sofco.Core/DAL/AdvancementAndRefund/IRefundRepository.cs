@@ -22,5 +22,7 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         bool Exist(int id);
 
         Refund GetById(int id);
+
+        IList<Refund> GetByApplicant(int id);
     }
 }

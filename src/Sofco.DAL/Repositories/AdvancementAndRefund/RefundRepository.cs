@@ -88,5 +88,17 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
             return context.Refunds.Include(x => x.Details).Include(x => x.AdvancementRefunds).SingleOrDefault(x => x.Id == id);
         }
+
+        public IList<Refund> GetByApplicant(int id)
+        {
+            return context.Refunds
+                .Include(x => x.Currency)
+                .Include(x => x.Status)
+                .Include(x => x.Details)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Advancement)
+                .Where(x => x.UserApplicantId == id)
+                .OrderByDescending(x => x.CreationDate).ToList();
+        }
     }
 }

@@ -160,6 +160,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
+        [HttpGet("{id}/refunds")]
+        public IActionResult GetRefunds(int id)
+        {
+            var response = employeeService.GetRefunds(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("external")]
         public IActionResult AddExternal([FromBody] AddExternalModel model)
         {

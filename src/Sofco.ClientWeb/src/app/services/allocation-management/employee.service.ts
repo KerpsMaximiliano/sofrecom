@@ -91,4 +91,8 @@ export class EmployeeService {
   getAdvancements(id){
     return this.http.get<any>(`${this.baseUrl}/employees/${id}/advancements`);
   }
+
+  getRefunds(id){
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/refunds`);
+  }
 }

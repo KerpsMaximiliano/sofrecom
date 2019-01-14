@@ -13,12 +13,14 @@ using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers.AllocationManagement;
 using Sofco.Core.Models;
+using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Framework.MailData;
 using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Domain.DTO;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
 using Sofco.Framework.Helpers;
@@ -436,6 +438,24 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
 
                 response.Data = unitOfWork.AdvancementRepository.GetByApplicant(user.Id).Select(x => new EmployeeAdvancementDetail(x)).ToList();
+            }
+
+            return response;
+        }
+
+        public Response<IList<EmployeeRefundDetail>> GetRefunds(int id)
+        {
+            var response = new Response<IList<EmployeeRefundDetail>>();
+            response.Data = new List<EmployeeRefundDetail>();
+
+            var employee = unitOfWork.EmployeeRepository.Get(id);
+
+            if (employee != null)
+            {
+                var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
+
+                response.Data = unitOfWork.RefundRepository.GetByApplicant(user.Id)
+                    .Select(x => mapper.Map<Refund, EmployeeRefundDetail>(x)).ToList();
             }
 
             return response;

@@ -52,12 +52,14 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     public managers: any[] = new Array();
     public profileHistories: any[] = new Array();
     public advancements: any[] = new Array();
+    public refunds: any[] = new Array();
 
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
     finalizeExtraHolidaysSubscrip: Subscription;
     getDataSubscrip: Subscription;
     getTasksSubscrip: Subscription;
+    getRefundDataSubscrip: Subscription;
     getManagersSubscript: Subscription;
 
     constructor(private router: Router,
@@ -99,6 +101,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.getProfile();
             this.getLicenses();
             this.getTasks();
+            this.getRefunds();
         });
     }
 
@@ -108,6 +111,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         if (this.getDataSubscrip) { this.getDataSubscrip.unsubscribe(); }
         if (this.finalizeExtraHolidaysSubscrip) { this.finalizeExtraHolidaysSubscrip.unsubscribe(); }
         if (this.getTasksSubscrip) { this.getTasksSubscrip.unsubscribe(); }
+        if (this.getRefundDataSubscrip) { this.getRefundDataSubscrip.unsubscribe(); }
     }
 
     getProfile(){
@@ -151,6 +155,19 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             var params = {
                 selector: "#advancementTable",
                 columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ]
+            };
+    
+            this.dataTableService.initialize(params);
+        });
+    }
+
+    getRefunds(){
+        this.getRefundDataSubscrip = this.employeeService.getRefunds(this.resourceId).subscribe(response => {
+            this.refunds = response.data;
+
+            var params = {
+                selector: "#refundTable",
+                columnDefs: [ {'aTargets': [1], "sType": "date-uk"} ]
             };
     
             this.dataTableService.initialize(params);
@@ -310,6 +327,10 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     
     goToAdvancementDetail(item){
         this.router.navigate(['/advancementAndRefund/advancement/' + item.id])
+    }
+
+    goToRefundDetail(item){
+        this.router.navigate(['/advancementAndRefund/refund/' + item.id])
     }
 
     userLoggedIsManager(){
