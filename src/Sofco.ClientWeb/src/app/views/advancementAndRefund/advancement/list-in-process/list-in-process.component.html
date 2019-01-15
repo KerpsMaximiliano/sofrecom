@@ -5,7 +5,8 @@
             <th>{{ 'advancement.type' | translate }}</th>
             <th>{{ 'advancement.currency' | translate }}</th>
             <th>{{ 'advancement.ammount' | translate }}</th>
-            <th>Fecha creación</th>
+            <th>{{ 'advancement.histories.createdDate' | translate }}</th>
+            <th>{{ 'advancement.bank' | translate }}</th>
             <th>{{ 'advancement.status' | translate }}</th>
         </tr>
     </thead>
@@ -19,6 +20,7 @@
             <td>{{ item.currencyDesc }}</td>
             <td>{{ item.ammount }}</td>
             <td>{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ item.bank }}</td>
             <td><label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusDesc }}</label></td>
         </tr>
     </tbody>

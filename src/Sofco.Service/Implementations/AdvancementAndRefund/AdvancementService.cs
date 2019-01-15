@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
@@ -114,6 +115,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var response = new Response<IList<AdvancementListItem>>();
             response.Data = new List<AdvancementListItem>();
 
+            var employeeDicc = new Dictionary<string, string>();
+
             var currentUser = userData.GetCurrentUser();
 
             var hasAllAccess = HasAllAccess(currentUser);
@@ -122,7 +125,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             if (hasAllAccess)
             {
-                response.Data = advancements.Select(x => new AdvancementListItem(x)).ToList();
+                response.Data = advancements.Select(x =>
+                {
+                    var item = new AdvancementListItem(x);
+
+                    item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+
+                    return item;
+                }).ToList();
             }
             else
             {
@@ -137,7 +147,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         {
                             if (response.Data.All(x => x.Id != advancement.Id))
                             {
-                                response.Data.Add(new AdvancementListItem(advancement));
+                                var item = new AdvancementListItem(advancement);
+
+                                item.Bank = GetBank(advancement.UserApplicant.Email, employeeDicc);
+
+                                response.Data.Add(item);
                             }
                         }
                     }
@@ -145,6 +159,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
             return response;
+        }
+
+        private string GetBank(string email, Dictionary<string, string> employeeDictionary)
+        {
+            if (!employeeDictionary.ContainsKey(email))
+            {
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
+
+                employeeDictionary.Add(email, employee?.Bank);
+            }
+
+            return employeeDictionary[email];
         }
 
         public Response<IList<WorkflowHistoryModel>> GetHistories(int id)
@@ -163,6 +189,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var response = new Response<IList<AdvancementListItem>>();
             response.Data = new List<AdvancementListItem>();
 
+            var employeeDicc = new Dictionary<string, string>();
+
             var currentUser = userData.GetCurrentUser();
 
             var hasAllAccess = HasAllAccess(currentUser);
@@ -171,7 +199,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             if (hasAllAccess)
             {
-                response.Data = advancements.Select(x => new AdvancementListItem(x)).ToList();
+                response.Data = advancements.Select(x =>
+                {
+                    var item = new AdvancementListItem(x);
+
+                    item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+
+                    return item;
+                }).ToList();
             }
             else
             {
@@ -181,7 +216,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     {
                         if (response.Data.All(x => x.Id != advancement.Id))
                         {
-                            response.Data.Add(new AdvancementListItem(advancement));
+                            var item = new AdvancementListItem(advancement);
+
+                            item.Bank = GetBank(advancement.UserApplicant.Email, employeeDicc);
+
+                            response.Data.Add(item);
                         }
                     }
                 }

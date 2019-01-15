@@ -614,7 +614,8 @@
                 "email": "Email",
                 "holidaysPending": "Vacaciones Pendientes (habiles)",
                 "holidaysPendingByLaw": "Vacaciones Pendientes",
-                "seniority": "Seniority"
+                "seniority": "Seniority",
+                "bank": "Banco"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha.",
             "phone": "Teléfono",
@@ -1073,6 +1074,7 @@
         "updateDate": "Fecha de Modificación",
         "creationDate": "Fecha de Creación",
         "others": "Moneda extranjera",
+        "bank": "Banco",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",

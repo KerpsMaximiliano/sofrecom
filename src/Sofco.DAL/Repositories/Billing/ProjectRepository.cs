@@ -19,7 +19,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Project> GetAllActives(string serviceId)
         {
-            return context.Projects.Where(x => x.ServiceId.Equals(serviceId)).ToList();
+            return context.Projects.Where(x => x.ServiceId.Equals(serviceId) && x.Active).ToList();
         }
 
         public void UpdateInactives(IList<int> idsAdded)

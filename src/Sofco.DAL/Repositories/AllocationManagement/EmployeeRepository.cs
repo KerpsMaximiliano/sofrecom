@@ -281,6 +281,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             storedData.PrepaidHealthCode = data.PrepaidHealthCode;
             storedData.OfficeAddress = data.OfficeAddress;
             storedData.Email = data.Email;
+            storedData.Bank = data.Bank;
 
             Update(storedData);
         }

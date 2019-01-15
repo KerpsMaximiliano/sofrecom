@@ -81,7 +81,8 @@ namespace Sofco.Service.Implementations.Jobs
                 nameof(Employee.Cuil),
                 nameof(Employee.PhoneCountryCode),
                 nameof(Employee.PhoneAreaCode),
-                nameof(Employee.PhoneNumber)
+                nameof(Employee.PhoneNumber),
+                nameof(Employee.Bank)
             };
         }
 
@@ -95,6 +96,7 @@ namespace Sofco.Service.Implementations.Jobs
                 employee.DocumentNumberType = employee.DocumentNumberType?.Trim();
                 employee.PhoneNumber = employee.PhoneNumber?.Trim();
                 employee.Email = employee.Email?.Trim();
+                employee.Bank = employee.Bank?.Trim();
             }
         }
 

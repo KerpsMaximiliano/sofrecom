@@ -29,7 +29,7 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
     }
     
     initGrid(){
-        var columns = [0, 1, 2, 3, 4];
+        var columns = [0, 1, 2, 3, 4, 5];
         var title = `Adelantos-finalizados`;
 
         var params = {
