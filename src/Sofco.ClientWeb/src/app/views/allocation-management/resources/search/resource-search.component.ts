@@ -260,7 +260,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             selector: "#resourcesTable",
             columns: columns,
             title: title,
-            columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ],
+            columnDefs: [ { 'aTargets': [4], "sType": "date-uk"},
+                          { 'aTargets': [3], "sType": "non-empty-string" } ],
             withExport: true,
          };
 
