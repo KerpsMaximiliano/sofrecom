@@ -177,14 +177,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 foreach (var advancement in advancements)
                 {
-                    foreach (var transition in advancement.Status.ActualTransitions)
+                    if (ValidateManagerAccess(advancement, currentUser))
                     {
-                        if (ValidateManagerAccess(advancement, transition, currentUser))
+                        if (response.Data.All(x => x.Id != advancement.Id))
                         {
-                            if (response.Data.All(x => x.Id != advancement.Id))
-                            {
-                                response.Data.Add(new AdvancementListItem(advancement));
-                            }
+                            response.Data.Add(new AdvancementListItem(advancement));
                         }
                     }
                 }
@@ -275,6 +272,25 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
             return hasAccess;
+        }
+
+        private bool ValidateManagerAccess(Advancement entity, UserLiteModel currentUser)
+        {
+            if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
+            {
+                return true;
+            }
+            else
+            {
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+
+                if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private bool ValidateManagerAccess(Advancement entity, WorkflowStateTransition transition, UserLiteModel currentUser)
