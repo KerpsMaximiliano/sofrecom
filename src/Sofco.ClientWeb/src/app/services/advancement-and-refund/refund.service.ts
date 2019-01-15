@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Service } from "../common/service";
+import {map} from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
@@ -53,4 +54,13 @@ export class RefundService {
     getAll(model){
         return this.http.post<any>(`${this.baseUrl}/refund/search`, model);
     }
+
+    exportFile(id){
+        return this.http.get(`${this.baseUrl}/refund/export/${id}`, {
+            responseType: 'arraybuffer',
+            observe: 'response'
+        }).pipe(map((res: any) => {
+            return new Blob([res.body], { type: 'application/octet-stream' });
+        }));
+    } 
 }

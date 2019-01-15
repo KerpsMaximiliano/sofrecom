@@ -1119,7 +1119,7 @@
         "companyRefund": "Reembolso empresa",
         "userRefund": "Reembolso usuario",
         "files": "Archivos",
-        "noDetailsInfo": "No se han cargado detalles. Por favor agregue alguno para poder continuar",
+        "noDetailsInfo": "No se han cargado detalles. Por favor agregue un item para poder continuar",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",

@@ -9,6 +9,7 @@ import { RefundService } from "app/services/advancement-and-refund/refund.servic
 import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { AuthService } from "app/services/common/auth.service";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'refund-refund',
@@ -124,14 +125,9 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
             }
         }
         else{
-            //todo: borrar cuando este terminada la busqueda
-            setTimeout(() => {
-                window.location.reload();
-            }, 500);
-          
-            // if(this.canBack()){
-            //     this.back();
-            // }
+            if(this.canBack()){
+                this.back();
+            }
         }
     }
 
@@ -193,6 +189,19 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
                     this.messageService.closeLoading();
                 });
 
+        });
+    }
+
+    export(file){
+        this.messageService.showLoading();
+
+        this.refundService.exportFile(file.id).subscribe(response => {
+            this.messageService.closeLoading();
+
+            FileSaver.saveAs(response, file.text);
+        },
+        () => {
+            this.messageService.closeLoading();
         });
     }
 }

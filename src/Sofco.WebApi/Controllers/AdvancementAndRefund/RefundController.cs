@@ -2,9 +2,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
+using Sofco.Core.Services.Common;
 using Sofco.Core.Services.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Common;
@@ -20,12 +23,20 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         private readonly IRefundService refundService;
         private readonly IWorkflowService workflowService;
         private readonly IAdvancementService advancementService;
+        private readonly IFileService fileService;
+        private readonly FileConfig fileConfig;
 
-        public RefundController(IRefundService refundService, IWorkflowService workflowService, IAdvancementService advancementService)
+        public RefundController(IRefundService refundService, 
+            IWorkflowService workflowService,
+            IOptions<FileConfig> fileOptions,
+            IAdvancementService advancementService,
+            IFileService fileService)
         {
             this.refundService = refundService;
             this.workflowService = workflowService;
             this.advancementService = advancementService;
+            this.fileService = fileService;
+            fileConfig = fileOptions.Value;
         }
 
         [HttpGet("{id}")]
@@ -125,6 +136,17 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             var response = refundService.GetByParameters(model);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpGet("export/{id}")]
+        public IActionResult ExportFile(int id)
+        {
+            var response = fileService.ExportFile(id, fileConfig.RefundPath);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
         }
     }
 }

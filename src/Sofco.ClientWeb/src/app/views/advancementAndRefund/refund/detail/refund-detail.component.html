@@ -72,7 +72,7 @@
                             <div class="panel-body">
                                 <ul class="todo-list small-list">
                                     <li *ngFor="let file of files; let i = index">
-                                        <span class="m-l-xs pointer">{{ file.text }}</span>
+                                        <span class="m-l-xs pointer" (click)="export(file)">{{ file.text }}</span>
                                         <span (click)="removeFile(file, i)" class="pull-right pointer"><i class="fa fa-times icon-danger"></i></span>
                                     </li>
                                 </ul>
