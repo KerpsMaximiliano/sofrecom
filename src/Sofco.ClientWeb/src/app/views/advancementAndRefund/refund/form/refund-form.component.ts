@@ -12,6 +12,7 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 import { MessageService } from "app/services/common/message.service";
 import { Validators } from "@angular/forms";
 import { UtilsService } from "app/services/common/utils.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
     selector: 'refund-form',
@@ -75,6 +76,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     constructor(public formsService: FormsService,
         public advancementService: AdvancementService,
         private utilsService: UtilsService,
+        private menuService: MenuService,
         public messageService: MessageService,
         public analyticService: AnalyticService,
         public i18nService: I18nService){}
@@ -84,6 +86,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             this.form = new Refund(false);
             this.setUserApplicant();
             this.canUpdate = true;
+            this.hasCreditCardChanged(false);
+            this.formConfiguration();
         }
 
         this.detailForms = new Array();
@@ -91,6 +95,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         this.getAdvancementsUnrelated();
         this.getAnalytics();
+        this.getCreditCards();
     }
 
     ngOnDestroy(): void {
@@ -312,8 +317,25 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             && this.form.controls.advancements.value.length > 0;
     }
 
+    formConfiguration(){
+        this.form.controls['advancements'].valueChanges.subscribe(
+            (selectedValue) => {
+                if(selectedValue.length > 0){
+                    this.hasCreditCard = false;
+                    this.hasCreditCardChanged(false);
+                }
+            }
+        );
+    }
+
+    hasCreditCardPermission(){
+        return this.menuService.hasFunctionality('USR', 'HAS-CREDIT-CARD');
+    }
+
     hasCreditCardChanged(value){
         if(value == true){
+            this.form.controls.advancements.setValue(new Array());
+
             this.form.controls.creditCardId.setValidators([Validators.required]);
             this.form.controls.creditCardId.updateValueAndValidity();
         }

@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" [hidden]="!hasCreditCardPermission()">
         <div class="col-md-4">
             <div class="form-group">
                 <icheck [(checked)]="hasCreditCard" (checkedChange)="hasCreditCardChanged($event)">

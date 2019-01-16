@@ -17,5 +17,7 @@
     "analyticRequired": "El contrato es requerido",
     "detailsRequired": "No se han cargado detalles. Por favor agregue alguno para poder continuar",
     "differentCurrencies": "Se deben seleccionar adelantos del mismo tipo de moneda",
-    "cannotLoad": "Su superior no tiene privilegios para autorizar un reintegro. Por favor comuniquese con recursos humanos"
+    "cannotLoad": "Su superior no tiene privilegios para autorizar un reintegro. Por favor comuniquese con recursos humanos",
+    "creditCardRequired": "La tarjeta de crédito es requerida",
+    "creditCardNotFound": "Tarjeta de crédito no encontrada"
 }
