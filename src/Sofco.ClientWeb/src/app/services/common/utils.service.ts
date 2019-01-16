@@ -43,4 +43,8 @@ export class UtilsService {
   getMonthsReturn(): any {
     return this.http.get<any>(`${this.apiUrl}/monthsReturn`);
   }
+
+  getCreditCards() {
+    return this.http.get<any>(`${this.apiUrl}/creditCards`);
+  }
 }

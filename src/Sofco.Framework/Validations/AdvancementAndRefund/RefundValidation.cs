@@ -123,6 +123,22 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             ValidateUser(model, response);
             ValidateCurrency(model, response);
             ValidateAnalytic(model, response);
+            ValidateCreditCard(model, response);
+        }
+
+        private void ValidateCreditCard(RefundModel model, Response response)
+        {
+            if (model.HasCreditCard)
+            {
+                if (!model.CreditCardId.HasValue || model.CreditCardId.Value <= 0)
+                {
+                    response.AddError(Resources.AdvancementAndRefund.Refund.CreditCardRequired);
+                }
+                else if (!unitOfWork.UtilsRepository.ExistCreditCard(model.CreditCardId.Value))
+                {
+                    response.AddError(Resources.AdvancementAndRefund.Refund.CreditCardNotFound);
+                }
+            }
         }
 
         private void ValidateAnalytic(RefundModel model, Response response)

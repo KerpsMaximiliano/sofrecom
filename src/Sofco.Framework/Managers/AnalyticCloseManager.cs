@@ -47,7 +47,7 @@ namespace Sofco.Framework.Managers
 
             if (!string.IsNullOrWhiteSpace(analytic.ServiceId) && status == AnalyticStatus.Close)
             {
-                var result = crmServiceService.DeactivateService(new Guid(string.Empty));
+                var result = crmServiceService.DeactivateService(new Guid(analytic.ServiceId));
 
                 if (result.HasErrors)
                 {

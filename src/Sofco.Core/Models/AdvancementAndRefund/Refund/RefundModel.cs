@@ -15,6 +15,10 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public int? AnalyticId { get; set; }
 
+        public int? CreditCardId { get; set; }
+
+        public bool HasCreditCard { get; set; }
+
         public IList<int> Advancements { get; set; }
 
         public IList<RefundDetailModel> Details { get; set; }
@@ -32,6 +36,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
             domain.InWorkflowProcess = true;
 
+            if (HasCreditCard)
+                domain.CreditCardId = CreditCardId;
+
             foreach (var detail in Details)
             {
                 domain.Details.Add(detail.CreateDomain());
@@ -46,6 +53,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
             domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
+
+            if (HasCreditCard)
+                domain.CreditCardId = CreditCardId;
 
             foreach (var detail in Details)
             {

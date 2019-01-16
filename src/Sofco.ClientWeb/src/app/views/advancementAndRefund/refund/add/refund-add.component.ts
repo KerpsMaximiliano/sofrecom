@@ -47,6 +47,7 @@ export class RefundAddComponent implements OnInit, OnDestroy {
 
     add(){
         const model = this.form.getModel();
+        model.hasCreditCard = this.form.hasCreditCard;
 
         this.messageService.showLoading();
 

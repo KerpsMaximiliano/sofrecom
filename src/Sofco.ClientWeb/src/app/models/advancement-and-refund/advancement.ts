@@ -48,7 +48,7 @@ export class Advancement extends FormGroup {
             this.workflowStateType = domain.workflowStateType;
         }
     }
-
+ 
     handleSalaryForm(){
         if(this.controls.paymentForm.value == '2') {
             this.controls.paymentForm.setValue('1');

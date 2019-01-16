@@ -88,6 +88,24 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.creditCardNotFound.
+        /// </summary>
+        public static string CreditCardNotFound {
+            get {
+                return ResourceManager.GetString("CreditCardNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.creditCardRequired.
+        /// </summary>
+        public static string CreditCardRequired {
+            get {
+                return ResourceManager.GetString("CreditCardRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/refund.detailAmmountRequired.
         /// </summary>
         public static string DetailAmmountRequired {

@@ -16,6 +16,9 @@ export class Refund extends FormGroup {
 
             analyticId: new FormControl({value: domain && domain.analyticId || null, disabled: isReadonly},
                 Validators.required),
+
+            creditCardId: new FormControl({value: domain && domain.creditCardId || null, disabled: isReadonly},
+                Validators.required),
         });
 
         if(domain){

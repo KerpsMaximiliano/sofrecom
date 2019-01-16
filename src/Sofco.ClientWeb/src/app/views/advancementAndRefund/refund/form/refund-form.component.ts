@@ -10,6 +10,8 @@ import { RefundDetail } from "app/models/advancement-and-refund/refund-detail";
 import { UserInfoService } from "app/services/common/user-info.service";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { MessageService } from "app/services/common/message.service";
+import { Validators } from "@angular/forms";
+import { UtilsService } from "app/services/common/utils.service";
 
 @Component({
     selector: 'refund-form',
@@ -22,6 +24,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     public advancements: any[] = new Array();
     public analytics: any[] = new Array();
+    public creditCards: any[] = new Array();
 
     public userApplicantIdLogged: number;
     public userApplicantName: string;
@@ -61,14 +64,17 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public workflowStateType: WorkflowStateType;
 
     public differentCurrenciesWereSelected = false;
+    public hasCreditCard = false;
     public canUpdate = false;
     public isNewDetail = true;
 
     getAdvancementsSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
+    getCreditCardsSubscrip: Subscription;
 
     constructor(public formsService: FormsService,
         public advancementService: AdvancementService,
+        private utilsService: UtilsService,
         public messageService: MessageService,
         public analyticService: AnalyticService,
         public i18nService: I18nService){}
@@ -90,13 +96,20 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if(this.getAdvancementsSubscrip) this.getAdvancementsSubscrip.unsubscribe();
         if(this.getAnalyticsSubscrip) this.getAnalyticsSubscrip.unsubscribe();
+        if(this.getCreditCardsSubscrip) this.getCreditCardsSubscrip.unsubscribe();
     }
 
     getAnalytics() {
         this.getAnalyticsSubscrip = this.analyticService.getByCurrentUser().subscribe(res => {
             this.analytics = res.data;
         });
-      }
+    }
+
+    getCreditCards() {
+        this.getAnalyticsSubscrip = this.utilsService.getCreditCards().subscribe(res => {
+            this.creditCards = res;
+        });
+    }
 
     getAdvancementsUnrelated(){
         this.getAdvancementsSubscrip = this.advancementService.getUnrelated().subscribe(response => {
@@ -297,5 +310,17 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     hasAdvancements(){
         return this.form.controls.advancements.value != null
             && this.form.controls.advancements.value.length > 0;
+    }
+
+    hasCreditCardChanged(value){
+        if(value == true){
+            this.form.controls.creditCardId.setValidators([Validators.required]);
+            this.form.controls.creditCardId.updateValueAndValidity();
+        }
+        else {
+            this.form.controls.creditCardId.clearValidators();
+            this.form.controls.creditCardId.updateValueAndValidity();
+            this.form.controls.creditCardId.setValue(null);
+        }
     }
 }

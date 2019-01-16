@@ -118,6 +118,7 @@ namespace Sofco.DAL
         public DbSet<Area> Areas { get; set; }
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
         public DbSet<MonthsReturn> MonthsReturns { get; set; }
+        public DbSet<CreditCard> CreditCards { get; set; }
 
         //Workflow
 

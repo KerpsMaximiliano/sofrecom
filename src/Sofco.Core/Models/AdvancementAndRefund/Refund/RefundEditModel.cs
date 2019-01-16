@@ -19,6 +19,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             CurrencyId = refund.CurrencyId;
             CurrencyDesc = refund.Currency?.Text;
 
+            CreditCardId = refund.CreditCardId;
+            CreditCardDesc = refund.CreditCard?.Text;
+
             StatusId = refund.StatusId;
             StatusDesc = refund.Status?.Name;
             WorkflowStateType = refund.Status?.Type;
@@ -70,6 +73,10 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public int CurrencyId { get; set; }
 
         public string CurrencyDesc { get; set; }
+
+        public int? CreditCardId { get; set; }
+
+        public string CreditCardDesc { get; set; }
 
         public int AnalyticId { get; set; }
 

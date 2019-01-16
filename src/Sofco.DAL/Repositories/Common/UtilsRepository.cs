@@ -112,5 +112,15 @@ namespace Sofco.DAL.Repositories.Common
         {
             return Context.Currencies.Any(x => x.Id == id);
         }
+
+        public bool ExistCreditCard(int creditCardId)
+        {
+            return Context.CreditCards.Any(x => x.Id == creditCardId);
+        }
+
+        public IList<CreditCard> GetCreditCards()
+        {
+            return Context.CreditCards.ToList().AsReadOnly();
+        }
     }
 }

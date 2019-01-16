@@ -126,6 +126,12 @@
   <data name="AnalyticRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.analyticRequired</value>
   </data>
+  <data name="CreditCardNotFound" xml:space="preserve">
+    <value>advancementAndRefund/refund.creditCardNotFound</value>
+  </data>
+  <data name="CreditCardRequired" xml:space="preserve">
+    <value>advancementAndRefund/refund.creditCardRequired</value>
+  </data>
   <data name="DetailAmmountRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.detailAmmountRequired</value>
   </data>

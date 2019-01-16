@@ -51,6 +51,26 @@
     </div>
 
     <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <icheck [(checked)]="hasCreditCard" (checkedChange)="hasCreditCardChanged($event)">
+                    <label style="padding-left:20px;">Tarjeta de Crédito</label> 
+                </icheck>
+            </div>
+        </div>
+        <div class="col-md-8" [hidden]="!hasCreditCard">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'creditCardId')">
+                <label class="control-label">{{ 'refund.creditCard' | translate }}</label>
+                <ng-select [items]="creditCards" bindValue="id" bindLabel="text" formControlName="creditCardId"></ng-select>
+        
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'creditCardId')">
+                    <p *ngIf="formsService.hasError(form, 'creditCardId', 'required')">{{ i18nService.translate('advancementAndRefund/refund','creditCardRequired') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-xs-6">
             <h2>{{ 'refund.details' | translate }}</h2>
         </div>

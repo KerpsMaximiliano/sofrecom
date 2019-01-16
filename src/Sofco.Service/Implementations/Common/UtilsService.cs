@@ -97,6 +97,11 @@ namespace Sofco.Service.Implementations.Common
             return unitOfWork.UtilsRepository.GetMonthsReturn();
         }
 
+        public IList<Option> GetCreditCards()
+        {
+            return unitOfWork.UtilsRepository.GetCreditCards().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
+        }
+
         public IEnumerable<Option> GetYears()
         {
             for (int i = 2018; i < 2099; i++)
