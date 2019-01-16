@@ -127,7 +127,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 var fileName = $"{fileToAdd.InternalFileName.ToString()}{fileToAdd.FileType}";
 
-                logger.LogError($"path: {fileConfig.RefundPath}", new Exception());
                 using (var fileStream = new FileStream(Path.Combine(fileConfig.RefundPath, fileName), FileMode.Create))
                 {
                     await file.CopyToAsync(fileStream);
