@@ -131,6 +131,11 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
         }
     }
 
+    goToProfile(){
+        const userInfo = UserInfoService.getUserInfo();
+        this.router.navigate(['/profile/' + userInfo.employeeId]);
+    }
+
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.refundService.getUrlForImportExcel(this.entityId),
                                           authToken: 'Bearer ' + Cookie.get('access_token') ,
@@ -190,6 +195,33 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
                 });
 
         });
+    }
+
+    delete(){
+        this.messageService.showLoading();
+
+        this.editSubscrip = this.refundService.delete(this.entityId).subscribe(
+            response => {
+                this.messageService.closeLoading();
+                this.goToProfile();
+            },
+            error => {
+                this.messageService.closeLoading();
+            });
+    }
+
+    canDelete(){
+        const userInfo = UserInfoService.getUserInfo();
+    
+        if(userInfo && userInfo.id && userInfo.name){
+            if(environment.draftWorkflowStateId == this.actualStateId){
+                if(userInfo.id == this.userApplicantId){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     export(file){

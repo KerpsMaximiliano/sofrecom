@@ -26,5 +26,7 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<IList<WorkflowHistoryModel>> GetHistories(int id);
 
         Response Update(RefundModel model);
+
+        Response Delete(int id);
     }
 }

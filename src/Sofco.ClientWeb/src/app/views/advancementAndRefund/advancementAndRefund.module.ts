@@ -10,7 +10,7 @@ import { FormsModule } from "@angular/forms";
 import { ICheckModule } from "../../components/icheck/icheck.module";
 import { DatePickerModule } from "../../components/date-picker/date-picker.module";
 import { Ng2ModalModule } from "../../components/modal/ng2modal.module";
-import { ButtonsModule, BsDatepickerModule } from "ngx-bootstrap";
+import { BsDatepickerModule } from "ngx-bootstrap";
 import { AdvancementAndRefundRouter } from "./advancementAndRefund.router";
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
@@ -31,6 +31,7 @@ import { RefundListFilterComponent } from "./refund/list/common/refund-list-filt
 import { RefundListGridComponent } from "./refund/list/common/refund-list-grid.component";
 import { RefundFormModule } from "./refund/form/refund-form.module";
 import { RefundHistoryComponent } from "./refund/history/refund-history.component";
+import { ButtonsModule } from "app/components/buttons/buttons.module";
 
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,

@@ -245,6 +245,40 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
+        public Response Delete(int id)
+        {
+            var response = new Response();
+
+            var domain = unitOfWork.RefundRepository.Get(id);
+
+            if (domain == null)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.NotFound);
+                return response;
+            }
+
+            if (domain.StatusId != settings.WorkflowStatusDraft)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.CannotDelete);
+                return response;
+            }
+
+            try
+            {
+                unitOfWork.RefundRepository.Delete(domain);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Refund.DeleteSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         public Response<List<WorkflowStateOptionModel>> GetStates()
         {
             var result = workflowStateRepository.GetStateByWorkflowTypeCode(settings.RefundWorkflowTypeCode);

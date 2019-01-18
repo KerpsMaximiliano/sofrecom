@@ -106,6 +106,14 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = refundService.Delete(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpDelete("{id}/file/{fileId}")]
         public IActionResult DeleteFile(int id, int fileId)
         {

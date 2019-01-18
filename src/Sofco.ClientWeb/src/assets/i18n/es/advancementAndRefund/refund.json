@@ -19,5 +19,7 @@
     "differentCurrencies": "Se deben seleccionar adelantos del mismo tipo de moneda",
     "cannotLoad": "Su superior no tiene privilegios para autorizar un reintegro. Por favor comuniquese con recursos humanos",
     "creditCardRequired": "La tarjeta de crédito es requerida",
-    "creditCardNotFound": "Tarjeta de crédito no encontrada"
+    "creditCardNotFound": "Tarjeta de crédito no encontrada",
+    "cannotDelete": "Solo se puede borrar en estado borrador o rechazado",
+    "deleteSuccess": "El reintegro fue eliminado correctamente"
 }

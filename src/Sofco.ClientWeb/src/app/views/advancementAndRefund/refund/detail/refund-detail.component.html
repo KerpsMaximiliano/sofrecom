@@ -20,7 +20,10 @@
             <div class="col-lg-12">
                 <button type="button" class="btn btn-sm btn-outline dim btn-success" (click)="back()" *ngIf="canBack()">
                     <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }}
-                </button>
+                </button> 
+
+                <btn-confirm *ngIf="canDelete()" [class]="'btn-danger btn-outline dim btn-sm'" [text]="'ACTIONS.DELETE'" [icon]="'fa-times'" (onConfirm)="delete(item)">
+                </btn-confirm>  
     
                 <div class="btn-right">
                     <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow></workflow>
@@ -73,7 +76,7 @@
                                 <ul class="todo-list small-list">
                                     <li *ngFor="let file of files; let i = index">
                                         <span class="m-l-xs pointer" (click)="export(file)">{{ file.text }}</span>
-                                        <span (click)="removeFile(file, i)" class="pull-right pointer"><i class="fa fa-times icon-danger"></i></span>
+                                        <span *ngIf="canUpdate()" (click)="removeFile(file, i)" class="pull-right pointer"><i class="fa fa-times icon-danger"></i></span>
                                     </li>
                                 </ul>
                             </div>

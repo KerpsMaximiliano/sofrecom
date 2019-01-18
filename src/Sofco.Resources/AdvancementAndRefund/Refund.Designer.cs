@@ -88,6 +88,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.cannotDelete.
+        /// </summary>
+        public static string CannotDelete {
+            get {
+                return ResourceManager.GetString("CannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/refund.creditCardNotFound.
         /// </summary>
         public static string CreditCardNotFound {
@@ -102,6 +111,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         public static string CreditCardRequired {
             get {
                 return ResourceManager.GetString("CreditCardRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.deleteSuccess.
+        /// </summary>
+        public static string DeleteSuccess {
+            get {
+                return ResourceManager.GetString("DeleteSuccess", resourceCulture);
             }
         }
         
