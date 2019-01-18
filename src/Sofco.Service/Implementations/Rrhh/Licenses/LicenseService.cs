@@ -190,6 +190,7 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
                 if (model.Status == LicenseStatus.Cancelled || model.Status == LicenseStatus.Rejected)
                 {
                     unitOfWork.WorkTimeRepository.RemoveBetweenDays(license.EmployeeId, license.StartDate, license.EndDate);
+                    unitOfWork.Save();
                 }
             }
             catch (Exception e)
