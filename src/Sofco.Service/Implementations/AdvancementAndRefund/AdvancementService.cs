@@ -140,19 +140,16 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 foreach (var advancement in advancements)
                 {
-                    foreach (var transition in advancement.Status.ActualTransitions)
+                    //if (ValidateManagerAccess(advancement, transition, currentUser) || HasReadAccess(readAccess, currentUser))
+                    if (ValidateManagerAccess(advancement, currentUser))
                     {
-                        //if (ValidateManagerAccess(advancement, transition, currentUser) || HasReadAccess(readAccess, currentUser))
-                        if (ValidateManagerAccess(advancement, transition, currentUser))
+                        if (response.Data.All(x => x.Id != advancement.Id))
                         {
-                            if (response.Data.All(x => x.Id != advancement.Id))
-                            {
-                                var item = new AdvancementListItem(advancement);
+                            var item = new AdvancementListItem(advancement);
 
-                                item.Bank = GetBank(advancement.UserApplicant.Email, employeeDicc);
+                            item.Bank = GetBank(advancement.UserApplicant.Email, employeeDicc);
 
-                                response.Data.Add(item);
-                            }
+                            response.Data.Add(item);
                         }
                     }
                 }
@@ -350,16 +347,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 {
                     return true;
                 }
-            }
-
-            return false;
-        }
-
-        private bool ValidateManagerAccess(Advancement entity, WorkflowStateTransition transition, UserLiteModel currentUser)
-        {
-            if (transition != null && transition.WorkflowStateAccesses != null && transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == settings.ManagerUserSource))
-            {
-                return ValidateManagerAccess(entity, currentUser);
             }
 
             return false;
