@@ -261,8 +261,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.PurchaseOrderAnalytics
                 .Where(x => x.PurchaseOrderId == purchaseOrderId)
                 .Include(x => x.Analytic)
-                    .ThenInclude(x => x.Manager)
                 .Select(x => x.Analytic)
+                .Include(x => x.Manager)
                 .ToList();
 
         }

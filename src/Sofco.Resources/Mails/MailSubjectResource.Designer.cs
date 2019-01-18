@@ -196,7 +196,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Proceso Aprobación Orden de Compra - {0} - {1}.
+        ///   Busca una cadena traducida similar a Proceso Aprobación Orden de Compra - {0} - {1} - {2}.
         /// </summary>
         public static string OcProcessTitle {
             get {

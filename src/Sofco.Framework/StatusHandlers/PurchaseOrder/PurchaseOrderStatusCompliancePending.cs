@@ -64,9 +64,16 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailSuccess(Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
-            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, 
+                purchaseOrder.Number, 
+                StatusDescription,
+                purchaseOrder.ClientExternalName);
 
-            var body = string.Format(Resources.Mails.MailMessageResource.OcComplianceMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}", GetAnalyticsBody(purchaseOrder));
+            var body = string.Format(Resources.Mails.MailMessageResource.OcComplianceMessage, 
+                purchaseOrder.Number, 
+                $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}",
+                GetAnalyticsBody(purchaseOrder),
+                purchaseOrder.ClientExternalName);
 
             var recipients = recipientManager.GetRecipientsCommercial(purchaseOrder);
 
@@ -84,7 +91,10 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
         {
             var ocText = $"{purchaseOrder.Number} - {purchaseOrder.ClientExternalName}";
 
-            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, ocText, RejectStatusDescription);
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, 
+                purchaseOrder.Number, 
+                RejectStatusDescription,
+                purchaseOrder.ClientExternalName);
 
             var body = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage, 
                 ocText, 
@@ -113,7 +123,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             foreach (var analytic in analytics)
             {
-                analyticsForBody = string.Concat(analyticsForBody, $"{analytic.Title} - {analytic.Name} <br/>");
+                analyticsForBody = string.Concat(analyticsForBody, $"{analytic.Manager.Name}: {analytic.Title} - {analytic.Name} <br/>");
             }
 
             return analyticsForBody;
