@@ -37,7 +37,7 @@ export class WorkTimeStatusApproveComponent implements OnDestroy  {
   }
 
   confirm(){
-    this.subscrip = this.worktimeService.approve(this.workTime.id).subscribe(
+    this.subscrip = this.worktimeService.approve(this.workTime.id, this.workTime.hoursSplitteds).subscribe(
         () => {
             this.approveModal.hide();
             if (this.onSuccess.observers.length > 0) {

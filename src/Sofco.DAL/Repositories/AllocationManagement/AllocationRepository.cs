@@ -88,6 +88,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {
             return context.Allocations
+                .Include(x => x.Analytic)
                 .Where(x => x.EmployeeId == employeeId
                             && x.Percentage > 0
                             && (x.StartDate.Date == startDate.Date

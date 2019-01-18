@@ -78,8 +78,9 @@
                                     <button *ngIf="item.comments" (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
                                 </td>
                                 <td class="column-xs text-center"> 
+                                    <a *ngIf="item.hoursSplitteds && item.hoursSplitteds.length > 0"><i class="fa fa-eye fa-2x pointer" (click)="showBankHoursModal(item)"></i></a>
                                     <a *ngIf="approveAllDisabled()" title="{{ 'ACTIONS.approve' | translate }}"><i class="fa fa-thumbs-o-up fa-2x pointer" (click)="showApproveModal(item, i)"></i> </a>
-                                    <a *ngIf="approveAllDisabled()" title="{{ 'ACTIONS.reject' | translate }}"><i class="fa fa-thumbs-o-down fa-2x pointer" (click)="showRejectModal(item, i)"></i> </a>
+                                    <a *ngIf="approveAllDisabled() && (!item.hoursSplitteds || item.hoursSplitteds.length == 0)" title="{{ 'ACTIONS.reject' | translate }}"><i class="fa fa-thumbs-o-down fa-2x pointer" (click)="showRejectModal(item, i)"></i> </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -159,6 +160,23 @@
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="bankHoursModalConfig" #bankHoursModal>
+    <table class="table table-striped" width="100%">
+        <thead>
+            <tr>
+                <th> {{'workTimeManagement.analytic' | translate }} </th>
+                <th class="text-center"> {{'workTimeManagement.hours' | translate }} </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of bankHours">
+                <td>{{ item.analytic }}</td>
+                <td class="text-center">{{ item.hours }}</td>
+            </tr>
+        </tbody>
+    </table>   
+</ng2-modal>
 
 <ng2-modal [config]="commentsModalConfig" #commentsModal>
     <pre class="pre-clear">{{ comments }}</pre>

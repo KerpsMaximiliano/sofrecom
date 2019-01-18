@@ -934,6 +934,7 @@
         "monthYear": "Mes-Año",
         "month": "Periodo",
         "reference": "Referencia",
+        "bankHoursTitle": "Detalle de horas",
         "workTime": {
             "title": "Cargar Horas",
             "calendar": "Calendario",

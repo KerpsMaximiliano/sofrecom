@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Models.WorkTimeManagement;
 
@@ -20,6 +23,45 @@ namespace Sofco.Service.Implementations.Rrhh
         {
             this.unitOfWork = unitOfWork;
             this.appSetting = appSetting.Value;
+        }
+
+        public IList<BankHoursSplitted> DivideBankWorkTime(WorkTime workTime)
+        {
+            var list = new List<BankHoursSplitted>();
+
+            var allocationStartDate = new DateTime(workTime.Date.Year, workTime.Date.Month, 1);
+
+            var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDays(workTime.EmployeeId, allocationStartDate, allocationStartDate).ToList();
+
+            if (allocations.Any())
+            {
+                if (allocations.Count == 1)
+                {
+                    if (allocations[0].AnalyticId != workTime.AnalyticId)
+                    {
+                        list.Add(CloneWorkTime(workTime, allocations[0]));
+                    }
+                }
+                else
+                {
+                    if (allocations.Any(x => x.Percentage != 0))
+                    {
+                        foreach (var allocation in allocations)
+                        {
+                            if (allocation.Percentage > 0)
+                            {
+                                var worktimeCloned = CloneWorkTime(workTime, allocation);
+
+                                worktimeCloned.Hours = (workTime.Employee.BusinessHours * allocation.Percentage) / 100;
+
+                                list.Add(worktimeCloned);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return list;
         }
 
         public void GenerateWorkTimes(License license)
@@ -57,7 +99,7 @@ namespace Sofco.Service.Implementations.Rrhh
                     worktime.AnalyticId = analyticBank.Id;
                     worktime.Hours = license.Employee.BusinessHours;
 
-                    unitOfWork.WorkTimeRepository.Insert(worktime);
+                    unitOfWork.WorkTimeRepository.Insert(worktime); 
                 }
                 else
                 {
@@ -114,6 +156,26 @@ namespace Sofco.Service.Implementations.Rrhh
                 Date = startDate.Date,
                 TaskId = license.Type.TaskId,
                 Source = WorkTimeSource.License.ToString()
+            };
+
+            return worktime;
+        }
+
+        public BankHoursSplitted CloneWorkTime(WorkTime workTime, Allocation allocation)
+        {
+            var worktime = new BankHoursSplitted
+            {
+                EmployeeId = workTime.EmployeeId,
+                UserId = workTime.UserId,
+                UserComment = workTime.UserComment,
+                CreationDate = DateTime.UtcNow.Date,
+                Status = WorkTimeStatus.License,
+                Date = workTime.Date,
+                TaskId = workTime.TaskId,
+                Source = workTime.Source,
+                Hours = workTime.Hours,
+                AnalyticId = allocation.AnalyticId,
+                Analytic = $"{allocation.Analytic.Title} - {allocation.Analytic.Name}"
             };
 
             return worktime;

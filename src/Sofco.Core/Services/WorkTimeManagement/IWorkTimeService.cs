@@ -17,13 +17,13 @@ namespace Sofco.Core.Services.WorkTimeManagement
 
         Response<IList<HoursApprovedModel>> GetHoursPending(WorktimeHoursPendingParams model);
 
-        Response Approve(int id);
+        Response Approve(int id, IList<BankHoursSplitted> bankHours);
 
         IEnumerable<Option> GetAnalytics();
 
         Response Reject(int id, string comments);
 
-        Response ApproveAll(List<int> hourIds);
+        Response ApproveAll(List<HoursToApproveModel> hourIds);
 
         Response Send();
 

@@ -95,6 +95,14 @@ namespace Sofco.Framework.ValidationHelpers.WorkTimeManagement
             }
         }
 
+        public static void ValidateExist(WorkTime worktime, Response response)
+        {
+            if (worktime == null)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.WorkTimeNotFound);
+            }
+        }
+
         public static void ValidateStatus(Response<WorkTime> response, WorkTimeAddModel model)
         {
             if (model.Status == 0) return;

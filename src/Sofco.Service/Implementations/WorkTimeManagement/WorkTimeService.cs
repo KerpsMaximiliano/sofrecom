@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -14,6 +16,7 @@ using Sofco.Domain.Utils;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
+using Sofco.Core.Services.Rrhh;
 using Sofco.Core.Validations;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
@@ -42,14 +45,20 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeSendManager workTimeSendHoursManager;
 
+        private readonly AppSetting appSetting;
+
+        private readonly ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService;
+
         public WorkTimeService(ILogMailer<WorkTimeService> logger,
             IUnitOfWork unitOfWork,
             IUserData userData,
             IEmployeeData employeeData,
             IWorkTimeValidation workTimeValidation,
+            IOptions<AppSetting> appSetting,
             IWorkTimeImportFileManager workTimeImportFileManager,
             IWorkTimeExportFileManager workTimeExportFileManager,
             IWorkTimeResumeManager workTimeResumeManger,
+            ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService,
             IWorkTimeRejectManager workTimeRejectManager, IWorkTimeSendManager workTimeSendHoursManager)
         {
             this.unitOfWork = unitOfWork;
@@ -62,6 +71,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.workTimeExportFileManager = workTimeExportFileManager;
             this.workTimeRejectManager = workTimeRejectManager;
             this.workTimeSendHoursManager = workTimeSendHoursManager;
+            this.appSetting = appSetting.Value;
+            this.licenseGenerateWorkTimeService = licenseGenerateWorkTimeService;
         }
 
         public Response<WorkTimeModel> Get(DateTime date)
@@ -181,7 +192,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var userIsManager = unitOfWork.UserRepository.HasManagerGroup(currentUser.UserName);
 
             var list = unitOfWork.WorkTimeRepository
-                .SearchPending(model, userIsManager || userIsDirector, currentUser.Id)
+                .SearchPending(model, userIsManager || userIsDirector, currentUser.Id, appSetting.AnalyticBank)
                 .ToList();
 
             list.AddRange(AddDelegatedData(model.AnalyticId, model.EmployeeId, WorkTimeStatus.Sent, list));
@@ -191,28 +202,79 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
             }
 
-            response.Data = list.Select(x => new HoursApprovedModel(x)).ToList();
+            response.Data = new List<HoursApprovedModel>();
+
+            foreach (var workTime in list)
+            {
+                var itemToAdd = new HoursApprovedModel(workTime);
+
+                if (workTime.Analytic.Title == appSetting.AnalyticBank)
+                {
+                    itemToAdd.HoursSplitteds = licenseGenerateWorkTimeService.DivideBankWorkTime(workTime);
+
+                    if (itemToAdd.HoursSplitteds.Any())
+                    {
+                        response.Data.Add(itemToAdd);
+                    }
+                }
+                else
+                {
+                    response.Data.Add(itemToAdd);
+                }
+            }
 
             return response;
         }
 
-        public Response Approve(int id)
+        public Response Approve(int id, IList<BankHoursSplitted> bankHours)
         {
             var response = new Response();
 
             var worktime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == id);
 
-            WorkTimeValidationHandler.ValidateApproveOrReject(worktime, response);
-
-            if (response.HasErrors()) return response;
-
             try
             {
-                worktime.Status = WorkTimeStatus.Approved;
-                worktime.ApprovalUserId = userData.GetCurrentUser().Id;
+                if (bankHours.Count > 0)
+                {
+                    WorkTimeValidationHandler.ValidateExist(worktime, response);
 
-                unitOfWork.WorkTimeRepository.UpdateStatus(worktime);
-                unitOfWork.Save();
+                    if (response.HasErrors()) return response;
+
+                    foreach (var bankHour in bankHours)
+                    {
+                        var workTimeToAdd = new WorkTime();
+                        workTimeToAdd.Date = worktime.Date;
+                        workTimeToAdd.AnalyticId = bankHour.AnalyticId;
+                        workTimeToAdd.EmployeeId = worktime.EmployeeId;
+                        workTimeToAdd.Hours = bankHour.Hours;
+                        workTimeToAdd.Source = worktime.Source;
+                        workTimeToAdd.TaskId = worktime.TaskId;
+                        workTimeToAdd.UserComment = worktime.UserComment;
+                        workTimeToAdd.UserId = worktime.UserId;
+                        workTimeToAdd.ApprovalComment = worktime.ApprovalComment;
+                        workTimeToAdd.ApprovalUserId = worktime.ApprovalUserId;
+                        workTimeToAdd.Reference = worktime.Reference;
+                        workTimeToAdd.CreationDate = worktime.CreationDate;
+                        workTimeToAdd.Status = worktime.Status;
+
+                        unitOfWork.WorkTimeRepository.Insert(workTimeToAdd);
+                    }
+
+                    unitOfWork.WorkTimeRepository.Delete(unitOfWork.WorkTimeRepository.GetByDate(worktime.Date));
+                    unitOfWork.Save();
+                }
+                else
+                {
+                    WorkTimeValidationHandler.ValidateApproveOrReject(worktime, response);
+
+                    if (response.HasErrors()) return response;
+
+                    worktime.Status = WorkTimeStatus.Approved;
+                    worktime.ApprovalUserId = userData.GetCurrentUser().Id;
+
+                    unitOfWork.WorkTimeRepository.UpdateStatus(worktime);
+                    unitOfWork.Save();
+                }
 
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApprovedSuccess);
             }
@@ -249,15 +311,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return workTimeRejectManager.Reject(id, comments);
         }
 
-        public Response ApproveAll(List<int> hourIds)
+        public Response ApproveAll(List<HoursToApproveModel> hours)
         {
             var response = new Response();
             var anyError = false;
             var anySuccess = false;
 
-            foreach (var hourId in hourIds)
+            foreach (var hour in hours)
             {
-                var hourResponse = Approve(hourId);
+                var hourResponse = Approve(hour.Id, hour.HoursSplitteds);
 
                 if (hourResponse.HasErrors())
                     anyError = true;
