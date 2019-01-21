@@ -105,4 +105,6 @@
     </Content>
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1azsof01wd-dev_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>
