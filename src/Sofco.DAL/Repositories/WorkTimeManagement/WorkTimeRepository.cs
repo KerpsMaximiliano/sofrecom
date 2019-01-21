@@ -166,7 +166,11 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
 
         public void RemoveBetweenDays(int licenseEmployeeId, DateTime licenseStartDate, DateTime licenseEndDate)
         {
-            context.Database.ExecuteSqlCommand($"DELETE FROM app.worktimes where employeeid = {licenseEmployeeId} AND date >= '{licenseStartDate:yyyy-MM-dd}' and date <= '{licenseEndDate:yyyy-MM-dd}'");
+            var worktimes = context.WorkTimes.Where(x =>
+                x.EmployeeId == licenseEmployeeId && x.Date.Date >= licenseStartDate.Date &&
+                x.Date.Date <= licenseEndDate.Date).ToList();
+
+            Delete(worktimes);
         }
 
         public decimal GetTotalHoursBetweenDays(int employeeId, DateTime startdate, DateTime endDate, int analyticId)
