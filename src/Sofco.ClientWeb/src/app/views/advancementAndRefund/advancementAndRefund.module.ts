@@ -32,11 +32,12 @@ import { RefundListGridComponent } from "./refund/list/common/refund-list-grid.c
 import { RefundFormModule } from "./refund/form/refund-form.module";
 import { RefundHistoryComponent } from "./refund/history/refund-history.component";
 import { ButtonsModule } from "app/components/buttons/buttons.module";
+import { AmountFormatPipe } from "app/pipes/amount-format.pipe";
 
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,
                     AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundHistoryComponent,
-                    RefundListComponent, RefundListFilterComponent, RefundListGridComponent ],
+                    RefundListComponent, RefundListFilterComponent, RefundListGridComponent, AmountFormatPipe ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, RefundFormModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,

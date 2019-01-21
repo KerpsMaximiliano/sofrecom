@@ -42,6 +42,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Authorizer)
+                .Include(x => x.MonthsReturn)
                 .Include(x => x.Status)
                     .ThenInclude(x => x.ActualTransitions)
                         .ThenInclude(x => x.WorkflowStateAccesses)
@@ -71,6 +72,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             var query = context.Advancements
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
+                .Include(x => x.MonthsReturn)
                 .Include(x => x.Authorizer)
                 .Where(x => !x.InWorkflowProcess && x.StatusId != statusDraft);
 

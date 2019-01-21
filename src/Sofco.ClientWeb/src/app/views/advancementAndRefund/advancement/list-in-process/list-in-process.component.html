@@ -3,11 +3,14 @@
         <tr>
             <th>{{ 'advancement.userApplicant' | translate }}</th>
             <th>{{ 'advancement.type' | translate }}</th>
+            <th>{{ 'advancement.histories.createdDate' | translate }}</th>
             <th>{{ 'advancement.currency' | translate }}</th>
             <th>{{ 'advancement.ammount' | translate }}</th>
-            <th>{{ 'advancement.histories.createdDate' | translate }}</th>
+            <th>{{ 'advancement.monthsReturn' | translate }}</th>
+            <th>{{ 'advancement.description' | translate }}</th>
+            <th>{{ 'advancement.paymentForm' | translate }}</th>
             <th>{{ 'advancement.bank' | translate }}</th>
-            <th>{{ 'advancement.status' | translate }}</th>
+            <th>{{ 'advancement.status' | translate }}</th> 
         </tr>
     </thead>
     <tbody>
@@ -17,9 +20,15 @@
                 <span *ngIf="item.type == 1">{{ 'advancement.salary' | translate }}</span>
                 <span *ngIf="item.type == 2">{{ 'advancement.viaticum' | translate }}</span>
             </td>
-            <td>{{ item.currencyDesc }}</td>
-            <td>{{ item.ammount }}</td>
             <td>{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ item.currencyDesc }}</td>
+            <td>{{ item.ammount | amountFormat }}</td>
+            <td>{{ item.monthsReturn }}</td>
+            <td class="column-md text-ellipsis" title="{{ item.description }}">{{ item.description }}</td>
+            <td>
+                <span *ngIf="item.paymentForm == 1">{{ 'advancement.ownBank' | translate }}</span>
+                <span *ngIf="item.paymentForm == 2">{{ 'advancement.foreignCurrency' | translate }}</span>
+            </td>
             <td>{{ item.bank }}</td>
             <td><label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusDesc }}</label></td>
         </tr>

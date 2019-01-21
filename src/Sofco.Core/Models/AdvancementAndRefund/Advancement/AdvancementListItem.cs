@@ -17,7 +17,16 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
             CreationDate = advancement.CreationDate;
             Ammount = advancement.Ammount;
             WorkflowStatusType = advancement.Status?.Type;
+            MonthsReturn = advancement.MonthsReturn?.Text;
+            PaymentForm = advancement.PaymentForm;
+            Description = advancement.Description;
         }
+
+        public string Description { get; set; }
+
+        public AdvancementPaymentForm PaymentForm { get; set; }
+
+        public string MonthsReturn { get; set; }
 
         public int Id { get; set; }
 
