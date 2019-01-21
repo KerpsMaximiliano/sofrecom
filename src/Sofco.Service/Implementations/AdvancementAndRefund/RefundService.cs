@@ -13,6 +13,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
@@ -293,6 +294,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         {
             ValidParameter(model);
 
+            var currentUser = userData.GetCurrentUser();
+
             if (!HasAllAccess())
             {
                 model.UserApplicantIds = GetUserApplicantIdsByCurrentManager();
@@ -300,10 +303,34 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var result = refundRepository.GetByParameters(model);
 
-            return new Response<List<RefundListResultModel>>
+            if (HasAllAccess())
             {
-                Data = Translate(result)
-            };
+                return new Response<List<RefundListResultModel>>
+                {
+                    Data = Translate(result)
+                };
+            }
+            else
+            {
+                var response = new Response<List<RefundListResultModel>> { Data = new List<RefundListResultModel>() };
+
+                foreach (var refund in result)
+                {
+                    if (ValidateManagerAccess(refund, currentUser))
+                    {
+                        if (response.Data.All(x => x.Id != refund.Id))
+                        {
+                            var mapped = mapper.Map<Refund, RefundListResultModel>(refund);
+
+                            response.Data.Add(mapped);
+                        }
+                    }
+                }
+
+                response.Data = ResolveManager(response.Data);
+
+                return response;
+            }
         }
 
         private List<int> GetUserApplicantIdsByCurrentManager()
@@ -375,6 +402,25 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var hasAllAccess = hasDirectorGroup || hasRrhhGroup || hasGafGroup || hasDafGroup;
 
             return hasAllAccess;
+        }
+
+        private bool ValidateManagerAccess(Refund entity, UserLiteModel currentUser)
+        {
+            if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
+            {
+                return true;
+            }
+            else
+            {
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+
+                if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
