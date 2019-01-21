@@ -33,7 +33,7 @@ export class AddCloseDateComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         var today = new Date();
 
-        this.dateRangePicker.start = moment([today.getFullYear(), today.getMonth()-1]);
+        this.dateRangePicker.start = moment([today.getFullYear(), today.getMonth()]);
         this.dateRangePicker.end = moment();
 
         this.startDate = this.dateRangePicker.start.toDate();
