@@ -5,6 +5,7 @@ using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.Workflow;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.AdvancementAndRefund;
@@ -21,13 +22,13 @@ namespace Sofco.Framework.Workflow.Notifications
         public WorkflowAdvancementNotificationDefault(IMailSender mailSender, 
             EmailConfig emailConfig, 
             AppSetting appSetting,
-            IUnitOfWork unitOfWork, 
-            IWorkflowRepository workflowRepository) : base(mailSender, appSetting, unitOfWork, workflowRepository)
+            IUnitOfWork unitOfWork) : base(mailSender, appSetting, unitOfWork)
         {
             this.emailConfig = emailConfig;
         }
 
-        public override void Send(WorkflowEntity entity, WorkflowStateTransition transition)
+        public override void Send(WorkflowEntity entity, WorkflowStateTransition transition,
+            WorkflowChangeStatusParameters parameters)
         {
             if(!transition.WorkflowStateNotifiers.Any()) return;
          

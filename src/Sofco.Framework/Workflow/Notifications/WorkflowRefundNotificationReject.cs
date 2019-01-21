@@ -6,16 +6,17 @@ using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.Workflow;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.Workflow.Notifications
 {
-    public class WorkflowRefundNotificationDefault : WorkflowNotification
+    public class WorkflowRefundNotificationReject : WorkflowNotification
     {
         private readonly EmailConfig emailConfig;
 
-        public WorkflowRefundNotificationDefault(IMailSender mailSender,
+        public WorkflowRefundNotificationReject(IMailSender mailSender,
             EmailConfig emailConfig,
             AppSetting appSetting,
             IUnitOfWork unitOfWork) : base(mailSender, appSetting, unitOfWork)
@@ -28,12 +29,20 @@ namespace Sofco.Framework.Workflow.Notifications
         {
             if (!transition.WorkflowStateNotifiers.Any()) return;
 
+            var comment = string.Empty;
+
+            if (parameters.Parameters != null && parameters.Parameters.ContainsKey("comments"))
+            {
+                comment = parameters.Parameters["comments"];
+            }
+
             var subject = string.Format(MailSubjectResource.WorkflowNotificationRefund, entity.UserApplicant.Name);
 
-            var body = string.Format(MailMessageResource.WorkflowNotificationRefund,
+            var body = string.Format(MailMessageResource.WorkflowNotificationReject,
                 $"{emailConfig.SiteUrl}advancementAndRefund/refund/{entity.Id}",
                 transition.ActualWorkflowState.Name,
-                transition.NextWorkflowState.Name);
+                transition.NextWorkflowState.Name,
+                comment);
 
             this.SendMail(subject, body, transition, entity);
         }

@@ -119,19 +119,20 @@ namespace Sofco.Service.Implementations.Workflow
             CreateHistory<TEntity, THistory>(entity, transition, currentUser, parameters);
 
             // Send Notification
-            SendNotification(entity, response, transition);
+            SendNotification(entity, response, transition, parameters);
 
             return response;
         }
 
-        private void SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition)
+        private void SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition,
+            WorkflowChangeStatusParameters parameters)
         {
             if (!string.IsNullOrWhiteSpace(transition.NotificationCode))
             {
                 try
                 {
                     var notificationHandler = workflowNotificationFactory.GetInstance(transition.NotificationCode);
-                    notificationHandler?.Send(entity, transition);
+                    notificationHandler?.Send(entity, transition, parameters);
                 }
                 catch (Exception e)
                 {
