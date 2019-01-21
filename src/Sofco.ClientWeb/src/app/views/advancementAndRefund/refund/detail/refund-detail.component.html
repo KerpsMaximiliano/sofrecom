@@ -1,90 +1,90 @@
 <div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'refund.addTitle' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'refund.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'refund.detail' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
         <div class="col-lg-12">
-            <h2> {{'refund.addTitle' | translate }} </h2>
-            <ol class="breadcrumb">
-                <li>
-                    <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
-                </li>
-                <li>
-                    {{'refund.title' | translate }}
-                </li>
-                <li class="active">
-                    <strong> {{'refund.detail' | translate }} </strong>
-                </li>
-            </ol>
+            <button type="button" class="btn btn-sm btn-outline dim btn-success" (click)="back()" *ngIf="canBack()">
+                <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }}
+            </button> 
+
+            <btn-confirm *ngIf="canDelete()" [class]="'btn-danger btn-outline dim btn-sm'" [text]="'ACTIONS.DELETE'" [icon]="'fa-times'" (onConfirm)="delete(item)">
+            </btn-confirm>  
+
+            <div class="btn-right">
+                <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow></workflow>
+            </div>
         </div>
     </div>
-    
-    <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row">
-            <div class="col-lg-12">
-                <button type="button" class="btn btn-sm btn-outline dim btn-success" (click)="back()" *ngIf="canBack()">
-                    <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }}
-                </button> 
 
-                <btn-confirm *ngIf="canDelete()" [class]="'btn-danger btn-outline dim btn-sm'" [text]="'ACTIONS.DELETE'" [icon]="'fa-times'" (onConfirm)="delete(item)">
-                </btn-confirm>  
-    
-                <div class="btn-right">
-                    <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow></workflow>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <refund-form #form [mode]="'detail'"></refund-form>
+                </div>
+                <div class="ibox-footer text-center" *ngIf="canUpdate()">
+                    <button [disabled]="!form.canSave()" (click)="update()" class="btn btn-primary" type="button">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>
                 </div>
             </div>
         </div>
+
+        <div class="col-md-4">
+
+            <div class="row" *ngIf="canUpdate()">
+                <div class="col-xs-12">
+                    <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+
+                    <div class="uploader-margin-top">
+                        <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+                        <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                        </div>
     
-        <div class="row">
-            <div class="col-md-8">
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <refund-form #form [mode]="'detail'"></refund-form>
-                    </div>
-                    <div class="ibox-footer text-center" *ngIf="canUpdate()">
-                        <button [disabled]="!form.canSave()" (click)="update()" class="btn btn-primary" type="button">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>
+                        <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                            <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+                        </button>
+    
+                        <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                            <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
-
-                <div class="row" *ngIf="canUpdate()">
-                    <div class="col-xs-12">
-                        <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
-
-                        <div class="uploader-margin-top">
-                            <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
-                            <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
-                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                            </div>
-        
-                            <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                                <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
-                            </button>
-        
-                            <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
-                                <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
-                            </button>
+            <div class="row" *ngIf="files.length > 0" [ngClass]="canUpdate() ? 'm-t-lg' : ''">
+                <div class="col-xs-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-info-circle"></i> {{'refund.files' | translate }}
                         </div>
-                    </div>
-                </div>
-
-                <div class="row" *ngIf="files.length > 0" [ngClass]="canUpdate() ? 'm-t-lg' : ''">
-                    <div class="col-xs-12">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <i class="fa fa-info-circle"></i> {{'refund.files' | translate }}
-                            </div>
-                            <div class="panel-body">
-                                <ul class="todo-list small-list">
-                                    <li *ngFor="let file of files; let i = index">
-                                        <span class="m-l-xs pointer" (click)="export(file)">{{ file.text }}</span>
-                                        <span *ngIf="canUpdate()" (click)="removeFile(file, i)" class="pull-right pointer"><i class="fa fa-times icon-danger"></i></span>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div class="panel-body">
+                            <ul class="todo-list small-list">
+                                <li *ngFor="let file of files; let i = index">
+                                    <span class="m-l-xs pointer" (click)="export(file)">{{ file.text }}</span>
+                                    <span *ngIf="canUpdate()" (click)="removeFile(file, i)" class="pull-right pointer"><i class="fa fa-times icon-danger"></i></span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <refund-history #history></refund-history>
     </div>
+    
+    <refund-history #history></refund-history>
+</div>

@@ -11,6 +11,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             CreationDate = detail.CreationDate;
             Ammount = detail.Ammount;
             Description = detail.Description;
+            AnalyticId = detail.AnalyticId;
         }
 
         public int Id { get; set; }
@@ -20,5 +21,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public decimal Ammount { get; set; }
 
         public string Description { get; set; }
+
+        public int AnalyticId { get; set; }
     }
 }

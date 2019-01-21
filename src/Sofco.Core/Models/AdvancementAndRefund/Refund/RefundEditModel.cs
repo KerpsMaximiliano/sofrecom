@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
@@ -25,8 +23,6 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             StatusId = refund.StatusId;
             StatusDesc = refund.Status?.Name;
             WorkflowStateType = refund.Status?.Type;
-
-            AnalyticId = refund.AnalyticId;
 
             Details = new List<RefundEditDetailModel>(); 
             AdvancementIds = new List<int>();
@@ -77,8 +73,6 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public int? CreditCardId { get; set; }
 
         public string CreditCardDesc { get; set; }
-
-        public int AnalyticId { get; set; }
 
         public IList<int> AdvancementIds { get; set; }
 

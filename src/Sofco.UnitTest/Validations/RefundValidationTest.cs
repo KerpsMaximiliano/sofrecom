@@ -65,13 +65,11 @@ namespace Sofco.UnitTest.Validations
             sut.ValidateAdd(model, response);
 
             Assert.True(response.HasErrors());
-            Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.AnalyticRequired)));
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.CurrencyRequired)));
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Advancement.UserApplicantRequired)));
             Assert.True(response.Messages.Any(x => x.Text.Equals(Resources.AdvancementAndRefund.Refund.DetailsRequired)));
 
             model.Details = GetInvalidItems();
-            model.AnalyticId = 2;
             model.CurrencyId = 2;
             model.UserApplicantId = 2;
             model.Advancements = new List<int> { 2 };
@@ -118,7 +116,6 @@ namespace Sofco.UnitTest.Validations
             {
                 UserApplicantId = 1,
                 CurrencyId = 1,
-                AnalyticId = 1,
                 Advancements = new List<int> { 1 },
                 Details = new List<RefundDetailModel>
                 {
@@ -126,6 +123,7 @@ namespace Sofco.UnitTest.Validations
                     {
                         CreationDate = DateTime.Now,
                         Ammount = 1000,
+                        AnalyticId = 1,
                         Description = "description"
                     }
                 }
@@ -138,7 +136,6 @@ namespace Sofco.UnitTest.Validations
             {
                 UserApplicantId = null,
                 CurrencyId = null,
-                AnalyticId = null,
                 Advancements = new List<int>(),
                 Details = new List<RefundDetailModel>()
             };
@@ -152,6 +149,7 @@ namespace Sofco.UnitTest.Validations
                 {
                     CreationDate = null,
                     Ammount = -1,
+                    AnalyticId = 2,
                     Description = string.Empty
                 }
             };
