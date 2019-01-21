@@ -13,6 +13,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public int? CurrencyId { get; set; }
 
+        public int? AnalyticId { get; set; }
+
         public int? CreditCardId { get; set; }
 
         public bool HasCreditCard { get; set; }
@@ -29,6 +31,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
+            domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.CreationDate = DateTime.UtcNow.Date;
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
             domain.InWorkflowProcess = true;
@@ -48,6 +51,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         {
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
+            domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
 
             if (HasCreditCard)
@@ -68,7 +72,6 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
                         domainDetail.Description = detail.Description;
                         domainDetail.Ammount = detail.Ammount;
                         domainDetail.CreationDate = detail.CreationDate.GetValueOrDefault();
-                        domainDetail.AnalyticId = detail.AnalyticId.GetValueOrDefault();
                     }
                 }
             }
@@ -97,15 +100,12 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public decimal Ammount { get; set; }
 
-        public int? AnalyticId { get; set; }
-
         public RefundDetail CreateDomain()
         {
             var domain = new RefundDetail();
 
             domain.Description = Description;
             domain.Ammount = Ammount;
-            domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.CreationDate = CreationDate.GetValueOrDefault().Date;
 
             return domain;

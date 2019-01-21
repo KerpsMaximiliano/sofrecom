@@ -105,13 +105,13 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics() {
-        this.getAnalyticsSubscrip = this.analyticService.getByCurrentUser().subscribe(res => {
-            this.analytics = res.data;
+        this.getAnalyticsSubscrip = this.analyticService.getOptions().subscribe(res => {
+            this.analytics = res;
         });
     }
 
     getCreditCards() {
-        this.getAnalyticsSubscrip = this.utilsService.getCreditCards().subscribe(res => {
+        this.getCreditCardsSubscrip = this.utilsService.getCreditCards().subscribe(res => {
             this.creditCards = res;
         });
     }

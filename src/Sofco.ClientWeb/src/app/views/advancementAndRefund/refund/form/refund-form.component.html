@@ -151,6 +151,16 @@
             </div>
         </div>
 
+        <div class="form-group" [ngClass]="formsService.getClassProperty(detailModalForm, 'description')">
+            <label class="control-label">{{ 'advancement.description' | translate }}</label>
+            <textarea rows="5" class="form-control" formControlName="description"></textarea>
+
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(detailModalForm, 'description')">
+                <p *ngIf="formsService.hasError(detailModalForm, 'description', 'required')">{{ i18nService.translate('advancementAndRefund/refund','detailDescriptionRequired') }}</p>
+                <p *ngIf="formsService.hasError(detailModalForm, 'description', 'maxLength')">{{ i18nService.translate('advancementAndRefund/refund','descriptionItemMaxLength') }}</p>
+            </div>
+        </div>
+
         <div class="form-group" [ngClass]="formsService.getClassProperty(detailModalForm, 'ammount')">
             <label class="control-label">{{ 'advancement.ammount' | translate }}</label>
             <input type="number" decimalFormat class="form-control" formControlName="ammount">
@@ -159,16 +169,6 @@
                 <p *ngIf="formsService.hasError(detailModalForm, 'ammount', 'required')">{{ i18nService.translate('advancementAndRefund/refund','detailAmmountRequired') }}</p>
                 <p *ngIf="formsService.hasError(detailModalForm, 'ammount', 'max')">{{ i18nService.translate('advancementAndRefund/refund','ammountItemMax') }}</p>
                 <p *ngIf="formsService.hasError(detailModalForm, 'ammount', 'min')">{{ i18nService.translate('advancementAndRefund/refund','ammountItemMin') }}</p>
-            </div>
-        </div>
-
-        <div class="form-group" [ngClass]="formsService.getClassProperty(detailModalForm, 'description')">
-            <label class="control-label">{{ 'advancement.description' | translate }}</label>
-            <textarea rows="5" class="form-control" formControlName="description"></textarea>
-
-            <div class="form-control-feedback" *ngIf="formsService.hasErrors(detailModalForm, 'description')">
-                <p *ngIf="formsService.hasError(detailModalForm, 'description', 'required')">{{ i18nService.translate('advancementAndRefund/refund','detailDescriptionRequired') }}</p>
-                <p *ngIf="formsService.hasError(detailModalForm, 'description', 'maxLength')">{{ i18nService.translate('advancementAndRefund/refund','descriptionItemMaxLength') }}</p>
             </div>
         </div>
     </form>

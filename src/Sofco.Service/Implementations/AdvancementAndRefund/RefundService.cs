@@ -148,7 +148,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         }
 
         public Response<RefundEditModel> Get(int id)
-        {
+        { 
             var response = new Response<RefundEditModel>();
 
             var refund = unitOfWork.RefundRepository.GetFullById(id);

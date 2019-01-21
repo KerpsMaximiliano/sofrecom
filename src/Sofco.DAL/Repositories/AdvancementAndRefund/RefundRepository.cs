@@ -50,6 +50,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
             return context.Refunds
                 .Include(x => x.Currency)
+                .Include(x => x.Analytic)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Status)
                 .Include(x => x.CreditCard)

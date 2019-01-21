@@ -329,6 +329,8 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AnalyticId");
+
                     b.Property<int?>("AuthorizerId");
 
                     b.Property<DateTime>("CreationDate");
@@ -346,6 +348,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("UserApplicantId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnalyticId");
 
                     b.HasIndex("AuthorizerId");
 
@@ -368,8 +372,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal>("Ammount");
 
-                    b.Property<int>("AnalyticId");
-
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<string>("Description")
@@ -378,8 +380,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("RefundId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AnalyticId");
 
                     b.HasIndex("RefundId");
 
@@ -2449,6 +2449,11 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.Refund", b =>
                 {
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
+                        .WithMany("Refunds")
+                        .HasForeignKey("AnalyticId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Sofco.Domain.Models.Admin.User", "Authorizer")
                         .WithMany("Refunds2")
                         .HasForeignKey("AuthorizerId")
@@ -2476,11 +2481,6 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.RefundDetail", b =>
                 {
-                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
-                        .WithMany("RefundDetails")
-                        .HasForeignKey("AnalyticId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Sofco.Domain.Models.AdvancementAndRefund.Refund", "Refund")
                         .WithMany("Details")
                         .HasForeignKey("RefundId")

@@ -81,7 +81,6 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             {
                 foreach (var detail in model.Details)
                 {
-                    ValidateAnalytic(detail, response);
                     ValidateDate(detail, response);
                     ValidateAmmount(detail, response);
                     ValidateDescription(detail, response);
@@ -123,6 +122,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
         {
             ValidateUser(model, response);
             ValidateCurrency(model, response);
+            ValidateAnalytic(model, response);
             ValidateCreditCard(model, response);
         }
 
@@ -141,7 +141,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             }
         }
 
-        private void ValidateAnalytic(RefundDetailModel model, Response response)
+        private void ValidateAnalytic(RefundModel model, Response response)
         {
             if (!model.AnalyticId.HasValue || model.AnalyticId.Value <= 0)
             {
