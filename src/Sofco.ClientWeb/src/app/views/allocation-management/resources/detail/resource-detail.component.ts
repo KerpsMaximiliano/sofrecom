@@ -312,8 +312,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     setManagerReference(item)
     {
-        item.employeePrevious.managerId = item.employee.manager.name;
-        item.employee.managerId = item.employeePrevious.manager.name;
+        item.employee.managerId = item.employee.manager.name;
+        item.employeePrevious.managerId = item.employeePrevious.manager.name;
     }
 
     getStatusClass(type){
