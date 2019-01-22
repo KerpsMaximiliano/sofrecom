@@ -1,4 +1,9 @@
-<table class="table table-striped dataTable" role="grid" id="advancements-finalized">
+<div class="alert alert-gaps-info" *ngIf="!visible">
+    <i class="fa fa-info-circle"></i>
+    {{ 'refund.needParameters' | translate }}
+</div>
+
+<table class="table table-striped dataTable" role="grid" id="advancements-finalized" *ngIf="visible">
     <thead>
         <tr>
             <th>{{ 'advancement.userApplicant' | translate }}</th>

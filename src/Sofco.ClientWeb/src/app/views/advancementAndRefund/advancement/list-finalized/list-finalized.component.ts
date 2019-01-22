@@ -14,6 +14,7 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
     getSubscrip: Subscription;
 
     public model: any[] = new Array();
+    public visible: boolean = false;
 
     constructor(private advancementService: AdvancementService,
                 private datatableService: DataTableService,
@@ -21,7 +22,6 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
                 private messageService: MessageService){}
 
     ngOnInit(): void {
-        this.initGrid();
     }
 
     ngOnDestroy(): void {
@@ -49,6 +49,7 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
     }
 
     search(parameters){
+        this.visible = true;
         this.messageService.showLoading();
 
         this.getSubscrip = this.advancementService.getAllFinalized(parameters).subscribe(response => {

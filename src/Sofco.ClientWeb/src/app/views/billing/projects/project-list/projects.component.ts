@@ -138,6 +138,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.updateSubscrip = this.service.update().subscribe(data => {
         this.messageService.closeLoading();
         this.getAll();
+      },
+      error => {
+        this.messageService.closeLoading();
       });
     }
 }

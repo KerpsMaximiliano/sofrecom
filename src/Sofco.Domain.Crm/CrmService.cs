@@ -3,7 +3,7 @@
 namespace Sofco.Domain.Crm
 {
     public class CrmService
-    { 
+    {
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -35,5 +35,7 @@ namespace Sofco.Domain.Crm
         public int TechnologyTypeId { get; set; }
 
         public string Analytic { get; set; }
+
+        public int StateCode { get; set; }
     }
 }

@@ -22,6 +22,9 @@
                 <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }}
             </button>
 
+            <btn-confirm *ngIf="canDelete()" [class]="'btn-danger btn-outline dim btn-sm'" [text]="'ACTIONS.DELETE'" [icon]="'fa-times'" (onConfirm)="delete(item)">
+            </btn-confirm>  
+
             <div class="btn-right">
                 <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow></workflow>
             </div>

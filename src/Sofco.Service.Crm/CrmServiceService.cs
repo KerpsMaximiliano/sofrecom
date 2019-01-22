@@ -26,8 +26,8 @@ namespace Sofco.Service.Crm
 
         private readonly CrmSetting crmSetting;
 
-        public CrmServiceService(ICrmApiHttpClient httpClient, 
-            ICrmTranslator<CrmService, CrmServiceTranslatorMap> translator, 
+        public CrmServiceService(ICrmApiHttpClient httpClient,
+            ICrmTranslator<CrmService, CrmServiceTranslatorMap> translator,
             ILogMailer<CrmServiceService> logger, IOptions<CrmSetting> crmOptions)
         {
             this.httpClient = httpClient;
@@ -60,7 +60,7 @@ namespace Sofco.Service.Crm
             }
             catch (Exception ex)
             {
-                var msg = "CrmServiceId = " + serviceId +" - Activate = "+ activate;
+                var msg = "CrmServiceId = " + serviceId + " - Activate = " + activate;
 
                 logger.LogError(msg, ex);
 
@@ -111,12 +111,7 @@ namespace Sofco.Service.Crm
 
         private string GetQuery()
         {
-            return "?$select=" + translator.KeySelects() + "&" + GetFilters();
-        }
-
-        private string GetFilters()
-        {
-            return "$filter=statuscode eq 1";
+            return "?$select=" + translator.KeySelects();
         }
 
         private string GetCrmUserUrl(Guid crmUserId)

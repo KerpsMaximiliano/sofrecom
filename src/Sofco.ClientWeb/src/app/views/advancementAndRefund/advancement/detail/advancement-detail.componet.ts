@@ -114,4 +114,36 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
             }
         }
     }
+
+    goToProfile(){
+        const userInfo = UserInfoService.getUserInfo();
+        this.router.navigate(['/profile/' + userInfo.employeeId]);
+    }
+
+    delete(){
+        this.messageService.showLoading();
+
+        this.editSubscrip = this.advancementService.delete(this.entityId).subscribe(
+            response => {
+                this.messageService.closeLoading();
+                this.goToProfile();
+            },
+            error => {
+                this.messageService.closeLoading();
+            });
+    }
+
+    canDelete(){
+        const userInfo = UserInfoService.getUserInfo();
+    
+        if(userInfo && userInfo.id && userInfo.name){
+            if(environment.draftWorkflowStateId == this.actualStateId){
+                if(userInfo.id == this.userApplicantId){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }

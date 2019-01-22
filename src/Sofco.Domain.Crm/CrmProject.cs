@@ -4,6 +4,7 @@ namespace Sofco.Domain.Crm
 {
     public class CrmProject
     {
+    
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -40,6 +41,8 @@ namespace Sofco.Domain.Crm
 
         public string TechnologyType { get; set; }
         public int TechnologyTypeId { get; set; }
+
+        public int StateCode { get; set; }
 
         public string Currency { get; set; }
 

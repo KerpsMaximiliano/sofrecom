@@ -106,6 +106,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.cannotDelete.
+        /// </summary>
+        public static string CannotDelete {
+            get {
+                return ResourceManager.GetString("CannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/advancement.cannotLoad.
         /// </summary>
         public static string CannotLoad {
@@ -138,6 +147,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         public static string DateItemRequired {
             get {
                 return ResourceManager.GetString("DateItemRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.deleteSuccess.
+        /// </summary>
+        public static string DeleteSuccess {
+            get {
+                return ResourceManager.GetString("DeleteSuccess", resourceCulture);
             }
         }
         

@@ -14,5 +14,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<IList<AdvancementListItem>> GetAllFinalized(AdvancementSearchFinalizedModel model);
         Response<bool> CanLoad();
         Response<IList<AdvancementUnrelatedItem>> GetUnrelated();
+        Response Delete(int id);
     }
 }

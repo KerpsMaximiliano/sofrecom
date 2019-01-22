@@ -158,6 +158,40 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
+        public Response Delete(int id)
+        {
+            var response = new Response();
+
+            var domain = unitOfWork.AdvancementRepository.Get(id);
+
+            if (domain == null)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.NotFound);
+                return response;
+            }
+
+            if (domain.StatusId != settings.WorkflowStatusDraft)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.CannotDelete);
+                return response;
+            }
+
+            try
+            {
+                unitOfWork.AdvancementRepository.Delete(domain);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Advancement.DeleteSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private string GetBank(string email, Dictionary<string, string> employeeDictionary)
         {
             if (!employeeDictionary.ContainsKey(email))

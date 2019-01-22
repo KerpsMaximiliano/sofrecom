@@ -47,6 +47,14 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = advancementService.Delete(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("unrelated")]
         public IActionResult GetUnrelated(int id)
         {

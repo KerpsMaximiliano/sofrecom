@@ -41,4 +41,8 @@ export class AdvancementService {
     canLoad(){
         return this.http.get<any>(`${this.baseUrl}/advancement/canLoad`);
     }
+
+    delete(id){
+        return this.http.delete<any>(`${this.baseUrl}/advancement/${id}`);
+    }
 }
