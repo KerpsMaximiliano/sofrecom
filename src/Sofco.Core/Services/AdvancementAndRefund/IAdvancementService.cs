@@ -15,5 +15,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<bool> CanLoad();
         Response<IList<AdvancementUnrelatedItem>> GetUnrelated();
         Response Delete(int id);
+        Response<IList<AdvancementListItem>> GetAllPaymentPending(AdvancementSearchFinalizedModel model);
     }
 }

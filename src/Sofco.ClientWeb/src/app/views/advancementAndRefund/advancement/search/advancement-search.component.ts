@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { I18nService } from "app/services/common/i18n.service";
 import { UserService } from "app/services/admin/user.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 declare var $: any;
 
@@ -22,12 +23,15 @@ export class AdvancementSearchComponent implements OnInit {
 
     @ViewChild('inProcess') inProcess;
     @ViewChild('finalized') finalized;
+    @ViewChild('paymentPending') paymentPending;
 
-    public tabInProcess: boolean = true;
+    public currentTab: number = 1;
 
     getResourcesSubscrip: Subscription;
 
-    constructor(private userService: UserService, private i18nService: I18nService){}
+    constructor(private userService: UserService, 
+        private menuService: MenuService,
+        private i18nService: I18nService){}
 
     ngOnInit(): void {
         this.getResources();
@@ -60,12 +64,21 @@ export class AdvancementSearchComponent implements OnInit {
             dateTo: this.dateTo
         }
 
-        if(this.tabInProcess){
+        if(this.currentTab == 1){
             this.inProcess.search(model);
         }
-        else{
+
+        if(this.currentTab == 2){
+            this.paymentPending.search(model);
+        }
+
+        if(this.currentTab == 3){
             this.finalized.search(model);
         }
+    }
+
+    isDaf(){
+        return this.menuService.userIsDaf;
     }
 
     collapse(){

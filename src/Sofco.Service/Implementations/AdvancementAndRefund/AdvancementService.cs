@@ -121,7 +121,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var hasAllAccess = HasAllAccess(currentUser);
 
-            var advancements = unitOfWork.AdvancementRepository.GetAllInProcess();
+            var advancements = unitOfWork.AdvancementRepository.GetAllInProcess(settings.WorkFlowStatePaymentPending);
 
             if (hasAllAccess)
             {
@@ -188,6 +188,41 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
+
+            return response;
+        }
+
+        public Response<IList<AdvancementListItem>> GetAllPaymentPending(AdvancementSearchFinalizedModel model)
+        {
+            var response = new Response<IList<AdvancementListItem>>();
+            response.Data = new List<AdvancementListItem>();
+
+            var employeeDicc = new Dictionary<string, string>();
+
+            var currentUser = userData.GetCurrentUser();
+
+            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
+
+            if (!hasDafGroup) return response;
+
+            var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending, model);
+
+            response.Data = advancements.Select(x =>
+            {
+                var item = new AdvancementListItem(x);
+
+                item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+
+                var transition = x.Status.ActualTransitions.FirstOrDefault();
+
+                if (transition != null)
+                {
+                    item.WorkflowId = transition.WorkflowId;
+                    item.NextWorkflowStateId = transition.NextWorkflowStateId;
+                }
+
+                return item;
+            }).ToList();
 
             return response;
         }

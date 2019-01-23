@@ -10,7 +10,8 @@ declare var moment: any;
 
 @Component({
     selector: 'list-in-process',
-    templateUrl: './list-in-process.component.html'
+    templateUrl: './list-in-process.component.html',
+    styleUrls: ['./list-in-process.component.scss']
 })
 export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
   
@@ -55,6 +56,16 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
   
         this.datatableService.destroy(params.selector);
         this.datatableService.initialize(params);
+
+        setTimeout(() => {
+            $("#advancements_wrapper").css("float","left");
+            $("#advancements_wrapper").css("padding-bottom","50px");
+            $("#advancements_filter label").addClass('search-filter');
+            $(".html5buttons").addClass('export-buttons');
+            $("#advancements_paginate").addClass('table-pagination');
+            $("#advancements_length").css("margin-right","10px");
+            $("#advancements_info").css("padding-top","4px");
+        }, 500);
     }
 
     goToDetail(item){

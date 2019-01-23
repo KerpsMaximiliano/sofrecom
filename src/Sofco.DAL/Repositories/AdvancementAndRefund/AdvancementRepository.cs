@@ -36,7 +36,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .SingleOrDefault(x => x.Id == id);
         }
 
-        public IList<Advancement> GetAllInProcess()
+        public IList<Advancement> GetAllInProcess(int workFlowStatePaymentPending)
         {
             return context.Advancements
                 .Include(x => x.Currency)
@@ -47,7 +47,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                     .ThenInclude(x => x.ActualTransitions)
                         .ThenInclude(x => x.WorkflowStateAccesses)
                             .ThenInclude(x => x.UserSource)
-                .Where(x => x.InWorkflowProcess).ToList();
+                .Where(x => x.InWorkflowProcess && x.StatusId != workFlowStatePaymentPending).ToList();
         }
 
         public IList<WorkflowReadAccess> GetWorkflowReadAccess(int advacementWorkflowId)
@@ -115,6 +115,31 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .ToList();
 
             return advancements;
+        }
+
+        public IList<Advancement> GetAllPaymentPending(int workFlowStatePaymentPending, AdvancementSearchFinalizedModel model)
+        {
+            var query = context.Advancements
+                .Include(x => x.Currency)
+                .Include(x => x.UserApplicant)
+                .Include(x => x.MonthsReturn)
+                .Include(x => x.Authorizer)
+                .Include(x => x.Status).ThenInclude(x => x.ActualTransitions)
+                .Where(x => x.StatusId == workFlowStatePaymentPending);
+
+            if (model.ResourceId.HasValue && model.ResourceId.Value > 0)
+                query = query.Where(x => x.UserApplicantId == model.ResourceId.Value);
+
+            if (model.TypeId.HasValue && model.TypeId.Value > 0)
+                query = query.Where(x => x.Type == (AdvancementType)model.TypeId.Value);
+
+            if (model.DateSince.HasValue)
+                query = query.Where(x => x.CreationDate.Date >= model.DateSince.Value.Date);
+
+            if (model.DateTo.HasValue)
+                query = query.Where(x => x.CreationDate.Date <= model.DateTo.Value.Date);
+
+            return query.ToList();
         }
     }
 }

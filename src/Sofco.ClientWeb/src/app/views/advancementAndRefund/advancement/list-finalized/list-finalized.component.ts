@@ -7,7 +7,8 @@ import { Router } from "@angular/router";
 
 @Component({
     selector: 'list-finalized',
-    templateUrl: './list-finalized.component.html'
+    templateUrl: './list-finalized.component.html',
+    styleUrls: ['./list-finalized.component.scss']
 })
 export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
 
@@ -42,6 +43,16 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
   
         this.datatableService.destroy(params.selector);
         this.datatableService.initialize(params);
+
+        setTimeout(() => {
+            $("#advancements-finalized_wrapper").css("float","left");
+            $("#advancements-finalized_wrapper").css("padding-bottom","50px");
+            $("#advancements-finalized_filter label").addClass('search-filter');
+            $(".html5buttons").addClass('export-buttons');
+            $("#advancements-finalized_paginate").addClass('table-pagination');
+            $("#advancements-finalized_length").css("margin-right","10px");
+            $("#advancements-finalized_info").css("padding-top","4px");
+        }, 500);
     }
 
     goToDetail(item){

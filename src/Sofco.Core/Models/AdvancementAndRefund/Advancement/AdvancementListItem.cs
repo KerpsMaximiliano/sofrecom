@@ -47,5 +47,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
         public DateTime CreationDate { get; set; }
 
         public WorkflowStateType? WorkflowStatusType { get; set; }
+
+        public int WorkflowId { get; set; }
+
+        public int NextWorkflowStateId { get; set; }
     }
 }

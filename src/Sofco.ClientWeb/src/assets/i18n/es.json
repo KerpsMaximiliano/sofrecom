@@ -1068,6 +1068,7 @@
         "monthsReturn": "Mes de Devolución",
         "finalized": "Finalizados",
         "inProcess": "En proceso de aprobación",
+        "paymentPending": "Pendientes de deposito",
         "dateSince": "Fecha desde",
         "dateTo": "Fecha hasta",
         "searchParameters": "Parametros de busqueda",
@@ -1082,7 +1083,7 @@
             "comment": "Comentarios",
             "statusFrom": "Estado inicial",
             "statusTo": "Estado final"
-        }   
+        }    
     },
     "refund": {
         "addTitle": "Solicitud Reintegro",

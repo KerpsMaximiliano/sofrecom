@@ -3,39 +3,41 @@
     {{ 'refund.needParameters' | translate }}
 </div>
 
-<table class="table table-striped dataTable" role="grid" id="advancements-finalized" *ngIf="visible">
-    <thead>
-        <tr>
-            <th>{{ 'advancement.userApplicant' | translate }}</th>
-            <th>{{ 'advancement.type' | translate }}</th>
-            <th>{{ 'advancement.histories.createdDate' | translate }}</th>
-            <th>{{ 'advancement.currency' | translate }}</th>
-            <th>{{ 'advancement.ammount' | translate }}</th>
-            <th>{{ 'advancement.monthsReturn' | translate }}</th>
-            <th>{{ 'advancement.description' | translate }}</th>
-            <th>{{ 'advancement.paymentForm' | translate }}</th>
-            <th>{{ 'advancement.bank' | translate }}</th>
-        </tr>
-    </thead>
-    <tbody> 
-        <tr *ngFor="let item of model" class="pointer" (click)="goToDetail(item)">
-            <td class="column-lg text-ellipsis">{{ item.userApplicantDesc }}</td>
-            <td>
-                <span *ngIf="item.type == 1">{{ 'advancement.salary' | translate }}</span>
-                <span *ngIf="item.type == 2">{{ 'advancement.viaticum' | translate }}</span>
-            </td>
-            <td>{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
-            <td>{{ item.currencyDesc }}</td>
-            <td>{{ item.ammount | amountFormat }}</td>
-            <td>{{ item.monthsReturn }}</td>
-            <td class="column-md text-ellipsis" title="{{ item.description }}">{{ item.description }}</td>
-            <td>
-                <span *ngIf="item.paymentForm == 1">{{ 'advancement.ownBank' | translate }}</span>
-                <span *ngIf="item.paymentForm == 2">{{ 'advancement.foreignCurrency' | translate }}</span>
-            </td>
-            <td>{{ item.bank }}</td>
-        </tr>
-    </tbody>
-</table>   
+<div class="table-responsive">
+    <table class="table table-striped dataTable" role="grid" id="advancements-finalized" *ngIf="visible">
+        <thead>
+            <tr>
+                <th class="column-md">{{ 'advancement.userApplicant' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.type' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.histories.createdDate' | translate }}</th>
+                <th class="column-xs">{{ 'advancement.currency' | translate }}</th>
+                <th class="column-xs">{{ 'advancement.ammount' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.monthsReturn' | translate }}</th>
+                <th class="column-md">{{ 'advancement.description' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.paymentForm' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.bank' | translate }}</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <tr *ngFor="let item of model" class="pointer" (click)="goToDetail(item)">
+                <td class="column-md text-ellipsis">{{ item.userApplicantDesc }}</td>
+                <td class="column-sm">
+                    <span *ngIf="item.type == 1">{{ 'advancement.salary' | translate }}</span>
+                    <span *ngIf="item.type == 2">{{ 'advancement.viaticum' | translate }}</span>
+                </td>
+                <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                <td class="column-xs">{{ item.currencyDesc }}</td>
+                <td class="column-xs">{{ item.ammount | amountFormat }}</td>
+                <td class="column-sm">{{ item.monthsReturn }}</td>
+                <td class="column-md text-ellipsis" title="{{ item.description }}">{{ item.description }}</td>
+                <td class="column-sm">
+                    <span *ngIf="item.paymentForm == 1">{{ 'advancement.ownBank' | translate }}</span>
+                    <span *ngIf="item.paymentForm == 2">{{ 'advancement.foreignCurrency' | translate }}</span>
+                </td>
+                <td class="column-sm">{{ item.bank }}</td>
+            </tr>
+        </tbody>
+    </table>   
+</div>
 
     

@@ -48,6 +48,8 @@
 
         public int CurrencyEuros { get; set; }
 
+        public int WorkFlowStatePaymentPending { get; set; }
+
         public string RefundWorkflowTypeCode { get; set; }
     }
 }

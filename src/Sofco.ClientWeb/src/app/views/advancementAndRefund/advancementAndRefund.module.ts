@@ -32,16 +32,17 @@ import { RefundListGridComponent } from "./refund/list/common/refund-list-grid.c
 import { RefundFormModule } from "./refund/form/refund-form.module";
 import { RefundHistoryComponent } from "./refund/history/refund-history.component";
 import { ButtonsModule } from "app/components/buttons/buttons.module";
-import { AmountFormatPipe } from "app/pipes/amount-format.pipe";
+import { AdvancementListPaymentPendingComponent } from "./advancement/list-payment-pending/list-payment-pending.component";
+import { AmountFormatModule } from "app/pipes/amount-format.module";
 
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,
                     AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundHistoryComponent,
-                    RefundListComponent, RefundListFilterComponent, RefundListGridComponent, AmountFormatPipe ],
+                    RefundListComponent, RefundListFilterComponent, RefundListGridComponent, AdvancementListPaymentPendingComponent ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, RefundFormModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
-                   AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule ],
+                   AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule, AmountFormatModule ],
 
     providers   : [ AdvancementService, UserService, I18nService, RefundService ],
 
