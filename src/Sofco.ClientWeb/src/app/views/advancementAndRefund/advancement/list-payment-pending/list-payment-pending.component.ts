@@ -43,7 +43,7 @@ export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy
           columns: columns,
           title: title,
           withExport: true,
-          columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ]
+          columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
         }
   
         this.datatableService.destroy(params.selector);

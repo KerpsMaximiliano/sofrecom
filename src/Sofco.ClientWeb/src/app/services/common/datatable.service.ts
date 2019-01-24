@@ -91,6 +91,8 @@ export class DataTableService {
             sInfoPostFix: "",
             sSearch: "Buscar:",
             sUrl: "",
+            decimal: ",",
+            thousands: ".",
             sInfoThousands: ",",
             sLoadingRecords: "Cargando...",
             oPaginate: {
