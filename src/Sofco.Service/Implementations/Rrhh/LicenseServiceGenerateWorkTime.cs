@@ -39,7 +39,11 @@ namespace Sofco.Service.Implementations.Rrhh
                 {
                     if (allocations[0].AnalyticId != workTime.AnalyticId)
                     {
-                        list.Add(CloneWorkTime(workTime, allocations[0]));
+                        var worktimeCloned = CloneWorkTime(workTime, allocations[0]);
+
+                        worktimeCloned.Hours = (workTime.Employee.BusinessHours * allocations[0].Percentage) / 100;
+
+                        list.Add(worktimeCloned);
                     }
                 }
                 else
@@ -114,6 +118,8 @@ namespace Sofco.Service.Implementations.Rrhh
                     }
                     else
                     {
+                        decimal hours = 0;
+
                         foreach (var allocation in allocationsInMonth)
                         {
                             if (allocation.Percentage > 0)
@@ -122,18 +128,23 @@ namespace Sofco.Service.Implementations.Rrhh
 
                                 worktime.AnalyticId = allocation.AnalyticId;
 
-                                if (allocationsInMonth.Count == 1)
-                                {
-                                    worktime.Hours = license.Employee.BusinessHours;
-                                }
-                                else
-                                {
-                                    worktime.Hours = (license.Employee.BusinessHours * allocation.Percentage) / 100;
-                                }
-                                
+                                worktime.Hours = (license.Employee.BusinessHours * allocation.Percentage) / 100;
+                                hours += worktime.Hours;
 
                                 unitOfWork.WorkTimeRepository.Insert(worktime);
                             }
+                        }
+
+                        if (hours < license.Employee.BusinessHours)
+                        {
+                            var diff = license.Employee.BusinessHours - hours;
+
+                            var worktime = BuildWorkTime(license, startDate, user);
+
+                            worktime.AnalyticId = analyticBank.Id;
+                            worktime.Hours = diff;
+
+                            unitOfWork.WorkTimeRepository.Insert(worktime);
                         }
                     }
                 }
@@ -173,7 +184,6 @@ namespace Sofco.Service.Implementations.Rrhh
                 Date = workTime.Date,
                 TaskId = workTime.TaskId,
                 Source = workTime.Source,
-                Hours = workTime.Hours,
                 AnalyticId = allocation.AnalyticId,
                 Analytic = $"{allocation.Analytic.Title} - {allocation.Analytic.Name}"
             };
