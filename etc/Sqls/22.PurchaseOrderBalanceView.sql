@@ -2,9 +2,11 @@ CREATE OR ALTER VIEW report.PurchaseOrderBalanceView AS
 SELECT
 	CAST(row_number() OVER (ORDER BY po.Number) AS INT) AS Id,
 	po.Number,
+	po.Title,
 	po.ClientExternalId,
 	po.ClientExternalName,
 	po.FileId,
+	po.Proposal,
 	fil.FileName,
 	po.Id as PurchaseOrderId,
 	poad.CurrencyId,
@@ -13,7 +15,11 @@ SELECT
 	poad.Adjustment,
 	po.Status,
 	po.ReceptionDate,
-	poad.Ammount - SUM(hit.Total) as Balance,
+	po.AdjustmentDate,
+	IIF(poad.AdjustmentBalance IS NULL, 
+		poad.Ammount - SUM(IIF(sf.TotalAmount IS NULL, 0, sf.TotalAmount))
+		, poad.AdjustmentBalance)
+	 as Balance,
 	STRING_AGG(an.Id, ';') as AnalyticIds,
 	STRING_AGG(an.ManagerId, ';') as ManagerIds,
 	STRING_AGG(an.CommercialManagerId, ';') as CommercialManagerIds,
@@ -27,10 +33,12 @@ LEFT JOIN app.Solfacs sf ON
 		sf.PurchaseOrderId = poad.PurchaseOrderId 
 		AND sf.CurrencyId = poad.CurrencyId
 		AND sf.ServiceId = an.ServiceId
-LEFT JOIN app.Hitos hit ON hit.SolfacId = sf.Id
 LEFT JOIN app.Currencies cur ON cur.Id = poad.CurrencyId
 LEFT JOIN app.[Users] accu ON accu.Id = an.ManagerId
 LEFT JOIN app.[Users] proju ON proju.Id = an.CommercialManagerId
 LEFT JOIN app.Files fil ON fil.Id = po.FileId
 GROUP BY 
-	po.Number, po.ClientExternalId, po.Id, po.ClientExternalName, po.FileId, fil.FileName, poad.CurrencyId, cur.Text, Ammount, po.ReceptionDate, po.Status, poad.Adjustment
+	po.Number, po.ClientExternalId, po.Id, po.ClientExternalName, po.FileId, 
+	fil.FileName, poad.CurrencyId, cur.Text, Ammount, po.ReceptionDate, 
+	po.Status, poad.Adjustment, poad.AdjustmentBalance, po.Proposal,
+	po.AdjustmentDate, po.Title

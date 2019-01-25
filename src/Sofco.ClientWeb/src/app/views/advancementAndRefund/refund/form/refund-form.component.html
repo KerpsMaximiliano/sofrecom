@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <div class="row" [hidden]="!hasCreditCardPermission()">
+    <div class="row" [hidden]="!userHasCreditCard">
         <div class="col-md-4">
             <div class="form-group">
                 <icheck [(checked)]="hasCreditCard" (checkedChange)="hasCreditCardChanged($event)">
@@ -113,26 +113,25 @@
         <div class="col-xs-3">
             <dl>
                 <dt><strong>{{ 'refund.advancementSum' | translate }}:</strong></dt>
-                <dd *ngIf="hasAdvancements()">{{ advancementSum }} {{ currencyDescription }}</dd>
-                <dd *ngIf="!hasAdvancements()">-</dd>
+                <dd>{{ advancementSum | amountFormat }} {{ currencyDescription }}</dd>
             </dl>
         </div>
         <div class="col-xs-3">
             <dl>
                 <dt><strong>{{ 'refund.itemTotal' | translate }}:</strong></dt>
-                <dd>{{ itemTotal }} {{ currencyDescription }}</dd>
+                <dd>{{ itemTotal | amountFormat }} {{ currencyDescription }}</dd>
             </dl>
         </div>
         <div class="col-xs-3">
             <dl>
                 <dt><strong>{{ 'refund.companyRefund' | translate }}:</strong></dt>
-                <dd>{{ companyRefund }}</dd>
+                <dd>{{ companyRefund | amountFormat }} {{ currencyDescription }}</dd>
             </dl>
         </div>
         <div class="col-xs-3">
             <dl>
                 <dt><strong>{{ 'refund.userRefund' | translate }}:</strong></dt>
-                <dd>{{ userRefund }}</dd>
+                <dd>{{ userRefund | amountFormat }} {{ currencyDescription }}</dd>
             </dl>
         </div>
     </div>

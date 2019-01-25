@@ -247,6 +247,11 @@ namespace Sofco.Service.Implementations.Admin
             model.EmployeeId = employee?.Id ?? 0;
             model.IsExternal = employee?.IsExternal ?? false;
 
+            if (employee != null)
+            {
+                model.HasCreditCard = employee.HasCreditCard;
+            }
+
             if (employee?.Manager != null)
             {
                 model.ManagerId = employee.ManagerId.GetValueOrDefault();

@@ -14,11 +14,12 @@ import { FormsService } from "app/services/forms/forms.service";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { RefundFormComponent } from "./refund-form.component";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { AmountFormatModule } from "app/pipes/amount-format.module";
 
 @NgModule({
     imports: [
         CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
-        TranslateModule, ButtonsModule, NgSelectModule, ReactiveFormsModule, BsDatepickerModule
+        TranslateModule, ButtonsModule, NgSelectModule, ReactiveFormsModule, BsDatepickerModule, AmountFormatModule
     ],
     declarations: [ 
         RefundFormComponent

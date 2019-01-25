@@ -70,6 +70,16 @@ export class RefundListGridComponent implements OnInit {
         this.datatableService.destroy(gridSelector);
 
         this.datatableService.initialize(params);
+
+        setTimeout(() => {
+            $(gridSelector + "_wrapper").css("float","left");
+            $(gridSelector + "_wrapper").css("padding-bottom","50px");
+            $(gridSelector + "_filter label").addClass('search-filter');
+            $(".html5buttons").addClass('export-buttons');
+            $(gridSelector + "_paginate").addClass('table-pagination');
+            $(gridSelector + "_length").css("margin-right","10px");
+            $(gridSelector + "_info").css("padding-top","4px");
+        }, 500);
     }
 
     getStatusClass(type){

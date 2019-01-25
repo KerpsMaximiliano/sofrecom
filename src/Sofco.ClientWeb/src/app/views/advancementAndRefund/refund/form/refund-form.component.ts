@@ -34,8 +34,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     public advancementSum = 0;
     public itemTotal = 0;
-    public companyRefund = '-';
-    public userRefund = '-';
+    public companyRefund = 0;
+    public userRefund = 0;
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -66,6 +66,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     public differentCurrenciesWereSelected = false;
     public hasCreditCard = false;
+    public userHasCreditCard = false;
     public canUpdate = false;
     public isNewDetail = true;
 
@@ -190,6 +191,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     setUserApplicant(){
         const userInfo = UserInfoService.getUserInfo();
 
+        this.userHasCreditCard = userInfo.hasCreditCard;
+
         if(userInfo && userInfo.id && userInfo.name){
             this.userApplicantIdLogged = userInfo.id;
 
@@ -244,8 +247,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     calculateTotals(){
         this.advancementSum = 0;
         this.itemTotal = 0;
-        this.companyRefund = '-';
-        this.userRefund = '-';
+        this.companyRefund = 0;
+        this.userRefund = 0;
 
         if(this.differentCurrenciesWereSelected) return;
 
@@ -270,11 +273,11 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         const diffTotal = this.advancementSum - this.itemTotal;
         this.companyRefund = this.hasAdvancements() && diffTotal > 0
-            ? Math.abs(diffTotal) +" "+ this.currencyDescription
-            : '-';
+            ? Math.abs(diffTotal)
+            : 0;
         this.userRefund = diffTotal < 0
-            ? Math.abs(diffTotal) +" "+ this.currencyDescription
-            : '-';
+            ? Math.abs(diffTotal) 
+            : 0;
     }
 
     advancementsChanged(){
@@ -326,10 +329,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
                 }
             }
         );
-    }
-
-    hasCreditCardPermission(){
-        return this.menuService.hasFunctionality('USR', 'HAS-CREDIT-CARD');
     }
 
     hasCreditCardChanged(value){
