@@ -88,8 +88,10 @@
                             <th class="column-lg">{{'workTimeManagement.report.manager' | translate }}</th>
                             <th class="column-lg">{{'workTimeManagement.report.employee' | translate }}</th>
                             <th class="column-md">{{'workTimeManagement.query.profile' | translate }}</th>
+                            <th class="column-md">{{'workTimeManagement.reference' | translate }}</th>
                             <th class="column-md">{{'workTimeManagement.query.category' | translate }}</th>
                             <th class="column-md">{{'workTimeManagement.query.task' | translate }}</th>
+                            <th class="column-lg">{{'workTimeManagement.comments' | translate }}</th>
                             <th class="column-xs">{{'workTimeManagement.query.date' | translate }}</th>
                             <th class="column-xs text-center">{{'workTimeManagement.query.hours' | translate }}</th>
                             <th class="column-sm">{{'workTimeManagement.query.status' | translate }}</th>
@@ -102,8 +104,10 @@
                             <td class="column-lg">{{ item.manager }}</td>
                             <td class="column-lg">{{ item.employee }}</td>
                             <td class="column-md">{{ item.profile }}</td>
+                            <td class="column-md">{{ item.reference }}</td>
                             <td class="column-md">{{ item.category }}</td>
                             <td class="column-md">{{ item.task }}</td>
+                            <td class="column-lg text-word-break">{{ item.comments }}</td>
                             <td class="column-xs">{{ item.date | date:'dd/MM/yyyy' }}</td>
                             <td class="column-xs text-center">{{ item.hours }}</td>
                             <td class="column-sm">

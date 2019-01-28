@@ -390,4 +390,12 @@ El Adelanto de {0} &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt; cambio del
 &lt;/br&gt;&lt;/br&gt;
 Motivo de rechazo: {3}</value>
   </data>
+  <data name="WorkTimeGeneralRejectHours" xml:space="preserve">
+    <value>Se han &lt;strong&gt; Rechazado&lt;/strong&gt; horas cargadas a:
+&lt;br/&gt;&lt;br/&gt;
+Analítica: {0}
+&lt;br/&gt;&lt;br/&gt;
+Recurso: {1}
+&lt;br/&gt;&lt;br/&gt;</value>
+  </data>
 </root>

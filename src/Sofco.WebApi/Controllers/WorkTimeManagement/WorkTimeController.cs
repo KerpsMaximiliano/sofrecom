@@ -74,7 +74,7 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         [HttpPut("{id}/reject")]
         public IActionResult Reject(int id, [FromBody] WorkTimeRejectParams parameters)
         {
-            var response = workTimeService.Reject(id, parameters.Comments);
+            var response = workTimeService.Reject(id, parameters.Comments, false);
 
             return this.CreateResponse(response);
         }

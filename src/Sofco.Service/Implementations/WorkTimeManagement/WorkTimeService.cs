@@ -306,9 +306,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return list;
         }
 
-        public Response Reject(int id, string comments)
+        public Response Reject(int id, string comments, bool massive)
         {
-            return workTimeRejectManager.Reject(id, comments);
+            return workTimeRejectManager.Reject(id, comments, massive);
         }
 
         public Response ApproveAll(List<HoursToApproveModel> hours)
@@ -393,6 +393,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 model.Date = worktime.Date;
                 model.Hours = worktime.Hours;
+                model.Reference = worktime.Reference;
+                model.Comments = worktime.UserComment;
                 model.Status = worktime.Status.ToString();
 
                 response.Data.Add(model);
@@ -414,7 +416,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             foreach (var hourId in parameters.HourIds)
             {
-                var hourResponse = Reject(hourId, parameters.Comments);
+                var hourResponse = Reject(hourId, parameters.Comments, true);
 
                 if (hourResponse.HasErrors())
                     anyError = true;
@@ -429,6 +431,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             if (anySuccess)
             {
+                var workTime = unitOfWork.WorkTimeRepository.GetSingle(x => x.Id == parameters.HourIds.FirstOrDefault());
+
+                workTimeRejectManager.SendGeneralRejectMail(workTime);
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.RejectedSuccess);
             }
             else

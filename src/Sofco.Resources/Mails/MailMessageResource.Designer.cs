@@ -503,6 +503,20 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Se han &lt;strong&gt; Rechazado&lt;/strong&gt; horas cargadas a:
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Analítica: {0}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recurso: {1}
+        ///&lt;br/&gt;&lt;br/&gt;.
+        /// </summary>
+        public static string WorkTimeGeneralRejectHours {
+            get {
+                return ResourceManager.GetString("WorkTimeGeneralRejectHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Se ha &lt;strong&gt; Rechazado&lt;/strong&gt; la siguiente hora enviada:
         ///&lt;br/&gt;&lt;br/&gt;
         ///Analítica: {0}
