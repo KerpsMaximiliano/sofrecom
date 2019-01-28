@@ -80,7 +80,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var searchResponse = employeeService.Search(parameters);
 
-            var response =
+            var response = 
                 new Response<IEnumerable<EmployeeModel>>
                 {
                     Data = searchResponse.Data.Select(x => new EmployeeModel(x)),

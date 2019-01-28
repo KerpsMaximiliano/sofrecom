@@ -93,6 +93,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public IList<Employee> GetUnassigned()
+        {
+            var employeeIdsWithAllocations = context.Allocations.Select(x => x.EmployeeId).Distinct().ToList();
+
+            return context.Employees.Include(x => x.Manager).Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
+        }
+
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {
             IQueryable<Employee> query = context.Employees.Include(x => x.Manager);

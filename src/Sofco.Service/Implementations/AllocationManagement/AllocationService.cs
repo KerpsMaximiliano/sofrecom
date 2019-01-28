@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Domain.DTO;
@@ -67,17 +68,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var allocationResponse = new AllocationResponse();
 
-            //Build Header
-            for (DateTime date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
-            {
-                var monthHeader = new MonthHeader();
-                monthHeader.Display = DatesHelper.GetDateShortDescription(date);
-                monthHeader.Month = date.Month;
-                monthHeader.Year = date.Year;
-                monthHeader.EmployeeHasLicense = licenses.Any(x => x.StartDate.Month == date.Month || x.EndDate.Month == date.Month);
-
-                allocationResponse.MonthsHeader.Add(monthHeader);
-            }
+            BuildMonthHeader(startDate, endDate, licenses, allocationResponse);
 
             if (licenses.Any())
             {
@@ -132,6 +123,20 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
 
             return allocationResponse;
+        }
+
+        private void BuildMonthHeader(DateTime startDate, DateTime endDate, ICollection<Domain.Models.Rrhh.License> licenses, AllocationResponse allocationResponse)
+        {
+            for (DateTime date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
+            {
+                var monthHeader = new MonthHeader();
+                monthHeader.Display = DatesHelper.GetDateShortDescription(date);
+                monthHeader.Month = date.Month;
+                monthHeader.Year = date.Year;
+                monthHeader.EmployeeHasLicense = licenses.Any(x => x.StartDate.Month == date.Month || x.EndDate.Month == date.Month);
+
+                allocationResponse.MonthsHeader.Add(monthHeader);
+            }
         }
 
         public ICollection<Employee> GetByService(string serviceId)
@@ -233,9 +238,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
 
+            IList<Employee> employeesUnassigned = new List<Employee>();
+
             var diccionaryAnalytics = new Dictionary<int, Analytic>();
 
-            if (employees.Any())
+            if (parameters.StartPercentage.GetValueOrDefault() == 0 &&
+                parameters.EndPercentage.GetValueOrDefault() == 0)
+            {
+                employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassigned();
+            }
+
+            if (employees.Any() || employeesUnassigned.Any())
             {
                 foreach (var employee in employees)
                 {
@@ -282,6 +295,38 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                         response.Data.Rows.Add(reportRow);
                     }
+                }
+
+                foreach (var employee in employeesUnassigned)
+                {
+                    var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employee.Id, parameters.StartDate, parameters.EndDate);
+
+                    var allocationResponse = new AllocationResponse();
+
+                    BuildMonthHeader(parameters.StartDate, parameters.EndDate, licenses, allocationResponse);
+
+                    if (licenses.Any())
+                    {
+                        allocationResponse.Licenses = licenses.Select(x => new LicenseItemDto(x)).ToList();
+                    }
+
+                    var reportRow = new AllocationReportRow
+                    {
+                        Manager = employee.Manager?.Name,
+                        Percentage = employee.BillingPercentage,
+                        Profile = employee.Profile,
+                        ResourceName = $"{employee.EmployeeNumber} - {employee.Name}",
+                        Seniority = employee.Seniority,
+                        Technology = employee.Technology,
+                        Analytic = "Sin Asignación"
+                    };
+
+                    foreach (var monthHeader in allocationResponse.MonthsHeader)
+                    {
+                        reportRow.Months.Add(new AllocationMonthReport { MonthYear = monthHeader.Display, Percentage = 0 });
+                    }
+
+                    response.Data.Rows.Add(reportRow);
                 }
 
                 response.Data.MonthsHeader = response.Data.Rows.FirstOrDefault()?.Months.Select(x => x.MonthYear).ToList();
