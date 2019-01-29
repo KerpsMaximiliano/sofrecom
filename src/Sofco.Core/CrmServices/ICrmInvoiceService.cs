@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Sofco.Common.Domains;
-using Sofco.Domain.Crm;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
@@ -11,8 +10,6 @@ namespace Sofco.Core.CrmServices
 {
     public interface ICrmInvoiceService
     {
-        Result<List<CrmHito>> GetHitosToExpire(int daysToExpire);
-
         Result<string> CreateHitoBySolfac(Solfac solfac);
 
         Response UpdateHitos(ICollection<Hito> hitos);
