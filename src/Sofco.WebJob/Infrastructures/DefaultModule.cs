@@ -12,6 +12,8 @@ using Sofco.Core.Mail;
 using Sofco.DAL;
 using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
+using Sofco.Service.Crm.HttpClients;
+using Sofco.Service.Crm.HttpClients.Interfaces;
 using Sofco.Service.Crm.Translators;
 using Sofco.Service.Crm.Translators.Interfaces;
 using Sofco.WebJob.Jobs.Interfaces;
@@ -61,6 +63,10 @@ namespace Sofco.WebJob.Infrastructures
                 .SingleInstance();
 
             builder.RegisterType<HttpClient>()
+                .SingleInstance();
+
+            builder.RegisterType<CrmApiHttpClient>()
+                .As<ICrmApiHttpClient>()
                 .SingleInstance();
 
             builder.RegisterGeneric(typeof(CrmTranslator<,>))
