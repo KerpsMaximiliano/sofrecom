@@ -23,7 +23,7 @@ namespace Sofco.Service.Implementations.Rrhh
         {
             var response = new Response<byte[]>();
 
-            var items = worktimeData.GetAll();
+            var items = worktimeData.GetAllTigerReport();
 
             if (!items.Any())
             {

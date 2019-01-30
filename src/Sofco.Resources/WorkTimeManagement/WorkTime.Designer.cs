@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.WorkTimeManagement {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.WorkTimeManagement {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.WorkTimeManagement.WorkTime", typeof(WorkTime).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.WorkTimeManagement.WorkTime", typeof(WorkTime).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -139,6 +138,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         public static string CannotDelete {
             get {
                 return ResourceManager.GetString("CannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.controlHoursEmpty.
+        /// </summary>
+        public static string ControlHoursEmpty {
+            get {
+                return ResourceManager.GetString("ControlHoursEmpty", resourceCulture);
             }
         }
         

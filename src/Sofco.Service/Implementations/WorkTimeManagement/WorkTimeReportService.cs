@@ -149,7 +149,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 response.Data.IsCompleted = response.Data.Items.All(x => x.HoursLoadedSuccesfully) && response.Data.EmployeesAllocationResume.All(x => !x.MissAnyPercentageAllocation);
 
-                worktimeData.ClearKeys();
+                worktimeData.ClearTigerReportKey();
                 worktimeData.SaveTigerReport(tigerReport);
             }
 

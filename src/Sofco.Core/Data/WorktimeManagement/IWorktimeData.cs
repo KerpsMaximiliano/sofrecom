@@ -5,10 +5,16 @@ namespace Sofco.Core.Data.WorktimeManagement
 {
     public interface IWorktimeData
     {
-        IList<TigerReportItem> GetAll();
+        IList<TigerReportItem> GetAllTigerReport();
 
-        void ClearKeys();
+        void ClearTigerReportKey();
 
         void SaveTigerReport(IList<TigerReportItem> list);
+
+        IList<WorkTimeControlResourceModel> GetAllControlHoursReport(string username);
+
+        void SaveControlHoursReport(IList<WorkTimeControlResourceModel> list, string username);
+
+        void ClearControlHoursReportKey(string username);
     }
 }

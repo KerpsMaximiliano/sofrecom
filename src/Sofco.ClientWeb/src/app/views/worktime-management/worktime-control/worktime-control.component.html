@@ -29,6 +29,10 @@
                         <select-two [label]="'workTimeManagement.month'" [(value)]="closeMonthId" [firstOptionEmpty]="false" [options]="closeMonths" (valueChange)="getData()"></select-two>
                     </div>
                 </div>
+
+                <div class="col-sm-4">
+                    <button class="btn btn-success btn-md m-t-md" (click)="export()"> {{ 'ACTIONS.export' | translate }} <i class="fa fa-download"></i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -67,7 +71,7 @@
                         <th></th>
                         <th>{{'workTimeManagement.worktimeControl.analytic' | translate }}</th>
                         <th>{{'workTimeManagement.worktimeControl.employeeNumber' | translate }}</th>
-                        <th>{{'workTimeManagement.worktimeControl.employeeName' | translate }}</th>
+                        <th class="column-lg">{{'workTimeManagement.worktimeControl.employeeName' | translate }}</th>
                         <th>{{'workTimeManagement.worktimeControl.businessHours' | translate }}</th>
                         <th>{{'workTimeManagement.worktimeControl.approvedHours' | translate }}</th>
                         <th>{{'workTimeManagement.worktimeControl.licenseHours' | translate }}</th>
@@ -85,7 +89,7 @@
                         <td>{{ item.id }}</td>
                         <td>{{ item.analytic }}</td>
                         <td>{{ item.employeeNumber }}</td>
-                        <td>{{ item.employeeName }}</td>
+                        <td class="column-lg">{{ item.employeeName }}</td>
                         <td>{{ item.businessHours }}</td>
                         <td>{{ item.approvedHours }}</td>
                         <td>{{ item.licenseHours }}</td>

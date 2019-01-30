@@ -13,5 +13,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public decimal RegisteredHours { get; set; }
 
         public DateTime Date { get; set; }
+
+        public string Comments { get; set; }
     }
 }
