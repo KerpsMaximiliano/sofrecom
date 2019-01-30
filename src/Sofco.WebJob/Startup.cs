@@ -16,6 +16,7 @@ using Sofco.Core.Config;
 using Sofco.Core.Mail;
 using Sofco.Framework.Logger.Extensions;
 using Sofco.Repository.Rh.Settings;
+using Sofco.Service.Crm.Settings;
 using Sofco.Service.Settings;
 using Sofco.Service.Settings.Jobs;
 using Sofco.WebJob.Filters;
@@ -57,6 +58,7 @@ namespace Sofco.WebJob
             services.Configure<JobSetting>(Configuration.GetSection("JobSetting"));
             services.Configure<AzureAdConfig>(Configuration.GetSection("AzureAd"));
             services.Configure<AppSetting>(Configuration.GetSection("App"));
+            services.Configure<CrmSetting>(Configuration.GetSection("CRM"));
 
             var containerBuilder = new ContainerBuilder();
 
