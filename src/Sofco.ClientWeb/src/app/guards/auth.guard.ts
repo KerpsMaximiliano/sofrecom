@@ -25,15 +25,21 @@ export class AuthGuard implements CanActivate {
             if(route.data && JSON.stringify(route.data) !== JSON.stringify({})){
                 var data = <any>route.data;
 
-                if(!data.module && !data.functionality) return true;
+                if(data.group){
+                    return this.hasGroup(data.group);
+                }
+                    
+                if(data.module && data.functionality){
+                    if(this.menuService.hasFunctionality(data.module, data.functionality)){
+                        return true;
+                    }
+                    else{
+                        this.router.navigate(['/403']);
+                        return false;
+                    }
+                }
 
-                if(this.menuService.hasFunctionality(data.module, data.functionality)){
-                    return true;
-                }
-                else{
-                    this.router.navigate(['/403']);
-                    return false;
-                }
+                return true;
             }
             else{
                 return true;
@@ -45,5 +51,16 @@ export class AuthGuard implements CanActivate {
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
 
         return false;
+    }
+
+    hasGroup(code): boolean {
+        switch(code){
+            case "DAF": return this.menuService.userIsDaf;
+            case "CDG": return this.menuService.userIsCdg;
+            case "DIRECTOR": return this.menuService.userIsDirector;
+            case "MANAGER": return this.menuService.userIsManager;
+            case "RRHH": return this.menuService.userIsRrhh;
+            default: return false;
+        }
     }
 }

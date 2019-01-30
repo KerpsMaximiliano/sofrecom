@@ -35,7 +35,7 @@ export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy
     }
     
     initGrid(){
-        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        var columns = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         var title = `Adelantos-pendientes-deposito`;
 
         var params = {
@@ -99,12 +99,16 @@ export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy
         this.model.forEach((item, index) => {
             item.selected = true;
         });
+
+        this.calculateTotals();
     }
 
     unselectAll(){
         this.model.forEach((item, index) => {
             item.selected = false;
         });
+
+        this.calculateTotals();
     }
 
     noneResourseSelected(){
@@ -116,16 +120,18 @@ export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy
 
         this.model.forEach(item => {
 
-            var itemTotal = this.totals.filter(x => x.text == item.currencyDesc);
+            if(item.selected){
+                var itemTotal = this.totals.filter(x => x.text == item.currencyDesc);
 
-            if(itemTotal.length > 0){
-                itemTotal[0].value = item.ammount + itemTotal[0].value;
-            }
-            else{
-                this.totals.push({
-                    text: item.currencyDesc,
-                    value: item.ammount
-                });
+                if(itemTotal.length > 0){
+                    itemTotal[0].value = item.ammount + itemTotal[0].value;
+                }
+                else{
+                    this.totals.push({
+                        text: item.currencyDesc,
+                        value: item.ammount
+                    });
+                }
             }
         });
     }
@@ -145,6 +151,7 @@ export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy
             if(list.length > 0){
                 this.messageService.showLoading();
 
+                var entityIds = [];
                 var promises = new Array();
 
                 list.forEach(item => {
@@ -152,8 +159,7 @@ export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy
 
                         this.postSubscrip = this.workflowService.post(item).subscribe(response => {
                             resolve();
-                            var indexItemToRemove = this.model.map(x => x.id).indexOf(item.entityId);
-                            this.model.splice(indexItemToRemove, 1);
+                            entityIds.push(item.entityId);
                         },
                         error => resolve());
                     });
@@ -163,6 +169,12 @@ export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy
 
                 Promise.all(promises).then(data => { 
                     this.messageService.closeLoading();
+
+                    entityIds.forEach(x => {
+                        var indexItemToRemove = this.model.map(x => x.id).indexOf(x);
+                        this.model.splice(indexItemToRemove, 1);
+                    });
+
                     this.calculateTotals();
                     this.initGrid();
                 });

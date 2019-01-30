@@ -36,7 +36,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .SingleOrDefault(x => x.Id == id);
         }
 
-        public IList<Advancement> GetAllInProcess(int workFlowStatePaymentPending)
+        public IList<Advancement> GetAllInProcess()
         {
             return context.Advancements
                 .Include(x => x.Currency)
@@ -47,7 +47,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                     .ThenInclude(x => x.ActualTransitions)
                         .ThenInclude(x => x.WorkflowStateAccesses)
                             .ThenInclude(x => x.UserSource)
-                .Where(x => x.InWorkflowProcess && x.StatusId != workFlowStatePaymentPending).ToList();
+                .Where(x => x.InWorkflowProcess).ToList();
         }
 
         public IList<WorkflowReadAccess> GetWorkflowReadAccess(int advacementWorkflowId)

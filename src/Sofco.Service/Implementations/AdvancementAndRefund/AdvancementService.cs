@@ -121,7 +121,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var hasAllAccess = HasAllAccess(currentUser);
 
-            var advancements = unitOfWork.AdvancementRepository.GetAllInProcess(settings.WorkFlowStatePaymentPending);
+            var advancements = unitOfWork.AdvancementRepository.GetAllInProcess();
 
             if (hasAllAccess)
             {
