@@ -437,7 +437,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
 
-                response.Data = unitOfWork.AdvancementRepository.GetByApplicant(user.Id).Select(x => new EmployeeAdvancementDetail(x)).ToList();
+                if (user != null)
+                {
+                    response.Data = unitOfWork.AdvancementRepository.GetByApplicant(user.Id).Select(x => new EmployeeAdvancementDetail(x)).ToList();
+                }
             }
 
             return response;
@@ -454,8 +457,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
 
-                response.Data = unitOfWork.RefundRepository.GetByApplicant(user.Id)
-                    .Select(x => mapper.Map<Refund, EmployeeRefundDetail>(x)).ToList();
+                if (user != null)
+                {
+                    response.Data = unitOfWork.RefundRepository.GetByApplicant(user.Id)
+                        .Select(x => mapper.Map<Refund, EmployeeRefundDetail>(x)).ToList();
+                }
             }
 
             return response;
