@@ -32,5 +32,16 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("export")]
+        public IActionResult ExportControlHoursReport()
+        {
+            var response = service.ExportControlHoursReport();
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
     }
 }

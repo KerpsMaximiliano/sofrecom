@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.DAL;
+using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.WorkTimeManagement;
@@ -26,15 +28,27 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IMapper mapper;
 
-        public WorkTimeControlService(IUnitOfWork unitOfWork, IUserData userData, IWorkTimeResumeManager workTimeResumeManager, IMapper mapper, IRoleManager roleManager)
+        private readonly IWorktimeData worktimeData;
+
+        private readonly IWorkTimeControlHoursFileManager workTimeControlHoursFileManager;
+
+        public WorkTimeControlService(IUnitOfWork unitOfWork, 
+            IUserData userData, 
+            IWorkTimeResumeManager workTimeResumeManager, 
+            IMapper mapper, 
+            IRoleManager roleManager, 
+            IWorktimeData worktimeData,
+            IWorkTimeControlHoursFileManager workTimeControlHoursFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.workTimeResumeManager = workTimeResumeManager;
             this.mapper = mapper;
             this.roleManager = roleManager;
+            this.worktimeData = worktimeData;
+            this.workTimeControlHoursFileManager = workTimeControlHoursFileManager;
         }
-
+         
         public Response<WorkTimeControlModel> Get(WorkTimeControlParams parameters)
         {
             var result = new Response<WorkTimeControlModel>();
@@ -56,6 +70,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var resumeModel = workTimeResumeManager.GetResume(models, startDate, endDate);
 
             var resources = GetResources(workTimes.ToList(), startDate, endDate);
+
+            var currentUser = userData.GetCurrentUser();
+
+            worktimeData.ClearControlHoursReportKey(currentUser.UserName);
+            worktimeData.SaveControlHoursReport(resources, currentUser.UserName);
 
             result.Data = new WorkTimeControlModel
             {
@@ -248,6 +267,27 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 .ToList();
 
             return result;
+        }
+
+        public Response<byte[]> ExportControlHoursReport()
+        {
+            var response = new Response<byte[]>();
+
+            var currentuser = userData.GetCurrentUser();
+
+            var list = worktimeData.GetAllControlHoursReport(currentuser.UserName);
+
+            if (!list.Any())
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.ControlHoursEmpty);
+                return response;
+            }
+
+            var excel = workTimeControlHoursFileManager.CreateExcel(list);
+
+            response.Data = excel.GetAsByteArray();
+
+            return response;
         }
     }
 }

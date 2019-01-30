@@ -69,8 +69,7 @@
     <div class="tabs-container">
         <ul class="nav nav-tabs">
             <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="currentTab = 1"> {{ 'advancement.inProcess' | translate }} </a></li>
-            <li class="" *ngIf="isDaf()"><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="currentTab = 2"> {{ 'advancement.paymentPending' | translate }} </a></li>
-            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-3" (click)="currentTab = 3"> {{ 'advancement.finalized' | translate }} </a></li>
+            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="currentTab = 3"> {{ 'advancement.finalized' | translate }} </a></li>
         </ul>
 
         <div class="tab-content">
@@ -80,13 +79,7 @@
                 </div>
             </div>
 
-            <div id="tab-2" class="tab-pane" *ngIf="isDaf()">
-                <div class="panel-body tab-primary">
-                    <list-payment-pending #paymentPending></list-payment-pending>
-                </div>
-            </div>
-
-            <div id="tab-3" class="tab-pane">
+            <div id="tab-2" class="tab-pane">
                 <div class="panel-body tab-primary">
                     <list-finalized #finalized></list-finalized>
                 </div>
