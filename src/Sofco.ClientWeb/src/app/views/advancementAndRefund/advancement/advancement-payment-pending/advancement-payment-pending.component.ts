@@ -7,9 +7,9 @@ import { Router } from "@angular/router";
 import { WorkflowService } from "app/services/workflow/workflow.service";
 
 @Component({
-    selector: 'list-payment-pending',
-    templateUrl: './list-payment-pending.component.html',
-    styleUrls: ['./list-payment-pending.component.scss']
+    selector: 'advancement-payment-pending',
+    templateUrl: './advancement-payment-pending.component.html',
+    styleUrls: ['./advancement-payment-pending.component.scss']
 })
 export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy {
 
@@ -26,7 +26,7 @@ export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy
                 private messageService: MessageService){}
 
     ngOnInit(): void {
-        this.search({});
+        this.search();
     }
 
     ngOnDestroy(): void {
@@ -64,10 +64,10 @@ export class AdvancementListPaymentPendingComponent implements OnInit, OnDestroy
         this.router.navigate(['/advancementAndRefund/advancement/' + item.id])
     }
 
-    search(parameters){
+    search(){
         this.messageService.showLoading();
 
-        this.getSubscrip = this.advancementService.getAllPaymentPending(parameters).subscribe(response => {
+        this.getSubscrip = this.advancementService.getAllPaymentPending().subscribe(response => {
             this.messageService.closeLoading();
 
             this.model = [];

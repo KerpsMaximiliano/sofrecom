@@ -192,7 +192,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        public Response<IList<AdvancementListItem>> GetAllPaymentPending(AdvancementSearchFinalizedModel model)
+        public Response<IList<AdvancementListItem>> GetAllPaymentPending()
         {
             var response = new Response<IList<AdvancementListItem>>();
             response.Data = new List<AdvancementListItem>();
@@ -205,7 +205,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             if (!hasDafGroup) return response;
 
-            var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending, model);
+            var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
 
             response.Data = advancements.Select(x =>
             {

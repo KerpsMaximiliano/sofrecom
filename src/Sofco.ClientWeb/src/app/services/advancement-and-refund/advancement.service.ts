@@ -38,8 +38,8 @@ export class AdvancementService {
         return this.http.post<any>(`${this.baseUrl}/advancement/finalized`, model);
     }
 
-    getAllPaymentPending(model){
-        return this.http.post<any>(`${this.baseUrl}/advancement/paymentPending`, model);
+    getAllPaymentPending(){
+        return this.http.get<any>(`${this.baseUrl}/advancement/paymentPending`);
     }
 
     canLoad(){

@@ -21,7 +21,7 @@ namespace Sofco.Framework.Workflow.Conditions
         }
         public bool CanDoTransition(WorkflowEntity entity, Response response)
         {
-            var refund = (Refund)entity;
+            var refund = (Domain.Models.AdvancementAndRefund.Refund)entity;
 
             var value = GetValueSetting(refund.CurrencyId);
 

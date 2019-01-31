@@ -3,6 +3,7 @@ using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Validations.AdvancementAndRefund;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.Validations.AdvancementAndRefund
@@ -48,6 +49,18 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             ValidateAdvancements(model, response);
 
             return response;
+        }
+
+        public bool HasUserRefund(Refund refund)
+        {
+            var diffTotal = refund.AdvancementRefunds
+                                .Sum(x => x.Advancement.Ammount) - refund.Details.Sum(x => x.Ammount);
+
+            var diff = diffTotal < 0
+                ? Math.Abs(diffTotal)
+                : 0;
+
+            return diff > 0;
         }
 
         private void ValidateIfExist(RefundModel model, Response response)

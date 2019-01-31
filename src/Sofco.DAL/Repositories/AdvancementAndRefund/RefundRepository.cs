@@ -101,5 +101,19 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Where(x => x.UserApplicantId == id)
                 .OrderByDescending(x => x.CreationDate).ToList();
         }
+
+        public IList<Refund> GetAllPaymentPending(int workFlowStatePaymentPending)
+        {
+            var query = context.Refunds
+                .Include(x => x.Currency)
+                .Include(x => x.UserApplicant)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Advancement)
+                .Include(x => x.Details)
+                .Include(x => x.Status).ThenInclude(x => x.ActualTransitions)
+                .Where(x => x.StatusId == workFlowStatePaymentPending);
+
+            return query.ToList();
+        }
     }
 }

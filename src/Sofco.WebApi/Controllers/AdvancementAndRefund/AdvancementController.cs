@@ -42,10 +42,10 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
-        [HttpPost("paymentPending")]
-        public IActionResult GetAllPaymentPending([FromBody] AdvancementSearchFinalizedModel model)
+        [HttpGet("paymentPending")]
+        public IActionResult GetAllPaymentPending()
         {
-            var response = advancementService.GetAllPaymentPending(model);
+            var response = advancementService.GetAllPaymentPending();
 
             return this.CreateResponse(response);
         }

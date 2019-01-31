@@ -28,6 +28,16 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.UserRefund, x => x.ResolveUsing(ResolveUserRefund))
                 .ForMember(s => s.WorkflowStatusType, x => x.ResolveUsing(_ => _.Status?.Type))
                 .ForMember(s => s.StatusName, x => x.ResolveUsing(_ => _.Status?.Name));
+
+            CreateMap<Refund, RefundPaymentPendingModel>()
+                .ForMember(s => s.CurrencyName, x => x.ResolveUsing(_ => _.Currency?.Text))
+                .ForMember(s => s.CreationDate, x => x.MapFrom(_ => _.CreationDate))
+                .ForMember(s => s.UserApplicantId, x => x.MapFrom(_ => _.UserApplicantId))
+                .ForMember(s => s.UserApplicantDesc, x => x.ResolveUsing(_ => _.UserApplicant?.Name))
+                .ForMember(s => s.AdvancementSum, x => x.ResolveUsing(ResolveAdvancementSum))
+                .ForMember(s => s.RefundItemTotal, x => x.ResolveUsing(ResolveRefundItemTotal))
+                .ForMember(s => s.UserRefund, x => x.ResolveUsing(ResolveUserRefund))
+                .ForMember(s => s.Id, x => x.ResolveUsing(_ => _.Id));
         }
 
         private decimal ResolveAdvancementSum(Refund refund)

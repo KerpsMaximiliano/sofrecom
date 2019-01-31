@@ -1123,6 +1123,7 @@
         "creditCard": "Tarjeta de Crédito",
         "needParameters": "Seleccione parámetros o seleccione buscar para ver todos",
         "files": "Archivos",
+        "totals": "Totales",
         "noDetailsInfo": "No se han cargado detalles. Por favor agregue un item para poder continuar",
         "histories": {
             "createdDate": "Fecha Creación",
