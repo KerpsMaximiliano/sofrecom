@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Newtonsoft.Json.Linq;
+using Sofco.Common.Domains;
+using Sofco.Core.Logger;
 using Sofco.Domain.Crm;
 using Sofco.Domain.Enums;
 using Sofco.Service.Crm.HttpClients.Interfaces;
@@ -24,12 +26,18 @@ namespace Sofco.Service.Crm
 
         private readonly IMapper mapper;
 
-        public CrmInvoicingMilestoneService(ICrmApiHttpClient httpClient, ICrmTranslator<CrmInvoicingMilestone, CrmInvoicingMilestoneTranslatorMap> translator, ICrmProjectService crmProjectService, IMapper mapper)
+        private readonly ILogMailer<CrmInvoicingMilestoneService> logger;
+
+        public CrmInvoicingMilestoneService(ICrmApiHttpClient httpClient, 
+            ICrmTranslator<CrmInvoicingMilestone, CrmInvoicingMilestoneTranslatorMap> translator, 
+            ICrmProjectService crmProjectService, IMapper mapper, 
+            ILogMailer<CrmInvoicingMilestoneService> logger)
         {
             this.httpClient = httpClient;
             this.translator = translator;
             this.crmProjectService = crmProjectService;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         public List<CrmHito> GetToExpire(int daysToExpire)
@@ -52,6 +60,38 @@ namespace Sofco.Service.Crm
                 .ToList();
 
             return TranslateToProjectHito(data);
+        }
+
+        public Result Update(CrmInvoicingMilestone data)
+        {
+            var result = new Result();
+
+            if (data.Id == Guid.Empty)
+            {
+                return result;
+            }
+
+            try
+            {
+            var body = new { statuscode = 0 };
+
+            httpClient.Patch<JObject>(UrlPath + "(" + data.Id + ")", body);
+            }
+            catch (Exception ex)
+            {
+                var msg = "CrmHitoId = " + data.Id;
+
+                logger.LogError(msg, ex);
+
+                result.AddError(msg);
+            }
+
+            return result;
+        }
+
+        public Result Create(CrmInvoicingMilestone data)
+        {
+            throw new NotImplementedException();
         }
 
         private string GetQuery(string filter)
