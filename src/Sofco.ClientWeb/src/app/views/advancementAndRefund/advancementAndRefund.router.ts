@@ -5,6 +5,7 @@ import { AdvancementSearchComponent } from "./advancement/search/advancement-sea
 import { RefundListComponent } from "./refund/list/refund-list.component";
 import { RefundDetailComponent } from "./refund/detail/refund-detail.component";
 import { ListPaymentPendingComponent } from "./common/list-payment-pending/list-payment-pending.component";
+import { AdvancementRefundSettingComponent } from "./common/settings/setting.component";
 
 const ADVANCEMENT_AND_REFUND_ROUTER: Routes = [
     {
@@ -20,6 +21,9 @@ const ADVANCEMENT_AND_REFUND_ROUTER: Routes = [
             { path: "search", component: RefundListComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "REFUND-LIST-VIEW" }  },
             { path: ":id", component: RefundDetailComponent, canActivate: [AuthGuard] }
         ]
+    },
+    {
+        path: "setting", component: AdvancementRefundSettingComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "SETTING" }
     }
 ]
 

@@ -1132,5 +1132,15 @@
             "statusFrom": "Estado inicial",
             "statusTo": "Estado final"
         }
+    },
+    "advRefSetting": {
+        "title": "Configuración",
+        "ammounts": "Montos",
+        "ammountAPesos": "Monto A Pesos",
+        "ammountADolares": "Monto A Dolares",
+        "ammountAEuros": "Monto A Euros",
+        "ammountBPesos": "Monto B Pesos",
+        "ammountBDolares": "Monto B Dolares",
+        "ammountBEuros": "Monto B Euros"
     }
 }
