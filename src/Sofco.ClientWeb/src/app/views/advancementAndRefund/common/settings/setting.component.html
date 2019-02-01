@@ -1,0 +1,95 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'advRefSetting.title' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'advancement.navigationTitle' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'advRefSetting.ammounts' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <form [formGroup]="form" *ngIf="form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'ammountAPesos')">
+                            <label class="control-label">{{'advRefSetting.ammountAPesos' | translate }}</label>
+                            <input type="number" class="form-control" formControlName="ammountAPesos">
+                
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'ammountAPesos')">
+                                <p *ngIf="formsService.hasError(form, 'ammountAPesos', 'required')">{{ i18nService.translate('advancementAndRefund/setting','ammountRequired') }}</p>
+                                <p *ngIf="formsService.hasError(form, 'ammountAPesos', 'min')">{{ i18nService.translate('advancementAndRefund/setting','ammountWrong') }}</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'ammountADolares')">
+                            <label class="control-label">{{'advRefSetting.ammountADolares' | translate }}</label>
+                            <input type="number" class="form-control" formControlName="ammountADolares">
+                
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'ammountADolares')">
+                                <p *ngIf="formsService.hasError(form, 'ammountADolares', 'required')">{{ i18nService.translate('advancementAndRefund/setting','ammountRequired') }}</p>
+                                <p *ngIf="formsService.hasError(form, 'ammountADolares', 'min')">{{ i18nService.translate('advancementAndRefund/setting','ammountWrong') }}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'ammountAEuros')">
+                            <label class="control-label">{{'advRefSetting.ammountAEuros' | translate }}</label>
+                            <input type="number" class="form-control" formControlName="ammountAEuros">
+                
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'ammountAEuros')">
+                                <p *ngIf="formsService.hasError(form, 'ammountAEuros', 'required')">{{ i18nService.translate('advancementAndRefund/setting','ammountRequired') }}</p>
+                                <p *ngIf="formsService.hasError(form, 'ammountAEuros', 'min')">{{ i18nService.translate('advancementAndRefund/setting','ammountWrong') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'ammountBPesos')">
+                            <label class="control-label">{{'advRefSetting.ammountBPesos' | translate }}</label>
+                            <input type="number" class="form-control" formControlName="ammountBPesos">
+                
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'ammountBPesos')">
+                                <p *ngIf="formsService.hasError(form, 'ammountBPesos', 'required')">{{ i18nService.translate('advancementAndRefund/setting','ammountRequired') }}</p>
+                                <p *ngIf="formsService.hasError(form, 'ammountBPesos', 'min')">{{ i18nService.translate('advancementAndRefund/setting','ammountWrong') }}</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'ammountBDolares')">
+                            <label class="control-label">{{'advRefSetting.ammountBDolares' | translate }}</label>
+                            <input type="number" class="form-control" formControlName="ammountBDolares">
+                
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'ammountBDolares')">
+                                <p *ngIf="formsService.hasError(form, 'ammountBDolares', 'required')">{{ i18nService.translate('advancementAndRefund/setting','ammountRequired') }}</p>
+                                <p *ngIf="formsService.hasError(form, 'ammountBDolares', 'min')">{{ i18nService.translate('advancementAndRefund/setting','ammountWrong') }}</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'ammountBEuros')">
+                            <label class="control-label">{{'advRefSetting.ammountBEuros' | translate }}</label>
+                            <input type="number" class="form-control" formControlName="ammountBEuros">
+                
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'ammountBEuros')">
+                                <p *ngIf="formsService.hasError(form, 'ammountBEuros', 'required')">{{ i18nService.translate('advancementAndRefund/setting','ammountRequired') }}</p>
+                                <p *ngIf="formsService.hasError(form, 'ammountBEuros', 'min')">{{ i18nService.translate('advancementAndRefund/setting','ammountWrong') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="ibox-footer text-center" *ngIf="form">
+            <button type="button" class="btn btn-primary" [disabled]="!canSave()" (click)="save()"> 
+                {{ 'ACTIONS.save' | translate }} 
+                <i class="fa fa-save"></i>
+            </button>
+        </div>
+    </div>
+</div>

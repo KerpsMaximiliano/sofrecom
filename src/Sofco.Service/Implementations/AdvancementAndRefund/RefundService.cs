@@ -422,5 +422,52 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             return false;
         }
+
+        public Response<IList<RefundPaymentPendingModel>> GetAllPaymentPending()
+        {
+            var response = new Response<IList<RefundPaymentPendingModel>>();
+            response.Data = new List<RefundPaymentPendingModel>();
+
+            var employeeDicc = new Dictionary<string, string>();
+
+            var currentUser = userData.GetCurrentUser();
+
+            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
+
+            if (!hasDafGroup) return response;
+
+            var refunds = unitOfWork.RefundRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
+
+            response.Data = refunds.Select(x =>
+            {
+                var item = mapper.Map<Refund, RefundPaymentPendingModel>(x);
+
+                item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+
+                var transition = x.Status.ActualTransitions.FirstOrDefault();
+
+                if (transition != null)
+                {
+                    item.WorkflowId = transition.WorkflowId;
+                    item.NextWorkflowStateId = transition.NextWorkflowStateId;
+                }
+
+                return item;
+            }).ToList();
+
+            return response;
+        }
+
+        private string GetBank(string email, Dictionary<string, string> employeeDictionary)
+        {
+            if (!employeeDictionary.ContainsKey(email))
+            {
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
+
+                employeeDictionary.Add(email, employee?.Bank);
+            }
+
+            return employeeDictionary[email];
+        }
     }
 }

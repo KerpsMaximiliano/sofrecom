@@ -1123,6 +1123,7 @@
         "creditCard": "Tarjeta de Crédito",
         "needParameters": "Seleccione parámetros o seleccione buscar para ver todos",
         "files": "Archivos",
+        "totals": "Totales",
         "noDetailsInfo": "No se han cargado detalles. Por favor agregue un item para poder continuar",
         "histories": {
             "createdDate": "Fecha Creación",
@@ -1131,5 +1132,15 @@
             "statusFrom": "Estado inicial",
             "statusTo": "Estado final"
         }
+    },
+    "advRefSetting": {
+        "title": "Configuración",
+        "ammounts": "Montos",
+        "ammountAPesos": "Monto A Pesos",
+        "ammountADolares": "Monto A Dolares",
+        "ammountAEuros": "Monto A Euros",
+        "ammountBPesos": "Monto B Pesos",
+        "ammountBDolares": "Monto B Dolares",
+        "ammountBEuros": "Monto B Euros"
     }
 }

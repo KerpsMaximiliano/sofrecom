@@ -1,0 +1,7 @@
+{
+    "modelError": "Alguno datos son incorrectos, por favor verifique los datos ingresados",
+    "valuesLessThan0": "Algunos valores son menores o iguales a 0, estos no seran actualizados",
+    "updateSuccess": "Los datos han sido actualizados correctamente",
+    "ammountRequired": "El monto es requerido",
+    "ammountWrong": "El monto no puede ser menor a 1"
+}

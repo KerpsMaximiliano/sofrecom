@@ -28,5 +28,7 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response Update(RefundModel model);
 
         Response Delete(int id);
+
+        Response<IList<RefundPaymentPendingModel>> GetAllPaymentPending();
     }
 }

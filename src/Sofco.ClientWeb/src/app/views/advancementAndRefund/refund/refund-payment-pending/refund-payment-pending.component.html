@@ -1,0 +1,54 @@
+<div class="row m-b-sm">
+    <div class="col-md-12">
+        <button *ngIf="!areAllSelected()" class="btn btn-success" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+        <button *ngIf="!areAllUnselected()" class="btn btn-warning" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+
+        <button *ngIf="!noneResourseSelected()" class="btn btn-primary" (click)="approveAll()">{{ 'ACTIONS.approveSelected' | translate }} <i class="fa fa-plus"></i></button>  
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-striped dataTable" role="grid" id="refund-payment-pending">
+                <thead>
+                    <tr>
+                        <th class="column-xs"></th>
+                        <th class="column-md">{{ 'refund.userApplicant' | translate }}</th>
+                        <th class="column-sm">{{ 'refund.applicationDate' | translate }}</th>
+                        <th class="column-xs">{{ 'refund.currency' | translate }}</th>
+                        <th class="column-sm">{{ 'refund.advancementSum' | translate }}</th>
+                        <th class="column-sm">{{ 'refund.itemTotal' | translate }}</th>
+                        <th class="column-sm">{{ 'refund.userRefund' | translate }}</th>
+                        <th class="column-sm">{{ 'advancement.bank' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                    <tr *ngFor="let item of model" class="pointer">
+                        <td class="column-xs text-center">
+                            <icheck [(checked)]="item.selected" (checkedChange)="calculateTotals()"></icheck>
+                        </td>
+                        <td class="column-md text-ellipsis" (click)="goToDetail(item)">{{ item.userApplicantDesc }}</td>
+                        <td class="column-sm" (click)="goToDetail(item)">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                        <td class="column-xs" (click)="goToDetail(item)">{{ item.currencyName }}</td>
+                        <td class="column-xs" (click)="goToDetail(item)">{{ item.advancementSum | amountFormat }}</td>
+                        <td class="column-xs" (click)="goToDetail(item)">{{ item.refundItemTotal | amountFormat }}</td>
+                        <td class="column-xs" (click)="goToDetail(item)">{{ item.userRefund | amountFormat }}</td>
+                        <td class="column-sm" (click)="goToDetail(item)">{{ item.bank }}</td>
+                    </tr>
+                </tbody>
+            </table>   
+        </div>
+    </div>
+</div>
+
+<h3 *ngIf="totals.length > 0">{{ 'refund.totals' | translate }}</h3>
+
+<div class="row">
+    <div class="col-sm-3" *ngFor="let item of totals">
+        <span>
+            <strong class="font-16">{{ item.text }}:</strong>
+            <span class="m-l-xs font-14">{{ item.value | amountFormat }}</span> 
+        </span>
+    </div>
+</div>

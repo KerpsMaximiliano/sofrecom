@@ -59,6 +59,10 @@ export class RefundService {
         return this.http.post<any>(`${this.baseUrl}/refund/search`, model);
     }
 
+    getAllPaymentPending(){
+        return this.http.get<any>(`${this.baseUrl}/refund/paymentPending`);
+    }
+
     exportFile(id){
         return this.http.get(`${this.baseUrl}/refund/export/${id}`, {
             responseType: 'arraybuffer',

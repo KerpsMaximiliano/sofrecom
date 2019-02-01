@@ -117,7 +117,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             return advancements;
         }
 
-        public IList<Advancement> GetAllPaymentPending(int workFlowStatePaymentPending, AdvancementSearchFinalizedModel model)
+        public IList<Advancement> GetAllPaymentPending(int workFlowStatePaymentPending)
         {
             var query = context.Advancements
                 .Include(x => x.Currency)
@@ -126,18 +126,6 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Authorizer)
                 .Include(x => x.Status).ThenInclude(x => x.ActualTransitions)
                 .Where(x => x.StatusId == workFlowStatePaymentPending);
-
-            if (model.ResourceId.HasValue && model.ResourceId.Value > 0)
-                query = query.Where(x => x.UserApplicantId == model.ResourceId.Value);
-
-            if (model.TypeId.HasValue && model.TypeId.Value > 0)
-                query = query.Where(x => x.Type == (AdvancementType)model.TypeId.Value);
-
-            if (model.DateSince.HasValue)
-                query = query.Where(x => x.CreationDate.Date >= model.DateSince.Value.Date);
-
-            if (model.DateTo.HasValue)
-                query = query.Where(x => x.CreationDate.Date <= model.DateTo.Value.Date);
 
             return query.ToList();
         }

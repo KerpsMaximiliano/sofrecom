@@ -22,7 +22,7 @@ namespace Sofco.Framework.Workflow.Conditions
 
         public bool CanDoTransition(WorkflowEntity entity, Response response)
         {
-            var refund = (Refund)entity;
+            var refund = (Domain.Models.AdvancementAndRefund.Refund)entity;
 
             var value = GetValueSetting(refund.CurrencyId);
 
@@ -40,19 +40,19 @@ namespace Sofco.Framework.Workflow.Conditions
 
             dictionary.Add(settings.CurrencyPesos, () =>
             {
-                var sett = this.unitOfWork.SettingRepository.GetByKey("AdvancementAmmountBPesos");
+                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountBPesos);
                 return Convert.ToInt32(sett.Value);
             });
 
             dictionary.Add(settings.CurrencyDolares, () =>
             {
-                var sett = this.unitOfWork.SettingRepository.GetByKey("AdvancementAmmountBDolares");
+                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountBDolares);
                 return Convert.ToInt32(sett.Value);
             });
 
             dictionary.Add(settings.CurrencyEuros, () =>
             {
-                var sett = this.unitOfWork.SettingRepository.GetByKey("AdvancementAmmountBEuros");
+                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountBEuros);
                 return Convert.ToInt32(sett.Value);
             });
 

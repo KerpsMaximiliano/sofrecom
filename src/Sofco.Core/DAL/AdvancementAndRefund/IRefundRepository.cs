@@ -24,5 +24,7 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         Refund GetById(int id);
 
         IList<Refund> GetByApplicant(int id);
+
+        IList<Refund> GetAllPaymentPending(int workFlowStatePaymentPending);
     }
 }

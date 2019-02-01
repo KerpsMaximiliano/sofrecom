@@ -57,19 +57,19 @@ namespace Sofco.Framework.Workflow.Conditions
 
             dictionary.Add(settings.CurrencyPesos, () =>
             {
-                var sett = this.unitOfWork.SettingRepository.GetByKey("AdvancementAmmountAPesos");
+                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountAPesos);
                 return Convert.ToInt32(sett.Value);
             });
 
             dictionary.Add(settings.CurrencyDolares, () =>
             {
-                var sett = this.unitOfWork.SettingRepository.GetByKey("AdvancementAmmountADolares");
+                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountADolares);
                 return Convert.ToInt32(sett.Value);
             });
 
             dictionary.Add(settings.CurrencyEuros, () =>
             {
-                var sett = this.unitOfWork.SettingRepository.GetByKey("AdvancementAmmountAEuros");
+                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountAEuros);
                 return Convert.ToInt32(sett.Value);
             });
 

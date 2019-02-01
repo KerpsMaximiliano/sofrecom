@@ -51,5 +51,17 @@
         public int WorkFlowStatePaymentPending { get; set; }
 
         public string RefundWorkflowTypeCode { get; set; }
+
+        public string AmmountAPesos { get; set; }
+
+        public string AmmountADolares { get; set; }
+
+        public string AmmountAEuros { get; set; }
+
+        public string AmmountBPesos { get; set; }
+
+        public string AmmountBDolares { get; set; }
+
+        public string AmmountBEuros { get; set; }
     }
 }

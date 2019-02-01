@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.Models.AdvancementAndRefund.Refund;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Validations.AdvancementAndRefund
@@ -8,5 +9,7 @@ namespace Sofco.Core.Validations.AdvancementAndRefund
         void ValidateAdd(RefundModel model, Response response);
 
         Response ValidateUpdate(RefundModel model);
+
+        bool HasUserRefund(Refund refund);
     }
 }

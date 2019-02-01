@@ -4,14 +4,15 @@ import { AdvancementDetailComponent } from "./advancement/detail/advancement-det
 import { AdvancementSearchComponent } from "./advancement/search/advancement-search.component";
 import { RefundListComponent } from "./refund/list/refund-list.component";
 import { RefundDetailComponent } from "./refund/detail/refund-detail.component";
-import { AdvancementListPaymentPendingComponent } from "./advancement/list-payment-pending/list-payment-pending.component";
+import { ListPaymentPendingComponent } from "./common/list-payment-pending/list-payment-pending.component";
+import { AdvancementRefundSettingComponent } from "./common/settings/setting.component";
 
 const ADVANCEMENT_AND_REFUND_ROUTER: Routes = [
     {
         path: "advancement",
         children: [
             { path: "search", component: AdvancementSearchComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "QUERY" }  },
-            { path: "paymentPending", component: AdvancementListPaymentPendingComponent, canActivate: [AuthGuard], data: { group: "DAF"  } },
+            { path: "paymentPending", component: ListPaymentPendingComponent, canActivate: [AuthGuard], data: { group: "DAF"  } },
             { path: ":id", component: AdvancementDetailComponent, canActivate: [AuthGuard] }
         ]},
     {
@@ -20,6 +21,9 @@ const ADVANCEMENT_AND_REFUND_ROUTER: Routes = [
             { path: "search", component: RefundListComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "REFUND-LIST-VIEW" }  },
             { path: ":id", component: RefundDetailComponent, canActivate: [AuthGuard] }
         ]
+    },
+    {
+        path: "setting", component: AdvancementRefundSettingComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "SETTING" }
     }
 ]
 
