@@ -398,8 +398,9 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
             var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUser.Email);
             var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUser.Email);
+            var hasComplianceGroup = unitOfWork.UserRepository.HasComplianceGroup(currentUser.Email);
 
-            var hasAllAccess = hasDirectorGroup || hasRrhhGroup || hasGafGroup || hasDafGroup;
+            var hasAllAccess = hasDirectorGroup || hasRrhhGroup || hasGafGroup || hasDafGroup || hasComplianceGroup;
 
             return hasAllAccess;
         }
