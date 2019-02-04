@@ -54,6 +54,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
                 this.userApplicantId = response.data.userApplicantId;
 
                 this.form.setModel(response.data, this.canUpdate());
+                this.form.hasCreditCardChanged(false);
 
                 if(response.data && response.data.files && response.data.files.length > 0){
                     this.files = response.data.files;
