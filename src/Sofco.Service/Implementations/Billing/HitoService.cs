@@ -1,194 +1,92 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
-using Sofco.Core.DAL;
-using Sofco.Core.Logger;
 using Sofco.Core.Services.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
+using Sofco.Service.Crm.Interfaces;
 
 namespace Sofco.Service.Implementations.Billing
 {
     public class HitoService : IHitoService
     {
         private readonly CrmConfig crmConfig;
-        private readonly ILogMailer<HitoService> logger;
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IHostingEnvironment environment;
+        private readonly ICrmInvoicingMilestoneService crmInvoicingMilestoneService;
 
-        public HitoService(IOptions<CrmConfig> crmOptions, ILogMailer<HitoService> logger, IUnitOfWork unitOfWork, IHostingEnvironment environment)
+        public HitoService(IOptions<CrmConfig> crmOptions,
+            ICrmInvoicingMilestoneService crmInvoicingMilestoneService)
         {
             this.crmConfig = crmOptions.Value;
-            this.logger = logger;
-            this.unitOfWork = unitOfWork;
-            this.environment = environment;
+            this.crmInvoicingMilestoneService = crmInvoicingMilestoneService;
         }
-         
+
         public Response Close(string id)
         {
             var response = new Response();
 
             var closeStatusCode = crmConfig.CloseStatusCode;
 
-            using (var client = new HttpClient())
+            crmInvoicingMilestoneService.Close(response, id, closeStatusCode);
+
+            if (!response.HasErrors())
             {
-                client.BaseAddress = new Uri(crmConfig.Url);
-
-                try
-                {
-                    var stringContent = new StringContent("StatusCode="+ closeStatusCode, Encoding.UTF8, "application/x-www-form-urlencoded");
-                    var result = client.PutAsync($"/api/InvoiceMilestone/{id}", stringContent).Result;
-
-                    result.EnsureSuccessStatusCode();
-
-                    response.Messages.Add(new Message(Resources.Billing.Solfac.CloseHito, MessageType.Success));
-                }
-                catch (Exception e)
-                {
-                    logger.LogError(e);
-                    response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
-                }
+                response.Messages.Add(new Message(Resources.Billing.Solfac.CloseHito, MessageType.Success));
             }
-
-            return response;
-        }
-
-        public async Task<Response> SplitHito(HitoSplittedParams hito)
-        {
-            var response = ValidateHitoSplitted(hito);
-
-            if (response.HasErrors()) return response;
-
-            using (var client = new HttpClient())
+            else
             {
-                client.BaseAddress = new Uri(crmConfig.Url);
-
-                try
-                {
-                    await UpdateFirstHito(response, hito, client);
-                    await CreateNewHito(response, hito, client);
-
-                    if (!response.HasErrors())
-                    {
-                        response.AddSuccess(Resources.Billing.Project.HitoSplitted);
-                    }
-                }
-                catch (Exception e)
-                {
-                    logger.LogError(e);
-                    response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
-                }
-            }
-
-            return response;
-        }
-
-        public async Task<Response> Create(HitoSplittedParams hito)
-        {
-            var response = ValidateHitoSplitted(hito);
-
-            var currency = ValdiateCurrency(hito, response);
-
-            if (response.HasErrors()) return response;
-
-            hito.MoneyId = environment.EnvironmentName.Equals("azgap01wp") ? currency.CrmProductionId : currency.CrmDevelopmentId;
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(crmConfig.Url);
-
-                try
-                {
-                    await CreateNewHito(response, hito, client);
-
-                    if (!response.HasErrors())
-                    {
-                        response.AddSuccess(Resources.Billing.Project.HitoCreated);
-                    }
-                }
-                catch (Exception e)
-                {
-                    logger.LogError(e);
-                    response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
-                }
-            }
-
-            return response;
-        }
-
-        private Currency ValdiateCurrency(HitoSplittedParams hito, Response response)
-        {
-            var currency = unitOfWork.UtilsRepository.GetCurrencies().SingleOrDefault(x => x.Id == Convert.ToInt32(hito.MoneyId));
-
-            if (currency == null)
-            {
-                response.AddError(Resources.Common.CurrencyRequired);
-            }
-
-            return currency;
-        }
-
-        private async Task CreateNewHito(Response response, HitoSplittedParams hito, HttpClient client)
-        {
-            var data =
-                $"Ammount={hito.Ammount}&StatusCode=1&StartDate={hito.StartDate:O}&Name={hito.Name}&MoneyId={hito.MoneyId}" +
-                $"&Month={hito.Month}&ProjectId={hito.ProjectId}&OpportunityId={hito.OpportunityId}&ManagerId={hito.ManagerId}";
-
-            var urlPath = "/api/InvoiceMilestone";
-
-            try
-            {
-                var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
-
-                var httpResponse = await client.PostAsync(urlPath, stringContent);
-
-                httpResponse.EnsureSuccessStatusCode();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(urlPath + "; data: " + data, ex);
                 response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
             }
+
+            return response;
         }
 
-        private async Task UpdateFirstHito(Response response, HitoSplittedParams hito, HttpClient client)
+        public Response SplitHito(HitoSplittedParams hito)
         {
-            var closeStatusCode = crmConfig.CloseStatusCode;
+            var response = Create(hito);
+            UpdateFirstHito(response, hito);
 
-            if (hito.AmmountFirstHito == 0 || hito.StatusCode == closeStatusCode) return;
+            if (response.HasErrors())
+            {
+                response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
+            }
+
+            return response;
+        }
+
+        public Response Create(HitoSplittedParams hito)
+        {
+            var response = ValidateHitoSplitted(hito);
+
+            if (response.HasErrors()) return response;
+
+            crmInvoicingMilestoneService.Create(hito, response);
+
+            if (!response.HasErrors())
+            {
+                response.AddSuccess(Resources.Billing.Project.HitoCreated);
+            }
+            else
+            {
+                response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
+            }
+
+            return response;
+        }
+
+        private void UpdateFirstHito(Response response, HitoSplittedParams hito)
+        {
+            if (hito.AmmountFirstHito == 0 || hito.StatusCode == crmConfig.CloseStatusCode) return;
 
             if (hito.AmmountFirstHito - hito.Ammount <= 0)
+            {
+                hito.StatusCode = crmConfig.CloseStatusCode;
                 hito.AmmountFirstHito = 0;
+            }
             else
                 hito.AmmountFirstHito -= hito.Ammount.GetValueOrDefault();
 
-            var data = $"Ammount={hito.AmmountFirstHito}";
-
-            if (hito.AmmountFirstHito == 0) data += "&StatusCode=" + closeStatusCode;
-
-            var urlPath = $"/api/InvoiceMilestone/{hito.ExternalHitoId}";
-
-            try
-            {
-                var stringContent = new StringContent(data, Encoding.UTF8, "application/x-www-form-urlencoded");
-
-                var httpResponse = await client.PutAsync(urlPath, stringContent);
-
-                httpResponse.EnsureSuccessStatusCode();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(urlPath + "; data: " + data, ex);
-                response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
-            }
+            crmInvoicingMilestoneService.Update(hito, response);
         }
 
         private Response ValidateHitoSplitted(HitoSplittedParams hito)

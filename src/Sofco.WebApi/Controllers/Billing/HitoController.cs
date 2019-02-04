@@ -29,17 +29,17 @@ namespace Sofco.WebApi.Controllers.Billing
 
         [HttpPost]
         [Route("split")]
-        public async Task<IActionResult> Split([FromBody] HitoSplittedParams hito)
+        public IActionResult Split([FromBody] HitoSplittedParams hito)
         {
-            var response = await hitoService.SplitHito(hito);
+            var response = hitoService.SplitHito(hito);
 
             return this.CreateResponse(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] HitoSplittedParams hito)
+        public IActionResult Post([FromBody] HitoSplittedParams hito)
         {
-            var response = await hitoService.Create(hito);
+            var response = hitoService.Create(hito);
 
             return this.CreateResponse(response);
         }

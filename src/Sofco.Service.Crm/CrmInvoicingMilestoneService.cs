@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Sofco.Common.Domains;
 using Sofco.Core.Logger;
 using Sofco.Domain.Crm;
+using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 using Sofco.Service.Crm.HttpClients.Interfaces;
 using Sofco.Service.Crm.Interfaces;
 using Sofco.Service.Crm.TranslatorMaps;
@@ -62,36 +64,79 @@ namespace Sofco.Service.Crm
             return TranslateToProjectHito(data);
         }
 
-        public Result Update(CrmInvoicingMilestone data)
+        public void Update(HitoSplittedParams data, Response response)
         {
-            var result = new Result();
-
-            if (data.Id == Guid.Empty)
-            {
-                return result;
-            }
+            if (string.IsNullOrWhiteSpace(data.ExternalHitoId)) return;
 
             try
             {
-            var body = new { statuscode = 0 };
+                var content = new JObject
+                {
+                    ["statuscode"] = data.StatusCode,
+                    ["as_amount"] = data.AmmountFirstHito
+                };
 
-            httpClient.Patch<JObject>(UrlPath + "(" + data.Id + ")", body);
+                httpClient.Patch<JObject>(UrlPath + "(" + data.ExternalHitoId + ")", content);
             }
             catch (Exception ex)
             {
-                var msg = "CrmHitoId = " + data.Id;
+                var msg = "CrmHitoId = " + data.ExternalHitoId;
 
                 logger.LogError(msg, ex);
 
-                result.AddError(msg);
+                response.AddError(msg);
             }
-
-            return result;
         }
 
-        public Result Create(CrmInvoicingMilestone data)
+        public void Close(Response response, string id, string status)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var content = new JObject
+                {
+                    ["statuscode"] = status,
+                };
+
+                httpClient.Patch<JObject>(UrlPath + "(" + id + ")", content);
+            }
+            catch (Exception ex)
+            {
+                var msg = "CrmHitoId = " + id;
+
+                logger.LogError(msg, ex);
+
+                response.AddError(msg);
+            }
+        }
+
+        public void Create(HitoSplittedParams data, Response response)
+        {
+            var date = data.StartDate.HasValue ? data.StartDate.Value.ToString("yyyy-MM-dd") : DateTime.UtcNow.ToString("yyyy-MM-dd");
+
+            var content = new JObject
+            {
+                ["as_name"] = data.Name,
+                ["as_month"] = data.Month,
+                ["as_date"] = date,
+                ["statuscode"] = 1,
+                ["as_amount"] = data.Ammount.GetValueOrDefault(),
+                ["transactioncurrencyid@odata.bind"] = $"/transactioncurrencies({data.MoneyId})",
+                ["as_InvoicingMilestonesId@odata.bind"] = $"/as_projects({data.ProjectId})",
+                ["as_OpportunityId@odata.bind"] = $"/opportunities({data.OpportunityId})"
+            };
+
+            try
+            {
+                httpClient.Post<JObject>(UrlPath, content);
+            }
+            catch (Exception ex)
+            {
+                var msg = "OpportunityId: " + data.OpportunityId + " - data: " + JsonConvert.SerializeObject(content);
+
+                logger.LogError(msg, ex);
+
+                response.AddError(msg);
+            }
         }
 
         private string GetQuery(string filter)

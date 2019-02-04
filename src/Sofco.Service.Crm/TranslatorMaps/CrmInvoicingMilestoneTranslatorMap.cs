@@ -37,7 +37,7 @@ namespace Sofco.Service.Crm.TranslatorMaps
                 {nameof(CrmInvoicingMilestone.PurchaseOrder), PurchaseOrder},
             };
         }
-
+         
         public string KeySelects()
         {
             var list = new List<string>

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sofco.Common.Domains;
 using Sofco.Domain.Crm;
+using Sofco.Domain.DTO;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Crm.Interfaces
 {
@@ -11,8 +12,10 @@ namespace Sofco.Service.Crm.Interfaces
 
         List<CrmProjectHito> GetByProjectId(Guid projectId);
 
-        Result Update(CrmInvoicingMilestone data);
+        void Update(HitoSplittedParams data, Response response);
 
-        Result Create(CrmInvoicingMilestone data);
+        void Create(HitoSplittedParams data, Response response);
+
+        void Close(Response response, string id, string status);
     }
 }
