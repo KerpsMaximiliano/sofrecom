@@ -86,7 +86,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     }
 
     canBack(){
-        return this.menuService.hasFunctionality('ADVAN', 'QUERY-REFUND');
+        return this.menuService.hasFunctionality('ADVAN', 'REFUND-LIST-VIEW');
     }
     
     canUpdate(){
