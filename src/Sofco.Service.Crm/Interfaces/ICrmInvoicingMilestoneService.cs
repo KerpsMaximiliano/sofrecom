@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Domain.Crm;
 using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Crm.Interfaces
@@ -12,9 +13,17 @@ namespace Sofco.Service.Crm.Interfaces
 
         List<CrmProjectHito> GetByProjectId(Guid projectId);
 
-        void Update(HitoSplittedParams data, Response response);
+        void UpdateAmmountAndStatus(HitoParameters data, Response response);
 
-        void Create(HitoSplittedParams data, Response response);
+        void UpdateStatus(List<string> hitoIds, HitoStatus hitoStatus);
+
+        void UpdateStatusAndPurchaseOrder(List<string> hitoIds, HitoStatus hitoStatus, string purchaseOrderNumber);
+
+        void UpdateStatusAndInvoiceDateAndNumber(List<string> hitoIds, HitoStatus hitoStatus, DateTime invoicingDate, string invoiceCode);
+
+        void UpdateStatusAndBillingDate(List<string> hitoIds, HitoStatus hitoStatus, DateTime billingDate);
+
+        string Create(HitoParameters data, Response response);
 
         void Close(Response response, string id, string status);
     }

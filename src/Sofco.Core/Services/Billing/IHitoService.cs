@@ -7,8 +7,8 @@ namespace Sofco.Core.Services.Billing
     {
         Response Close(string id);
 
-        Response SplitHito(HitoSplittedParams hito);
+        Response SplitHito(HitoParameters hito);
 
-        Response Create(HitoSplittedParams hito);
+        Response Create(HitoParameters hito);
     }
 }

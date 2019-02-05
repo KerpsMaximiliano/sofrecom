@@ -28,7 +28,7 @@ namespace Sofco.WebApi.Controllers.Billing
 
         [HttpPost]
         [Route("split")]
-        public IActionResult Split([FromBody] HitoSplittedParams hito)
+        public IActionResult Split([FromBody] HitoParameters hito)
         {
             var response = hitoService.SplitHito(hito);
 
@@ -36,7 +36,7 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] HitoSplittedParams hito)
+        public IActionResult Post([FromBody] HitoParameters hito)
         {
             var response = hitoService.Create(hito);
 

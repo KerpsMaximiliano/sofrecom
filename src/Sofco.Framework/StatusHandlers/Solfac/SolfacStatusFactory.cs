@@ -1,8 +1,8 @@
-﻿using Sofco.Core.CrmServices;
-using Sofco.Core.DAL;
+﻿using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Domain.Enums;
+using Sofco.Service.Crm.Interfaces;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -10,13 +10,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
     {
         private readonly IUnitOfWork unitOfWork;
 
-        private readonly ICrmInvoiceService crmInvoiceService;
+        private readonly ICrmInvoicingMilestoneService crmInvoiceService;
 
         private readonly IMailBuilder mailBuilder;
 
         private readonly IMailSender mailSender;
 
-        public SolfacStatusFactory(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder, IMailSender mailSender)
+        public SolfacStatusFactory(IUnitOfWork unitOfWork, ICrmInvoicingMilestoneService crmInvoiceService, IMailBuilder mailBuilder, IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;

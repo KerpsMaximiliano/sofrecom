@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Config;
-using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
@@ -10,6 +9,7 @@ using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
+using Sofco.Service.Crm.Interfaces;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -17,13 +17,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
     {
         private readonly IUnitOfWork unitOfWork;
 
-        private readonly ICrmInvoiceService crmInvoiceService;
+        private readonly ICrmInvoicingMilestoneService crmInvoiceService;
 
         private readonly IMailBuilder mailBuilder;
 
         private readonly IMailSender mailSender;
 
-        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, IMailBuilder mailBuilder, IMailSender mailSender)
+        public SolfacStatusManagementControlRejectedHandler(IUnitOfWork unitOfWork, ICrmInvoicingMilestoneService crmInvoiceService, IMailBuilder mailBuilder, IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
@@ -87,7 +87,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac, string url)
         {
-            crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
+            crmInvoiceService.UpdateStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
         }
 
         public void SendMail(Domain.Models.Billing.Solfac solfac, EmailConfig emailConfig)

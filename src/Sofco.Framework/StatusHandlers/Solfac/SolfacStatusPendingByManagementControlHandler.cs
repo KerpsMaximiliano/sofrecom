@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Config;
-using Sofco.Core.CrmServices;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
@@ -10,8 +8,8 @@ using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
-using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Utils;
+using Sofco.Service.Crm.Interfaces;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -19,13 +17,13 @@ namespace Sofco.Framework.StatusHandlers.Solfac
     {
         private readonly IUnitOfWork unitOfWork;
 
-        private readonly ICrmInvoiceService crmInvoiceService;
+        private readonly ICrmInvoicingMilestoneService crmInvoiceService;
 
         private readonly IMailBuilder mailBuilder;
 
         private readonly IMailSender mailSender;
 
-        public SolfacStatusPendingByManagementControlHandler(IUnitOfWork unitOfWork, ICrmInvoiceService crmInvoiceService, 
+        public SolfacStatusPendingByManagementControlHandler(IUnitOfWork unitOfWork, ICrmInvoicingMilestoneService crmInvoiceService, 
                                                              IMailBuilder mailBuilder, IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
@@ -109,7 +107,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 ocNumber = solfac.PurchaseOrder.Number;
             }
 
-            crmInvoiceService.UpdateHitosStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), ocNumber);
+            crmInvoiceService.UpdateStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), ocNumber);
         }
 
 

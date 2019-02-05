@@ -6,6 +6,10 @@ using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Service.Crm.Interfaces;
+using Sofco.Core.DAL;
+using Microsoft.AspNetCore.Hosting;
+using System.Linq;
+using System;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -13,11 +17,17 @@ namespace Sofco.Service.Implementations.Billing
     {
         private readonly CrmConfig crmConfig;
         private readonly ICrmInvoicingMilestoneService crmInvoicingMilestoneService;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IHostingEnvironment environment;
 
         public HitoService(IOptions<CrmConfig> crmOptions,
+            IUnitOfWork unitOfWork,
+            IHostingEnvironment environment,
             ICrmInvoicingMilestoneService crmInvoicingMilestoneService)
         {
             this.crmConfig = crmOptions.Value;
+            this.environment = environment;
+            this.unitOfWork = unitOfWork;
             this.crmInvoicingMilestoneService = crmInvoicingMilestoneService;
         }
 
@@ -41,7 +51,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response SplitHito(HitoSplittedParams hito)
+        public Response SplitHito(HitoParameters hito)
         {
             var response = Create(hito);
             UpdateFirstHito(response, hito);
@@ -54,11 +64,15 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response Create(HitoSplittedParams hito)
+        public Response Create(HitoParameters hito)
         {
             var response = ValidateHitoSplitted(hito);
 
+            var currency = ValdiateCurrency(hito, response);
+
             if (response.HasErrors()) return response;
+
+            hito.MoneyId = environment.EnvironmentName.Equals("azgap01wp") ? currency.CrmProductionId : currency.CrmDevelopmentId;
 
             crmInvoicingMilestoneService.Create(hito, response);
 
@@ -74,7 +88,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private void UpdateFirstHito(Response response, HitoSplittedParams hito)
+        private void UpdateFirstHito(Response response, HitoParameters hito)
         {
             if (hito.AmmountFirstHito == 0 || hito.StatusCode == crmConfig.CloseStatusCode) return;
 
@@ -86,10 +100,10 @@ namespace Sofco.Service.Implementations.Billing
             else
                 hito.AmmountFirstHito -= hito.Ammount.GetValueOrDefault();
 
-            crmInvoicingMilestoneService.Update(hito, response);
+            crmInvoicingMilestoneService.UpdateAmmountAndStatus(hito, response);
         }
 
-        private Response ValidateHitoSplitted(HitoSplittedParams hito)
+        private Response ValidateHitoSplitted(HitoParameters hito)
         {
             var response = new Response();
 
@@ -100,6 +114,18 @@ namespace Sofco.Service.Implementations.Billing
             HitoValidatorHelper.ValidateOpportunity(hito, response);
 
             return response;
+        }
+
+        private Currency ValdiateCurrency(HitoParameters hito, Response response)
+        {
+            var currency = unitOfWork.UtilsRepository.GetCurrencies().SingleOrDefault(x => x.Id == Convert.ToInt32(hito.MoneyId));
+
+            if (currency == null)
+            {
+                response.AddError(Resources.Common.CurrencyRequired);
+            }
+
+            return currency;
         }
     }
 }

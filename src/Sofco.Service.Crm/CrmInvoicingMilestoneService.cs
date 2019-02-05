@@ -64,52 +64,124 @@ namespace Sofco.Service.Crm
             return TranslateToProjectHito(data);
         }
 
-        public void Update(HitoSplittedParams data, Response response)
+        private void Update(JObject content, string hitoId, Response response)
         {
-            if (string.IsNullOrWhiteSpace(data.ExternalHitoId)) return;
-
             try
             {
-                var content = new JObject
-                {
-                    ["statuscode"] = data.StatusCode,
-                    ["as_amount"] = data.AmmountFirstHito
-                };
-
-                httpClient.Patch<JObject>(UrlPath + "(" + data.ExternalHitoId + ")", content);
+                httpClient.Patch<JObject>(UrlPath + "(" + hitoId + ")", content);
             }
             catch (Exception ex)
             {
-                var msg = "CrmHitoId = " + data.ExternalHitoId;
+                var msg = "CrmHitoId = " + hitoId;
 
                 logger.LogError(msg, ex);
 
                 response.AddError(msg);
+            }
+        }
+
+        public void UpdateAmmountAndStatus(HitoParameters data, Response response)
+        {
+            if (string.IsNullOrWhiteSpace(data.ExternalHitoId)) return;
+
+            var content = new JObject
+            {
+                ["statuscode"] = data.StatusCode,
+                ["as_amount"] = data.AmmountFirstHito
+            };
+
+            Update(content, data.ExternalHitoId, response);
+        }
+
+        public void UpdateStatus(List<string> hitoIds, HitoStatus hitoStatus)
+        {
+            var statusCode = (int)hitoStatus;
+            var response = new Response();
+
+            foreach (var hitoId in hitoIds)
+            {
+                if (string.IsNullOrWhiteSpace(hitoId)) continue;
+
+                var content = new JObject
+                {
+                    ["statuscode"] = statusCode,
+                };
+
+                Update(content, hitoId, response);
+            }
+        }
+
+        public void UpdateStatusAndPurchaseOrder(List<string> hitoIds, HitoStatus hitoStatus, string purchaseOrderNumber)
+        {
+            var statusCode = (int)hitoStatus;
+            var response = new Response();
+
+            foreach (var hitoId in hitoIds)
+            {
+                if (string.IsNullOrWhiteSpace(hitoId)) continue;
+
+                var content = new JObject
+                {
+                    ["statuscode"] = statusCode,
+                    ["as_nroordencompra"] = purchaseOrderNumber,
+                };
+
+                Update(content, hitoId, response);
+            }
+        }
+
+        public void UpdateStatusAndInvoiceDateAndNumber(List<string> hitoIds, HitoStatus hitoStatus, DateTime invoicingDate, string invoiceCode)
+        {
+            var statusCode = (int)hitoStatus;
+            var response = new Response();
+
+            foreach (var hitoId in hitoIds)
+            {
+                if (string.IsNullOrWhiteSpace(hitoId)) continue;
+
+                var content = new JObject
+                {
+                    ["statuscode"] = statusCode,
+                    ["as_invoiceddate"] = invoicingDate.ToString("yyyy-MM-dd"),
+                    ["as_invoicenumber"] = invoiceCode,
+                };
+
+                Update(content, hitoId, response);
+            }
+        }
+
+        public void UpdateStatusAndBillingDate(List<string> hitoIds, HitoStatus hitoStatus, DateTime billingDate)
+        {
+            var statusCode = (int)hitoStatus;
+            var response = new Response();
+
+            foreach (var hitoId in hitoIds)
+            {
+                if (string.IsNullOrWhiteSpace(hitoId)) continue;
+
+                var content = new JObject
+                {
+                    ["statuscode"] = statusCode,
+                    ["as_paiddate"] = billingDate.ToString("yyyy-MM-dd"),
+                };
+
+                Update(content, hitoId, response);
             }
         }
 
         public void Close(Response response, string id, string status)
         {
-            try
+            if (string.IsNullOrWhiteSpace(id)) return;
+
+            var content = new JObject
             {
-                var content = new JObject
-                {
-                    ["statuscode"] = status,
-                };
+                ["statuscode"] = status,
+            };
 
-                httpClient.Patch<JObject>(UrlPath + "(" + id + ")", content);
-            }
-            catch (Exception ex)
-            {
-                var msg = "CrmHitoId = " + id;
-
-                logger.LogError(msg, ex);
-
-                response.AddError(msg);
-            }
+            Update(content, id, response);
         }
 
-        public void Create(HitoSplittedParams data, Response response)
+        public string Create(HitoParameters data, Response response)
         {
             var date = data.StartDate.HasValue ? data.StartDate.Value.ToString("yyyy-MM-dd") : DateTime.UtcNow.ToString("yyyy-MM-dd");
 
@@ -127,7 +199,11 @@ namespace Sofco.Service.Crm
 
             try
             {
-                httpClient.Post<JObject>(UrlPath, content);
+                var result = httpClient.Post<JObject>(UrlPath, content);
+
+                var hito = mapper.Map<CrmInvoicingMilestone, CrmProjectHito>(translator.Translate(result.Data));
+
+                return hito.Id;
             }
             catch (Exception ex)
             {
@@ -137,6 +213,8 @@ namespace Sofco.Service.Crm
 
                 response.AddError(msg);
             }
+
+            return string.Empty;
         }
 
         private string GetQuery(string filter)

@@ -2,7 +2,7 @@
 
 namespace Sofco.Domain.DTO
 {
-    public class HitoSplittedParams
+    public class HitoParameters
     {
         public string ExternalHitoId { get; set; }
         public string Name { get; set; }

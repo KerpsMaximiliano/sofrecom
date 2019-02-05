@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Options;
-using Sofco.Core.CrmServices;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Crm;

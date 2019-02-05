@@ -6,7 +6,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 {
     public class HitoValidatorHelper
     {
-        public static void ValidateAmmounts(HitoSplittedParams hito, Response response)
+        public static void ValidateAmmounts(HitoParameters hito, Response response)
         {
             if (!hito.Ammount.HasValue || hito.Ammount.GetValueOrDefault() <= 0)
             {
@@ -14,7 +14,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateOpportunity(HitoSplittedParams hito, Response response)
+        public static void ValidateOpportunity(HitoParameters hito, Response response)
         {
             if (string.IsNullOrWhiteSpace(hito.OpportunityId) || hito.OpportunityId.Equals("00000000-0000-0000-0000-000000000000"))
             {
@@ -22,7 +22,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateName(HitoSplittedParams hito, Response response)
+        public static void ValidateName(HitoParameters hito, Response response)
         {
             if (string.IsNullOrWhiteSpace(hito.Name))
             {
@@ -30,7 +30,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateMonth(HitoSplittedParams hito, Response response)
+        public static void ValidateMonth(HitoParameters hito, Response response)
         {
             if (hito.Month <= 0)
             {
@@ -38,7 +38,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateDate(HitoSplittedParams hito, Response response)
+        public static void ValidateDate(HitoParameters hito, Response response)
         {
             if (!hito.StartDate.HasValue)
             {
