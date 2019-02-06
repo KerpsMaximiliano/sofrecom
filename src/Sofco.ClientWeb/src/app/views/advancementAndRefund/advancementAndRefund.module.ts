@@ -34,16 +34,14 @@ import { RefundHistoryComponent } from "./refund/history/refund-history.componen
 import { ButtonsModule } from "app/components/buttons/buttons.module";
 import { AmountFormatModule } from "app/pipes/amount-format.module";
 import { ListPaymentPendingComponent } from "./common/list-payment-pending/list-payment-pending.component";
-import { AdvancementListPaymentPendingComponent } from "./advancement/advancement-payment-pending/advancement-payment-pending.component";
-import { RefundListPaymentPendingComponent } from "./refund/refund-payment-pending/refund-payment-pending.component";
 import { AdvancementRefundSettingComponent } from "./common/settings/setting.component";
 import { AdvancementRefundSettingService } from "app/services/advancement-and-refund/setting.service";
 
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,
-                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundHistoryComponent,
-                    RefundListComponent, RefundListFilterComponent, RefundListGridComponent, AdvancementListPaymentPendingComponent,
-                    ListPaymentPendingComponent, RefundListPaymentPendingComponent, AdvancementRefundSettingComponent
+                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent,
+                    RefundListComponent, RefundListFilterComponent, RefundListGridComponent, RefundHistoryComponent,
+                    ListPaymentPendingComponent, AdvancementRefundSettingComponent
                   ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, RefundFormModule,

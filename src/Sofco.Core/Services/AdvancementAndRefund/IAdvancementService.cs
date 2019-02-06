@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
+using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.AdvancementAndRefund
@@ -15,6 +16,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<bool> CanLoad();
         Response<IList<AdvancementUnrelatedItem>> GetUnrelated();
         Response Delete(int id);
-        Response<IList<AdvancementListItem>> GetAllPaymentPending();
+        Response<IList<PaymentPendingModel>> GetAllPaymentPending();
     }
 }

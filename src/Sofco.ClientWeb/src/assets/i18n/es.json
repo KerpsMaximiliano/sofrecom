@@ -1136,6 +1136,7 @@
     "advRefSetting": {
         "title": "Configuración",
         "ammounts": "Montos",
+        "type": "Tipo",
         "ammountAPesos": "Monto A Pesos",
         "ammountADolares": "Monto A Dolares",
         "ammountAEuros": "Monto A Euros",

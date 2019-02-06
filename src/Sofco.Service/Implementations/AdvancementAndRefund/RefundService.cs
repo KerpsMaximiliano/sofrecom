@@ -15,6 +15,7 @@ using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
+using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
@@ -424,10 +425,10 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return false;
         }
 
-        public Response<IList<RefundPaymentPendingModel>> GetAllPaymentPending()
+        public Response<IList<PaymentPendingModel>> GetAllPaymentPending()
         {
-            var response = new Response<IList<RefundPaymentPendingModel>>();
-            response.Data = new List<RefundPaymentPendingModel>();
+            var response = new Response<IList<PaymentPendingModel>>();
+            response.Data = new List<PaymentPendingModel>();
 
             var employeeDicc = new Dictionary<string, string>();
 
@@ -441,9 +442,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             response.Data = refunds.Select(x =>
             {
-                var item = mapper.Map<Refund, RefundPaymentPendingModel>(x);
+                var item = new PaymentPendingModel
+                {
+                    Id = x.Id,
+                    UserApplicantId = x.UserApplicantId,
+                    UserApplicantDesc = x.UserApplicant?.Name,
+                    CurrencyId = x.CurrencyId,
+                    CurrencyDesc = x.Currency?.Text,
+                    Ammount = ResolveUserRefund(x),
+                    Type = "Reintegro"
+                };
 
-                item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+                item.Bank = GetBank(x.UserApplicant?.Email, employeeDicc);
 
                 var transition = x.Status.ActualTransitions.FirstOrDefault();
 
@@ -457,6 +467,16 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }).ToList();
 
             return response;
+        }
+
+        private decimal ResolveUserRefund(Refund refund)
+        {
+            var diffTotal = refund.AdvancementRefunds
+                                .Sum(x => x.Advancement.Ammount) - refund.Details.Sum(x => x.Ammount);
+
+            return diffTotal < 0
+                ? Math.Abs(diffTotal)
+                : 0;
         }
 
         private string GetBank(string email, Dictionary<string, string> employeeDictionary)

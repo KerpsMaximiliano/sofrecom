@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
+using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Domain.Models.Common;
@@ -29,6 +30,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
 
         Response Delete(int id);
 
-        Response<IList<RefundPaymentPendingModel>> GetAllPaymentPending();
+        Response<IList<PaymentPendingModel>> GetAllPaymentPending();
     }
 }

@@ -9,6 +9,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
+using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Models.AdvancementAndRefund;
@@ -94,7 +95,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         }
 
         public Response<AdvancementEditModel> Get(int id)
-        { 
+        {
             var response = new Response<AdvancementEditModel>();
 
             var advancement = unitOfWork.AdvancementRepository.GetFullById(id);
@@ -192,10 +193,10 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        public Response<IList<AdvancementListItem>> GetAllPaymentPending()
+        public Response<IList<PaymentPendingModel>> GetAllPaymentPending()
         {
-            var response = new Response<IList<AdvancementListItem>>();
-            response.Data = new List<AdvancementListItem>();
+            var response = new Response<IList<PaymentPendingModel>>();
+            response.Data = new List<PaymentPendingModel>();
 
             var employeeDicc = new Dictionary<string, string>();
 
@@ -209,9 +210,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             response.Data = advancements.Select(x =>
             {
-                var item = new AdvancementListItem(x);
+                var item = new PaymentPendingModel
+                {
+                    Id = x.Id,
+                    UserApplicantId = x.UserApplicantId,
+                    UserApplicantDesc = x.UserApplicant?.Name,
+                    CurrencyId = x.CurrencyId,
+                    CurrencyDesc = x.Currency?.Text,
+                    Ammount = x.Ammount,
+                    Type = "Adelanto"
+                };
 
-                item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+                item.Bank = GetBank(x.UserApplicant?.Email, employeeDicc);
 
                 var transition = x.Status.ActualTransitions.FirstOrDefault();
 
