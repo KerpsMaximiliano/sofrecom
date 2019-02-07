@@ -243,9 +243,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var diccionaryAnalytics = new Dictionary<int, Analytic>();
 
             if (parameters.StartPercentage.GetValueOrDefault() == 0 &&
-                parameters.EndPercentage.GetValueOrDefault() == 0)
+                parameters.EndPercentage.GetValueOrDefault() == 0 && 
+                !parameters.AnalyticIds.Any() &&
+                !parameters.EmployeeId.HasValue || (parameters.EmployeeId.HasValue && parameters.EmployeeId.Value == 0))
             {
-                employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassigned();
+                employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(parameters.StartDate, parameters.EndDate);
             }
 
             if (employees.Any() || employeesUnassigned.Any())
@@ -256,10 +258,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     foreach (var allocation in allocationResponse.Allocations)
                     {
-
                         if (parameters.AnalyticIds.Any() && parameters.AnalyticIds.All(x => x != allocation.AnalyticId)) continue;
-                        //if (parameters.Percentage.HasValue && parameters.Percentage != (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage != parameters.Percentage)) continue;
-                        //if (parameters.Percentage.HasValue && parameters.Percentage == (int)AllocationPercentage.Differente100 && allocation.Months.All(x => x.Percentage == 100)) continue;
 
                         if (parameters.Percentage.HasValue && parameters.Percentage > 0 &&
                             !allocation.Months.Any(x => x.Percentage >= parameters.StartPercentage.GetValueOrDefault() &&
