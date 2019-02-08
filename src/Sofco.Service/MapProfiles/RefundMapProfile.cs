@@ -42,7 +42,7 @@ namespace Sofco.Service.MapProfiles
 
         private decimal ResolveAdvancementSum(Refund refund)
         {
-            return refund.AdvancementRefunds.Sum(x => x.Advancement.Ammount);
+            return refund.AdvancementRefunds.Sum(x => x.OriginalAdvancement);
         }
 
         private decimal ResolveRefundItemTotal(Refund refund)
@@ -58,7 +58,7 @@ namespace Sofco.Service.MapProfiles
         private decimal ResolveCompanyRefund(Refund refund)
         {
             var diffTotal = refund.AdvancementRefunds
-                                .Sum(x => x.Advancement.Ammount) - refund.Details.Sum(x => x.Ammount);
+                                .Sum(x => x.OriginalAdvancement) - refund.Details.Sum(x => x.Ammount);
 
             return HasAdvancements(refund) && diffTotal > 0
                 ? Math.Abs(diffTotal)
@@ -68,7 +68,7 @@ namespace Sofco.Service.MapProfiles
         private decimal ResolveUserRefund(Refund refund)
         {
             var diffTotal = refund.AdvancementRefunds
-                                .Sum(x => x.Advancement.Ammount) - refund.Details.Sum(x => x.Ammount);
+                                .Sum(x => x.OriginalAdvancement) - refund.Details.Sum(x => x.Ammount);
 
             return diffTotal < 0
                 ? Math.Abs(diffTotal)

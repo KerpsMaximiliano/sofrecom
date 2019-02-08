@@ -57,6 +57,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Details)
                 .Include(x => x.AdvancementRefunds)
                     .ThenInclude(x => x.Advancement)
+                        .ThenInclude(x => x.AdvancementRefunds)
                 .Include(x => x.Attachments)
                     .ThenInclude(x => x.File)
                 .SingleOrDefault(x => x.Id == id);

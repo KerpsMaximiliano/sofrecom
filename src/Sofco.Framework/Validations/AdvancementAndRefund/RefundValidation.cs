@@ -54,7 +54,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
         public bool HasUserRefund(Refund refund)
         {
             var diffTotal = refund.AdvancementRefunds
-                                .Sum(x => x.Advancement.Ammount) - refund.Details.Sum(x => x.Ammount);
+                                .Sum(x => x.OriginalAdvancement) - refund.Details.Sum(x => x.Ammount);
 
             var diff = diffTotal < 0
                 ? Math.Abs(diffTotal)

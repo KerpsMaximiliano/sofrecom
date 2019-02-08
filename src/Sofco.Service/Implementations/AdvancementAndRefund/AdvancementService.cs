@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
-using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
@@ -50,7 +49,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             try
             {
                 var domain = model.CreateDomain();
-                domain.CreationDate = DateTime.UtcNow.Date;
+                domain.CreationDate = DateTime.UtcNow;
                 domain.StatusId = settings.WorkflowStatusDraft;
 
                 unitOfWork.AdvancementRepository.Insert(domain);
@@ -346,13 +345,15 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             foreach (var advancement in advancements)
             {
+                var balance = advancement.Ammount - advancement.AdvancementRefunds.Sum(x => x.DiscountedFromAdvancement);
+
                 response.Data.Add(new AdvancementUnrelatedItem
                 {
                     Id = advancement.Id,
                     CurrencyId = advancement.CurrencyId,
                     CurrencyText = advancement.Currency.Text,
-                    Ammount = advancement.Ammount,
-                    Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency.Text}"
+                    Ammount = balance,
+                    Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency.Text} - Saldo: {balance}"
                 });
             }
 

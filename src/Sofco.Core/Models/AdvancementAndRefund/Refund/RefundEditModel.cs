@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Domain.Enums;
@@ -37,13 +38,15 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             {
                 AdvancementIds.Add(advancementRefund.AdvancementId);
 
+                var balance = advancementRefund.Advancement.Ammount - advancementRefund.Advancement.AdvancementRefunds.Sum(x => x.DiscountedFromAdvancement);
+
                 Advancements.Add(new AdvancementUnrelatedItem
                 {
                     Id = advancementRefund.AdvancementId,
                     CurrencyId = refund.CurrencyId,
                     CurrencyText = refund.Currency?.Text,
-                    Ammount = advancementRefund.Advancement.Ammount,
-                    Text = $"{advancementRefund.Advancement.CreationDate:dd/MM/yyyy} - {advancementRefund.Advancement.Ammount} {refund.Currency?.Text}"
+                    Ammount = advancementRefund.OriginalAdvancement,
+                    Text = $"{advancementRefund.Advancement.CreationDate:dd/MM/yyyy} - {advancementRefund.Advancement.Ammount} {refund.Currency?.Text} - Saldo: {balance}"
                 });
             }
 

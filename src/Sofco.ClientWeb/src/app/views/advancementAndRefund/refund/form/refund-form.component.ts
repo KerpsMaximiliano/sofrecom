@@ -12,7 +12,6 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 import { MessageService } from "app/services/common/message.service";
 import { Validators } from "@angular/forms";
 import { UtilsService } from "app/services/common/utils.service";
-import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
     selector: 'refund-form',
@@ -77,7 +76,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     constructor(public formsService: FormsService,
         public advancementService: AdvancementService,
         private utilsService: UtilsService,
-        private menuService: MenuService,
         public messageService: MessageService,
         public analyticService: AnalyticService,
         public i18nService: I18nService){}
@@ -89,12 +87,12 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             this.canUpdate = true;
             this.hasCreditCardChanged(false);
             this.formConfiguration();
+            this.getAdvancementsUnrelated(null);
         }
 
         this.detailForms = new Array();
         this.detailModalForm = new RefundDetail();
 
-        this.getAdvancementsUnrelated();
         this.getAnalytics();
         this.getCreditCards();
     }
@@ -117,9 +115,14 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         });
     }
 
-    getAdvancementsUnrelated(){
+    getAdvancementsUnrelated(callback){
         this.getAdvancementsSubscrip = this.advancementService.getUnrelated().subscribe(response => {
-            this.advancements = response.data;
+            if(callback){
+                callback(response.data);
+            }
+            else{
+                this.advancements = response.data;
+            }
         });
     }
 
@@ -220,14 +223,28 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             });
         }
 
-        if(domain.advancements && domain.advancements.length > 0){
-            domain.advancements.forEach(advancement => {
-                this.advancements.push(advancement);
-            });
-        }
+        this.getAdvancementsUnrelated((unrelated) => {
+            if(domain.advancements && domain.advancements.length > 0){
+
+                var list = [];
+
+                domain.advancements.forEach(advancement => {
+                    list.push(advancement);
+                });
+
+                unrelated.forEach(advancement => {
+                    if(list.filter(x => x.id == advancement.id).length == 0){
+                        list.push(advancement);
+                    }
+                });
+
+                this.advancements = list;
+
+                this.calculateTotals();
+            }
+        });
 
         this.userApplicantName = domain.userApplicantDesc;
-        this.calculateTotals();
     }
 
     getModel(){

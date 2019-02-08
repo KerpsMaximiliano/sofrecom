@@ -23,7 +23,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
         public Advancement GetById(int id)
         {
-            return context.Advancements.SingleOrDefault(x => x.Id == id);
+            return context.Advancements.Include(x => x.AdvancementRefunds).SingleOrDefault(x => x.Id == id);
         }
 
         public Advancement GetFullById(int id)
@@ -102,16 +102,13 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
         public IList<Advancement> GetUnrelated(int currentUserId, int workflowStatusDraftId)
         {
-            var advancementIds = context.AdvancementRefunds
-                .Include(x => x.Advancement)
-                .Where(x => x.Advancement.UserApplicantId == currentUserId)
-                .Select(x => x.AdvancementId)
-                .ToList();
 
             var advancements = context.Advancements
                 .Include(x => x.Currency)
+                .Include(x => x.AdvancementRefunds)
                 .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && 
-                            !x.InWorkflowProcess && x.StatusId != workflowStatusDraftId && !advancementIds.Contains(x.Id))
+                            !x.InWorkflowProcess && x.StatusId != workflowStatusDraftId && 
+                            (x.Ammount > x.AdvancementRefunds.Sum(s => s.DiscountedFromAdvancement) || !x.AdvancementRefunds.Any()))
                 .ToList();
 
             return advancements;

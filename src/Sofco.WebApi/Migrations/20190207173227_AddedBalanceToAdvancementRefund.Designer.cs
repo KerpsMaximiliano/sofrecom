@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190207173227_AddedBalanceToAdvancementRefund")]
+    partial class AddedBalanceToAdvancementRefund
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,8 +320,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal>("DiscountedFromAdvancement");
 
-                    b.Property<decimal>("OriginalAdvancement");
-
                     b.HasKey("AdvancementId", "RefundId");
 
                     b.HasIndex("RefundId");
@@ -382,6 +382,8 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(300);
 
                     b.Property<int>("RefundId");
+
+                    b.Property<bool>("UsedInAdvancement");
 
                     b.HasKey("Id");
 

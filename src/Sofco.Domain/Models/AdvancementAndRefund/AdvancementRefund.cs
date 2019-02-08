@@ -9,5 +9,9 @@
         public int RefundId { get; set; }
 
         public Refund Refund { get; set; }
+
+        public decimal OriginalAdvancement { get; set; }
+
+        public decimal DiscountedFromAdvancement { get; set; }
     }
 }

@@ -42,11 +42,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         public RefundService(IUnitOfWork unitOfWork,
             ILogMailer<RefundService> logger,
             IRefundValidation validation,
-            IOptions<AppSetting> settingOptions, 
+            IOptions<AppSetting> settingOptions,
             IWorkflowStateRepository workflowStateRepository,
             IOptions<FileConfig> fileOptions,
-            IMapper mapper, 
-            IRefundRepository refundRepository, 
+            IMapper mapper,
+            IRefundRepository refundRepository,
             IUserData userData)
         {
             this.unitOfWork = unitOfWork;
@@ -78,8 +78,10 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 {
                     foreach (var advancement in model.Advancements)
                     {
-                        domain.AdvancementRefunds.Add(new AdvancementRefund { AdvancementId = advancement, Refund = domain });
+                        domain.AdvancementRefunds.Add(new AdvancementRefund { Advancement = unitOfWork.AdvancementRepository.GetById(advancement), Refund = domain });
                     }
+
+                    CalculateAdvancementBalance(domain);
                 }
 
                 unitOfWork.RefundRepository.Insert(domain);
@@ -96,6 +98,71 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
             return response;
+        }
+
+        public Response Update(RefundModel model)
+        {
+            var response = validation.ValidateUpdate(model);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+
+                var domain = unitOfWork.RefundRepository.GetById(model.Id);
+                model.UpdateDomain(domain);
+
+                domain.AdvancementRefunds = new List<AdvancementRefund>();
+
+                unitOfWork.RefundRepository.Update(domain);
+                unitOfWork.Save();
+
+                foreach (var advancement in model.Advancements)
+                {
+                    domain.AdvancementRefunds.Add(new AdvancementRefund { Advancement = unitOfWork.AdvancementRepository.GetById(advancement), Refund = domain });
+
+                    CalculateAdvancementBalance(domain);
+                }
+
+                unitOfWork.RefundRepository.Update(domain);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Refund.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(e);
+            }
+
+            return response;
+        }
+
+        private void CalculateAdvancementBalance(Refund domain)
+        {
+            var sumTotal = domain.Details.Sum(x => x.Ammount);
+
+            foreach (var advancementRefund in domain.AdvancementRefunds.OrderBy(x => x.Advancement.CreationDate))
+            {
+                var balance = advancementRefund.Advancement.Ammount - advancementRefund.Advancement.AdvancementRefunds.Sum(x => x.DiscountedFromAdvancement);
+
+                if (balance <= 0) continue;
+
+                advancementRefund.OriginalAdvancement = balance;
+
+                if (sumTotal <= 0) continue;
+
+                if (balance >= sumTotal)
+                {
+                    advancementRefund.DiscountedFromAdvancement = sumTotal;
+                    sumTotal = 0;
+                }
+                else
+                {
+                    sumTotal -= balance;
+                    advancementRefund.DiscountedFromAdvancement = balance;
+                }
+            }
         }
 
         public async Task<Response<File>> AttachFile(int refundId, Response<File> response, IFormFile file)
@@ -150,7 +217,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         }
 
         public Response<RefundEditModel> Get(int id)
-        { 
+        {
             var response = new Response<RefundEditModel>();
 
             var refund = unitOfWork.RefundRepository.GetFullById(id);
@@ -211,38 +278,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var response = new Response<IList<WorkflowHistoryModel>>();
 
             response.Data = histories.Select(x => new WorkflowHistoryModel(x)).ToList();
-
-            return response;
-        }
-
-        public Response Update(RefundModel model)
-        {
-            var response = validation.ValidateUpdate(model);
-
-            if (response.HasErrors()) return response;
-
-            try
-            {
-                var domain = unitOfWork.RefundRepository.GetById(model.Id);
-                model.UpdateDomain(domain);
-
-                domain.AdvancementRefunds = new List<AdvancementRefund>();
-
-                foreach (var advancement in model.Advancements)
-                {
-                    domain.AdvancementRefunds.Add(new AdvancementRefund { AdvancementId = advancement, Refund = domain });
-                }
-
-                unitOfWork.RefundRepository.Update(domain);
-                unitOfWork.Save();
-
-                response.AddSuccess(Resources.AdvancementAndRefund.Refund.UpdateSuccess);
-            }
-            catch (Exception e)
-            {
-                response.AddError(Resources.Common.ErrorSave);
-                logger.LogError(e);
-            }
 
             return response;
         }
@@ -472,7 +507,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private decimal ResolveUserRefund(Refund refund)
         {
             var diffTotal = refund.AdvancementRefunds
-                                .Sum(x => x.Advancement.Ammount) - refund.Details.Sum(x => x.Ammount);
+                                .Sum(x => x.OriginalAdvancement) - refund.Details.Sum(x => x.Ammount);
 
             return diffTotal < 0
                 ? Math.Abs(diffTotal)
