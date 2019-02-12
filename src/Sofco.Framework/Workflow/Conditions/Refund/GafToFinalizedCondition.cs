@@ -22,7 +22,7 @@ namespace Sofco.Framework.Workflow.Conditions.Refund
         {
             var refund = unitOfWork.RefundRepository.GetFullById(entity.Id);
 
-            return !validation.HasUserRefund(refund);
+            return true;
         }
     }
 }

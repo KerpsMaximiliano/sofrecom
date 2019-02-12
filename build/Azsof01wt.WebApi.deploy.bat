@@ -16,5 +16,4 @@ cmd /c dotnet publish "%WORKSPACE_PATH%\src\Sofco.%PROJECT_NAME%" -c release --o
 
 "%MSDEPLOY_PATH%\msdeploy.exe" -source:manifest="%WORKSPACE_PATH%\build\Azsof01wt.%PROJECT_NAME%.SourceManifest.xml" -dest:package="%PUBLISH_PATH%\%PROJECT_NAME%.zip" -verb:sync -retryAttempts:20 -disablerule:BackupRule
 
-"%MSDEPLOY_PATH%\msdeploy.exe" -verb:sync -source:package="%PUBLISH_PATH%\%PROJECT_NAME%.zip" -dest: contentPath='azsof01wt-web', ComputerName="https://azsof01wt-web.publish.azurewebsites.windows.net:443/msdeploy.axd?site=azsof01wt-web", UserName='AZSOF01WD\SofcoWebDeploy', Password='Hellspawn!01', AuthType='Basic'
-
+"%MSDEPLOY_PATH%\msdeploy.exe" -source:package="%PUBLISH_PATH%\%PROJECT_NAME%.zip" -dest:manifest="%WORKSPACE_PATH%\build\Azsof01wt.%PROJECT_NAME%.DestinationManifest.xml",ComputerName='https://azsof01wt:8172/msdeploy.axd?site=Sofco.%PROJECT_NAME%',UserName='AZSOF01WT\SofcoWebDeploy',Password='Hellspawn!01',IncludeAcls='False',AuthType='Basic' -verb:sync -enablerule:AppOffline -enableRule:DoNotDeleteRule -allowUntrusted

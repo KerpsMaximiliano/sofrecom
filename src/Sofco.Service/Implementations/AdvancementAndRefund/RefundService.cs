@@ -80,8 +80,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     {
                         domain.AdvancementRefunds.Add(new AdvancementRefund { Advancement = unitOfWork.AdvancementRepository.GetById(advancement), Refund = domain });
                     }
-
-                    CalculateAdvancementBalance(domain);
                 }
 
                 unitOfWork.RefundRepository.Insert(domain);
@@ -108,7 +106,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             try
             {
-
                 var domain = unitOfWork.RefundRepository.GetById(model.Id);
                 model.UpdateDomain(domain);
 
@@ -120,8 +117,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 foreach (var advancement in model.Advancements)
                 {
                     domain.AdvancementRefunds.Add(new AdvancementRefund { Advancement = unitOfWork.AdvancementRepository.GetById(advancement), Refund = domain });
-
-                    CalculateAdvancementBalance(domain);
                 }
 
                 unitOfWork.RefundRepository.Update(domain);
@@ -138,32 +133,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        private void CalculateAdvancementBalance(Refund domain)
-        {
-            var sumTotal = domain.Details.Sum(x => x.Ammount);
-
-            foreach (var advancementRefund in domain.AdvancementRefunds.OrderBy(x => x.Advancement.CreationDate))
-            {
-                var balance = advancementRefund.Advancement.Ammount - advancementRefund.Advancement.AdvancementRefunds.Sum(x => x.DiscountedFromAdvancement);
-
-                if (balance <= 0) continue;
-
-                advancementRefund.OriginalAdvancement = balance;
-
-                if (sumTotal <= 0) continue;
-
-                if (balance >= sumTotal)
-                {
-                    advancementRefund.DiscountedFromAdvancement = sumTotal;
-                    sumTotal = 0;
-                }
-                else
-                {
-                    sumTotal -= balance;
-                    advancementRefund.DiscountedFromAdvancement = balance;
-                }
-            }
-        }
 
         public async Task<Response<File>> AttachFile(int refundId, Response<File> response, IFormFile file)
         {
@@ -484,7 +453,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     UserApplicantDesc = x.UserApplicant?.Name,
                     CurrencyId = x.CurrencyId,
                     CurrencyDesc = x.Currency?.Text,
-                    Ammount = ResolveUserRefund(x),
+                    Ammount = x.TotalAmmount,
                     Type = "Reintegro"
                 };
 
@@ -502,16 +471,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }).ToList();
 
             return response;
-        }
-
-        private decimal ResolveUserRefund(Refund refund)
-        {
-            var diffTotal = refund.AdvancementRefunds
-                                .Sum(x => x.OriginalAdvancement) - refund.Details.Sum(x => x.Ammount);
-
-            return diffTotal < 0
-                ? Math.Abs(diffTotal)
-                : 0;
         }
 
         private string GetBank(string email, Dictionary<string, string> employeeDictionary)

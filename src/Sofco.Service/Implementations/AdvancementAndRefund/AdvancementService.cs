@@ -345,15 +345,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             foreach (var advancement in advancements)
             {
-                var balance = advancement.Ammount - advancement.AdvancementRefunds.Sum(x => x.DiscountedFromAdvancement);
-
                 response.Data.Add(new AdvancementUnrelatedItem
                 {
                     Id = advancement.Id,
                     CurrencyId = advancement.CurrencyId,
                     CurrencyText = advancement.Currency.Text,
-                    Ammount = balance,
-                    Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency.Text} - Saldo: {balance}"
+                    Ammount = advancement.Ammount,
+                    Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency.Text}"
                 });
             }
 

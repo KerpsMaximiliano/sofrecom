@@ -51,18 +51,6 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             return response;
         }
 
-        public bool HasUserRefund(Refund refund)
-        {
-            var diffTotal = refund.AdvancementRefunds
-                                .Sum(x => x.OriginalAdvancement) - refund.Details.Sum(x => x.Ammount);
-
-            var diff = diffTotal < 0
-                ? Math.Abs(diffTotal)
-                : 0;
-
-            return diff > 0;
-        }
-
         private void ValidateIfExist(RefundModel model, Response response)
         {
             if (!unitOfWork.RefundRepository.Exist(model.Id))
