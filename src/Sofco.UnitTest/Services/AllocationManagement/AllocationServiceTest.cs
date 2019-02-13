@@ -8,11 +8,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Rrhh;
 using Sofco.DAL;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.UnitTest.Services.AllocationManagement
 {
@@ -22,6 +24,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
         private Mock<IAllocationRepository> allocationRepositoryMock;
         private Mock<IAnalyticRepository> analyticRepositoryMock;
         private Mock<IEmployeeRepository> employeeRepositoryMock;
+        private Mock<ILicenseRepository> licenseRepositoryMock;
         private Mock<ILogMailer<AllocationService>> loggerMock;
         private Mock<IAllocationFileManager> fileManagerMock;
         private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeServiceMock;
@@ -41,6 +44,8 @@ namespace Sofco.UnitTest.Services.AllocationManagement
 
             fileManagerMock = new Mock<IAllocationFileManager>();
 
+            licenseRepositoryMock = new Mock<ILicenseRepository>();
+
             licenseGenerateWorkTimeServiceMock = new Mock<ILicenseGenerateWorkTimeService>();
 
             unitOfWork = new Mock<IUnitOfWork>();
@@ -50,6 +55,9 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             unitOfWork.Setup(x => x.AllocationRepository).Returns(allocationRepositoryMock.Object);
             unitOfWork.Setup(x => x.AnalyticRepository).Returns(analyticRepositoryMock.Object);
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
+            unitOfWork.Setup(x => x.LicenseRepository).Returns(licenseRepositoryMock.Object);
+
+            licenseRepositoryMock.Setup(x => x.GetByEmployeeAndDates(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new List<License>());
 
             sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, fileManagerMock.Object);
         }
