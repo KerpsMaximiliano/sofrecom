@@ -75,9 +75,12 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 domain.Advancements = new List<Advancement>();
 
-                foreach (var advancementId in model.Advancements)
+                if (model.Advancements != null)
                 {
-                    domain.Advancements.Add(unitOfWork.AdvancementRepository.Get(advancementId));
+                    foreach (var advancementId in model.Advancements)
+                    {
+                        domain.Advancements.Add(unitOfWork.AdvancementRepository.Get(advancementId));
+                    }
                 }
 
                 unitOfWork.RefundRepository.Insert(domain);
@@ -109,9 +112,12 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 domain.Advancements = new List<Advancement>();
 
-                foreach (var advancementId in model.Advancements)
+                if (model.Advancements != null)
                 {
-                    domain.Advancements.Add(unitOfWork.AdvancementRepository.Get(advancementId));
+                    foreach (var advancementId in model.Advancements)
+                    {
+                        domain.Advancements.Add(unitOfWork.AdvancementRepository.Get(advancementId));
+                    }
                 }
 
                 unitOfWork.RefundRepository.Update(domain);

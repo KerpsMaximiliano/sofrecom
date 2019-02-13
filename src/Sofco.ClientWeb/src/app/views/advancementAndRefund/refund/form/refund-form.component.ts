@@ -239,9 +239,9 @@ export class RefundFormComponent implements OnInit, OnDestroy {
                 });
 
                 this.advancements = list;
-
-                this.calculateTotals();
             }
+
+            this.calculateTotals();
         });
 
         this.userApplicantName = domain.userApplicantDesc;
