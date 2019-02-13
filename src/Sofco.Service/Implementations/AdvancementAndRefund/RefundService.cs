@@ -72,14 +72,12 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 var domain = model.CreateDomain();
                 domain.StatusId = settings.WorkflowStatusDraft;
-                domain.AdvancementRefunds = new List<AdvancementRefund>();
 
-                if (model.Advancements != null)
+                domain.Advancements = new List<Advancement>();
+
+                foreach (var advancementId in model.Advancements)
                 {
-                    foreach (var advancement in model.Advancements)
-                    {
-                        domain.AdvancementRefunds.Add(new AdvancementRefund { Advancement = unitOfWork.AdvancementRepository.GetById(advancement), Refund = domain });
-                    }
+                    domain.Advancements.Add(unitOfWork.AdvancementRepository.Get(advancementId));
                 }
 
                 unitOfWork.RefundRepository.Insert(domain);
@@ -109,15 +107,15 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 var domain = unitOfWork.RefundRepository.GetById(model.Id);
                 model.UpdateDomain(domain);
 
-                domain.AdvancementRefunds = new List<AdvancementRefund>();
+                domain.Advancements = new List<Advancement>();
+
+                foreach (var advancementId in model.Advancements)
+                {
+                    domain.Advancements.Add(unitOfWork.AdvancementRepository.Get(advancementId));
+                }
 
                 unitOfWork.RefundRepository.Update(domain);
                 unitOfWork.Save();
-
-                foreach (var advancement in model.Advancements)
-                {
-                    domain.AdvancementRefunds.Add(new AdvancementRefund { Advancement = unitOfWork.AdvancementRepository.GetById(advancement), Refund = domain });
-                }
 
                 unitOfWork.RefundRepository.Update(domain);
                 unitOfWork.Save();

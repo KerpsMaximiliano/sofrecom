@@ -28,6 +28,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             var domain = new Domain.Models.AdvancementAndRefund.Refund();
 
             domain.Details = new List<RefundDetail>();
+            domain.Advancements = new List<Domain.Models.AdvancementAndRefund.Advancement>();
 
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
@@ -53,6 +54,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
             domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
+
+            domain.Advancements = new List<Domain.Models.AdvancementAndRefund.Advancement>();
 
             if (HasCreditCard)
                 domain.CreditCardId = CreditCardId;

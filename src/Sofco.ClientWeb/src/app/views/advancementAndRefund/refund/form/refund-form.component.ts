@@ -289,12 +289,21 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         }
 
         const diffTotal = this.advancementSum - this.itemTotal;
+
         this.companyRefund = this.hasAdvancements() && diffTotal > 0
             ? Math.abs(diffTotal)
             : 0;
+
         this.userRefund = diffTotal < 0
             ? Math.abs(diffTotal) 
             : 0;
+
+        if(this.userRefund > 0){
+            this.form.controls.advancements.enable();
+        }
+        else{
+            this.form.controls.advancements.disable();
+        }
     }
 
     advancementsChanged(){

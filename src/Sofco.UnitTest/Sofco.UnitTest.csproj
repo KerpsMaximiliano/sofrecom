@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.7.127" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnit.Runners" Version="3.8.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />

@@ -94,7 +94,6 @@ namespace Sofco.DAL
         public DbSet<RefundHistory> RefundHistories { get; set; }
         public DbSet<RefundDetail> RefundDetails { get; set; }
         public DbSet<RefundFile> RefundFiles { get; set; }
-        public DbSet<AdvancementRefund> AdvancementRefunds { get; set; }
 
         // Common
         public DbSet<File> Files { get; set; }

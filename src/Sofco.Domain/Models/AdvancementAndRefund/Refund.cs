@@ -24,7 +24,7 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
 
         public IList<RefundFile> Attachments { get; set; }
 
-        public IList<AdvancementRefund> AdvancementRefunds { get; set; }
+        public IList<Advancement> Advancements { get; set; }
 
         public int? CreditCardId { get; set; }
 

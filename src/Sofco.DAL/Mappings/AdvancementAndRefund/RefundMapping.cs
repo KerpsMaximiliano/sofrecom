@@ -18,7 +18,7 @@ namespace Sofco.DAL.Mappings.AdvancementAndRefund
             builder.Entity<Refund>().HasMany(x => x.Details).WithOne(x => x.Refund).HasForeignKey(x => x.RefundId);
 
             builder.Entity<Refund>().HasMany(x => x.Attachments).WithOne(x => x.Refund).HasForeignKey(x => x.RefundId);
-            builder.Entity<Refund>().HasMany(x => x.AdvancementRefunds).WithOne(x => x.Refund).HasForeignKey(x => x.RefundId);
+            builder.Entity<Refund>().HasMany(x => x.Advancements).WithOne(x => x.Refund).HasForeignKey(x => x.RefundId).OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<RefundHistory>().HasKey(x => x.Id);
             builder.Entity<RefundHistory>().Property(x => x.Comment).HasMaxLength(400);
@@ -32,18 +32,6 @@ namespace Sofco.DAL.Mappings.AdvancementAndRefund
             builder.Entity<RefundDetail>().HasKey(x => x.Id);
             builder.Entity<RefundDetail>().Property(x => x.Description).HasMaxLength(300);
             builder.Entity<RefundDetail>().HasOne(x => x.Refund).WithMany(x => x.Details).HasForeignKey(x => x.RefundId);
-
-            builder.Entity<AdvancementRefund>().HasKey(t => new { t.AdvancementId, t.RefundId });
-
-            builder.Entity<AdvancementRefund>()
-                .HasOne(pt => pt.Refund)
-                .WithMany(p => p.AdvancementRefunds)
-                .HasForeignKey(pt => pt.RefundId);
-
-            builder.Entity<AdvancementRefund>()
-                .HasOne(pt => pt.Advancement)
-                .WithMany(t => t.AdvancementRefunds)
-                .HasForeignKey(pt => pt.AdvancementId);
 
             builder.Entity<RefundFile>().HasKey(t => new { t.FileId, t.RefundId });
 

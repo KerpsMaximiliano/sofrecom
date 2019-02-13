@@ -177,5 +177,17 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
                 response.AddError(Resources.Admin.User.NotFound);
             }
         }
+
+        public bool HasUserRefund(Refund refund)
+        {
+            var diffTotal = refund.Advancements
+                                .Sum(x => x.Ammount) - refund.Details.Sum(x => x.Ammount);
+
+            var diff = diffTotal < 0
+                ? Math.Abs(diffTotal)
+                : 0;
+
+            return diff > 0;
+        }
     }
 }

@@ -9,7 +9,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
     public interface IAdvancementRepository : IBaseRepository<Advancement>
     {
         bool Exist(int id);
-        Advancement GetById(int id);
         Advancement GetFullById(int id);
         IList<Advancement> GetAllInProcess();
         IList<WorkflowReadAccess> GetWorkflowReadAccess(int advacementWorkflowId);

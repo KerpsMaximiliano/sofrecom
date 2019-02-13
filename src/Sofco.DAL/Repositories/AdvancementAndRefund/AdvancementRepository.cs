@@ -21,11 +21,6 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             return context.Advancements.Any(x => x.Id == id);
         }
 
-        public Advancement GetById(int id)
-        {
-            return context.Advancements.Include(x => x.AdvancementRefunds).SingleOrDefault(x => x.Id == id);
-        }
-
         public Advancement GetFullById(int id)
         {
             return context.Advancements
@@ -105,9 +100,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             var advancements = context.Advancements
                 .Include(x => x.Currency)
-                .Include(x => x.AdvancementRefunds)
                 .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && 
-                            !x.InWorkflowProcess && x.StatusId != workflowStatusDraftId)
+                            !x.InWorkflowProcess && x.StatusId != workflowStatusDraftId && !x.RefundId.HasValue)
                 .ToList();
 
             return advancements;

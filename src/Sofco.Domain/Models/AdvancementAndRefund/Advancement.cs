@@ -31,6 +31,7 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
 
         public IList<AdvancementHistory> Histories { get; set; }
 
-        public IList<AdvancementRefund> AdvancementRefunds { get; set; }
+        public int? RefundId { get; set; }
+        public Refund Refund { get; set; }
     }
 }

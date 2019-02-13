@@ -76,7 +76,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             try
             {
-                var advancement = unitOfWork.AdvancementRepository.GetById(model.Id);
+                var advancement = unitOfWork.AdvancementRepository.Get(model.Id);
                 model.UpdateDomain(advancement);
 
                 unitOfWork.AdvancementRepository.Update(advancement);

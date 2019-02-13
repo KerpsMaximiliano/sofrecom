@@ -34,17 +34,17 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             Advancements = new List<AdvancementUnrelatedItem>();
             Files = new List<Option>();
 
-            foreach (var advancementRefund in refund.AdvancementRefunds)
+            foreach (var advancement in refund.Advancements)
             {
-                AdvancementIds.Add(advancementRefund.AdvancementId);
+                AdvancementIds.Add(advancement.Id);
 
                 Advancements.Add(new AdvancementUnrelatedItem
                 {
-                    Id = advancementRefund.AdvancementId,
+                    Id = advancement.Id,
                     CurrencyId = refund.CurrencyId,
                     CurrencyText = refund.Currency?.Text,
-                    Ammount = advancementRefund.Advancement.Ammount,
-                    Text = $"{advancementRefund.Advancement.CreationDate:dd/MM/yyyy} - {advancementRefund.Advancement.Ammount} {refund.Currency?.Text}"
+                    Ammount = advancement.Ammount,
+                    Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {refund.Currency?.Text}"
                 });
             }
 
