@@ -8,7 +8,5 @@ namespace Sofco.Core.Services.Rrhh
     public interface ILicenseGenerateWorkTimeService
     {
         void GenerateWorkTimes(License license);
-
-        IList<BankHoursSplitted> DivideBankWorkTime(WorkTime workTime);
     }
 }

@@ -10,6 +10,7 @@ using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
+using Sofco.Core.Services.Rrhh;
 using Sofco.DAL;
 using Sofco.Domain.Models.AllocationManagement;
 
@@ -23,6 +24,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
         private Mock<IEmployeeRepository> employeeRepositoryMock;
         private Mock<ILogMailer<AllocationService>> loggerMock;
         private Mock<IAllocationFileManager> fileManagerMock;
+        private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeServiceMock;
 
         private Mock<IUnitOfWork> unitOfWork;
 
@@ -39,6 +41,8 @@ namespace Sofco.UnitTest.Services.AllocationManagement
 
             fileManagerMock = new Mock<IAllocationFileManager>();
 
+            licenseGenerateWorkTimeServiceMock = new Mock<ILicenseGenerateWorkTimeService>();
+
             unitOfWork = new Mock<IUnitOfWork>();
 
             loggerMock = new Mock<ILogMailer<AllocationService>>();
@@ -47,7 +51,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             unitOfWork.Setup(x => x.AnalyticRepository).Returns(analyticRepositoryMock.Object);
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
 
-            sut = new AllocationService(unitOfWork.Object, loggerMock.Object, fileManagerMock.Object);
+            sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, fileManagerMock.Object);
         }
 
         [TestCase]

@@ -17,7 +17,7 @@ namespace Sofco.Core.Services.WorkTimeManagement
 
         Response<IList<HoursApprovedModel>> GetHoursPending(WorktimeHoursPendingParams model);
 
-        Response Approve(int id, IList<BankHoursSplitted> bankHours);
+        Response Approve(int id);
 
         IEnumerable<Option> GetAnalytics();
 

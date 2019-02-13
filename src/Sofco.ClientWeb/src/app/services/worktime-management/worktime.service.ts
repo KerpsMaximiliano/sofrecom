@@ -40,8 +40,8 @@ export class WorktimeService {
     return this.http.post<any>(`${this.apiUrl}/search`, model);
   }
 
-  approve(id, bankHours) {
-    return this.http.put<any>(`${this.apiUrl}/${id}/approve`, bankHours);
+  approve(id) {
+    return this.http.put<any>(`${this.apiUrl}/${id}/approve`, {});
   }
 
   delete(id) {

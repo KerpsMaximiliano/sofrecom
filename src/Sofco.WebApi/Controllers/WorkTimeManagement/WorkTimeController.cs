@@ -56,9 +56,9 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         }
 
         [HttpPut("{id}/approve")]
-        public IActionResult Approve(int id, [FromBody] IList<BankHoursSplitted> bankHours)
+        public IActionResult Approve(int id)
         {
-            var response = workTimeService.Approve(id, bankHours);
+            var response = workTimeService.Approve(id);
 
             return this.CreateResponse(response);
         }

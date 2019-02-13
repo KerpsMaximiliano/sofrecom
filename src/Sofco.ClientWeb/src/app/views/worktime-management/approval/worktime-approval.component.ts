@@ -21,7 +21,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     public employees: any[] = new Array();
     public hoursApproved: any[] = new Array();
     public hoursPending: any[] = new Array();
-    public bankHours: any[] = new Array();
 
     getEmployeesSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
@@ -47,16 +46,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     public commentsModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "comments",
         "commentsModal",
-        false,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.close"
-    );
-
-    @ViewChild('bankHoursModal') bankHoursModal;
-    public bankHoursModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "workTimeManagement.bankHoursTitle",
-        "bankHoursModal",
         false,
         true,
         "ACTIONS.ACCEPT",
@@ -256,7 +245,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     approveAll(){
         var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => 
         { 
-            return { id: item.id, hoursSplitteds: item.hoursSplitteds }
+            return { id: item.id }
         });
 
         if(hoursSelected.length == 0) return;
@@ -295,10 +284,5 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
         error => {
             this.rejectAllModal.hide();
         });
-    }
-
-    showBankHoursModal(item){
-        this.bankHours = item.hoursSplitteds;
-        this.bankHoursModal.show();
     }
 } 

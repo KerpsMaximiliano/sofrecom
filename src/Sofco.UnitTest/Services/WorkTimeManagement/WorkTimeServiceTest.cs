@@ -89,7 +89,7 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
             appSettingMock = new Mock<IOptions<AppSetting>>();
 
             sut = new WorkTimeService(loggerMock.Object, unitOfWorkMock.Object, userDataMock.Object, employeeDataMock.Object,
-                workTimeValidationMock.Object, appSettingMock.Object, workTimeFileManagerMock.Object, workTimeExportFileManagerMock.Object, 
+                workTimeValidationMock.Object, appSettingMock.Object, workTimeFileManagerMock.Object, workTimeExportFileManagerMock.Object,
                 workTimeResumeMangerMock.Object, licenseGenerateWorkTimeServiceMock.Object, workTimeRejectManagerMock.Object, workTimeSendManagerMock.Object);
         }
 
@@ -98,13 +98,13 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
         {
             const int workTimeId = 1;
 
-            var workTime = new WorkTime {Id = workTimeId, Status = WorkTimeStatus.Sent};
+            var workTime = new WorkTime { Id = workTimeId, Status = WorkTimeStatus.Sent };
 
             workTimeRepositoryMock.Setup(s => s.GetSingle(It.IsAny<Expression<Func<WorkTime, bool>>>())).Returns(workTime);
 
-            userDataMock.Setup(s => s.GetCurrentUser()).Returns(new UserLiteModel{ Id = 1 });
+            userDataMock.Setup(s => s.GetCurrentUser()).Returns(new UserLiteModel { Id = 1 });
 
-            var actual = sut.Approve(workTimeId, new List<BankHoursSplitted>());
+            var actual = sut.Approve(workTimeId);
 
             Assert.False(actual.HasErrors());
         }
@@ -118,13 +118,13 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             var workTimes = new List<HoursToApproveModel>
             {
-                new HoursToApproveModel{ Id = workTimeId1, HoursSplitteds = new List<BankHoursSplitted>()},
-                new HoursToApproveModel{ Id = workTimeId2, HoursSplitteds = new List<BankHoursSplitted>()}
+                new HoursToApproveModel{ Id = workTimeId1},
+                new HoursToApproveModel{ Id = workTimeId2}
             };
 
             workTimeRepositoryMock.Setup(s => s.GetSingle(It.IsAny<Expression<Func<WorkTime, bool>>>()))
                 .Returns(
-                    (Expression<Func<WorkTime, bool>> predicate) 
+                    (Expression<Func<WorkTime, bool>> predicate)
                     => new WorkTime { Id = 1, Status = WorkTimeStatus.Sent });
 
             userDataMock.Setup(s => s.GetCurrentUser()).Returns(new UserLiteModel { Id = 1 });
@@ -149,13 +149,13 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             var workTimes = new List<HoursToApproveModel>
             {
-                new HoursToApproveModel{ Id = workTimeId1, HoursSplitteds = new List<BankHoursSplitted>()},
-                new HoursToApproveModel{ Id = workTimeId2, HoursSplitteds = new List<BankHoursSplitted>()}
+                new HoursToApproveModel{ Id = workTimeId1},
+                new HoursToApproveModel{ Id = workTimeId2}
             };
 
             workTimeRepositoryMock.Setup(s => s.GetSingle(It.IsAny<Expression<Func<WorkTime, bool>>>()))
                 .Returns(
-                    (Expression<Func<WorkTime, bool>> predicate) 
+                    (Expression<Func<WorkTime, bool>> predicate)
                     => new WorkTime { Id = 1, Status = WorkTimeStatus.Approved });
 
             userDataMock.Setup(s => s.GetCurrentUser()).Returns(new UserLiteModel { Id = 1 });

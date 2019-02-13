@@ -207,26 +207,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             foreach (var workTime in list)
             {
                 var itemToAdd = new HoursApprovedModel(workTime);
-
-                if (workTime.Analytic.Title == appSetting.AnalyticBank)
-                {
-                    itemToAdd.HoursSplitteds = licenseGenerateWorkTimeService.DivideBankWorkTime(workTime);
-
-                    if (itemToAdd.HoursSplitteds.Any())
-                    {
-                        response.Data.Add(itemToAdd);
-                    }
-                }
-                else
-                {
-                    response.Data.Add(itemToAdd);
-                }
+                response.Data.Add(itemToAdd);
             }
 
             return response;
         }
 
-        public Response Approve(int id, IList<BankHoursSplitted> bankHours)
+        public Response Approve(int id)
         {
             var response = new Response();
 
@@ -234,47 +221,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             try
             {
-                if (bankHours.Count > 0)
-                {
-                    WorkTimeValidationHandler.ValidateExist(worktime, response);
+                WorkTimeValidationHandler.ValidateApproveOrReject(worktime, response);
 
-                    if (response.HasErrors()) return response;
+                if (response.HasErrors()) return response;
 
-                    foreach (var bankHour in bankHours)
-                    {
-                        var workTimeToAdd = new WorkTime();
-                        workTimeToAdd.Date = worktime.Date;
-                        workTimeToAdd.AnalyticId = bankHour.AnalyticId;
-                        workTimeToAdd.EmployeeId = worktime.EmployeeId;
-                        workTimeToAdd.Hours = bankHour.Hours;
-                        workTimeToAdd.Source = worktime.Source;
-                        workTimeToAdd.TaskId = worktime.TaskId;
-                        workTimeToAdd.UserComment = worktime.UserComment;
-                        workTimeToAdd.UserId = worktime.UserId;
-                        workTimeToAdd.ApprovalComment = worktime.ApprovalComment;
-                        workTimeToAdd.ApprovalUserId = worktime.ApprovalUserId;
-                        workTimeToAdd.Reference = worktime.Reference;
-                        workTimeToAdd.CreationDate = worktime.CreationDate;
-                        workTimeToAdd.Status = worktime.Status;
+                worktime.Status = WorkTimeStatus.Approved;
+                worktime.ApprovalUserId = userData.GetCurrentUser().Id;
 
-                        unitOfWork.WorkTimeRepository.Insert(workTimeToAdd);
-                    }
-
-                    unitOfWork.WorkTimeRepository.Delete(unitOfWork.WorkTimeRepository.GetByDate(worktime.Date));
-                    unitOfWork.Save();
-                }
-                else
-                {
-                    WorkTimeValidationHandler.ValidateApproveOrReject(worktime, response);
-
-                    if (response.HasErrors()) return response;
-
-                    worktime.Status = WorkTimeStatus.Approved;
-                    worktime.ApprovalUserId = userData.GetCurrentUser().Id;
-
-                    unitOfWork.WorkTimeRepository.UpdateStatus(worktime);
-                    unitOfWork.Save();
-                }
+                unitOfWork.WorkTimeRepository.UpdateStatus(worktime);
+                unitOfWork.Save();
 
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApprovedSuccess);
             }
@@ -319,7 +274,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             foreach (var hour in hours)
             {
-                var hourResponse = Approve(hour.Id, hour.HoursSplitteds);
+                var hourResponse = Approve(hour.Id);
 
                 if (hourResponse.HasErrors())
                     anyError = true;

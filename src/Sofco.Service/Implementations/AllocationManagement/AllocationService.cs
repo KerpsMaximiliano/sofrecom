@@ -12,6 +12,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Services.Rrhh;
 using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -21,12 +22,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<AllocationService> logger;
         private readonly IAllocationFileManager allocationFileManager;
+        private readonly ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService;
 
-        public AllocationService(IUnitOfWork unitOfWork, ILogMailer<AllocationService> logger, IAllocationFileManager allocationFileManager)
+        public AllocationService(IUnitOfWork unitOfWork, 
+            ILogMailer<AllocationService> logger,
+            ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService,
+            IAllocationFileManager allocationFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.allocationFileManager = allocationFileManager;
+            this.licenseGenerateWorkTimeService = licenseGenerateWorkTimeService;
         }
 
         public Response<Allocation> Add(AllocationDto allocation)
@@ -56,6 +62,27 @@ namespace Sofco.Service.Implementations.AllocationManagement
             else
             {
                 SaveAllocation(allocation, response, allocationsBetweenDays);
+            }
+
+            var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(allocation.EmployeeId, firstMonth.Date.Date, lastMonth.Date.Date);
+
+            if (licenses.Any())
+            {
+                foreach (var license in licenses)
+                {
+                    try
+                    {
+                        unitOfWork.WorkTimeRepository.RemoveBetweenDays(license.EmployeeId, license.StartDate, license.EndDate);
+                        licenseGenerateWorkTimeService.GenerateWorkTimes(license);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogError(e);
+                        response.AddWarning(Resources.Rrhh.License.GenerateWorkTimesError);
+                    }
+                }
+
+                unitOfWork.Save();
             }
 
             return response;
