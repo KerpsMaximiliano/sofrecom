@@ -322,6 +322,26 @@ namespace Sofco.Service.Implementations.Workflow
             return response;
         }
 
+        public Response<IList<WorkflowListItemModel>> GetAll()
+        {
+            var response = new Response<IList<WorkflowListItemModel>>();
+            
+            response.Data = workflowRepository.GetAll().Select(x => new WorkflowListItemModel(x)).ToList();
+
+            return response;
+        }
+
+        public Response<WorkflowDetailModel> GetById(int workflowId)
+        { 
+            var response = new Response<WorkflowDetailModel>();
+
+            var workflow = workflowRepository.GetById(workflowId);
+
+            response.Data = new WorkflowDetailModel(workflow);
+
+            return response;
+        }
+
         private void AddTransition(Response<IList<TransitionItemModel>> response, WorkflowStateTransition transition)
         {
             response.Data.Add(new TransitionItemModel

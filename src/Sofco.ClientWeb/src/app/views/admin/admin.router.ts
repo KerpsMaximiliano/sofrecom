@@ -25,6 +25,8 @@ import { AreaEditComponent } from "./areas/edit/area-edit.component";
 import { SectorListComponent } from "./sectors/list/sector-list.components";
 import { SectorAddComponent } from "./sectors/add/sector-add.component";
 import { SectorEditComponent } from "./sectors/edit/sector-edit.component";
+import { WorkflowListComponent } from "./workflow/workflows-list/workflow-list.component";
+import { WorkflowDetailComponent } from "./workflow/workflow-detail/workflow-detail.component";
 
 const ADMIN_ROUTER: Routes = [
     { path: 'roles', children:[
@@ -78,7 +80,12 @@ const ADMIN_ROUTER: Routes = [
 
       { path: 'settings', children: [
         { path: '', component: SettingsComponent, canActivate: [AuthGuard], data: { module: "PARMS", functionality: "UPDAT" } }
-      ]}
+      ]},
+
+      { path: "workflows", children: [
+        { path: '', component: WorkflowListComponent, canActivate: [AuthGuard] },
+        { path: ':id', component: WorkflowDetailComponent, canActivate: [AuthGuard] }
+      ]},
 ];
 
 export const AdminRouter = RouterModule.forChild(ADMIN_ROUTER);

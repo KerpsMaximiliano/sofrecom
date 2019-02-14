@@ -22,6 +22,7 @@
           <li [ngClass]="{active: activeRoute('areas')}" *ngIf="menuService.hasFunctionality('AREAS', 'QUERY')"><a [routerLink]="['/admin/areas']">{{ 'ADMIN.area.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('sectors')}" *ngIf="menuService.hasFunctionality('SECTO', 'QUERY')"><a [routerLink]="['/admin/sectors']">{{ 'ADMIN.sector.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('settings')}"  *ngIf="menuService.hasFunctionality('PARMS', 'UPDAT')"><a [routerLink]="['/admin/settings']">{{'ADMIN.settings.title' | translate }}</a></li>
+          <li [ngClass]="{active: activeRoute('workflows')}"><a [routerLink]="['/admin/workflows']">Workflows</a></li>
         </ul>
       </li>
  

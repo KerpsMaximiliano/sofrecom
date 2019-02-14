@@ -1,0 +1,43 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>Workflows</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{ 'ADMIN.TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>Workflows</strong>
+            </li>
+        </ol>
+    </div>
+</div> 
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <table class="table table-striped" id="workflowsTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>Descripcion</th>
+                        <th>Modificado por</th>
+                        <th>Modificado en</th>
+                        <th>Version</th>
+                        <th>Activo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items" (click)="goToDetail(item)" class="pointer">
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.modifiedBy }}</td>
+                        <td>{{ item.modifiedAt }}</td>
+                        <td>{{ item.version }}</td>
+                        <td class="text-center"><span class="fa" [ngClass]="item.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                    </tr>
+                </tbody>
+            </table>        
+        </div>
+    </div>
+</div>

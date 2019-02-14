@@ -50,19 +50,22 @@ import { SectorAddComponent } from './sectors/add/sector-add.component';
 import { SectorEditComponent } from './sectors/edit/sector-edit.component';
 import { SectorListComponent } from './sectors/list/sector-list.components';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { WorkflowListComponent } from './workflow/workflows-list/workflow-list.component';
+import { WorkflowService } from 'app/services/workflow/workflow.service';
+import { WorkflowDetailComponent } from './workflow/workflow-detail/workflow-detail.component';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
                  TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent,
-                 SectorListComponent],
+                 SectorListComponent, WorkflowListComponent, WorkflowDetailComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
                  SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService,
-                 TaskService, AreaService, SectorService],
+                 TaskService, AreaService, SectorService, WorkflowService],
 
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, SettingsComponent]

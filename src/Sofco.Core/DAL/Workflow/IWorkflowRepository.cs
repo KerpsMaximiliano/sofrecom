@@ -13,5 +13,7 @@ namespace Sofco.Core.DAL.Workflow
         IList<WorkflowStateTransition> GetTransitions(int actualStateId, int workflowId);
         bool IsEndTransition(int actualStateId, int workflowId);
         void AddHistory<THistory>(THistory history) where THistory : WorkflowHistory;
+        IList<Domain.Models.Workflow.Workflow> GetAll();
+        Domain.Models.Workflow.Workflow GetById(int workflowId);
     }
 }

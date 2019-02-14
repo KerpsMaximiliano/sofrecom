@@ -17,4 +17,12 @@ export class WorkflowService {
   post(model){
     return this.http.post<any>(`${this.baseUrl}/${model.entityController}/transition`, model);
   }
+
+  getWorkflows(){
+    return this.http.get<any>(`${this.baseUrl}/workflows`);
+  }
+
+  getWorkflowById(id){
+    return this.http.get<any>(`${this.baseUrl}/workflows/${id}`);
+  }
 }

@@ -1,0 +1,77 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>Workflows</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <span>{{ 'ADMIN.TITLE' | translate }}</span>
+            </li>
+            <li>
+                <span>Workflows</span>   
+            </li>
+            <li class="active">
+                <strong>Detalle</strong>
+            </li>
+        </ol>
+    </div>
+</div> 
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="btn-right">
+        <button class="btn btn-success btn-outline dim btn-sm" (click)="addTransition()"> 
+            Agregar Transición
+            <i class="fa fa-plus"></i>
+        </button>
+
+        <button class="btn btn-primary btn-outline dim btn-sm" (click)="update()"> 
+            Actualizar
+            <i class="fa fa-save"></i>
+        </button>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <label class="control-label">Descripción</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.description" maxlength="200">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="control-label">Version</label>
+                        <input type="text" class="form-control" [(ngModel)]="model.version" maxlength="50">
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive m-t-md">
+                <table class="table table-striped" id="transitionsTable" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="column-lg">Estado Actual</th>
+                            <th class="column-lg">Proximo Estado</th>
+                            <th>Cod. Notificación</th>
+                            <th>Cod. Validación</th>
+                            <th>Cod. Condición</th>
+                            <th>Cod. Parametros</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of model.transitions">
+                            <td class="column-lg">{{ item.actualWorkflowStateDescription }}</td>
+                            <td class="column-lg">{{ item.nextWorkflowStateDescription }}</td>
+                            <td>{{ item.notificationCode }}</td>
+                            <td>{{ item.validationCode }}</td>
+                            <td>{{ item.conditionCode }}</td>
+                            <td>{{ item.parameterCode }}</td>
+                        </tr>
+                    </tbody>
+                </table>      
+            </div>
+        </div>
+    </div> 
+</div> 

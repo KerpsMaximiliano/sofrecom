@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Workflow;
+using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.Workflow
 {
@@ -46,6 +47,16 @@ namespace Sofco.DAL.Repositories.Workflow
             context.SaveChanges();
         }
 
+        public Domain.Models.Workflow.Workflow GetById(int workflowId)
+        {
+            return context.Workflows
+                .Include(x => x.Transitions)
+                    .ThenInclude(x => x.ActualWorkflowState)
+                .Include(x => x.Transitions)
+                    .ThenInclude(x => x.NextWorkflowState)
+                .SingleOrDefault(x => x.Id == workflowId);
+        }
+
         public IList<WorkflowStateTransition> GetTransitions(int actualStateId, int workflowId)
         {
             return context.WorkflowStateTransitions
@@ -68,6 +79,11 @@ namespace Sofco.DAL.Repositories.Workflow
         public void AddHistory<THistory>(THistory history) where THistory : WorkflowHistory
         {
             context.Set<THistory>().Add(history);
+        }
+
+        public IList<Domain.Models.Workflow.Workflow> GetAll()
+        {
+            return context.Workflows.Include(x => x.ModifiedBy).ToList().AsReadOnly();
         }
     }
 }
