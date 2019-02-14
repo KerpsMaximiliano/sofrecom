@@ -111,7 +111,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 var allocation = allocations.Where(x => x.AnalyticId == analyticId).ToList();
 
-                if (allocation.All(x => x.Percentage == 0)) continue;
+                //if (allocation.All(x => x.Percentage == 0)) continue;
 
                 if (allocation.Any())
                 {
@@ -124,7 +124,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 else
                 {
                     allocationDto.AnalyticId = 0;
-                    allocationDto.AnalyticTitle = string.Empty;
+                    allocationDto.AnalyticTitle = "Sin Asignación";
                     allocationDto.Id = 0;
                 }
 
@@ -258,12 +258,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<AllocationReportModel> CreateReport(AllocationReportParams parameters)
         {
+            var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
+
+            if (parameters.StartDate.Date >= parameters.EndDate)
+            {
+                response.AddError(Resources.AllocationManagement.Allocation.DateToLessThanDateSince);
+                return response;
+            }
+
             parameters.StartDate = new DateTime(parameters.StartDate.Year, parameters.StartDate.Month, 1);
             parameters.EndDate = new DateTime(parameters.EndDate.Year, parameters.EndDate.Month, DateTime.DaysInMonth(parameters.EndDate.Year, parameters.EndDate.Month));
+     
 
             var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
-
-            var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
 
             IList<Employee> employeesUnassigned = new List<Employee>();
 
