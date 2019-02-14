@@ -30,7 +30,7 @@
         <div class="col-md-8">
             <div class="form-group">
                 <label class="control-label"> {{ 'refund.advancements' | translate }} </label>
-                <ng-select [items]="advancements" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" formControlName="advancements" (change)="advancementsChanged()"></ng-select>
+                <ng-select id="advancements" [items]="advancements" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" formControlName="advancements" (change)="advancementsChanged()"></ng-select>
             </div>
         </div>
         <div class="col-md-4">

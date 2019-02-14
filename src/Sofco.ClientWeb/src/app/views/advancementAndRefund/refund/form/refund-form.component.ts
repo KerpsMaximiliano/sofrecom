@@ -298,11 +298,17 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             ? Math.abs(diffTotal) 
             : 0;
 
-        if(this.userRefund > 0){
+        if(this.userRefund > 0 || this.advancements.length == 0){
             this.form.controls.advancements.enable();
         }
         else{
             this.form.controls.advancements.disable();
+        }
+
+        if(this.canUpdate){
+            setTimeout(() => {
+                $('#advancements .ng-value-icon').show();
+            }, 250);
         }
     }
 
