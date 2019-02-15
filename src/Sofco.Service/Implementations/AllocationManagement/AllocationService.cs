@@ -104,6 +104,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var analyticsIds = allocations.Select(x => x.AnalyticId).Distinct();
 
+            var diccionary = new Dictionary<DateTime, decimal>();
+
             foreach (var analyticId in analyticsIds)
             {
                 var allocationDto = new AllocationDto();
@@ -138,6 +140,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     allocationMonthDto.Percentage = allocationMonth?.Percentage ?? 0;
                     allocationMonthDto.ReleaseDate = allocationMonth?.ReleaseDate.Date.Date ?? DateTime.UtcNow.Date;
 
+                    if (diccionary.ContainsKey(date))
+                    {
+                        diccionary[date] += allocationMonthDto.Percentage.GetValueOrDefault();
+                    }
+                    else
+                    {
+                        diccionary.Add(date, allocationMonthDto.Percentage.GetValueOrDefault());
+                    }
+
                     if (!allocationDto.ReleaseDate.HasValue)
                     {
                         allocationDto.ReleaseDate = allocationMonth?.ReleaseDate.Date == DateTime.MinValue ? null : allocationMonth?.ReleaseDate.Date;
@@ -147,6 +158,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 }
 
                 allocationResponse.Allocations.Add(allocationDto);
+            }
+
+            foreach (var allocationDto in allocationResponse.Allocations)
+            {
+                foreach (var allocationMonthDto in allocationDto.Months)
+                {
+                    allocationMonthDto.PercentageSum = diccionary[allocationMonthDto.Date];
+                }
             }
 
             return allocationResponse;
@@ -295,8 +314,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         if (parameters.AnalyticIds.Any() && parameters.AnalyticIds.All(x => x != allocation.AnalyticId)) continue;
 
                         if (parameters.Percentage.HasValue && parameters.Percentage > 0 &&
-                            !allocation.Months.Any(x => x.Percentage >= parameters.StartPercentage.GetValueOrDefault() &&
-                                                       x.Percentage <= parameters.EndPercentage.GetValueOrDefault())) continue;
+                            !allocation.Months.Any(x => x.PercentageSum >= parameters.StartPercentage.GetValueOrDefault() &&
+                                                       x.PercentageSum <= parameters.EndPercentage.GetValueOrDefault())) continue;
 
                         Analytic analytic;
 

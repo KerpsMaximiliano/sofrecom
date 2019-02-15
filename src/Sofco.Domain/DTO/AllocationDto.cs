@@ -34,6 +34,8 @@ namespace Sofco.Domain.DTO
         public bool Updated { get; set; }
 
         public DateTime ReleaseDate { get; set; }
+
+        public decimal PercentageSum { get; set; }
     }
 
     public class AllocationResponse
