@@ -535,6 +535,7 @@
             "grid": {
                 "analytic": "Analítica",
                 "employee": "Empleado",
+                "employeeNumber": "Legajo",
                 "boss": "Superior",
                 "manager":"Gerente",
                 "office": "Dirección",

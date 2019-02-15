@@ -36,6 +36,8 @@ namespace Sofco.Core.Models.AllocationManagement
         public string Manager { get; set; }
 
         public IList<AllocationMonthReport> Months { get; set; }
+
+        public string EmployeeNumber { get; set; }
     }
 
     public class AllocationMonthReport
