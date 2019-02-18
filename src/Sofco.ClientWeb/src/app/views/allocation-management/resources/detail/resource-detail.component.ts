@@ -31,6 +31,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     ); 
 
     resourceId: number;
+    employeeLoggedId: number;
     userLoggedId: number;
     public model: any;
 
@@ -94,6 +95,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
                 }
 
                 this.userLoggedId = userInfo.id;
+                this.employeeLoggedId = userInfo.employeeId;
             }
 
             this.getUsers();
@@ -233,13 +235,13 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     }
 
     canAddLicense(){
-        if(!this.isRrhh && this.menuService.hasFunctionality('PROFI', 'ALTA')) return true;
+        if(!this.isRrhh && this.employeeLoggedId == this.resourceId && this.menuService.hasFunctionality('PROFI', 'ALTA')) return true;
 
         return false;
     }
 
     canAddWorkTime(){
-        if(!this.isRrhh && this.menuService.hasFunctionality('PROFI', 'WORKT')) return true;
+        if(!this.isRrhh && this.employeeLoggedId == this.resourceId && this.menuService.hasFunctionality('PROFI', 'WORKT')) return true;
 
         return false;
     }
