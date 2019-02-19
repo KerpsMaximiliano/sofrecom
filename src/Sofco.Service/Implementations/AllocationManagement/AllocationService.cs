@@ -334,8 +334,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                             Manager = employee.Manager?.Name,
                             Percentage = employee.BillingPercentage,
                             Profile = employee.Profile,
-                            ResourceName = $"{employee.Name}",
-                            EmployeeNumber = $"{employee.EmployeeNumber}",
+                            ResourceName = employee.Name,
+                            EmployeeNumber = employee.EmployeeNumber,
                             Seniority = employee.Seniority,
                             Technology = employee.Technology,
                             Analytic = $"{allocation.AnalyticTitle} - {analytic?.Name}"
@@ -368,7 +368,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         Manager = employee.Manager?.Name,
                         Percentage = employee.BillingPercentage,
                         Profile = employee.Profile,
-                        ResourceName = $"{employee.EmployeeNumber} - {employee.Name}",
+                        EmployeeNumber = employee.EmployeeNumber,
+                        ResourceName = employee.Name,
                         Seniority = employee.Seniority,
                         Technology = employee.Technology,
                         Analytic = "Sin Asignación"
