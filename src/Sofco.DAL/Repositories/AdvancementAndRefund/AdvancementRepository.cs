@@ -119,5 +119,15 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             return query.ToList();
         }
+
+        public IList<Advancement> GetByRefund(int entityId)
+        {
+            return context.Advancements.Where(x => x.RefundId == entityId).ToList();
+        }
+
+        public void UpdateRefundId(Advancement advancement)
+        {
+            context.Entry(advancement).Property("RefundId").IsModified = true;
+        }
     }
 }

@@ -28,6 +28,7 @@ namespace Sofco.Service.Implementations.Workflow
         private readonly IWorkflowValidationStateFactory workflowValidationStateFactory;
         private readonly AppSetting appSetting;
         private readonly IWorkflowNotificationFactory workflowNotificationFactory;
+        private readonly IOnTransitionSuccessFactory onTransitionSuccessFactory;
 
         public WorkflowService(IWorkflowRepository workflowRepository, 
             ILogMailer<WorkflowService> logger, 
@@ -36,6 +37,7 @@ namespace Sofco.Service.Implementations.Workflow
             IWorkflowValidationStateFactory workflowValidationStateFactory,
             IOptions<AppSetting> appSettingsOptions,
             IWorkflowNotificationFactory workflowNotificationFactory,
+            IOnTransitionSuccessFactory onTransitionSuccessFactory,
             IWorkflowConditionStateFactory workflowConditionStateFactory)
         {
             this.workflowRepository = workflowRepository;
@@ -46,6 +48,7 @@ namespace Sofco.Service.Implementations.Workflow
             this.unitOfWork = unitOfWork;
             this.appSetting = appSettingsOptions.Value;
             this.workflowNotificationFactory = workflowNotificationFactory;
+            this.onTransitionSuccessFactory = onTransitionSuccessFactory;
         }
 
         public Response DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters)
@@ -113,6 +116,14 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
+            }
+
+            // Custom Success Process
+            if (!string.IsNullOrWhiteSpace(transition.OnSuccessCode))
+            {
+                var onSuccessHandler = onTransitionSuccessFactory.GetInstance(transition.OnSuccessCode);
+
+                onSuccessHandler?.Process(entity);
             }
 
             // Create history
