@@ -295,7 +295,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             ? Math.abs(diffTotal) 
             : 0;
 
-        if(this.userRefund > 0 || this.advancements.length == 0){
+        if(this.userRefund > 0 || this.form.controls.advancements.value.length == 0){
             this.form.controls.advancements.enable();
         }
         else{
