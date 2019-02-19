@@ -150,7 +150,9 @@
                                     <dd class="text-ellipsis">{{ model?.healthInsurance?.name }}</dd>
 
                                     <dt>{{'allocationManagement.resources.prepaidHealth' | translate }}</dt>
-                                    <dd class="text-ellipsis">{{ model?.prepaidHealth?.name }}</dd>
+                                    <dd class="text-ellipsis">
+                                        <label class="font-normal">{{ model?.prepaidHealth?.name }}</label>
+                                    </dd>
 
                                     <dt *ngIf="isRrhh">{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
                                     <dd class="text-ellipsis" *ngIf="isRrhh">{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
