@@ -14,5 +14,9 @@ namespace Sofco.Core.Services.Workflow
         Response<IList<WorkflowListItemModel>> GetAll();
 
         Response<WorkflowDetailModel> GetById(int workflowId);
+
+        Response<WorkflowListItemModel> Post(WorkflowAddModel model);
+
+        Response<IList<Option>> GetTypes();
     }
 }

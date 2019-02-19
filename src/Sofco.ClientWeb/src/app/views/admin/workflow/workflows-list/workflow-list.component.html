@@ -16,6 +16,11 @@
 </div> 
 
 <div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="btn-right">
+        <button class="btn btn-success btn-outline dim btn-sm" (click)="addItem()">Agregar <i class="fa fa-plus"></i></button>
+    </div>
+
     <div class="ibox">
         <div class="ibox-content">
             <table class="table table-striped" id="workflowsTable" width="100%">
@@ -24,16 +29,16 @@
                         <th>Descripcion</th>
                         <th>Modificado por</th>
                         <th>Modificado en</th>
-                        <th>Version</th>
-                        <th>Activo</th>
+                        <th class="text-center">Version</th>
+                        <th class="text-center">Activo</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of items" (click)="goToDetail(item)" class="pointer">
                         <td>{{ item.description }}</td>
                         <td>{{ item.modifiedBy }}</td>
-                        <td>{{ item.modifiedAt }}</td>
-                        <td>{{ item.version }}</td>
+                        <td>{{ item.modifiedAt | date: 'dd/MM/yyyy' }}</td>
+                        <td class="text-center">{{ item.version }}</td>
                         <td class="text-center"><span class="fa" [ngClass]="item.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
                     </tr>
                 </tbody>
@@ -41,3 +46,5 @@
         </div>
     </div>
 </div>
+
+<workflow-add #newModal (onSuccess)="onAddSuccess($event)"></workflow-add>

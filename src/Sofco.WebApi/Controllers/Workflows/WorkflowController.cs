@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.Workflow;
 using Sofco.WebApi.Extensions;
 
@@ -28,6 +29,22 @@ namespace Sofco.WebApi.Controllers.Workflows
         public IActionResult Get(int workflowId)
         {
             var response = workflowService.GetById(workflowId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] WorkflowAddModel model)
+        {
+            var response = workflowService.Post(model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("types")]
+        public IActionResult GetTypes()
+        {
+            var response = workflowService.GetTypes();
 
             return this.CreateResponse(response);
         }

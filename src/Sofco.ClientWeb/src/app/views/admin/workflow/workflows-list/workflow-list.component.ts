@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { MessageService } from "../../../../services/common/message.service";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -15,6 +15,8 @@ declare var moment: any;
     public items: any[] = new Array(); 
  
     public getSubscrip: Subscription;
+
+    @ViewChild('newModal') newModal;
 
     constructor(private messageService: MessageService,
                 private router: Router,
@@ -58,5 +60,15 @@ declare var moment: any;
 
         this.dataTableService.destroy(params.selector);
         this.dataTableService.initialize(params);
+    }
+
+    addItem(){
+        this.newModal.show();
+    }
+
+    onAddSuccess(newItem){
+        this.items.push(newItem);
+
+        this.initGrid();
     }
 }

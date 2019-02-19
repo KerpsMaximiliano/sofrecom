@@ -61,6 +61,33 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.actualStateIsRequired.
+        /// </summary>
+        public static string ActualStateIsRequired {
+            get {
+                return ResourceManager.GetString("ActualStateIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.actualStateNotFound.
+        /// </summary>
+        public static string ActualStateNotFound {
+            get {
+                return ResourceManager.GetString("ActualStateNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.addSuccess.
+        /// </summary>
+        public static string AddSuccess {
+            get {
+                return ResourceManager.GetString("AddSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.cannotDoTransition.
         /// </summary>
         public static string CannotDoTransition {
@@ -79,11 +106,38 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.descriptionRequired.
+        /// </summary>
+        public static string DescriptionRequired {
+            get {
+                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.entityNull.
         /// </summary>
         public static string EntityNull {
             get {
                 return ResourceManager.GetString("EntityNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.nextStateIsRequired.
+        /// </summary>
+        public static string NextStateIsRequired {
+            get {
+                return ResourceManager.GetString("NextStateIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.nextStateNotFound.
+        /// </summary>
+        public static string NextStateNotFound {
+            get {
+                return ResourceManager.GetString("NextStateNotFound", resourceCulture);
             }
         }
         
@@ -115,11 +169,38 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.typeNotFound.
+        /// </summary>
+        public static string TypeNotFound {
+            get {
+                return ResourceManager.GetString("TypeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.typeRequired.
+        /// </summary>
+        public static string TypeRequired {
+            get {
+                return ResourceManager.GetString("TypeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.userHasNoAccess.
         /// </summary>
         public static string UserHasNoAccess {
             get {
                 return ResourceManager.GetString("UserHasNoAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.versionRequired.
+        /// </summary>
+        public static string VersionRequired {
+            get {
+                return ResourceManager.GetString("VersionRequired", resourceCulture);
             }
         }
     }

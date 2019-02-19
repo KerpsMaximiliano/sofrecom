@@ -10,6 +10,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.Workflow;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.DAL.Repositories.Admin;
 using Sofco.DAL.Repositories.AdvancementAndRefund;
@@ -18,6 +19,7 @@ using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.DAL.Repositories.Reports;
 using Sofco.DAL.Repositories.Rrhh;
+using Sofco.DAL.Repositories.Workflow;
 using Sofco.DAL.Repositories.WorkTimeManagement;
 
 namespace Sofco.DAL
@@ -104,6 +106,8 @@ namespace Sofco.DAL
 
         #endregion
 
+        private IWorkflowRepository workflowRepository;
+
         #region Advancements
 
         private IAdvancementRepository advancementRepository;
@@ -189,7 +193,6 @@ namespace Sofco.DAL
         public IFileRepository FileRepository => fileRepository ?? (fileRepository = new FileRepository(context));
         public IUserDelegateRepository UserDelegateRepository => userDelegateRepository ?? (userDelegateRepository = new UserDelegateRepository(context));
 
-
         #endregion
 
         #region WorkTimeManagement
@@ -201,6 +204,8 @@ namespace Sofco.DAL
         public IHolidayRepository HolidayRepository => holidayRepository ?? (holidayRepository = new HolidayRepository(context));
 
         #endregion
+
+        public IWorkflowRepository WorkflowRepository => workflowRepository ?? (workflowRepository = new WorkflowRepository(context));
 
         #region Advancements
 

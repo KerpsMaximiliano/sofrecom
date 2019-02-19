@@ -117,14 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActualStateIsRequired" xml:space="preserve">
+    <value>workflow/workflow.actualStateIsRequired</value>
+  </data>
+  <data name="ActualStateNotFound" xml:space="preserve">
+    <value>workflow/workflow.actualStateNotFound</value>
+  </data>
+  <data name="AddSuccess" xml:space="preserve">
+    <value>workflow/workflow.addSuccess</value>
+  </data>
   <data name="CannotDoTransition" xml:space="preserve">
     <value>workflow/workflow.cannotDoTransition</value>
   </data>
   <data name="CommentsRequired" xml:space="preserve">
     <value>workflow/workflow.commentsRequired</value>
   </data>
+  <data name="DescriptionRequired" xml:space="preserve">
+    <value>workflow/workflow.descriptionRequired</value>
+  </data>
   <data name="EntityNull" xml:space="preserve">
     <value>workflow/workflow.entityNull</value>
+  </data>
+  <data name="NextStateIsRequired" xml:space="preserve">
+    <value>workflow/workflow.nextStateIsRequired</value>
+  </data>
+  <data name="NextStateNotFound" xml:space="preserve">
+    <value>workflow/workflow.nextStateNotFound</value>
   </data>
   <data name="ParametersNull" xml:space="preserve">
     <value>workflow/workflow.parametersNull</value>
@@ -135,7 +153,16 @@
   <data name="TransitionSuccess" xml:space="preserve">
     <value>workflow/workflow.transitionSuccess</value>
   </data>
+  <data name="TypeNotFound" xml:space="preserve">
+    <value>workflow/workflow.typeNotFound</value>
+  </data>
+  <data name="TypeRequired" xml:space="preserve">
+    <value>workflow/workflow.typeRequired</value>
+  </data>
   <data name="UserHasNoAccess" xml:space="preserve">
     <value>workflow/workflow.userHasNoAccess</value>
+  </data>
+  <data name="VersionRequired" xml:space="preserve">
+    <value>workflow/workflow.versionRequired</value>
   </data>
 </root>

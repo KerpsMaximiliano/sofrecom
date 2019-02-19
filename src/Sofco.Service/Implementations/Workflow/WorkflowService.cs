@@ -12,6 +12,7 @@ using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.Workflow;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Workflow.Notifications;
@@ -28,14 +29,16 @@ namespace Sofco.Service.Implementations.Workflow
         private readonly IWorkflowValidationStateFactory workflowValidationStateFactory;
         private readonly AppSetting appSetting;
         private readonly IWorkflowNotificationFactory workflowNotificationFactory;
+        private readonly IWorkflowValidation workflowValidation;
 
-        public WorkflowService(IWorkflowRepository workflowRepository, 
-            ILogMailer<WorkflowService> logger, 
-            IUserData userData, 
+        public WorkflowService(IWorkflowRepository workflowRepository,
+            ILogMailer<WorkflowService> logger,
+            IUserData userData,
             IUnitOfWork unitOfWork,
             IWorkflowValidationStateFactory workflowValidationStateFactory,
             IOptions<AppSetting> appSettingsOptions,
             IWorkflowNotificationFactory workflowNotificationFactory,
+            IWorkflowValidation workflowValidation,
             IWorkflowConditionStateFactory workflowConditionStateFactory)
         {
             this.workflowRepository = workflowRepository;
@@ -46,10 +49,11 @@ namespace Sofco.Service.Implementations.Workflow
             this.unitOfWork = unitOfWork;
             this.appSetting = appSettingsOptions.Value;
             this.workflowNotificationFactory = workflowNotificationFactory;
+            this.workflowValidation = workflowValidation;
         }
 
         public Response DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters)
-            where TEntity : WorkflowEntity 
+            where TEntity : WorkflowEntity
             where THistory : WorkflowHistory
         {
             var response = new Response();
@@ -177,11 +181,11 @@ namespace Sofco.Service.Implementations.Workflow
             bool hasAccess = false;
 
             hasAccess = ValidateUserAccess(transition, currentUser, hasAccess);
-    
+
             hasAccess = ValidateGroupAccess(transition, currentUser, hasAccess);
 
             hasAccess = ValidateApplicantAccess(transition, currentUser, entity, hasAccess);
-  
+
             hasAccess = ValidateManagerAccess(transition, currentUser, entity, hasAccess);
 
             hasAccess = ValidateSectorAccess(transition, currentUser, entity, hasAccess);
@@ -325,19 +329,67 @@ namespace Sofco.Service.Implementations.Workflow
         public Response<IList<WorkflowListItemModel>> GetAll()
         {
             var response = new Response<IList<WorkflowListItemModel>>();
-            
+
             response.Data = workflowRepository.GetAll().Select(x => new WorkflowListItemModel(x)).ToList();
 
             return response;
         }
 
         public Response<WorkflowDetailModel> GetById(int workflowId)
-        { 
+        {
             var response = new Response<WorkflowDetailModel>();
 
             var workflow = workflowRepository.GetById(workflowId);
 
             response.Data = new WorkflowDetailModel(workflow);
+
+            return response;
+        }
+
+        public Response<WorkflowListItemModel> Post(WorkflowAddModel model)
+        {
+            var response = new Response<WorkflowListItemModel>();
+
+            workflowValidation.ValidateAdd(model, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var currentUser = userData.GetCurrentUser();
+
+                var domain = model.CreateDomain();
+                domain.CreatedById = currentUser.Id;
+                domain.ModifiedById = currentUser.Id;
+
+                unitOfWork.WorkflowRepository.Add(domain);
+                unitOfWork.Save();
+
+                domain.ModifiedBy = new User
+                {
+                    Id = currentUser.Id,
+                    Name = currentUser.Name
+                };
+
+                response.Data = new WorkflowListItemModel(domain);
+                response.AddSuccess(Resources.Workflow.Workflow.AddSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<Option>> GetTypes()
+        {
+            var types = unitOfWork.WorkflowRepository.GetTypes();
+
+            var response = new Response<IList<Option>>();
+
+            response.Data = types.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
 
             return response;
         }

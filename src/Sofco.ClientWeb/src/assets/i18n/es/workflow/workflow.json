@@ -5,5 +5,10 @@
     "transitionSuccess": "La transaccion fue realizada exitosamente",
     "entityNull": "La entidad no existe",
     "commentsRequired": "Los comentarios son requeridos",
-    "userHasNoAccess": "No tiene permisos para realizar esta acción"
+    "userHasNoAccess": "No tiene permisos para realizar esta acción",
+    "versionRequired": "La version es requerida",
+    "descriptionRequired": "La descripción es requerida",
+    "typeRequired": "El tipo es requerido",
+    "typeNotFound": "El tipo no existe",
+    "addSuccess": "Nuevo Workflow dado de alta correctamente"
 }

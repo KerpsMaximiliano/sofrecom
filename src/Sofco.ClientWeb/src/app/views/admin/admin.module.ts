@@ -53,13 +53,14 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { WorkflowListComponent } from './workflow/workflows-list/workflow-list.component';
 import { WorkflowService } from 'app/services/workflow/workflow.service';
 import { WorkflowDetailComponent } from './workflow/workflow-detail/workflow-detail.component';
+import { WorkflowAddComponent } from './workflow/workflow-add/workflow-add.component';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
                  TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent,
-                 SectorListComponent, WorkflowListComponent, WorkflowDetailComponent],
+                 SectorListComponent, WorkflowListComponent, WorkflowDetailComponent, WorkflowAddComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
                  SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule],

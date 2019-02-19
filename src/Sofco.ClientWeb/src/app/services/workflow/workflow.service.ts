@@ -25,4 +25,12 @@ export class WorkflowService {
   getWorkflowById(id){
     return this.http.get<any>(`${this.baseUrl}/workflows/${id}`);
   }
+
+  getTypes(){
+    return this.http.get<any>(`${this.baseUrl}/workflows/types`);
+  }
+
+  add(model){
+    return this.http.post<any>(`${this.baseUrl}/workflows`, model);
+  }
 }

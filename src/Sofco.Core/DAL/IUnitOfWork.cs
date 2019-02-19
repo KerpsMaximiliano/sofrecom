@@ -5,6 +5,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.Workflow;
 using Sofco.Core.DAL.WorkTimeManagement;
 
 namespace Sofco.Core.DAL
@@ -85,6 +86,8 @@ namespace Sofco.Core.DAL
         IHolidayRepository HolidayRepository { get; }
 
         #endregion
+
+        IWorkflowRepository WorkflowRepository { get; }
 
         #region Advancements
 

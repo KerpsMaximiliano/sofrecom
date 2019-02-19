@@ -57,6 +57,26 @@ namespace Sofco.DAL.Repositories.Workflow
                 .SingleOrDefault(x => x.Id == workflowId);
         }
 
+        public bool TypeExist(int type)
+        {
+            return context.WorkflowTypes.Any(x => x.Id == type);
+        }
+
+        public void Add(Domain.Models.Workflow.Workflow domain)
+        {
+            context.Workflows.Add(domain);
+        }
+
+        public IList<WorkflowType> GetTypes()
+        {
+            return context.WorkflowTypes.ToList().AsReadOnly();
+        }
+
+        public bool StateExist(int id)
+        {
+            return context.WorkflowStates.Any(x => x.Id == id);
+        }
+
         public IList<WorkflowStateTransition> GetTransitions(int actualStateId, int workflowId)
         {
             return context.WorkflowStateTransitions

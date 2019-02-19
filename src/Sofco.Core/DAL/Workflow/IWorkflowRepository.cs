@@ -15,5 +15,9 @@ namespace Sofco.Core.DAL.Workflow
         void AddHistory<THistory>(THistory history) where THistory : WorkflowHistory;
         IList<Domain.Models.Workflow.Workflow> GetAll();
         Domain.Models.Workflow.Workflow GetById(int workflowId);
+        bool TypeExist(int type);
+        void Add(Domain.Models.Workflow.Workflow domain);
+        IList<WorkflowType> GetTypes();
+        bool StateExist(int id);
     }
 }
