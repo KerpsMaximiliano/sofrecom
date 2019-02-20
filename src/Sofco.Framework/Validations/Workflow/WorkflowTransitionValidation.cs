@@ -1,4 +1,5 @@
-﻿using Sofco.Core.DAL;
+﻿using System.Linq;
+using Sofco.Core.DAL;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Utils;
@@ -22,16 +23,25 @@ namespace Sofco.Framework.Validations.Workflow
                 return;
             }
 
-            if (!model.ActualWorkflowStateId.HasValue || model.ActualWorkflowStateId.Value == 0)
-            {
-                response.AddError(Resources.Workflow.Workflow.ActualStateIsRequired);
-            }
-            else if (unitOfWork.WorkflowRepository.StateExist(model.ActualWorkflowStateId.Value))
-            {
-                response.AddError(Resources.Workflow.Workflow.ActualStateNotFound);
-            }
+            ValidateActualState(model, response);
+            ValidateNextState(model, response);
+            ValidateWorkflow(model, response);
+        }
 
+        private void ValidateWorkflow(WorkflowTransitionAddModel model, Response response)
+        {
+            if (!model.WorkflowId.HasValue || model.WorkflowId.Value == 0)
+            {
+                response.AddError(Resources.Workflow.Workflow.WorkflowIsRequired);
+            }
+            else if (unitOfWork.WorkflowRepository.WorkflowExist(model.WorkflowId.Value))
+            {
+                response.AddError(Resources.Workflow.Workflow.WorkflowNotFound);
+            }
+        }
 
+        private void ValidateNextState(WorkflowTransitionAddModel model, Response response)
+        {
             if (!model.NextWorkflowStateId.HasValue || model.NextWorkflowStateId.Value == 0)
             {
                 response.AddError(Resources.Workflow.Workflow.NextStateIsRequired);
@@ -39,6 +49,18 @@ namespace Sofco.Framework.Validations.Workflow
             else if (unitOfWork.WorkflowRepository.StateExist(model.NextWorkflowStateId.Value))
             {
                 response.AddError(Resources.Workflow.Workflow.NextStateNotFound);
+            }
+        }
+
+        private void ValidateActualState(WorkflowTransitionAddModel model, Response response)
+        {
+            if (!model.ActualWorkflowStateId.HasValue || model.ActualWorkflowStateId.Value == 0)
+            {
+                response.AddError(Resources.Workflow.Workflow.ActualStateIsRequired);
+            }
+            else if (unitOfWork.WorkflowRepository.StateExist(model.ActualWorkflowStateId.Value))
+            {
+                response.AddError(Resources.Workflow.Workflow.ActualStateNotFound);
             }
         }
     }

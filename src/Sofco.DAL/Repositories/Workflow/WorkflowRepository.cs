@@ -77,6 +77,11 @@ namespace Sofco.DAL.Repositories.Workflow
             return context.WorkflowStates.Any(x => x.Id == id);
         }
 
+        public bool WorkflowExist(int id)
+        {
+            return context.Workflows.Any(x => x.Id == id);
+        }
+
         public IList<WorkflowStateTransition> GetTransitions(int actualStateId, int workflowId)
         {
             return context.WorkflowStateTransitions

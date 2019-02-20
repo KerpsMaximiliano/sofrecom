@@ -203,5 +203,23 @@ namespace Sofco.Resources.Workflow {
                 return ResourceManager.GetString("VersionRequired", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.workflowIsRequired.
+        /// </summary>
+        public static string WorkflowIsRequired {
+            get {
+                return ResourceManager.GetString("WorkflowIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.workflowNotFound.
+        /// </summary>
+        public static string WorkflowNotFound {
+            get {
+                return ResourceManager.GetString("WorkflowNotFound", resourceCulture);
+            }
+        }
     }
 }

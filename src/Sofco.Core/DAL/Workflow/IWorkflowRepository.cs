@@ -19,5 +19,6 @@ namespace Sofco.Core.DAL.Workflow
         void Add(Domain.Models.Workflow.Workflow domain);
         IList<WorkflowType> GetTypes();
         bool StateExist(int id);
+        bool WorkflowExist(int id);
     }
 }

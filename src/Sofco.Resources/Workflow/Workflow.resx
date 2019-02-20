@@ -165,4 +165,10 @@
   <data name="VersionRequired" xml:space="preserve">
     <value>workflow/workflow.versionRequired</value>
   </data>
+  <data name="WorkflowIsRequired" xml:space="preserve">
+    <value>workflow/workflow.workflowIsRequired</value>
+  </data>
+  <data name="WorkflowNotFound" xml:space="preserve">
+    <value>workflow/workflow.workflowNotFound</value>
+  </data>
 </root>
