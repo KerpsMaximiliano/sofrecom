@@ -63,5 +63,11 @@
         public string AmmountBDolares { get; set; }
 
         public string AmmountBEuros { get; set; }
+
+        public int SalaryWorkflowId { get; set; }
+
+        public int RefundWorkflowId { get; set; }
+
+        public int ViaticumWorkflowId { get; set; }
     }
 }

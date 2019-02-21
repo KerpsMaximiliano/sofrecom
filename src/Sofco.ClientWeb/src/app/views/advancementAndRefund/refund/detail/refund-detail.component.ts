@@ -63,7 +63,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
                 this.uploaderConfig();
 
                 var model = {
-                    workflowId: environment.refundWorkflowId,
+                    workflowId: response.data.workflowId,
                     entityController: "refund",
                     entityId: response.data.id,
                     actualStateId: response.data.statusId

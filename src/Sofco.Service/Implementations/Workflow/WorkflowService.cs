@@ -379,6 +379,9 @@ namespace Sofco.Service.Implementations.Workflow
                 domain.CreatedById = currentUser.Id;
                 domain.ModifiedById = currentUser.Id;
 
+                var version = unitOfWork.WorkflowRepository.GetVersion(domain.WorkflowTypeId);
+                domain.Version = version;
+
                 unitOfWork.WorkflowRepository.Add(domain);
                 unitOfWork.Save();
 

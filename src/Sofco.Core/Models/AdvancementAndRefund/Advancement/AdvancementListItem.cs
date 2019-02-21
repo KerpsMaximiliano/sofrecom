@@ -20,6 +20,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
             MonthsReturn = advancement.MonthsReturn?.Text;
             PaymentForm = advancement.PaymentForm;
             Description = advancement.Description;
+            WorkflowId = advancement.WorkflowId;
         }
 
         public string Description { get; set; }

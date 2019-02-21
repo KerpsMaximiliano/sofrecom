@@ -18,21 +18,11 @@ namespace Sofco.Framework.Validations.Workflow
         {
             ValidateType(model, response);
             ValidateDescription(model, response);
-            ValidateVersion(model, response);
         }
 
         public void ValidateUpdate(WorkflowAddModel model, Response response)
         {
             ValidateDescription(model, response);
-            ValidateVersion(model, response);
-        }
-
-        private void ValidateVersion(WorkflowAddModel model, Response response)
-        {
-            if (string.IsNullOrWhiteSpace(model.Version))
-            {
-                response.AddError(Resources.Workflow.Workflow.VersionRequired);
-            }
         }
 
         private void ValidateDescription(WorkflowAddModel model, Response response)

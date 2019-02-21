@@ -17,7 +17,6 @@ declare var moment: any;
     public model: any = {
         id: 0,
         description: "",
-        version: "",
         active: false,
         transitions: []
     } 

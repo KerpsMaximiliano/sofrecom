@@ -40,7 +40,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
 
                 var model = {
-                    workflowId: response.data.type == 1 ? environment.advacementWorkflowId : environment.viaticumWorkflowId,
+                    workflowId: response.data.workflowId,
                     entityController: "advancement",
                     entityId: response.data.id,
                     actualStateId: response.data.statusId

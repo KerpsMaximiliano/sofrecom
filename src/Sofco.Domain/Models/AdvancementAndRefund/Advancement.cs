@@ -33,5 +33,8 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
 
         public int? RefundId { get; set; }
         public Refund Refund { get; set; }
+
+        public int WorkflowId { get; set; }
+        public Workflow.Workflow Workflow { get; set; }
     }
 }

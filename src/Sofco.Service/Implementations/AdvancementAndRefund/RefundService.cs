@@ -20,6 +20,7 @@ using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
@@ -73,8 +74,12 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 var domain = model.CreateDomain();
                 domain.StatusId = settings.WorkflowStatusDraft;
 
-                domain.Advancements = new List<Advancement>();
+                var workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.RefundWorkflowId);
 
+                domain.WorkflowId = workflow.Id;
+
+                domain.Advancements = new List<Advancement>();
+                 
                 if (model.Advancements != null)
                 {
                     foreach (var advancementId in model.Advancements)
@@ -458,6 +463,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     CurrencyId = x.CurrencyId,
                     CurrencyDesc = x.Currency?.Text,
                     Ammount = x.TotalAmmount,
+                    WorkflowId = x.WorkflowId,
                     Type = "Reintegro"
                 };
 
@@ -467,7 +473,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 if (transition != null)
                 {
-                    item.WorkflowId = transition.WorkflowId;
                     item.NextWorkflowStateId = transition.NextWorkflowStateId;
                 }
 

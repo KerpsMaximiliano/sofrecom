@@ -29,5 +29,9 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
         public int? CreditCardId { get; set; }
 
         public CreditCard CreditCard { get; set; }
+
+        public int WorkflowId { get; set; }
+
+        public Workflow.Workflow Workflow { get; set; }
     }
 }

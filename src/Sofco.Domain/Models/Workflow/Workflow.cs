@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AdvancementAndRefund;
 
 namespace Sofco.Domain.Models.Workflow
 {
@@ -9,7 +10,7 @@ namespace Sofco.Domain.Models.Workflow
     {
         public string Description { get; set; }
 
-        public string Version { get; set; }
+        public int Version { get; set; }
 
         public bool Active { get; set; }
 
@@ -31,5 +32,9 @@ namespace Sofco.Domain.Models.Workflow
         public int ModifiedById { get; set; }
 
         public User ModifiedBy { get; set; }
+
+        public IList<Advancement> Advancements { get; set; }
+
+        public IList<Refund> Refunds { get; set; }
     }
 }

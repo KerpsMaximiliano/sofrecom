@@ -6,8 +6,6 @@ namespace Sofco.Core.Models.Workflow
     {
         public string Description { get; set; }
 
-        public string Version { get; set; }
-
         public int? Type { get; set; }
 
         public Domain.Models.Workflow.Workflow CreateDomain()
@@ -15,7 +13,6 @@ namespace Sofco.Core.Models.Workflow
             var domain = new Domain.Models.Workflow.Workflow();
 
             domain.Description = Description;
-            domain.Version = Version;
             domain.WorkflowTypeId = Type.GetValueOrDefault();
 
             domain.Active = true;
@@ -30,7 +27,6 @@ namespace Sofco.Core.Models.Workflow
         {
             domain.ModifiedAt = DateTime.UtcNow;
             domain.Description = Description;
-            domain.Version = Version;
         }
     }
 }

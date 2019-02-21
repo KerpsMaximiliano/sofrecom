@@ -11,6 +11,7 @@ using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
@@ -51,6 +52,10 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 var domain = model.CreateDomain();
                 domain.CreationDate = DateTime.UtcNow;
                 domain.StatusId = settings.WorkflowStatusDraft;
+
+                var workflow = unitOfWork.WorkflowRepository.GetLastByType(domain.Type == AdvancementType.Salary ? settings.SalaryWorkflowId : settings.ViaticumWorkflowId);
+
+                domain.WorkflowId = workflow.Id;
 
                 unitOfWork.AdvancementRepository.Insert(domain);
                 unitOfWork.Save();
@@ -217,6 +222,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     CurrencyId = x.CurrencyId,
                     CurrencyDesc = x.Currency?.Text,
                     Ammount = x.Ammount,
+                    WorkflowId = x.WorkflowId,
                     Type = "Adelanto"
                 };
 
@@ -226,7 +232,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 if (transition != null)
                 {
-                    item.WorkflowId = transition.WorkflowId;
                     item.NextWorkflowStateId = transition.NextWorkflowStateId;
                 }
 

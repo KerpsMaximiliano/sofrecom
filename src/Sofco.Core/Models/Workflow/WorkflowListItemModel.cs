@@ -22,7 +22,7 @@ namespace Sofco.Core.Models.Workflow
 
         public DateTime ModifiedAt { get; set; }
 
-        public string Version { get; set; }
+        public int Version { get; set; }
 
         public bool Active { get; set; }
     }

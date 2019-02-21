@@ -29,6 +29,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
             AnalyticId = refund.AnalyticId;
 
+            WorkflowId = refund.WorkflowId;
+
             Details = new List<RefundEditDetailModel>(); 
             AdvancementIds = new List<int>();
             Advancements = new List<AdvancementUnrelatedItem>();
@@ -58,6 +60,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
                 Files.Add(new Option { Id = refundAttachment.FileId, Text = refundAttachment.File.FileName });
             }
         }
+
+        public int WorkflowId { get; set; }
 
         public int Id { get; set; }
 

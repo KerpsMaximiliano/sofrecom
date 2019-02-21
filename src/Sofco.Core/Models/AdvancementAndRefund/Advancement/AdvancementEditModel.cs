@@ -30,7 +30,11 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 
             Description = advancement.Description;
             Ammount = advancement.Ammount;
+
+            WorkflowId = advancement.WorkflowId;
         }
+
+        public int WorkflowId { get; set; }
 
         public int Id { get; set; }
 

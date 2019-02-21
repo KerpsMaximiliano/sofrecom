@@ -27,5 +27,7 @@ namespace Sofco.Core.DAL.Workflow
         void DeleteTransition(WorkflowStateTransition transition);
         void UpdateTransition(WorkflowStateTransition transition);
         void Update(Domain.Models.Workflow.Workflow domain);
+        Domain.Models.Workflow.Workflow GetLastByType(int typeId);
+        int GetVersion(int workflowTypeId);
     }
 }

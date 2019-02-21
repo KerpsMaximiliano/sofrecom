@@ -32,6 +32,7 @@ namespace Sofco.Service.MapProfiles
             CreateMap<Refund, RefundPaymentPendingModel>()
                 .ForMember(s => s.CurrencyName, x => x.ResolveUsing(_ => _.Currency?.Text))
                 .ForMember(s => s.CreationDate, x => x.MapFrom(_ => _.CreationDate))
+                .ForMember(s => s.WorkflowId, x => x.MapFrom(_ => _.WorkflowId))
                 .ForMember(s => s.UserApplicantId, x => x.MapFrom(_ => _.UserApplicantId))
                 .ForMember(s => s.UserApplicantDesc, x => x.ResolveUsing(_ => _.UserApplicant?.Name))
                 .ForMember(s => s.AdvancementSum, x => x.ResolveUsing(ResolveAdvancementSum))

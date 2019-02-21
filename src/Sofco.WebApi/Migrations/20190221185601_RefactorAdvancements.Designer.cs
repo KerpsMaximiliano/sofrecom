@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190221185601_RefactorAdvancements")]
+    partial class RefactorAdvancements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -342,8 +344,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("UserApplicantId");
 
-                    b.Property<int>("WorkflowId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AnalyticId");
@@ -357,8 +357,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("StatusId");
 
                     b.HasIndex("UserApplicantId");
-
-                    b.HasIndex("WorkflowId");
 
                     b.ToTable("Refunds");
                 });
@@ -2474,11 +2472,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.Admin.User", "UserApplicant")
                         .WithMany("Refunds")
                         .HasForeignKey("UserApplicantId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Sofco.Domain.Models.Workflow.Workflow", "Workflow")
-                        .WithMany("Refunds")
-                        .HasForeignKey("WorkflowId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

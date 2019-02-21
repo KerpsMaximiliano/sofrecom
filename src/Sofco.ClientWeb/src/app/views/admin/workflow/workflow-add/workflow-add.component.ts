@@ -30,7 +30,6 @@ export class WorkflowAddComponent implements OnInit, OnDestroy {
     public model: any = {
         description: "",
         type: null,
-        version: "",
         id: null
     }
 
@@ -64,7 +63,6 @@ export class WorkflowAddComponent implements OnInit, OnDestroy {
             this.model = {
                 description: "",
                 type: null,
-                version: "",
                 id: null
             };
         }, 

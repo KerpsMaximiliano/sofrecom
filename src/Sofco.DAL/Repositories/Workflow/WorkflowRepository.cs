@@ -122,6 +122,29 @@ namespace Sofco.DAL.Repositories.Workflow
             context.Workflows.Update(domain);
         }
 
+        public Domain.Models.Workflow.Workflow GetLastByType(int typeId)
+        {
+            var maxVersion = context.Workflows.Where(x => x.WorkflowTypeId == typeId).Max(x => x.Version);
+
+            return context.Workflows.SingleOrDefault(x => x.WorkflowTypeId == typeId && x.Version == maxVersion);
+        }
+
+        public int GetVersion(int workflowTypeId)
+        {
+            var workflows = context.Workflows.Where(x => x.WorkflowTypeId == workflowTypeId).ToList();
+
+            if (!workflows.Any())
+            {
+                return 1;
+            }
+            else
+            {
+                var maxVersion = workflows.Max(x => x.Version);
+                maxVersion++;
+                return maxVersion;
+            }
+        }
+
         public IList<WorkflowStateTransition> GetTransitions(int actualStateId, int workflowId)
         {
             return context.WorkflowStateTransitions
