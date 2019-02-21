@@ -4,6 +4,8 @@ namespace Sofco.Core.Models.Workflow
 {
     public class WorkflowTransitionAddModel
     {
+        public int? Id { get; set; }
+
         public int? ActualWorkflowStateId { get; set; }
 
         public int? NextWorkflowStateId { get; set; }

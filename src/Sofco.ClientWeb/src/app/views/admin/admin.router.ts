@@ -27,6 +27,8 @@ import { SectorAddComponent } from "./sectors/add/sector-add.component";
 import { SectorEditComponent } from "./sectors/edit/sector-edit.component";
 import { WorkflowListComponent } from "./workflow/workflows-list/workflow-list.component";
 import { WorkflowDetailComponent } from "./workflow/workflow-detail/workflow-detail.component";
+import { WorkflowTransitionAddComponent } from "./workflow/transition-add/transition-add";
+import { WorkflowTransitionEditComponent } from "./workflow/transition-edit/transition-edit";
 
 const ADMIN_ROUTER: Routes = [
     { path: 'roles', children:[
@@ -84,7 +86,9 @@ const ADMIN_ROUTER: Routes = [
 
       { path: "workflows", children: [
         { path: '', component: WorkflowListComponent, canActivate: [AuthGuard] },
-        { path: ':id', component: WorkflowDetailComponent, canActivate: [AuthGuard] }
+        { path: ':id', component: WorkflowDetailComponent, canActivate: [AuthGuard] },
+        { path: ':workflowId/transition/new', component: WorkflowTransitionAddComponent, canActivate: [AuthGuard] },
+        { path: ':workflowId/transition/:id', component: WorkflowTransitionEditComponent, canActivate: [AuthGuard] }
       ]},
 ];
 

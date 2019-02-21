@@ -19,7 +19,7 @@ namespace Sofco.Framework.Validations.Workflow
         {
             if (model == null)
             {
-                response.AddError(Resources.Workflow.Workflow.EntityNull);
+                response.AddError(Resources.Workflow.Workflow.TransitionParametersNull);
                 return;
             }
 
@@ -34,7 +34,7 @@ namespace Sofco.Framework.Validations.Workflow
             {
                 response.AddError(Resources.Workflow.Workflow.WorkflowIsRequired);
             }
-            else if (unitOfWork.WorkflowRepository.WorkflowExist(model.WorkflowId.Value))
+            else if (!unitOfWork.WorkflowRepository.WorkflowExist(model.WorkflowId.Value))
             {
                 response.AddError(Resources.Workflow.Workflow.WorkflowNotFound);
             }
@@ -46,7 +46,7 @@ namespace Sofco.Framework.Validations.Workflow
             {
                 response.AddError(Resources.Workflow.Workflow.NextStateIsRequired);
             }
-            else if (unitOfWork.WorkflowRepository.StateExist(model.NextWorkflowStateId.Value))
+            else if (!unitOfWork.WorkflowRepository.StateExist(model.NextWorkflowStateId.Value))
             {
                 response.AddError(Resources.Workflow.Workflow.NextStateNotFound);
             }
@@ -58,7 +58,7 @@ namespace Sofco.Framework.Validations.Workflow
             {
                 response.AddError(Resources.Workflow.Workflow.ActualStateIsRequired);
             }
-            else if (unitOfWork.WorkflowRepository.StateExist(model.ActualWorkflowStateId.Value))
+            else if (!unitOfWork.WorkflowRepository.StateExist(model.ActualWorkflowStateId.Value))
             {
                 response.AddError(Resources.Workflow.Workflow.ActualStateNotFound);
             }

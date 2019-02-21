@@ -17,10 +17,34 @@ namespace Sofco.WebApi.Controllers.Workflows
             this.workflowTransitionService = workflowTransitionService;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var response = workflowTransitionService.Get(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = workflowTransitionService.Delete(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] WorkflowTransitionAddModel model)
         {
             var response = workflowTransitionService.Post(model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] WorkflowTransitionAddModel model)
+        {
+            var response = workflowTransitionService.Put(model);
 
             return this.CreateResponse(response);
         }

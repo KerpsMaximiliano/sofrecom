@@ -394,6 +394,17 @@ namespace Sofco.Service.Implementations.Workflow
             return response;
         }
 
+        public Response<IList<Option>> GetStates()
+        {
+            var states = unitOfWork.WorkflowRepository.GetStates();
+
+            var response = new Response<IList<Option>>();
+
+            response.Data = states.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+
+            return response;
+        }
+
         private void AddTransition(Response<IList<TransitionItemModel>> response, WorkflowStateTransition transition)
         {
             response.Data.Add(new TransitionItemModel

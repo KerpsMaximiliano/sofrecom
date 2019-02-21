@@ -88,6 +88,15 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.addTransitionSuccess.
+        /// </summary>
+        public static string AddTransitionSuccess {
+            get {
+                return ResourceManager.GetString("AddTransitionSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.cannotDoTransition.
         /// </summary>
         public static string CannotDoTransition {
@@ -151,6 +160,24 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.transitionDeleted.
+        /// </summary>
+        public static string TransitionDeleted {
+            get {
+                return ResourceManager.GetString("TransitionDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.transitionNotFound.
+        /// </summary>
+        public static string TransitionNotFound {
+            get {
+                return ResourceManager.GetString("TransitionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.transitionParametersNull.
         /// </summary>
         public static string TransitionParametersNull {
@@ -183,6 +210,15 @@ namespace Sofco.Resources.Workflow {
         public static string TypeRequired {
             get {
                 return ResourceManager.GetString("TypeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.updateTransitionSuccess.
+        /// </summary>
+        public static string UpdateTransitionSuccess {
+            get {
+                return ResourceManager.GetString("UpdateTransitionSuccess", resourceCulture);
             }
         }
         

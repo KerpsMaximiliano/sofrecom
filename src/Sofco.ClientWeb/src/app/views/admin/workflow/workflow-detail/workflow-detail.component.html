@@ -52,22 +52,27 @@
                 <table class="table table-striped" id="transitionsTable" width="100%">
                     <thead>
                         <tr>
-                            <th class="column-lg">Estado Actual</th>
-                            <th class="column-lg">Proximo Estado</th>
-                            <th>Cod. Notificación</th>
-                            <th>Cod. Validación</th>
-                            <th>Cod. Condición</th>
-                            <th>Cod. Parametros</th>
+                            <th>Estado Actual</th>
+                            <th>Proximo Estado</th>
+                            <th class="column-md">Cod. Notificación</th>
+                            <th class="column-md">Cod. Validación</th>
+                            <th class="column-md">Cod. Condición</th>
+                            <th class="column-md">Cod. Parametros</th>
+                            <th class="column-sm text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of model.transitions">
-                            <td class="column-lg">{{ item.actualWorkflowStateDescription }}</td>
-                            <td class="column-lg">{{ item.nextWorkflowStateDescription }}</td>
-                            <td>{{ item.notificationCode }}</td>
-                            <td>{{ item.validationCode }}</td>
-                            <td>{{ item.conditionCode }}</td>
-                            <td>{{ item.parameterCode }}</td>
+                        <tr *ngFor="let item of model.transitions, let i = index">
+                            <td>{{ item.actualWorkflowStateDescription }}</td>
+                            <td>{{ item.nextWorkflowStateDescription }}</td>
+                            <td class="column-md">{{ item.notificationCode }}</td>
+                            <td class="column-md">{{ item.validationCode }}</td>
+                            <td class="column-md">{{ item.conditionCode }}</td>
+                            <td class="column-md">{{ item.parameterCode }}</td>
+                            <td class="column-sm text-center">
+                                <button class="btn btn-success btn-xs" (click)="goToDetail(item)"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-danger btn-xs" (click)="delete(item, i)"><i class="fa fa-trash"></i></button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>      

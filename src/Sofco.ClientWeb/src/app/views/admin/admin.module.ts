@@ -54,19 +54,23 @@ import { WorkflowListComponent } from './workflow/workflows-list/workflow-list.c
 import { WorkflowService } from 'app/services/workflow/workflow.service';
 import { WorkflowDetailComponent } from './workflow/workflow-detail/workflow-detail.component';
 import { WorkflowAddComponent } from './workflow/workflow-add/workflow-add.component';
+import { WorkflowTransitionAddComponent } from './workflow/transition-add/transition-add';
+import { UtilsService } from 'app/services/common/utils.service';
+import { WorkflowTransitionFormComponent } from './workflow/transition-form/transition-form';
+import { WorkflowTransitionEditComponent } from './workflow/transition-edit/transition-edit';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
-                 TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent,
-                 SectorListComponent, WorkflowListComponent, WorkflowDetailComponent, WorkflowAddComponent],
+                 TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent, WorkflowTransitionEditComponent,
+                 SectorListComponent, WorkflowListComponent, WorkflowDetailComponent, WorkflowAddComponent, WorkflowTransitionAddComponent, WorkflowTransitionFormComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
                  SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService,
-                 TaskService, AreaService, SectorService, WorkflowService],
+                 TaskService, AreaService, SectorService, WorkflowService, UtilsService],
 
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, SettingsComponent]

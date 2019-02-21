@@ -108,6 +108,8 @@ namespace Sofco.DAL
 
         private IWorkflowRepository workflowRepository;
 
+        private IUserSourceRepository userSourceRepository;
+
         #region Advancements
 
         private IAdvancementRepository advancementRepository;
@@ -206,6 +208,8 @@ namespace Sofco.DAL
         #endregion
 
         public IWorkflowRepository WorkflowRepository => workflowRepository ?? (workflowRepository = new WorkflowRepository(context));
+
+        public IUserSourceRepository UserSourceRepository => userSourceRepository ?? (userSourceRepository = new UserSourceRepository(context));
 
         #region Advancements
 

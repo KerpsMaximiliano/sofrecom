@@ -126,6 +126,9 @@
   <data name="AddSuccess" xml:space="preserve">
     <value>workflow/workflow.addSuccess</value>
   </data>
+  <data name="AddTransitionSuccess" xml:space="preserve">
+    <value>workflow/workflow.addTransitionSuccess</value>
+  </data>
   <data name="CannotDoTransition" xml:space="preserve">
     <value>workflow/workflow.cannotDoTransition</value>
   </data>
@@ -147,6 +150,12 @@
   <data name="ParametersNull" xml:space="preserve">
     <value>workflow/workflow.parametersNull</value>
   </data>
+  <data name="TransitionDeleted" xml:space="preserve">
+    <value>workflow/workflow.transitionDeleted</value>
+  </data>
+  <data name="TransitionNotFound" xml:space="preserve">
+    <value>workflow/workflow.transitionNotFound</value>
+  </data>
   <data name="TransitionParametersNull" xml:space="preserve">
     <value>workflow/workflow.transitionParametersNull</value>
   </data>
@@ -158,6 +167,9 @@
   </data>
   <data name="TypeRequired" xml:space="preserve">
     <value>workflow/workflow.typeRequired</value>
+  </data>
+  <data name="UpdateTransitionSuccess" xml:space="preserve">
+    <value>workflow/workflow.updateTransitionSuccess</value>
   </data>
   <data name="UserHasNoAccess" xml:space="preserve">
     <value>workflow/workflow.userHasNoAccess</value>

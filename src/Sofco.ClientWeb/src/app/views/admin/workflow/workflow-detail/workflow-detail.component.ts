@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { MessageService } from "../../../../services/common/message.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -12,6 +12,8 @@ declare var moment: any;
 })
   export class WorkflowDetailComponent implements OnInit, OnDestroy {
 
+    @ViewChild('addTransitionModal') addTransitionModal;
+
     public model: any = {
         id: 0,
         description: "",
@@ -21,6 +23,7 @@ declare var moment: any;
     } 
  
     public getSubscrip: Subscription;
+    public deleteTransitionSubscrip: Subscription;
 
     constructor(private messageService: MessageService,
                 private router: Router,
@@ -44,7 +47,7 @@ declare var moment: any;
     }
 
     goToDetail(item){
-        this.router.navigate([`/workflow/${this.model.id}/transitions/${item.id}`]);
+        this.router.navigate([`/admin/workflows/${this.model.id}/transition/${item.id}`]);
     }
 
     initGrid(){
@@ -60,5 +63,27 @@ declare var moment: any;
 
         this.dataTableService.destroy(params.selector);
         this.dataTableService.initialize(params);
+    }
+
+    addTransition(){
+        this.router.navigate([`/admin/workflows/${this.model.id}/transition/new`]);
+    }
+
+    delete(item, index){
+
+        this.messageService.showConfirm(() => {
+
+            this.messageService.showLoading();
+
+            this.deleteTransitionSubscrip = this.workflowService.deleteTransition(item.id).subscribe(response => {
+                this.messageService.closeLoading();
+                this.model.transitions.splice(index, 1);
+                this.initGrid()
+            },
+            error => {
+                this.messageService.closeLoading();
+            });
+
+        });
     }
 }

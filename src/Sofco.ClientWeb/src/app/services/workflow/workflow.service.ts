@@ -18,6 +18,10 @@ export class WorkflowService {
     return this.http.post<any>(`${this.baseUrl}/${model.entityController}/transition`, model);
   }
 
+  put(model){
+    return this.http.put<any>(`${this.baseUrl}/${model.entityController}/transition`, model);
+  }
+
   getWorkflows(){
     return this.http.get<any>(`${this.baseUrl}/workflows`);
   }
@@ -32,5 +36,25 @@ export class WorkflowService {
 
   add(model){
     return this.http.post<any>(`${this.baseUrl}/workflows`, model);
+  }
+
+  getStates(){
+    return this.http.get<any>(`${this.baseUrl}/workflows/states`);
+  }
+
+  addTransition(model){
+    return this.http.post<any>(`${this.baseUrl}/workflowtransitions`, model);
+  }
+
+  putTransition(model){
+    return this.http.put<any>(`${this.baseUrl}/workflowtransitions`, model);
+  }
+
+  deleteTransition(id){
+    return this.http.delete<any>(`${this.baseUrl}/workflowtransitions/${id}`);
+  }
+
+  getTransition(id){
+    return this.http.get<any>(`${this.baseUrl}/workflowtransitions/${id}`);
   }
 }

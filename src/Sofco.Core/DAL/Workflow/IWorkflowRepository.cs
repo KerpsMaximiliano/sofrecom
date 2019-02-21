@@ -20,5 +20,11 @@ namespace Sofco.Core.DAL.Workflow
         IList<WorkflowType> GetTypes();
         bool StateExist(int id);
         bool WorkflowExist(int id);
+        void AddTransition(WorkflowStateTransition domain);
+        IList<WorkflowState> GetStates();
+        WorkflowStateTransition GetTransition(int id);
+        WorkflowStateTransition GetTransitionLite(int id);
+        void DeleteTransition(WorkflowStateTransition transition);
+        void UpdateTransition(WorkflowStateTransition transition);
     }
 }

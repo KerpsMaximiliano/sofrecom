@@ -10,5 +10,9 @@
     "descriptionRequired": "La descripción es requerida",
     "typeRequired": "El tipo es requerido",
     "typeNotFound": "El tipo no existe",
-    "addSuccess": "Nuevo Workflow dado de alta correctamente"
+    "addSuccess": "Nuevo Workflow dado de alta correctamente",
+    "transitionNotFound": "La transicion no fue encontrada",
+    "updateTransitionSuccess": "La transicion fue actualizada correctamente",
+    "addTransitionSuccess": "La transicion fue creada correctamente",
+    "transitionDeleted": "La transicion fue eliminada correctamente"
 }

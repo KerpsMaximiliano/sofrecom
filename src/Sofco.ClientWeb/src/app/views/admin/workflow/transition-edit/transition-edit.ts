@@ -5,10 +5,10 @@ import { Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 
 @Component({
-    selector: 'workflow-transition-add',
-    templateUrl: './transition-add.html'
+    selector: 'workflow-transition-edit',
+    templateUrl: './transition-edit.html'
 })
-export class WorkflowTransitionAddComponent implements OnInit, OnDestroy {
+export class WorkflowTransitionEditComponent implements OnInit, OnDestroy {
 
     @ViewChild('form') form;
 
@@ -24,19 +24,29 @@ export class WorkflowTransitionAddComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const routeParams = this.activateRoute.snapshot.params;
         this.workflowId = routeParams.workflowId;
+
+        this.messageService.showLoading();
+
+        this.postSubscrip = this.workflowService.getTransition(routeParams.id).subscribe(response => {
+            this.messageService.closeLoading();
+
+            this.form.model = response.data;
+        }, 
+        () => {
+            this.messageService.closeLoading();
+        });
     }    
     
     ngOnDestroy(): void {
         if(this.postSubscrip) this.postSubscrip.unsubscribe();
     }
 
-    add(){
+    update(){
         var model = this.form.model;
-        model.workflowId = this.workflowId;
 
         this.messageService.showLoading();
 
-        this.postSubscrip = this.workflowService.addTransition(model).subscribe(() => {
+        this.postSubscrip = this.workflowService.putTransition(model).subscribe(() => {
             this.messageService.closeLoading();
             window.history.back();
         }, 

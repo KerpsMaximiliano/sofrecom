@@ -18,5 +18,7 @@ namespace Sofco.Core.Services.Workflow
         Response<WorkflowListItemModel> Post(WorkflowAddModel model);
 
         Response<IList<Option>> GetTypes();
+
+        Response<IList<Option>> GetStates();
     }
 }

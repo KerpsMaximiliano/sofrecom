@@ -48,5 +48,13 @@ namespace Sofco.WebApi.Controllers.Workflows
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("states")]
+        public IActionResult GetStates()
+        {
+            var response = workflowService.GetStates();
+
+            return this.CreateResponse(response);
+        }
     }
 }

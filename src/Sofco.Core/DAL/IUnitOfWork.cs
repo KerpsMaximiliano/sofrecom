@@ -89,6 +89,8 @@ namespace Sofco.Core.DAL
 
         IWorkflowRepository WorkflowRepository { get; }
 
+        IUserSourceRepository UserSourceRepository { get; }
+
         #region Advancements
 
         IAdvancementRepository AdvancementRepository { get; }

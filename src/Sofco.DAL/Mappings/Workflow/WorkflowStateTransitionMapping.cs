@@ -20,8 +20,8 @@ namespace Sofco.DAL.Mappings.Workflow
             builder.Entity<WorkflowStateTransition>().HasOne(x => x.CreatedBy).WithMany(x => x.WorkflowStateTransitions).HasForeignKey(x => x.CreatedById).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkflowStateTransition>().HasOne(x => x.ModifiedBy).WithMany(x => x.WorkflowStateTransitions2).HasForeignKey(x => x.ModifiedById).OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<WorkflowStateTransition>().HasMany(x => x.WorkflowStateAccesses).WithOne(x => x.WorkflowStateTransition).HasForeignKey(x => x.WorkflowStateTransitionId);
-            builder.Entity<WorkflowStateTransition>().HasMany(x => x.WorkflowStateNotifiers).WithOne(x => x.WorkflowStateTransition).HasForeignKey(x => x.WorkflowStateTransitionId);
+            builder.Entity<WorkflowStateTransition>().HasMany(x => x.WorkflowStateAccesses).WithOne(x => x.WorkflowStateTransition).HasForeignKey(x => x.WorkflowStateTransitionId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<WorkflowStateTransition>().HasMany(x => x.WorkflowStateNotifiers).WithOne(x => x.WorkflowStateTransition).HasForeignKey(x => x.WorkflowStateTransitionId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

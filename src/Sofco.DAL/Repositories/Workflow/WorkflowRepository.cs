@@ -82,6 +82,41 @@ namespace Sofco.DAL.Repositories.Workflow
             return context.Workflows.Any(x => x.Id == id);
         }
 
+        public void AddTransition(WorkflowStateTransition domain)
+        {
+            context.WorkflowStateTransitions.Add(domain);
+        }
+
+        public IList<WorkflowState> GetStates()
+        {
+            return context.WorkflowStates.ToList().AsReadOnly();
+        }
+
+        public WorkflowStateTransition GetTransition(int id)
+        {
+            return context.WorkflowStateTransitions
+                .Include(x => x.WorkflowStateAccesses)
+                    .ThenInclude(x => x.UserSource)
+                .Include(x => x.WorkflowStateNotifiers)
+                    .ThenInclude(x => x.UserSource)
+                .SingleOrDefault(x => x.Id == id);
+        }
+
+        public WorkflowStateTransition GetTransitionLite(int id)
+        {
+            return context.WorkflowStateTransitions.Find(id);
+        }
+
+        public void DeleteTransition(WorkflowStateTransition transition)
+        {
+            context.WorkflowStateTransitions.Remove(transition);
+        }
+
+        public void UpdateTransition(WorkflowStateTransition transition)
+        {
+            context.WorkflowStateTransitions.Update(transition);
+        }
+
         public IList<WorkflowStateTransition> GetTransitions(int actualStateId, int workflowId)
         {
             return context.WorkflowStateTransitions
