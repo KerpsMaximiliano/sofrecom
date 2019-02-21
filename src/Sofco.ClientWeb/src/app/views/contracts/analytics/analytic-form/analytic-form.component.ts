@@ -107,7 +107,8 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
 
         this.getNewTitleSubscrip = this.analyticService.getNewTitle(this.model.costCenterId).subscribe(
             response => {
-                this.model.title = response.data;
+                this.model.title = response.data.title;
+                this.model.titleId = response.data.titleId;
             });
     }
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190218203957_OnTransitionSuccessAdded")]
+    partial class OnTransitionSuccessAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2839,7 +2841,7 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.Workflow.WorkflowStateTransition", "WorkflowStateTransition")
                         .WithMany("WorkflowStateAccesses")
                         .HasForeignKey("WorkflowStateTransitionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowStateNotifier", b =>
@@ -2862,7 +2864,7 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.Workflow.WorkflowStateTransition", "WorkflowStateTransition")
                         .WithMany("WorkflowStateNotifiers")
                         .HasForeignKey("WorkflowStateTransitionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Workflow.WorkflowStateTransition", b =>

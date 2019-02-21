@@ -83,7 +83,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        this.router.navigate(['/advancementAndRefund/refund/search']);
+        window.history.back();
     }
 
     canBack(){

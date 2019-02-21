@@ -104,6 +104,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var analyticsIds = allocations.Select(x => x.AnalyticId).Distinct();
 
+            var diccionary = new Dictionary<DateTime, decimal>();
+
             foreach (var analyticId in analyticsIds)
             {
                 var allocationDto = new AllocationDto();
@@ -111,7 +113,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 var allocation = allocations.Where(x => x.AnalyticId == analyticId).ToList();
 
-                if (allocation.All(x => x.Percentage == 0)) continue;
+                //if (allocation.All(x => x.Percentage == 0)) continue;
 
                 if (allocation.Any())
                 {
@@ -124,7 +126,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 else
                 {
                     allocationDto.AnalyticId = 0;
-                    allocationDto.AnalyticTitle = string.Empty;
+                    allocationDto.AnalyticTitle = "Sin Asignación";
                     allocationDto.Id = 0;
                 }
 
@@ -138,6 +140,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     allocationMonthDto.Percentage = allocationMonth?.Percentage ?? 0;
                     allocationMonthDto.ReleaseDate = allocationMonth?.ReleaseDate.Date.Date ?? DateTime.UtcNow.Date;
 
+                    if (diccionary.ContainsKey(date))
+                    {
+                        diccionary[date] += allocationMonthDto.Percentage.GetValueOrDefault();
+                    }
+                    else
+                    {
+                        diccionary.Add(date, allocationMonthDto.Percentage.GetValueOrDefault());
+                    }
+
                     if (!allocationDto.ReleaseDate.HasValue)
                     {
                         allocationDto.ReleaseDate = allocationMonth?.ReleaseDate.Date == DateTime.MinValue ? null : allocationMonth?.ReleaseDate.Date;
@@ -147,6 +158,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 }
 
                 allocationResponse.Allocations.Add(allocationDto);
+            }
+
+            foreach (var allocationDto in allocationResponse.Allocations)
+            {
+                foreach (var allocationMonthDto in allocationDto.Months)
+                {
+                    allocationMonthDto.PercentageSum = diccionary[allocationMonthDto.Date];
+                }
             }
 
             return allocationResponse;
@@ -258,12 +277,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<AllocationReportModel> CreateReport(AllocationReportParams parameters)
         {
+            var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
+
+            if (parameters.StartDate.Date >= parameters.EndDate)
+            {
+                response.AddError(Resources.AllocationManagement.Allocation.DateToLessThanDateSince);
+                return response;
+            }
+
             parameters.StartDate = new DateTime(parameters.StartDate.Year, parameters.StartDate.Month, 1);
             parameters.EndDate = new DateTime(parameters.EndDate.Year, parameters.EndDate.Month, DateTime.DaysInMonth(parameters.EndDate.Year, parameters.EndDate.Month));
+     
 
             var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
-
-            var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
 
             IList<Employee> employeesUnassigned = new List<Employee>();
 
@@ -288,8 +314,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         if (parameters.AnalyticIds.Any() && parameters.AnalyticIds.All(x => x != allocation.AnalyticId)) continue;
 
                         if (parameters.Percentage.HasValue && parameters.Percentage > 0 &&
-                            !allocation.Months.Any(x => x.Percentage >= parameters.StartPercentage.GetValueOrDefault() &&
-                                                       x.Percentage <= parameters.EndPercentage.GetValueOrDefault())) continue;
+                            !allocation.Months.Any(x => x.PercentageSum >= parameters.StartPercentage.GetValueOrDefault() &&
+                                                       x.PercentageSum <= parameters.EndPercentage.GetValueOrDefault())) continue;
 
                         Analytic analytic;
 
@@ -308,7 +334,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                             Manager = employee.Manager?.Name,
                             Percentage = employee.BillingPercentage,
                             Profile = employee.Profile,
-                            ResourceName = $"{employee.EmployeeNumber} - {employee.Name}",
+                            ResourceName = employee.Name,
+                            EmployeeNumber = employee.EmployeeNumber,
                             Seniority = employee.Seniority,
                             Technology = employee.Technology,
                             Analytic = $"{allocation.AnalyticTitle} - {analytic?.Name}"
@@ -341,7 +368,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         Manager = employee.Manager?.Name,
                         Percentage = employee.BillingPercentage,
                         Profile = employee.Profile,
-                        ResourceName = $"{employee.EmployeeNumber} - {employee.Name}",
+                        EmployeeNumber = employee.EmployeeNumber,
+                        ResourceName = employee.Name,
                         Seniority = employee.Seniority,
                         Technology = employee.Technology,
                         Analytic = "Sin Asignación"

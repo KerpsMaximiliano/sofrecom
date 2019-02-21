@@ -39,10 +39,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IRoleManager roleManager;
         private readonly IAnalyticCloseManager analyticCloseManager;
 
-        public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger, 
+        public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger,
             IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IServiceData serviceData,
-            IEmployeeData employeeData, IAnalyticFileManager analyticFileManager, 
-            IUserData userData, IAnalyticManager analyticManager, IRoleManager roleManager, 
+            IEmployeeData employeeData, IAnalyticFileManager analyticFileManager,
+            IUserData userData, IAnalyticManager analyticManager, IRoleManager roleManager,
             IAnalyticCloseManager analyticCloseManager)
         {
             this.unitOfWork = unitOfWork;
@@ -81,14 +81,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var list = unitOfWork.AnalyticRepository.GetResources(id);
 
-            return list.Select(x => new Option {Id = x.Id, Text = $"{x.EmployeeNumber}-{x.Name}"}).ToList();
+            return list.Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber}-{x.Name}" }).ToList();
         }
 
         public Response<List<Option>> GetByCurrentUser()
         {
             var employeeId = employeeData.GetCurrentEmployee().Id;
             var userId = userData.GetCurrentUser().Id;
-             
+
             var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
             // Item 1: DateFrom
@@ -114,8 +114,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var currentUser = userData.GetCurrentUser();
 
-            var analyticsByManagers = roleManager.HasFullAccess() 
-                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly() 
+            var analyticsByManagers = roleManager.HasFullAccess()
+                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly()
                 : unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
 
             var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
@@ -227,7 +227,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             options.Activities = unitOfWork.UtilsRepository.GetImputationNumbers().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Sectors = unitOfWork.UtilsRepository.GetSectors().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Sellers = unitOfWork.UserRepository.GetSellers().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
-            options.Managers = unitOfWork.UserRepository.GetManagers().Distinct().Select(x => new ListItem<string> { Id = x.Id, Text = x.Name, ExtraValue = x.ExternalManagerId}).ToList();
+            options.Managers = unitOfWork.UserRepository.GetManagers().Distinct().Select(x => new ListItem<string> { Id = x.Id, Text = x.Name, ExtraValue = x.ExternalManagerId }).ToList();
             options.Currencies = unitOfWork.UtilsRepository.GetCurrencies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Solutions = unitOfWork.UtilsRepository.GetSolutions().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
             options.Technologies = unitOfWork.UtilsRepository.GetTechnologies().Select(x => new Option { Id = x.Id, Text = x.Text }).ToList();
@@ -254,7 +254,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var response = new Response<IList<Allocation>>();
 
             var startDate = new DateTime(dateSince.Year, dateSince.Month, 1);
-            var endDateAux = dateSince.AddMonths(months-1);
+            var endDateAux = dateSince.AddMonths(months - 1);
             var endDate = new DateTime(endDateAux.Year, endDateAux.Month, DateTime.DaysInMonth(endDateAux.Year, endDateAux.Month));
 
             var resources = unitOfWork.AnalyticRepository.GetTimelineResources(id, startDate, endDate);
@@ -328,9 +328,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<string> GetNewTitle(int costCenterId)
+        public Response<NewTitleModel> GetNewTitle(int costCenterId)
         {
-            var response = new Response<string>();
+            var response = new Response<NewTitleModel> { Data = new NewTitleModel() };
 
             if (costCenterId == 0)
             {
@@ -343,12 +343,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
             if (analytic == null)
             {
                 var costCenter = unitOfWork.CostCenterRepository.GetSingle(x => x.Id == costCenterId);
-                response.Data = $"{costCenter.Code}-{costCenter.Letter}0001";
+                response.Data.Title = $"{costCenter.Code}-{costCenter.Letter}0001";
+                response.Data.TitleId = 1;
             }
             else
             {
                 analytic.TitleId++;
-                response.Data = $"{analytic.CostCenter.Code}-{analytic.CostCenter.Letter}{analytic.TitleId.ToString().PadLeft(4, '0')}";
+                response.Data.Title = $"{analytic.CostCenter.Code}-{analytic.CostCenter.Letter}{analytic.TitleId.ToString().PadLeft(4, '0')}";
+                response.Data.TitleId = analytic.TitleId;
             }
 
             return response;
@@ -420,8 +422,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);
 
-                if(manager != null) recipientsList.Add(manager.Email);
-                if(seller != null) recipientsList.Add(seller.Email);
+                if (manager != null) recipientsList.Add(manager.Email);
+                if (seller != null) recipientsList.Add(seller.Email);
 
                 var data = new AddAnalyticData
                 {

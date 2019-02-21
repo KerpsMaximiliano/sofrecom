@@ -90,12 +90,15 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public AnalyticStatus Status { get; set; }
 
+        public int TitleId { get; set; }
+
         public virtual Analytic CreateDomain()
         {
             var domain = new Analytic();
 
             FillData(domain);
 
+            domain.TitleId = TitleId;
             domain.CreationDate = DateTime.UtcNow;
             domain.Status = AnalyticStatus.Open;
 
