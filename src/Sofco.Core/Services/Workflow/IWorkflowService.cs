@@ -20,5 +20,7 @@ namespace Sofco.Core.Services.Workflow
         Response<IList<Option>> GetTypes();
 
         Response<IList<Option>> GetStates();
+
+        Response Put(int id, WorkflowAddModel model);
     }
 }

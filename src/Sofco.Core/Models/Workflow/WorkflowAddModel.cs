@@ -25,5 +25,12 @@ namespace Sofco.Core.Models.Workflow
 
             return domain;
         }
+
+        public void UpdateDomain(Domain.Models.Workflow.Workflow domain)
+        {
+            domain.ModifiedAt = DateTime.UtcNow;
+            domain.Description = Description;
+            domain.Version = Version;
+        }
     }
 }

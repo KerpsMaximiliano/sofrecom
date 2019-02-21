@@ -69,6 +69,18 @@ declare var moment: any;
         this.router.navigate([`/admin/workflows/${this.model.id}/transition/new`]);
     }
 
+    update(){
+        this.messageService.showConfirm(() => {
+
+            this.messageService.showLoading();
+
+            this.deleteTransitionSubscrip = this.workflowService.update(this.model).subscribe(response => {
+                this.messageService.closeLoading();
+            },
+            error => this.messageService.closeLoading());
+        });
+    }
+
     delete(item, index){
 
         this.messageService.showConfirm(() => {

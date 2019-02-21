@@ -33,6 +33,14 @@ namespace Sofco.WebApi.Controllers.Workflows
             return this.CreateResponse(response);
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] WorkflowAddModel model)
+        {
+            var response = workflowService.Put(id, model);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] WorkflowAddModel model)
         {

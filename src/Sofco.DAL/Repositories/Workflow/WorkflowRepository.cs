@@ -117,6 +117,11 @@ namespace Sofco.DAL.Repositories.Workflow
             context.WorkflowStateTransitions.Update(transition);
         }
 
+        public void Update(Domain.Models.Workflow.Workflow domain)
+        {
+            context.Workflows.Update(domain);
+        }
+
         public IList<WorkflowStateTransition> GetTransitions(int actualStateId, int workflowId)
         {
             return context.WorkflowStateTransitions

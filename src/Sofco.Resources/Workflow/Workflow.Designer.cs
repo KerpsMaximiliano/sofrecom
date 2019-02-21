@@ -214,6 +214,15 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.updateTransitionSuccess.
         /// </summary>
         public static string UpdateTransitionSuccess {

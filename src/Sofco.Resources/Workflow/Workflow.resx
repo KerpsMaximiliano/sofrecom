@@ -168,6 +168,9 @@
   <data name="TypeRequired" xml:space="preserve">
     <value>workflow/workflow.typeRequired</value>
   </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>workflow/workflow.updateSuccess</value>
+  </data>
   <data name="UpdateTransitionSuccess" xml:space="preserve">
     <value>workflow/workflow.updateTransitionSuccess</value>
   </data>

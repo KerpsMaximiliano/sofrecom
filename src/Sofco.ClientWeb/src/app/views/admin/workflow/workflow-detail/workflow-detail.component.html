@@ -52,8 +52,8 @@
                 <table class="table table-striped" id="transitionsTable" width="100%">
                     <thead>
                         <tr>
-                            <th>Estado Actual</th>
-                            <th>Proximo Estado</th>
+                            <th class="column-xlg">Estado Actual</th>
+                            <th class="column-xlg">Proximo Estado</th>
                             <th class="column-md">Cod. Notificación</th>
                             <th class="column-md">Cod. Validación</th>
                             <th class="column-md">Cod. Condición</th>
@@ -63,8 +63,8 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of model.transitions, let i = index">
-                            <td>{{ item.actualWorkflowStateDescription }}</td>
-                            <td>{{ item.nextWorkflowStateDescription }}</td>
+                            <td class="column-xlg">{{ item.actualWorkflowStateDescription }}</td>
+                            <td class="column-xlg">{{ item.nextWorkflowStateDescription }}</td>
                             <td class="column-md">{{ item.notificationCode }}</td>
                             <td class="column-md">{{ item.validationCode }}</td>
                             <td class="column-md">{{ item.conditionCode }}</td>

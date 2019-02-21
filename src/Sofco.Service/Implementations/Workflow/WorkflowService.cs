@@ -341,6 +341,12 @@ namespace Sofco.Service.Implementations.Workflow
 
             var workflow = workflowRepository.GetById(workflowId);
 
+            if (workflow == null)
+            {
+                response.AddError(Resources.Workflow.Workflow.WorkflowNotFound);
+                return response;
+            }
+
             response.Data = new WorkflowDetailModel(workflow);
 
             return response;
@@ -401,6 +407,43 @@ namespace Sofco.Service.Implementations.Workflow
             var response = new Response<IList<Option>>();
 
             response.Data = states.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+
+            return response;
+        }
+
+        public Response Put(int id, WorkflowAddModel model)
+        {
+            var response = new Response();
+
+            var domain = unitOfWork.WorkflowRepository.GetById(id);
+
+            if (domain == null)
+            {
+                response.AddError(Resources.Workflow.Workflow.WorkflowNotFound);
+                return response;
+            }
+       
+            workflowValidation.ValidateUpdate(model, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var currentUser = userData.GetCurrentUser();
+
+                domain.ModifiedById = currentUser.Id;
+                model.UpdateDomain(domain);
+
+                unitOfWork.WorkflowRepository.Update(domain);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Workflow.Workflow.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
 
             return response;
         }

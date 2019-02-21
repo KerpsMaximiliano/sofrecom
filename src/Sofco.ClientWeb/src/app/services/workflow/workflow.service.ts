@@ -38,6 +38,10 @@ export class WorkflowService {
     return this.http.post<any>(`${this.baseUrl}/workflows`, model);
   }
 
+  update(model){
+    return this.http.put<any>(`${this.baseUrl}/workflows/${model.id}`, model);
+  }
+
   getStates(){
     return this.http.get<any>(`${this.baseUrl}/workflows/states`);
   }
