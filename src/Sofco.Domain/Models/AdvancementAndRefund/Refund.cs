@@ -24,7 +24,7 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
 
         public IList<RefundFile> Attachments { get; set; }
 
-        public IList<Advancement> Advancements { get; set; }
+        public IList<AdvancementRefund> AdvancementRefunds { get; set; }
 
         public int? CreditCardId { get; set; }
 
@@ -33,5 +33,7 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
         public int WorkflowId { get; set; }
 
         public Workflow.Workflow Workflow { get; set; }
+
+        public bool CashReturn { get; set; }
     }
 }

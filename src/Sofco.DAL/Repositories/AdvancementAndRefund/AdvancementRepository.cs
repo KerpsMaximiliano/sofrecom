@@ -95,13 +95,12 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .OrderByDescending(x => x.CreationDate).ToList();
         }
 
-        public IList<Advancement> GetUnrelated(int currentUserId, int workflowStatusDraftId)
+        public IList<Advancement> GetUnrelated(int currentUserId, int workflowStatusOpenId)
         {
 
             var advancements = context.Advancements
                 .Include(x => x.Currency)
-                .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && 
-                            !x.InWorkflowProcess && x.StatusId != workflowStatusDraftId && !x.RefundId.HasValue)
+                .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && x.StatusId != workflowStatusOpenId)
                 .ToList();
 
             return advancements;
@@ -120,14 +119,19 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             return query.ToList();
         }
 
-        public IList<Advancement> GetByRefund(int entityId)
+        public IList<AdvancementRefund> GetAdvancementAndRefundByRefund(int entityId)
         {
-            return context.Advancements.Where(x => x.RefundId == entityId).ToList();
+            return context.AdvancementRefunds.Where(x => x.RefundId == entityId).ToList();
         }
 
         public void UpdateRefundId(Advancement advancement)
         {
             context.Entry(advancement).Property("RefundId").IsModified = true;
+        }
+
+        public void DeleteAdvancementRefund(AdvancementRefund advancementRefund)
+        {
+            context.AdvancementRefunds.Remove(advancementRefund);
         }
     }
 }

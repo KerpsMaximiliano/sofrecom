@@ -28,7 +28,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             WorkflowStateType = refund.Status?.Type;
 
             AnalyticId = refund.AnalyticId;
-
+            CashReturn = refund.CashReturn;
             WorkflowId = refund.WorkflowId;
 
             Details = new List<RefundEditDetailModel>(); 
@@ -36,17 +36,17 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             Advancements = new List<AdvancementUnrelatedItem>();
             Files = new List<Option>();
 
-            foreach (var advancement in refund.Advancements)
+            foreach (var advancementRefund in refund.AdvancementRefunds)
             {
-                AdvancementIds.Add(advancement.Id);
+                AdvancementIds.Add(advancementRefund.Advancement.Id);
 
                 Advancements.Add(new AdvancementUnrelatedItem
                 {
-                    Id = advancement.Id,
+                    Id = advancementRefund.Advancement.Id,
                     CurrencyId = refund.CurrencyId,
                     CurrencyText = refund.Currency?.Text,
-                    Ammount = advancement.Ammount,
-                    Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {refund.Currency?.Text}"
+                    Ammount = advancementRefund.Advancement.Ammount,
+                    Text = $"{advancementRefund.Advancement.CreationDate:dd/MM/yyyy} - {advancementRefund.Advancement.Ammount} {refund.Currency?.Text}"
                 });
             }
 
@@ -78,6 +78,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public int CurrencyId { get; set; }
 
         public string CurrencyDesc { get; set; }
+
+        public bool CashReturn { get; set; }
 
         public int? CreditCardId { get; set; }
 

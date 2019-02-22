@@ -25,7 +25,7 @@ namespace Sofco.Framework.Workflow.Conditions
 
             var value = GetValueSetting(refund.CurrencyId);
 
-            if (refund.TotalAmmount <= value)
+            if (refund.TotalAmmount < value)
             {
                 return true;
             }

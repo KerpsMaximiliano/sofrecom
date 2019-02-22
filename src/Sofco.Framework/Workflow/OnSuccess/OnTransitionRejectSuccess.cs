@@ -15,12 +15,11 @@ namespace Sofco.Framework.Workflow.OnSuccess
 
         public void Process(WorkflowEntity entity)
         {
-            var advancements = unitOfWork.AdvancementRepository.GetByRefund(entity.Id);
+            var advancementAndRefunds = unitOfWork.AdvancementRepository.GetAdvancementAndRefundByRefund(entity.Id);
 
-            foreach (var advancement in advancements)
+            foreach (var advancementRefund in advancementAndRefunds)
             {
-                advancement.RefundId = null;
-                unitOfWork.AdvancementRepository.UpdateRefundId(advancement);
+                unitOfWork.AdvancementRepository.DeleteAdvancementRefund(advancementRefund);
             }
            
             unitOfWork.Save();

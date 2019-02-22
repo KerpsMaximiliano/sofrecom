@@ -69,5 +69,7 @@
         public int RefundWorkflowId { get; set; }
 
         public int ViaticumWorkflowId { get; set; }
+
+        public int WorkflowStatusApproveId { get; set; }
     }
 }

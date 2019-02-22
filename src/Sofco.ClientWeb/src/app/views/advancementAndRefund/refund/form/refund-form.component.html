@@ -100,7 +100,7 @@
             <tr *ngFor="let detail of detailForms; let i = index" class="pointer">
                 <td>{{ detail.controls.creationDate.value | date: 'dd/MM/yyyy' }}</td>
                 <td class="column-xlg text-word-break">{{ detail.controls.description.value }}</td>
-                <td>{{ detail.controls.ammount.value | currency: '$' }}</td>
+                <td>{{ currencyDescription }}  {{ detail.controls.ammount.value | amountFormat }}</td>
                 <td *ngIf="canUpdate" class="text-center column-xs">
                     <button class="btn btn-sm fa fa-pencil btn-warning" (click)="editDetail(detail, i)"></button>
                     <button class="btn btn-sm fa fa-trash btn-danger" (click)="removeDetail(i)"></button>

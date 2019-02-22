@@ -17,7 +17,8 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         IList<Advancement> GetByApplicant(int id);
         IList<Advancement> GetUnrelated(int currentUserId, int workflowStatusDraftId);
         IList<Advancement> GetAllPaymentPending(int workFlowStatePaymentPending);
-        IList<Advancement> GetByRefund(int entityId);
+        IList<AdvancementRefund> GetAdvancementAndRefundByRefund(int entityId);
         void UpdateRefundId(Advancement advancement);
+        void DeleteAdvancementRefund(AdvancementRefund advancementRefund);
     }
 }

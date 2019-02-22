@@ -28,7 +28,7 @@ namespace Sofco.Framework.Workflow.Conditions
 
             var value = GetValueSetting(advancement.CurrencyId);
 
-            if (advancement.Ammount > value)
+            if (advancement.Ammount >= value)
             {
                 return true;
             }

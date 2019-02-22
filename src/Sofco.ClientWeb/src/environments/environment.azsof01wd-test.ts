@@ -3,6 +3,7 @@ export const environment = {
     urlApi:  'http://azsof01wd:9001/api',
     crmCloseStatusCode: '717620004',
     refundWorkflowId: 4,
+    draftWorkflowStateId: 8,
     currencyPesosId: 1,
     rejectedWorkflowStateId: 2
 };

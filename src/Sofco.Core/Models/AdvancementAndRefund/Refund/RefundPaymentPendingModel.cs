@@ -1,5 +1,4 @@
 ﻿using System;
-using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 {

@@ -22,7 +22,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Status)
                     .ThenInclude(x => x.ActualTransitions)
                 .Include(x => x.Details)
-                .Include(x => x.Advancements)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Advancement)
                 .Where(s => s.CreationDate.Date >= model.DateSince.Value.Date
                             && s.InWorkflowProcess == model.InWorkflowProcess);
 
@@ -54,7 +55,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Status)
                 .Include(x => x.CreditCard)
                 .Include(x => x.Details)
-                .Include(x => x.Advancements)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Advancement)
                 .Include(x => x.Attachments)
                     .ThenInclude(x => x.File)
                 .SingleOrDefault(x => x.Id == id);
@@ -85,7 +87,10 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
         public Refund GetById(int id)
         {
-            return context.Refunds.Include(x => x.Details).Include(x => x.Advancements).SingleOrDefault(x => x.Id == id);
+            return context.Refunds.Include(x => x.Details)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Advancement)
+                .SingleOrDefault(x => x.Id == id);
         }
 
         public IList<Refund> GetByApplicant(int id)
@@ -94,7 +99,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Currency)
                 .Include(x => x.Status)
                 .Include(x => x.Details)
-                .Include(x => x.Advancements)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Advancement)
                 .Where(x => x.UserApplicantId == id)
                 .OrderByDescending(x => x.CreationDate).ToList();
         }
@@ -104,7 +110,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             var query = context.Refunds
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
-                .Include(x => x.Advancements)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Advancement)
                 .Include(x => x.Details)
                 .Include(x => x.Status).ThenInclude(x => x.ActualTransitions)
                 .Where(x => x.StatusId == workFlowStatePaymentPending);

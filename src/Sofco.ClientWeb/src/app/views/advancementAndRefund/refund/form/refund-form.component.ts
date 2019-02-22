@@ -232,7 +232,12 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
             if(domain.advancements && domain.advancements.length > 0){
                 domain.advancements.forEach(advancement => {
-                    list.push(advancement);
+
+                    var itemExist = list.find(x => x.id == advancement);
+                    
+                    if(!itemExist){
+                        list.push(advancement);
+                    }
                 });
             }
 
@@ -261,8 +266,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     calculateTotals(){
         this.advancementSum = 0;
         this.itemTotal = 0;
-        this.companyRefund = 0;
-        this.userRefund = 0;
 
         if(this.differentCurrenciesWereSelected) return;
 
@@ -284,16 +287,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
                 }
             });
         }
-
-        const diffTotal = this.advancementSum - this.itemTotal;
-
-        this.companyRefund = this.hasAdvancements() && diffTotal > 0
-            ? Math.abs(diffTotal)
-            : 0;
-
-        this.userRefund = diffTotal < 0
-            ? Math.abs(diffTotal) 
-            : 0;
 
         if(this.userRefund > 0 || this.form.controls.advancements.value.length == 0){
             this.form.controls.advancements.enable();
