@@ -35,6 +35,7 @@ export class Refund extends FormGroup {
             analyticId: this.controls.analyticId.value,
             advancements: this.controls.advancements.value,
             creditCardId: this.controls.creditCardId.value,
+            cashReturn: false,
             details: new Array()
         }
     }

@@ -49,4 +49,8 @@ export class AdvancementService {
     delete(id){
         return this.http.delete<any>(`${this.baseUrl}/advancement/${id}`);
     }
+
+    getRefunds(id){
+        return this.http.get<any>(`${this.baseUrl}/advancement/${id}/refunds`);
+    }
 }

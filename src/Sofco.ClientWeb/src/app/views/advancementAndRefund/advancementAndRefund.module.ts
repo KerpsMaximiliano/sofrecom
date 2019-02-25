@@ -36,12 +36,13 @@ import { AmountFormatModule } from "app/pipes/amount-format.module";
 import { ListPaymentPendingComponent } from "./common/list-payment-pending/list-payment-pending.component";
 import { AdvancementRefundSettingComponent } from "./common/settings/setting.component";
 import { AdvancementRefundSettingService } from "app/services/advancement-and-refund/setting.service";
+import { RefundsRelatedComponent } from "./advancement/refunds-related/refunds-related";
 
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,
                     AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent,
                     RefundListComponent, RefundListFilterComponent, RefundListGridComponent, RefundHistoryComponent,
-                    ListPaymentPendingComponent, AdvancementRefundSettingComponent
+                    ListPaymentPendingComponent, AdvancementRefundSettingComponent, RefundsRelatedComponent
                   ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, RefundFormModule,

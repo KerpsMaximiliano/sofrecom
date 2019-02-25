@@ -32,6 +32,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         const routeParams = this.activateRoute.snapshot.params;
+        this.entityId = routeParams.id;
 
         if (routeParams.id) {
             this.messageService.showLoading();
@@ -47,7 +48,6 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
                 }
 
                 this.actualStateId = response.data.statusId;
-                this.entityId = response.data.id;
                 this.userApplicantId = response.data.userApplicantId;
 
                 this.form.setModel(response.data, this.canUpdate());

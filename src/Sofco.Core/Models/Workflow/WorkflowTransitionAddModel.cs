@@ -20,6 +20,8 @@ namespace Sofco.Core.Models.Workflow
 
         public string ParameterCode { get; set; }
 
+        public string OnSuccessCode { get; set; }
+
         public bool NotifyToUserApplicant { get; set; }
 
         public bool NotifyToManager { get; set; }

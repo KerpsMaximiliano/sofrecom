@@ -40,9 +40,9 @@ export class WorkflowComponent implements OnDestroy {
         this.entityController = model.entityController;
 
         this.getTransitionsSubscrip = this.workflowService.getTransitions(model).subscribe(response => {
-            this.transitions = response.data.filter(x => x.parameterCode == null);
+            this.transitions = response.data.filter(x => !x.parameterCode);
 
-            var transitionsWithParameters = response.data.filter(x => x.parameterCode != null);
+            var transitionsWithParameters = response.data.filter(x => x.parameterCode);
 
             this.buildComponents(transitionsWithParameters);
         });

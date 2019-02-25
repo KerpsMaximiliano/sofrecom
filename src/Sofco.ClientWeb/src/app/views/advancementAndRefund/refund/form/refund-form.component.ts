@@ -33,8 +33,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     public advancementSum = 0;
     public itemTotal = 0;
-    public companyRefund = 0;
-    public userRefund = 0;
+
+    public cashReturn: boolean;
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -233,7 +233,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             if(domain.advancements && domain.advancements.length > 0){
                 domain.advancements.forEach(advancement => {
 
-                    var itemExist = list.find(x => x.id == advancement);
+                    var itemExist = list.find(x => x.id == advancement.id);
                     
                     if(!itemExist){
                         list.push(advancement);
@@ -259,6 +259,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         if(advancement.advancements == null){
             advancement.currencyId = this.defaultCurrencyId;
         }
+
+        advancement.cashReturn = this.cashReturn;
 
         return advancement;
     }
@@ -288,7 +290,9 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             });
         }
 
-        if(this.userRefund > 0 || this.form.controls.advancements.value.length == 0){
+        if(this.canUpdate && (this.itemTotal > this.advancementSum || 
+                             (!this.form.controls.advancements.value || this.form.controls.advancements.value.length == 0))){
+                                 
             this.form.controls.advancements.enable();
         }
         else{
@@ -356,6 +360,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     hasCreditCardChanged(value){
         if(value == true){
             this.form.controls.advancements.setValue(new Array());
+            this.form.controls.advancements.enable();
 
             this.form.controls.creditCardId.setValidators([Validators.required]);
             this.form.controls.creditCardId.updateValueAndValidity();

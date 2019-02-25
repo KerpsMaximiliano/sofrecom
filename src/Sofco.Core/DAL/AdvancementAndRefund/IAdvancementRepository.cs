@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Domain.Models.AdvancementAndRefund;
@@ -18,7 +19,8 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         IList<Advancement> GetUnrelated(int currentUserId, int workflowStatusDraftId);
         IList<Advancement> GetAllPaymentPending(int workFlowStatePaymentPending);
         IList<AdvancementRefund> GetAdvancementAndRefundByRefund(int entityId);
-        void UpdateRefundId(Advancement advancement);
         void DeleteAdvancementRefund(AdvancementRefund advancementRefund);
+        void UpdateStatus(Advancement advancement);
+        Tuple<IList<Refund>, IList<Advancement>> GetRefunds(int id);
     }
 }

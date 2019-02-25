@@ -59,6 +59,7 @@ namespace Sofco.Service.Implementations.Workflow
                     NotificationCode = model.NotificationCode,
                     ParameterCode = model.ParameterCode,
                     ValidationCode = model.ValidationCode,
+                    OnSuccessCode = model.OnSuccessCode,
                     CreatedAt = DateTime.UtcNow,
                     ModifiedAt = DateTime.UtcNow,
                     CreatedById = currentUser.Id,
@@ -120,6 +121,7 @@ namespace Sofco.Service.Implementations.Workflow
                 transition.NotificationCode = model.NotificationCode;
                 transition.ParameterCode = model.ParameterCode;
                 transition.ValidationCode = model.ValidationCode;
+                transition.OnSuccessCode = model.OnSuccessCode;
                 transition.ModifiedAt = DateTime.UtcNow;
                 transition.ModifiedById = currentUser.Id;
                 transition.WorkflowStateAccesses = new List<WorkflowStateAccess>();
@@ -173,6 +175,7 @@ namespace Sofco.Service.Implementations.Workflow
                 ConditionCode = transition.ConditionCode,
                 NotificationCode = transition.NotificationCode,
                 ParameterCode = transition.ParameterCode,
+                OnSuccessCode = transition.OnSuccessCode,
                 GroupsHasAccess = new List<int>(),
                 UsersHasAccess =  new List<int>(),
                 SectorsHasAccess = new List<int>(),

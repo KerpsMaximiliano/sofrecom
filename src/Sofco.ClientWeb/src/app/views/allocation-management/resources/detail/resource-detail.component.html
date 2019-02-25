@@ -325,8 +325,6 @@
                                         <th class="column-sm">{{ 'refund.currency' | translate }}</th>
                                         <th class="column-sm">{{ 'refund.advancementSum' | translate }}</th>
                                         <th class="column-sm">{{ 'refund.itemTotal' | translate }}</th>
-                                        <th class="column-sm">{{ 'refund.companyRefund' | translate }}</th>
-                                        <th class="column-sm">{{ 'refund.userRefund' | translate }}</th>
                                         <th class="column-sm">{{ 'refund.status' | translate }}</th>
                                     </tr>
                                 </thead>
@@ -336,8 +334,6 @@
                                         <td>{{ item.currencyName }}</td>
                                         <td>{{ item.advancementSum }}</td>
                                         <td>{{ item.refundItemTotal }}</td>
-                                        <td>{{ item.companyRefund }}</td>
-                                        <td>{{ item.userRefund }}</td>
                                         <td>
                                             <label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusName }}</label>
                                         </td>

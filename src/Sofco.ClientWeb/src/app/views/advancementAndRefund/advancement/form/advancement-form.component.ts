@@ -10,7 +10,8 @@ import { FormsService } from "app/services/forms/forms.service";
 
 @Component({
     selector: 'advancement-form',
-    templateUrl: './advancement-form.component.html'
+    templateUrl: './advancement-form.component.html',
+    styleUrls: ['./advancement-form.component.scss']
 })
 export class AdvancementFormComponent implements OnInit, OnDestroy {
 

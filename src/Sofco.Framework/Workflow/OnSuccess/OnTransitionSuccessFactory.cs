@@ -17,6 +17,8 @@ namespace Sofco.Framework.Workflow.OnSuccess
             switch (code)
             {
                 case "REJECT": return new OnTransitionRejectSuccess(unitOfWork);
+                case "GAF-TO-FINALIZE": return new OnGafToFinalizeSuccess(unitOfWork);
+                case "PAYMENT-PENDING-TO-FINALIZE": return new OnPaymentPendingToFinalized(unitOfWork);
                 default: return null;
             }
         }

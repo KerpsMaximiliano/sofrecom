@@ -9,6 +9,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
+using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Enums;
@@ -237,6 +238,33 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 return item;
             }).ToList();
+
+            return response;
+        }
+
+        public Response<AdvancementRefundModel> GetRefunds(int id)
+        {
+            var data = unitOfWork.AdvancementRepository.GetRefunds(id);
+
+            var response = new Response<AdvancementRefundModel> { Data = new AdvancementRefundModel() };
+
+            response.Data.Refunds = data.Item1.Select(x => new RefundRelatedModel
+            {
+                Id = x.Id,
+                Analytic = x.Analytic?.Name,
+                CashReturn = x.CashReturn,
+                Total = x.TotalAmmount,
+                StatusName = x.Status?.Name,
+                StatusType = x.Status?.Type,
+            })
+            .ToList();
+
+            response.Data.Advancements = data.Item2.Select(x => new AdvancementRelatedModel
+            {
+                Id = x.Id,
+                Total = x.Ammount
+            })
+            .ToList();
 
             return response;
         }

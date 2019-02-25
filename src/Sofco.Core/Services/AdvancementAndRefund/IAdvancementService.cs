@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
+using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.AdvancementAndRefund
@@ -17,5 +18,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<IList<AdvancementUnrelatedItem>> GetUnrelated();
         Response Delete(int id);
         Response<IList<PaymentPendingModel>> GetAllPaymentPending();
+        Response<AdvancementRefundModel> GetRefunds(int id);
     }
 }

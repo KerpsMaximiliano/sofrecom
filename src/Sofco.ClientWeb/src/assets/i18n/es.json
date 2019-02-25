@@ -1048,6 +1048,7 @@
         "add": "Solicitud",
         "edit": "Edición Solicitud",
         "title": "Adelantos",
+        "advancementName": "Adelanto",
         "userApplicant": "Solicitante",
         "paymentForm": "Forma de cobro",
         "type": "Tipo de Adelanto",

@@ -50,6 +50,12 @@
         </div>
     </div>
 
+    <div class="form-group">
+        <icheck [(checked)]="cashReturn">
+            <label style="padding-left:20px;">Ultimo reintegro</label> 
+        </icheck>
+    </div>
+
     <div class="row" [hidden]="!userHasCreditCard">
         <div class="col-md-4">
             <div class="form-group">
@@ -100,7 +106,7 @@
             <tr *ngFor="let detail of detailForms; let i = index" class="pointer">
                 <td>{{ detail.controls.creationDate.value | date: 'dd/MM/yyyy' }}</td>
                 <td class="column-xlg text-word-break">{{ detail.controls.description.value }}</td>
-                <td>{{ currencyDescription }}  {{ detail.controls.ammount.value | amountFormat }}</td>
+                <td>{{ detail.controls.ammount.value | amountFormat }} {{ currencyDescription }}</td>
                 <td *ngIf="canUpdate" class="text-center column-xs">
                     <button class="btn btn-sm fa fa-pencil btn-warning" (click)="editDetail(detail, i)"></button>
                     <button class="btn btn-sm fa fa-trash btn-danger" (click)="removeDetail(i)"></button>
@@ -110,12 +116,6 @@
     </table>   
 
     <div class="row m-t-lg">
-        <div class="col-xs-3">
-            <dl>
-                <dt><strong>{{ 'refund.advancementSum' | translate }}:</strong></dt>
-                <dd>{{ advancementSum | amountFormat }} {{ currencyDescription }}</dd>
-            </dl>
-        </div>
         <div class="col-xs-3">
             <dl>
                 <dt><strong>{{ 'refund.itemTotal' | translate }}:</strong></dt>
