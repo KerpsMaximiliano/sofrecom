@@ -180,12 +180,9 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
 
         public bool HasUserRefund(Refund refund)
         {
-            var diffTotal = refund.AdvancementRefunds.Select(x => x.Advancement)
-                                .Sum(x => x.Ammount) - refund.Details.Sum(x => x.Ammount);
+            var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
 
-            var diff = diffTotal < 0
-                ? Math.Abs(diffTotal)
-                : 0;
+            var diff = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
 
             return diff > 0;
         }

@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { Router } from "@angular/router";
+import { WorkflowStateType } from "app/models/enums/workflowStateType";
 
 @Component({
     selector: 'list-finalized',
@@ -71,5 +72,14 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
             this.initGrid();
         }, 
         error => this.messageService.closeLoading());
+    }
+
+    getStatusClass(type){
+        switch(type){
+            case WorkflowStateType.Info: return "label-success";
+            case WorkflowStateType.Warning: return "label-warning";
+            case WorkflowStateType.Success: return "label-primary";
+            case WorkflowStateType.Danger: return "label-danger";
+        }
     }
 }

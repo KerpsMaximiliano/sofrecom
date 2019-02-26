@@ -16,6 +16,7 @@
                 <th class="column-md">{{ 'advancement.description' | translate }}</th>
                 <th class="column-sm">{{ 'advancement.paymentForm' | translate }}</th>
                 <th class="column-sm">{{ 'advancement.bank' | translate }}</th>
+                <th class="column-md">{{ 'advancement.status' | translate }}</th> 
             </tr>
         </thead>
         <tbody> 
@@ -35,6 +36,7 @@
                     <span *ngIf="item.paymentForm == 2">{{ 'advancement.foreignCurrency' | translate }}</span>
                 </td>
                 <td class="column-sm">{{ item.bank }}</td>
+                <td class="column-md"><label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusDesc }}</label></td>
             </tr>
         </tbody>
     </table>   

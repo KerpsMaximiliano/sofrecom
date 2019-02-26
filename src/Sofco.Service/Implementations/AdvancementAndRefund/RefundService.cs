@@ -450,31 +450,34 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var refunds = unitOfWork.RefundRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
 
-            response.Data = refunds.Select(x =>
+            foreach (var refund in refunds)
             {
                 var item = new PaymentPendingModel
                 {
-                    Id = x.Id,
-                    UserApplicantId = x.UserApplicantId,
-                    UserApplicantDesc = x.UserApplicant?.Name,
-                    CurrencyId = x.CurrencyId,
-                    CurrencyDesc = x.Currency?.Text,
-                    Ammount = x.TotalAmmount,
-                    WorkflowId = x.WorkflowId,
+                    Id = refund.Id,
+                    UserApplicantId = refund.UserApplicantId,
+                    UserApplicantDesc = refund.UserApplicant?.Name,
+                    CurrencyId = refund.CurrencyId,
+                    CurrencyDesc = refund.Currency?.Text,
+                    WorkflowId = refund.WorkflowId,
                     Type = "Reintegro"
                 };
 
-                item.Bank = GetBank(x.UserApplicant?.Email, employeeDicc);
+                var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
 
-                var transition = x.Status.ActualTransitions.FirstOrDefault();
+                item.Ammount = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
+
+                item.Bank = GetBank(refund.UserApplicant?.Email, employeeDicc);
+
+                var transition = refund.Status.ActualTransitions.FirstOrDefault();
 
                 if (transition != null)
                 {
                     item.NextWorkflowStateId = transition.NextWorkflowStateId;
                 }
 
-                return item;
-            }).ToList();
+                response.Data.Add(item);
+            }
 
             return response;
         }

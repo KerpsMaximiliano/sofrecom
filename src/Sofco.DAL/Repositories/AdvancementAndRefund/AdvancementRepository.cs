@@ -70,6 +70,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.UserApplicant)
                 .Include(x => x.MonthsReturn)
                 .Include(x => x.Authorizer)
+                .Include(x => x.Status)
                 .Where(x => !x.InWorkflowProcess && x.StatusId != statusDraft);
 
             if (model.ResourceId.HasValue && model.ResourceId.Value > 0)
