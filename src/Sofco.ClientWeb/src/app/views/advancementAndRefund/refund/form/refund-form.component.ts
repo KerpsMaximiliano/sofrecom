@@ -216,6 +216,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         this.form = new Refund(!isEdit, domain);
 
         this.currencyDescription = domain.currencyDesc;
+        this.cashReturn = domain.cashReturn;
 
         if(domain.details && domain.details.length > 0){
             domain.details.forEach(detail => {

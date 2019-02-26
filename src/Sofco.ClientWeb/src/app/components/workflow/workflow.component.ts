@@ -5,6 +5,7 @@ import { MessageService } from "app/services/common/message.service";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
 import { WfRejectComponent } from "./templates/reject/wf-reject.component";
 import { Type } from "@angular/compiler/src/core";
+import { WfCurrencyExchangeComponent } from "./templates/currency-exchange/currency-exchange";
 
 @Component({
     selector: 'workflow',
@@ -108,6 +109,7 @@ export class WorkflowComponent implements OnDestroy {
     getComponentClass(type) : Type{
         switch(type){
             case "REJECT": return WfRejectComponent;
+            case "CURRENCY-EXCHANGE": return WfCurrencyExchangeComponent;
             default: return null;
         }
     }

@@ -31,6 +31,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             CashReturn = refund.CashReturn;
             WorkflowId = refund.WorkflowId;
 
+            CurrencyExchange = refund.CurrencyExchange;
+
             Details = new List<RefundEditDetailModel>(); 
             AdvancementIds = new List<int>();
             Advancements = new List<AdvancementUnrelatedItem>();
@@ -60,6 +62,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
                 Files.Add(new Option { Id = refundAttachment.FileId, Text = refundAttachment.File.FileName });
             }
         }
+
+        public decimal CurrencyExchange { get; set; }
 
         public int WorkflowId { get; set; }
 

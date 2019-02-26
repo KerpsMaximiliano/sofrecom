@@ -71,5 +71,7 @@
         public int ViaticumWorkflowId { get; set; }
 
         public int WorkflowStatusApproveId { get; set; }
+
+        public int WorkflowStatusFinalizedId { get; set; }
     }
 }

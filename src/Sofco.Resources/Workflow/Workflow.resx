@@ -129,11 +129,17 @@
   <data name="AddTransitionSuccess" xml:space="preserve">
     <value>workflow/workflow.addTransitionSuccess</value>
   </data>
+  <data name="AllRefundsMustHaveSameStatus" xml:space="preserve">
+    <value>workflow/workflow.allRefundsMustHaveSameStatus</value>
+  </data>
   <data name="CannotDoTransition" xml:space="preserve">
     <value>workflow/workflow.cannotDoTransition</value>
   </data>
   <data name="CommentsRequired" xml:space="preserve">
     <value>workflow/workflow.commentsRequired</value>
+  </data>
+  <data name="CurrencyExchangeRequired" xml:space="preserve">
+    <value>workflow/workflow.currencyExchangeRequired</value>
   </data>
   <data name="DescriptionRequired" xml:space="preserve">
     <value>workflow/workflow.descriptionRequired</value>

@@ -244,7 +244,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
         public Response<AdvancementRefundModel> GetRefunds(int id)
         {
-            var data = unitOfWork.AdvancementRepository.GetRefunds(id);
+            var data = unitOfWork.AdvancementRepository.GetAdvancementsAndRefundsByAdvancementId(id);
 
             var response = new Response<AdvancementRefundModel> { Data = new AdvancementRefundModel() };
 

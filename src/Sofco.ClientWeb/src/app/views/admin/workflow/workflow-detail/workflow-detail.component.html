@@ -57,7 +57,7 @@
                             <th class="column-md">Cod. Notificación</th>
                             <th class="column-md">Cod. Validación</th>
                             <th class="column-md">Cod. Condición</th>
-                            <th class="column-md">Cod. Parametros</th>
+                            <th class="column-md">Proceso al guardar</th>
                             <th class="column-sm text-center">Acciones</th>
                         </tr>
                     </thead>
@@ -68,7 +68,7 @@
                             <td class="column-md">{{ item.notificationCode }}</td>
                             <td class="column-md">{{ item.validationCode }}</td>
                             <td class="column-md">{{ item.conditionCode }}</td>
-                            <td class="column-md">{{ item.parameterCode }}</td>
+                            <td class="column-md">{{ item.onSuccessCode }}</td>
                             <td class="column-sm text-center">
                                 <button class="btn btn-success btn-xs" (click)="goToDetail(item)"><i class="fa fa-edit"></i></button>
                                 <button class="btn btn-danger btn-xs" (click)="delete(item, i)"><i class="fa fa-trash"></i></button>

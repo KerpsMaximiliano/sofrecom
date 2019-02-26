@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Workflow;
-using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.Workflow
 {
@@ -25,6 +24,10 @@ namespace Sofco.DAL.Repositories.Workflow
         public void UpdateStatus(WorkflowEntity entity)
         {
             context.Entry(entity).Property("StatusId").IsModified = true;
+        }
+
+        public void UpdateInWorkflowProcess(WorkflowEntity entity)
+        {
             context.Entry(entity).Property("InWorkflowProcess").IsModified = true;
         }
 

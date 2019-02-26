@@ -5,6 +5,7 @@ export class Refund extends FormGroup {
 
     private id: number;
     public workflowStateType: WorkflowStateType;
+    public currencyExchange: number;
 
     constructor(isReadonly: boolean, domain?) {
         super({
@@ -24,6 +25,7 @@ export class Refund extends FormGroup {
         if(domain){
             this.id = domain.id || 0;
             this.workflowStateType = domain.workflowStateType;
+            this.currencyExchange = domain.currencyExchange;
         }
     }
 

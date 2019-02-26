@@ -33,11 +33,13 @@
                 <ng-select id="advancements" [items]="advancements" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" formControlName="advancements" (change)="advancementsChanged()"></ng-select>
             </div>
         </div>
+        
         <div class="col-md-4">
-            <dl>
-                <dt><strong> {{'refund.currency' | translate }}: </strong></dt>
-                <dd> {{ currencyDescription }} </dd>
-            </dl>
+            <label>{{'refund.currency' | translate }}:</label> 
+            <span class="m-l-sm">{{ currencyDescription }}</span>
+
+            <label *ngIf="form.currencyExchange > 0">Cotización: </label> 
+            <span class="m-l-sm" *ngIf="form.currencyExchange > 0">{{ form.currencyExchange }}</span>
         </div>
     </div>
 

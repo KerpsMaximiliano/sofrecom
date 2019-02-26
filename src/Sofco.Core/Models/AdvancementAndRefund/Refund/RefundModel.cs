@@ -37,6 +37,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.CreationDate = DateTime.UtcNow.Date;
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
             domain.InWorkflowProcess = true;
+            domain.CashReturn = CashReturn;
 
             if (HasCreditCard)
                 domain.CreditCardId = CreditCardId;
@@ -55,6 +56,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
             domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
+            domain.CashReturn = CashReturn;
 
             if (HasCreditCard)
                 domain.CreditCardId = CreditCardId;

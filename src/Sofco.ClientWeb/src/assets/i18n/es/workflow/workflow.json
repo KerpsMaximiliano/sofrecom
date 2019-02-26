@@ -15,5 +15,7 @@
     "transitionNotFound": "La transicion no fue encontrada",
     "updateTransitionSuccess": "La transicion fue actualizada correctamente",
     "addTransitionSuccess": "La transicion fue creada correctamente",
-    "transitionDeleted": "La transicion fue eliminada correctamente"
+    "transitionDeleted": "La transicion fue eliminada correctamente",
+    "currencyExchangeRequired": "La cotización es requerida",
+    "allRefundsMustHaveSameStatus": "Alguno de los reintegros relacionados se encuentra en proceso de aprobación"
 }

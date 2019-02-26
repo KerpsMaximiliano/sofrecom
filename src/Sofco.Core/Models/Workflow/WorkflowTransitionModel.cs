@@ -12,7 +12,7 @@ namespace Sofco.Core.Models.Workflow
             NotificationCode = domain.NotificationCode;
             ValidationCode = domain.ValidationCode;
             ConditionCode = domain.ConditionCode;
-            ParameterCode = domain.ParameterCode;
+            OnSuccessCode = domain.OnSuccessCode;
         }
 
         public int Id { get; set; }
@@ -27,6 +27,6 @@ namespace Sofco.Core.Models.Workflow
 
         public string ConditionCode { get; set; }
 
-        public string ParameterCode { get; set; }
+        public string OnSuccessCode { get; set; }
     }
 }

@@ -120,7 +120,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             return query.ToList();
         }
 
-        public IList<AdvancementRefund> GetAdvancementAndRefundByRefund(int entityId)
+        public IList<AdvancementRefund> GetAdvancementRefundByRefundId(int entityId)
         {
             return context.AdvancementRefunds.Include(x => x.Advancement).Where(x => x.RefundId == entityId).ToList();
         }
@@ -135,7 +135,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             context.Entry(advancement).Property("StatusId").IsModified = true;
         }
 
-        public Tuple<IList<Refund>, IList<Advancement>> GetRefunds(int id)
+        public Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByAdvancementId(int id)
         {
             var refundIds = context.AdvancementRefunds
                 .Where(x => x.AdvancementId == id)

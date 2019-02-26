@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AdvancementAndRefund;
@@ -117,6 +118,41 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Where(x => x.StatusId == workFlowStatePaymentPending);
 
             return query.ToList();
+        }
+
+        public Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByRefundId(int id)
+        {
+            var advancementIds = context.AdvancementRefunds
+                .Where(x => x.RefundId == id)
+                .Select(x => x.AdvancementId)
+                .Distinct()
+                .ToList();
+
+            var advancements = context.Advancements
+                .Where(x => advancementIds.Contains(x.Id))
+                .ToList();
+
+            var refundIds = context.AdvancementRefunds
+                .Where(x => advancementIds.Contains(x.AdvancementId))
+                .Select(x => x.RefundId)
+                .Distinct()
+                .ToList();
+
+            var refunds = context.Refunds
+                .Where(x => refundIds.Contains(x.Id))
+                .ToList();
+
+            return new Tuple<IList<Refund>, IList<Advancement>>(refunds, advancements);
+        }
+
+        public void UpdateStatus(Refund refund)
+        {
+            context.Entry(refund).Property("StatusId").IsModified = true;
+        }
+
+        public void UpdateCurrencyExchange(Refund refund)
+        {
+            context.Entry(refund).Property("CurrencyExchange").IsModified = true;
         }
     }
 }

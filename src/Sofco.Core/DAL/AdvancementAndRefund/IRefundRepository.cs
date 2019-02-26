@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Domain.Models.AdvancementAndRefund;
@@ -26,5 +27,10 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         IList<Refund> GetByApplicant(int id);
 
         IList<Refund> GetAllPaymentPending(int workFlowStatePaymentPending);
+
+        Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByRefundId(int id);
+
+        void UpdateStatus(Refund refund);
+        void UpdateCurrencyExchange(Refund refund);
     }
 }

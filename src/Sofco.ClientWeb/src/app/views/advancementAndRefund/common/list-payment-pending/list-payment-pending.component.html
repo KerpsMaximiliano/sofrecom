@@ -51,10 +51,6 @@
             </div>
         </div>
         <div class="panel-footer">
-            <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
-            <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
-            <button *ngIf="!noneResourseSelected()" class="btn btn-primary btn-sm pull-left" (click)="approveAll()">{{ 'ACTIONS.approveSelected' | translate }} <i class="fa fa-plus"></i></button>  
-
             <div class="text-right">
                 <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
                 <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
@@ -63,6 +59,14 @@
     </div> 
 
     <div class="ibox">
+        <div class="ibox-title" *ngIf="model.length > 0">
+            <div class="ibox-tools">
+                <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+
+                <button [disabled]="noneResourseSelected()" class="btn btn-primary btn-sm" (click)="approveAll()">{{ 'ACTIONS.approveSelected' | translate }} <i class="fa fa-plus"></i></button>  
+            </div>
+        </div>
         <div class="ibox-content">
             <table class="table table-striped dataTable" role="grid" id="payment-pending">
                 <thead>

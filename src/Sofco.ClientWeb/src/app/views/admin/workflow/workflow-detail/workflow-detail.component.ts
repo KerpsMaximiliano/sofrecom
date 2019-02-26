@@ -46,6 +46,9 @@ declare var moment: any;
     }
 
     goToDetail(item){
+        localStorage.setItem("actualState", item.actualWorkflowStateDescription);
+        localStorage.setItem("nextState", item.nextWorkflowStateDescription);
+
         this.router.navigate([`/admin/workflows/${this.model.id}/transition/${item.id}`]);
     }
 

@@ -13,6 +13,7 @@ using Sofco.Core.Services.Workflow;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Workflow.Notifications;
@@ -96,12 +97,16 @@ namespace Sofco.Service.Implementations.Workflow
             // Custom Validation
             if (!string.IsNullOrWhiteSpace(transition.ValidationCode))
             {
-                var validatorHandler = workflowValidationStateFactory.GetInstance(transition.ValidationCode);
+                var codes = transition.ValidationCode.Split(';');
 
-                if (!validatorHandler.Validate(entity, response, parameters))
+                foreach (var code in codes)
                 {
-                    return response;
+                    var validatorHandler = workflowValidationStateFactory.GetInstance(code);
+
+                    validatorHandler.Validate(entity, response, parameters);
                 }
+
+                if(response.HasErrors()) return response;
             }
 
             // Save change status
@@ -109,7 +114,7 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 entity.StatusId = parameters.NextStateId;
 
-                entity.InWorkflowProcess = !workflowRepository.IsEndTransition(parameters.NextStateId, parameters.WorkflowId);
+                //entity.InWorkflowProcess = !workflowRepository.IsEndTransition(parameters.NextStateId, parameters.WorkflowId);
 
                 workflowRepository.UpdateStatus(entity);
                 workflowRepository.Save();
@@ -125,9 +130,21 @@ namespace Sofco.Service.Implementations.Workflow
             // Custom Success Process
             if (!string.IsNullOrWhiteSpace(transition.OnSuccessCode))
             {
-                var onSuccessHandler = onTransitionSuccessFactory.GetInstance(transition.OnSuccessCode);
+                var codes = transition.OnSuccessCode.Split(';');
 
-                onSuccessHandler?.Process(entity);
+                foreach (var code in codes)
+                {
+                    try
+                    {
+                        var onSuccessHandler = onTransitionSuccessFactory.GetInstance(code);
+
+                        onSuccessHandler?.Process(entity, parameters);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogError(e);
+                    }
+                }
             }
 
             // Create history
@@ -318,6 +335,8 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 if (ValidateAccess(transition, currentUser, entity))
                 {
+                    CheckConditionParameterCode(entity, transition);
+
                     if (!string.IsNullOrWhiteSpace(transition.ConditionCode))
                     {
                         var conditionHandler = workflowConditionStateFactory.GetInstance(transition.ConditionCode);
@@ -335,6 +354,17 @@ namespace Sofco.Service.Implementations.Workflow
             }
 
             return response;
+        }
+
+        private void CheckConditionParameterCode<T>(T entity, WorkflowStateTransition transition) where T : WorkflowEntity
+        {
+            if (entity is Refund refund)
+            {
+                if (refund.CurrencyId == appSetting.CurrencyPesos)
+                {
+                    transition.ParameterCode = string.Empty;
+                }
+            }
         }
 
         public Response<IList<WorkflowListItemModel>> GetAll()

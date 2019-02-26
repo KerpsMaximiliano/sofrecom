@@ -15,6 +15,8 @@ export class WorkflowTransitionEditComponent implements OnInit, OnDestroy {
     postSubscrip: Subscription;
 
     workflowId: number;
+    actualState: string;
+    nextState: string;
 
     constructor(private messageService: MessageService,
                 private activateRoute: ActivatedRoute,
@@ -24,6 +26,9 @@ export class WorkflowTransitionEditComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         const routeParams = this.activateRoute.snapshot.params;
         this.workflowId = routeParams.workflowId;
+        
+        this.actualState = localStorage.getItem('actualState');
+        this.nextState = localStorage.getItem('nextState');
 
         this.messageService.showLoading();
 

@@ -97,6 +97,15 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.allRefundsMustHaveSameStatus.
+        /// </summary>
+        public static string AllRefundsMustHaveSameStatus {
+            get {
+                return ResourceManager.GetString("AllRefundsMustHaveSameStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.cannotDoTransition.
         /// </summary>
         public static string CannotDoTransition {
@@ -111,6 +120,15 @@ namespace Sofco.Resources.Workflow {
         public static string CommentsRequired {
             get {
                 return ResourceManager.GetString("CommentsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.currencyExchangeRequired.
+        /// </summary>
+        public static string CurrencyExchangeRequired {
+            get {
+                return ResourceManager.GetString("CurrencyExchangeRequired", resourceCulture);
             }
         }
         

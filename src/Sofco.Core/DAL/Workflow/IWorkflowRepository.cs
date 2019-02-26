@@ -29,5 +29,6 @@ namespace Sofco.Core.DAL.Workflow
         void Update(Domain.Models.Workflow.Workflow domain);
         Domain.Models.Workflow.Workflow GetLastByType(int typeId);
         int GetVersion(int workflowTypeId);
+        void UpdateInWorkflowProcess(WorkflowEntity entity);
     }
 }
