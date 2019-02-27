@@ -395,7 +395,7 @@
                 "province": "Provincia"
             },
             "histories": {
-                "createdDate": "Fecha Creación",
+                "createdDate": "Fecha Modificación",
                 "userName": "Usuario",
                 "comment": "Comentarios",
                 "solfacStatusFrom": "Estado inicial",
