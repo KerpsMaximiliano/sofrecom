@@ -103,7 +103,7 @@ namespace Sofco.Service.Implementations.Workflow
                 {
                     var validatorHandler = workflowValidationStateFactory.GetInstance(code);
 
-                    validatorHandler.Validate(entity, response, parameters);
+                    validatorHandler?.Validate(entity, response, parameters);
                 }
 
                 if(response.HasErrors()) return response;
@@ -113,8 +113,6 @@ namespace Sofco.Service.Implementations.Workflow
             try
             {
                 entity.StatusId = parameters.NextStateId;
-
-                //entity.InWorkflowProcess = !workflowRepository.IsEndTransition(parameters.NextStateId, parameters.WorkflowId);
 
                 workflowRepository.UpdateStatus(entity);
                 workflowRepository.Save();
@@ -341,7 +339,7 @@ namespace Sofco.Service.Implementations.Workflow
                     {
                         var conditionHandler = workflowConditionStateFactory.GetInstance(transition.ConditionCode);
 
-                        if (conditionHandler.CanDoTransition(entity, response))
+                        if (conditionHandler != null && conditionHandler.CanDoTransition(entity, response))
                         {
                             AddTransition(response, transition);
                         }
