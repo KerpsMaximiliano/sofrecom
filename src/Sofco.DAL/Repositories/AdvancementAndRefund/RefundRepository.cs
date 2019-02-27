@@ -154,5 +154,14 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
             context.Entry(refund).Property("CurrencyExchange").IsModified = true;
         }
+
+        public IList<Refund> GetAllInCurrentAccount(int workflowStatusCurrentAccount)
+        {
+            return context.Refunds
+                .Include(x => x.UserApplicant)
+                .Include(x => x.Currency)
+                .Where(x => x.StatusId == workflowStatusCurrentAccount)
+                .ToList();
+        }
     }
 }

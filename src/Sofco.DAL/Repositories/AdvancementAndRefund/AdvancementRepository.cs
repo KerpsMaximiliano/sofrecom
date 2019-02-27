@@ -162,5 +162,10 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             return new Tuple<IList<Refund>, IList<Advancement>>(refunds, advancements);
         }
+
+        public IList<Advancement> GetAllApproved(int workflowStatusApproveId)
+        {
+            return context.Advancements.Where(x => x.StatusId == workflowStatusApproveId).ToList();
+        }
     }
 }

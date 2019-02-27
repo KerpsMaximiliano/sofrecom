@@ -1,0 +1,45 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Cuenta Corriente </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'advancement.navigationTitle' | translate }}
+            </li>
+            <li class="active">
+                <strong> Cuenta Corriente </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <table class="table table-striped dataTable" role="grid" id="current-account">
+                <thead>
+                    <tr>
+                        <th>{{ 'advancement.userApplicant' | translate }}</th>
+                        <th>{{ 'advancement.currency' | translate }}</th>
+                        <th>Total Adelantos</th>
+                        <th>Total Reintegros</th>
+                        <th>Reembolso usuario</th>
+                        <th>Reembolso compañia</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                    <tr *ngFor="let item of model">
+                        <td>{{ item.user }}</td>
+                        <td>{{ item.currency }}</td>
+                        <td>{{ item.advancementTotal | amountFormat }}</td>
+                        <td>{{ item.refundTotal | amountFormat }}</td>
+                        <td>{{ item.userRefund | amountFormat }}</td>
+                        <td>{{ item.companyRefund | amountFormat }}</td>
+                    </tr>
+                </tbody>
+            </table>   
+        </div>
+    </div>
+</div>

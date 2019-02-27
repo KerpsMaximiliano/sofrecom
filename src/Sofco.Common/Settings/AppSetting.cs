@@ -73,5 +73,7 @@
         public int WorkflowStatusApproveId { get; set; }
 
         public int WorkflowStatusFinalizedId { get; set; }
+
+        public int WorkflowStatusCurrentAccount { get; set; }
     }
 }

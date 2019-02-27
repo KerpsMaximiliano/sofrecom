@@ -32,5 +32,7 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
 
         void UpdateStatus(Refund refund);
         void UpdateCurrencyExchange(Refund refund);
+
+        IList<Refund> GetAllInCurrentAccount(int workflowStatusCurrentAccount);
     }
 }

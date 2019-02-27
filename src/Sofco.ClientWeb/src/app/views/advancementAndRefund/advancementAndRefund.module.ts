@@ -37,19 +37,21 @@ import { ListPaymentPendingComponent } from "./common/list-payment-pending/list-
 import { AdvancementRefundSettingComponent } from "./common/settings/setting.component";
 import { AdvancementRefundSettingService } from "app/services/advancement-and-refund/setting.service";
 import { RefundsRelatedComponent } from "./advancement/refunds-related/refunds-related";
+import { CurrentAccountService } from "app/services/advancement-and-refund/current-account.sevice";
+import { CurrentAccountComponent } from "./common/current-account/current-account";
 
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,
                     AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent,
                     RefundListComponent, RefundListFilterComponent, RefundListGridComponent, RefundHistoryComponent,
-                    ListPaymentPendingComponent, AdvancementRefundSettingComponent, RefundsRelatedComponent
+                    ListPaymentPendingComponent, AdvancementRefundSettingComponent, RefundsRelatedComponent, CurrentAccountComponent
                   ],
 
     imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, RefundFormModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
                    AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule, AmountFormatModule ],
 
-    providers   : [ AdvancementService, UserService, I18nService, RefundService, AdvancementRefundSettingService ],
+    providers   : [ AdvancementService, UserService, I18nService, RefundService, AdvancementRefundSettingService, CurrentAccountService ],
 
     exports     : []
 })

@@ -22,5 +22,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         void DeleteAdvancementRefund(AdvancementRefund advancementRefund);
         void UpdateStatus(Advancement advancement);
         Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByAdvancementId(int id);
+        IList<Advancement> GetAllApproved(int workflowStatusApproveId);
     }
 }
