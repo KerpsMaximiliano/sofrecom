@@ -136,15 +136,25 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var allocationAnalytic = allocations?.FirstOrDefault(s => s.AnalyticId == model.AnalyticId);
 
-                if (allocationAnalytic == null) continue;
+                //if (allocationAnalytic == null) continue;
 
-                resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
+                if (allocationAnalytic == null)
+                {
+                    resource.BusinessHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
+                    resource.AllocationPercentage = 0;
+                }
+                else
+                {
+                    resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
+                    resource.AllocationPercentage = allocationAnalytic.Percentage;
+                }
+          
                 resource.ApprovedHours = item.Value.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours);
                 resource.LicenseHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
                 resource.SentHours = item.Value.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours);
                 resource.DraftHours = item.Value.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours);
                 resource.PendingHours = resource.BusinessHours - resource.ApprovedHours - resource.LicenseHours - resource.SentHours - resource.DraftHours;
-                resource.AllocationPercentage = allocationAnalytic.Percentage;
+            
                 var details = list.OrderBy(s => s.Date).ToList();
                 resource.Details = Translate(details);
                 resource.DetailCount = details.Count;
