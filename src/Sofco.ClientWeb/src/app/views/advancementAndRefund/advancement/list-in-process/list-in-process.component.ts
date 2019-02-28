@@ -51,7 +51,7 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
           columns: columns,
           title: title,
           withExport: true,
-          columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ]
+          columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
         }
   
         this.datatableService.destroy(params.selector);

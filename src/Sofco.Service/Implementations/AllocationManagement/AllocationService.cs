@@ -88,7 +88,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
+        public AllocationResponse GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate, IList<int> analyticIdsParameter)
         {
             var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(employeeId, startDate, endDate);
             var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employeeId, startDate, endDate);
@@ -108,6 +108,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             foreach (var analyticId in analyticsIds)
             {
+                if (analyticIdsParameter.Any() && !analyticIdsParameter.Contains(analyticId)) continue;
+
                 var allocationDto = new AllocationDto();
                 allocationDto.EmployeeId = employeeId;
 
@@ -307,7 +309,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 foreach (var employee in employees)
                 {
-                    var allocationResponse = GetAllocationsBetweenDays(employee.Id, parameters.StartDate, parameters.EndDate);
+                    var allocationResponse = GetAllocationsBetweenDays(employee.Id, parameters.StartDate, parameters.EndDate, parameters.AnalyticIds);
 
                     foreach (var allocation in allocationResponse.Allocations)
                     {

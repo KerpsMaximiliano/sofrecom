@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +46,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpGet("analytics/{employeeId}/{startDate}/{endDate}")]
         public IActionResult GetAllocationsBetweenDays(int employeeId, DateTime startDate, DateTime endDate)
         {
-            var model = allocationService.GetAllocationsBetweenDays(employeeId, startDate.Date, endDate.Date);
+            var model = allocationService.GetAllocationsBetweenDays(employeeId, startDate.Date, endDate.Date, new List<int>());
 
             return Ok(model);
         }
