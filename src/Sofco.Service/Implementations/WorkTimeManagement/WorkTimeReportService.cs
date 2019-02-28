@@ -101,7 +101,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                         model = new WorkTimeReportModelItem
                         {
-                            Client = allocation.Analytic.ClientExternalName,
+                            Client = allocation.Analytic.AccountName,
                             AnalyticId = allocation.AnalyticId,
                             Analytic = $"{allocation.Analytic.Title} - {allocation.Analytic.Name}",
                             Title = $"{allocation.Analytic.Title}",

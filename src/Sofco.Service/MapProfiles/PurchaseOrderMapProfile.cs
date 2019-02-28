@@ -25,7 +25,7 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.Analytic, x => x.MapFrom(_ => MapAnalytic(_)));
 
             CreateMap<PurchaseOrder, PurchaseOrderPendingModel>()
-                .ForMember(s => s.Client, x => x.MapFrom(_ => _.ClientExternalName))
+                .ForMember(s => s.Client, x => x.MapFrom(_ => _.AccountName))
                 .ForMember(s => s.Area, x => x.MapFrom(_ => MapArea(_)));
         }
 

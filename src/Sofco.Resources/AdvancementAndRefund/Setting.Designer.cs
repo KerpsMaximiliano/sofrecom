@@ -61,6 +61,33 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/setting.amountALessThanBDolares.
+        /// </summary>
+        public static string AmountALessThanBDolares {
+            get {
+                return ResourceManager.GetString("AmountALessThanBDolares", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/setting.amountALessThanBEuros.
+        /// </summary>
+        public static string AmountALessThanBEuros {
+            get {
+                return ResourceManager.GetString("AmountALessThanBEuros", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/setting.amountALessThanBPesos.
+        /// </summary>
+        public static string AmountALessThanBPesos {
+            get {
+                return ResourceManager.GetString("AmountALessThanBPesos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/setting.modelError.
         /// </summary>
         public static string ModelError {

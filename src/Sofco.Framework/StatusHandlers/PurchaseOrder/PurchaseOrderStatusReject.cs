@@ -64,13 +64,13 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, 
                 purchaseOrder.Number, 
                 StatusDescription, 
-                purchaseOrder.ClientExternalName);
+                purchaseOrder.AccountName);
 
             var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage,
                 purchaseOrder.Number, 
                 $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}", 
                 analyticsForBody,
-                purchaseOrder.ClientExternalName);
+                purchaseOrder.AccountName);
 
             var recipientsToCompliance = recipientManager.GetRecipientsCompliance();
 

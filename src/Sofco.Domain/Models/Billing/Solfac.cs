@@ -67,8 +67,8 @@ namespace Sofco.Domain.Models.Billing
         public string ProjectId { get; set; }
         public string Project { get; set; }
 
-        public string CustomerId { get; set; }
-        public string ClientName { get; set; }
+        public string AccountId { get; set; }
+        public string AccountName { get; set; }
 
         public string ServiceId { get; set; }
         public string Service { get; set; }

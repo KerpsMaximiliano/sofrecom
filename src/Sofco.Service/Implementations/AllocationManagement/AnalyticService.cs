@@ -375,7 +375,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 unitOfWork.AnalyticRepository.Update(analytic);
                 unitOfWork.Save();
 
-                if (!string.IsNullOrWhiteSpace(analytic.ClientExternalId) &&
+                if (!string.IsNullOrWhiteSpace(analytic.AccountId) &&
                     !string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
                     var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
@@ -405,7 +405,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             try
             {
-                var subject = string.Format(MailSubjectResource.AddAnalytic, analytic.ClientExternalName);
+                var subject = string.Format(MailSubjectResource.AddAnalytic, analytic.AccountName);
                 var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);

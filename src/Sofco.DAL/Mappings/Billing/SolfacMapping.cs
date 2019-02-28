@@ -10,7 +10,7 @@ namespace Sofco.DAL.Mappings.Billing
         {
             // Primary Key
             builder.Entity<Solfac>().HasKey(_ => _.Id);
-            builder.Entity<Solfac>().Property(_ => _.ClientName).HasMaxLength(100);
+            builder.Entity<Solfac>().Property(_ => _.AccountName).HasMaxLength(100);
             builder.Entity<Solfac>().Property(_ => _.BusinessName).HasMaxLength(100);
             builder.Entity<Solfac>().Property(_ => _.CelPhone).HasMaxLength(50);
             builder.Entity<Solfac>().Property(_ => _.Project).HasMaxLength(1000);

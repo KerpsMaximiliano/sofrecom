@@ -77,13 +77,13 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailSuccess(Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
-            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription, purchaseOrder.ClientExternalName);
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription, purchaseOrder.AccountName);
 
             var body = string.Format(Resources.Mails.MailMessageResource.OcComercialMessage, 
                 purchaseOrder.Number, 
                 $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}",
                 GetAnalyticsAndManagersBody(purchaseOrder),
-                purchaseOrder.ClientExternalName);
+                purchaseOrder.AccountName);
 
             var recipients = recipientManager.GetRecipientsOperation(purchaseOrder);
 
@@ -99,12 +99,12 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailReject(Domain.Models.Billing.PurchaseOrder purchaseOrder, string comments)
         {
-            var ocText = $"{purchaseOrder.Number} - {purchaseOrder.ClientExternalName}";
+            var ocText = $"{purchaseOrder.Number} - {purchaseOrder.AccountName}";
 
             var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle,
                 purchaseOrder.Number,
                 RejectStatusDescription,
-                purchaseOrder.ClientExternalName);
+                purchaseOrder.AccountName);
 
             var body = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage,
                 ocText,

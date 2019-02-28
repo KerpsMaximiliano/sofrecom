@@ -488,8 +488,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         Name = analityc.Name,
                         AllocationPercentage = allocationThisMonth.Percentage,
                         StartDate = unitOfWork.AllocationRepository.GetStartDate(analityc.Id),
-                        Client = analityc.ClientExternalName,
-                        Service = analityc.Service,
+                        Client = analityc.AccountName,
+                        Service = analityc.ServiceName,
                         ReleaseDate = allocationThisMonth?.ReleaseDate,
                     };
 

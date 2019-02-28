@@ -27,7 +27,7 @@ namespace Sofco.Core.Models.Billing
             InvoiceDate = domain.InvoiceDate;
             InvoiceCode = domain.InvoiceCode;
 
-            CustomerId = domain.CustomerId;
+            CustomerId = domain.AccountId;
             ServiceId = domain.ServiceId;
             ProjectId = domain.ProjectId;
 

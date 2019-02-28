@@ -18,7 +18,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateClient(Response response, Certificate domain)
         {
-            if (string.IsNullOrWhiteSpace(domain.ClientExternalId))
+            if (string.IsNullOrWhiteSpace(domain.AccountId))
             {
                 response.AddError(Resources.Billing.Certificate.ClientIsRequired);
             }

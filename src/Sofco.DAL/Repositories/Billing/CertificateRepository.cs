@@ -33,7 +33,7 @@ namespace Sofco.DAL.Repositories.Billing
             if (parameters != null)
             {
                 if (!string.IsNullOrWhiteSpace(parameters.ClientId) && !parameters.ClientId.Equals("0"))
-                    query = query.Where(x => x.ClientExternalId.Equals(parameters.ClientId));
+                    query = query.Where(x => x.AccountId.Equals(parameters.ClientId));
 
                 if (parameters.Year > 0)
                     query = query.Where(x => x.Year == parameters.Year);
@@ -44,7 +44,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public ICollection<Certificate> GetByClients(string client)
         {
-            return context.Certificates.Where(x => x.ClientExternalId.Equals(client)).ToList();
+            return context.Certificates.Where(x => x.AccountId.Equals(client)).ToList();
         }
 
         public void RelateToSolfac(SolfacCertificate solfacCertificate)

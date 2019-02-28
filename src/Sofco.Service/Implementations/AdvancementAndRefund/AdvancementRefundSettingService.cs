@@ -57,6 +57,17 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 return response;
             }
 
+            if (model.AmmountAPesos > model.AmmountBPesos)
+                response.AddError(Resources.AdvancementAndRefund.Setting.AmountALessThanBPesos);
+
+            if (model.AmmountADolares > model.AmmountBDolares)
+                response.AddError(Resources.AdvancementAndRefund.Setting.AmountALessThanBDolares);
+
+            if (model.AmmountAEuros > model.AmmountBEuros)
+                response.AddError(Resources.AdvancementAndRefund.Setting.AmountALessThanBEuros);
+
+            if (response.HasErrors()) return response;
+
             try
             {
                 var ammounts = new int[]

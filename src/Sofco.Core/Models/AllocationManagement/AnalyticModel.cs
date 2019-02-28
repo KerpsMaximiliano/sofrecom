@@ -17,9 +17,9 @@ namespace Sofco.Core.Models.AllocationManagement
             Id = domain.Id;
             Title = domain.Title;
             Name = domain.Name;
-            ClientExternalId = domain.ClientExternalId;
-            ClientExternalName = domain.ClientExternalName;
-            Service = domain.Service;
+            ClientExternalId = domain.AccountId;
+            ClientExternalName = domain.AccountName;
+            Service = domain.ServiceName;
             ServiceId = domain.ServiceId;
             SoftwareLawId = domain.SoftwareLawId;
             ActivityId = domain.ActivityId;
@@ -110,10 +110,10 @@ namespace Sofco.Core.Models.AllocationManagement
             domain.Id = Id;
             domain.Title = Title;
             domain.Name = Name;
-            domain.ClientExternalId = ClientExternalId;
+            domain.AccountId = ClientExternalId;
             domain.ServiceId = ServiceId;
-            domain.ClientExternalName = string.IsNullOrWhiteSpace(ClientExternalId) ? "No Aplica" : ClientExternalName;
-            domain.Service = string.IsNullOrWhiteSpace(ServiceId) ? "No Aplica" : Service;
+            domain.AccountName = string.IsNullOrWhiteSpace(ClientExternalId) ? "No Aplica" : ClientExternalName;
+            domain.ServiceName = string.IsNullOrWhiteSpace(ServiceId) ? "No Aplica" : Service;
             domain.SoftwareLawId = SoftwareLawId;
             domain.ActivityId = ActivityId;
             domain.StartDateContract = StartDateContract.Date;

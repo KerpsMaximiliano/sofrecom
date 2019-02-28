@@ -39,7 +39,7 @@ namespace Sofco.Domain.Models.Billing
         public int? SolfacId { get; set; }
         public Solfac Solfac { get; set; }
 
-        public string CustomerId { get; set; }
+        public string AccountId { get; set; }
         public string ServiceId { get; set; }
 
         public int? ExcelFileId { get; set; }
@@ -65,7 +65,7 @@ namespace Sofco.Domain.Models.Billing
             invoice.ProjectId = this.ProjectId;
             invoice.Service = this.Service;
             invoice.ServiceId = this.ServiceId;
-            invoice.CustomerId = this.CustomerId;
+            invoice.AccountId = this.AccountId;
             invoice.Province = this.Province;
             invoice.Zipcode = this.Zipcode;
             invoice.UserId = this.UserId;

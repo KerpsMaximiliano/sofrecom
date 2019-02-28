@@ -14,7 +14,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         {
             Id = purchaseOrder.Id;
             Number = purchaseOrder.Number;
-            Client = purchaseOrder.ClientExternalName;
+            Client = purchaseOrder.AccountName;
             Status = purchaseOrder.Status;
             ReceptionDate = purchaseOrder.ReceptionDate;
 

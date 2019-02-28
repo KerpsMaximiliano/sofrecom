@@ -214,7 +214,7 @@ namespace Sofco.UnitTest.Services.Billing
             var model = new PurchaseOrder()
             {
                 Number = ExistNumber,
-                ClientExternalId = "Client",
+                AccountId = "Client",
                 AreaId = 1,
                 Id = 1,
                 Status = status,

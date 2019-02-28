@@ -126,7 +126,7 @@ namespace Sofco.Core.Models.Billing
         {
             var solfac = new Solfac();
 
-            solfac.ClientName = ClientName;
+            solfac.AccountName = ClientName;
             solfac.BusinessName = BusinessName;
             solfac.CelPhone = CelPhone;
             solfac.Status = StatusId;
@@ -150,7 +150,7 @@ namespace Sofco.Core.Models.Billing
             solfac.PaymentTerm = PaymentTerm;
             solfac.ProjectId = ProjectId;
             solfac.ServiceId = ServiceId;
-            solfac.CustomerId = CustomerId;
+            solfac.AccountId = CustomerId;
             solfac.Analytic = Analytic;
             solfac.Service = Service;
             solfac.WithTax = WithTax;

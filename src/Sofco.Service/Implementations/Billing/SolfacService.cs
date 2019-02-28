@@ -751,7 +751,7 @@ namespace Sofco.Service.Implementations.Billing
             hitoParams.StatusCode = Convert.ToInt32(HitoStatus.Pending).ToString();
             hitoParams.StartDate = DateTime.UtcNow;
             hitoParams.Month = hito.Month;
-            hitoParams.ProjectId = hito.ExternalProjectId;
+            hitoParams.ProjectId = hito.ProjectId;
             hitoParams.OpportunityId = hito.OpportunityId;
             hitoParams.MoneyId = hito.CurrencyId;
 

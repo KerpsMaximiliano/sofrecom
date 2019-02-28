@@ -28,7 +28,7 @@ namespace Sofco.Core.Models.Billing
             InvoiceStatus = invoice.InvoiceStatus.ToString();
             InvoiceNumber = invoice.InvoiceNumber;
             ServiceId = invoice.ServiceId;
-            CustomerId = invoice.CustomerId;
+            CustomerId = invoice.AccountId;
 
             if (invoice.ExcelFileData != null)
             {
@@ -113,7 +113,7 @@ namespace Sofco.Core.Models.Billing
             domain.Project = Project;
             domain.ProjectId = ProjectId;
             domain.Analytic = Analytic;
-            domain.CustomerId = CustomerId;
+            domain.AccountId = CustomerId;
             domain.ServiceId = ServiceId;
 
             return domain;
