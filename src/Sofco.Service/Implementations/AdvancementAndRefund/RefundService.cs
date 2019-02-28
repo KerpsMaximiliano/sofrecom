@@ -73,6 +73,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 var domain = model.CreateDomain();
                 domain.StatusId = settings.WorkflowStatusDraft;
+                domain.InWorkflowProcess = true;
 
                 var workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.RefundWorkflowId);
 

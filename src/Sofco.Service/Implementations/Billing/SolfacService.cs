@@ -218,7 +218,7 @@ namespace Sofco.Service.Implementations.Billing
                 response.AddSuccess(solfacStatusHandler.GetSuccessMessage());
 
                 // Update Hitos
-                solfacStatusHandler.UpdateHitos(unitOfWork.SolfacRepository.GetHitosIdsBySolfacId(solfac.Id), solfac, crmConfig.Url);
+                solfacStatusHandler.UpdateHitos(unitOfWork.SolfacRepository.GetHitosIdsBySolfacId(solfac.Id), solfac);
             }
             catch(Exception ex)
             {

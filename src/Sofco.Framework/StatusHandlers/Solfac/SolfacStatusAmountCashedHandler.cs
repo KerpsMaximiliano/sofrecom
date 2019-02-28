@@ -79,7 +79,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             solfac.CashedDate = parameters.CashedDate;
         }
 
-        public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac, string url)
+        public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac)
         {
             crmInvoiceService.UpdateStatusAndBillingDate(hitos.ToList(), GetHitoStatus(), solfac.CashedDate.GetValueOrDefault());
         }

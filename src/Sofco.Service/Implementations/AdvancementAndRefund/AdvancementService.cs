@@ -57,6 +57,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 var workflow = unitOfWork.WorkflowRepository.GetLastByType(domain.Type == AdvancementType.Salary ? settings.SalaryWorkflowId : settings.ViaticumWorkflowId);
 
                 domain.WorkflowId = workflow.Id;
+                domain.InWorkflowProcess = true;
 
                 unitOfWork.AdvancementRepository.Insert(domain);
                 unitOfWork.Save();

@@ -85,7 +85,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             unitOfWork.SolfacRepository.UpdateStatus(solfacToModif);
         }
 
-        public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac, string url)
+        public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac)
         {
             crmInvoiceService.UpdateStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), solfac.PurchaseOrder.Number);
         }

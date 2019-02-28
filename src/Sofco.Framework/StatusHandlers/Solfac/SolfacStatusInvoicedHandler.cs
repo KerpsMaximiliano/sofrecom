@@ -131,7 +131,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             mailSender.Send(email);
         }
 
-        public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac, string url)
+        public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac)
         {
             crmInvoiceService.UpdateStatusAndInvoiceDateAndNumber(hitos.ToList(), GetHitoStatus(), solfac.InvoiceDate.GetValueOrDefault(), solfac.InvoiceCode);
         }
