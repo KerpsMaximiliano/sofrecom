@@ -20,4 +20,7 @@ cmd /c ng build --prod --configuration=azsof01wt --output-path "%PUBLISH_PATH%"
 
 @if %errorlevel% neq 0 exit /b %errorlevel%
 
+cmd /c DEL /F /Q "%DEPLOY_PATH%"
+cmd /c FOR /D %%p IN ("%DEPLOY_PATH%\*.*") DO rmdir "%%p" /s /q
+
 cmd /c XCOPY /Y /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"
