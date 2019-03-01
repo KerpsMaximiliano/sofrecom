@@ -11,6 +11,7 @@ import { Select2Module } from "../../../../components/select2/select2";
 import { EmployeeProfileHistoryService } from "../../../../services/allocation-management/employee-profile-history.service";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { ICheckModule } from "app/components/icheck/icheck.module";
+import { AmountFormatModule } from "app/pipes/amount-format.module";
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import { ICheckModule } from "app/components/icheck/icheck.module";
       Ng2ModalModule,
       Select2Module,
       NgSelectModule,
-      ICheckModule
+      ICheckModule,
+      AmountFormatModule
     ],
     declarations: [ 
         ResourceDetailComponent
