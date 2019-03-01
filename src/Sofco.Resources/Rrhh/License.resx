@@ -147,6 +147,9 @@
   <data name="DaysWrong" xml:space="preserve">
     <value>rrhh/license.daysWrong</value>
   </data>
+  <data name="DetailPeriodRequired" xml:space="preserve">
+    <value>rrhh/license.detailPeriodRequired</value>
+  </data>
   <data name="EmployeeNotFound" xml:space="preserve">
     <value>rrhh/license.employeeNotFound</value>
   </data>

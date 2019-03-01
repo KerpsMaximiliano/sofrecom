@@ -11,7 +11,7 @@
                 case 3: 
                 case 4: 
                 case 5: 
-                case 6: 
+                case 6: return new RecoveryLicense();
                 case 8: 
                 case 9: 
                 case 10: 
