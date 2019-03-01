@@ -85,30 +85,10 @@
   background: #1e2e3d;
 }
 
-.blue-skin {
-  font-weight: 600;
-  background: url("#{$asset-path}/header-profile-skin-1.png") repeat scroll 0 0;
-}
-
 .blue-skin:hover {
   background: #0d8ddb;
 }
 
-.yellow-skin {
-  font-weight: 600;
-  background: url("#{$asset-path}/header-profile-skin-3.png") repeat scroll 0 100%;
-}
-
 .yellow-skin:hover {
   background: #ce8735;
-}
-
-.ultra-skin {
-  padding: 20px 10px;
-  font-weight: 600;
-  background: url("#{$asset-path}/3.png") repeat scroll 0 0;
-}
-
-.ultra-skin:hover {
-  background: url("#{$asset-path}/4.png") repeat scroll 0 0;
 }
