@@ -38,7 +38,7 @@
             <label>{{'refund.currency' | translate }}:</label> 
             <span class="m-l-sm">{{ currencyDescription }}</span>
 
-            <label *ngIf="form.currencyExchange > 0">Cotización: </label> 
+            <label *ngIf="form.currencyExchange > 0">{{'refund.currencyExchange' | translate }}: </label> 
             <span class="m-l-sm" *ngIf="form.currencyExchange > 0">{{ form.currencyExchange }}</span>
         </div>
     </div>
@@ -54,7 +54,7 @@
 
     <div class="form-group">
         <icheck [(checked)]="cashReturn">
-            <label style="padding-left:20px;">Ultimo reintegro</label> 
+            <label style="padding-left:20px;">{{'refund.lastRefund' | translate }}</label> 
         </icheck>
     </div>
 
@@ -62,7 +62,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <icheck [(checked)]="hasCreditCard" (checkedChange)="hasCreditCardChanged($event)">
-                    <label style="padding-left:20px;">Tarjeta de Crédito</label> 
+                    <label style="padding-left:20px;">{{'refund.creditCard' | translate }}</label> 
                 </icheck>
             </div>
         </div>

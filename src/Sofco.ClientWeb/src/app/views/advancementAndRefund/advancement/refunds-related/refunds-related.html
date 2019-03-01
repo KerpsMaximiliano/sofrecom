@@ -2,7 +2,7 @@
     <div class="ibox-content">
         <div class="row">
             <div [ngClass]="advancements.length > 0 ? 'col-md-8' : 'col-md-12'">
-                <h3>Reintegros relacionados</h3>
+                <h3>{{'refund.refundsRelated' | translate }}</h3>
 
                 <table class="table table-striped" width="100%">
                     <thead>
@@ -26,13 +26,13 @@
                 </table>
             </div>
             <div class="col-md-4" *ngIf="advancements.length > 0">
-                <h3>Adelantos relacionados</h3>
+                <h3>{{'refund.advancementRelated' | translate }}</h3>
 
                 <table class="table table-striped" width="100%">
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
-                            <th>Monto Total</th>
+                            <th>{{'refund.totalAmount' | translate }}</th>
                         </tr>
                     </thead>
                     <tbody>

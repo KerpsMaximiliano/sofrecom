@@ -1068,7 +1068,7 @@
         "ammount": "Monto",
         "search": "Adelantos",
         "monthsReturn": "Mes de Devolución",
-        "finalized": "Finalizados",
+        "finalized": "Aprobados o Finalizados",
         "inProcess": "En proceso de aprobación",
         "paymentPending": "Pendientes de deposito",
         "dateSince": "Fecha desde",
@@ -1079,6 +1079,7 @@
         "creationDate": "Fecha de Creación",
         "others": "Moneda extranjera",
         "bank": "Banco",
+        "advancementRelated": "Adelantos relacionados",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",
@@ -1117,7 +1118,7 @@
         "creationDate": "Fecha de Creación",
         "applicationDate": "Fecha de solicitud",
         "superior": "Superior",
-        "refundTotal": "Total adelanto",
+        "refundTotal": "Total reintegros",
         "itemTotal": "Total items",
         "advancementSum": "Total adelantos",
         "companyRefund": "Reembolso empresa",
@@ -1126,7 +1127,11 @@
         "needParameters": "Seleccione parámetros o seleccione buscar para ver todos",
         "files": "Archivos",
         "totals": "Totales",
+        "totalAmount": "Monto Total",
         "noDetailsInfo": "No se han cargado detalles. Por favor agregue un item para poder continuar",
+        "refundsRelated": "Reintegros relacionados",
+        "currencyExchange": "Cotización",
+        "lastRefund": "Ultimo reintegro",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",
@@ -1144,6 +1149,7 @@
         "ammountAEuros": "Monto A Euros",
         "ammountBPesos": "Monto B Pesos",
         "ammountBDolares": "Monto B Dolares",
-        "ammountBEuros": "Monto B Euros"
+        "ammountBEuros": "Monto B Euros",
+        "currentAccount": "Cuenta Corriente"
     }
 }

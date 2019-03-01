@@ -308,7 +308,7 @@
                                             <span *ngIf="item.paymentForm == 2">{{ 'advancement.others' | translate }}</span>
                                         </td>
                                         <td>{{ item.currencyDesc }}</td>
-                                        <td>{{ item.ammount }}</td>
+                                        <td>{{ item.ammount | amountFormat }}</td>
                                         <td>{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
                                         <td><label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusDesc }}</label></td>
                                     </tr>
@@ -332,8 +332,8 @@
                                     <tr *ngFor="let item of refunds" class="pointer" (click)="goToRefundDetail(item)">
                                         <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
                                         <td>{{ item.currencyName }}</td>
-                                        <td>{{ item.advancementSum }}</td>
-                                        <td>{{ item.refundItemTotal }}</td>
+                                        <td>{{ item.advancementSum | amountFormat }}</td>
+                                        <td>{{ item.refundItemTotal | amountFormat }}</td>
                                         <td>
                                             <label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusName }}</label>
                                         </td>

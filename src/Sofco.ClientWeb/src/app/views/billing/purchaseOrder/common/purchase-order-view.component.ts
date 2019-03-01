@@ -69,7 +69,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             },
             columnDefs: [
                 { "targets": [ 1,11,12 ], "visible": false, "searchable": false },
-                { "aTargets": [5], "sType": "date-uk"},
+                { "aTargets": [6], "sType": "date-uk"},
             ]
         }
 

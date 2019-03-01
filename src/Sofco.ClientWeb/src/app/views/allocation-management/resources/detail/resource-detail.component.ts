@@ -169,7 +169,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
             var params = {
                 selector: "#refundTable",
-                columnDefs: [ {'aTargets': [1], "sType": "date-uk"} ]
+                columnDefs: [ {'aTargets': [0], "sType": "date-uk"} ]
             };
     
             this.dataTableService.initialize(params);

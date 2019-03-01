@@ -20,4 +20,4 @@ cmd /c ng build --prod --configuration=azsof01wt --output-path "%PUBLISH_PATH%"
 
 @if %errorlevel% neq 0 exit /b %errorlevel%
 
-cmd /c XCOPY /Y /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"
+cmd /c COPY /Y /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"
