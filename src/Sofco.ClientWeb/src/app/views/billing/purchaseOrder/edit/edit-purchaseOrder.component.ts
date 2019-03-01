@@ -240,6 +240,6 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
     }
 
     canDelete(){
-        return this.form.model.status == PurchaseOrderStatus.Draft || this.form.model.status == PurchaseOrderStatus.Reject;
+        return this.menuService.userIsCdg && (this.form.model.status == PurchaseOrderStatus.Draft || this.form.model.status == PurchaseOrderStatus.Reject);
     }
 }  

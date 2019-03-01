@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2> Cuenta Corriente </h2>
+        <h2> {{'advRefSetting.currentAccount' | translate }} </h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -9,7 +9,7 @@
                 {{'advancement.navigationTitle' | translate }}
             </li>
             <li class="active">
-                <strong> Cuenta Corriente </strong>
+                <strong> {{'advRefSetting.currentAccount' | translate }} </strong>
             </li>
         </ol>
     </div>
@@ -23,10 +23,10 @@
                     <tr>
                         <th>{{ 'advancement.userApplicant' | translate }}</th>
                         <th>{{ 'advancement.currency' | translate }}</th>
-                        <th>Total Adelantos</th>
-                        <th>Total Reintegros</th>
-                        <th>Reembolso usuario</th>
-                        <th>Reembolso compañia</th>
+                        <th>{{ 'refund.advancementSum' | translate }}</th>
+                        <th>{{ 'refund.refundTotal' | translate }}</th>
+                        <th>{{ 'refund.userRefund' | translate }}</th>
+                        <th>{{ 'refund.companyRefund' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody> 
