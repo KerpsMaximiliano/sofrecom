@@ -11,7 +11,7 @@ namespace Sofco.DAL.Mappings.Rrhh
             // Primary Key
             builder.Entity<License>().HasKey(_ => _.Id);
 
-            builder.Entity<License>().Property(x => x.Comments).HasMaxLength(200);
+            builder.Entity<License>().Property(x => x.Comments).HasMaxLength(500);
             builder.Entity<License>().Property(x => x.ExamDescription).HasMaxLength(200);
 
             builder.Entity<License>().HasOne(x => x.Sector).WithMany(x => x.Licenses).HasForeignKey(x => x.SectorId);
