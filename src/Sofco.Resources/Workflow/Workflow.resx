@@ -156,6 +156,12 @@
   <data name="ParametersNull" xml:space="preserve">
     <value>workflow/workflow.parametersNull</value>
   </data>
+  <data name="StatesEquals" xml:space="preserve">
+    <value>workflow/workflow.statesEquals</value>
+  </data>
+  <data name="TransitionAlreadyExist" xml:space="preserve">
+    <value>workflow/workflow.transitionAlreadyExist</value>
+  </data>
   <data name="TransitionDeleted" xml:space="preserve">
     <value>workflow/workflow.transitionDeleted</value>
   </data>

@@ -178,6 +178,24 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.statesEquals.
+        /// </summary>
+        public static string StatesEquals {
+            get {
+                return ResourceManager.GetString("StatesEquals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.transitionAlreadyExist.
+        /// </summary>
+        public static string TransitionAlreadyExist {
+            get {
+                return ResourceManager.GetString("TransitionAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.transitionDeleted.
         /// </summary>
         public static string TransitionDeleted {

@@ -106,7 +106,7 @@ namespace Sofco.Service.Implementations.Workflow
                 return response;
             }
 
-            workflowTransitionValidation.ValidateAdd(model, response);
+            workflowTransitionValidation.ValidateAdd(model, response, model.Id.GetValueOrDefault());
 
             if (response.HasErrors()) return response;
 

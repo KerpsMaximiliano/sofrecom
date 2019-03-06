@@ -17,5 +17,7 @@
     "addTransitionSuccess": "La transicion fue creada correctamente",
     "transitionDeleted": "La transicion fue eliminada correctamente",
     "currencyExchangeRequired": "La cotización es requerida",
+    "statesEquals": "Los estados no pueden ser iguales",
+    "transitionAlreadyExist": "Ya existe una transición con el estado actual y proximo seleccionados",
     "allRefundsMustHaveSameStatus": "Alguno de los reintegros relacionados se encuentra en proceso de aprobación"
 }

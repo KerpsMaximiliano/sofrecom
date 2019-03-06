@@ -15,7 +15,7 @@ namespace Sofco.Framework.Validations.Workflow
             this.unitOfWork = unitOfWork;
         }
 
-        public void ValidateAdd(WorkflowTransitionAddModel model, Response response)
+        public void ValidateAdd(WorkflowTransitionAddModel model, Response response, int transitionId = 0)
         {
             if (model == null)
             {
@@ -26,6 +26,32 @@ namespace Sofco.Framework.Validations.Workflow
             ValidateActualState(model, response);
             ValidateNextState(model, response);
             ValidateWorkflow(model, response);
+            ValidateStates(model, response);
+
+            if (response.HasErrors()) return;
+
+            ValidateIfTransitionExist(model, response, transitionId);
+        }
+
+        private void ValidateIfTransitionExist(WorkflowTransitionAddModel model, Response response, int transitionId)
+        {
+            if (unitOfWork.WorkflowRepository.TransitionExist(transitionId,
+                model.ActualWorkflowStateId.GetValueOrDefault(), model.NextWorkflowStateId.GetValueOrDefault(), 
+                model.WorkflowId.GetValueOrDefault()))
+            {
+                response.AddError(Resources.Workflow.Workflow.TransitionAlreadyExist);
+            }
+        }
+
+        private void ValidateStates(WorkflowTransitionAddModel model, Response response)
+        {
+            if (model.ActualWorkflowStateId.HasValue && model.NextWorkflowStateId.HasValue)
+            {
+                if (model.ActualWorkflowStateId == model.NextWorkflowStateId)
+                {
+                    response.AddError(Resources.Workflow.Workflow.StatesEquals);
+                }
+            }
         }
 
         private void ValidateWorkflow(WorkflowTransitionAddModel model, Response response)

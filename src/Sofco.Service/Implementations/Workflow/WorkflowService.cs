@@ -411,6 +411,15 @@ namespace Sofco.Service.Implementations.Workflow
                 domain.Version = version;
 
                 unitOfWork.WorkflowRepository.Add(domain);
+
+                var wfactive = unitOfWork.WorkflowRepository.GetByTypeActive(domain.WorkflowTypeId);
+
+                if (wfactive != null)
+                {
+                    wfactive.Active = false;
+                    unitOfWork.WorkflowRepository.UpdateActive(wfactive);
+                }
+
                 unitOfWork.Save();
 
                 domain.ModifiedBy = new User

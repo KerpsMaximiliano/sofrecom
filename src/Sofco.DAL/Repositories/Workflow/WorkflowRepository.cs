@@ -31,6 +31,21 @@ namespace Sofco.DAL.Repositories.Workflow
             context.Entry(entity).Property("InWorkflowProcess").IsModified = true;
         }
 
+        public void UpdateActive(Domain.Models.Workflow.Workflow entity)
+        {
+            context.Entry(entity).Property("Active").IsModified = true;
+        }
+
+        public bool TransitionExist(int transitionId, int actualStateId, int nextStateId, int workflowId)
+        {
+            return context.WorkflowStateTransitions.Any(x => x.ActualWorkflowStateId == actualStateId && x.NextWorkflowStateId == nextStateId && x.WorkflowId == workflowId && x.Id != transitionId);
+        }
+
+        public Domain.Models.Workflow.Workflow GetByTypeActive(int workflowTypeId)
+        {
+            return context.Workflows.SingleOrDefault(x => x.WorkflowTypeId == workflowTypeId && x.Active);
+        }
+
         public WorkflowStateTransition GetTransition(int actualStateId, int nextStateId, int workflowId)
         {
             return context.WorkflowStateTransitions
@@ -39,7 +54,7 @@ namespace Sofco.DAL.Repositories.Workflow
                 .Include(x => x.NextWorkflowState)
                 .Include(x => x.WorkflowStateAccesses).ThenInclude(x => x.UserSource)
                 .Include(x => x.WorkflowStateNotifiers).ThenInclude(x => x.UserSource)
-                .SingleOrDefault(x => x.Workflow.Active &&
+                .SingleOrDefault(x =>
                                  x.WorkflowId == workflowId && 
                                  x.ActualWorkflowStateId == actualStateId &&
                                  x.NextWorkflowStateId == nextStateId);
@@ -154,17 +169,8 @@ namespace Sofco.DAL.Repositories.Workflow
                 .Include(x => x.Workflow)
                 .Include(x => x.NextWorkflowState)
                 .Include(x => x.WorkflowStateAccesses).ThenInclude(x => x.UserSource)
-                .Where(x => x.Workflow.Active && x.WorkflowId == workflowId && x.ActualWorkflowStateId == actualStateId)
+                .Where(x => x.WorkflowId == workflowId && x.ActualWorkflowStateId == actualStateId)
                 .ToList();
-        }
-
-        public bool IsEndTransition(int actualStateId, int workflowId)
-        {
-            return !context.WorkflowStateTransitions
-                .Include(x => x.Workflow)
-                .Any(x => x.Workflow.Active &&
-                          x.WorkflowId == workflowId &&
-                          x.ActualWorkflowStateId == actualStateId);
         }
 
         public void AddHistory<THistory>(THistory history) where THistory : WorkflowHistory
