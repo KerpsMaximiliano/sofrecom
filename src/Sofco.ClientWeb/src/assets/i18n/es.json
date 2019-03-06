@@ -770,7 +770,8 @@
             "delegate": {
                 "viewTitle": "Delegar Autorizar Licencia",
                 "delegateAction": "Delegar"
-            }
+            },
+            "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar"
         },
         "closeDate": {
             "title": "Fechas de Cierre",
