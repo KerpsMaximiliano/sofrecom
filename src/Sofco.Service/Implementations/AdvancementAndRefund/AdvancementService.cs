@@ -225,17 +225,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     CurrencyDesc = x.Currency?.Text,
                     Ammount = x.Ammount,
                     WorkflowId = x.WorkflowId,
-                    Type = "Adelanto"
+                    Type = "Adelanto",
+                    NextWorkflowStateId = settings.WorkflowStatusApproveId
                 };
 
                 item.Bank = GetBank(x.UserApplicant?.Email, employeeDicc);
-
-                var transition = x.Status.ActualTransitions.FirstOrDefault();
-
-                if (transition != null)
-                {
-                    item.NextWorkflowStateId = transition.NextWorkflowStateId;
-                }
 
                 return item;
             }).ToList();

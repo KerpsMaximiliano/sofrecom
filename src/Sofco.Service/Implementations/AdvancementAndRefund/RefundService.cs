@@ -461,7 +461,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     CurrencyId = refund.CurrencyId,
                     CurrencyDesc = refund.Currency?.Text,
                     WorkflowId = refund.WorkflowId,
-                    Type = "Reintegro"
+                    Type = "Reintegro",
+                    NextWorkflowStateId = settings.WorkflowStatusFinalizedId
                 };
 
                 var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
@@ -469,13 +470,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 item.Ammount = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
 
                 item.Bank = GetBank(refund.UserApplicant?.Email, employeeDicc);
-
-                var transition = refund.Status.ActualTransitions.FirstOrDefault();
-
-                if (transition != null)
-                {
-                    item.NextWorkflowStateId = transition.NextWorkflowStateId;
-                }
 
                 response.Data.Add(item);
             }
