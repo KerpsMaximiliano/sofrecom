@@ -53,17 +53,24 @@
         <div role="tabpanel" id="tab-3" class="tab-pane">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <icheck [(checked)]="model.userApplicantHasAccess">
                                 <label style="padding-left:20px;">Solicitante</label> 
                             </icheck>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <icheck [(checked)]="model.managerHasAccess">
                                 <label style="padding-left:20px;">Superior</label> 
+                            </icheck>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <icheck [(checked)]="model.sectorHasAccess">
+                                <label style="padding-left:20px;">Director de Sector</label> 
                             </icheck>
                         </div>
                     </div>
@@ -78,28 +85,30 @@
                     <label class="control-label">Grupos</label>
                     <ng-select [items]="groups" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.groupsHasAccess"></ng-select>
                 </div>
-
-                <div class="form-group">
-                    <label class="control-label">Sectores</label>
-                    <ng-select [items]="sectors" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.sectorsHasAccess"></ng-select>
-                </div>
             </div>
         </div>
 
         <div role="tabpanel" id="tab-4" class="tab-pane">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <icheck [(checked)]="model.notifyToUserApplicant">
                                 <label style="padding-left:20px;">Solicitante</label> 
                             </icheck>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <icheck [(checked)]="model.notifyToManager">
                                 <label style="padding-left:20px;">Superior</label> 
+                            </icheck>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <icheck [(checked)]="model.notifyToSector">
+                                <label style="padding-left:20px;">Director del sector</label> 
                             </icheck>
                         </div>
                     </div>
@@ -113,11 +122,6 @@
                 <div class="form-group">
                     <label class="control-label">Grupos</label>
                     <ng-select [items]="groups" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.notifyToGroups"></ng-select>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label">Sectores</label>
-                    <ng-select [items]="sectors" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.notifyToSectors"></ng-select>
                 </div>
             </div>
         </div>

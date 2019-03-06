@@ -14,13 +14,11 @@ export class WorkflowTransitionFormComponent implements OnInit, OnDestroy {
     getStatesSubscrip: Subscription;
     getUsersSubscrip: Subscription;
     getGroupsSubscrip: Subscription;
-    getSectorsSubscrip: Subscription;
     postSubscrip: Subscription;
 
     public states: any[] = new Array();
     public users: any[] = new Array();
     public groups: any[] = new Array();
-    public sectors: any[] = new Array();
 
     public model: any = {
         actualWorkflowStateId: null,
@@ -33,12 +31,12 @@ export class WorkflowTransitionFormComponent implements OnInit, OnDestroy {
         managerHasAccess: false,
         usersHasAccess: [],
         groupsHasAccess: [],
-        sectorsHasAccess: [],
+        sectorHasAccess: false,
         notifyToUserApplicant: false,
         notifyToManager: false,
         notifyToUsers: [],
         notifyToGroups: [],
-        notifyToSectors: [],
+        notifyToSector: false,
         id: null
     }
 
@@ -51,7 +49,6 @@ export class WorkflowTransitionFormComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getUsers();
         this.getGroups();
-        this.getSectors();
         this.getStates();
     }    
     
@@ -59,7 +56,6 @@ export class WorkflowTransitionFormComponent implements OnInit, OnDestroy {
         if(this.getStatesSubscrip) this.getStatesSubscrip.unsubscribe();
         if(this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe();
         if(this.getGroupsSubscrip) this.getGroupsSubscrip.unsubscribe();
-        if(this.getSectorsSubscrip) this.getSectorsSubscrip.unsubscribe();
         if(this.postSubscrip) this.postSubscrip.unsubscribe();
     }
 
@@ -75,12 +71,6 @@ export class WorkflowTransitionFormComponent implements OnInit, OnDestroy {
     getGroups() {
         this.getUsersSubscrip = this.groupService.getOptions().subscribe(res => {
             this.groups = res;
-        });
-    }
-
-    getSectors() {
-        this.getUsersSubscrip = this.utilsService.getSectors().subscribe(res => {
-            this.sectors = res;
         });
     }
 

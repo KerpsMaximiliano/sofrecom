@@ -178,9 +178,7 @@ namespace Sofco.Service.Implementations.Workflow
                 OnSuccessCode = transition.OnSuccessCode,
                 GroupsHasAccess = new List<int>(),
                 UsersHasAccess =  new List<int>(),
-                SectorsHasAccess = new List<int>(),
                 NotifyToGroups = new List<int>(),
-                NotifyToSectors = new List<int>(),
                 NotifyToUsers = new List<int>()
             };
 
@@ -200,8 +198,8 @@ namespace Sofco.Service.Implementations.Workflow
                     if(workflowStateAccess.UserSource.Code == appSetting.UserUserSource) 
                         response.Data.UsersHasAccess.Add(workflowStateAccess.UserSource.SourceId);
 
-                    if(workflowStateAccess.UserSource.Code == appSetting.SectorUserSource) 
-                        response.Data.SectorsHasAccess.Add(workflowStateAccess.UserSource.SourceId);
+                    if (workflowStateAccess.UserSource.Code == appSetting.SectorUserSource)
+                        response.Data.SectorHasAccess = true;
                 }
             }
 
@@ -222,7 +220,7 @@ namespace Sofco.Service.Implementations.Workflow
                         response.Data.NotifyToUsers.Add(workflowStateNotifier.UserSource.SourceId);
 
                     if (workflowStateNotifier.UserSource.Code == appSetting.SectorUserSource)
-                        response.Data.NotifyToSectors.Add(workflowStateNotifier.UserSource.SourceId);
+                        response.Data.NotifyToSector = true;
                 }
             }
 
@@ -257,21 +255,6 @@ namespace Sofco.Service.Implementations.Workflow
             return response;
         }
 
-        private void CheckSectorNotifier(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
-        {
-            if (model.NotifyToSectors != null && model.NotifyToSectors.Any())
-            {
-                foreach (var sectorId in model.NotifyToSectors)
-                {
-                    var wfStateNotifier = CreateWorkflowStateNotifier();
-
-                    wfStateNotifier.UserSource = userSourceService.Get(appSetting.SectorUserSource, sectorId);
-
-                    domain.WorkflowStateNotifiers.Add(wfStateNotifier);
-                }
-            }
-        }
-
         private void CheckUserNotifier(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
         {
             if (model.NotifyToUsers != null && model.NotifyToUsers.Any())
@@ -302,6 +285,18 @@ namespace Sofco.Service.Implementations.Workflow
             }
         }
 
+        private void CheckSectorNotifier(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
+        {
+            if (model.NotifyToSector)
+            {
+                var wfStateNotifier = CreateWorkflowStateNotifier();
+
+                wfStateNotifier.UserSource = userSourceService.Get(appSetting.SectorUserSource);
+
+                domain.WorkflowStateNotifiers.Add(wfStateNotifier);
+            }
+        }
+
         private void CheckUserApplicantNotifier(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
         {
             if (model.NotifyToUserApplicant)
@@ -328,16 +323,13 @@ namespace Sofco.Service.Implementations.Workflow
 
         private void CheckSectorAccess(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
         {
-            if (model.SectorsHasAccess != null && model.SectorsHasAccess.Any())
+            if (model.SectorHasAccess)
             {
-                foreach (var sectorId in model.SectorsHasAccess)
-                {
-                    var wfStateAccess = CreateWorkflowStateAccess();
+                var wfStateAccess = CreateWorkflowStateAccess();
 
-                    wfStateAccess.UserSource = userSourceService.Get(appSetting.SectorUserSource, sectorId);
+                wfStateAccess.UserSource = userSourceService.Get(appSetting.SectorUserSource);
 
-                    domain.WorkflowStateAccesses.Add(wfStateAccess);
-                }
+                domain.WorkflowStateAccesses.Add(wfStateAccess);
             }
         }
 
