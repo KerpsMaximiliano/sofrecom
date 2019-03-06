@@ -139,7 +139,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .ToList();
 
             var refunds = context.Refunds
-                .Where(x => refundIds.Contains(x.Id))
+                .Where(x => refundIds.Contains(x.Id) || x.Id == id)
+                .Distinct()
                 .ToList();
 
             return new Tuple<IList<Refund>, IList<Advancement>>(refunds, advancements);
