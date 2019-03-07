@@ -17,11 +17,11 @@
      
     <div class="wrapper wrapper-content animated fadeInRight" id="contentWrapper">
         
-        <div class="alert alert-gaps-error" style="margin-bottom: 10px" *ngIf="!canLoad">
+        <div class="alert alert-gaps-error" *ngIf="!canLoad">
             <i class="fa fa-warning"></i>
             {{ i18nService.translate('advancementAndRefund/refund','cannotLoad') }}
         </div>
-    
+
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="ibox">

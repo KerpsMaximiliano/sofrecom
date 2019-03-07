@@ -69,6 +69,18 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
                 {
                     response.AddError(Resources.AdvancementAndRefund.Advancement.NotFound);
                 }
+                else
+                {
+                    var refundWithLastRefundMarkedCount =
+                        unitOfWork.AdvancementRepository.GetRefundWithLastRefundMarkedCount(advancement, model.Id);
+
+                    if (model.CashReturn) refundWithLastRefundMarkedCount++;
+
+                    if (refundWithLastRefundMarkedCount > 1)
+                    {
+                        response.AddError(Resources.AdvancementAndRefund.Refund.ExistLastRefund);
+                    }
+                }
             }
         }
 

@@ -102,6 +102,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             var advancements = context.Advancements
                 .Include(x => x.Currency)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Refund)
                 .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && x.StatusId == workflowStatusOpenId)
                 .ToList();
 
@@ -166,6 +168,14 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         public IList<Advancement> GetAllApproved(int workflowStatusApproveId)
         {
             return context.Advancements.Where(x => x.StatusId == workflowStatusApproveId).ToList();
+        }
+
+        public int GetRefundWithLastRefundMarkedCount(int advancementId, int refundId)
+        {
+            return context.AdvancementRefunds
+                .Include(x => x.Refund)
+                .Where(x => x.AdvancementId == advancementId && x.RefundId != refundId)
+                .Count(x => x.Refund.CashReturn);
         }
     }
 }

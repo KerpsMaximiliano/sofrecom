@@ -379,6 +379,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     CurrencyId = advancement.CurrencyId,
                     CurrencyText = advancement.Currency.Text,
                     Ammount = advancement.Ammount,
+                    HasLastRefundMarked = advancement.AdvancementRefunds.Any(x => x.Refund.CashReturn),
                     Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency.Text}"
                 });
             }

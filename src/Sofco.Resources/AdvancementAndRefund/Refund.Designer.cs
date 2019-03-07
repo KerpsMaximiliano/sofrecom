@@ -169,6 +169,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.existLastRefund.
+        /// </summary>
+        public static string ExistLastRefund {
+            get {
+                return ResourceManager.GetString("ExistLastRefund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/refund.notFound.
         /// </summary>
         public static string NotFound {

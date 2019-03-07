@@ -11,5 +11,7 @@
         public string CurrencyText { get; set; }
 
         public decimal Ammount { get; set; }
+
+        public bool HasLastRefundMarked { get; set; }
     }
 }
