@@ -67,6 +67,13 @@ export class RefundListGridComponent implements OnInit {
             columnDefs: []
         }
 
+        if(this.inWorkflowProcess){
+            params.columnDefs = [ {"aTargets": [5], "sType": "date-uk"} ]
+        }
+        else{
+            params.columnDefs = [ {"aTargets": [4], "sType": "date-uk"} ]
+        }
+        
         this.datatableService.destroy(gridSelector);
 
         this.datatableService.initialize(params);

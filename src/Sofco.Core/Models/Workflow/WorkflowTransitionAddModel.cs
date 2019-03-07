@@ -30,7 +30,7 @@ namespace Sofco.Core.Models.Workflow
 
         public IList<int> NotifyToGroups { get; set; }
 
-        public IList<int> NotifyToSectors { get; set; }
+        public bool NotifyToSector { get; set; }
 
         public bool UserApplicantHasAccess { get; set; }
 
@@ -40,6 +40,6 @@ namespace Sofco.Core.Models.Workflow
 
         public IList<int> GroupsHasAccess { get; set; }
 
-        public IList<int> SectorsHasAccess { get; set; }
+        public bool SectorHasAccess { get; set; }
     }
 }

@@ -53,7 +53,8 @@ declare var moment: any;
         var params = {
             selector: '#workflowsTable',
             columns: columns,
-            title: title,
+            title: title, 
+            order: [[ 3, "desc" ]],
             withExport: true,
             columnDefs: [ {'aTargets': [2], "sType": "date-uk"} ]
         }

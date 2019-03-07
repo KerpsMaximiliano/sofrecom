@@ -358,7 +358,7 @@ namespace Sofco.Service.Implementations.Workflow
         {
             if (entity is Refund refund)
             {
-                if (refund.CurrencyId == appSetting.CurrencyPesos)
+                if (refund.CurrencyId == appSetting.CurrencyPesos && appSetting.WorkFlowStatePaymentPending == transition.NextWorkflowStateId)
                 {
                     transition.ParameterCode = string.Empty;
                 }
@@ -411,6 +411,15 @@ namespace Sofco.Service.Implementations.Workflow
                 domain.Version = version;
 
                 unitOfWork.WorkflowRepository.Add(domain);
+
+                var wfactive = unitOfWork.WorkflowRepository.GetByTypeActive(domain.WorkflowTypeId);
+
+                if (wfactive != null)
+                {
+                    wfactive.Active = false;
+                    unitOfWork.WorkflowRepository.UpdateActive(wfactive);
+                }
+
                 unitOfWork.Save();
 
                 domain.ModifiedBy = new User

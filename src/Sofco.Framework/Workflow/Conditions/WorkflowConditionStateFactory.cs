@@ -40,6 +40,7 @@ namespace Sofco.Framework.Workflow.Conditions
                 case "DIRECTOR-TO-DAF": return new DirectorToDafRefundCondition(unitOfWork, settings);
                 case "GAF-TO-PAYMENT-PENDING": return new GafToPaymentPendingCondition(validation, unitOfWork);
                 case "GAF-TO-FINALIZED": return new GafToFinalizedCondition(validation, unitOfWork);
+                case "GAF-TO-CURRENT-ACCOUNT": return new GafToCurrentAccountCondition(unitOfWork);
                 default: return null;
             }
         }

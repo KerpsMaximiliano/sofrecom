@@ -182,6 +182,8 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
         {
             var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
 
+            //Tuple1: Reintegros
+            //Tuple2: Adelantos
             var diff = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
 
             return diff > 0;

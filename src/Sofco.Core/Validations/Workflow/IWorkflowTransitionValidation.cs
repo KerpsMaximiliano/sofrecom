@@ -5,6 +5,6 @@ namespace Sofco.Core.Validations.Workflow
 {
     public interface IWorkflowTransitionValidation
     {
-        void ValidateAdd(WorkflowTransitionAddModel model, Response response);
+        void ValidateAdd(WorkflowTransitionAddModel model, Response response, int transitionId = 0);
     }
 }
