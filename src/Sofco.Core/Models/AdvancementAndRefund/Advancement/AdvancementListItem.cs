@@ -14,6 +14,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
             Type = advancement.Type;
             CurrencyDesc = advancement.Currency?.Text;
             StatusDesc = advancement.Status?.Name;
+            StatusId = advancement.StatusId;
             CreationDate = advancement.CreationDate;
             Ammount = advancement.Ammount;
             WorkflowStatusType = advancement.Status?.Type;
@@ -22,6 +23,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
             Description = advancement.Description;
             WorkflowId = advancement.WorkflowId;
         }
+
+        public int StatusId { get; set; }
 
         public string Description { get; set; }
 

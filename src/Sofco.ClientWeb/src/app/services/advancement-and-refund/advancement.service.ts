@@ -53,4 +53,8 @@ export class AdvancementService {
     getRefunds(id){
         return this.http.get<any>(`${this.baseUrl}/advancement/${id}/refunds`);
     }
+
+    getStates(){
+        return this.http.get<any>(`${this.baseUrl}/advancement/states`);
+    }
 }

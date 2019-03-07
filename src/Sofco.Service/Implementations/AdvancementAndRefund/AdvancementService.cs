@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
@@ -26,15 +27,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly IAdvancemenValidation validation;
         private readonly AppSetting settings;
         private readonly IUserData userData;
+        private readonly IWorkflowStateRepository workflowStateRepository;
 
         public AdvancementService(IUnitOfWork unitOfWork,
             ILogMailer<AdvancementService> logger,
             IAdvancemenValidation validation,
+            IWorkflowStateRepository workflowStateRepository,
             IUserData userData,
             IOptions<AppSetting> settingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.workflowStateRepository = workflowStateRepository;
             this.validation = validation;
             this.settings = settingOptions.Value;
             this.userData = userData;
@@ -262,6 +266,17 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             .ToList();
 
             return response;
+        }
+
+        public Response<IList<Option>> GetStates()
+        {
+            var salaryAdvs = workflowStateRepository.GetStateByWorkflowTypeCode(settings.SalaryWorkflowTypeCode);
+            var viaticumAdvs = workflowStateRepository.GetStateByWorkflowTypeCode(settings.ViaticumWorkflowTypeCode);
+
+            return new Response<IList<Option>>
+            {
+                Data = salaryAdvs.Union(viaticumAdvs).Distinct().Select(x => new Option { Id = x.Id, Text = x.Name}).ToList()
+            };
         }
 
         private string GetBank(string email, Dictionary<string, string> employeeDictionary)
