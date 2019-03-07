@@ -29,6 +29,7 @@ import { WorkflowListComponent } from "./workflow/workflows-list/workflow-list.c
 import { WorkflowDetailComponent } from "./workflow/workflow-detail/workflow-detail.component";
 import { WorkflowTransitionAddComponent } from "./workflow/transition-add/transition-add";
 import { WorkflowTransitionEditComponent } from "./workflow/transition-edit/transition-edit";
+import { WorkflowStateListComponent } from "./workflow/state-list/state-list.component";
 
 const ADMIN_ROUTER: Routes = [
     { path: 'roles', children:[
@@ -78,6 +79,10 @@ const ADMIN_ROUTER: Routes = [
         { path: '', component: SectorListComponent, canActivate: [AuthGuard], data: { module: "SECTO", functionality: "QUERY" } },
         { path: 'add', component: SectorAddComponent, canActivate: [AuthGuard], data: { module: "SECTO", functionality: "ALTA" } },
         { path: ':id/edit', component: SectorEditComponent, canActivate: [AuthGuard], data: { module: "SECTO", functionality: "EDIT" } }
+      ]},
+
+      { path: "states", children: [
+        { path: '', component: WorkflowStateListComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "QUERY" } },
       ]},
 
       { path: 'settings', children: [

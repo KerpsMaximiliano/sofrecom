@@ -49,6 +49,7 @@ namespace Sofco.DAL
         private ITaskRepository taskRepository;
         private IAreaRepository areaRepository;
         private ISectorRepository sectorRepository;
+        private IWorkflowStateRepository workflowStateRepository;
 
         #endregion
 
@@ -138,6 +139,8 @@ namespace Sofco.DAL
         public ICategoryRepository CategoryRepository => categoryRepository ?? (categoryRepository = new CategoryRepository(context));
         public ITaskRepository TaskRepository => taskRepository ?? (taskRepository = new TaskRepository(context));
         public ISectorRepository SectorRepository => sectorRepository ?? (sectorRepository = new SectorRepository(context));
+        public IWorkflowStateRepository WorkflowStateRepository => workflowStateRepository ?? (workflowStateRepository = new WorkflowStateRepository(context));
+
 
         #endregion
 

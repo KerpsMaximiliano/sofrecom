@@ -61,4 +61,9 @@ export class WorkflowService {
   getTransition(id){
     return this.http.get<any>(`${this.baseUrl}/workflowtransitions/${id}`);
   }
+
+  //Workflow States
+  getWorkflowStates(){
+     return this.http.get<any>(`${this.baseUrl}/workflowstate`);
+ }
 }
