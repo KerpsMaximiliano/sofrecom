@@ -26,6 +26,7 @@ namespace Sofco.Core.DAL
         ITaskRepository TaskRepository { get; }
         ISectorRepository SectorRepository { get; }
         IAreaRepository AreaRepository { get; }
+        IWorkflowStateRepository WorkflowStateRepository { get; }
 
         #endregion
 

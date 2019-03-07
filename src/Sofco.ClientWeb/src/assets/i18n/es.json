@@ -134,6 +134,14 @@
             "WorkingHoursPerDaysMax": "Tope jornada laboral",
             "CloseMonth": "Dia del cierre del mes",
             "ValidatePeriodCloseMonth": "Validar fecha de cierre"
+        },
+        "state": {
+            "admin": "Administración de Estados",
+            "title": "Estados",
+            "list": "Listado de Estados",
+            "edit": "Editar Estado",
+            "add": "Agregar Estado",
+            "state": "Estado"
         }
     },
     "billing":{

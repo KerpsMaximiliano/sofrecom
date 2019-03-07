@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL.Workflow;
+using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Models.Workflow;
 
 namespace Sofco.DAL.Repositories.Workflow
 {
-    public class WorkflowStateRepository : IWorkflowStateRepository
+    public class WorkflowStateRepository : BaseRepository<WorkflowState>, IWorkflowStateRepository
     {
         protected readonly SofcoContext Context;
 
-        public WorkflowStateRepository(SofcoContext context)
+        public WorkflowStateRepository(SofcoContext context) : base(context)
         {
             Context = context;
         }
@@ -35,6 +36,11 @@ namespace Sofco.DAL.Repositories.Workflow
             return Context.Set<WorkflowState>()
                 .Where(s => stateIds.Contains(s.Id))
                 .ToList();
+        }
+
+        public new IList<WorkflowState> GetAll()
+        {
+            return Context.WorkflowStates.ToList().AsReadOnly();
         }
     }
 }
