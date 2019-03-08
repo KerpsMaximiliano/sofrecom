@@ -30,6 +30,8 @@ import { WorkflowDetailComponent } from "./workflow/workflow-detail/workflow-det
 import { WorkflowTransitionAddComponent } from "./workflow/transition-add/transition-add";
 import { WorkflowTransitionEditComponent } from "./workflow/transition-edit/transition-edit";
 import { WorkflowStateListComponent } from "./workflow/state-list/state-list.component";
+import { WorkflowStateAddComponent } from "./workflow/state-add/state-add.component";
+import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
 
 const ADMIN_ROUTER: Routes = [
     { path: 'roles', children:[
@@ -82,7 +84,9 @@ const ADMIN_ROUTER: Routes = [
       ]},
 
       { path: "states", children: [
-        { path: '', component: WorkflowStateListComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "QUERY" } },
+        { path: '', component: WorkflowStateListComponent, canActivate: [AuthGuard], data: { module: "WORKF", functionality: "QUERY" } },
+        { path: 'add', component: WorkflowStateAddComponent, canActivate: [AuthGuard], data: { module: "WORKF", functionality: "ADD" } },
+        { path: ':id/edit', component: WorkflowStateEditComponent, canActivate: [AuthGuard], data: { module: "WORKF", functionality: "UPDAT" } }
       ]},
 
       { path: 'settings', children: [

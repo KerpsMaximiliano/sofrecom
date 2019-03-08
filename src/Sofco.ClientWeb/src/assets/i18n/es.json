@@ -141,7 +141,11 @@
             "list": "Listado de Estados",
             "edit": "Editar Estado",
             "add": "Agregar Estado",
-            "state": "Estado"
+            "state": "Estado",
+            "nameState": "Nombre Estado",
+            "textButton": "Texto Boton",
+            "type": "Tipo",
+            "active": "Activo"
         }
     },
     "billing":{

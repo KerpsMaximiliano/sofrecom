@@ -156,8 +156,32 @@
   <data name="ParametersNull" xml:space="preserve">
     <value>workflow/workflow.parametersNull</value>
   </data>
+  <data name="StateCreated" xml:space="preserve">
+    <value>workflow/workflow.stateCreated</value>
+  </data>
+  <data name="StateDisabled" xml:space="preserve">
+    <value>workflow/workflow.stateDisabled</value>
+  </data>
+  <data name="StateEnabled" xml:space="preserve">
+    <value>workflow/workflow.stateEnabled</value>
+  </data>
+  <data name="StateNameRequired" xml:space="preserve">
+    <value>workflow/workflow.stateNameRequired</value>
+  </data>
+  <data name="StateNotFound" xml:space="preserve">
+    <value>workflow/workflow.stateNotFound</value>
+  </data>
   <data name="StatesEquals" xml:space="preserve">
     <value>workflow/workflow.statesEquals</value>
+  </data>
+  <data name="StateTextButtonRequired" xml:space="preserve">
+    <value>workflow/workflow.stateTextButtonRequired</value>
+  </data>
+  <data name="StateTypeRequired" xml:space="preserve">
+    <value>workflow/workflow.stateTypeRequired</value>
+  </data>
+  <data name="StateUpdated" xml:space="preserve">
+    <value>workflow/workflow.StateUpdated</value>
   </data>
   <data name="TransitionAlreadyExist" xml:space="preserve">
     <value>workflow/workflow.transitionAlreadyExist</value>
