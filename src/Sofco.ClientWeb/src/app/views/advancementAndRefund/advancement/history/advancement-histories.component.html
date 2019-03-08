@@ -1,27 +1,31 @@
-<table class="table table-striped" id="historyTable" width="100%">
-    <thead>
-        <tr>
-            <th class="text-center">#</th>
-            <th class="text-center">{{'advancement.updateDate' | translate }}</th>
-            <th class="text-center">{{'advancement.histories.userName' | translate }}</th>
-            <th class="text-center">{{'advancement.histories.statusFrom' | translate }}</th>
-            <th class="text-center">{{'advancement.histories.statusTo' | translate }}</th>
-            <th class="text-center">{{'advancement.histories.comment' | translate }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let history of histories; let i = index" class="pointer">
-            <td class="text-center col-lg-1">{{i+1}}</td>
-            <td class="text-center col-lg-2">{{ history.createdDate }}</td>
-            <td class="text-center col-lg-2">{{ history.userName }}</td>
-            <td class="text-center"><span class="label" [ngClass]="getStatusClass(history.statusFromType)">{{ history.statusFrom }}</span></td>
-            <td class="text-center"><span class="label" [ngClass]="getStatusClass(history.statusToType)">{{ history.statusTo }}</span></td>
-            <td class="text-center col-lg-1">
-                <button *ngIf="history.comment" (click)="showComments(history)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="ibox" *ngIf="histories.length > 0">
+    <div class="ibox-content">
+        <table class="table table-striped" id="historyTable" width="100%">
+            <thead>
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">{{'advancement.updateDate' | translate }}</th>
+                    <th class="text-center">{{'advancement.histories.userName' | translate }}</th>
+                    <th class="text-center">{{'advancement.histories.statusFrom' | translate }}</th>
+                    <th class="text-center">{{'advancement.histories.statusTo' | translate }}</th>
+                    <th class="text-center">{{'advancement.histories.comment' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let history of histories; let i = index" class="pointer">
+                    <td class="text-center col-lg-1">{{i+1}}</td>
+                    <td class="text-center col-lg-2">{{ history.createdDate }}</td>
+                    <td class="text-center col-lg-2">{{ history.userName }}</td>
+                    <td class="text-center"><span class="label" [ngClass]="getStatusClass(history.statusFromType)">{{ history.statusFrom }}</span></td>
+                    <td class="text-center"><span class="label" [ngClass]="getStatusClass(history.statusToType)">{{ history.statusTo }}</span></td>
+                    <td class="text-center col-lg-1">
+                        <button *ngIf="history.comment" (click)="showComments(history)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <ng2-modal [config]="commentsModalConfig" #commentsModal>
     <pre class="pre-clear">{{ historyComments }}</pre>

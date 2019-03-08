@@ -15,5 +15,7 @@ namespace Sofco.Domain.Utils
         public ICollection<PurchaseOrderAmmountDetail> AmmountDetails { get; set; }
 
         public ICollection<Advancement> Advancements { get; set; }
+
+        public ICollection<Refund> Refunds { get; set; }
     }
 }

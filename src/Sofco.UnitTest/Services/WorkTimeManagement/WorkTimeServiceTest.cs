@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
+using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
@@ -13,6 +15,8 @@ using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
+using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Core.Services.Rrhh;
 using Sofco.Core.Validations;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.WorkTimeManagement;
@@ -47,6 +51,10 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
         private Mock<IWorkTimeSendManager> workTimeSendManagerMock;
 
+        private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeServiceMock;
+
+        private Mock<IOptions<AppSetting>> appSettingMock;
+
         [SetUp]
         public void Setup()
         {
@@ -76,9 +84,13 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             workTimeSendManagerMock = new Mock<IWorkTimeSendManager>();
 
+            licenseGenerateWorkTimeServiceMock = new Mock<ILicenseGenerateWorkTimeService>();
+
+            appSettingMock = new Mock<IOptions<AppSetting>>();
+
             sut = new WorkTimeService(loggerMock.Object, unitOfWorkMock.Object, userDataMock.Object, employeeDataMock.Object,
-                workTimeValidationMock.Object, workTimeFileManagerMock.Object, workTimeExportFileManagerMock.Object, 
-                workTimeResumeMangerMock.Object, workTimeRejectManagerMock.Object, workTimeSendManagerMock.Object);
+                workTimeValidationMock.Object, appSettingMock.Object, workTimeFileManagerMock.Object, workTimeExportFileManagerMock.Object,
+                workTimeResumeMangerMock.Object, licenseGenerateWorkTimeServiceMock.Object, workTimeRejectManagerMock.Object, workTimeSendManagerMock.Object);
         }
 
         [Test]
@@ -86,11 +98,11 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
         {
             const int workTimeId = 1;
 
-            var workTime = new WorkTime {Id = workTimeId, Status = WorkTimeStatus.Sent};
+            var workTime = new WorkTime { Id = workTimeId, Status = WorkTimeStatus.Sent };
 
             workTimeRepositoryMock.Setup(s => s.GetSingle(It.IsAny<Expression<Func<WorkTime, bool>>>())).Returns(workTime);
 
-            userDataMock.Setup(s => s.GetCurrentUser()).Returns(new UserLiteModel{ Id = 1 });
+            userDataMock.Setup(s => s.GetCurrentUser()).Returns(new UserLiteModel { Id = 1 });
 
             var actual = sut.Approve(workTimeId);
 
@@ -104,11 +116,15 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             const int workTimeId2 = 2;
 
-            var workTimes = new List<int> { workTimeId1, workTimeId2 };
+            var workTimes = new List<HoursToApproveModel>
+            {
+                new HoursToApproveModel{ Id = workTimeId1},
+                new HoursToApproveModel{ Id = workTimeId2}
+            };
 
             workTimeRepositoryMock.Setup(s => s.GetSingle(It.IsAny<Expression<Func<WorkTime, bool>>>()))
                 .Returns(
-                    (Expression<Func<WorkTime, bool>> predicate) 
+                    (Expression<Func<WorkTime, bool>> predicate)
                     => new WorkTime { Id = 1, Status = WorkTimeStatus.Sent });
 
             userDataMock.Setup(s => s.GetCurrentUser()).Returns(new UserLiteModel { Id = 1 });
@@ -131,11 +147,15 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             const int workTimeId2 = 2;
 
-            var workTimes = new List<int> { workTimeId1, workTimeId2 };
+            var workTimes = new List<HoursToApproveModel>
+            {
+                new HoursToApproveModel{ Id = workTimeId1},
+                new HoursToApproveModel{ Id = workTimeId2}
+            };
 
             workTimeRepositoryMock.Setup(s => s.GetSingle(It.IsAny<Expression<Func<WorkTime, bool>>>()))
                 .Returns(
-                    (Expression<Func<WorkTime, bool>> predicate) 
+                    (Expression<Func<WorkTime, bool>> predicate)
                     => new WorkTime { Id = 1, Status = WorkTimeStatus.Approved });
 
             userDataMock.Setup(s => s.GetCurrentUser()).Returns(new UserLiteModel { Id = 1 });

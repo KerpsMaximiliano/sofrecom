@@ -77,9 +77,13 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailSuccess(Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
-            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription);
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, purchaseOrder.Number, StatusDescription, purchaseOrder.AccountName);
 
-            var body = string.Format(Resources.Mails.MailMessageResource.OcComercialMessage, purchaseOrder.Number, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}", GetAnalyticsBody(purchaseOrder));
+            var body = string.Format(Resources.Mails.MailMessageResource.OcComercialMessage, 
+                purchaseOrder.Number, 
+                $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}",
+                GetAnalyticsAndManagersBody(purchaseOrder),
+                purchaseOrder.AccountName);
 
             var recipients = recipientManager.GetRecipientsOperation(purchaseOrder);
 
@@ -95,16 +99,19 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
         private MailDefaultData CreateMailReject(Domain.Models.Billing.PurchaseOrder purchaseOrder, string comments)
         {
-            var ocText = $"{purchaseOrder.Number} - {purchaseOrder.ClientExternalName}";
+            var ocText = $"{purchaseOrder.Number} - {purchaseOrder.AccountName}";
 
-            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, ocText, RejectStatusDescription);
+            var subject = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle,
+                purchaseOrder.Number,
+                RejectStatusDescription,
+                purchaseOrder.AccountName);
 
             var body = string.Format(Resources.Mails.MailMessageResource.OcRejectMessage,
                 ocText,
                 AreaDescription,
                 comments,
                 $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}",
-                GetAnalyticsBody(purchaseOrder));
+                GetAnalyticsAndManagersBody(purchaseOrder));
 
             var recipients = recipientManager.GetRejectCommercial(purchaseOrder);
 
@@ -118,7 +125,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
             return data;
         }
 
-        private string GetAnalyticsBody(Domain.Models.Billing.PurchaseOrder purchaseOrder)
+        private string GetAnalyticsAndManagersBody(Domain.Models.Billing.PurchaseOrder purchaseOrder)
         {
             var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
 
@@ -126,7 +133,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             foreach (var analytic in analytics)
             {
-                analyticsForBody = string.Concat(analyticsForBody, $"{analytic.Title} - {analytic.Name} <br/>");
+                analyticsForBody = string.Concat(analyticsForBody, $"{analytic.Manager?.Name}: {analytic.Title} - {analytic.Name} <br/>");
             }
 
             return analyticsForBody;

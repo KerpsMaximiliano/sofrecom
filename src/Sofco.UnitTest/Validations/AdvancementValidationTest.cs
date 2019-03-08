@@ -8,7 +8,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Common;
-using Sofco.Core.Models.AdvancementAndRefund;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Validations.AdvancementAndRefund;
@@ -23,7 +23,6 @@ namespace Sofco.UnitTest.Validations
         private Mock<IUnitOfWork> unitOfWorkMock;
 
         private Mock<IUtilsRepository> utilsRepositoryMock;
-        private Mock<IAnalyticRepository> analyticRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
 
         [SetUp]
@@ -31,17 +30,13 @@ namespace Sofco.UnitTest.Validations
         {
             unitOfWorkMock = new Mock<IUnitOfWork>();
             utilsRepositoryMock = new Mock<IUtilsRepository>();
-            analyticRepositoryMock = new Mock<IAnalyticRepository>();
             userRepositoryMock = new Mock<IUserRepository>();
 
             unitOfWorkMock.Setup(x => x.UtilsRepository).Returns(utilsRepositoryMock.Object);
-            unitOfWorkMock.Setup(x => x.AnalyticRepository).Returns(analyticRepositoryMock.Object);
             unitOfWorkMock.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
 
             utilsRepositoryMock.Setup(x => x.ExistCurrency(1)).Returns(true);
             utilsRepositoryMock.Setup(x => x.ExistCurrency(2)).Returns(false);
-            analyticRepositoryMock.Setup(x => x.Exist(1)).Returns(true);
-            analyticRepositoryMock.Setup(x => x.Exist(2)).Returns(false);
             utilsRepositoryMock.Setup(x => x.ExistMonthReturn(1)).Returns(true);
             utilsRepositoryMock.Setup(x => x.ExistMonthReturn(2)).Returns(false);
             userRepositoryMock.Setup(x => x.ExistById(1)).Returns(true);

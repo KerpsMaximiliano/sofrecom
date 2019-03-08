@@ -57,6 +57,8 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public bool HasExtraHolidays { get; set; }
 
+        public bool HasCreditCard { get; set; }
+
         public DateTime StartDate { get; set; }
 
         public DateTime? Birthday { get; set; }
@@ -80,5 +82,7 @@ namespace Sofco.Core.Models.AllocationManagement
         public int PhoneAreaCode { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public string Bank { get; set; }
     }
 }

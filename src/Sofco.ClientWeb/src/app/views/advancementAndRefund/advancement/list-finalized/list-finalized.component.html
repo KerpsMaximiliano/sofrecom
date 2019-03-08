@@ -1,25 +1,47 @@
-<table class="table table-striped dataTable" role="grid" id="advancements-finalized">
+<div class="alert alert-gaps-info" *ngIf="!visible">
+    <i class="fa fa-info-circle"></i>
+    {{ 'refund.needParameters' | translate }}
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped dataTable" role="grid" id="advancements-finalized" *ngIf="visible">
         <thead>
             <tr>
-                <th>{{ 'advancement.userApplicant' | translate }}</th>
-                <th>{{ 'advancement.type' | translate }}</th>
-                <th>{{ 'advancement.currency' | translate }}</th>
-                <th>{{ 'advancement.ammount' | translate }}</th>
-                <th>Fecha creación</th>
-            </tr>
+                <th class="column-sm"># {{ 'advancement.advancementName' | translate }}</th>
+                <th class="column-md">{{ 'advancement.status' | translate }}</th> 
+                <th class="column-md">{{ 'advancement.userApplicant' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.type' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.histories.createdDate' | translate }}</th>
+                <th class="column-xs">{{ 'advancement.currency' | translate }}</th>
+                <th class="column-xs">{{ 'advancement.ammount' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.bank' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.monthsReturn' | translate }}</th>
+                <th class="column-md">{{ 'advancement.description' | translate }}</th>
+                <th class="column-sm">{{ 'advancement.paymentForm' | translate }}</th>
+            </tr> 
         </thead>
-        <tbody>
+        <tbody> 
             <tr *ngFor="let item of model" class="pointer" (click)="goToDetail(item)">
-                <td class="column-lg text-ellipsis">{{ item.userApplicantDesc }}</td>
-                <td>
+                <td class="column-sm">{{ item.id }}</td>
+                <td class="column-md"><label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusDesc }}</label></td>
+                <td class="column-md text-ellipsis">{{ item.userApplicantDesc }}</td>
+                <td class="column-sm">
                     <span *ngIf="item.type == 1">{{ 'advancement.salary' | translate }}</span>
                     <span *ngIf="item.type == 2">{{ 'advancement.viaticum' | translate }}</span>
                 </td>
-                <td>{{ item.currencyDesc }}</td>
-                <td>{{ item.ammount }}</td>
-                <td>{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                <td class="column-xs">{{ item.currencyDesc }}</td>
+                <td class="column-xs">{{ item.ammount | amountFormat }}</td>
+                <td class="column-sm">{{ item.bank }}</td>
+                <td class="column-sm">{{ item.monthsReturn }}</td>
+                <td class="column-md text-ellipsis" title="{{ item.description }}">{{ item.description }}</td>
+                <td class="column-sm">
+                    <span *ngIf="item.paymentForm == 1">{{ 'advancement.ownBank' | translate }}</span>
+                    <span *ngIf="item.paymentForm == 2">{{ 'advancement.foreignCurrency' | translate }}</span>
+                </td>
             </tr>
         </tbody>
     </table>   
-    
+</div>
+
     

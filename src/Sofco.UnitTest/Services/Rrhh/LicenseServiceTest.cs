@@ -279,7 +279,7 @@ namespace Sofco.UnitTest.Services.Rrhh
 
             Assert.False(response.HasErrors());
             licenseRepositoryMock.Verify(x => x.UpdateStatus(It.IsAny<License>()), Times.Once());
-            unitOfWork.Verify(s => s.Save(), Times.Once);
+            unitOfWork.Verify(s => s.Save(), Times.Exactly(2));
             mailSender.Verify(x => x.Send(It.IsAny<IMailData>()), Times.Once());
         }
 

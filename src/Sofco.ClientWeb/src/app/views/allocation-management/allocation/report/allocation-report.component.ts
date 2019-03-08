@@ -141,6 +141,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
         var options = { 
             selector: "#resourcesTable",
             title: title,
+            order: [[ 2, "asc" ]],
             withExport: true
         };
 

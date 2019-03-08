@@ -260,10 +260,12 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de &lt;strong&gt;Compliance&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación Operativa&lt;/strong&gt;
         ///&lt;br/&gt;&lt;br/&gt; 
-        ///Analiticas relacionadas:
+        ///Cliente: {3}
+        ///&lt;br/&gt;&lt;br/&gt; 
+        ///Gerentes y Analiticas relacionadas:
         ///&lt;br/&gt;&lt;br/&gt; 
         ///{2}
-        ///&lt;br/&gt; 
+        ///&lt;br/&gt;
         ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;br/&gt;&lt;br/&gt;
         ///Muchas gracias..
@@ -277,10 +279,12 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de &lt;strong&gt;Compliance&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación Comercial&lt;/strong&gt;
         ///&lt;br/&gt;&lt;br/&gt; 
-        ///Analiticas relacionadas:
+        ///Cliente: {3}
+        ///&lt;br/&gt;&lt;br/&gt; 
+        ///Gerentes y Analiticas relacionadas:
         ///&lt;br/&gt;&lt;br/&gt; 
         ///{2}
-        ///&lt;br/&gt; 
+        ///&lt;br/&gt;
         ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;br/&gt;&lt;br/&gt;
         ///Muchas gracias..
@@ -294,7 +298,9 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha terminado el proceso de aprobación. Ya se encuentra en estado &lt;strong&gt;Vigente&lt;/strong&gt; para su uso.
         ///&lt;br/&gt;&lt;br/&gt; 
-        ///Analiticas relacionadas:
+        ///Cliente: {3}
+        ///&lt;br/&gt;&lt;br/&gt; 
+        ///Gerentes y Analiticas relacionadas:
         ///&lt;br/&gt;&lt;br/&gt; 
         ///{2}
         ///&lt;br/&gt; 
@@ -311,10 +317,12 @@ namespace Sofco.Resources.Mails {
         /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido enviada al area de &lt;strong&gt;Compliance&lt;/strong&gt;. 
         ///&lt;br/&gt;&lt;br/&gt; 
-        ///Analiticas relacionadas:
+        ///Cliente: {3}
+        ///&lt;br/&gt;&lt;br/&gt; 
+        ///Gerentes y Analiticas relacionadas:
         ///&lt;br/&gt;&lt;br/&gt; 
         ///{2}
-        ///&lt;br/&gt; 
+        ///&lt;br/&gt;
         ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;br/&gt;&lt;br/&gt;
         ///Muchas gracias..
@@ -330,8 +338,12 @@ namespace Sofco.Resources.Mails {
         ///&lt;br/&gt;&lt;br/&gt; 
         ///Analiticas relacionadas: 
         ///&lt;br/&gt;&lt;br/&gt; 
+        ///Cliente: {3}
+        ///&lt;br/&gt; &lt;br/&gt; 
+        ///Gerentes y Analiticas relacionadas:
+        ///&lt;br/&gt;&lt;br/&gt; 
         ///{2}
-        ///&lt;br/&gt; 
+        ///&lt;br/&gt;
         ///Para acceder a la misma, por favor ingresar al siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. 
         ///&lt;br/&gt;&lt;br/&gt;
         ///Muchas gracias..
@@ -347,7 +359,7 @@ namespace Sofco.Resources.Mails {
         ///&lt;br/&gt;&lt;br/&gt;
         ///{2}
         ///&lt;br/&gt;&lt;br/&gt; 
-        ///Analiticas relacionadas 
+        ///Gerentes y Analiticas relacionadas 
         ///&lt;br/&gt;&lt;br/&gt; 
         ///{4}
         ///&lt;br/&gt; 
@@ -467,6 +479,40 @@ namespace Sofco.Resources.Mails {
         public static string WorkflowNotificationAdvancement {
             get {
                 return ResourceManager.GetString("WorkflowNotificationAdvancement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a El Reintegro &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. .
+        /// </summary>
+        public static string WorkflowNotificationRefund {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationRefund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a El Reintegro &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Motivo de rechazo: {3}.
+        /// </summary>
+        public static string WorkflowNotificationReject {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationReject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Se han &lt;strong&gt; Rechazado&lt;/strong&gt; horas cargadas a:
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Analítica: {0}
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recurso: {1}
+        ///&lt;br/&gt;&lt;br/&gt;.
+        /// </summary>
+        public static string WorkTimeGeneralRejectHours {
+            get {
+                return ResourceManager.GetString("WorkTimeGeneralRejectHours", resourceCulture);
             }
         }
         

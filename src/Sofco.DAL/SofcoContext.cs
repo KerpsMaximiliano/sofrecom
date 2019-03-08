@@ -90,6 +90,11 @@ namespace Sofco.DAL
         // Advancement and Refund
         public DbSet<Advancement> Advancements { get; set; }
         public DbSet<AdvancementHistory> AdvancementHistories { get; set; }
+        public DbSet<Refund> Refunds { get; set; }
+        public DbSet<RefundHistory> RefundHistories { get; set; }
+        public DbSet<RefundDetail> RefundDetails { get; set; }
+        public DbSet<RefundFile> RefundFiles { get; set; }
+        public DbSet<AdvancementRefund> AdvancementRefunds { get; set; }
 
         // Common
         public DbSet<File> Files { get; set; }
@@ -113,6 +118,7 @@ namespace Sofco.DAL
         public DbSet<Area> Areas { get; set; }
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
         public DbSet<MonthsReturn> MonthsReturns { get; set; }
+        public DbSet<CreditCard> CreditCards { get; set; }
 
         //Workflow
 
@@ -180,6 +186,8 @@ namespace Sofco.DAL
             builder.MapWorkflowStateNotifier();
             builder.MapWorkflowStateTransition();
             builder.MapWorkflowType();
+            builder.MapRefund();
+            builder.MapAdvancementRefund();
         }
     }
 }

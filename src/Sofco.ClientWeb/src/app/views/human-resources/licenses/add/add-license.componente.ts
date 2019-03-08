@@ -16,7 +16,8 @@ declare var $: any;
 
 @Component({
     selector: 'add-license',
-    templateUrl: './add-license.component.html'
+    templateUrl: './add-license.component.html',
+    styleUrls: ['./add-license.component.scss']
 })
 export class AddLicenseComponent implements OnInit, OnDestroy {
 

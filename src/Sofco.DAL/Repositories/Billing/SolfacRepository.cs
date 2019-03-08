@@ -24,7 +24,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Hito> GetHitosByProject(string projectId)
         {
-            return context.Hitos.Where(x => x.ExternalProjectId.Equals(projectId)).ToList();
+            return context.Hitos.Where(x => x.ProjectId.Equals(projectId)).ToList();
         }
 
         public IList<Solfac> GetByProject(string projectId)
@@ -151,7 +151,7 @@ namespace Sofco.DAL.Repositories.Billing
                 query = query.Where(x => x.StartDate.Date >= parameters.DateSince.GetValueOrDefault().Date && x.StartDate.Date <= parameters.DateTo.GetValueOrDefault().Date);
 
             if (!string.IsNullOrWhiteSpace(parameters.CustomerId) && !parameters.CustomerId.Equals("0"))
-                query = query.Where(x => x.CustomerId == parameters.CustomerId);
+                query = query.Where(x => x.AccountId == parameters.CustomerId);
 
             if (!string.IsNullOrWhiteSpace(parameters.ServiceId) && !parameters.ServiceId.Equals("0"))
                 query = query.Where(x => x.ServiceId == parameters.ServiceId);

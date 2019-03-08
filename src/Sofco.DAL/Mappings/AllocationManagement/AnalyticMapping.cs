@@ -8,11 +8,11 @@ namespace Sofco.DAL.Mappings.AllocationManagement
         public static void MapAnalytic(this ModelBuilder builder)
         {
             builder.Entity<Analytic>().HasKey(_ => _.Id);
-            builder.Entity<Analytic>().Property(_ => _.ClientExternalId).HasMaxLength(150);
-            builder.Entity<Analytic>().Property(_ => _.ClientExternalName).HasMaxLength(150);
+            builder.Entity<Analytic>().Property(_ => _.AccountId).HasMaxLength(150);
+            builder.Entity<Analytic>().Property(_ => _.AccountName).HasMaxLength(150);
             builder.Entity<Analytic>().Property(_ => _.Name).HasMaxLength(200);
             builder.Entity<Analytic>().Property(_ => _.Proposal).HasMaxLength(2000);
-            builder.Entity<Analytic>().Property(_ => _.Service).HasMaxLength(200);
+            builder.Entity<Analytic>().Property(_ => _.ServiceName).HasMaxLength(200);
             builder.Entity<Analytic>().Property(_ => _.Title).HasMaxLength(150);
             builder.Entity<Analytic>().Property(_ => _.UsersQv).HasMaxLength(500);
 
@@ -27,6 +27,8 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Analytic>().HasOne(x => x.CostCenter).WithMany(x => x.Analytics).HasForeignKey(x => x.CostCenterId);
             builder.Entity<Analytic>().HasOne(x => x.SoftwareLaw).WithMany(x => x.Analytics).HasForeignKey(x => x.SoftwareLawId);
             builder.Entity<Analytic>().HasOne(x => x.ServiceType).WithMany(x => x.Analytics).HasForeignKey(x => x.ServiceTypeId);
+
+            builder.Entity<Analytic>().HasMany(x => x.Refunds).WithOne(x => x.Analytic).HasForeignKey(x => x.AnalyticId);
         }
     }
 }

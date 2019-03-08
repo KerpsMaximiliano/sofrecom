@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.DTO;
@@ -29,17 +28,17 @@ namespace Sofco.WebApi.Controllers.Billing
 
         [HttpPost]
         [Route("split")]
-        public async Task<IActionResult> Split([FromBody] HitoSplittedParams hito)
+        public IActionResult Split([FromBody] HitoParameters hito)
         {
-            var response = await hitoService.SplitHito(hito);
+            var response = hitoService.SplitHito(hito);
 
             return this.CreateResponse(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] HitoSplittedParams hito)
+        public IActionResult Post([FromBody] HitoParameters hito)
         {
-            var response = await hitoService.Create(hito);
+            var response = hitoService.Create(hito);
 
             return this.CreateResponse(response);
         }

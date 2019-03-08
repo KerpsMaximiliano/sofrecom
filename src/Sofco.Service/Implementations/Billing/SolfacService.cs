@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
-using Sofco.Core.CrmServices;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Billing;
@@ -18,6 +17,8 @@ using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Domain.Helpers;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Relationships;
+using System.Globalization;
+using Sofco.Service.Crm.Interfaces;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -26,7 +27,7 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ISolfacStatusFactory solfacStatusFactory;
         private readonly IUnitOfWork unitOfWork;
         private readonly CrmConfig crmConfig;
-        private readonly ICrmInvoiceService crmInvoiceService;
+        private readonly ICrmInvoicingMilestoneService crmInvoiceService;
         private readonly ILogMailer<SolfacService> logger;
         private readonly IUserData userData;
          
@@ -34,7 +35,7 @@ namespace Sofco.Service.Implementations.Billing
             IUnitOfWork unitOfWork,
             IUserData userData,
             IOptions<CrmConfig> crmOptions,
-            ICrmInvoiceService crmInvoiceService, ILogMailer<SolfacService> logger)
+            ICrmInvoicingMilestoneService crmInvoiceService, ILogMailer<SolfacService> logger)
         {
             this.solfacStatusFactory = solfacStatusFactory;
             crmConfig = crmOptions.Value;
@@ -52,7 +53,7 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                CreateHitoOnCrm(solfac);
+                CreateHitoOnCrm(solfac, response);
 
                 solfac.UpdatedDate = DateTime.Now;
                 solfac.ModifiedByUserId = solfac.UserApplicantId;
@@ -85,9 +86,9 @@ namespace Sofco.Service.Implementations.Billing
                 if (SolfacHelper.IsCreditNote(solfac) || SolfacHelper.IsDebitNote(solfac))
                     return response;
 
-                var crmResult = crmInvoiceService.UpdateHitos(solfac.Hitos);
+                //var crmResult = crmInvoiceService.UpdateHitos(solfac.Hitos);
 
-                response.AddMessages(crmResult.Messages);
+                //response.AddMessages(crmResult.Messages);
             }
             catch (Exception ex)
             {
@@ -217,7 +218,7 @@ namespace Sofco.Service.Implementations.Billing
                 response.AddSuccess(solfacStatusHandler.GetSuccessMessage());
 
                 // Update Hitos
-                solfacStatusHandler.UpdateHitos(unitOfWork.SolfacRepository.GetHitosIdsBySolfacId(solfac.Id), solfac, crmConfig.Url);
+                solfacStatusHandler.UpdateHitos(unitOfWork.SolfacRepository.GetHitosIdsBySolfacId(solfac.Id), solfac);
             }
             catch(Exception ex)
             {
@@ -262,7 +263,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 var hitos = unitOfWork.SolfacRepository.GetHitosBySolfacId(solfac.Id);
 
-                crmInvoiceService.UpdateHitoStatus(hitos.ToList(), HitoStatus.Pending);
+                //crmInvoiceService.UpdateHitoStatus(hitos.ToList(), HitoStatus.Pending);
 
                 unitOfWork.SolfacRepository.Delete(solfac);
                 unitOfWork.Save();
@@ -303,9 +304,9 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.Save();
 
                 // Update hitos in CRM
-                var crmResult = crmInvoiceService.UpdateHitos(solfac.Hitos);
+                //var crmResult = crmInvoiceService.UpdateHitos(solfac.Hitos);
 
-                response.AddMessages(crmResult.Messages);
+                //response.AddMessages(crmResult.Messages);
 
                 response.AddSuccess(Resources.Billing.Solfac.SolfacUpdated);
             }
@@ -424,7 +425,7 @@ namespace Sofco.Service.Implementations.Billing
             if (SolfacHelper.IsDebitNote(solfac) || SolfacHelper.IsCreditNote(solfac))
             {
                 var hito = solfac.Hitos.First();
-                HitoValidatorHelper.ValidateOpportunity(new HitoSplittedParams { OpportunityId = hito.OpportunityId }, response);
+                HitoValidatorHelper.ValidateOpportunity(new HitoParameters { OpportunityId = hito.OpportunityId }, response);
             }
 
             return response;
@@ -514,15 +515,15 @@ namespace Sofco.Service.Implementations.Billing
                 response.AddError(Resources.Common.ErrorSave);
             }
 
-            try
-            {
-                crmInvoiceService.UpdateHitoInvoice(unitOfWork.SolfacRepository.GetHitosBySolfacId(solfac.Id), parameters);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex);
-                response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
-            }
+            //try
+            //{
+            //    crmInvoiceService.UpdateHitoInvoice(unitOfWork.SolfacRepository.GetHitosBySolfacId(solfac.Id), parameters);
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.LogError(ex);
+            //    response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
+            //}
 
             return response;
         }
@@ -732,7 +733,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        private void CreateHitoOnCrm(Solfac solfac)
+        private void CreateHitoOnCrm(Solfac solfac, Response response)
         {
             if (!SolfacHelper.IsCreditNote(solfac) && !SolfacHelper.IsDebitNote(solfac))
                 return;
@@ -741,9 +742,40 @@ namespace Sofco.Service.Implementations.Billing
 
             hito.SolfacId = 0;
 
-            var hitoResult = crmInvoiceService.CreateHitoBySolfac(solfac);
+            hito.Total = hito.Details.Sum(s => s.Total);
 
-            hito.ExternalHitoId = hitoResult.Data;
+            var hitoParams = new HitoParameters();
+
+            hitoParams.Ammount = SolfacHelper.IsCreditNote(solfac) ? (-1)*hito.Total : hito.Total;
+            hitoParams.Name = hito.Description = GetPrefixTitle(solfac) + hito.Description;
+            hitoParams.StatusCode = Convert.ToInt32(HitoStatus.Pending).ToString();
+            hitoParams.StartDate = DateTime.UtcNow;
+            hitoParams.Month = hito.Month;
+            hitoParams.ProjectId = hito.ProjectId;
+            hitoParams.OpportunityId = hito.OpportunityId;
+            hitoParams.MoneyId = hito.CurrencyId;
+
+            var hitoId = crmInvoiceService.Create(hitoParams, response);
+
+            if (!response.HasErrors())
+            {
+                hito.ExternalHitoId = hitoId;
+            }
+            else
+            {
+                response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
+            }
+        }
+
+        private string GetPrefixTitle(Solfac solfac)
+        {
+            if (SolfacHelper.IsCreditNote(solfac))
+                return Resources.Billing.Invoice.CrmPrefixCreditNoteTitle;
+
+            if (SolfacHelper.IsDebitNote(solfac))
+                return Resources.Billing.Invoice.CrmPrefixDebitNoteTitle;
+
+            return string.Empty;
         }
     }
 }

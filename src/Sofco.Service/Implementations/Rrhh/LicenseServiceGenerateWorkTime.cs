@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Models.WorkTimeManagement;
 
@@ -21,11 +24,8 @@ namespace Sofco.Service.Implementations.Rrhh
             this.unitOfWork = unitOfWork;
             this.appSetting = appSetting.Value;
         }
-
         public void GenerateWorkTimes(License license)
         {
-            if (license.Status != LicenseStatus.Draft) return;
-
             var startDate = license.StartDate;
             var endDate = license.EndDate;
 
@@ -57,7 +57,7 @@ namespace Sofco.Service.Implementations.Rrhh
                     worktime.AnalyticId = analyticBank.Id;
                     worktime.Hours = license.Employee.BusinessHours;
 
-                    unitOfWork.WorkTimeRepository.Insert(worktime);
+                    unitOfWork.WorkTimeRepository.Insert(worktime); 
                 }
                 else
                 {
@@ -72,6 +72,8 @@ namespace Sofco.Service.Implementations.Rrhh
                     }
                     else
                     {
+                        decimal hours = 0;
+
                         foreach (var allocation in allocationsInMonth)
                         {
                             if (allocation.Percentage > 0)
@@ -80,18 +82,23 @@ namespace Sofco.Service.Implementations.Rrhh
 
                                 worktime.AnalyticId = allocation.AnalyticId;
 
-                                if (allocationsInMonth.Count == 1)
-                                {
-                                    worktime.Hours = license.Employee.BusinessHours;
-                                }
-                                else
-                                {
-                                    worktime.Hours = (license.Employee.BusinessHours * allocation.Percentage) / 100;
-                                }
-                                
+                                worktime.Hours = (license.Employee.BusinessHours * allocation.Percentage) / 100;
+                                hours += worktime.Hours;
 
                                 unitOfWork.WorkTimeRepository.Insert(worktime);
                             }
+                        }
+
+                        if (hours < license.Employee.BusinessHours)
+                        {
+                            var diff = license.Employee.BusinessHours - hours;
+
+                            var worktime = BuildWorkTime(license, startDate, user);
+
+                            worktime.AnalyticId = analyticBank.Id;
+                            worktime.Hours = diff;
+
+                            unitOfWork.WorkTimeRepository.Insert(worktime);
                         }
                     }
                 }

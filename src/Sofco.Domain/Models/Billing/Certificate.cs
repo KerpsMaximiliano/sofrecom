@@ -9,9 +9,9 @@ namespace Sofco.Domain.Models.Billing
     {
         public string Name { get; set; }
 
-        public string ClientExternalId { get; set; }
+        public string AccountId { get; set; }
 
-        public string ClientExternalName { get; set; }
+        public string AccountName { get; set; }
 
         public int Year { get; set; }
 

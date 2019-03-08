@@ -70,7 +70,9 @@
   border-radius: 5px 0 0 5px;
 }
 
-
+textarea {
+  resize: vertical
+}
 
 li.paginate-button a{
   height:32px;
@@ -473,6 +475,11 @@ pre {
 .column-sm {
   width: 110px!important;
   max-width: 110px!important;
+}
+
+.column-xxlg {
+  width: 450px!important;
+  max-width: 450px!important;
 }
 
 .uploader-margin-top{

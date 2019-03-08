@@ -8,9 +8,9 @@ namespace Sofco.DAL.Mappings.Billing
         public static void MapPurchaseOrder(this ModelBuilder builder)
         {
             builder.Entity<PurchaseOrder>().HasKey(_ => _.Id);
-            builder.Entity<PurchaseOrder>().Property(_ => _.ClientExternalId).HasMaxLength(150);
+            builder.Entity<PurchaseOrder>().Property(_ => _.AccountId).HasMaxLength(150);
             builder.Entity<PurchaseOrder>().Property(_ => _.Description).HasMaxLength(2000);
-            builder.Entity<PurchaseOrder>().Property(_ => _.ClientExternalName).HasMaxLength(150);
+            builder.Entity<PurchaseOrder>().Property(_ => _.AccountName).HasMaxLength(150);
             builder.Entity<PurchaseOrder>().Property(_ => _.Number).HasMaxLength(150);
             builder.Entity<PurchaseOrder>().Property(_ => _.UpdateByUser).HasMaxLength(25);
             builder.Entity<PurchaseOrder>().Property(_ => _.FicheDeSignature).HasMaxLength(200);

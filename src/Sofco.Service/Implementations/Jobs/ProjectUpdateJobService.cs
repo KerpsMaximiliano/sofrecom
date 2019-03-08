@@ -19,7 +19,7 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly ICrmProjectService crmProjectService;
         private readonly IMapper mapper;
 
-        private IList<int> IdsAdded { get; }
+        //private IList<int> IdsAdded { get; }
 
         public ProjectUpdateJobService(IUnitOfWork unitOfWork,
             IProjectData projectData,
@@ -32,7 +32,7 @@ namespace Sofco.Service.Implementations.Jobs
             this.mapper = mapper;
             this.projectData = projectData;
 
-            IdsAdded = new List<int>();
+            //IdsAdded = new List<int>();
         }
 
         public void Execute()
@@ -53,7 +53,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             try
             {
-                unitOfWork.ProjectRepository.UpdateInactives(IdsAdded);
+                //unitOfWork.ProjectRepository.UpdateInactives(IdsAdded);
 
                 unitOfWork.Commit();
                 projectData.ClearKeys();
@@ -71,7 +71,7 @@ namespace Sofco.Service.Implementations.Jobs
                 unitOfWork.ProjectRepository.Update(Translate(crmProject, project));
                 unitOfWork.Save();
 
-                IdsAdded.Add(project.Id);
+                //IdsAdded.Add(project.Id);
             }
             catch (Exception e)
             {
@@ -98,7 +98,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             mapper.Map(crmProject, project);
 
-            project.Active = true;
+            project.Active = crmProject.StateCode == 0;
 
             return project;
         }

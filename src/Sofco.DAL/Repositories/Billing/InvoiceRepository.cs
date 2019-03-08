@@ -159,7 +159,7 @@ namespace Sofco.DAL.Repositories.Billing
                 query = query.Where(x => x.CreatedDate.Date >= parameters.DateSince.GetValueOrDefault().Date && x.CreatedDate.Date <= parameters.DateTo.GetValueOrDefault().Date);
 
             if (!string.IsNullOrWhiteSpace(parameters.CustomerId) && !parameters.CustomerId.Equals("0"))
-                query = query.Where(x => x.CustomerId == parameters.CustomerId);
+                query = query.Where(x => x.AccountId == parameters.CustomerId);
 
             if (!string.IsNullOrWhiteSpace(parameters.ServiceId) && !parameters.ServiceId.Equals("0"))
                 query = query.Where(x => x.ServiceId == parameters.ServiceId);

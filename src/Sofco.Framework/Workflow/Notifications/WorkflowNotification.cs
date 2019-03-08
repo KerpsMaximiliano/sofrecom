@@ -2,8 +2,8 @@
 using System.Linq;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
-using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Mail;
+using Sofco.Core.Models.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Framework.MailData;
@@ -13,22 +13,20 @@ namespace Sofco.Framework.Workflow.Notifications
     public abstract class WorkflowNotification
     {
         private readonly IMailSender mailSender;
-        private readonly IWorkflowRepository workflowRepository;
         private readonly IUnitOfWork unitOfWork;
         private readonly AppSetting appSetting;
 
         protected WorkflowNotification(IMailSender mailSender,
             AppSetting appSetting,
-            IUnitOfWork unitOfWork,
-            IWorkflowRepository workflowRepository)
+            IUnitOfWork unitOfWork)
         {
             this.mailSender = mailSender;
             this.unitOfWork = unitOfWork;
-            this.workflowRepository = workflowRepository;
             this.appSetting = appSetting;
         }
 
-        public abstract void Send(WorkflowEntity entity, WorkflowStateTransition transition);
+        public abstract void Send(WorkflowEntity entity, WorkflowStateTransition transition,
+            WorkflowChangeStatusParameters parameters);
 
         protected void SendMail(string subject, string body, WorkflowStateTransition transition, WorkflowEntity entity)
         {

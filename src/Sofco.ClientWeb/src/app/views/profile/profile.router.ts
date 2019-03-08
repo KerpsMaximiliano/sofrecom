@@ -4,6 +4,7 @@ import { ResourceDetailComponent } from "../allocation-management/resources/deta
 import { AuthGuard } from "../../guards/auth.guard";
 import { AddLicenseComponent } from "../human-resources/licenses/add/add-license.componente";
 import { AdvancementAddComponent } from "app/views/advancementAndRefund/advancement/add/advancement-add.component";
+import { RefundAddComponent } from "../advancementAndRefund/refund/add/refund-add.component";
 
 const PROFILE_ROUTER: Routes = [
     { path: "workTime", component: WorkTimeComponent, canActivate: [AuthGuard], data: { module: "PROFI", functionality: "WORKT" } },
@@ -18,6 +19,12 @@ const PROFILE_ROUTER: Routes = [
         path: "advancement",
         children: [
             { path: "add", component: AdvancementAddComponent, canActivate: [AuthGuard], data: { module: "PROFI", functionality: "ADD" } }
+        ]
+    },
+    {
+        path: "refund",
+        children: [
+            { path: "add", component: RefundAddComponent, canActivate: [AuthGuard], data: { module: "PROFI", functionality: "ADD-REFUND" } }
         ]
     }
 ]

@@ -13,9 +13,9 @@ namespace Sofco.Domain.Models.Billing
 
         public string Number { get; set; }
 
-        public string ClientExternalId { get; set; }
+        public string AccountId { get; set; }
 
-        public string ClientExternalName { get; set; }
+        public string AccountName { get; set; }
 
         public DateTime ReceptionDate { get; set; }
 

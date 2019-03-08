@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.Mails {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.Mails {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Mails.MailSubjectResource", typeof(MailSubjectResource).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Mails.MailSubjectResource", typeof(MailSubjectResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -197,7 +196,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Proceso Aprobación Orden de Compra - {0} - {1}.
+        ///   Busca una cadena traducida similar a Proceso Aprobación Orden de Compra - {0} - {1} - {2}.
         /// </summary>
         public static string OcProcessTitle {
             get {
@@ -283,6 +282,15 @@ namespace Sofco.Resources.Mails {
         public static string WorkflowNotificationAdvancement {
             get {
                 return ResourceManager.GetString("WorkflowNotificationAdvancement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Solicitud de Reintegro - {0}.
+        /// </summary>
+        public static string WorkflowNotificationRefund {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationRefund", resourceCulture);
             }
         }
         

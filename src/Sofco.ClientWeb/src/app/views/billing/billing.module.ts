@@ -74,7 +74,6 @@ import { PdfViewerModule } from '../../components/pdf-viewer/pdf-viewer.module';
 import { DatePickerModule } from '../../components/date-picker/date-picker.module';
 import { NewHitoComponent } from './hitos/new/new-hito.component';
 import { ProjectPurchaseOrdersComponent } from './projects/project-detail/purchase-order-detail/purchase-order-detail.component';
-import { AmountFormatPipe } from '../../pipes/amount-format.pipe';
 import { BillingRouter } from './billing.router';
 import { ResourceByServiceComponent } from '../allocation-management/resources/by-service/resource-by-service.component';
 import { AnalyticService } from '../../services/allocation-management/analytic.service';
@@ -102,9 +101,9 @@ import { PurchaseOrderViewFilterComponent } from './purchaseOrder/common/purchas
 import { PurchaseOrderActiveViewComponent } from './purchaseOrder/active-view/purchase-order-active-view.component';
 import { ButtonsModule } from '../../components/buttons/buttons.module';
 import { DecimalFormatModule } from 'app/components/decimalFormat/decimal-format.directive';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TooltipModule } from 'ngx-bootstrap';
+import { AmountFormatModule } from 'app/pipes/amount-format.module';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -116,7 +115,7 @@ import { TooltipModule } from 'ngx-bootstrap';
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent,
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
-                 NewHitoComponent, ProjectPurchaseOrdersComponent, AmountFormatPipe, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
+                 NewHitoComponent, ProjectPurchaseOrdersComponent, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
                  OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderApprovalDelegateComponent, PurchaseOrderApprovalDelegateEditComponent,
                  OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent, PurchaseOrderActiveDelegateComponent, PurchaseOrderActiveDelegateEditComponent,
@@ -124,7 +123,7 @@ import { TooltipModule } from 'ngx-bootstrap';
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, TooltipModule,
-                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter, ButtonsModule, DecimalFormatModule, NgSelectModule],
+                 DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter, ButtonsModule, DecimalFormatModule, NgSelectModule, AmountFormatModule],
 
   providers   : [CustomerService, ServiceService, ProjectService, SolfacService, InvoiceService, PurchaseOrderService, CertificatesService,
                 SolfacDelegateService, CategoryService, AnalyticService, EmployeeService, UtilsService, AllocationService, PurchaseOrderApprovalDelegateService, 

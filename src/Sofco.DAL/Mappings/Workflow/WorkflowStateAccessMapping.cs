@@ -10,7 +10,7 @@ namespace Sofco.DAL.Mappings.Workflow
         {
             builder.Entity<WorkflowStateAccess>().HasKey(_ => _.Id);
 
-            builder.Entity<WorkflowStateAccess>().HasOne(x => x.WorkflowStateTransition).WithMany(x => x.WorkflowStateAccesses).HasForeignKey(x => x.WorkflowStateTransitionId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<WorkflowStateAccess>().HasOne(x => x.WorkflowStateTransition).WithMany(x => x.WorkflowStateAccesses).HasForeignKey(x => x.WorkflowStateTransitionId).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<WorkflowStateAccess>().HasOne(x => x.UserSource).WithMany(x => x.WorkflowStateAccesses).HasForeignKey(x => x.UserSourceId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkflowStateAccess>().HasOne(x => x.CreatedBy).WithMany(x => x.WorkflowStateAccesses).HasForeignKey(x => x.CreatedById).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkflowStateAccess>().HasOne(x => x.ModifiedBy).WithMany(x => x.WorkflowStateAccesses2).HasForeignKey(x => x.ModifiedById).OnDelete(DeleteBehavior.Restrict);

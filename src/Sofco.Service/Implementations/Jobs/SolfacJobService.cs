@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Options;
-using Sofco.Core.CrmServices;
 using Sofco.Core.Mail;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Crm;
@@ -11,6 +10,7 @@ using Sofco.Domain;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Framework.MailData;
+using Sofco.Service.Crm.Interfaces;
 using Sofco.Service.Settings.Jobs;
 
 namespace Sofco.Service.Implementations.Jobs
@@ -23,7 +23,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         private readonly IUnitOfWork unitOfWork;
 
-        private readonly ICrmInvoiceService crmInvoiceService;
+        private readonly ICrmInvoicingMilestoneService crmInvoiceService;
 
         private readonly IMailBuilder mailBuilder;
 
@@ -32,7 +32,7 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly EmailConfig emailConfig;
 
         public SolfacJobService(IUnitOfWork unitOfWork,
-            ICrmInvoiceService crmInvoiceService,
+            ICrmInvoicingMilestoneService crmInvoiceService,
             IMailBuilder mailBuilder,
             IMailSender mailSender,
             IOptions<EmailConfig> emailConfigOptions,
@@ -57,9 +57,9 @@ namespace Sofco.Service.Implementations.Jobs
 
         private List<CrmHito> GetHitosWithoutSolfac()
         {
-            var crmHitosResult = crmInvoiceService.GetHitosToExpire(daysToExpire);
+            var crmHitosResult = crmInvoiceService.GetToExpire(daysToExpire);
 
-            var crmHitosList = crmHitosResult.Data.ToList();
+            var crmHitosList = crmHitosResult.ToList();
 
             var crmHitosIdList = crmHitosList.Select(s => s.Id).ToList();
 

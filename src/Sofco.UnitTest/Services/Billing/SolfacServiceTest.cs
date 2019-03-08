@@ -2,9 +2,7 @@
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
-using Sofco.Common.Domains;
 using Sofco.Core.Config;
-using Sofco.Core.CrmServices;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
@@ -13,8 +11,8 @@ using Sofco.Core.Logger;
 using Sofco.Core.StatusHandlers;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
-using Sofco.Domain.Utils;
 using Sofco.Service.Implementations.Billing;
+using Sofco.Service.Crm.Interfaces;
 
 namespace Sofco.UnitTest.Services.Billing
 {
@@ -27,7 +25,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<ISolfacStatusFactory> solfacStatusFactoryMock;
         private Mock<IUserRepository> userRepositoryMock;
         private Mock<CrmConfig> crmConfigMock;
-        private Mock<ICrmInvoiceService> crmInvoiceServiceMock;
+        private Mock<ICrmInvoicingMilestoneService> crmInvoiceServiceMock;
         private Mock<ILogMailer<SolfacService>> loggerMock;
         private Mock<IUserData> userDataMock;
         private Mock<IPurchaseOrderRepository> purchaseOrderRepositoryMock;
@@ -42,7 +40,7 @@ namespace Sofco.UnitTest.Services.Billing
             solfacStatusFactoryMock = new Mock<ISolfacStatusFactory>();
             userRepositoryMock = new Mock<IUserRepository>();
             crmConfigMock = new Mock<CrmConfig>();
-            crmInvoiceServiceMock = new Mock<ICrmInvoiceService>();
+            crmInvoiceServiceMock = new Mock<ICrmInvoicingMilestoneService>();
             loggerMock = new Mock<ILogMailer<SolfacService>>();
             userDataMock = new Mock<IUserData>();
             purchaseOrderRepositoryMock = new Mock<IPurchaseOrderRepository>();
@@ -60,8 +58,6 @@ namespace Sofco.UnitTest.Services.Billing
             solfacRepositoryMock.Setup(s => s.GetById(It.IsAny<int>())).Returns(GetSolfacData());
             solfacRepositoryMock.Setup(s => s.GetTotalAmountById(It.IsAny<int>())).Returns(GetSolfacData().TotalAmount);
 
-            crmInvoiceServiceMock.Setup(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>())).Returns(new Response());
-            crmInvoiceServiceMock.Setup(s => s.CreateHitoBySolfac(It.IsAny<Solfac>())).Returns(new Result<string>("1"));
 
             purchaseOrderRepositoryMock.Setup(s => s.HasAmmountDetails(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
 
@@ -82,12 +78,10 @@ namespace Sofco.UnitTest.Services.Billing
 
             Assert.False(actual.HasErrors());
 
-            crmInvoiceServiceMock.Verify(s => s.CreateHitoBySolfac(It.IsAny<Solfac>()), Times.Never);
             solfacRepositoryMock.Verify(s => s.Insert(It.IsAny<Solfac>()), Times.Once);
             unitOfWork.Verify(s => s.Save(), Times.Exactly(2));
             invoiceRepositoryMock.Verify(s => s.UpdateSolfacId(It.IsAny<Invoice>()), Times.AtLeastOnce);
             invoiceRepositoryMock.Verify(s => s.UpdateStatus(It.IsAny<Invoice>()), Times.AtLeastOnce);
-            crmInvoiceServiceMock.Verify(s => s.UpdateHitos(It.IsAny<ICollection<Hito>>()), Times.Once);
         }
 
         [TestCase(SolfacDocumentType.CreditNoteA)]
@@ -102,7 +96,6 @@ namespace Sofco.UnitTest.Services.Billing
 
             Assert.False(actual.HasErrors());
 
-            crmInvoiceServiceMock.Verify(s => s.CreateHitoBySolfac(It.IsAny<Solfac>()), Times.Once);
             solfacRepositoryMock.Verify(s => s.Insert(It.IsAny<Solfac>()), Times.Once);
             unitOfWork.Verify(s => s.Save(), Times.Once);
             invoiceRepositoryMock.Verify(s => s.UpdateSolfacId(It.IsAny<Invoice>()), Times.Never);
@@ -120,7 +113,6 @@ namespace Sofco.UnitTest.Services.Billing
 
             Assert.False(actual.HasErrors());
 
-            crmInvoiceServiceMock.Verify(s => s.CreateHitoBySolfac(It.IsAny<Solfac>()), Times.Once);
             solfacRepositoryMock.Verify(s => s.Insert(It.IsAny<Solfac>()), Times.Once);
             unitOfWork.Verify(s => s.Save(), Times.Once);
             invoiceRepositoryMock.Verify(s => s.UpdateSolfacId(It.IsAny<Invoice>()), Times.Never);

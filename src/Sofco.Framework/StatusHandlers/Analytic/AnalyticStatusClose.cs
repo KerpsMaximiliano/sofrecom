@@ -45,8 +45,8 @@ namespace Sofco.Framework.StatusHandlers.Analytic
 
             var data = new CloseAnalyticData
             {
-                Title = string.Format(title, analytic.ClientExternalName),
-                Message = string.Format(message, $"{analytic.Title} - {analytic.Name}", analytic.Service, $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view"),
+                Title = string.Format(title, analytic.AccountName),
+                Message = string.Format(message, $"{analytic.Title} - {analytic.Name}", analytic.ServiceName, $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view"),
                 Recipients = recipients
             };
 

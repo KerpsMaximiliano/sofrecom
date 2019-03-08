@@ -1,0 +1,41 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'refund.listTitle' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'refund.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'refund.search' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="tabInProcess = true"> {{ 'advancement.inProcess' | translate }} </a></li>
+            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="tabInProcess = false"> {{ 'refund.finalized' | translate }} </a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="tab-success">
+                    <refund-list-grid #inProcessGrid controlId="inProcess"></refund-list-grid>
+                </div>
+            </div>
+
+            <div id="tab-2" class="tab-pane">
+                <div class="tab-primary">
+                    <refund-list-grid #finalizedGrid controlId="finalized" [inWorkflowProcess]="false"></refund-list-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

@@ -35,5 +35,6 @@ namespace Sofco.Core.Services.Common
         IEnumerable<Option> GetCloseMonths();
 
         IList<MonthsReturn> GetMonthsReturn();
+        IList<Option> GetCreditCards();
     }
 }

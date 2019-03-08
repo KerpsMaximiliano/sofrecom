@@ -52,7 +52,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Code == emailConfig.DirectorsCode)
+                .Where(x => x.Group.Code == emailConfig.DirectorsCode && x.User.Active)
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList();
@@ -63,7 +63,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Code == emailConfig.ManagersCode || x.Group.Code == emailConfig.DirectorsCode)
+                .Where(x => x.Group.Code == emailConfig.ManagersCode || x.Group.Code == emailConfig.DirectorsCode && x.User.Active)
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList().DistinctBy(s => s.Name);
@@ -73,7 +73,7 @@ namespace Sofco.DAL.Repositories.Admin
         {
             var result = context.Analytics
                 .Include(x => x.CommercialManager)
-                .Where(x => x.CommercialManagerId > 0)
+                .Where(x => x.CommercialManagerId > 0 && x.CommercialManager.Active)
                 .Select(x => x.CommercialManager)
                 .Distinct();
 
@@ -233,6 +233,14 @@ namespace Sofco.DAL.Repositories.Admin
                 .Any(x => x.Email.Equals(email) && x.UserGroups.Any(s => s.Group.Code == gafCode));
         }
 
+        public List<UserLiteModel> GetUserLiteByEmails(List<string> emails)
+        {
+            return context.Users
+                .Where(x => emails.Contains(x.Email))
+                .Select(s => new UserLiteModel {Id = s.Id, Name = s.Name})
+                .ToList();
+        }
+
         public bool HasCdgGroup(string userMail)
         {
             var cdgCode = emailConfig.CdgCode;
@@ -273,7 +281,8 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Users.Where(s => s.Id == userId).Select(s => new UserLiteModel
             {
                 Id = s.Id,
-                Name = s.Name
+                Name = s.Name,
+                Email = s.Email
             }).FirstOrDefault();
         }
 

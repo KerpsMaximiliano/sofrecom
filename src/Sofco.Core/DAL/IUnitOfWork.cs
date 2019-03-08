@@ -5,6 +5,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.Workflow;
 using Sofco.Core.DAL.WorkTimeManagement;
 
 namespace Sofco.Core.DAL
@@ -25,6 +26,7 @@ namespace Sofco.Core.DAL
         ITaskRepository TaskRepository { get; }
         ISectorRepository SectorRepository { get; }
         IAreaRepository AreaRepository { get; }
+        IWorkflowStateRepository WorkflowStateRepository { get; }
 
         #endregion
 
@@ -86,9 +88,14 @@ namespace Sofco.Core.DAL
 
         #endregion
 
-        #region WorkTimeManagement
+        IWorkflowRepository WorkflowRepository { get; }
+
+        IUserSourceRepository UserSourceRepository { get; }
+
+        #region Advancements
 
         IAdvancementRepository AdvancementRepository { get; }
+        IRefundRepository RefundRepository { get; }
 
         #endregion
 

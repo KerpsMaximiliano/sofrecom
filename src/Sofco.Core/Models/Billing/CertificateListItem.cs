@@ -8,7 +8,7 @@ namespace Sofco.Core.Models.Billing
         {
             Id = purchaseOrder.Id;
             Name = purchaseOrder.Name;
-            Client = purchaseOrder.ClientExternalName;
+            Client = purchaseOrder.AccountName;
             Year = purchaseOrder.Year;
 
             if (purchaseOrder.File != null)

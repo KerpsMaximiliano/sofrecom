@@ -16,8 +16,8 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             Id = domain.Id;
             Number = domain.Number;
             Title = domain.Title;
-            ClientExternalId = domain.ClientExternalId;
-            ClientExternalName = domain.ClientExternalName;
+            ClientExternalId = domain.AccountId;
+            ClientExternalName = domain.AccountName;
             ReceptionDate = domain.ReceptionDate;
             AreaId = domain.AreaId.GetValueOrDefault();
             Status = domain.Status;

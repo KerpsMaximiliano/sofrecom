@@ -58,13 +58,19 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             foreach (var analytic in analytics)
             {
-                analyticsForBody = string.Concat(analyticsForBody, $"{analytic.Title} - {analytic.Name} <br/>");
+                analyticsForBody = string.Concat(analyticsForBody, $"{analytic.Manager.Name}: {analytic.Title} - {analytic.Name} <br/>");
             }
 
-            var ocText = $"{purchaseOrder.Number} - {purchaseOrder.ClientExternalName}";
+            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, 
+                purchaseOrder.Number, 
+                StatusDescription, 
+                purchaseOrder.AccountName);
 
-            var subjectToDaf = string.Format(Resources.Mails.MailSubjectResource.OcProcessTitle, ocText, StatusDescription);
-            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage, ocText, $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}", analyticsForBody);
+            var bodyToDaf = string.Format(Resources.Mails.MailMessageResource.OcDraftMessage,
+                purchaseOrder.Number, 
+                $"{emailConfig.SiteUrl}billing/purchaseOrders/{purchaseOrder.Id}", 
+                analyticsForBody,
+                purchaseOrder.AccountName);
 
             var recipientsToCompliance = recipientManager.GetRecipientsCompliance();
 

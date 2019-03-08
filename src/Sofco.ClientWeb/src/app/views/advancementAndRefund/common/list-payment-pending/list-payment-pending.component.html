@@ -1,0 +1,108 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> {{'advancement.paymentPending' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'advancement.navigationTitle' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'advancement.paymentPending' | translate }} </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h5 class="panel-title">
+                <span>{{'advancement.searchParameters' | translate }}</span>
+            </h5>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">{{ 'advancement.userApplicant' | translate }}</label>
+                        <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="userId"></ng-select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">{{'advancement.bank' | translate }}</label>
+                        <ng-select [items]="banks" bindLabel="text" bindValue="id" [(ngModel)]="bankId"></ng-select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">{{ 'advancement.currency' | translate }}</label>
+                        <ng-select [items]="currencies" bindLabel="text" bindValue="id" [(ngModel)]="currencyId"></ng-select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label class="control-label">{{ 'advancement.type' | translate }}</label>
+                        <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId"></ng-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="text-right">
+                <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div> 
+
+    <div class="ibox">
+        <div class="ibox-title" *ngIf="model.length > 0">
+            <div class="ibox-tools">
+                <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+
+                <button [disabled]="noneResourseSelected()" class="btn btn-primary btn-sm" (click)="approveAll()">{{ 'ACTIONS.approveSelected' | translate }} <i class="fa fa-plus"></i></button>  
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table class="table table-striped dataTable" role="grid" id="payment-pending">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{ 'advancement.bank' | translate }}</th>
+                        <th>{{ 'advancement.currency' | translate }}</th>
+                        <th>{{ 'advancement.userApplicant' | translate }}</th>
+                        <th>{{ 'advancement.ammount' | translate }}</th>
+                        <th>{{ 'advRefSetting.type' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                    <tr *ngFor="let item of model" class="pointer">
+                        <td class="column-xs text-center">
+                            <icheck [(checked)]="item.selected" (checkedChange)="calculateTotals()"></icheck>
+                        </td>
+                        <td (click)="goToDetail(item)">{{ item.bank }}</td>
+                        <td (click)="goToDetail(item)">{{ item.currencyDesc }}</td>
+                        <td (click)="goToDetail(item)">{{ item.userApplicantDesc }}</td>
+                        <td (click)="goToDetail(item)">{{ item.ammount | amountFormat }}</td>
+                        <td (click)="goToDetail(item)">{{ item.type }}</td>
+                    </tr>
+                </tbody>
+            </table>   
+    
+            <h3 *ngIf="totals.length > 0">{{ 'refund.totals' | translate }}</h3>
+            
+            <div class="row">
+                <div class="col-sm-3" *ngFor="let item of totals">
+                    <span>
+                        <strong class="font-16">{{ item.text }}:</strong>
+                        <span class="m-l-xs font-14">{{ item.value | amountFormat }}</span> 
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

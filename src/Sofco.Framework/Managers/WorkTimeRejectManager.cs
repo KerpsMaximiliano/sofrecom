@@ -4,6 +4,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
 
@@ -28,7 +29,7 @@ namespace Sofco.Framework.Managers
             this.workTimeRejectMailManager = workTimeRejectMailManager;
         }
 
-        public Response Reject(int workTimeId, string comments)
+        public Response Reject(int workTimeId, string comments, bool massive)
         {
             var response = new Response();
 
@@ -48,7 +49,7 @@ namespace Sofco.Framework.Managers
                 unitOfWork.WorkTimeRepository.UpdateApprovalComment(workTime);
                 unitOfWork.Save();
 
-                workTimeRejectMailManager.SendEmail(workTime);
+                if(!massive) workTimeRejectMailManager.SendEmail(workTime);
 
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.RejectedSuccess);
             }
@@ -59,6 +60,11 @@ namespace Sofco.Framework.Managers
             }
 
             return response;
+        }
+
+        public void SendGeneralRejectMail(WorkTime workTime)
+        {
+            workTimeRejectMailManager.SendGeneraEmail(workTime);
         }
     }
 }

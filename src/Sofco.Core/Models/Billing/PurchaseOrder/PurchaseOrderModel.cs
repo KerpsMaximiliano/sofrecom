@@ -62,8 +62,8 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             FillData(domain, userName);
 
             domain.Status = PurchaseOrderStatus.Draft;
-            domain.ClientExternalId = ClientExternalId;
-            domain.ClientExternalName = ClientExternalName;
+            domain.AccountId = ClientExternalId;
+            domain.AccountName = ClientExternalName;
             domain.AreaId = AreaId;
 
             domain.Histories = new List<PurchaseOrderHistory>();

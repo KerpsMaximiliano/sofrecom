@@ -14,7 +14,7 @@ namespace Sofco.Core.Models.Billing
         public SolfacDetail(Domain.Models.Billing.Solfac domain)
         {
             Id = domain.Id;
-            ClientName = domain.ClientName;
+            ClientName = domain.AccountName;
             BusinessName = domain.BusinessName;
             CelPhone = domain.CelPhone;
             StatusName = domain.Status.ToString();
@@ -42,7 +42,7 @@ namespace Sofco.Core.Models.Billing
             InvoiceRequired = domain.InvoiceRequired;
             OpportunityNumber = domain.OpportunityNumber;
 
-            CustomerId = domain.CustomerId;
+            CustomerId = domain.AccountId;
             ServiceId = domain.ServiceId;
             ServiceName = domain.Service;
             Integrator = domain.Integrator;
@@ -208,7 +208,7 @@ namespace Sofco.Core.Models.Billing
             var solfac = new Domain.Models.Billing.Solfac();
 
             solfac.Id = Id;
-            solfac.ClientName = ClientName;
+            solfac.AccountName = ClientName;
             solfac.BusinessName = BusinessName;
             solfac.CelPhone = CelPhone;
             solfac.Status = StatusId;
@@ -232,7 +232,7 @@ namespace Sofco.Core.Models.Billing
             solfac.PaymentTerm = PaymentTerm;
             solfac.ProjectId = ProjectId;
             solfac.ServiceId = ServiceId;
-            solfac.CustomerId = CustomerId;
+            solfac.AccountId = CustomerId;
             solfac.Analytic = ImputationNumber1;
             solfac.Service = ServiceName;
             solfac.WithTax = WithTax;

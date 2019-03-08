@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -13,6 +12,8 @@ using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.Workflow;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Workflow.Notifications;
@@ -29,14 +30,18 @@ namespace Sofco.Service.Implementations.Workflow
         private readonly IWorkflowValidationStateFactory workflowValidationStateFactory;
         private readonly AppSetting appSetting;
         private readonly IWorkflowNotificationFactory workflowNotificationFactory;
+        private readonly IWorkflowValidation workflowValidation;
+        private readonly IOnTransitionSuccessFactory onTransitionSuccessFactory;
 
-        public WorkflowService(IWorkflowRepository workflowRepository, 
-            ILogMailer<WorkflowService> logger, 
-            IUserData userData, 
+        public WorkflowService(IWorkflowRepository workflowRepository,
+            ILogMailer<WorkflowService> logger,
+            IUserData userData,
             IUnitOfWork unitOfWork,
             IWorkflowValidationStateFactory workflowValidationStateFactory,
             IOptions<AppSetting> appSettingsOptions,
             IWorkflowNotificationFactory workflowNotificationFactory,
+            IWorkflowValidation workflowValidation,
+            IOnTransitionSuccessFactory onTransitionSuccessFactory,
             IWorkflowConditionStateFactory workflowConditionStateFactory)
         {
             this.workflowRepository = workflowRepository;
@@ -47,10 +52,12 @@ namespace Sofco.Service.Implementations.Workflow
             this.unitOfWork = unitOfWork;
             this.appSetting = appSettingsOptions.Value;
             this.workflowNotificationFactory = workflowNotificationFactory;
+            this.workflowValidation = workflowValidation;
+            this.onTransitionSuccessFactory = onTransitionSuccessFactory;
         }
 
         public Response DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters)
-            where TEntity : WorkflowEntity 
+            where TEntity : WorkflowEntity
             where THistory : WorkflowHistory
         {
             var response = new Response();
@@ -90,20 +97,22 @@ namespace Sofco.Service.Implementations.Workflow
             // Custom Validation
             if (!string.IsNullOrWhiteSpace(transition.ValidationCode))
             {
-                var validatorHandler = workflowValidationStateFactory.GetInstance(transition.ValidationCode);
+                var codes = transition.ValidationCode.Split(';');
 
-                if (!validatorHandler.Validate(entity, response, parameters))
+                foreach (var code in codes)
                 {
-                    return response;
+                    var validatorHandler = workflowValidationStateFactory.GetInstance(code);
+
+                    validatorHandler?.Validate(entity, response, parameters);
                 }
+
+                if(response.HasErrors()) return response;
             }
 
             // Save change status
             try
             {
                 entity.StatusId = parameters.NextStateId;
-
-                entity.InWorkflowProcess = !workflowRepository.IsEndTransition(parameters.NextStateId, parameters.WorkflowId);
 
                 workflowRepository.UpdateStatus(entity);
                 workflowRepository.Save();
@@ -116,23 +125,44 @@ namespace Sofco.Service.Implementations.Workflow
                 response.AddError(Resources.Common.ErrorSave);
             }
 
+            // Custom Success Process
+            if (!string.IsNullOrWhiteSpace(transition.OnSuccessCode))
+            {
+                var codes = transition.OnSuccessCode.Split(';');
+
+                foreach (var code in codes)
+                {
+                    try
+                    {
+                        var onSuccessHandler = onTransitionSuccessFactory.GetInstance(code);
+
+                        onSuccessHandler?.Process(entity, parameters);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogError(e);
+                    }
+                }
+            }
+
             // Create history
             CreateHistory<TEntity, THistory>(entity, transition, currentUser, parameters);
 
             // Send Notification
-            SendNotification(entity, response, transition);
+            SendNotification(entity, response, transition, parameters);
 
             return response;
         }
 
-        private void SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition)
+        private void SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition,
+            WorkflowChangeStatusParameters parameters)
         {
             if (!string.IsNullOrWhiteSpace(transition.NotificationCode))
             {
                 try
                 {
                     var notificationHandler = workflowNotificationFactory.GetInstance(transition.NotificationCode);
-                    notificationHandler?.Send(entity, transition);
+                    notificationHandler?.Send(entity, transition, parameters);
                 }
                 catch (Exception e)
                 {
@@ -177,11 +207,11 @@ namespace Sofco.Service.Implementations.Workflow
             bool hasAccess = false;
 
             hasAccess = ValidateUserAccess(transition, currentUser, hasAccess);
-    
+
             hasAccess = ValidateGroupAccess(transition, currentUser, hasAccess);
 
             hasAccess = ValidateApplicantAccess(transition, currentUser, entity, hasAccess);
-  
+
             hasAccess = ValidateManagerAccess(transition, currentUser, entity, hasAccess);
 
             hasAccess = ValidateSectorAccess(transition, currentUser, entity, hasAccess);
@@ -303,11 +333,13 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 if (ValidateAccess(transition, currentUser, entity))
                 {
+                    CheckConditionParameterCode(entity, transition);
+
                     if (!string.IsNullOrWhiteSpace(transition.ConditionCode))
                     {
                         var conditionHandler = workflowConditionStateFactory.GetInstance(transition.ConditionCode);
 
-                        if (conditionHandler.CanDoTransition(entity, response))
+                        if (conditionHandler != null && conditionHandler.CanDoTransition(entity, response))
                         {
                             AddTransition(response, transition);
                         }
@@ -317,6 +349,153 @@ namespace Sofco.Service.Implementations.Workflow
                         AddTransition(response, transition);
                     }
                 }
+            }
+
+            return response;
+        }
+
+        private void CheckConditionParameterCode<T>(T entity, WorkflowStateTransition transition) where T : WorkflowEntity
+        {
+            if (entity is Refund refund)
+            {
+                if (refund.CurrencyId == appSetting.CurrencyPesos && 
+                    (appSetting.WorkFlowStatePaymentPending == transition.NextWorkflowStateId || 
+                     appSetting.WorkflowStatusFinalizedId == transition.NextWorkflowStateId))
+                {
+                    transition.ParameterCode = string.Empty;
+                }
+            }
+        }
+
+        public Response<IList<WorkflowListItemModel>> GetAll()
+        {
+            var response = new Response<IList<WorkflowListItemModel>>();
+
+            response.Data = workflowRepository.GetAll().Select(x => new WorkflowListItemModel(x)).ToList();
+
+            return response;
+        }
+
+        public Response<WorkflowDetailModel> GetById(int workflowId)
+        {
+            var response = new Response<WorkflowDetailModel>();
+
+            var workflow = workflowRepository.GetById(workflowId);
+
+            if (workflow == null)
+            {
+                response.AddError(Resources.Workflow.Workflow.WorkflowNotFound);
+                return response;
+            }
+
+            response.Data = new WorkflowDetailModel(workflow);
+
+            return response;
+        }
+
+        public Response<WorkflowListItemModel> Post(WorkflowAddModel model)
+        {
+            var response = new Response<WorkflowListItemModel>();
+
+            workflowValidation.ValidateAdd(model, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var currentUser = userData.GetCurrentUser();
+
+                var domain = model.CreateDomain();
+                domain.CreatedById = currentUser.Id;
+                domain.ModifiedById = currentUser.Id;
+
+                var version = unitOfWork.WorkflowRepository.GetVersion(domain.WorkflowTypeId);
+                domain.Version = version;
+
+                unitOfWork.WorkflowRepository.Add(domain);
+
+                var wfactive = unitOfWork.WorkflowRepository.GetByTypeActive(domain.WorkflowTypeId);
+
+                if (wfactive != null)
+                {
+                    wfactive.Active = false;
+                    unitOfWork.WorkflowRepository.UpdateActive(wfactive);
+                }
+
+                unitOfWork.Save();
+
+                domain.ModifiedBy = new User
+                {
+                    Id = currentUser.Id,
+                    Name = currentUser.Name
+                };
+
+                response.Data = new WorkflowListItemModel(domain);
+                response.AddSuccess(Resources.Workflow.Workflow.AddSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<Option>> GetTypes()
+        {
+            var types = unitOfWork.WorkflowRepository.GetTypes();
+
+            var response = new Response<IList<Option>>();
+
+            response.Data = types.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+
+            return response;
+        }
+
+        public Response<IList<Option>> GetStates()
+        {
+            var states = unitOfWork.WorkflowRepository.GetStates();
+
+            var response = new Response<IList<Option>>();
+
+            response.Data = states.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+
+            return response;
+        }
+
+        public Response Put(int id, WorkflowAddModel model)
+        {
+            var response = new Response();
+
+            var domain = unitOfWork.WorkflowRepository.GetById(id);
+
+            if (domain == null)
+            {
+                response.AddError(Resources.Workflow.Workflow.WorkflowNotFound);
+                return response;
+            }
+       
+            workflowValidation.ValidateUpdate(model, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var currentUser = userData.GetCurrentUser();
+
+                domain.ModifiedById = currentUser.Id;
+                model.UpdateDomain(domain);
+
+                unitOfWork.WorkflowRepository.Update(domain);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Workflow.Workflow.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;

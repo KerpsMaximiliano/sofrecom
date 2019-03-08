@@ -8,9 +8,10 @@ import { MessageService } from "app/services/common/message.service";
 import { WfRejectComponent } from "./templates/reject/wf-reject.component";
 import { Ng2ModalModule } from "../modal/ng2modal.module";
 import { FormsModule } from "@angular/forms";
+import { WfCurrencyExchangeComponent } from "./templates/currency-exchange/currency-exchange";
 
 @NgModule({
-    declarations: [ WorkflowComponent, WfRejectComponent ],
+    declarations: [ WorkflowComponent, WfRejectComponent, WfCurrencyExchangeComponent ],
 
     imports     : [ CommonModule, TranslateModule, ButtonsModule, Ng2ModalModule, FormsModule ],
 
@@ -18,7 +19,7 @@ import { FormsModule } from "@angular/forms";
 
     exports     : [ WorkflowComponent],
 
-    entryComponents : [ WfRejectComponent ] 
+    entryComponents : [ WfRejectComponent, WfCurrencyExchangeComponent ] 
 })
 
 export class WorkflowModule {} 

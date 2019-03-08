@@ -45,7 +45,7 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(int id) 
         {
             var response = purchaseOrderService.GetById(id);
 

@@ -92,7 +92,7 @@ namespace Sofco.UnitTest.Framework.Managers
             workTimeRepositoryMock.Setup(s => s.GetSingle(It.IsAny<Expression<Func<WorkTime, bool>>>()))
                 .Returns(validWorkTime);
 
-            var actualResponse = sut.Reject(validWorkTime.Id, rejectComment);
+            var actualResponse = sut.Reject(validWorkTime.Id, rejectComment, false);
 
             Assert.False(actualResponse.HasErrors());
 
@@ -110,7 +110,7 @@ namespace Sofco.UnitTest.Framework.Managers
             workTimeRepositoryMock.Setup(s => s.GetSingle(It.IsAny<Expression<Func<WorkTime, bool>>>()))
                 .Returns(inValidWorkTime);
 
-            var actualResponse = sut.Reject(validWorkTime.Id, rejectComment);
+            var actualResponse = sut.Reject(validWorkTime.Id, rejectComment, false);
 
             Assert.True(actualResponse.HasErrors());
 

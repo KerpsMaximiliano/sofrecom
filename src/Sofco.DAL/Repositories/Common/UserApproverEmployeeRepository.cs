@@ -127,11 +127,11 @@ namespace Sofco.DAL.Repositories.Common
             {
                 EmployeeId = employee.Id.ToString(),
                 Name = employee.Name,
-                Client = allocation?.Analytic?.ClientExternalName,
-                Service = allocation?.Analytic?.Service,
+                Client = allocation?.Analytic?.AccountName,
+                Service = allocation?.Analytic?.ServiceName,
                 ManagerId = allocation?.Analytic?.ManagerId,
                 ApprovalName = firstUserApprover?.ApproverUser?.Name,
-                ClientId = allocation?.Analytic?.ClientExternalId,
+                ClientId = allocation?.Analytic?.AccountId,
                 AnalyticId = allocation?.AnalyticId,
                 UserApprover = firstUserApprover
             };

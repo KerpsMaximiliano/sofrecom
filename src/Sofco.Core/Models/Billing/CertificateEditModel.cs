@@ -13,8 +13,8 @@ namespace Sofco.Core.Models.Billing
         {
             Id = domain.Id;
             Name = domain.Name;
-            ClientExternalId = domain.ClientExternalId;
-            ClientExternalName = domain.ClientExternalName;
+            ClientExternalId = domain.AccountId;
+            ClientExternalName = domain.AccountName;
             Year = domain.Year;
 
             if (domain.File != null)
@@ -47,8 +47,8 @@ namespace Sofco.Core.Models.Billing
 
             domain.Id = Id;
             domain.Name = Name;
-            domain.ClientExternalId = ClientExternalId;
-            domain.ClientExternalName = ClientExternalName;
+            domain.AccountId = ClientExternalId;
+            domain.AccountName = ClientExternalName;
             domain.Year = Year;
 
             if (FileId > 0)

@@ -38,6 +38,8 @@ namespace Sofco.Core.Models.Admin
 
         public string AuthorizerDesc { get; set; }
 
+        public bool HasCreditCard { get; set; }
+
         public User CreateDomain()
         {
             var user = new User

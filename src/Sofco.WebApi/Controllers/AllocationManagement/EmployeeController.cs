@@ -80,7 +80,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var searchResponse = employeeService.Search(parameters);
 
-            var response =
+            var response = 
                 new Response<IEnumerable<EmployeeModel>>
                 {
                     Data = searchResponse.Data.Select(x => new EmployeeModel(x)),
@@ -128,10 +128,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
-        [HttpPut("{id}/businessHours")]
-        public IActionResult UpdateBusinessHours(int id, [FromBody] EmployeeBusinessHoursParams model)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] EmployeeBusinessHoursParams model)
         {
-            var response = employeeService.UpdateBusinessHours(id, model);
+            var response = employeeService.Update(id, model);
 
             return this.CreateResponse(response);
         }
@@ -156,6 +156,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult GetAdvancements(int id)
         {
             var response = employeeService.GetAdvancements(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/refunds")]
+        public IActionResult GetRefunds(int id)
+        {
+            var response = employeeService.GetRefunds(id);
 
             return this.CreateResponse(response);
         }

@@ -123,11 +123,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             if (onlyActives)
             {
-                return context.Analytics.Where(x => x.ClientExternalId.Equals(clientId) && x.Status == AnalyticStatus.Open).ToList();
+                return context.Analytics.Where(x => x.AccountId.Equals(clientId) && x.Status == AnalyticStatus.Open).ToList();
             }
             else
             {
-                return context.Analytics.Where(x => x.ClientExternalId.Equals(clientId)).ToList();
+                return context.Analytics.Where(x => x.AccountId.Equals(clientId)).ToList();
             }
         }
 
@@ -218,7 +218,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             if (!string.IsNullOrEmpty(searchCriteria.CustomerId))
             {
-                query = query.Where(x => x.ClientExternalId == searchCriteria.CustomerId);
+                query = query.Where(x => x.AccountId == searchCriteria.CustomerId);
             }
 
             if (!string.IsNullOrEmpty(searchCriteria.ServiceId))
@@ -261,8 +261,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.PurchaseOrderAnalytics
                 .Where(x => x.PurchaseOrderId == purchaseOrderId)
                 .Include(x => x.Analytic)
-                    .ThenInclude(x => x.Manager)
                 .Select(x => x.Analytic)
+                .Include(x => x.Manager)
                 .ToList();
 
         }

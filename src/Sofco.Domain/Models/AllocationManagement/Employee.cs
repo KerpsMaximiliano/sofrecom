@@ -100,5 +100,9 @@ namespace Sofco.Domain.Models.AllocationManagement
         public string PhoneNumber { get; set; }
 
         public bool IsExternal { get; set; }
+
+        public bool HasCreditCard { get; set; }
+
+        public string Bank { get; set; }
     }
 }

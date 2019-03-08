@@ -15,7 +15,7 @@ namespace Sofco.Core.Models.Billing
             Id = hito.Id;
             Description = hito.Description;
             Total = hito.Total;
-            ExternalProjectId = hito.ExternalProjectId;
+            ExternalProjectId = hito.ProjectId;
             ExternalHitoId = hito.ExternalHitoId;
             Currency = hito.Currency;
             Month = hito.Month;
@@ -54,7 +54,7 @@ namespace Sofco.Core.Models.Billing
                 Id = Id,
                 Description = Description,
                 Total = Total,
-                ExternalProjectId = ExternalProjectId,
+                ProjectId = ExternalProjectId,
                 ExternalHitoId = ExternalHitoId,
                 Currency = Currency,
                 Month = Month,

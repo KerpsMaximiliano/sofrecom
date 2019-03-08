@@ -32,6 +32,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         const routeParams = this.activateRoute.snapshot.params;
+        this.entityId = routeParams.id;
 
         if (routeParams.id) {
             this.messageService.showLoading();
@@ -40,14 +41,13 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading();
 
                 var model = {
-                    workflowId: response.data.type == 1 ? environment.advacementWorkflowId : environment.viaticumWorkflowId,
+                    workflowId: response.data.workflowId,
                     entityController: "advancement",
                     entityId: response.data.id,
                     actualStateId: response.data.statusId
                 }
 
                 this.actualStateId = response.data.statusId;
-                this.entityId = response.data.id;
                 this.userApplicantId = response.data.userApplicantId;
 
                 this.form.setModel(response.data, this.canUpdate());
@@ -66,7 +66,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        this.router.navigate(['/advancementAndRefund/advancement/search']);
+        window.history.back();
     }
 
     canBack(){
@@ -103,7 +103,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
     onTransitionSuccess(){
         const userInfo = UserInfoService.getUserInfo();
 
-        if(this.form.userApplicantIdLogged == this.form.form.controls.userApplicantId.value){
+        if(userInfo.id == this.form.form.controls.userApplicantId.value){
             if(userInfo && userInfo.employeeId){
                 this.router.navigate(['/profile/' + userInfo.employeeId]);
             }
@@ -113,5 +113,37 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
                 this.back();
             }
         }
+    }
+
+    goToProfile(){
+        const userInfo = UserInfoService.getUserInfo();
+        this.router.navigate(['/profile/' + userInfo.employeeId]);
+    }
+
+    delete(){
+        this.messageService.showLoading();
+
+        this.editSubscrip = this.advancementService.delete(this.entityId).subscribe(
+            response => {
+                this.messageService.closeLoading();
+                this.goToProfile();
+            },
+            error => {
+                this.messageService.closeLoading();
+            });
+    }
+
+    canDelete(){
+        const userInfo = UserInfoService.getUserInfo();
+    
+        if(userInfo && userInfo.id && userInfo.name){
+            if(environment.draftWorkflowStateId == this.actualStateId){
+                if(userInfo.id == this.userApplicantId){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

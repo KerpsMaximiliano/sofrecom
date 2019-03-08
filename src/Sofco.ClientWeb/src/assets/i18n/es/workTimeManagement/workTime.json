@@ -41,5 +41,6 @@
     "importUserWithEmailNull": "El recurso no posee mail. Comunicarse con gaps@sofrecom.com.ar",
     "fileEmpty": "El archivo importado no contiene registros",
     "invalidAllocationAssignment": "El recurso no está asignado a la analítica seleccionada en el periodo vigente.",
-    "noPendingHours": "No se registraron horas pendientes."
+    "noPendingHours": "No se registraron horas pendientes.",
+    "controlHoursEmpty": "No se han encontrado datos para exportar. Realice una nueva consulta o verifique los parametros de busqueda"
 } 

@@ -5,11 +5,15 @@ using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
-using Sofco.Core.Models.AdvancementAndRefund;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
+using Sofco.Core.Models.AdvancementAndRefund.Common;
+using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
@@ -23,15 +27,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly IAdvancemenValidation validation;
         private readonly AppSetting settings;
         private readonly IUserData userData;
+        private readonly IWorkflowStateRepository workflowStateRepository;
 
         public AdvancementService(IUnitOfWork unitOfWork,
             ILogMailer<AdvancementService> logger,
             IAdvancemenValidation validation,
+            IWorkflowStateRepository workflowStateRepository,
             IUserData userData,
             IOptions<AppSetting> settingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.workflowStateRepository = workflowStateRepository;
             this.validation = validation;
             this.settings = settingOptions.Value;
             this.userData = userData;
@@ -48,8 +55,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             try
             {
                 var domain = model.CreateDomain();
-                domain.CreationDate = DateTime.UtcNow.Date;
+                domain.CreationDate = DateTime.UtcNow;
                 domain.StatusId = settings.WorkflowStatusDraft;
+
+                var workflow = unitOfWork.WorkflowRepository.GetLastByType(domain.Type == AdvancementType.Salary ? settings.SalaryWorkflowId : settings.ViaticumWorkflowId);
+
+                domain.WorkflowId = workflow.Id;
+                domain.InWorkflowProcess = true;
 
                 unitOfWork.AdvancementRepository.Insert(domain);
                 unitOfWork.Save();
@@ -75,7 +87,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             try
             {
-                var advancement = unitOfWork.AdvancementRepository.GetById(model.Id);
+                var advancement = unitOfWork.AdvancementRepository.Get(model.Id);
                 model.UpdateDomain(advancement);
 
                 unitOfWork.AdvancementRepository.Update(advancement);
@@ -114,6 +126,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var response = new Response<IList<AdvancementListItem>>();
             response.Data = new List<AdvancementListItem>();
 
+            var employeeDicc = new Dictionary<string, string>();
+
             var currentUser = userData.GetCurrentUser();
 
             var hasAllAccess = HasAllAccess(currentUser);
@@ -122,7 +136,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             if (hasAllAccess)
             {
-                response.Data = advancements.Select(x => new AdvancementListItem(x)).ToList();
+                response.Data = advancements.Select(x =>
+                {
+                    var item = new AdvancementListItem(x);
+
+                    item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+
+                    return item;
+                }).ToList();
             }
             else
             {
@@ -130,15 +151,16 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 foreach (var advancement in advancements)
                 {
-                    foreach (var transition in advancement.Status.ActualTransitions)
+                    //if (ValidateManagerAccess(advancement, transition, currentUser) || HasReadAccess(readAccess, currentUser))
+                    if (ValidateManagerAccess(advancement, currentUser))
                     {
-                        //if (ValidateManagerAccess(advancement, transition, currentUser) || HasReadAccess(readAccess, currentUser))
-                        if (ValidateManagerAccess(advancement, transition, currentUser))
+                        if (response.Data.All(x => x.Id != advancement.Id))
                         {
-                            if (response.Data.All(x => x.Id != advancement.Id))
-                            {
-                                response.Data.Add(new AdvancementListItem(advancement));
-                            }
+                            var item = new AdvancementListItem(advancement);
+
+                            item.Bank = GetBank(advancement.UserApplicant.Email, employeeDicc);
+
+                            response.Data.Add(item);
                         }
                     }
                 }
@@ -147,13 +169,135 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        public Response<IList<AdvancementHistoryModel>> GetHistories(int id)
+        public Response Delete(int id)
+        {
+            var response = new Response();
+
+            var domain = unitOfWork.AdvancementRepository.Get(id);
+
+            if (domain == null)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.NotFound);
+                return response;
+            }
+
+            if (domain.StatusId != settings.WorkflowStatusDraft)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.CannotDelete);
+                return response;
+            }
+
+            try
+            {
+                unitOfWork.AdvancementRepository.Delete(domain);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Advancement.DeleteSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<PaymentPendingModel>> GetAllPaymentPending()
+        {
+            var response = new Response<IList<PaymentPendingModel>>();
+            response.Data = new List<PaymentPendingModel>();
+
+            var employeeDicc = new Dictionary<string, string>();
+
+            var currentUser = userData.GetCurrentUser();
+
+            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
+
+            if (!hasDafGroup) return response;
+
+            var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
+
+            response.Data = advancements.Select(x =>
+            {
+                var item = new PaymentPendingModel
+                {
+                    Id = x.Id,
+                    UserApplicantId = x.UserApplicantId,
+                    UserApplicantDesc = x.UserApplicant?.Name,
+                    CurrencyId = x.CurrencyId,
+                    CurrencyDesc = x.Currency?.Text,
+                    Ammount = x.Ammount,
+                    WorkflowId = x.WorkflowId,
+                    Type = "Adelanto",
+                    NextWorkflowStateId = settings.WorkflowStatusApproveId
+                };
+
+                item.Bank = GetBank(x.UserApplicant?.Email, employeeDicc);
+
+                return item;
+            }).ToList();
+
+            return response;
+        }
+
+        public Response<AdvancementRefundModel> GetRefunds(int id)
+        {
+            var data = unitOfWork.AdvancementRepository.GetAdvancementsAndRefundsByAdvancementId(id);
+
+            var response = new Response<AdvancementRefundModel> { Data = new AdvancementRefundModel() };
+
+            response.Data.Refunds = data.Item1.Select(x => new RefundRelatedModel
+            {
+                Id = x.Id,
+                Analytic = x.Analytic?.Name,
+                CashReturn = x.CashReturn,
+                Total = x.TotalAmmount,
+                StatusName = x.Status?.Name,
+                StatusType = x.Status?.Type,
+            })
+            .ToList();
+
+            response.Data.Advancements = data.Item2.Select(x => new AdvancementRelatedModel
+            {
+                Id = x.Id,
+                Total = x.Ammount
+            })
+            .ToList();
+
+            return response;
+        }
+
+        public Response<IList<Option>> GetStates()
+        {
+            var salaryAdvs = workflowStateRepository.GetStateByWorkflowTypeCode(settings.SalaryWorkflowTypeCode);
+            var viaticumAdvs = workflowStateRepository.GetStateByWorkflowTypeCode(settings.ViaticumWorkflowTypeCode);
+
+            return new Response<IList<Option>>
+            {
+                Data = salaryAdvs.Union(viaticumAdvs).Distinct().Select(x => new Option { Id = x.Id, Text = x.Name}).ToList()
+            };
+        }
+
+        private string GetBank(string email, Dictionary<string, string> employeeDictionary)
+        {
+            if (!employeeDictionary.ContainsKey(email))
+            {
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
+
+                employeeDictionary.Add(email, employee?.Bank);
+            }
+
+            return employeeDictionary[email];
+        }
+
+        public Response<IList<WorkflowHistoryModel>> GetHistories(int id)
         {
             var histories = unitOfWork.AdvancementRepository.GetHistories(id);
 
-            var response = new Response<IList<AdvancementHistoryModel>>();
+            var response = new Response<IList<WorkflowHistoryModel>>();
 
-            response.Data = histories.Select(x => new AdvancementHistoryModel(x)).ToList();
+            response.Data = histories.Select(x => new WorkflowHistoryModel(x)).ToList();
 
             return response;
         }
@@ -163,6 +307,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var response = new Response<IList<AdvancementListItem>>();
             response.Data = new List<AdvancementListItem>();
 
+            var employeeDicc = new Dictionary<string, string>();
+
             var currentUser = userData.GetCurrentUser();
 
             var hasAllAccess = HasAllAccess(currentUser);
@@ -171,7 +317,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             if (hasAllAccess)
             {
-                response.Data = advancements.Select(x => new AdvancementListItem(x)).ToList();
+                response.Data = advancements.Select(x =>
+                {
+                    var item = new AdvancementListItem(x);
+
+                    item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+
+                    return item;
+                }).ToList();
             }
             else
             {
@@ -181,7 +334,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     {
                         if (response.Data.All(x => x.Id != advancement.Id))
                         {
-                            response.Data.Add(new AdvancementListItem(advancement));
+                            var item = new AdvancementListItem(advancement);
+
+                            item.Bank = GetBank(advancement.UserApplicant.Email, employeeDicc);
+
+                            response.Data.Add(item);
                         }
                     }
                 }
@@ -209,12 +366,37 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var sectors = unitOfWork.SectorRepository.GetAll();
 
-            if (analytics.Any(s => s.ManagerId == managerId) 
+            if (analytics.Any(s => s.ManagerId == managerId)
                 || sectors.Any(s => s.ResponsableUserId == managerId))
             {
                 response.Data = true;
 
                 return response;
+            }
+
+            return response;
+        }
+
+        public Response<IList<AdvancementUnrelatedItem>> GetUnrelated()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var advancements = unitOfWork.AdvancementRepository.GetUnrelated(currentUser.Id, settings.WorkflowStatusApproveId);
+
+            var response = new Response<IList<AdvancementUnrelatedItem>>();
+            response.Data = new List<AdvancementUnrelatedItem>();
+
+            foreach (var advancement in advancements)
+            {
+                response.Data.Add(new AdvancementUnrelatedItem
+                {
+                    Id = advancement.Id,
+                    CurrencyId = advancement.CurrencyId,
+                    CurrencyText = advancement.Currency.Text,
+                    Ammount = advancement.Ammount,
+                    HasLastRefundMarked = advancement.AdvancementRefunds.Any(x => x.Refund.CashReturn),
+                    Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency.Text}"
+                });
             }
 
 
@@ -287,28 +469,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
                 {
                     return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool ValidateManagerAccess(Advancement entity, WorkflowStateTransition transition, UserLiteModel currentUser)
-        {
-            if (transition != null && transition.WorkflowStateAccesses != null && transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == settings.ManagerUserSource))
-            {
-                if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
-                {
-                    return true;
-                }
-                else
-                {
-                    var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
-
-                    if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
-                    {
-                        return true;
-                    }
                 }
             }
 

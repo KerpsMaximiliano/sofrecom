@@ -7,7 +7,7 @@ SET WORKSPACE_PATH=%~1
 SET DEPLOY_PATH=%~2
 
 IF [%1] == [] SET WORKSPACE_PATH=C:\Projects\Sofcoar
-IF [%2] == [] SET DEPLOY_PATH=\\AZSOF01WT\Sofco.WebApi\wwwroot
+IF [%2] == [] SET DEPLOY_PATH=C:\Projects\Deploys\Sofco.WebApi\wwwroot
 
 cd "%WORKSPACE_PATH%\src\%PROJECT_NAME%"
 
@@ -20,4 +20,4 @@ cmd /c ng build --prod --configuration=azsof01wt --output-path "%PUBLISH_PATH%"
 
 @if %errorlevel% neq 0 exit /b %errorlevel%
 
-cmd /c XCOPY /Y /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"
+cmd /c COPY /Y /S "%PUBLISH_PATH%" "%DEPLOY_PATH%"

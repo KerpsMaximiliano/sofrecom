@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.AdvancementAndRefund;
-using Sofco.Core.Models;
-using Sofco.Core.Models.AdvancementAndRefund;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
-using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Repositories.AdvancementAndRefund
 {
@@ -21,11 +20,6 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         public bool Exist(int id)
         {
             return context.Advancements.Any(x => x.Id == id);
-        }
-
-        public Advancement GetById(int id)
-        {
-            return context.Advancements.SingleOrDefault(x => x.Id == id);
         }
 
         public Advancement GetFullById(int id)
@@ -44,6 +38,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Authorizer)
+                .Include(x => x.MonthsReturn)
                 .Include(x => x.Status)
                     .ThenInclude(x => x.ActualTransitions)
                         .ThenInclude(x => x.WorkflowStateAccesses)
@@ -73,6 +68,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             var query = context.Advancements
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
+                .Include(x => x.MonthsReturn)
                 .Include(x => x.Authorizer)
                 .Where(x => !x.InWorkflowProcess && x.StatusId != statusDraft);
 
@@ -98,6 +94,87 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Status)
                 .Where(x => x.UserApplicantId == id)
                 .OrderByDescending(x => x.CreationDate).ToList();
+        }
+
+        public IList<Advancement> GetUnrelated(int currentUserId, int workflowStatusOpenId)
+        {
+
+            var advancements = context.Advancements
+                .Include(x => x.Currency)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Refund)
+                .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && x.StatusId == workflowStatusOpenId)
+                .ToList();
+
+            return advancements;
+        }
+
+        public IList<Advancement> GetAllPaymentPending(int workFlowStatePaymentPending)
+        {
+            var query = context.Advancements
+                .Include(x => x.Currency)
+                .Include(x => x.UserApplicant)
+                .Include(x => x.MonthsReturn)
+                .Include(x => x.Authorizer)
+                .Include(x => x.Status).ThenInclude(x => x.ActualTransitions)
+                .Where(x => x.StatusId == workFlowStatePaymentPending);
+
+            return query.ToList();
+        }
+
+        public IList<AdvancementRefund> GetAdvancementRefundByRefundId(int entityId)
+        {
+            return context.AdvancementRefunds.Include(x => x.Advancement).Where(x => x.RefundId == entityId).ToList();
+        }
+
+        public void DeleteAdvancementRefund(AdvancementRefund advancementRefund)
+        {
+            context.AdvancementRefunds.Remove(advancementRefund);
+        }
+
+        public void UpdateStatus(Advancement advancement)
+        {
+            context.Entry(advancement).Property("StatusId").IsModified = true;
+        }
+
+        public Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByAdvancementId(int id)
+        {
+            var refundIds = context.AdvancementRefunds
+                .Where(x => x.AdvancementId == id)
+                .Select(x => x.RefundId)
+                .Distinct()
+                .ToList();
+
+            var refunds = context.Refunds
+                .Include(x => x.Status)
+                .Include(x => x.Analytic)
+                .Where(x => refundIds.Contains(x.Id))
+                .ToList();
+
+            var advancementIds = context.AdvancementRefunds
+                .Where(x => refundIds.Contains(x.RefundId))
+                .Select(x => x.AdvancementId)
+                .Distinct()
+                .ToList();
+
+            var advancements = context.Advancements
+                .Where(x => advancementIds.Contains(x.Id))
+                .ToList();
+
+            return new Tuple<IList<Refund>, IList<Advancement>>(refunds, advancements);
+        }
+
+        public IList<Advancement> GetAllApproved(int workflowStatusApproveId)
+        {
+            return context.Advancements.Where(x => x.StatusId == workflowStatusApproveId).ToList();
+        }
+
+        public int GetRefundWithLastRefundMarkedCount(int advancementId, int refundId)
+        {
+            return context.AdvancementRefunds
+                .Include(x => x.Refund)
+                .Where(x => x.AdvancementId == advancementId && x.RefundId != refundId)
+                .Count(x => x.Refund.CashReturn);
         }
     }
 }

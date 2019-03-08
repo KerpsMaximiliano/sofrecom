@@ -15,8 +15,8 @@ namespace Sofco.Core.Models.AllocationManagement
             Id = domain.Id;
             Title = domain.Title;
             Name = domain.Name;
-            ClientExternalName = domain.ClientExternalName;
-            ServiceName = domain.Service;
+            ClientExternalName = domain.AccountName;
+            ServiceName = domain.ServiceName;
             StartDate = domain.StartDateContract;
             EndDate = domain.EndDateContract;
             Status = domain.Status;

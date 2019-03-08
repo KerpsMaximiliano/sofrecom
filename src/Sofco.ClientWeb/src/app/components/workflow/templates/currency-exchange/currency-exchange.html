@@ -1,0 +1,10 @@
+<button class="btn" (click)="showModal()" [ngClass]="status"> 
+    {{ text }} <i class="fa fa-times"></i>
+</button>
+    
+<ng2-modal [config]="currencyExchangeModalConfig" #currencyExchangeModal (accept)="save()">
+    <div class="form-group">
+        <label class="control-label">Cotización del día</label>
+        <input type="number" min="1" max="100" decimalFormat class="form-control" [(ngModel)]="value">
+    </div>
+</ng2-modal> 

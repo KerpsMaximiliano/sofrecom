@@ -41,6 +41,10 @@ export class UserService {
        return this.http.get<any>(`${this.baseUrl}/users/options`);
     }
 
+    getManagersAndDirectors() {
+        return this.http.get<any>(`${this.baseUrl}/users/managersAndDirectors`);
+     }
+
     getUsersExternalFreeOptions(){
         return this.http.get<any>(`${this.baseUrl}/users/externalsFree`);
     }

@@ -10,6 +10,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.Workflow;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.DAL.Repositories.Admin;
 using Sofco.DAL.Repositories.AdvancementAndRefund;
@@ -18,6 +19,7 @@ using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.DAL.Repositories.Reports;
 using Sofco.DAL.Repositories.Rrhh;
+using Sofco.DAL.Repositories.Workflow;
 using Sofco.DAL.Repositories.WorkTimeManagement;
 
 namespace Sofco.DAL
@@ -47,6 +49,7 @@ namespace Sofco.DAL
         private ITaskRepository taskRepository;
         private IAreaRepository areaRepository;
         private ISectorRepository sectorRepository;
+        private IWorkflowStateRepository workflowStateRepository;
 
         #endregion
 
@@ -104,9 +107,14 @@ namespace Sofco.DAL
 
         #endregion
 
-        #region WorkTimeManagement
+        private IWorkflowRepository workflowRepository;
+
+        private IUserSourceRepository userSourceRepository;
+
+        #region Advancements
 
         private IAdvancementRepository advancementRepository;
+        private IRefundRepository refundRepository;
 
         #endregion
 
@@ -131,6 +139,8 @@ namespace Sofco.DAL
         public ICategoryRepository CategoryRepository => categoryRepository ?? (categoryRepository = new CategoryRepository(context));
         public ITaskRepository TaskRepository => taskRepository ?? (taskRepository = new TaskRepository(context));
         public ISectorRepository SectorRepository => sectorRepository ?? (sectorRepository = new SectorRepository(context));
+        public IWorkflowStateRepository WorkflowStateRepository => workflowStateRepository ?? (workflowStateRepository = new WorkflowStateRepository(context));
+
 
         #endregion
 
@@ -188,7 +198,6 @@ namespace Sofco.DAL
         public IFileRepository FileRepository => fileRepository ?? (fileRepository = new FileRepository(context));
         public IUserDelegateRepository UserDelegateRepository => userDelegateRepository ?? (userDelegateRepository = new UserDelegateRepository(context));
 
-
         #endregion
 
         #region WorkTimeManagement
@@ -201,9 +210,14 @@ namespace Sofco.DAL
 
         #endregion
 
-        #region WorkTimeManagement
+        public IWorkflowRepository WorkflowRepository => workflowRepository ?? (workflowRepository = new WorkflowRepository(context));
+
+        public IUserSourceRepository UserSourceRepository => userSourceRepository ?? (userSourceRepository = new UserSourceRepository(context));
+
+        #region Advancements
 
         public IAdvancementRepository AdvancementRepository => advancementRepository ?? (advancementRepository = new AdvancementRepository(context));
+        public IRefundRepository RefundRepository => refundRepository ?? (refundRepository = new RefundRepository(context));
 
         #endregion
 

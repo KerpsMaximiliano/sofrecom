@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using AutoMapper;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
@@ -18,7 +17,7 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly ICrmServiceService crmServiceService;
         private readonly IMapper mapper;
 
-        private IList<int> IdsAdded { get; }
+        //private IList<int> IdsAdded { get; }
 
         public ServiceUpdateJobService(IUnitOfWork unitOfWork,
             IServiceData serviceData,
@@ -32,7 +31,7 @@ namespace Sofco.Service.Implementations.Jobs
             this.mapper = mapper;
             this.serviceData = serviceData;
 
-            IdsAdded = new List<int>();
+            //IdsAdded = new List<int>();
         }
 
         public void Execute()
@@ -53,7 +52,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             try
             {
-                unitOfWork.ServiceRepository.UpdateInactives(IdsAdded);
+                //unitOfWork.ServiceRepository.UpdateInactives(IdsAdded);
 
                 unitOfWork.Commit();
                 serviceData.ClearKeys();
@@ -71,7 +70,7 @@ namespace Sofco.Service.Implementations.Jobs
                 unitOfWork.ServiceRepository.Update(Translate(crmService, service));
                 unitOfWork.Save();
 
-                IdsAdded.Add(service.Id);
+                //IdsAdded.Add(service.Id);
             }
             catch (Exception e)
             {
@@ -98,7 +97,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             mapper.Map(crmService, service);
 
-            service.Active = true;
+            service.Active = crmService.StateCode == 0;
 
             return service;
         }

@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AdvancementAndRefund;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Services.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AdvancementAndRefund
@@ -37,11 +41,35 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 
             return this.CreateResponse(response);
         }
+         
+        [HttpGet("paymentPending")]
+        public IActionResult GetAllPaymentPending()
+        {
+            var response = advancementService.GetAllPaymentPending();
+
+            return this.CreateResponse(response);
+        }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var response = advancementService.Get(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = advancementService.Delete(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("unrelated")]
+        public IActionResult GetUnrelated()
+        {
+            var response = advancementService.GetUnrelated();
 
             return this.CreateResponse(response);
         }
@@ -90,6 +118,22 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         public IActionResult CanLoad()
         {
             var response = advancementService.CanLoad();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/refunds")]
+        public IActionResult GetRefunds(int id)
+        {
+            var response = advancementService.GetRefunds(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("states")]
+        public IActionResult Get()
+        {
+            var response = advancementService.GetStates();
 
             return this.CreateResponse(response);
         }

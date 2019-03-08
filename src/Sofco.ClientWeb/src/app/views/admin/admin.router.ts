@@ -25,6 +25,13 @@ import { AreaEditComponent } from "./areas/edit/area-edit.component";
 import { SectorListComponent } from "./sectors/list/sector-list.components";
 import { SectorAddComponent } from "./sectors/add/sector-add.component";
 import { SectorEditComponent } from "./sectors/edit/sector-edit.component";
+import { WorkflowListComponent } from "./workflow/workflows-list/workflow-list.component";
+import { WorkflowDetailComponent } from "./workflow/workflow-detail/workflow-detail.component";
+import { WorkflowTransitionAddComponent } from "./workflow/transition-add/transition-add";
+import { WorkflowTransitionEditComponent } from "./workflow/transition-edit/transition-edit";
+import { WorkflowStateListComponent } from "./workflow/state-list/state-list.component";
+import { WorkflowStateAddComponent } from "./workflow/state-add/state-add.component";
+import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
 
 const ADMIN_ROUTER: Routes = [
     { path: 'roles', children:[
@@ -76,9 +83,22 @@ const ADMIN_ROUTER: Routes = [
         { path: ':id/edit', component: SectorEditComponent, canActivate: [AuthGuard], data: { module: "SECTO", functionality: "EDIT" } }
       ]},
 
+      { path: "states", children: [
+        { path: '', component: WorkflowStateListComponent, canActivate: [AuthGuard], data: { module: "WORKF", functionality: "QUERY" } },
+        { path: 'add', component: WorkflowStateAddComponent, canActivate: [AuthGuard], data: { module: "WORKF", functionality: "ADD" } },
+        { path: ':id/edit', component: WorkflowStateEditComponent, canActivate: [AuthGuard], data: { module: "WORKF", functionality: "UPDAT" } }
+      ]},
+
       { path: 'settings', children: [
         { path: '', component: SettingsComponent, canActivate: [AuthGuard], data: { module: "PARMS", functionality: "UPDAT" } }
-      ]}
+      ]},
+
+      { path: "workflows", children: [
+        { path: '', component: WorkflowListComponent, canActivate: [AuthGuard] },
+        { path: ':id', component: WorkflowDetailComponent, canActivate: [AuthGuard] },
+        { path: ':workflowId/transition/new', component: WorkflowTransitionAddComponent, canActivate: [AuthGuard] },
+        { path: ':workflowId/transition/:id', component: WorkflowTransitionEditComponent, canActivate: [AuthGuard] }
+      ]},
 ];
 
 export const AdminRouter = RouterModule.forChild(ADMIN_ROUTER);

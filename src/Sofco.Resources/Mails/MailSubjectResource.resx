@@ -184,7 +184,7 @@
     <value>Orden de Compra CONSUMIDA - {0}</value>
   </data>
   <data name="OcProcessTitle" xml:space="preserve">
-    <value>Proceso Aprobación Orden de Compra - {0} - {1}</value>
+    <value>Proceso Aprobación Orden de Compra - {0} - {1} - {2}</value>
   </data>
   <data name="CloseForExpensesAnalytic" xml:space="preserve">
     <value>Cierre para Costos analítica: {0}</value>
@@ -197,5 +197,8 @@
   </data>
   <data name="WorkflowNotificationAdvancement" xml:space="preserve">
     <value>Solicitud de Adelanto - {0}</value>
+  </data>
+  <data name="WorkflowNotificationRefund" xml:space="preserve">
+    <value>Solicitud de Reintegro - {0}</value>
   </data>
 </root>

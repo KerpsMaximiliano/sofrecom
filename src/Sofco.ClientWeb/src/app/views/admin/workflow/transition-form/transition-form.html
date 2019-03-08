@@ -1,0 +1,129 @@
+<div class="tabs-container">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a class="nav-link" data-toggle="tab" href="#tab-1"> Estados </a></li>
+        <li><a class="nav-link" data-toggle="tab" href="#tab-2"> Parametros </a></li>
+        <li><a class="nav-link" data-toggle="tab" href="#tab-3"> Accesos </a></li>
+        <li><a class="nav-link" data-toggle="tab" href="#tab-4"> Notificaciones </a></li>
+    </ul>
+    <div class="tab-content">
+
+        <div role="tabpanel" id="tab-1" class="tab-pane active">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">Estado desde</label>
+                    <ng-select [items]="states" bindValue="id" bindLabel="text" [(ngModel)]="model.actualWorkflowStateId"></ng-select>
+                </div>
+            
+                <div class="form-group">
+                    <label class="control-label">Estado hasta</label>
+                    <ng-select [items]="states" bindValue="id" bindLabel="text" [(ngModel)]="model.nextWorkflowStateId"></ng-select>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" id="tab-2" class="tab-pane">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">Cod. Notificación</label>
+                    <input type="text" class="form-control" [(ngModel)]="model.notificationCode" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Cod. Condición</label>
+                    <input type="text" class="form-control" [(ngModel)]="model.conditionCode" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Cod. Validación</label>
+                    <input type="text" class="form-control" [(ngModel)]="model.validationCode" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Cod. Parametros</label>
+                    <input type="text" class="form-control" [(ngModel)]="model.parameterCode" maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Cod. proceso al guardar</label>
+                    <input type="text" class="form-control" [(ngModel)]="model.onSuccessCode" maxlength="50">
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" id="tab-3" class="tab-pane">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <icheck [(checked)]="model.userApplicantHasAccess">
+                                <label style="padding-left:20px;">Solicitante</label> 
+                            </icheck>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <icheck [(checked)]="model.managerHasAccess">
+                                <label style="padding-left:20px;">Superior</label> 
+                            </icheck>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <icheck [(checked)]="model.sectorHasAccess">
+                                <label style="padding-left:20px;">Director de Sector</label> 
+                            </icheck>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Usuarios</label>
+                    <ng-select [items]="users" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.usersHasAccess"></ng-select>
+                </div>
+            
+                <div class="form-group">
+                    <label class="control-label">Grupos</label>
+                    <ng-select [items]="groups" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.groupsHasAccess"></ng-select>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" id="tab-4" class="tab-pane">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <icheck [(checked)]="model.notifyToUserApplicant">
+                                <label style="padding-left:20px;">Solicitante</label> 
+                            </icheck>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <icheck [(checked)]="model.notifyToManager">
+                                <label style="padding-left:20px;">Superior</label> 
+                            </icheck>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <icheck [(checked)]="model.notifyToSector">
+                                <label style="padding-left:20px;">Director del sector</label> 
+                            </icheck>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Usuarios</label>
+                    <ng-select [items]="users" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.notifyToUsers"></ng-select>
+                </div>
+            
+                <div class="form-group">
+                    <label class="control-label">Grupos</label>
+                    <ng-select [items]="groups" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.notifyToGroups"></ng-select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

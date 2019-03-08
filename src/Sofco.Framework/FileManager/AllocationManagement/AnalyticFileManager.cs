@@ -44,8 +44,8 @@ namespace Sofco.Framework.FileManager.AllocationManagement
                 sheet.Cells[$"D{i}"].Value = item.StartDateContract.ToString("dd/MM/yyyy");
                 sheet.Cells[$"E{i}"].Value = item.EndDateContract.ToString("dd/MM/yyyy");
                 sheet.Cells[$"F{i}"].Value = GetStatusDescription(item.Status);
-                sheet.Cells[$"G{i}"].Value = item.ClientExternalName;
-                sheet.Cells[$"H{i}"].Value = item.Service;
+                sheet.Cells[$"G{i}"].Value = item.AccountName;
+                sheet.Cells[$"H{i}"].Value = item.ServiceName;
                 sheet.Cells[$"I{i}"].Value = item.Proposal;
 
                 if (item.Sector != null)

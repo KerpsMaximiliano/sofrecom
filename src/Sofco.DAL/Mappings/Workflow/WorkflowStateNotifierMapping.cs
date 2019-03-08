@@ -10,7 +10,7 @@ namespace Sofco.DAL.Mappings.Workflow
         {
             builder.Entity<WorkflowStateNotifier>().HasKey(_ => _.Id);
 
-            builder.Entity<WorkflowStateNotifier>().HasOne(x => x.WorkflowStateTransition).WithMany(x => x.WorkflowStateNotifiers).HasForeignKey(x => x.WorkflowStateTransitionId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<WorkflowStateNotifier>().HasOne(x => x.WorkflowStateTransition).WithMany(x => x.WorkflowStateNotifiers).HasForeignKey(x => x.WorkflowStateTransitionId).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<WorkflowStateNotifier>().HasOne(x => x.UserSource).WithMany(x => x.WorkflowStateNotifiers).HasForeignKey(x => x.UserSourceId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkflowStateNotifier>().HasOne(x => x.CreatedBy).WithMany(x => x.WorkflowStateNotifiers).HasForeignKey(x => x.CreatedById).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkflowStateNotifier>().HasOne(x => x.ModifiedBy).WithMany(x => x.WorkflowStateNotifiers2).HasForeignKey(x => x.ModifiedById).OnDelete(DeleteBehavior.Restrict);

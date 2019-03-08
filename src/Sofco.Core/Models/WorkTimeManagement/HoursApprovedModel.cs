@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Domain;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.Core.Models.WorkTimeManagement
@@ -46,5 +48,10 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public string Comments { get; set; }
 
         public string Status { get; set; }
+    }
+
+    public class HoursToApproveModel
+    {
+        public int Id { get; set; }
     }
 }

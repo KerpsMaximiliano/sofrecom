@@ -22,6 +22,10 @@ export class AdvancementService {
         return this.http.get<any>(`${this.baseUrl}/advancement/${id}`);
     }
 
+    getUnrelated(){
+        return this.http.get<any>(`${this.baseUrl}/advancement/unrelated`);
+    }
+
     getHistories(id){
         return this.http.get<any>(`${this.baseUrl}/advancement/${id}/histories`);
     }
@@ -34,7 +38,23 @@ export class AdvancementService {
         return this.http.post<any>(`${this.baseUrl}/advancement/finalized`, model);
     }
 
+    getAllPaymentPending(){
+        return this.http.get<any>(`${this.baseUrl}/advancement/paymentPending`);
+    }
+
     canLoad(){
         return this.http.get<any>(`${this.baseUrl}/advancement/canLoad`);
+    }
+
+    delete(id){
+        return this.http.delete<any>(`${this.baseUrl}/advancement/${id}`);
+    }
+
+    getRefunds(id){
+        return this.http.get<any>(`${this.baseUrl}/advancement/${id}/refunds`);
+    }
+
+    getStates(){
+        return this.http.get<any>(`${this.baseUrl}/advancement/states`);
     }
 }

@@ -31,9 +31,12 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     ); 
 
     resourceId: number;
+    employeeLoggedId: number;
+    userLoggedId: number;
     public model: any;
 
     public isRrhh: boolean = false;
+    public isManager: boolean = false;
 
     public editModel = {
         businessHours: 0,
@@ -41,7 +44,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         office: "",
         managerId: null,
         billingPercentage: 0,
-        holidaysPending: null
+        holidaysPending: null,
+        hasCreditCard: false
     }
 
     public licenses: any[] = new Array();
@@ -49,12 +53,14 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     public managers: any[] = new Array();
     public profileHistories: any[] = new Array();
     public advancements: any[] = new Array();
+    public refunds: any[] = new Array();
 
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
     finalizeExtraHolidaysSubscrip: Subscription;
     getDataSubscrip: Subscription;
     getTasksSubscrip: Subscription;
+    getRefundDataSubscrip: Subscription;
     getManagersSubscript: Subscription;
 
     constructor(private router: Router,
@@ -87,6 +93,9 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
                     this.router.navigate([`/403`]);
                     return;
                 }
+
+                this.userLoggedId = userInfo.id;
+                this.employeeLoggedId = userInfo.employeeId;
             }
 
             this.getUsers();
@@ -94,6 +103,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.getProfile();
             this.getLicenses();
             this.getTasks();
+            this.getRefunds();
         });
     }
 
@@ -103,6 +113,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         if (this.getDataSubscrip) { this.getDataSubscrip.unsubscribe(); }
         if (this.finalizeExtraHolidaysSubscrip) { this.finalizeExtraHolidaysSubscrip.unsubscribe(); }
         if (this.getTasksSubscrip) { this.getTasksSubscrip.unsubscribe(); }
+        if (this.getRefundDataSubscrip) { this.getRefundDataSubscrip.unsubscribe(); }
     }
 
     getProfile(){
@@ -117,6 +128,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.editModel.holidaysPending = response.data.holidaysPendingByLaw;
             this.editModel.managerId = response.data.managerId.toString();
             this.editModel.billingPercentage = response.data.percentage;
+            this.editModel.hasCreditCard = response.data.hasCreditCard;
 
             this.messageService.closeLoading();
             this.initGrid();
@@ -145,6 +157,19 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             var params = {
                 selector: "#advancementTable",
                 columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ]
+            };
+    
+            this.dataTableService.initialize(params);
+        });
+    }
+
+    getRefunds(){
+        this.getRefundDataSubscrip = this.employeeService.getRefunds(this.resourceId).subscribe(response => {
+            this.refunds = response.data;
+
+            var params = {
+                selector: "#refundTable",
+                columnDefs: [ {'aTargets': [0], "sType": "date-uk"} ]
             };
     
             this.dataTableService.initialize(params);
@@ -188,17 +213,18 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    updateBusinessHours(){
+    update(){
         var json = {
             businessHours: this.editModel.businessHours,
             businessHoursDescription: this.editModel.businessHoursDescription,
             holidaysPending: this.editModel.holidaysPending,
             office: this.editModel.office,
             billingPercentage: this.editModel.billingPercentage,
-            managerId: this.editModel.managerId
+            managerId: this.editModel.managerId,
+            hasCreditCard: this.editModel.hasCreditCard
         };
 
-        this.finalizeExtraHolidaysSubscrip = this.employeeService.updateBusinessHours(this.resourceId, json).subscribe(data => {
+        this.finalizeExtraHolidaysSubscrip = this.employeeService.put(this.resourceId, json).subscribe(data => {
             this.businessHoursModal.hide();
 
             setTimeout(() => {
@@ -209,19 +235,19 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     }
 
     canAddLicense(){
-        if(!this.isRrhh && this.menuService.hasFunctionality('PROFI', 'ALTA')) return true;
+        if(!this.isRrhh && this.employeeLoggedId == this.resourceId && this.menuService.hasFunctionality('PROFI', 'ALTA')) return true;
 
         return false;
     }
 
     canAddWorkTime(){
-        if(!this.isRrhh && this.menuService.hasFunctionality('PROFI', 'WORKT')) return true;
+        if(!this.isRrhh && this.employeeLoggedId == this.resourceId && this.menuService.hasFunctionality('PROFI', 'WORKT')) return true;
 
         return false;
     }
 
     getUsers(){
-        this.getManagersSubscript = this.userService.getOptions().subscribe(response => {
+        this.getManagersSubscript = this.userService.getManagersAndDirectors().subscribe(response => {
             this.managers = response;
         });
     }
@@ -288,8 +314,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     setManagerReference(item)
     {
-        item.employeePrevious.managerId = item.employee.manager.name;
-        item.employee.managerId = item.employeePrevious.manager.name;
+        item.employee.managerId = item.employee.manager.name;
+        item.employeePrevious.managerId = item.employeePrevious.manager.name;
     }
 
     getStatusClass(type){
@@ -303,5 +329,13 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     
     goToAdvancementDetail(item){
         this.router.navigate(['/advancementAndRefund/advancement/' + item.id])
+    }
+
+    goToRefundDetail(item){
+        this.router.navigate(['/advancementAndRefund/refund/' + item.id])
+    }
+
+    userLoggedIsManager(){
+        return this.editModel.managerId == this.userLoggedId;
     }
 }

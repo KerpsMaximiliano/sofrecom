@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.DAL;
+using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.WorkTimeManagement;
@@ -26,15 +28,27 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IMapper mapper;
 
-        public WorkTimeControlService(IUnitOfWork unitOfWork, IUserData userData, IWorkTimeResumeManager workTimeResumeManager, IMapper mapper, IRoleManager roleManager)
+        private readonly IWorktimeData worktimeData;
+
+        private readonly IWorkTimeControlHoursFileManager workTimeControlHoursFileManager;
+
+        public WorkTimeControlService(IUnitOfWork unitOfWork, 
+            IUserData userData, 
+            IWorkTimeResumeManager workTimeResumeManager, 
+            IMapper mapper, 
+            IRoleManager roleManager, 
+            IWorktimeData worktimeData,
+            IWorkTimeControlHoursFileManager workTimeControlHoursFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.workTimeResumeManager = workTimeResumeManager;
             this.mapper = mapper;
             this.roleManager = roleManager;
+            this.worktimeData = worktimeData;
+            this.workTimeControlHoursFileManager = workTimeControlHoursFileManager;
         }
-
+         
         public Response<WorkTimeControlModel> Get(WorkTimeControlParams parameters)
         {
             var result = new Response<WorkTimeControlModel>();
@@ -56,6 +70,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var resumeModel = workTimeResumeManager.GetResume(models, startDate, endDate);
 
             var resources = GetResources(workTimes.ToList(), startDate, endDate);
+
+            var currentUser = userData.GetCurrentUser();
+
+            worktimeData.ClearControlHoursReportKey(currentUser.UserName);
+            worktimeData.SaveControlHoursReport(resources, currentUser.UserName);
 
             result.Data = new WorkTimeControlModel
             {
@@ -112,22 +131,33 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var resume = workTimeResumeManager.GetResume(models, startDate, endDate);
 
-                var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDaysForWorkTimeControl(model.EmployeeId, startDate, endDate);
+                var allocations = unitOfWork.AllocationRepository
+                    .GetAllocationsLiteBetweenDaysForWorkTimeControl(model.EmployeeId, startDate, endDate);
 
                 var allocationAnalytic = allocations?.FirstOrDefault(s => s.AnalyticId == model.AnalyticId);
 
-                if (allocationAnalytic == null) continue;
+                //if (allocationAnalytic == null) continue;
 
-                resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
+                if (allocationAnalytic == null)
+                {
+                    resource.BusinessHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
+                    resource.AllocationPercentage = 0;
+                }
+                else
+                {
+                    resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
+                    resource.AllocationPercentage = allocationAnalytic.Percentage;
+                }
+          
                 resource.ApprovedHours = item.Value.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours);
                 resource.LicenseHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
                 resource.SentHours = item.Value.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours);
                 resource.DraftHours = item.Value.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours);
-
                 resource.PendingHours = resource.BusinessHours - resource.ApprovedHours - resource.LicenseHours - resource.SentHours - resource.DraftHours;
-
-                resource.AllocationPercentage = allocationAnalytic.Percentage;
-                resource.Details = Translate(list.OrderBy(s => s.Date).ToList());
+            
+                var details = list.OrderBy(s => s.Date).ToList();
+                resource.Details = Translate(details);
+                resource.DetailCount = details.Count;
                 result.Add(resource);
             }
 
@@ -247,6 +277,27 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 .ToList();
 
             return result;
+        }
+
+        public Response<byte[]> ExportControlHoursReport()
+        {
+            var response = new Response<byte[]>();
+
+            var currentuser = userData.GetCurrentUser();
+
+            var list = worktimeData.GetAllControlHoursReport(currentuser.UserName);
+
+            if (!list.Any())
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.ControlHoursEmpty);
+                return response;
+            }
+
+            var excel = workTimeControlHoursFileManager.CreateExcel(list);
+
+            response.Data = excel.GetAsByteArray();
+
+            return response;
         }
     }
 }

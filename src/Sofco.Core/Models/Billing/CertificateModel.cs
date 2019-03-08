@@ -18,8 +18,8 @@ namespace Sofco.Core.Models.Billing
             var domain = new Certificate();
 
             domain.Name = Name;
-            domain.ClientExternalId = ClientExternalId;
-            domain.ClientExternalName = ClientExternalName;
+            domain.AccountId = ClientExternalId;
+            domain.AccountName = ClientExternalName;
             domain.Year = Year;
 
             domain.UpdateDate = DateTime.UtcNow;

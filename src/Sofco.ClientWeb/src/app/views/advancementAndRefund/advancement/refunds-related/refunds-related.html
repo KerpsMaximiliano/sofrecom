@@ -1,0 +1,75 @@
+<div class="ibox" *ngIf="refunds.length > 0">
+    <div class="ibox-content">
+        <div class="row">
+            <div [ngClass]="advancements.length > 0 ? 'col-md-8' : 'col-md-12'">
+                <h3>{{'refund.refundsRelated' | translate }}</h3>
+
+                <table class="table table-striped" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>{{'refund.analytic' | translate }}</th>
+                            <th>{{'refund.itemTotal' | translate }}</th>
+                            <th>{{'refund.status' | translate }}</th>
+                            <th class="text-center">Ultimo reintegro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let refund of refunds" (click)="goToRefund(refund)" class="pointer">
+                            <td class="text-center">{{ refund.id }}</td>
+                            <td>{{ refund.analytic }}</td>
+                            <td>{{ refund.total }}</td>
+                            <td><span class="label" [ngClass]="getStatusClass(refund.statusType)">{{ refund.statusName }}</span></td>
+                            <td class="text-center"><span class="fa" [ngClass]="refund.cashReturn ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4" *ngIf="advancements.length > 0">
+                <h3>{{'advancement.advancementRelated' | translate }}</h3>
+
+                <table class="table table-striped" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th>{{'refund.totalAmount' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let advancement of advancements">
+                            <td class="text-center">{{ advancement.id }}</td>
+                            <td>{{ advancement.total }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <dl>
+                    <dt><strong>{{ 'refund.advancementSum' | translate }}:</strong></dt>
+                    <dd>{{ advancementSum | amountFormat }} {{ currencyDescription }}</dd>
+                </dl>
+            </div>
+            <div class="col-sm-3">
+                <dl>
+                    <dt><strong>{{ 'refund.itemTotal' | translate }}:</strong></dt>
+                    <dd>{{ refundSum | amountFormat }} {{ currencyDescription }}</dd>
+                </dl>
+            </div>
+            <div class="col-sm-3">
+                <dl>
+                    <dt><strong>{{ 'refund.companyRefund' | translate }}:</strong></dt>
+                    <dd>{{ companyRefund | amountFormat }} {{ currencyDescription }}</dd>
+                </dl>
+            </div>
+            <div class="col-sm-3">
+                <dl>
+                    <dt><strong>{{ 'refund.userRefund' | translate }}:</strong></dt>
+                    <dd>{{ userRefund | amountFormat }} {{ currencyDescription }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

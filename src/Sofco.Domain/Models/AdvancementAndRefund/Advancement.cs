@@ -8,6 +8,7 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
 {
     public class Advancement : WorkflowEntity
     {
+
         public AdvancementPaymentForm PaymentForm { get; set; }
 
         public AdvancementType Type { get; set; }
@@ -29,5 +30,10 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
         public decimal Ammount { get; set; }
 
         public IList<AdvancementHistory> Histories { get; set; }
+
+        public IList<AdvancementRefund> AdvancementRefunds { get; set; }
+
+        public int WorkflowId { get; set; }
+        public Workflow.Workflow Workflow { get; set; }
     }
 }

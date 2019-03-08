@@ -1,0 +1,45 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>Workflows</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <span>{{ 'ADMIN.TITLE' | translate }}</span>
+            </li>
+            <li>
+                <span>Workflows</span>   
+            </li>
+            <li>
+                <span>Transición</span>   
+            </li>
+            <li class="active">
+                <strong>Editar</strong>
+            </li>
+        </ol>
+    </div>
+</div> 
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="ibox">
+                <div class="ibox-title text-center">
+                    <h3>{{ actualState }} <i class="fa fa-arrow-right"></i> {{ nextState }}</h3>
+                </div>
+                <div class="ibox-content">
+                    <workflow-transition-form #form></workflow-transition-form>
+                </div>
+            </div>
+        </div> 
+        <div class="col-md-2">
+            <div class="btn-right">
+                <button class="btn btn-primary btn-outline dim btn-sm" (click)="update()"> 
+                    Guardar
+                    <i class="fa fa-save"></i>
+                </button>
+            </div>
+        </div>
+    </div> 
+</div> 

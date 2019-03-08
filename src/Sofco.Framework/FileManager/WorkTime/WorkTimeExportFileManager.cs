@@ -27,6 +27,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             this.logger = logger;
             this.hostingEnvironment = hostingEnvironment;
         }
+
         public ExcelPackage CreateTemplateExcel(int analyticId)
         {
             var memoryStream = this.GetTemplateStream().Result;

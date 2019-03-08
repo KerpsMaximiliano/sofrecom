@@ -50,7 +50,7 @@ namespace Sofco.Framework.FileManager.Billing
                 row++;
 
                 sheet.SetValue(row, 1, purchaseOrder.Number);
-                sheet.SetValue(row, 2, purchaseOrder.ClientExternalName);
+                sheet.SetValue(row, 2, purchaseOrder.AccountName);
                 sheet.SetValue(row, 3, purchaseOrder.Title);
                 sheet.SetValue(row, 4, GetStatusDescription(purchaseOrder.Status));
                 sheet.SetValue(row, 5, purchaseOrder.ReceptionDate.ToString("dd/MM/yyyy"));
@@ -108,7 +108,7 @@ namespace Sofco.Framework.FileManager.Billing
                     {
                         sheet.SetValue(row, 1, purchaseOrder.Number);
                         sheet.SetValue(row, 2, ocAnalytic.Analytic.Name);
-                        sheet.SetValue(row, 3, ocAnalytic.Analytic.Service);
+                        sheet.SetValue(row, 3, ocAnalytic.Analytic.ServiceName);
                         sheet.SetValue(row, 4, ocAnalytic.Analytic.Manager?.Name);
                         sheet.SetValue(row, 5, ocAnalytic.Analytic.CommercialManager?.Name);
 

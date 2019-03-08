@@ -23,5 +23,7 @@ namespace Sofco.Core.DAL.Common
         IList<MonthsReturn> GetMonthsReturn();
         bool ExistMonthReturn(int id);
         bool ExistCurrency(int currencyId);
+        bool ExistCreditCard(int creditCardId);
+        IList<CreditCard> GetCreditCards();
     }
 }

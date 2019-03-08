@@ -12,6 +12,7 @@
     "azsof01wd-test": "ng build --prod --configuration=azsof01wd-test",
     "azsof01wd-qa": "ng build --prod --configuration=azsof01wd-qa",
     "azsof01wt": "ng build --prod --configuration=azsof01wt",
+    "azsof01wt-qa": "ng build --prod --configuration=azsof01wt-qa",
     "azgap01wp": "ng build --prod --configuration=azgap01wp"
   },
   "private": true,

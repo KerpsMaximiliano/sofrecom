@@ -28,7 +28,7 @@ namespace Sofco.DAL.Repositories.Reports
                     ProjectId = x.ProjectId,
                     ProjectName = x.Project,
                     BusinessName = x.BusinessName,
-                    ClientName = x.ClientName,
+                    AccountName = x.AccountName,
                     InvoiceCode = x.InvoiceCode,
                     InvoiceDate = x.InvoiceDate.Value,
                     Amount = x.TotalAmount

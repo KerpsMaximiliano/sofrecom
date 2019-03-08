@@ -12,7 +12,7 @@ namespace Sofco.Domain.Models.Reports
 
         public string BusinessName { get; set; }
 
-        public string ClientName { get; set; }
+        public string AccountName { get; set; }
 
         public string InvoiceCode { get; set; }
 

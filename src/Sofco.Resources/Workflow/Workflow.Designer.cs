@@ -61,6 +61,51 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.actualStateIsRequired.
+        /// </summary>
+        public static string ActualStateIsRequired {
+            get {
+                return ResourceManager.GetString("ActualStateIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.actualStateNotFound.
+        /// </summary>
+        public static string ActualStateNotFound {
+            get {
+                return ResourceManager.GetString("ActualStateNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.addSuccess.
+        /// </summary>
+        public static string AddSuccess {
+            get {
+                return ResourceManager.GetString("AddSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.addTransitionSuccess.
+        /// </summary>
+        public static string AddTransitionSuccess {
+            get {
+                return ResourceManager.GetString("AddTransitionSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.allRefundsMustHaveSameStatus.
+        /// </summary>
+        public static string AllRefundsMustHaveSameStatus {
+            get {
+                return ResourceManager.GetString("AllRefundsMustHaveSameStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.cannotDoTransition.
         /// </summary>
         public static string CannotDoTransition {
@@ -79,6 +124,24 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.currencyExchangeRequired.
+        /// </summary>
+        public static string CurrencyExchangeRequired {
+            get {
+                return ResourceManager.GetString("CurrencyExchangeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.descriptionRequired.
+        /// </summary>
+        public static string DescriptionRequired {
+            get {
+                return ResourceManager.GetString("DescriptionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.entityNull.
         /// </summary>
         public static string EntityNull {
@@ -88,11 +151,137 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.nextStateIsRequired.
+        /// </summary>
+        public static string NextStateIsRequired {
+            get {
+                return ResourceManager.GetString("NextStateIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.nextStateNotFound.
+        /// </summary>
+        public static string NextStateNotFound {
+            get {
+                return ResourceManager.GetString("NextStateNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.parametersNull.
         /// </summary>
         public static string ParametersNull {
             get {
                 return ResourceManager.GetString("ParametersNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateCreated.
+        /// </summary>
+        public static string StateCreated {
+            get {
+                return ResourceManager.GetString("StateCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateDisabled.
+        /// </summary>
+        public static string StateDisabled {
+            get {
+                return ResourceManager.GetString("StateDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateEnabled.
+        /// </summary>
+        public static string StateEnabled {
+            get {
+                return ResourceManager.GetString("StateEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateNameRequired.
+        /// </summary>
+        public static string StateNameRequired {
+            get {
+                return ResourceManager.GetString("StateNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateNotFound.
+        /// </summary>
+        public static string StateNotFound {
+            get {
+                return ResourceManager.GetString("StateNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.statesEquals.
+        /// </summary>
+        public static string StatesEquals {
+            get {
+                return ResourceManager.GetString("StatesEquals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateTextButtonRequired.
+        /// </summary>
+        public static string StateTextButtonRequired {
+            get {
+                return ResourceManager.GetString("StateTextButtonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateTypeRequired.
+        /// </summary>
+        public static string StateTypeRequired {
+            get {
+                return ResourceManager.GetString("StateTypeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.StateUpdated.
+        /// </summary>
+        public static string StateUpdated {
+            get {
+                return ResourceManager.GetString("StateUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.transitionAlreadyExist.
+        /// </summary>
+        public static string TransitionAlreadyExist {
+            get {
+                return ResourceManager.GetString("TransitionAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.transitionDeleted.
+        /// </summary>
+        public static string TransitionDeleted {
+            get {
+                return ResourceManager.GetString("TransitionDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.transitionNotFound.
+        /// </summary>
+        public static string TransitionNotFound {
+            get {
+                return ResourceManager.GetString("TransitionNotFound", resourceCulture);
             }
         }
         
@@ -115,11 +304,74 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.typeNotFound.
+        /// </summary>
+        public static string TypeNotFound {
+            get {
+                return ResourceManager.GetString("TypeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.typeRequired.
+        /// </summary>
+        public static string TypeRequired {
+            get {
+                return ResourceManager.GetString("TypeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.updateTransitionSuccess.
+        /// </summary>
+        public static string UpdateTransitionSuccess {
+            get {
+                return ResourceManager.GetString("UpdateTransitionSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.userHasNoAccess.
         /// </summary>
         public static string UserHasNoAccess {
             get {
                 return ResourceManager.GetString("UserHasNoAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.versionRequired.
+        /// </summary>
+        public static string VersionRequired {
+            get {
+                return ResourceManager.GetString("VersionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.workflowIsRequired.
+        /// </summary>
+        public static string WorkflowIsRequired {
+            get {
+                return ResourceManager.GetString("WorkflowIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.workflowNotFound.
+        /// </summary>
+        public static string WorkflowNotFound {
+            get {
+                return ResourceManager.GetString("WorkflowNotFound", resourceCulture);
             }
         }
     }

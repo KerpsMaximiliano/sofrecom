@@ -132,6 +132,9 @@
   <data name="AnalyticRequired" xml:space="preserve">
     <value>advancementAndRefund/advancement.analyticRequired</value>
   </data>
+  <data name="CannotDelete" xml:space="preserve">
+    <value>advancementAndRefund/advancement.cannotDelete</value>
+  </data>
   <data name="CannotLoad" xml:space="preserve">
     <value>advancementAndRefund/advancement.cannotLoad</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="DateItemRequired" xml:space="preserve">
     <value>advancementAndRefund/advancement.dateItemRequired</value>
+  </data>
+  <data name="DeleteSuccess" xml:space="preserve">
+    <value>advancementAndRefund/advancement.deleteSuccess</value>
   </data>
   <data name="DescriptionItemRequired" xml:space="preserve">
     <value>advancementAndRefund/advancement.descriptionItemRequired</value>

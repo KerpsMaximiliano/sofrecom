@@ -10,8 +10,6 @@ import { I18nService } from "app/services/common/i18n.service";
     templateUrl: './advancement-add.component.html'
 })
 export class AdvancementAddComponent implements OnInit, OnDestroy {
-
-
     @ViewChild('form') form;
 
     canLoad: boolean = true;

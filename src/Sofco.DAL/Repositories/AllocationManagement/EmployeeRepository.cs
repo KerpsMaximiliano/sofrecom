@@ -49,14 +49,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employeeToChange).Property("TypeEndReasonId").IsModified = true;
         }
 
-        public ICollection<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate)
+        public IList<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate)
         {
             var from = new DateTime(startDate.Year, startDate.Month, 1).Date;
             var to = new DateTime(endDate.Year, endDate.Month, 1).Date;
 
             var employeeIdsWithAllocations = context.Allocations.Where(x => x.StartDate.Date == from && x.StartDate.Date == to).Select(x => x.EmployeeId).Distinct().ToList();
 
-            return context.Employees.Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
+            return context.Employees.Include(x => x.Manager).Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
         }
 
         public IList<Employee> GetByAnalyticIds(List<int> analyticIds)
@@ -83,6 +83,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                         .ThenInclude(x => x.ResponsableUser)
                 .Where(x => x.EmployeeId == employeeId && x.StartDate.Date == today)
                 .Select(x => x.Analytic.Sector)
+                .ToList();
+        }
+
+        public IList<Employee> GetByManagerId(int managerId)
+        {
+            return context.Employees
+                .Where(x => x.ManagerId == managerId)
                 .ToList();
         }
 
@@ -164,6 +171,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employee).Property("ManagerId").IsModified = true;
             context.Entry(employee).Property("HolidaysPending").IsModified = true;
             context.Entry(employee).Property("BillingPercentage").IsModified = true;
+            context.Entry(employee).Property("HasCreditCard").IsModified = true;
         }
 
         public IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers)
@@ -273,6 +281,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             storedData.PrepaidHealthCode = data.PrepaidHealthCode;
             storedData.OfficeAddress = data.OfficeAddress;
             storedData.Email = data.Email;
+            storedData.Bank = data.Bank;
 
             Update(storedData);
         }

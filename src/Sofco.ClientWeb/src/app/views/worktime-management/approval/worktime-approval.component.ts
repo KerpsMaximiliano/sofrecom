@@ -243,7 +243,10 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     }
 
     approveAll(){
-        var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => item.id);
+        var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => 
+        { 
+            return { id: item.id }
+        });
 
         if(hoursSelected.length == 0) return;
 

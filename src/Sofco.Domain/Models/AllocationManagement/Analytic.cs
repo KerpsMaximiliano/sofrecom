@@ -22,11 +22,11 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public string Name { get; set; }
 
-        public string ClientExternalId { get; set; }
+        public string AccountId { get; set; }
 
-        public string ClientExternalName { get; set; }
+        public string AccountName { get; set; }
 
-        public string Service { get; set; }
+        public string ServiceName { get; set; }
 
         public string ServiceId { get; set; }
 
@@ -76,8 +76,6 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }
 
-        public ICollection<UserApprover> UserApprovers { get; set; }
-
-        public ICollection<Advancement> Advancements { get; set; }
+        public ICollection<Refund> Refunds { get; set; }
     }
 }

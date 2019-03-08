@@ -13,12 +13,14 @@ using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers.AllocationManagement;
 using Sofco.Core.Models;
+using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Framework.MailData;
 using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Domain.DTO;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
 using Sofco.Framework.Helpers;
@@ -252,7 +254,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response UpdateBusinessHours(int id, EmployeeBusinessHoursParams model)
+        public Response Update(int id, EmployeeBusinessHoursParams model)
         {
             var response = new Response();
 
@@ -275,6 +277,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.ManagerId = model.ManagerId;
                 employee.BillingPercentage = model.BillingPercentage.GetValueOrDefault();
                 employee.HolidaysPending = CalculateHolidaysPending(model);
+                employee.HasCreditCard = model.HasCreditCard;
 
                 unitOfWork.EmployeeRepository.UpdateBusinessHours(employee);
                 unitOfWork.Save();
@@ -434,7 +437,31 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
 
-                response.Data = unitOfWork.AdvancementRepository.GetByApplicant(user.Id).Select(x => new EmployeeAdvancementDetail(x)).ToList();
+                if (user != null)
+                {
+                    response.Data = unitOfWork.AdvancementRepository.GetByApplicant(user.Id).Select(x => new EmployeeAdvancementDetail(x)).ToList();
+                }
+            }
+
+            return response;
+        }
+
+        public Response<IList<EmployeeRefundDetail>> GetRefunds(int id)
+        {
+            var response = new Response<IList<EmployeeRefundDetail>>();
+            response.Data = new List<EmployeeRefundDetail>();
+
+            var employee = unitOfWork.EmployeeRepository.Get(id);
+
+            if (employee != null)
+            {
+                var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
+
+                if (user != null)
+                {
+                    response.Data = unitOfWork.RefundRepository.GetByApplicant(user.Id)
+                        .Select(x => mapper.Map<Refund, EmployeeRefundDetail>(x)).ToList();
+                }
             }
 
             return response;
@@ -461,8 +488,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         Name = analityc.Name,
                         AllocationPercentage = allocationThisMonth.Percentage,
                         StartDate = unitOfWork.AllocationRepository.GetStartDate(analityc.Id),
-                        Client = analityc.ClientExternalName,
-                        Service = analityc.Service,
+                        Client = analityc.AccountName,
+                        Service = analityc.ServiceName,
                         ReleaseDate = allocationThisMonth?.ReleaseDate,
                     };
 

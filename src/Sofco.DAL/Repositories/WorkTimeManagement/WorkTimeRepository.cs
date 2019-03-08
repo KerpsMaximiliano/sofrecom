@@ -35,6 +35,9 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .Where(x => x.EmployeeId == employeeId 
                             && x.Date.Date >= startDate.Date 
                             && x.Date.Date <= endDate.Date)
+                .Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                .Include(x => x.Task)
                 .ToList();
         }
 
@@ -51,6 +54,28 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         }
 
         public IList<WorkTime> GetByEmployeeIds(List<int> employeeIds)
+        {
+            return context.WorkTimes
+                .Where(x => employeeIds.Contains(x.EmployeeId))
+                .Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                .Include(x => x.Task)
+                .ToList();
+        }
+
+        public IList<WorkTime> GetByEmployeeIds(DateTime startDate, DateTime endDate, IList<int> employeeIds)
+        {
+            return context.WorkTimes
+                .Where(x => employeeIds.Contains(x.EmployeeId)
+                            && x.Date.Date >= startDate.Date
+                            && x.Date.Date <= endDate.Date)
+                .Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                .Include(x => x.Task)
+                .ToList();
+        }
+
+        public IList<WorkTime> GetByEmployeeIds(IList<int> employeeIds)
         {
             return context.WorkTimes
                 .Where(x => employeeIds.Contains(x.EmployeeId))
@@ -87,13 +112,14 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             return query.ToList();
         }
 
-        public IList<WorkTime> SearchPending(WorktimeHoursPendingParams parameters, bool isManagerOrDirector, int currentUserId)
+        public IList<WorkTime> SearchPending(WorktimeHoursPendingParams parameters, bool isManagerOrDirector,
+            int currentUserId, string analyticBank)
         {
             IQueryable<WorkTime> query1 = context.WorkTimes
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                 .Include(x => x.Task)
-                .Where(x => x.Status == WorkTimeStatus.Sent && x.Analytic.ManagerId == currentUserId);
+                .Where(x => (x.Status == WorkTimeStatus.Sent || (x.Status == WorkTimeStatus.License && x.Analytic.Title.Equals(analyticBank))) && x.Analytic.ManagerId == currentUserId);
 
             IQueryable<WorkTime> query2 = from worktime in context.WorkTimes
                                           from userApprover in context.UserApprovers
@@ -234,6 +260,11 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .Where(s => s.EmployeeId == employeeId
                             && s.Status == WorkTimeStatus.Draft)
                 .ToList();
+        }
+
+        public IList<WorkTime> GetByDate(DateTime worktimeDate)
+        {
+            return context.WorkTimes.Where(x => x.Date.Date == worktimeDate.Date).ToList();
         }
 
         public decimal GetPendingHoursByEmployeeId(int employeeId)

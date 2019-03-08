@@ -33,10 +33,6 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         void ResetAllExamDays();
 
-        void UpdateHolidaysPending(Employee employeeToModif);
-
-        void UpdateExamDaysTaken(Employee employeeToModif);
-
         IList<EmployeeCategory> GetEmployeeCategories(int employeeId);
 
         void UpdateBusinessHours(Employee employee);
@@ -53,10 +49,12 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         Employee GetUserInfo(string email);
 
-        ICollection<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate);
+        IList<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate);
 
         IList<Employee> GetByAnalyticIds(List<int> analyticIds);
 
         IList<Sector> GetAnalyticsWithSector(int employeeId);
+
+        IList<Employee> GetByManagerId(int managerId);
     }
 }

@@ -216,6 +216,11 @@ namespace Sofco.Service.Implementations.Admin
             return SetUserInfo(employee.Email, response);
         }
 
+        public ICollection<User> GetDirectors()
+        {
+            return unitOfWork.UserRepository.GetDirectors();
+        }
+
         public Response<UserModel> GetUserInfo()
         {
             var email = sessionManager.GetUserEmail();
@@ -241,6 +246,11 @@ namespace Sofco.Service.Implementations.Admin
 
             model.EmployeeId = employee?.Id ?? 0;
             model.IsExternal = employee?.IsExternal ?? false;
+
+            if (employee != null)
+            {
+                model.HasCreditCard = employee.HasCreditCard;
+            }
 
             if (employee?.Manager != null)
             {

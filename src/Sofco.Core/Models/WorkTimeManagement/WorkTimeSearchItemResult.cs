@@ -24,5 +24,9 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public decimal Hours { get; set; }
 
         public string Status { get; set; }
+
+        public string Reference { get; set; }
+
+        public string Comments { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace Sofco.Service.Crm.TranslatorMaps
         private const string OwnerId = "_ownerid_value";
         private const string IntegratorId = "_as_integratorid_value";
         private const string ServiceId = "_as_serviceid_value";
+        private const string StateCode = "statecode";
 
         public Dictionary<string, string> KeyMaps()
         {
@@ -54,7 +55,8 @@ namespace Sofco.Service.Crm.TranslatorMaps
                 {nameof(CrmProject.OwnerId), OwnerId},
                 {nameof(CrmProject.IntegratorId), IntegratorId},
                 {nameof(CrmProject.Integrator), IntegratorId + TranslatorMapConstant.ODataFormattedValue},
-                {nameof(CrmProject.ServiceId), ServiceId}
+                {nameof(CrmProject.ServiceId), ServiceId},
+                {nameof(CrmProject.StateCode), StateCode}
             };
         }
 
@@ -64,7 +66,7 @@ namespace Sofco.Service.Crm.TranslatorMaps
             {
                 Name, AccountId, StartDate, EndDate, Analytic, Incomes, PurchaseOrder, OpportunityId,
                 TotalAmount, ServiceType, SolutionType, TechnologyType, CurrencyId, Remito, ManagerId,
-                OwnerId, IntegratorId, ServiceId
+                OwnerId, IntegratorId, ServiceId, StateCode
             };
 
             return string.Join(TranslatorMapConstant.SelectDelimiter, list);

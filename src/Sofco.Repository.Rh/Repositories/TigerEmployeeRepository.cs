@@ -11,36 +11,37 @@ namespace Sofco.Repository.Rh.Repositories
     public class TigerEmployeeRepository : ITigerEmployeeRepository
     {
         private const string TigerEmployeeSql = @"
-SELECT
-	legaj, 
-	nomb, 
-	fenac, 
-	feiem, 
-	febaj, 
-	dtitu, 
-	didio, 
-	dgrup, 
-	calle,
-	nro,
-	piso,
-	depto,
-	loca,
-	dprov,
-	obsoc,
-	dobso,
-	ospla,
-	dospl,
-    domif as officeaddress,
-    LOWER(demai) as email,
-    tidoc as documentNumberType,
-    nudoc as documentNumber,
-    nusin as cuil,
-    CAST(teddi as INTEGER) as phoneCountryCode,
-    CAST(teddn as INTEGER) as phoneAreaCode,
-    telef as phoneNumber
-FROM
-	View_A001
-";
+        SELECT
+	        legaj, 
+	        nomb, 
+	        fenac, 
+	        feiem, 
+	        febaj, 
+	        dtitu, 
+	        didio, 
+	        dgrup, 
+	        calle,
+	        nro,
+	        piso,
+	        depto,
+	        loca,
+	        dprov,
+	        obsoc,
+	        dobso,
+	        ospla,
+	        dospl,
+            domif as officeaddress,
+            LOWER(demai) as email,
+            tidoc as documentNumberType,
+            nudoc as documentNumber,
+            nusin as cuil,
+            CAST(teddi as INTEGER) as phoneCountryCode,
+            CAST(teddn as INTEGER) as phoneAreaCode,
+            telef as phoneNumber,
+            dbanc as bank
+        FROM
+	        View_A001
+        ";
 
         private DbSet<TigerEmployee> TigerEmployeeSet { get; }
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Mappings.WorkTimeManagement
@@ -14,7 +13,7 @@ namespace Sofco.DAL.Mappings.WorkTimeManagement
             builder.Entity<WorkTime>().Property(x => x.Source).HasMaxLength(50);
             builder.Entity<WorkTime>().Property(x => x.ApprovalComment).HasMaxLength(500);
             builder.Entity<WorkTime>().Property(x => x.UserComment).HasMaxLength(500);
-            builder.Entity<WorkTime>().Property(x => x.Reference).HasMaxLength(50);
+            builder.Entity<WorkTime>().Property(x => x.Reference).HasMaxLength(250);
 
             builder.Entity<WorkTime>().HasOne(x => x.Employee).WithMany(x => x.WorkTimes).HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<WorkTime>().HasOne(x => x.User).WithMany(x => x.WorkTimes1).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);

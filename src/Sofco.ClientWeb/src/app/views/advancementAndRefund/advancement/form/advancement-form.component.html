@@ -1,6 +1,12 @@
 <form [formGroup]="form" *ngIf="form">
 
     <div class="row">
+        <div class="col-xs-6" *ngIf="id > 0">
+            <label class="advancement-name">{{'advancement.advancementName' | translate }} #{{id}}</label>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-md-6">
             <div class="form-group" [ngClass]="form.controls.userApplicantId.invalid ? 'has-error' : 'has-success'">
                 <label style="font-size: 15px"> {{'advancement.userApplicant' | translate }}: </label>
@@ -115,6 +121,7 @@
         <textarea rows="6" class="form-control" formControlName="description" maxlength="1000"></textarea>
 
         <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'description')">
+            <p *ngIf="formsService.hasError(form, 'description', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','descriptionItemRequired') }}</p>
             <p *ngIf="formsService.hasError(form, 'description', 'maxLength')">{{ i18nService.translate('advancementAndRefund/advancement','descriptionItemMaxLength') }}</p>
         </div>
     </div>

@@ -51,5 +51,7 @@ namespace Sofco.Domain.Rh.Tiger
         public int PhoneAreaCode { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public string Bank { get; set; }
     }
 }

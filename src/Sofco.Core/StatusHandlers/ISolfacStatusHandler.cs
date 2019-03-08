@@ -14,7 +14,7 @@ namespace Sofco.Core.StatusHandlers
 
         void SaveStatus(Solfac solfac, SolfacStatusParams parameters);
 
-        void UpdateHitos(ICollection<string> getHitosIdsBySolfacId, Solfac solfac, string url);
+        void UpdateHitos(ICollection<string> getHitosIdsBySolfacId, Solfac solfac);
 
         void SendMail(Solfac solfac, EmailConfig emailConfig);
     }

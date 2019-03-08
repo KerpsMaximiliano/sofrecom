@@ -1,6 +1,7 @@
 ﻿using System;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.AdvancementAndRefund;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
@@ -23,7 +24,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
                 response.AddError(Resources.AdvancementAndRefund.Advancement.NullModel);
                 return;
             }
-
+             
             ValidateCommonData(model, response);
         }
 

@@ -8,6 +8,7 @@ import { MenuService } from '../../../services/admin/menu.service';
 import { UtilsService } from 'app/services/common/utils.service';
 declare var $: any;
 declare var moment: any;
+import * as FileSaver from "file-saver";
 
 @Component({
   selector: 'app-worktime-control',
@@ -44,7 +45,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
     getAnalytics() {
         this.loading = true;
         this.messageService.showLoading();
-        this.subscription = this.worktimeControlService.GetAnalyticOptionsByCurrentManager().subscribe(res => {
+        this.subscription = this.worktimeControlService.getAnalyticOptionsByCurrentManager().subscribe(res => {
             this.messageService.closeLoading();
             this.analytics = this.sortAnalytics(res.data);
             this.setAnalyticSelect();
@@ -159,7 +160,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
         this.updateTableDetail();
     }
 
-    formatDetail( data ) {
+    formatDetail(data) {
         const id = $(data[0]).data("id");
         const item = <any>this.data.find(x => x.id == id);
 
@@ -175,6 +176,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
             '<thead>' +
                 '<th>' + this.i18nService.translateByKey('workTimeManagement.date') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('workTimeManagement.reference') + '</th>' +
+                '<th class="column-xxlg">' + this.i18nService.translateByKey('workTimeManagement.comments') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('ADMIN.task.task') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('ADMIN.task.category') + '</th>' +
                 '<th>' + this.i18nService.translateByKey('workTimeManagement.hours') + '</th>' +
@@ -215,9 +217,23 @@ export class WorkTimeControlComponent implements OnDestroy  {
         return '<tr>' +
             '<td>' + moment(item.date).format("DD/MM/YYYY") + '</td>' +
             '<td>' + (item.reference != null ? item.reference :'')  + '</td>' +
+            '<td class="column-xxlg text-ellipsis">' + (item.comments != null ? item.comments :'')  + '</td>' +
             '<td>' + item.taskDescription + '</td>' +
             '<td>' + item.categoryDescription + '</td>' +
             '<td>' + item.registeredHours + '</td>' +
             '</tr>';
+    }
+
+    export(){
+        this.messageService.showLoading();
+
+        this.worktimeControlService.createReport().subscribe(file => {
+            this.messageService.closeLoading();
+
+            FileSaver.saveAs(file, "reporte-control-horas.xlsx");
+        },
+        () => {
+            this.messageService.closeLoading();
+        });
     }
 }

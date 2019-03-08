@@ -13,19 +13,16 @@ namespace Sofco.Framework.Workflow.Notifications
         private readonly IMailSender mailSender;
         private readonly EmailConfig emailConfig;
         private readonly IUnitOfWork unitOfWork;
-        private readonly IWorkflowRepository workflowRepository;
         private readonly AppSetting appSetting;
 
         public WorkflowNotificationFactory(IMailSender mailSender,
             IOptions<EmailConfig> emailConfig,
             IOptions<AppSetting> appSetting,
-            IUnitOfWork unitOfWork,
-            IWorkflowRepository workflowRepository)
+            IUnitOfWork unitOfWork)
         {
             this.mailSender = mailSender;
             this.emailConfig = emailConfig.Value;
             this.unitOfWork = unitOfWork;
-            this.workflowRepository = workflowRepository;
             this.appSetting = appSetting.Value;
         }
 
@@ -33,7 +30,9 @@ namespace Sofco.Framework.Workflow.Notifications
         {
             switch (code)
             {
-                case "ADVANCEMENT-DEFAULT": return new WorkflowAdvancementNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork, workflowRepository);
+                case "ADVANCEMENT-DEFAULT": return new WorkflowAdvancementNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork);
+                case "REFUND-DEFAULT": return new WorkflowRefundNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork);
+                case "REFUND-REJECT": return new WorkflowRefundNotificationReject(mailSender, emailConfig, appSetting, unitOfWork);
                 default: return null;
             }
         }

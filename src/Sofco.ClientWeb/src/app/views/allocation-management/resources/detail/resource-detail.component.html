@@ -104,7 +104,14 @@
                     </tr>
                     <tr>
                         <td><strong><i class="fa fa-paper-plane"></i> {{'allocationManagement.resources.grid.examDaysTaken' | translate }}: </strong> {{ model?.examDaysTaken }} {{'rrhh.license.days' | translate }}</td>
-                        <td></td>
+                        <td *ngIf="isRrhh || userLoggedIsManager()">
+                            <strong><i class="fa fa-credit-card"></i> 
+                                {{'allocationManagement.resources.hasCreditCard' | translate }}: 
+                            </strong> 
+
+                            <span *ngIf="model?.hasCreditCard">{{ 'ACTIONS.yes' | translate }}</span>
+                            <span *ngIf="!model?.hasCreditCard">{{ 'ACTIONS.no' | translate }}</span>
+                        </td>
                         <td *ngIf="model?.hasExtraHolidays && isRrhh"><strong><i class="fa fa-paper-plane"></i> {{'rrhh.license.extraHolidays' | translate }}: </strong> {{ model?.extraHolidaysQuantityByLaw }} {{'rrhh.license.days' | translate }}</td>
                     </tr>
                 </tbody>
@@ -122,7 +129,8 @@
                     <li class="" *ngIf="model?.history.length > 0"><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-5"> {{ 'ADMIN.task.title' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-6"> {{ 'advancement.title' | translate }} </a></li>
-                    <li class="" *ngIf="isRrhh"><a data-toggle="tab" href="#tab-7"> {{ 'allocationManagement.resources.profileHistoryGrid.name' | translate }} </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-7"> {{ 'refund.title' | translate }} </a></li>
+                    <li class="" *ngIf="isRrhh"><a data-toggle="tab" href="#tab-8"> {{ 'allocationManagement.resources.profileHistoryGrid.name' | translate }} </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
@@ -142,7 +150,9 @@
                                     <dd class="text-ellipsis">{{ model?.healthInsurance?.name }}</dd>
 
                                     <dt>{{'allocationManagement.resources.prepaidHealth' | translate }}</dt>
-                                    <dd class="text-ellipsis">{{ model?.prepaidHealth?.name }}</dd>
+                                    <dd class="text-ellipsis">
+                                        <label class="font-normal">{{ model?.prepaidHealth?.name }}</label>
+                                    </dd>
 
                                     <dt *ngIf="isRrhh">{{'allocationManagement.resources.prepaidHealthAmount' | translate }}</dt>
                                     <dd class="text-ellipsis" *ngIf="isRrhh">{{ model?.prepaidHealth?.amount | number: '1.2-2' }}</dd>
@@ -167,6 +177,9 @@
 
                                     <dt>{{'allocationManagement.resources.grid.birthday' | translate }}</dt>
                                     <dd class="text-ellipsis">{{ model?.birthday | date:'dd/MM/yyyy' }}</dd>
+
+                                    <dt>{{'allocationManagement.resources.grid.bank' | translate }}</dt>
+                                    <dd class="text-ellipsis">{{ model?.bank }}</dd>
                                 </dl>
                             </div>
                         </div>
@@ -295,7 +308,7 @@
                                             <span *ngIf="item.paymentForm == 2">{{ 'advancement.others' | translate }}</span>
                                         </td>
                                         <td>{{ item.currencyDesc }}</td>
-                                        <td>{{ item.ammount }}</td>
+                                        <td>{{ item.ammount | amountFormat }}</td>
                                         <td>{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
                                         <td><label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusDesc }}</label></td>
                                     </tr>
@@ -303,7 +316,33 @@
                             </table>
                         </div>
                     </div>
-                    <div id="tab-7" class="tab-pane" *ngIf="isRrhh">
+                    <div id="tab-7" class="tab-pane">
+                        <div class="panel-body">
+                            <table class="table table-striped dataTable" role="grid" id="refundTable">
+                                <thead>
+                                    <tr>
+                                        <th class="column-sm">{{ 'refund.applicationDate' | translate }}</th>
+                                        <th class="column-sm">{{ 'refund.currency' | translate }}</th>
+                                        <th class="column-sm">{{ 'refund.advancementSum' | translate }}</th>
+                                        <th class="column-sm">{{ 'refund.itemTotal' | translate }}</th>
+                                        <th class="column-sm">{{ 'refund.status' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of refunds" class="pointer" (click)="goToRefundDetail(item)">
+                                        <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                                        <td>{{ item.currencyName }}</td>
+                                        <td>{{ item.advancementSum | amountFormat }}</td>
+                                        <td>{{ item.refundItemTotal | amountFormat }}</td>
+                                        <td>
+                                            <label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusName }}</label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="tab-8" class="tab-pane" *ngIf="isRrhh">
                         <div class="panel-body">
                             <table class="table table-striped dataTable" role="grid" id="profileHistoryTable">
                                 <thead>
@@ -331,7 +370,7 @@
     </div>
 </div> 
 
-<ng2-modal [config]="businessHoursModalConfig" #businessHoursModal (accept)="updateBusinessHours()">
+<ng2-modal [config]="businessHoursModalConfig" #businessHoursModal (accept)="update()">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -365,5 +404,11 @@
     <div class="form-group">
         <label class="control-label">{{ 'allocationManagement.resources.manager' | translate }}</label>
         <ng-select [items]="managers" bindLabel="text" bindValue="id" [(ngModel)]="editModel.managerId"></ng-select>
+    </div>
+
+    <div class="form-group">
+        <icheck [(checked)]="editModel.hasCreditCard" >
+            <label style="padding-left:20px;">{{ 'allocationManagement.resources.hasCreditCard' | translate }}</label> 
+        </icheck>
     </div>
 </ng2-modal>  

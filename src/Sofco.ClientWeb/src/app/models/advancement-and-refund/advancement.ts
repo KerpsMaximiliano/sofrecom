@@ -32,8 +32,9 @@ export class Advancement extends FormGroup {
             currencyId: new FormControl({value: domain && domain.currencyId || null, disabled: isReadonly}, 
                 Validators.required),
 
-            description: new FormControl({value: domain && domain.description || null, disabled: isReadonly}, 
-                Validators.maxLength(1000)),
+            description: new FormControl({value: domain && domain.description || null, disabled: isReadonly}, [
+                Validators.required,
+                Validators.maxLength(1000)]),
             
             ammount: new FormControl({value: domain && domain.ammount || null, disabled: isReadonly}, [
                 Validators.required,
@@ -47,7 +48,7 @@ export class Advancement extends FormGroup {
             this.workflowStateType = domain.workflowStateType;
         }
     }
-
+ 
     handleSalaryForm(){
         if(this.controls.paymentForm.value == '2') {
             this.controls.paymentForm.setValue('1');

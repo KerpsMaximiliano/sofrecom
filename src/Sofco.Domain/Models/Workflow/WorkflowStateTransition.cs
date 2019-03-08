@@ -28,6 +28,8 @@ namespace Sofco.Domain.Models.Workflow
 
         public string ParameterCode { get; set; }
 
+        public string OnSuccessCode { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
         public int CreatedById { get; set; }

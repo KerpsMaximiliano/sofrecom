@@ -117,17 +117,80 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActualStateIsRequired" xml:space="preserve">
+    <value>workflow/workflow.actualStateIsRequired</value>
+  </data>
+  <data name="ActualStateNotFound" xml:space="preserve">
+    <value>workflow/workflow.actualStateNotFound</value>
+  </data>
+  <data name="AddSuccess" xml:space="preserve">
+    <value>workflow/workflow.addSuccess</value>
+  </data>
+  <data name="AddTransitionSuccess" xml:space="preserve">
+    <value>workflow/workflow.addTransitionSuccess</value>
+  </data>
+  <data name="AllRefundsMustHaveSameStatus" xml:space="preserve">
+    <value>workflow/workflow.allRefundsMustHaveSameStatus</value>
+  </data>
   <data name="CannotDoTransition" xml:space="preserve">
     <value>workflow/workflow.cannotDoTransition</value>
   </data>
   <data name="CommentsRequired" xml:space="preserve">
     <value>workflow/workflow.commentsRequired</value>
   </data>
+  <data name="CurrencyExchangeRequired" xml:space="preserve">
+    <value>workflow/workflow.currencyExchangeRequired</value>
+  </data>
+  <data name="DescriptionRequired" xml:space="preserve">
+    <value>workflow/workflow.descriptionRequired</value>
+  </data>
   <data name="EntityNull" xml:space="preserve">
     <value>workflow/workflow.entityNull</value>
   </data>
+  <data name="NextStateIsRequired" xml:space="preserve">
+    <value>workflow/workflow.nextStateIsRequired</value>
+  </data>
+  <data name="NextStateNotFound" xml:space="preserve">
+    <value>workflow/workflow.nextStateNotFound</value>
+  </data>
   <data name="ParametersNull" xml:space="preserve">
     <value>workflow/workflow.parametersNull</value>
+  </data>
+  <data name="StateCreated" xml:space="preserve">
+    <value>workflow/workflow.stateCreated</value>
+  </data>
+  <data name="StateDisabled" xml:space="preserve">
+    <value>workflow/workflow.stateDisabled</value>
+  </data>
+  <data name="StateEnabled" xml:space="preserve">
+    <value>workflow/workflow.stateEnabled</value>
+  </data>
+  <data name="StateNameRequired" xml:space="preserve">
+    <value>workflow/workflow.stateNameRequired</value>
+  </data>
+  <data name="StateNotFound" xml:space="preserve">
+    <value>workflow/workflow.stateNotFound</value>
+  </data>
+  <data name="StatesEquals" xml:space="preserve">
+    <value>workflow/workflow.statesEquals</value>
+  </data>
+  <data name="StateTextButtonRequired" xml:space="preserve">
+    <value>workflow/workflow.stateTextButtonRequired</value>
+  </data>
+  <data name="StateTypeRequired" xml:space="preserve">
+    <value>workflow/workflow.stateTypeRequired</value>
+  </data>
+  <data name="StateUpdated" xml:space="preserve">
+    <value>workflow/workflow.StateUpdated</value>
+  </data>
+  <data name="TransitionAlreadyExist" xml:space="preserve">
+    <value>workflow/workflow.transitionAlreadyExist</value>
+  </data>
+  <data name="TransitionDeleted" xml:space="preserve">
+    <value>workflow/workflow.transitionDeleted</value>
+  </data>
+  <data name="TransitionNotFound" xml:space="preserve">
+    <value>workflow/workflow.transitionNotFound</value>
   </data>
   <data name="TransitionParametersNull" xml:space="preserve">
     <value>workflow/workflow.transitionParametersNull</value>
@@ -135,7 +198,28 @@
   <data name="TransitionSuccess" xml:space="preserve">
     <value>workflow/workflow.transitionSuccess</value>
   </data>
+  <data name="TypeNotFound" xml:space="preserve">
+    <value>workflow/workflow.typeNotFound</value>
+  </data>
+  <data name="TypeRequired" xml:space="preserve">
+    <value>workflow/workflow.typeRequired</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>workflow/workflow.updateSuccess</value>
+  </data>
+  <data name="UpdateTransitionSuccess" xml:space="preserve">
+    <value>workflow/workflow.updateTransitionSuccess</value>
+  </data>
   <data name="UserHasNoAccess" xml:space="preserve">
     <value>workflow/workflow.userHasNoAccess</value>
+  </data>
+  <data name="VersionRequired" xml:space="preserve">
+    <value>workflow/workflow.versionRequired</value>
+  </data>
+  <data name="WorkflowIsRequired" xml:space="preserve">
+    <value>workflow/workflow.workflowIsRequired</value>
+  </data>
+  <data name="WorkflowNotFound" xml:space="preserve">
+    <value>workflow/workflow.workflowNotFound</value>
   </data>
 </root>

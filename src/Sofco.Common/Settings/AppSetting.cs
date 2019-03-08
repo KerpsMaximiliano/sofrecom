@@ -47,5 +47,37 @@
         public int CurrencyDolares { get; set; }
 
         public int CurrencyEuros { get; set; }
+
+        public int WorkFlowStatePaymentPending { get; set; }
+
+        public string RefundWorkflowTypeCode { get; set; }
+
+        public string ViaticumWorkflowTypeCode { get; set; }
+
+        public string SalaryWorkflowTypeCode { get; set; }
+
+        public string AmmountAPesos { get; set; }
+
+        public string AmmountADolares { get; set; }
+
+        public string AmmountAEuros { get; set; }
+
+        public string AmmountBPesos { get; set; }
+
+        public string AmmountBDolares { get; set; }
+
+        public string AmmountBEuros { get; set; }
+
+        public int SalaryWorkflowId { get; set; }
+
+        public int RefundWorkflowId { get; set; }
+
+        public int ViaticumWorkflowId { get; set; }
+
+        public int WorkflowStatusApproveId { get; set; }
+
+        public int WorkflowStatusFinalizedId { get; set; }
+
+        public int WorkflowStatusCurrentAccount { get; set; }
     }
 }

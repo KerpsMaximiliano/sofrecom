@@ -134,6 +134,18 @@
             "WorkingHoursPerDaysMax": "Tope jornada laboral",
             "CloseMonth": "Dia del cierre del mes",
             "ValidatePeriodCloseMonth": "Validar fecha de cierre"
+        },
+        "state": {
+            "admin": "Administración de Estados",
+            "title": "Estados",
+            "list": "Listado de Estados",
+            "edit": "Editar Estado",
+            "add": "Agregar Estado",
+            "state": "Estado",
+            "nameState": "Nombre Estado",
+            "textButton": "Texto Boton",
+            "type": "Tipo",
+            "active": "Activo"
         }
     },
     "billing":{
@@ -395,7 +407,7 @@
                 "province": "Provincia"
             },
             "histories": {
-                "createdDate": "Fecha Creación",
+                "createdDate": "Fecha Modificación",
                 "userName": "Usuario",
                 "comment": "Comentarios",
                 "solfacStatusFrom": "Estado inicial",
@@ -491,7 +503,7 @@
                 "description": "Descripción",
                 "active": "Activo"
             }
-        }
+        } 
     },
     "allocationManagement": {
         "title": "Gestión de Recursos",
@@ -535,6 +547,7 @@
             "grid": {
                 "analytic": "Analítica",
                 "employee": "Empleado",
+                "employeeNumber": "Legajo",
                 "boss": "Superior",
                 "manager":"Gerente",
                 "office": "Dirección",
@@ -577,7 +590,8 @@
             "endDate": "Fecha Baja",
             "reason": "Motivo",
             "comments": "Comentarios",
-            "manager": "Superior",
+            "manager": "Superior (Gerente/Director)",
+            "hasCreditCard": "Tarjeta de Credito",
             "user": "Usuario",
             "grid": {
                 "name": "Nombre",
@@ -613,7 +627,8 @@
                 "email": "Email",
                 "holidaysPending": "Vacaciones Pendientes (habiles)",
                 "holidaysPendingByLaw": "Vacaciones Pendientes",
-                "seniority": "Seniority"
+                "seniority": "Seniority",
+                "bank": "Banco"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha.",
             "phone": "Teléfono",
@@ -767,7 +782,8 @@
             "delegate": {
                 "viewTitle": "Delegar Autorizar Licencia",
                 "delegateAction": "Delegar"
-            }
+            },
+            "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar"
         },
         "closeDate": {
             "title": "Fechas de Cierre",
@@ -932,6 +948,7 @@
         "monthYear": "Mes-Año",
         "month": "Periodo",
         "reference": "Referencia",
+        "bankHoursTitle": "Detalle de horas",
         "workTime": {
             "title": "Cargar Horas",
             "calendar": "Calendario",
@@ -1016,7 +1033,7 @@
             "analytic": "Analítica",
             "employeeNumber": "Legajo",
             "employeeName": "Nombre",
-            "businessHours": "Horas laborables",
+            "businessHours": "Horas cargadas",
             "approvedHours": "Horas aprobadas",
             "licenseHours": "Horas licencias",
             "sentHours": "Horas pendientes de aprobación",
@@ -1044,8 +1061,8 @@
         "add": "Solicitud",
         "edit": "Edición Solicitud",
         "title": "Adelantos",
+        "advancementName": "Adelanto",
         "userApplicant": "Solicitante",
-        "analytic": "Analitica",
         "paymentForm": "Forma de cobro",
         "type": "Tipo de Adelanto",
         "ownBank": "Cuenta Sueldo",
@@ -1062,22 +1079,90 @@
         "detail": "Detalle",
         "status": "Estado",
         "ammount": "Monto",
-        "search": "Busqueda",
+        "search": "Adelantos",
         "monthsReturn": "Mes de Devolución",
-        "finalized": "Finalizados",
+        "finalized": "Aprobados o Finalizados",
         "inProcess": "En proceso de aprobación",
+        "paymentPending": "Pendientes de deposito",
         "dateSince": "Fecha desde",
         "dateTo": "Fecha hasta",
         "searchParameters": "Parametros de busqueda",
         "listTitle": "Listado de Adelantos",
         "updateDate": "Fecha de Modificación",
         "creationDate": "Fecha de Creación",
+        "others": "Moneda extranjera",
+        "bank": "Banco",
+        "advancementRelated": "Adelantos relacionados",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",
             "comment": "Comentarios",
             "statusFrom": "Estado inicial",
             "statusTo": "Estado final"
-        }   
+        }    
+    },
+    "refund": {
+        "addTitle": "Solicitud Reintegro",
+        "add": "Solicitud",
+        "edit": "Edición Solicitud",
+        "title": "Reintegros",
+        "refundName": "Reintegro",
+        "userApplicant": "Solicitante",
+        "ownBank": "Cuenta Sueldo",
+        "foreignCurrency": "Moneda extranjera", 
+        "currency":"Moneda",
+        "addDetail": "Agregar detalle",
+        "details": "Detalles",
+        "date": "Fecha",
+        "description": "Detalle de concepto",
+        "detail": "Detalle",
+        "status": "Estado",
+        "amount": "Monto",
+        "search": "Reintegros",
+        "analytic": "Analítica",
+        "advancements": "Adelantos",
+        "finalized": "Finalizados",
+        "inProcess": "En proceso de aprobación",
+        "dateSince": "Fecha desde",
+        "dateTo": "Fecha hasta",
+        "searchParameters": "Parametros de busqueda",
+        "listTitle": "Listado de Reintegros",
+        "updateDate": "Fecha de Modificación",
+        "creationDate": "Fecha de Creación",
+        "applicationDate": "Fecha de solicitud",
+        "superior": "Superior",
+        "refundTotal": "Total reintegros",
+        "itemTotal": "Total items",
+        "advancementSum": "Total adelantos",
+        "companyRefund": "Reembolso empresa",
+        "userRefund": "Reembolso usuario",
+        "creditCard": "Tarjeta de Crédito",
+        "needParameters": "Seleccione parámetros o seleccione buscar para ver todos",
+        "files": "Archivos",
+        "totals": "Totales",
+        "totalAmount": "Monto Total",
+        "noDetailsInfo": "No se han cargado detalles. Por favor agregue un item para poder continuar",
+        "refundsRelated": "Reintegros relacionados",
+        "currencyExchange": "Cotización",
+        "lastRefund": "Ultimo reintegro",
+        "histories": {
+            "createdDate": "Fecha Creación",
+            "userName": "Usuario",
+            "comment": "Comentarios",
+            "statusFrom": "Estado inicial",
+            "statusTo": "Estado final"
+        }
+    },
+    "advRefSetting": {
+        "title": "Configuración",
+        "ammounts": "Montos",
+        "type": "Tipo",
+        "ammountAPesos": "Monto A Pesos",
+        "ammountADolares": "Monto A Dolares",
+        "ammountAEuros": "Monto A Euros",
+        "ammountBPesos": "Monto B Pesos",
+        "ammountBDolares": "Monto B Dolares",
+        "ammountBEuros": "Monto B Euros",
+        "currentAccount": "Cuenta Corriente"
     }
-}  
+}
