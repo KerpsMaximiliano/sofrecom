@@ -7,7 +7,8 @@ import { RefundService } from "app/services/advancement-and-refund/refund.servic
 
 @Component({
     selector: 'refund-add',
-    templateUrl: './refund-add.component.html'
+    templateUrl: './refund-add.component.html',
+    styleUrls: ['./refund-add.component.scss']
 })
 export class RefundAddComponent implements OnInit, OnDestroy {
     @ViewChild('form') form;

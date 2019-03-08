@@ -21,5 +21,6 @@
     "creditCardRequired": "La tarjeta de crédito es requerida",
     "creditCardNotFound": "Tarjeta de crédito no encontrada",
     "cannotDelete": "Solo se puede borrar en estado borrador o rechazado",
-    "deleteSuccess": "El reintegro fue eliminado correctamente"
+    "deleteSuccess": "El reintegro fue eliminado correctamente",
+    "existLastRefund": "Ya existe un ultimo reintegro relacionado a los adelantos seleccionados"
 }

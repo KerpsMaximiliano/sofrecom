@@ -1,41 +1,40 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-12">
-            <h2> {{'refund.addTitle' | translate }} </h2>
-            <ol class="breadcrumb">
-                <li>
-                    <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
-                </li>
-                <li>
-                    {{'refund.title' | translate }}
-                </li>
-                <li class="active">
-                    <strong> {{'refund.add' | translate }} </strong>
-                </li>
-            </ol>
-        </div>
+    <div class="col-lg-12">
+        <h2> {{'refund.addTitle' | translate }} </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'refund.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> {{'refund.add' | translate }} </strong>
+            </li>
+        </ol>
     </div>
-     
-    <div class="wrapper wrapper-content animated fadeInRight" id="contentWrapper">
-        
-        <div class="alert alert-gaps-error" style="margin-bottom: 10px" *ngIf="!canLoad">
-            <i class="fa fa-warning"></i>
-            {{ i18nService.translate('advancementAndRefund/refund','cannotLoad') }}
-        </div>
+</div>
     
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <refund-form #form [mode]="'add'"></refund-form>
-                    </div>
-                    <div class="ibox-footer text-center" *ngIf="canLoad">
-                        <button [disabled]="!form.canSave()" (click)="add()" class="btn btn-primary" type="button">
-                            {{'ACTIONS.save' | translate }} 
-                            <i class="fa fa-save"></i> 
-                        </button>
-                    </div>
+<div class="wrapper wrapper-content animated fadeInRight" id="contentWrapper">
+    
+    <div class="alert alert-gaps-error" *ngIf="!canLoad">
+        <i class="fa fa-warning"></i>
+        {{ i18nService.translate('advancementAndRefund/refund','cannotLoad') }}
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <refund-form #form [mode]="'add'"></refund-form>
+                </div>
+                <div class="ibox-footer text-center" *ngIf="canLoad">
+                    <button [disabled]="!form.canSave()" (click)="add()" class="btn btn-primary" type="button">
+                        {{'ACTIONS.save' | translate }} 
+                        <i class="fa fa-save"></i> 
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    
+</div>

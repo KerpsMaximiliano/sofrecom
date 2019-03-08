@@ -52,6 +52,10 @@
 
         public string RefundWorkflowTypeCode { get; set; }
 
+        public string ViaticumWorkflowTypeCode { get; set; }
+
+        public string SalaryWorkflowTypeCode { get; set; }
+
         public string AmmountAPesos { get; set; }
 
         public string AmmountADolares { get; set; }

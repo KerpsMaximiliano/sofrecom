@@ -84,7 +84,7 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
     search(parameters){
         this.modelFiltered = [];
 
-        if(!parameters.resourceId && !parameters.typeId && !parameters.dateSince && !parameters.dateTo){
+        if(!parameters.resourceId && !parameters.typeId && !parameters.dateSince && !parameters.dateTo && !parameters.stateId){
             this.modelFiltered = this.model;
         }
         else{
@@ -100,6 +100,12 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
 
                 if(parameters.typeId && parameters.typeId > 0){
                     if(parameters.typeId != item.type){
+                        addItem = false;
+                    }
+                }
+
+                if(parameters.stateId && parameters.stateId > 0){
+                    if(parameters.stateId != item.statusId){
                         addItem = false;
                     }
                 }

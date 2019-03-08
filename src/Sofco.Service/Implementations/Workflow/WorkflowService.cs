@@ -358,7 +358,9 @@ namespace Sofco.Service.Implementations.Workflow
         {
             if (entity is Refund refund)
             {
-                if (refund.CurrencyId == appSetting.CurrencyPesos && appSetting.WorkFlowStatePaymentPending == transition.NextWorkflowStateId)
+                if (refund.CurrencyId == appSetting.CurrencyPesos && 
+                    (appSetting.WorkFlowStatePaymentPending == transition.NextWorkflowStateId || 
+                     appSetting.WorkflowStatusFinalizedId == transition.NextWorkflowStateId))
                 {
                     transition.ParameterCode = string.Empty;
                 }

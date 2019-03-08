@@ -3,7 +3,7 @@ import { WorkflowStateType } from "../enums/workflowStateType";
 
 export class Refund extends FormGroup {
 
-    private id: number;
+    public id: number;
     public workflowStateType: WorkflowStateType;
     public currencyExchange: number;
 
