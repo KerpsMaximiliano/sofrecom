@@ -22,7 +22,7 @@
 
             <div class="ibox-tools">
                 <a [routerLink]="['/admin/states/add']" class="btn btn-primary btn-sm btn-link"
-                    *ngIf="menuService.hasFunctionality('TASKS', 'EDIT')">
+                    *ngIf="menuService.hasFunctionality('WORKF', 'EDIT')">
                     {{ 'ACTIONS.ADD' | translate }}
                     <i class="fa fa-plus"></i>
                 </a>
@@ -49,11 +49,11 @@
                         </td>
                         <td class="text-center column-xs">
                              <button class="btn btn-warning btn-xs" (click)="goToDetail(state)"
-                                *ngIf="menuService.hasFunctionality('TASKS', 'EDIT')">
+                                *ngIf="menuService.hasFunctionality('WORKF', 'UPDAT')">
                                 <i class="fa fa-edit"></i>
                             </button>
                             <button class="btn btn-xs" [ngClass]="(state.active)?'btn-danger':'btn-success'"
-                                (click)="habInhabClick(state)" *ngIf="menuService.hasFunctionality('TASKS', 'HABIN')">
+                                (click)="habInhabClick(state)" *ngIf="menuService.hasFunctionality('WORKF', 'HABIN')">
                                 <span [ngClass]="(state.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
                             </button>
                         </td>

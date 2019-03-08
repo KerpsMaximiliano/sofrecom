@@ -84,9 +84,9 @@ const ADMIN_ROUTER: Routes = [
       ]},
 
       { path: "states", children: [
-        { path: '', component: WorkflowStateListComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "QUERY" } },
-        { path: 'add', component: WorkflowStateAddComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "ADD" } },
-        { path: ':id/edit', component: WorkflowStateEditComponent, canActivate: [AuthGuard], data: { module: "TASKS", functionality: "EDIT" } }
+        { path: '', component: WorkflowStateListComponent, canActivate: [AuthGuard], data: { module: "WORKF", functionality: "QUERY" } },
+        { path: 'add', component: WorkflowStateAddComponent, canActivate: [AuthGuard], data: { module: "WORKF", functionality: "ADD" } },
+        { path: ':id/edit', component: WorkflowStateEditComponent, canActivate: [AuthGuard], data: { module: "WORKF", functionality: "UPDAT" } }
       ]},
 
       { path: 'settings', children: [
