@@ -178,11 +178,83 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateCreated.
+        /// </summary>
+        public static string StateCreated {
+            get {
+                return ResourceManager.GetString("StateCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a admin/workflow.StateDisabled.
+        /// </summary>
+        public static string StateDisabled {
+            get {
+                return ResourceManager.GetString("StateDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a admin/workflow.StateEnabled.
+        /// </summary>
+        public static string StateEnabled {
+            get {
+                return ResourceManager.GetString("StateEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateNameRequired.
+        /// </summary>
+        public static string StateNameRequired {
+            get {
+                return ResourceManager.GetString("StateNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a admin/workflow.StateNotFound.
+        /// </summary>
+        public static string StateNotFound {
+            get {
+                return ResourceManager.GetString("StateNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a workflow/workflow.statesEquals.
         /// </summary>
         public static string StatesEquals {
             get {
                 return ResourceManager.GetString("StatesEquals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateTextButtonRequired.
+        /// </summary>
+        public static string StateTextButtonRequired {
+            get {
+                return ResourceManager.GetString("StateTextButtonRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.stateTypeRequired.
+        /// </summary>
+        public static string StateTypeRequired {
+            get {
+                return ResourceManager.GetString("StateTypeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workflow/workflow.StateUpdated.
+        /// </summary>
+        public static string StateUpdated {
+            get {
+                return ResourceManager.GetString("StateUpdated", resourceCulture);
             }
         }
         

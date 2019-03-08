@@ -21,7 +21,7 @@
             <h4 class="pull-left">{{ 'ADMIN.state.list' | translate }}</h4>
 
             <div class="ibox-tools">
-                <a [routerLink]="['/admin/state/add']" class="btn btn-primary btn-sm btn-link"
+                <a [routerLink]="['/admin/states/add']" class="btn btn-primary btn-sm btn-link"
                     *ngIf="menuService.hasFunctionality('TASKS', 'EDIT')">
                     {{ 'ACTIONS.ADD' | translate }}
                     <i class="fa fa-plus"></i>
@@ -32,9 +32,10 @@
             <table class="table table-striped" id="stateTable" width="100%">
                 <thead>
                     <tr>
-                        <th>Nombre Estado</th>
-                        <th>Nombre de la Acción</th>
-                        <th>Color</th>
+                        <th>{{ 'ADMIN.state.nameState' | translate }}</th>
+                        <th>{{ 'ADMIN.state.textButton' | translate }}</th>
+                        <th>{{ 'ADMIN.state.type' | translate }}</th>
+                        <th class="text-center column-xs">{{ 'ADMIN.state.active' | translate }}</th>
                         <th class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
@@ -42,22 +43,19 @@
                     <tr *ngFor="let state of states">
                         <td>{{ state.name }}</td>
                         <td>{{ state.actionName }}</td>
-                        <td>color boton</td>
+                        <td>{{ state.type }}</td>
                         <td class="text-center column-xs">
-                                <button class="btn btn-warning btn-xs">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                            <button class="btn btn-xs" class="btn-danger">
-                                <span class="fa fa-trash"></span>
-                            </button>
-                            <!-- <button class="btn btn-warning btn-xs" (click)="goToDetail(task)"
+                            <span class="fa" [ngClass]="state.active ? 'fa-check text-success' : 'fa-close text-danger'"></span>
+                        </td>
+                        <td class="text-center column-xs">
+                             <button class="btn btn-warning btn-xs" (click)="goToDetail(state)"
                                 *ngIf="menuService.hasFunctionality('TASKS', 'EDIT')">
                                 <i class="fa fa-edit"></i>
                             </button>
-                            <button class="btn btn-xs" [ngClass]="(task.active)?'btn-danger':'btn-success'"
-                                (click)="habInhabClick(task)" *ngIf="menuService.hasFunctionality('TASKS', 'HABIN')">
-                                <span [ngClass]="(task.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
-                            </button> -->
+                            <button class="btn btn-xs" [ngClass]="(state.active)?'btn-danger':'btn-success'"
+                                (click)="habInhabClick(state)" *ngIf="menuService.hasFunctionality('TASKS', 'HABIN')">
+                                <span [ngClass]="(state.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
+                            </button>
                         </td>
                     </tr>
                 </tbody>

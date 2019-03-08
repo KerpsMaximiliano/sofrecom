@@ -19,5 +19,13 @@
     "currencyExchangeRequired": "La cotización es requerida",
     "statesEquals": "Los estados no pueden ser iguales",
     "transitionAlreadyExist": "Ya existe una transición con el estado actual y proximo seleccionados",
-    "allRefundsMustHaveSameStatus": "Alguno de los reintegros relacionados se encuentra en proceso de aprobación"
+    "allRefundsMustHaveSameStatus": "Alguno de los reintegros relacionados se encuentra en proceso de aprobación",
+    "stateDisabled": "El estado fue deshabilitada correctamente",
+    "stateEnabled": "El estado fue habilitada correctamente",
+    "stateNotFound": "Estado no encontrado",
+    "stateNameRequired": "El nombre de estado es requerido",
+    "stateTextButtonRequired": "El texto del boton es requerido",
+    "stateTypeRequired": "El tipo es requerido",
+    "stateUpdated": "El estado fue actualizado exitosamente",
+    "stateCreated": "Estado creado exitosamente"
 }

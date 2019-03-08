@@ -59,6 +59,8 @@ import { UtilsService } from 'app/services/common/utils.service';
 import { WorkflowTransitionFormComponent } from './workflow/transition-form/transition-form';
 import { WorkflowTransitionEditComponent } from './workflow/transition-edit/transition-edit';
 import { WorkflowStateListComponent } from './workflow/state-list/state-list.component';
+import { WorkflowStateAddComponent } from './workflow/state-add/state-add.component';
+import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
@@ -66,7 +68,7 @@ import { WorkflowStateListComponent } from './workflow/state-list/state-list.com
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
                  TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent, WorkflowTransitionEditComponent,
                  SectorListComponent, WorkflowListComponent, WorkflowDetailComponent, WorkflowAddComponent, WorkflowTransitionAddComponent, WorkflowTransitionFormComponent,
-                 WorkflowStateListComponent],
+                 WorkflowStateListComponent, WorkflowStateAddComponent, WorkflowStateEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
                  SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule],

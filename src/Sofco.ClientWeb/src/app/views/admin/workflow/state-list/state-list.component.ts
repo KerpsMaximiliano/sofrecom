@@ -44,9 +44,23 @@ export class WorkflowStateListComponent implements OnInit, OnDestroy {
          this.getSubscrip = this.workflowService.getWorkflowStates().subscribe(response => {
              this.messageService.closeLoading();
              this.states = response;
-            debugger;
          },
          error => this.messageService.closeLoading());
+    }
+
+    habInhabClick(state){        
+        this.messageService.showLoading();
+        var newState = !state.active;
+
+        this.activateSubscrip = this.workflowService.activeWorkflowState(state.id, newState).subscribe(
+            data => {
+                state.active = newState;
+            },
+            error => this.messageService.closeLoading());        
+    }
+
+    goToDetail(task){
+        this.router.navigate([`/admin/states/${task.id}/edit`]);
     }
 
 }
