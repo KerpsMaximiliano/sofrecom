@@ -160,16 +160,16 @@
     <value>workflow/workflow.stateCreated</value>
   </data>
   <data name="StateDisabled" xml:space="preserve">
-    <value>admin/workflow.StateDisabled</value>
+    <value>workflow/workflow.stateDisabled</value>
   </data>
   <data name="StateEnabled" xml:space="preserve">
-    <value>admin/workflow.StateEnabled</value>
+    <value>workflow/workflow.stateEnabled</value>
   </data>
   <data name="StateNameRequired" xml:space="preserve">
     <value>workflow/workflow.stateNameRequired</value>
   </data>
   <data name="StateNotFound" xml:space="preserve">
-    <value>admin/workflow.StateNotFound</value>
+    <value>workflow/workflow.stateNotFound</value>
   </data>
   <data name="StatesEquals" xml:space="preserve">
     <value>workflow/workflow.statesEquals</value>

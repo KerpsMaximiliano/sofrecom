@@ -187,7 +187,7 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/workflow.StateDisabled.
+        ///   Busca una cadena traducida similar a workflow/workflow.stateDisabled.
         /// </summary>
         public static string StateDisabled {
             get {
@@ -196,7 +196,7 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/workflow.StateEnabled.
+        ///   Busca una cadena traducida similar a workflow/workflow.stateEnabled.
         /// </summary>
         public static string StateEnabled {
             get {
@@ -214,7 +214,7 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a admin/workflow.StateNotFound.
+        ///   Busca una cadena traducida similar a workflow/workflow.stateNotFound.
         /// </summary>
         public static string StateNotFound {
             get {
