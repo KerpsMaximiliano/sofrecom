@@ -30,7 +30,7 @@ namespace Sofco.WebApi.Migrations
                 schema: "app",
                 table: "Advancements",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 2);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Advancements_WorkflowId",

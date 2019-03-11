@@ -181,8 +181,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     : new List<int>();
             }
 
-            return roleManager.IsDirector()
-                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly().Select(s => s.Id).ToList()
+            return roleManager.IsDirector() 
+                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly().Select(s => s.Id).ToList() 
                 : availableAnalyticIds;
         }
 

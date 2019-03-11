@@ -56,8 +56,7 @@
                                             [attr.data-analyticId]="taskItem.analyticId"
                                             [attr.data-hours]="taskItem.hours"
                                             [attr.data-reference]="taskItem.reference"
-                                            (click)="showRecentEditModal(taskItem)"
-                                            >
+                                            (click)="showRecentEditModal(taskItem)">
                                             {{ taskItem.task }} - {{ taskItem.hours }} hs
                                         </div>
                                         <a class="task-item-edit" (click)="showRecentEditModal(taskItem)">

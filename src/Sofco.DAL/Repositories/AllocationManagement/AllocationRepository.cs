@@ -169,8 +169,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Allocations
                 .Where(x => x.EmployeeId == employeeId
-                            && x.Percentage > 0
-                            && x.StartDate.Date >= startDate.Date
+                            && x.Percentage > 0 
+                            && x.StartDate.Date >= startDate.Date 
                             && x.StartDate.Date <= endDate.Date)
                 .ToList();
         }

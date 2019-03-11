@@ -166,6 +166,8 @@ namespace Sofco.Framework.Mail
             {
                 client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 
+                logger.LogError($"server: {smtpServer}, puerto: {smtpPort}, domain: {smtpDomain}");
+
                 client.Connect(smtpServer, smtpPort, false);
                 client.LocalDomain = smtpDomain;
                 client.AuthenticationMechanisms.Remove("XOAUTH2");

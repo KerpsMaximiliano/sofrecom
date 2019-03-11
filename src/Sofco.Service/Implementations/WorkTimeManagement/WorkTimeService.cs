@@ -509,6 +509,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     .ToList();
             }
 
+            if (employeeId.HasValue && employeeId.Value > 0)
+            {
+                userApprovers = userApprovers
+                    .Where(s => s.EmployeeId == employeeId.Value)
+                    .ToList();
+            }
+
             if (!userApprovers.Any()) return result;
 
             var employeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
