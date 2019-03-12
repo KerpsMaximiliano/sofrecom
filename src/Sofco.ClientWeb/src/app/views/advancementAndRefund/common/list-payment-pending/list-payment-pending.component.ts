@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
     selector: 'list-payment-pending',
@@ -32,6 +33,7 @@ export class ListPaymentPendingComponent  {
     public typeId: number;
 
     constructor(private advancementService: AdvancementService,
+                public menuService: MenuService,
                 private refundService: RefundService,
                 private datatableService: DataTableService,
                 private workflowService: WorkflowService,
