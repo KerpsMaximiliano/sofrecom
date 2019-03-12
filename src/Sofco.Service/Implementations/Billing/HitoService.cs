@@ -68,11 +68,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = ValidateHitoSplitted(hito);
 
-            var currency = ValdiateCurrency(hito, response);
-
             if (response.HasErrors()) return response;
-
-            hito.MoneyId = environment.EnvironmentName.Equals("azgap01wp") ? currency.CrmProductionId : currency.CrmDevelopmentId;
 
             crmInvoicingMilestoneService.Create(hito, response);
 
@@ -107,6 +103,7 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response();
 
+            HitoValidatorHelper.ValidateCurrency(hito, response);
             HitoValidatorHelper.ValidateName(hito, response);
             HitoValidatorHelper.ValidateDate(hito, response);
             HitoValidatorHelper.ValidateMonth(hito, response);
@@ -114,18 +111,6 @@ namespace Sofco.Service.Implementations.Billing
             HitoValidatorHelper.ValidateOpportunity(hito, response);
 
             return response;
-        }
-
-        private Currency ValdiateCurrency(HitoParameters hito, Response response)
-        {
-            var currency = unitOfWork.UtilsRepository.GetCurrencies().SingleOrDefault(x => x.Id == Convert.ToInt32(hito.MoneyId));
-
-            if (currency == null)
-            {
-                response.AddError(Resources.Common.CurrencyRequired);
-            }
-
-            return currency;
         }
     }
 }
