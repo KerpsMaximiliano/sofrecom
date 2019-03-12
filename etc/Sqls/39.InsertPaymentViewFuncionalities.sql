@@ -4,7 +4,7 @@ DECLARE @IdAdvan INT = (SELECT m.Id FROM app.Modules m WHERE	m.Code = 'ADVAN')
 INSERT INTO [app].[Functionalities]
            ([Active], [Code], [Description], [ModuleId])
      VALUES
-           (1, N'PAYMENT-PENDING-VIEW', N'Listado de pagos Pendientes de deposito', @IdAdvan)
+           (1, N'PAYMENT-PENDING-VIEW', N'Listado de pagos pendientes de deposito', @IdAdvan)
 		   
 INSERT INTO [app].[Functionalities]
            ([Active], [Code], [Description], [ModuleId])
