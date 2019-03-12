@@ -22,6 +22,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     @ViewChild('selectedFile') selectedFile: any;
     @ViewChild('workflow') workflow;
     @ViewChild('history') history;
+    @ViewChild('refundRelated') refundRelated;
 
     public entityId: number;
     public actualStateId: number;
@@ -68,6 +69,10 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
                     entityController: "refund",
                     entityId: response.data.id,
                     actualStateId: response.data.statusId
+                }
+
+                if(response.data.advancementIds && response.data.advancementIds.length > 0){
+                    this.refundRelated.init(response.data.advancementIds);
                 }
 
                 this.workflow.init(model);
