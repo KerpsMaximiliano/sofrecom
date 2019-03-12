@@ -59,12 +59,12 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
     }
 
     save(){
-        var model = this.hito;
+        let model = Object.assign({}, this.hito);
 
         var currency = this.currencies.find(x => x.id == this.hito.moneyId);
         model.moneyId = currency.crmId;
 
-        this.subscrip = this.projectService.createNewHito(this.hito).subscribe(() => {
+        this.subscrip = this.projectService.createNewHito(model).subscribe(() => {
             this.newHitoModal.hide();
             if (this.hitosReload.observers.length > 0) {
                 this.hitosReload.emit();
