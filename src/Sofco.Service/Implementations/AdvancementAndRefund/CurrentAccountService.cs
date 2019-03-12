@@ -62,7 +62,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                     foreach (var currencyDiccionaryKey in currencyDiccionary.Keys)
                     {
-                        var refundAux = refunds.FirstOrDefault(x => x.CurrencyId == currencyDiccionaryKey);
+                        var refundAux = refunds.FirstOrDefault(x => x.CurrencyId == currencyDiccionaryKey && x.UserApplicantId == key);
 
                         if (refundAux == null) continue;
 
