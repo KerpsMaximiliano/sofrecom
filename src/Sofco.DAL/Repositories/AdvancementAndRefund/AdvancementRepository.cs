@@ -137,10 +137,10 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             context.Entry(advancement).Property("StatusId").IsModified = true;
         }
 
-        public Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByAdvancementId(int id)
+        public Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByAdvancementId(IList<int> ids)
         {
             var refundIds = context.AdvancementRefunds
-                .Where(x => x.AdvancementId == id)
+                .Where(x => ids.Contains(x.AdvancementId))
                 .Select(x => x.RefundId)
                 .Distinct()
                 .ToList();

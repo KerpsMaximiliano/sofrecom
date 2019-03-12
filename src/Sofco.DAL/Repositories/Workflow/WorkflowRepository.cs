@@ -107,7 +107,7 @@ namespace Sofco.DAL.Repositories.Workflow
 
         public IList<WorkflowState> GetStates()
         {
-            return context.WorkflowStates.ToList().AsReadOnly();
+            return context.WorkflowStates.Where(x => x.Active).ToList().AsReadOnly();
         }
 
         public WorkflowStateTransition GetTransition(int id)

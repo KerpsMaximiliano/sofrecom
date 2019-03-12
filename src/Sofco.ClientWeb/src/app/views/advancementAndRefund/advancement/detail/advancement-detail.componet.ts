@@ -16,6 +16,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
     @ViewChild('form') form;
     @ViewChild('workflow') workflow;
     @ViewChild('history') history;
+    @ViewChild('refundRelated') refundRelated;
 
     public entityId: number;
     public actualStateId: number;
@@ -35,6 +36,8 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
         this.entityId = routeParams.id;
 
         if (routeParams.id) {
+            this.refundRelated.init([routeParams.id]);
+
             this.messageService.showLoading();
 
             this.getSubscrip = this.advancementService.get(routeParams.id).subscribe(response => {

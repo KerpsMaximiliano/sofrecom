@@ -1,6 +1,5 @@
-import { Component, OnDestroy, Input, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { DataTableService } from '../../../../services/common/datatable.service';
 import { WorkflowStateType } from 'app/models/enums/workflowStateType';
 import { AdvancementService } from 'app/services/advancement-and-refund/advancement.service';
 import { Router } from '@angular/router';
@@ -9,7 +8,7 @@ import { Router } from '@angular/router';
   selector: 'refunds-related',
   templateUrl: './refunds-related.html'
 })
-export class RefundsRelatedComponent implements OnInit, OnDestroy {
+export class RefundsRelatedComponent implements OnDestroy {
 
     public refunds: any[] = new Array<any>();
     public advancements: any[] = new Array<any>();
@@ -21,24 +20,16 @@ export class RefundsRelatedComponent implements OnInit, OnDestroy {
 
     getSubscrip: Subscription;
 
-    @Input("id") id;
-    @Input("advancementAmount") advancementAmount: number = 0;
-
     constructor(private advancementService: AdvancementService,
-                private router: Router,
-                private datatableService: DataTableService) {
-    }
-
-    ngOnInit(): void {
-        this.get();
+                private router: Router) {
     }
 
     ngOnDestroy(){
         if(this.getSubscrip) this.getSubscrip.unsubscribe();
     }
 
-    get(){
-        this.getSubscrip = this.advancementService.getRefunds(this.id).subscribe(response => {
+    init(ids){
+        this.getSubscrip = this.advancementService.getResume(ids).subscribe(response => {
             this.refunds = response.data.refunds;
             this.advancements = response.data.advancements;
 

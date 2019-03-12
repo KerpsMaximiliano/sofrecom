@@ -77,6 +77,16 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
 
         this.datatableService.initialize(params);
 
+        setTimeout(() => {
+            $("#purchaseOrderTable_wrapper").css("float","left");
+            $("#purchaseOrderTable_wrapper").css("padding-bottom","50px");
+            $("#purchaseOrderTable_filter label").addClass('search-filter');
+            $(".html5buttons").addClass('export-buttons');
+            $("#purchaseOrderTable_paginate").addClass('table-pagination');
+            $("#purchaseOrderTable_length").css("margin-right","10px");
+            $("#purchaseOrderTable_info").css("padding-top","4px");
+        }, 500);
+
         this.updateTableDetail();
     }
 

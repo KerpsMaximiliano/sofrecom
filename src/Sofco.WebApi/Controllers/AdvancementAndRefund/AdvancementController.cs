@@ -122,10 +122,10 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
-        [HttpGet("{id}/refunds")]
-        public IActionResult GetRefunds(int id)
+        [HttpPost("resume")]
+        public IActionResult GetResume([FromBody] List<int> ids)
         {
-            var response = advancementService.GetRefunds(id);
+            var response = advancementService.GetResume(ids);
 
             return this.CreateResponse(response);
         }

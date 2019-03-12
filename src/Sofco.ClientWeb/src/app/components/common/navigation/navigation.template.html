@@ -23,7 +23,7 @@
           <li [ngClass]="{active: activeRoute('sectors')}" *ngIf="menuService.hasFunctionality('SECTO', 'QUERY')"><a [routerLink]="['/admin/sectors']">{{ 'ADMIN.sector.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('states')}" *ngIf="menuService.hasFunctionality('WORKF', 'QUERY')"><a [routerLink]="['/admin/states']">Estados</a></li>
           <li [ngClass]="{active: activeRoute('settings')}"  *ngIf="menuService.hasFunctionality('PARMS', 'UPDAT')"><a [routerLink]="['/admin/settings']">{{'ADMIN.settings.title' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('workflows')}"><a [routerLink]="['/admin/workflows']">Workflows</a></li>
+          <li [ngClass]="{active: activeRoute('workflows')}" *ngIf="menuService.hasFunctionality('WORKF', 'QUERY')"><a [routerLink]="['/admin/workflows']">Workflows</a></li>
         </ul>
       </li>
  
