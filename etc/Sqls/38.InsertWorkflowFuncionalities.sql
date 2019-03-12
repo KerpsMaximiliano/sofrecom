@@ -12,7 +12,7 @@ INSERT INTO [app].[Functionalities]
 INSERT INTO [app].[Functionalities]
            ([Active], [Code], [Description], [ModuleId])
      VALUES
-           (1, N'ALTA', N'Alta Workflow', @IdWorkflow)
+           (1, N'ADD', N'Alta Workflow', @IdWorkflow)
 
 INSERT INTO [app].[Functionalities]
            ([Active], [Code], [Description], [ModuleId])

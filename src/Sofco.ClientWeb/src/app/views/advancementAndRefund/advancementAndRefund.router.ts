@@ -13,7 +13,7 @@ const ADVANCEMENT_AND_REFUND_ROUTER: Routes = [
         path: "advancement",
         children: [
             { path: "search", component: AdvancementSearchComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "QUERY" }  },
-            { path: "paymentPending", component: ListPaymentPendingComponent, canActivate: [AuthGuard], data: { group: "DAF"  } },
+            { path: "paymentPending", component: ListPaymentPendingComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "PAYMENT-PENDING-VIEW" } },
             { path: ":id", component: AdvancementDetailComponent, canActivate: [AuthGuard] }
         ]},
     {
