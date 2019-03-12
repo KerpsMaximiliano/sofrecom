@@ -45,5 +45,13 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.AddError(Resources.Billing.Project.DateRequired);
             }
         }
+
+        public static void ValidateCurrency(HitoParameters hito, Response response)
+        {
+            if (string.IsNullOrWhiteSpace(hito.MoneyId))
+            {
+                response.AddError(Resources.Common.CurrencyRequired);
+            }
+        }
     }
 }

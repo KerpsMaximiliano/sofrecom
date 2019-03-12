@@ -8,9 +8,7 @@ namespace Sofco.Domain.Utils
     {
         public IList<Solfac> Solfacs { get; set; }
 
-        public string CrmProductionId { get; set; }
-
-        public string CrmDevelopmentId { get; set; }
+        public string CrmId { get; set; }
 
         public ICollection<PurchaseOrderAmmountDetail> AmmountDetails { get; set; }
 

@@ -29,7 +29,7 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
 
   public hito: NewHito = new NewHito();
 
-  public currencies: Option[] = new Array();
+  public currencies: any[] = new Array();
 
     constructor(private utilsService: UtilsService,
     private projectService: ProjectService) {}
@@ -59,7 +59,12 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
     }
 
     save(){
-        this.subscrip = this.projectService.createNewHito(this.hito).subscribe(() => {
+        let model = Object.assign({}, this.hito);
+
+        var currency = this.currencies.find(x => x.id == this.hito.moneyId);
+        model.moneyId = currency.crmId;
+
+        this.subscrip = this.projectService.createNewHito(model).subscribe(() => {
             this.newHitoModal.hide();
             if (this.hitosReload.observers.length > 0) {
                 this.hitosReload.emit();

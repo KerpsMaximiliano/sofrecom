@@ -24,6 +24,7 @@ namespace Sofco.Service.Implementations.Rrhh
             this.unitOfWork = unitOfWork;
             this.appSetting = appSetting.Value;
         }
+
         public void GenerateWorkTimes(License license)
         {
             var startDate = license.StartDate;
