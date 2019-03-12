@@ -64,7 +64,7 @@
                 <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
                 <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
 
-                <button [disabled]="noneResourseSelected()" class="btn btn-primary btn-sm" (click)="approveAll()">{{ 'ACTIONS.approveSelected' | translate }} <i class="fa fa-plus"></i></button>  
+                <button *ngIf="menuService.hasFunctionality('ADVAN', 'PP-MASIVE-APPROVAL')" [disabled]="noneResourseSelected()" class="btn btn-primary btn-sm" (click)="approveAll()">{{ 'ACTIONS.approveSelected' | translate }} <i class="fa fa-plus"></i></button>  
             </div>
         </div>
         <div class="ibox-content">
