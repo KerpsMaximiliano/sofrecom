@@ -164,5 +164,10 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Where(x => x.StatusId == workflowStatusCurrentAccount)
                 .ToList();
         }
+
+        public bool HasAttachments(int entityId)
+        {
+            return context.RefundFiles.Any(x => x.RefundId == entityId);
+        }
     }
 }

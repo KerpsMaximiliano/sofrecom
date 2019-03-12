@@ -23,6 +23,7 @@ namespace Sofco.Framework.Workflow.Validations
                 case "REJECT": return new RejectValidationState();
                 case "CURRENCY-EXCHANGE": return new CurrencyExchangeValidation(appSetting);
                 case "CLOSE-REFUND": return new OnCloseRefundValidation(unitOfWork);
+                case "REFUND-ATTACHMENTS": return new RefundAttachmentsValidation(unitOfWork);
                 default: return null;
             }
         }

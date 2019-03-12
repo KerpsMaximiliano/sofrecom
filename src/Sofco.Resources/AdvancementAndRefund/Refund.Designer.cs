@@ -178,6 +178,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.hasNoAttachments.
+        /// </summary>
+        public static string HasNoAttachments {
+            get {
+                return ResourceManager.GetString("HasNoAttachments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/refund.notFound.
         /// </summary>
         public static string NotFound {
