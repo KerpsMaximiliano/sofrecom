@@ -15,6 +15,6 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public WorkflowStateType? StatusType { get; set; }
 
-        public bool CashReturn { get; set; }
+        public bool LastRefund { get; set; }
     }
 }

@@ -74,7 +74,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
                     var refundWithLastRefundMarkedCount =
                         unitOfWork.AdvancementRepository.GetRefundWithLastRefundMarkedCount(advancement, model.Id);
 
-                    if (model.CashReturn) refundWithLastRefundMarkedCount++;
+                    if (model.LastRefund) refundWithLastRefundMarkedCount++;
 
                     if (refundWithLastRefundMarkedCount > 1)
                     {

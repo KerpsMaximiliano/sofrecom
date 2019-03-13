@@ -20,7 +20,7 @@
                             <td>{{ refund.analytic }}</td>
                             <td>{{ refund.total }}</td>
                             <td><span class="label" [ngClass]="getStatusClass(refund.statusType)">{{ refund.statusName }}</span></td>
-                            <td class="text-center"><span class="fa" [ngClass]="refund.cashReturn ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                            <td class="text-center"><span class="fa" [ngClass]="refund.lastRefund ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
                         </tr>
                     </tbody>
                 </table>

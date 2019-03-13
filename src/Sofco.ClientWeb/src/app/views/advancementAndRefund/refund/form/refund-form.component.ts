@@ -35,6 +35,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public itemTotal = 0;
 
     public cashReturn: boolean;
+    public lastRefund: boolean;
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -217,6 +218,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         this.currencyDescription = domain.currencyDesc;
         this.cashReturn = domain.cashReturn;
+        this.lastRefund = domain.lastRefund;
 
         if(domain.details && domain.details.length > 0){
             domain.details.forEach(detail => {
@@ -251,19 +253,20 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     getModel(){
-        const advancement = this.form.getModel();
+        const refund = this.form.getModel();
 
         this.detailForms.forEach(element => {
-            advancement.details.push(element.getModel());
+            refund.details.push(element.getModel());
         });
 
-        if(advancement.advancements == null){
-            advancement.currencyId = this.defaultCurrencyId;
+        if(refund.advancements == null){
+            refund.currencyId = this.defaultCurrencyId;
         }
 
-        advancement.cashReturn = this.cashReturn;
+        refund.cashReturn = this.cashReturn;
+        refund.lastRefund = this.lastRefund;
 
-        return advancement;
+        return refund;
     }
 
     calculateTotals(){

@@ -28,6 +28,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             WorkflowStateType = refund.Status?.Type;
 
             AnalyticId = refund.AnalyticId;
+            LastRefund = refund.LastRefund;
             CashReturn = refund.CashReturn;
             WorkflowId = refund.WorkflowId;
 
@@ -63,6 +64,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             }
         }
 
+        public bool CashReturn { get; set; }
+
         public decimal CurrencyExchange { get; set; }
 
         public int WorkflowId { get; set; }
@@ -83,7 +86,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public string CurrencyDesc { get; set; }
 
-        public bool CashReturn { get; set; }
+        public bool LastRefund { get; set; }
 
         public int? CreditCardId { get; set; }
 

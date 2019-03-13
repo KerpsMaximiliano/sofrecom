@@ -19,7 +19,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public bool HasCreditCard { get; set; }
 
-        public bool CashReturn { get; set; }
+        public bool LastRefund { get; set; }
 
         public IList<int> Advancements { get; set; }
 
@@ -37,6 +37,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.CreationDate = DateTime.UtcNow.Date;
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
             domain.InWorkflowProcess = true;
+            domain.LastRefund = LastRefund;
             domain.CashReturn = CashReturn;
 
             if (HasCreditCard)
@@ -50,12 +51,15 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             return domain;
         }
 
+        public bool CashReturn { get; set; }
+
         public void UpdateDomain(Domain.Models.AdvancementAndRefund.Refund domain)
         {
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
             domain.AnalyticId = AnalyticId.GetValueOrDefault();
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
+            domain.LastRefund = LastRefund;
             domain.CashReturn = CashReturn;
 
             if (HasCreditCard)
