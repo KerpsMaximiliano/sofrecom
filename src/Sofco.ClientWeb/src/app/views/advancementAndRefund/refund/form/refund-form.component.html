@@ -62,7 +62,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <icheck [(checked)]="cashReturn">
+                <icheck [(checked)]="cashReturn" (checkedChange)="cashReturnChanged($event)">
                     <label style="padding-left:20px;">Devolución en Efectivo</label> 
                 </icheck>
             </div>
