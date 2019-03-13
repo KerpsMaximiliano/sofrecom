@@ -1145,6 +1145,7 @@
         "refundsRelated": "Reintegros relacionados",
         "currencyExchange": "Cotización",
         "lastRefund": "Ultimo reintegro",
+        "documentRevision": "Toda documentación queda sujeta a revisión de Compliance",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",
