@@ -9,7 +9,7 @@ export class RefundDetail extends FormGroup {
 
     constructor(domain?) {
         super({
-            creationDate: new FormControl(domain && moment(domain.creationDate).toDate() || null,
+            creationDate: new FormControl(domain && domain.creationDate && moment(domain.creationDate).toDate() || null,
                 [Validators.required, FormValidationService.dateRangeValidator]
                 ),
 
