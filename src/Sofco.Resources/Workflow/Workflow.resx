@@ -181,7 +181,7 @@
     <value>workflow/workflow.stateTypeRequired</value>
   </data>
   <data name="StateUpdated" xml:space="preserve">
-    <value>workflow/workflow.StateUpdated</value>
+    <value>workflow/workflow.stateUpdated</value>
   </data>
   <data name="TransitionAlreadyExist" xml:space="preserve">
     <value>workflow/workflow.transitionAlreadyExist</value>

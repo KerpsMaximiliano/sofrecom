@@ -445,9 +445,9 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var currentUser = userData.GetCurrentUser();
 
-            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
+            //var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
 
-            if (!hasDafGroup) return response;
+            //if (!hasDafGroup) return response;
 
             var refunds = unitOfWork.RefundRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
 

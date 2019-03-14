@@ -250,7 +250,7 @@ namespace Sofco.Resources.Workflow {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a workflow/workflow.StateUpdated.
+        ///   Busca una cadena traducida similar a workflow/workflow.stateUpdated.
         /// </summary>
         public static string StateUpdated {
             get {
