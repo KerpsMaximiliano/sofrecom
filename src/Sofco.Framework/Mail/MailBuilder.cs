@@ -91,7 +91,7 @@ namespace Sofco.Framework.Mail
 
             body = body.ReplaceKeyValue(MailContentKey.HomeLink, emailConfig.SiteUrl);
 
-            return new Email
+             return new Email
             {
                 Subject = GetSubject(subject),
                 Recipient = recipients,

@@ -23,13 +23,14 @@ export class RefundListComponent implements OnInit {
     }
 
     getData() {
-      //  debugger;
         const model = this.getParameterModel();
 
         if (this.tabInProcess){
+            model.inWorkflowProcess = true;
             this.inProcess.getData(model);
         }
         else {
+            model.inWorkflowProcess = false;
             this.finalized.getData(model);
         }
 

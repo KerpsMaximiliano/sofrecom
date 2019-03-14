@@ -21,6 +21,7 @@ export class RefundListGridComponent implements OnInit {
     subscrip: Subscription;
     public data:any[] = new Array<any>();
     //@ViewChild('gridFilter') gridFilter;
+    selectParamsVisible = true;
 
     constructor(private refundService: RefundService,
         private datatableService: DataTableService,
@@ -37,6 +38,7 @@ export class RefundListGridComponent implements OnInit {
 
     getData(model) {
        // const model = this.getParameterModel();
+        this.selectParamsVisible = false;
         this.loading = true;
         this.subscrip = this.refundService.getAll(model).subscribe(res => {
             this.loading = false;
