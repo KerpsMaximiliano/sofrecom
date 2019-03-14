@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 
 declare var $: any;
 
@@ -11,8 +11,35 @@ export class RefundListComponent implements OnInit {
 
     public tabInProcess = true;
 
-    constructor(){}
+    public inWorkflowProcess = true;
+    @ViewChild('gridFilter') gridFilter;
+    @ViewChild('inProcessGrid') inProcess;
+    @ViewChild('finalizedGrid') finalized;
+
+    constructor() { }
 
     ngOnInit(): void {
+        this.getData();
+    }
+
+    getData() {
+      //  debugger;
+        const model = this.getParameterModel();
+
+        if (this.tabInProcess){
+            this.inProcess.getData(model);
+        }
+        else {
+            this.finalized.getData(model);
+        }
+
+    }
+
+    getParameterModel() {
+        return this.gridFilter.model !== undefined
+            ? this.gridFilter.model
+            : {
+                inWorkflowProcess: this.inWorkflowProcess
+            };
     }
 }

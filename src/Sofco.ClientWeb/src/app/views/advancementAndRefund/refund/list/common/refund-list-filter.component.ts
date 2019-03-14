@@ -89,6 +89,6 @@ export class RefundListFilterComponent implements OnInit {
         }
         this.valueChange.emit(this.model);
 
-        this.collapse();
+     //   this.collapse();
     }
 }
