@@ -1,0 +1,8 @@
+﻿ 2019-03-12 09:17:00,790 ERROR Sofco.Service.Implementations.AllocationManagement.AllocationService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.Rrhh.LicenseGenerateWorkTimeService.GenerateWorkTimes(License license) in C:\Proyectos\Gaps\src\Sofco.Service\Implementations\Rrhh\LicenseServiceGenerateWorkTime.cs:line 98
+   at Sofco.Service.Implementations.AllocationManagement.AllocationService.Add(AllocationDto allocation) in C:\Proyectos\Gaps\src\Sofco.Service\Implementations\AllocationManagement\AllocationService.cs:line 76
+ 2019-03-12 09:29:39,475 ERROR Sofco.Service.Implementations.AllocationManagement.AllocationService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.Rrhh.LicenseGenerateWorkTimeService.GenerateWorkTimes(License license) in C:\Proyectos\Gaps\src\Sofco.Service\Implementations\Rrhh\LicenseServiceGenerateWorkTime.cs:line 99
+   at Sofco.Service.Implementations.AllocationManagement.AllocationService.Add(AllocationDto allocation) in C:\Proyectos\Gaps\src\Sofco.Service\Implementations\AllocationManagement\AllocationService.cs:line 76

@@ -34,6 +34,8 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
 
         public Workflow.Workflow Workflow { get; set; }
 
+        public bool LastRefund { get; set; }
+
         public bool CashReturn { get; set; }
 
         public decimal CurrencyExchange { get; set; }

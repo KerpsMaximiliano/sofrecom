@@ -251,7 +251,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 Id = x.Id,
                 Analytic = x.Analytic?.Name,
-                CashReturn = x.CashReturn,
+                LastRefund = x.LastRefund,
                 Total = x.TotalAmmount,
                 StatusName = x.Status?.Name,
                 StatusType = x.Status?.Type,
@@ -394,7 +394,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     CurrencyId = advancement.CurrencyId,
                     CurrencyText = advancement.Currency.Text,
                     Ammount = advancement.Ammount,
-                    HasLastRefundMarked = advancement.AdvancementRefunds.Any(x => x.Refund.CashReturn),
+                    HasLastRefundMarked = advancement.AdvancementRefunds.Any(x => x.Refund.LastRefund),
                     Text = $"{advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency.Text}"
                 });
             }

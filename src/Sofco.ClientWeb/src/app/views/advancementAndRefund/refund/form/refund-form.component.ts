@@ -35,6 +35,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public itemTotal = 0;
 
     public cashReturn: boolean;
+    public lastRefund: boolean;
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -217,6 +218,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         this.currencyDescription = domain.currencyDesc;
         this.cashReturn = domain.cashReturn;
+        this.lastRefund = domain.lastRefund;
 
         if(domain.details && domain.details.length > 0){
             domain.details.forEach(detail => {
@@ -251,19 +253,20 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     getModel(){
-        const advancement = this.form.getModel();
+        const refund = this.form.getModel();
 
         this.detailForms.forEach(element => {
-            advancement.details.push(element.getModel());
+            refund.details.push(element.getModel());
         });
 
-        if(advancement.advancements == null){
-            advancement.currencyId = this.defaultCurrencyId;
+        if(refund.advancements == null){
+            refund.currencyId = this.defaultCurrencyId;
         }
 
-        advancement.cashReturn = this.cashReturn;
+        refund.cashReturn = this.cashReturn;
+        refund.lastRefund = this.lastRefund;
 
-        return advancement;
+        return refund;
     }
 
     calculateTotals(){
@@ -307,6 +310,20 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         }
     }
 
+    cashReturnDisabled(){
+        if(!this.canUpdate){
+            return true;
+        }
+        else{
+            if(this.form.controls.advancements && this.form.controls.advancements.value && this.form.controls.advancements.value.length > 0){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+    }
+
     advancementsChanged(){
         this.differentCurrenciesWereSelected = false;
 
@@ -337,6 +354,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         else{
             this.form.controls.currencyId.setValue(this.defaultCurrencyId);
             this.currencyDescription = this.defaultCurrencyDescription;
+            this.cashReturn = false;
+            this.detailForms = [];
         }
 
         this.calculateTotals();
@@ -350,12 +369,26 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     formConfiguration(){
         this.form.controls['advancements'].valueChanges.subscribe(
             (selectedValue) => {
-                if(selectedValue.length > 0){
+                if(selectedValue && selectedValue.length > 0){
                     this.hasCreditCard = false;
                     this.hasCreditCardChanged(false);
                 }
             }
         );
+    }
+
+    cashReturnChanged(value){
+        this.detailForms = [];
+
+        if(value == true){
+            var item = { description: 'Devolución de efectivo', creationDate: null, ammount: 0 };
+
+            var detail = new RefundDetail(item);
+
+            this.detailForms.push(detail);
+
+            this.editDetail(detail, 0);
+        }
     }
 
     hasCreditCardChanged(value){

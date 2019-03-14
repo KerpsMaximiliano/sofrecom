@@ -174,7 +174,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             return context.AdvancementRefunds
                 .Include(x => x.Refund)
                 .Where(x => x.AdvancementId == advancementId && x.RefundId != refundId)
-                .Count(x => x.Refund.CashReturn);
+                .Count(x => x.Refund.LastRefund);
         }
     }
 }

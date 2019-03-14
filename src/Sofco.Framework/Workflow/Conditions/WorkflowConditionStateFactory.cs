@@ -41,6 +41,8 @@ namespace Sofco.Framework.Workflow.Conditions
                 case "GAF-TO-PAYMENT-PENDING": return new GafToPaymentPendingCondition(validation, unitOfWork);
                 case "GAF-TO-FINALIZED": return new GafToFinalizedCondition(validation, unitOfWork);
                 case "GAF-TO-CURRENT-ACCOUNT": return new GafToCurrentAccountCondition(unitOfWork);
+                case "DRAFT-TO-GAF": return new DraftToGafCondition(unitOfWork);
+                case "DRAFT-TO-MANAGER": return new DraftToManagerCondition(unitOfWork);
                 default: return null;
             }
         }
