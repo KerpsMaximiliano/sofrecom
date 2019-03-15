@@ -22,6 +22,7 @@ using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Resources.Mails;
 using File = Sofco.Domain.Models.Common.File;
+using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.Billing
 {

@@ -20,6 +20,7 @@ using Sofco.Domain.Relationships;
 using System.Globalization;
 using Sofco.Core.Managers;
 using Sofco.Service.Crm.Interfaces;
+using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -38,6 +39,7 @@ namespace Sofco.Service.Implementations.Billing
             IUserData userData,
             IRoleManager roleManager,
             IOptions<CrmConfig> crmOptions,
+            IRoleManager roleManager,
             ICrmInvoicingMilestoneService crmInvoiceService, ILogMailer<SolfacService> logger)
         {
             this.solfacStatusFactory = solfacStatusFactory;
@@ -46,6 +48,7 @@ namespace Sofco.Service.Implementations.Billing
             this.crmInvoiceService = crmInvoiceService;
             this.roleManager = roleManager;
             this.logger = logger;
+            this.roleManager = roleManager;
             this.userData = userData;
         }
 

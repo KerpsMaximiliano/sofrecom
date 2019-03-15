@@ -18,6 +18,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
+using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
 {

@@ -14,6 +14,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
 using Sofco.Service.Implementations.Billing;
 using Sofco.Service.Crm.Interfaces;
+using Sofco.Core.Managers;
 
 namespace Sofco.UnitTest.Services.Billing
 {
@@ -69,6 +70,7 @@ namespace Sofco.UnitTest.Services.Billing
                 userDataMock.Object,
                 roleManagerMock.Object,
                 optionsMock.Object,
+                roleManagerMock.Object,
                 crmInvoiceServiceMock.Object,
                 loggerMock.Object);
         }
