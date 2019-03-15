@@ -42,6 +42,12 @@
                                 <date-picker [(date)]="dateTo"></date-picker>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'advancement.bank' | translate }}</label>
+                                <ng-select [items]="banks" bindLabel="text" bindValue="id" [(ngModel)]="bankId"></ng-select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">

@@ -15,13 +15,15 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
     public resources: any[] = new Array<any>();
     public types: any[] = new Array<any>();
     public states: any[] = new Array<any>();
+    public banks: any[] = new Array();
 
     public resourceId: number;
     public typeId: number;
     public stateId: number;
     public dateSince: Date;
     public dateTo: Date;
-
+    public bankId: number;
+    
     @ViewChild('inProcess') inProcess;
     @ViewChild('finalized') finalized;
 
@@ -68,6 +70,7 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         this.stateId = null;
         this.dateSince = null;
         this.dateTo = null;
+        this.bankId = null;
     }
 
     search(){
@@ -76,7 +79,8 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
             typeId: this.typeId,
             stateId: this.stateId,
             dateSince: this.dateSince,
-            dateTo: this.dateTo
+            dateTo: this.dateTo,
+            bank:   this.bankId
         }
 
         if(this.currentTab == 1){
