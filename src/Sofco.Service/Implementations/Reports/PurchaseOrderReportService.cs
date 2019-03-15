@@ -17,6 +17,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Reports;
 using Sofco.Domain.Utils;
+using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.Reports
 {
@@ -42,12 +43,15 @@ namespace Sofco.Service.Implementations.Reports
 
         private readonly EmailConfig emailConfig;
 
-        public PurchaseOrderReportService(IPurchaseOrderBalanceViewRepository purchaseOrderRepository, 
-            IMapper mapper, 
-            ILogMailer<PurchaseOrderReportService> logger, 
-            IUnitOfWork unitOfWork, 
+        private readonly IRoleManager roleManager;
+
+        public PurchaseOrderReportService(IPurchaseOrderBalanceViewRepository purchaseOrderRepository,
+            IMapper mapper,
+            ILogMailer<PurchaseOrderReportService> logger,
+            IUnitOfWork unitOfWork,
             IUserData userData,
-            ISessionManager sessionManager, 
+            ISessionManager sessionManager,
+            IRoleManager roleManager,
             IOptions<EmailConfig> emailOptions,
             IUserDelegateRepository userDelegateRepository)
         {
@@ -59,6 +63,7 @@ namespace Sofco.Service.Implementations.Reports
             this.sessionManager = sessionManager;
             this.userDelegateRepository = userDelegateRepository;
             this.emailConfig = emailOptions.Value;
+            this.roleManager = roleManager;
         }
 
         public Response<List<PurchaseOrderBalanceViewModel>> Get(SearchPurchaseOrderParams parameters)
@@ -84,14 +89,11 @@ namespace Sofco.Service.Implementations.Reports
 
         public Response<List<Option>> GetAnalyticsByCurrentUser()
         {
-            var userMail = sessionManager.GetUserEmail();
-            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
-            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
+            var hasAllAccess = roleManager.HasFullAccess(); 
 
             List<Analytic> analytics;
 
-            if (isDirector || isDaf || isCdg)
+            if (hasAllAccess)
             {
                 analytics = unitOfWork.AnalyticRepository.GetAllReadOnly().ToList();
             }
