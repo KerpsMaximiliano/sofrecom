@@ -135,12 +135,9 @@ namespace Sofco.Service.Implementations.Reports
 
         private List<PurchaseOrderBalanceView> ApplyCurrentUserFilter(List<PurchaseOrderBalanceView> data)
         {
-            var userMail = sessionManager.GetUserEmail();
-            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
-            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
+            var hasAllAccess = roleManager.HasFullAccess();
 
-            if (isDirector || isDaf || isCdg) return data;
+            if (hasAllAccess) return data;
 
             var currentUser = userData.GetCurrentUser();
 
@@ -158,14 +155,9 @@ namespace Sofco.Service.Implementations.Reports
 
         private List<PurchaseOrderBalanceView> ApplyActiveUserFilter(List<PurchaseOrderBalanceView> data)
         {
-            var userMail = sessionManager.GetUserEmail();
-            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
-            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
-            var isCompliance = unitOfWork.UserRepository.HasComplianceGroup(userMail);
-            var isCommercial = unitOfWork.UserRepository.HasComercialGroup(userMail);
+            var hasAllAccess = roleManager.HasFullAccess();
 
-            if (isDirector || isDaf || isCdg || isCompliance || isCommercial) return data;
+            if (hasAllAccess) return data;
 
             var currentUserId = userData.GetCurrentUser().Id;
 
