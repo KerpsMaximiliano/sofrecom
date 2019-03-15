@@ -176,7 +176,7 @@ namespace Sofco.Framework.Mail
                 {
                     try
                     {
-                        if (message.To.Mailboxes.Any()) continue;
+                        if (!message.To.Mailboxes.Any()) continue;
 
                         client.Send(message);
                     }
