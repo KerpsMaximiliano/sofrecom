@@ -17,6 +17,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
+using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
 {
@@ -27,6 +28,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly IAdvancemenValidation validation;
         private readonly AppSetting settings;
         private readonly IUserData userData;
+        private readonly IRoleManager roleManager;
         private readonly IWorkflowStateRepository workflowStateRepository;
 
         public AdvancementService(IUnitOfWork unitOfWork,
@@ -34,12 +36,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             IAdvancemenValidation validation,
             IWorkflowStateRepository workflowStateRepository,
             IUserData userData,
+            IRoleManager roleManager,
             IOptions<AppSetting> settingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.workflowStateRepository = workflowStateRepository;
             this.validation = validation;
+            this.roleManager = roleManager;
             this.settings = settingOptions.Value;
             this.userData = userData;
         }
@@ -130,7 +134,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var currentUser = userData.GetCurrentUser();
 
-            var hasAllAccess = HasAllAccess(currentUser);
+            var hasAllAccess = roleManager.HasFullAccess();
 
             var advancements = unitOfWork.AdvancementRepository.GetAllInProcess();
 
@@ -311,7 +315,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var currentUser = userData.GetCurrentUser();
 
-            var hasAllAccess = HasAllAccess(currentUser);
+            var hasAllAccess = roleManager.HasFullAccess();
 
             var advancements = unitOfWork.AdvancementRepository.GetAllFinalized(settings.WorkflowStatusDraft, model);
 
@@ -401,17 +405,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
 
             return response;
-        }
-
-        private bool HasAllAccess(UserLiteModel currentUser)
-        {
-            var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email);
-            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
-            var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUser.Email);
-            var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUser.Email);
-
-            var hasAllAccess = hasDirectorGroup || hasRrhhGroup || hasGafGroup || hasDafGroup;
-            return hasAllAccess;
         }
 
         private bool HasReadAccess(IList<WorkflowReadAccess> readAccess, UserLiteModel currentUser)

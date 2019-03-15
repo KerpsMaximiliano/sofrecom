@@ -19,6 +19,7 @@ using Sofco.Domain.Models.Common;
 using Sofco.Domain.Relationships;
 using System.Globalization;
 using Sofco.Service.Crm.Interfaces;
+using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -30,11 +31,13 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ICrmInvoicingMilestoneService crmInvoiceService;
         private readonly ILogMailer<SolfacService> logger;
         private readonly IUserData userData;
+        private readonly IRoleManager roleManager;
          
         public SolfacService(ISolfacStatusFactory solfacStatusFactory,
             IUnitOfWork unitOfWork,
             IUserData userData,
             IOptions<CrmConfig> crmOptions,
+            IRoleManager roleManager,
             ICrmInvoicingMilestoneService crmInvoiceService, ILogMailer<SolfacService> logger)
         {
             this.solfacStatusFactory = solfacStatusFactory;
@@ -42,6 +45,7 @@ namespace Sofco.Service.Implementations.Billing
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
             this.logger = logger;
+            this.roleManager = roleManager;
             this.userData = userData;
         }
 
@@ -131,12 +135,9 @@ namespace Sofco.Service.Implementations.Billing
         public IList<Solfac> Search(SolfacParams parameter)
         {
             var user = userData.GetCurrentUser();
-            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(user.Email);
-            var isDaf = unitOfWork.UserRepository.HasDafGroup(user.Email);
-            var isCdg = unitOfWork.UserRepository.HasCdgGroup(user.Email);
-            var isComercial = unitOfWork.UserRepository.HasCdgGroup(user.Email);
+            var hasAllAccess = roleManager.HasFullAccess();
 
-            if (isDirector || isDaf || isCdg || isComercial)
+            if (hasAllAccess)
             {
                 return unitOfWork.SolfacRepository.SearchByParams(parameter);
             }

@@ -13,6 +13,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
 using Sofco.Service.Implementations.Billing;
 using Sofco.Service.Crm.Interfaces;
+using Sofco.Core.Managers;
 
 namespace Sofco.UnitTest.Services.Billing
 {
@@ -28,6 +29,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<ICrmInvoicingMilestoneService> crmInvoiceServiceMock;
         private Mock<ILogMailer<SolfacService>> loggerMock;
         private Mock<IUserData> userDataMock;
+        private Mock<IRoleManager> roleManagerMock;
         private Mock<IPurchaseOrderRepository> purchaseOrderRepositoryMock;
 
         private Mock<IUnitOfWork> unitOfWork;
@@ -43,6 +45,7 @@ namespace Sofco.UnitTest.Services.Billing
             crmInvoiceServiceMock = new Mock<ICrmInvoicingMilestoneService>();
             loggerMock = new Mock<ILogMailer<SolfacService>>();
             userDataMock = new Mock<IUserData>();
+            roleManagerMock = new Mock<IRoleManager>();
             purchaseOrderRepositoryMock = new Mock<IPurchaseOrderRepository>();
 
             var optionsMock = new Mock<IOptions<CrmConfig>>();
@@ -65,6 +68,7 @@ namespace Sofco.UnitTest.Services.Billing
                 unitOfWork.Object,
                 userDataMock.Object,
                 optionsMock.Object,
+                roleManagerMock.Object,
                 crmInvoiceServiceMock.Object,
                 loggerMock.Object);
         }
