@@ -4,6 +4,7 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Cache;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
+using Sofco.Core.Managers;
 
 namespace Sofco.Data.Billing
 {
@@ -17,12 +18,14 @@ namespace Sofco.Data.Billing
         private readonly ICacheManager cacheManager;
         private readonly ISessionManager sessionManager;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IRoleManager roleManager;
 
-        public ServiceData(ICacheManager cacheManager, ISessionManager sessionManager, IUnitOfWork unitOfWork)
+        public ServiceData(ICacheManager cacheManager, ISessionManager sessionManager, IUnitOfWork unitOfWork, IRoleManager roleManager)
         {
             this.cacheManager = cacheManager;
             this.sessionManager = sessionManager;
             this.unitOfWork = unitOfWork;
+            this.roleManager = roleManager;
         }
 
         public IList<Domain.Models.Billing.Service> GetServices(string customerId, string username)
@@ -32,12 +35,7 @@ namespace Sofco.Data.Billing
             return cacheManager.GetHashList(string.Format(ServicesCacheKey, username, customerId),
                 () =>
                 {
-                    var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(email);
-                    var hasCommercialGroup = unitOfWork.UserRepository.HasComercialGroup(email);
-                    var hasCdgGroup = unitOfWork.UserRepository.HasCdgGroup(email);
-                    var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(email);
-
-                    var hasAllAccess = hasDirectorGroup || hasCommercialGroup || hasCdgGroup || hasDafGroup;
+                    var hasAllAccess = roleManager.HasFullAccess();
 
                     if (hasAllAccess)
                         return unitOfWork.ServiceRepository.GetAllActives(customerId);
