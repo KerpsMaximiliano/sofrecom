@@ -60,6 +60,6 @@
 
         public string GafCode { get; set; }
 
-        public object ReadOnlyCode { get; set; }
+        public string ReadOnlyCode { get; set; }
     }
 }
