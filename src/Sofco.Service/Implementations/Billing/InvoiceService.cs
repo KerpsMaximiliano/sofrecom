@@ -16,11 +16,13 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Utils;
 using Sofco.Core.Mail;
+using Sofco.Core.Managers;
 using Sofco.Core.Models.Billing;
 using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Resources.Mails;
 using File = Sofco.Domain.Models.Common.File;
+using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -34,11 +36,13 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ILogMailer<InvoiceService> logger;
         private readonly IMailBuilder mailBuilder;
         private readonly FileConfig fileConfig;
+        private readonly IRoleManager roleManager;
 
         public InvoiceService(IUnitOfWork unitOfWork,
             IInvoiceStatusFactory invoiceStatusFactory,
             IOptions<EmailConfig> emailOptions,
             IMailBuilder mailBuilder,
+            IRoleManager roleManager,
             ILogMailer<InvoiceService> logger,
             IMailSender mailSender, ISessionManager sessionManager, IOptions<FileConfig> fileOptions)
         {
@@ -48,6 +52,7 @@ namespace Sofco.Service.Implementations.Billing
             this.sessionManager = sessionManager;
             this.emailConfig = emailOptions.Value;
             this.logger = logger;
+            this.roleManager = roleManager;
             this.mailBuilder = mailBuilder;
             fileConfig = fileOptions.Value;
         }
@@ -221,12 +226,9 @@ namespace Sofco.Service.Implementations.Billing
         public ICollection<Invoice> Search(InvoiceParams parameters)
         {
             var userMail = sessionManager.GetUserEmail();
-            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(userMail);
-            var isDaf = unitOfWork.UserRepository.HasDafGroup(userMail);
-            var isCdg = unitOfWork.UserRepository.HasCdgGroup(userMail);
-            var isComercial = unitOfWork.UserRepository.HasComercialGroup(emailConfig.ComercialCode, userMail);
+            var hasAllAccess = roleManager.HasFullAccess();
 
-            if (isDirector || isDaf || isCdg || isComercial)
+            if (hasAllAccess)
             {
                 return unitOfWork.InvoiceRepository.SearchByParams(parameters);
             }

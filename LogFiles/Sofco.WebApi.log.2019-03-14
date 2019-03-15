@@ -1,0 +1,403 @@
+﻿ 2019-03-14 15:58:15,060 ERROR Sofco.Service.Implementations.Rrhh.Licenses.LicenseService An error occurred while updating the entries. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Licenses_Sectors_SectorId". The conflict occurred in database "SofcoDB_UAT", table "app.Sectors", column 'Id'.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(DbContext _, ValueTuple`2 parameters)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IReadOnlyList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Sofco.DAL.UnitOfWork.Save() in C:\GAPS\Fuentes\GAPS\src\Sofco.DAL\UnitOfWork.cs:line 226
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 71
+ 2019-03-14 16:00:30,496 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Could not find a part of the path 'C:\Temp\email.2019143T160026.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T160026.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 159
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 139
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 115
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(String message, Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 67
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 54
+   at Sofco.Framework.Logger.LogMailer`1.LogError(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 49
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 80
+   at Sofco.WebApi.Controllers.Rrhh.LicenseController.Post(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Controllers\Rrhh\LicenseController.cs:line 74
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ 2019-03-14 16:03:28,204 ERROR Sofco.Service.Implementations.Rrhh.Licenses.LicenseService An error occurred while updating the entries. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Licenses_Sectors_SectorId". The conflict occurred in database "SofcoDB_UAT", table "app.Sectors", column 'Id'.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(DbContext _, ValueTuple`2 parameters)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IReadOnlyList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Sofco.DAL.UnitOfWork.Save() in C:\GAPS\Fuentes\GAPS\src\Sofco.DAL\UnitOfWork.cs:line 226
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 71
+ 2019-03-14 16:04:17,964 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Could not find a part of the path 'C:\Temp\email.2019143T160409.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T160409.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 159
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 139
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 115
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(String message, Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 67
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 54
+   at Sofco.Framework.Logger.LogMailer`1.LogError(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 49
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 80
+   at Sofco.WebApi.Controllers.Rrhh.LicenseController.Post(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Controllers\Rrhh\LicenseController.cs:line 74
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ 2019-03-14 16:05:19,491 ERROR Sofco.Service.Implementations.Rrhh.Licenses.LicenseService An error occurred while updating the entries. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Licenses_Sectors_SectorId". The conflict occurred in database "SofcoDB_UAT", table "app.Sectors", column 'Id'.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(DbContext _, ValueTuple`2 parameters)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IReadOnlyList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Sofco.DAL.UnitOfWork.Save() in C:\GAPS\Fuentes\GAPS\src\Sofco.DAL\UnitOfWork.cs:line 226
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 71
+ 2019-03-14 16:05:22,381 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Could not find a part of the path 'C:\Temp\email.2019143T160521.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T160521.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 159
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 139
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 115
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(String message, Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 67
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 54
+   at Sofco.Framework.Logger.LogMailer`1.LogError(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 49
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 80
+   at Sofco.WebApi.Controllers.Rrhh.LicenseController.Post(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Controllers\Rrhh\LicenseController.cs:line 74
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ 2019-03-14 16:06:14,365 ERROR Sofco.Service.Implementations.Rrhh.Licenses.LicenseService An error occurred while updating the entries. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Licenses_Sectors_SectorId". The conflict occurred in database "SofcoDB_UAT", table "app.Sectors", column 'Id'.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(DbContext _, ValueTuple`2 parameters)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IReadOnlyList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Sofco.DAL.UnitOfWork.Save() in C:\GAPS\Fuentes\GAPS\src\Sofco.DAL\UnitOfWork.cs:line 226
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 71
+ 2019-03-14 16:06:15,883 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Could not find a part of the path 'C:\Temp\email.2019143T160615.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T160615.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 159
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 139
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 115
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(String message, Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 67
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 54
+   at Sofco.Framework.Logger.LogMailer`1.LogError(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 49
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 80
+   at Sofco.WebApi.Controllers.Rrhh.LicenseController.Post(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Controllers\Rrhh\LicenseController.cs:line 74
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ 2019-03-14 16:06:52,608 ERROR Sofco.Service.Implementations.Rrhh.Licenses.LicenseService An error occurred while updating the entries. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Licenses_Sectors_SectorId". The conflict occurred in database "SofcoDB_UAT", table "app.Sectors", column 'Id'.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(DbContext _, ValueTuple`2 parameters)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IReadOnlyList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Sofco.DAL.UnitOfWork.Save() in C:\GAPS\Fuentes\GAPS\src\Sofco.DAL\UnitOfWork.cs:line 226
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 71
+ 2019-03-14 16:06:54,061 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Could not find a part of the path 'C:\Temp\email.2019143T160653.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T160653.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 159
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 139
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 115
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(String message, Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 67
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 54
+   at Sofco.Framework.Logger.LogMailer`1.LogError(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 49
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 80
+   at Sofco.WebApi.Controllers.Rrhh.LicenseController.Post(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Controllers\Rrhh\LicenseController.cs:line 74
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ 2019-03-14 16:10:31,901 ERROR Sofco.Service.Implementations.Rrhh.Licenses.LicenseService Subject: Aprobación de licencia - LARENZE, JUAN JOSE - Recipients: [jlarenze@sofrecom.com.ar,vcuomo@sofrecom.com.ar,jlarenze@sofrecom.com.ar,] - Could not find a part of the path 'C:\Temp\email.2019143T161031.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T161031.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 159
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 139
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 115
+   at Sofco.Framework.Mail.MailSender.Send(IMailData mailData) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 122
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.SendMail(License license, Response response, ILicenseStatusHandler licenseStatusHandler, LicenseStatusChangeModel parameters) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 213
+ 2019-03-14 16:10:34,116 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Could not find a part of the path 'C:\Temp\email.2019143T161033.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T161033.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 159
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 139
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 115
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(String message, Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 67
+   at Sofco.Framework.Logger.LogMailer`1.LogError(String message, Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 42
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.SendMail(License license, Response response, ILicenseStatusHandler licenseStatusHandler, LicenseStatusChangeModel parameters) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 223
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.ChangeStatus(Int32 id, LicenseStatusChangeModel model, License license) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 202
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.UpdateStatus(LicenseAddModel model, Response`1 response, LicenseType licenseType, License license) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 287
+   at Sofco.Service.Implementations.Rrhh.Licenses.LicenseService.Add(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Rrhh\Licenses\LicenseService.cs:line 99
+   at Sofco.WebApi.Controllers.Rrhh.LicenseController.Post(LicenseAddModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Controllers\Rrhh\LicenseController.cs:line 74
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ 2019-03-14 16:21:45,715 ERROR Sofco.Service.Implementations.AdvancementAndRefund.AdvancementService Timeout expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+System.Data.SqlClient.SqlException (0x80131904): Timeout expired.  The timeout period elapsed prior to completion of the operation or the server is not responding. ---> System.ComponentModel.Win32Exception (258): Tiempo de espera de la operación de espera agotado
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadNetworkPacket()
+   at System.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadByte(Byte& value)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.TdsParser.TdsExecuteTransactionManagerRequest(Byte[] buffer, TransactionManagerRequestType request, String transactionName, TransactionManagerIsolationLevel isoLevel, Int32 timeout, SqlInternalTransaction transaction, TdsParserStateObject stateObj, Boolean isDelegateControlRequest)
+   at System.Data.SqlClient.SqlInternalConnectionTds.ExecuteTransactionYukon(TransactionRequest transactionRequest, String transactionName, IsolationLevel iso, SqlInternalTransaction internalTransaction, Boolean isDelegateControlRequest)
+   at System.Data.SqlClient.SqlInternalTransaction.Commit()
+   at System.Data.SqlClient.SqlTransaction.Commit()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.Commit()
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(DbContext _, ValueTuple`2 parameters)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IReadOnlyList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Sofco.DAL.UnitOfWork.Save() in C:\GAPS\Fuentes\GAPS\src\Sofco.DAL\UnitOfWork.cs:line 226
+   at Sofco.Service.Implementations.AdvancementAndRefund.AdvancementService.Add(AdvancementModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\AdvancementService.cs:line 67
+ClientConnectionId:e3132e3d-fc1d-4e8e-ad51-e0aa40e4b0ba
+Error Number:-2,State:0,Class:11
+ 2019-03-14 16:22:50,332 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Could not find a part of the path 'C:\Temp\email.2019143T162234.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T162234.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 159
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 139
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 115
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(String message, Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 67
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 54
+   at Sofco.Framework.Logger.LogMailer`1.LogError(Exception exception) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 49
+   at Sofco.Service.Implementations.AdvancementAndRefund.AdvancementService.Add(AdvancementModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\AdvancementService.cs:line 76
+   at Sofco.WebApi.Controllers.AdvancementAndRefund.AdvancementController.Post(AdvancementModel model) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Controllers\AdvancementAndRefund\AdvancementController.cs:line 80
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ 2019-03-14 16:46:08,902 ERROR Sofco.Service.Implementations.Workflow.WorkflowService Could not find a part of the path 'C:\Temp\email.2019143T164600.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T164600.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 159
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 139
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 115
+   at Sofco.Framework.Mail.MailSender.Send(IMailData mailData) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 122
+   at Sofco.Framework.Workflow.Notifications.WorkflowNotification.SendMail(String subject, String body, WorkflowStateTransition transition, WorkflowEntity entity) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Workflow\Notifications\WorkflowNotification.cs:line 51
+   at Sofco.Framework.Workflow.Notifications.WorkflowAdvancementNotificationDefault.Send(WorkflowEntity entity, WorkflowStateTransition transition, WorkflowChangeStatusParameters parameters) in C:\GAPS\Fuentes\GAPS\src\Sofco.Framework\Workflow\Notifications\WorkflowAdvancementNotificationDefault.cs:line 45
+   at Sofco.Service.Implementations.Workflow.WorkflowService.SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition, WorkflowChangeStatusParameters parameters) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Workflow\WorkflowService.cs:line 165
+ 2019-03-14 16:50:25,015 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Could not find a part of the path 'C:\Temp\email.2019143T164933.eml'.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Temp\email.2019143T164933.eml'.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages)
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message)
+   at Sofco.Framework.Mail.MailSender.Send(Email email)
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(String message, Exception exception)
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(Exception exception)
+   at Sofco.Framework.Logger.LogMailer`1.LogError(Exception exception)
+   at Sofco.Service.Implementations.Workflow.WorkflowService.SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition, WorkflowChangeStatusParameters parameters) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Workflow\WorkflowService.cs:line 170
+   at Sofco.Service.Implementations.Workflow.WorkflowService.DoTransition[TEntity,THistory](WorkflowChangeStatusParameters parameters) in C:\GAPS\Fuentes\GAPS\src\Sofco.Service\Implementations\Workflow\WorkflowService.cs:line 152
+   at Sofco.WebApi.Controllers.AdvancementAndRefund.AdvancementController.DoTransition(WorkflowChangeStatusParameters parameters) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Controllers\AdvancementAndRefund\AdvancementController.cs:line 96
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\GAPS\Fuentes\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
