@@ -59,5 +59,7 @@
         public string AllowedMails { get; set; }
 
         public string GafCode { get; set; }
+
+        public object ReadOnlyCode { get; set; }
     }
 }

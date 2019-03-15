@@ -57,5 +57,9 @@ namespace Sofco.Core.DAL.Admin
         bool HasGafGroup(string email);
 
         List<UserLiteModel> GetUserLiteByEmails(List<string> emails);
+
+        bool HasPmoGroup(string currentUserEmail);
+
+        bool HasReadOnlyGroup(string currentUserEmail);
     }
 }
