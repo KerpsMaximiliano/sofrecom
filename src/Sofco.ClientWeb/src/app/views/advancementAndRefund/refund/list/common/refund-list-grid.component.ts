@@ -20,7 +20,8 @@ export class RefundListGridComponent implements OnInit {
     public loading = false;
     subscrip: Subscription;
     public data:any[] = new Array<any>();
-    @ViewChild('gridFilter') gridFilter;
+    //@ViewChild('gridFilter') gridFilter;
+    selectParamsVisible = true;
 
     constructor(private refundService: RefundService,
         private datatableService: DataTableService,
@@ -28,16 +29,16 @@ export class RefundListGridComponent implements OnInit {
         private i18nService: I18nService){}
 
     ngOnInit(): void {
-        this.getData();
+      //  this.getData();
     }
 
     goToDetail(id){
         this.router.navigate(['advancementAndRefund/refund/' + id]);
     }
 
-    getData() {
-        const model = this.getParameterModel();
-
+    getData(model) {
+       // const model = this.getParameterModel();
+        this.selectParamsVisible = false;
         this.loading = true;
         this.subscrip = this.refundService.getAll(model).subscribe(res => {
             this.loading = false;
@@ -46,13 +47,13 @@ export class RefundListGridComponent implements OnInit {
         });
     }
 
-    getParameterModel() {
-        return this.gridFilter.model !== undefined
-            ? this.gridFilter.model
-            : {
-                inWorkflowProcess: this.inWorkflowProcess
-            };
-    }
+    // getParameterModel() {
+    //     return this.gridFilter.model !== undefined
+    //         ? this.gridFilter.model
+    //         : {
+    //             inWorkflowProcess: this.inWorkflowProcess
+    //         };
+    // }
 
     initGrid(){
         const gridSelector = "#gridTable-" + this.controlId;

@@ -17,6 +17,7 @@ namespace Sofco.Core.DAL.Admin
         Group GetGroup(int solfacUserApplicantId);
         bool ExistByMail(string mail);
         bool HasDafGroup(string userMail);
+        bool HasPmoGroup(string userMail);
         bool HasCdgGroup(string userMail);
         bool IsActive(string userMail);
         IList<User> GetDirectors();
@@ -57,8 +58,6 @@ namespace Sofco.Core.DAL.Admin
         bool HasGafGroup(string email);
 
         List<UserLiteModel> GetUserLiteByEmails(List<string> emails);
-
-        bool HasPmoGroup(string currentUserEmail);
 
         bool HasReadOnlyGroup(string currentUserEmail);
     }

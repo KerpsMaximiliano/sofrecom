@@ -103,7 +103,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Currency)
                 .Include(x => x.AdvancementRefunds)
                     .ThenInclude(x => x.Refund)
-                .Where(x => x.UserApplicantId == currentUserId  && x.Type == AdvancementType.Viaticum && x.StatusId == workflowStatusOpenId)
+                .Where(x => x.UserApplicantId == currentUserId && x.Type == AdvancementType.Viaticum && x.StatusId == workflowStatusOpenId)
                 .ToList();
 
             return advancements;
@@ -140,27 +140,30 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         public Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByAdvancementId(IList<int> ids)
         {
             var refundIds = context.AdvancementRefunds
-                .Where(x => ids.Contains(x.AdvancementId))
-                .Select(x => x.RefundId)
-                .Distinct()
-                .ToList();
-
-            var refunds = context.Refunds
-                .Include(x => x.Status)
-                .Include(x => x.Analytic)
-                .Where(x => refundIds.Contains(x.Id))
-                .ToList();
+            .Where(x => ids.Contains(x.AdvancementId))
+            .Select(x => x.RefundId)
+            .Distinct()
+            .ToList();
 
             var advancementIds = context.AdvancementRefunds
-                .Where(x => refundIds.Contains(x.RefundId))
-                .Select(x => x.AdvancementId)
-                .Distinct()
-                .ToList();
+            .Where(x => refundIds.Contains(x.RefundId))
+            .Select(x => x.AdvancementId)
+            .Distinct()
+            .ToList();
 
             var advancements = context.Advancements
-                .Where(x => advancementIds.Contains(x.Id))
-                .ToList();
+            .Where(x => advancementIds.Contains(x.Id))
+            .ToList();
 
+            advancementIds = advancements.Select(x => x.Id).ToList();
+
+            var refunds = context.AdvancementRefunds
+            .Where(x => advancementIds.Contains(x.AdvancementId))
+            .Include(x => x.Refund)
+            .Select(x => x.Refund)
+            .Distinct()
+            .ToList();
+            
             return new Tuple<IList<Refund>, IList<Advancement>>(refunds, advancements);
         }
 

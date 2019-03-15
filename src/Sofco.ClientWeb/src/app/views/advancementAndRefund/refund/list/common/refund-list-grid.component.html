@@ -1,10 +1,15 @@
-<refund-list-filter #gridFilter controlId="{{ controlId }}" [inWorkflowProcess]="inWorkflowProcess" (valueChange)="getData()"></refund-list-filter>
+<!-- <refund-list-filter #gridFilter controlId="{{ controlId }}" [inWorkflowProcess]="inWorkflowProcess" (valueChange)="getData()"></refund-list-filter> -->
 
 <div class="ibox">
     <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
         <spinner></spinner>
 
-        <div class="table-responsive">
+        <div class="alert alert-gaps-info" id="alert-select-params" *ngIf="selectParamsVisible">
+            <i class="fa fa-info-circle"></i>
+            {{ 'refund.needParameters' | translate }}
+        </div>
+
+        <div class="table-responsive" *ngIf="!selectParamsVisible">
             <table class="table table-striped dataTable" role="grid" id="{{ 'gridTable-'+ controlId }}" >
                 <thead>
                     <tr>

@@ -17,6 +17,9 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
+    <refund-list-filter #gridFilter controlId="{{ controlId }}" [inWorkflowProcess]="inWorkflowProcess" (valueChange)="getData()"></refund-list-filter>
+
+
     <div class="tabs-container">
         <ul class="nav nav-tabs">
             <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="tabInProcess = true"> {{ 'advancement.inProcess' | translate }} </a></li>
