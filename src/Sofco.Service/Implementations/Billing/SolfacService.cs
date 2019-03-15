@@ -44,7 +44,7 @@ namespace Sofco.Service.Implementations.Billing
             crmConfig = crmOptions.Value;
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
-            this.roleManager = roleManager
+            this.roleManager = roleManager;
             this.logger = logger;
             this.userData = userData;
         }
