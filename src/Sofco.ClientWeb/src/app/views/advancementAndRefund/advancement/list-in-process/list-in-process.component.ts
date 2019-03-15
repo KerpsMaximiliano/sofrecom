@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
@@ -14,16 +14,20 @@ declare var moment: any;
     styleUrls: ['./list-in-process.component.scss']
 })
 export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
-  
+
     getSubscrip: Subscription;
 
     public model: any[] = new Array();
     public modelFiltered: any[] = new Array();
+   
+    public banks: any[] = new Array();
+    @Output()
+    valueChange = new EventEmitter<any>();
 
     constructor(private advancementService: AdvancementService,
-                private datatableService: DataTableService,
-                private router: Router,
-                private messageService: MessageService){}
+        private datatableService: DataTableService,
+        private router: Router,
+        private messageService: MessageService) { }
 
     ngOnInit(): void {
         this.messageService.showLoading();
@@ -34,46 +38,47 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
             this.model = response.data;
             this.modelFiltered = response.data;
             this.initGrid();
-        }, 
-        error => this.messageService.closeLoading());
-    }
-                
-    ngOnDestroy(): void {
-        if(this.getSubscrip) this.getSubscrip.unsubscribe();
+            this.filterBanks();
+        },
+            error => this.messageService.closeLoading());
     }
 
-    initGrid(){
+    ngOnDestroy(): void {
+        if (this.getSubscrip) this.getSubscrip.unsubscribe();
+    }
+
+    initGrid() {
         var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         var title = `Adelantos-en-proceso`;
 
         var params = {
-          selector: '#advancements',
-          columns: columns,
-          title: title,
-          withExport: true,
-          columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ]
+            selector: '#advancements',
+            columns: columns,
+            title: title,
+            withExport: true,
+            columnDefs: [{ "aTargets": [4], "sType": "date-uk" }]
         }
-  
+
         this.datatableService.destroy(params.selector);
         this.datatableService.initialize(params);
 
         setTimeout(() => {
-            $("#advancements_wrapper").css("float","left");
-            $("#advancements_wrapper").css("padding-bottom","50px");
+            $("#advancements_wrapper").css("float", "left");
+            $("#advancements_wrapper").css("padding-bottom", "50px");
             $("#advancements_filter label").addClass('search-filter');
             $(".html5buttons").addClass('export-buttons');
             $("#advancements_paginate").addClass('table-pagination');
-            $("#advancements_length").css("margin-right","10px");
-            $("#advancements_info").css("padding-top","4px");
+            $("#advancements_length").css("margin-right", "10px");
+            $("#advancements_info").css("padding-top", "4px");
         }, 500);
     }
 
-    goToDetail(item){
+    goToDetail(item) {
         this.router.navigate(['/advancementAndRefund/advancement/' + item.id])
     }
 
-    getStatusClass(type){
-        switch(type){
+    getStatusClass(type) {
+        switch (type) {
             case WorkflowStateType.Info: return "label-success";
             case WorkflowStateType.Warning: return "label-warning";
             case WorkflowStateType.Success: return "label-primary";
@@ -81,68 +86,83 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
         }
     }
 
-    search(parameters){
+    search(parameters) {
         this.modelFiltered = [];
 
-        if(!parameters.resourceId && !parameters.typeId && !parameters.dateSince && !parameters.dateTo && !parameters.stateId){
+        if (!parameters.resourceId && !parameters.typeId && !parameters.dateSince && !parameters.dateTo && !parameters.stateId) {
             this.modelFiltered = this.model;
         }
-        else{
-            for(var i = 0; i < this.model.length; i++){
+        else {
+            for (var i = 0; i < this.model.length; i++) {
                 var addItem = true;
                 var item = this.model[i];
 
-                if(parameters.resourceId && parameters.resourceId > 0){
-                    if(parameters.resourceId != item.userApplicantId){
+                if (parameters.resourceId && parameters.resourceId > 0) {
+                    if (parameters.resourceId != item.userApplicantId) {
                         addItem = false;
                     }
                 }
 
-                if(parameters.typeId && parameters.typeId > 0){
-                    if(parameters.typeId != item.type){
+                if (parameters.typeId && parameters.typeId > 0) {
+                    if (parameters.typeId != item.type) {
                         addItem = false;
                     }
                 }
 
-                if(parameters.stateId && parameters.stateId > 0){
-                    if(parameters.stateId != item.statusId){
+                if (parameters.stateId && parameters.stateId > 0) {
+                    if (parameters.stateId != item.statusId) {
                         addItem = false;
                     }
                 }
 
-                if(parameters.dateSince){
-                    parameters.dateSince.setHours(0,0,0,0);
+                if (parameters.dateSince) {
+                    parameters.dateSince.setHours(0, 0, 0, 0);
 
-                    if(moment(item.creationDate).toDate() < parameters.dateSince){
+                    if (moment(item.creationDate).toDate() < parameters.dateSince) {
                         addItem = false;
                     }
                 }
 
-                if(parameters.dateTo){
-                    parameters.dateTo.setHours(0,0,0,0);
+                if (parameters.dateTo) {
+                    parameters.dateTo.setHours(0, 0, 0, 0);
 
-                    if(parameters.dateSince){
-                        if(moment(item.creationDate).toDate() < parameters.dateSince || moment(item.creationDate).toDate() > parameters.dateTo){
+                    if (parameters.dateSince) {
+                        if (moment(item.creationDate).toDate() < parameters.dateSince || moment(item.creationDate).toDate() > parameters.dateTo) {
                             addItem = false;
                         }
                     }
-                    else{
-                        if(moment(item.creationDate).toDate() > parameters.dateTo){
+                    else {
+                        if (moment(item.creationDate).toDate() > parameters.dateTo) {
                             addItem = false;
                         }
                     }
                 }
 
-                if(addItem){
+                if (addItem) {
                     this.modelFiltered.push(item);
                 }
             }
         }
 
-        if(this.modelFiltered.length == 0){
-            this.messageService.showWarningByFolder('common','searchNotFound');
+        if (this.modelFiltered.length == 0) {
+            this.messageService.showWarningByFolder('common', 'searchNotFound');
         }
 
+        this.filterBanks();
         this.initGrid();
     }
+
+    filterBanks() {
+        this.model.forEach(x => {
+
+            if (this.banks.filter(bank => bank.id == x.bank).length == 0) {
+                this.banks.push({ id: x.bank, text: x.bank });
+            }
+        });
+
+        this.valueChange.emit(this.banks);
+        debugger;
+    }
 }
+
+

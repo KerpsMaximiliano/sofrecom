@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
@@ -18,12 +18,17 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
     public model: any[] = new Array();
     public visible: boolean = false;
 
+    public banks: any[] = new Array();
+    @Output()
+    valueChange = new EventEmitter<any>();
+
     constructor(private advancementService: AdvancementService,
                 private datatableService: DataTableService,
                 private router: Router,
                 private messageService: MessageService){}
 
     ngOnInit(): void {
+        this.filterBanks();
     }
 
     ngOnDestroy(): void {
@@ -70,6 +75,7 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
             this.model = [];
             this.model = response.data;
             this.initGrid();
+            this.filterBanks();
         }, 
         error => this.messageService.closeLoading());
     }
@@ -81,5 +87,18 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
             case WorkflowStateType.Success: return "label-primary";
             case WorkflowStateType.Danger: return "label-danger";
         }
+    }
+
+    filterBanks() {
+        
+        this.model.forEach(x => {
+
+            if (this.banks.filter(bank => bank.id == x.bank).length == 0) {
+                this.banks.push({ id: x.bank, text: x.bank });
+            }
+        });
+
+        this.valueChange.emit(this.banks);
+        debugger;
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
+import { Component, OnInit, ViewChild, OnDestroy, Input } from "@angular/core";
 import { Subscription } from "rxjs";
 import { I18nService } from "app/services/common/i18n.service";
 import { UserService } from "app/services/admin/user.service";
@@ -15,7 +15,8 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
     public resources: any[] = new Array<any>();
     public types: any[] = new Array<any>();
     public states: any[] = new Array<any>();
-    public banks: any[] = new Array();
+
+    public banks: any[] = new Array<any>();
 
     public resourceId: number;
     public typeId: number;
@@ -23,7 +24,7 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
     public dateSince: Date;
     public dateTo: Date;
     public bankId: number;
-    
+
     @ViewChild('inProcess') inProcess;
     @ViewChild('finalized') finalized;
 
@@ -33,8 +34,8 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
     getStatesSubscrip: Subscription;
 
     constructor(private userService: UserService,
-                private advancementService: AdvancementService, 
-                private i18nService: I18nService){}
+        private advancementService: AdvancementService,
+        private i18nService: I18nService) { }
 
     ngOnInit(): void {
         this.getResources();
@@ -43,28 +44,28 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if(this.getResourcesSubscrip) this.getResourcesSubscrip.unsubscribe();
-        if(this.getStatesSubscrip) this.getStatesSubscrip.unsubscribe();
+        if (this.getResourcesSubscrip) this.getResourcesSubscrip.unsubscribe();
+        if (this.getStatesSubscrip) this.getStatesSubscrip.unsubscribe();
     }
 
-    getResources(){
+    getResources() {
         this.getResourcesSubscrip = this.userService.getOptions().subscribe(data => {
             this.resources = data;
         });
     }
 
-    getStates(){
+    getStates() {
         this.getResourcesSubscrip = this.advancementService.getStates().subscribe(response => {
             this.states = response.data;
         });
     }
 
-    getTypes(){
+    getTypes() {
         this.types.push({ id: 1, text: this.i18nService.translateByKey('advancement.salary') });
         this.types.push({ id: 2, text: this.i18nService.translateByKey('advancement.viaticum') });
     }
 
-    clean(){
+    clean() {
         this.resourceId = null;
         this.typeId = null;
         this.stateId = null;
@@ -73,42 +74,59 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         this.bankId = null;
     }
 
-    search(){
+    search() {
         var model = {
             resourceId: this.resourceId,
             typeId: this.typeId,
             stateId: this.stateId,
             dateSince: this.dateSince,
             dateTo: this.dateTo,
-            bank:   this.bankId
+            bank: this.bankId
         }
 
-        if(this.currentTab == 1){
+        if (this.currentTab == 1) {
             this.inProcess.search(model);
         }
 
-        if(this.currentTab == 3){
+        if (this.currentTab == 3) {
             this.finalized.search(model);
         }
     }
 
-    collapse(){
-        if($("#collapseOne").hasClass('in')){
+    collapse() {
+        if ($("#collapseOne").hasClass('in')) {
             $("#collapseOne").removeClass('in');
         }
-        else{
+        else {
             $("#collapseOne").addClass('in');
         }
 
         this.changeIcon();
     }
 
-    changeIcon(){
-        if($("#collapseOne").hasClass('in')){
+    changeIcon() {
+        if ($("#collapseOne").hasClass('in')) {
             $("#search-icon").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
         }
-        else{
+        else {
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         }
+    }
+
+    getBanks(banks) {
+        this.banks = banks;
+    }
+
+    getGrid(pTab){
+        debugger;
+        this.currentTab = pTab;
+        if (this.currentTab == 1) {
+            this.inProcess.filterBanks();
+        }
+
+        if (this.currentTab == 3) {
+            this.finalized.filterBanks();
+        }
+
     }
 }
