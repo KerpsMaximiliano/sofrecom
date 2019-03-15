@@ -303,5 +303,25 @@ namespace Sofco.DAL.Repositories.Admin
                 .ThenInclude(x => x.Group)
                 .Any(x => x.Email.Equals(email) && x.UserGroups.Any(s => s.Group.Code.Equals(comercialCode)));
         }
+
+        public bool HasPmoGroup(string currentUserEmail)
+        {
+            var pmoCode = emailConfig.PmoCode;
+
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(currentUserEmail) && x.UserGroups.Any(s => s.Group.Code == pmoCode));
+        }
+
+        public bool HasReadOnlyGroup(string currentUserEmail)
+        {
+            var readOnlyCode = emailConfig.ReadOnlyCode;
+
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(currentUserEmail) && x.UserGroups.Any(s => s.Group.Code == readOnlyCode));
+        }
     }
 }
