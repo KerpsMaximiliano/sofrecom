@@ -70,7 +70,6 @@ namespace Sofco.UnitTest.Services.Billing
                 userDataMock.Object,
                 roleManagerMock.Object,
                 optionsMock.Object,
-                roleManagerMock.Object,
                 crmInvoiceServiceMock.Object,
                 loggerMock.Object);
         }

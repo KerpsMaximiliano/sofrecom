@@ -17,10 +17,8 @@ using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Domain.Helpers;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Relationships;
-using System.Globalization;
 using Sofco.Core.Managers;
 using Sofco.Service.Crm.Interfaces;
-using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -39,14 +37,12 @@ namespace Sofco.Service.Implementations.Billing
             IUserData userData,
             IRoleManager roleManager,
             IOptions<CrmConfig> crmOptions,
-            IRoleManager roleManager,
             ICrmInvoicingMilestoneService crmInvoiceService, ILogMailer<SolfacService> logger)
         {
             this.solfacStatusFactory = solfacStatusFactory;
             crmConfig = crmOptions.Value;
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
-            this.roleManager = roleManager;
             this.logger = logger;
             this.roleManager = roleManager;
             this.userData = userData;
