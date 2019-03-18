@@ -323,7 +323,7 @@ namespace Sofco.Service.Implementations.Admin
 
         public bool HasCdgGroup()
         {
-            return unitOfWork.UserRepository.HasDafGroup(sessionManager.GetUserEmail());
+            return unitOfWork.UserRepository.HasCdgGroup(sessionManager.GetUserEmail());
         }
 
         public ICollection<User> GetManagers()

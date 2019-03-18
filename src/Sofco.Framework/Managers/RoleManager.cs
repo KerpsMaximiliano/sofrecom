@@ -67,8 +67,10 @@ namespace Sofco.Framework.Managers
             var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUserEmail);
             var hasPmoGroup = unitOfWork.UserRepository.HasPmoGroup(currentUserEmail);
             var hasReadOnlyGroup = unitOfWork.UserRepository.HasReadOnlyGroup(currentUserEmail);
+            var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUserEmail);
+            var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUserEmail);
 
-            return hasDirectorGroup || hasCommercialGroup || hasCdgGroup || hasDafGroup || hasPmoGroup || hasReadOnlyGroup;
+            return hasDirectorGroup || hasGafGroup || hasRrhhGroup || hasCommercialGroup || hasCdgGroup || hasDafGroup || hasPmoGroup || hasReadOnlyGroup;
         }
 
         public bool IsDirector()
