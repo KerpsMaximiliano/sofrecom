@@ -99,6 +99,12 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
         if(this.getByIdSubscrip) this.getByIdSubscrip.unsubscribe();
     }
 
+    canUpdate(){
+        if(this.menuService.hasFunctionality('PUROR', 'ALTA') && !this.form.isReadOnly) return true;
+
+        return false;
+    }
+
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.purchaseOrderService.getUrlForImportExcel(this.form.model.id),
                                           authToken: 'Bearer ' + Cookie.get('access_token') ,

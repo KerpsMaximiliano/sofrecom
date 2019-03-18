@@ -24,7 +24,7 @@
             <button class="btn btn-success btn-outline dim btn-sm" (click)="back()" *ngIf="menuService.hasFunctionality('PUROR', 'PEND')"> <i class="fa fa-arrow-left"></i> {{ 'billing.purchaseOrder.goToPendings' | translate }} </button>
             <button class="btn btn-success btn-outline dim btn-sm" (click)="goToQuery()" *ngIf="menuService.hasFunctionality('PUROR', 'QUERY')"> <i class="fa fa-search"></i> {{ 'ACTIONS.goToSearch' | translate }} </button>
             <button class="btn btn-success btn-outline dim btn-sm" (click)="openAdjustment()" *ngIf="menuService.hasFunctionality('PUROR', 'ADJUSTMENT') && (form.model.status == 1 || form.model.status == 2)"> {{ 'billing.purchaseOrder.createAdjustment' | translate }} </button>
-            <button class="btn btn-primary btn-outline dim btn-sm" (click)="update()" *ngIf="menuService.hasFunctionality('PUROR', 'ALTA')">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>
+            <button class="btn btn-primary btn-outline dim btn-sm" (click)="update()" *ngIf="canUpdate()">{{'ACTIONS.update' | translate }} <i class="fa fa-save"></i> </button>
 
             <div class="btn-right">
                 <oc-status-reject [ocId]="form.model.id" [model]="form.model" [status]="form.model.status"></oc-status-reject>
