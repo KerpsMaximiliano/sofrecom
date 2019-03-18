@@ -28,7 +28,9 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <button class="btn btn-success btn-sm btn-outline dim" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+    <button class="btn btn-success btn-sm btn-outline dim" (click)="back()"> 
+        <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} 
+    </button>
 
     <div class="btn-right">
         <button class="btn btn-success btn-sm btn-outline dim" (click)="goToResources()"> 
@@ -47,7 +49,7 @@
             {{'allocationManagement.analytics.new' | translate }} <i class="fa fa-plus"></i> 
         </button>
 
-        <button class="btn btn-sm btn-sm btn-success btn-outline dim" (click)="update()">
+        <button class="btn btn-sm btn-sm btn-success btn-outline dim" (click)="update()" *ngIf="menuService.hasFunctionality('SOLFA', 'PROJECT-UPDATE')">
             {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i>
         </button>
     </div>

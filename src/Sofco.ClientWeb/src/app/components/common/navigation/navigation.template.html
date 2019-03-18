@@ -48,7 +48,7 @@
       <li [ngClass]="{active: activeRoute('contracts')}" *ngIf="menuService.hasContractsMenu()">
         <a href="#"><i class="fa fa-bars"></i> <span class="nav-label">{{'contracts.title' | translate }}</span> <span class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('contracts')}">
-            <li [ngClass]="{active: activeRoute('costCenter')}" *ngIf="menuService.hasFunctionality('CONTR', 'CCLST')"><a [routerLink]="['/contracts/costCenter']">{{'contracts.costCenter.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('costCenter')}" *ngIf="menuService.hasFunctionality('COSTC', 'QUERY')"><a [routerLink]="['/contracts/costCenter']">{{'contracts.costCenter.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('analytics')}" *ngIf="menuService.hasFunctionality('CONTR', 'QUERY')"><a [routerLink]="['/contracts/analytics']">{{'allocationManagement.analytics.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('closeDate')}" *ngIf="menuService.hasFunctionality('CONTR', 'CDADD')"><a [routerLink]="['/contracts/closeDate']">{{'rrhh.closeDate.title' | translate }}</a></li>
         </ul>

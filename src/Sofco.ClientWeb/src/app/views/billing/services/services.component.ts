@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { ServiceService } from "../../../services/billing/service.service";
 import { DataTableService } from "../../../services/common/datatable.service";
 import { MessageService } from '../../../services/common/message.service';
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'app-services',
@@ -22,6 +23,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private service: ServiceService,
+        public menuService: MenuService,
         private messageService: MessageService,
         private datatableService: DataTableService) { }
 

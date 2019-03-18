@@ -93,7 +93,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         public Response<List<Option>> GetAnalyticOptionsByCurrentManager()
         {
-            var analyticsByManagers = roleManager.IsDirector()
+            var analyticsByManagers = roleManager.HasFullAccess()
                 ? unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite()
                 : GetAnalyticByManagerAndDelegated();
 

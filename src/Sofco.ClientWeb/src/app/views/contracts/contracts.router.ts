@@ -25,9 +25,9 @@ const CONTRACTS_ROUTER: Routes = [
     {
       path: "costCenter",
       children: [
-        { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CCLST" } },
-        { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CCADD" } },
-        { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CCADD" } }
+        { path: "", component: ListCostCenterComponent, canActivate: [AuthGuard], data: { module: "COSTC", functionality: "QUERY" } },
+        { path: "add", component: AddCostCenterComponent, canActivate: [AuthGuard], data: { module: "COSTC", functionality: "ADD" } },
+        { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "COSTC", functionality: "UPDAT" } }
       ]
     },
 

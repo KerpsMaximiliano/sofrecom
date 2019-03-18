@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Views;
 using Sofco.Domain.Models.Reports;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Sofco.DAL.Repositories.Reports
 {

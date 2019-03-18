@@ -22,7 +22,9 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <button class="btn btn-sm btn-success btn-outline dim pull-right" (click)="update()"> {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i></button>
+    <button class="btn btn-sm btn-success btn-outline dim pull-right" (click)="update()" *ngIf="menuService.hasFunctionality('SOLFA', 'SERVICE-UPDATE')"> 
+        {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i>
+    </button>
 
     <div class="ibox">
         <div class="ibox-content">

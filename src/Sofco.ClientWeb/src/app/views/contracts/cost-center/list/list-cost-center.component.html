@@ -14,13 +14,13 @@
         </ol>
     </div> 
 </div>
-    
+     
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h4 class="pull-left">{{ 'contracts.costCenter.title' | translate }}</h4>
             
-            <div class="ibox-tools" *ngIf="menuService.hasFunctionality('CONTR', 'ANADD')">
+            <div class="ibox-tools" *ngIf="menuService.hasFunctionality('COSTC', 'ADD')">
                 <div class="btn-group">
                     <button class="btn btn-sm" type="button" [ngClass]="(actives)?'btn-primary':'btn-white'" (click)="filterActives(true)">Activos</button>
                     <button class="btn btn-sm" type="button" [ngClass]="(actives)?'btn-white':'btn-primary'" (click)="filterActives(false)">Todos</button>
@@ -47,9 +47,9 @@
                         <td>{{ costCenter.description }}</td>
                         <td class="text-center column-xs"><span class="fa" [ngClass]="costCenter.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
                         <td class="text-center column-xs">
-                            <button class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('ALLOC', 'CCADD')" (click)="gotToEdit(costCenter)"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('COSTC', 'UPDAT')" (click)="gotToEdit(costCenter)"><i class="fa fa-edit"></i></button>
 
-                            <button class="btn btn-xs" [ngClass]="(costCenter.active)?'btn-danger':'btn-success'" (click)="habInhabClick(costCenter, i)" >
+                            <button class="btn btn-xs" [ngClass]="(costCenter.active)?'btn-danger':'btn-success'" (click)="habInhabClick(costCenter, i)" *ngIf="menuService.hasFunctionality('COSTC', 'HABIN')">
                                 <span [ngClass]="(costCenter.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
                             </button>
                         </td>
