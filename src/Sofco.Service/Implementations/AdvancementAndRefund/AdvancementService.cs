@@ -18,7 +18,6 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
-using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
 {
@@ -215,11 +214,9 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var employeeDicc = new Dictionary<string, string>();
 
-            var currentUser = userData.GetCurrentUser();
+            var hasAllAccess = roleManager.HasFullAccess();
 
-            //var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
-
-            //if (!hasDafGroup) return response;
+            if (!hasAllAccess) return response;
 
             var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
 

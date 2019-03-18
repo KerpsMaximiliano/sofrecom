@@ -26,7 +26,6 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<IInvoiceRepository> invoiceRepositoryMock;
         private Mock<ISolfacStatusFactory> solfacStatusFactoryMock;
         private Mock<IUserRepository> userRepositoryMock;
-        private Mock<CrmConfig> crmConfigMock;
         private Mock<ICrmInvoicingMilestoneService> crmInvoiceServiceMock;
         private Mock<ILogMailer<SolfacService>> loggerMock;
         private Mock<IUserData> userDataMock;
@@ -42,15 +41,11 @@ namespace Sofco.UnitTest.Services.Billing
             invoiceRepositoryMock = new Mock<IInvoiceRepository>();
             solfacStatusFactoryMock = new Mock<ISolfacStatusFactory>();
             userRepositoryMock = new Mock<IUserRepository>();
-            crmConfigMock = new Mock<CrmConfig>();
             crmInvoiceServiceMock = new Mock<ICrmInvoicingMilestoneService>();
             loggerMock = new Mock<ILogMailer<SolfacService>>();
             userDataMock = new Mock<IUserData>();
             roleManagerMock = new Mock<IRoleManager>();
             purchaseOrderRepositoryMock = new Mock<IPurchaseOrderRepository>();
-
-            var optionsMock = new Mock<IOptions<CrmConfig>>();
-            optionsMock.SetupGet(s => s.Value).Returns(crmConfigMock.Object);
 
             unitOfWork = new Mock<IUnitOfWork>();
 
@@ -69,7 +64,6 @@ namespace Sofco.UnitTest.Services.Billing
                 unitOfWork.Object,
                 userDataMock.Object,
                 roleManagerMock.Object,
-                optionsMock.Object,
                 crmInvoiceServiceMock.Object,
                 loggerMock.Object);
         }

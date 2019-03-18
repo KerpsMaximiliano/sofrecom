@@ -28,5 +28,6 @@ namespace Sofco.Core.DAL.Billing
         bool ExistNumber(string number, int domainId);
         bool HasWorkflowStarted(int purchaseOrderId);
         IList<PurchaseOrder> GetForReport();
+        decimal GetBalance(int purchaseOrderId, int solfacCurrencyId);
     }
 }

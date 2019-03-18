@@ -13,6 +13,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Logger;
+using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
@@ -20,7 +21,6 @@ using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
-using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
@@ -37,6 +37,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly IWorkflowStateRepository workflowStateRepository;
         private readonly IMapper mapper;
         private readonly FileConfig fileConfig;
+        private readonly IRoleManager roleManager;
         private readonly IRefundRepository refundRepository;
         private readonly IUserData userData;
 
@@ -47,6 +48,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             IWorkflowStateRepository workflowStateRepository,
             IOptions<FileConfig> fileOptions,
             IMapper mapper,
+            IRoleManager roleManager,
             IRefundRepository refundRepository,
             IUserData userData)
         {
@@ -55,6 +57,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             this.validation = validation;
             this.workflowStateRepository = workflowStateRepository;
             this.mapper = mapper;
+            this.roleManager = roleManager;
             this.refundRepository = refundRepository;
             this.userData = userData;
             fileConfig = fileOptions.Value;
@@ -307,15 +310,16 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             ValidParameter(model);
 
             var currentUser = userData.GetCurrentUser();
+            var hasAllAccess = roleManager.HasFullAccess();
 
-            if (!HasAllAccess())
+            if (!hasAllAccess)
             {
                 model.UserApplicantIds = GetUserApplicantIdsByCurrentManager();
             }
 
             var result = refundRepository.GetByParameters(model);
 
-            if (HasAllAccess())
+            if (hasAllAccess)
             {
                 return new Response<List<RefundListResultModel>>
                 {
@@ -400,21 +404,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
             return models;
-        }
-
-        private bool HasAllAccess()
-        {
-            var currentUser = userData.GetCurrentUser();
-
-            var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email);
-            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUser.Email);
-            var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUser.Email);
-            var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUser.Email);
-            var hasComplianceGroup = unitOfWork.UserRepository.HasComplianceGroup(currentUser.Email);
-
-            var hasAllAccess = hasDirectorGroup || hasRrhhGroup || hasGafGroup || hasDafGroup || hasComplianceGroup;
-
-            return hasAllAccess;
         }
 
         private bool ValidateManagerAccess(Refund entity, UserLiteModel currentUser)

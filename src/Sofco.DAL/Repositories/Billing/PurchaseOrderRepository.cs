@@ -188,5 +188,20 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(x => x.Area)
                 .ToList();
         }
+
+        public decimal GetBalance(int purchaseOrderId, int solfacCurrencyId)
+        {
+            var solfacs = context.Solfacs
+                .Where(x => x.PurchaseOrderId == purchaseOrderId && x.CurrencyId == solfacCurrencyId &&
+                            x.Status == SolfacStatus.AmountCashed || x.Status == SolfacStatus.Invoiced)
+                .ToList();
+
+            var purchaseOrder = context.PurchaseOrderAmmountDetails
+                .SingleOrDefault(x => x.PurchaseOrderId == purchaseOrderId && x.CurrencyId == solfacCurrencyId);
+
+            if (purchaseOrder != null) return purchaseOrder.Ammount - solfacs.Sum(x => x.TotalAmount);
+
+            return 0;
+        }
     }
 }

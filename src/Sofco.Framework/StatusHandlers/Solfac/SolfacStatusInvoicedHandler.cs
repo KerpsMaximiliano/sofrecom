@@ -83,22 +83,25 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             if (solfac.PurchaseOrder == null) return;
 
-            var detail = solfac.PurchaseOrder.AmmountDetails.SingleOrDefault(x => x.CurrencyId == solfac.CurrencyId);
+            //var detail = solfac.PurchaseOrder.AmmountDetails.SingleOrDefault(x => x.CurrencyId == solfac.CurrencyId);
 
-            if (detail != null)
-            {
-                var oldBalance = detail.Balance;
+            var ocBalance = unitOfWork.PurchaseOrderRepository.GetBalance(solfac.PurchaseOrder.Id, solfac.CurrencyId);
 
-                detail.Balance = detail.Balance - solfac.TotalAmount;
-                unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
+            //if (detail != null)
+            //{
+                var oldBalance = ocBalance;
+                var newBalance = ocBalance - solfac.TotalAmount;
 
-                if (oldBalance > 0 && detail.Balance <= 0)
+                //detail.Balance = detail.Balance - solfac.TotalAmount;
+                //unitOfWork.PurchaseOrderRepository.UpdateBalance(detail);
+
+                if (oldBalance > 0 && newBalance <= 0)
                 {
                     solfac.PurchaseOrder.Status = PurchaseOrderStatus.Consumed;
                     unitOfWork.PurchaseOrderRepository.UpdateStatus(solfac.PurchaseOrder);
                     SendMailForOcConsumed(solfac.PurchaseOrder);
                 }
-            }
+            //}
         }
 
         private void SendMailForOcConsumed(Domain.Models.Billing.PurchaseOrder purchaseOrder)
