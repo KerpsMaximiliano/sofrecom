@@ -181,7 +181,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             {
                 response.AddError(Resources.Billing.PurchaseOrder.MarginRequired);
             }
-            else if(model.Margin.Value <= 0 || model.Margin.Value > 100)
+            else if(model.Margin.Value < 0 || model.Margin.Value > 100)
             {
                 response.AddError(Resources.Billing.PurchaseOrder.MarginWrong);
             }
