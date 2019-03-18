@@ -10,6 +10,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.Views;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.DAL.Repositories.Admin;
@@ -27,6 +28,7 @@ namespace Sofco.DAL
     public class UnitOfWork : IUnitOfWork
     {
         private readonly SofcoContext context;
+        private readonly ReportContext reportContext;
 
         private IDbContextTransaction contextTransaction;
 
@@ -64,6 +66,7 @@ namespace Sofco.DAL
         private ICustomerRepository customerRepository;
         private IServiceRepository serviceRepository;
         private IProjectRepository projectRepository;
+        private IBanksViewRepository banksViewRepository;
 
         #endregion
 
@@ -156,6 +159,7 @@ namespace Sofco.DAL
         public ICustomerRepository CustomerRepository => customerRepository ?? (customerRepository = new CustomerRepository(context));
         public IServiceRepository ServiceRepository => serviceRepository ?? (serviceRepository = new ServiceRepository(context));
         public IProjectRepository ProjectRepository => projectRepository ?? (projectRepository = new ProjectRepository(context));
+        public IBanksViewRepository BanksViewRepository => banksViewRepository ?? (banksViewRepository = new BanksViewRepository(reportContext));
 
         #endregion
 

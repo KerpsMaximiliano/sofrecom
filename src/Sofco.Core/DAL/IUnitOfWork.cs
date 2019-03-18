@@ -5,6 +5,7 @@ using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.DAL.Views;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.DAL.WorkTimeManagement;
 
@@ -41,6 +42,7 @@ namespace Sofco.Core.DAL
         ICustomerRepository CustomerRepository { get; }
         IServiceRepository ServiceRepository { get; }
         IProjectRepository ProjectRepository { get; }
+        IBanksViewRepository BanksViewRepository { get; }
 
         #endregion
 

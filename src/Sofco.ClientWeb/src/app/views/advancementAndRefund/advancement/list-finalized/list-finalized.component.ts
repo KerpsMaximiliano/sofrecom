@@ -78,9 +78,6 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
             this.filterBanks();
         }, 
         error => this.messageService.closeLoading());
-
-        console.log( this.model);
-        debugger;
     }
 
     getStatusClass(type){
