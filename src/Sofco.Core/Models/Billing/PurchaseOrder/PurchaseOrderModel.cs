@@ -57,12 +57,9 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         {
             var domain = new Domain.Models.Billing.PurchaseOrder();
 
-            FillData(domain, userName);
-
             domain.Status = PurchaseOrderStatus.Draft;
-            domain.AccountId = ClientExternalId;
-            domain.AccountName = ClientExternalName;
-            domain.AreaId = AreaId;
+
+            FillData(domain, userName);
 
             domain.Histories = new List<PurchaseOrderHistory>();
 
@@ -116,12 +113,18 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             domain.EndDate = EndDate;
             domain.ReceptionDate = ReceptionDate;
             domain.Description = Description;
-            domain.AreaId = AreaId;
             domain.FicheDeSignature = FicheDeSignature;
             domain.PaymentForm = PaymentForm;
-            domain.Margin = Margin.GetValueOrDefault();
             domain.Comments = Comments;
             domain.Proposal = string.Join(";", ProposalIds);
+
+            if (domain.Status == PurchaseOrderStatus.Draft || domain.Status == PurchaseOrderStatus.Reject)
+            {
+                domain.AreaId = AreaId;
+                domain.Margin = Margin.GetValueOrDefault();
+                domain.AccountId = ClientExternalId;
+                domain.AccountName = ClientExternalName;
+            }
 
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;
