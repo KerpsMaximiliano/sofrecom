@@ -37,6 +37,6 @@ namespace Sofco.Core.Services.Common
         IList<MonthsReturn> GetMonthsReturn();
         IList<Option> GetCreditCards();
 
-        IList<BankModel> GetBanks()
+        IList<BankModel> GetBanks();
     }
 }
