@@ -378,6 +378,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     canCreateHito(){
+        if(!this.menuService.hasFunctionality('SOLFA', 'NEW-HITO')) return false;
+
         let hitos = this.getHitosSelected();
         return hitos.length == 0;
     }
@@ -435,6 +437,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     canCreateCreditNote():boolean {
+        if(!this.menuService.hasFunctionality('SOLFA', 'CREDIT-DEBIT-NOTE')) return false;
+
         if(!this.canCreateSolfac()) return false;
 
         if(!this.isValidCreditNote()) return false;
@@ -443,6 +447,8 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     }
 
     canCreateDebitNote():boolean {
+        if(!this.menuService.hasFunctionality('SOLFA', 'CREDIT-DEBIT-NOTE')) return false;
+        
         if(!this.canCreateSolfac()) return false;
 
         if(!this.isValidDebitNote()) return false;

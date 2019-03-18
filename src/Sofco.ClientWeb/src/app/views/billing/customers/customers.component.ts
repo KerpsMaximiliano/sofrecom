@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { CustomerService } from "../../../services/billing/customer.service";
 import { DataTableService } from "../../../services/common/datatable.service";
 import { MessageService } from '../../../services/common/message.service';
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'app-customers',
@@ -19,6 +20,7 @@ export class CustomersComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private service: CustomerService,
+        public menuService: MenuService,
         private messageService: MessageService,
         private datatableService: DataTableService) { }
 
