@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sofco.Domain.Models.Reports
+﻿namespace Sofco.Domain.Models.Reports
 {
     public class BankView
     {

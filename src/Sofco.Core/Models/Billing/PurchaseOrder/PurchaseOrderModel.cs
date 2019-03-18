@@ -50,8 +50,6 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
 
         public string Comments { get; set; }
 
-        public string Proposal { get; set; }
-
 
         public IList<PurchaseOrderAmmountDetailModel> AmmountDetails { get; set; }
 
@@ -59,19 +57,15 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         {
             var domain = new Domain.Models.Billing.PurchaseOrder();
 
-            FillData(domain, userName);
-
             domain.Status = PurchaseOrderStatus.Draft;
-            domain.AccountId = ClientExternalId;
-            domain.AccountName = ClientExternalName;
-            domain.AreaId = AreaId;
+
+            FillData(domain, userName);
 
             domain.Histories = new List<PurchaseOrderHistory>();
 
             domain.AmmountDetails = AmmountDetails.Where(x => x.Enable).Select(x => new PurchaseOrderAmmountDetail
             {
                 CurrencyId = x.CurrencyId,
-                //Balance = x.Ammount,
                 Ammount = x.Ammount
             })
             .ToList();
@@ -91,11 +85,6 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                 {
                     if (detail.Enable)
                     {
-                        if (domainDetail.Ammount != detail.Ammount)
-                        {
-                            //domainDetail.Balance += detail.Ammount - domainDetail.Ammount;
-                        }
-
                         domainDetail.Ammount = detail.Ammount;
                     }
                     else
@@ -110,7 +99,6 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                     domain.AmmountDetails.Add(new PurchaseOrderAmmountDetail
                     {
                         CurrencyId = detail.CurrencyId,
-                        //Balance = detail.Ammount,
                         Ammount = detail.Ammount
                     });
                 }
@@ -127,9 +115,16 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             domain.Description = Description;
             domain.FicheDeSignature = FicheDeSignature;
             domain.PaymentForm = PaymentForm;
-            domain.Margin = Margin.GetValueOrDefault();
             domain.Comments = Comments;
             domain.Proposal = string.Join(";", ProposalIds);
+
+            if (domain.Status == PurchaseOrderStatus.Draft || domain.Status == PurchaseOrderStatus.Reject)
+            {
+                domain.AreaId = AreaId;
+                domain.Margin = Margin.GetValueOrDefault();
+                domain.AccountId = ClientExternalId;
+                domain.AccountName = ClientExternalName;
+            }
 
             domain.UpdateDate = DateTime.UtcNow;
             domain.UpdateByUser = userName;

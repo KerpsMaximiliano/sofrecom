@@ -38,7 +38,6 @@
             <li [ngClass]="{active: activeRoute('certificates')}" *ngIf="menuService.hasFunctionality('CERT', 'QUERY')"><a [routerLink]="['/billing/certificates']">{{'billing.certificate.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('approval/delegate')}" *ngIf="menuService.hasFunctionality('PUROR', 'PODE')"><a [routerLink]="['/billing/purchaseOrders/approval/delegate']">{{'billing.purchaseOrder.delegate.approvalTitle' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('active/delegate')}" *ngIf="menuService.hasFunctionality('PUROR', 'POACTIVEDELEGATE')"><a [routerLink]="['/billing/purchaseOrders/active/delegate']">{{'billing.purchaseOrder.delegate.activeTitle' | translate }}</a></li>
-            <li [ngClass]="{active: activeRoute('active')}" *ngIf="menuService.hasFunctionality('PUROR', 'POACTIVEVIEW')"><a [routerLink]="['/billing/purchaseOrders/active']">{{'billing.purchaseOrder.activeViewTitle' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('query')}" *ngIf="menuService.hasFunctionality('PUROR', 'QUERY')"><a [routerLink]="['/billing/purchaseOrders/query']">{{'billing.purchaseOrder.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('pendings')}" *ngIf="menuService.hasFunctionality('PUROR', 'PEND')"><a [routerLink]="['/billing/purchaseOrders/pendings']">{{'billing.purchaseOrder.ocPendingsShortTitle' | translate }}</a></li>
         </ul>

@@ -72,9 +72,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
-        public DateTime GetStartDate(int analitycId)
+        public DateTime GetStartDate(int analitycId, int employeeId)
         {
-            return context.Allocations.Where(x => x.AnalyticId == analitycId).Min(x => x.StartDate);
+            return context.Allocations.Where(x => x.AnalyticId == analitycId && x.EmployeeId == employeeId && x.Percentage > 0).Min(x => x.StartDate);
         }
 
         public ICollection<Allocation> GetByEmployee(int id)
