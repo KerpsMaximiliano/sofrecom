@@ -37,8 +37,6 @@ namespace Sofco.Service.Implementations.Reports
 
         private readonly IMapper mapper;
 
-        private readonly ISessionManager sessionManager;
-
         private readonly ILogMailer<PurchaseOrderReportService> logger;
 
         private readonly EmailConfig emailConfig;
@@ -50,7 +48,6 @@ namespace Sofco.Service.Implementations.Reports
             ILogMailer<PurchaseOrderReportService> logger,
             IUnitOfWork unitOfWork,
             IUserData userData,
-            ISessionManager sessionManager,
             IRoleManager roleManager,
             IOptions<EmailConfig> emailOptions,
             IUserDelegateRepository userDelegateRepository)
@@ -60,7 +57,6 @@ namespace Sofco.Service.Implementations.Reports
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
-            this.sessionManager = sessionManager;
             this.userDelegateRepository = userDelegateRepository;
             this.emailConfig = emailOptions.Value;
             this.roleManager = roleManager;
@@ -109,51 +105,7 @@ namespace Sofco.Service.Implementations.Reports
             return new Response<List<Option>> { Data = result };
         }
 
-        public Response<List<PurchaseOrderBalanceViewModel>> GetActives(SearchPurchaseOrderParams parameters)
-        {
-            var response = new Response<List<PurchaseOrderBalanceViewModel>>();
-
-            try
-            {
-                parameters.StatusId = string.Empty;
-                parameters.StatusIds = new List<PurchaseOrderStatus> { PurchaseOrderStatus.Valid, PurchaseOrderStatus.Consumed};
-
-                var data = purchaseOrderRepository.Search(parameters);
-
-                data = ApplyActiveUserFilter(data);
-
-                response.Data = Translate(data);
-            }
-            catch (Exception ex)
-            {
-                response.AddError(Resources.Common.GeneralError);
-                logger.LogError(ex);
-            }
-
-            return response;
-        }
-
         private List<PurchaseOrderBalanceView> ApplyCurrentUserFilter(List<PurchaseOrderBalanceView> data)
-        {
-            var hasAllAccess = roleManager.HasFullAccess();
-
-            if (hasAllAccess) return data;
-
-            var currentUser = userData.GetCurrentUser();
-
-            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
-
-            return data.Where(s =>
-            {
-                if (string.IsNullOrEmpty(s.ManagerIds)) return false;
-
-                var managerIds = s.ManagerIds.Split(Delimiter).Select(int.Parse).ToList();
-
-                return analyticsByManagers.Any(_ => _.ManagerId != null && managerIds.Contains(_.ManagerId.Value));
-            }).ToList();
-        }
-
-        private List<PurchaseOrderBalanceView> ApplyActiveUserFilter(List<PurchaseOrderBalanceView> data)
         {
             var hasAllAccess = roleManager.HasFullAccess();
 

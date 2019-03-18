@@ -98,7 +98,6 @@ import { PurchaseOrderActiveDelegateComponent } from './purchaseOrder/active-vie
 import { PurchaseOrderActiveDelegateEditComponent } from './purchaseOrder/active-view/active-delegate/edit/purchase-order-active-delegate-edit.component';
 import { PurchaseOrderViewComponent } from './purchaseOrder/common/purchase-order-view.component';
 import { PurchaseOrderViewFilterComponent } from './purchaseOrder/common/purchase-order-view-filter.component';
-import { PurchaseOrderActiveViewComponent } from './purchaseOrder/active-view/purchase-order-active-view.component';
 import { ButtonsModule } from '../../components/buttons/buttons.module';
 import { DecimalFormatModule } from 'app/components/decimalFormat/decimal-format.directive';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -119,7 +118,7 @@ import { AmountFormatModule } from 'app/pipes/amount-format.module';
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
                  OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderApprovalDelegateComponent, PurchaseOrderApprovalDelegateEditComponent,
                  OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent, PurchaseOrderActiveDelegateComponent, PurchaseOrderActiveDelegateEditComponent,
-                 PurchaseOrderViewComponent, PurchaseOrderViewFilterComponent, PurchaseOrderActiveViewComponent],
+                 PurchaseOrderViewComponent, PurchaseOrderViewFilterComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, TooltipModule,

@@ -320,7 +320,7 @@
             "commercialManager": "Gerente de Cuenta",
             "delegate": {
                 "approvalTitle": "Delegar Aprobación Orden de Compra",
-                "activeTitle": "Delegar Orden de Compra Activas",
+                "activeTitle": "Delegar Orden de Compra",
                 "delegateAction": "Delegar",
                 "type": "Tipo",
                 "source": "Origen",
@@ -337,7 +337,7 @@
                 "PurchaseOrderApprovalDaf": "DAF"
             },
             "adjustment": "Ajuste",
-            "activeViewTitle": "Orden de Compras Activas"
+            "activeViewTitle": "Orden de Compras"
         },
         "solfac":{
             "title": "Solicitud Facturación",
