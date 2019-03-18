@@ -26,7 +26,6 @@ namespace Sofco.Service.Implementations.Billing
     {
         private readonly ISolfacStatusFactory solfacStatusFactory;
         private readonly IUnitOfWork unitOfWork;
-        private readonly CrmConfig crmConfig;
         private readonly ICrmInvoicingMilestoneService crmInvoiceService;
         private readonly ILogMailer<SolfacService> logger;
         private readonly IUserData userData;
@@ -36,11 +35,9 @@ namespace Sofco.Service.Implementations.Billing
             IUnitOfWork unitOfWork,
             IUserData userData,
             IRoleManager roleManager,
-            IOptions<CrmConfig> crmOptions,
             ICrmInvoicingMilestoneService crmInvoiceService, ILogMailer<SolfacService> logger)
         {
             this.solfacStatusFactory = solfacStatusFactory;
-            crmConfig = crmOptions.Value;
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
             this.logger = logger;

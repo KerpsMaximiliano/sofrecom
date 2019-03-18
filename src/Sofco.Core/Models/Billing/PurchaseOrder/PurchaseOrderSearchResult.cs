@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Sofco.Core.Models.Billing.PurchaseOrder
+﻿namespace Sofco.Core.Models.Billing.PurchaseOrder
 {
     public class PurchaseOrderSearchResult
     {
@@ -18,8 +15,6 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                 FileName = purchaseOrder.File.FileName;
                 CreationDate = purchaseOrder.File.CreationDate.ToString("d");
             }
-
-            Details = purchaseOrder.AmmountDetails.Select(x => new AmmountDetailModel { Currency = x.Currency.Text, Balance = x.Balance }).ToList();
         }
 
         public int Id { get; set; }
@@ -35,7 +30,5 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
         public string FileName { get; set; }
 
         public string CreationDate { get; set; }
-
-        public IList<AmmountDetailModel> Details { get; set; }
     }
 }

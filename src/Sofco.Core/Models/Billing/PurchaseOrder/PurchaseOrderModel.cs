@@ -71,7 +71,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             domain.AmmountDetails = AmmountDetails.Where(x => x.Enable).Select(x => new PurchaseOrderAmmountDetail
             {
                 CurrencyId = x.CurrencyId,
-                Balance = x.Ammount,
+                //Balance = x.Ammount,
                 Ammount = x.Ammount
             })
             .ToList();
@@ -93,7 +93,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                     {
                         if (domainDetail.Ammount != detail.Ammount)
                         {
-                            domainDetail.Balance += detail.Ammount - domainDetail.Ammount;
+                            //domainDetail.Balance += detail.Ammount - domainDetail.Ammount;
                         }
 
                         domainDetail.Ammount = detail.Ammount;
@@ -110,7 +110,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                     domain.AmmountDetails.Add(new PurchaseOrderAmmountDetail
                     {
                         CurrencyId = detail.CurrencyId,
-                        Balance = detail.Ammount,
+                        //Balance = detail.Ammount,
                         Ammount = detail.Ammount
                     });
                 }

@@ -110,7 +110,6 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             crmInvoiceService.UpdateStatusAndPurchaseOrder(hitos.ToList(), GetHitoStatus(), ocNumber);
         }
 
-
         public void SendMail(Domain.Models.Billing.Solfac solfac, EmailConfig emailConfig)
         {
             var subjectToCdg = GetSubjectMail(solfac);
