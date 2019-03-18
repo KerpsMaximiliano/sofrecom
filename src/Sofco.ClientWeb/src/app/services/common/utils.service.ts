@@ -47,4 +47,8 @@ export class UtilsService {
   getCreditCards() {
     return this.http.get<any>(`${this.apiUrl}/creditCards`);
   }
+
+  getBanks() {
+    return this.http.get<any>(`${this.apiUrl}/Banks`);
+  }
 }

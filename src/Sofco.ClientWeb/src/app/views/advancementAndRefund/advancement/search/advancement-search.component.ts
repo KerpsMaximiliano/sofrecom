@@ -3,6 +3,7 @@ import { Subscription } from "rxjs";
 import { I18nService } from "app/services/common/i18n.service";
 import { UserService } from "app/services/admin/user.service";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
+import { UtilsService } from "app/services/common/utils.service";
 
 declare var $: any;
 
@@ -17,6 +18,7 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
     public states: any[] = new Array<any>();
 
     public banks: any[] = new Array<any>();
+    public bancos: any[] = new Array<any>();
 
     public resourceId: number;
     public typeId: number;
@@ -35,12 +37,14 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
 
     constructor(private userService: UserService,
         private advancementService: AdvancementService,
+        private utilsService: UtilsService,
         private i18nService: I18nService) { }
 
     ngOnInit(): void {
         this.getResources();
         this.getTypes();
         this.getStates();
+        this.obtenerBancos();
     }
 
     ngOnDestroy(): void {
@@ -127,6 +131,13 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         if (this.currentTab == 3) {
             this.finalized.filterBanks();
         }
+    }
 
+    obtenerBancos() {
+        this.getResourcesSubscrip = this.utilsService.getBanks().subscribe(response => {
+            this.bancos = response.data;
+            console.log(this.bancos);
+            console.log(response.data);
+        });
     }
 }

@@ -22,6 +22,8 @@ namespace Sofco.DAL
             builder.Entity<PurchaseOrderBalanceView>().ToTable("PurchaseOrderBalanceView");
 
             builder.Entity<PurchaseOrderBalanceDetailView>().ToTable("PurchaseOrderBalanceDetailView");
+
+            builder.Entity<BankView>().ToTable("BanksView");
         }
     }
 }

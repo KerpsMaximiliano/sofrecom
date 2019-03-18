@@ -86,5 +86,11 @@ namespace Sofco.WebApi.Controllers
         {
             return Ok(utilsService.GetCreditCards());
         }
+
+        [HttpGet("Banks")]
+        public IActionResult GetBanks()
+        {
+            return Ok(utilsService.GetBanks());
+        }
     }
 }

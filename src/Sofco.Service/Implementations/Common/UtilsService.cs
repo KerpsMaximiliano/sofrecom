@@ -10,6 +10,7 @@ using Sofco.Domain;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
+using Sofco.Domain.Models.Reports;
 
 namespace Sofco.Service.Implementations.Common
 {
@@ -158,6 +159,13 @@ namespace Sofco.Service.Implementations.Common
             return unitOfWork.UtilsRepository.GetProvinces();
         }
 
+        public IList<BankModel> GetBanks()
+        {
+            var data = unitOfWork.BanksViewRepository.GetBanks().ToList();
+
+            return Translate(data).OrderBy(x => x.Name).ToList();
+        }
+
         private List<SectorModel> Translate(List<Sector> data)
         {
             return mapper.Map<List<Sector>, List<SectorModel>>(data);
@@ -166,6 +174,11 @@ namespace Sofco.Service.Implementations.Common
         private List<AreaModel> Translate(List<Area> data)
         {
             return mapper.Map<List<Area>, List<AreaModel>>(data);
+        }
+
+        public List<BankModel> Translate(List<BankView> data)
+        {
+            return mapper.Map <List<BankView>, List<BankModel>>(data);
         }
     }
 }
