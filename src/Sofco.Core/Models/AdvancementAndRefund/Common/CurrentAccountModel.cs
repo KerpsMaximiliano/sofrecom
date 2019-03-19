@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 
 namespace Sofco.Core.Models.AdvancementAndRefund.Common
 {
@@ -21,5 +22,18 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Common
         public int CurrencyId { get; set; }
 
         public int UserId { get; set; }
+
+        public IList<CurrentAccountRefundModel> Refunds { get; set; }
+
+        public IList<AdvancementUnrelatedItem> Advancements { get; set; }
+    }
+
+    public class CurrentAccountRefundModel
+    {
+        public int Id { get; set; }
+
+        public decimal Value { get; set; }
+
+        public string Advancements { get; set; }
     }
 }

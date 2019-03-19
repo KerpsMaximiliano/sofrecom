@@ -30,7 +30,7 @@
                     </tr>
                 </thead>
                 <tbody> 
-                    <tr *ngFor="let item of model">
+                    <tr *ngFor="let item of model" (click)="openDetailModal(item)" class="pointer">
                         <td>{{ item.user }}</td>
                         <td>{{ item.currency }}</td>
                         <td>{{ item.advancementTotal | amountFormat }}</td>
@@ -43,3 +43,31 @@
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="detailModalConfig" #detailModal (accept)="saveRefunds()" [size]="'modal-lg'" [isSaveEnabled]="saveEnabled()">
+    <div class="form-group">
+        <label class="control-label"> {{ 'refund.advancements' | translate }} </label>
+        <ng-select [(ngModel)]="advancementsSelected" [items]="currentAccountDetail.advancements" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text"></ng-select>
+    </div>
+
+    <table class="table table-striped dataTable" role="grid">
+        <thead>
+            <tr>
+                <th></th>
+                <th># Reintegro</th>
+                <th>Monto y moneda</th>
+                <th>Adelantos relacionados</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <tr *ngFor="let item of currentAccountDetail.refunds">
+                <td class="column-xs text-center">
+                    <icheck [(checked)]="item.selected"></icheck>
+                </td>
+                <td>{{ item.id }}</td>
+                <td>{{ item.value }} {{ currentAccountDetail.currency }}</td>
+                <td>{{ item.advancements }}</td>
+            </tr>
+        </tbody>
+    </table>   
+</ng2-modal> 

@@ -13,4 +13,8 @@ export class CurrentAccountService {
     get(){
         return this.http.get<any>(`${this.baseUrl}/currentAccount`);
     }
+
+    updateMassive(json): any {
+        return this.http.put<any>(`${this.baseUrl}/currentAccount`, json);
+    }
 }

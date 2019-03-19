@@ -860,7 +860,8 @@
         "viewProfile": "Ver Perfil",
         "selectAll": "Seleccionar todo",
         "removeAll": "Quitar todo",
-        "reassingAllocation": "Asignación masiva de recursos"
+        "reassingAllocation": "Asignación masiva de recursos",
+        "doRelate": "Relacionar"
     }, 
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
@@ -1093,6 +1094,7 @@
         "others": "Moneda extranjera",
         "bank": "Banco",
         "advancementRelated": "Adelantos relacionados",
+        "userCurrentAccountDetail": "Detalle de adelantos y reintegros",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",

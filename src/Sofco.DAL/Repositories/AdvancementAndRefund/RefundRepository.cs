@@ -161,6 +161,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             return context.Refunds
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Currency)
+                .Include(x => x.AdvancementRefunds)
                 .Where(x => x.StatusId == workflowStatusCurrentAccount)
                 .ToList();
         }
@@ -168,6 +169,16 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         public bool HasAttachments(int entityId)
         {
             return context.RefundFiles.Any(x => x.RefundId == entityId);
+        }
+
+        public bool ExistAdvancementRefund(int advancement, int refund)
+        {
+            return context.AdvancementRefunds.Any(x => x.AdvancementId == advancement && x.RefundId == refund);
+        }
+
+        public void AddAdvancementRefund(AdvancementRefund advancementRefund)
+        {
+            context.AdvancementRefunds.Add(advancementRefund);
         }
     }
 }

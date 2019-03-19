@@ -88,11 +88,29 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/setting.modelEmpty.
+        /// </summary>
+        public static string ModelEmpty {
+            get {
+                return ResourceManager.GetString("ModelEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/setting.modelError.
         /// </summary>
         public static string ModelError {
             get {
                 return ResourceManager.GetString("ModelError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/setting.updateMassiveSuccess.
+        /// </summary>
+        public static string UpdateMassiveSuccess {
+            get {
+                return ResourceManager.GetString("UpdateMassiveSuccess", resourceCulture);
             }
         }
         
