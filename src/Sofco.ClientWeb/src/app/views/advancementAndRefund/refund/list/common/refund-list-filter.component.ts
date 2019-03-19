@@ -24,6 +24,7 @@ export class RefundListFilterComponent implements OnInit {
     public states: any[] = new Array<any>();
     public banks: any[] = new Array<any>();
     public stateId: number;
+    public bankId: number;
     getResourcesSubscrip: Subscription;
     subscrip: Subscription;
 
@@ -85,6 +86,7 @@ export class RefundListFilterComponent implements OnInit {
         this.dateSince = null;
         this.dateTo = null;
         this.inWorkflowProcess = this.inWorkflowProcess;
+        this.bankId = null;
         this.search();
     }
 
@@ -94,7 +96,8 @@ export class RefundListFilterComponent implements OnInit {
             stateId: this.stateId,
             dateSince: this.dateSince,
             dateTo: this.dateTo,
-            inWorkflowProcess: this.inWorkflowProcess
+            inWorkflowProcess: this.inWorkflowProcess,
+            bank: this.bankId
         }
         this.valueChange.emit(this.model);
 

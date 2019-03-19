@@ -1147,6 +1147,7 @@
         "lastRefund": "Ultimo reintegro",
         "cashReturn": "Devolución en Efectivo",
         "documentRevision": "Toda documentación queda sujeta a revisión de Compliance",
+        "bank": "Banco",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",

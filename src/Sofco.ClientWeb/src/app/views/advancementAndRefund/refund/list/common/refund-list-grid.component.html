@@ -14,24 +14,26 @@
                 <thead>
                     <tr>
                         <th class="column-sm"># {{ 'refund.refundName' | translate }}</th>
-                        <th class="column-lg" *ngIf="inWorkflowProcess">{{ 'refund.status' | translate }}</th>
+                        <th class="column-lg">{{ 'refund.status' | translate }}</th>
                         <th class="column-lg">{{ 'refund.userApplicant' | translate }}</th>
                         <th class="column-sm">{{ 'refund.currency' | translate }}</th>
                         <th class="column-sm">{{ 'refund.itemTotal' | translate }}</th>
                         <th class="column-sm">{{ 'refund.applicationDate' | translate }}</th>
+                        <th class="column-sm">{{ 'refund.bank' | translate }}</th>
                         <th class="column-sm">{{ 'refund.superior' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of data" class="pointer" (click)="goToDetail(item.id)">
                         <td class="column-sm">{{ item.id }}</td>
-                        <td *ngIf="inWorkflowProcess" class="column-lg text-ellipsis">
+                        <td class="column-lg text-ellipsis">
                             <label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusName }}</label>
                         </td>
                         <td class="column-lg text-ellipsis">{{ item.userApplicantName }}</td>
                         <td>{{ item.currencyName }}</td>
                         <td>{{ item.refundItemTotal | amountFormat }}</td>
                         <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ item.bank }}</td>
                         <td>{{ item.managerName }}</td>
                     </tr>
                 </tbody>

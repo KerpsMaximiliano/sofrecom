@@ -319,16 +319,19 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var result = refundRepository.GetByParameters(model);
 
+            var response = new Response<List<RefundListResultModel>> { Data = new List<RefundListResultModel>() };
+
             if (hasAllAccess)
             {
-                return new Response<List<RefundListResultModel>>
-                {
-                    Data = Translate(result)
-                };
+                //return new Response<List<RefundListResultModel>>
+                //{
+                //    Data = Translate(result)
+                //};
+                response.Data = Translate(result);
             }
             else
             {
-                var response = new Response<List<RefundListResultModel>> { Data = new List<RefundListResultModel>() };
+                //var response = new Response<List<RefundListResultModel>> { Data = new List<RefundListResultModel>() };
 
                 foreach (var refund in result)
                 {
@@ -343,10 +346,15 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     }
                 }
 
-                response.Data = ResolveManager(response.Data);
-
-                return response;
+                response.Data = ResolveManagerAndBank(response.Data);
             }
+
+            if (!string.IsNullOrEmpty(model.Bank))
+            {
+                response.Data = response.Data.Where(d => d.Bank == model.Bank).ToList();
+            }
+
+            return response;
         }
 
         private List<int> GetUserApplicantIdsByCurrentManager()
@@ -384,10 +392,10 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         {
             var result = mapper.Map<List<Refund>, List<RefundListResultModel>>(data);
 
-            return ResolveManager(result);
+            return ResolveManagerAndBank(result);
         }
 
-        private List<RefundListResultModel> ResolveManager(List<RefundListResultModel> models)
+        private List<RefundListResultModel> ResolveManagerAndBank(List<RefundListResultModel> models)
         {
             var userIds = models.Select(s => s.UserApplicantId).Distinct();
 
@@ -400,6 +408,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 foreach (var refundListResultModel in models.Where(s => s.UserApplicantId == userId))
                 {
                     refundListResultModel.ManagerName = employee.Manager?.Name;
+                    refundListResultModel.Bank = employee.Bank;
                 }
             }
 
