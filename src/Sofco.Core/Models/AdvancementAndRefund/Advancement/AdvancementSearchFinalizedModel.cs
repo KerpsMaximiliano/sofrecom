@@ -11,5 +11,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
         public DateTime? DateSince  { get; set; }
 
         public DateTime? DateTo  { get; set; }
+
+        public string Bank { get; set; }
+
+        public int? StateId { get; set; }
     }
 }

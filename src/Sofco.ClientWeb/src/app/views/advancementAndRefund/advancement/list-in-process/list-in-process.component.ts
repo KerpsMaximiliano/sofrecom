@@ -20,10 +20,6 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
     public model: any[] = new Array();
     public modelFiltered: any[] = new Array();
    
-    public banks: any[] = new Array();
-    @Output()
-    valueChange = new EventEmitter<any>();
-
     constructor(private advancementService: AdvancementService,
         private datatableService: DataTableService,
         private router: Router,
@@ -38,7 +34,6 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
             this.model = response.data;
             this.modelFiltered = response.data;
             this.initGrid();
-            this.filterBanks();
         },
             error => this.messageService.closeLoading());
     }
@@ -89,7 +84,7 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
     search(parameters) {
         this.modelFiltered = [];
 
-        if (!parameters.resourceId && !parameters.typeId && !parameters.dateSince && !parameters.dateTo && !parameters.stateId) {
+        if (!parameters.resourceId && !parameters.typeId && !parameters.dateSince && !parameters.dateTo && !parameters.stateId && !parameters.bank) {
             this.modelFiltered = this.model;
         }
         else {
@@ -138,6 +133,12 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
                     }
                 }
 
+                if (parameters.bank) {
+                    if (parameters.bank != item.bank) {
+                        addItem = false;
+                    }
+                }
+
                 if (addItem) {
                     this.modelFiltered.push(item);
                 }
@@ -148,21 +149,9 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
             this.messageService.showWarningByFolder('common', 'searchNotFound');
         }
 
-        this.filterBanks();
         this.initGrid();
     }
-
-    filterBanks() {
-        this.model.forEach(x => {
-
-            if (this.banks.filter(bank => bank.id == x.bank).length == 0) {
-                this.banks.push({ id: x.bank, text: x.bank });
-            }
-        });
-
-        this.valueChange.emit(this.banks);
-        debugger;
-    }
+   
 }
 
 

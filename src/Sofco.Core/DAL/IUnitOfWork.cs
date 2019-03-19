@@ -42,7 +42,6 @@ namespace Sofco.Core.DAL
         ICustomerRepository CustomerRepository { get; }
         IServiceRepository ServiceRepository { get; }
         IProjectRepository ProjectRepository { get; }
-        IBanksViewRepository BanksViewRepository { get; }
 
         #endregion
 

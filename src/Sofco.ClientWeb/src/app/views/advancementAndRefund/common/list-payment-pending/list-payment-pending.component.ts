@@ -328,5 +328,6 @@ export class ListPaymentPendingComponent  {
         }
 
         this.initGrid();
+        this.calculateTotals();
     }
 }

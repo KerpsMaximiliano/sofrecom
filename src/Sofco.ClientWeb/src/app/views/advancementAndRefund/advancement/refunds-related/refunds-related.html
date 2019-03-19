@@ -38,7 +38,7 @@
                     <tbody>
                         <tr *ngFor="let advancement of advancements">
                             <td class="text-center">{{ advancement.id }}</td>
-                            <td>{{ advancement.total }}</td>
+                            <td>{{ advancement.total | amountFormat }}</td>
                         </tr>
                     </tbody>
                 </table>

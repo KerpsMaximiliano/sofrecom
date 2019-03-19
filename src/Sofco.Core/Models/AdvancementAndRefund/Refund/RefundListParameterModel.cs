@@ -16,5 +16,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public bool InWorkflowProcess { get; set; }
 
         public List<int> UserApplicantIds { get; set; }
+
+        public string Bank { get; set; }
     }
 }

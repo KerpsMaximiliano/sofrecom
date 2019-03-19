@@ -21,7 +21,8 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h5 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()" style="display: block">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()"
+                        style="display: block">
                         <span>{{'advancement.searchParameters' | translate }}</span>
                         <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
                     </a>
@@ -30,6 +31,13 @@
             <div id="collapseOne" class="panel-collapse collapse in">
                 <div class="panel-body">
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'advancement.userApplicant' | translate }}</label>
+                                <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="resourceId">
+                                </ng-select>
+                            </div>
+                        </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="control-label">{{ 'advancement.dateSince' | translate }}</label>
@@ -42,61 +50,62 @@
                                 <date-picker [(date)]="dateTo"></date-picker>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">{{'advancement.bank' | translate }}</label>
-                                <ng-select [items]="banks" bindLabel="text" bindValue="id" [(ngModel)]="bankId"></ng-select>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label class="control-label">{{'advancement.userApplicant' | translate }}</label>
-                                <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="resourceId"></ng-select>
+                                <label class="control-label">{{ 'advancement.status' | translate }}</label>
+                                <ng-select [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateId">
+                                </ng-select>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label class="control-label">{{ 'advancement.type' | translate }}</label>
-                                <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId"></ng-select>
+                                <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId">
+                                </ng-select>
                             </div>
                         </div>
-                        <div class="col-md-4" *ngIf="currentTab == 1">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label class="control-label">{{ 'advancement.status' | translate }}</label>
-                                <ng-select [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateId"></ng-select>
+                                <label class="control-label">{{'advancement.bank' | translate }}</label>
+                                <ng-select [items]="banks" bindLabel="name" bindValue="name" [(ngModel)]="bankId">
+                                </ng-select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="panel-footer">
                     <div class="text-right">
-                        <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                        <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                        <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i
+                                class="fa fa-refresh"></i></button>
+                        <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i
+                                class="fa fa-search"></i></button>
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 
     <div class="tabs-container">
         <ul class="nav nav-tabs">
-            <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="getGrid(1)"> {{ 'advancement.inProcess' | translate }} </a></li>
-            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="getGrid(3)"> {{ 'advancement.finalized' | translate }} </a></li>
+            <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="getGrid(1)">
+                    {{ 'advancement.inProcess' | translate }} </a></li>
+            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="getGrid(3)">
+                    {{ 'advancement.finalized' | translate }} </a></li>
         </ul>
 
         <div class="tab-content">
             <div id="tab-1" class="tab-pane active">
                 <div class="panel-body tab-success">
-                    <list-in-process #inProcess (valueChange)="getBanks($event)"></list-in-process>
+                    <list-in-process #inProcess></list-in-process>
                 </div>
             </div>
 
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body tab-primary">
-                    <list-finalized #finalized (valueChange)="getBanks($event)"></list-finalized>
+                    <list-finalized #finalized></list-finalized>
                 </div>
             </div>
         </div>

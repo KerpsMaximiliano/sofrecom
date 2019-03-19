@@ -24,5 +24,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public decimal RefundItemTotal { get; set; }
 
         public decimal AdvancementSum { get; set; }
+
+        public string Bank { get; set; }
     }
 }

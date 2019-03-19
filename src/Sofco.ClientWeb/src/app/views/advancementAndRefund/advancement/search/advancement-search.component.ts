@@ -16,9 +16,7 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
     public resources: any[] = new Array<any>();
     public types: any[] = new Array<any>();
     public states: any[] = new Array<any>();
-
     public banks: any[] = new Array<any>();
-    public bancos: any[] = new Array<any>();
 
     public resourceId: number;
     public typeId: number;
@@ -44,7 +42,7 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         this.getResources();
         this.getTypes();
         this.getStates();
-        this.obtenerBancos();
+        this.getBanks();
     }
 
     ngOnDestroy(): void {
@@ -67,6 +65,12 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
     getTypes() {
         this.types.push({ id: 1, text: this.i18nService.translateByKey('advancement.salary') });
         this.types.push({ id: 2, text: this.i18nService.translateByKey('advancement.viaticum') });
+    }
+
+    getBanks() {
+        this.getResourcesSubscrip = this.utilsService.getBanks().subscribe(response => {
+            this.banks = response;
+        });
     }
 
     clean() {
@@ -117,12 +121,7 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         }
     }
 
-    getBanks(banks) {
-        this.banks = banks;
-    }
-
     getGrid(pTab){
-        debugger;
         this.currentTab = pTab;
         if (this.currentTab == 1) {
             this.inProcess.filterBanks();
@@ -133,11 +132,5 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         }
     }
 
-    obtenerBancos() {
-        this.getResourcesSubscrip = this.utilsService.getBanks().subscribe(response => {
-            this.bancos = response.data;
-            console.log(this.bancos);
-            console.log(response.data);
-        });
-    }
+  
 }

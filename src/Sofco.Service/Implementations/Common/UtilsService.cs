@@ -11,6 +11,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
 using Sofco.Domain.Models.Reports;
+using Sofco.Core.DAL.Views;
 
 namespace Sofco.Service.Implementations.Common
 {
@@ -22,11 +23,14 @@ namespace Sofco.Service.Implementations.Common
 
         private readonly IMapper mapper;
 
-        public UtilsService(IUnitOfWork unitOfWork, IUserData userData, IMapper mapper)
+        private readonly IBanksViewRepository banksViewRepository;
+
+        public UtilsService(IUnitOfWork unitOfWork, IUserData userData, IMapper mapper, IBanksViewRepository banksViewRepository)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.mapper = mapper;
+            this.banksViewRepository = banksViewRepository;
         }
 
         public IList<Currency> GetCurrencies()
@@ -161,7 +165,7 @@ namespace Sofco.Service.Implementations.Common
 
         public IList<BankModel> GetBanks()
         {
-            var data = unitOfWork.BanksViewRepository.GetBanks().ToList();
+            var data = banksViewRepository.GetBanks().ToList();
 
             return Translate(data).OrderBy(x => x.Name).ToList();
         }
@@ -178,7 +182,17 @@ namespace Sofco.Service.Implementations.Common
 
         public List<BankModel> Translate(List<BankView> data)
         {
-            return mapper.Map <List<BankView>, List<BankModel>>(data);
+            List<BankModel> banks = new List<BankModel>();
+            foreach (var item in data)
+            {
+                BankModel bank = new BankModel();
+                bank.Id = item.Id;
+                bank.Name = item.Name;
+
+                banks.Add(bank);
+            }
+
+            return banks;
         }
     }
 }

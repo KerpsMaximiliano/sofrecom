@@ -58,7 +58,7 @@ export class RefundListGridComponent implements OnInit {
     initGrid(){
         const gridSelector = "#gridTable-" + this.controlId;
 
-        const columns = [0, 1, 2, 3, 4, 5];
+        const columns = [0, 1, 2, 3, 4, 5, 6, 7];
 
         const params = {
             selector: gridSelector,
