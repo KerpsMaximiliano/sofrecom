@@ -88,6 +88,11 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             if (model.DateTo.HasValue)
                 query = query.Where(x => x.CreationDate.Date <= model.DateTo.Value.Date);
 
+            if (model.StateId.HasValue)
+            {
+                query = query.Where(x => x.StatusId == model.StateId);
+            }
+
             return query.ToList();
         }
 

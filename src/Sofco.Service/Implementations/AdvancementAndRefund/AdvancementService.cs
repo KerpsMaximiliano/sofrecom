@@ -277,7 +277,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             return new Response<IList<Option>>
             {
-                Data = salaryAdvs.Union(viaticumAdvs).Distinct().Select(x => new Option { Id = x.Id, Text = x.Name}).ToList()
+                Data = salaryAdvs.Union(viaticumAdvs).Distinct().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList()
             };
         }
 
@@ -339,7 +339,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                             var item = new AdvancementListItem(advancement);
 
                             item.Bank = GetBank(advancement.UserApplicant.Email, employeeDicc);
-
                             response.Data.Add(item);
                         }
                     }
@@ -351,7 +350,12 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 response.AddWarning(Resources.Common.SearchNotFound);
             }
 
+            if (!string.IsNullOrEmpty(model.Bank))
+            {
+                response.Data = response.Data.Where(d => d.Bank == model.Bank).ToList();
+            }
             return response;
+
         }
 
         public Response<bool> CanLoad()
