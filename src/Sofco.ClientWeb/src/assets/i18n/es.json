@@ -1064,7 +1064,7 @@
         "advancementName": "Adelanto",
         "userApplicant": "Solicitante",
         "paymentForm": "Forma de cobro",
-        "type": "Tipo de Adelanto",
+        "type": "Tipo",
         "ownBank": "Cuenta Sueldo",
         "foreignCurrency": "Moneda extranjera",
         "salary": "Sueldo",
