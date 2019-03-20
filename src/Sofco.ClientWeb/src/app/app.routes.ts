@@ -82,6 +82,12 @@ export const ROUTES:Routes = [
     loadChildren: 'app/views/advancementAndRefund/advancementAndRefund.module#AdvancementAndRefundModule'
   },
 
+  {
+    path: 'managementReport', 
+    component: BasicLayoutComponent,
+    loadChildren: 'app/views/management-report/management-report.module#ManagementReportModule'
+  },
+
   // Handle all other routes
   { path: '**',  redirectTo: 'inicio' }
 ];
