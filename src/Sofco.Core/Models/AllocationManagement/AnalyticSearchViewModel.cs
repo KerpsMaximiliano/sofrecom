@@ -16,7 +16,9 @@ namespace Sofco.Core.Models.AllocationManagement
             Title = domain.Title;
             Name = domain.Name;
             ClientExternalName = domain.AccountName;
+            ClientId = domain.AccountId;
             ServiceName = domain.ServiceName;
+            ServiceId = domain.ServiceId;
             StartDate = domain.StartDateContract;
             EndDate = domain.EndDateContract;
             Status = domain.Status;
@@ -44,5 +46,9 @@ namespace Sofco.Core.Models.AllocationManagement
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+        public string ServiceId { get; set; }
+
+        public string ClientId { get; set; }
     }
 }

@@ -112,6 +112,7 @@
                             <button title="{{ 'ACTIONS.EDIT' | translate }}" class="btn btn-warning btn-xs" *ngIf="menuService.hasFunctionality('CONTR', 'ANEDT') && analytic.status == 1" (click)="gotToEdit(analytic)"><i class="fa fa-edit"></i></button>
                             <button title="{{ 'allocationManagement.analytics.view' | translate }}" class="btn btn-primary btn-xs" (click)="gotToView(analytic)"><i class="fa fa-eye"></i></button>
                             <button title="{{ 'ACTIONS.assign' | translate }}" class="btn btn-success btn-xs" (click)="goToAssignResource(analytic)" *ngIf="analytic.status == 1 && menuService.hasFunctionality('ALLOC', 'ADRES')"><i class="fa fa-user-plus"></i></button>
+                            <button title="Informe de gestión" class="btn btn-white btn-xs" (click)="goToManagementReport(analytic)" *ngIf="menuService.hasFunctionality('MANRE', 'VIEW-DETAIL')"><i class="fa fa-line-chart"></i></button>
                         </td>
                     </tr>
                 </tbody>

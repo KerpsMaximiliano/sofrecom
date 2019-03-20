@@ -92,6 +92,20 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
         this.router.navigate([`/contracts/analytics/${analytic.id}/view`]);
     }
 
+    goToManagementReport(analytic){
+        sessionStorage.setItem('customerName', analytic.clientExternalName);
+        sessionStorage.setItem('serviceName', analytic.serviceName);
+        this.router.navigate([`/managementReport/${analytic.clientId}/service/${analytic.serviceId}/detail`]);
+    }
+
+    canGoToManagementReport(analytic){
+        if(this.menuService.hasFunctionality('MANRE', 'VIEW-DETAIL') && analytic.clientId && analytic.serviceId){
+            return true;
+        }
+
+        return false;
+    }
+
     goToAssignResource(analytic){
         if(this.menuService.hasFunctionality('ALLOC', 'ADRES')){
             sessionStorage.setItem("analytic", JSON.stringify(analytic));

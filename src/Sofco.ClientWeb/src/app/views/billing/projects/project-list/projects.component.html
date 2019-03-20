@@ -33,7 +33,7 @@
     </button>
 
     <div class="btn-right">
-        <button class="btn btn-success btn-sm btn-outline dim" (click)="goToManagementReport()"> 
+        <button class="btn btn-success btn-sm btn-outline dim" (click)="goToManagementReport()" *ngIf="menuService.hasFunctionality('MANRE', 'VIEW-DETAIL')"> 
             Informe de Gestión <i class="fa fa-line-chart "></i> 
         </button>
 
