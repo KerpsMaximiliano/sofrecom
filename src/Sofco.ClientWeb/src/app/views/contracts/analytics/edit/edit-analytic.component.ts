@@ -103,6 +103,18 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
         }
     }
 
+    canClose(){
+        if(this.menuService.hasFunctionality('CONTR', 'CLOSE') && this.form.model.status != 2) return true;
+
+        return false;
+    }
+
+    canForCloseForExpenses(){
+        if(this.menuService.hasFunctionality('CONTR', 'CLOSE-EXP') && this.form.model.status == 1) return true;
+
+        return false;
+    }
+
     openForClose(){
         this.statusClose = true;
         this.confirmModal.show();

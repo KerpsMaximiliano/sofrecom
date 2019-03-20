@@ -28,11 +28,11 @@
                     {{'billing.project.title' | translate }} <i class="fa fa-building"></i> 
                 </button>
 
-                <button class="btn btn-warning btn-outline dim" (click)="openForClose()" *ngIf="form.model.status != 2"> 
+                <button class="btn btn-warning btn-outline dim" (click)="openForClose()" *ngIf="canClose()"> 
                     {{ 'allocationManagement.analytics.close' | translate }} <i class="fa fa-times-circle"></i> 
                 </button>
 
-                <button class="btn btn-warning btn-outline dim" (click)="openForCloseForExpenses()" *ngIf="form.model.status == 1"> 
+                <button class="btn btn-warning btn-outline dim" (click)="openForCloseForExpenses()" *ngIf="canForCloseForExpenses()"> 
                     {{ 'allocationManagement.analytics.closeForExpenses' | translate }} <i class="fa fa-times-circle"></i> 
                 </button>
  
