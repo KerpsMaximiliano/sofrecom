@@ -254,6 +254,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 Id = x.Id,
                 Analytic = x.Analytic?.Name,
                 LastRefund = x.LastRefund,
+                CashReturn = x.CashReturn,
                 Total = x.TotalAmmount,
                 StatusName = x.Status?.Name,
                 StatusType = x.Status?.Type,

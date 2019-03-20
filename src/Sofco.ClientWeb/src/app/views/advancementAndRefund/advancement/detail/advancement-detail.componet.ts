@@ -32,40 +32,42 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
                 private messageService: MessageService){}
 
     ngOnInit(): void {
-        const routeParams = this.activateRoute.snapshot.params;
-        this.entityId = routeParams.id;
-
-        if (routeParams.id) {
-            this.refundRelated.init([routeParams.id]);
-
-            this.messageService.showLoading();
-
-            this.getSubscrip = this.advancementService.get(routeParams.id).subscribe(response => {
-                this.messageService.closeLoading();
-
-                var model = {
-                    workflowId: response.data.workflowId,
-                    entityController: "advancement",
-                    entityId: response.data.id,
-                    actualStateId: response.data.statusId
-                }
-
-                this.actualStateId = response.data.statusId;
-                this.userApplicantId = response.data.userApplicantId;
-
-                this.form.setModel(response.data, this.canUpdate());
-
-                this.workflow.init(model);
-
-                this.history.getHistories(routeParams.id);
-            }, 
-            error => this.messageService.closeLoading());
-        }
+        this.activateRoute.params.subscribe(routeParams => {
+            this.entityId = routeParams.id;
+            this.getData(routeParams.id);
+        });
     }
                 
     ngOnDestroy(): void {
         if(this.getSubscrip) this.getSubscrip.unsubscribe();
         if(this.editSubscrip) this.editSubscrip.unsubscribe();
+    }
+
+    getData(id){
+        this.refundRelated.init([id]);
+
+        this.messageService.showLoading();
+
+        this.getSubscrip = this.advancementService.get(id).subscribe(response => {
+            this.messageService.closeLoading();
+
+            var model = {
+                workflowId: response.data.workflowId,
+                entityController: "advancement",
+                entityId: response.data.id,
+                actualStateId: response.data.statusId
+            }
+
+            this.actualStateId = response.data.statusId;
+            this.userApplicantId = response.data.userApplicantId;
+
+            this.form.setModel(response.data, this.canUpdate());
+
+            this.workflow.init(model);
+
+            this.history.getHistories(id);
+        }, 
+        error => this.messageService.closeLoading());
     }
 
     back(){

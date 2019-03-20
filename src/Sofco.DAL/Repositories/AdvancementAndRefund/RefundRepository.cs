@@ -128,18 +128,26 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Distinct()
                 .ToList();
 
-            var advancements = context.Advancements
-                .Where(x => advancementIds.Contains(x.Id))
-                .ToList();
-
             var refundIds = context.AdvancementRefunds
                 .Where(x => advancementIds.Contains(x.AdvancementId))
                 .Select(x => x.RefundId)
                 .Distinct()
                 .ToList();
 
-            var refunds = context.Refunds
-                .Where(x => refundIds.Contains(x.Id) || x.Id == id)
+            advancementIds = context.AdvancementRefunds
+                .Where(x => refundIds.Contains(x.RefundId))
+                .Select(x => x.AdvancementId)
+                .Distinct()
+                .ToList();
+
+            var advancements = context.Advancements
+                .Where(x => advancementIds.Contains(x.Id))
+                .ToList();
+
+            var refunds = context.AdvancementRefunds
+                .Where(x => advancementIds.Contains(x.AdvancementId))
+                .Include(x => x.Refund)
+                .Select(x => x.Refund)
                 .Distinct()
                 .ToList();
 
@@ -161,6 +169,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             return context.Refunds
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Currency)
+                .Include(x => x.AdvancementRefunds)
                 .Where(x => x.StatusId == workflowStatusCurrentAccount)
                 .ToList();
         }
@@ -168,6 +177,16 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         public bool HasAttachments(int entityId)
         {
             return context.RefundFiles.Any(x => x.RefundId == entityId);
+        }
+
+        public bool ExistAdvancementRefund(int advancement, int refund)
+        {
+            return context.AdvancementRefunds.Any(x => x.AdvancementId == advancement && x.RefundId == refund);
+        }
+
+        public void AddAdvancementRefund(AdvancementRefund advancementRefund)
+        {
+            context.AdvancementRefunds.Add(advancementRefund);
         }
     }
 }

@@ -50,7 +50,7 @@
 
         <div class="col-md-4">
 
-            <div class="row" *ngIf="canUpdate()">
+            <div class="row" *ngIf="canUpdate() && !form.cashReturn">
                 <div class="col-xs-12">
                     <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
 

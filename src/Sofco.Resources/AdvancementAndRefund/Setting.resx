@@ -126,8 +126,14 @@
   <data name="AmountALessThanBPesos" xml:space="preserve">
     <value>advancementAndRefund/setting.amountALessThanBPesos</value>
   </data>
+  <data name="ModelEmpty" xml:space="preserve">
+    <value>advancementAndRefund/setting.modelEmpty</value>
+  </data>
   <data name="ModelError" xml:space="preserve">
     <value>advancementAndRefund/setting.modelError</value>
+  </data>
+  <data name="UpdateMassiveSuccess" xml:space="preserve">
+    <value>advancementAndRefund/setting.updateMassiveSuccess</value>
   </data>
   <data name="UpdateSuccess" xml:space="preserve">
     <value>advancementAndRefund/setting.updateSuccess</value>

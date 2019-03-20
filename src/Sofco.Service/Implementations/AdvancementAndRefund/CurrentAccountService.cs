@@ -5,9 +5,9 @@ using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Services.AdvancementAndRefund;
-using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 
@@ -36,19 +36,19 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 var refunds = unitOfWork.RefundRepository.GetAllInCurrentAccount(settings.WorkflowStatusCurrentAccount);
 
-                var diccionary = new Dictionary<int, List<Refund>>();
+                var userDiccionary = new Dictionary<int, List<Refund>>();
 
                 foreach (var refund in refunds)
                 {
-                    if (diccionary.ContainsKey(refund.UserApplicantId))
-                        diccionary[refund.UserApplicantId].Add(refund);
+                    if (userDiccionary.ContainsKey(refund.UserApplicantId))
+                        userDiccionary[refund.UserApplicantId].Add(refund);
                     else
-                        diccionary.Add(refund.UserApplicantId, new List<Refund> { refund });
+                        userDiccionary.Add(refund.UserApplicantId, new List<Refund> { refund });
                 }
 
-                foreach (var key in diccionary.Keys)
+                foreach (var key in userDiccionary.Keys)
                 {
-                    var userRefunds = diccionary[key];
+                    var userRefunds = userDiccionary[key];
 
                     var currencyDiccionary = new Dictionary<int, decimal>();
 
@@ -62,7 +62,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                     foreach (var currencyDiccionaryKey in currencyDiccionary.Keys)
                     {
-                        var refundAux = refunds.FirstOrDefault(x => x.CurrencyId == currencyDiccionaryKey && x.UserApplicantId == key);
+                        var allRefundAux = refunds.Where(x => x.CurrencyId == currencyDiccionaryKey && x.UserApplicantId == key).ToList();
+                        var refundAux = allRefundAux.FirstOrDefault();
 
                         if (refundAux == null) continue;
 
@@ -72,7 +73,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                             UserId = refundAux.UserApplicantId,
                             Currency = refundAux.Currency?.Text,
                             CurrencyId = currencyDiccionaryKey,
-                            RefundTotal = currencyDiccionary[currencyDiccionaryKey]
+                            RefundTotal = currencyDiccionary[currencyDiccionaryKey],
+                            Refunds = allRefundAux.Select(x =>
+                                new CurrentAccountRefundModel()
+                                {
+                                    Id = x.Id,
+                                    Value = x.TotalAmmount,
+                                    Advancements = string.Join(" - ", x.AdvancementRefunds.Select(a => $"#{a.AdvancementId}")),
+                                }).ToList(),
                         };
 
                         response.Data.Add(currentAccountModel);
@@ -83,7 +91,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 foreach (var currentAccountModel in response.Data)
                 {
-                    currentAccountModel.AdvancementTotal = advancements.Where(x => x.CurrencyId == currentAccountModel.CurrencyId && x.UserApplicantId == currentAccountModel.UserId).Sum(x => x.Ammount);
+                    var advancementsAux = advancements.Where(x => x.CurrencyId == currentAccountModel.CurrencyId && x.UserApplicantId == currentAccountModel.UserId).ToList();
+
+                    currentAccountModel.AdvancementTotal = advancementsAux.Sum(x => x.Ammount);
+
+                    currentAccountModel.Advancements = advancementsAux.Select(x => new AdvancementUnrelatedItem
+                    {
+                        Id = x.Id,
+                        Ammount = x.Ammount,
+                        CurrencyId = x.CurrencyId,
+                        CurrencyText = x.Currency?.Text,
+                        Text = $"#{x.Id} - {x.CreationDate:dd/MM/yyyy} - {x.Ammount} {x.Currency?.Text}"
+                    }).ToList();
 
                     if (currentAccountModel.RefundTotal > currentAccountModel.AdvancementTotal)
                         currentAccountModel.UserRefund = currentAccountModel.RefundTotal - currentAccountModel.AdvancementTotal;
@@ -95,6 +114,45 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.GeneralError);
+            }
+
+            return response;
+        }
+
+        public Response UpdateMassive(UpdateMassiveModel model)
+        {
+            var response = new Response();
+
+            if (!model.Advancements.Any() || !model.Refunds.Any())
+            {
+                response.AddError(Resources.AdvancementAndRefund.Setting.ModelEmpty);
+                return response;
+            }
+
+            try
+            {
+                foreach (var advancement in model.Advancements)
+                {
+                    if (!unitOfWork.AdvancementRepository.Exist(advancement)) continue;
+
+                    foreach (var refund in model.Refunds)
+                    {
+                        if (!unitOfWork.RefundRepository.Exist(refund)) continue;
+
+                        if (!unitOfWork.RefundRepository.ExistAdvancementRefund(advancement, refund))
+                        {
+                            unitOfWork.RefundRepository.AddAdvancementRefund(new AdvancementRefund { AdvancementId = advancement, RefundId = refund });
+                        }
+                    }
+                }
+
+                unitOfWork.Save();
+                response.AddSuccess(Resources.AdvancementAndRefund.Setting.UpdateMassiveSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;

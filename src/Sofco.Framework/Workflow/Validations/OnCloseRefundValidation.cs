@@ -19,12 +19,20 @@ namespace Sofco.Framework.Workflow.Validations
         public bool Validate(WorkflowEntity entity, Response response, WorkflowChangeStatusParameters parameters)
         {
             var data = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(entity.Id);
+            var refund = data.Item1.SingleOrDefault(x => x.Id == entity.Id);
 
-            var refunds = data.Item1.Where(x => x.Id != entity.Id);
-
-            if (refunds.Any(x => x.InWorkflowProcess))
+            if (refund != null && !refund.CashReturn)
             {
-                response.AddError(Resources.Workflow.Workflow.AllRefundsMustHaveSameStatus);
+                var refunds = data.Item1.Where(x => x.Id != entity.Id);
+
+                if (refunds.Any(x => x.InWorkflowProcess))
+                {
+                    response.AddError(Resources.Workflow.Workflow.AllRefundsMustHaveSameStatus);
+                    return false;
+                }
+            }
+            else
+            {
                 return false;
             }
 

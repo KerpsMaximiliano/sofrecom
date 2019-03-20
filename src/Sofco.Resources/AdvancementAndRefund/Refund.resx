@@ -123,6 +123,9 @@
   <data name="AdvancementRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.advancementRequired</value>
   </data>
+  <data name="AmmountCashReturnError" xml:space="preserve">
+    <value>advancementAndRefund/refund.ammountCashReturnError</value>
+  </data>
   <data name="AnalyticRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.analyticRequired</value>
   </data>

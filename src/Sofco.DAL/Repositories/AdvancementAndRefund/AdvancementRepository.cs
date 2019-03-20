@@ -149,36 +149,37 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         public Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByAdvancementId(IList<int> ids)
         {
             var refundIds = context.AdvancementRefunds
-            .Where(x => ids.Contains(x.AdvancementId))
-            .Select(x => x.RefundId)
-            .Distinct()
-            .ToList();
+                .Where(x => ids.Contains(x.AdvancementId))
+                .Select(x => x.RefundId)
+                .Distinct()
+                .ToList();
 
             var advancementIds = context.AdvancementRefunds
-            .Where(x => refundIds.Contains(x.RefundId))
-            .Select(x => x.AdvancementId)
-            .Distinct()
-            .ToList();
+                .Where(x => refundIds.Contains(x.RefundId))
+                .Select(x => x.AdvancementId)
+                .Distinct()
+                .ToList();
 
             var advancements = context.Advancements
-            .Where(x => advancementIds.Contains(x.Id))
-            .ToList();
+                .Where(x => advancementIds.Contains(x.Id))
+                .ToList();
 
             advancementIds = advancements.Select(x => x.Id).ToList();
 
             var refunds = context.AdvancementRefunds
-            .Where(x => advancementIds.Contains(x.AdvancementId))
-            .Include(x => x.Refund)
-            .Select(x => x.Refund)
-            .Distinct()
-            .ToList();
+                .Where(x => advancementIds.Contains(x.AdvancementId))
+                .Include(x => x.Refund)
+                .Select(x => x.Refund)
+                .Include(x => x.Status)
+                .Distinct()
+                .ToList();
             
             return new Tuple<IList<Refund>, IList<Advancement>>(refunds, advancements);
         }
 
         public IList<Advancement> GetAllApproved(int workflowStatusApproveId)
         {
-            return context.Advancements.Where(x => x.StatusId == workflowStatusApproveId).ToList();
+            return context.Advancements.Include(x => x.Currency).Where(x => x.StatusId == workflowStatusApproveId).ToList();
         }
 
         public int GetRefundWithLastRefundMarkedCount(int advancementId, int refundId)

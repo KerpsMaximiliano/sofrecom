@@ -1,5 +1,4 @@
-﻿using Sofco.Core.DAL;
-using Sofco.Core.Models.Workflow;
+﻿using Sofco.Core.Models.Workflow;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 
@@ -7,18 +6,16 @@ namespace Sofco.Framework.Workflow.OnSuccess
 {
     public class FinalizeWorkflowProcess : IOnTransitionSuccessState
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IWorkflowManager workflowManager;
 
-        public FinalizeWorkflowProcess(IUnitOfWork unitOfWork)
+        public FinalizeWorkflowProcess(IWorkflowManager workflowManager)
         {
-            this.unitOfWork = unitOfWork;
+            this.workflowManager = workflowManager;
         }
 
         public void Process(WorkflowEntity entity, WorkflowChangeStatusParameters parameters)
         {
-            entity.InWorkflowProcess = false;
-            unitOfWork.WorkflowRepository.UpdateInWorkflowProcess(entity);
-            unitOfWork.Save();
+            this.workflowManager.CloseEntity(entity);
         }
     }
 }

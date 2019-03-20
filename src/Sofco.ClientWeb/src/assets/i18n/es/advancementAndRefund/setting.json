@@ -6,5 +6,7 @@
     "amountALessThanBPesos": "El monto A en pesos no puede ser mayor al B",
     "amountALessThanBDolares": "El monto A en dolares no puede ser mayor al B",
     "amountALessThanBEuros": "El monto A en euros no puede ser mayor al B",
-    "ammountWrong": "El monto no puede ser menor a 1"
+    "ammountWrong": "El monto no puede ser menor a 1",
+    "updateMassiveSuccess": "Los adelantos y reintegros han sido actualizados",
+    "modelEmpty": "No se han seleccionado adelantos o reintegros"
 }

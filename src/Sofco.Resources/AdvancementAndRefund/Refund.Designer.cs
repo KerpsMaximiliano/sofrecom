@@ -79,6 +79,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.ammountCashReturnError.
+        /// </summary>
+        public static string AmmountCashReturnError {
+            get {
+                return ResourceManager.GetString("AmmountCashReturnError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/refund.analyticRequired.
         /// </summary>
         public static string AnalyticRequired {

@@ -43,49 +43,51 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
                 private messageService: MessageService){}
 
     ngOnInit(): void {
-        const routeParams = this.activateRoute.snapshot.params;
-
-        if (routeParams.id) {
-            this.messageService.showLoading();
-
-            this.getSubscrip = this.refundService.get(routeParams.id).subscribe(response => {
-                this.messageService.closeLoading();
-
-                this.actualStateId = response.data.statusId;
-                this.entityId = response.data.id;
-                this.userApplicantId = response.data.userApplicantId;
-
-                this.form.setModel(response.data, this.canUpdate());
-                this.form.hasCreditCardChanged(false);
-
-                if(response.data && response.data.files && response.data.files.length > 0){
-                    this.files = response.data.files;
-                }
-
-                this.uploaderConfig();
-
-                var model = {
-                    workflowId: response.data.workflowId,
-                    entityController: "refund",
-                    entityId: response.data.id,
-                    actualStateId: response.data.statusId
-                }
-
-                if(response.data.advancementIds && response.data.advancementIds.length > 0){
-                    this.refundRelated.init(response.data.advancementIds);
-                }
-
-                this.workflow.init(model);
-
-                this.history.getHistories(routeParams.id);
-            }, 
-            error => this.messageService.closeLoading());
-        }
+        this.activateRoute.params.subscribe(routeParams => {
+            this.getData(routeParams.id);
+        });
     }
                 
     ngOnDestroy(): void {
         if(this.getSubscrip) this.getSubscrip.unsubscribe();
         if(this.editSubscrip) this.editSubscrip.unsubscribe();
+    }
+
+    getData(id){
+        this.messageService.showLoading();
+
+        this.getSubscrip = this.refundService.get(id).subscribe(response => {
+            this.messageService.closeLoading();
+
+            this.actualStateId = response.data.statusId;
+            this.entityId = response.data.id;
+            this.userApplicantId = response.data.userApplicantId;
+
+            this.form.setModel(response.data, this.canUpdate());
+            this.form.hasCreditCardChanged(false);
+
+            if(response.data && response.data.files && response.data.files.length > 0){
+                this.files = response.data.files;
+            }
+
+            this.uploaderConfig();
+
+            var model = {
+                workflowId: response.data.workflowId,
+                entityController: "refund",
+                entityId: response.data.id,
+                actualStateId: response.data.statusId
+            }
+
+            if(response.data.advancementIds && response.data.advancementIds.length > 0){
+                this.refundRelated.init(response.data.advancementIds);
+            }
+
+            this.workflow.init(model);
+
+            this.history.getHistories(id);
+        }, 
+        error => this.messageService.closeLoading());
     }
 
     back(){
