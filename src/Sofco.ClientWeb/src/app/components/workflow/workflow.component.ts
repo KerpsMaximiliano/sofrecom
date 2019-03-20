@@ -37,6 +37,8 @@ export class WorkflowComponent implements OnDestroy {
     }
 
     init(model){
+        this.transitions = [];
+
         this.entityId = model.entityId;
         this.entityController = model.entityController;
 
