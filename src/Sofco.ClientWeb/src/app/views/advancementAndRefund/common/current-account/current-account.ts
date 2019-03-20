@@ -75,6 +75,7 @@ export class CurrentAccountComponent implements OnInit, OnDestroy  {
 
     openDetailModal(item){
         this.currentAccountDetail = item;
+        this.advancementsSelected = [];
 
         this.detailModal.show();
     }

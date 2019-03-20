@@ -19,7 +19,7 @@ namespace Sofco.Framework.Workflow.Conditions.Refund
         {
             var refund = unitOfWork.RefundRepository.GetById(entity.Id);
 
-            return refund.AdvancementRefunds.Any();
+            return !refund.CashReturn && refund.AdvancementRefunds.Any();
         }
     }
 }

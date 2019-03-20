@@ -23,5 +23,6 @@
     "cannotDelete": "Solo se puede borrar en estado borrador o rechazado",
     "deleteSuccess": "El reintegro fue eliminado correctamente",
     "hasNoAttachments": "Se esta iniciando el proceso de aprobación de un reintegro, sin la información que respalde los ítems cargados",
-    "existLastRefund": "Ya existe un ultimo reintegro relacionado a los adelantos seleccionados"
+    "existLastRefund": "Ya existe un ultimo reintegro relacionado a los adelantos seleccionados",
+    "ammountCashReturnError": "No puede cargar un reintegro de devolución en efectivo si las sumas de los reintegros es mayor a la de los adelantos"
 }
