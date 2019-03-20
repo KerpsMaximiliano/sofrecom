@@ -264,6 +264,14 @@ export class ListPaymentPendingComponent  {
     }
 
     search(){
+        this.advancements.forEach(x => {
+            x.selected = false;
+        });
+
+        this.refunds.forEach(x => {
+            x.selected = false;
+        });
+
         this.model = [];
 
         if(!this.userId && !this.typeId && !this.bankId && !this.currencyId){
