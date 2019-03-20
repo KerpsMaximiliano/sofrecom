@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Configuration } from './configuration';
+import { DebugRenderer2 } from '@angular/core/src/view/services';
 declare var $: any;
 
 @Injectable()
@@ -7,64 +8,83 @@ export class DataTableService {
 
     constructor(private config: Configuration) { }
 
-    destroy(selector){
+    destroy(selector) {
         $(selector).DataTable().destroy();
     }
 
-    initialize(params){
+    initialize(params) {
         let lang = {};
 
-        if(this.config.currLang == "es"){
-          lang = this.getLanguageEs();
+        if (this.config.currLang == "es") {
+            lang = this.getLanguageEs();
         }
 
-        if(this.config.currLang == "fr"){
+        if (this.config.currLang == "fr") {
             lang = this.getLanguageFr();
         }
 
-        setTimeout(()=>{
-            $( document ).ready(function() {
+        setTimeout(() => {
+            $(document).ready(function () {
                 var options: any = {
                     oSearch: { "bSmart": false, "bRegex": true },
                     responsive: true,
                     language: lang,
                 }
 
-                if(params.scrollX && params.scrollX == true){
+                if (params.scrollX && params.scrollX == true) {
                     options.scrollX = true;
                 }
 
-                if(params.columnDefs){
+                if (params.columnDefs) {
                     options.aoColumnDefs = params.columnDefs;
                 }
 
-                if(params.withOutSorting){
+                if (params.withOutSorting) {
                     options.bSort = false;
                 }
 
-                if(params.order){
+                if (params.order) {
                     options.order = params.order;
                 }
 
-                if(params.withExport){
+                if (params.withExport) {
                     const excelExport: any = {
                         extend: 'excelHtml5',
                         title: params.title,
                         exportOptions: {
-                            columns: params.columns
+                            columns: params.columns,
+                            format: {
+                                body: function (data, row, column, node) {
+                                    data = $('<p>' + data + '</p>').text();
+                                    return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                                }
+                            }
                         }
                     };
 
-                    if(params.customizeExcelExport){
+                    if (params.customizeExcelExport) {
                         excelExport.customize = params.customizeExcelExport;
                     }
+                    else {
+                        if (params.currencyColumns) {
+                            excelExport.customize =
+                                function (xlsx) {
+                                    var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                                    $('row c[r*="2"]', sheet).attr('s', '2');
+                                    params.currencyColumns.forEach(element => {
+                                        $('row c[r^="G"], row c[r^="' + element + '"]', sheet).attr('s', '64');
+                                    });
 
-                    if(params.customizeExcelExportData){
+                                };
+                        }
+                    }
+
+                    if (params.customizeExcelExportData) {
                         excelExport.customizeData = params.customizeExcelExportData;
                     }
 
                     options.dom = '<"html5buttons"B>lTfgitp';
-                    options.buttons = [ excelExport ];
+                    options.buttons = [excelExport];
                 }
 
                 $(params.selector).DataTable(options);
@@ -79,7 +99,7 @@ export class DataTableService {
     //     }, 1000);
     // }
 
-    getLanguageEs(): any{
+    getLanguageEs(): any {
         return {
             sProcessing: "Procesando...",
             sLengthMenu: "Mostrar _MENU_ registros",
