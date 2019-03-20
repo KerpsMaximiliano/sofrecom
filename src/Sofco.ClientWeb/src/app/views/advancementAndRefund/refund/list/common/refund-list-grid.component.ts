@@ -72,7 +72,7 @@ export class RefundListGridComponent implements OnInit {
             params.columnDefs = [ {"aTargets": [5], "sType": "date-uk"} ]
         }
         else{
-            params.columnDefs = [ {"aTargets": [4], "sType": "date-uk"} ]
+            params.columnDefs = [ {"aTargets": [5], "sType": "date-uk"} ]
         }
         
         this.datatableService.destroy(gridSelector);
