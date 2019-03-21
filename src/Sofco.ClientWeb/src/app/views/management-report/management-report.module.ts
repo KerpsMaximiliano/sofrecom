@@ -10,10 +10,13 @@ import { PCheckModule } from "app/components/pcheck/pcheck.module";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { ManagementReportRouter } from "./management-report.routes";
 import { ManagementReportDetailComponent } from "./detail/mr-detail";
+import { ManagementReportService } from "app/services/management-report/management-report.service";
+import { DatesService } from "app/services/common/month.service";
+import { MarginTrackingComponent } from "./margin-tracking/margin-tracking";
 
 @NgModule({
     declarations: [
-      ManagementReportDetailComponent
+      ManagementReportDetailComponent, MarginTrackingComponent
     ],
     imports: [
       CommonModule,
@@ -27,7 +30,7 @@ import { ManagementReportDetailComponent } from "./detail/mr-detail";
       PCheckModule,
       NgSelectModule
     ],
-    providers: [  ],
+    providers: [ ManagementReportService, DatesService ],
     exports: [],
   })
   

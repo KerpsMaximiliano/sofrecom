@@ -10,5 +10,9 @@ namespace Sofco.Core.Managers
         bool HasFullAccess();
 
         bool IsDirector();
+
+        bool IsCdg();
+
+        bool IsManager();
     }
 }

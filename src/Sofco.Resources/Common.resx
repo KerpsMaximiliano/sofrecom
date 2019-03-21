@@ -141,6 +141,9 @@
   <data name="FileNotFound" xml:space="preserve">
     <value>common.fileNotFound</value>
   </data>
+  <data name="Forbidden" xml:space="preserve">
+    <value>common.forbidden</value>
+  </data>
   <data name="GeneralError" xml:space="preserve">
     <value>common.generalError</value>
   </data>

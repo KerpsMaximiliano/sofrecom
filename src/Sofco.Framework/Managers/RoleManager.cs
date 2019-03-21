@@ -4,6 +4,7 @@ using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
+using Sofco.Core.Models.Admin;
 using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Framework.Managers
@@ -26,6 +27,8 @@ namespace Sofco.Framework.Managers
 
         private readonly IUserData userData;
 
+        public UserLiteModel CurrentUser { get; set; }
+
         public RoleManager(IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager, ILicenseViewDelegateManager licenseViewDelegateManager, ISolfacDelegateManager solfacDelegateManager, IUnitOfWork unitOfWork, ISessionManager sessionManager, IWorkTimeApproverDelegateManager workTimeApproverDelegateManager, IUserData userData)
         {
             this.purchaseOrderApprovalDelegateManager = purchaseOrderApprovalDelegateManager;
@@ -36,6 +39,8 @@ namespace Sofco.Framework.Managers
             this.sessionManager = sessionManager;
             this.workTimeApproverDelegateManager = workTimeApproverDelegateManager;
             this.userData = userData;
+
+            CurrentUser = userData.GetCurrentUser();
         }
 
         public List<Role> GetRoles()
@@ -59,7 +64,7 @@ namespace Sofco.Framework.Managers
 
         public bool HasFullAccess()
         {
-            var currentUserEmail = userData.GetCurrentUser().Email;
+            var currentUserEmail = CurrentUser.Email;
 
             var hasDirectorGroup = unitOfWork.UserRepository.HasDirectorGroup(currentUserEmail);
             var hasCommercialGroup = unitOfWork.UserRepository.HasComercialGroup(currentUserEmail);
@@ -76,12 +81,24 @@ namespace Sofco.Framework.Managers
 
         public bool IsDirector()
         {
-            var currentUser = userData.GetCurrentUser();
-
-            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email)
-                             || unitOfWork.SectorRepository.HasSector(currentUser.Id);
+            var isDirector = unitOfWork.UserRepository.HasDirectorGroup(CurrentUser.Email)
+                             || unitOfWork.SectorRepository.HasSector(CurrentUser.Id);
 
             return isDirector;
+        }
+
+        public bool IsCdg()
+        {
+            var hasCdgGroup = unitOfWork.UserRepository.HasCdgGroup(CurrentUser.Email);
+
+            return hasCdgGroup;
+        }
+
+        public bool IsManager()
+        {
+            var isManager = unitOfWork.UserRepository.HasManagerGroup(CurrentUser.UserName);
+
+            return isManager;
         }
     }
 }

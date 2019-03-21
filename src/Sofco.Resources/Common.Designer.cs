@@ -133,6 +133,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a common.forbidden.
+        /// </summary>
+        public static string Forbidden {
+            get {
+                return ResourceManager.GetString("Forbidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a common.generalError.
         /// </summary>
         public static string GeneralError {

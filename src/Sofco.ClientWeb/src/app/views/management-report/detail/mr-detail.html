@@ -24,12 +24,118 @@
                         <span>Datos Analítica</span>
                         <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
                     </a>
-                </h5>
+                </h5> 
             </div>
 
             <div id="collapseOne" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    
+                    <div class="row">
+                        <div class="col-md-3">
+                            <dl class="dl-vertical">
+                                <dt class="m-b-xs"><i class="fa fa-file-text-o"></i> Analítica</dt> 
+                                <dd class="text-ellipsis"> {{ model?.analytic }} </dd>
+
+                                <dt class="m-b-xs"><i class="fa fa-wrench"></i> Tipo de Servicio</dt> 
+                                <dd class="text-ellipsis"> {{ model?.serviceType }} </dd>
+
+                                <dt class="m-b-xs"><i class="fa fa-wrench"></i> Tipo de Solución </dt>
+                                <dd class="text-ellipsis"> {{ model?.solutionType }}</dd>
+
+                                <dt class="m-b-xs"><i class="fa fa-wrench"></i> Tipo de Tecnología </dt>
+                                <dd class="text-ellipsis"> {{ model?.technologyType }} </dd>
+                            </dl>
+                        </div>
+
+                        <div class="col-md-5">
+                            <dl class="dl-vertical">
+                                <dt class="m-b-xs"><i class="fa fa-user"></i> Gerente </dt> 
+                                <dd> {{ model?.manager }} </dd>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <dt class="m-b-xs"><i class="fa fa-calendar"></i> Fecha Fin </dt> 
+                                        <dd> {{ model?.startDate | date: 'dd/MM/yyyy' }} </dd>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <dt class="m-b-xs"><i class="fa fa-calendar"></i> Fecha Inicio </dt> 
+                                        <dd> {{ model?.endDate | date: 'dd/MM/yyyy' }} </dd>
+                                    </div>
+                                </div>
+
+                                <dt class="m-b-xs"><i class="fa fa-file-text-o"></i> Oportunidades </dt> 
+                                <dd>
+                                    <ul>
+                                        <li *ngFor="let item of model?.opportunities" class="text-ellipsis">{{ item }}</li>
+                                    </ul>
+                                </dd>
+                            </dl>
+                        </div>
+
+                        <div class="col-md-4">
+                            <dt class="m-b-xs"><i class="fa fa-file-text-o"></i> Ordenes de compra </dt> 
+                            <dd>
+                                <ul>
+                                    <li *ngFor="let item of model?.purchaseOrders" class="text-ellipsis"> {{ item }} </li>
+                                </ul>
+                            </dd>
+
+                            <dt class="m-b-xs"><i class="fa fa-calculator"></i> Total ordenes de compra por divisa </dt>
+                            <dd>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Moneda</th>
+                                            <th>Monto</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of model?.ammounts">
+                                            <td>{{ item.currency }}</td>
+                                            <td>{{ item.value }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </dd> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="month-header">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-white" (click)="substractMonth()"><i class="fa fa-chevron-left"></i></button>
+                    <button type="button" class="btn btn-white" (click)="addMonth()"><i class="fa fa-chevron-right"></i></button>
+                </div>
+                <label class="btn btn-white">Mes</label>
+                <h3 class="month-label">{{ monthDesc }} {{ year }}</h3>
+            </div>
+
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1"> Seguimiento de Margen </a></li>
+                    <li><a data-toggle="tab" href="#tab-2"> Detalle Costos </a></li>
+                    <li><a data-toggle="tab" href="#tab-3"> Facturación </a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="panel-body">
+                            <margin-tracking></margin-tracking>
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+                            
+                        </div>
+                    </div>
+                    <div id="tab-3" class="tab-pane">
+                        <div class="panel-body">
+                                
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
