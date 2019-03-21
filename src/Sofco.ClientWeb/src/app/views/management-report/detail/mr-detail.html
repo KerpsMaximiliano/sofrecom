@@ -91,7 +91,7 @@
                                     <tbody>
                                         <tr *ngFor="let item of model?.ammounts">
                                             <td>{{ item.currency }}</td>
-                                            <td>{{ item.value }}</td>
+                                            <td>{{ item.value | amountFormat }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

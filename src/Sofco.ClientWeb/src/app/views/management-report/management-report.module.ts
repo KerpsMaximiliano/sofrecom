@@ -13,6 +13,7 @@ import { ManagementReportDetailComponent } from "./detail/mr-detail";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { DatesService } from "app/services/common/month.service";
 import { MarginTrackingComponent } from "./margin-tracking/margin-tracking";
+import { AmountFormatModule } from "app/pipes/amount-format.module";
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import { MarginTrackingComponent } from "./margin-tracking/margin-tracking";
       ManagementReportRouter,
       DatePickerModule,
       NumbersOnlyModule,
-      Ng2ModalModule,
+      Ng2ModalModule, 
+      AmountFormatModule,
       PCheckModule,
       NgSelectModule
     ],

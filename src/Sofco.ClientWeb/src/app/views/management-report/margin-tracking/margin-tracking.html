@@ -91,3 +91,11 @@
         </table>
     </div>
 </div>
+
+<div class="detail-actions">
+    <button class="btn btn-primary" type="button" *ngIf="isManager || isCdgOrDirector">Ver <i class="fa fa-eye"></i></button>
+    <button class="btn btn-primary" type="button" *ngIf="isCdgOrDirector">Editar <i class="fa fa-pencil"></i></button>
+    <button class="btn btn-primary" type="button" *ngIf="isManager || isCdgOrDirector">Enviar <i class="fa fa-paper-plane"></i></button>
+    <button class="btn btn-primary" type="button" *ngIf="isCdgOrDirector">Cerrar <i class="fa fa-close"></i></button>
+    <button class="btn btn-primary" type="button" *ngIf="isManager || isCdgOrDirector">Reporte Mensual <i class="fa fa-file"></i></button>
+</div>
