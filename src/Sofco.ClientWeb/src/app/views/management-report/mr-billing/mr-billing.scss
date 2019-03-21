@@ -1,0 +1,24 @@
+table{
+    table-layout: fixed;
+}
+
+th, td {
+    width: 100px;
+}
+
+.label {
+    display: block;
+    font-size: 12px;
+}
+
+.first-column {
+    width: 250px;
+}
+
+.hitos-title {
+    font-size: 15px;
+}
+
+.billing-table {
+    max-height: 850px;
+}

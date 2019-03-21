@@ -14,10 +14,11 @@ import { ManagementReportService } from "app/services/management-report/manageme
 import { DatesService } from "app/services/common/month.service";
 import { MarginTrackingComponent } from "./margin-tracking/margin-tracking";
 import { AmountFormatModule } from "app/pipes/amount-format.module";
+import { ManagementReportBillingComponent } from "./mr-billing/mr-billing";
 
 @NgModule({
     declarations: [
-      ManagementReportDetailComponent, MarginTrackingComponent
+      ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent
     ],
     imports: [
       CommonModule,

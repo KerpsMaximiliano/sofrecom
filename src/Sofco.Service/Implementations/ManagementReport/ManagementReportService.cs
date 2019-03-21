@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
+using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Helpers;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -18,15 +21,18 @@ namespace Sofco.Service.Implementations.ManagementReport
         private readonly ILogMailer<ManagementReportService> logger;
         private readonly IRoleManager roleManager;
         private readonly IUserData userData;
+        private readonly IProjectData projectData;
 
         public ManagementReportService(IUnitOfWork unitOfWork, 
             ILogMailer<ManagementReportService> logger, 
             IUserData userData,
+            IProjectData projectData,
             IRoleManager roleManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
+            this.projectData = projectData;
             this.roleManager = roleManager;
         }
 
@@ -102,6 +108,92 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
 
             return response;
+        }
+
+        public Response<BillingDetail> GetBilling(string serviceId)
+        {
+            var response = new Response<BillingDetail> { Data = new BillingDetail() };
+
+            var analytic = unitOfWork.AnalyticRepository.GetByService(serviceId);
+
+            if (analytic == null)
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                return response;
+            }
+
+            var projects = unitOfWork.ProjectRepository.GetAllActives(serviceId);
+
+            var today = DateTime.UtcNow;
+
+            var dates = SetDates(analytic, today);
+
+            response.Data.MonthsHeader = new List<MonthBillingHeaderItem>();
+
+            for (DateTime date = dates.Item1.Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
+            {
+                var monthHeader = new MonthBillingHeaderItem();
+                monthHeader.Display = DatesHelper.GetDateShortDescription(date);
+                monthHeader.Year = date.Year;
+                monthHeader.Month = date.Month;
+                response.Data.MonthsHeader.Add(monthHeader);
+            }
+
+            response.Data.Rows = new List<BillingRowItem>();
+
+            foreach (var project in projects)
+            {
+                var crmProjectHitos = projectData.GetHitos(project.CrmId);
+
+                foreach (var hito in crmProjectHitos)
+                {
+                    if (hito.StartDate.Date >= dates.Item1.Date && hito.StartDate.Date <= dates.Item2.Date)
+                    {
+                        var billingRowItem = new BillingRowItem
+                        {
+                            Description = hito.Name,
+                            MonthValues = new List<MonthBiilingRowItem>
+                            {
+                                new MonthBiilingRowItem
+                                {
+                                    Month = hito.StartDate.Month,
+                                    Year = hito.StartDate.Year,
+                                    Value = hito.Ammount
+                                }
+                            }
+                        };
+
+                        response.Data.Rows.Add(billingRowItem);
+                    }
+                }
+            }
+
+            return response;
+        }
+
+        private Tuple<DateTime, DateTime> SetDates(Analytic analytic, DateTime today)
+        {
+            DateTime startDate;
+            DateTime endDate;
+
+            if (analytic.StartDateContract.Year <= today.Year)
+            {
+                startDate = analytic.StartDateContract.Date;
+
+                endDate = analytic.EndDateContract.Year > today.Year
+                    ? new DateTime(today.Year, 12, 31)
+                    : analytic.EndDateContract.Date;
+            }
+            else
+            {
+                startDate = new DateTime(today.Year, 1, 1);
+
+                endDate = analytic.EndDateContract.Year > today.Year
+                    ? new DateTime(today.Year, 12, 31)
+                    : analytic.EndDateContract.Date;
+            }
+
+            return new Tuple<DateTime, DateTime>(startDate, endDate);
         }
 
         private bool CheckRoles(Analytic analytic)

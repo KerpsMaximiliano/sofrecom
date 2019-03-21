@@ -13,4 +13,8 @@ export class ManagementReportService {
   getDetail(serviceId) {
     return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}`);
   }
+
+  getBilling(serviceId) {
+    return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/billing`);
+  }
 }

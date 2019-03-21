@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.ManagementReport;
 using Sofco.WebApi.Extensions;
@@ -21,6 +20,14 @@ namespace Sofco.WebApi.Controllers.ManagementReport
         public IActionResult GetDetail(string serviceId)
         {
             var response = managementReportService.GetDetail(serviceId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{serviceId}/billing")]
+        public IActionResult GetBilling(string serviceId)
+        {
+            var response = managementReportService.GetBilling(serviceId);
 
             return this.CreateResponse(response);
         }

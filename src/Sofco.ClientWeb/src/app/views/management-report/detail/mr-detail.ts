@@ -1,4 +1,4 @@
-import { OnInit, Component, OnDestroy } from "@angular/core";
+import { OnInit, Component, OnDestroy, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
@@ -25,6 +25,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     public monthDesc: string;
     public month: number;
     public year: number;
+
+    @ViewChild("billing") billing;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private messageService: MessageService,
@@ -74,6 +76,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.getDetailSubscrip = this.managementReportService.getDetail(this.serviceId).subscribe(response => {
 
             this.model = response.data;
+            this.billing.init(this.serviceId);
             this.messageService.closeLoading();
         },
         error => this.messageService.closeLoading());

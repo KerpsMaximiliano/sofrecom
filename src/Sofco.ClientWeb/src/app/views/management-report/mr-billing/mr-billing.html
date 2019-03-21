@@ -1,0 +1,29 @@
+<div class="table-responsive billing-table" >
+    <table class="table table-striped dataTable" role="grid">
+        <thead>
+            <tr>
+                <th class="first-column"></th>
+                <th class="text-center" *ngFor="let month of months">{{ month.display }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="first-column text-ellipsis">Total Facturación</td>
+                <td *ngFor="let month of months"><label class="label" class="label label-primary">{{ month.total | amountFormat }}</label></td>
+            </tr>
+            <tr>
+                <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
+                <td *ngFor="let month of months"><label class="label" class="label label-primary">1</label></td>
+            </tr>
+            <tr>
+                <td [attr.colspan]="months.length+1" class="hitos-title">Hitos</td>
+            </tr>
+            <tr *ngFor="let hito of hitos">
+                <td class="first-column text-ellipsis">{{ hito.description }}</td>
+                <td *ngFor="let value of hito.values">
+                    <input type="number" class="form-control input-sm" min="0" [attr.value]="value.value">
+                </td>
+            </tr>
+        </tbody>
+    </table>       
+</div>
