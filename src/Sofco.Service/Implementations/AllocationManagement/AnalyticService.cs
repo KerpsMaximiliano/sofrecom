@@ -115,7 +115,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var currentUser = userData.GetCurrentUser();
 
             var analyticsByManagers = roleManager.HasFullAccess()
-                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly()
+                ? unitOfWork.AnalyticRepository.GetAll()
                 : unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
 
             var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
