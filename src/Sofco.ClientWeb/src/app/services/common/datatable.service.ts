@@ -56,7 +56,7 @@ export class DataTableService {
                             format: {
                                 body: function (data, row, column, node) {
                                     data = $('<p>' + data + '</p>').text();
-                                    return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                                    return $.isNumeric(data.replace('.', '').replace(',', '.')) ? data.replace('.', '').replace(',', '.') : data;
                                 }
                             }
                         }
@@ -70,11 +70,10 @@ export class DataTableService {
                             excelExport.customize =
                                 function (xlsx) {
                                     var sheet = xlsx.xl.worksheets['sheet1.xml'];
-                                    $('row c[r*="2"]', sheet).attr('s', '2');
                                     params.currencyColumns.forEach(element => {
-                                        $('row c[r^="G"], row c[r^="' + element + '"]', sheet).attr('s', '64');
+                                        $('row c[r^="' + String.fromCharCode(element + 65) + '"]', sheet).attr('s', '64');
                                     });
-
+                                    //$('row c[r*="2"]', sheet).attr('s', '2');
                                 };
                         }
                     }

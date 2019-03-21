@@ -40,7 +40,8 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
           columns: columns,
           title: title,
           withExport: true,
-          columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ]
+          columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
+          currencyColumns: [6]
         }
   
         this.datatableService.destroy(params.selector);

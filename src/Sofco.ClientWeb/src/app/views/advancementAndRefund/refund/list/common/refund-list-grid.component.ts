@@ -65,7 +65,8 @@ export class RefundListGridComponent implements OnInit {
             columns: columns,
             title: this.i18nService.translateByKey('refund.listTitle'),
             withExport: true,
-            columnDefs: []
+            columnDefs: [],
+            currencyColumns: [4]
         }
 
         if(this.inWorkflowProcess){

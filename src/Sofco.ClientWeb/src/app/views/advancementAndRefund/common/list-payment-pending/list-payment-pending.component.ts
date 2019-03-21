@@ -58,7 +58,8 @@ export class ListPaymentPendingComponent  {
           selector: '#payment-pending',
           columns: columns,
           title: title,
-          withExport: true
+          withExport: true,
+          currencyColumns: [4]
         }
   
         this.datatableService.destroy(params.selector);
