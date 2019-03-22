@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, AfterViewInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { DataTableService } from "../../../../services/common/datatable.service";
 import { MenuService } from "../../../../services/admin/menu.service";
@@ -15,7 +15,7 @@ declare var moment: any;
     templateUrl: './allocation-report.component.html',
     styleUrls: ['./allocation-report.component.scss']
 })
-export class AllocationReportComponent implements OnInit, OnDestroy {
+export class AllocationReportComponent implements OnInit, OnDestroy, AfterViewInit {
  
     public model: any;
     public resources: any[] = new Array<any>();
@@ -29,7 +29,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     public dateSince: Date = new Date();
     public dateTo: Date = new Date();
     public includeStaff: boolean = false;
-    public includeAnalyticId: number;
+    public includeAnalyticId;
 
     private lastQuery: any;
     public loaded: boolean = false;
@@ -47,7 +47,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
         this.getPercentages();
 
         var data = JSON.parse(sessionStorage.getItem('lastReportQuery'));
-        this.includeAnalyticId = 1;
+
 
         if(data){
             this.lastQuery = data;
@@ -56,6 +56,10 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             this.includeStaff = data.includeStaff;
             this.includeAnalyticId = data.includeAnalyticId;
         }
+    }
+
+    ngAfterViewInit(){
+        this.includeAnalyticId = "1";
     }
 
     ngOnDestroy(): void {
