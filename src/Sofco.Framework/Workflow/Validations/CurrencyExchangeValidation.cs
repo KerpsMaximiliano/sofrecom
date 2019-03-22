@@ -30,9 +30,9 @@ namespace Sofco.Framework.Workflow.Validations
             {
                 var domain = unitOfWork.RefundRepository.GetFullById(entity.Id);
 
-                if (refund.CurrencyId != appSetting.CurrencyPesos && !parameters.Parameters.ContainsKey("currencyExchange"))
+                if (refund.CurrencyId != appSetting.CurrencyPesos)
                 {
-                    if (validation.HasUserRefund(domain))
+                    if (validation.HasUserRefund(domain) && parameters.Parameters != null && !parameters.Parameters.ContainsKey("currencyExchange"))
                     {
                         response.AddError(Resources.Workflow.Workflow.CurrencyExchangeRequired);
                         return false;

@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
@@ -143,13 +144,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (!parameters.IncludeStaff)
                 query = query.Where(x => x.Employee.BillingPercentage != 0);
 
-            //if (parameters.Percentage.HasValue)
-            //{
-            //    if (parameters.Percentage == 999)
-            //        query = query.Where(x => x.Percentage != 100);
-            //    else
-            //        query = query.Where(x => x.Percentage == parameters.Percentage);
-            //}
+            if (parameters.IncludeAnalyticId == 2)
+                query = query.Where(x => x.Analytic.Status == AnalyticStatus.Open);
+
+            if (parameters.IncludeAnalyticId == 3)
+                query = query.Where(x => x.Analytic.Status == AnalyticStatus.Close || x.Analytic.Status == AnalyticStatus.CloseToExpenses);
 
             return query.Select(x => x.Employee).Distinct().ToList();
         }

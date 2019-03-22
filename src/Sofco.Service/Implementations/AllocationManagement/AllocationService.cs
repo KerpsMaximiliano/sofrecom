@@ -289,7 +289,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             parameters.StartDate = new DateTime(parameters.StartDate.Year, parameters.StartDate.Month, 1);
             parameters.EndDate = new DateTime(parameters.EndDate.Year, parameters.EndDate.Month, DateTime.DaysInMonth(parameters.EndDate.Year, parameters.EndDate.Month));
-     
 
             var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
 

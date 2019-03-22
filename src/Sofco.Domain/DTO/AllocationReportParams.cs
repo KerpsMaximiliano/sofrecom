@@ -17,6 +17,8 @@ namespace Sofco.Domain.DTO
 
         public bool IncludeStaff { get; set; }
 
+        public int IncludeAnalyticId { get; set; }
+
         public decimal? StartPercentage { get; set; }
 
         public decimal? EndPercentage { get; set; }

@@ -29,6 +29,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     public dateSince: Date = new Date();
     public dateTo: Date = new Date();
     public includeStaff: boolean = false;
+    public includeAnalyticId: number;
 
     private lastQuery: any;
     public loaded: boolean = false;
@@ -46,12 +47,14 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
         this.getPercentages();
 
         var data = JSON.parse(sessionStorage.getItem('lastReportQuery'));
+        this.includeAnalyticId = 1;
 
         if(data){
             this.lastQuery = data;
             this.dateSince = data.startDate
             this.dateTo = data.endDate
             this.includeStaff = data.includeStaff;
+            this.includeAnalyticId = data.includeAnalyticId;
         }
     }
 
@@ -102,6 +105,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             startDate: this.dateSince,
             endDate: this.dateTo,
             includeStaff: this.includeStaff,
+            includeAnalyticId: this.includeAnalyticId,
             analyticIds: $('#analyticId').val(),
             employeeId: $('#employeeId').val() == 0 ? null : $('#employeeId').val(),
             percentage: $('#percentageId').val() == '' || undefined ? null : $('#percentageId').val(),

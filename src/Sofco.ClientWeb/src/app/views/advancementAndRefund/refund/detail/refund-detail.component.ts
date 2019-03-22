@@ -125,6 +125,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
         this.editSubscrip = this.refundService.edit(model).subscribe(response => {
             this.messageService.closeLoading();
             this.workflow.init(this.workflowModel);
+            this.refundRelated.init(this.form.form.controls.advancements.value);
         },
         error => {
             this.messageService.closeLoading();

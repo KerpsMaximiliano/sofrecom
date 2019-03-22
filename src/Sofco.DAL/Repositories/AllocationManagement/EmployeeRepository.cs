@@ -54,7 +54,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             var from = new DateTime(startDate.Year, startDate.Month, 1).Date;
             var to = new DateTime(endDate.Year, endDate.Month, 1).Date;
 
-            var employeeIdsWithAllocations = context.Allocations.Where(x => x.StartDate.Date == from && x.StartDate.Date == to).Select(x => x.EmployeeId).Distinct().ToList();
+            var employeeIdsWithAllocations = context.Allocations.Where(x => x.StartDate.Date == from || x.StartDate.Date == to).Select(x => x.EmployeeId).Distinct().ToList();
 
             return context.Employees.Include(x => x.Manager).Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
         }
