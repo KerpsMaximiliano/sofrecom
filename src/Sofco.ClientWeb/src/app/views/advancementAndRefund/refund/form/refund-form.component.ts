@@ -206,6 +206,9 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     setModel(domain, isEdit){
+        this.detailForms = new Array();
+        this.detailModalForm = new RefundDetail();
+        
         if(domain.statusId > 0){
             this.status = domain.statusDesc;
         }

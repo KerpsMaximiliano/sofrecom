@@ -38,6 +38,11 @@ export class RefundsRelatedComponent implements OnDestroy {
     }
 
     calculateTotals(){
+        this.advancementSum = 0;
+        this.refundSum = 0;
+        this.userRefund = 0;
+        this.companyRefund = 0;
+
         this.advancements.forEach(x => {
             this.advancementSum += x.total;
         });

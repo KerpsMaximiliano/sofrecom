@@ -159,18 +159,43 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Select(x => x.AdvancementId)
                 .Distinct()
                 .ToList();
+          
+            var end = false;
+
+            while (!end)
+            {
+                var refundIdCount = refundIds.Count;
+
+                refundIds = context.AdvancementRefunds
+                    .Where(x => advancementIds.Contains(x.AdvancementId))
+                    .Select(x => x.RefundId)
+                    .Distinct()
+                    .ToList();
+
+                if (refundIdCount < refundIds.Count)
+                {
+                    advancementIds = context.AdvancementRefunds
+                        .Where(x => refundIds.Contains(x.RefundId))
+                        .Select(x => x.AdvancementId)
+                        .Distinct()
+                        .ToList();
+                }
+                else
+                {
+                    end = true;
+                }
+            }
 
             var advancements = context.Advancements
                 .Where(x => advancementIds.Contains(x.Id))
                 .ToList();
-
-            advancementIds = advancements.Select(x => x.Id).ToList();
 
             var refunds = context.AdvancementRefunds
                 .Where(x => advancementIds.Contains(x.AdvancementId))
                 .Include(x => x.Refund)
                 .Select(x => x.Refund)
                 .Include(x => x.Status)
+                .Include(x => x.Analytic)
                 .Distinct()
                 .ToList();
             

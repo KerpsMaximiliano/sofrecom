@@ -12,15 +12,17 @@
                             <th>{{'refund.itemTotal' | translate }}</th>
                             <th>{{'refund.status' | translate }}</th>
                             <th class="text-center">Ultimo reintegro</th>
+                            <th class="text-center">Devolución efectivo</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let refund of refunds" (click)="goToRefund(refund)" class="pointer">
                             <td class="text-center">{{ refund.id }}</td>
                             <td>{{ refund.analytic }}</td>
-                            <td>{{ refund.total }}</td>
+                            <td>{{ refund.total | amountFormat }}</td>
                             <td><span class="label" [ngClass]="getStatusClass(refund.statusType)">{{ refund.statusName }}</span></td>
                             <td class="text-center"><span class="fa" [ngClass]="refund.lastRefund ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                            <td class="text-center"><span class="fa" [ngClass]="refund.cashReturn ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
                         </tr>
                     </tbody>
                 </table>

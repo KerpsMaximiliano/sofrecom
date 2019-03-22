@@ -215,7 +215,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             columns: columns,
             order: [[ 4, "desc" ]],
             title: title,
-            withExport: true
+            withExport: true,
+            currencyColumns: [6]
           }
 
         this.datatableService.destroy('#solfacsTable');
