@@ -153,6 +153,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 worktimeData.SaveTigerReport(tigerReport);
             }
 
+            //Se filtran las analiticas seleccionadas
+            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
+            {
+                response.Data.Items = response.Data.Items.Where(e => e.AnalyticId == parameters.AnalyticId).ToList();
+            }
+
             return response;
         }
 
