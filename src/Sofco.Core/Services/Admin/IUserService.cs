@@ -46,5 +46,6 @@ namespace Sofco.Core.Services.Admin
         Response<UserModel> GetUserInfo(int employeeId);
 
         ICollection<User> GetDirectors();
+        bool HasGafGroup();
     }
 }

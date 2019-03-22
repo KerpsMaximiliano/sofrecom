@@ -44,5 +44,6 @@ namespace Sofco.Core.Models.Admin
         public List<int> AreaIds { get; set; }
 
         public List<int> SectorIds { get; set; }
+        public bool IsGaf { get; set; }
     }
 }

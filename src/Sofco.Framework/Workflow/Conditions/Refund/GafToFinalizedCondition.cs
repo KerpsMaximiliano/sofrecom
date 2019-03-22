@@ -3,7 +3,7 @@ using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Utils;
-
+ 
 namespace Sofco.Framework.Workflow.Conditions.Refund
 {
     public class GafToFinalizedCondition : IWorkflowConditionState

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
-using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -23,8 +22,8 @@ namespace Sofco.Service.Implementations.ManagementReport
         private readonly IUserData userData;
         private readonly IProjectData projectData;
 
-        public ManagementReportService(IUnitOfWork unitOfWork, 
-            ILogMailer<ManagementReportService> logger, 
+        public ManagementReportService(IUnitOfWork unitOfWork,
+            ILogMailer<ManagementReportService> logger,
             IUserData userData,
             IProjectData projectData,
             IRoleManager roleManager)
@@ -68,6 +67,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.SolutionType = service.SolutionType;
                 response.Data.TechnologyType = service.TechnologyType;
                 response.Data.Manager = service.Manager;
+                response.Data.Name = service.Name;
+                response.Data.AccountName = service.AccountName;
             }
 
             var projects = unitOfWork.ProjectRepository.GetAllActives(serviceId);
@@ -129,6 +130,9 @@ namespace Sofco.Service.Implementations.ManagementReport
             var dates = SetDates(analytic, today);
 
             response.Data.MonthsHeader = new List<MonthBillingHeaderItem>();
+            response.Data.Projects = new List<ProjectOption>();
+
+            response.Data.ManagerId = analytic.Manager.ExternalManagerId;
 
             for (DateTime date = dates.Item1.Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
             {
@@ -144,6 +148,8 @@ namespace Sofco.Service.Implementations.ManagementReport
             foreach (var project in projects)
             {
                 var crmProjectHitos = projectData.GetHitos(project.CrmId);
+
+                response.Data.Projects.Add(new ProjectOption { Id = project.CrmId, Text = project.Name, OpportunityId = project.OpportunityId });
 
                 foreach (var hito in crmProjectHitos)
                 {

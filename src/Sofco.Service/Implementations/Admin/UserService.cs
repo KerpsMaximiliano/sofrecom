@@ -221,6 +221,11 @@ namespace Sofco.Service.Implementations.Admin
             return unitOfWork.UserRepository.GetDirectors();
         }
 
+        public bool HasGafGroup()
+        {
+            return unitOfWork.UserRepository.HasGafGroup(sessionManager.GetUserEmail());
+        }
+
         public Response<UserModel> GetUserInfo()
         {
             var email = sessionManager.GetUserEmail();

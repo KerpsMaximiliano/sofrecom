@@ -5,5 +5,6 @@ export const environment = {
   crmCloseStatusCode: '979730000',
   draftWorkflowStateId: 8,
   currencyPesosId: 1,
+  gafWorkflowStateId: 10,
   rejectedWorkflowStateId: 2
 };

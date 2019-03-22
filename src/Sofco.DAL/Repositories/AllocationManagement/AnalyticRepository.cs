@@ -110,7 +110,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public Analytic GetByService(string serviceId)
         {
-            return context.Analytics.SingleOrDefault(x => x.ServiceId.Equals(serviceId));
+            return context.Analytics.Include(x => x.Manager).SingleOrDefault(x => x.ServiceId.Equals(serviceId));
         }
 
         public List<Analytic> GetByServiceIds(List<string> serviceIds)

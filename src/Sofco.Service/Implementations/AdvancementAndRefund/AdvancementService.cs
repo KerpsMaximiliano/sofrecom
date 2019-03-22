@@ -230,6 +230,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     CurrencyId = x.CurrencyId,
                     CurrencyDesc = x.Currency?.Text,
                     Ammount = x.Ammount,
+                    AmmountPesos = x.Ammount,
                     WorkflowId = x.WorkflowId,
                     Type = "Adelanto",
                     NextWorkflowStateId = settings.WorkflowStatusApproveId

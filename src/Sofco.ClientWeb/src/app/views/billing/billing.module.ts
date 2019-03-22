@@ -50,7 +50,6 @@ import { UpdateSolfacBillComponent } from './solfac/workflow/update-bill/update-
 import { UpdateSolfacCashComponent } from './solfac/workflow/update-cash/update-solfac-cash.component';
 import { WidgetModule } from '../../components/widget/widget.module';
 import { Select2Module } from '../../components/select2/select2';
-import { SplitHitoComponent } from './hitos/split-hito.component';
 import { SolfacPdfViewerComponent } from './solfac/pdf-viewer/solfac-pdf-viewer.component';
 import { LayoutsModule } from '../../components/common/layouts/layouts.module';
 import { StatusRejectDafComponent } from './solfac/workflow/reject-by-daf/status-reject-daf.component';
@@ -72,7 +71,6 @@ import { CertificatesService } from '../../services/billing/certificates.service
 import { SolfacDelegateEditComponent } from './solfac/solfac-delegate/edit/solfac-delegate-edit.component'
 import { PdfViewerModule } from '../../components/pdf-viewer/pdf-viewer.module';
 import { DatePickerModule } from '../../components/date-picker/date-picker.module';
-import { NewHitoComponent } from './hitos/new/new-hito.component';
 import { ProjectPurchaseOrdersComponent } from './projects/project-detail/purchase-order-detail/purchase-order-detail.component';
 import { BillingRouter } from './billing.router';
 import { ResourceByServiceComponent } from '../allocation-management/resources/by-service/resource-by-service.component';
@@ -103,6 +101,7 @@ import { DecimalFormatModule } from 'app/components/decimalFormat/decimal-format
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TooltipModule } from 'ngx-bootstrap';
 import { AmountFormatModule } from 'app/pipes/amount-format.module';
+import { HitoModule } from './hitos/hito.module';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -110,17 +109,17 @@ import { AmountFormatModule } from 'app/pipes/amount-format.module';
                  SolfacAttachmentsComponent, StatusDeleteComponent, StatusCashComponent, StatusBillComponent, StatusSendToCdgComponent, 
                  StatusSendToDafComponent, StatusRejectComponent, CloneInvoiceComponent, InvoiceHistoryComponent, StatusApproveComponent,
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
-                 UpdateSolfacCashComponent, SplitHitoComponent, SolfacPdfViewerComponent, StatusRejectDafComponent,
+                 UpdateSolfacCashComponent, SolfacPdfViewerComponent, StatusRejectDafComponent,
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent,
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
-                 NewHitoComponent, ProjectPurchaseOrdersComponent, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
+                 ProjectPurchaseOrdersComponent, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
                  OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderApprovalDelegateComponent, PurchaseOrderApprovalDelegateEditComponent,
                  OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent, PurchaseOrderActiveDelegateComponent, PurchaseOrderActiveDelegateEditComponent,
                  PurchaseOrderViewComponent, PurchaseOrderViewFilterComponent],
 
-  imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
+  imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, HitoModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, TooltipModule,
                  DatePickerModule, PCheckModule, DateRangePickerModule, BillingRouter, ButtonsModule, DecimalFormatModule, NgSelectModule, AmountFormatModule],
 

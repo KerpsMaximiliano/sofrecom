@@ -20,7 +20,6 @@ export class ListPaymentPendingComponent  {
     public model: any[] = new Array();
     public advancements: any[] = new Array();
     public refunds: any[] = new Array();
-    public totals: any[] = new Array();
 
     public banks: any[] = new Array();
     public users: any[] = new Array();
@@ -31,6 +30,8 @@ export class ListPaymentPendingComponent  {
     public userId: number;
     public currencyId: number;
     public typeId: number;
+
+    public totalAmount: number;
 
     constructor(private advancementService: AdvancementService,
                 public menuService: MenuService,
@@ -188,22 +189,10 @@ export class ListPaymentPendingComponent  {
     }
 
     calculateTotals(){
-        this.totals = new Array();
-
+        this.totalAmount = 0;
         this.model.forEach(item => {
-
             if(item.selected){
-                var itemTotal = this.totals.filter(x => x.text == item.currencyDesc);
-
-                if(itemTotal.length > 0){
-                    itemTotal[0].value = item.ammount + itemTotal[0].value;
-                }
-                else{
-                    this.totals.push({
-                        text: item.currencyDesc,
-                        value: item.ammount
-                    });
-                }
+                this.totalAmount += item.ammountPesos;
             }
         });
     }

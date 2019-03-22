@@ -61,6 +61,7 @@ namespace Sofco.Service.Implementations.Admin
             model.IsDirector = userService.HasDirectorGroup();
             model.IsManager = userService.HasManagerGroup();
             model.IsDaf = userService.HasDafGroup();
+            model.IsGaf = userService.HasGafGroup();
             model.IsCdg = userService.HasCdgGroup();
             model.IsRrhh = userService.HasRrhhGroup();
             model.DafMail = GetGroupMail(emailConfig.DafCode);

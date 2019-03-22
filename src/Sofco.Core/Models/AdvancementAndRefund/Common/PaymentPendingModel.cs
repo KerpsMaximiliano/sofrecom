@@ -16,10 +16,14 @@
 
         public decimal Ammount { get; set; }
 
+        public decimal AmmountPesos { get; set; }
+
         public string Type { get; set; }
 
         public int WorkflowId { get; set; }
 
         public int NextWorkflowStateId { get; set; }
+
+        public decimal? CurrencyExchange { get; set; }
     }
 }

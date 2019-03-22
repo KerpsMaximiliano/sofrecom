@@ -1,8 +1,8 @@
 import { Component, OnDestroy, ViewChild, EventEmitter, Output } from '@angular/core';
-import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
 import { Subscription } from "rxjs";
-import { ProjectService } from '../../../services/billing/project.service';
-import { NewHito } from '../../../models/billing/solfac/newHito';
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { NewHito } from 'app/models/billing/solfac/newHito';
+import { ProjectService } from 'app/services/billing/project.service';
 
 @Component({
   selector: 'split-hito',

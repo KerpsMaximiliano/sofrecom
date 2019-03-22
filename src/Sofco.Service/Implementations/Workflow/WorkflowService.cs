@@ -10,6 +10,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.Workflow;
+using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Admin;
@@ -32,6 +33,7 @@ namespace Sofco.Service.Implementations.Workflow
         private readonly IWorkflowNotificationFactory workflowNotificationFactory;
         private readonly IWorkflowValidation workflowValidation;
         private readonly IOnTransitionSuccessFactory onTransitionSuccessFactory;
+        private readonly IRefundValidation refundValidation;
 
         public WorkflowService(IWorkflowRepository workflowRepository,
             ILogMailer<WorkflowService> logger,
@@ -41,6 +43,7 @@ namespace Sofco.Service.Implementations.Workflow
             IOptions<AppSetting> appSettingsOptions,
             IWorkflowNotificationFactory workflowNotificationFactory,
             IWorkflowValidation workflowValidation,
+            IRefundValidation refundValidation,
             IOnTransitionSuccessFactory onTransitionSuccessFactory,
             IWorkflowConditionStateFactory workflowConditionStateFactory)
         {
@@ -51,6 +54,7 @@ namespace Sofco.Service.Implementations.Workflow
             this.workflowValidationStateFactory = workflowValidationStateFactory;
             this.unitOfWork = unitOfWork;
             this.appSetting = appSettingsOptions.Value;
+            this.refundValidation = refundValidation;
             this.workflowNotificationFactory = workflowNotificationFactory;
             this.workflowValidation = workflowValidation;
             this.onTransitionSuccessFactory = onTransitionSuccessFactory;
@@ -358,11 +362,22 @@ namespace Sofco.Service.Implementations.Workflow
         {
             if (entity is Refund refund)
             {
-                if (refund.CurrencyId == appSetting.CurrencyPesos && 
-                    (appSetting.WorkFlowStatePaymentPending == transition.NextWorkflowStateId || 
-                     appSetting.WorkflowStatusFinalizedId == transition.NextWorkflowStateId))
+                if (appSetting.WorkFlowStatePaymentPending == transition.NextWorkflowStateId ||
+                    appSetting.WorkflowStatusFinalizedId == transition.NextWorkflowStateId)
                 {
-                    transition.ParameterCode = string.Empty;
+                    if (refund.CurrencyId == appSetting.CurrencyPesos)
+                    {
+                        transition.ParameterCode = string.Empty;
+                    }
+                    else
+                    {
+                        var domain = unitOfWork.RefundRepository.GetFullById(entity.Id);
+
+                        if (!refundValidation.HasUserRefund(domain))
+                        {
+                            transition.ParameterCode = string.Empty;
+                        }
+                    }
                 }
             }
         }

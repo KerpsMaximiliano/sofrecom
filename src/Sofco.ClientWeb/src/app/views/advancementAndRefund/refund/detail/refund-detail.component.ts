@@ -35,6 +35,8 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
 
     public files: any[] = new Array();
 
+    private workflowModel: any;
+
     constructor(private refundService: RefundService,
                 private activateRoute: ActivatedRoute,
                 private menuService: MenuService,
@@ -72,7 +74,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
 
             this.uploaderConfig();
 
-            var model = {
+            this.workflowModel = {
                 workflowId: response.data.workflowId,
                 entityController: "refund",
                 entityId: response.data.id,
@@ -83,7 +85,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
                 this.refundRelated.init(response.data.advancementIds);
             }
 
-            this.workflow.init(model);
+            this.workflow.init(this.workflowModel);
 
             this.history.getHistories(id);
         }, 
@@ -97,12 +99,15 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     canBack(){
         return this.menuService.hasFunctionality('ADVAN', 'REFUND-LIST-VIEW');
     }
-    
+
     canUpdate(){
-        const userInfo = UserInfoService.getUserInfo();
+        if(environment.gafWorkflowStateId == this.actualStateId && this.menuService.userIsGaf) return true;
+
+        if(environment.draftWorkflowStateId == this.actualStateId || environment.rejectedWorkflowStateId == this.actualStateId){
+            const userInfo = UserInfoService.getUserInfo();
     
-        if(userInfo && userInfo.id && userInfo.name){
-            if(environment.draftWorkflowStateId == this.actualStateId || environment.rejectedWorkflowStateId == this.actualStateId){
+            if(userInfo && userInfo.id && userInfo.name){
+
                 if(userInfo.id == this.userApplicantId){
                     return true;
                 }
@@ -119,6 +124,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
 
         this.editSubscrip = this.refundService.edit(model).subscribe(response => {
             this.messageService.closeLoading();
+            this.workflow.init(this.workflowModel);
         },
         error => {
             this.messageService.closeLoading();

@@ -27,3 +27,61 @@
         </tbody>
     </table>       
 </div>
+
+<div class="detail-actions m-t-sm">
+    <button *ngIf="canCreateHito()" (click)="openHitoModal()" type="button" class="btn btn-success btn-sm">
+        {{ 'billing.project.detail.milestone.create' | translate }}  <i class="fa fa-plus"></i>
+    </button> 
+    <button>
+        
+    </button>
+</div>
+
+<ng2-modal [config]="newHitoModalConfig" #newHitoModal (accept)="createHito()">
+
+    <div class="form-group">
+        <label class="control-label">Proyectos</label>
+        <ng-select [items]="projects" bindLabel="text" bindValue="id" [(ngModel)]="hito.projectId"></ng-select>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label class="control-label">{{ 'billing.project.detail.milestone.name' | translate }}</label>
+                <input type="text" class="form-control" [(ngModel)]="hito.name">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label">{{ 'billing.solfac.currency' | translate }}</label>
+                <ng-select [items]="currencies" bindLabel="text" bindValue="id" [(ngModel)]="hito.moneyId"></ng-select>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <label class="control-label">{{ 'billing.project.detail.milestone.amount' | translate }}</label>
+            <input type="number" decimalFormat class="form-control" [(ngModel)]="hito.ammount">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label">{{'billing.project.detail.milestone.startDate' | translate }}</label>
+                <date-picker [(date)]="hito.startDate"></date-picker>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label class="control-label">{{ 'billing.project.detail.milestone.month' | translate }}</label>
+                <input type="number" min="1" max="12" class="form-control" [(ngModel)]="hito.month">
+            </div>
+        </div>
+    </div>
+
+</ng2-modal> 

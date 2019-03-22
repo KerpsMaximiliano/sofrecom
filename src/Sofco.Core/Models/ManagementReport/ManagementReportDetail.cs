@@ -24,6 +24,10 @@ namespace Sofco.Core.Models.ManagementReport
         public IList<string> PurchaseOrders { get; set; }
 
         public IList<AmmountItem> Ammounts { get; set; }
+
+        public string Name { get; set; }
+
+        public string AccountName { get; set; }
     }
 
     public class AmmountItem

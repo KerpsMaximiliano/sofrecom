@@ -15,6 +15,9 @@ import { DatesService } from "app/services/common/month.service";
 import { MarginTrackingComponent } from "./margin-tracking/margin-tracking";
 import { AmountFormatModule } from "app/pipes/amount-format.module";
 import { ManagementReportBillingComponent } from "./mr-billing/mr-billing";
+import { MenuService } from "app/services/admin/menu.service";
+import { ProjectService } from "app/services/billing/project.service";
+import { UtilsService } from "app/services/common/utils.service";
 
 @NgModule({
     declarations: [
@@ -33,7 +36,7 @@ import { ManagementReportBillingComponent } from "./mr-billing/mr-billing";
       PCheckModule,
       NgSelectModule
     ],
-    providers: [ ManagementReportService, DatesService ],
+    providers: [ ManagementReportService, DatesService, MenuService, UtilsService, ProjectService ],
     exports: [],
   })
   
