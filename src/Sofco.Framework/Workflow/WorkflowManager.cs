@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AdvancementAndRefund;
 
 namespace Sofco.Framework.Workflow
 {
@@ -21,6 +24,11 @@ namespace Sofco.Framework.Workflow
         {
             var data = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(entityId);
 
+            CloseAdvancementsAndRefunds(data, entityId);
+        }
+
+        public void CloseAdvancementsAndRefunds(Tuple<IList<Refund>, IList<Advancement>> data, int entityId)
+        {
             foreach (var refund in data.Item1)
             {
                 if (refund.Id != entityId)

@@ -1,5 +1,5 @@
-<div class="table-responsive billing-table" >
-    <table class="table table-striped dataTable" role="grid">
+<div class="table-responsive billing-table">
+    <table class="table table-striped dataTable table-bordered" role="grid">
         <thead>
             <tr>
                 <th class="first-column"></th>
@@ -7,21 +7,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td class="first-column text-ellipsis">Total Facturación</td>
-                <td *ngFor="let month of months"><label class="label" class="label label-primary">{{ month.total | amountFormat }}</label></td>
+            <tr *ngFor="let total of totals">
+                <td class="first-column text-ellipsis">Total Facturación {{ total.currencyName }}</td>
+                <td *ngFor="let month of total.monthValues"><label class="label" class="label label-primary">{{ month.value | amountFormat }}</label></td>
             </tr>
             <tr>
                 <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
-                <td *ngFor="let month of months"><label class="label" class="label label-primary">1</label></td>
+                <td *ngFor="let month of months"><label class="label" class="label label-primary">{{ month.resourceQuantity }}</label></td>
             </tr>
             <tr>
                 <td [attr.colspan]="months.length+1" class="hitos-title">Hitos</td>
             </tr>
             <tr *ngFor="let hito of hitos">
-                <td class="first-column text-ellipsis">{{ hito.description }}</td>
+                <td class="first-column text-word-break">{{ hito.description }} </td>
+                
                 <td *ngFor="let value of hito.values">
-                    <input type="number" class="form-control input-sm" min="0" [attr.value]="value.value">
+                    <input *ngIf="value.value > 0" type="number" class="form-control input-sm" [ngClass]="resolveHitoLabel(value)" min="0" [attr.value]="value.value" [disabled]="isReadOnly()">
                 </td>
             </tr>
         </tbody>

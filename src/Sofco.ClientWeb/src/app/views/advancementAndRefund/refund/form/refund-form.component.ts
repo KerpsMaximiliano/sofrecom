@@ -36,6 +36,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     public cashReturn: boolean;
     public lastRefund: boolean;
+    public canGafUpdate: boolean = false;
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -88,7 +89,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             this.canUpdate = true;
             this.hasCreditCardChanged(false);
             this.formConfiguration();
-            this.getAdvancementsUnrelated(null);
+            this.getAdvancementsUnrelated(null, this.userApplicantIdLogged);
         }
 
         this.detailForms = new Array();
@@ -116,8 +117,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         });
     }
 
-    getAdvancementsUnrelated(callback){
-        this.getAdvancementsSubscrip = this.advancementService.getUnrelated().subscribe(response => {
+    getAdvancementsUnrelated(callback, userId){
+        this.getAdvancementsSubscrip = this.advancementService.getUnrelated(userId).subscribe(response => {
             if(callback){
                 callback(response.data);
             }
@@ -229,6 +230,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             });
         }
 
+        this.userApplicantName = domain.userApplicantDesc;
+
         this.getAdvancementsUnrelated((unrelated) => {
             var list = [];
 
@@ -250,9 +253,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             this.advancements = list;
 
             this.calculateTotals();
-        });
-
-        this.userApplicantName = domain.userApplicantDesc;
+        }, domain.userApplicantId);
     }
 
     getModel(){
@@ -297,7 +298,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             });
         }
 
-        if(this.canUpdate && (this.itemTotal > this.advancementSum || 
+        if((this.canUpdate || this.canGafUpdate) && (this.itemTotal > this.advancementSum || 
                              (!this.form.controls.advancements.value || this.form.controls.advancements.value.length == 0))){
                                  
             this.form.controls.advancements.enable();
@@ -355,10 +356,12 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             }
         }
         else{
-            this.form.controls.currencyId.setValue(this.defaultCurrencyId);
-            this.currencyDescription = this.defaultCurrencyDescription;
-            this.cashReturn = false;
-            this.detailForms = [];
+            if(!this.canGafUpdate){
+                this.form.controls.currencyId.setValue(this.defaultCurrencyId);
+                this.currencyDescription = this.defaultCurrencyDescription;
+                this.cashReturn = false;
+                this.detailForms = [];
+            }
         }
 
         this.calculateTotals();

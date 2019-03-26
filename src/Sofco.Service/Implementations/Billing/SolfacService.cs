@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
@@ -30,10 +31,12 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ILogMailer<SolfacService> logger;
         private readonly IUserData userData;
         private readonly IRoleManager roleManager;
-         
+        private readonly IProjectData projectData;
+
         public SolfacService(ISolfacStatusFactory solfacStatusFactory,
             IUnitOfWork unitOfWork,
             IUserData userData,
+            IProjectData projectData,
             IRoleManager roleManager,
             ICrmInvoicingMilestoneService crmInvoiceService, ILogMailer<SolfacService> logger)
         {
@@ -41,6 +44,7 @@ namespace Sofco.Service.Implementations.Billing
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
             this.logger = logger;
+            this.projectData = projectData;
             this.roleManager = roleManager;
             this.userData = userData;
         }
@@ -216,6 +220,8 @@ namespace Sofco.Service.Implementations.Billing
 
                 // Update Hitos
                 solfacStatusHandler.UpdateHitos(unitOfWork.SolfacRepository.GetHitosIdsBySolfacId(solfac.Id), solfac);
+
+                projectData.ClearHitoKeys(solfac.ProjectId);
             }
             catch(Exception ex)
             {

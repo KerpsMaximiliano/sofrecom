@@ -59,5 +59,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         void UpdateDaf(Analytic analytic);
 
         List<Analytic> GetByAllocations(int employeeId, DateTime dateFrom, DateTime dateTo);
+        Analytic GetByServiceForManagementReport(string serviceId);
     }
 }

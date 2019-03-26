@@ -1,4 +1,5 @@
-﻿using Sofco.Core.DAL;
+﻿using System.Linq;
+using Sofco.Core.DAL;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
@@ -20,13 +21,22 @@ namespace Sofco.Framework.Workflow.OnSuccess
         {
             var refund = unitOfWork.RefundRepository.Get(entity.Id);
 
+            var data = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(entity.Id);
+
             if (refund.CashReturn)
             {
-                this.workflowManager.CloseEntity(entity);
+                if (data.Item1.Count == 1 && data.Item1.Sum(x => x.TotalAmmount) == data.Item2.Sum(x => x.Ammount))
+                {
+                    this.workflowManager.CloseAdvancementsAndRefunds(data, entity.Id);
+                }
+                else
+                {
+                    this.workflowManager.CloseEntity(entity);
+                }
             }
             else
             {
-                this.workflowManager.CloseAdvancementsAndRefunds(entity.Id);
+                this.workflowManager.CloseAdvancementsAndRefunds(data, entity.Id);
             }
         }
     }

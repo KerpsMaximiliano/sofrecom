@@ -12,7 +12,9 @@ namespace Sofco.Data.Billing
     public class ProjectData : IProjectData
     {
         private const string ProjectsCacheKey = "urn:services:{0}:projects:all";
+        private const string HitosCacheKey = "urn:projects:{0}:hitos:all";
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
+        private readonly TimeSpan hitosCacheExpire = TimeSpan.FromMinutes(30);
 
         private readonly ICacheManager cacheManager;
         private readonly IUnitOfWork unitOfWork;
@@ -35,12 +37,20 @@ namespace Sofco.Data.Billing
 
         public IList<CrmProjectHito> GetHitos(string projectId)
         {
-            return crmInvoicingMilestoneService.GetByProjectId(Guid.Parse(projectId));
+            return cacheManager.GetHashList(string.Format(HitosCacheKey, projectId),
+                () => crmInvoicingMilestoneService.GetByProjectId(Guid.Parse(projectId)),
+            x => x.Id,
+                hitosCacheExpire);
         }
 
         public void ClearKeys()
         {
             cacheManager.DeletePatternKey(string.Format(ProjectsCacheKey, '*'));
+        }
+
+        public void ClearHitoKeys(string projectId)
+        {
+            cacheManager.DeletePatternKey(string.Format(HitosCacheKey, projectId));
         }
     }
 }

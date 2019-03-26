@@ -99,7 +99,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public List<AnalyticLiteModel> GetAllOpenAnalyticLite()
         {
             return context.Analytics
-                .Where(x => x.Status == AnalyticStatus.Open)
                 .Select(s => new AnalyticLiteModel
                 {
                     Id = s.Id,
@@ -111,6 +110,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public Analytic GetByService(string serviceId)
         {
             return context.Analytics.Include(x => x.Manager).SingleOrDefault(x => x.ServiceId.Equals(serviceId));
+        }
+
+        public Analytic GetByServiceForManagementReport(string serviceId)
+        {
+            return context.Analytics
+                .Include(x => x.ServiceType)
+                .Include(x => x.Technology)
+                .Include(x => x.Solution)
+                .Include(x => x.Manager)
+                .SingleOrDefault(x => x.ServiceId.Equals(serviceId));
         }
 
         public List<Analytic> GetByServiceIds(List<string> serviceIds)
