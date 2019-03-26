@@ -224,18 +224,23 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                         if (allocationsFiltered.Any())
                         {
-                            var percentageSum = allocationsFiltered.Sum(x => x.Percentage);
+                            //var percentageSum = allocationsFiltered.Sum(x => x.Percentage);
 
-                            if (percentageSum + model.Percentage > 100)
-                            {
-                                var employee = allocationsFiltered.FirstOrDefault()?.Employee;
+                            //if (percentageSum + model.Percentage > 100)
+                            //{
+                            //    var employee = allocationsFiltered.FirstOrDefault()?.Employee;
 
-                                employeesWithError.Add(new Tuple<string, string, decimal>($"{employee?.EmployeeNumber} - {employee?.Name}", firstMonthAux.Date.ToString("Y"), percentageSum));
-                            }
-                            else
-                            {
-                                InsertNewAllocation(model, employeeId, firstMonthAux);
-                            }
+                            //    employeesWithError.Add(new Tuple<string, string, decimal>($"{employee?.EmployeeNumber} - {employee?.Name}", firstMonthAux.Date.ToString("Y"), percentageSum));
+                            //}
+                            //else
+                            //{
+                            //    InsertNewAllocation(model, employeeId, firstMonthAux);
+                            //}
+
+                            //Si existe Asignacion anterior la elimino e inserto la asignacion nueva
+                            unitOfWork.AllocationRepository.Delete(allocationsFiltered);
+
+                            InsertNewAllocation(model, employeeId, firstMonthAux);
                         }
                         else
                         {

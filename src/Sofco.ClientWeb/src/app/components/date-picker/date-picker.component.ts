@@ -14,7 +14,9 @@ export class DatePickerComponent implements OnInit {
     public model: Date;
 
     @Input() date: Date;
+    @Input() minDate: Date;
     @Output() dateChange = new EventEmitter<Date>();
+
 
     bsConfig: Partial<BsDatepickerConfig>;
 
@@ -22,7 +24,7 @@ export class DatePickerComponent implements OnInit {
 
     ngOnInit(): void {
         this.localeService.use('es');
-        this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue', showWeekNumbers: false });
+        this.bsConfig = Object.assign({}, { containerClass: 'theme-dark-blue', showWeekNumbers: false, minDate: this.minDate });
     }
 
     onValueChange(event){
