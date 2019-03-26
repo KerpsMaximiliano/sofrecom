@@ -99,7 +99,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public List<AnalyticLiteModel> GetAllOpenAnalyticLite()
         {
             return context.Analytics
-                .Where(x => x.Status == AnalyticStatus.Open)
                 .Select(s => new AnalyticLiteModel
                 {
                     Id = s.Id,

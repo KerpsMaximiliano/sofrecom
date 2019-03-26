@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.Billing;
@@ -29,6 +30,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<ICrmInvoicingMilestoneService> crmInvoiceServiceMock;
         private Mock<ILogMailer<SolfacService>> loggerMock;
         private Mock<IUserData> userDataMock;
+        private Mock<IProjectData> projectDataMock;
         private Mock<IRoleManager> roleManagerMock;
         private Mock<IPurchaseOrderRepository> purchaseOrderRepositoryMock;
 
@@ -44,6 +46,7 @@ namespace Sofco.UnitTest.Services.Billing
             crmInvoiceServiceMock = new Mock<ICrmInvoicingMilestoneService>();
             loggerMock = new Mock<ILogMailer<SolfacService>>();
             userDataMock = new Mock<IUserData>();
+            projectDataMock = new Mock<IProjectData>();
             roleManagerMock = new Mock<IRoleManager>();
             purchaseOrderRepositoryMock = new Mock<IPurchaseOrderRepository>();
 
@@ -57,12 +60,12 @@ namespace Sofco.UnitTest.Services.Billing
             solfacRepositoryMock.Setup(s => s.GetById(It.IsAny<int>())).Returns(GetSolfacData());
             solfacRepositoryMock.Setup(s => s.GetTotalAmountById(It.IsAny<int>())).Returns(GetSolfacData().TotalAmount);
 
-
             purchaseOrderRepositoryMock.Setup(s => s.HasAmmountDetails(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
 
             sut = new SolfacService(solfacStatusFactoryMock.Object,
                 unitOfWork.Object,
                 userDataMock.Object,
+                projectDataMock.Object,
                 roleManagerMock.Object,
                 crmInvoiceServiceMock.Object,
                 loggerMock.Object);
