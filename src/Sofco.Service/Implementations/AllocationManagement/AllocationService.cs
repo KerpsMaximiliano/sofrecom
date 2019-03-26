@@ -224,18 +224,22 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                         if (allocationsFiltered.Any())
                         {
-                            var percentageSum = allocationsFiltered.Sum(x => x.Percentage);
+                            //var percentageSum = allocationsFiltered.Sum(x => x.Percentage);
 
-                            if (percentageSum + model.Percentage > 100)
-                            {
-                                var employee = allocationsFiltered.FirstOrDefault()?.Employee;
+                            //if (percentageSum + model.Percentage > 100)
+                            //{
+                            //    var employee = allocationsFiltered.FirstOrDefault()?.Employee;
 
-                                employeesWithError.Add(new Tuple<string, string, decimal>($"{employee?.EmployeeNumber} - {employee?.Name}", firstMonthAux.Date.ToString("Y"), percentageSum));
-                            }
-                            else
-                            {
-                                InsertNewAllocation(model, employeeId, firstMonthAux);
-                            }
+                            //    employeesWithError.Add(new Tuple<string, string, decimal>($"{employee?.EmployeeNumber} - {employee?.Name}", firstMonthAux.Date.ToString("Y"), percentageSum));
+                            //}
+                            //else
+                            //{
+                            //    InsertNewAllocation(model, employeeId, firstMonthAux);
+                            //}
+
+                            //Si existe Asignacion anterior la elimino e inserto la asignacion nueva
+                            unitOfWork.AllocationRepository.Delete(allocationsFiltered);
+                            InsertNewAllocation(model, employeeId, firstMonthAux);
                         }
                         else
                         {
@@ -244,9 +248,31 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                         firstMonthAux = firstMonthAux.AddMonths(1);
                     }
+
+                    unitOfWork.Save();
+
+                    //Licencias
+                    var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employeeId, firstMonth.Date.Date, lastMonth.Date.Date);
+                    if (licenses.Any())
+                    {
+                        foreach (var license in licenses)
+                        {
+                            try
+                            {
+                                unitOfWork.WorkTimeRepository.RemoveBetweenDays(license.EmployeeId, license.StartDate, license.EndDate);
+                                licenseGenerateWorkTimeService.GenerateWorkTimes(license);
+                            }
+                            catch (Exception e)
+                            {
+                                logger.LogError(e);
+                                response.AddWarning(Resources.Rrhh.License.GenerateWorkTimesError);
+                            }
+                        }
+
+                        unitOfWork.Save();
+                    }
                 }
 
-                unitOfWork.Save();
 
                 if (employeesWithError.Any())
                 {

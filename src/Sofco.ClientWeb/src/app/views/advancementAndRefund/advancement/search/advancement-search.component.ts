@@ -121,16 +121,7 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         }
     }
 
-    getGrid(pTab){
-        this.currentTab = pTab;
-        if (this.currentTab == 1) {
-            this.inProcess.filterBanks();
-        }
 
-        if (this.currentTab == 3) {
-            this.finalized.filterBanks();
-        }
-    }
 
   
 }
