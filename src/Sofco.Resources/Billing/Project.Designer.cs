@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.Billing {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.Billing {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Billing.Project", typeof(Project).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Billing.Project", typeof(Project).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -98,6 +97,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/projects.hitoDatesOutRange.
+        /// </summary>
+        public static string HitoDatesOutRange {
+            get {
+                return ResourceManager.GetString("HitoDatesOutRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/projects.hitoSplitted.
         /// </summary>
         public static string HitoSplitted {
@@ -139,6 +147,15 @@ namespace Sofco.Resources.Billing {
         public static string OpportunityRequired {
             get {
                 return ResourceManager.GetString("OpportunityRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/projects.required.
+        /// </summary>
+        public static string Required {
+            get {
+                return ResourceManager.GetString("Required", resourceCulture);
             }
         }
     }

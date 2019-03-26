@@ -8,6 +8,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Service.Crm.Interfaces;
 using Sofco.Core.Data.Billing;
+using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 
 namespace Sofco.Service.Implementations.Billing
@@ -17,16 +18,19 @@ namespace Sofco.Service.Implementations.Billing
         private readonly CrmConfig crmConfig;
         private readonly ICrmInvoicingMilestoneService crmInvoicingMilestoneService;
         private readonly IProjectData projectData;
+        private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<HitoService> logger;
 
         public HitoService(IOptions<CrmConfig> crmOptions,
             IProjectData projectData,
+            IUnitOfWork unitOfWork,
             ILogMailer<HitoService> logger,
             ICrmInvoicingMilestoneService crmInvoicingMilestoneService)
         {
             this.crmConfig = crmOptions.Value;
             this.projectData = projectData;
             this.logger = logger;
+            this.unitOfWork = unitOfWork;
             this.crmInvoicingMilestoneService = crmInvoicingMilestoneService;
         }
 
@@ -79,7 +83,7 @@ namespace Sofco.Service.Implementations.Billing
 
         public Response Create(HitoParameters hito)
         {
-            var response = ValidateHitoSplitted(hito);
+            var response = ValidateParameters(hito);
 
             if (response.HasErrors()) return response;
 
@@ -151,16 +155,23 @@ namespace Sofco.Service.Implementations.Billing
             crmInvoicingMilestoneService.UpdateAmmountAndStatus(hito, response);
         }
 
-        private Response ValidateHitoSplitted(HitoParameters hito)
+        private Response ValidateParameters(HitoParameters hito)
         {
             var response = new Response();
 
+            HitoValidatorHelper.ValidateProject(hito, response);
             HitoValidatorHelper.ValidateCurrency(hito, response);
             HitoValidatorHelper.ValidateName(hito, response);
             HitoValidatorHelper.ValidateDate(hito, response);
             HitoValidatorHelper.ValidateMonth(hito, response);
             HitoValidatorHelper.ValidateAmmounts(hito, response);
             HitoValidatorHelper.ValidateOpportunity(hito, response);
+
+            if (response.HasErrors()) return response;
+
+            var project = unitOfWork.ProjectRepository.GetByIdCrm(hito.ProjectId);
+
+            HitoValidatorHelper.ValidateDates(project, response, hito);
 
             return response;
         }

@@ -1,5 +1,6 @@
 ﻿using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.ValidationHelpers.Billing
@@ -51,6 +52,30 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             if (string.IsNullOrWhiteSpace(hito.MoneyId))
             {
                 response.AddError(Resources.Common.CurrencyRequired);
+            }
+        }
+
+        public static void ValidateProject(HitoParameters hito, Response response)
+        {
+            if (string.IsNullOrWhiteSpace(hito.ProjectId) || hito.ProjectId.Equals("00000000-0000-0000-0000-000000000000"))
+            {
+                response.AddError(Resources.Billing.Project.Required);
+            }
+        }
+
+        public static void ValidateDates(Project project, Response response, HitoParameters hito)
+        {
+            if (project == null)
+            {
+                response.AddError(Resources.Billing.Project.NotFound);
+            }
+            else
+            {
+                if (!(hito.StartDate.GetValueOrDefault().Date >= project.StartDate.Date &&
+                    hito.StartDate.GetValueOrDefault().Date <= project.EndDate.Date))
+                {
+                    response.AddError(Resources.Billing.Project.HitoDatesOutRange);
+                }
             }
         }
     }

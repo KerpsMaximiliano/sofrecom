@@ -119,12 +119,15 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     createHito(){
+        let model = Object.assign({}, this.hito);
+
         var currency = this.currencies.find(x => x.id == this.hito.moneyId);
         var project = this.projects.find(x => x.id == this.hito.projectId)
-        this.hito.opportunityId = project.opportunityId;
-        this.hito.moneyId = currency.crmId;
 
-        this.postHitoSubscrip = this.projectService.createNewHito(this.hito).subscribe(() => {
+        model.opportunityId = project.opportunityId;
+        model.moneyId = currency.crmId;
+
+        this.postHitoSubscrip = this.projectService.createNewHito(model).subscribe(() => {
             this.newHitoModal.hide();
         }, 
         error => this.newHitoModal.resetButtons());
