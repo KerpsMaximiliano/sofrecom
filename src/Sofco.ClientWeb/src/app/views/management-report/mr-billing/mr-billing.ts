@@ -24,8 +24,11 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     hitos: any[] = new Array();
     currencies: any[] = new Array();
     projects: any[] = new Array();
+    totals: any[] = new Array();
     
     managerId: string;
+
+    pendingHitoStatus:string = "Pendiente";
 
     hito: NewHito = new NewHito();
 
@@ -68,11 +71,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             this.managerId = response.data.managerId;
 
             this.projects = response.data.projects;
-
-            this.months = response.data.monthsHeader.map(item => {
-                item.total = 0;
-                return item;
-            });
+            this.totals = response.data.totals;
+            this.months = response.data.monthsHeader;
 
             this.columnsCount = this.months.length;
 
@@ -85,7 +85,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     var monthValue = row.monthValues.find(x => x.month == month.month && x.year == month.year);
     
                     if(monthValue){
-                        month.total += monthValue.value;
                         hito.values.push(monthValue);
                     }
                     else {
@@ -123,5 +122,17 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             this.newHitoModal.hide();
         }, 
         error => this.newHitoModal.resetButtons());
+    }
+
+    isReadOnly(){
+        return this.menuService.userIsCdg;
+    }
+
+    resolveHitoLabel(hito){ 
+        if(hito.status == this.pendingHitoStatus && hito.solfacId && hito.solfacId > 0){
+            return 'input-pending-related';
+        }
+        
+        return `input-${hito.status}`
     }
 }

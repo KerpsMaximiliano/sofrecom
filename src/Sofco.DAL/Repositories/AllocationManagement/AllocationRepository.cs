@@ -78,6 +78,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Allocations.Where(x => x.AnalyticId == analitycId && x.EmployeeId == employeeId && x.Percentage > 0).Min(x => x.StartDate);
         }
 
+        public int GetResourceQuantityByDate(int analyticId, DateTime dateTime)
+        {
+            return context.Allocations.Count(x => x.AnalyticId == analyticId && x.Percentage > 0 && x.StartDate.Date == dateTime);
+        }
+
         public ICollection<Allocation> GetByEmployee(int id)
         {
             return context.Allocations

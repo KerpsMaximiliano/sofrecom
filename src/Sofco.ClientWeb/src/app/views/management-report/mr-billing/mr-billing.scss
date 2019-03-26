@@ -26,3 +26,28 @@ th, td {
 .detail-actions {
     text-align: center;
 }
+
+.input-pending-related {
+    background-color: firebrick;
+    color: #FFFFFF;
+}
+
+.input-ToBeBilled {
+    background-color: #1c84c6;
+    color: #FFFFFF;
+}
+
+.input-Proyectado, .input-Pendiente {
+    background-color: #f8ac59;
+    color: #FFFFFF;
+}
+
+.input-Facturado {
+    background-color: #1ab394;
+    color: #FFFFFF;
+}
+
+.input-Pagado {
+    background-color: #7CB400;
+    color: #FFFFFF;
+}

@@ -11,6 +11,8 @@ namespace Sofco.Core.Models.ManagementReport
         public IList<MonthBillingHeaderItem> MonthsHeader { get; set; }
 
         public IList<BillingRowItem> Rows { get; set; }
+
+        public IList<BillingTotal> Totals { get; set; }
     }
 
     public class ProjectOption
@@ -27,7 +29,19 @@ namespace Sofco.Core.Models.ManagementReport
         public int Month { get; set; }
 
         public int Year { get; set; }
+
         public string Display { get; set; }
+
+        public int ResourceQuantity { get; set; }
+    }
+
+    public class BillingTotal
+    {
+        public string CurrencyId { get; set; }
+
+        public string CurrencyName { get; set; }
+
+        public IList<MonthBiilingRowItem> MonthValues { get; set; }
     }
 
     public class BillingRowItem
@@ -44,5 +58,9 @@ namespace Sofco.Core.Models.ManagementReport
         public int Year { get; set; }
 
         public decimal Value { get; set; }
+
+        public int SolfacId { get; set; }
+
+        public string Status { get; set; }
     }
 }

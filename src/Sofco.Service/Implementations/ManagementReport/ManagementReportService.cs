@@ -5,18 +5,22 @@ using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
+using Sofco.Domain.Crm;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.Services.Billing;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
     public class ManagementReportService : IManagementReportService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ISolfacService solfacService;
         private readonly ILogMailer<ManagementReportService> logger;
         private readonly IRoleManager roleManager;
         private readonly IUserData userData;
@@ -26,6 +30,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             ILogMailer<ManagementReportService> logger,
             IUserData userData,
             IProjectData projectData,
+            ISolfacService solfacService,
             IRoleManager roleManager)
         {
             this.unitOfWork = unitOfWork;
@@ -33,13 +38,14 @@ namespace Sofco.Service.Implementations.ManagementReport
             this.userData = userData;
             this.projectData = projectData;
             this.roleManager = roleManager;
+            this.solfacService = solfacService;
         }
 
         public Response<ManagementReportDetail> GetDetail(string serviceId)
         {
             var response = new Response<ManagementReportDetail> { Data = new ManagementReportDetail() };
 
-            var analytic = unitOfWork.AnalyticRepository.GetByService(serviceId);
+            var analytic = unitOfWork.AnalyticRepository.GetByServiceForManagementReport(serviceId);
 
             if (analytic != null)
             {
@@ -51,6 +57,10 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 response.Data.StartDate = analytic.StartDateContract;
                 response.Data.EndDate = analytic.EndDateContract;
+                response.Data.ServiceType = analytic.ServiceType?.Text;
+                response.Data.SolutionType = analytic.Solution?.Text;
+                response.Data.TechnologyType = analytic.Technology?.Text;
+                response.Data.Manager = analytic.Manager?.Name;
             }
             else
             {
@@ -63,10 +73,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             if (service != null)
             {
                 response.Data.Analytic = service.Analytic;
-                response.Data.ServiceType = service.ServiceType;
-                response.Data.SolutionType = service.SolutionType;
-                response.Data.TechnologyType = service.TechnologyType;
-                response.Data.Manager = service.Manager;
+         
                 response.Data.Name = service.Name;
                 response.Data.AccountName = service.AccountName;
             }
@@ -140,14 +147,19 @@ namespace Sofco.Service.Implementations.ManagementReport
                 monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                 monthHeader.Year = date.Year;
                 monthHeader.Month = date.Month;
+                monthHeader.ResourceQuantity = unitOfWork.AllocationRepository.GetResourceQuantityByDate(analytic.Id, new DateTime(date.Year, date.Month, 1));
+
                 response.Data.MonthsHeader.Add(monthHeader);
             }
 
             response.Data.Rows = new List<BillingRowItem>();
+            response.Data.Totals = new List<BillingTotal>();
 
             foreach (var project in projects)
             {
                 var crmProjectHitos = projectData.GetHitos(project.CrmId);
+
+                var hitos = solfacService.GetHitosByProject(project.CrmId);
 
                 response.Data.Projects.Add(new ProjectOption { Id = project.CrmId, Text = project.Name, OpportunityId = project.OpportunityId });
 
@@ -155,26 +167,85 @@ namespace Sofco.Service.Implementations.ManagementReport
                 {
                     if (hito.StartDate.Date >= dates.Item1.Date && hito.StartDate.Date <= dates.Item2.Date)
                     {
+                        var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hito.Id);
+
                         var billingRowItem = new BillingRowItem
                         {
-                            Description = hito.Name,
-                            MonthValues = new List<MonthBiilingRowItem>
-                            {
-                                new MonthBiilingRowItem
-                                {
-                                    Month = hito.StartDate.Month,
-                                    Year = hito.StartDate.Year,
-                                    Value = hito.Ammount
-                                }
-                            }
+                            Description = $"{project.OpportunityNumber} {project.Name} - {hito.Name}",
+                            MonthValues = new List<MonthBiilingRowItem>()
                         };
+
+                        var rowItem = new MonthBiilingRowItem
+                        {
+                            Month = hito.StartDate.Month,
+                            Year = hito.StartDate.Year,
+                            Value = hito.Ammount,
+                            Status = hito.Status
+                        };
+
+                        if (existHito != null)
+                            rowItem.SolfacId = existHito.SolfacId;
+
+                        if (hito.Status.Equals("A ser facturado"))
+                            rowItem.Status = HitoStatus.ToBeBilled.ToString();
+
+                        billingRowItem.MonthValues.Add(rowItem);
+
+                        FillTotalBilling(response, hito, dates);
 
                         response.Data.Rows.Add(billingRowItem);
                     }
                 }
+
+                foreach (var billingTotal in response.Data.Totals)
+                {
+                    billingTotal.MonthValues = billingTotal.MonthValues.OrderBy(x => x.Month).ThenBy(x => x.Year).ToList();
+                }
             }
 
             return response;
+        }
+
+        private void FillTotalBilling(Response<BillingDetail> response, CrmProjectHito hito, Tuple<DateTime, DateTime> dates)
+        {
+            var totalBilling = response.Data.Totals.FirstOrDefault(x => x.CurrencyId == hito.MoneyId);
+
+            if (totalBilling != null)
+            {
+                var month = totalBilling.MonthValues.FirstOrDefault(x => x.Month == hito.StartDate.Month && x.Year == hito.StartDate.Year);
+
+                if (month != null)
+                {
+                    month.Value += hito.Ammount;
+                }
+            }
+            else
+            {
+                totalBilling = new BillingTotal
+                {
+                    CurrencyId = hito.MoneyId,
+                    CurrencyName = hito.Money,
+                    MonthValues = new List<MonthBiilingRowItem>()
+                };
+
+                for (DateTime date = dates.Item1.Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
+                {
+                    MonthBiilingRowItem biilingRowItem;
+
+                    if (hito.StartDate.Month == date.Month && hito.StartDate.Year == date.Year)
+                    {
+                        biilingRowItem = new MonthBiilingRowItem { Year = date.Year, Month = date.Month, Value = hito.Ammount };
+                    }
+                    else
+                    {
+                        biilingRowItem = new MonthBiilingRowItem { Year = date.Year, Month = date.Month, Value = 0 };
+                    }
+
+                    totalBilling.MonthValues.Add(biilingRowItem);
+                }
+
+                response.Data.Totals.Add(totalBilling);
+            }
         }
 
         private Tuple<DateTime, DateTime> SetDates(Analytic analytic, DateTime today)

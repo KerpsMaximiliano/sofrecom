@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
@@ -6,10 +7,8 @@ using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Service.Crm.Interfaces;
-using Sofco.Core.DAL;
-using Microsoft.AspNetCore.Hosting;
-using System.Linq;
-using System;
+using Sofco.Core.Data.Billing;
+using Sofco.Core.Logger;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -17,17 +16,17 @@ namespace Sofco.Service.Implementations.Billing
     {
         private readonly CrmConfig crmConfig;
         private readonly ICrmInvoicingMilestoneService crmInvoicingMilestoneService;
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IHostingEnvironment environment;
+        private readonly IProjectData projectData;
+        private readonly ILogMailer<HitoService> logger;
 
         public HitoService(IOptions<CrmConfig> crmOptions,
-            IUnitOfWork unitOfWork,
-            IHostingEnvironment environment,
+            IProjectData projectData,
+            ILogMailer<HitoService> logger,
             ICrmInvoicingMilestoneService crmInvoicingMilestoneService)
         {
             this.crmConfig = crmOptions.Value;
-            this.environment = environment;
-            this.unitOfWork = unitOfWork;
+            this.projectData = projectData;
+            this.logger = logger;
             this.crmInvoicingMilestoneService = crmInvoicingMilestoneService;
         }
 
@@ -61,7 +60,21 @@ namespace Sofco.Service.Implementations.Billing
                 response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
             }
 
+            this.ClearHitoKeys(hito.ProjectId);
+
             return response;
+        }
+
+        private void ClearHitoKeys(string hitoProjectId)
+        {
+            try
+            {
+                this.projectData.ClearHitoKeys(hitoProjectId);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
         }
 
         public Response Create(HitoParameters hito)
@@ -74,6 +87,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (!response.HasErrors())
             {
+                this.ClearHitoKeys(hito.ProjectId);
                 response.AddSuccess(Resources.Billing.Project.HitoCreated);
             }
             else

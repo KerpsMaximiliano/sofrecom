@@ -10,5 +10,6 @@ namespace Sofco.Core.Data.Billing
 
         IList<CrmProjectHito> GetHitos(string projectId);
         void ClearKeys();
+        void ClearHitoKeys(string projectId);
     }
 }
