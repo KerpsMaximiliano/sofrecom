@@ -13,16 +13,27 @@
             </tr>
             <tr>
                 <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
-                <td *ngFor="let month of months"><label class="label" class="label label-primary">{{ month.resourceQuantity }}</label></td>
+                <td *ngFor="let month of months"><label class="label label-primary">{{ month.resourceQuantity }}</label></td>
             </tr>
             <tr>
                 <td [attr.colspan]="months.length+1" class="hitos-title">Hitos</td>
             </tr>
             <tr *ngFor="let hito of hitos">
-                <td class="first-column text-word-break">{{ hito.description }} </td>
+                <td class="first-column text-word-break">
+                    {{ hito.description }}
+                    <i class="fa fa-2x fa-trash pointer" (click)="delete(hito)" *ngIf="canDeleteHito(hito)"></i>
+                </td>
                 
                 <td *ngFor="let value of hito.values">
-                    <input *ngIf="value.value > 0" type="number" class="form-control input-sm" [ngClass]="resolveHitoLabel(value)" min="0" [attr.value]="value.value" [disabled]="isReadOnly()">
+                    <input *ngIf="value.value > 0" 
+                        type="number" 
+                        class="form-control input-sm" 
+                        [ngClass]="resolveHitoLabel(value)" 
+                        min="0" 
+                        (blur)="updateHito(hito)"
+                        [(ngModel)]="value.value"
+                        [disabled]="!isEnabled(value)">
+             
                 </td>
             </tr>
         </tbody>

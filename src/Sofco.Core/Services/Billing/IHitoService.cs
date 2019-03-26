@@ -10,5 +10,9 @@ namespace Sofco.Core.Services.Billing
         Response SplitHito(HitoParameters hito);
 
         Response Create(HitoParameters hito);
+
+        Response UpdateCurrency(HitoAmmountParameter hito);
+
+        Response Delete(string hitoId, string projectId);
     }
 }

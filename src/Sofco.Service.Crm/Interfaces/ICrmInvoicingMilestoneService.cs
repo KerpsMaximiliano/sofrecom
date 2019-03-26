@@ -26,5 +26,9 @@ namespace Sofco.Service.Crm.Interfaces
         string Create(HitoParameters data, Response response);
 
         void Close(Response response, string id, string status);
+
+        void UpdateAmmount(HitoAmmountParameter hito, Response response);
+
+        void Delete(string hitoId, Response response);
     }
 }

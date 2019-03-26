@@ -267,4 +267,7 @@
   <data name="PurchaseOrderWithWrongCurrency" xml:space="preserve">
     <value>billing/solfac.purchaseOrderWithWrongCurrency</value>
   </data>
+  <data name="HitoNotFound" xml:space="preserve">
+    <value>billing/solfac.hitoNotFound</value>
+  </data>
 </root>

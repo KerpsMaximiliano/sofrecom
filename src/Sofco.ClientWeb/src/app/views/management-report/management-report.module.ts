@@ -18,6 +18,7 @@ import { ManagementReportBillingComponent } from "./mr-billing/mr-billing";
 import { MenuService } from "app/services/admin/menu.service";
 import { ProjectService } from "app/services/billing/project.service";
 import { UtilsService } from "app/services/common/utils.service";
+import { MessageService } from "app/services/common/message.service";
 
 @NgModule({
     declarations: [
@@ -36,7 +37,7 @@ import { UtilsService } from "app/services/common/utils.service";
       PCheckModule,
       NgSelectModule
     ],
-    providers: [ ManagementReportService, DatesService, MenuService, UtilsService, ProjectService ],
+    providers: [ ManagementReportService, DatesService, MenuService, UtilsService, ProjectService, MessageService ],
     exports: [],
   })
   

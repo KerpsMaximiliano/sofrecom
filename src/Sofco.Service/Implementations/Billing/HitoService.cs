@@ -98,6 +98,44 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public Response UpdateCurrency(HitoAmmountParameter hito)
+        {
+            var response = new Response();
+
+            if (string.IsNullOrWhiteSpace(hito.Id))
+                response.AddError(Resources.Billing.Solfac.HitoNotFound);
+
+            if (!hito.Ammount.HasValue || hito.Ammount == 0)
+                response.AddError(Resources.Billing.Project.HitoAmmoutRequired);
+
+            if (response.HasErrors()) return response;
+
+            crmInvoicingMilestoneService.UpdateAmmount(hito, response);
+
+            if (!response.HasErrors())
+                projectData.ClearHitoKeys(hito.ProjectId);
+
+            return response;
+        }
+
+        public Response Delete(string hitoId, string projectId)
+        {
+            var response = new Response();
+
+            if (string.IsNullOrWhiteSpace(hitoId))
+            {
+                response.AddError(Resources.Billing.Solfac.HitoNotFound);
+                return response;
+            }
+
+            crmInvoicingMilestoneService.Delete(hitoId, response);
+
+            if (!response.HasErrors())
+                projectData.ClearHitoKeys(projectId);
+
+            return response;
+        }
+
         private void UpdateFirstHito(Response response, HitoParameters hito)
         {
             if (hito.AmmountFirstHito == 0 || hito.StatusCode == crmConfig.CloseStatusCode) return;

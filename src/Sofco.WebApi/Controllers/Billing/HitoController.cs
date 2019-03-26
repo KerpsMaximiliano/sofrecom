@@ -42,5 +42,21 @@ namespace Sofco.WebApi.Controllers.Billing
 
             return this.CreateResponse(response);
         }
+
+        [HttpPatch]
+        public IActionResult UpdateCurrency([FromBody] HitoAmmountParameter hito)
+        {
+            var response = hitoService.UpdateCurrency(hito);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("{hitoId}/{projectId}")]
+        public IActionResult Delete(string hitoId, string projectId)
+        {
+            var response = hitoService.Delete(hitoId, projectId);
+
+            return this.CreateResponse(response);
+        }
     }
 }

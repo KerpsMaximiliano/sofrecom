@@ -6,7 +6,7 @@ import { NewHito } from "app/models/billing/solfac/newHito";
 import { UtilsService } from "app/services/common/utils.service";
 import { ProjectService } from "app/services/billing/project.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { Hito } from "app/models/billing/solfac/hito";
+import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'management-report-billing',
@@ -19,6 +19,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     getBillingSubscrip: Subscription;
     getCurrenciesSubscrip: Subscription;
     postHitoSubscrip: Subscription;
+    updateHitoSubscrip: Subscription;
 
     months: any[] = new Array();
     hitos: any[] = new Array();
@@ -46,6 +47,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     constructor(private managementReportService: ManagementReportService,
                 private utilsService: UtilsService,
+                private messageService: MessageService,
                 private projectService: ProjectService,
                 private menuService: MenuService){}
 
@@ -57,6 +59,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         if(this.getBillingSubscrip) this.getBillingSubscrip.unsubscribe();
         if(this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if(this.postHitoSubscrip) this.postHitoSubscrip.unsubscribe();
+        if(this.updateHitoSubscrip) this.updateHitoSubscrip.unsubscribe();
     }
 
     getCurrencies(){
@@ -78,17 +81,20 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
             response.data.rows.forEach(row => {
 
-                var hito = { description: "", values: [] };
+                var hito = { id: "", projectId: "", description: "", values: [] };
                 hito.description = row.description;
+                hito.id = row.id;
+                hito.projectId = row.projectId;
 
                 this.months.forEach(month => {
                     var monthValue = row.monthValues.find(x => x.month == month.month && x.year == month.year);
     
                     if(monthValue){
+                        monthValue.oldValue = monthValue.value;
                         hito.values.push(monthValue);
                     }
                     else {
-                        hito.values.push({ month: month.month, year: month.year, value: null  });
+                        hito.values.push({ month: month.month, year: month.year, value: null, oldValue: null  });
                     }
                 });
 
@@ -124,8 +130,44 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         error => this.newHitoModal.resetButtons());
     }
 
-    isReadOnly(){
-        return this.menuService.userIsCdg;
+    updateHito(hito){
+        var hitoMonth = hito.values.find(x => x.value && x.value > 0);
+
+        if(!this.isEnabled(hitoMonth)) return;
+
+        if(hitoMonth.value > 0 && hitoMonth.value != hitoMonth.oldValue){
+            var json = {
+                id: hito.id,
+                ammount: hitoMonth.value,
+                projectId: hito.projectId
+            }
+    
+            this.projectService.updateAmmountHito(json).subscribe(response => {
+                hitoMonth.oldValue = hitoMonth.value;
+            });
+        }
+    }
+
+    delete(hito){
+        this.messageService.showConfirm(() => {
+            this.projectService.deleteHito(hito.id, hito.projectId).subscribe(() => {
+                
+                var hitoindex = this.hitos.findIndex(x => x.id == hito.id);
+
+                if(hitoindex) this.hitos.splice(hitoindex, 1);
+            }, 
+            error => this.newHitoModal.resetButtons());
+        });
+    }
+
+    isEnabled(hito){
+        return this.menuService.userIsManager && hito.status == this.pendingHitoStatus && (!hito.solfacId || hito.solfacId == 0);
+    }
+
+    canDeleteHito(hito){
+        var hitoMonth = hito.values.find(x => x.value && x.value > 0);
+
+        return this.isEnabled(hitoMonth);
     }
 
     resolveHitoLabel(hito){ 

@@ -146,7 +146,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                     .Distinct()
                     .ToList();
 
-                if (advancementIdCount < refundIds.Count)
+                if (advancementIdCount < advancementIds.Count)
                 {
                     refundIds = context.AdvancementRefunds
                         .Where(x => advancementIds.Contains(x.AdvancementId))
