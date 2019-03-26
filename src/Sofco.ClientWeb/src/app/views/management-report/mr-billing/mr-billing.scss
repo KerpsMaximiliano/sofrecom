@@ -1,22 +1,36 @@
 table{
     table-layout: fixed;
+    font-size: 11px;
 }
 
 th, td {
     width: 100px;
 }
 
+td{
+    padding: 4px!important;
+}
+
 .label {
     display: block;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .first-column {
     width: 250px;
+
+    i{
+        float: right;
+        color: #BD3446;
+    }
+}
+
+.hito-description {
+    width: 95%;
 }
 
 .hitos-title {
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .billing-table {
@@ -25,6 +39,12 @@ th, td {
 
 .detail-actions {
     text-align: center;
+}
+
+.input-sm {
+    font-size: 12px;
+    padding: 2px 5px;
+    height: 25px;
 }
 
 .input-pending-related {

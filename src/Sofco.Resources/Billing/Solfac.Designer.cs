@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.Billing {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.Billing {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Billing.Solfac", typeof(Solfac).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Billing.Solfac", typeof(Solfac).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -256,6 +255,15 @@ namespace Sofco.Resources.Billing {
         public static string FileDeleted {
             get {
                 return ResourceManager.GetString("FileDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a billing/solfac.hitoNotFound.
+        /// </summary>
+        public static string HitoNotFound {
+            get {
+                return ResourceManager.GetString("HitoNotFound", resourceCulture);
             }
         }
         

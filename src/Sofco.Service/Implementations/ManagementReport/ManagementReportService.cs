@@ -152,7 +152,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.MonthsHeader.Add(monthHeader);
             }
 
-            response.Data.Rows = new List<BillingRowItem>();
+            response.Data.Rows = new List<BillingHitoItem>();
             response.Data.Totals = new List<BillingTotal>();
 
             foreach (var project in projects)
@@ -163,15 +163,17 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 response.Data.Projects.Add(new ProjectOption { Id = project.CrmId, Text = project.Name, OpportunityId = project.OpportunityId });
 
-                foreach (var hito in crmProjectHitos)
+                foreach (var hito in crmProjectHitos.OrderBy(x => x.StartDate))
                 {
                     if (hito.StartDate.Date >= dates.Item1.Date && hito.StartDate.Date <= dates.Item2.Date)
                     {
                         var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hito.Id);
 
-                        var billingRowItem = new BillingRowItem
+                        var billingRowItem = new BillingHitoItem
                         {
                             Description = $"{project.OpportunityNumber} {project.Name} - {hito.Name}",
+                            Id = hito.Id,
+                            ProjectId = project.CrmId,
                             MonthValues = new List<MonthBiilingRowItem>()
                         };
 

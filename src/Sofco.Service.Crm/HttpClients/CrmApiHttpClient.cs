@@ -49,6 +49,10 @@ namespace Sofco.Service.Crm.HttpClients
         {
             return GetResult<T>(urlPath, HttpMethod.Post, data);
         }
+        public Result<T> Delete<T>(string urlPath, object data)
+        {
+            return GetResult<T>(urlPath, HttpMethod.Delete, data);
+        }
 
         public Result<T> Put<T>(string urlPath, object data)
         {

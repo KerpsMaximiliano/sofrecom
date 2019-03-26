@@ -51,6 +51,14 @@ export class ProjectService {
     return this.http.put<any>(`${this.baseUrl}/hitos/${id}/close`, {});
   }
 
+  updateAmmountHito(hito){
+    return this.http.patch<any>(`${this.baseUrl}/hitos`, hito);
+  }
+
+  deleteHito(hitoId, projectId){
+    return this.http.delete<any>(`${this.baseUrl}/hitos/${hitoId}/${projectId}`);
+  }
+
   getIfIsRelated(serviceId) {
     return this.http.get<any>(`${this.baseUrl}/services/${serviceId}/analytic`);
   }

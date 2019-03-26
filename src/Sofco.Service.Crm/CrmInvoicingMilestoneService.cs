@@ -181,6 +181,32 @@ namespace Sofco.Service.Crm
             Update(content, id, response);
         }
 
+        public void UpdateAmmount(HitoAmmountParameter hito, Response response)
+        {
+            var content = new JObject
+            {
+                ["as_amount"] = hito.Ammount
+            };
+
+            Update(content, hito.Id, response);
+        }
+
+        public void Delete(string hitoId, Response response)
+        {
+            try
+            {
+                httpClient.Delete<JObject>(UrlPath + "(" + hitoId + ")", null);
+            }
+            catch (Exception ex)
+            {
+                var msg = "CrmHitoId = " + hitoId;
+
+                logger.LogError(msg, ex);
+
+                response.AddError(msg);
+            }
+        }
+
         public string Create(HitoParameters data, Response response)
         {
             var date = data.StartDate.HasValue ? data.StartDate.Value.ToString("yyyy-MM-dd") : DateTime.UtcNow.ToString("yyyy-MM-dd");

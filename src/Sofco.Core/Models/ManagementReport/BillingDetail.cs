@@ -10,7 +10,7 @@ namespace Sofco.Core.Models.ManagementReport
 
         public IList<MonthBillingHeaderItem> MonthsHeader { get; set; }
 
-        public IList<BillingRowItem> Rows { get; set; }
+        public IList<BillingHitoItem> Rows { get; set; }
 
         public IList<BillingTotal> Totals { get; set; }
     }
@@ -44,11 +44,15 @@ namespace Sofco.Core.Models.ManagementReport
         public IList<MonthBiilingRowItem> MonthValues { get; set; }
     }
 
-    public class BillingRowItem
+    public class BillingHitoItem
     {
         public string Description { get; set; }
 
         public IList<MonthBiilingRowItem> MonthValues { get; set; }
+
+        public string Id { get; set; }
+
+        public string ProjectId { get; set; }
     }
 
     public class MonthBiilingRowItem

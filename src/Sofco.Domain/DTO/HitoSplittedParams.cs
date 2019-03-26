@@ -16,4 +16,13 @@ namespace Sofco.Domain.DTO
         public string ManagerId { get; set; }
         public string MoneyId { get; set; }
     }
+
+    public class HitoAmmountParameter
+    {
+        public string Id { get; set; }
+
+        public string ProjectId { get; set; }
+
+        public decimal? Ammount { get; set; }
+    }
 }

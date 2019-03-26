@@ -129,6 +129,9 @@
   <data name="HitoCreated" xml:space="preserve">
     <value>billing/projects.hitoCreated</value>
   </data>
+  <data name="HitoDatesOutRange" xml:space="preserve">
+    <value>billing/projects.hitoDatesOutRange</value>
+  </data>
   <data name="HitoSplitted" xml:space="preserve">
     <value>billing/projects.hitoSplitted</value>
   </data>
@@ -143,5 +146,8 @@
   </data>
   <data name="OpportunityRequired" xml:space="preserve">
     <value>billing/projects.opportunityRequired</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>billing/projects.required</value>
   </data>
 </root>
