@@ -90,9 +90,9 @@
 
     <div class="tabs-container">
         <ul class="nav nav-tabs">
-            <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="getGrid(1)">
+            <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="currentTab = 1">
                     {{ 'advancement.inProcess' | translate }} </a></li>
-            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="getGrid(3)">
+            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="currentTab = 3">
                     {{ 'advancement.finalized' | translate }} </a></li>
         </ul>
 
