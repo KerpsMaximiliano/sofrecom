@@ -108,6 +108,25 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 return response;
             }
 
+            //Elimina las Licencias
+            var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndStartDate(model.EmployeeId, model.EndDate);
+            if (licenses.Any())
+            {
+                foreach (var license in licenses)
+                {
+                    try
+                    {
+                        unitOfWork.WorkTimeRepository.RemoveBetweenDays(license.EmployeeId, license.StartDate, license.EndDate);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogError(e);
+                        response.AddWarning(Resources.Rrhh.License.GenerateWorkTimesError);
+                    }
+                }
+                unitOfWork.Save();
+            }
+
             var manager = unitOfWork.UserRepository.GetSingle(x => x.UserName.Equals(model.UserName));
 
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
@@ -127,7 +146,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 mailSender.Send(email);
 
-                employeeEndNotificationManager.Save(model);
+                employeeEndNotificationManager.Save(model);                                        
 
                 response.AddSuccess(Resources.Common.MailSent);
             }
