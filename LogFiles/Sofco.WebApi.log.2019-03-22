@@ -1,0 +1,4 @@
+﻿ 2019-03-22 14:27:34,924 ERROR Sofco.Service.Implementations.Workflow.WorkflowService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Framework.Workflow.OnSuccess.UpdateCurrencyExchangeProcess.Process(WorkflowEntity entity, WorkflowChangeStatusParameters parameters) in C:\Proyectos\GAPS\src\Sofco.Framework\Workflow\OnSuccess\UpdateCurrencyExchangeProcess.cs:line 26
+   at Sofco.Service.Implementations.Workflow.WorkflowService.DoTransition[TEntity,THistory](WorkflowChangeStatusParameters parameters) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Workflow\WorkflowService.cs:line 143

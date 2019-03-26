@@ -63,10 +63,10 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
-        [HttpGet("unrelated")]
-        public IActionResult GetUnrelated()
+        [HttpGet("unrelated/{userId}")]
+        public IActionResult GetUnrelated(int userId)
         {
-            var response = advancementService.GetUnrelated();
+            var response = advancementService.GetUnrelated(userId);
 
             return this.CreateResponse(response);
         }

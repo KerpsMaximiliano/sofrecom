@@ -101,7 +101,9 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     }
 
     canUpdate(){
-        if(environment.gafWorkflowStateId == this.actualStateId && this.menuService.userIsGaf) return true;
+        if(environment.gafWorkflowStateId == this.actualStateId && this.menuService.userIsGaf) {
+            this.form.canGafUpdate = true;
+        }
 
         if(environment.draftWorkflowStateId == this.actualStateId || environment.rejectedWorkflowStateId == this.actualStateId){
             const userInfo = UserInfoService.getUserInfo();
