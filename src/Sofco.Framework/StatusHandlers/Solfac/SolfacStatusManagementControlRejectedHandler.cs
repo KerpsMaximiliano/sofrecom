@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
@@ -8,6 +9,7 @@ using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
+using Sofco.Service.Crm.Interfaces;
 
 namespace Sofco.Framework.StatusHandlers.Solfac
 {
@@ -19,11 +21,14 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private readonly IMailSender mailSender;
 
-        public SolfacStatusRejectedByDafHandler(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender)
+        private readonly ICrmInvoicingMilestoneService crmInvoiceService;
+
+        public SolfacStatusRejectedByDafHandler(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IMailSender mailSender, ICrmInvoicingMilestoneService crmInvoiceService)
         {
             this.unitOfWork = unitOfWork;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
+            this.crmInvoiceService = crmInvoiceService;
         }
 
         private string mailBody = Resources.Mails.MailMessageResource.SolfacStatusRejectedByDafMessage;
@@ -77,6 +82,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         public void UpdateHitos(ICollection<string> hitos, Domain.Models.Billing.Solfac solfac)
         {
+            crmInvoiceService.UpdateStatus(hitos.ToList(), HitoStatus.Pending);
         }
 
         public void SendMail(Domain.Models.Billing.Solfac solfac, EmailConfig emailConfig)
