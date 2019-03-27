@@ -9,7 +9,7 @@
     "nameRequired": "El nombre es requerido",
     "monthRequired": "El mes es requerido",
     "hitoCreated": "Hito fue creado correctamente. Se actualizó correctamente CRM",
-    "hitoDatesOutRange": "La fecha programada esta fuera del rango del proyecto",
+    "hitoDatesOutRange": "La fecha programada debe ser entre el mes en curso y la fecha de fin de proyecto",
     "required": "El proyecto es requerido",
     "dateRequired": "La fecha es requerida"
 }

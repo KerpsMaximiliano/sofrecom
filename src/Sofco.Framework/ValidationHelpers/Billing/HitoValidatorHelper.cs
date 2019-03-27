@@ -1,4 +1,5 @@
-﻿using Sofco.Domain.DTO;
+﻿using System;
+using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Utils;
@@ -65,13 +66,15 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateDates(Project project, Response response, HitoParameters hito)
         {
+            var currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
             if (project == null)
             {
                 response.AddError(Resources.Billing.Project.NotFound);
             }
             else
             {
-                if (!(hito.StartDate.GetValueOrDefault().Date >= project.StartDate.Date &&
+                if (!(hito.StartDate.GetValueOrDefault().Date >= currentMonth.Date &&
                     hito.StartDate.GetValueOrDefault().Date <= project.EndDate.Date))
                 {
                     response.AddError(Resources.Billing.Project.HitoDatesOutRange);

@@ -174,6 +174,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                             Description = $"{project.OpportunityNumber} {project.Name} - {hito.Name}",
                             Id = hito.Id,
                             ProjectId = project.CrmId,
+                            ProjectName = $"{project.OpportunityNumber} {project.Name}",
+                            CurrencyId = hito.MoneyId,
+                            Date = hito.StartDate,
                             MonthValues = new List<MonthBiilingRowItem>()
                         };
 
