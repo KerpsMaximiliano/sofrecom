@@ -204,7 +204,10 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
         public IList<Advancement> GetAllApproved(int workflowStatusApproveId)
         {
-            return context.Advancements.Include(x => x.Currency).Where(x => x.StatusId == workflowStatusApproveId).ToList();
+            return context.Advancements
+                .Include(x => x.UserApplicant)
+                .Include(x => x.Currency)
+                .Where(x => x.StatusId == workflowStatusApproveId).ToList();
         }
 
         public int GetRefundWithLastRefundMarkedCount(int advancementId, int refundId)

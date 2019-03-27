@@ -9,9 +9,10 @@ import { WfRejectComponent } from "./templates/reject/wf-reject.component";
 import { Ng2ModalModule } from "../modal/ng2modal.module";
 import { FormsModule } from "@angular/forms";
 import { WfCurrencyExchangeComponent } from "./templates/currency-exchange/currency-exchange";
+import { WfCashReturnConfirmComponent } from "./templates/cash-return-confirm/cash-return-confirm";
 
 @NgModule({
-    declarations: [ WorkflowComponent, WfRejectComponent, WfCurrencyExchangeComponent ],
+    declarations: [ WorkflowComponent, WfRejectComponent, WfCurrencyExchangeComponent, WfCashReturnConfirmComponent ],
 
     imports     : [ CommonModule, TranslateModule, ButtonsModule, Ng2ModalModule, FormsModule ],
 
@@ -19,7 +20,7 @@ import { WfCurrencyExchangeComponent } from "./templates/currency-exchange/curre
 
     exports     : [ WorkflowComponent],
 
-    entryComponents : [ WfRejectComponent, WfCurrencyExchangeComponent ] 
+    entryComponents : [ WfRejectComponent, WfCurrencyExchangeComponent, WfCashReturnConfirmComponent ] 
 })
 
 export class WorkflowModule {} 

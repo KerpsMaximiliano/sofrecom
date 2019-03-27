@@ -79,5 +79,7 @@
         public int WorkflowStatusFinalizedId { get; set; }
 
         public int WorkflowStatusCurrentAccount { get; set; }
+
+        public string CashReturnConfirm { get; set; }
     }
 }

@@ -371,11 +371,22 @@ namespace Sofco.Service.Implementations.Workflow
                     }
                     else
                     {
-                        var domain = unitOfWork.RefundRepository.GetFullById(entity.Id);
-
-                        if (!refundValidation.HasUserRefund(domain))
+                        if (refund.CashReturn)
                         {
-                            transition.ParameterCode = string.Empty;
+                            transition.ParameterCode = appSetting.CashReturnConfirm;
+                        }
+                        else
+                        {
+                            var domain = unitOfWork.RefundRepository.GetFullById(entity.Id);
+
+                            if (!refundValidation.HasUserRefund(domain))
+                            {
+                                transition.ParameterCode = string.Empty;
+                            }
+                            else if (refund.CurrencyExchange > 0)
+                            { 
+                                transition.ParameterCode = string.Empty;
+                            }
                         }
                     }
                 }

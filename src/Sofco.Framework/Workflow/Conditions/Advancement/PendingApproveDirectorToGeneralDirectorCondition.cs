@@ -4,17 +4,16 @@ using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
-using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 
-namespace Sofco.Framework.Workflow.Conditions
+namespace Sofco.Framework.Workflow.Conditions.Advancement
 {
-    public class DirectorToGeneralDirectorRefundCondition : IWorkflowConditionState
+    public class PendingApproveDirectorToGeneralDirectorCondition : IWorkflowConditionState
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly AppSetting settings;
 
-        public DirectorToGeneralDirectorRefundCondition(IUnitOfWork unitOfWork, AppSetting settings)
+        public PendingApproveDirectorToGeneralDirectorCondition(IUnitOfWork unitOfWork, AppSetting settings)
         {
             this.unitOfWork = unitOfWork;
             this.settings = settings;
@@ -22,11 +21,11 @@ namespace Sofco.Framework.Workflow.Conditions
 
         public bool CanDoTransition(WorkflowEntity entity, Response response)
         {
-            var refund = (Domain.Models.AdvancementAndRefund.Refund)entity;
+            var advancement = (Domain.Models.AdvancementAndRefund.Advancement)entity;
 
-            var value = GetValueSetting(refund.CurrencyId);
+            var value = GetValueSetting(advancement.CurrencyId);
 
-            if (refund.TotalAmmount >= value)
+            if (advancement.Ammount >= value)
             {
                 return true;
             }

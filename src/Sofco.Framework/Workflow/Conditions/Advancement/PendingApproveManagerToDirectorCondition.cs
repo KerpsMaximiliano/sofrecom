@@ -6,10 +6,9 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
-using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 
-namespace Sofco.Framework.Workflow.Conditions
+namespace Sofco.Framework.Workflow.Conditions.Advancement
 {
     public class PendingApproveManagerToDirectorCondition : IWorkflowConditionState
     {
@@ -32,7 +31,7 @@ namespace Sofco.Framework.Workflow.Conditions
 
             var sectors = unitOfWork.EmployeeRepository.GetAnalyticsWithSector(employee.Id);
 
-            var advancement = (Advancement)entity;
+            var advancement = (Domain.Models.AdvancementAndRefund.Advancement)entity;
 
             var value = GetValueSetting(advancement.CurrencyId); 
 

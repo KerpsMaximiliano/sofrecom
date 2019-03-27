@@ -4,10 +4,9 @@ using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
-using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 
-namespace Sofco.Framework.Workflow.Conditions
+namespace Sofco.Framework.Workflow.Conditions.Refund
 {
     public class ComplianceToDafCondition : IWorkflowConditionState
     {
