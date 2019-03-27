@@ -127,6 +127,15 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Where(x => x.EmployeeId == employeeId && x.StartDate.Date >= startDate.Date && x.EndDate.Date <= endDate.Date).ToList();
         }
 
+        public ICollection<License> GetByEmployeeAndStartDate(int employeeId, DateTime startDate)
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Type)
+                .Where(x => x.EmployeeId == employeeId && x.StartDate.Date >= startDate.Date).ToList();
+        }
+
         public void UpdateStatus(License license)
         {
             context.Entry(license).Property("Status").IsModified = true;

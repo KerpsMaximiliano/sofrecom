@@ -22,6 +22,7 @@ namespace Sofco.Core.DAL.Rrhh
         ICollection<License> GetByManagerIds(List<int> managerIds);
         ICollection<License> GetByManagerAndStatus(LicenseStatus statusId, int managerId);
         ICollection<License> GetByEmployeeAndDates(int employeeId, DateTime startDate, DateTime endDate);
+        ICollection<License> GetByEmployeeAndStartDate(int employeeId, DateTime startDate);
         void UpdateStatus(License license);
         void AddHistory(LicenseHistory history);
         License GetById(int id);
