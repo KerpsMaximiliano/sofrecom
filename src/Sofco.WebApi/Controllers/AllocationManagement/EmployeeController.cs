@@ -168,6 +168,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
+        [HttpGet("{id}/currentAccount")]
+        public IActionResult GetCurrentAccount(int id)
+        {
+            var response = employeeService.GetCurrentAccount(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("external")]
         public IActionResult AddExternal([FromBody] AddExternalModel model)
         {

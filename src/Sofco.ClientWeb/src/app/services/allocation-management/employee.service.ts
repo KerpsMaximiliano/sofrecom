@@ -95,4 +95,8 @@ export class EmployeeService {
   getRefunds(id){
     return this.http.get<any>(`${this.baseUrl}/employees/${id}/refunds`);
   }
+
+  getCurrentAccount(id){
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/currentAccount`);
+  }
 }

@@ -6,6 +6,7 @@ using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Core.Models.AdvancementAndRefund.Common;
 
 namespace Sofco.Core.Services.AllocationManagement
 {
@@ -44,5 +45,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<IList<EmployeeAdvancementDetail>> GetAdvancements(int id);
 
         Response<IList<EmployeeRefundDetail>> GetRefunds(int id);
+
+        Response<IList<EmployeeCurrentAccount>> GetCurrentAccount(int id);
     }
 }

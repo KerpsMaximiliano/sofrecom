@@ -25,6 +25,8 @@ using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
 using Sofco.Framework.Helpers;
 using Sofco.Resources.Mails;
+using Sofco.Core.Models.AdvancementAndRefund.Common;
+using Sofco.Core.Services.AdvancementAndRefund;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -40,8 +42,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IEmployeeData employeeData;
         private readonly IUserData userData;
         private readonly IEmployeeEndNotificationManager employeeEndNotificationManager;
+        private readonly ICurrentAccountService currentAccountService;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData, IEmployeeEndNotificationManager employeeEndNotificationManager)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData, IEmployeeEndNotificationManager employeeEndNotificationManager, ICurrentAccountService currentAccountService)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -53,6 +56,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.userData = userData;
             this.employeeEndNotificationManager = employeeEndNotificationManager;
             emailConfig = emailOptions.Value;
+            this.currentAccountService = currentAccountService;
         }
 
         public ICollection<Employee> GetAll()
@@ -138,15 +142,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var email = mailBuilder.GetEmail(new EmployeeEndNotificationData
                 {
                     Recipients = model.Recipients.ToList(),
-                    Message = string.Format(MailMessageResource.EmployeeEndNotification, 
-                        employeeName, 
-                        manager.Name, 
+                    Message = string.Format(MailMessageResource.EmployeeEndNotification,
+                        employeeName,
+                        manager.Name,
                         model.EndDate.ToString("dd/MM/yyyy"))
                 });
 
                 mailSender.Send(email);
 
-                employeeEndNotificationManager.Save(model);                                        
+                employeeEndNotificationManager.Save(model);
 
                 response.AddSuccess(Resources.Common.MailSent);
             }
@@ -309,7 +313,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
-            
+
             return response;
         }
 
@@ -442,7 +446,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var employees = unitOfWork.EmployeeRepository.GetByAnalyticIds(analytics.Select(x => x.Id).ToList());
 
-            return new Response<List<Option>> {Data = Translate(employees.ToList())};
+            return new Response<List<Option>> { Data = Translate(employees.ToList()) };
         }
 
         public Response<IList<EmployeeAdvancementDetail>> GetAdvancements(int id)
@@ -480,6 +484,34 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 {
                     response.Data = unitOfWork.RefundRepository.GetByApplicant(user.Id)
                         .Select(x => mapper.Map<Refund, EmployeeRefundDetail>(x)).ToList();
+                }
+            }
+
+            return response;
+        }
+
+        public Response<IList<EmployeeCurrentAccount>> GetCurrentAccount(int id)
+        {
+            var allCurrentAccount = currentAccountService.Get();
+            var response = new Response<IList<EmployeeCurrentAccount>>();
+
+            var employee = unitOfWork.EmployeeRepository.Get(id);
+
+            if (employee != null)
+            {
+                var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
+
+                if (user != null)
+                {
+                    response.Data = allCurrentAccount.Data.Where(cc => cc.UserId == user.Id)
+                        .Select(x => new EmployeeCurrentAccount
+                        {
+                            Currency = x.Currency,
+                            AdvancementTotal = x.AdvancementTotal,
+                            CompanyRefund = x.CompanyRefund,
+                            RefundTotal = x.RefundTotal,
+                            UserRefund = x.UserRefund
+                        }).ToList();
                 }
             }
 

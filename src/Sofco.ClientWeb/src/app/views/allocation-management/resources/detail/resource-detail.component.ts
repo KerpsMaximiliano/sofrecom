@@ -54,6 +54,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
     public profileHistories: any[] = new Array();
     public advancements: any[] = new Array();
     public refunds: any[] = new Array();
+    public currentAccount: any[] = new Array();
 
     getSubscrip: Subscription;
     paramsSubscrip: Subscription;
@@ -104,6 +105,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.getLicenses();
             this.getTasks();
             this.getRefunds();
+            this.getCurrentAccount();
         });
     }
 
@@ -169,6 +171,19 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
             var params = {
                 selector: "#refundTable",
+                columnDefs: [ {'aTargets': [0], "sType": "date-uk"} ]
+            };
+    
+            this.dataTableService.initialize(params);
+        });
+    }
+
+    getCurrentAccount(){
+        this.getRefundDataSubscrip = this.employeeService.getCurrentAccount(this.resourceId).subscribe(response => {
+            this.currentAccount = response.data;
+
+            var params = {
+                selector: "#currentAccountTable",
                 columnDefs: [ {'aTargets': [0], "sType": "date-uk"} ]
             };
     
