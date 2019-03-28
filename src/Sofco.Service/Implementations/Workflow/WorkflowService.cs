@@ -227,13 +227,26 @@ namespace Sofco.Service.Implementations.Workflow
         {
             if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.SectorUserSource))
             {
-                var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
-
-                var sectors = unitOfWork.EmployeeRepository.GetAnalyticsWithSector(employee.Id);
-
-                if (sectors.Any(x => x.ResponsableUserId == currentUser.Id))
+                if (entity is Refund refund)
                 {
-                    hasAccess = true;
+                    var director = unitOfWork.AnalyticRepository.GetDirector(refund.AnalyticId);
+
+                    if (director != null && director.Id == currentUser.Id)
+                    {
+                        hasAccess = true;
+                    }
+                }
+                else
+                {
+
+                    var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+
+                    var sectors = unitOfWork.EmployeeRepository.GetAnalyticsWithSector(employee.Id);
+
+                    if (sectors.Any(x => x.ResponsableUserId == currentUser.Id))
+                    {
+                        hasAccess = true;
+                    }
                 }
             }
 
@@ -365,16 +378,27 @@ namespace Sofco.Service.Implementations.Workflow
                 if (appSetting.WorkFlowStatePaymentPending == transition.NextWorkflowStateId ||
                     appSetting.WorkflowStatusFinalizedId == transition.NextWorkflowStateId)
                 {
+                    var domain = unitOfWork.RefundRepository.GetFullById(entity.Id);
+
                     if (refund.CurrencyId == appSetting.CurrencyPesos)
                     {
-                        transition.ParameterCode = string.Empty;
+                        if (!refundValidation.HasUserRefund(domain))
+                        {
+                            transition.ParameterCode = appSetting.CashReturnConfirm;
+                        }
+                        else
+                        {
+                            transition.ParameterCode = string.Empty;
+                        }
                     }
                     else
                     {
-                        var domain = unitOfWork.RefundRepository.GetFullById(entity.Id);
-
                         if (!refundValidation.HasUserRefund(domain))
                         {
+                            transition.ParameterCode = appSetting.CashReturnConfirm;
+                        }
+                        else if (refund.CurrencyExchange > 0)
+                        { 
                             transition.ParameterCode = string.Empty;
                         }
                     }

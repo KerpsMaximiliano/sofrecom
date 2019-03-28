@@ -94,6 +94,24 @@ export class MessageService {
         }
     }
 
+    showCustomConfirm(msj, callback){
+        swal({
+            title: `<h2> ${ this.i18nService.translateByKey('ACTIONS.confirmTitle')} </h2>`,
+            html: `<h3> ${ msj } </h3>`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            allowOutsideClick: false,
+            confirmButtonText: this.i18nService.translateByKey('ACTIONS.confirm'),
+        })
+        .then((result) => {
+            if (result.value) {
+                callback();
+            }
+        });
+    }
+
     showConfirm(callback){
         swal({
             title: `<h2> ${ this.i18nService.translateByKey('ACTIONS.confirmTitle')} </h2>`,

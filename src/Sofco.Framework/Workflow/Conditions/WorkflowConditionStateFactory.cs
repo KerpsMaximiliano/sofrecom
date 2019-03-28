@@ -4,6 +4,7 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Core.Validations.Workflow;
+using Sofco.Framework.Workflow.Conditions.Advancement;
 using Sofco.Framework.Workflow.Conditions.Refund;
 
 namespace Sofco.Framework.Workflow.Conditions
@@ -43,6 +44,8 @@ namespace Sofco.Framework.Workflow.Conditions
                 case "GAF-TO-CURRENT-ACCOUNT": return new GafToCurrentAccountCondition(unitOfWork);
                 case "DRAFT-TO-GAF": return new DraftToGafCondition(unitOfWork);
                 case "DRAFT-TO-MANAGER": return new DraftToManagerCondition(unitOfWork);
+                case "IS-NOT-FOREIGN-CURRENCY": return new IsNotForeignCurrencyCondition(settings);
+                case "IS-FOREIGN-CURRENCY": return new IsForeignCurrencyCondition(settings);
                 default: return null;
             }
         }

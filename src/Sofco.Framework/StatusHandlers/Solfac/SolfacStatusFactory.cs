@@ -33,7 +33,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 case SolfacStatus.InvoicePending: return new SolfacStatusInvoicePendingHandler(unitOfWork, crmInvoiceService, mailBuilder, mailSender);
                 case SolfacStatus.Invoiced: return new SolfacStatusInvoicedHandler(unitOfWork, crmInvoiceService, mailBuilder, mailSender);
                 case SolfacStatus.AmountCashed: return new SolfacStatusAmountCashedHandler(unitOfWork, crmInvoiceService, mailBuilder, mailSender);
-                case SolfacStatus.RejectedByDaf: return new SolfacStatusRejectedByDafHandler(unitOfWork, mailBuilder, mailSender);
+                case SolfacStatus.RejectedByDaf: return new SolfacStatusRejectedByDafHandler(unitOfWork, mailBuilder, mailSender, crmInvoiceService);
                 default: return null;
             }
         }

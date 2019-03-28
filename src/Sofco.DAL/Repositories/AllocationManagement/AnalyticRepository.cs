@@ -122,6 +122,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .SingleOrDefault(x => x.ServiceId.Equals(serviceId));
         }
 
+        public User GetDirector(int analyticId)
+        {
+            return context.Analytics
+                .Include(x => x.Sector)
+                    .ThenInclude(x => x.ResponsableUser)
+                .SingleOrDefault(x => x.Id == analyticId)?.Sector?.ResponsableUser;
+        }
+
         public List<Analytic> GetByServiceIds(List<string> serviceIds)
         {
             return context.Analytics.Where(x => x.Status == AnalyticStatus.Open

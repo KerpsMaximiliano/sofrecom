@@ -1,16 +1,13 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
-using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.Workflow;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
-using Sofco.Domain.Utils;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Framework.Workflow.Notifications

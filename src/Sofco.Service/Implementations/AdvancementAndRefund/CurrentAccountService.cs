@@ -81,6 +81,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                                     Value = x.TotalAmmount,
                                     Advancements = string.Join(" - ", x.AdvancementRefunds.Select(a => $"#{a.AdvancementId}")),
                                 }).ToList(),
+                            Advancements = new List<AdvancementUnrelatedItem>()
                         };
 
                         response.Data.Add(currentAccountModel);
@@ -89,25 +90,49 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 var advancements = unitOfWork.AdvancementRepository.GetAllApproved(settings.WorkflowStatusApproveId);
 
-                foreach (var currentAccountModel in response.Data)
+                foreach (var advancement in advancements)
                 {
-                    var advancementsAux = advancements.Where(x => x.CurrencyId == currentAccountModel.CurrencyId && x.UserApplicantId == currentAccountModel.UserId).ToList();
+                    var currentAccountModel = response.Data.FirstOrDefault(x => x.CurrencyId == advancement.CurrencyId && x.UserId == advancement.UserApplicantId);
 
-                    currentAccountModel.AdvancementTotal = advancementsAux.Sum(x => x.Ammount);
-
-                    currentAccountModel.Advancements = advancementsAux.Select(x => new AdvancementUnrelatedItem
+                    if (currentAccountModel != null)
                     {
-                        Id = x.Id,
-                        Ammount = x.Ammount,
-                        CurrencyId = x.CurrencyId,
-                        CurrencyText = x.Currency?.Text,
-                        Text = $"#{x.Id} - {x.CreationDate:dd/MM/yyyy} - {x.Ammount} {x.Currency?.Text}"
-                    }).ToList();
+                        currentAccountModel.AdvancementTotal += advancement.Ammount;
 
-                    if (currentAccountModel.RefundTotal > currentAccountModel.AdvancementTotal)
-                        currentAccountModel.UserRefund = currentAccountModel.RefundTotal - currentAccountModel.AdvancementTotal;
+                        currentAccountModel.Advancements.Add(new AdvancementUnrelatedItem
+                        {
+                            Id = advancement.Id,
+                            Ammount = advancement.Ammount,
+                            CurrencyId = advancement.CurrencyId,
+                            CurrencyText = advancement.Currency?.Text,
+                            Text = $"#{advancement.Id} - {advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency?.Text}"
+                        });
+                    }
                     else
-                        currentAccountModel.CompanyRefund = currentAccountModel.AdvancementTotal - currentAccountModel.RefundTotal;
+                    {
+                        currentAccountModel = new CurrentAccountModel
+                        {
+                            User = advancement.UserApplicant?.Name,
+                            UserId = advancement.UserApplicantId,
+                            Currency = advancement.Currency?.Text,
+                            CurrencyId = advancement.CurrencyId,
+                            RefundTotal = 0,
+                            AdvancementTotal = advancement.Ammount,
+                            Refunds = new List<CurrentAccountRefundModel>(),
+                            Advancements = new List<AdvancementUnrelatedItem>
+                            {
+                                new AdvancementUnrelatedItem
+                                {
+                                    Id = advancement.Id,
+                                    Ammount = advancement.Ammount,
+                                    CurrencyId = advancement.CurrencyId,
+                                    CurrencyText = advancement.Currency?.Text,
+                                    Text = $"#{advancement.Id} - {advancement.CreationDate:dd/MM/yyyy} - {advancement.Ammount} {advancement.Currency?.Text}"
+                                }
+                            }
+                        };
+
+                        response.Data.Add(currentAccountModel);
+                    }
                 }
             }
             catch (Exception e)

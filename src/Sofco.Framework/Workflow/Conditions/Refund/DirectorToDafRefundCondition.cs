@@ -6,14 +6,14 @@ using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Utils;
 
-namespace Sofco.Framework.Workflow.Conditions
+namespace Sofco.Framework.Workflow.Conditions.Refund
 {
-    public class ComplianceToDirectorCondition : IWorkflowConditionState
+    public class DirectorToDafRefundCondition : IWorkflowConditionState
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly AppSetting settings;
 
-        public ComplianceToDirectorCondition(IUnitOfWork unitOfWork, AppSetting settings)
+        public DirectorToDafRefundCondition(IUnitOfWork unitOfWork, AppSetting settings)
         {
             this.unitOfWork = unitOfWork;
             this.settings = settings;
@@ -25,7 +25,7 @@ namespace Sofco.Framework.Workflow.Conditions
 
             var value = GetValueSetting(refund.CurrencyId);
 
-            if (refund.TotalAmmount >= value)
+            if (refund.TotalAmmount < value)
             {
                 return true;
             }
@@ -39,19 +39,19 @@ namespace Sofco.Framework.Workflow.Conditions
 
             dictionary.Add(settings.CurrencyPesos, () =>
             {
-                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountAPesos);
+                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountBPesos);
                 return Convert.ToInt32(sett.Value);
             });
 
             dictionary.Add(settings.CurrencyDolares, () =>
             {
-                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountADolares);
+                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountBDolares);
                 return Convert.ToInt32(sett.Value);
             });
 
             dictionary.Add(settings.CurrencyEuros, () =>
             {
-                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountAEuros);
+                var sett = this.unitOfWork.SettingRepository.GetByKey(settings.AmmountBEuros);
                 return Convert.ToInt32(sett.Value);
             });
 

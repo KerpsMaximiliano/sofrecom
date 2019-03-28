@@ -54,7 +54,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response SplitHito(HitoParameters hito)
+        public Response<string> SplitHito(HitoParameters hito)
         {
             var response = Create(hito);
             UpdateFirstHito(response, hito);
@@ -81,13 +81,13 @@ namespace Sofco.Service.Implementations.Billing
             }
         }
 
-        public Response Create(HitoParameters hito)
+        public Response<string> Create(HitoParameters hito)
         {
             var response = ValidateParameters(hito);
 
             if (response.HasErrors()) return response;
 
-            crmInvoicingMilestoneService.Create(hito, response);
+            response.Data = crmInvoicingMilestoneService.Create(hito, response);
 
             if (!response.HasErrors())
             {
@@ -155,9 +155,9 @@ namespace Sofco.Service.Implementations.Billing
             crmInvoicingMilestoneService.UpdateAmmountAndStatus(hito, response);
         }
 
-        private Response ValidateParameters(HitoParameters hito)
+        private Response<string> ValidateParameters(HitoParameters hito)
         {
-            var response = new Response();
+            var response = new Response<string>();
 
             HitoValidatorHelper.ValidateProject(hito, response);
             HitoValidatorHelper.ValidateCurrency(hito, response);

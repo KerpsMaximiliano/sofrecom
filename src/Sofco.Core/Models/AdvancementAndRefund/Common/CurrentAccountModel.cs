@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 
 namespace Sofco.Core.Models.AdvancementAndRefund.Common
@@ -15,9 +13,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Common
 
         public decimal RefundTotal { get; set; }
 
-        public decimal UserRefund { get; set; }
+        public decimal UserRefund => RefundTotal - AdvancementTotal > 0 ? RefundTotal - AdvancementTotal : 0;
 
-        public decimal CompanyRefund { get; set; }
+        public decimal CompanyRefund => AdvancementTotal - RefundTotal > 0 ? AdvancementTotal - RefundTotal : 0;
 
         public int CurrencyId { get; set; }
 

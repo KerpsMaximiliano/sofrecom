@@ -7,6 +7,7 @@ import { UtilsService } from "app/services/common/utils.service";
 import { ProjectService } from "app/services/billing/project.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
+import * as moment from 'moment';
 
 @Component({
     selector: 'management-report-billing',
@@ -81,10 +82,13 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
             response.data.rows.forEach(row => {
 
-                var hito = { id: "", projectId: "", description: "", values: [] };
+                var hito = { id: "", projectId: "", description: "", projectName: "", currencyId: "", date: new Date(), values: [] };
                 hito.description = row.description;
                 hito.id = row.id;
                 hito.projectId = row.projectId;
+                hito.projectName = row.projectName;
+                hito.date = row.date;
+                hito.currencyId = row.currencyId;
 
                 this.months.forEach(month => {
                     var monthValue = row.monthValues.find(x => x.month == month.month && x.year == month.year);
@@ -127,8 +131,57 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         model.opportunityId = project.opportunityId;
         model.moneyId = currency.crmId;
 
-        this.postHitoSubscrip = this.projectService.createNewHito(model).subscribe(() => {
+        this.postHitoSubscrip = this.projectService.createNewHito(model).subscribe(response => {
             this.newHitoModal.hide();
+
+            let hitosAux = [];
+            var newInserted = false;
+
+            var month = model.startDate.getMonth()+1;
+            var year = model.startDate.getFullYear();
+
+            var totalCurrency = this.totals.find(x => x.currencyId == model.moneyId);
+
+            if(totalCurrency){
+                var monthValue = totalCurrency.monthValues.find(x => x.month == month && x.year == year);
+
+                if(monthValue){
+                    monthValue.value += model.ammount;
+                }
+            }
+
+            this.hitos.forEach(element => {
+
+                if(!newInserted && moment(element.date).toDate() > model.startDate){
+                    newInserted = true;
+
+                    var hito = { id: response.data, 
+                        projectId: this.hito.projectId, 
+                        projectName: element.projectName, 
+                        description: element.projectName + " - " + model.name, 
+                        values: [] };
+
+                    this.months.forEach(monthRow => {
+                        var monthValue = { month: monthRow.month, year: monthRow.year, value: null, oldValue: null, status: null  };
+
+                        if(monthRow.month == month && monthRow.year == year){
+                            monthValue.value = model.ammount;
+                            monthValue.oldValue = model.ammount;
+                            monthValue.status = this.pendingHitoStatus;
+                        }
+
+                        hito.values.push(monthValue);
+                    });
+
+                    hitosAux.push(hito);
+
+                }
+                else{
+                    hitosAux.push(element);
+                }
+            });
+
+            this.hitos = hitosAux;
         }, 
         error => this.newHitoModal.resetButtons());
     }
@@ -147,6 +200,19 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     
             this.projectService.updateAmmountHito(json).subscribe(response => {
                 hitoMonth.oldValue = hitoMonth.value;
+
+                var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
+    
+                if(totalCurrency){
+                    var monthValue = totalCurrency.monthValues.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
+    
+                    if(monthValue){
+                        monthValue.value = hitoMonth.value;
+                    }
+                }
+            }, 
+            error => {
+                hitoMonth.value = hitoMonth.oldValue;
             });
         }
     }
@@ -155,6 +221,18 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.messageService.showConfirm(() => {
             this.projectService.deleteHito(hito.id, hito.projectId).subscribe(() => {
                 
+                var hitoMonth = hito.values.find(x => x.value && x.value > 0);
+
+                var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
+    
+                if(totalCurrency){
+                    var monthValue = totalCurrency.monthValues.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
+    
+                    if(monthValue){
+                        monthValue.value -= hitoMonth.value;
+                    }
+                }
+
                 var hitoindex = this.hitos.findIndex(x => x.id == hito.id);
 
                 if(hitoindex) this.hitos.splice(hitoindex, 1);

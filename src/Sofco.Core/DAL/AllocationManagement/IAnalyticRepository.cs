@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AllocationManagement;
+using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.AllocationManagement
@@ -60,5 +61,6 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         List<Analytic> GetByAllocations(int employeeId, DateTime dateFrom, DateTime dateTo);
         Analytic GetByServiceForManagementReport(string serviceId);
+        User GetDirector(int analyticId);
     }
 }

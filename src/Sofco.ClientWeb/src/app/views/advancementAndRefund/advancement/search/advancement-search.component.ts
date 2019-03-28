@@ -120,8 +120,4 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         }
     }
-
-
-
-  
 }

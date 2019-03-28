@@ -6,14 +6,14 @@ using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Utils;
 
-namespace Sofco.Framework.Workflow.Conditions
+namespace Sofco.Framework.Workflow.Conditions.Refund
 {
-    public class DirectorToDafRefundCondition : IWorkflowConditionState
+    public class DirectorToGeneralDirectorRefundCondition : IWorkflowConditionState
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly AppSetting settings;
 
-        public DirectorToDafRefundCondition(IUnitOfWork unitOfWork, AppSetting settings)
+        public DirectorToGeneralDirectorRefundCondition(IUnitOfWork unitOfWork, AppSetting settings)
         {
             this.unitOfWork = unitOfWork;
             this.settings = settings;
@@ -25,7 +25,7 @@ namespace Sofco.Framework.Workflow.Conditions
 
             var value = GetValueSetting(refund.CurrencyId);
 
-            if (refund.TotalAmmount < value)
+            if (refund.TotalAmmount >= value)
             {
                 return true;
             }

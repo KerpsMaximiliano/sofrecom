@@ -7,9 +7,9 @@ namespace Sofco.Core.Services.Billing
     {
         Response Close(string id);
 
-        Response SplitHito(HitoParameters hito);
+        Response<string> SplitHito(HitoParameters hito);
 
-        Response Create(HitoParameters hito);
+        Response<string> Create(HitoParameters hito);
 
         Response UpdateCurrency(HitoAmmountParameter hito);
 
