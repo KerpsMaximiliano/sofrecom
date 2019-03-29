@@ -11,6 +11,7 @@ namespace Sofco.Core.Models.AllocationManagement
         }
 
         public IList<AllocationReportRow> Rows { get; set; }
+
         public IList<string> MonthsHeader { get; set; }
     }
 
@@ -18,8 +19,12 @@ namespace Sofco.Core.Models.AllocationManagement
     {
         public AllocationReportRow()
         {
-            Months = new List<AllocationMonthReport>();
+            Months = new List<AllocationDateReport>();
         }
+
+        public int AnalyticId { get; set; }
+
+        public int EmployeeId { get; set; }
 
         public string Analytic { get; set; }
 
@@ -35,14 +40,27 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string Manager { get; set; }
 
-        public IList<AllocationMonthReport> Months { get; set; }
+        public IList<AllocationDateReport> Months { get; set; }
 
         public string EmployeeNumber { get; set; }
     }
 
-    public class AllocationMonthReport
+    public class AllocationDateReport
     {
-        public string MonthYear { get; set; }
+        public AllocationDateReport()
+        {
+        }
+
+        public AllocationDateReport(AllocationDateReport x)
+        {
+            Year = x.Year;
+            Month = x.Month;
+            Percentage = x.Percentage;
+        }
+
+        public int Year { get; set; }
+
+        public int Month { get; set; }
 
         public decimal Percentage { get; set; }
     }

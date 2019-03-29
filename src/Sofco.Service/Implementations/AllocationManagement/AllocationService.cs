@@ -187,6 +187,35 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
         }
 
+        private IList<AllocationDateReport> GetDateForReport(DateTime startDate, DateTime endDate)
+        {
+            var list = new List<AllocationDateReport>();
+
+            for (DateTime date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
+            {
+                var monthHeader = new AllocationDateReport();
+                monthHeader.Month = date.Month;
+                monthHeader.Year = date.Year;
+                monthHeader.Percentage = 0;
+
+                list.Add(monthHeader);
+            }
+
+            return list;
+        }
+
+        private IList<string> GetDateHeaderForReport(DateTime startDate, DateTime endDate)
+        {
+            var list = new List<string>();
+
+            for (DateTime date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
+            {
+                list.Add(DatesHelper.GetDateShortDescription(date));
+            }
+
+            return list;
+        }
+
         public ICollection<Employee> GetByService(string serviceId)
         {
             return unitOfWork.AllocationRepository.GetByService(serviceId);
@@ -316,11 +345,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             parameters.StartDate = new DateTime(parameters.StartDate.Year, parameters.StartDate.Month, 1);
             parameters.EndDate = new DateTime(parameters.EndDate.Year, parameters.EndDate.Month, DateTime.DaysInMonth(parameters.EndDate.Year, parameters.EndDate.Month));
 
-            var employees = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
+            var allocations = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
 
             IList<Employee> employeesUnassigned = new List<Employee>();
-
-            var diccionaryAnalytics = new Dictionary<int, Analytic>();
 
             if (parameters.StartPercentage.GetValueOrDefault() == 0 &&
                 parameters.EndPercentage.GetValueOrDefault() == 0 && 
@@ -330,94 +357,89 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(parameters.StartDate, parameters.EndDate);
             }
 
-            if (employees.Any() || employeesUnassigned.Any())
+            response.Data.MonthsHeader = GetDateHeaderForReport(parameters.StartDate, parameters.EndDate);
+
+            var months = GetDateForReport(parameters.StartDate, parameters.EndDate);
+
+            foreach (var allocation in allocations)
             {
-                foreach (var employee in employees)
+                var percentageSum = allocations.Where(x => x.EmployeeId == allocation.EmployeeId && x.StartDate.Date == allocation.StartDate.Date).Sum(x => x.Percentage);
+
+                if (parameters.Percentage == 0)
                 {
-                    var allocationResponse = GetAllocationsBetweenDays(employee.Id, parameters.StartDate, parameters.EndDate, parameters.AnalyticIds);
-
-                    foreach (var allocation in allocationResponse.Allocations)
+                    AddRowReport(response, allocation, months);
+                }
+                else
+                {
+                    if (percentageSum >= parameters.StartPercentage.GetValueOrDefault() &&
+                        percentageSum <= parameters.EndPercentage.GetValueOrDefault())
                     {
-                        if (parameters.AnalyticIds.Any() && parameters.AnalyticIds.All(x => x != allocation.AnalyticId)) continue;
-
-                        if (parameters.Percentage.HasValue && parameters.Percentage > 0 &&
-                            !allocation.Months.Any(x => x.PercentageSum >= parameters.StartPercentage.GetValueOrDefault() &&
-                                                       x.PercentageSum <= parameters.EndPercentage.GetValueOrDefault())) continue;
-
-                        Analytic analytic;
-
-                        if (diccionaryAnalytics.ContainsKey(allocation.AnalyticId))
-                        {
-                            diccionaryAnalytics.TryGetValue(allocation.AnalyticId, out analytic);
-                        }
-                        else
-                        {
-                            analytic = unitOfWork.AnalyticRepository.GetById(allocation.AnalyticId);
-                            diccionaryAnalytics.Add(allocation.AnalyticId, analytic);
-                        }
-
-                        var reportRow = new AllocationReportRow
-                        {
-                            Manager = employee.Manager?.Name,
-                            Percentage = employee.BillingPercentage,
-                            Profile = employee.Profile,
-                            ResourceName = employee.Name,
-                            EmployeeNumber = employee.EmployeeNumber,
-                            Seniority = employee.Seniority,
-                            Technology = employee.Technology,
-                            Analytic = $"{allocation.AnalyticTitle} - {analytic?.Name}"
-                        };
-
-                        for (int i = 0; i < allocation.Months.Count; i++)
-                        {
-                            reportRow.Months.Add(new AllocationMonthReport { MonthYear = allocationResponse.MonthsHeader[i].Display, Percentage = allocation.Months[i].Percentage.GetValueOrDefault() });
-                        }
-
-                        response.Data.Rows.Add(reportRow);
+                        AddRowReport(response, allocation, months);
                     }
                 }
-
-                foreach (var employee in employeesUnassigned)
-                {
-                    var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employee.Id, parameters.StartDate, parameters.EndDate);
-
-                    var allocationResponse = new AllocationResponse();
-
-                    BuildMonthHeader(parameters.StartDate, parameters.EndDate, licenses, allocationResponse);
-
-                    if (licenses.Any())
-                    {
-                        allocationResponse.Licenses = licenses.Select(x => new LicenseItemDto(x)).ToList();
-                    }
-
-                    var reportRow = new AllocationReportRow
-                    {
-                        Manager = employee.Manager?.Name,
-                        Percentage = employee.BillingPercentage,
-                        Profile = employee.Profile,
-                        EmployeeNumber = employee.EmployeeNumber,
-                        ResourceName = employee.Name,
-                        Seniority = employee.Seniority,
-                        Technology = employee.Technology,
-                        Analytic = "Sin Asignación"
-                    };
-
-                    foreach (var monthHeader in allocationResponse.MonthsHeader)
-                    {
-                        reportRow.Months.Add(new AllocationMonthReport { MonthYear = monthHeader.Display, Percentage = 0 });
-                    }
-
-                    response.Data.Rows.Add(reportRow);
-                }
-
-                response.Data.MonthsHeader = response.Data.Rows.FirstOrDefault()?.Months.Select(x => x.MonthYear).ToList();
             }
-            else
+
+            foreach (var employee in employeesUnassigned)
+            {
+                var reportRow = new AllocationReportRow
+                {
+                    Manager = employee.Manager?.Name,
+                    Percentage = employee.BillingPercentage,
+                    Profile = employee.Profile,
+                    EmployeeNumber = employee.EmployeeNumber,
+                    ResourceName = employee.Name,
+                    Seniority = employee.Seniority,
+                    Technology = employee.Technology,
+                    Analytic = "Sin Asignación",
+                    EmployeeId = employee.Id,
+                    AnalyticId = 0,
+                    Months = months.ToList()
+                };
+
+                response.Data.Rows.Add(reportRow);
+            }
+
+            if(!response.Data.Rows.Any())
             {
                 response.AddWarning(Resources.AllocationManagement.Employee.EmployeesNotFound);
             }
 
             return response;
+        }
+
+        private void AddRowReport(Response<AllocationReportModel> response, Allocation allocation, IList<AllocationDateReport> months)
+        {
+            var row = response.Data.Rows.FirstOrDefault(x => x.EmployeeId == allocation.EmployeeId && x.AnalyticId == allocation.AnalyticId);
+            var newRow = false;
+
+            if (row == null)
+            {
+                newRow = true;
+
+                row = new AllocationReportRow
+                {
+                    AnalyticId = allocation.AnalyticId,
+                    EmployeeId = allocation.EmployeeId,
+                    Manager = allocation.Employee.Manager?.Name,
+                    Percentage = allocation.Employee.BillingPercentage,
+                    Profile = allocation.Employee.Profile,
+                    ResourceName = allocation.Employee.Name,
+                    EmployeeNumber = allocation.Employee.EmployeeNumber,
+                    Seniority = allocation.Employee.Seniority,
+                    Technology = allocation.Employee.Technology,
+                    Analytic = $"{allocation.Analytic?.Title} - {allocation.Analytic?.Name}",
+                    Months = months.Select(x => new  AllocationDateReport(x)).ToList()
+                };
+            }
+
+            var month = row.Months.FirstOrDefault(x => x.Year == allocation.StartDate.Year && x.Month == allocation.StartDate.Month); 
+
+            if (month != null) month.Percentage = allocation.Percentage;
+
+            if (newRow)
+            {
+                response.Data.Rows.Add(row);
+            }
         }
 
         public IEnumerable<OptionPercentage> GetAllPercentages()

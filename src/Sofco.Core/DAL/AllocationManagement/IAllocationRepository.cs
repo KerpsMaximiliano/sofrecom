@@ -14,7 +14,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         void UpdateReleaseDate(Allocation allocation);
         ICollection<Employee> GetByService(string serviceId);
         ICollection<Allocation> GetByEmployee(int id);
-        ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters);
+        ICollection<Allocation> GetByEmployeesForReport(AllocationReportParams parameters);
         void RemoveAllocationByAnalytic(int analyticId, DateTime today);
         ICollection<Allocation> GetAllocationsLiteBetweenDays(int employeeId, DateTime startDate, DateTime endDate);
         ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters);
