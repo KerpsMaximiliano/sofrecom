@@ -183,8 +183,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.currentAccount = response.data;
 
             var params = {
-                selector: "#currentAccountTable",
-                columnDefs: [ {'aTargets': [0], "sType": "date-uk"} ]
+                selector: "#currentAccountTable"
             };
     
             this.dataTableService.initialize(params);
