@@ -133,12 +133,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Allocations.Any(x => x.Id == allocationId);
         }
 
-        public ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters)
+        public ICollection<Allocation> GetByEmployeesForReport(AllocationReportParams parameters)
         {
             IQueryable<Allocation> query = context.Allocations
+                .Include(x => x.Analytic)
                 .Include(x => x.Employee)
                     .ThenInclude(x => x.Manager)
-                .Where(x => x.StartDate >= parameters.StartDate && x.StartDate <= parameters.EndDate);
+                .Where(x => x.StartDate.Date >= parameters.StartDate.Date && x.StartDate.Date <= parameters.EndDate.Date && x.Percentage > 0);
 
             if (parameters.AnalyticIds.Any())
                 query = query.Where(x => parameters.AnalyticIds.Contains(x.AnalyticId));
@@ -155,7 +156,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (parameters.IncludeAnalyticId == 3)
                 query = query.Where(x => x.Analytic.Status == AnalyticStatus.Close || x.Analytic.Status == AnalyticStatus.CloseToExpenses);
 
-            return query.Select(x => x.Employee).Distinct().ToList();
+            return query.OrderBy(x => x.StartDate).ToList();
         }
 
         public void RemoveAllocationByAnalytic(int analyticId, DateTime today)

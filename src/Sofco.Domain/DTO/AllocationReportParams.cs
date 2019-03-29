@@ -13,7 +13,7 @@ namespace Sofco.Domain.DTO
 
         public int? EmployeeId { get; set; }
 
-        public decimal? Percentage { get; set; }
+        public decimal Percentage { get; set; }
 
         public bool IncludeStaff { get; set; }
 
