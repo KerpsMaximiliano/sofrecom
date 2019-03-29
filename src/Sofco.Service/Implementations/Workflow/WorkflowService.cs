@@ -12,6 +12,7 @@ using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.Workflow;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Core.Validations.Workflow;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AdvancementAndRefund;
@@ -233,14 +234,20 @@ namespace Sofco.Service.Implementations.Workflow
                 {
                     var director = unitOfWork.AnalyticRepository.GetDirector(refund.AnalyticId);
 
-                    if (director != null && director.Id == currentUser.Id)
+                    if (director != null)
                     {
-                        hasAccess = true;
+                        if(director.Id == currentUser.Id) hasAccess = true;
+
+                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.Id, refund.AnalyticId, UserApproverType.Refund);
+
+                        if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                        {
+                            hasAccess = true;
+                        }
                     }
                 }
                 else
                 {
-
                     var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
 
                     var sectors = unitOfWork.EmployeeRepository.GetAnalyticsWithSector(employee.Id);
@@ -270,7 +277,7 @@ namespace Sofco.Service.Implementations.Workflow
 
                     if (entity is Refund refund)
                     {
-                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, refund.AnalyticId);
+                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, refund.AnalyticId, UserApproverType.Refund);
 
                         if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                         {

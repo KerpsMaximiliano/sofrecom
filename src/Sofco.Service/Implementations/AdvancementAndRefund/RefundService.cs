@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Common;
 using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
@@ -422,7 +424,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     hasAccess = true;
                 }
 
-                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, entity.AnalyticId);
+                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, entity.AnalyticId, UserApproverType.Refund);
 
                 if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                 {

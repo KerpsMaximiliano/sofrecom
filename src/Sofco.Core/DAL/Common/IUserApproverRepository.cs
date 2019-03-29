@@ -32,6 +32,6 @@ namespace Sofco.Core.DAL.Common
 
         List<UserApprover> GetByUserId(UserApproverType type, int userId);
 
-        List<UserApprover> GetByAnalyticAndUserId(int managerId, int analyticId);
+        List<UserApprover> GetByAnalyticAndUserId(int managerId, int analyticId, UserApproverType refund);
     }
 }
