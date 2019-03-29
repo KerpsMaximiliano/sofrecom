@@ -30,6 +30,7 @@ export class WorkflowTransitionFormComponent implements OnInit, OnDestroy {
         userApplicantHasAccess: false,
         managerHasAccess: false,
         usersHasAccess: [],
+        usersDenyAccess: [],
         groupsHasAccess: [],
         sectorHasAccess: false,
         notifyToUserApplicant: false,

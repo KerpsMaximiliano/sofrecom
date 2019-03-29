@@ -85,6 +85,12 @@
                     <label class="control-label">Grupos</label>
                     <ng-select [items]="groups" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.groupsHasAccess"></ng-select>
                 </div>
+
+                <div class="form-group">
+                    <label class="control-label">Usuarios Exceptuados</label>
+                    <ng-select [items]="users" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="model.usersDenyAccess"></ng-select>
+                </div>
+
             </div>
         </div>
 

@@ -72,6 +72,7 @@ namespace Sofco.Service.Implementations.Workflow
                 CheckUserApplicantAccess(model, domain);
                 CheckGroupAccess(model, domain);
                 CheckUserAccess(model, domain);
+                CheckUserDenyAccess(model, domain);
                 CheckSectorAccess(model, domain);
 
                 CheckManagerNotifier(model, domain);
@@ -131,6 +132,7 @@ namespace Sofco.Service.Implementations.Workflow
                 CheckUserApplicantAccess(model, transition);
                 CheckGroupAccess(model, transition);
                 CheckUserAccess(model, transition);
+                CheckUserDenyAccess(model, transition);
                 CheckSectorAccess(model, transition);
 
                 CheckManagerNotifier(model, transition);
@@ -178,6 +180,7 @@ namespace Sofco.Service.Implementations.Workflow
                 OnSuccessCode = transition.OnSuccessCode,
                 GroupsHasAccess = new List<int>(),
                 UsersHasAccess =  new List<int>(),
+                UsersDenyAccess = new List<int>(),
                 NotifyToGroups = new List<int>(),
                 NotifyToUsers = new List<int>()
             };
@@ -195,8 +198,11 @@ namespace Sofco.Service.Implementations.Workflow
                     if (workflowStateAccess.UserSource.Code == appSetting.GroupUserSource)
                         response.Data.GroupsHasAccess.Add(workflowStateAccess.UserSource.SourceId);
 
-                    if(workflowStateAccess.UserSource.Code == appSetting.UserUserSource) 
+                    if(workflowStateAccess.UserSource.Code == appSetting.UserUserSource && workflowStateAccess.AccessDenied == false) 
                         response.Data.UsersHasAccess.Add(workflowStateAccess.UserSource.SourceId);
+
+                    if (workflowStateAccess.UserSource.Code == appSetting.UserUserSource && workflowStateAccess.AccessDenied == true)
+                        response.Data.UsersDenyAccess.Add(workflowStateAccess.UserSource.SourceId);
 
                     if (workflowStateAccess.UserSource.Code == appSetting.SectorUserSource)
                         response.Data.SectorHasAccess = true;
@@ -348,6 +354,22 @@ namespace Sofco.Service.Implementations.Workflow
             }
         }
 
+        private void CheckUserDenyAccess(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
+        {
+            if (model.UsersDenyAccess != null && model.UsersDenyAccess.Any())
+            {
+                foreach (var userId in model.UsersDenyAccess)
+                {
+                    var wfStateAccess = CreateWorkflowStateAccess();
+
+                    wfStateAccess.AccessDenied = true;
+                    wfStateAccess.UserSource = userSourceService.Get(appSetting.UserUserSource, userId);
+
+                    domain.WorkflowStateAccesses.Add(wfStateAccess);
+                }
+            }
+        }
+
         private void CheckGroupAccess(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
         {
             if (model.GroupsHasAccess != null && model.GroupsHasAccess.Any())
@@ -395,6 +417,8 @@ namespace Sofco.Service.Implementations.Workflow
             wfStateAccess.CreatedById = userData.GetCurrentUser().Id;
             wfStateAccess.ModifiedAt = DateTime.UtcNow;
             wfStateAccess.ModifiedById = wfStateAccess.CreatedById;
+            wfStateAccess.AccessDenied = false;
+
             return wfStateAccess;
         }
 

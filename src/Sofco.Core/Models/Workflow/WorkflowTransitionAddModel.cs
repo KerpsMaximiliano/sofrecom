@@ -38,6 +38,8 @@ namespace Sofco.Core.Models.Workflow
 
         public IList<int> UsersHasAccess { get; set; }
 
+        public IList<int> UsersDenyAccess { get; set; }
+
         public IList<int> GroupsHasAccess { get; set; }
 
         public bool SectorHasAccess { get; set; }
