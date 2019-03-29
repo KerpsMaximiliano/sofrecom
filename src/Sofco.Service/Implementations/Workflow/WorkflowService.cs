@@ -259,17 +259,23 @@ namespace Sofco.Service.Implementations.Workflow
         {
             if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.ManagerUserSource))
             {
-                if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
-                {
-                    hasAccess = true;
-                }
-                else
-                {
-                    var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
 
-                    if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
+                if (employee.ManagerId.HasValue && employee.Manager != null)
+                {
+                    if (employee.ManagerId.Value == currentUser.Id)
                     {
                         hasAccess = true;
+                    }
+
+                    if (entity is Refund refund)
+                    {
+                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, refund.AnalyticId);
+
+                        if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                        {
+                            hasAccess = true;
+                        }
                     }
                 }
             }

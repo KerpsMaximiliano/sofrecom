@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
-using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.Workflow;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
@@ -21,9 +16,14 @@ using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
-using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
+using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
@@ -83,7 +83,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 domain.WorkflowId = workflow.Id;
 
                 domain.AdvancementRefunds = new List<AdvancementRefund>();
-                 
+
                 if (model.Advancements != null)
                 {
                     foreach (var advancementId in model.Advancements)
@@ -323,16 +323,10 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             if (hasAllAccess)
             {
-                //return new Response<List<RefundListResultModel>>
-                //{
-                //    Data = Translate(result)
-                //};
                 response.Data = Translate(result);
             }
             else
             {
-                //var response = new Response<List<RefundListResultModel>> { Data = new List<RefundListResultModel>() };
-
                 foreach (var refund in result)
                 {
                     if (ValidateManagerAccess(refund, currentUser))
@@ -417,21 +411,26 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
         private bool ValidateManagerAccess(Refund entity, UserLiteModel currentUser)
         {
-            if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
-            {
-                return true;
-            }
-            else
-            {
-                var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
 
-                if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
+            var hasAccess = false;
+
+            if (employee.ManagerId.HasValue && employee.Manager != null)
+            {
+                if (employee.ManagerId.Value == currentUser.Id)
                 {
-                    return true;
+                    hasAccess = true;
+                }
+
+                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, entity.AnalyticId);
+
+                if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                {
+                    hasAccess = true;
                 }
             }
 
-            return false;
+            return hasAccess;
         }
 
         public Response<IList<PaymentPendingModel>> GetAllPaymentPending()
@@ -470,6 +469,31 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 item.Bank = GetBank(refund.UserApplicant?.Email, employeeDicc);
 
                 response.Data.Add(item);
+            }
+
+            return response;
+        }
+
+        public Response<IList<Option>> GetAnalitycs()
+        {
+            var response = new Response<IList<Option>> { Data = new List<Option>() };
+
+            var currentUser = userData.GetCurrentUser();
+
+            if (roleManager.IsManager())
+            {
+                var analytics = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(currentUser.Id);
+
+                foreach (var analytic in analytics)
+                    response.Data.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+            }
+
+            if (roleManager.IsDirector())
+            {
+                var analytics = unitOfWork.AnalyticRepository.GetByDirectorId(currentUser.Id);
+
+                foreach (var analytic in analytics)
+                    response.Data.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
             }
 
             return response;

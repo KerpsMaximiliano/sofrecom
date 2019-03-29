@@ -4,6 +4,8 @@
     {
         WorkTime,
 
-        LicenseAuthorizer
+        LicenseAuthorizer,
+
+        Refund
     }
 }

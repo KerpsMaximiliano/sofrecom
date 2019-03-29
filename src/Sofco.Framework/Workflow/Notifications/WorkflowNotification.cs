@@ -77,21 +77,12 @@ namespace Sofco.Framework.Workflow.Notifications
         {
             if (stateNotifier.UserSource.Code == appSetting.ManagerUserSource)
             {
-                if (entity.AuthorizerId.HasValue)
+                if (entity.UserApplicant != null)
                 {
-                    if (entity.Authorizer != null && !string.IsNullOrWhiteSpace(entity.Authorizer.Email))
-                        recipientsList.Add(entity.Authorizer.Email);
-                }
-                else
-                {
-                    if (entity.UserApplicant != null)
-                    {
-                        var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+                    var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
 
-                        if (employee != null && employee.ManagerId.HasValue && employee.Manager != null && !string.IsNullOrWhiteSpace(employee.Manager.Email))
-                            recipientsList.Add(employee.Manager.Email);
-                    }
-
+                    if (employee != null && employee.ManagerId.HasValue && employee.Manager != null && !string.IsNullOrWhiteSpace(employee.Manager.Email))
+                        recipientsList.Add(employee.Manager.Email);
                 }
             }
         }

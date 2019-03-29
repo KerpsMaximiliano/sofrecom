@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class RefundService {
+   
     private baseUrl: string;
 
     constructor(private http: HttpClient, private service: Service) {
@@ -61,6 +62,10 @@ export class RefundService {
 
     getAllPaymentPending(){
         return this.http.get<any>(`${this.baseUrl}/refund/paymentPending`);
+    }
+
+    getAnalytics(): any {
+        return this.http.get<any>(`${this.baseUrl}/refund/analytics`);
     }
 
     exportFile(id){

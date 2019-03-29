@@ -164,5 +164,13 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 
             return File(response.Data, "application/octet-stream", string.Empty);
         }
+
+        [HttpGet("analytics")]
+        public IActionResult GetAnalitycs()
+        {
+            var response = refundService.GetAnalitycs();
+
+            return this.CreateResponse(response);
+        }
     }
 }

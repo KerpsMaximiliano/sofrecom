@@ -49,7 +49,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var response = ValidateSave(userApprovers);
 
             if (response.HasErrors())
-                return response;
+                return response; 
 
             try
             {

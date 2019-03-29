@@ -40,10 +40,18 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
+        [HttpGet("{type}/{userId}/analytics")]
+        public IActionResult GetEmployees(UserApproverType type, int userId)
+        {
+            var response = approversEmployeeService.GetByUserId(userId, type);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("{type}")]
         public IActionResult Post(UserApproverType type, [FromBody]List<UserApproverModel> model)
         {
-            var response = service.Save(model, type);
+            var response = service.Save(model, type); 
 
             return this.CreateResponse(response);
         }
