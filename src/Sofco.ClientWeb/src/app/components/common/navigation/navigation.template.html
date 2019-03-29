@@ -62,6 +62,7 @@
             <li [ngClass]="{active: activeRoute('advancement/paymentPending')}" *ngIf="menuService.hasFunctionality('ADVAN', 'PAYMENT-PENDING-VIEW')"><a [routerLink]="['/advancementAndRefund/advancement/paymentPending']">{{'advancement.paymentPending' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('setting')}" *ngIf="menuService.hasFunctionality('ADVAN', 'SETTING')"><a [routerLink]="['/advancementAndRefund/setting']">{{'advRefSetting.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('currentAccount')}" *ngIf="menuService.hasFunctionality('ADVAN', 'CURRENT-ACCOUNT')"><a [routerLink]="['/advancementAndRefund/currentAccount']">Cuenta Corriente</a></li>
+            <li [ngClass]="{active: activeRoute('advancementAndRefund/delegate')}" *ngIf="menuService.hasFunctionality('ADVAN', 'DELEGATE')"><a [routerLink]="['/advancementAndRefund/delegate']">Delegación</a></li>
         </ul>
       </li> 
  
