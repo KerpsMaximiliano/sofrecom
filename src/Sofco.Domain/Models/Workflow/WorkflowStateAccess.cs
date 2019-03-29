@@ -18,5 +18,8 @@ namespace Sofco.Domain.Models.Workflow
         public User CreatedBy { get; set; }
         public int ModifiedById { get; set; }
         public User ModifiedBy { get; set; }
+
+        public bool AccessDenied { get; set; }
+
     }
 }

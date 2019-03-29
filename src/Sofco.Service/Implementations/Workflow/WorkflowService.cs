@@ -220,6 +220,8 @@ namespace Sofco.Service.Implementations.Workflow
 
             hasAccess = ValidateSectorAccess(transition, currentUser, entity, hasAccess);
 
+            hasAccess = ValidateUserDenyAccess(transition, currentUser, hasAccess);
+
             return hasAccess;
         }
 
@@ -306,9 +308,19 @@ namespace Sofco.Service.Implementations.Workflow
 
         private bool ValidateUserAccess(WorkflowStateTransition transition, UserLiteModel currentUser, bool hasAccess)
         {
-            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.SourceId == currentUser.Id && x.UserSource.Code == appSetting.UserUserSource))
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.SourceId == currentUser.Id && x.UserSource.Code == appSetting.UserUserSource && x.AccessDenied == false))
             {
                 hasAccess = true;
+            }
+
+            return hasAccess;
+        }
+
+        private bool ValidateUserDenyAccess(WorkflowStateTransition transition, UserLiteModel currentUser, bool hasAccess)
+        {
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.SourceId == currentUser.Id && x.UserSource.Code == appSetting.UserUserSource && x.AccessDenied == true))
+            {
+                hasAccess = false;
             }
 
             return hasAccess;
