@@ -510,7 +510,7 @@ namespace Sofco.Service.Implementations.Workflow
 
             var response = new Response<IList<Option>>();
 
-            response.Data = states.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+            response.Data = states.Select(x => new Option { Id = x.Id, Text = x.Name }).OrderBy(e => e.Text).ToList();
 
             return response;
         }
