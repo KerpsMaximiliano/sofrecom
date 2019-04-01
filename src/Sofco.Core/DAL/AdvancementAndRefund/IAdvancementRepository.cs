@@ -11,7 +11,7 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
     {
         bool Exist(int id);
         Advancement GetFullById(int id);
-        IList<Advancement> GetAllInProcess();
+        IList<Advancement> GetAllInProcess(int settingsWorkflowStatusRejectedId, int settingsWorkflowStatusDraft);
         IList<WorkflowReadAccess> GetWorkflowReadAccess(int advacementWorkflowId);
         IList<AdvancementHistory> GetHistories(int id);
         IList<Advancement> GetAllFinalized(int statusDraft, AdvancementSearchFinalizedModel model);

@@ -32,7 +32,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .SingleOrDefault(x => x.Id == id);
         }
 
-        public IList<Advancement> GetAllInProcess()
+        public IList<Advancement> GetAllInProcess(int workflowStatusRejectedId, int workflowStatusDraft)
         {
             return context.Advancements
                 .Include(x => x.Currency)
@@ -42,7 +42,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                     .ThenInclude(x => x.ActualTransitions)
                         .ThenInclude(x => x.WorkflowStateAccesses)
                             .ThenInclude(x => x.UserSource)
-                .Where(x => x.InWorkflowProcess).ToList();
+                .Where(x => x.InWorkflowProcess && x.StatusId != workflowStatusRejectedId && x.StatusId != workflowStatusDraft).ToList();
         }
 
         public IList<WorkflowReadAccess> GetWorkflowReadAccess(int advacementWorkflowId)

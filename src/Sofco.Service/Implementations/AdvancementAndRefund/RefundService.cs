@@ -319,7 +319,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 model.UserApplicantIds = GetUserApplicantIdsByCurrentManager();
             }
 
-            var result = refundRepository.GetByParameters(model);
+            var result = refundRepository.GetByParameters(model, settings.WorkflowStatusRejectedId, settings.WorkflowStatusDraft);
 
             var response = new Response<List<RefundListResultModel>> { Data = new List<RefundListResultModel>() };
 
