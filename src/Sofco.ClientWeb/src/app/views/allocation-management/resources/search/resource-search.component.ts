@@ -120,6 +120,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.getCategories();
 
         this.dateFrom.minDate = this.startNewPeriod;
+        this.dateTo.minDate = this.startNewPeriod;
     }
 
     ngOnDestroy(): void {
