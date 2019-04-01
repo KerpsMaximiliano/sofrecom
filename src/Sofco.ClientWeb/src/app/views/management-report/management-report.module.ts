@@ -19,6 +19,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { ProjectService } from "app/services/billing/project.service";
 import { UtilsService } from "app/services/common/utils.service";
 import { MessageService } from "app/services/common/message.service";
+import { DecimalFormatModule } from "app/components/decimalFormat/decimal-format.directive";
 
 @NgModule({
     declarations: [
@@ -32,6 +33,7 @@ import { MessageService } from "app/services/common/message.service";
       ManagementReportRouter,
       DatePickerModule,
       NumbersOnlyModule,
+      DecimalFormatModule,
       Ng2ModalModule, 
       AmountFormatModule,
       PCheckModule,
