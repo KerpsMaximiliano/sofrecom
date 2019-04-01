@@ -360,7 +360,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
                 this.form.controls.currencyId.setValue(this.defaultCurrencyId);
                 this.currencyDescription = this.defaultCurrencyDescription;
                 this.cashReturn = false;
-                this.detailForms = [];
             }
         }
 
