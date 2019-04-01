@@ -473,26 +473,29 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<IList<EmployeeCurrentAccount>> GetCurrentAccount(int id)
         {
-            var allCurrentAccount = currentAccountService.Get();
             var response = new Response<IList<EmployeeCurrentAccount>>();
+            var allCurrentAccount = currentAccountService.Get();
 
-            var employee = unitOfWork.EmployeeRepository.Get(id);
-
-            if (employee != null)
+            if (allCurrentAccount.Data.Count > 0)
             {
-                var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
+                var employee = unitOfWork.EmployeeRepository.Get(id);
 
-                if (user != null)
+                if (employee != null)
                 {
-                    response.Data = allCurrentAccount.Data.Where(cc => cc.UserId == user.Id)
-                        .Select(x => new EmployeeCurrentAccount
-                        {
-                            Currency = x.Currency,
-                            AdvancementTotal = x.AdvancementTotal,
-                            CompanyRefund = x.CompanyRefund,
-                            RefundTotal = x.RefundTotal,
-                            UserRefund = x.UserRefund
-                        }).ToList();
+                    var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
+
+                    if (user != null)
+                    {
+                        response.Data = allCurrentAccount.Data.Where(cc => cc.UserId == user.Id)
+                            .Select(x => new EmployeeCurrentAccount
+                            {
+                                Currency = x.Currency,
+                                AdvancementTotal = x.AdvancementTotal,
+                                CompanyRefund = x.CompanyRefund,
+                                RefundTotal = x.RefundTotal,
+                                UserRefund = x.UserRefund
+                            }).ToList();
+                    }
                 }
             }
 
