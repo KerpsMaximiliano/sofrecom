@@ -23,7 +23,7 @@ namespace Sofco.Framework.Managers
         public Response UpdateCrmAnalytic(Analytic analytic)
         {
             var response = new Response();
-
+             
             var analyticTitle = analytic.Title;
 
             var serviceId = analytic.ServiceId;
@@ -41,7 +41,10 @@ namespace Sofco.Framework.Managers
             {
                 Id = new Guid(serviceId),
                 ManagerId = managerId,
-                AnalyticTitle = analyticTitle
+                AnalyticTitle = analyticTitle,
+                ServiceTypeId = analytic.ServiceTypeId,
+                SoluctionTypeId = analytic.SolutionId,
+                TechnologyTypeId = analytic.TechnologyId
             };
 
             var result = crmServiceService.Update(dataUpdate);
