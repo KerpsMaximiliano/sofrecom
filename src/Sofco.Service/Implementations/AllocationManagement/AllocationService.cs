@@ -281,7 +281,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     unitOfWork.Save();
 
                     //Licencias
-                    var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employeeId, firstMonth.Date.Date, lastMonth.Date.Date);
+                    var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employeeId, firstMonth.Date.Date, model.EndDate.GetValueOrDefault());
                     if (licenses.Any())
                     {
                         foreach (var license in licenses)
