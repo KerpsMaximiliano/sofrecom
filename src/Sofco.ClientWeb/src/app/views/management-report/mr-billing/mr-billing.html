@@ -29,6 +29,7 @@
                         type="number" 
                         class="form-control input-sm" 
                         [ngClass]="resolveHitoLabel(value)" 
+                        decimalFormat
                         min="0" 
                         (blur)="updateHito(hito)"
                         [(ngModel)]="value.value"

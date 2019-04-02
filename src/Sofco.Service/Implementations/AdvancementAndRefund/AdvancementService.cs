@@ -136,7 +136,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var hasAllAccess = roleManager.HasFullAccess();
 
-            var advancements = unitOfWork.AdvancementRepository.GetAllInProcess();
+            var advancements = unitOfWork.AdvancementRepository.GetAllInProcess(settings.WorkflowStatusRejectedId, settings.WorkflowStatusDraft);
 
             if (hasAllAccess)
             {

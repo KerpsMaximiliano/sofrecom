@@ -89,9 +89,16 @@ namespace Sofco.Service.Crm
             var content = new JObject { ["as_analitica"] = crmServiceUpdate.AnalyticTitle };
 
             if (crmServiceUpdate.ManagerId.HasValue)
-            {
                 content["as_projectmanagerid@odata.bind"] = GetCrmUserUrl(crmServiceUpdate.ManagerId.Value);
-            }
+
+            if (crmServiceUpdate.ServiceTypeId.HasValue)
+                content["as_servicetype"] = crmServiceUpdate.ServiceTypeId.Value;
+
+            if (crmServiceUpdate.SoluctionTypeId.HasValue)
+                content["as_solutiontype"] = crmServiceUpdate.SoluctionTypeId.Value;
+
+            if (crmServiceUpdate.TechnologyTypeId.HasValue)
+                content["as_technologytype"] = crmServiceUpdate.TechnologyTypeId.Value;
 
             try
             {

@@ -132,9 +132,6 @@ export class AllocationReportComponent implements OnInit, OnDestroy, AfterViewIn
         this.loaded = false;
 
         this.createReportSubscrip = this.allocationService.createReport(parameters).subscribe(response => {
-          
-            if(response.messages) this.messageService.showMessages(response.messages);
-
             this.model = response.data;
             this.initGrid();
 
