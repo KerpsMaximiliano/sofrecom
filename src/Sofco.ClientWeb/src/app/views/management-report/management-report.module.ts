@@ -13,6 +13,7 @@ import { ManagementReportDetailComponent } from "./detail/mr-detail";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { DatesService } from "app/services/common/month.service";
 import { MarginTrackingComponent } from "./margin-tracking/margin-tracking";
+import { CostDetailComponent } from "./cost-detail/cost-detail.component";
 import { AmountFormatModule } from "app/pipes/amount-format.module";
 import { ManagementReportBillingComponent } from "./mr-billing/mr-billing";
 import { MenuService } from "app/services/admin/menu.service";
@@ -22,7 +23,7 @@ import { MessageService } from "app/services/common/message.service";
 
 @NgModule({
     declarations: [
-      ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent
+      ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent
     ],
     imports: [
       CommonModule,
