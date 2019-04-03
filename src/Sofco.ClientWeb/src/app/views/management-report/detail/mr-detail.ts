@@ -27,6 +27,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     public year: number;
 
     @ViewChild("billing") billing;
+    @ViewChild("detailCost") detailCost;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private messageService: MessageService,

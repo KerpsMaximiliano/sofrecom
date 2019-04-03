@@ -7,5 +7,6 @@ namespace Sofco.Core.Services.ManagementReport
     {
         Response<ManagementReportDetail> GetDetail(string serviceId);
         Response<BillingDetail> GetBilling(string serviceId);
+        Response<CostDetail> GetCostDetail(string serviceId);
     }
 }

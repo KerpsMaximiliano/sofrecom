@@ -211,6 +211,39 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        public Response<CostDetail> GetCostDetail(string serviceId)
+        {
+            var response = new Response<CostDetail> { Data = new CostDetail() };
+
+            var analytic = unitOfWork.AnalyticRepository.GetByService(serviceId);
+
+            if (analytic == null)
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                return response;
+            }
+
+            //Obtengo los meses que tiene la analitica
+            response.Data.MonthsHeader = new List<MonthDetailCost>();
+
+            response.Data.ManagerId = analytic.Manager.ExternalManagerId;
+
+            for (DateTime date = analytic.StartDateContract.Date; date.Date <= analytic.EndDateContract.Date; date = date.AddMonths(1))
+            {
+                var monthHeader = new MonthDetailCost();
+                monthHeader.Display = DatesHelper.GetDateShortDescription(date);
+                monthHeader.Year = date.Year;
+                monthHeader.Month = date.Month;
+
+                response.Data.MonthsHeader.Add(monthHeader);
+            }
+
+            //Obtengo los empleados de la analitica
+            response.Data.Employees = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(analytic.Id);
+
+            return response;
+        }
+
         private void FillTotalBilling(Response<BillingDetail> response, CrmProjectHito hito, Tuple<DateTime, DateTime> dates)
         {
             var totalBilling = response.Data.Totals.FirstOrDefault(x => x.CurrencyId == hito.MoneyId);

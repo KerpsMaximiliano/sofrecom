@@ -31,5 +31,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{serviceId}/costDetail")]
+        public IActionResult GetDetailCost(string serviceId)
+        {
+            var response = managementReportService.GetCostDetail(serviceId);
+
+            return this.CreateResponse(response);
+        }
     }
 }
