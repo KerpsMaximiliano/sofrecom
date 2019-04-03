@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Sofco.Core.Models.ManagementReport
 {
-    public class CostDetail
+    public class CostDetailModel
     {
         public string ManagerId { get; set; }
         public IList<MonthDetailCost> MonthsHeader { get; set; }

@@ -20,7 +20,7 @@
                 </td>
             </tr>
             <tr class="active" *ngFor="let employee of employees">
-                <th>{{ employee.name }} - Legajo n°{{employee.employeeNumber}} </th>
+                <th>{{ employee.name }} - {{employee.employeeNumber}} </th>
                 <td *ngFor="let month of months">
                     <label class="label" (click)="openEditItemModal(employee)" [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}"></label>
                 </td>
