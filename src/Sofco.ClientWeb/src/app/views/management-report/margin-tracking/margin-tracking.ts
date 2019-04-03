@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
@@ -11,6 +11,8 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     isManager: boolean = false;
     isCdgOrDirector: boolean = false;
 
+    @ViewChild('costDetailMonth') costDetailMonth;
+
     constructor(private menuService: MenuService){}
 
     ngOnInit(): void {
@@ -20,5 +22,9 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         
+    }
+
+    seeCostDetailMonth(){
+        this.costDetailMonth.open({});
     }
 }
