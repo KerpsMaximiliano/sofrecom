@@ -118,6 +118,11 @@ namespace Sofco.Service.Implementations.Billing
 
             if (!response.HasErrors())
                 projectData.ClearHitoKeys(hito.ProjectId);
+            else
+            {
+                response.Messages.Clear();
+                response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
+            }
 
             return response;
         }
