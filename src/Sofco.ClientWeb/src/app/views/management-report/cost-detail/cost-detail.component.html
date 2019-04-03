@@ -1,319 +1,97 @@
-<div class="table-responsive">
-    <table class="table">
+<div class="table-responsive billing-table">
+    <table class="table dataTable" role="grid">
         <thead>
             <tr>
-                <th scope="col"></th>
-                <th scope="col">Ene. 2019</th>
-                <th scope="col">Feb. 2019</th>
-                <th scope="col">Mar. 2019</th>
-                <th scope="col">Abr. 2019</th>
-                <th scope="col">May. 2019</th>
-                <th scope="col">Jun. 2019</th>
-                <th scope="col">Jul. 2019</th>
-                <th scope="col"></th>
+                <th class="first-column"></th>
+                <th class="text-center" *ngFor="let month of months">{{ month.display }}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <th>Total Costos</th>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
+                <td *ngFor="let month of months">
+                    <label class="label label-total"></label>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td></td>
             </tr>
             <tr>
                 <th>Cantidad Recursos costeados</th>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
+                <td *ngFor="let month of months">
+                    <label class="label label-cant-resources"></label>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td></td>
             </tr>
-            <tr class="active">
-                <th>Recurso 1 - Legajo n° </th>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
+            <tr class="active" *ngFor="let employee of employees">
+                <th>{{ employee.name }} - Legajo n°{{employee.employeeNumber}} </th>
+                <td *ngFor="let month of months">
+                    <label class="label" (click)="openEditItemModal(employee)" [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}"></label>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td></td>
-            </tr>
-            <tr class="active">
-                <th>Recurso 2 - Legajo n° </th>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td></td>
-            </tr>
-            <tr class="active">
-                <th>Recurso 3 - Legajo n° </th>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td></td>
-            </tr>
-            <tr class="active">
-                <th>Recurso 4 - Legajo n° </th>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td></td>
             </tr>
             <tr>
                 <th>% Ajuste</th>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
+                <td *ngFor="let month of months">
+                    <label class="label" (click)="openEditItemModal(employee)" [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}"></label>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td></td>
             </tr>
             <tr>
                 <th>Recupero Vacaciones</th>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
+                <td *ngFor="let month of months">
+                    <label class="label" (click)="openEditItemModal(employee)" [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}"></label>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td></td>
             </tr>
             <tr>
                 <th>Gratificaciones</th>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
+                <td *ngFor="let month of months">
+                    <label class="label" (click)="openEditItemModal(employee)" [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}"></label>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td></td>
             </tr>
             <tr>
                 <th>Riesgo/Retenciones</th>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
+                <td *ngFor="let month of months">
+                    <label class="label" (click)="openEditItemModal(employee)" [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}"></label>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-secondary btn-lg"></button>
-                </td>
-                <td></td>
             </tr>
             <tr>
                 <th>Total Sueldo</th>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
+                <td *ngFor="let month of months">
+                    <label class="label label-salary"></label>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td></td>
             </tr>
             <tr>
                 <th>Cargas (0.51 del sueldo)</th>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
+                <td *ngFor="let month of months">
+                    <label class="label label-load"></label>
                 </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-info btn-lg"></button>
-                </td>
-                <td></td>
             </tr>
         </tbody>
     </table>
 </div>
+
+<div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
+    <button class="btn btn-primary" type="button">Guardar <i class="fa fa-save"></i></button>
+</div>
+
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()">
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label">HOLA</label>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <label class="control-label">K ACE</label>
+            <input type="number" decimalFormat class="form-control">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label">fecha</label>
+                <date-picker></date-picker>
+            </div>
+        </div>
+    </div>
+
+
+</ng2-modal>
