@@ -5,6 +5,7 @@ using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Relationships;
@@ -46,6 +47,13 @@ namespace Sofco.Domain.Models.Admin
         public ICollection<Sector> Sectors { get; set; }
 
         public ICollection<Employee> Employees { get; set; }
+
+        public ICollection<CostDetailResource> CostDetailResource { get; set; }
+        public ICollection<CostDetailResource> CostDetailResource2 { get; set; }
+
+        public ICollection<CostDetailHumanResource> CostDetailHumanResources { get; set; }
+        public ICollection<CostDetailHumanResource> CostDetailHumanResources2 { get; set; }
+        public ICollection<CostDetailHumanResource> CostDetailHumanResources3 { get; set; }
 
         public IList<Advancement> Advancements { get; set; }
         public IList<Advancement> Advancements2 { get; set; }

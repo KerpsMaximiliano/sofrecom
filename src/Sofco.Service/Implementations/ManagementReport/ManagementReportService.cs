@@ -211,9 +211,9 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<CostDetail> GetCostDetail(string serviceId)
+        public Response<CostDetailModel> GetCostDetail(string serviceId)
         {
-            var response = new Response<CostDetail> { Data = new CostDetail() };
+            var response = new Response<CostDetailModel> { Data = new CostDetailModel() };
 
             var analytic = unitOfWork.AnalyticRepository.GetByService(serviceId);
 

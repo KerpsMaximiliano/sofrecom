@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Common.Domains;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Relationships;
@@ -77,6 +78,8 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public ICollection<WorkTime> WorkTimes { get; set; }
 
+        public ICollection<CostDetailHumanResource> CostDetailHumanResources { get; set; }
+        
         public string EndReason { get; set; }
 
         public int? TypeEndReasonId { get; set; }
