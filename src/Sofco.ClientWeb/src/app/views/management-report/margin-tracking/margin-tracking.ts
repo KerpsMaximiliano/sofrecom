@@ -11,20 +11,14 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     isManager: boolean = false;
     isCdgOrDirector: boolean = false;
 
-    @ViewChild('costDetailMonth') costDetailMonth;
-
     constructor(private menuService: MenuService){}
 
     ngOnInit(): void {
         this.isManager = this.menuService.userIsManager;
-        this.isCdgOrDirector = this.menuService.userIsManager || this.menuService.userIsCdg;
+        this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
     }
 
     ngOnDestroy(): void {
         
-    }
-
-    seeCostDetailMonth(){
-        this.costDetailMonth.open({});
     }
 }

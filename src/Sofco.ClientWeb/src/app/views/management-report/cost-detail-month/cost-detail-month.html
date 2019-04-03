@@ -5,7 +5,7 @@
             <div class="form-group row">
                 <label class="col-sm-6 col-form-label">Total Provisionado:</label>
                 <div class="col-sm-6">
-                    <input type="text" decimalFormat class="form-control input-xs" disabled>
+                    <label class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
                 </div>
             </div>
         </div>
@@ -13,7 +13,7 @@
             <div class="form-group row">
                 <label class="col-sm-6 col-form-label">Total Facturación (GAPS)</label>
                 <div class="col-sm-6">
-                    <input type="text" decimalFormat class="form-control input-xs" disabled>
+                    <label class="label label-gray">{{ totalBilling | amountFormat }}</label>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
             <div class="form-group row">
                 <label class="col-sm-6 col-form-label">Total Costos:</label>
                 <div class="col-sm-6">
-                    <input type="text" decimalFormat class="form-control input-xs" disabled>
+                    <label class="label label-gray">{{ totalCosts | amountFormat }}</label>
                 </div>
             </div>
         </div>
@@ -33,80 +33,76 @@
     <hr class="hr-line-dashed">
 
     <div class="row border-bottom m-b-sm">
-        <div class="col-sm-4"><h4>Costos RD + P</h4></div>
+        <div class="col-sm-6"><h4>Costos RD + P</h4></div>
         <div class="col-sm-2"><h4>Bruto</h4></div>
         <div class="col-sm-2"><h4>Cargas</h4></div>
         <div class="col-sm-2"><h4>Total gral</h4></div>
-        <div class="col-sm-2"></div>
     </div>
 
     <div class="row">
-        <div class="col-sm-4">Recurso 1 - 111</div>
+        <div class="col-sm-6">Recurso 1 - 111</div>
         <div class="col-sm-2">
             <input type="number" decimalFormat class="form-control input-xs" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" disabled>
+            <input type="number" decimalFormat class="form-control input-xs" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
             <input type="number" decimalFormat class="form-control input-xs" disabled>
-        </div>
-        <div class="col-sm-2">
-            <button class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></button>
         </div>
     </div>
 
     <hr class="hr-line-dashed">
     
     <div class="row border-bottom m-b-sm">
-        <div class="col-sm-4"><h4>Costos contratados + subcontratados</h4></div>
+        <div class="col-sm-5"><h4>Costos contratados + subcontratados</h4></div>
         <div class="col-sm-2"><h4>Honorarios</h4></div>
         <div class="col-sm-2"><h4>Seguro</h4></div>
         <div class="col-sm-2"><h4>Total gral</h4></div>
-        <div class="col-sm-2"></div>
+        <div class="col-sm-1"></div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-4">Recurso 1 - 111</div>
-        <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" disabled>
+    <div class="row m-t-xs" *ngFor="let subresource of subResources; let i of index">
+        <div class="col-sm-5">
+            <input type="text" class="form-control input-xs" [(ngModel)]="subresource.name" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" disabled>
+            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="subresource.salary" (ngModelChange)="subResourceChange(subresource)" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" disabled>
+            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="subresource.insurance" (ngModelChange)="subResourceChange(subresource)" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
-            <button class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></button>
-            <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="subresource.total" disabled>
+        </div>
+        <div class="col-sm-1">
+            <button class="btn btn-danger btn-xs" (click)="deleteSubResource(i)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
         </div>
     </div>
 
-    <button class="btn btn-success btn-xs" type="button">Agregar <i class="fa fa-plus"></i></button>
+    <button class="btn btn-success btn-xs m-t-xs" type="button" *ngIf="!isReadOnly" (click)="addSubResource()">Agregar <i class="fa fa-plus"></i></button>
 
     <hr class="hr-line-dashed">
 
     <div class="row border-bottom m-b-sm">
         <div class="col-sm-4"><h4>Otros Gastos</h4></div>
-        <div class="col-sm-4"><h4>Descripción</h4></div>
-        <div class="col-sm-2"><h4>Total gral</h4></div>
-        <div class="col-sm-2"></div>
+        <div class="col-sm-5"><h4>Descripción</h4></div>
+        <div class="col-sm-2"><h4>Total</h4></div>
+        <div class="col-sm-1"></div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-4">Gasto xxx</div>
-        <div class="col-sm-4">
-            <input type="text" class="form-control input-xs" disabled>
+    <div class="row m-t-xs" *ngFor="let expense of expenses; let i of index">
+        <div class="col-sm-4">{{ expense.type }}</div>
+        <div class="col-sm-5">
+            <input type="text" class="form-control input-xs" [(ngModel)]="expense.description" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
-            <input type="text" class="form-control input-xs" disabled>
+            <input type="number" class="form-control input-xs" [(ngModel)]="expense.total" (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly">
         </div>
-        <div class="col-sm-2">
-            <button class="btn btn-warning btn-xs"><i class="fa fa-edit"></i></button>
-            <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+        <div class="col-sm-1">
+            <button class="btn btn-danger btn-xs" (click)="deleteExpense(i)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
         </div>
     </div>
 
-    <button class="btn btn-success btn-xs" type="button">Agregar <i class="fa fa-plus"></i></button>
+    <button class="btn btn-success btn-xs m-t-xs" (click)="addExpense()" *ngIf="!isReadOnly" type="button">Agregar <i class="fa fa-plus"></i></button>
 </ng2-modal> 
