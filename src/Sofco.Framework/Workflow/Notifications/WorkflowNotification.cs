@@ -40,6 +40,7 @@ namespace Sofco.Framework.Workflow.Notifications
                 AddGroup(recipientsList, stateNotifier);
                 AddApplicant(entity, recipientsList, stateNotifier);
                 AddManager(entity, recipientsList, stateNotifier);
+                AddAnalyticManager(entity, recipientsList, stateNotifier);
                 AddSector(entity, recipientsList, stateNotifier);
             }
 
@@ -104,8 +105,7 @@ namespace Sofco.Framework.Workflow.Notifications
                 {
                     var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
 
-                    if (employee != null && employee.ManagerId.HasValue && employee.Manager != null &&
-                        !string.IsNullOrWhiteSpace(employee.Manager.Email))
+                    if (employee != null && employee.ManagerId.HasValue && employee.Manager != null && !string.IsNullOrWhiteSpace(employee.Manager.Email))
                     {
                         recipientsList.Add(employee.Manager.Email);
 
@@ -123,6 +123,34 @@ namespace Sofco.Framework.Workflow.Notifications
                       
                     }
                         
+                }
+            }
+        }
+
+        private void AddAnalyticManager(WorkflowEntity entity, List<string> recipientsList, WorkflowStateNotifier stateNotifier)
+        {
+            if (stateNotifier.UserSource.Code == appSetting.ManagerUserSource)
+            {
+                if (entity.UserApplicant != null)
+                {
+                    if (entity is Refund refund)
+                    {
+                        var manager = unitOfWork.AnalyticRepository.GetManager(refund.AnalyticId);
+
+                        if (manager != null)
+                        {
+                            recipientsList.Add(manager.Email);
+
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(manager.Id, refund.AnalyticId, UserApproverType.Refund);
+
+                            foreach (var userApprover in userApprovers)
+                            {
+                                var userToSend = unitOfWork.UserRepository.Get(userApprover.UserId);
+
+                                if (userToSend != null) recipientsList.Add(userToSend.Email);
+                            }
+                        }
+                    }
                 }
             }
         }

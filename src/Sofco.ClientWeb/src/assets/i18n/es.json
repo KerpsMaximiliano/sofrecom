@@ -1169,5 +1169,8 @@
         "ammountBDolares": "Monto B Dolares",
         "ammountBEuros": "Monto B Euros",
         "currentAccount": "Cuenta Corriente"
+    },
+    "managementReport":{
+        "costDetailMonth": "Detalle de costos mensual"
     }
 }

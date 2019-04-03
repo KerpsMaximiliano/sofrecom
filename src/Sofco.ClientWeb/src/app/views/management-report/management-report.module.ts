@@ -21,10 +21,12 @@ import { ProjectService } from "app/services/billing/project.service";
 import { UtilsService } from "app/services/common/utils.service";
 import { MessageService } from "app/services/common/message.service";
 import { DecimalFormatModule } from "app/components/decimalFormat/decimal-format.directive";
+import { CostDetailMonthComponent } from "./cost-detail-month/cost-detail-month";
 
 @NgModule({
     declarations: [
-      ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent
+      ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent, 
+      CostDetailMonthComponent
     ],
     imports: [
       CommonModule,

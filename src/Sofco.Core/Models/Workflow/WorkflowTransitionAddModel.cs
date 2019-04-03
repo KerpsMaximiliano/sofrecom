@@ -26,6 +26,8 @@ namespace Sofco.Core.Models.Workflow
 
         public bool NotifyToManager { get; set; }
 
+        public bool NotifyToAnalyticManager { get; set; }
+
         public IList<int> NotifyToUsers { get; set; }
 
         public IList<int> NotifyToGroups { get; set; }
@@ -36,6 +38,8 @@ namespace Sofco.Core.Models.Workflow
 
         public bool ManagerHasAccess { get; set; }
 
+        public bool AnalyticManagerHasAccess { get; set; }
+
         public IList<int> UsersHasAccess { get; set; }
 
         public IList<int> UsersDenyAccess { get; set; }
@@ -43,5 +47,7 @@ namespace Sofco.Core.Models.Workflow
         public IList<int> GroupsHasAccess { get; set; }
 
         public bool SectorHasAccess { get; set; }
+
+
     }
 }

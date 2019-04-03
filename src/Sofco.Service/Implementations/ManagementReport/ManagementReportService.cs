@@ -168,10 +168,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                     if (hito.StartDate.Date >= dates.Item1.Date && hito.StartDate.Date <= dates.Item2.Date)
                     {
                         var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hito.Id);
-
+                        
                         var billingRowItem = new BillingHitoItem
                         {
-                            Description = $"{project.OpportunityNumber} {project.Name} - {hito.Name}",
+                            Description = $"{project.OpportunityNumber} - {hito.Name} - ({hito.Money})",
                             Id = hito.Id,
                             ProjectId = project.CrmId,
                             ProjectName = $"{project.OpportunityNumber} {project.Name}",

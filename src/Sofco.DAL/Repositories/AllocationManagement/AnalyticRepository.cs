@@ -143,6 +143,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 }).ToList();
         }
 
+        public User GetManager(int analyticId)
+        {
+            return context.Analytics
+                .Include(x => x.Manager)
+                .SingleOrDefault(x => x.Id == analyticId)?.Manager;
+        }
+
         public List<Analytic> GetByServiceIds(List<string> serviceIds)
         {
             return context.Analytics.Where(x => x.Status == AnalyticStatus.Open

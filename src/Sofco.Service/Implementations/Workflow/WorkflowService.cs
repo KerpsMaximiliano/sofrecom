@@ -219,6 +219,8 @@ namespace Sofco.Service.Implementations.Workflow
 
             hasAccess = ValidateManagerAccess(transition, currentUser, entity, hasAccess);
 
+            hasAccess = ValidateAnalyticManagerAccess(transition, currentUser, entity, hasAccess);
+
             hasAccess = ValidateSectorAccess(transition, currentUser, entity, hasAccess);
 
             hasAccess = ValidateUserDenyAccess(transition, currentUser, hasAccess);
@@ -255,6 +257,37 @@ namespace Sofco.Service.Implementations.Workflow
                     if (sectors.Any(x => x.ResponsableUserId == currentUser.Id))
                     {
                         hasAccess = true;
+                    }
+                }
+            }
+
+            return hasAccess;
+        }
+
+        private bool ValidateAnalyticManagerAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
+        {
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.AnalyticManagerUserSource))
+            {
+                if (entity is Refund refund)
+                {
+                    var analytic = unitOfWork.AnalyticRepository.Get(refund.AnalyticId);
+
+                    if (analytic != null)
+                    {
+                        if (analytic.ManagerId.HasValue)
+                        {
+                            if (analytic.ManagerId.Value == currentUser.Id)
+                            {
+                                hasAccess = true;
+                            }
+
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(analytic.ManagerId.Value, refund.AnalyticId, UserApproverType.Refund);
+
+                            if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                            {
+                                hasAccess = true;
+                            }
+                        }
                     }
                 }
             }
