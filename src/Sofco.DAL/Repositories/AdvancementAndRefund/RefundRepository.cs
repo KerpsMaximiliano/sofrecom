@@ -21,6 +21,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             var query = context.Refunds
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
+                .Include(x => x.Analytic)
                 .Include(x => x.Status)
                     .ThenInclude(x => x.ActualTransitions)
                 .Include(x => x.Details)

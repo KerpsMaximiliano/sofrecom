@@ -331,7 +331,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 foreach (var refund in result)
                 {
-                    if (ValidateManagerAccess(refund, currentUser))
+                    if (ValidateManagerAccess(refund, currentUser) || ValidateAnalyticManagerAccess(refund, currentUser))
                     {
                         if (response.Data.All(x => x.Id != refund.Id))
                         {
@@ -425,6 +425,28 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 }
 
                 var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, entity.AnalyticId, UserApproverType.Refund);
+
+                if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                {
+                    hasAccess = true;
+                }
+            }
+
+            return hasAccess;
+        }
+
+        private bool ValidateAnalyticManagerAccess(Refund entity, UserLiteModel currentUser)
+        {
+            var hasAccess = false;
+
+            if (entity.Analytic != null && entity.Analytic.ManagerId.HasValue)
+            {
+                if (entity.Analytic.ManagerId.Value == currentUser.Id)
+                {
+                    hasAccess = true;
+                }
+
+                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(entity.Analytic.ManagerId.Value, entity.AnalyticId, UserApproverType.Refund);
 
                 if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                 {

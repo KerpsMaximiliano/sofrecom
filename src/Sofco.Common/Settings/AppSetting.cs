@@ -36,6 +36,8 @@
 
         public string ManagerUserSource { get; set; }
 
+        public string AnalyticManagerUserSource { get; set; }
+
         public string ApplicantUserSource { get; set; }
 
         public string GroupUserSource { get; set; }
