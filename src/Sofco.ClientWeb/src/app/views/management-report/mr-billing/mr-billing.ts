@@ -175,7 +175,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                         projectId: this.hito.projectId, 
                         projectName: element.projectName, 
                         currencyId: model.moneyId, 
-                        description: element.projectName + " - " + model.name, 
+                        description: element.projectName + " - " + model.name + " - " + currency.text, 
                         values: [] };
 
                     this.months.forEach(monthRow => {
@@ -245,7 +245,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.messageService.showConfirm(() => {
             this.messageService.showLoading();
 
-            this.projectService.deleteHito(hito.id, hito.projectId).subscribe(() => {
+            this.projectService.deleteHito(hito.id, hito.projectId).subscribe(response => {
                 this.messageService.closeLoading();
 
                 var hitoMonth = hito.values.find(x => x.value && x.value > 0);
