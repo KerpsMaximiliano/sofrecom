@@ -272,20 +272,15 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 foreach (var month in resource.MonthsCost)
                 {
-                    CostDetail entity = new CostDetail();
-                    entity.IdAnalytic = pDetailCost.AnalyticId;
-                    entity.Cost = month.Value;
-                    entity.MonthYear = month.MonthYear;
-                    entity.TypeId = resource.TypeId;
-                    entity.EmployeeId = resource.EmployeeId;
+                    CostDetail entity = new CostDetail();                   
 
                     if (month.CostDetailId > 0)
                     {
-                        if (month.Value != costDetails.Where(c => c.Id == month.CostDetailId).FirstOrDefault().Cost)
-                        {
-                            entity.CreatedAt = DateTime.UtcNow;
-                            entity.CreatedById = currentUser.Id;
+                        entity = costDetails.Where(c => c.Id == month.CostDetailId).FirstOrDefault();
 
+                        if (month.Value != entity.Cost)
+                        {
+                            entity.Cost = month.Value ?? 0;
                             entity.ModifiedAt = DateTime.UtcNow;
                             entity.ModifiedById = currentUser.Id;
 
@@ -296,6 +291,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         if(month.Value > 0)
                         {
+                            entity.IdAnalytic = pDetailCost.AnalyticId;
+                            entity.Cost = month.Value ?? 0;
+                            entity.MonthYear = month.MonthYear;
+                            entity.TypeId = resource.TypeId;
+                            entity.EmployeeId = resource.EmployeeId;
                             entity.CreatedAt = DateTime.UtcNow;
                             entity.CreatedById = currentUser.Id;
 
@@ -443,6 +443,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 detailResource.MonthsCost = new List<MonthDetailCost>();
 
                 detailResource.Display = type.Name;
+                detailResource.TypeId = type.Id;
 
                 foreach (var mounth in Months)
                 {

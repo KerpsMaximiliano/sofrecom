@@ -54,7 +54,7 @@
 </div>
 
 <div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
-    <button class="btn btn-primary" type="button" (click)="save()">Guardar <i class="fa fa-save"></i></button>
+    <button class="btn btn-primary cursor-pointer" type="button" (click)="save()">Guardar <i class="fa fa-save"></i></button>
 </div>
 
 <ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()">
