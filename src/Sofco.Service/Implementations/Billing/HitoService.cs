@@ -174,9 +174,9 @@ namespace Sofco.Service.Implementations.Billing
 
             if (response.HasErrors()) return response;
 
-            var project = unitOfWork.ProjectRepository.GetByIdCrm(hito.ProjectId);
+            //var project = unitOfWork.ProjectRepository.GetByIdCrm(hito.ProjectId);
 
-            HitoValidatorHelper.ValidateDates(project, response, hito);
+            //HitoValidatorHelper.ValidateDates(project, response, hito);
 
             return response;
         }
