@@ -31,6 +31,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     managerId: string;
 
     pendingHitoStatus:string = "Pendiente";
+    billedHitoStatus:string = "Facturado";
+    cashedHitoStatus:string = "Pagado";
 
     hito: NewHito = new NewHito();
 
@@ -268,5 +270,27 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         }
         
         return `input-${hito.status}`
+    }
+
+    getTotals(month, year){
+        var totals = {
+            totalProvisioned: 0,
+            totalBilling: 0
+        }
+
+        this.hitos.forEach(hito => {
+
+            var value = hito.values.find(x => x.month == month && x.year == year);
+
+            if(value && value.value > 0){
+                if(value.status == this.billedHitoStatus || value.status == this.cashedHitoStatus){
+                    totals.totalBilling += value.value;
+                }
+
+                totals.totalProvisioned += value.value;
+            }
+        });
+
+        return totals;
     }
 }

@@ -63,12 +63,24 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     addMonth(){
+        var dateSplitted = this.model.endDate.split("-");
+
+        if(this.year == dateSplitted[0] && (this.month+1) == dateSplitted[1]){
+            return;
+        }
+
         this.month += 1;
         var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
         this.setDate(dateSetting);  
     }
 
     substractMonth(){
+        var dateSplitted = this.model.startDate.split("-");
+
+        if(this.year == dateSplitted[0] && (this.month+1) == dateSplitted[1]){
+            return;
+        }
+
         this.month -= 1;
         var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
         this.setDate(dateSetting);  
@@ -113,8 +125,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     seeCostDetailMonth(){
-        var resources = this.detailCost.getResourcesByMonth(this.month, this.year);
+        var resources = this.detailCost.getResourcesByMonth(this.month+1, this.year);
+        var totals = this.billing.getTotals(this.month+1, this.year);
 
-        this.costDetailMonth.open({ isCdg: this.menuService.userIsCdg, resources });
+        this.costDetailMonth.open({ isCdg: this.menuService.userIsCdg, resources, totals });
     }
 }

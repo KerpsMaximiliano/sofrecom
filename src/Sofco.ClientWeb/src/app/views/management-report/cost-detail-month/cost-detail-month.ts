@@ -57,7 +57,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     open(data){
         this.isReadOnly = !data.isCdg;
         this.resources = data.resources;
+        this.totalBilling = data.totals.totalBilling;
+        this.totalProvisioned = data.totals.totalProvisioned;
 
+        this.calculateTotalCosts();
         this.costDetailMonthModal.show();
     }
 

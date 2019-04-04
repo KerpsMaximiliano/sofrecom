@@ -108,14 +108,22 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     getResourcesByMonth(month, year){
-        //todo: filtrar por mes y año correspondiente
 
         return this.employees.map(element => {
+
+            var monthCost = element.monthsCost.find(x => {
+                var dateSplitted = x.monthYear.split("-");
+
+                if(dateSplitted[0] == year && dateSplitted[1] == month){
+                    return x;
+                } 
+            });
+
             return {
-                name: element.name + " - " + element.employeeNumber,
-                salary: 0,
+                name: element.display,
+                salary: monthCost.value,
                 charges: 0,
-                total: 0
+                total: monthCost.value
             }
         });
     }
