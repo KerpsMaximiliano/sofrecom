@@ -59,7 +59,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private string GetRecipient(EmailConfig emailConfig)
         {
-            return unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
+            return unitOfWork.GroupRepository.GetEmail(emailConfig.GafCode);
         }
 
         public string GetSuccessMessage()
