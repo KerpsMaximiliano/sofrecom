@@ -74,7 +74,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             if (service != null)
             {
                 response.Data.Analytic = service.Analytic;
-         
+
                 response.Data.Name = service.Name;
                 response.Data.AccountName = service.AccountName;
             }
@@ -169,7 +169,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     if (hito.StartDate.Date >= dates.Item1.Date && hito.StartDate.Date <= dates.Item2.Date)
                     {
                         var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hito.Id);
-                        
+
                         var billingRowItem = new BillingHitoItem
                         {
                             Description = $"{project.OpportunityNumber} - {hito.Name} - ({hito.Money})",
@@ -224,6 +224,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 return response;
             }
 
+            response.Data.AnalyticId = analytic.Id;
             //Obtengo los meses que tiene la analitica
             response.Data.MonthsHeader = new List<MonthDetailCost>();
 
@@ -254,6 +255,62 @@ namespace Sofco.Service.Implementations.ManagementReport
             response.Data.FundedResources = FillFundedResoursesByMonth(analytic.Id, response.Data.MonthsHeader, FundedResources, TypesFundedResources);
 
             return response;
+        }
+
+        public Response UpdateCostDetail(CostDetailModel pDetailCost)
+        {
+            //Obtengo los datos de las celdas
+            var costDetails = unitOfWork.CostDetailRepository.GetByAnalytic(pDetailCost.AnalyticId);
+
+            List<CostResource> resources = new List<CostResource>();
+            resources.AddRange(pDetailCost.CostEmployees);
+            resources.AddRange(pDetailCost.FundedResources);
+
+            var currentUser = userData.GetCurrentUser();
+
+            foreach (var resource in resources)
+            {
+                foreach (var month in resource.MonthsCost)
+                {
+                    CostDetail entity = new CostDetail();
+                    entity.IdAnalytic = pDetailCost.AnalyticId;
+                    entity.Cost = month.Value;
+                    entity.MonthYear = month.MonthYear;
+                    entity.TypeId = resource.TypeId;
+                    entity.EmployeeId = resource.EmployeeId;
+
+                    if (month.CostDetailId > 0)
+                    {
+                        if (month.Value != costDetails.Where(c => c.Id == month.CostDetailId).FirstOrDefault().Cost)
+                        {
+                            entity.CreatedAt = DateTime.UtcNow;
+                            entity.CreatedById = currentUser.Id;
+
+                            entity.ModifiedAt = DateTime.UtcNow;
+                            entity.ModifiedById = currentUser.Id;
+
+                            unitOfWork.CostDetailRepository.Update(entity);
+                        }
+                    }
+                    else
+                    {
+                        if(month.Value > 0)
+                        {
+                            entity.CreatedAt = DateTime.UtcNow;
+                            entity.CreatedById = currentUser.Id;
+
+                            unitOfWork.CostDetailRepository.Insert(entity);
+                        }
+                    }
+                }
+            }
+
+            unitOfWork.Save();
+
+            var Response = new Response();
+
+            return Response;
+
         }
 
         private void FillTotalBilling(Response<BillingDetail> response, CrmProjectHito hito, Tuple<DateTime, DateTime> dates)
@@ -363,6 +420,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     if (monthValue != null)
                     {
                         monthDetail.Value = monthValue.Cost;
+                        monthDetail.CostDetailId = monthValue.Id;
                     }
 
                     monthDetail.MonthYear = mounth.MonthYear;
@@ -378,14 +436,14 @@ namespace Sofco.Service.Implementations.ManagementReport
         private List<CostResource> FillFundedResoursesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> FundedResources, List<CostDetailResourceType> Types)
         {
             List<CostResource> fundedResources = new List<CostResource>();
-           
+
             foreach (var type in Types)
             {
                 var detailResource = new CostResource();
                 detailResource.MonthsCost = new List<MonthDetailCost>();
 
                 detailResource.Display = type.Name;
-                
+
                 foreach (var mounth in Months)
                 {
                     var monthDetail = new MonthDetailCost();
@@ -394,6 +452,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     if (monthValue != null)
                     {
                         monthDetail.Value = monthValue.Cost;
+                        monthDetail.CostDetailId = monthValue.Id;
                     }
 
                     monthDetail.MonthYear = mounth.MonthYear;

@@ -8,6 +8,7 @@ namespace Sofco.Core.Models.ManagementReport
     public class CostDetailModel
     {
         public string ManagerId { get; set; }
+        public int AnalyticId { get; set; }
         public IList<MonthDetailCost> MonthsHeader { get; set; }
         public List<CostResource> CostEmployees { get; set; }
         public List<CostResource> FundedResources { get; set; }
@@ -18,11 +19,11 @@ namespace Sofco.Core.Models.ManagementReport
         public string Display { get; set; }
         public float Value { get; set; }
         public DateTime MonthYear { get; set; }
+        public int CostDetailId { get; set; }
     }
     
     public class CostResource
     {
-        public int CostDetailId { get; set; }
         public int EmployeeId { get; set; }
         public int TypeId { get; set; }
         public string Display { get; set; }
