@@ -1,18 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
-using Sofco.Core.Data.Admin;
+using Sofco.Common.Settings;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Common;
+using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -30,16 +34,24 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private readonly ISessionManager sessionManager;
 
-        public UserApproverService(IUserApproverRepository userApproverRepository, 
-            IUserData userData, 
+        private readonly AppSetting setting;
+
+        private readonly IUnitOfWork unitOfWork;
+
+        public UserApproverService(IUserApproverRepository userApproverRepository,
+            IUserData userData,
             IEmployeeRepository employeeRepository,
             ILogMailer<UserApproverService> logger,
+            IUnitOfWork unitOfWork,
+            IOptions<AppSetting> settingOptions,
             IMapper mapper, ISessionManager sessionManager)
         {
             this.userApproverRepository = userApproverRepository;
             this.userData = userData;
             this.employeeRepository = employeeRepository;
             this.logger = logger;
+            this.unitOfWork = unitOfWork;
+            this.setting = settingOptions.Value;
             this.mapper = mapper;
             this.sessionManager = sessionManager;
         }
@@ -49,13 +61,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var response = ValidateSave(userApprovers);
 
             if (response.HasErrors())
-                return response; 
+                return response;
 
             try
             {
                 ResolveUserId(userApprovers);
 
                 userApproverRepository.Save(Translate(userApprovers, type));
+
+                RefundAddHandler(userApprovers, type);
 
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverAdded);
                 response.Data = userApprovers;
@@ -69,13 +83,41 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response Delete(int workTimeApprovalId)
+        private void RefundAddHandler(List<UserApproverModel> userApprovers, UserApproverType type)
+        {
+            if (type == UserApproverType.Refund)
+            {
+                var group = this.unitOfWork.GroupRepository.GetByCode(setting.AdvancementRefundControlGroupCode);
+
+                if (group != null)
+                {
+                    foreach (var userApproverModel in userApprovers)
+                    {
+                        if (!unitOfWork.UserGroupRepository.ExistById(userApproverModel.ApproverUserId, group.Id))
+                        {
+                            unitOfWork.UserGroupRepository.Insert(new UserGroup
+                            { UserId = userApproverModel.ApproverUserId, GroupId = group.Id });
+                        }
+                    }
+
+                    unitOfWork.Save();
+                }
+            }
+        }
+
+        public Response Delete(int id)
         {
             var response = new Response();
 
             try
             {
-                userApproverRepository.Delete(workTimeApprovalId);
+                var domain = userApproverRepository.Get(id);
+
+                RefundDeleteHandler(domain);
+
+                userApproverRepository.Delete(domain);
+
+                unitOfWork.Save();
 
                 response.AddSuccess(Resources.WorkTimeManagement.WorkTime.ApproverDeleted);
             }
@@ -86,6 +128,22 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
 
             return response;
+        }
+
+        private void RefundDeleteHandler(UserApprover domain)
+        {
+            if (domain.Type == UserApproverType.Refund)
+            {
+                var group = this.unitOfWork.GroupRepository.GetByCode(setting.AdvancementRefundControlGroupCode);
+
+                if (group != null)
+                {
+                    if (unitOfWork.UserGroupRepository.ExistById(domain.ApproverUserId, group.Id))
+                    {
+                        unitOfWork.UserGroupRepository.Delete(new UserGroup { UserId = domain.ApproverUserId, GroupId = group.Id });
+                    }
+                }
+            }
         }
 
         public Response<List<UserSelectListItem>> GetApprovers(UserApproverQuery query, UserApproverType type)
@@ -143,7 +201,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var email = employeeRepository.GetById(userApprover.EmployeeId).Email;
 
-                if(string.IsNullOrEmpty(email)) continue;
+                if (string.IsNullOrEmpty(email)) continue;
 
                 var userName = email.Split('@')[0];
 

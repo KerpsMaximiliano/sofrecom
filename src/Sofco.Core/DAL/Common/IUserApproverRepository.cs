@@ -6,7 +6,7 @@ using Sofco.Domain.Models.Common;
 
 namespace Sofco.Core.DAL.Common
 {
-    public interface IUserApproverRepository
+    public interface IUserApproverRepository : IBaseRepository<UserApprover>
     {
         void Save(List<UserApprover> userApprovers);
 
