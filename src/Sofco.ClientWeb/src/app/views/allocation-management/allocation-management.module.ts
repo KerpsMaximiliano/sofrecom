@@ -31,6 +31,7 @@ import { ExternalUserComponent } from 'app/views/human-resources/external-user/e
 import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directive';
 import { ApproversModule } from '../common/approvers/approvers.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { BsDatepickerModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     SpinnerModule,
     TranslateModule,
+    BsDatepickerModule,
     Select2Module,
     NgDatepickerModule,
     DatePickerModule,

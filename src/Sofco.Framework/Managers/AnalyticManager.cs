@@ -42,6 +42,8 @@ namespace Sofco.Framework.Managers
                 Id = new Guid(serviceId),
                 ManagerId = managerId,
                 AnalyticTitle = analyticTitle,
+                StartDate = analytic.StartDateContract,
+                EndDate = analytic.EndDateContract,
                 ServiceTypeId = analytic.ServiceTypeId,
                 SoluctionTypeId = analytic.SolutionId,
                 TechnologyTypeId = analytic.TechnologyId

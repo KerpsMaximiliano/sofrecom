@@ -14,7 +14,7 @@
         </ol>
     </div>
 </div>
- 
+  
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox">
         <div class="ibox-content">
@@ -22,13 +22,13 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">{{'billing.solfac.dateSince' | translate }}</label>
-                        <date-picker [(date)]="dateSince"></date-picker>
+                        <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [(ngModel)]="dateSince">
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label">{{'billing.solfac.dateTo' | translate }}</label>
-                        <date-picker [(date)]="dateTo"></date-picker>
+                        <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [(ngModel)]="dateTo">
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -61,7 +61,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
                         <select select2 class="form-control" id="analyticId" multiple>
@@ -69,7 +69,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label"> {{ 'allocationManagement.allocation.resources' | translate }} </label>
                         <select select2 class="form-control" id="employeeId">
@@ -78,7 +78,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
+                    <div class="form-group checkbox-center">
+                        <icheck [(checked)]="unassigned">
+                            <label class="control-label">No Asignados</label> 
+                        </icheck>
+                    </div>
+                </div>
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label"> {{ 'allocationManagement.allocation.percentages' | translate }} </label>
                         <select select2 class="form-control" id="percentageId">

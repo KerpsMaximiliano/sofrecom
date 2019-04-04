@@ -143,7 +143,7 @@
         <div class="form-group" [ngClass]="formsService.getClassProperty(detailModalForm, 'creationDate')">
             <label class="control-label">{{ 'refund.date' | translate }}</label>
             <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="creationDate">
-
+ 
             <div class="form-control-feedback" *ngIf="formsService.hasErrors(detailModalForm, 'creationDate')">
                 <p *ngIf="detailModalForm.controls.creationDate.errors.required">{{ i18nService.translate('advancementAndRefund/refund','detailDateRequired') }}</p>
                 <p *ngIf="detailModalForm.controls.creationDate.errors.invalidDate">{{ i18nService.translate('advancementAndRefund/refund','detailDateInvalidRange') }}</p>
