@@ -115,7 +115,26 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             });
     }
 
+    getResourcesByMonth(month, year){
 
+        return this.employees.map(element => {
+
+            var monthCost = element.monthsCost.find(x => {
+                var dateSplitted = x.monthYear.split("-");
+
+                if(dateSplitted[0] == year && dateSplitted[1] == month){
+                    return x;
+                } 
+            });
+
+            return {
+                name: element.display,
+                salary: monthCost.value,
+                charges: 0,
+                total: monthCost.value
+            }
+        });
+    }
 
 }
 

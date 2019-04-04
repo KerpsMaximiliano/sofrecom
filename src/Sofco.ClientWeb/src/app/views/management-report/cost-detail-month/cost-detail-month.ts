@@ -56,7 +56,11 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     open(data){
         this.isReadOnly = !data.isCdg;
+        this.resources = data.resources;
+        this.totalBilling = data.totals.totalBilling;
+        this.totalProvisioned = data.totals.totalProvisioned;
 
+        this.calculateTotalCosts();
         this.costDetailMonthModal.show();
     }
 
@@ -70,6 +74,12 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.calculateTotalCosts();
     }
 
+    resourceChange(resource){
+        resource.total = resource.salary + resource.charges;
+
+        this.calculateTotalCosts();
+    }
+
     calculateTotalCosts(){
         this. totalCosts = 0;
 
@@ -78,6 +88,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         });
 
         this.expenses.forEach(element => {
+            this.totalCosts += element.total;
+        });
+
+        this.resources.forEach(element => {
             this.totalCosts += element.total;
         });
     }

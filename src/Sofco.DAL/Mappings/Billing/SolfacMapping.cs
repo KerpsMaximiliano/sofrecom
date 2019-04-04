@@ -41,7 +41,7 @@ namespace Sofco.DAL.Mappings.Billing
         public static void MapHitos(this ModelBuilder builder)
         {
             builder.Entity<Hito>().HasKey(_ => _.Id);
-            builder.Entity<Hito>().Property(_ => _.Description).HasMaxLength(500);
+            builder.Entity<Hito>().Property(_ => _.Description).HasMaxLength(250);
             builder.Entity<Hito>().Property(_ => _.Currency).HasMaxLength(10);
             builder.Entity<Hito>().Property(_ => _.CurrencyId).HasMaxLength(150);
             builder.Entity<Hito>().Property(_ => _.OpportunityId).HasMaxLength(150);

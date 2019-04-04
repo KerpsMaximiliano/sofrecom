@@ -10,9 +10,9 @@ namespace Sofco.Framework.ValidationHelpers.Billing
     {
         public static void ValidateAmmounts(HitoParameters hito, Response response)
         {
-            if (!hito.Ammount.HasValue || hito.Ammount.GetValueOrDefault() <= 0)
+            if (!hito.Ammount.HasValue || hito.Ammount.GetValueOrDefault() <= 0 || hito.Ammount.GetValueOrDefault() > 99999999)
             {
-                response.Messages.Add(new Message(Resources.Billing.Project.HitoAmmoutRequired, MessageType.Error));
+                response.AddError(Resources.Billing.Project.HitoAmmoutRequired);
             }
         }
 
@@ -20,7 +20,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             if (string.IsNullOrWhiteSpace(hito.OpportunityId) || hito.OpportunityId.Equals("00000000-0000-0000-0000-000000000000"))
             {
-                response.Messages.Add(new Message(Resources.Billing.Project.OpportunityRequired, MessageType.Error));
+                response.AddError(Resources.Billing.Project.OpportunityRequired);
             }
         }
 
@@ -28,15 +28,15 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             if (string.IsNullOrWhiteSpace(hito.Name))
             {
-                response.Messages.Add(new Message(Resources.Billing.Project.NameRequired, MessageType.Error));
+                response.AddError(Resources.Billing.Project.NameRequired);
             }
         }
 
         public static void ValidateMonth(HitoParameters hito, Response response)
         {
-            if (hito.Month <= 0)
+            if (!hito.Month.HasValue || hito.Month <= 0 || hito.Month > 12)
             {
-                response.Messages.Add(new Message(Resources.Billing.Project.MonthRequired, MessageType.Error));
+                response.AddError(Resources.Billing.Project.MonthRequired);
             }
         }
 

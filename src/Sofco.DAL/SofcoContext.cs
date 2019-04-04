@@ -150,6 +150,7 @@ namespace Sofco.DAL
             builder.MapUserGroups();
             builder.MapFunctionalities();
             builder.MapSolfac();
+            builder.MapHitos();
             builder.MapUtils();
             builder.MapRoleFunctionality();
             builder.MapInvoice();

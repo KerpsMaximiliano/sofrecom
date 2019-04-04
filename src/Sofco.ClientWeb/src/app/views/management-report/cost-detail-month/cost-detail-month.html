@@ -30,8 +30,6 @@
         </div>
     </div>
 
-    <hr class="hr-line-dashed">
-
     <div class="row border-bottom m-b-sm">
         <div class="col-sm-6"><h4>Costos RD + P</h4></div>
         <div class="col-sm-2"><h4>Bruto</h4></div>
@@ -39,16 +37,16 @@
         <div class="col-sm-2"><h4>Total gral</h4></div>
     </div>
 
-    <div class="row">
-        <div class="col-sm-6">Recurso 1 - 111</div>
+    <div class="row m-t-xs" *ngFor="let resource of resources">
+        <div class="col-sm-6">{{ resource.name }}</div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" disabled>
+            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.salary" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [disabled]="isReadOnly">
+            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" disabled>
+            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
         </div>
     </div>
 
