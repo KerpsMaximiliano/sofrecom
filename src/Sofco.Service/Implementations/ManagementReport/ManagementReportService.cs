@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.ManagementReport;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -228,18 +229,29 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             response.Data.ManagerId = analytic.Manager.ExternalManagerId;
 
-            for (DateTime date = analytic.StartDateContract.Date; date.Date <= analytic.EndDateContract.Date; date = date.AddMonths(1))
+            for (DateTime date = new DateTime(analytic.StartDateContract.Year, analytic.StartDateContract.Month, 1).Date; date.Date <= analytic.EndDateContract.Date; date = date.AddMonths(1))
             {
                 var monthHeader = new MonthDetailCost();
                 monthHeader.Display = DatesHelper.GetDateShortDescription(date);
-                monthHeader.Year = date.Year;
-                monthHeader.Month = date.Month;
+                monthHeader.MonthYear = date;
 
                 response.Data.MonthsHeader.Add(monthHeader);
             }
 
-            //Obtengo los empleados de la analitica
-            response.Data.Employees = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(analytic.Id);
+            //Obtengo los datos de las celdas
+            var costDetails = unitOfWork.CostDetailRepository.GetByAnalytic(analytic.Id);
+            var CostDetailEmployees = costDetails.Where(cd => cd.Type.Name == CostDetailTypeResource.Empleados.ToString()).ToList();
+            var FundedResources = costDetails.Where(cd => cd.Type.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
+
+            //Obtengo los tipos de Recursos
+            List<CostDetailResourceType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
+            List<CostDetailResourceType> TypesFundedResources = Types.Where(t => t.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
+            int IdEmployeeType = Types.Where(t => t.Name == CostDetailTypeResource.Empleados.ToString()).FirstOrDefault().Id;
+
+            //Mapeo Los empleados      
+            response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, CostDetailEmployees, IdEmployeeType);
+            //Mapeo Los demas datos
+            response.Data.FundedResources = FillFundedResoursesByMonth(analytic.Id, response.Data.MonthsHeader, FundedResources, TypesFundedResources);
 
             return response;
         }
@@ -325,6 +337,73 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
 
             return false;
+        }
+
+        private List<CostResource> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> CostDetailEmployees, int IdEmployeeType)
+        {
+            List<CostResource> costEmployees = new List<CostResource>();
+
+            //Obtengo los empleados de la analitica
+            var EmployeesAnalytic = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(IdAnalytic);
+
+            foreach (var employee in EmployeesAnalytic)
+            {
+                var detailEmployee = new CostResource();
+                detailEmployee.MonthsCost = new List<MonthDetailCost>();
+
+                detailEmployee.EmployeeId = employee.Id;
+                detailEmployee.Display = employee.Name + " - " + employee.Id;
+                detailEmployee.TypeId = IdEmployeeType;
+
+                foreach (var mounth in Months)
+                {
+                    var monthDetail = new MonthDetailCost();
+
+                    var monthValue = CostDetailEmployees.Find(e => e.EmployeeId == employee.Id && new DateTime(e.MonthYear.Year, e.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
+                    if (monthValue != null)
+                    {
+                        monthDetail.Value = monthValue.Cost;
+                    }
+
+                    monthDetail.MonthYear = mounth.MonthYear;
+                    detailEmployee.MonthsCost.Add(monthDetail);
+                }
+
+                costEmployees.Add(detailEmployee);
+            }
+
+            return costEmployees.OrderBy(e => e.Display).ToList();
+        }
+
+        private List<CostResource> FillFundedResoursesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> FundedResources, List<CostDetailResourceType> Types)
+        {
+            List<CostResource> fundedResources = new List<CostResource>();
+           
+            foreach (var type in Types)
+            {
+                var detailResource = new CostResource();
+                detailResource.MonthsCost = new List<MonthDetailCost>();
+
+                detailResource.Display = type.Name;
+                
+                foreach (var mounth in Months)
+                {
+                    var monthDetail = new MonthDetailCost();
+
+                    var monthValue = FundedResources.Find(r => r.TypeId == type.Id && new DateTime(r.MonthYear.Year, r.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
+                    if (monthValue != null)
+                    {
+                        monthDetail.Value = monthValue.Cost;
+                    }
+
+                    monthDetail.MonthYear = mounth.MonthYear;
+                    detailResource.MonthsCost.Add(monthDetail);
+                }
+
+                fundedResources.Add(detailResource);
+            }
+
+            return fundedResources;
         }
     }
 }

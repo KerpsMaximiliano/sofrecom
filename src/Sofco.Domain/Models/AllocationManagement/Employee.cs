@@ -78,7 +78,7 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public ICollection<WorkTime> WorkTimes { get; set; }
 
-        public ICollection<CostDetailHumanResource> CostDetailHumanResources { get; set; }
+        public ICollection<CostDetail> CostDetail { get; set; }
         
         public string EndReason { get; set; }
 

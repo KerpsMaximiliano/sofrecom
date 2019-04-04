@@ -21,7 +21,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     serviceId: string;
     months: any[] = new Array();
     employees: any[] = new Array();
-
+    fundedResourses: any[] = new Array();
     
     @ViewChild('editItemModal') editItemModal;
     public editItemModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -58,8 +58,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             
             this.months = response.data.monthsHeader;
-            this.employees = response.data.employees;
-         
+            this.employees = response.data.costEmployees;
+            this.fundedResourses = response.data.fundedResources;
         }, 
         error => {
             this.messageService.closeLoading();
