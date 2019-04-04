@@ -17,14 +17,14 @@ namespace Sofco.Core.Models.ManagementReport
     public class MonthDetailCost
     {
         public string Display { get; set; }
-        public float Value { get; set; }
+        public float? Value { get; set; }
         public DateTime MonthYear { get; set; }
         public int CostDetailId { get; set; }
     }
     
     public class CostResource
     {
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         public int TypeId { get; set; }
         public string Display { get; set; }
 
