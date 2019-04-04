@@ -423,6 +423,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         monthDetail.CostDetailId = monthValue.Id;
                     }
 
+                    monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
                     detailEmployee.MonthsCost.Add(monthDetail);
                 }
@@ -456,6 +457,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         monthDetail.CostDetailId = monthValue.Id;
                     }
 
+                    monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
                     detailResource.MonthsCost.Add(monthDetail);
                 }
