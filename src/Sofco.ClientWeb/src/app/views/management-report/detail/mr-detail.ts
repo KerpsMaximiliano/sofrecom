@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { MessageService } from "app/services/common/message.service";
 import { DatesService } from "app/services/common/month.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
     selector: 'management-report-detail',
@@ -26,11 +27,16 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     public month: number;
     public year: number;
 
+    isManager: boolean = false;
+    isCdgOrDirector: boolean = false;
+
     @ViewChild("billing") billing;
     @ViewChild("detailCost") detailCost;
+    @ViewChild('costDetailMonth') costDetailMonth;
 
     constructor(private activatedRoute: ActivatedRoute,
                 private messageService: MessageService,
+                private menuService: MenuService,
                 private datesService: DatesService,
                 private managementReportService: ManagementReportService){}
 
@@ -43,6 +49,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
             this.getDetail();
           });
+
+          this.isManager = this.menuService.userIsManager;
+          this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
 
           var dateSetting = this.datesService.getMonth(new Date());
           this.setDate(dateSetting);  
@@ -101,5 +110,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         else {
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         }
+    }
+
+    seeCostDetailMonth(){
+        this.costDetailMonth.open({ isCdg: this.menuService.userIsCdg });
     }
 }

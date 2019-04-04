@@ -18,6 +18,16 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    totalProvisioned: number = 0;
+    totalCosts: number = 0;
+    totalBilling: number = 0;
+
+    resources: any[] = new Array();
+    subResources: any[] = new Array();
+    expenses: any[] = new Array();
+
+    isReadOnly: boolean 
+
     constructor(){}
 
     ngOnInit(): void {
@@ -26,11 +36,49 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
     }
 
+    addSubResource(){
+        this.subResources.push({ name: "", salary: 0, insurance: 0, total: 0 });
+    }
+
+    deleteSubResource(index){
+        this.subResources.splice(index, 1);
+        this.calculateTotalCosts();
+    }
+
+    addExpense(){
+        this.expenses.push({ type: "Gasto x", description: "", total: 0 });
+    }
+
+    deleteExpense(index){
+        this.expenses.splice(index, 1);
+        this.calculateTotalCosts();
+    }
+
     open(data){
+        this.isReadOnly = !data.isCdg;
+
         this.costDetailMonthModal.show();
     }
 
     save(){
         
+    }
+
+    subResourceChange(subResource){
+        subResource.total = subResource.salary + subResource.insurance;
+
+        this.calculateTotalCosts();
+    }
+
+    calculateTotalCosts(){
+        this. totalCosts = 0;
+
+        this.subResources.forEach(element => {
+            this.totalCosts += element.total;
+        });
+
+        this.expenses.forEach(element => {
+            this.totalCosts += element.total;
+        });
     }
 }
