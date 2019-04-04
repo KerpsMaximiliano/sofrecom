@@ -113,6 +113,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     seeCostDetailMonth(){
-        this.costDetailMonth.open({ isCdg: this.menuService.userIsCdg });
+        var resources = this.detailCost.getResourcesByMonth(this.month, this.year);
+
+        this.costDetailMonth.open({ isCdg: this.menuService.userIsCdg, resources });
     }
 }
