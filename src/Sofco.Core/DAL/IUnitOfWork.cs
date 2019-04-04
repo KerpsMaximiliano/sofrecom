@@ -3,6 +3,7 @@ using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.DAL.ManagementReport;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.Views;
@@ -97,6 +98,12 @@ namespace Sofco.Core.DAL
 
         IAdvancementRepository AdvancementRepository { get; }
         IRefundRepository RefundRepository { get; }
+
+        #endregion
+
+        #region Management Report
+
+        ICostDetailRepository CostDetailRepository { get; }
 
         #endregion
 

@@ -8,6 +8,6 @@ namespace Sofco.Domain.Models.ManagementReport
     {
         public string Name { get; set; }
 
-        public ICollection<CostDetailResource> Resources { get; set; }
+        public ICollection<CostDetail> CostDetail { get; set; }
     }
 }

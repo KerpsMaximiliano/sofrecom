@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
 using Sofco.WebApi.Extensions;
 
@@ -36,6 +37,14 @@ namespace Sofco.WebApi.Controllers.ManagementReport
         public IActionResult GetDetailCost(string serviceId)
         {
             var response = managementReportService.GetCostDetail(serviceId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("{serviceId}/costDetail")]
+        public IActionResult PutDetailCost([FromBody] CostDetailModel model)
+        {
+            var response = managementReportService.UpdateCostDetail(model);
 
             return this.CreateResponse(response);
         }

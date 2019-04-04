@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190403210123_cost-detail-order")]
+    partial class costdetailorder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1626,41 +1628,87 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("IdAnalytic");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdAnalytic");
+
+                    b.ToTable("CostDetail");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailHumanResource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<float>("Cost");
+
+                    b.Property<int>("CostDetailId");
 
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<int>("CreatedById");
 
-                    b.Property<int?>("EmployeeId");
-
-                    b.Property<int>("IdAnalytic");
+                    b.Property<int>("EmployeeId");
 
                     b.Property<DateTime?>("ModifiedAt");
 
                     b.Property<int?>("ModifiedById");
 
-                    b.Property<DateTime>("MonthYear");
+                    b.Property<DateTime>("Month");
 
-                    b.Property<int>("TypeId");
-
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CostDetailId");
 
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("EmployeeId");
 
-                    b.HasIndex("IdAnalytic");
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CostDetailHumanResource");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailResource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<float>("Cost");
+
+                    b.Property<int>("CostDetailId");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<DateTime?>("ModifiedAt");
+
+                    b.Property<int?>("ModifiedById");
+
+                    b.Property<DateTime>("Month");
+
+                    b.Property<int>("TypeId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CostDetailId");
+
+                    b.HasIndex("CreatedById");
 
                     b.HasIndex("ModifiedById");
 
                     b.HasIndex("TypeId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CostDetail");
+                    b.ToTable("CostDetailResource");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailResourceType", b =>
@@ -2827,34 +2875,61 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetail", b =>
                 {
-                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
-                        .WithMany("CostDetail2")
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
-                        .WithMany("CostDetail")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
                         .WithMany("CostDetail")
                         .HasForeignKey("IdAnalytic")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailHumanResource", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetail", "CostDetail")
+                        .WithMany("Employees")
+                        .HasForeignKey("CostDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("CostDetailHumanResources2")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
+                        .WithMany("CostDetailHumanResources")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
-                        .WithMany("CostDetail3")
+                        .WithMany("CostDetailHumanResources3")
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "User")
+                        .WithMany("CostDetailHumanResources")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailResource", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetail", "CostDetail")
+                        .WithMany("Resources")
+                        .HasForeignKey("CostDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("CostDetailResource")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
+                        .WithMany("CostDetailResource2")
                         .HasForeignKey("ModifiedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetailResourceType", "Type")
-                        .WithMany("CostDetail")
+                        .WithMany("Resources")
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Admin.User")
-                        .WithMany("CostDetail")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.License", b =>

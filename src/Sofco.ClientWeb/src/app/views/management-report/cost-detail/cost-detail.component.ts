@@ -5,6 +5,7 @@ import { Subscription } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
+import * as moment from 'moment';
 
 
 @Component({
@@ -16,16 +17,21 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     paramsSubscrip: Subscription;
     getCostSubscrip: Subscription;
+    updateCostSubscrip: Subscription;
 
     //Propiedades
     serviceId: string;
     months: any[] = new Array();
     employees: any[] = new Array();
+    fundedResourses: any[] = new Array();
+    monthSelected:  any = {value: 0};
+    ItemSelected:  any;
+    model: any;
 
     
     @ViewChild('editItemModal') editItemModal;
     public editItemModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "billing.project.detail.milestone.splitTitle",
+        "Editar Monto",
         "editItemModal",
         true,
         true,
@@ -48,7 +54,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        
+        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+        if(this.getCostSubscrip) this.getCostSubscrip.unsubscribe();
+        if(this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
     }
 
     getCost(){
@@ -57,20 +65,46 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.getCostSubscrip = this.managementReportService.getCostDetail(this.serviceId).subscribe(response => {
             this.messageService.closeLoading();
             
+            this.model = response.data;
+           
             this.months = response.data.monthsHeader;
-            this.employees = response.data.employees;
-         
+            this.employees = response.data.costEmployees;
+            this.fundedResourses = response.data.fundedResources;
+
         }, 
         error => {
             this.messageService.closeLoading();
         });
     }
 
-    openEditItemModal(item){
-
+    openEditItemModal(month, item){
+       
         if(this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')){
             this.editItemModal.show();
+            this.monthSelected = month;
+            this.ItemSelected = item;
         }
+    }
+
+    EditItem(){
+        
+        this.editItemModal.hide();
+         
+    }
+
+    save(){
+        this.messageService.showLoading();
+
+        this.model.employees = this.employees;
+        this.model.fundedResources = this.fundedResourses;
+
+        this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, this.model).subscribe(response => {
+            this.messageService.closeLoading();
+          
+        }, 
+        error => {
+            this.messageService.closeLoading();
+        });
     }
 
     getResourcesByMonth(month, year){
