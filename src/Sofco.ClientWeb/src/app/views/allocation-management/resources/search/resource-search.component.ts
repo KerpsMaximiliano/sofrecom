@@ -332,7 +332,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     canAddCategories() {
         if (!this.menuService.hasFunctionality('ALLOC', 'EMP-CAT')) return false;
 
-        return this.menuService.userIsDirector || this.menuService.userIsManager;
+        return true;
     }
 
     areAllSelected() {
