@@ -8,6 +8,7 @@ import { ProjectService } from "app/services/billing/project.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
 import * as moment from 'moment';
+import { I18nService } from "app/services/common/i18n.service";
 
 @Component({
     selector: 'management-report-billing',
@@ -31,6 +32,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     managerId: string;
 
     pendingHitoStatus:string = "Pendiente";
+    billedHitoStatus:string = "Facturado";
+    cashedHitoStatus:string = "Pagado";
 
     hito: NewHito = new NewHito();
 
@@ -50,6 +53,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 private utilsService: UtilsService,
                 private messageService: MessageService,
                 private projectService: ProjectService,
+                private i18nService: I18nService,
                 private menuService: MenuService){}
 
     ngOnInit(): void {
@@ -125,6 +129,18 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     createHito(){
         let model = Object.assign({}, this.hito);
 
+        if(!this.hito.projectId || this.hito.projectId == ""){
+            this.messageService.showErrorByFolder('billing/projects', 'required');
+            this.newHitoModal.resetButtons();
+            return;
+        }
+
+        if(!this.hito.moneyId || this.hito.moneyId == 0){
+            this.messageService.showErrorByFolder('billing/solfac', 'currencyRequired');
+            this.newHitoModal.resetButtons();
+            return;
+        }
+
         var currency = this.currencies.find(x => x.id == this.hito.moneyId);
         var project = this.projects.find(x => x.id == this.hito.projectId)
 
@@ -158,7 +174,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     var hito = { id: response.data, 
                         projectId: this.hito.projectId, 
                         projectName: element.projectName, 
-                        description: element.projectName + " - " + model.name, 
+                        currencyId: model.moneyId, 
+                        description: element.projectName + " - " + model.name + " - " + currency.text, 
                         values: [] };
 
                     this.months.forEach(monthRow => {
@@ -176,9 +193,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     hitosAux.push(hito);
 
                 }
-                else{
-                    hitosAux.push(element);
-                }
+
+                hitosAux.push(element);
             });
 
             this.hitos = hitosAux;
@@ -192,6 +208,19 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         if(!this.isEnabled(hitoMonth)) return;
 
         if(hitoMonth.value > 0 && hitoMonth.value != hitoMonth.oldValue){
+            var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
+    
+            var monthValue;
+
+            if(totalCurrency){
+                monthValue = totalCurrency.monthValues.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
+
+                if(monthValue){
+                    monthValue.value -= hitoMonth.oldValue;
+                    monthValue.value += hitoMonth.value;
+                }
+            }
+
             var json = {
                 id: hito.id,
                 ammount: hitoMonth.value,
@@ -200,18 +229,13 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     
             this.projectService.updateAmmountHito(json).subscribe(response => {
                 hitoMonth.oldValue = hitoMonth.value;
-
-                var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
-    
-                if(totalCurrency){
-                    var monthValue = totalCurrency.monthValues.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
-    
-                    if(monthValue){
-                        monthValue.value = hitoMonth.value;
-                    }
-                }
             }, 
             error => {
+                if(monthValue){
+                    monthValue.value -= hitoMonth.value;
+                    monthValue.value += hitoMonth.oldValue;
+                }
+
                 hitoMonth.value = hitoMonth.oldValue;
             });
         }
@@ -219,8 +243,11 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     delete(hito){
         this.messageService.showConfirm(() => {
-            this.projectService.deleteHito(hito.id, hito.projectId).subscribe(() => {
-                
+            this.messageService.showLoading();
+
+            this.projectService.deleteHito(hito.id, hito.projectId).subscribe(response => {
+                this.messageService.closeLoading();
+
                 var hitoMonth = hito.values.find(x => x.value && x.value > 0);
 
                 var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
@@ -237,7 +264,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
                 if(hitoindex) this.hitos.splice(hitoindex, 1);
             }, 
-            error => this.newHitoModal.resetButtons());
+            error => this.messageService.closeLoading());
         });
     }
 
@@ -257,5 +284,27 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         }
         
         return `input-${hito.status}`
+    }
+
+    getTotals(month, year){
+        var totals = {
+            totalProvisioned: 0,
+            totalBilling: 0
+        }
+
+        this.hitos.forEach(hito => {
+
+            var value = hito.values.find(x => x.month == month && x.year == year);
+
+            if(value && value.value > 0){
+                if(value.status == this.billedHitoStatus || value.status == this.cashedHitoStatus){
+                    totals.totalBilling += value.value;
+                }
+
+                totals.totalProvisioned += value.value;
+            }
+        });
+
+        return totals;
     }
 }

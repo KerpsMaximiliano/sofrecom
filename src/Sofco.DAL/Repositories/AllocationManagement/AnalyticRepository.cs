@@ -130,6 +130,26 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .SingleOrDefault(x => x.Id == analyticId)?.Sector?.ResponsableUser;
         }
 
+        public IList<AnalyticLiteModel> GetByDirectorId(int currentUserId)
+        {
+            return context.Analytics
+                .Include(x => x.Sector)
+                .Where(x => x.Sector.ResponsableUserId == currentUserId)
+                .Select(s => new AnalyticLiteModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Title = s.Title
+                }).ToList();
+        }
+
+        public User GetManager(int analyticId)
+        {
+            return context.Analytics
+                .Include(x => x.Manager)
+                .SingleOrDefault(x => x.Id == analyticId)?.Manager;
+        }
+
         public List<Analytic> GetByServiceIds(List<string> serviceIds)
         {
             return context.Analytics.Where(x => x.Status == AnalyticStatus.Open

@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, EventEmitter, Output, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { WorkflowService } from "app/services/workflow/workflow.service";
 import { Subscription } from "rxjs";
 import { GroupService } from "app/services/admin/group.service";
 import { UserService } from "app/services/admin/user.service";
-import { UtilsService } from "app/services/common/utils.service";
 
 @Component({
     selector: 'workflow-transition-form',
@@ -29,11 +28,14 @@ export class WorkflowTransitionFormComponent implements OnInit, OnDestroy {
         parameterCode: "",
         userApplicantHasAccess: false,
         managerHasAccess: false,
+        analyticManagerHasAccess: false,
         usersHasAccess: [],
+        usersDenyAccess: [],
         groupsHasAccess: [],
         sectorHasAccess: false,
         notifyToUserApplicant: false,
         notifyToManager: false,
+        notifyToAnalyticManager: false,
         notifyToUsers: [],
         notifyToGroups: [],
         notifyToSector: false,
@@ -42,7 +44,6 @@ export class WorkflowTransitionFormComponent implements OnInit, OnDestroy {
 
     constructor(private groupService: GroupService,
                 private userService: UserService,
-                private utilsService: UtilsService,
                 private workflowService: WorkflowService){
     }
 

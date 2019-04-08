@@ -15,7 +15,7 @@ declare var moment: any;
     templateUrl: './allocation-report.component.html',
     styleUrls: ['./allocation-report.component.scss']
 })
-export class AllocationReportComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AllocationReportComponent implements OnInit, OnDestroy {
  
     public model: any;
     public resources: any[] = new Array<any>();
@@ -29,7 +29,8 @@ export class AllocationReportComponent implements OnInit, OnDestroy, AfterViewIn
     public dateSince: Date = new Date();
     public dateTo: Date = new Date();
     public includeStaff: boolean = false;
-    public includeAnalyticId;
+    public unassigned: boolean = false;
+    public includeAnalyticId = "1";
 
     private lastQuery: any;
     public loaded: boolean = false;
@@ -51,15 +52,12 @@ export class AllocationReportComponent implements OnInit, OnDestroy, AfterViewIn
 
         if(data){
             this.lastQuery = data;
-            this.dateSince = data.startDate
-            this.dateTo = data.endDate
+            this.dateSince = moment(data.startDate).toDate();
+            this.dateTo = moment(data.endDate).toDate();
             this.includeStaff = data.includeStaff;
+            this.unassigned = data.unassigned;
             this.includeAnalyticId = data.includeAnalyticId;
         }
-    }
-
-    ngAfterViewInit(){
-        this.includeAnalyticId = "1";
     }
 
     ngOnDestroy(): void {
@@ -109,6 +107,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy, AfterViewIn
             startDate: this.dateSince,
             endDate: this.dateTo,
             includeStaff: this.includeStaff,
+            unassigned: this.unassigned,
             includeAnalyticId: this.includeAnalyticId,
             analyticIds: $('#analyticId').val(),
             employeeId: $('#employeeId').val() == 0 ? null : $('#employeeId').val(),
@@ -132,9 +131,6 @@ export class AllocationReportComponent implements OnInit, OnDestroy, AfterViewIn
         this.loaded = false;
 
         this.createReportSubscrip = this.allocationService.createReport(parameters).subscribe(response => {
-          
-            if(response.messages) this.messageService.showMessages(response.messages);
-
             this.model = response.data;
             this.initGrid();
 
@@ -181,6 +177,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy, AfterViewIn
         $('#analyticId').val(null).trigger('change');
         $('#employeeId').val(0).trigger('change');
         $('#percentageId').val('').trigger('change');
+        this.unassigned = false;
         sessionStorage.removeItem('lastReportQuery')
     }
 }

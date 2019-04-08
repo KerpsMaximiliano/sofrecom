@@ -83,15 +83,27 @@ namespace Sofco.Service.Crm
             {
                 return result;
             }
-
+             
             var serviceId = crmServiceUpdate.Id;
 
-            var content = new JObject { ["as_analitica"] = crmServiceUpdate.AnalyticTitle };
+            var content = new JObject
+            {
+                ["as_analitica"] = crmServiceUpdate.AnalyticTitle,
+                ["as_startdate_date"] = crmServiceUpdate.StartDate,
+                ["as_enddate_date"] = crmServiceUpdate.EndDate,
+            };
 
             if (crmServiceUpdate.ManagerId.HasValue)
-            {
                 content["as_projectmanagerid@odata.bind"] = GetCrmUserUrl(crmServiceUpdate.ManagerId.Value);
-            }
+
+            if (crmServiceUpdate.ServiceTypeId.HasValue)
+                content["as_servicetype"] = crmServiceUpdate.ServiceTypeId.Value;
+
+            if (crmServiceUpdate.SoluctionTypeId.HasValue)
+                content["as_solutiontype"] = crmServiceUpdate.SoluctionTypeId.Value;
+
+            if (crmServiceUpdate.TechnologyTypeId.HasValue)
+                content["as_technologytype"] = crmServiceUpdate.TechnologyTypeId.Value;
 
             try
             {

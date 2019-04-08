@@ -8,9 +8,6 @@ namespace Sofco.Domain.Interfaces
         public int UserApplicantId { get; set; }
         public User UserApplicant { get; set; }
 
-        public int? AuthorizerId { get; set; }
-        public User Authorizer { get; set; }
-
         public int StatusId { get; set; }
 
         public WorkflowState Status { get; set; }

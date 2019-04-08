@@ -281,7 +281,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     unitOfWork.Save();
 
                     //Licencias
-                    var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employeeId, firstMonth.Date.Date, lastMonth.Date.Date);
+                    var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employeeId, firstMonth.Date.Date, model.EndDate.GetValueOrDefault());
                     if (licenses.Any())
                     {
                         foreach (var license in licenses)
@@ -336,46 +336,67 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response<AllocationReportModel> { Data = new AllocationReportModel() };
 
-            if (parameters.StartDate.Date >= parameters.EndDate)
+            if (!parameters.StartDate.HasValue)
+                response.AddError(Resources.AllocationManagement.Allocation.DateSinceRequired);
+
+            if (!parameters.EndDate.HasValue)
+                response.AddError(Resources.AllocationManagement.Allocation.DateToRequired);
+
+            if (response.HasErrors()) return response;
+
+            if (parameters.StartDate.GetValueOrDefault().Date >= parameters.EndDate.GetValueOrDefault().Date)
             {
                 response.AddError(Resources.AllocationManagement.Allocation.DateToLessThanDateSince);
                 return response;
             }
 
-            parameters.StartDate = new DateTime(parameters.StartDate.Year, parameters.StartDate.Month, 1);
-            parameters.EndDate = new DateTime(parameters.EndDate.Year, parameters.EndDate.Month, DateTime.DaysInMonth(parameters.EndDate.Year, parameters.EndDate.Month));
+            parameters.StartDate = new DateTime(parameters.StartDate.GetValueOrDefault().Year, parameters.StartDate.GetValueOrDefault().Month, 1);
 
-            var allocations = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
+            parameters.EndDate = new DateTime(parameters.EndDate.GetValueOrDefault().Year, parameters.EndDate.GetValueOrDefault().Month, 
+                                 DateTime.DaysInMonth(parameters.EndDate.GetValueOrDefault().Year, parameters.EndDate.GetValueOrDefault().Month));
 
-            IList<Employee> employeesUnassigned = new List<Employee>();
+            response.Data.MonthsHeader = GetDateHeaderForReport(parameters.StartDate.Value, parameters.EndDate.Value);
 
-            if (parameters.StartPercentage.GetValueOrDefault() == 0 &&
-                parameters.EndPercentage.GetValueOrDefault() == 0 && 
-                !parameters.AnalyticIds.Any() &&
-                !parameters.EmployeeId.HasValue || (parameters.EmployeeId.HasValue && parameters.EmployeeId.Value == 0))
+            var months = GetDateForReport(parameters.StartDate.Value, parameters.EndDate.Value);
+
+            if (!parameters.Unassigned)
             {
-                employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(parameters.StartDate, parameters.EndDate);
-            }
+                var allocations = unitOfWork.AllocationRepository.GetByEmployeesForReport(parameters);
 
-            response.Data.MonthsHeader = GetDateHeaderForReport(parameters.StartDate, parameters.EndDate);
-
-            var months = GetDateForReport(parameters.StartDate, parameters.EndDate);
-
-            foreach (var allocation in allocations)
-            {
-                var percentageSum = allocations.Where(x => x.EmployeeId == allocation.EmployeeId && x.StartDate.Date == allocation.StartDate.Date).Sum(x => x.Percentage);
-
-                if (parameters.Percentage == 0)
+                foreach (var allocation in allocations)
                 {
-                    AddRowReport(response, allocation, months);
-                }
-                else
-                {
-                    if (percentageSum >= parameters.StartPercentage.GetValueOrDefault() &&
-                        percentageSum <= parameters.EndPercentage.GetValueOrDefault())
+                    var percentageSum = allocations.Where(x => x.EmployeeId == allocation.EmployeeId && x.StartDate.Date == allocation.StartDate.Date).Sum(x => x.Percentage);
+
+                    if (parameters.Percentage == 0)
                     {
                         AddRowReport(response, allocation, months);
                     }
+                    else
+                    {
+                        if (percentageSum >= parameters.StartPercentage.GetValueOrDefault() &&
+                            percentageSum <= parameters.EndPercentage.GetValueOrDefault())
+                        {
+                            AddRowReport(response, allocation, months);
+                        }
+                    }
+                }
+            }
+
+            IList<Employee> employeesUnassigned = new List<Employee>();
+
+            if (parameters.Unassigned)
+            {
+                employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(parameters.StartDate.Value, parameters.EndDate.Value);
+            }
+            else
+            {
+                if (parameters.StartPercentage.GetValueOrDefault() == 0 &&
+                    parameters.EndPercentage.GetValueOrDefault() == 0 &&
+                    !parameters.AnalyticIds.Any() &&
+                    (parameters.IncludeAnalyticId == 1 || parameters.IncludeAnalyticId == 2) &&
+                    !parameters.EmployeeId.HasValue || (parameters.EmployeeId.HasValue && parameters.EmployeeId.Value == 0))
+                {
+                    employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(parameters.StartDate.Value, parameters.EndDate.Value);
                 }
             }
 

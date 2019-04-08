@@ -18,6 +18,8 @@ using Sofco.Domain.Models.Common;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Models.ManagementReport;
+using Sofco.DAL.Mappings.ManagementReport;
 
 namespace Sofco.DAL
 {
@@ -131,6 +133,10 @@ namespace Sofco.DAL
         public DbSet<WorkflowStateTransition> WorkflowStateTransitions { get; set; }
         public DbSet<WorkflowType> WorkflowTypes { get; set; }
 
+        //Management Report
+        public DbSet<CostDetail> CostDetail { get; set; }
+        public DbSet<CostDetailResourceType> CostDetailResourceType { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -144,6 +150,7 @@ namespace Sofco.DAL
             builder.MapUserGroups();
             builder.MapFunctionalities();
             builder.MapSolfac();
+            builder.MapHitos();
             builder.MapUtils();
             builder.MapRoleFunctionality();
             builder.MapInvoice();
@@ -188,6 +195,7 @@ namespace Sofco.DAL
             builder.MapWorkflowType();
             builder.MapRefund();
             builder.MapAdvancementRefund();
+            builder.MapCostDetail();
         }
     }
 }

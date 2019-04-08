@@ -17,4 +17,13 @@ export class ManagementReportService {
   getBilling(serviceId) {
     return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/billing`);
   }
+
+  getCostDetail(serviceId){
+    return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetail`);
+  }
+
+  PostCostDetail(serviceId, model){
+    return this.http.post<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetail`, model);
+  }
+
 }

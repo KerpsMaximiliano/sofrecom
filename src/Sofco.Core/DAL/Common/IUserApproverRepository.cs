@@ -6,7 +6,7 @@ using Sofco.Domain.Models.Common;
 
 namespace Sofco.Core.DAL.Common
 {
-    public interface IUserApproverRepository
+    public interface IUserApproverRepository : IBaseRepository<UserApprover>
     {
         void Save(List<UserApprover> userApprovers);
 
@@ -29,5 +29,9 @@ namespace Sofco.Core.DAL.Common
         bool HasUserAuthorizer(int userId, UserApproverType type);
 
         User GetAuthorizerForLicenses(string managerUsername, int employeeId);
+
+        List<UserApprover> GetByUserId(UserApproverType type, int userId);
+
+        List<UserApprover> GetByAnalyticAndUserId(int managerId, int analyticId, UserApproverType refund);
     }
 }

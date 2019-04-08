@@ -136,7 +136,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var hasAllAccess = roleManager.HasFullAccess();
 
-            var advancements = unitOfWork.AdvancementRepository.GetAllInProcess();
+            var advancements = unitOfWork.AdvancementRepository.GetAllInProcess(settings.WorkflowStatusRejectedId, settings.WorkflowStatusDraft);
 
             if (hasAllAccess)
             {
@@ -453,18 +453,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
         private bool ValidateManagerAccess(Advancement entity, UserLiteModel currentUser)
         {
-            if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+
+            if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
             {
                 return true;
-            }
-            else
-            {
-                var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
-
-                if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
-                {
-                    return true;
-                }
             }
 
             return false;

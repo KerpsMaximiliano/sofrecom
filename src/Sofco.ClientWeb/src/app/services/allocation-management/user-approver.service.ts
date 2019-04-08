@@ -24,6 +24,10 @@ export class UserApproverService {
     return this.http.get<any>(this.apiUrl + `/${this.type}/employees?analyticId=${query.analyticId}&approvalId=${query.approvalId}`);
   }
 
+  getByUserId(userId) {
+    return this.http.get<any>(this.apiUrl + `/${this.type}/${userId}/analytics`);
+  }
+
   getApprovals(analyticId) {
     return this.http.get<any>(this.apiUrl + `/${this.type}/?analyticId=${analyticId}`);
   }

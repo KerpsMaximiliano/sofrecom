@@ -13,16 +13,20 @@ import { ManagementReportDetailComponent } from "./detail/mr-detail";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { DatesService } from "app/services/common/month.service";
 import { MarginTrackingComponent } from "./margin-tracking/margin-tracking";
+import { CostDetailComponent } from "./cost-detail/cost-detail.component";
 import { AmountFormatModule } from "app/pipes/amount-format.module";
 import { ManagementReportBillingComponent } from "./mr-billing/mr-billing";
 import { MenuService } from "app/services/admin/menu.service";
 import { ProjectService } from "app/services/billing/project.service";
 import { UtilsService } from "app/services/common/utils.service";
 import { MessageService } from "app/services/common/message.service";
+import { DecimalFormatModule } from "app/components/decimalFormat/decimal-format.directive";
+import { CostDetailMonthComponent } from "./cost-detail-month/cost-detail-month";
 
 @NgModule({
     declarations: [
-      ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent
+      ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent, 
+      CostDetailMonthComponent
     ],
     imports: [
       CommonModule,
@@ -32,6 +36,7 @@ import { MessageService } from "app/services/common/message.service";
       ManagementReportRouter,
       DatePickerModule,
       NumbersOnlyModule,
+      DecimalFormatModule,
       Ng2ModalModule, 
       AmountFormatModule,
       PCheckModule,

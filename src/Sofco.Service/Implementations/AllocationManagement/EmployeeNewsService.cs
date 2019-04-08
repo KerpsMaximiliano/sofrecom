@@ -182,6 +182,26 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 // Save all changes
                 unitOfWork.Save();
 
+                //Elimina las Licencias
+                var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndStartDate(employeeToChange.Id, response.Data.EndDate ?? DateTime.Now);
+                if (licenses.Any())
+                {
+                    foreach (var license in licenses)
+                    {
+                        try
+                        {
+                            unitOfWork.LicenseRepository.Delete(license);
+                            unitOfWork.WorkTimeRepository.RemoveBetweenDays(license.EmployeeId, license.StartDate, license.EndDate);
+                        }
+                        catch (Exception e)
+                        {
+                            logger.LogError(e);
+                            response.AddWarning(Resources.Rrhh.License.GenerateWorkTimesError);
+                        }
+                    }
+                    unitOfWork.Save();
+                }
+                            
                 response.AddSuccess(Resources.AllocationManagement.Employee.Deleted);
             }
             catch (Exception e)

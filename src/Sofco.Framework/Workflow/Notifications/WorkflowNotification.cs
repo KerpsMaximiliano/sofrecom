@@ -4,7 +4,9 @@ using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.Workflow;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Framework.MailData;
 
@@ -38,6 +40,7 @@ namespace Sofco.Framework.Workflow.Notifications
                 AddGroup(recipientsList, stateNotifier);
                 AddApplicant(entity, recipientsList, stateNotifier);
                 AddManager(entity, recipientsList, stateNotifier);
+                AddAnalyticManager(entity, recipientsList, stateNotifier);
                 AddSector(entity, recipientsList, stateNotifier);
             }
 
@@ -57,16 +60,37 @@ namespace Sofco.Framework.Workflow.Notifications
             {
                 if (entity.UserApplicant != null)
                 {
-                    var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
-
-                    var sectors = unitOfWork.EmployeeRepository.GetAnalyticsWithSector(employee.Id);
-
-                    if (sectors.Any())
+                    if (entity is Refund refund)
                     {
-                        foreach (var sector in sectors)
+                        var director = unitOfWork.AnalyticRepository.GetDirector(refund.AnalyticId);
+
+                        if (director != null)
                         {
-                            if (sector.ResponsableUser != null && !string.IsNullOrWhiteSpace(sector.ResponsableUser.Email))
-                                recipientsList.Add(sector.ResponsableUser.Email);
+                            recipientsList.Add(director.Email);
+
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.Id, refund.AnalyticId, UserApproverType.Refund);
+
+                            foreach (var userApprover in userApprovers)
+                            {
+                                var userToSend = unitOfWork.UserRepository.Get(userApprover.UserId);
+
+                                if (userToSend != null) recipientsList.Add(userToSend.Email);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+
+                        var sectors = unitOfWork.EmployeeRepository.GetAnalyticsWithSector(employee.Id);
+
+                        if (sectors.Any())
+                        {
+                            foreach (var sector in sectors)
+                            {
+                                if (sector.ResponsableUser != null && !string.IsNullOrWhiteSpace(sector.ResponsableUser.Email))
+                                    recipientsList.Add(sector.ResponsableUser.Email);
+                            }
                         }
                     }
                 }
@@ -77,21 +101,56 @@ namespace Sofco.Framework.Workflow.Notifications
         {
             if (stateNotifier.UserSource.Code == appSetting.ManagerUserSource)
             {
-                if (entity.AuthorizerId.HasValue)
+                if (entity.UserApplicant != null)
                 {
-                    if (entity.Authorizer != null && !string.IsNullOrWhiteSpace(entity.Authorizer.Email))
-                        recipientsList.Add(entity.Authorizer.Email);
-                }
-                else
-                {
-                    if (entity.UserApplicant != null)
+                    var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+
+                    if (employee != null && employee.ManagerId.HasValue && employee.Manager != null && !string.IsNullOrWhiteSpace(employee.Manager.Email))
                     {
-                        var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+                        recipientsList.Add(employee.Manager.Email);
 
-                        if (employee != null && employee.ManagerId.HasValue && employee.Manager != null && !string.IsNullOrWhiteSpace(employee.Manager.Email))
-                            recipientsList.Add(employee.Manager.Email);
+                        if (entity is Refund refund)
+                        {
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, refund.AnalyticId, UserApproverType.Refund);
+
+                            foreach (var userApprover in userApprovers)
+                            {
+                                var userToSend = unitOfWork.UserRepository.Get(userApprover.UserId);
+
+                                if (userToSend != null) recipientsList.Add(userToSend.Email);
+                            }
+                        }
+                      
                     }
+                        
+                }
+            }
+        }
 
+        private void AddAnalyticManager(WorkflowEntity entity, List<string> recipientsList, WorkflowStateNotifier stateNotifier)
+        {
+            if (stateNotifier.UserSource.Code == appSetting.ManagerUserSource)
+            {
+                if (entity.UserApplicant != null)
+                {
+                    if (entity is Refund refund)
+                    {
+                        var manager = unitOfWork.AnalyticRepository.GetManager(refund.AnalyticId);
+
+                        if (manager != null)
+                        {
+                            recipientsList.Add(manager.Email);
+
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(manager.Id, refund.AnalyticId, UserApproverType.Refund);
+
+                            foreach (var userApprover in userApprovers)
+                            {
+                                var userToSend = unitOfWork.UserRepository.Get(userApprover.UserId);
+
+                                if (userToSend != null) recipientsList.Add(userToSend.Email);
+                            }
+                        }
+                    }
                 }
             }
         }

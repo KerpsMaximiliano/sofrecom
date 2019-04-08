@@ -118,6 +118,11 @@ namespace Sofco.Service.Implementations.Billing
 
             if (!response.HasErrors())
                 projectData.ClearHitoKeys(hito.ProjectId);
+            else
+            {
+                response.Messages.Clear();
+                response.AddError(Resources.Billing.Solfac.ErrorSaveOnHitos);
+            }
 
             return response;
         }
@@ -169,9 +174,9 @@ namespace Sofco.Service.Implementations.Billing
 
             if (response.HasErrors()) return response;
 
-            var project = unitOfWork.ProjectRepository.GetByIdCrm(hito.ProjectId);
+            //var project = unitOfWork.ProjectRepository.GetByIdCrm(hito.ProjectId);
 
-            HitoValidatorHelper.ValidateDates(project, response, hito);
+            //HitoValidatorHelper.ValidateDates(project, response, hito);
 
             return response;
         }

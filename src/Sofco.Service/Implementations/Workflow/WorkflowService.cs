@@ -12,6 +12,7 @@ using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.Workflow;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Core.Validations.Workflow;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AdvancementAndRefund;
@@ -218,7 +219,11 @@ namespace Sofco.Service.Implementations.Workflow
 
             hasAccess = ValidateManagerAccess(transition, currentUser, entity, hasAccess);
 
+            hasAccess = ValidateAnalyticManagerAccess(transition, currentUser, entity, hasAccess);
+
             hasAccess = ValidateSectorAccess(transition, currentUser, entity, hasAccess);
+
+            hasAccess = ValidateUserDenyAccess(transition, currentUser, hasAccess);
 
             return hasAccess;
         }
@@ -231,14 +236,20 @@ namespace Sofco.Service.Implementations.Workflow
                 {
                     var director = unitOfWork.AnalyticRepository.GetDirector(refund.AnalyticId);
 
-                    if (director != null && director.Id == currentUser.Id)
+                    if (director != null)
                     {
-                        hasAccess = true;
+                        if(director.Id == currentUser.Id) hasAccess = true;
+
+                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.Id, refund.AnalyticId, UserApproverType.Refund);
+
+                        if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                        {
+                            hasAccess = true;
+                        }
                     }
                 }
                 else
                 {
-
                     var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
 
                     var sectors = unitOfWork.EmployeeRepository.GetAnalyticsWithSector(employee.Id);
@@ -253,21 +264,58 @@ namespace Sofco.Service.Implementations.Workflow
             return hasAccess;
         }
 
+        private bool ValidateAnalyticManagerAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
+        {
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.AnalyticManagerUserSource))
+            {
+                if (entity is Refund refund)
+                {
+                    var analytic = unitOfWork.AnalyticRepository.Get(refund.AnalyticId);
+
+                    if (analytic != null)
+                    {
+                        if (analytic.ManagerId.HasValue)
+                        {
+                            if (analytic.ManagerId.Value == currentUser.Id)
+                            {
+                                hasAccess = true;
+                            }
+
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(analytic.ManagerId.Value, refund.AnalyticId, UserApproverType.Refund);
+
+                            if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                            {
+                                hasAccess = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return hasAccess;
+        }
+
         private bool ValidateManagerAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
         {
             if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.ManagerUserSource))
             {
-                if (entity.AuthorizerId.HasValue && entity.AuthorizerId.Value == currentUser.Id)
-                {
-                    hasAccess = true;
-                }
-                else
-                {
-                    var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
 
-                    if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
+                if (employee.ManagerId.HasValue && employee.Manager != null)
+                {
+                    if (employee.ManagerId.Value == currentUser.Id)
                     {
                         hasAccess = true;
+                    }
+
+                    if (entity is Refund refund)
+                    {
+                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, refund.AnalyticId, UserApproverType.Refund);
+
+                        if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                        {
+                            hasAccess = true;
+                        }
                     }
                 }
             }
@@ -306,9 +354,19 @@ namespace Sofco.Service.Implementations.Workflow
 
         private bool ValidateUserAccess(WorkflowStateTransition transition, UserLiteModel currentUser, bool hasAccess)
         {
-            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.SourceId == currentUser.Id && x.UserSource.Code == appSetting.UserUserSource))
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.SourceId == currentUser.Id && x.UserSource.Code == appSetting.UserUserSource && x.AccessDenied == false))
             {
                 hasAccess = true;
+            }
+
+            return hasAccess;
+        }
+
+        private bool ValidateUserDenyAccess(WorkflowStateTransition transition, UserLiteModel currentUser, bool hasAccess)
+        {
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.SourceId == currentUser.Id && x.UserSource.Code == appSetting.UserUserSource && x.AccessDenied == true))
+            {
+                hasAccess = false;
             }
 
             return hasAccess;
@@ -498,7 +556,7 @@ namespace Sofco.Service.Implementations.Workflow
 
             var response = new Response<IList<Option>>();
 
-            response.Data = states.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+            response.Data = states.Select(x => new Option { Id = x.Id, Text = x.Name }).OrderBy(e => e.Text).ToList();
 
             return response;
         }

@@ -241,8 +241,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal>("Ammount");
 
-                    b.Property<int?>("AuthorizerId");
-
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<int>("CurrencyId");
@@ -264,11 +262,11 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("UserApplicantId");
 
+                    b.Property<int?>("UserId");
+
                     b.Property<int>("WorkflowId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorizerId");
 
                     b.HasIndex("CurrencyId");
 
@@ -277,6 +275,8 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("StatusId");
 
                     b.HasIndex("UserApplicantId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("WorkflowId");
 
@@ -335,8 +335,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("AnalyticId");
 
-                    b.Property<int?>("AuthorizerId");
-
                     b.Property<bool>("CashReturn");
 
                     b.Property<DateTime>("CreationDate");
@@ -357,13 +355,13 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("UserApplicantId");
 
+                    b.Property<int?>("UserId");
+
                     b.Property<int>("WorkflowId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AnalyticId");
-
-                    b.HasIndex("AuthorizerId");
 
                     b.HasIndex("CreditCardId");
 
@@ -372,6 +370,8 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("StatusId");
 
                     b.HasIndex("UserApplicantId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("WorkflowId");
 
@@ -1620,6 +1620,63 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("UserDelegate");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<float>("Cost");
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<int>("CreatedById");
+
+                    b.Property<int?>("EmployeeId");
+
+                    b.Property<int>("IdAnalytic");
+
+                    b.Property<DateTime?>("ModifiedAt");
+
+                    b.Property<int?>("ModifiedById");
+
+                    b.Property<DateTime>("MonthYear");
+
+                    b.Property<int>("TypeId");
+
+                    b.Property<int?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("IdAnalytic");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("TypeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CostDetail");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailResourceType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CostDetailResourceType");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.CloseDate", b =>
                 {
                     b.Property<int>("Id")
@@ -1836,6 +1893,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AccessDenied");
 
                     b.Property<DateTime>("CreatedAt");
 
@@ -2405,11 +2464,6 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.Advancement", b =>
                 {
-                    b.HasOne("Sofco.Domain.Models.Admin.User", "Authorizer")
-                        .WithMany("Advancements2")
-                        .HasForeignKey("AuthorizerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
                         .WithMany("Advancements")
                         .HasForeignKey("CurrencyId")
@@ -2429,6 +2483,10 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("Advancements")
                         .HasForeignKey("UserApplicantId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User")
+                        .WithMany("Advancements2")
+                        .HasForeignKey("UserId");
 
                     b.HasOne("Sofco.Domain.Models.Workflow.Workflow", "Workflow")
                         .WithMany("Advancements")
@@ -2474,11 +2532,6 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("AnalyticId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Sofco.Domain.Models.Admin.User", "Authorizer")
-                        .WithMany("Refunds2")
-                        .HasForeignKey("AuthorizerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Sofco.Domain.Utils.CreditCard", "CreditCard")
                         .WithMany("Refunds")
                         .HasForeignKey("CreditCardId");
@@ -2497,6 +2550,10 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("Refunds")
                         .HasForeignKey("UserApplicantId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User")
+                        .WithMany("Refunds2")
+                        .HasForeignKey("UserId");
 
                     b.HasOne("Sofco.Domain.Models.Workflow.Workflow", "Workflow")
                         .WithMany("Refunds")
@@ -2766,6 +2823,38 @@ namespace Sofco.WebApi.Migrations
                         .WithMany()
                         .HasForeignKey("ApproverUserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetail", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
+                        .WithMany("CostDetail2")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
+                        .WithMany("CostDetail")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
+                        .WithMany("CostDetail")
+                        .HasForeignKey("IdAnalytic")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
+                        .WithMany("CostDetail3")
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetailResourceType", "Type")
+                        .WithMany("CostDetail")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User")
+                        .WithMany("CostDetail")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.License", b =>

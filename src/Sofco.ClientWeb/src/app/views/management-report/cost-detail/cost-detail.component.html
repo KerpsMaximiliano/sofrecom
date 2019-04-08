@@ -1,0 +1,83 @@
+<div class="table-responsive billing-table">
+    <table class="table dataTable" role="grid">
+        <thead>
+            <tr>
+                <th class="first-column"></th>
+                <th class="text-center" *ngFor="let month of months">{{ month.display }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Total Costos</th>
+                <td *ngFor="let month of months">
+                    <label class="label label-total"></label>
+                </td>
+            </tr>
+            <tr>
+                <th>Cantidad Recursos costeados</th>
+                <td *ngFor="let month of months">
+                    <label class="label label-cant-resources"></label>
+                </td>
+            </tr>
+            <tr class="active" *ngFor="let employee of employees">
+                <th>{{ employee.display }} </th>
+                <td *ngFor="let monthCost of employee.monthsCost">
+                    <label class="label" (click)="openEditItemModal(monthCost, employee)"
+                        [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}">
+                        {{ monthCost.value | amountFormat }}
+                    </label>
+                </td>
+            </tr>
+            <tr *ngFor="let item of fundedResourses">
+                <th>{{ item.display }}</th>
+                <td *ngFor="let monthCost of item.monthsCost">
+                    <label class="label" (click)="openEditItemModal(monthCost, item)"
+                        [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}">
+                        {{ monthCost.value | amountFormat }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th>Total Sueldo</th>
+                <td *ngFor="let month of months">
+                    <label class="label label-salary"></label>
+                </td>
+            </tr>
+            <tr>
+                <th>Cargas (0.51 del sueldo)</th>
+                <td *ngFor="let month of months">
+                    <label class="label label-load"></label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
+    <button class="btn btn-primary cursor-pointer" type="button" (click)="save()">Guardar <i
+            class="fa fa-save"></i></button>
+</div>
+
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <fieldset>
+                    <label class="control-label" for="readOnlyInput">Mes</label>
+                    <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelected.display }}"
+                        readonly="">
+                </fieldset>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Monto</label>
+                <input type="number" decimalFormat class="form-control" [(ngModel)]="monthSelected.value">
+                <small class="form-text text-muted">
+                    <i class="fa fa-exclamation-triangle text-warning" aria-hidden="true"></i>
+                    El monto se modificara apartir de la fecha seleccionada hasta el final del proyecto
+                </small>
+            </div>
+        </div>
+    </div>
+
+</ng2-modal>

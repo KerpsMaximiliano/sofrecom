@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
@@ -15,7 +15,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.isManager = this.menuService.userIsManager;
-        this.isCdgOrDirector = this.menuService.userIsManager || this.menuService.userIsCdg;
+        this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
     }
 
     ngOnDestroy(): void {

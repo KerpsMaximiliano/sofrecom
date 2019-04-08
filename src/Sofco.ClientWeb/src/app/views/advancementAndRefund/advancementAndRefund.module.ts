@@ -39,19 +39,23 @@ import { AdvancementRefundSettingService } from "app/services/advancement-and-re
 import { RefundsRelatedComponent } from "./advancement/refunds-related/refunds-related";
 import { CurrentAccountService } from "app/services/advancement-and-refund/current-account.sevice";
 import { CurrentAccountComponent } from "./common/current-account/current-account";
+import { MenuService } from "app/services/admin/menu.service";
+import { RefundDelegateComponent } from "./refund/delegate/refund-delegate";
+import { UserApproverService } from "app/services/allocation-management/user-approver.service";
+import { PCheckModule } from "app/components/pcheck/pcheck.module";
 
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,
-                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent,
+                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundDelegateComponent,
                     RefundListComponent, RefundListFilterComponent, RefundListGridComponent, RefundHistoryComponent,
                     ListPaymentPendingComponent, AdvancementRefundSettingComponent, RefundsRelatedComponent, CurrentAccountComponent
                   ],
 
-    imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, RefundFormModule,
+    imports     : [ CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, RefundFormModule, PCheckModule,
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
                    AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule, AmountFormatModule ],
 
-    providers   : [ AdvancementService, UserService, I18nService, RefundService, AdvancementRefundSettingService, CurrentAccountService ],
+    providers   : [ AdvancementService, UserService, I18nService, RefundService, AdvancementRefundSettingService, CurrentAccountService, MenuService, UserApproverService ],
 
     exports     : []
 })

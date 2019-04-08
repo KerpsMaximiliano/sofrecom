@@ -36,6 +36,8 @@
 
         public string ManagerUserSource { get; set; }
 
+        public string AnalyticManagerUserSource { get; set; }
+
         public string ApplicantUserSource { get; set; }
 
         public string GroupUserSource { get; set; }
@@ -78,8 +80,12 @@
 
         public int WorkflowStatusFinalizedId { get; set; }
 
+        public int WorkflowStatusRejectedId { get; set; }
+
         public int WorkflowStatusCurrentAccount { get; set; }
 
         public string CashReturnConfirm { get; set; }
+
+        public string AdvancementRefundControlGroupCode { get; set; }
     }
 }

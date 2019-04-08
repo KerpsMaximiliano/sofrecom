@@ -1,0 +1,84 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Delegación de reintegros </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'refund.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> Delegación </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInUp">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Analiticas</label>
+                        <ng-select [items]="analytics" bindValue="id" bindLabel="text" [(ngModel)]="analyticId"></ng-select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Usuario a delegar</label>
+                        <ng-select [items]="users" bindValue="id" bindLabel="text" [(ngModel)]="userId"></ng-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <div class="ibox-tools">
+                <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+
+                <button [disabled]="!showSave()" (click)="save()" class="btn btn-primary btn-sm" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+                <button [disabled]="!deleteAllEnable()" class="btn btn-danger btn-sm" (click)="confirmModal2.show()" > Eliminar Seleccionados <i class="fa fa-trash"></i></button>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table class="table table-striped dataTable" role="grid" id="resourcesTable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{'allocationManagement.analytics.title' | translate }}</th>
+                        <th>{{'allocationManagement.workTimeApproval.delegate.approver' | translate }}</th>
+                        <th width="25">{{'ACTIONS.title' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of data">
+                        <td class="column-xs text-center" width="20">
+                            <pcheck [(checked)]="item.checked">
+                            </pcheck>
+                        </td>
+                        <td>{{ item.analyticName }}</td>
+                        <td>{{ item.approverName }}</td>
+                        <td>
+                            <button class="btn btn-xs btn-danger" (click)="showConfirmDelete(item)">
+                                <span class="fa-trash fa"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>                        
+        </div>
+    </div>
+</div>
+
+<ng2-modal [config]="modalConfig" #confirmModal (accept)="processDelete()">
+    <h4>{{ 'allocationManagement.workTimeApproval.delegate.deleteConfirm' | translate }}</h4>
+</ng2-modal>
+
+<ng2-modal [config]="modalConfig2" #confirmModal2 (accept)="processDeleteAll()">
+    <h4>{{ 'allocationManagement.workTimeApproval.delegate.deleteConfirm' | translate }}</h4>
+</ng2-modal>

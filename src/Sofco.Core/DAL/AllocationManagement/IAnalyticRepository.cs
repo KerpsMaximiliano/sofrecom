@@ -62,5 +62,9 @@ namespace Sofco.Core.DAL.AllocationManagement
         List<Analytic> GetByAllocations(int employeeId, DateTime dateFrom, DateTime dateTo);
         Analytic GetByServiceForManagementReport(string serviceId);
         User GetDirector(int analyticId);
+
+        IList<AnalyticLiteModel> GetByDirectorId(int currentUserId);
+
+        User GetManager(int analyticId);
     }
 }

@@ -29,6 +29,8 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Analytic>().HasOne(x => x.ServiceType).WithMany(x => x.Analytics).HasForeignKey(x => x.ServiceTypeId);
 
             builder.Entity<Analytic>().HasMany(x => x.Refunds).WithOne(x => x.Analytic).HasForeignKey(x => x.AnalyticId);
+
+            builder.Entity<Analytic>().HasMany(x => x.CostDetail).WithOne(x => x.Analytic).HasForeignKey(x => x.IdAnalytic);
         }
     }
 }

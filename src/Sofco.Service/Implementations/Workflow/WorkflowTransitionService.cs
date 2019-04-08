@@ -69,12 +69,15 @@ namespace Sofco.Service.Implementations.Workflow
                 };
 
                 CheckManagerAccess(model, domain);
+                CheckAnalyticManagerAccess(model, domain);
                 CheckUserApplicantAccess(model, domain);
                 CheckGroupAccess(model, domain);
                 CheckUserAccess(model, domain);
+                CheckUserDenyAccess(model, domain);
                 CheckSectorAccess(model, domain);
 
                 CheckManagerNotifier(model, domain);
+                CheckAnalyticManagerNotifier(model, domain);
                 CheckUserApplicantNotifier(model, domain);
                 CheckGroupNotifier(model, domain);
                 CheckUserNotifier(model, domain);
@@ -128,12 +131,15 @@ namespace Sofco.Service.Implementations.Workflow
                 transition.WorkflowStateNotifiers = new List<WorkflowStateNotifier>();
 
                 CheckManagerAccess(model, transition);
+                CheckAnalyticManagerAccess(model, transition);
                 CheckUserApplicantAccess(model, transition);
                 CheckGroupAccess(model, transition);
                 CheckUserAccess(model, transition);
+                CheckUserDenyAccess(model, transition);
                 CheckSectorAccess(model, transition);
 
                 CheckManagerNotifier(model, transition);
+                CheckAnalyticManagerNotifier(model, transition);
                 CheckUserApplicantNotifier(model, transition);
                 CheckGroupNotifier(model, transition);
                 CheckUserNotifier(model, transition);
@@ -178,6 +184,7 @@ namespace Sofco.Service.Implementations.Workflow
                 OnSuccessCode = transition.OnSuccessCode,
                 GroupsHasAccess = new List<int>(),
                 UsersHasAccess =  new List<int>(),
+                UsersDenyAccess = new List<int>(),
                 NotifyToGroups = new List<int>(),
                 NotifyToUsers = new List<int>()
             };
@@ -189,14 +196,20 @@ namespace Sofco.Service.Implementations.Workflow
                     if (workflowStateAccess.UserSource.Code == appSetting.ManagerUserSource)
                         response.Data.ManagerHasAccess = true;
 
+                    if (workflowStateAccess.UserSource.Code == appSetting.AnalyticManagerUserSource)
+                        response.Data.AnalyticManagerHasAccess = true;
+
                     if (workflowStateAccess.UserSource.Code == appSetting.ApplicantUserSource)
                         response.Data.UserApplicantHasAccess = true;
 
                     if (workflowStateAccess.UserSource.Code == appSetting.GroupUserSource)
                         response.Data.GroupsHasAccess.Add(workflowStateAccess.UserSource.SourceId);
 
-                    if(workflowStateAccess.UserSource.Code == appSetting.UserUserSource) 
+                    if(workflowStateAccess.UserSource.Code == appSetting.UserUserSource && workflowStateAccess.AccessDenied == false) 
                         response.Data.UsersHasAccess.Add(workflowStateAccess.UserSource.SourceId);
+
+                    if (workflowStateAccess.UserSource.Code == appSetting.UserUserSource && workflowStateAccess.AccessDenied == true)
+                        response.Data.UsersDenyAccess.Add(workflowStateAccess.UserSource.SourceId);
 
                     if (workflowStateAccess.UserSource.Code == appSetting.SectorUserSource)
                         response.Data.SectorHasAccess = true;
@@ -209,6 +222,9 @@ namespace Sofco.Service.Implementations.Workflow
                 {
                     if (workflowStateNotifier.UserSource.Code == appSetting.ManagerUserSource)
                         response.Data.NotifyToManager = true;
+
+                    if (workflowStateNotifier.UserSource.Code == appSetting.AnalyticManagerUserSource)
+                        response.Data.NotifyToAnalyticManager = true;
 
                     if (workflowStateNotifier.UserSource.Code == appSetting.ApplicantUserSource)
                         response.Data.NotifyToUserApplicant = true;
@@ -321,6 +337,18 @@ namespace Sofco.Service.Implementations.Workflow
             }
         }
 
+        private void CheckAnalyticManagerNotifier(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
+        {
+            if (model.NotifyToAnalyticManager)
+            {
+                var wfStateNotifier = CreateWorkflowStateNotifier();
+
+                wfStateNotifier.UserSource = userSourceService.Get(appSetting.AnalyticManagerUserSource);
+
+                domain.WorkflowStateNotifiers.Add(wfStateNotifier);
+            }
+        }
+
         private void CheckSectorAccess(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
         {
             if (model.SectorHasAccess)
@@ -341,6 +369,22 @@ namespace Sofco.Service.Implementations.Workflow
                 {
                     var wfStateAccess = CreateWorkflowStateAccess();
 
+                    wfStateAccess.UserSource = userSourceService.Get(appSetting.UserUserSource, userId);
+
+                    domain.WorkflowStateAccesses.Add(wfStateAccess);
+                }
+            }
+        }
+
+        private void CheckUserDenyAccess(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
+        {
+            if (model.UsersDenyAccess != null && model.UsersDenyAccess.Any())
+            {
+                foreach (var userId in model.UsersDenyAccess)
+                {
+                    var wfStateAccess = CreateWorkflowStateAccess();
+
+                    wfStateAccess.AccessDenied = true;
                     wfStateAccess.UserSource = userSourceService.Get(appSetting.UserUserSource, userId);
 
                     domain.WorkflowStateAccesses.Add(wfStateAccess);
@@ -387,6 +431,18 @@ namespace Sofco.Service.Implementations.Workflow
             }
         }
 
+        private void CheckAnalyticManagerAccess(WorkflowTransitionAddModel model, WorkflowStateTransition domain)
+        {
+            if (model.AnalyticManagerHasAccess)
+            {
+                var wfStateAccess = CreateWorkflowStateAccess();
+
+                wfStateAccess.UserSource = userSourceService.Get(appSetting.AnalyticManagerUserSource);
+
+                domain.WorkflowStateAccesses.Add(wfStateAccess);
+            }
+        }
+
         private WorkflowStateAccess CreateWorkflowStateAccess()
         {
             var wfStateAccess = new WorkflowStateAccess();
@@ -395,6 +451,8 @@ namespace Sofco.Service.Implementations.Workflow
             wfStateAccess.CreatedById = userData.GetCurrentUser().Id;
             wfStateAccess.ModifiedAt = DateTime.UtcNow;
             wfStateAccess.ModifiedById = wfStateAccess.CreatedById;
+            wfStateAccess.AccessDenied = false;
+
             return wfStateAccess;
         }
 

@@ -15,11 +15,13 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
         }
 
-        public List<Refund> GetByParameters(RefundListParameterModel model)
+        public List<Refund> GetByParameters(RefundListParameterModel model, int workflowStatusRejectedId,
+            int workflowStatusDraft)
         {
             var query = context.Refunds
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
+                .Include(x => x.Analytic)
                 .Include(x => x.Status)
                     .ThenInclude(x => x.ActualTransitions)
                 .Include(x => x.Details)
@@ -37,6 +39,10 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             if (model.StateId.HasValue)
             {
                 query = query.Where(x => x.StatusId == model.StateId);
+            }
+            else
+            {
+                query = query.Where(x => x.StatusId != workflowStatusRejectedId && x.StatusId != workflowStatusDraft);
             }
 
             return query.ToList();

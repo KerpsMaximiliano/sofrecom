@@ -139,7 +139,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Include(x => x.Analytic)
                 .Include(x => x.Employee)
                     .ThenInclude(x => x.Manager)
-                .Where(x => x.StartDate.Date >= parameters.StartDate.Date && x.StartDate.Date <= parameters.EndDate.Date && x.Percentage > 0);
+                .Where(x => x.StartDate.Date >= parameters.StartDate.GetValueOrDefault().Date && x.StartDate.Date <= parameters.EndDate.GetValueOrDefault().Date && x.Percentage > 0);
 
             if (parameters.AnalyticIds.Any())
                 query = query.Where(x => parameters.AnalyticIds.Contains(x.AnalyticId));

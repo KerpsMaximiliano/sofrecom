@@ -1,0 +1,49 @@
+table {
+  table-layout: fixed;
+  font-size: 11px;
+}
+
+th,
+td {
+  width: 100px;
+}
+
+td {
+  padding: 4px !important;
+}
+
+.first-column {
+  width: 250px;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  min-height: 17px;
+  min-height: 25px;
+  padding-top: 7px;
+}
+
+.label-total {
+  background-color: #1bb394;
+  color: #ffffff;
+}
+
+.label-cant-resources {
+  background-color: #39e1bf;
+  color: #ffffff;
+}
+
+.label-salary {
+  background-color: #dbf9e3;
+  color: #000;
+}
+
+.label-load {
+  background-color: #b3ffd9;
+  color: #000;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

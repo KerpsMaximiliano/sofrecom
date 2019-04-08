@@ -188,7 +188,7 @@
 </ng2-modal>
 
 
-<ng2-modal [config]="allocationsModalConfig" #allocationsModal (accept)="sendNewAllocations()">
+<ng2-modal [config]="allocationsModalConfig" #allocationsModal (accept)="sendNewAllocations()" [isSaveEnabled]="allocationModel.analyticId > 0">
     <div class="form-group">
         <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
         <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="allocationModel.analyticId"></ng-select>

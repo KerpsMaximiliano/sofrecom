@@ -8,6 +8,7 @@ using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
+using Sofco.Core.DAL.ManagementReport;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.Views;
@@ -18,6 +19,7 @@ using Sofco.DAL.Repositories.AdvancementAndRefund;
 using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
+using Sofco.DAL.Repositories.ManagementReport;
 using Sofco.DAL.Repositories.Reports;
 using Sofco.DAL.Repositories.Rrhh;
 using Sofco.DAL.Repositories.Workflow;
@@ -116,6 +118,12 @@ namespace Sofco.DAL
 
         private IAdvancementRepository advancementRepository;
         private IRefundRepository refundRepository;
+
+        #endregion
+
+        #region Management Report
+
+        private ICostDetailRepository costDetailRepository;
 
         #endregion
 
@@ -219,6 +227,12 @@ namespace Sofco.DAL
 
         public IAdvancementRepository AdvancementRepository => advancementRepository ?? (advancementRepository = new AdvancementRepository(context));
         public IRefundRepository RefundRepository => refundRepository ?? (refundRepository = new RefundRepository(context));
+
+        #endregion
+
+        #region Management Report
+
+        public ICostDetailRepository CostDetailRepository => costDetailRepository ?? (costDetailRepository = new CostDetailRepository(context));
 
         #endregion
 

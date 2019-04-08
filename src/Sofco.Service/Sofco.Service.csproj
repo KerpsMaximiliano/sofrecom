@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="NUnit.Portable.Agent">
+      <HintPath>..\..\..\..\Users\ledrughieri\.nuget\packages\nunit.portable.agent\3.4.0-beta-2\lib\netstandard1.3\NUnit.Portable.Agent.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp.NetCore">
       <HintPath>..\..\..\..\Users\ledrughieri\.nuget\packages\restsharp.netcore\105.2.3\lib\netstandard1.6\RestSharp.NetCore.dll</HintPath>
     </Reference>
