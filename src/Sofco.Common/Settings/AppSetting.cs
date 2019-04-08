@@ -87,5 +87,7 @@
         public string CashReturnConfirm { get; set; }
 
         public string AdvancementRefundControlGroupCode { get; set; }
+
+        public int WorkflowStatusPendingManagerId { get; set; }
     }
 }

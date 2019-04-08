@@ -61,11 +61,11 @@ namespace Sofco.Service.Implementations.Workflow
             this.onTransitionSuccessFactory = onTransitionSuccessFactory;
         }
 
-        public Response DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters)
+        public Response<bool> DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters)
             where TEntity : WorkflowEntity
             where THistory : WorkflowHistory
         {
-            var response = new Response();
+            var response = new Response<bool>(){ Data = false };
 
             // Validate Parameters
             ValidateParameters(parameters, response);
@@ -153,8 +153,29 @@ namespace Sofco.Service.Implementations.Workflow
             // Create history
             CreateHistory<TEntity, THistory>(entity, transition, currentUser, parameters);
 
-            // Send Notification
-            SendNotification(entity, response, transition, parameters);
+            var nextState = transition.NextWorkflowState;
+
+            var possibleNextTransitions = workflowRepository.GetTransitions(nextState.Id, parameters.WorkflowId).Where(x => x.ActualWorkflowStateId != appSetting.WorkflowStatusRejectedId).ToList();
+
+            if (possibleNextTransitions.Count() == 1)
+            {
+                var nextTransition = possibleNextTransitions.FirstOrDefault();
+
+                if (nextTransition != null)
+                {
+                    if (ValidatePriviligeAccess(nextTransition, currentUser, entity))
+                    {
+                        response.Data = true;
+                        parameters.NextStateId = nextTransition.NextWorkflowStateId;
+                    }
+                }
+            }
+
+            if (!response.Data)
+            {
+                // Send Notification
+                SendNotification(entity, response, transition, parameters);
+            }
 
             return response;
         }
@@ -224,6 +245,19 @@ namespace Sofco.Service.Implementations.Workflow
             hasAccess = ValidateSectorAccess(transition, currentUser, entity, hasAccess);
 
             hasAccess = ValidateUserDenyAccess(transition, currentUser, hasAccess);
+
+            return hasAccess;
+        }
+
+        private bool ValidatePriviligeAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity)
+        {
+            bool hasAccess = false;
+
+            hasAccess = ValidateManagerAccess(transition, currentUser, entity, hasAccess);
+
+            hasAccess = ValidateAnalyticManagerAccess(transition, currentUser, entity, hasAccess);
+
+            hasAccess = ValidateSectorAccess(transition, currentUser, entity, hasAccess);
 
             return hasAccess;
         }

@@ -76,6 +76,11 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         {
             var response = workflowService.DoTransition<Refund, RefundHistory>(parameters);
 
+            while (response.Data)
+            {
+                response = workflowService.DoTransition<Refund, RefundHistory>(parameters);
+            }
+
             return this.CreateResponse(response);
         }
 
