@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
@@ -177,6 +178,30 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         public IActionResult GetAnalitycs()
         {
             var response = refundService.GetAnalitycs();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("delegate/{userId}")]
+        public IActionResult Delegate(int userId)
+        {
+            var response = refundService.Delegate(userId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("delegate")]
+        public IActionResult DeleteDelegate([FromBody] List<int> ids)
+        {
+            var response = refundService.DeleteDelegate(ids);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("delegates")]
+        public IActionResult GetDelegates()
+        {
+            var response = refundService.GetDelegates();
 
             return this.CreateResponse(response);
         }

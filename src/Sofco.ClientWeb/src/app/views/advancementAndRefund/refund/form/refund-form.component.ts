@@ -12,6 +12,7 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 import { MessageService } from "app/services/common/message.service";
 import { Validators } from "@angular/forms";
 import { UtilsService } from "app/services/common/utils.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
     selector: 'refund-form',
@@ -24,6 +25,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
     public advancements: any[] = new Array();
     public analytics: any[] = new Array();
+    public users: any[] = new Array();
     public creditCards: any[] = new Array();
 
     public userApplicantIdLogged: number;
@@ -34,9 +36,10 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public advancementSum = 0;
     public itemTotal = 0;
 
-    public cashReturn: boolean;
-    public lastRefund: boolean;
-    public canGafUpdate: boolean = false;
+    cashReturn: boolean;
+    lastRefund: boolean;
+    canGafUpdate: boolean = false;
+    isDelegate: boolean = false;
 
     @ViewChild('addDetailModal') addDetailModal;
     public addDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -79,6 +82,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         public advancementService: AdvancementService,
         private utilsService: UtilsService,
         public messageService: MessageService,
+        private menusService: MenuService,
         public analyticService: AnalyticService,
         public i18nService: I18nService){}
 
@@ -90,6 +94,19 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             this.hasCreditCardChanged(false);
             this.formConfiguration();
             this.getAdvancementsUnrelated(null, this.userApplicantIdLogged);
+
+            const refundDelegates = this.menusService.refundDelegates;
+
+            if(refundDelegates && refundDelegates.length > 0){
+                this.users = [];
+                this.isDelegate = true;
+
+                this.users.push({ id: this.form.controls.userApplicantId.value, text: this.userApplicantName });
+
+                refundDelegates.forEach(x => {
+                    this.users.push(x);
+                });
+            }
         }
 
         this.detailForms = new Array();
@@ -103,6 +120,12 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         if(this.getAdvancementsSubscrip) this.getAdvancementsSubscrip.unsubscribe();
         if(this.getAnalyticsSubscrip) this.getAnalyticsSubscrip.unsubscribe();
         if(this.getCreditCardsSubscrip) this.getCreditCardsSubscrip.unsubscribe();
+    }
+
+    userChanged(){
+        this.form.controls.advancements.setValue(new Array());
+        this.form.controls.advancements.enable();
+        this.getAdvancementsUnrelated(null, this.form.controls.userApplicantId.value);
     }
 
     getAnalytics() {
@@ -263,7 +286,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             refund.details.push(element.getModel());
         });
 
-        if(refund.advancements == null){
+        if(!refund.advancements || refund.advancements == null || refund.advancements.length == 0){
             refund.currencyId = this.defaultCurrencyId;
         }
 

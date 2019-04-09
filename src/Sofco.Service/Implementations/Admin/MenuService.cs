@@ -1,12 +1,14 @@
-﻿using System.Linq;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
-using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Services.Admin;
 using Sofco.Domain.Utils;
+using System.Linq;
+using Sofco.Core.Data.Admin;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Service.Implementations.Admin
 {
@@ -24,7 +26,9 @@ namespace Sofco.Service.Implementations.Admin
 
         private readonly EmailConfig emailConfig;
 
-        public MenuService(IUnitOfWork unitOfWork, IUserService userService, IOptions<EmailConfig> emailConfig, IAreaData areaData, ISectorData sectorData, IRoleManager roleManager)
+        private readonly IUserData userData;
+
+        public MenuService(IUnitOfWork unitOfWork, IUserService userService, IOptions<EmailConfig> emailConfig, IAreaData areaData, ISectorData sectorData, IRoleManager roleManager, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.userService = userService;
@@ -32,6 +36,7 @@ namespace Sofco.Service.Implementations.Admin
             this.sectorData = sectorData;
             this.roleManager = roleManager;
             this.emailConfig = emailConfig.Value;
+            this.userData = userData;
         }
 
         public Response<MenuResponseModel> GetFunctionalitiesByUserName()
@@ -46,7 +51,7 @@ namespace Sofco.Service.Implementations.Admin
             {
                 if (!item.Functionality.Active || !item.Functionality.Module.Active) continue;
 
-                if(model.Menus.Any(x => x.Module == item.Functionality.Module.Code && x.Functionality == item.Functionality.Code)) continue;
+                if (model.Menus.Any(x => x.Module == item.Functionality.Module.Code && x.Functionality == item.Functionality.Code)) continue;
 
                 var menu = new MenuModel
                 {
@@ -72,7 +77,20 @@ namespace Sofco.Service.Implementations.Admin
             model.AreaIds = areaData.GetIdByCurrent();
             model.SectorIds = sectorData.GetIdByCurrent();
 
-            return new Response<MenuResponseModel> {Data = model};
+            var userDelegates = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.RefundAdd, userData.GetCurrentUser().Id);
+
+            foreach (var userDelegate in userDelegates)
+            {
+                var user = userData.GetById(userDelegate.UserId);
+
+                model.RefundDelegates.Add(new Option
+                {
+                    Id = userDelegate.UserId,
+                    Text = user.Name
+                });
+            }
+
+            return new Response<MenuResponseModel> { Data = model };
         }
 
         public string GetGroupMail(string code)

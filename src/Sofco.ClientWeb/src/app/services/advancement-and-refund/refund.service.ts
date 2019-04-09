@@ -76,4 +76,16 @@ export class RefundService {
             return new Blob([res.body], { type: 'application/octet-stream' });
         }));
     } 
+
+    getDelegates(): any {
+        return this.http.get<any>(`${this.baseUrl}/refund/delegates`);
+    }
+
+    addDelegate(userId): any {
+        return this.http.post<any>(`${this.baseUrl}/refund/delegate/${userId}`, {});
+    }
+
+    deleteDelegate(ids): any {
+        return this.http.post<any>(`${this.baseUrl}/refund/delegate`, ids);
+    }
 }

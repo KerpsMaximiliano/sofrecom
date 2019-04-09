@@ -157,20 +157,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let invoice of invoices" class="pointer" (click)="goToInvoiceDetail(invoice)">
+                                            <tr *ngFor="let invoice of invoices" class="pointer" >
                                                 <td class="col-lg-1">
                                                     <pcheck [(checked)]="invoice.selected"></pcheck>
                                                 </td>
-                                                <td>{{ invoice.invoiceNumber }}</td>
-                                                <td>{{ invoice.excelFileName }}</td>
-                                                <td class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy' }}</td>
-                                                <td class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
+                                                <td (click)="goToInvoiceDetail(invoice)">{{ invoice.invoiceNumber }}</td>
+                                                <td (click)="goToInvoiceDetail(invoice)">{{ invoice.excelFileName }}</td>
+                                                <td (click)="goToInvoiceDetail(invoice)" class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy' }}</td>
+                                                <td (click)="goToInvoiceDetail(invoice)" class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
                                             </tr>
                                         </tbody>
                                     </table>
 
                                     <div class="button-group" *ngIf="canCreateInvoice()">
                                         <button class="btn btn-primary" (click)="goToCreateInvoice()"> {{'billing.project.detail.invoices.create' | translate }} <i class="fa fa-plus"></i></button>
+                                        <button class="btn btn-primary" *ngIf="canDownload()" (click)="downloadZip()"> Descargar zip <i class="fa fa-download"></i></button>
                                         <button class="btn btn-warning" *ngIf="canAskForAnnulment()" (click)="invoiceAnnulmentModal.show()"> {{'billing.project.detail.invoices.askAnnulment' | translate }} <i class="fa fa-times"></i></button>
                                     </div>
                                 </div>

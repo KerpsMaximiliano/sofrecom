@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,7 @@ using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Resources.Mails;
 using File = Sofco.Domain.Models.Common.File;
 using Sofco.Core.Managers;
+using Sofco.Core.Services.Common;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -36,6 +38,7 @@ namespace Sofco.Service.Implementations.Billing
         private readonly ILogMailer<InvoiceService> logger;
         private readonly IMailBuilder mailBuilder;
         private readonly FileConfig fileConfig;
+        private readonly IFileService fileService;
         private readonly IRoleManager roleManager;
 
         public InvoiceService(IUnitOfWork unitOfWork,
@@ -43,6 +46,7 @@ namespace Sofco.Service.Implementations.Billing
             IOptions<EmailConfig> emailOptions,
             IMailBuilder mailBuilder,
             IRoleManager roleManager,
+            IFileService fileService,
             ILogMailer<InvoiceService> logger,
             IMailSender mailSender, ISessionManager sessionManager, IOptions<FileConfig> fileOptions)
         {
@@ -55,6 +59,7 @@ namespace Sofco.Service.Implementations.Billing
             this.roleManager = roleManager;
             this.mailBuilder = mailBuilder;
             fileConfig = fileOptions.Value;
+            this.fileService = fileService;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -394,6 +399,63 @@ namespace Sofco.Service.Implementations.Billing
             }
 
             return response;
+        }
+
+        public Response<Stream> GetZip(IList<int> ids)
+        {
+            var response = new Response<Stream>();
+
+            if (ids.Count > 0)
+            {
+                var zipStream = new MemoryStream();
+
+                try
+                {
+                    using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
+                    {
+                        foreach (var id in ids)
+                        {
+                            var responseFile = fileService.GetFile(id, fileConfig.InvoicesPdfPath);
+
+                            if (!responseFile.HasErrors())
+                            {
+                                CopyStream(zip, responseFile);
+                            }
+                            else
+                            {
+                                responseFile = fileService.GetFile(id, fileConfig.InvoicesExcelPath);
+
+                                if (!responseFile.HasErrors())
+                                {
+                                    CopyStream(zip, responseFile);
+                                }
+                            }
+                        }
+                    }
+
+                    zipStream.Position = 0;
+
+                    response.Data = zipStream;
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e);
+                    response.AddError(Resources.Common.ExportFileError);
+                }
+            }
+
+            return response;
+        }
+
+        private void CopyStream(ZipArchive zip, Response<Tuple<byte[], string>> responseFile)
+        {
+            var entry = zip.CreateEntry(responseFile.Data.Item2);
+
+            using (var entryStream = entry.Open())
+            {
+                var memoryStream = new MemoryStream(responseFile.Data.Item1);
+                memoryStream.CopyTo(entryStream);
+            }
         }
     }
 }

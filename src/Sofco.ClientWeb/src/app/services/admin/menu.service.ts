@@ -26,6 +26,7 @@ export class MenuService {
     public sellerMail: string;
     public areaIds: any[];
     public sectorIds: any[];
+    public refundDelegates: any[];
 
     constructor(private http: HttpClient, private service: Service) {
         this.baseUrl = this.service.UrlApi;
@@ -48,6 +49,8 @@ export class MenuService {
                 this.sellerMail = menu.sellerMail;
                 this.areaIds = menu.areaIds;
                 this.sectorIds = menu.sectorIds;
+
+                this.refundDelegates = menu.refundDelegates;
             }
         }
 

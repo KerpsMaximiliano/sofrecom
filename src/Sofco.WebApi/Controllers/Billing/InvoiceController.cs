@@ -141,6 +141,16 @@ namespace Sofco.WebApi.Controllers.Billing
             return File(response.Data, "application/octet-stream", string.Empty);
         }
 
+        [HttpPost("export/all")]
+        public IActionResult ExportAll([FromBody] IList<int> ids)
+        {
+            var response = invoiceService.GetZip(ids);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
         [HttpGet("{id}/pdf")]
         public IActionResult GetPdfFile(int id)
         {

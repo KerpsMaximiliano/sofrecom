@@ -12,6 +12,7 @@ import { ServiceService } from '../../../../services/billing/service.service';
 import { NewHito } from '../../../../models/billing/solfac/newHito';
 import { InvoiceStatus } from '../../../../models/enums/invoiceStatus';
 import { InvoiceService } from '../../../../services/billing/invoice.service';
+import * as FileSaver from "file-saver";
 
 @Component({
   selector: 'app-project-detail',
@@ -545,6 +546,28 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         if(invoices.length != invoicesSelectedCount) return false;
 
         return true;
+    }
+
+    canDownload(){
+        var invoices = this.invoices.filter(x => x.selected && x.fileId > 0);
+
+        if(invoices.length == 0) return false;
+
+        return true;
+    }
+
+    downloadZip(){
+        var invoicesIds = this.invoices.filter(x => x.selected).map(x => x.fileId);
+
+        if(!invoicesIds || invoicesIds == null || invoicesIds.length == 0) return;
+
+        this.messageService.showLoading();
+
+        this.invoiceService.downloadZip(invoicesIds).subscribe(file => {
+            this.messageService.closeLoading();
+            FileSaver.saveAs(file, "remitos.zip");
+        },
+        error => this.messageService.closeLoading());
     }
 
     askForAnnulment(){
