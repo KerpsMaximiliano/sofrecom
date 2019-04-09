@@ -72,7 +72,7 @@
                         <div class="panel-heading">
                             <div class="panel-options"> 
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#tab-1" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.milestone.title' | translate }}</a></li>
+                                    <li class="active"><a href="#tab-1" data-toggle="tab">{{'billing.project.detail.milestone.title' | translate }}</a></li>
                                     <li class="" *ngIf="canSeeSolfacs()"><a href="#tab-2" data-toggle="tab" aria-expanded="true">{{'billing.project.detail.requests.title' | translate }}</a></li>
                                     <li class="" *ngIf="canSeeInvoices()"><a href="#tab-3" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.invoices.title' | translate }}</a></li>
                                     <li class=""><a href="#tab-4" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.balance' | translate }}</a></li>
@@ -146,7 +146,7 @@
                                 </div>
 
                                 <div class="tab-pane" id="tab-3" *ngIf="canSeeInvoices()">
-                                    <table class="table table-striped" id="invoiceTable" width="100%">
+                                    <table class="table table-striped" id="invoiceGrid" width="100%">
                                         <thead>
                                             <tr>
                                                 <th></th>

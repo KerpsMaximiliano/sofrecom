@@ -90,7 +90,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         public menuService: MenuService,
         private serviceService: ServiceService,
         private config: Configuration) {}
- 
+  
     ngOnInit() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.projectId = params['projectId'];
@@ -108,7 +108,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.getService();
             this.getSolfacs(this.projectId);
             this.getHitos();
-            this.getInvoices(this.projectId);
+    
             this.ocs.getAll(this.projectId);
         });
     }
@@ -175,6 +175,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.project = data;
             sessionStorage.setItem("projectDetail", JSON.stringify(data));
             this.loading = false;
+
+            if(this.canSeeInvoices()){
+                this.getInvoices(this.projectId);
+            }
         },
         err => {
             this.loading = false;
@@ -237,10 +241,11 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         var title = `Remitos`;
 
         var params = {
-          selector: '#invoiceTable',
+          selector: '#invoiceGrid',
           columns: columns,
           title: title, 
           withExport: true,
+          order: [[ 3, "desc" ]],
           columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
         }
   
