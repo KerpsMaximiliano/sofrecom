@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Options;
-using Sofco.Core.Config;
+﻿using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL;
+using Sofco.Core.Logger;
+using Sofco.Core.Managers;
+using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.StatusHandlers;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
-using Sofco.Domain.Models.Billing;
-using Sofco.Domain.Utils;
-using Sofco.Core.Logger;
-using Sofco.Core.Models.Billing;
-using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Domain.Helpers;
+using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Relationships;
-using Sofco.Core.Managers;
+using Sofco.Domain.Utils;
+using Sofco.Framework.ValidationHelpers.Billing;
 using Sofco.Service.Crm.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -52,7 +51,7 @@ namespace Sofco.Service.Implementations.Billing
         public Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId, IList<int> certificatesId)
         {
             var response = Validate(solfac);
-             
+
             if (response.HasErrors()) return response;
 
             try
@@ -90,9 +89,10 @@ namespace Sofco.Service.Implementations.Billing
                 if (SolfacHelper.IsCreditNote(solfac) || SolfacHelper.IsDebitNote(solfac))
                     return response;
 
-                //var crmResult = crmInvoiceService.UpdateHitos(solfac.Hitos);
-
-                //response.AddMessages(crmResult.Messages);
+                foreach (var solfacHito in solfac.Hitos)
+                {
+                    crmInvoiceService.UpdateAmmount(new HitoAmmountParameter { Ammount = solfacHito.Total, Id = solfacHito.ExternalHitoId }, new Response());
+                }
             }
             catch (Exception ex)
             {
@@ -223,7 +223,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 projectData.ClearHitoKeys(solfac.ProjectId);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response = new Response();
                 response.AddError(Resources.Common.ErrorSave);
@@ -266,7 +266,7 @@ namespace Sofco.Service.Implementations.Billing
 
                 var hitos = unitOfWork.SolfacRepository.GetHitosBySolfacId(solfac.Id);
 
-                //crmInvoiceService.UpdateHitoStatus(hitos.ToList(), HitoStatus.Pending);
+                crmInvoiceService.UpdateStatus(hitos.Select(x => x.ExternalHitoId).ToList(), HitoStatus.Pending);
 
                 unitOfWork.SolfacRepository.Delete(solfac);
                 unitOfWork.Save();
@@ -306,10 +306,10 @@ namespace Sofco.Service.Implementations.Billing
                 // Save changes
                 unitOfWork.Save();
 
-                // Update hitos in CRM
-                //var crmResult = crmInvoiceService.UpdateHitos(solfac.Hitos);
-
-                //response.AddMessages(crmResult.Messages);
+                foreach (var solfacHito in solfac.Hitos)
+                {
+                    crmInvoiceService.UpdateAmmount(new HitoAmmountParameter { Ammount = solfacHito.Total, Id = solfacHito.ExternalHitoId }, new Response());
+                }
 
                 response.AddSuccess(Resources.Billing.Solfac.SolfacUpdated);
             }
@@ -398,7 +398,7 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.Save();
                 response.AddSuccess(Resources.Billing.Solfac.FileDeleted);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.AddError(Resources.Common.ErrorSave);
                 logger.LogError(ex);
@@ -406,7 +406,7 @@ namespace Sofco.Service.Implementations.Billing
 
             return response;
         }
-         
+
         public Response<Solfac> Validate(Solfac solfac)
         {
             var response = new Response<Solfac>();
@@ -452,7 +452,7 @@ namespace Sofco.Service.Implementations.Billing
                 unitOfWork.Save();
                 response.AddSuccess(Resources.Billing.Solfac.DetailDeleted);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.AddError(Resources.Common.ErrorSave);
                 logger.LogError(ex);
@@ -634,12 +634,15 @@ namespace Sofco.Service.Implementations.Billing
                         unitOfWork.InvoiceRepository.UpdateStatus(invoice);
                         unitOfWork.InvoiceRepository.UpdateSolfacId(invoice);
 
-                        response.Data.Add(new Invoice { Id = invoice.Id,
+                        response.Data.Add(new Invoice
+                        {
+                            Id = invoice.Id,
                             InvoiceNumber = invoice.InvoiceNumber,
                             PDfFileData = new File
                             {
                                 FileName = invoice.PDfFileData?.FileName
-                            }});
+                            }
+                        });
                     }
                     else
                     {
@@ -678,7 +681,7 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                var solfacCertificate = new SolfacCertificate {SolfacId = id, CertificateId = certificateId};
+                var solfacCertificate = new SolfacCertificate { SolfacId = id, CertificateId = certificateId };
                 unitOfWork.SolfacCertificateRepository.Delete(solfacCertificate);
                 unitOfWork.Save();
 
@@ -749,7 +752,7 @@ namespace Sofco.Service.Implementations.Billing
 
             var hitoParams = new HitoParameters();
 
-            hitoParams.Ammount = SolfacHelper.IsCreditNote(solfac) ? (-1)*hito.Total : hito.Total;
+            hitoParams.Ammount = SolfacHelper.IsCreditNote(solfac) ? (-1) * hito.Total : hito.Total;
             hitoParams.Name = hito.Description = GetPrefixTitle(solfac) + hito.Description;
             hitoParams.StatusCode = Convert.ToInt32(HitoStatus.Pending).ToString();
             hitoParams.StartDate = DateTime.UtcNow;

@@ -6,6 +6,7 @@ using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Services.Workflow;
 using Sofco.Domain.Models.AdvancementAndRefund;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AdvancementAndRefund
@@ -90,7 +91,12 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         [HttpPost("transition")]
         public IActionResult DoTransition([FromBody] WorkflowChangeStatusParameters parameters)
         {
-            var response = workflowService.DoTransition<Advancement, AdvancementHistory>(parameters);
+            var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel { MustDoNextTransition = true } };
+
+            while (response.Data.MustDoNextTransition)
+            {
+                workflowService.DoTransition<Advancement, AdvancementHistory>(parameters, response);
+            }
 
             return this.CreateResponse(response);
         }

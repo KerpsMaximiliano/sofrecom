@@ -93,7 +93,8 @@ export class WorkflowComponent implements OnDestroy {
         this.postSubscrip = this.workflowService.post(model).subscribe(response => {
             this.messageService.closeLoading();
             this.onSaveSuccess.emit();
-        });
+        },
+        error => this.messageService.closeLoading());
     }
 
     onTransitionCustomConfirm(){

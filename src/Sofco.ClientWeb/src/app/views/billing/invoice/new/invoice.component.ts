@@ -119,7 +119,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     exportToExcel(){
         this.messageService.showLoading();
 
-        this.service.exportExcelFile(this.model.excelFileId).subscribe(file => {
+        this.service.exportNewExcelFile(this.model.id).subscribe(file => {
             this.messageService.closeLoading();
             FileSaver.saveAs(file, `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`);
         },

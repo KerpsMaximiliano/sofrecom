@@ -68,6 +68,10 @@ export class MessageService {
         swal.close();
     }
 
+    removeMessages(){
+        this.toastrService.clear();
+    }
+
     getDefaultConfig(config?: any):any {
         const option = {
             closeButton: true

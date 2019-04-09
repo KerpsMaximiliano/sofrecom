@@ -344,7 +344,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (response.HasErrors()) return response;
 
-            if (parameters.StartDate.GetValueOrDefault().Date >= parameters.EndDate.GetValueOrDefault().Date)
+            if (parameters.StartDate.GetValueOrDefault().Date > parameters.EndDate.GetValueOrDefault().Date)
             {
                 response.AddError(Resources.AllocationManagement.Allocation.DateToLessThanDateSince);
                 return response;

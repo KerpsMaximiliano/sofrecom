@@ -61,24 +61,28 @@ namespace Sofco.Service.Implementations.Workflow
             this.onTransitionSuccessFactory = onTransitionSuccessFactory;
         }
 
-        public Response<bool> DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters)
+        public void DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters, Response<TransitionSuccessModel> response)
             where TEntity : WorkflowEntity
             where THistory : WorkflowHistory
         {
-            var response = new Response<bool>(){ Data = false };
+            response.Data.MustDoNextTransition = false;
 
             // Validate Parameters
             ValidateParameters(parameters, response);
 
-            if (response.HasErrors()) return response;
+            if (response.HasErrors()) return;
 
             var entity = workflowRepository.GetEntity<TEntity>(parameters.EntityId);
 
             // Validate if entity exist
             if (entity == null)
             {
-                response.AddError(Resources.Workflow.Workflow.EntityNull);
-                return response;
+                if (response.Data.OnError != null)
+                    response.Data.OnError.Invoke();
+                else
+                    response.AddError(Resources.Workflow.Workflow.EntityNull);
+
+                return;
             }
 
             var transition = workflowRepository.GetTransition(entity.StatusId, parameters.NextStateId, parameters.WorkflowId);
@@ -86,8 +90,12 @@ namespace Sofco.Service.Implementations.Workflow
             // Validate if transition exist
             if (transition == null)
             {
-                response.AddError(Resources.Workflow.Workflow.CannotDoTransition);
-                return response;
+                if (response.Data.OnError != null)
+                    response.Data.OnError.Invoke();
+                else
+                    response.AddError(Resources.Workflow.Workflow.CannotDoTransition);
+          
+                return;
             }
 
             var currentUser = userData.GetCurrentUser();
@@ -95,8 +103,12 @@ namespace Sofco.Service.Implementations.Workflow
             // Validate user access
             if (!ValidateAccess(transition, currentUser, entity))
             {
-                response.AddError(Resources.Workflow.Workflow.UserHasNoAccess);
-                return response;
+                if (response.Data.OnError != null)
+                    response.Data.OnError.Invoke();
+                else
+                    response.AddError(Resources.Workflow.Workflow.UserHasNoAccess);
+
+                return;
             }
 
             // Custom Validation
@@ -111,7 +123,16 @@ namespace Sofco.Service.Implementations.Workflow
                     validatorHandler?.Validate(entity, response, parameters);
                 }
 
-                if(response.HasErrors()) return response;
+                if (response.HasErrors())
+                {
+                    if (response.Data.OnError != null)
+                    {
+                        response.Data.OnError.Invoke();
+                        response.Messages = response.Messages.Where(x => x.Type != MessageType.Error).ToList();
+                    }
+
+                    return;
+                }
             }
 
             // Save change status
@@ -122,12 +143,19 @@ namespace Sofco.Service.Implementations.Workflow
                 workflowRepository.UpdateStatus(entity);
                 workflowRepository.Save();
 
-                response.AddSuccess(Resources.Workflow.Workflow.TransitionSuccess);
+                if (response.Messages.All(x => x.Text != Resources.Workflow.Workflow.TransitionSuccess))
+                {
+                    response.AddSuccess(Resources.Workflow.Workflow.TransitionSuccess);
+                }
             }
             catch (Exception e)
             {
                 logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
+
+                if (response.Data.OnError != null)
+                    response.Data.OnError.Invoke();
+                else
+                    response.AddError(Resources.Common.ErrorSave);
             }
 
             // Custom Success Process
@@ -153,35 +181,70 @@ namespace Sofco.Service.Implementations.Workflow
             // Create history
             CreateHistory<TEntity, THistory>(entity, transition, currentUser, parameters);
 
+            CheckIfMustGoToNextStep<TEntity, THistory>(parameters, response, transition, entity);
+
+            if (!response.Data.MustDoNextTransition)
+            {
+                // Send Notification
+                SendNotification(entity, response, transition, parameters);
+            }
+        }
+
+        private void CheckIfMustGoToNextStep<TEntity, THistory>(WorkflowChangeStatusParameters parameters, Response<TransitionSuccessModel> response,
+            WorkflowStateTransition transition, TEntity entity) where TEntity : WorkflowEntity where THistory : WorkflowHistory
+        {
             var nextState = transition.NextWorkflowState;
 
-            var possibleNextTransitions = workflowRepository.GetTransitions(nextState.Id, parameters.WorkflowId).Where(x => x.ActualWorkflowStateId != appSetting.WorkflowStatusRejectedId).ToList();
+            var possibleNextTransitions = workflowRepository.GetTransitions(nextState.Id, parameters.WorkflowId)
+                .Where(x => x.NextWorkflowStateId != appSetting.WorkflowStatusRejectedId).ToList();
 
-            if (possibleNextTransitions.Count() == 1)
+            var nextTransitions = new List<WorkflowStateTransition>();
+
+            foreach (var possibleNextTransition in possibleNextTransitions)
+            {
+                var user = new UserLiteModel
+                {
+                    Id = entity.UserApplicant.Id,
+                    Email = entity.UserApplicant.Email
+                };
+
+                if (ValidatePriviligeAccess(possibleNextTransition, user, entity))
+                {
+                    if (!string.IsNullOrWhiteSpace(possibleNextTransition.ConditionCode))
+                    {
+                        var conditionHandler = workflowConditionStateFactory.GetInstance(possibleNextTransition.ConditionCode);
+
+                        if (conditionHandler != null && conditionHandler.CanDoTransition(entity, response))
+                        {
+                            nextTransitions.Add(possibleNextTransition);
+                        }
+                    }
+                    else
+                    {
+                        nextTransitions.Add(possibleNextTransition);
+                    }
+                }
+            }
+
+            if (nextTransitions.Count == 1)
             {
                 var nextTransition = possibleNextTransitions.FirstOrDefault();
 
                 if (nextTransition != null)
                 {
-                    if (ValidatePriviligeAccess(nextTransition, currentUser, entity))
+                    response.Data.MustDoNextTransition = true;
+                    parameters.NextStateId = nextTransition.NextWorkflowStateId;
+
+                    response.Data.OnError = () =>
                     {
-                        response.Data = true;
-                        parameters.NextStateId = nextTransition.NextWorkflowStateId;
-                    }
+                        SendNotification(entity, response, transition, parameters);
+                        return response;
+                    };
                 }
             }
-
-            if (!response.Data)
-            {
-                // Send Notification
-                SendNotification(entity, response, transition, parameters);
-            }
-
-            return response;
         }
 
-        private void SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition,
-            WorkflowChangeStatusParameters parameters)
+        private void SendNotification(WorkflowEntity entity, Response response, WorkflowStateTransition transition, WorkflowChangeStatusParameters parameters)
         {
             if (!string.IsNullOrWhiteSpace(transition.NotificationCode))
             {
@@ -249,15 +312,15 @@ namespace Sofco.Service.Implementations.Workflow
             return hasAccess;
         }
 
-        private bool ValidatePriviligeAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity)
+        private bool ValidatePriviligeAccess(WorkflowStateTransition transition, UserLiteModel user, WorkflowEntity entity)
         {
             bool hasAccess = false;
 
-            hasAccess = ValidateManagerAccess(transition, currentUser, entity, hasAccess);
+            hasAccess = ValidateManagerAccess(transition, user, entity, hasAccess);
 
-            hasAccess = ValidateAnalyticManagerAccess(transition, currentUser, entity, hasAccess);
+            hasAccess = ValidateAnalyticManagerAccess(transition, user, entity, hasAccess);
 
-            hasAccess = ValidateSectorAccess(transition, currentUser, entity, hasAccess);
+            hasAccess = ValidateSectorAccess(transition, user, entity, hasAccess);
 
             return hasAccess;
         }

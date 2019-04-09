@@ -118,6 +118,18 @@ namespace Sofco.WebApi.Controllers.Billing
             return File(response.Data, "application/octet-stream", string.Empty);
         }
 
+        [HttpGet("{id}/excel/new")]
+        public IActionResult ExportNewExcelFile(int id)
+        {
+            var response = invoiceService.GetById(id);
+
+            if (response.HasErrors()) return BadRequest(response);
+
+            var excel = invoiceFileManager.CreateInvoiceExcel(response.Data);
+
+            return File(excel.GetAsByteArray(), "application/octet-stream", string.Empty);
+        }
+
         [HttpGet("{id}/pdf/export")]
         public IActionResult ExportPdfFile(int id)
         {

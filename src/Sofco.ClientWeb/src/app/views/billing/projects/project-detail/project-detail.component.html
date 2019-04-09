@@ -150,21 +150,21 @@
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th width="120">{{'billing.project.detail.invoices.invoiceNumber' | translate }}</th>
+                                                <th>{{'billing.project.detail.invoices.invoiceNumber' | translate }}</th>
                                                 <th>{{'billing.invoice.excelFileName' | translate }}</th>
-                                                <th width="150" class="text-center">{{'billing.project.detail.invoices.date' | translate }}</th>
-                                                <th width="150" class="text-center">{{'billing.project.detail.invoices.status' | translate }}</th>
+                                                <th class="text-center">{{'billing.project.detail.invoices.date' | translate }}</th>
+                                                <th class="text-center">{{'billing.project.detail.invoices.status' | translate }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngFor="let invoice of invoices" class="pointer" >
+                                            <tr *ngFor="let invoice of invoices" class="pointer" (click)="goToInvoiceDetail(invoice)">
                                                 <td class="col-lg-1">
                                                     <pcheck [(checked)]="invoice.selected"></pcheck>
                                                 </td>
-                                                <td (click)="goToInvoiceDetail(invoice)">{{ invoice.invoiceNumber }}</td>
-                                                <td (click)="goToInvoiceDetail(invoice)">{{ invoice.excelFileName }}</td>
-                                                <td (click)="goToInvoiceDetail(invoice)" class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy' }}</td>
-                                                <td (click)="goToInvoiceDetail(invoice)" class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
+                                                <td>{{ invoice.invoiceNumber }}</td>
+                                                <td>{{ invoice.excelFileName }}</td>
+                                                <td class="text-center">{{ invoice.createdDate | date:'dd/MM/yyyy' }}</td>
+                                                <td class="text-center"><span class="label label-{{invoice.invoiceStatus}}">{{ invoice.invoiceStatus | translate}}</span></td>
                                             </tr>
                                         </tbody>
                                     </table>
