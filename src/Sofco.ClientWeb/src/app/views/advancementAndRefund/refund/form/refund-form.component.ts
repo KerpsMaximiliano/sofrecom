@@ -263,7 +263,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             refund.details.push(element.getModel());
         });
 
-        if(refund.advancements == null){
+        if(!refund.advancements || refund.advancements == null || refund.advancements.length == 0){
             refund.currencyId = this.defaultCurrencyId;
         }
 
