@@ -8,6 +8,7 @@ using MailKit.Net.Smtp;
 using MimeKit;
 using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Framework.Helpers;
 using Sofco.Domain;
@@ -21,6 +22,7 @@ namespace Sofco.Framework.Mail
         private readonly IHostingEnvironment environment;
 
         private readonly ILoggerWrapper<MailSender> logger;
+        private readonly ILogMailer<MailSender> loggerMail;
 
         private readonly string fromEmail;
         private readonly string fromDisplayName;
@@ -36,9 +38,11 @@ namespace Sofco.Framework.Mail
         public MailSender(IHostingEnvironment environment, 
             IOptions<EmailConfig> emailConfigOption, 
             ILoggerWrapper<MailSender> logger, 
+            ILogMailer<MailSender> loggerMail, 
             IMailBuilder mailBuilder)
         {
             this.logger = logger;
+            this.loggerMail = loggerMail;
             this.mailBuilder = mailBuilder;
             this.environment = environment;
             var emailConfig = emailConfigOption.Value;
@@ -184,7 +188,7 @@ namespace Sofco.Framework.Mail
                     {
                         var msg = $"Subject: {message.Subject} - Recipients: {string.Join(",", message.To.Mailboxes.Select(s => s.Address))}";
 
-                        logger.LogError(msg, e);
+                        loggerMail.LogError(msg, e);
                         throw;
                     }
                 }
