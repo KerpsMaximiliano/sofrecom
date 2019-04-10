@@ -20,10 +20,7 @@ export class RefundDelegateComponent implements OnInit, OnDestroy {
     public dataApprovers: any[] = new Array<any>();
     public dataDelegates: any[] = new Array<any>();
 
-    public managersAndDirectors: any[] = new Array<any>();
     public users: any[] = new Array<any>();
-
-    public allUsers: any[] = new Array<any>();
     public userId: number;
 
     public analytics: any[] = new Array();
@@ -73,7 +70,6 @@ export class RefundDelegateComponent implements OnInit, OnDestroy {
         this.approversService.setType(UserApproverType.Refund);
  
         this.getUsers();
-        this.getManagersAndDirectors();
         this.getAnalytics();
         this.getData();
     }
@@ -96,13 +92,6 @@ export class RefundDelegateComponent implements OnInit, OnDestroy {
     getUsers() {
         this.getUsersSubscription = this.userService.getOptions().subscribe(res => {
             this.users = res;
-            this.allUsers = res;
-        });
-    }
-
-    getManagersAndDirectors() {
-        this.getUsersSubscription = this.userService.getManagersAndDirectors().subscribe(res => {
-            this.managersAndDirectors = res;
         });
     }
 
@@ -173,12 +162,10 @@ export class RefundDelegateComponent implements OnInit, OnDestroy {
 
         if(this.type == '1'){
             this.analyticDisabled = false;
-            this.allUsers = this.users;
         }
         else{
             this.analyticDisabled = true;
             this.analyticId = null;
-            this.allUsers = this.managersAndDirectors;
         }
     }
 
