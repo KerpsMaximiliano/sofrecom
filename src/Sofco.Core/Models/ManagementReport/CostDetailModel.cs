@@ -26,6 +26,7 @@ namespace Sofco.Core.Models.ManagementReport
     {
         public int? EmployeeId { get; set; }
         public int TypeId { get; set; }
+        public string TypeName { get; set; }
         public string Display { get; set; }
 
         public IList<MonthDetailCost> MonthsCost { get; set; }

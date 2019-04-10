@@ -248,10 +248,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                 //Obtengo los tipos de Recursos
                 List<CostDetailResourceType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
                 List<CostDetailResourceType> TypesFundedResources = Types.Where(t => t.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
-                int IdEmployeeType = Types.Where(t => t.Name == CostDetailTypeResource.Empleados.ToString()).FirstOrDefault().Id;
+                CostDetailResourceType EmployeeType = Types.Where(t => t.Name == CostDetailTypeResource.Empleados.ToString()).FirstOrDefault();
 
                 //Mapeo Los empleados      
-                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, CostDetailEmployees, IdEmployeeType);
+                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, CostDetailEmployees, EmployeeType);
                 //Mapeo Los demas datos
                 response.Data.FundedResources = FillFundedResoursesByMonth(analytic.Id, response.Data.MonthsHeader, FundedResources, TypesFundedResources);
 
@@ -409,7 +409,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return false;
         }
 
-        private List<CostResource> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> CostDetailEmployees, int IdEmployeeType)
+        private List<CostResource> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> CostDetailEmployees, CostDetailResourceType EmployeeType)
         {
             List<CostResource> costEmployees = new List<CostResource>();
 
@@ -423,7 +423,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 detailEmployee.EmployeeId = employee.Id;
                 detailEmployee.Display = employee.Name + " - " + employee.Id;
-                detailEmployee.TypeId = IdEmployeeType;
+                detailEmployee.TypeId = EmployeeType.Id;
+                detailEmployee.TypeName = EmployeeType.Name;
 
                 foreach (var mounth in Months)
                 {
@@ -458,6 +459,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 detailResource.Display = type.Name;
                 detailResource.TypeId = type.Id;
+                detailResource.TypeName = type.Name;
 
                 foreach (var mounth in Months)
                 {
