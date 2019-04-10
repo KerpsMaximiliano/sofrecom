@@ -166,6 +166,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 foreach (var hito in crmProjectHitos.OrderBy(x => x.StartDate))
                 {
+                    if(hito.Status.Equals("Cerrado")) continue;
+
                     if (hito.StartDate.Date >= dates.Item1.Date && hito.StartDate.Date <= dates.Item2.Date)
                     {
                         var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hito.Id);
