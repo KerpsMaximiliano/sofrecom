@@ -43,7 +43,6 @@
     <button *ngIf="canCreateHito()" (click)="openHitoModal()" type="button" class="btn btn-success btn-sm">
         {{ 'billing.project.detail.milestone.create' | translate }}  <i class="fa fa-plus"></i>
     </button> 
-    <button class="btn btn-primary" type="button">Guardar <i class="fa fa-save"></i></button>
 </div>
 
 <ng2-modal [config]="newHitoModalConfig" #newHitoModal (accept)="createHito()">
