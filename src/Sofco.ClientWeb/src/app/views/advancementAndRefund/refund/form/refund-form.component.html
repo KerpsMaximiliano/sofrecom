@@ -15,10 +15,19 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group" [ngClass]="form.controls.userApplicantId.invalid ? 'has-error' : 'has-success'">
+            <div class="form-group" [ngClass]="form.controls.userApplicantId.invalid ? 'has-error' : 'has-success'" *ngIf="!isDelegate">
                 <label style="font-size: 15px"> {{'refund.userApplicant' | translate }}: </label>
                 <span style="font-size: 14px"> {{ userApplicantName }}</span>
         
+                <div class="form-control-feedback" *ngIf="form.controls.userApplicantId.invalid">
+                    <p>{{ i18nService.translate('advancementAndRefund/refund','userApplicantRequired') }}</p>
+                </div>
+            </div>
+
+            <div class="form-group" [ngClass]="form.controls.userApplicantId.invalid ? 'has-error' : 'has-success'" *ngIf="isDelegate && mode == 'add'">
+                <label class="control-label"> {{ 'refund.userApplicant' | translate }} </label>
+                <ng-select [items]="users" bindValue="id" bindLabel="text" formControlName="userApplicantId" (change)="userChanged()"></ng-select>
+
                 <div class="form-control-feedback" *ngIf="form.controls.userApplicantId.invalid">
                     <p>{{ i18nService.translate('advancementAndRefund/refund','userApplicantRequired') }}</p>
                 </div>

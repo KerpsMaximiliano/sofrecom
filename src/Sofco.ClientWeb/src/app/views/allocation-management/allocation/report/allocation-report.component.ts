@@ -128,6 +128,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
         }
 
         this.messageService.showLoading();
+        this.messageService.removeMessages();
         this.loaded = false;
 
         this.createReportSubscrip = this.allocationService.createReport(parameters).subscribe(response => {

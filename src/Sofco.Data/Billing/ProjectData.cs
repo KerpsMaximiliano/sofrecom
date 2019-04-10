@@ -14,7 +14,7 @@ namespace Sofco.Data.Billing
         private const string ProjectsCacheKey = "urn:services:{0}:projects:all";
         private const string HitosCacheKey = "urn:projects:{0}:hitos:all";
         private readonly TimeSpan cacheExpire = TimeSpan.FromMinutes(10);
-        private readonly TimeSpan hitosCacheExpire = TimeSpan.FromMinutes(30);
+        private readonly TimeSpan hitosCacheExpire = TimeSpan.FromMinutes(10);
 
         private readonly ICacheManager cacheManager;
         private readonly IUnitOfWork unitOfWork;

@@ -22,14 +22,28 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Analiticas</label>
-                        <ng-select [items]="analytics" bindValue="id" bindLabel="text" [(ngModel)]="analyticId"></ng-select>
+                        <ng-select [items]="analytics" bindValue="id" bindLabel="text" [(ngModel)]="analyticId" [disabled]="analyticDisabled"></ng-select>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Usuario a delegar</label>
-                        <ng-select [items]="users" bindValue="id" bindLabel="text" [(ngModel)]="userId"></ng-select>
+                        <ng-select [items]="allUsers" bindValue="id" bindLabel="text" [(ngModel)]="userId"></ng-select>
                     </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <h4 class="control-label">Tipo delegación</h4>
+                        <div class="radio radio-success radio-inline">
+                            <input value="1" type="radio" [(ngModel)]="type" (ngModelChange)="typeChange()">
+                            <label> Aprobación </label>
+                        </div> 
+                    
+                        <div class="radio radio-success radio-inline">
+                            <input value="2" type="radio" [(ngModel)]="type" (ngModelChange)="typeChange()">
+                            <label> Generación </label>
+                        </div>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -52,6 +66,7 @@
                         <th></th>
                         <th>{{'allocationManagement.analytics.title' | translate }}</th>
                         <th>{{'allocationManagement.workTimeApproval.delegate.approver' | translate }}</th>
+                        <th>Tipo delegacion</th>
                         <th width="25">{{'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
@@ -63,6 +78,7 @@
                         </td>
                         <td>{{ item.analyticName }}</td>
                         <td>{{ item.approverName }}</td>
+                        <td>{{ item.type }}</td>
                         <td>
                             <button class="btn btn-xs btn-danger" (click)="showConfirmDelete(item)">
                                 <span class="fa-trash fa"></span>

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { I18nService } from "app/services/common/i18n.service";
 
 @Component({
     selector: 'cost-detail-month',
@@ -28,7 +29,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     isReadOnly: boolean 
 
-    constructor(){}
+    constructor(public i18nService: I18nService){}
 
     ngOnInit(): void {
     }

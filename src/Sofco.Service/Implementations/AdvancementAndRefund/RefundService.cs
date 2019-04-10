@@ -523,6 +523,91 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
+        public Response<int> Delegate(int userId)
+        {
+            var response = new Response<int>();
+
+            if (!unitOfWork.UserRepository.ExistById(userId))
+            {
+                response.AddError(Resources.Admin.User.NotFound);
+                return response;
+            }
+
+            try
+            {
+                var currentUser = userData.GetCurrentUser();
+
+                var userDelegate = new UserDelegate
+                {
+                    Created = DateTime.UtcNow,
+                    CreatedUser = currentUser.UserName,
+                    Modified = DateTime.UtcNow,
+                    SourceId = userId,
+                    Type = UserDelegateType.RefundAdd,
+                    UserId = currentUser.Id
+                };
+
+                unitOfWork.UserDelegateRepository.Insert(userDelegate);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Refund.DelegateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response DeleteDelegate(List<int> ids)
+        {
+            var response = new Response();
+
+            try
+            {
+                foreach (var id in ids)
+                {
+                    var userDelegate = unitOfWork.UserDelegateRepository.Get(id);
+
+                    if (userDelegate != null)
+                    {
+                        unitOfWork.UserDelegateRepository.Delete(userDelegate);
+                    }
+                }
+
+                unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<Option>> GetDelegates()
+        {
+            var response = new Response<IList<Option>> { Data = new List<Option>() };
+
+            var delegates = unitOfWork.UserDelegateRepository.GetByUserId(userData.GetCurrentUser().Id, UserDelegateType.RefundAdd);
+
+            foreach (var userDelegate in delegates)
+            {
+                var user = userData.GetUserLiteById(userDelegate.SourceId.GetValueOrDefault());
+
+                response.Data.Add(new Option
+                {
+                    Id = userDelegate.Id,
+                    Text = user.Name
+                });
+            }
+
+            return response;
+        }
+
         private string GetBank(string email, Dictionary<string, string> employeeDictionary)
         {
             if (!employeeDictionary.ContainsKey(email))

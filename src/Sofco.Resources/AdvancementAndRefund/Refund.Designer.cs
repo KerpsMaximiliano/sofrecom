@@ -124,6 +124,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.delegateSuccess.
+        /// </summary>
+        public static string DelegateSuccess {
+            get {
+                return ResourceManager.GetString("DelegateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/refund.deleteSuccess.
         /// </summary>
         public static string DeleteSuccess {

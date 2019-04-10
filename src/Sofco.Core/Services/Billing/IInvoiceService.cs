@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Sofco.Core.Config;
@@ -6,8 +7,8 @@ using Sofco.Core.Models.Billing;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
-using Sofco.Domain.Models.Common;
 using Sofco.Domain.Utils;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Core.Services.Billing
 {
@@ -24,5 +25,6 @@ namespace Sofco.Core.Services.Billing
         ICollection<InvoiceHistory> GetHistories(int id);
         Response RequestAnnulment(InvoiceAnnulmentModel model);
         Task<Response<File>> AttachFile(int invoiceId, Response<File> response, IFormFile file, string userName);
+        Response<Stream> GetZip(IList<int> ids);
     }
 }

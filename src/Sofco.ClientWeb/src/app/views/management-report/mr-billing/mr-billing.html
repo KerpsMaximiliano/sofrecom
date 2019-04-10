@@ -25,12 +25,11 @@
                 </td>
                 
                 <td *ngFor="let value of hito.values">
-                    <input *ngIf="value.value > 0" 
+                    <input *ngIf="value.value" 
                         type="number" 
                         class="form-control input-sm" 
                         [ngClass]="resolveHitoLabel(value)" 
                         decimalFormat
-                        min="0" 
                         (blur)="updateHito(hito)"
                         [(ngModel)]="value.value"
                         [disabled]="!isEnabled(value)">
@@ -44,7 +43,6 @@
     <button *ngIf="canCreateHito()" (click)="openHitoModal()" type="button" class="btn btn-success btn-sm">
         {{ 'billing.project.detail.milestone.create' | translate }}  <i class="fa fa-plus"></i>
     </button> 
-    <button class="btn btn-primary" type="button">Guardar <i class="fa fa-save"></i></button>
 </div>
 
 <ng2-modal [config]="newHitoModalConfig" #newHitoModal (accept)="createHito()">

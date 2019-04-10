@@ -185,7 +185,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             var solfacId = solfac.Hitos.First().SolfacId;
 
-            var totalLimit = solfacRepository.GetTotalAmountById(solfacId);
+            var totalLimit = Math.Abs(solfacRepository.GetTotalAmountById(solfacId));
 
             var hitosTotalImport = solfac.Hitos.Sum(s => s.Details.Sum(d => d.Total));
 

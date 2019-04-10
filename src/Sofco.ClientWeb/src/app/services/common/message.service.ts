@@ -10,7 +10,7 @@ export class MessageService {
     private successType = 0;
     private errorType = 1;
     private warningType = 2;
-    private ErrorTimeOut = 150000;
+    private ErrorTimeOut = 10000;
 
     constructor(private toastrService: ToastrService,
                 private i18nService: I18nService) {}
@@ -66,6 +66,10 @@ export class MessageService {
 
     closeLoading(){
         swal.close();
+    }
+
+    removeMessages(){
+        this.toastrService.clear();
     }
 
     getDefaultConfig(config?: any):any {

@@ -12,6 +12,7 @@ import { ServiceService } from '../../../../services/billing/service.service';
 import { NewHito } from '../../../../models/billing/solfac/newHito';
 import { InvoiceStatus } from '../../../../models/enums/invoiceStatus';
 import { InvoiceService } from '../../../../services/billing/invoice.service';
+import * as FileSaver from "file-saver";
 
 @Component({
   selector: 'app-project-detail',
@@ -90,7 +91,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         public menuService: MenuService,
         private serviceService: ServiceService,
         private config: Configuration) {}
- 
+  
     ngOnInit() {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.projectId = params['projectId'];
@@ -108,7 +109,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.getService();
             this.getSolfacs(this.projectId);
             this.getHitos();
-            this.getInvoices(this.projectId);
+    
             this.ocs.getAll(this.projectId);
         });
     }
@@ -175,6 +176,10 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
             this.project = data;
             sessionStorage.setItem("projectDetail", JSON.stringify(data));
             this.loading = false;
+
+            if(this.canSeeInvoices()){
+                this.getInvoices(this.projectId);
+            }
         },
         err => {
             this.loading = false;
@@ -237,13 +242,15 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         var title = `Remitos`;
 
         var params = {
-          selector: '#invoiceTable',
+          selector: '#invoiceGrid',
           columns: columns,
-          title: title,
+          title: title, 
           withExport: true,
-          columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ]
+          order: [[ 3, "desc" ]],
+          columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
         }
   
+        this.datatableService.destroy(params.selector);
         this.datatableService.initialize(params);
     }
 
@@ -539,6 +546,28 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         if(invoices.length != invoicesSelectedCount) return false;
 
         return true;
+    }
+
+    canDownload(){
+        var invoices = this.invoices.filter(x => x.selected && x.fileId > 0);
+
+        if(invoices.length == 0) return false;
+
+        return true;
+    }
+
+    downloadZip(){
+        var invoicesIds = this.invoices.filter(x => x.selected).map(x => x.fileId);
+
+        if(!invoicesIds || invoicesIds == null || invoicesIds.length == 0) return;
+
+        this.messageService.showLoading();
+
+        this.invoiceService.downloadZip(invoicesIds).subscribe(file => {
+            this.messageService.closeLoading();
+            FileSaver.saveAs(file, "remitos.zip");
+        },
+        error => this.messageService.closeLoading());
     }
 
     askForAnnulment(){

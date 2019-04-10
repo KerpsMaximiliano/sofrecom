@@ -10,7 +10,7 @@ export class DecimalFormatDirective {
     private regex: RegExp = new RegExp(/^[0-9]+(.[0-9]{0,2})?$/g);
     // Allow key codes for special events. Reflect :
     // Backspace, tab, end, home
-    private specialKeys: Array<string> = [ 'Backspace', 'Tab', 'End', 'Home', '-' ];
+    private specialKeys: Array<string> = [ 'Tab', 'End', 'Home', '-' ];
 
     constructor(private el: ElementRef) {}
 
@@ -24,6 +24,8 @@ export class DecimalFormatDirective {
         if(event.key.includes('.')){
             event.preventDefault();
         }
+
+        if(event.key == "Backspace") return;
 
         let current: string = this.el.nativeElement.value;
         let next: string = current.concat(event.key);

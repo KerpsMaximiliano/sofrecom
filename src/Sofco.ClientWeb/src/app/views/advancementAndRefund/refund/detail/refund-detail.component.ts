@@ -84,6 +84,10 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
             if(response.data.advancementIds && response.data.advancementIds.length > 0){
                 this.refundRelated.init(response.data.advancementIds);
             }
+            else{
+                this.refundRelated.advancements = [];
+                this.refundRelated.refunds = [];
+            }
 
             this.workflow.init(this.workflowModel);
 

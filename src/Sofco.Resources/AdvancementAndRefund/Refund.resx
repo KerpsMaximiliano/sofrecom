@@ -138,6 +138,9 @@
   <data name="CreditCardRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.creditCardRequired</value>
   </data>
+  <data name="DelegateSuccess" xml:space="preserve">
+    <value>advancementAndRefund/refund.delegateSuccess</value>
+  </data>
   <data name="DeleteSuccess" xml:space="preserve">
     <value>advancementAndRefund/refund.deleteSuccess</value>
   </data>

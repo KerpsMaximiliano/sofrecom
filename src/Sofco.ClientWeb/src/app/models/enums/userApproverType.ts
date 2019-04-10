@@ -4,5 +4,7 @@ export enum UserApproverType {
 
     License = 1,
 
-    Refund = 2
+    Refund = 2,
+
+    RefundAdd = 3
 }

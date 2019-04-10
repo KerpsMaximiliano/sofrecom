@@ -72,7 +72,7 @@
                         <div class="panel-heading">
                             <div class="panel-options"> 
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#tab-1" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.milestone.title' | translate }}</a></li>
+                                    <li class="active"><a href="#tab-1" data-toggle="tab">{{'billing.project.detail.milestone.title' | translate }}</a></li>
                                     <li class="" *ngIf="canSeeSolfacs()"><a href="#tab-2" data-toggle="tab" aria-expanded="true">{{'billing.project.detail.requests.title' | translate }}</a></li>
                                     <li class="" *ngIf="canSeeInvoices()"><a href="#tab-3" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.invoices.title' | translate }}</a></li>
                                     <li class=""><a href="#tab-4" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.balance' | translate }}</a></li>
@@ -146,14 +146,14 @@
                                 </div>
 
                                 <div class="tab-pane" id="tab-3" *ngIf="canSeeInvoices()">
-                                    <table class="table table-striped" id="invoiceTable" width="100%">
+                                    <table class="table table-striped" id="invoiceGrid" width="100%">
                                         <thead>
                                             <tr>
                                                 <th></th>
-                                                <th width="120">{{'billing.project.detail.invoices.invoiceNumber' | translate }}</th>
+                                                <th>{{'billing.project.detail.invoices.invoiceNumber' | translate }}</th>
                                                 <th>{{'billing.invoice.excelFileName' | translate }}</th>
-                                                <th width="150" class="text-center">{{'billing.project.detail.invoices.date' | translate }}</th>
-                                                <th width="150" class="text-center">{{'billing.project.detail.invoices.status' | translate }}</th>
+                                                <th class="text-center">{{'billing.project.detail.invoices.date' | translate }}</th>
+                                                <th class="text-center">{{'billing.project.detail.invoices.status' | translate }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -171,6 +171,7 @@
 
                                     <div class="button-group" *ngIf="canCreateInvoice()">
                                         <button class="btn btn-primary" (click)="goToCreateInvoice()"> {{'billing.project.detail.invoices.create' | translate }} <i class="fa fa-plus"></i></button>
+                                        <button class="btn btn-primary" *ngIf="canDownload()" (click)="downloadZip()"> Descargar zip <i class="fa fa-download"></i></button>
                                         <button class="btn btn-warning" *ngIf="canAskForAnnulment()" (click)="invoiceAnnulmentModal.show()"> {{'billing.project.detail.invoices.askAnnulment' | translate }} <i class="fa fa-times"></i></button>
                                     </div>
                                 </div>
