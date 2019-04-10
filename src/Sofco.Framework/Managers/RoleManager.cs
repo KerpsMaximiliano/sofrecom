@@ -79,6 +79,31 @@ namespace Sofco.Framework.Managers
             return hasDirectorGroup || hasCommercialGroup || hasGafGroup || hasCdgGroup || hasDafGroup || hasPmoGroup || hasReadOnlyGroup || hasRrhhGroup || hasComplianceGroup;
         }
 
+        public bool HasAdvancementAccess()
+        {
+            var currentUserEmail = CurrentUser.Email;
+
+            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUserEmail);
+            var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUserEmail);
+            var hasComplianceGroup = unitOfWork.UserRepository.HasComplianceGroup(currentUserEmail);
+            var hasReadOnlyGroup = unitOfWork.UserRepository.HasReadOnlyGroup(currentUserEmail);
+            var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUserEmail);
+
+            return  hasGafGroup || hasDafGroup || hasReadOnlyGroup || hasRrhhGroup || hasComplianceGroup;
+        }
+
+        public bool HasAccessForRefund()
+        {
+            var currentUserEmail = CurrentUser.Email;
+
+            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUserEmail);
+            var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUserEmail);
+            var hasComplianceGroup = unitOfWork.UserRepository.HasComplianceGroup(currentUserEmail);
+            var hasReadOnlyGroup = unitOfWork.UserRepository.HasReadOnlyGroup(currentUserEmail);
+
+            return hasGafGroup || hasDafGroup || hasReadOnlyGroup || hasComplianceGroup;
+        }
+
         public bool IsDirector()
         {
             var isDirector = unitOfWork.UserRepository.HasDirectorGroup(CurrentUser.Email)

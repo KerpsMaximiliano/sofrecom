@@ -134,7 +134,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var currentUser = userData.GetCurrentUser();
 
-            var hasAllAccess = roleManager.HasFullAccess();
+            var hasAllAccess = roleManager.HasAdvancementAccess();
 
             var advancements = unitOfWork.AdvancementRepository.GetAllInProcess(settings.WorkflowStatusRejectedId, settings.WorkflowStatusDraft);
 
@@ -156,7 +156,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 foreach (var advancement in advancements)
                 {
                     //if (ValidateManagerAccess(advancement, transition, currentUser) || HasReadAccess(readAccess, currentUser))
-                    if (ValidateManagerAccess(advancement, currentUser))
+                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser))
                     {
                         if (response.Data.All(x => x.Id != advancement.Id))
                         {
@@ -214,7 +214,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var employeeDicc = new Dictionary<string, string>();
 
-            var hasAllAccess = roleManager.HasFullAccess();
+            var hasAllAccess = roleManager.HasAdvancementAccess();
 
             if (!hasAllAccess) return response;
 
@@ -334,7 +334,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 foreach (var advancement in advancements)
                 {
-                    if (ValidateManagerAccess(advancement, currentUser))
+                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser))
                     {
                         if (response.Data.All(x => x.Id != advancement.Id))
                         {
@@ -456,6 +456,20 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
 
             if (employee.ManagerId.HasValue && employee.Manager != null && employee.ManagerId.Value == currentUser.Id)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool ValidateSectorAccess(Advancement entity, UserLiteModel currentUser)
+        {
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
+
+            var sectors = unitOfWork.EmployeeRepository.GetAnalyticsWithSector(employee.Id);
+
+            if (sectors.Any(x => x.ResponsableUserId == currentUser.Id))
             {
                 return true;
             }
