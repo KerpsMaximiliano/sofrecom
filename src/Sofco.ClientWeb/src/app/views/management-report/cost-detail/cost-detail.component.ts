@@ -8,6 +8,8 @@ import { MessageService } from "app/services/common/message.service";
 import * as moment from 'moment';
 import { modalConfigDefaults } from "ngx-bootstrap/modal/modal-options.class";
 
+import {  FormGroup, FormControl, Validators } from "@angular/forms";
+
 
 @Component({
     selector: 'cost-detail',
@@ -24,11 +26,15 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     serviceId: string;
     months: any[] = new Array();
     employees: any[] = new Array();
+    employeesOriginal: any[] = new Array();
     fundedResourses: any[] = new Array();
-    monthSelected: any = { value: 0,  display: ''};
+    monthSelected: any = { value: 0, display: '' };
     itemSelected: any;
     model: any;
+    modalPercentage: boolean = false;
+  
 
+   
 
     @ViewChild('editItemModal') editItemModal;
     @ViewChild("editItemModal") modal;
@@ -49,6 +55,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         private menuService: MenuService) { }
 
     ngOnInit(): void {
+
+        const control = new FormControl(16, Validators.max(15));
+
+        console.log(control.errors); 
+    
+
         this.modal.size = 'modal-sm'
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
@@ -74,6 +86,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.months = response.data.monthsHeader;
             this.employees = response.data.costEmployees;
             this.fundedResourses = response.data.fundedResources;
+            this.employeesOriginal = response.data.costEmployees;
 
         },
             error => {
@@ -91,13 +104,23 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     EditItem() {
-        this.itemSelected.monthsCost.forEach(monthRow => {
-            if(monthRow.monthYear > this.monthSelected.monthYear){
-                monthRow.value = this.monthSelected.value;
-            }
-        });
+        if (this.itemSelected.monthsCost.TypeName == 'Empleados') {
+            this.itemSelected.monthsCost.forEach(monthRow => {
+                if (monthRow.monthYear > this.monthSelected.monthYear) {
+                    monthRow.value = this.monthSelected.value;
+                }
+            });
+        }
 
         this.editItemModal.hide();
+        if (this.itemSelected.display == '% Ajuste') {
+            this.modalPercentage = true;
+        }
+        else {
+            this.modalPercentage = false;
+
+        }
+        // this.CalculateRows();
     }
 
     save() {
@@ -115,16 +138,16 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             });
     }
 
-    getResourcesByMonth(month, year){
+    getResourcesByMonth(month, year) {
 
         return this.employees.map(element => {
 
             var monthCost = element.monthsCost.find(x => {
                 var dateSplitted = x.monthYear.split("-");
 
-                if(dateSplitted[0] == year && dateSplitted[1] == month){
+                if (dateSplitted[0] == year && dateSplitted[1] == month) {
                     return x;
-                } 
+                }
             });
 
             return {
@@ -134,6 +157,34 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 total: monthCost.value || 0
             }
         });
+    }
+
+    CalculateRows() {
+        if (this.itemSelected.display == '% Ajuste') {
+            this.employees.forEach(employee => {
+                employee.monthsCost.forEach(monthEmployee => {
+
+                    if (monthEmployee.monthYear > this.monthSelected.monthYear) {
+                        var percentage = (monthEmployee.value * this.monthSelected.value) / 100;
+                        monthEmployee.value = monthEmployee.value + percentage;
+                    }
+                });
+            })
+        }
+    }
+
+    CalculateSalary(pSalary) {
+        
+        //var AjusteMensual = []
+        var newSalary = pSalary.value;
+
+        var AjusteMensual = this.fundedResourses.find(r => r.display == '% Ajuste');
+        if (AjusteMensual) {
+            var ajuste = AjusteMensual.monthsCost.find(a => a.monthYear == pSalary.monthYear)
+            newSalary = pSalary.value + (pSalary.value * ajuste.value / 100);
+        }
+
+        return newSalary;
     }
 
 }
