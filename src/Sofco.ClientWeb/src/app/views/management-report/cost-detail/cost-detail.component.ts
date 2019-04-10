@@ -129,9 +129,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             return {
                 name: element.display,
-                salary: monthCost.value,
+                salary: monthCost.value || 0,
                 charges: 0,
-                total: monthCost.value
+                total: monthCost.value || 0
             }
         });
     }

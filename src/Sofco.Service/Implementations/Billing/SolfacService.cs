@@ -766,6 +766,7 @@ namespace Sofco.Service.Implementations.Billing
             if (!response.HasErrors())
             {
                 hito.ExternalHitoId = hitoId;
+                projectData.ClearHitoKeys(hito.ProjectId);
             }
             else
             {
