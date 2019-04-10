@@ -42,6 +42,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(options);
         }
 
+        [HttpGet("options/active")]
+        public IActionResult GetOptionsActive()
+        {
+            var options = new List<AnalyticOption>();
+
+            options.AddRange(analyticService.GetAllActives().Select(x => new AnalyticOption { Id = x.Id, Text = $"{x.Title} - {x.Name}", Title = x.Title }));
+
+            return Ok(options);
+        }
+
         [HttpGet("clients/{clientId}")]
         public IActionResult GetByClient(string clientId)
         {
