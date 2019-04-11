@@ -9,29 +9,33 @@
         <tbody>
             <tr>
                 <th>Total Costos</th>
-                <td *ngFor="let month of months">
-                    <label class="label label-total"></label>
+                <td *ngFor="let month of months; let i = index">
+                    <label class="label label-total">
+                        {{ calculateTotalCosts(i) }}
+                    </label>
                 </td>
             </tr>
             <tr>
                 <th>Cantidad Recursos costeados</th>
-                <td *ngFor="let month of months">
-                    <label class="label label-cant-resources"></label>
+                <td *ngFor="let month of months; let i = index">
+                    <label class="label label-cant-resources">
+                        {{ calculateAssignedEmployees(i) }}
+                    </label>
                 </td>
             </tr>
             <tr class="active" *ngFor="let employee of employees">
                 <th>{{ employee.display }} </th>
-                <td *ngFor="let monthCost of employee.monthsCost">
-                    <label class="label" (click)="openEditItemModal(monthCost, employee)"
+                <td *ngFor="let monthCost of employee.monthsCost; let i = index">
+                    <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
                         [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}">
-                        {{ CalculateSalary(monthCost) | amountFormat }}
+                        {{ CalculateSalary(monthCost, i) | amountFormat }} 
                     </label>
                 </td>
             </tr>
-            <tr *ngFor="let item of fundedResourses">
+            <tr *ngFor="let item of fundedResourses; let i = index">
                 <th>{{ item.display }}</th>
                 <td *ngFor="let monthCost of item.monthsCost">
-                    <label class="label" (click)="openEditItemModal(monthCost, item)"
+                    <label class="label" (click)="openEditItemModal(monthCost, item, i)"
                         [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}">
                         {{ monthCost.value | amountFormat }}
                     </label>
@@ -39,8 +43,10 @@
             </tr>
             <tr>
                 <th>Total Sueldo</th>
-                <td *ngFor="let month of months">
-                    <label class="label label-salary"></label>
+                <td *ngFor="let month of months; let i = index">
+                    <label class="label label-salary">
+                        {{ calculateAllSalary(i) | amountFormat }}
+                    </label>
                 </td>
             </tr>
             <tr>
@@ -58,7 +64,7 @@
             class="fa fa-save"></i></button>
 </div>
 
-<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()">
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()" [isSaveEnabled]="editItemMonto.valid">
 
     <div class="row">
         <div class="col-sm-12">
@@ -73,7 +79,7 @@
                 <label class="control-label">Monto</label>
                 <div class="input-group">
                     <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
-                    <input type="number" decimalFormat class="form-control" [(ngModel)]="monthSelected.value">
+                    <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto" [(ngModel)]="monthSelected.value">
                     <span class="input-group-addon" *ngIf="modalPercentage">%</span>
                 </div>
                 <small class="form-text text-muted">
@@ -83,5 +89,4 @@
             </div>
         </div>
     </div>
-
 </ng2-modal>
