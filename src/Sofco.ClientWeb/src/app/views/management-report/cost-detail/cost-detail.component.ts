@@ -42,7 +42,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         "editItemModal",
         true,
         true,
-        "ACTIONS.save",
+        "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
     );
 
@@ -100,10 +100,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.monthSelected = month;
             this.indexSelected = indexMonth;
             this.itemSelected = item;
+            this.editItemMonto.setValue(month.value)
         }
     }
 
     EditItem() {
+
+        this.monthSelected.value = this.editItemMonto.value
+
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
         if (this.itemSelected.typeName == 'Empleados') {
             for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
@@ -201,19 +205,19 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var totalSalary = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
-                totalSalary += employee.monthsCost[index].value
+                totalSalary += this.CalculateSalary(employee.monthsCost[index], index)
             }
         })
 
         return totalSalary
     }
 
-    calculateAssignedEmployees(index){
+    calculateAssignedEmployees(index) {
         var totalEmployees = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
                 if (employee.monthsCost[index].value > 0) {
-                totalEmployees ++
+                    totalEmployees++
                 }
             }
         })
@@ -221,22 +225,38 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalEmployees
     }
 
-    calculateTotalCosts(index){
+    calculateTotalCosts(index) {
         var totalCost = 0;
         //Sumo el totol de los sueldos
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
-                totalCost += employee.monthsCost[index].value
+                totalCost += this.CalculateSalary(employee.monthsCost[index], index)
             }
         })
         //Sumo los demas gastos excepto el % de Ajuste
         this.fundedResourses.forEach(resource => {
-            if(resource.typeName != '% Ajuste'){
-                totalCost += resource.monthsCost[index].value 
+            if (resource.typeName != '% Ajuste') {
+                totalCost += resource.monthsCost[index].value
             }
         })
 
         return totalCost;
+    }
+
+    calculateLoads(index) {
+
+        var totalSalary = 0;
+        this.employees.forEach(employee => {
+            if (employee.monthsCost[index].value) {
+                totalSalary += this.CalculateSalary(employee.monthsCost[index], index)
+            }
+        })
+
+        return totalSalary * 0.51;
+    }
+
+    EditItemOnClose() {
+
     }
 
 }

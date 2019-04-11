@@ -51,8 +51,10 @@
             </tr>
             <tr>
                 <th>Cargas (0.51 del sueldo)</th>
-                <td *ngFor="let month of months">
-                    <label class="label label-load"></label>
+                <td *ngFor="let month of months; let i = index">
+                    <label class="label label-load">
+                        {{ calculateLoads(i) | amountFormat }}
+                    </label>
                 </td>
             </tr>
         </tbody>
@@ -64,7 +66,7 @@
             class="fa fa-save"></i></button>
 </div>
 
-<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()" [isSaveEnabled]="editItemMonto.valid">
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()" (close)="EditItemOnClose()" [isSaveEnabled]="editItemMonto.valid">
 
     <div class="row">
         <div class="col-sm-12">
@@ -79,7 +81,8 @@
                 <label class="control-label">Monto</label>
                 <div class="input-group">
                     <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
-                    <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto" [(ngModel)]="monthSelected.value">
+                    <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto">
+                    <!-- [(ngModel)]="monthSelected.value"> -->
                     <span class="input-group-addon" *ngIf="modalPercentage">%</span>
                 </div>
                 <small class="form-text text-muted">
