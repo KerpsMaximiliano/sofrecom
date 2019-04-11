@@ -8,7 +8,7 @@ import { MessageService } from "app/services/common/message.service";
 import * as moment from 'moment';
 import { modalConfigDefaults } from "ngx-bootstrap/modal/modal-options.class";
 
-import {  FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 
 @Component({
@@ -30,14 +30,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     fundedResourses: any[] = new Array();
     monthSelected: any = { value: 0, display: '' };
     itemSelected: any;
+    indexSelected: number = 0;
     model: any;
     modalPercentage: boolean = false;
-  
-
-   
+    editItemMonto = new FormControl('', [Validators.min(0), Validators.max(999999)]);
 
     @ViewChild('editItemModal') editItemModal;
-    @ViewChild("editItemModal") modal;
 
     public editItemModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Editar Monto",
@@ -58,10 +56,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
         const control = new FormControl(16, Validators.max(15));
 
-        console.log(control.errors); 
-    
+        console.log(control.errors);
 
-        this.modal.size = 'modal-sm'
+
+        this.editItemModal.size = 'modal-sm'
+
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
 
@@ -94,33 +93,39 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             });
     }
 
-    openEditItemModal(month, item) {
+    openEditItemModal(month, item, indexMonth) {
 
         if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')) {
             this.editItemModal.show();
             this.monthSelected = month;
+            this.indexSelected = indexMonth;
             this.itemSelected = item;
         }
     }
 
     EditItem() {
-        if (this.itemSelected.monthsCost.TypeName == 'Empleados') {
-            this.itemSelected.monthsCost.forEach(monthRow => {
-                if (monthRow.monthYear > this.monthSelected.monthYear) {
-                    monthRow.value = this.monthSelected.value;
-                }
-            });
+        //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
+        if (this.itemSelected.typeName == 'Empleados') {
+            for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
+                this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+            }
+
+            //Actualiza el sueldo
+            this.salaryPlusIncrease(this.itemSelected, this.indexSelected);
         }
 
-        this.editItemModal.hide();
-        if (this.itemSelected.display == '% Ajuste') {
+        //Si estoy editando un aumento se actualiza el sueldo para todos los empleados
+        if (this.itemSelected.typeName == '% Ajuste') {
             this.modalPercentage = true;
+            this.employees.forEach(employee => {
+                this.salaryPlusIncrease(employee, this.indexSelected);
+            })
         }
         else {
             this.modalPercentage = false;
-
         }
-        // this.CalculateRows();
+
+        this.editItemModal.hide();
     }
 
     save() {
@@ -159,32 +164,79 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    CalculateRows() {
-        if (this.itemSelected.display == '% Ajuste') {
-            this.employees.forEach(employee => {
-                employee.monthsCost.forEach(monthEmployee => {
 
-                    if (monthEmployee.monthYear > this.monthSelected.monthYear) {
-                        var percentage = (monthEmployee.value * this.monthSelected.value) / 100;
-                        monthEmployee.value = monthEmployee.value + percentage;
-                    }
-                });
-            })
+    CalculateSalary(monthData, index) {
+        var SalaryPlusIncrese = monthData.value;
+
+        var AjusteMensual = this.fundedResourses.find(r => r.typeName == '% Ajuste');
+        if (AjusteMensual) {
+            if (AjusteMensual.monthsCost[index].value > 0) {
+                SalaryPlusIncrese = monthData.value + (monthData.value * AjusteMensual.monthsCost[index].value / 100);
+            }
+        }
+        return SalaryPlusIncrese;
+    }
+
+    salaryPlusIncrease(employee, pIndex) {
+        //Verifico que exista la fila de ajustes
+        var AjusteMensual = this.fundedResourses.find(r => r.display == '% Ajuste');
+        if (AjusteMensual) {
+            //Si existe, Recorro todos los meses
+            //El nuevo salario lo seteo como el primer salario
+            let newSalary = employee.monthsCost[pIndex].value
+
+            for (let index = pIndex; index < employee.monthsCost.length; index++) {
+                //Verifico si tiene aumento en alguno
+                if (AjusteMensual.monthsCost[index].value > 0) {
+                    newSalary = employee.monthsCost[index].value + (employee.monthsCost[index].value * AjusteMensual.monthsCost[index].value / 100);
+                }
+                if (employee.monthsCost[index + 1]) {
+                    employee.monthsCost[index + 1].value = newSalary;
+                }
+            }
         }
     }
 
-    CalculateSalary(pSalary) {
-        
-        //var AjusteMensual = []
-        var newSalary = pSalary.value;
+    calculateAllSalary(index) {
+        var totalSalary = 0;
+        this.employees.forEach(employee => {
+            if (employee.monthsCost[index].value) {
+                totalSalary += employee.monthsCost[index].value
+            }
+        })
 
-        var AjusteMensual = this.fundedResourses.find(r => r.display == '% Ajuste');
-        if (AjusteMensual) {
-            var ajuste = AjusteMensual.monthsCost.find(a => a.monthYear == pSalary.monthYear)
-            newSalary = pSalary.value + (pSalary.value * ajuste.value / 100);
-        }
+        return totalSalary
+    }
 
-        return newSalary;
+    calculateAssignedEmployees(index){
+        var totalEmployees = 0;
+        this.employees.forEach(employee => {
+            if (employee.monthsCost[index].value) {
+                if (employee.monthsCost[index].value > 0) {
+                totalEmployees ++
+                }
+            }
+        })
+
+        return totalEmployees
+    }
+
+    calculateTotalCosts(index){
+        var totalCost = 0;
+        //Sumo el totol de los sueldos
+        this.employees.forEach(employee => {
+            if (employee.monthsCost[index].value) {
+                totalCost += employee.monthsCost[index].value
+            }
+        })
+        //Sumo los demas gastos excepto el % de Ajuste
+        this.fundedResourses.forEach(resource => {
+            if(resource.typeName != '% Ajuste'){
+                totalCost += resource.monthsCost[index].value 
+            }
+        })
+
+        return totalCost;
     }
 
 }
