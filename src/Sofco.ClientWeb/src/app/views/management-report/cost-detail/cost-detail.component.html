@@ -11,7 +11,7 @@
                 <th>Total Costos</th>
                 <td *ngFor="let month of months; let i = index">
                     <label class="label label-total">
-                        {{ calculateTotalCosts(i) }}
+                        {{ calculateTotalCosts(i) | amountFormat }}
                     </label>
                 </td>
             </tr>
