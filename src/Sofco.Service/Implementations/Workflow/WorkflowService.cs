@@ -67,6 +67,14 @@ namespace Sofco.Service.Implementations.Workflow
         {
             response.Data.MustDoNextTransition = false;
 
+            var currentUser = userData.GetCurrentUser();
+
+            if (response.Data.UserApplicantId > 0)
+            {
+                currentUser.Id = response.Data.UserApplicantId;
+                currentUser.UserName = response.Data.UserName;
+            }
+
             // Validate Parameters
             ValidateParameters(parameters, response);
 
@@ -98,7 +106,7 @@ namespace Sofco.Service.Implementations.Workflow
                 return;
             }
 
-            var currentUser = userData.GetCurrentUser();
+            
 
             // Validate user access
             if (!ValidateAccess(transition, currentUser, entity))
@@ -228,12 +236,14 @@ namespace Sofco.Service.Implementations.Workflow
 
             if (nextTransitions.Count == 1)
             {
-                var nextTransition = possibleNextTransitions.FirstOrDefault();
+                var nextTransition = nextTransitions.FirstOrDefault();
 
                 if (nextTransition != null)
                 {
                     response.Data.MustDoNextTransition = true;
                     parameters.NextStateId = nextTransition.NextWorkflowStateId;
+                    response.Data.UserApplicantId = entity.UserApplicantId;
+                    response.Data.UserName = entity.UserApplicant.UserName;
 
                     response.Data.OnError = () =>
                     {

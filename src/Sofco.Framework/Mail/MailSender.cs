@@ -8,6 +8,7 @@ using MailKit.Net.Smtp;
 using MimeKit;
 using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Framework.Helpers;
 using Sofco.Domain;

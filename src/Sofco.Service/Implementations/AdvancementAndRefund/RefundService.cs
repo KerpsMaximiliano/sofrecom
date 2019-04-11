@@ -312,7 +312,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             ValidParameter(model);
 
             var currentUser = userData.GetCurrentUser();
-            var hasAllAccess = roleManager.HasFullAccess();
+            var hasAllAccess = roleManager.HasAccessForRefund();
 
             if (!hasAllAccess)
             {
@@ -331,7 +331,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 foreach (var refund in result)
                 {
-                    if (ValidateManagerAccess(refund, currentUser) || ValidateAnalyticManagerAccess(refund, currentUser))
+                    if (ValidateAnalyticManagerAccess(refund, currentUser) || ValidateSectorAccess(refund, currentUser))
                     {
                         if (response.Data.All(x => x.Id != refund.Id))
                         {
@@ -411,20 +411,17 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return models;
         }
 
-        private bool ValidateManagerAccess(Refund entity, UserLiteModel currentUser)
+        private bool ValidateSectorAccess(Refund entity, UserLiteModel currentUser)
         {
-            var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
-
             var hasAccess = false;
 
-            if (employee.ManagerId.HasValue && employee.Manager != null)
-            {
-                if (employee.ManagerId.Value == currentUser.Id)
-                {
-                    hasAccess = true;
-                }
+            var director = unitOfWork.AnalyticRepository.GetDirector(entity.AnalyticId);
 
-                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, entity.AnalyticId, UserApproverType.Refund);
+            if (director != null)
+            {
+                if (director.Id == currentUser.Id) hasAccess = true;
+
+                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.Id, entity.AnalyticId, UserApproverType.Refund);
 
                 if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                 {

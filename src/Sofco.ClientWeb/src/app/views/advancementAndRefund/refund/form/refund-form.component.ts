@@ -127,9 +127,9 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         this.form.controls.advancements.enable();
         this.getAdvancementsUnrelated(null, this.form.controls.userApplicantId.value);
     }
-
+ 
     getAnalytics() {
-        this.getAnalyticsSubscrip = this.analyticService.getOptions().subscribe(res => {
+        this.getAnalyticsSubscrip = this.analyticService.getOptionsActives().subscribe(res => {
             this.analytics = res;
         });
     }
