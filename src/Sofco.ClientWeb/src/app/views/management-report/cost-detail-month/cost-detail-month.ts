@@ -24,7 +24,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     totalBilling: number = 0;
 
     resources: any[] = new Array();
-    subResources: any[] = new Array();
     expenses: any[] = new Array();
 
     isReadOnly: boolean 
@@ -35,15 +34,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-    }
-
-    addSubResource(){
-        this.subResources.push({ name: "", salary: 0, insurance: 0, total: 0 });
-    }
-
-    deleteSubResource(index){
-        this.subResources.splice(index, 1);
-        this.calculateTotalCosts();
     }
 
     addExpense(){
@@ -83,10 +73,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     calculateTotalCosts(){
         this. totalCosts = 0;
-
-        this.subResources.forEach(element => {
-            this.totalCosts += element.total;
-        });
 
         this.expenses.forEach(element => {
             this.totalCosts += element.total;

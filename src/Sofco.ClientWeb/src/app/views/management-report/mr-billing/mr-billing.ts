@@ -301,7 +301,13 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
             if(value && value != null){
                 if(value.status == this.billedHitoStatus || value.status == this.cashedHitoStatus){
-                    totals.totalBilling += value.value;
+
+                    if(value.valuePesos > 0){
+                        totals.totalBilling += value.valuePesos;
+                    }
+                    else{
+                        totals.totalBilling += value.value;
+                    }
                 }
 
                 totals.totalProvisioned += value.value;

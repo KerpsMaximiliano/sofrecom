@@ -92,5 +92,7 @@ namespace Sofco.Domain.Models.Billing
         public PurchaseOrder PurchaseOrder { get; set; }
 
         public string OpportunityNumber { get; set; }
+
+        public decimal? CurrencyExchange { get; set; }
     }
 }

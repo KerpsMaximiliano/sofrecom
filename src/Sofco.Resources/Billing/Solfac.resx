@@ -270,4 +270,7 @@
   <data name="HitoNotFound" xml:space="preserve">
     <value>billing/solfac.hitoNotFound</value>
   </data>
+  <data name="CurrencyExchangeRequired" xml:space="preserve">
+    <value>billing/solfac.currencyExchangeRequired</value>
+  </data>
 </root>

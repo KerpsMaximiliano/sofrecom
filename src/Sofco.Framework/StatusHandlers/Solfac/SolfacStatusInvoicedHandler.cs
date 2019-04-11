@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 
 using Sofco.Core.DAL;
@@ -24,12 +26,19 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private readonly IMailSender mailSender;
 
-        public SolfacStatusInvoicedHandler(IUnitOfWork unitOfWork, ICrmInvoicingMilestoneService crmInvoiceService, IMailBuilder mailBuilder, IMailSender mailSender)
+        private readonly AppSetting appSetting;
+
+        public SolfacStatusInvoicedHandler(IUnitOfWork unitOfWork, 
+            ICrmInvoicingMilestoneService crmInvoiceService, 
+            IMailBuilder mailBuilder, 
+            AppSetting appSetting,
+            IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
             this.crmInvoiceService = crmInvoiceService;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
+            this.appSetting = appSetting;
         }
 
         public Response Validate(Domain.Models.Billing.Solfac solfac, SolfacStatusParams parameters)
@@ -43,6 +52,11 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
             SolfacValidationHelper.ValidateInvoiceCode(parameters, unitOfWork.SolfacRepository, response, solfac.InvoiceCode);
             SolfacValidationHelper.ValidateInvoiceDate(parameters, response, solfac);
+
+            if (solfac.CurrencyId != appSetting.CurrencyPesos)
+            {
+                SolfacValidationHelper.ValidateCurrencyExchange(parameters, response, solfac);
+            }
             
             return response;
         }
@@ -80,6 +94,12 @@ namespace Sofco.Framework.StatusHandlers.Solfac
             unitOfWork.SolfacRepository.UpdateStatusAndInvoice(solfacToModif);
             solfac.InvoiceDate = parameters.InvoiceDate;
             solfac.InvoiceCode = parameters.InvoiceCode;
+
+            if (solfac.CurrencyId != appSetting.CurrencyPesos)
+            {
+                solfac.CurrencyExchange = parameters.CurrencyExchange;
+                unitOfWork.SolfacRepository.UpdateCurrencyExchange(solfac);
+            }
 
             if (solfac.PurchaseOrder == null) return;
 

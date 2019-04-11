@@ -137,9 +137,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             {
                 url: this.service.getUrlForImportFile(id), 
                 authToken: 'Bearer ' + Cookie.get('access_token'), 
-                maxFileSize: 10*1024*1024
+                maxFileSize: 10*1024*1024,
+                allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
             }
-        );
+        ); 
 
         this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
 

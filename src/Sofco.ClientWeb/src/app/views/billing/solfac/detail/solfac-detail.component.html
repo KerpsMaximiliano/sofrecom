@@ -29,10 +29,10 @@
                 <status-sendToDaf [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-sendToDaf>
                 <status-reject-daf [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-reject-daf>
 
-                <update-solfac-bill [solfacId]="solfacId" [status]="model.statusName" [invoiceCode]="model.invoiceCode" [invoiceDate]="model.invoiceDate" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></update-solfac-bill>
+                <update-solfac-bill [solfacId]="solfacId" [status]="model.statusName" [currencyId]="model.currencyId" [currencyExchange]="model.currencyExchange" [invoiceCode]="model.invoiceCode" [invoiceDate]="model.invoiceDate" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></update-solfac-bill>
                 <update-solfac-cash [solfacId]="solfacId" [status]="model.statusName" [cashedDate]="model.cashedDate" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></update-solfac-cash>
 
-                <status-bill [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-bill>
+                <status-bill #statusBill [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-bill>
                 <status-cash [solfacId]="solfacId" [status]="model.statusName" (history)="history.getHistories()" (updateStatus)="updateStatus($event)"></status-cash>
             </div>
         </div>

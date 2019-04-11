@@ -192,7 +192,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                         };
 
                         if (existHito != null)
+                        {
                             rowItem.SolfacId = existHito.SolfacId;
+
+                            if (existHito.Solfac.CurrencyExchange.HasValue && existHito.Solfac.CurrencyExchange > 0)
+                            {
+                                rowItem.ValuePesos = hito.Ammount * existHito.Solfac.CurrencyExchange.Value;
+                            }
+                        }
 
                         if (hito.Status.Equals("A ser facturado"))
                             rowItem.Status = HitoStatus.ToBeBilled.ToString();

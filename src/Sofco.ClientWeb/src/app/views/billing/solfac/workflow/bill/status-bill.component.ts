@@ -5,6 +5,7 @@ import { Subscription } from "rxjs";
 import { SolfacStatus } from "../../../../../models/enums/solfacStatus";
 import { MenuService } from "../../../../../services/admin/menu.service";
 import { MessageService } from '../../../../../services/common/message.service';
+import { environment } from 'environments/environment'
 declare var $: any;
 
 @Component({
@@ -12,7 +13,6 @@ declare var $: any;
   templateUrl: './status-bill.component.html'
 })
 export class StatusBillComponent implements OnDestroy  {
-
     @ViewChild('billModal') billModal;
     public billModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "billing.solfac.includeInvoiceCode",
@@ -33,13 +33,26 @@ export class StatusBillComponent implements OnDestroy  {
 
     invoiceDate: Date = new Date();
     invoiceCode: string;
+    currencyExchange: number;
+
+    currencyId: number;
+    isCurrencyPesos: boolean = false;
 
     constructor(private solfacService: SolfacService,
         private messageService: MessageService,
         private menuService: MenuService) {}
 
+
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
+    }
+
+    setCurrencyId(currencyId){
+        this.currencyId = currencyId;
+
+        if(environment.currencyPesosId == this.currencyId){
+            this.isCurrencyPesos = true;
+       }
     }
 
     canSendToBill(){
@@ -59,7 +72,8 @@ export class StatusBillComponent implements OnDestroy  {
             var json = {
                 status: SolfacStatus.Invoiced,
                 invoiceCode: this.invoiceCode,
-                invoiceDate: this.invoiceDate
+                invoiceDate: this.invoiceDate,
+                currencyExchange: this.currencyExchange
               }
 
             this.subscrip = this.solfacService.changeStatus(this.solfacId, json).subscribe(
