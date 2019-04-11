@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
@@ -33,6 +34,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<IProjectData> projectDataMock;
         private Mock<IRoleManager> roleManagerMock;
         private Mock<IPurchaseOrderRepository> purchaseOrderRepositoryMock;
+        private Mock<IOptions<AppSetting>> appSettingMock;
 
         private Mock<IUnitOfWork> unitOfWork;
 
@@ -49,6 +51,7 @@ namespace Sofco.UnitTest.Services.Billing
             projectDataMock = new Mock<IProjectData>();
             roleManagerMock = new Mock<IRoleManager>();
             purchaseOrderRepositoryMock = new Mock<IPurchaseOrderRepository>();
+            appSettingMock = new Mock<IOptions<AppSetting>>();
 
             unitOfWork = new Mock<IUnitOfWork>();
 
@@ -68,7 +71,8 @@ namespace Sofco.UnitTest.Services.Billing
                 projectDataMock.Object,
                 roleManagerMock.Object,
                 crmInvoiceServiceMock.Object,
-                loggerMock.Object);
+                loggerMock.Object,
+                appSettingMock.Object);
         }
 
         [Test]

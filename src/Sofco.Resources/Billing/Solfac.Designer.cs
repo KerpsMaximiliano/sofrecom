@@ -187,6 +187,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/solfac.currencyExchangeRequired.
+        /// </summary>
+        public static string CurrencyExchangeRequired {
+            get {
+                return ResourceManager.GetString("CurrencyExchangeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/solfac.dafRejectedSuccess.
         /// </summary>
         public static string DafRejectedSuccess {

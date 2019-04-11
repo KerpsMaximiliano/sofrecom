@@ -19,6 +19,8 @@ using Sofco.Service.Crm.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -31,13 +33,16 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IUserData userData;
         private readonly IRoleManager roleManager;
         private readonly IProjectData projectData;
+        private readonly AppSetting appSetting;
 
         public SolfacService(ISolfacStatusFactory solfacStatusFactory,
             IUnitOfWork unitOfWork,
             IUserData userData,
             IProjectData projectData,
             IRoleManager roleManager,
-            ICrmInvoicingMilestoneService crmInvoiceService, ILogMailer<SolfacService> logger)
+            ICrmInvoicingMilestoneService crmInvoiceService, 
+            ILogMailer<SolfacService> logger,
+            IOptions<AppSetting> appSettingOptions)
         {
             this.solfacStatusFactory = solfacStatusFactory;
             this.unitOfWork = unitOfWork;
@@ -46,6 +51,7 @@ namespace Sofco.Service.Implementations.Billing
             this.projectData = projectData;
             this.roleManager = roleManager;
             this.userData = userData;
+            this.appSetting = appSettingOptions.Value;
         }
 
         public Response<Solfac> CreateSolfac(Solfac solfac, IList<int> invoicesId, IList<int> certificatesId)
@@ -494,6 +500,11 @@ namespace Sofco.Service.Implementations.Billing
             SolfacValidationHelper.ValidateInvoiceCode(parameters, unitOfWork.SolfacRepository, response, solfac.InvoiceCode);
             SolfacValidationHelper.ValidateInvoiceDate(parameters, response, solfac);
 
+            if (solfac.CurrencyId != appSetting.CurrencyPesos)
+            {
+                SolfacValidationHelper.ValidateCurrencyExchange(parameters, response, solfac);
+            }
+
             if (response.HasErrors()) return response;
 
             try
@@ -504,7 +515,15 @@ namespace Sofco.Service.Implementations.Billing
                     InvoiceCode = parameters.InvoiceCode,
                     InvoiceDate = parameters.InvoiceDate
                 };
+
                 unitOfWork.SolfacRepository.UpdateInvoice(solfacToModif);
+
+
+                if (solfac.CurrencyId != appSetting.CurrencyPesos)
+                {
+                    solfacToModif.CurrencyExchange = parameters.CurrencyExchange;
+                    unitOfWork.SolfacRepository.UpdateCurrencyExchange(solfacToModif);
+                }
 
                 var history = GetHistory(solfac.Id, solfac.Status, solfac.Status, parameters.UserId, string.Empty);
                 unitOfWork.SolfacRepository.AddHistory(history);

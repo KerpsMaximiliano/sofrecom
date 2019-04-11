@@ -11,6 +11,7 @@ namespace Sofco.Domain.DTO
         public int UserId { get; set; }
         public DateTime? InvoiceDate { get; set; }
         public DateTime? CashedDate { get; set; }
+        public decimal? CurrencyExchange { get; set; }
 
         public SolfacStatusParams()
         {

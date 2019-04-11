@@ -73,5 +73,7 @@ namespace Sofco.Core.Models.ManagementReport
         public int SolfacId { get; set; }
 
         public string Status { get; set; }
+
+        public decimal ValuePesos { get; set; }
     }
 }

@@ -212,5 +212,13 @@ namespace Sofco.Framework.ValidationHelpers.Billing
                 response.AddError(Resources.Billing.Solfac.DetailsRequired);
             }
         }
+
+        public static void ValidateCurrencyExchange(SolfacStatusParams parameters, Response response, Solfac solfac)
+        {
+            if (!parameters.CurrencyExchange.HasValue || parameters.CurrencyExchange == 0)
+            {
+                response.AddError(Resources.Billing.Solfac.CurrencyExchangeRequired);
+            }
+        }
     }
 }

@@ -39,5 +39,6 @@ namespace Sofco.Core.DAL.Billing
         decimal GetTotalAmountById(int solfacId);
 
         IEnumerable<Solfac> GetByProjectWithPurchaseOrder(string projectId);
+        void UpdateCurrencyExchange(Solfac solfac);
     }
 }

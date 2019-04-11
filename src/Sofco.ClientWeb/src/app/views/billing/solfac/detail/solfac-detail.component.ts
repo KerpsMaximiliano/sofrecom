@@ -16,6 +16,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('history') history: any;
     @ViewChild('pdfViewer') pdfViewer: any;
+    @ViewChild('statusBill') statusBill: any;
 
     public model: any = {};
     public solfacId: any;
@@ -64,6 +65,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
 
             this.model = d;
             this.setCurrencySymbol(this.model.currencyId);
+            this.statusBill.setCurrencyId(this.model.currencyId);
 
             this.getOptions();
 
@@ -108,6 +110,7 @@ export class SolfacDetailComponent implements OnInit, OnDestroy {
         if(event.invoiceCode) this.model.invoiceCode = event.invoiceCode;
         if(event.invoiceDate) this.model.invoiceDate = event.invoiceDate;
         if(event.cashedDate) this.model.cashedDate = event.cashedDate;
+        if(event.currencyExchange) this.model.currencyExchange = event.currencyExchange;
     }
 
     printSolfac() {
