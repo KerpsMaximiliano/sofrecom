@@ -15,6 +15,6 @@
 
     <div class="form-group" *ngIf="!isCurrencyPesos()">
         <label class="control-label">Cotización</label>
-        <input type="number" class="form-control" decimalFormat [(ngModel)]="currencyExchange">
+        <input type="number" class="form-control" [decimalFormat]="3" [(ngModel)]="currencyExchange">
     </div>
 </ng2-modal>  
