@@ -96,11 +96,17 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     openEditItemModal(month, item, indexMonth) {
 
         if (this.canEdit) {
-            this.editItemModal.show();
-            this.monthSelected = month;
-            this.indexSelected = indexMonth;
-            this.itemSelected = item;
-            this.editItemMonto.setValue(month.value)
+            if (item.typeName == 'Empleados' && !month.hasAlocation) {
+                return false
+            }
+            else {
+                this.editItemModal.show();
+                this.monthSelected = month;
+                this.indexSelected = indexMonth;
+                this.itemSelected = item;
+                this.editItemMonto.setValue(month.value)
+            }
+
         }
     }
 
@@ -111,7 +117,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
         if (this.itemSelected.typeName == 'Empleados') {
             for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
-                this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+
+                if (this.itemSelected.monthsCost[index].hasAlocation) {
+                    this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+                }
+                else {
+                    this.itemSelected.monthsCost[index].value = 0
+                }
             }
 
             //Actualiza el sueldo
@@ -195,7 +207,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     newSalary = employee.monthsCost[index].value + (employee.monthsCost[index].value * AjusteMensual.monthsCost[index].value / 100);
                 }
                 if (employee.monthsCost[index + 1]) {
-                    employee.monthsCost[index + 1].value = newSalary;
+                    if (employee.monthsCost[index + 1].hasAlocation) {
+                        employee.monthsCost[index + 1].value = newSalary;
+                    }
                 }
             }
         }
