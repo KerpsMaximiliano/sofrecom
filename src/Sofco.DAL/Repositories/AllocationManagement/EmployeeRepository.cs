@@ -243,6 +243,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees
                 .Include(x => x.WorkTimes)
                 .Include(x => x.Licenses)
+                .Include(x => x.Allocations)
                 .Where(x => ids.Contains(x.Id)).ToList();
         }
 

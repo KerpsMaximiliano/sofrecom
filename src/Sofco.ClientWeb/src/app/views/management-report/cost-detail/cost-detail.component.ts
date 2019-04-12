@@ -34,6 +34,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     model: any;
     modalPercentage: boolean = false;
     editItemMonto = new FormControl('', [Validators.min(0), Validators.max(999999)]);
+    canEdit: boolean = false;
 
     @ViewChild('editItemModal') editItemModal;
 
@@ -54,10 +55,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        const control = new FormControl(16, Validators.max(15));
-
-        console.log(control.errors);
-
+        if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')) {
+            this.canEdit = true
+        }
 
         this.editItemModal.size = 'modal-sm'
 
@@ -95,7 +95,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     openEditItemModal(month, item, indexMonth) {
 
-        if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')) {
+        if (this.canEdit) {
             this.editItemModal.show();
             this.monthSelected = month;
             this.indexSelected = indexMonth;
@@ -257,6 +257,22 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     EditItemOnClose() {
 
+    }
+
+    AccessEmployeeClass(monthCost) {
+
+        let cssClass;
+        if (!this.canEdit) {
+            cssClass = 'not-allowed'
+        }
+        else {
+            cssClass = 'cursor-pointer'
+            if (!monthCost.hasAlocation) {
+                cssClass = 'not-allowed label-danger'
+            }
+        }
+
+        return cssClass;
     }
 
 }
