@@ -479,7 +479,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
 
-                item.Ammount = item.AmmountPesos = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
+                if (tuple.Item1.Any())
+                {
+                    item.Ammount = item.AmmountPesos = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
+                }
+                else
+                {
+                    item.Ammount = refund.TotalAmmount;
+                }
 
                 if (refund.CurrencyExchange > 0)
                 {
@@ -530,10 +537,16 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 return response;
             }
 
+            var currentUser = userData.GetCurrentUser();
+
+            if (currentUser.Id == userId)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.CurrentUserEqualsDelegate);
+                return response;
+            }
+
             try
             {
-                var currentUser = userData.GetCurrentUser();
-
                 var userDelegate = new UserDelegate
                 {
                     Created = DateTime.UtcNow,
