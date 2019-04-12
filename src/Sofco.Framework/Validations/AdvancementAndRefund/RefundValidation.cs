@@ -196,9 +196,16 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
 
             //Tuple1: Reintegros
             //Tuple2: Adelantos
-            var diff = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
+            if (!tuple.Item1.Any())
+            {
+                return true;
+            }
+            else
+            {
+                var diff = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
 
-            return diff > 0;
+                return diff > 0;
+            }
         }
     }
 }
