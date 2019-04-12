@@ -20,6 +20,7 @@ namespace Sofco.Core.Models.ManagementReport
         public float? Value { get; set; }
         public DateTime MonthYear { get; set; }
         public int CostDetailId { get; set; }
+        public bool HasAlocation { get; set; }
     }
     
     public class CostResource

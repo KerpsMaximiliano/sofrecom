@@ -166,7 +166,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 foreach (var hito in crmProjectHitos.OrderBy(x => x.StartDate))
                 {
-                    if(hito.Status.Equals("Cerrado")) continue;
+                    if (hito.Status.Equals("Cerrado")) continue;
 
                     if (hito.StartDate.Date >= dates.Item1.Date && hito.StartDate.Date <= dates.Item2.Date)
                     {
@@ -448,6 +448,21 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
+
+                    //Verifico si este mes el recurso se encontro en la analitica
+                    var startDate = new DateTime(mounth.MonthYear.Year, mounth.MonthYear.Month, 1);
+                    var endDate = startDate.AddMonths(1).AddDays(-1);
+
+                    var alocation = employee.Allocations.Where(x => x.AnalyticId == IdAnalytic && x.StartDate >= startDate.Date && x.StartDate <= endDate.Date && x.Percentage > 0).ToList();
+                    if (alocation.Any())
+                    {
+                        monthDetail.HasAlocation = true;
+                    }
+                    else
+                    {
+                        monthDetail.HasAlocation = false;
+                    }
+
                     detailEmployee.MonthsCost.Add(monthDetail);
                 }
 
