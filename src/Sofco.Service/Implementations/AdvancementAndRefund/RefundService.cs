@@ -485,7 +485,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 }
                 else
                 {
-                    item.Ammount = refund.TotalAmmount;
+                    item.Ammount = item.AmmountPesos = refund.TotalAmmount;
                 }
 
                 if (refund.CurrencyExchange > 0)
