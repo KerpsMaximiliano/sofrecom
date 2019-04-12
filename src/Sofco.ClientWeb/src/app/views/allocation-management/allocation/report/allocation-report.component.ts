@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
 import { DataTableService } from "../../../../services/common/datatable.service";
 import { MenuService } from "../../../../services/admin/menu.service";
@@ -20,7 +20,6 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     public model: any;
     public resources: any[] = new Array<any>();
     public analytics: any[] = new Array<any>();
-    public percentages: any[] = new Array<any>();
 
     createReportSubscrip: Subscription;
     getAllocationResourcesSubscrip: Subscription;
@@ -45,7 +44,6 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getAllocationResources();
         this.getAnalytics();
-        this.getPercentages();
 
         var data = JSON.parse(sessionStorage.getItem('lastReportQuery'));
 
@@ -90,18 +88,6 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
         });
     }
 
-    getPercentages(){
-        this.getAnalyticsSubscrip = this.allocationService.getAllPercentages().subscribe(data => {
-            this.percentages = data;
-
-            if(this.lastQuery){
-                setTimeout(() => {
-                    $('#percentageId').val(this.lastQuery.percentage).trigger('change');
-                }, 0);
-            }
-        });
-    }
-
     search(){
         var parameters = {
             startDate: this.dateSince,
@@ -110,21 +96,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             unassigned: this.unassigned,
             includeAnalyticId: this.includeAnalyticId,
             analyticIds: $('#analyticId').val(),
-            employeeId: $('#employeeId').val() == 0 ? null : $('#employeeId').val(),
-            percentage: $('#percentageId').val() == '' || undefined ? null : $('#percentageId').val(),
-            startPercentage: 0,
-            endPercentage: 0
-        }
-
-        var percentageSelected = $('#percentageId').val();
-
-        if(percentageSelected > 0){
-            var percentage = this.percentages.filter(x => x.id == percentageSelected)[0];
-
-            if(percentage){
-                parameters.startPercentage = percentage.startValue;
-                parameters.endPercentage = percentage.endValue;
-            }
+            employeeId: $('#employeeId').val() == 0 ? null : $('#employeeId').val()
         }
 
         this.messageService.showLoading();
@@ -177,8 +149,15 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
         this.dateTo = new Date();
         $('#analyticId').val(null).trigger('change');
         $('#employeeId').val(0).trigger('change');
-        $('#percentageId').val('').trigger('change');
         this.unassigned = false;
         sessionStorage.removeItem('lastReportQuery')
+    }
+
+    unassignedChanged(){
+        if(this.unassigned){
+            $('#analyticId').val(null).trigger('change');
+            $('#employeeId').val(0).trigger('change');
+            this.includeAnalyticId = "1";
+        }
     }
 }

@@ -1,0 +1,40 @@
+﻿ 2019-04-10 14:44:02,203 ERROR Sofco.Service.Implementations.AdvancementAndRefund.RefundService Sequence contains no elements.
+System.InvalidOperationException: Sequence contains no elements.
+   at Microsoft.EntityFrameworkCore.Query.QueryMethodProvider.GetResult[TResult](IEnumerable`1 valueBuffers, Boolean throwOnNullResult)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at Sofco.DAL.Repositories.Workflow.WorkflowRepository.GetLastByType(Int32 typeId) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\Workflow\WorkflowRepository.cs:line 145
+   at Sofco.Service.Implementations.AdvancementAndRefund.RefundService.Add(RefundModel model) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\RefundService.cs:line 83
+ 2019-04-10 14:44:20,991 ERROR Sofco.Service.Implementations.AdvancementAndRefund.RefundService Sequence contains no elements.
+System.InvalidOperationException: Sequence contains no elements.
+   at Microsoft.EntityFrameworkCore.Query.QueryMethodProvider.GetResult[TResult](IEnumerable`1 valueBuffers, Boolean throwOnNullResult)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at Sofco.DAL.Repositories.Workflow.WorkflowRepository.GetLastByType(Int32 typeId) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\Workflow\WorkflowRepository.cs:line 145
+   at Sofco.Service.Implementations.AdvancementAndRefund.RefundService.Add(RefundModel model) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\RefundService.cs:line 83
+ 2019-04-10 14:46:17,455 ERROR Sofco.Service.Implementations.AdvancementAndRefund.RefundService Sequence contains no elements.
+System.InvalidOperationException: Sequence contains no elements.
+   at Microsoft.EntityFrameworkCore.Query.QueryMethodProvider.GetResult[TResult](IEnumerable`1 valueBuffers, Boolean throwOnNullResult)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at Sofco.DAL.Repositories.Workflow.WorkflowRepository.GetLastByType(Int32 typeId) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\Workflow\WorkflowRepository.cs:line 145
+   at Sofco.Service.Implementations.AdvancementAndRefund.RefundService.Add(RefundModel model) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\RefundService.cs:line 83
+ 2019-04-10 14:48:07,267 ERROR Sofco.Service.Implementations.AdvancementAndRefund.RefundService Sequence contains no elements.
+System.InvalidOperationException: Sequence contains no elements.
+   at Microsoft.EntityFrameworkCore.Query.QueryMethodProvider.GetResult[TResult](IEnumerable`1 valueBuffers, Boolean throwOnNullResult)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at Sofco.DAL.Repositories.Workflow.WorkflowRepository.GetLastByType(Int32 typeId) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\Workflow\WorkflowRepository.cs:line 145
+   at Sofco.Service.Implementations.AdvancementAndRefund.RefundService.Add(RefundModel model) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\RefundService.cs:line 83
