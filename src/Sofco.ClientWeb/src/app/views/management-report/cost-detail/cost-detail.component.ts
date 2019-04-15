@@ -8,7 +8,7 @@ import { MessageService } from "app/services/common/message.service";
 import * as moment from 'moment';
 import { modalConfigDefaults } from "ngx-bootstrap/modal/modal-options.class";
 
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators, FormsModule } from "@angular/forms";
 
 
 @Component({
@@ -27,7 +27,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     months: any[] = new Array();
     employees: any[] = new Array();
     employeesOriginal: any[] = new Array();
-    fundedResourses: any[] = new Array();
+    fundedResources: any[] = new Array();
+    otherResources: any[] = new Array();
     monthSelected: any = { value: 0, display: '' };
     itemSelected: any;
     indexSelected: number = 0;
@@ -35,6 +36,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     modalPercentage: boolean = false;
     editItemMonto = new FormControl('', [Validators.min(0), Validators.max(999999)]);
     canEdit: boolean = false;
+
+    otherResourceId: number;
 
     @ViewChild('editItemModal') editItemModal;
 
@@ -84,13 +87,19 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             this.months = response.data.monthsHeader;
             this.employees = response.data.costEmployees;
-            this.fundedResourses = response.data.fundedResources;
+            this.fundedResources = response.data.fundedResources;
+            this.otherResources = response.data.otherResources;
             this.employeesOriginal = response.data.costEmployees;
+
+            if(this.otherResources.length > 0){
+                this.otherResourceId = this.otherResources[0].typeId;
+            }
 
         },
             error => {
                 this.messageService.closeLoading();
             });
+
     }
 
     openEditItemModal(month, item, indexMonth) {
@@ -148,7 +157,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.model.employees = this.employees;
-        this.model.fundedResources = this.fundedResourses;
+        this.model.fundedResources = this.fundedResources;
 
         this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, this.model).subscribe(response => {
             this.messageService.closeLoading();
@@ -184,7 +193,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     CalculateSalary(monthData, index) {
         var SalaryPlusIncrese = monthData.value;
 
-        var AjusteMensual = this.fundedResourses.find(r => r.typeName == '% Ajuste');
+        var AjusteMensual = this.fundedResources.find(r => r.typeName == '% Ajuste');
         if (AjusteMensual) {
             if (AjusteMensual.monthsCost[index].value > 0) {
                 SalaryPlusIncrese = monthData.value + (monthData.value * AjusteMensual.monthsCost[index].value / 100);
@@ -195,7 +204,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     salaryPlusIncrease(employee, pIndex) {
         //Verifico que exista la fila de ajustes
-        var AjusteMensual = this.fundedResourses.find(r => r.display == '% Ajuste');
+        var AjusteMensual = this.fundedResources.find(r => r.display == '% Ajuste');
         if (AjusteMensual) {
             //Si existe, Recorro todos los meses
             //El nuevo salario lo seteo como el primer salario
@@ -248,7 +257,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         })
         //Sumo los demas gastos excepto el % de Ajuste
-        this.fundedResourses.forEach(resource => {
+        this.fundedResources.forEach(resource => {
             if (resource.typeName != '% Ajuste') {
                 totalCost += resource.monthsCost[index].value
             }
@@ -287,6 +296,17 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         }
 
         return cssClass;
+    }
+
+    addOtherCost() {
+        debugger
+         var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
+         this.fundedResources.push(resource)
+
+         var pos = this.otherResources.findIndex(r => r.typeId == this.otherResourceId);
+         this.otherResources.splice(pos, 1)
+        
+         this.otherResourceId = this.otherResources[0].typeId;
     }
 
 }

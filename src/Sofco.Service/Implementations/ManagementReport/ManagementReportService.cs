@@ -262,7 +262,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                 //Mapeo Los empleados      
                 response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, CostDetailEmployees, EmployeeType);
                 //Mapeo Los demas datos
-                response.Data.FundedResources = FillFundedResoursesByMonth(analytic.Id, response.Data.MonthsHeader, FundedResources, TypesFundedResources);
+                var AllCostResources = FillFundedResoursesByMonth(analytic.Id, response.Data.MonthsHeader, FundedResources, TypesFundedResources);
+
+                response.Data.FundedResources = AllCostResources.Where(r => r.show == true).ToList();
+                response.Data.OtherResources = AllCostResources.Where(r => r.show == false).OrderBy(r => r.Display).ToList();
 
             }
             catch (Exception ex)
@@ -480,6 +483,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 var detailResource = new CostResource();
                 detailResource.MonthsCost = new List<MonthDetailCost>();
+                bool hasValue = false;
 
                 detailResource.Display = type.Name;
                 detailResource.TypeId = type.Id;
@@ -494,11 +498,19 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         monthDetail.Value = monthValue.Cost;
                         monthDetail.CostDetailId = monthValue.Id;
+                        hasValue = true;
                     }
 
                     monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
                     detailResource.MonthsCost.Add(monthDetail);
+                }
+
+                //Separo los campos por defectos de los ocultos
+                //var typeWithoutValue = detailResource.MonthsCost.Where(m => m.Value == null || m.Value == 0).ToList();
+                if(type.Default == true || hasValue)
+                {
+                    detailResource.show = true;
                 }
 
                 fundedResources.Add(detailResource);
