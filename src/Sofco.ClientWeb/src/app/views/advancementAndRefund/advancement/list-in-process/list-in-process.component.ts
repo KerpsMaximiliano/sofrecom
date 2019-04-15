@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
-import { Router } from "@angular/router";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
 
 declare var moment: any;
@@ -22,7 +21,6 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
    
     constructor(private advancementService: AdvancementService,
         private datatableService: DataTableService,
-        private router: Router,
         private messageService: MessageService) { }
 
     ngOnInit(): void {
@@ -31,11 +29,19 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
         this.getSubscrip = this.advancementService.getAllInProcess().subscribe(response => {
             this.messageService.closeLoading();
 
+            const data = JSON.parse(sessionStorage.getItem('lastAdvancementQuery'));
+
             this.model = response.data;
-            this.modelFiltered = response.data;
-            this.initGrid();
+     
+            if(data){
+                this.search(data);
+            }
+            else{
+                this.modelFiltered = response.data;
+                this.initGrid();
+            }
         },
-            error => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     ngOnDestroy(): void {
@@ -84,6 +90,7 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
 
     search(parameters) {
         this.modelFiltered = [];
+        sessionStorage.setItem('lastAdvancementQuery', JSON.stringify(parameters));
 
         if (!parameters.resourceId && !parameters.typeId && !parameters.dateSince && !parameters.dateTo && !parameters.stateId && !parameters.bank) {
             this.modelFiltered = this.model;
