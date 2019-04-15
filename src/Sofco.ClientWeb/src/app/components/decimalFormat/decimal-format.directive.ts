@@ -1,18 +1,28 @@
-import { Directive, ElementRef, HostListener, NgModule } from '@angular/core';
-
-declare var navigator: any;
+import { Directive, ElementRef, HostListener, NgModule, Input, OnInit } from '@angular/core';
 
 @Directive({
  selector: '[decimalFormat]'
 })
-export class DecimalFormatDirective {
-    // Allow decimal numbers and negative values
-    private regex: RegExp = new RegExp(/^[0-9]+(.[0-9]{0,2})?$/g);
+export class DecimalFormatDirective implements OnInit {
+    private regex: RegExp ;
     // Allow key codes for special events. Reflect :
     // Backspace, tab, end, home
     private specialKeys: Array<string> = [ 'Tab', 'End', 'Home', '-' ];
 
+    @Input("decimalFormat") digits: number;
+
     constructor(private el: ElementRef) {}
+
+    ngOnInit(): void {
+        if(this.digits && this.digits > 0){
+            var expression = '^[0-9]{1,' + this.digits + '}([.][0-9][0-9])?$';
+
+            this.regex = new RegExp(expression, 'g');
+        }
+        else{
+            this.regex = new RegExp(/^[0-9]+(.[0-9]{0,2})?$/g);
+        }
+    }
 
     @HostListener('keydown', [ '$event' ])
     onKeyDown(event: KeyboardEvent) {

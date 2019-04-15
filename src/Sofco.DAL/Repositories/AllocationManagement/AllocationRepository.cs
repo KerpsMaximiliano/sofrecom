@@ -133,30 +133,39 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Allocations.Any(x => x.Id == allocationId);
         }
 
-        public ICollection<Allocation> GetByEmployeesForReport(AllocationReportParams parameters)
+        public ICollection<Employee> GetByEmployeesForReport(AllocationReportParams parameters)
         {
             IQueryable<Allocation> query = context.Allocations
                 .Include(x => x.Analytic)
                 .Include(x => x.Employee)
                     .ThenInclude(x => x.Manager)
-                .Where(x => x.StartDate.Date >= parameters.StartDate.GetValueOrDefault().Date && x.StartDate.Date <= parameters.EndDate.GetValueOrDefault().Date && x.Percentage > 0);
-
-            if (parameters.AnalyticIds.Any())
-                query = query.Where(x => parameters.AnalyticIds.Contains(x.AnalyticId));
-
-            if (parameters.EmployeeId.HasValue)
-                query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
+                .Where(x => x.StartDate.Date >= parameters.StartDate.GetValueOrDefault().Date && x.StartDate.Date <= parameters.EndDate.GetValueOrDefault().Date && !x.Employee.EndDate.HasValue);
 
             if (!parameters.IncludeStaff)
                 query = query.Where(x => x.Employee.BillingPercentage != 0);
 
-            if (parameters.IncludeAnalyticId == 2)
-                query = query.Where(x => x.Analytic.Status == AnalyticStatus.Open);
+            if (!parameters.Unassigned)
+            {
+                if (parameters.AnalyticIds.Any())
+                    query = query.Where(x => parameters.AnalyticIds.Contains(x.AnalyticId));
 
-            if (parameters.IncludeAnalyticId == 3)
-                query = query.Where(x => x.Analytic.Status == AnalyticStatus.Close || x.Analytic.Status == AnalyticStatus.CloseToExpenses);
+                if (parameters.EmployeeId.HasValue)
+                    query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
 
-            return query.OrderBy(x => x.StartDate).ToList();
+                if (parameters.IncludeAnalyticId == 2)
+                    query = query.Where(x => x.Analytic.Status == AnalyticStatus.Open);
+
+                if (parameters.IncludeAnalyticId == 3)
+                    query = query.Where(x => x.Analytic.Status == AnalyticStatus.Close || x.Analytic.Status == AnalyticStatus.CloseToExpenses);
+            }
+
+            return query.Select(x => x.Employee)
+                .Include(x => x.Manager)
+                .Include(x => x.Allocations)
+                .ThenInclude(x => x.Analytic)
+                .OrderBy(x => x.StartDate)
+                .Distinct()
+                .ToList();
         }
 
         public void RemoveAllocationByAnalytic(int analyticId, DateTime today)

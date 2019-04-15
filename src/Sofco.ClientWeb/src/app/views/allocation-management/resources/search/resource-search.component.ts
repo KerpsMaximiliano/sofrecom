@@ -11,7 +11,6 @@ import { CategoryService } from "../../../../services/admin/category.service";
 import { AllocationService } from "../../../../services/allocation-management/allocation.service";
 import * as FileSaver from "file-saver";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
-import { BsDatepickerModule } from "ngx-bootstrap";
 
 declare var moment: any;
 declare var $: any;
@@ -82,7 +81,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     public allocationModel = {
         analyticId: null,
         percentage: 100,
-        //startDate: new Date(),
         startDate: this.startNewPeriod,
         endDate: this.startNewPeriod
     }
@@ -149,7 +147,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.subscrip = this.employeeService.getPendingHours(resource.id).subscribe(res => {
             this.showEndEmployeeModal(res.data);
         },
-            () => this.confirmModal.hide());
+        () => this.confirmModal.hide());
     }
 
     showEndEmployeeModal(data) {
@@ -175,8 +173,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.getAnalyticSubscrip = this.analyticService.getOptions().subscribe(
             data => {
                 this.analytics = data;
-
-                this.setLastQuery();
             });
     }
 
@@ -185,17 +181,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             data => {
                 this.categories = data;
             });
-    }
-
-    setLastQuery() {
-        setTimeout(() => {
-            var data = JSON.parse(sessionStorage.getItem('lastResourceQuery'));
-
-            if (data) {
-                this.searchModel = data;
-                this.search();
-            }
-        }, 0);
     }
 
     clean() {
@@ -209,7 +194,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.searchModel.unassigned = false;
         this.searchModel.externalOnly = false;
         this.resources = [];
-        sessionStorage.removeItem('lastResourceQuery');
     }
 
     searchDisable() {
@@ -239,8 +223,6 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
             this.messageService.closeLoading();
             this.collapse();
-
-            sessionStorage.setItem('lastResourceQuery', JSON.stringify(this.searchModel));
         },
             () => this.messageService.closeLoading());
     }

@@ -176,6 +176,11 @@ export class RefundDelegateComponent implements OnInit, OnDestroy {
     }
 
     save() {
+        if(this.menuService.user.id == this.userId){
+            this.messageService.showErrorByFolder('advancementAndRefund/refund', 'currentUserEqualsDelegate');
+            return;
+        }
+
         if(this.type == '1'){
             var json ={
                 id: 0,

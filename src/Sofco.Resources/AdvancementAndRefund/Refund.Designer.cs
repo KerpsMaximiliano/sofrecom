@@ -124,6 +124,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.currentUserEqualsDelegate.
+        /// </summary>
+        public static string CurrentUserEqualsDelegate {
+            get {
+                return ResourceManager.GetString("CurrentUserEqualsDelegate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/refund.delegateSuccess.
         /// </summary>
         public static string DelegateSuccess {

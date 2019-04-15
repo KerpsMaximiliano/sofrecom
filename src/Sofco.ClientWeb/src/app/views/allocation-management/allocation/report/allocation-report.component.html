@@ -43,17 +43,17 @@
                     <div class="form-group">
                         <h4 class="control-label">Analiticas a incluir</h4>
                         <div class="radio radio-success radio-inline">
-                            <input value="1" type="radio" [(ngModel)]="includeAnalyticId">
+                            <input value="1" type="radio" [(ngModel)]="includeAnalyticId" [disabled]="unassigned">
                             <label> Todas </label>
                         </div> 
                     
                         <div class="radio radio-success radio-inline">
-                            <input value="2" type="radio" [(ngModel)]="includeAnalyticId">
+                            <input value="2" type="radio" [(ngModel)]="includeAnalyticId" [disabled]="unassigned">
                             <label> Abiertas </label>
                         </div>
             
                         <div class="radio radio-success radio-inline">
-                            <input value="3" type="radio" [(ngModel)]="includeAnalyticId">
+                            <input value="3" type="radio" [(ngModel)]="includeAnalyticId" [disabled]="unassigned">
                             <label> Cerradas </label>
                         </div>
                     </div> 
@@ -64,7 +64,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label"> {{ 'allocationManagement.analytics.title' | translate }} </label>
-                        <select select2 class="form-control" id="analyticId" multiple>
+                        <select select2 class="form-control" id="analyticId" multiple [disabled]="unassigned">
                             <option *ngFor="let analytic of analytics" [value]="analytic?.id">{{analytic?.text}}</option>
                         </select>
                     </div>
@@ -72,7 +72,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="control-label"> {{ 'allocationManagement.allocation.resources' | translate }} </label>
-                        <select select2 class="form-control" id="employeeId">
+                        <select select2 class="form-control" id="employeeId" [disabled]="unassigned">
                             <option value="0">Seleccione una opción</option>
                             <option *ngFor="let resource of resources" [value]="resource?.id">{{ resource?.text }}</option>
                         </select>
@@ -80,18 +80,9 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group checkbox-center">
-                        <icheck [(checked)]="unassigned">
-                            <label class="control-label">No Asignados</label> 
+                        <icheck [(checked)]="unassigned" (checkedChange)="unassignedChanged()">
+                            <label class="control-label">Asignación incompleta</label> 
                         </icheck>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label class="control-label"> {{ 'allocationManagement.allocation.percentages' | translate }} </label>
-                        <select select2 class="form-control" id="percentageId">
-                            <option value="0">Seleccione una opción</option>
-                            <option *ngFor="let percentage of percentages" [value]="percentage?.id">{{ percentage?.text | translate }}</option>
-                        </select>
                     </div>
                 </div>
             </div>
