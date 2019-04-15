@@ -295,6 +295,15 @@ namespace Sofco.Resources.Billing {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a billing/solfac.hitoUpdateSuccess.
+        /// </summary>
+        public static string HitoUpdateSuccess {
+            get {
+                return ResourceManager.GetString("HitoUpdateSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a billing/solfac.imputationNumberEmpty.
         /// </summary>
         public static string ImputationNumberEmpty {
