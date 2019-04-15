@@ -106,6 +106,18 @@ namespace Sofco.Service.Implementations.Billing
                 response.AddError(Resources.Common.ErrorSave);
             }
 
+            try
+            {
+                if (!response.HasErrors())
+                {
+                    projectData.ClearHitoKeys(solfac.ProjectId);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
+
             return response;
         }
 
@@ -239,6 +251,18 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
+                if (!response.HasErrors())
+                {
+                    projectData.ClearHitoKeys(solfac.ProjectId);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
+
+            try
+            {
                 // Send Mail
                 solfacStatusHandler.SendMail(solfac, emailConfig);
             }
@@ -283,6 +307,18 @@ namespace Sofco.Service.Implementations.Billing
             {
                 response.AddError(Resources.Common.ErrorSave);
                 logger.LogError(ex);
+            }
+
+            try
+            {
+                if (!response.HasErrors())
+                {
+                    this.projectData.ClearHitoKeys(solfac.ProjectId);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
             }
 
             return response;

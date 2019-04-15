@@ -55,10 +55,9 @@ namespace Sofco.Service.Crm
 
         public List<CrmProjectHito> GetByProjectId(Guid projectId)
         {
-            var result = httpClient.Get<JObject>(UrlPath + GetQuery(string.Empty));
+            var result = httpClient.Get<JObject>(UrlPath + GetFilterByProjectQuery(projectId.ToString()));
 
             var data = translator.TranslateList(result.Data)
-                .Where(s => s.ProjectId == projectId)
                 .ToList();
 
             return TranslateToProjectHito(data);
@@ -246,6 +245,11 @@ namespace Sofco.Service.Crm
         private string GetQuery(string filter)
         {
             return "?$select=" + translator.KeySelects() + filter;
+        }
+
+        private string GetFilterByProjectQuery(string id)
+        {
+            return $"?$filter=_as_invoicingmilestonesid_value eq {id}";
         }
 
         private string GetToExpireFilters()

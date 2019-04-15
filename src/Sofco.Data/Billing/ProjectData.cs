@@ -51,6 +51,7 @@ namespace Sofco.Data.Billing
         public void ClearHitoKeys(string projectId)
         {
             cacheManager.DeletePatternKey(string.Format(HitosCacheKey, projectId));
+            GetHitos(projectId);
         }
     }
 }
