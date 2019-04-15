@@ -70,7 +70,7 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
     }
 
     goToDetail(item) {
-        this.router.navigate(['/advancementAndRefund/advancement/' + item.id])
+        window.open('/#/advancementAndRefund/advancement/' + item.id, '_blank');
     }
 
     getStatusClass(type) {
