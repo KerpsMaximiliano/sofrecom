@@ -20,7 +20,6 @@ export class RefundListGridComponent implements OnInit {
     public loading = false;
     subscrip: Subscription;
     public data:any[] = new Array<any>();
-    //@ViewChild('gridFilter') gridFilter;
     selectParamsVisible = true;
 
     constructor(private refundService: RefundService,
@@ -29,15 +28,13 @@ export class RefundListGridComponent implements OnInit {
         private i18nService: I18nService){}
 
     ngOnInit(): void {
-      //  this.getData();
     }
 
     goToDetail(id){
-        this.router.navigate(['advancementAndRefund/refund/' + id]);
+        window.open('/#/advancementAndRefund/refund/' + id, "_blank");
     }
 
     getData(model) {
-       // const model = this.getParameterModel();
         this.selectParamsVisible = false;
         this.loading = true;
         this.subscrip = this.refundService.getAll(model).subscribe(res => {
@@ -46,14 +43,6 @@ export class RefundListGridComponent implements OnInit {
             this.initGrid();
         });
     }
-
-    // getParameterModel() {
-    //     return this.gridFilter.model !== undefined
-    //         ? this.gridFilter.model
-    //         : {
-    //             inWorkflowProcess: this.inWorkflowProcess
-    //         };
-    // }
 
     initGrid(){
         const gridSelector = "#gridTable-" + this.controlId;
