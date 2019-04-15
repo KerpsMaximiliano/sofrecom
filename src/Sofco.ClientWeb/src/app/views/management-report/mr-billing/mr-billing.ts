@@ -42,7 +42,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     hitoSelected: any;
     indexSelected: number = 0
     monthSelectedDisplay: string = "";
-    editItemMonto = new FormControl('', [Validators.min(0), Validators.max(999999)]);
+    editItemMonto = new FormControl('', [ Validators.required, Validators.min(0), Validators.max(999999)]);
 
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -370,10 +370,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     }
 
-    editItemModal(){
-        debugger
-        // this.hitoSelected.values[this.indexSelected].value = this.editItemMonto.value
-        // this.updateHito(this.hitoSelected)
-    }
+   
 
 }

@@ -57,5 +57,6 @@
     "hitoNotFound": "Hito no encontrado",
     "delegateSaveMangerOnlyError": "Solo los gerentes estan autorizados a delegar.",
     "currencyExchangeRequired": "La cotización es requerida",
-    "purchaseOrderWithWrongCurrency": "La moneda seleccionada no corresponde con la orden de compra"
+    "purchaseOrderWithWrongCurrency": "La moneda seleccionada no corresponde con la orden de compra",
+    "hitoUpdateSuccess": "Hito actualizado correctamente"
 }

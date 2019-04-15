@@ -117,7 +117,10 @@ namespace Sofco.Service.Implementations.Billing
             crmInvoicingMilestoneService.UpdateAmmount(hito, response);
 
             if (!response.HasErrors())
+            {
                 projectData.ClearHitoKeys(hito.ProjectId);
+                response.AddSuccess(Resources.Billing.Solfac.HitoUpdateSuccess);
+            }
             else
             {
                 response.Messages.Clear();

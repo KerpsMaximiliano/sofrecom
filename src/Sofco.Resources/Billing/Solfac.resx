@@ -273,4 +273,7 @@
   <data name="CurrencyExchangeRequired" xml:space="preserve">
     <value>billing/solfac.currencyExchangeRequired</value>
   </data>
+  <data name="HitoUpdateSuccess" xml:space="preserve">
+    <value>billing/solfac.hitoUpdateSuccess</value>
+  </data>
 </root>
