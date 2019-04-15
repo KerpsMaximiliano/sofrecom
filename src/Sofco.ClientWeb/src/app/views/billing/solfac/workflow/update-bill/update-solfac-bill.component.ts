@@ -1,19 +1,18 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnDestroy, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { Ng2ModalConfig } from '../../../../../components/modal/ng2modal-config';
 import { SolfacService } from "../../../../../services/billing/solfac.service";
 import { Subscription } from "rxjs";
 import { SolfacStatus } from "../../../../../models/enums/solfacStatus";
 import { MenuService } from "../../../../../services/admin/menu.service";
 import { MessageService } from '../../../../../services/common/message.service';
+import { environment } from 'environments/environment'
 declare var $: any;
 
 @Component({
   selector: 'update-solfac-bill',
   templateUrl: './update-solfac-bill.component.html'
 })
-export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
-
-
+export class UpdateSolfacBillComponent implements OnDestroy  {
     @ViewChild('updateBillModal') updateBillModal;
     public updateBillModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "billing.solfac.includeInvoiceCode",
@@ -27,6 +26,8 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
     @Input() solfacId: number;
     @Input() status: string;
     @Input() invoiceCode: string;
+    @Input() currencyExchange: number;
+    @Input() currencyId: number;
     @Input() invoiceDate: Date = new Date();
 
     @Output() updateStatus: EventEmitter<any> = new EventEmitter();
@@ -38,9 +39,6 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
         private messageService: MessageService,
         private menuService: MenuService) {}
 
-    ngOnInit(): void {
-    }
-
     ngOnDestroy(): void {
         if(this.subscrip) this.subscrip.unsubscribe();
     }
@@ -48,6 +46,12 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
     openModal(){
         $('#updateInvoiceCode').val(this.invoiceCode);
         this.updateBillModal.show();
+    }
+
+    isCurrencyPesos(){
+        if(this.currencyId == environment.currencyPesosId) return true;
+
+        return false;
     }
 
     canUpdateBill(){
@@ -66,6 +70,7 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
 
             var json = {
                 invoiceCode: this.invoiceCode,
+                currencyExchange: this.currencyExchange,
                 invoiceDate: this.invoiceDate
               }
 
@@ -78,7 +83,8 @@ export class UpdateSolfacBillComponent implements OnDestroy, OnInit  {
                     if (this.updateStatus.observers.length > 0) {
                         var toModif = {
                             invoiceCode: this.invoiceCode,
-                            invoiceDate: this.invoiceDate
+                            invoiceDate: this.invoiceDate,
+                            currencyExchange: this.currencyExchange
                         };
                         this.updateStatus.emit(toModif);
                     }

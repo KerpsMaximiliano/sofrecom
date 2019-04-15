@@ -14,6 +14,8 @@
 
         PurchaseOrderActive,
 
-        LicenseView
+        LicenseView,
+
+        RefundAdd
     }
 }

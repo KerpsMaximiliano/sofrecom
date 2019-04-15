@@ -14,5 +14,9 @@ namespace Sofco.Core.Managers
         bool IsCdg();
 
         bool IsManager();
+
+        bool HasAccessForRefund();
+
+        bool HasAdvancementAccess();
     }
 }

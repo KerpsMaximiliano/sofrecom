@@ -38,6 +38,10 @@ export class AnalyticService {
     return this.http.get<any>(`${this.baseUrl}/analytics/options`);
   }
 
+  getOptionsActives(){
+    return this.http.get<any>(`${this.baseUrl}/analytics/options/active`);
+  }
+
   getClientId(clientId){
     return this.http.get<any>(`${this.baseUrl}/analytics/clients/${clientId}`);
   }

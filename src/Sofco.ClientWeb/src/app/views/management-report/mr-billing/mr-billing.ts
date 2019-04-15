@@ -203,7 +203,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     updateHito(hito){
-        var hitoMonth = hito.values.find(x => x.value && x.value > 0);
+        var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
         if(!this.isEnabled(hitoMonth)) return;
 
@@ -239,6 +239,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 hitoMonth.value = hitoMonth.oldValue;
             });
         }
+        else{
+            hitoMonth.value = hitoMonth.oldValue;
+        }
     }
 
     delete(hito){
@@ -248,7 +251,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             this.projectService.deleteHito(hito.id, hito.projectId).subscribe(response => {
                 this.messageService.closeLoading();
 
-                var hitoMonth = hito.values.find(x => x.value && x.value > 0);
+                var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
                 var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
     
@@ -273,7 +276,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     canDeleteHito(hito){
-        var hitoMonth = hito.values.find(x => x.value && x.value > 0);
+        var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
         return this.isEnabled(hitoMonth);
     }
@@ -296,9 +299,15 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
             var value = hito.values.find(x => x.month == month && x.year == year);
 
-            if(value && value.value > 0){
+            if(value && value != null){
                 if(value.status == this.billedHitoStatus || value.status == this.cashedHitoStatus){
-                    totals.totalBilling += value.value;
+
+                    if(value.valuePesos > 0){
+                        totals.totalBilling += value.valuePesos;
+                    }
+                    else{
+                        totals.totalBilling += value.value;
+                    }
                 }
 
                 totals.totalProvisioned += value.value;

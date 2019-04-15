@@ -13,16 +13,10 @@ namespace Sofco.Domain.DTO
 
         public int? EmployeeId { get; set; }
 
-        public decimal Percentage { get; set; }
-
         public bool IncludeStaff { get; set; }
 
         public bool Unassigned { get; set; }
 
         public int IncludeAnalyticId { get; set; }
-
-        public decimal? StartPercentage { get; set; }
-
-        public decimal? EndPercentage { get; set; }
     }
 }

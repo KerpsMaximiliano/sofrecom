@@ -312,7 +312,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             ValidParameter(model);
 
             var currentUser = userData.GetCurrentUser();
-            var hasAllAccess = roleManager.HasFullAccess();
+            var hasAllAccess = roleManager.HasAccessForRefund();
 
             if (!hasAllAccess)
             {
@@ -331,7 +331,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 foreach (var refund in result)
                 {
-                    if (ValidateManagerAccess(refund, currentUser) || ValidateAnalyticManagerAccess(refund, currentUser))
+                    if (ValidateAnalyticManagerAccess(refund, currentUser) || ValidateSectorAccess(refund, currentUser))
                     {
                         if (response.Data.All(x => x.Id != refund.Id))
                         {
@@ -411,20 +411,17 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return models;
         }
 
-        private bool ValidateManagerAccess(Refund entity, UserLiteModel currentUser)
+        private bool ValidateSectorAccess(Refund entity, UserLiteModel currentUser)
         {
-            var employee = unitOfWork.EmployeeRepository.GetByEmail(entity.UserApplicant.Email);
-
             var hasAccess = false;
 
-            if (employee.ManagerId.HasValue && employee.Manager != null)
-            {
-                if (employee.ManagerId.Value == currentUser.Id)
-                {
-                    hasAccess = true;
-                }
+            var director = unitOfWork.AnalyticRepository.GetDirector(entity.AnalyticId);
 
-                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, entity.AnalyticId, UserApproverType.Refund);
+            if (director != null)
+            {
+                if (director.Id == currentUser.Id) hasAccess = true;
+
+                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.Id, entity.AnalyticId, UserApproverType.Refund);
 
                 if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                 {
@@ -488,7 +485,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 }
                 else
                 {
-                    item.Ammount = refund.TotalAmmount;
+                    item.Ammount = item.AmmountPesos = refund.TotalAmmount;
                 }
 
                 if (refund.CurrencyExchange > 0)
@@ -525,6 +522,97 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 foreach (var analytic in analytics)
                     response.Data.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+            }
+
+            return response;
+        }
+
+        public Response<int> Delegate(int userId)
+        {
+            var response = new Response<int>();
+
+            if (!unitOfWork.UserRepository.ExistById(userId))
+            {
+                response.AddError(Resources.Admin.User.NotFound);
+                return response;
+            }
+
+            var currentUser = userData.GetCurrentUser();
+
+            if (currentUser.Id == userId)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.CurrentUserEqualsDelegate);
+                return response;
+            }
+
+            try
+            {
+                var userDelegate = new UserDelegate
+                {
+                    Created = DateTime.UtcNow,
+                    CreatedUser = currentUser.UserName,
+                    Modified = DateTime.UtcNow,
+                    SourceId = userId,
+                    Type = UserDelegateType.RefundAdd,
+                    UserId = currentUser.Id
+                };
+
+                unitOfWork.UserDelegateRepository.Insert(userDelegate);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Refund.DelegateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response DeleteDelegate(List<int> ids)
+        {
+            var response = new Response();
+
+            try
+            {
+                foreach (var id in ids)
+                {
+                    var userDelegate = unitOfWork.UserDelegateRepository.Get(id);
+
+                    if (userDelegate != null)
+                    {
+                        unitOfWork.UserDelegateRepository.Delete(userDelegate);
+                    }
+                }
+
+                unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<Option>> GetDelegates()
+        {
+            var response = new Response<IList<Option>> { Data = new List<Option>() };
+
+            var delegates = unitOfWork.UserDelegateRepository.GetByUserId(userData.GetCurrentUser().Id, UserDelegateType.RefundAdd);
+
+            foreach (var userDelegate in delegates)
+            {
+                var user = userData.GetUserLiteById(userDelegate.SourceId.GetValueOrDefault());
+
+                response.Data.Add(new Option
+                {
+                    Id = userDelegate.Id,
+                    Text = user.Name
+                });
             }
 
             return response;

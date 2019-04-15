@@ -5,7 +5,7 @@ using Sofco.Domain.Models.Common;
 
 namespace Sofco.Core.DAL.Common
 {
-    public interface IUserDelegateRepository
+    public interface IUserDelegateRepository : IBaseRepository<UserDelegate>
     {
         List<UserDelegate> GetByServiceIds(List<string> serviceIds, UserDelegateType type);
 

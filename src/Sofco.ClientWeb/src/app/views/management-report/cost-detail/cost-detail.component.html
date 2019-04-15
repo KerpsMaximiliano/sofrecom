@@ -9,44 +9,52 @@
         <tbody>
             <tr>
                 <th>Total Costos</th>
-                <td *ngFor="let month of months">
-                    <label class="label label-total"></label>
+                <td *ngFor="let month of months; let i = index">
+                    <label class="label label-total">
+                        {{ calculateTotalCosts(i) | amountFormat }}
+                    </label>
                 </td>
             </tr>
             <tr>
                 <th>Cantidad Recursos costeados</th>
-                <td *ngFor="let month of months">
-                    <label class="label label-cant-resources"></label>
+                <td *ngFor="let month of months; let i = index">
+                    <label class="label label-cant-resources">
+                        {{ calculateAssignedEmployees(i) }}
+                    </label>
                 </td>
             </tr>
             <tr class="active" *ngFor="let employee of employees">
                 <th>{{ employee.display }} </th>
-                <td *ngFor="let monthCost of employee.monthsCost">
-                    <label class="label" (click)="openEditItemModal(monthCost, employee)"
-                        [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}">
-                        {{ monthCost.value | amountFormat }}
+                <td *ngFor="let monthCost of employee.monthsCost; let i = index">
+                    <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
+                        [ngClass]="AccessEmployeeClass(monthCost)">
+                        {{ CalculateSalary(monthCost, i) | amountFormat }} 
                     </label>
                 </td>
             </tr>
-            <tr *ngFor="let item of fundedResourses">
+            <tr *ngFor="let item of fundedResourses; let i = index">
                 <th>{{ item.display }}</th>
                 <td *ngFor="let monthCost of item.monthsCost">
-                    <label class="label" (click)="openEditItemModal(monthCost, item)"
-                        [ngClass]="{'cursor-pointer': menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')}">
+                    <label class="label" (click)="openEditItemModal(monthCost, item, i)"
+                        [ngClass]="(canEdit == true) ? 'cursor-pointer' : 'not-allowed'">
                         {{ monthCost.value | amountFormat }}
                     </label>
                 </td>
             </tr>
             <tr>
                 <th>Total Sueldo</th>
-                <td *ngFor="let month of months">
-                    <label class="label label-salary"></label>
+                <td *ngFor="let month of months; let i = index">
+                    <label class="label label-salary">
+                        {{ calculateAllSalary(i) | amountFormat }}
+                    </label>
                 </td>
             </tr>
             <tr>
                 <th>Cargas (0.51 del sueldo)</th>
-                <td *ngFor="let month of months">
-                    <label class="label label-load"></label>
+                <td *ngFor="let month of months; let i = index">
+                    <label class="label label-load">
+                        {{ calculateLoads(i) | amountFormat }}
+                    </label>
                 </td>
             </tr>
         </tbody>
@@ -58,7 +66,7 @@
             class="fa fa-save"></i></button>
 </div>
 
-<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()">
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()" (close)="EditItemOnClose()" [isSaveEnabled]="editItemMonto.valid">
 
     <div class="row">
         <div class="col-sm-12">
@@ -71,7 +79,12 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Monto</label>
-                <input type="number" decimalFormat class="form-control" [(ngModel)]="monthSelected.value">
+                <div class="input-group">
+                    <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
+                    <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto">
+                    <!-- [(ngModel)]="monthSelected.value"> -->
+                    <span class="input-group-addon" *ngIf="modalPercentage">%</span>
+                </div>
                 <small class="form-text text-muted">
                     <i class="fa fa-exclamation-triangle text-warning" aria-hidden="true"></i>
                     El monto se modificara apartir de la fecha seleccionada hasta el final del proyecto
@@ -79,5 +92,4 @@
             </div>
         </div>
     </div>
-
 </ng2-modal>

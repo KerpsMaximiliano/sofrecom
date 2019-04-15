@@ -1,4 +1,6 @@
-﻿using Sofco.Core.DAL;
+﻿using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
+using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
 using Sofco.Domain.Enums;
@@ -16,9 +18,16 @@ namespace Sofco.Framework.StatusHandlers.Solfac
 
         private readonly IMailSender mailSender;
 
-        public SolfacStatusFactory(IUnitOfWork unitOfWork, ICrmInvoicingMilestoneService crmInvoiceService, IMailBuilder mailBuilder, IMailSender mailSender)
+        private readonly AppSetting appSetting;
+
+        public SolfacStatusFactory(IUnitOfWork unitOfWork, 
+            ICrmInvoicingMilestoneService crmInvoiceService, 
+            IOptions<AppSetting> appSettingOptions,
+            IMailBuilder mailBuilder, 
+            IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
+            this.appSetting = appSettingOptions.Value;
             this.crmInvoiceService = crmInvoiceService;
             this.mailBuilder = mailBuilder;
             this.mailSender = mailSender;
@@ -31,7 +40,7 @@ namespace Sofco.Framework.StatusHandlers.Solfac
                 case SolfacStatus.PendingByManagementControl: return new SolfacStatusPendingByManagementControlHandler(unitOfWork, crmInvoiceService, mailBuilder, mailSender);
                 case SolfacStatus.ManagementControlRejected: return new SolfacStatusManagementControlRejectedHandler(unitOfWork, crmInvoiceService, mailBuilder, mailSender);
                 case SolfacStatus.InvoicePending: return new SolfacStatusInvoicePendingHandler(unitOfWork, crmInvoiceService, mailBuilder, mailSender);
-                case SolfacStatus.Invoiced: return new SolfacStatusInvoicedHandler(unitOfWork, crmInvoiceService, mailBuilder, mailSender);
+                case SolfacStatus.Invoiced: return new SolfacStatusInvoicedHandler(unitOfWork, crmInvoiceService, mailBuilder, appSetting, mailSender);
                 case SolfacStatus.AmountCashed: return new SolfacStatusAmountCashedHandler(unitOfWork, crmInvoiceService, mailBuilder, mailSender);
                 case SolfacStatus.RejectedByDaf: return new SolfacStatusRejectedByDafHandler(unitOfWork, mailBuilder, mailSender, crmInvoiceService);
                 default: return null;

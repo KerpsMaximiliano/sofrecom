@@ -119,7 +119,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     exportToExcel(){
         this.messageService.showLoading();
 
-        this.service.exportExcelFile(this.model.excelFileId).subscribe(file => {
+        this.service.exportNewExcelFile(this.model.id).subscribe(file => {
             this.messageService.closeLoading();
             FileSaver.saveAs(file, `REMITO_${this.model.accountName}_${this.model.service}_${this.model.project}_${this.getDateForFile()}.xlsx`);
         },
@@ -137,9 +137,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             {
                 url: this.service.getUrlForImportFile(id), 
                 authToken: 'Bearer ' + Cookie.get('access_token'), 
-                maxFileSize: 10*1024*1024
+                maxFileSize: 10*1024*1024,
+                allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
             }
-        );
+        ); 
 
         this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
 

@@ -24,7 +24,7 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Hito> GetHitosByProject(string projectId)
         {
-            return context.Hitos.Where(x => x.ProjectId.Equals(projectId)).ToList();
+            return context.Hitos.Include(x => x.Solfac).Where(x => x.ProjectId.Equals(projectId)).ToList();
         }
 
         public IList<Solfac> GetByProject(string projectId)
@@ -175,6 +175,11 @@ namespace Sofco.DAL.Repositories.Billing
         {
             context.Entry(solfac).Property("InvoiceCode").IsModified = true;
             context.Entry(solfac).Property("InvoiceDate").IsModified = true;
+        }
+
+        public void UpdateCurrencyExchange(Solfac solfac)
+        {
+            context.Entry(solfac).Property("CurrencyExchange").IsModified = true;
         }
 
         public void UpdateCash(Solfac solfac)

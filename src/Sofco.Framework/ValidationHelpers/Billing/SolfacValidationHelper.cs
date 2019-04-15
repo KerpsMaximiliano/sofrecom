@@ -185,7 +185,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
         {
             var solfacId = solfac.Hitos.First().SolfacId;
 
-            var totalLimit = solfacRepository.GetTotalAmountById(solfacId);
+            var totalLimit = Math.Abs(solfacRepository.GetTotalAmountById(solfacId));
 
             var hitosTotalImport = solfac.Hitos.Sum(s => s.Details.Sum(d => d.Total));
 
@@ -210,6 +210,14 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             if (details == 0)
             {
                 response.AddError(Resources.Billing.Solfac.DetailsRequired);
+            }
+        }
+
+        public static void ValidateCurrencyExchange(SolfacStatusParams parameters, Response response, Solfac solfac)
+        {
+            if (!parameters.CurrencyExchange.HasValue || parameters.CurrencyExchange == 0)
+            {
+                response.AddError(Resources.Billing.Solfac.CurrencyExchangeRequired);
             }
         }
     }

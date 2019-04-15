@@ -166,6 +166,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 foreach (var hito in crmProjectHitos.OrderBy(x => x.StartDate))
                 {
+                    if (hito.Status.Equals("Cerrado")) continue;
+
                     if (hito.StartDate.Date >= dates.Item1.Date && hito.StartDate.Date <= dates.Item2.Date)
                     {
                         var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hito.Id);
@@ -190,7 +192,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                         };
 
                         if (existHito != null)
+                        {
                             rowItem.SolfacId = existHito.SolfacId;
+
+                            if (existHito.Solfac.CurrencyExchange.HasValue && existHito.Solfac.CurrencyExchange > 0)
+                            {
+                                rowItem.ValuePesos = hito.Ammount * existHito.Solfac.CurrencyExchange.Value;
+                            }
+                        }
 
                         if (hito.Status.Equals("A ser facturado"))
                             rowItem.Status = HitoStatus.ToBeBilled.ToString();
@@ -248,10 +257,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                 //Obtengo los tipos de Recursos
                 List<CostDetailResourceType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
                 List<CostDetailResourceType> TypesFundedResources = Types.Where(t => t.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
-                int IdEmployeeType = Types.Where(t => t.Name == CostDetailTypeResource.Empleados.ToString()).FirstOrDefault().Id;
+                CostDetailResourceType EmployeeType = Types.Where(t => t.Name == CostDetailTypeResource.Empleados.ToString()).FirstOrDefault();
 
                 //Mapeo Los empleados      
-                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, CostDetailEmployees, IdEmployeeType);
+                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, CostDetailEmployees, EmployeeType);
                 //Mapeo Los demas datos
                 response.Data.FundedResources = FillFundedResoursesByMonth(analytic.Id, response.Data.MonthsHeader, FundedResources, TypesFundedResources);
 
@@ -409,7 +418,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return false;
         }
 
-        private List<CostResource> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> CostDetailEmployees, int IdEmployeeType)
+        private List<CostResource> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> CostDetailEmployees, CostDetailResourceType EmployeeType)
         {
             List<CostResource> costEmployees = new List<CostResource>();
 
@@ -423,7 +432,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 detailEmployee.EmployeeId = employee.Id;
                 detailEmployee.Display = employee.Name + " - " + employee.Id;
-                detailEmployee.TypeId = IdEmployeeType;
+                detailEmployee.TypeId = EmployeeType.Id;
+                detailEmployee.TypeName = EmployeeType.Name;
 
                 foreach (var mounth in Months)
                 {
@@ -438,6 +448,21 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
+
+                    //Verifico si este mes el recurso se encontro en la analitica
+                    var startDate = new DateTime(mounth.MonthYear.Year, mounth.MonthYear.Month, 1);
+                    var endDate = startDate.AddMonths(1).AddDays(-1);
+
+                    var alocation = employee.Allocations.Where(x => x.AnalyticId == IdAnalytic && x.StartDate >= startDate.Date && x.StartDate <= endDate.Date && x.Percentage > 0).ToList();
+                    if (alocation.Any())
+                    {
+                        monthDetail.HasAlocation = true;
+                    }
+                    else
+                    {
+                        monthDetail.HasAlocation = false;
+                    }
+
                     detailEmployee.MonthsCost.Add(monthDetail);
                 }
 
@@ -458,6 +483,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 detailResource.Display = type.Name;
                 detailResource.TypeId = type.Id;
+                detailResource.TypeName = type.Name;
 
                 foreach (var mounth in Months)
                 {

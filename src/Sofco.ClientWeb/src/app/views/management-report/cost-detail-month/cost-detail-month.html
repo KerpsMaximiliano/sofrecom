@@ -43,7 +43,7 @@
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.salary" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
+            <input type="number" [digitLimit]="7" decimalFormat class="form-control input-xs" [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
@@ -53,49 +53,24 @@
     <hr class="hr-line-dashed">
     
     <div class="row border-bottom m-b-sm">
-        <div class="col-sm-5"><h4>Costos contratados + subcontratados</h4></div>
-        <div class="col-sm-2"><h4>Honorarios</h4></div>
-        <div class="col-sm-2"><h4>Seguro</h4></div>
-        <div class="col-sm-2"><h4>Total gral</h4></div>
-        <div class="col-sm-1"></div>
-    </div>
-
-    <div class="row m-t-xs" *ngFor="let subresource of subResources; let i of index">
-        <div class="col-sm-5">
-            <input type="text" class="form-control input-xs" [(ngModel)]="subresource.name" [disabled]="isReadOnly">
-        </div>
-        <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="subresource.salary" (ngModelChange)="subResourceChange(subresource)" [disabled]="isReadOnly">
-        </div>
-        <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="subresource.insurance" (ngModelChange)="subResourceChange(subresource)" [disabled]="isReadOnly">
-        </div>
-        <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="subresource.total" disabled>
-        </div>
-        <div class="col-sm-1">
-            <button class="btn btn-danger btn-xs" (click)="deleteSubResource(i)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
-        </div>
-    </div>
-
-    <button class="btn btn-success btn-xs m-t-xs" type="button" *ngIf="!isReadOnly" (click)="addSubResource()">Agregar <i class="fa fa-plus"></i></button>
-
-    <hr class="hr-line-dashed">
-
-    <div class="row border-bottom m-b-sm">
         <div class="col-sm-4"><h4>Otros Gastos</h4></div>
         <div class="col-sm-5"><h4>Descripción</h4></div>
         <div class="col-sm-2"><h4>Total</h4></div>
         <div class="col-sm-1"></div>
     </div>
 
+    <div class="alert alert-gaps-info" *ngIf="isReadOnly">
+        <i class="fa fa-info"></i>
+        {{ i18nService.translateByKey('noInfoAvailable') }}
+    </div>
+
     <div class="row m-t-xs" *ngFor="let expense of expenses; let i of index">
         <div class="col-sm-4">{{ expense.type }}</div>
         <div class="col-sm-5">
-            <input type="text" class="form-control input-xs" [(ngModel)]="expense.description" [disabled]="isReadOnly">
+            <input type="text" class="form-control input-xs" [(ngModel)]="expense.description" [disabled]="isReadOnly" maxlength="200">
         </div>
         <div class="col-sm-2">
-            <input type="number" class="form-control input-xs" [(ngModel)]="expense.total" (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly">
+            <input type="number" class="form-control input-xs" [digitLimit]="7" [(ngModel)]="expense.total" (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-1">
             <button class="btn btn-danger btn-xs" (click)="deleteExpense(i)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>

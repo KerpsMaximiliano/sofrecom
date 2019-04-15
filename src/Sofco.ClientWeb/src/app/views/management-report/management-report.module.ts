@@ -22,6 +22,8 @@ import { UtilsService } from "app/services/common/utils.service";
 import { MessageService } from "app/services/common/message.service";
 import { DecimalFormatModule } from "app/components/decimalFormat/decimal-format.directive";
 import { CostDetailMonthComponent } from "./cost-detail-month/cost-detail-month";
+import { ReactiveFormsModule } from '@angular/forms';
+import { DigitModule } from "app/components/digit-limit/digit-limit.directive";
 
 @NgModule({
     declarations: [
@@ -40,7 +42,9 @@ import { CostDetailMonthComponent } from "./cost-detail-month/cost-detail-month"
       Ng2ModalModule, 
       AmountFormatModule,
       PCheckModule,
-      NgSelectModule
+      NgSelectModule,
+      DigitModule,
+      ReactiveFormsModule
     ],
     providers: [ ManagementReportService, DatesService, MenuService, UtilsService, ProjectService, MessageService ],
     exports: [],

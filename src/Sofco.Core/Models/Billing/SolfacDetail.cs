@@ -41,6 +41,7 @@ namespace Sofco.Core.Models.Billing
             WithTax = domain.WithTax;
             InvoiceRequired = domain.InvoiceRequired;
             OpportunityNumber = domain.OpportunityNumber;
+            CurrencyExchange = domain.CurrencyExchange;
 
             CustomerId = domain.AccountId;
             ServiceId = domain.ServiceId;
@@ -98,6 +99,8 @@ namespace Sofco.Core.Models.Billing
                 Hitos.Add(new HitoModel(hito));
             }
         }
+
+        public decimal? CurrencyExchange { get; set; }
 
         public string ServiceName { get; set; }
 

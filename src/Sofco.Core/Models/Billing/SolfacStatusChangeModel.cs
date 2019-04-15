@@ -14,6 +14,8 @@ namespace Sofco.Core.Models.Billing
 
         public DateTime? CashedDate { get; set; }
 
+        public decimal CurrencyExchange { get; set; }
+
         public SolfacStatusParams CreateStatusParams()
         {
             var parameters = new SolfacStatusParams();
@@ -24,6 +26,7 @@ namespace Sofco.Core.Models.Billing
             parameters.InvoiceCode = InvoiceCode;
             parameters.InvoiceDate = InvoiceDate;
             parameters.CashedDate = CashedDate;
+            parameters.CurrencyExchange = CurrencyExchange;
 
             return parameters;
         }

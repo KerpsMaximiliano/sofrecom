@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Models.Admin
 {
@@ -17,9 +18,12 @@ namespace Sofco.Core.Models.Admin
         public MenuResponseModel()
         {
             Menus = new Collection<MenuModel>();
+            RefundDelegates = new List<Option>();
         }
 
         public ICollection<MenuModel> Menus { get; set; }
+
+        public IList<Option> RefundDelegates { get; set; }
 
         public bool IsDirector { get; set; }
 
@@ -44,6 +48,7 @@ namespace Sofco.Core.Models.Admin
         public List<int> AreaIds { get; set; }
 
         public List<int> SectorIds { get; set; }
+
         public bool IsGaf { get; set; }
     }
 }

@@ -17,6 +17,8 @@
         // Pagado
         Cashed = 717620001,
 
+        Closed = 979730000,
+
         // Inactivo
         Inactive = 2
     }

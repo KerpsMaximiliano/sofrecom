@@ -70,7 +70,7 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         public string GetRecipients(Domain.Models.Billing.Invoice invoice, EmailConfig emailConfig)
         {
-            return unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
+            return unitOfWork.GroupRepository.GetEmail(emailConfig.GafCode);
         }
 
         public void SaveStatus(Domain.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)

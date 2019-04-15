@@ -61,6 +61,15 @@ export class InvoiceService {
     }));
   }
 
+  exportNewExcelFile(id){
+    return this.http.get(`${this.baseUrl}/invoices/${id}/excel/new`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).pipe(map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    }));
+  }
+
   exportExcelFile(id){
     return this.http.get(`${this.baseUrl}/invoices/${id}/excel/export`, {
       responseType: 'arraybuffer',
@@ -84,5 +93,14 @@ export class InvoiceService {
 
   askForAnnulment(model) {
     return this.http.post<any>(`${this.baseUrl}/invoices/requestAnnulment`, model);
- }
+  }
+
+  downloadZip(ids){
+    return this.http.post(`${this.baseUrl}/invoices/export/all`, ids, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).pipe(map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    }));
+  }
 }

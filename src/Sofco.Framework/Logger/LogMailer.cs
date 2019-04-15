@@ -56,7 +56,7 @@ namespace Sofco.Framework.Logger
 
         private void SendMail(string message, Exception exception)
         {
-            var msg = string.IsNullOrEmpty(message)
+            var msg = string.IsNullOrWhiteSpace(message)
                 ? exception.Message
                 : message + MessageDelimiter + exception.Message;
 

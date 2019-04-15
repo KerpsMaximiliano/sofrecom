@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { I18nService } from "app/services/common/i18n.service";
 
 @Component({
     selector: 'cost-detail-month',
@@ -23,26 +24,16 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     totalBilling: number = 0;
 
     resources: any[] = new Array();
-    subResources: any[] = new Array();
     expenses: any[] = new Array();
 
     isReadOnly: boolean 
 
-    constructor(){}
+    constructor(public i18nService: I18nService){}
 
     ngOnInit(): void {
     }
 
     ngOnDestroy(): void {
-    }
-
-    addSubResource(){
-        this.subResources.push({ name: "", salary: 0, insurance: 0, total: 0 });
-    }
-
-    deleteSubResource(index){
-        this.subResources.splice(index, 1);
-        this.calculateTotalCosts();
     }
 
     addExpense(){
@@ -82,10 +73,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     calculateTotalCosts(){
         this. totalCosts = 0;
-
-        this.subResources.forEach(element => {
-            this.totalCosts += element.total;
-        });
 
         this.expenses.forEach(element => {
             this.totalCosts += element.total;

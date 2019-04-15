@@ -129,7 +129,7 @@ namespace Sofco.Framework.Workflow.Notifications
 
         private void AddAnalyticManager(WorkflowEntity entity, List<string> recipientsList, WorkflowStateNotifier stateNotifier)
         {
-            if (stateNotifier.UserSource.Code == appSetting.ManagerUserSource)
+            if (stateNotifier.UserSource.Code == appSetting.AnalyticManagerUserSource)
             {
                 if (entity.UserApplicant != null)
                 {

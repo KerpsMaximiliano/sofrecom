@@ -15,12 +15,16 @@ namespace Sofco.Core.Models.Billing
             if (invoice.PDfFileData != null)
             {
                 ExcelFileName = invoice.PDfFileData.FileName;
+                FileId = invoice.PdfFileId.GetValueOrDefault();
             }
             else if (invoice.ExcelFileData != null)
             {
                 ExcelFileName = invoice.ExcelFileData.FileName;
+                FileId = invoice.ExcelFileId.GetValueOrDefault();
             }
         }
+
+        public int FileId { get; set; }
 
         public string ExcelFileName { get; set; }
 

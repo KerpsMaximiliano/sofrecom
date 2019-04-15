@@ -9,6 +9,8 @@ namespace Sofco.Core.Models.Billing
 
         public DateTime? InvoiceDate { get; set; }
 
+        public decimal? CurrencyExchange { get; set; }
+
         public int UserId { get; set; }
 
         public SolfacStatusParams CreateStatusParams()
@@ -18,6 +20,7 @@ namespace Sofco.Core.Models.Billing
             parameters.UserId = UserId;
             parameters.InvoiceCode = InvoiceCode;
             parameters.InvoiceDate = InvoiceDate;
+            parameters.CurrencyExchange = CurrencyExchange;
 
             return parameters;
         }

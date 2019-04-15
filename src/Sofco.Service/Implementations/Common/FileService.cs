@@ -44,5 +44,33 @@ namespace Sofco.Service.Implementations.Common
 
             return response;
         }
+
+        public Response<Tuple<byte[], string>> GetFile(int id, string path)
+        {
+            var response = new Response<Tuple<byte[], string>>();
+
+            var file = unitOfWork.FileRepository.GetSingle(x => x.Id == id);
+
+            if (file == null)
+            {
+                response.AddError(Resources.Common.FileNotFound);
+                return response;
+            }
+
+            try
+            {
+                var bytes = System.IO.File.ReadAllBytes($"{path}\\{file.InternalFileName}{file.FileType}");
+
+                response.Data = new Tuple<byte[], string>(bytes, $"{file.FileName}");
+
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.GeneralError);
+            }
+
+            return response;
+        }
     }
 }

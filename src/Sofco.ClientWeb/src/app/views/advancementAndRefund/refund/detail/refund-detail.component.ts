@@ -10,7 +10,6 @@ import { FileUploader } from "ng2-file-upload";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { AuthService } from "app/services/common/auth.service";
 import * as FileSaver from "file-saver";
-import { I18nService } from "app/services/common/i18n.service";
 
 @Component({
     selector: 'refund-refund',
@@ -83,6 +82,10 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
 
             if(response.data.advancementIds && response.data.advancementIds.length > 0){
                 this.refundRelated.init(response.data.advancementIds);
+            }
+            else{
+                this.refundRelated.advancements = [];
+                this.refundRelated.refunds = [];
             }
 
             this.workflow.init(this.workflowModel);

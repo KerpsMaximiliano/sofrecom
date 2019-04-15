@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -13,6 +12,8 @@ using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 {
@@ -26,7 +27,7 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         private readonly IFileService fileService;
         private readonly FileConfig fileConfig;
 
-        public RefundController(IRefundService refundService, 
+        public RefundController(IRefundService refundService,
             IWorkflowService workflowService,
             IOptions<FileConfig> fileOptions,
             IAdvancementService advancementService,
@@ -74,9 +75,17 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         [HttpPost("transition")]
         public IActionResult DoTransition([FromBody] WorkflowChangeStatusParameters parameters)
         {
-            var response = workflowService.DoTransition<Refund, RefundHistory>(parameters);
+            var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel { MustDoNextTransition = true } };
 
-            return this.CreateResponse(response);
+            while (response.Data.MustDoNextTransition)
+            {
+                workflowService.DoTransition<Refund, RefundHistory>(parameters, response);
+            }
+
+            var finalResponse = new Response();
+            finalResponse.Messages = response.Messages;
+
+            return this.CreateResponse(finalResponse);
         }
 
         [HttpPost("possibleTransitions")]
@@ -169,6 +178,30 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
         public IActionResult GetAnalitycs()
         {
             var response = refundService.GetAnalitycs();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("delegate/{userId}")]
+        public IActionResult Delegate(int userId)
+        {
+            var response = refundService.Delegate(userId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("delegate")]
+        public IActionResult DeleteDelegate([FromBody] List<int> ids)
+        {
+            var response = refundService.DeleteDelegate(ids);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("delegates")]
+        public IActionResult GetDelegates()
+        {
+            var response = refundService.GetDelegates();
 
             return this.CreateResponse(response);
         }
