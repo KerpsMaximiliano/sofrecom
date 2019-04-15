@@ -9,11 +9,13 @@
         <tbody>
             <tr *ngFor="let total of totals">
                 <td class="first-column text-ellipsis">Total Facturación {{ total.currencyName }}</td>
-                <td *ngFor="let month of total.monthValues"><label class="label" class="label label-primary">{{ month.value | amountFormat }}</label></td>
+                <td *ngFor="let month of total.monthValues"><label class="label"
+                        class="label label-primary">{{ month.value | amountFormat }}</label></td>
             </tr>
             <tr>
                 <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
-                <td *ngFor="let month of months"><label class="label label-primary">{{ month.resourceQuantity }}</label></td>
+                <td *ngFor="let month of months"><label class="label label-primary">{{ month.resourceQuantity }}</label>
+                </td>
             </tr>
             <tr>
                 <td [attr.colspan]="months.length+1" class="hitos-title">Hitos</td>
@@ -23,26 +25,32 @@
                     {{ hito.description }}
                     <i class="fa fa-2x fa-trash pointer" (click)="delete(hito)" *ngIf="canDeleteHito(hito)"></i>
                 </td>
-                
-                <td *ngFor="let value of hito.values">
-                    <input *ngIf="value.value" 
+
+                <td *ngFor="let value of hito.values; let i = index">
+                    <!-- <input *ngIf="value.value" 
                         type="number" 
                         class="form-control input-sm" 
                         [ngClass]="resolveHitoLabel(value)" 
                         decimalFormat
                         (blur)="updateHito(hito)"
                         [(ngModel)]="value.value"
-                        [disabled]="!isEnabled(value)">
+                        [disabled]="!isEnabled(value)"> -->
+                    <label *ngIf="value.value" 
+                            class="form-control input-sm text-center" 
+                            [ngClass]="resolveHitoLabel(value)"
+                            (click)="openEditItemModal(value, hito, i)">
+                            {{ value.value | amountFormat }}
+                    </label>
                 </td>
             </tr>
         </tbody>
-    </table>       
+    </table>
 </div>
 
 <div class="detail-actions m-t-sm">
     <button *ngIf="canCreateHito()" (click)="openHitoModal()" type="button" class="btn btn-success btn-sm">
-        {{ 'billing.project.detail.milestone.create' | translate }}  <i class="fa fa-plus"></i>
-    </button> 
+        {{ 'billing.project.detail.milestone.create' | translate }} <i class="fa fa-plus"></i>
+    </button>
 </div>
 
 <ng2-modal [config]="newHitoModalConfig" #newHitoModal (accept)="createHito()">
@@ -92,4 +100,27 @@
         </div>
     </div>
 
-</ng2-modal> 
+</ng2-modal>
+
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateHito()" [isSaveEnabled]="editItemMonto.valid">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <fieldset>
+                    <label class="control-label" for="readOnlyInput">Mes</label>
+                    <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelectedDisplay }}"
+                        readonly="">
+                </fieldset>
+            </div> 
+            <div class="form-group">
+                <label class="control-label">Monto</label>
+                <div class="input-group">
+                    <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
+                    <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto">
+                    <span class="input-group-addon" *ngIf="modalPercentage">%</span>
+                </div> 
+          </div>
+        </div>
+    </div> 
+</ng2-modal>
