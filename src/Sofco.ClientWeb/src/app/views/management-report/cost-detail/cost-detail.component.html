@@ -32,9 +32,9 @@
                     </label>
                 </td>
             </tr>
-            <tr *ngFor="let item of fundedResources; let i = index">
+            <tr *ngFor="let item of fundedResources">
                 <th>{{ item.display }}</th>
-                <td *ngFor="let monthCost of item.monthsCost">
+                <td *ngFor="let monthCost of item.monthsCost; let i = index">
                     <label class="label" (click)="openEditItemModal(monthCost, item, i)"
                         [ngClass]="(canEdit == true) ? 'cursor-pointer' : 'not-allowed'">
                         {{ monthCost.value | amountFormat }}
