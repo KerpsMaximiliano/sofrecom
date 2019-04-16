@@ -34,7 +34,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     indexSelected: number = 0;
     model: any;
     modalPercentage: boolean = false;
-    editItemMonto = new FormControl('', [Validators.min(0), Validators.max(999999)]);
+    editItemMonto = new FormControl();
     canEdit: boolean = false;
 
     otherResourceId: number;
@@ -91,7 +91,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.otherResources = response.data.otherResources;
             this.employeesOriginal = response.data.costEmployees;
 
-            if(this.otherResources.length > 0){
+            if (this.otherResources.length > 0) {
                 this.otherResourceId = this.otherResources[0].typeId;
             }
 
@@ -114,6 +114,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.indexSelected = indexMonth;
                 this.itemSelected = item;
                 this.editItemMonto.setValue(month.value)
+                
+                if (this.itemSelected.typeName == '% Ajuste') {
+                    this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
+                }
+                else {
+                    this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
+
+                }
             }
 
         }
@@ -300,13 +308,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     addOtherCost() {
         debugger
-         var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
-         this.fundedResources.push(resource)
+        var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
+        this.fundedResources.push(resource)
 
-         var pos = this.otherResources.findIndex(r => r.typeId == this.otherResourceId);
-         this.otherResources.splice(pos, 1)
-        
-         this.otherResourceId = this.otherResources[0].typeId;
+        var pos = this.otherResources.findIndex(r => r.typeId == this.otherResourceId);
+        this.otherResources.splice(pos, 1)
+
+        this.otherResourceId = this.otherResources[0].typeId;
     }
 
 }
