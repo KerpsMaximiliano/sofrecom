@@ -328,6 +328,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 }
 
                 unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
             }
             catch (Exception ex)
             {

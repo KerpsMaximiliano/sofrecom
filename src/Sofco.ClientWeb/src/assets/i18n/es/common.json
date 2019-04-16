@@ -21,5 +21,6 @@
     "fileMustBeIncluded": "El archivo es requerido",
     "updateSuccess": "Los datos fueron actualizados correctamente",
     "searchNotFound": "No se han encontrado resultados con los parámetros especificados",
-    "fileMustReupload": "Las credenciales expiraron y fueron regeneradas. Por favor, es necesario volver a cargar los archivos."
+    "fileMustReupload": "Las credenciales expiraron y fueron regeneradas. Por favor, es necesario volver a cargar los archivos.",
+    "saveSuccess": "Datos actualizados exitosamente"
 }
