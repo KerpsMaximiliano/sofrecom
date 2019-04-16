@@ -36,6 +36,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IAnalyticManager analyticManager;
         private readonly IUserData userData;
         private readonly IServiceData serviceData;
+        private readonly ICustomerData customerData;
         private readonly IRoleManager roleManager;
         private readonly IAnalyticCloseManager analyticCloseManager;
 
@@ -43,7 +44,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IServiceData serviceData,
             IEmployeeData employeeData, IAnalyticFileManager analyticFileManager,
             IUserData userData, IAnalyticManager analyticManager, IRoleManager roleManager,
-            IAnalyticCloseManager analyticCloseManager)
+            IAnalyticCloseManager analyticCloseManager, ICustomerData customerData)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -57,6 +58,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.roleManager = roleManager;
             this.analyticCloseManager = analyticCloseManager;
             this.serviceData = serviceData;
+            this.customerData = customerData;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -287,12 +289,24 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
+                    var manager = unitOfWork.UserRepository.Get(analytic.ManagerId.GetValueOrDefault());
+
                     var service = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
 
                     if (service != null)
                     {
                         service.Analytic = analytic.Title;
-                        unitOfWork.ServiceRepository.UpdateAnalytic(service);
+
+                        if (manager != null)
+                        {
+                            service.ManagerId = manager.ExternalManagerId;
+                            service.Manager = manager.Name;
+                        }
+
+                        unitOfWork.ServiceRepository.UpdateAnalyticAndManager(service);
+
+                        customerData.ClearKeys(manager != null ? manager.UserName : "*");
+                        serviceData.ClearKeys(manager != null ? manager.UserName : "*", service.AccountId);
                     }
                 }
 
@@ -303,8 +317,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 unitOfWork.AnalyticRepository.Insert(analytic);
 
                 unitOfWork.Save();
-
-                serviceData.ClearKeys();
 
                 response.AddSuccess(Resources.AllocationManagement.Analytic.SaveSuccess);
             }
@@ -317,6 +329,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
             {
                 var crmResponse = analyticManager.UpdateCrmAnalytic(analytic);
+
                 if (crmResponse.HasErrors())
                 {
                     response.AddMessages(crmResponse.Messages);
@@ -372,6 +385,21 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
+                var manager = unitOfWork.UserRepository.Get(analytic.ManagerId.GetValueOrDefault());
+
+                var service = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
+
+                if (service != null && manager != null)
+                {
+                    service.ManagerId = manager.ExternalManagerId;
+                    service.Manager = manager.Name;
+
+                    unitOfWork.ServiceRepository.UpdateAnalyticAndManager(service);
+
+                    customerData.ClearKeys(manager.UserName);
+                    serviceData.ClearKeys(manager.UserName, service.AccountId);
+                }
+
                 unitOfWork.AnalyticRepository.Update(analytic);
                 unitOfWork.Save();
 

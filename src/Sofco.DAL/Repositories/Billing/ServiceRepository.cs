@@ -50,9 +50,11 @@ namespace Sofco.DAL.Repositories.Billing
             context.Entry(service).Property("Active").IsModified = true;
         }
 
-        public void UpdateAnalytic(Service service)
+        public void UpdateAnalyticAndManager(Service service)
         {
             context.Entry(service).Property("Analytic").IsModified = true;
+            context.Entry(service).Property("ManagerId").IsModified = true;
+            context.Entry(service).Property("Manager").IsModified = true;
         }
 
         public IList<Service> GetAllNotRelatedOptions(string customerId)

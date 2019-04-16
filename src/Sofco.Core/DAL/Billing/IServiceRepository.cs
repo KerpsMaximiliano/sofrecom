@@ -10,7 +10,7 @@ namespace Sofco.Core.DAL.Billing
         IList<Service> GetAllActives(string customerId);
         IList<Service> GetAllByManager(string customerId, string externalManagerId);
         void UpdateActive(Service service);
-        void UpdateAnalytic(Service service);
+        void UpdateAnalyticAndManager(Service service);
         IList<Service> GetAllNotRelatedOptions(string customerId);
         IList<Service> GetAllByManager(string externalManagerId);
         void UpdateInactives(IList<int> idsAdded);
