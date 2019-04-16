@@ -106,8 +106,6 @@ namespace Sofco.Service.Implementations.Workflow
                 return;
             }
 
-            
-
             // Validate user access
             if (!ValidateAccess(transition, currentUser, entity))
             {
@@ -432,9 +430,19 @@ namespace Sofco.Service.Implementations.Workflow
 
         private bool ValidateApplicantAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
         {
-            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.ApplicantUserSource && entity.UserApplicantId == currentUser.Id))
+            if (transition.WorkflowStateAccesses.Any(x => x.UserSource.Code == appSetting.ApplicantUserSource))
             {
-                hasAccess = true;
+                if(entity.UserApplicantId == currentUser.Id)
+                {
+                    hasAccess = true;
+                }
+
+                var userDelegates = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.RefundAdd, currentUser.Id).ToList();
+
+                if (userDelegates.Any(x => x.UserId == entity.UserApplicantId))
+                {
+                    hasAccess = true;
+                }
             }
 
             return hasAccess;
