@@ -56,7 +56,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     @ViewChild('dateFrom') dateFrom;
     @ViewChild('dateTo') dateTo;
     private today: Date = new Date();
-    private startNewPeriod: Date = new Date(this.today.getFullYear(), this.today.getMonth() + 1, 1);
+    private startNewPeriod: Date = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
+    //private startNewPeriod: Date = new Date(this.today.getFullYear(), this.today.getMonth() + 1, 1);
 
     public model: any[] = new Array<any>();
     public resources: any[] = new Array<any>();
