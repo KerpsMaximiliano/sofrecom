@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Helpers;
 
 namespace Sofco.Core.Models.Billing
 {
@@ -23,7 +24,7 @@ namespace Sofco.Core.Models.Billing
             ImputationNumber1 = domain.ImputationNumber1;
             TotalAmount = domain.TotalAmount;
             ParticularSteps = domain.ParticularSteps;
-            PaymentTerm = domain.PaymentTerm;
+            PaymentTerm = domain.PaymentTerm; 
             CurrencyId = domain.CurrencyId;
             UserApplicantId = domain.UserApplicantId;
             DocumentTypeId = domain.DocumentType.Id;
@@ -42,6 +43,7 @@ namespace Sofco.Core.Models.Billing
             InvoiceRequired = domain.InvoiceRequired;
             OpportunityNumber = domain.OpportunityNumber;
             CurrencyExchange = domain.CurrencyExchange;
+            IdToCompareByCreditNote = domain.IdToCompareByCreditNote;
 
             CustomerId = domain.AccountId;
             ServiceId = domain.ServiceId;
@@ -98,7 +100,23 @@ namespace Sofco.Core.Models.Billing
 
                 Hitos.Add(new HitoModel(hito));
             }
+
+            if (SolfacHelper.IsCreditNote(domain))
+            {
+                IsCreditNote = true;
+            }
+
+            if (SolfacHelper.IsDebitNote(domain))
+            {
+                IsDebitNote = true;
+            }
         }
+
+        public int? IdToCompareByCreditNote { get; set; }
+
+        public bool IsDebitNote { get; set; }
+
+        public bool IsCreditNote { get; set; }
 
         public decimal? CurrencyExchange { get; set; }
 
@@ -243,6 +261,12 @@ namespace Sofco.Core.Models.Billing
             solfac.ManagerId = ManagerId;
             solfac.Manager = Manager;
             solfac.OpportunityNumber = OpportunityNumber;
+            solfac.IdToCompareByCreditNote = IdToCompareByCreditNote;
+
+            if (SolfacHelper.IsCreditNote(solfac) && solfac.TotalAmount > 0)
+            {
+                solfac.TotalAmount *= -1;
+            }
 
             foreach (var hitoViewModel in Hitos)
             {

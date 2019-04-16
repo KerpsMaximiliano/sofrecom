@@ -282,6 +282,10 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.details.forEach(detail => {
         this.model.totalAmount += detail.total;
       });
+
+      if(this.isCreditNoteSolfacType){
+        this.model.totalAmount *= -1;
+      }
     }
 
     save(){

@@ -64,6 +64,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 CreateHitoOnCrm(solfac, response);
 
+
                 solfac.UpdatedDate = DateTime.Now;
                 solfac.ModifiedByUserId = solfac.UserApplicantId;
 
@@ -800,6 +801,8 @@ namespace Sofco.Service.Implementations.Billing
                 return;
 
             var hito = solfac.Hitos.First();
+
+            solfac.IdToCompareByCreditNote = hito.SolfacId;
 
             hito.SolfacId = 0;
 
