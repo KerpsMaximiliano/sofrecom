@@ -175,7 +175,10 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
             FileSaver.saveAs(file, `${startDateName} - ${endDateName} Licencias.xlsx`);
         },
         err => {
+            this.messageService.showWarningByFolder('rrhh/license', 'reportWithoutEmpty');
+
             this.reportModal.hide();
+            this.messageService.closeLoading();
         });
     }
 
