@@ -237,6 +237,10 @@ export class SolfacEditComponent implements OnInit, OnDestroy {
       this.model.details.forEach(detail => {
         this.model.totalAmount += detail.total;
       });
+
+      if(this.model.isCreditNote){
+        this.model.totalAmount *= -1;
+      }
     }
 
     canUpdate(){

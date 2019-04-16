@@ -19,8 +19,6 @@ namespace Sofco.DAL.Repositories.Billing
         {
             IQueryable<Invoice> query = context.Invoices.Include(x => x.ExcelFileData).Include(x => x.PDfFileData);
 
-            //query = GetProperties(query);
-
             return query.Where(x => x.ProjectId == projectId).ToList();
         }
 
@@ -31,8 +29,6 @@ namespace Sofco.DAL.Repositories.Billing
                 .Include(x => x.PDfFileData)
                 .Include(x => x.ExcelFileData)
                 .Include(x => x.Solfac);
-
-            //query = GetProperties(query);
 
             return query.SingleOrDefault(x => x.Id == id);
         }
@@ -47,28 +43,6 @@ namespace Sofco.DAL.Repositories.Billing
             context.Entry(invoice).Property("InvoiceStatus").IsModified = true;
         }
 
-        //public Invoice GetExcel(int invoiceId)
-        //{
-        //    return context.Invoices.Select(x => new Invoice
-        //        {
-        //            Id = x.Id,
-        //            ExcelFile = x.ExcelFile,
-        //            ExcelFileName = x.ExcelFileName
-        //        })
-        //        .SingleOrDefault(x => x.Id == invoiceId);
-        //}
-
-        //public Invoice GetPdf(int invoiceId)
-        //{
-        //    return context.Invoices.Select(x => new Invoice
-        //        {
-        //            Id = x.Id,
-        //            PdfFile = x.PdfFile,
-        //            PdfFileName = x.PdfFileName
-        //        })
-        //        .SingleOrDefault(x => x.Id == invoiceId);
-        //}
-
         public void UpdateExcelId(Invoice invoice)
         {
             context.Entry(invoice).Property("ExcelFileId").IsModified = true;
@@ -78,20 +52,6 @@ namespace Sofco.DAL.Repositories.Billing
         {
             context.Entry(invoice).Property("PdfFileId").IsModified = true;
         }
-
-        //public void UpdateExcel(Invoice invoice)
-        //{
-        //    context.Entry(invoice).Property("ExcelFile").IsModified = true;
-        //    context.Entry(invoice).Property("ExcelFileName").IsModified = true;
-        //    context.Entry(invoice).Property("ExcelFileCreatedDate").IsModified = true;
-        //}
-
-        //public void UpdatePdf(Invoice invoice)
-        //{
-        //    context.Entry(invoice).Property("PdfFile").IsModified = true;
-        //    context.Entry(invoice).Property("PdfFileName").IsModified = true;
-        //    context.Entry(invoice).Property("PdfFileCreatedDate").IsModified = true;
-        //}
 
         public void UpdateStatusAndApprove(Invoice invoice)
         {
@@ -112,37 +72,6 @@ namespace Sofco.DAL.Repositories.Billing
         {
             return context.Invoices.Any(x => x.InvoiceNumber == invoiceNumber);
         }
-
-        //private IQueryable<Invoice> GetProperties(IQueryable<Invoice> dbset)
-        //{
-        //    return dbset.Select(x => new Invoice
-        //    {
-        //        Id = x.Id,
-        //        AccountName = x.AccountName,
-        //        Project = x.Project,
-        //        Address = x.Address,
-        //        City = x.City,
-        //        Cuit = x.Cuit,
-        //        Country = x.Country,
-        //        Province = x.Province,
-        //        Analytic = x.Analytic,
-        //        Zipcode = x.Zipcode,
-        //        CreatedDate = x.CreatedDate,
-        //        Service = x.Service,
-        //        ProjectId = x.ProjectId,
-        //        ExcelFileName = x.ExcelFileName,
-        //        PdfFileName = x.PdfFileName,
-        //        ExcelFileCreatedDate = x.ExcelFileCreatedDate,
-        //        PdfFileCreatedDate = x.PdfFileCreatedDate,
-        //        InvoiceStatus = x.InvoiceStatus,
-        //        InvoiceNumber = x.InvoiceNumber,
-        //        UserId = x.UserId,
-        //        User = x.User,
-        //        CustomerId = x.CustomerId,
-        //        ServiceId = x.ServiceId,
-        //        Solfac = x.Solfac
-        //    });
-        //}
 
         public ICollection<Invoice> SearchByParams(InvoiceParams parameters)
         {

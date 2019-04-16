@@ -183,7 +183,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateCreditNote(Solfac solfac, ISolfacRepository solfacRepository, Response response)
         {
-            var solfacId = solfac.Hitos.First().SolfacId;
+            var solfacId = solfac.IdToCompareByCreditNote.HasValue ? solfac.IdToCompareByCreditNote.Value : solfac.Hitos.First().SolfacId;
 
             var totalLimit = Math.Abs(solfacRepository.GetTotalAmountById(solfacId));
 

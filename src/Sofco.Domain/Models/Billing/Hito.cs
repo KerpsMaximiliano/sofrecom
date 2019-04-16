@@ -30,5 +30,7 @@ namespace Sofco.Domain.Models.Billing
         public DateTime? Created { get; set; }
 
         public DateTime? Modified { get; set; }
+
+        public decimal? OriginalAmount { get; set; }
     }
 }

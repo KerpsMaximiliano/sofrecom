@@ -161,9 +161,9 @@ namespace Sofco.Core.Models.Billing
             solfac.ManagerId = ManagerId;
             solfac.OpportunityNumber = OpportunityNumber;
 
-            if (SolfacHelper.IsCreditNote(solfac))
+            if (SolfacHelper.IsCreditNote(solfac) && solfac.TotalAmount > 0)
             {
-                solfac.TotalAmount *= -1;
+                solfac.TotalAmount *= -1; 
             }
 
             foreach (var hitoViewModel in Hitos)
