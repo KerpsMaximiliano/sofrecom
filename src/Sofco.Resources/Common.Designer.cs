@@ -169,6 +169,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a common.saveSuccess.
+        /// </summary>
+        public static string SaveSuccess {
+            get {
+                return ResourceManager.GetString("SaveSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a common.searchNotFound.
         /// </summary>
         public static string SearchNotFound {

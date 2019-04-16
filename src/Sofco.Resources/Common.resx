@@ -153,6 +153,9 @@
   <data name="SaveFileError" xml:space="preserve">
     <value>common.saveFileError</value>
   </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>common.saveSuccess</value>
+  </data>
   <data name="SearchNotFound" xml:space="preserve">
     <value>common.searchNotFound</value>
   </data>
