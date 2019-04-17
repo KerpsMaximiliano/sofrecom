@@ -23,5 +23,7 @@
         public const string ServiceUpdate = "ServiceUpdate";
 
         public const string ProjectUpdate = "ProjectUpdate";
+
+        public const string AllocationClean = "AllocationClean";
     }
 }

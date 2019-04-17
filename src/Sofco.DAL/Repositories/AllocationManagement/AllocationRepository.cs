@@ -83,6 +83,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Allocations.Count(x => x.AnalyticId == analyticId && x.Percentage > 0 && x.StartDate.Date == dateTime);
         }
 
+        public void Clean()
+        {
+            context.Database.ExecuteSqlCommand("delete from app.Allocations where Percentage = 0");
+        }
+
         public ICollection<Allocation> GetByEmployee(int id)
         {
             return context.Allocations
