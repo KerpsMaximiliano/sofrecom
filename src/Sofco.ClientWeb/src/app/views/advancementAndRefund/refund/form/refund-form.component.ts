@@ -20,10 +20,8 @@ import { MenuService } from "app/services/admin/menu.service";
     styleUrls: ['./refund-form.component.scss']
 })
 export class RefundFormComponent implements OnInit, OnDestroy {
-    private defaultCurrencyId = 1;
-    private defaultCurrencyDescription = "Pesos ($)";
-
     public advancements: any[] = new Array();
+    public currencies: any[] = new Array();
     public analytics: any[] = new Array();
     public users: any[] = new Array();
     public creditCards: any[] = new Array();
@@ -31,10 +29,10 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public userApplicantIdLogged: number;
     public userApplicantName: string;
     public status: string;
-    public currencyDescription: string = this.defaultCurrencyDescription;
 
     public advancementSum = 0;
     public itemTotal = 0;
+    public defaultCurrencyId = 1;
 
     cashReturn: boolean;
     lastRefund: boolean;
@@ -77,6 +75,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     getAdvancementsSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
     getCreditCardsSubscrip: Subscription;
+    getCurrenciesSubscrip: Subscription;
 
     constructor(public formsService: FormsService,
         public advancementService: AdvancementService,
@@ -114,12 +113,14 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         this.getAnalytics();
         this.getCreditCards();
+        this.getCurrencies();
     }
 
     ngOnDestroy(): void {
         if(this.getAdvancementsSubscrip) this.getAdvancementsSubscrip.unsubscribe();
         if(this.getAnalyticsSubscrip) this.getAnalyticsSubscrip.unsubscribe();
         if(this.getCreditCardsSubscrip) this.getCreditCardsSubscrip.unsubscribe();
+        if(this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
     }
 
     userChanged(){
@@ -128,6 +129,12 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         this.getAdvancementsUnrelated(null, this.form.controls.userApplicantId.value);
     }
  
+    getCurrencies(){
+        this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(response => {
+            this.currencies = response;
+        });
+    }
+
     getAnalytics() {
         this.getAnalyticsSubscrip = this.analyticService.getOptionsActives().subscribe(res => {
             this.analytics = res;
@@ -243,7 +250,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         this.form = new Refund(!isEdit, domain);
 
-        this.currencyDescription = domain.currencyDesc;
         this.cashReturn = domain.cashReturn;
         this.lastRefund = domain.lastRefund;
 
@@ -286,9 +292,9 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             refund.details.push(element.getModel());
         });
 
-        if(!refund.advancements || refund.advancements == null || refund.advancements.length == 0){
-            refund.currencyId = this.defaultCurrencyId;
-        }
+        // if(!refund.advancements || refund.advancements == null || refund.advancements.length == 0){
+        //     refund.currencyId = this.defaultCurrencyId;
+        // }
 
         refund.cashReturn = this.cashReturn;
         refund.lastRefund = this.lastRefund;
@@ -359,7 +365,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             let advancement = this.advancements.find(x => x.id == this.form.controls.advancements.value[0]);
 
             const currencyId = advancement.currencyId;
-            const currencyDescription = advancement.currencyText;
 
             this.form.controls.advancements.value.forEach(element => {
                 advancement = this.advancements.find(x => x.id == element);
@@ -371,17 +376,14 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
             if(!this.differentCurrenciesWereSelected){
                 this.form.controls.currencyId.setValue(currencyId);
-                this.currencyDescription = currencyDescription;
             }
             else{
-                this.form.controls.currencyId.setValue(0);
-                this.currencyDescription = "";
+                this.form.controls.currencyId.setValue(null);
             }
         }
         else{
             if(!this.canGafUpdate){
                 this.form.controls.currencyId.setValue(this.defaultCurrencyId);
-                this.currencyDescription = this.defaultCurrencyDescription;
                 this.cashReturn = false;
             }
         }

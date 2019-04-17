@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
@@ -63,14 +64,20 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
         {
             if (model.Advancements == null) return;
 
+            var currencyIds = new List<int>();
+
             foreach (var advancement in model.Advancements)
             {
-                if (!unitOfWork.AdvancementRepository.Exist(advancement))
+                var domain = unitOfWork.AdvancementRepository.Get(advancement);
+
+                if (domain == null)
                 {
                     response.AddError(Resources.AdvancementAndRefund.Advancement.NotFound);
                 }
                 else
                 {
+                    currencyIds.Add(domain.CurrencyId);
+
                     var refundWithLastRefundMarkedCount =
                         unitOfWork.AdvancementRepository.GetRefundWithLastRefundMarkedCount(advancement, model.Id);
 
@@ -81,6 +88,11 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
                         response.AddError(Resources.AdvancementAndRefund.Refund.ExistLastRefund);
                     }
                 }
+            }
+
+            if (currencyIds.Any() && currencyIds.Any(x => x != model.CurrencyId.GetValueOrDefault()))
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.CurrencyDifferentToAdvancement);
             }
         }
 
