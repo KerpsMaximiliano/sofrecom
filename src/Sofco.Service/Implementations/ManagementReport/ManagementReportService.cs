@@ -214,7 +214,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 foreach (var billingTotal in response.Data.Totals)
                 {
-                    billingTotal.MonthValues = billingTotal.MonthValues.OrderBy(x => x.Month).ThenBy(x => x.Year).ToList();
+                    billingTotal.MonthValues = billingTotal.MonthValues.OrderBy(x => x.Year).ThenBy(x => x.Month).ToList();
                 }
             }
 
