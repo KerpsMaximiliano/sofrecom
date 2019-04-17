@@ -28,5 +28,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public string Reference { get; set; }
 
         public string Comments { get; set; }
+
+        public string AnalyticTitle { get; set; }
     }
 }
