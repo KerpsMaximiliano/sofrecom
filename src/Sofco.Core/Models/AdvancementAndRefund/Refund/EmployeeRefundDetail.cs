@@ -18,5 +18,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public string StatusName { get; set; }
 
         public decimal AdvancementSum { get; set; }
+
+        public bool IsCreditCard { get; set; }
+
+        public bool IsCashReturn { get; set; }
     }
 }
