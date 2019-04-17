@@ -11,6 +11,7 @@ using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Validations.AdvancementAndRefund;
 
@@ -49,8 +50,8 @@ namespace Sofco.UnitTest.Validations
             utilsRepositoryMock.Setup(x => x.ExistCurrency(2)).Returns(false);
             userRepositoryMock.Setup(x => x.ExistById(1)).Returns(true);
             userRepositoryMock.Setup(x => x.ExistById(2)).Returns(false);
-            advancementRepositoryMock.Setup(x => x.Exist(1)).Returns(true);
-            advancementRepositoryMock.Setup(x => x.Exist(2)).Returns(false);
+            advancementRepositoryMock.Setup(x => x.Get(1)).Returns(new Advancement { CurrencyId = 1 });
+            advancementRepositoryMock.Setup(x => x.Get(2)).Returns((Advancement) null);
 
             sut = new RefundValidation(unitOfWorkMock.Object);
         }
