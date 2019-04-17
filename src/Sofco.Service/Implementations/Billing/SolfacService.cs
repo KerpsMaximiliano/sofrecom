@@ -64,7 +64,6 @@ namespace Sofco.Service.Implementations.Billing
             {
                 CreateHitoOnCrm(solfac, response);
 
-
                 solfac.UpdatedDate = DateTime.Now;
                 solfac.ModifiedByUserId = solfac.UserApplicantId;
 

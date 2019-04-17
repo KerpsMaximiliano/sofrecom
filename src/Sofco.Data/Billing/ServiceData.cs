@@ -63,5 +63,10 @@ namespace Sofco.Data.Billing
             cacheManager.DeletePatternKey(string.Format(ServicesCacheKey, '*', '*'));
             cacheManager.DeletePatternKey(string.Format(ServiceByIdCacheKey, '*'));
         }
+
+        public void ClearKeys(string username, string customerId)
+        {
+            cacheManager.DeletePatternKey(string.Format(ServicesCacheKey, username, customerId));
+        }
     }
 }

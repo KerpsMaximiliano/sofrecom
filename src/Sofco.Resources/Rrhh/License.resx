@@ -207,6 +207,9 @@
   <data name="RejectSuccess" xml:space="preserve">
     <value>rrhh/license.rejectSuccess</value>
   </data>
+  <data name="ReportWithoutEmpty" xml:space="preserve">
+    <value>rrhh/license.reportWithoutEmpty</value>
+  </data>
   <data name="SaveSuccess" xml:space="preserve">
     <value>rrhh/license.saveSuccess</value>
   </data>

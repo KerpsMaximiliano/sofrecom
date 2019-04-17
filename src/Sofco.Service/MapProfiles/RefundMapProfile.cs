@@ -19,6 +19,8 @@ namespace Sofco.Service.MapProfiles
 
             CreateMap<Refund, EmployeeRefundDetail>()
                 .ForMember(s => s.CurrencyName, x => x.MapFrom(_ => _.Currency.Text))
+                .ForMember(s => s.IsCreditCard, x => x.MapFrom(_ => _.CreditCardId.HasValue))
+                .ForMember(s => s.IsCashReturn, x => x.MapFrom(_ => _.CashReturn))
                 .ForMember(s => s.AdvancementSum, x => x.ResolveUsing(ResolveAdvancementSum))
                 .ForMember(s => s.RefundItemTotal, x => x.ResolveUsing(ResolveRefundItemTotal))
                 .ForMember(s => s.WorkflowStatusType, x => x.ResolveUsing(_ => _.Status?.Type))

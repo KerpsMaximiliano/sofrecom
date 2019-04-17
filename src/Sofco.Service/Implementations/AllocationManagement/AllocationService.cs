@@ -180,7 +180,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                 monthHeader.Month = date.Month;
                 monthHeader.Year = date.Year;
-                monthHeader.EmployeeHasLicense = licenses.Any(x => x.StartDate.Month == date.Month || x.EndDate.Month == date.Month);
+                monthHeader.EmployeeHasLicense = licenses.Any(x => (x.StartDate.Month == date.Month &&x.StartDate.Year == date.Year) || (x.EndDate.Month == date.Month && x.EndDate.Year == date.Year));
 
                 allocationResponse.MonthsHeader.Add(monthHeader);
             }

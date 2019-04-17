@@ -58,7 +58,7 @@ export class LicenseListManager implements OnInit, OnDestroy {
             title: title,
             order: [[ 3, "desc" ]],
             withExport: true,
-            columnDefs: [ {'aTargets': [3, 4, 5], "sType": "date-uk"} ]
+            columnDefs: [ {'aTargets': [4, 5, 6], "sType": "date-uk"} ]
         };
 
         this.datatableService.destroy(params.selector);
