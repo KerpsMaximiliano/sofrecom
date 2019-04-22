@@ -12,6 +12,7 @@ namespace Sofco.Core.Models.ManagementReport
         public IList<MonthDetailCost> MonthsHeader { get; set; }
         public List<CostResource> CostEmployees { get; set; }
         public List<CostResource> FundedResources { get; set; }
+        public List<CostResource> OtherResources { get; set; }
     }
 
     public class MonthDetailCost
@@ -29,6 +30,7 @@ namespace Sofco.Core.Models.ManagementReport
         public int TypeId { get; set; }
         public string TypeName { get; set; }
         public string Display { get; set; }
+        public bool show { get; set; }
 
         public IList<MonthDetailCost> MonthsCost { get; set; }
     }

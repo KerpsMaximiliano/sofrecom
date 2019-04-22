@@ -326,7 +326,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 if (worktime.Analytic != null)
                 {
                     model.Client = worktime.Analytic.AccountName;
-                    model.Analytic = $"{worktime.Analytic.Name} - {worktime.Analytic.ServiceName}";
+                    model.AnalyticTitle = worktime.Analytic.Title;
+                    model.Analytic = worktime.Analytic.Name;
                     model.Manager = worktime.Analytic?.Manager?.Name;
                 }
 

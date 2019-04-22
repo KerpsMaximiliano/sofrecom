@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
-import { Router } from "@angular/router";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
 
 @Component({
@@ -20,7 +19,6 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
 
     constructor(private advancementService: AdvancementService,
                 private datatableService: DataTableService,
-                private router: Router,
                 private messageService: MessageService){}
 
     ngOnInit(): void {
@@ -59,7 +57,7 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
     }
 
     goToDetail(item){
-        this.router.navigate(['/advancementAndRefund/advancement/' + item.id])
+        window.open('/#/advancementAndRefund/advancement/' + item.id, '_blank');
     }
 
     search(parameters){
@@ -73,7 +71,7 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
             this.model = response.data;
             this.initGrid();
         }, 
-        error => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     getStatusClass(type){

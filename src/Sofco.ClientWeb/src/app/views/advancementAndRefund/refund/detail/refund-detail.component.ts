@@ -95,14 +95,6 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
         error => this.messageService.closeLoading());
     }
 
-    back(){
-        window.history.back();
-    }
-
-    canBack(){
-        return this.menuService.hasFunctionality('ADVAN', 'REFUND-LIST-VIEW');
-    }
-
     canUpdate(){
         if(environment.gafWorkflowStateId == this.actualStateId && this.menuService.userIsGaf) {
             this.form.canGafUpdate = true;
@@ -143,11 +135,6 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
         if(userInfo.id == this.form.form.controls.userApplicantId.value){
             if(userInfo && userInfo.employeeId){
                 this.router.navigate(['/profile/' + userInfo.employeeId]);
-            }
-        }
-        else{
-            if(this.canBack()){
-                this.back();
             }
         }
     }

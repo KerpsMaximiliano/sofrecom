@@ -35,7 +35,7 @@ export class RefundListFilterComponent implements OnInit {
     ngOnInit(): void {
         this.collapseSelector = "#collapse" + this.controlId;
 
-        this.getResources();
+        this.getResources(); 
         //  if(this.inWorkflowProcess){
         this.getStates();
         //}
@@ -91,6 +91,11 @@ export class RefundListFilterComponent implements OnInit {
     }
 
     search() {
+        this.setModel();
+        this.valueChange.emit(this.model);
+    }
+
+    setModel(){
         this.model = {
             userApplicantId: this.resourceId,
             stateId: this.stateId,
@@ -99,8 +104,7 @@ export class RefundListFilterComponent implements OnInit {
             inWorkflowProcess: this.inWorkflowProcess,
             bank: this.bankId
         }
-        this.valueChange.emit(this.model);
 
-        //   this.collapse();
+        sessionStorage.setItem('lastRefundQuery', JSON.stringify(this.model));
     }
 }

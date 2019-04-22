@@ -331,6 +331,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.reportWithoutEmpty.
+        /// </summary>
+        public static string ReportWithoutEmpty {
+            get {
+                return ResourceManager.GetString("ReportWithoutEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.saveSuccess.
         /// </summary>
         public static string SaveSuccess {

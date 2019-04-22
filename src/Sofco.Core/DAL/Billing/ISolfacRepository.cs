@@ -40,5 +40,6 @@ namespace Sofco.Core.DAL.Billing
 
         IEnumerable<Solfac> GetByProjectWithPurchaseOrder(string projectId);
         void UpdateCurrencyExchange(Solfac solfac);
+        Hito GetHitoByCrmId(string hitoId);
     }
 }

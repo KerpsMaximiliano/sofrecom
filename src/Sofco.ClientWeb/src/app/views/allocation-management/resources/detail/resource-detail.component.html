@@ -130,8 +130,8 @@
                     <li class=""><a data-toggle="tab" href="#tab-5"> {{ 'ADMIN.task.title' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-6"> {{ 'advancement.title' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-7"> {{ 'refund.title' | translate }} </a></li>
-                    <li class="" *ngIf="isRrhh"><a data-toggle="tab" href="#tab-8"> {{ 'allocationManagement.resources.profileHistoryGrid.name' | translate }} </a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-9" *ngIf="currentAccount.length > 0"> {{ 'advRefSetting.currentAccount' | translate }} </a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-8" *ngIf="currentAccount.length > 0"> {{ 'advRefSetting.currentAccount' | translate }} </a></li>
+                    <li class="" *ngIf="isRrhh"><a data-toggle="tab" href="#tab-9"> {{ 'allocationManagement.resources.profileHistoryGrid.name' | translate }} </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
@@ -326,6 +326,8 @@
                                         <th class="column-sm">{{ 'refund.currency' | translate }}</th>
                                         <th class="column-sm">{{ 'refund.advancementSum' | translate }}</th>
                                         <th class="column-sm">{{ 'refund.itemTotal' | translate }}</th>
+                                        <th class="column-sm">Con Tarjeta</th>
+                                        <th class="column-sm">Dev. Efectivo</th>
                                         <th class="column-sm">{{ 'refund.status' | translate }}</th>
                                     </tr>
                                 </thead>
@@ -335,6 +337,8 @@
                                         <td>{{ item.currencyName }}</td>
                                         <td>{{ item.advancementSum | amountFormat }}</td>
                                         <td>{{ item.refundItemTotal | amountFormat }}</td>
+                                        <td class="text-center"><span class="fa" [ngClass]="item.isCreditCard ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                                        <td class="text-center"><span class="fa" [ngClass]="item.isCashReturn ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
                                         <td>
                                             <label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusName }}</label>
                                         </td>
@@ -343,30 +347,8 @@
                             </table>
                         </div>
                     </div>
-                    <div id="tab-8" class="tab-pane" *ngIf="isRrhh">
-                        <div class="panel-body">
-                            <table class="table table-striped dataTable" role="grid" id="profileHistoryTable">
-                                <thead>
-                                    <tr>
-                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.field' | translate }}</th>
-                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.oldValue' | translate }}</th>
-                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.newValue' | translate }}</th>
-                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.date' | translate }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of profileHistories">
-                                        <td> {{ item.field }} </td>
-                                        <td> {{ item.oldValue }} </td>
-                                        <td> {{ item.newValue }} </td>
-                                        <td> {{ item.dateTime | date:'dd/MM/yyyy HH:mm:ss' }} </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
 
-                    <div id="tab-9" class="tab-pane" *ngIf="currentAccount.length > 0">
+                    <div id="tab-8" class="tab-pane" *ngIf="currentAccount.length > 0">
                         <div class="panel-body">
                             <table class="table table-striped dataTable" role="grid" id="currentAccountTable">
                                 <thead>
@@ -385,6 +367,29 @@
                                         <td>{{ item.refundTotal | amountFormat }}</td>
                                         <td>{{ item.userRefund | amountFormat }}</td>
                                         <td>{{ item.companyRefund | amountFormat }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="tab-9" class="tab-pane" *ngIf="isRrhh">
+                        <div class="panel-body">
+                            <table class="table table-striped dataTable" role="grid" id="profileHistoryTable">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.field' | translate }}</th>
+                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.oldValue' | translate }}</th>
+                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.newValue' | translate }}</th>
+                                        <th>{{ 'allocationManagement.resources.profileHistoryGrid.date' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of profileHistories">
+                                        <td> {{ item.field }} </td>
+                                        <td> {{ item.oldValue }} </td>
+                                        <td> {{ item.newValue }} </td>
+                                        <td> {{ item.dateTime | date:'dd/MM/yyyy HH:mm:ss' }} </td>
                                     </tr>
                                 </tbody>
                             </table>

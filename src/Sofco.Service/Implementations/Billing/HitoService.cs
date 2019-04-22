@@ -10,6 +10,7 @@ using Sofco.Service.Crm.Interfaces;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Domain.Helpers;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -114,10 +115,30 @@ namespace Sofco.Service.Implementations.Billing
 
             if (response.HasErrors()) return response;
 
+            //var domain = unitOfWork.SolfacRepository.GetHitoByCrmId(hito.Id);
+
+            //if (domain != null && domain.Solfac != null)
+            //{
+            //    if (SolfacHelper.IsCreditNote(domain.Solfac) && domain.Solfac.IdToCompareByCreditNote.HasValue)
+            //    {
+            //        var totalLimit = Math.Abs(unitOfWork.SolfacRepository.GetTotalAmountById(domain.Solfac.IdToCompareByCreditNote.Value));
+
+            //        if (hito.Ammount > totalLimit)
+            //        {
+            //            response.Messages.Add(new Message(Resources.Billing.Solfac.CreditNoteTotalExceededError, MessageType.Error));
+            //        }
+            //    }
+            //}
+
+            //if (response.HasErrors()) return response;
+
             crmInvoicingMilestoneService.UpdateAmmount(hito, response);
 
             if (!response.HasErrors())
+            {
                 projectData.ClearHitoKeys(hito.ProjectId);
+                response.AddSuccess(Resources.Billing.Solfac.HitoUpdateSuccess);
+            }
             else
             {
                 response.Messages.Clear();

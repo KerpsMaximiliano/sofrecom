@@ -41,14 +41,24 @@
                 <label class="control-label"> {{ 'refund.advancements' | translate }} </label>
                 <ng-select id="advancements" [items]="advancements" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" formControlName="advancements" (change)="advancementsChanged()"></ng-select>
             </div>
-        </div>
+        </div> 
         
         <div class="col-md-4">
-            <label>{{'refund.currency' | translate }}:</label> 
-            <span class="m-l-sm">{{ currencyDescription }}</span>
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'currencyId')">
+                <label class="control-label"> {{ 'refund.currency' | translate }} </label>
+                <ng-select [items]="currencies" bindValue="id" bindLabel="text" formControlName="currencyId"></ng-select>
 
-            <label *ngIf="form.currencyExchange > 0">{{'refund.currencyExchange' | translate }}: </label> 
-            <span class="m-l-sm" *ngIf="form.currencyExchange > 0">{{ form.currencyExchange }}</span>
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'currencyId')">
+                    <p *ngIf="formsService.hasError(form, 'currencyId', 'required')">{{ i18nService.translate('advancementAndRefund/advancement','currencyRequired') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="form.currencyExchange > 0">
+        <div class="col-md-4 col-md-offset-8">
+            <label >{{'refund.currencyExchange' | translate }}: </label> 
+            <span class="m-l-sm">{{ form.currencyExchange }}</span>
         </div>
     </div>
 
@@ -64,7 +74,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <icheck [(checked)]="lastRefund" [disabled]="!canUpdate">
+                <icheck [(checked)]="lastRefund" [disabled]="cashReturnDisabled()">
                     <label style="padding-left:20px;">{{'refund.lastRefund' | translate }}</label> 
                 </icheck>
             </div>
@@ -74,7 +84,7 @@
                 <icheck [(checked)]="cashReturn" (checkedChange)="cashReturnChanged($event)" [disabled]="cashReturnDisabled()">
                     <label style="padding-left:20px;">{{'refund.cashReturn' | translate }}</label> 
                 </icheck>
-            </div>
+            </div> 
         </div>
     </div>
 

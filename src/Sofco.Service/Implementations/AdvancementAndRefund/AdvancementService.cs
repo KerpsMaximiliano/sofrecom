@@ -131,6 +131,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             response.Data = new List<AdvancementListItem>();
 
             var employeeDicc = new Dictionary<string, string>();
+            var employeeManagerDicc = new Dictionary<string, string>();
 
             var currentUser = userData.GetCurrentUser();
 
@@ -144,25 +145,34 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 {
                     var item = new AdvancementListItem(x);
 
-                    item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+                    SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+
+                    if (x.UserApplicant != null)
+                    {
+                        item.Bank = employeeDicc[x.UserApplicant?.Email];
+                        item.Manager = employeeManagerDicc[x.UserApplicant?.Email];
+                    }
 
                     return item;
                 }).ToList();
             }
             else
             {
-                //var readAccess = unitOfWork.AdvancementRepository.GetWorkflowReadAccess(settings.AdvacementWorkflowId);
-
                 foreach (var advancement in advancements)
                 {
-                    //if (ValidateManagerAccess(advancement, transition, currentUser) || HasReadAccess(readAccess, currentUser))
-                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser))
-                    {
+                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser) || ValidateUserAccess(advancement, currentUser))
+                    { 
                         if (response.Data.All(x => x.Id != advancement.Id))
                         {
                             var item = new AdvancementListItem(advancement);
 
-                            item.Bank = GetBank(advancement.UserApplicant.Email, employeeDicc);
+                            SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+
+                            if (advancement.UserApplicant != null)
+                            {
+                                item.Bank = employeeDicc[advancement.UserApplicant?.Email];
+                                item.Manager = employeeManagerDicc[advancement.UserApplicant?.Email];
+                            }
 
                             response.Data.Add(item);
                         }
@@ -213,6 +223,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             response.Data = new List<PaymentPendingModel>();
 
             var employeeDicc = new Dictionary<string, string>();
+            var employeeManagerDicc = new Dictionary<string, string>();
 
             var hasAllAccess = roleManager.HasAdvancementAccess();
 
@@ -236,7 +247,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     NextWorkflowStateId = settings.WorkflowStatusApproveId
                 };
 
-                item.Bank = GetBank(x.UserApplicant?.Email, employeeDicc);
+                SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+
+                if (x.UserApplicant != null)
+                {
+                    item.Bank = employeeDicc[x.UserApplicant?.Email];
+                    item.Manager = employeeManagerDicc[x.UserApplicant?.Email];
+                }
 
                 return item;
             }).ToList();
@@ -283,16 +300,15 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             };
         }
 
-        private string GetBank(string email, Dictionary<string, string> employeeDictionary)
+        private void SetBankAndManager(string email, Dictionary<string, string> employeeDictionary, Dictionary<string, string> employeeManagerDictionary)
         {
             if (!employeeDictionary.ContainsKey(email))
             {
                 var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
 
                 employeeDictionary.Add(email, employee?.Bank);
+                employeeManagerDictionary.Add(email, employee?.Manager?.Name);
             }
-
-            return employeeDictionary[email];
         }
 
         public Response<IList<WorkflowHistoryModel>> GetHistories(int id)
@@ -312,6 +328,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             response.Data = new List<AdvancementListItem>();
 
             var employeeDicc = new Dictionary<string, string>();
+            var employeeManagerDicc = new Dictionary<string, string>();
 
             var currentUser = userData.GetCurrentUser();
 
@@ -325,7 +342,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 {
                     var item = new AdvancementListItem(x);
 
-                    item.Bank = GetBank(x.UserApplicant.Email, employeeDicc);
+                    SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+
+                    if (x.UserApplicant != null)
+                    {
+                        item.Bank = employeeDicc[x.UserApplicant?.Email];
+                        item.Manager = employeeManagerDicc[x.UserApplicant?.Email];
+                    }
 
                     return item;
                 }).ToList();
@@ -334,13 +357,20 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 foreach (var advancement in advancements)
                 {
-                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser))
+                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser) || ValidateUserAccess(advancement, currentUser))
                     {
                         if (response.Data.All(x => x.Id != advancement.Id))
                         {
                             var item = new AdvancementListItem(advancement);
 
-                            item.Bank = GetBank(advancement.UserApplicant.Email, employeeDicc);
+                            SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+
+                            if (advancement.UserApplicant != null)
+                            {
+                                item.Bank = employeeDicc[advancement.UserApplicant?.Email];
+                                item.Manager = employeeManagerDicc[advancement.UserApplicant?.Email];
+                            }
+
                             response.Data.Add(item);
                         }
                     }
@@ -409,44 +439,9 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        private bool HasReadAccess(IList<WorkflowReadAccess> readAccess, UserLiteModel currentUser)
+        private bool ValidateUserAccess(Advancement entity, UserLiteModel currentUser)
         {
-            var hasAccess = false;
-
-            foreach (var workflowReadAccess in readAccess)
-            {
-                hasAccess = ValidateUserReadAccess(currentUser, workflowReadAccess.UserSource, hasAccess);
-                hasAccess = ValidateGroupAccess(currentUser, workflowReadAccess.UserSource, hasAccess);
-            }
-
-            return hasAccess;
-        }
-
-        private bool ValidateUserReadAccess(UserLiteModel currentUser, UserSource userSource, bool hasAccess)
-        {
-            if (userSource.Code == settings.UserUserSource && userSource.SourceId == currentUser.Id)
-            {
-                hasAccess = true;
-            }
-
-            return hasAccess;
-        }
-
-        private bool ValidateGroupAccess(UserLiteModel currentUser, UserSource userSource, bool hasAccess)
-        {
-            if (userSource.Code == settings.GroupUserSource)
-            {
-                var user = unitOfWork.UserRepository.GetSingleWithUserGroup(x => x.Id == currentUser.Id);
-                var groups = user.UserGroups?.Select(x => x.Group).Distinct().ToList();
-
-                if (groups != null && groups.Any())
-                {
-                    if (groups.Any(u => u.Id == userSource.SourceId))
-                    {
-                        hasAccess = true;
-                    }
-                }
-            }
+            bool hasAccess = entity.Status.ActualTransitions.Any(x => x.WorkflowStateAccesses.Any(s => s.UserSource.SourceId == currentUser.Id && s.UserSource.Code == settings.UserUserSource && s.AccessDenied == false));
 
             return hasAccess;
         }

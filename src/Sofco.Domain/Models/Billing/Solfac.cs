@@ -94,5 +94,7 @@ namespace Sofco.Domain.Models.Billing
         public string OpportunityNumber { get; set; }
 
         public decimal? CurrencyExchange { get; set; }
+
+        public int? IdToCompareByCreditNote { get; set; }
     }
 }

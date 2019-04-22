@@ -26,5 +26,6 @@
     "existLastRefund": "Ya existe un ultimo reintegro relacionado a los adelantos seleccionados",
     "delegateSuccess": "El usuario fue delegado correctamente",
     "currentUserEqualsDelegate": "El usuario a delegar no puede ser el mismo que el delegador",
+    "currencyDifferentToAdvancement": "Las monedas de los adelantos no pueden ser distintas a la moneda del reintegro",
     "ammountCashReturnError": "No puede cargar un reintegro de devolución en efectivo si las sumas de los reintegros es mayor a la de los adelantos"
 }

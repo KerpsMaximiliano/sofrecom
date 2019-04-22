@@ -11,5 +11,7 @@ namespace Sofco.Core.Data.Billing
         Service GetService(Guid? serviceId);
 
         void ClearKeys();
+
+        void ClearKeys(string username, string customerId);
     }
 }

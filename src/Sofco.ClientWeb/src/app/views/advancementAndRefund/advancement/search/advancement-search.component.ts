@@ -43,6 +43,17 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         this.getTypes();
         this.getStates();
         this.getBanks();
+
+        const data = JSON.parse(sessionStorage.getItem('lastAdvancementQuery'));
+
+        if(data){
+            this.resourceId = data.resourceId;
+            this.typeId = data.typeId;
+            this.stateId = data.stateId;
+            this.dateSince = data.dateSince;
+            this.dateTo = data.dateTo;
+            this.bankId = data.bankId;
+        }
     }
 
     ngOnDestroy(): void {

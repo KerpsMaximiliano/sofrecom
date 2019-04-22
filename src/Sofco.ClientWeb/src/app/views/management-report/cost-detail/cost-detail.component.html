@@ -32,9 +32,9 @@
                     </label>
                 </td>
             </tr>
-            <tr *ngFor="let item of fundedResourses; let i = index">
+            <tr *ngFor="let item of fundedResources">
                 <th>{{ item.display }}</th>
-                <td *ngFor="let monthCost of item.monthsCost">
+                <td *ngFor="let monthCost of item.monthsCost; let i = index">
                     <label class="label" (click)="openEditItemModal(monthCost, item, i)"
                         [ngClass]="(canEdit == true) ? 'cursor-pointer' : 'not-allowed'">
                         {{ monthCost.value | amountFormat }}
@@ -59,6 +59,22 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<div class="row" *ngIf="otherResources.length > 0">
+    <div class="col-md-4">
+         <select class="form-control" id="otherResourceId" 
+         name="otherResourceId" [(ngModel)]="otherResourceId">
+            <option [value]="otherResource.typeId" *ngFor="let otherResource of otherResources">
+                {{otherResource.typeName}}
+            </option> 
+        </select> 
+    </div>
+    <div class="col-md-4" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
+        <button class="btn btn-success btn-sm" type="button" (click)="addOtherCost()">
+            Agregar
+            <i class="fa fa-plus"></i></button>
+    </div>    
 </div>
 
 <div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
