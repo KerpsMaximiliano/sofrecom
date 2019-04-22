@@ -55,5 +55,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
         public int WorkflowId { get; set; }
 
         public int NextWorkflowStateId { get; set; }
+
+        public string Manager { get; set; }
     }
 }

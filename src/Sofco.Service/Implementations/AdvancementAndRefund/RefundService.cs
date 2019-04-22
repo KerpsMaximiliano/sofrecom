@@ -403,7 +403,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 foreach (var refundListResultModel in models.Where(s => s.UserApplicantId == userId))
                 {
-                    refundListResultModel.ManagerName = employee.Manager?.Name;
                     refundListResultModel.Bank = employee.Bank;
                 }
             }
