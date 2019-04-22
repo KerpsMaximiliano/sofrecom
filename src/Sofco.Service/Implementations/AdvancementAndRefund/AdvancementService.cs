@@ -151,13 +151,10 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
             else
             {
-                //var readAccess = unitOfWork.AdvancementRepository.GetWorkflowReadAccess(settings.AdvacementWorkflowId);
-
                 foreach (var advancement in advancements)
                 {
-                    //if (ValidateManagerAccess(advancement, transition, currentUser) || HasReadAccess(readAccess, currentUser))
-                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser))
-                    {
+                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser) || ValidateUserAccess(advancement, currentUser))
+                    { 
                         if (response.Data.All(x => x.Id != advancement.Id))
                         {
                             var item = new AdvancementListItem(advancement);
@@ -334,7 +331,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 foreach (var advancement in advancements)
                 {
-                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser))
+                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser) || ValidateUserAccess(advancement, currentUser))
                     {
                         if (response.Data.All(x => x.Id != advancement.Id))
                         {
@@ -409,15 +406,9 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        private bool HasReadAccess(IList<WorkflowReadAccess> readAccess, UserLiteModel currentUser)
+        private bool ValidateUserAccess(Advancement entity, UserLiteModel currentUser)
         {
-            var hasAccess = false;
-
-            foreach (var workflowReadAccess in readAccess)
-            {
-                hasAccess = ValidateUserReadAccess(currentUser, workflowReadAccess.UserSource, hasAccess);
-                hasAccess = ValidateGroupAccess(currentUser, workflowReadAccess.UserSource, hasAccess);
-            }
+            bool hasAccess = entity.Status.ActualTransitions.Any(x => x.WorkflowStateAccesses.Any(s => s.UserSource.SourceId == currentUser.Id && s.UserSource.Code == settings.UserUserSource && s.AccessDenied == false));
 
             return hasAccess;
         }

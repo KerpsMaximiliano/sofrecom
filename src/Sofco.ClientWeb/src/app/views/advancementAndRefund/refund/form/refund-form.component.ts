@@ -86,9 +86,13 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         public i18nService: I18nService){}
 
     ngOnInit(): void {
+        const userInfo = UserInfoService.getUserInfo();
+
+        this.userHasCreditCard = userInfo.hasCreditCard;
+
         if(this.mode == 'add'){
             this.form = new Refund(false);
-            this.setUserApplicant();
+            this.setUserApplicant(userInfo);
             this.canUpdate = true;
             this.hasCreditCardChanged(false);
             this.formConfiguration();
@@ -223,10 +227,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    setUserApplicant(){
-        const userInfo = UserInfoService.getUserInfo();
-
-        this.userHasCreditCard = userInfo.hasCreditCard;
+    setUserApplicant(userInfo){
+    
 
         if(userInfo && userInfo.id && userInfo.name){
             this.userApplicantIdLogged = userInfo.id;
@@ -386,6 +388,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
                 this.form.controls.currencyId.setValue(this.defaultCurrencyId);
                 this.cashReturn = false;
             }
+
+            this.lastRefund = false;
         }
 
         this.calculateTotals();

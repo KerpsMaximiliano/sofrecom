@@ -331,7 +331,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 foreach (var refund in result)
                 {
-                    if (ValidateAnalyticManagerAccess(refund, currentUser) || ValidateSectorAccess(refund, currentUser))
+                    if (ValidateAnalyticManagerAccess(refund, currentUser) || ValidateSectorAccess(refund, currentUser) || ValidateUserAccess(refund, currentUser))
                     {
                         if (response.Data.All(x => x.Id != refund.Id))
                         {
@@ -431,6 +431,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             return hasAccess;
         }
+
+        private bool ValidateUserAccess(Refund entity, UserLiteModel currentUser)
+        {
+            bool hasAccess = entity.Status.ActualTransitions.Any(x => x.WorkflowStateAccesses.Any(s => s.UserSource.SourceId == currentUser.Id && s.UserSource.Code == settings.UserUserSource && s.AccessDenied == false));
+
+            return hasAccess;
+        } 
 
         private bool ValidateAnalyticManagerAccess(Refund entity, UserLiteModel currentUser)
         {

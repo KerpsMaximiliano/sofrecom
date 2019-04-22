@@ -24,6 +24,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Analytic)
                 .Include(x => x.Status)
                     .ThenInclude(x => x.ActualTransitions)
+                        .ThenInclude(x => x.WorkflowStateAccesses)
+                            .ThenInclude(x => x.UserSource)
                 .Include(x => x.Details)
                 .Include(x => x.AdvancementRefunds)
                     .ThenInclude(x => x.Advancement)

@@ -74,7 +74,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <icheck [(checked)]="lastRefund" [disabled]="!canUpdate">
+                <icheck [(checked)]="lastRefund" [disabled]="cashReturnDisabled()">
                     <label style="padding-left:20px;">{{'refund.lastRefund' | translate }}</label> 
                 </icheck>
             </div>
@@ -84,7 +84,7 @@
                 <icheck [(checked)]="cashReturn" (checkedChange)="cashReturnChanged($event)" [disabled]="cashReturnDisabled()">
                     <label style="padding-left:20px;">{{'refund.cashReturn' | translate }}</label> 
                 </icheck>
-            </div>
+            </div> 
         </div>
     </div>
 
