@@ -25,5 +25,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Allocation> GetLastAllocationsForEmployee(int employeeId, DateTime date);
         DateTime GetStartDate(int analitycId, int employeeId);
         int GetResourceQuantityByDate(int analyticId, DateTime dateTime);
+        void Clean();
     }
 }

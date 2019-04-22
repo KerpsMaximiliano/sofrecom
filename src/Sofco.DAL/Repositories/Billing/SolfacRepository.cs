@@ -182,6 +182,11 @@ namespace Sofco.DAL.Repositories.Billing
             context.Entry(solfac).Property("CurrencyExchange").IsModified = true;
         }
 
+        public Hito GetHitoByCrmId(string hitoId)
+        {
+            return context.Hitos.Include(x => x.Solfac).SingleOrDefault(x => x.ExternalHitoId.Equals(hitoId));
+        }
+
         public void UpdateCash(Solfac solfac)
         {
             context.Entry(solfac).Property("CashedDate").IsModified = true;

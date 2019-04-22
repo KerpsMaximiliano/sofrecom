@@ -101,8 +101,9 @@
                 <table class="table table-striped dataTable" role="grid" id="resourcesTable">
                     <thead>
                         <tr>
-                            <th class="column-sm">{{'allocationManagement.report.grid.analytic' | translate }}</th>
-                            <th class="column-lg">{{'allocationManagement.report.grid.employeeNumber' | translate }}</th>
+                            <th class="column-sm">Título analítica</th>
+                            <th class="column-lg">{{'allocationManagement.report.grid.analytic' | translate }}</th>
+                            <th class="column-sm">{{'allocationManagement.report.grid.employeeNumber' | translate }}</th>
                             <th class="column-lg">{{'allocationManagement.report.grid.employee' | translate }}</th>
                             <th class="column-md">{{'allocationManagement.resources.grid.senority' | translate }}</th>
                             <th class="column-lg">{{'allocationManagement.resources.grid.profile' | translate }}</th>
@@ -115,8 +116,9 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let resource of model?.rows">
-                            <td class="column-sm">{{ resource.analytic }}</td>
-                            <td class="column-lg">{{ resource.employeeNumber }}</td>
+                            <td class="column-sm">{{ resource.analyticTitle }}</td>
+                            <td class="column-lg">{{ resource.analytic }}</td>
+                            <td class="column-sm">{{ resource.employeeNumber }}</td>
                             <td class="column-lg">{{ resource.resourceName }}</td>
                             <td class="column-md">{{ resource.seniority}}</td>
                             <td class="column-lg">{{ resource.profile}}</td>

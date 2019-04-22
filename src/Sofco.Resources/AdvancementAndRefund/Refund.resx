@@ -138,6 +138,9 @@
   <data name="CreditCardRequired" xml:space="preserve">
     <value>advancementAndRefund/refund.creditCardRequired</value>
   </data>
+  <data name="CurrencyDifferentToAdvancement" xml:space="preserve">
+    <value>advancementAndRefund/refund.currencyDifferentToAdvancement</value>
+  </data>
   <data name="CurrentUserEqualsDelegate" xml:space="preserve">
     <value>advancementAndRefund/refund.currentUserEqualsDelegate</value>
   </data>

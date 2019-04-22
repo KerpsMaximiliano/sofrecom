@@ -124,6 +124,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/refund.currencyDifferentToAdvancement.
+        /// </summary>
+        public static string CurrencyDifferentToAdvancement {
+            get {
+                return ResourceManager.GetString("CurrencyDifferentToAdvancement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/refund.currentUserEqualsDelegate.
         /// </summary>
         public static string CurrentUserEqualsDelegate {

@@ -15,6 +15,7 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.AdvancementSum, x => x.ResolveUsing(ResolveAdvancementSum))
                 .ForMember(s => s.RefundItemTotal, x => x.ResolveUsing(ResolveRefundItemTotal))
                 .ForMember(s => s.WorkflowStatusType, x => x.ResolveUsing(_ => _.Status?.Type))
+                .ForMember(s => s.ManagerName, x => x.ResolveUsing(_ => _.Analytic?.Manager?.Name))
                 .ForMember(s => s.StatusName, x => x.ResolveUsing(_ => _.Status?.Name));
 
             CreateMap<Refund, EmployeeRefundDetail>()

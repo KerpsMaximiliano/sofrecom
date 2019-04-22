@@ -25,5 +25,7 @@
         public int NextWorkflowStateId { get; set; }
 
         public decimal? CurrencyExchange { get; set; }
+
+        public string Manager { get; set; }
     }
 }

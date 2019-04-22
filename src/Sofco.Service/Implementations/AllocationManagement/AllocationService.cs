@@ -494,7 +494,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     EmployeeNumber = allocation.Employee.EmployeeNumber,
                     Seniority = allocation.Employee.Seniority,
                     Technology = allocation.Employee.Technology,
-                    Analytic = $"{allocation.Analytic?.Title} - {allocation.Analytic?.Name}",
+                    AnalyticTitle = allocation.Analytic?.Title,
+                    Analytic = allocation.Analytic?.Name,
                     Months = months.Select(x => new AllocationDateReport(x)).ToList()
                 };
             }

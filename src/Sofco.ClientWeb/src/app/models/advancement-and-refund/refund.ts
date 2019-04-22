@@ -11,7 +11,8 @@ export class Refund extends FormGroup {
         super({
             userApplicantId: new FormControl(domain && domain.userApplicantId || null, Validators.required),
 
-            currencyId: new FormControl({value: domain && domain.currencyId || null, disabled: isReadonly}),
+            currencyId: new FormControl({value: domain && domain.currencyId || null, disabled: isReadonly},
+                Validators.required),
 
             advancements: new FormControl({value: domain && domain.advancementIds || null, disabled: isReadonly}),
 

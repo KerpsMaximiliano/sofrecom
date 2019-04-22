@@ -84,6 +84,7 @@
                     <thead>
                         <tr>
                             <th class="column-lg">{{'workTimeManagement.report.client' | translate }}</th>
+                            <th class="column-sm">Título analítica</th>
                             <th class="column-lg">{{'workTimeManagement.report.analytic' | translate }}</th>
                             <th class="column-lg">{{'workTimeManagement.report.manager' | translate }}</th>
                             <th class="column-lg">{{'workTimeManagement.report.employee' | translate }}</th>
@@ -100,6 +101,7 @@
                     <tbody>
                         <tr *ngFor="let item of data">
                             <td class="column-lg">{{ item.client }}</td>
+                            <td class="column-sm">{{ item.analyticTitle }}</td>
                             <td class="column-lg">{{ item.analytic }}</td>
                             <td class="column-lg">{{ item.manager }}</td>
                             <td class="column-lg">{{ item.employee }}</td>
