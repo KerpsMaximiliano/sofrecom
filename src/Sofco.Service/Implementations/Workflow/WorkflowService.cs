@@ -144,7 +144,11 @@ namespace Sofco.Service.Implementations.Workflow
             // Save change status
             try
             {
+                var actualStateId = entity.StatusId;
+
                 entity.StatusId = parameters.NextStateId;
+
+                WorkflowHelper.CheckEspecialUsers(entity, actualStateId, parameters.NextStateId, appSetting);
 
                 workflowRepository.UpdateStatus(entity);
                 workflowRepository.Save();
@@ -195,6 +199,7 @@ namespace Sofco.Service.Implementations.Workflow
                 SendNotification(entity, response, transition, parameters);
             }
         }
+
 
         private void CheckIfMustGoToNextStep<TEntity, THistory>(WorkflowChangeStatusParameters parameters, Response<TransitionSuccessModel> response,
             WorkflowStateTransition transition, TEntity entity) where TEntity : WorkflowEntity where THistory : WorkflowHistory
@@ -281,7 +286,7 @@ namespace Sofco.Service.Implementations.Workflow
                 history.UserName = currentUser.Name;
                 history.CreatedDate = DateTime.UtcNow.Date;
                 history.StatusFromId = transition.ActualWorkflowStateId;
-                history.StatusToId = transition.NextWorkflowStateId;
+                history.StatusToId = entity.StatusId;
 
                 if (parameters.Parameters != null && parameters.Parameters.ContainsKey("comments"))
                 {
