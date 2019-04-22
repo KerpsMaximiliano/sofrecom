@@ -105,24 +105,7 @@
 
     <div class="ibox">
         <div class="ibox-content">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="month-header">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-white" (click)="substractMonth()"><i class="fa fa-chevron-left"></i></button>
-                            <button type="button" class="btn btn-white" (click)="addMonth()"><i class="fa fa-chevron-right"></i></button>
-                        </div>
-                        <label class="btn btn-white">Mes</label>
-                        <h3 class="month-label">{{ monthDesc }} {{ year }}</h3>
-                    </div>
-                </div>
-                <div class="col-md-6 action-buttons">
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector">Reporte Mensual <i class="fa fa-file"></i></button>
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdgOrDirector">Cerrar <i class="fa fa-close"></i></button>
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector">Enviar <i class="fa fa-paper-plane"></i></button>
-                    <button class="btn btn-primary btn-sm" type="button" (click)="seeCostDetailMonth()" *ngIf="isManager || isCdgOrDirector">Costo mensual <i class="fa fa-edit"></i></button>
-                </div>
-            </div>
+          
 
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
@@ -133,7 +116,7 @@
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
-                            <margin-tracking></margin-tracking>
+                            <margin-tracking #marginTracking></margin-tracking>
                         </div>
                     </div>
                     <div id="tab-2" class="tab-pane">

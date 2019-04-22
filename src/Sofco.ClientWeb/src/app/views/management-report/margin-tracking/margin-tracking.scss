@@ -36,3 +36,18 @@
 .detail-actions {
     text-align: right;
 }
+
+.month-header {
+    display: flex;
+    margin-bottom: 10px;
+
+    h3 {
+        margin-left: 10px;
+    }
+}
+
+.action-buttons {
+    button {
+        float: right;
+    }
+}
