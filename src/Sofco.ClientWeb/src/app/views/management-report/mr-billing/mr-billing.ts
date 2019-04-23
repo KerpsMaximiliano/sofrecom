@@ -290,10 +290,12 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                         monthValue.value -= hitoMonth.value;
                     }
                 }
-
+                
                 var hitoindex = this.hitos.findIndex(x => x.id == hito.id);
 
-                if (hitoindex) this.hitos.splice(hitoindex, 1);
+                if (hitoindex != undefined ) {
+                    this.hitos.splice(hitoindex, 1);
+                } 
             },
                 error => this.messageService.closeLoading());
         });
