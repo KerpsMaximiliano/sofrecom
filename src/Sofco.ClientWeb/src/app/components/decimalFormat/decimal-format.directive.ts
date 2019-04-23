@@ -31,10 +31,6 @@ export class DecimalFormatDirective implements OnInit {
             return;
         }
 
-        if(event.key.includes('.')){
-            event.preventDefault();
-        }
-
         if(event.key == "Backspace") return;
 
         let current: string = this.el.nativeElement.value;
