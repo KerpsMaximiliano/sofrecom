@@ -206,14 +206,16 @@ export class ListPaymentPendingComponent  {
                     workflowId: x.workflowId,
                     entityId: x.id,
                     nextStateId: x.nextWorkflowStateId,
-                    entityController: x.entityController
+                    entityController: x.entityController,
+                    type: x.type
                 }
             });
 
             if(list.length > 0){
                 this.messageService.showLoading();
 
-                var entityIds = [];
+                var entityAdvancmentIds = [];
+                var entityRefundIds = [];
                 var promises = new Array();
 
                 list.forEach(item => {
@@ -221,7 +223,13 @@ export class ListPaymentPendingComponent  {
 
                         this.postSubscrip = this.workflowService.post(item).subscribe(response => {
                             resolve();
-                            entityIds.push(item.entityId);
+
+                            if(item.type == "Reintegro"){
+                                entityRefundIds.push(item.entityId);
+                            }
+                            else{
+                                entityAdvancmentIds.push(item.entityId);
+                            }
                         },
                         error => resolve());
                     });
@@ -232,13 +240,17 @@ export class ListPaymentPendingComponent  {
                 Promise.all(promises).then(data => { 
                     this.messageService.closeLoading();
 
-                    entityIds.forEach(x => {
-                        var indexItemToRemove = this.model.map(x => x.id).indexOf(x);
-                        this.model.splice(indexItemToRemove, 1);
+                    entityRefundIds.forEach(x => {
+                        var indexItemToRemove = this.refunds.map(x => x.id).indexOf(x);
+                        this.refunds.splice(indexItemToRemove, 1);
                     });
 
-                    this.calculateTotals();
-                    this.initGrid();
+                    entityAdvancmentIds.forEach(x => {
+                        var indexItemToRemove = this.advancements.map(x => x.id).indexOf(x);
+                        this.advancements.splice(indexItemToRemove, 1);
+                    });
+
+                    this.search();
                 });
             }
         })
