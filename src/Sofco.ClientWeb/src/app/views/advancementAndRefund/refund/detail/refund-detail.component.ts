@@ -137,6 +137,11 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/profile/' + userInfo.employeeId]);
             }
         }
+        else{
+            setTimeout(() => {
+                window.close();
+            }, 1000);
+        }
     }
 
     goToProfile(){

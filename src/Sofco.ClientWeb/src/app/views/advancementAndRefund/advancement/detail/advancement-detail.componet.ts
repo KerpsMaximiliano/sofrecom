@@ -62,7 +62,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
             this.userApplicantId = response.data.userApplicantId;
 
             this.form.setModel(response.data, this.canUpdate());
-
+ 
             this.workflow.init(model);
 
             this.history.getHistories(id);
@@ -71,7 +71,14 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        window.history.back();
+        if(window.history.length > 0){
+            window.history.back();
+        }
+        else{
+            setTimeout(() => {
+                window.close();
+            }, 500);
+        }
     }
 
     canBack(){
