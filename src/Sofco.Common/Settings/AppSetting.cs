@@ -94,17 +94,11 @@
 
         public int FinancialDirectorUserId { get; set; }
 
-        public int SolCovelloUserId { get; set; }
-
-        public int AlejandroGarciaUserId { get; set; }
-
         public int MonicaBimanUserId { get; set; }
 
         public int GiselaPerugorriaUserId { get; set; }
 
         public int DiegoCegnaUserId { get; set; }
-
-        public int AnibalNapolitanoUserId { get; set; }
 
         public int WorkflowStatusPendingDirectorId { get; set; }
 
@@ -113,5 +107,7 @@
         public int WorkflowStatusDafId { get; set; }
 
         public int WorkflowStatusGafId { get; set; }
+
+        public int WorkflowStatusRrhhId { get; set; }
     }
 }

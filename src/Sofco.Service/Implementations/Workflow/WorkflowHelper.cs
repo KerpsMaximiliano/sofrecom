@@ -36,12 +36,9 @@ namespace Sofco.Service.Implementations.Workflow
 
             if (appSetting.FinancialDirectorUserId == entity.UserApplicantId)
             {
-                if (entity is Refund refund)
+                if (entity is Refund refund && nextStateId == appSetting.WorkflowStatusDafId)
                 {
-                    if (nextStateId == appSetting.WorkflowStatusDafId)
-                    {
-                        entity.StatusId = appSetting.WorkflowStatusGafId;
-                    }
+                    entity.StatusId = appSetting.WorkflowStatusGafId;
                 }
 
                 if (entity is Advancement advancement)
@@ -57,6 +54,69 @@ namespace Sofco.Service.Implementations.Workflow
                         nextStateId == appSetting.WorkflowStatusDafId)
                     {
                         entity.StatusId = appSetting.WorkflowStatusGafId;
+                    }
+                }
+            }
+
+            if (appSetting.GiselaPerugorriaUserId == entity.UserApplicantId)
+            {
+                if (entity is Advancement advancement)
+                {
+
+                    if (advancement.Type == AdvancementType.Viaticum &&
+                        actualStateId == appSetting.WorkflowStatusPendingManagerId &&
+                        nextStateId == appSetting.WorkflowStatusPendingDirectorId)
+                    {
+                        entity.StatusId = appSetting.WorkflowStatusPendingGeneralDirectorId;
+                    }
+
+                    if (advancement.Type == AdvancementType.Viaticum && 
+                        actualStateId == appSetting.WorkflowStatusPendingManagerId &&
+                        nextStateId == appSetting.WorkflowStatusDafId)
+                    {
+                        entity.StatusId = appSetting.WorkflowStatusGafId;
+                    }
+
+
+                    if (advancement.Type == AdvancementType.Viaticum &&
+                        actualStateId == appSetting.WorkflowStatusPendingGeneralDirectorId &&
+                        nextStateId == appSetting.WorkflowStatusDafId)
+                    {
+                        entity.StatusId = appSetting.WorkflowStatusGafId;
+                    }
+
+                    if (advancement.Type == AdvancementType.Salary &&
+                        actualStateId == appSetting.WorkflowStatusRrhhId &&
+                        nextStateId == appSetting.WorkflowStatusDafId)
+                    {
+                        entity.StatusId = appSetting.WorkflowStatusGafId;
+                    }
+                }
+
+            }
+
+            if (appSetting.DiegoCegnaUserId == entity.UserApplicantId)
+            {
+                if (entity is Advancement advancement)
+                {
+                    if (advancement.Type == AdvancementType.Viaticum &&
+                        actualStateId == appSetting.WorkflowStatusPendingManagerId &&
+                        nextStateId == appSetting.WorkflowStatusPendingDirectorId)
+                    {
+                        entity.StatusId = appSetting.WorkflowStatusPendingGeneralDirectorId;
+                    }
+                }
+            }
+
+            if (appSetting.MonicaBimanUserId == entity.UserApplicantId)
+            {
+                if (entity is Advancement advancement)
+                {
+                    if (advancement.Type == AdvancementType.Viaticum &&
+                        actualStateId == appSetting.WorkflowStatusPendingManagerId &&
+                        nextStateId == appSetting.WorkflowStatusPendingDirectorId)
+                    {
+                        entity.StatusId = appSetting.WorkflowStatusDafId;
                     }
                 }
             }
