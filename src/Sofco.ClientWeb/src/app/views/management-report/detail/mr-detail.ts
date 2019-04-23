@@ -3,7 +3,6 @@ import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { MessageService } from "app/services/common/message.service";
-import { DatesService } from "app/services/common/month.service";
 import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
@@ -23,13 +22,10 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     public model: any;
 
-    public monthDesc: string;
-    public month: number;
-    public year: number;
-
     isManager: boolean = false;
     isCdgOrDirector: boolean = false;
 
+    @ViewChild("marginTracking") marginTracking;
     @ViewChild("billing") billing;
     @ViewChild("detailCost") detailCost;
     @ViewChild('costDetailMonth') costDetailMonth;
@@ -37,7 +33,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     constructor(private activatedRoute: ActivatedRoute,
                 private messageService: MessageService,
                 private menuService: MenuService,
-                private datesService: DatesService,
                 private managementReportService: ManagementReportService){}
 
     ngOnInit(): void {
@@ -52,44 +47,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
           this.isManager = this.menuService.userIsManager;
           this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
-
-          var dateSetting = this.datesService.getMonth(new Date());
-          this.setDate(dateSetting);  
     }    
 
     ngOnDestroy(): void {
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
-    }
-
-    addMonth(){
-        var dateSplitted = this.model.endDate.split("-");
-
-        if(this.year == dateSplitted[0] && (this.month+1) == dateSplitted[1]){
-            return;
-        }
-
-        this.month += 1;
-        var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
-        this.setDate(dateSetting);  
-    }
-
-    substractMonth(){
-        var dateSplitted = this.model.startDate.split("-");
-
-        if(this.year == dateSplitted[0] && (this.month+1) == dateSplitted[1]){
-            return;
-        }
-
-        this.month -= 1;
-        var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
-        this.setDate(dateSetting);  
-    }
-
-    setDate(dateSetting){
-        this.monthDesc = dateSetting.montDesc;
-        this.month = dateSetting.month;
-        this.year = dateSetting.year;
     }
 
     getDetail(){
@@ -98,6 +60,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.getDetailSubscrip = this.managementReportService.getDetail(this.serviceId).subscribe(response => {
 
             this.model = response.data;
+            this.marginTracking.model = response.data;
             this.billing.init(this.serviceId);
             this.messageService.closeLoading();
         },
@@ -124,9 +87,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    seeCostDetailMonth(){
-        var resources = this.detailCost.getResourcesByMonth(this.month+1, this.year);
-        var totals = this.billing.getTotals(this.month+1, this.year);
+    seeCostDetailMonth(month, year){
+        var resources = this.detailCost.getResourcesByMonth(month+1, year);
+        var totals = this.billing.getTotals(month+1, year);
 
         this.costDetailMonth.open({ isCdg: this.menuService.userIsCdg, resources, totals });
     }
