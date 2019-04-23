@@ -31,16 +31,7 @@
                         {{ CalculateSalary(monthCost, i) | amountFormat }} 
                     </label>
                 </td>
-            </tr>
-            <tr *ngFor="let item of fundedResources">
-                <th>{{ item.display }}</th>
-                <td *ngFor="let monthCost of item.monthsCost; let i = index">
-                    <label class="label" (click)="openEditItemModal(monthCost, item, i)"
-                        [ngClass]="(canEdit == true) ? 'cursor-pointer' : 'not-allowed'">
-                        {{ monthCost.value | amountFormat }}
-                    </label>
-                </td>
-            </tr>
+            </tr>          
             <tr>
                 <th>Total Sueldo</th>
                 <td *ngFor="let month of months; let i = index">
@@ -57,10 +48,20 @@
                     </label>
                 </td>
             </tr>
+            <tr *ngFor="let item of fundedResources">
+                <th>{{ item.display }}</th>
+                <td *ngFor="let monthCost of item.monthsCost; let i = index">
+                    <label class="label" (click)="openEditItemModal(monthCost, item, i)"
+                        [ngClass]="(canEdit == true) ? 'cursor-pointer' : 'not-allowed'">
+                        {{ monthCost.value | amountFormat }}
+                    </label>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
 
+<br>
 <div class="row" *ngIf="otherResources.length > 0">
     <div class="col-md-4">
          <select class="form-control" id="otherResourceId" 

@@ -466,6 +466,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     else
                     {
                         monthDetail.HasAlocation = false;
+                        //Ticket 9471 si se quito la asignacion borrar el valor
+                        monthDetail.Value = null;
                     }
 
                     detailEmployee.MonthsCost.Add(monthDetail);
