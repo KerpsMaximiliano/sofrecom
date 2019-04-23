@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore">
+      <HintPath>..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.visualstudio.web.codegeneration.entityframeworkcore\2.1.6\lib\netstandard2.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll</HintPath>
+    </Reference>
     <Reference Include="NUnit.Portable.Agent">
       <HintPath>..\..\..\..\Users\ledrughieri\.nuget\packages\nunit.portable.agent\3.4.0-beta-2\lib\netstandard1.3\NUnit.Portable.Agent.dll</HintPath>
     </Reference>
