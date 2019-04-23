@@ -213,8 +213,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     hitosAux.push(hito);
 
                 }
-
-                hitosAux.push(element);
+                else{
+                    hitosAux.push(element);
+                }
             });
 
             this.hitos = hitosAux;
