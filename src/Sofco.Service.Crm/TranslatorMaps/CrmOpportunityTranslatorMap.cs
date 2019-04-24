@@ -11,6 +11,7 @@ namespace Sofco.Service.Crm.TranslatorMaps
         private const string Number = "as_opportunitynumber";
         private const string ActualValue = "actualvalue";
         private const string ParentContactId = "_parentcontactid_value";
+        private const string ProjectManagerId = "_as_gerentedeproyecto_value";
 
         public Dictionary<string, string> KeyMaps()
         {
@@ -20,6 +21,8 @@ namespace Sofco.Service.Crm.TranslatorMaps
                 {nameof(CrmOpportunity.Name), Name},
                 {nameof(CrmOpportunity.Number), Number},
                 {nameof(CrmOpportunity.ActualValue), Number},
+                {nameof(CrmOpportunity.ProjectManagerId), ProjectManagerId},
+                {nameof(CrmOpportunity.ProjectManagerName), ProjectManagerId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmOpportunity.ParentContactId), ParentContactId},
                 {nameof(CrmOpportunity.ParentContactName), ParentContactId + TranslatorMapConstant.ODataFormattedValue},
             };
@@ -29,7 +32,7 @@ namespace Sofco.Service.Crm.TranslatorMaps
         {
             var list = new List<string>
             {
-                Name, Number, ActualValue, ParentContactId
+                Name, Number, ActualValue, ParentContactId, ProjectManagerId
             };
 
             return string.Join(TranslatorMapConstant.SelectDelimiter, list);

@@ -44,6 +44,6 @@ export class Solfac {
         public opportunityNumber: string,
         public manager: string,
         public managerId: string,
-        public email: string,
+        public contactEmail: string,
     ){}
 }

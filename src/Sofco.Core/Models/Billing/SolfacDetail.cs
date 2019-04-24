@@ -53,6 +53,7 @@ namespace Sofco.Core.Models.Billing
             ManagerId = domain.ManagerId;
             Manager = domain.Manager;
             PurchaseOrderId = domain.PurchaseOrderId;
+            ContactEmail = domain.ContactEmail;
 
             if (domain.ProjectId.Contains(";"))
             {
@@ -111,6 +112,8 @@ namespace Sofco.Core.Models.Billing
                 IsDebitNote = true;
             }
         }
+
+        public string ContactEmail { get; set; }
 
         public int? IdToCompareByCreditNote { get; set; }
 
@@ -262,6 +265,7 @@ namespace Sofco.Core.Models.Billing
             solfac.Manager = Manager;
             solfac.OpportunityNumber = OpportunityNumber;
             solfac.IdToCompareByCreditNote = IdToCompareByCreditNote;
+            solfac.ContactEmail = ContactEmail;
 
             if (SolfacHelper.IsCreditNote(solfac) && solfac.TotalAmount > 0)
             {

@@ -1,10 +1,10 @@
-﻿using System;
-
-namespace Sofco.Domain.Crm
+﻿namespace Sofco.Domain.Models.Billing
 {
-    public class CrmOpportunity
+    public class Opportunity
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
+
+        public string CrmId { get; set; }
 
         public string Name { get; set; }
 
@@ -12,7 +12,7 @@ namespace Sofco.Domain.Crm
 
         public decimal? ActualValue { get; set; }
 
-        public Guid? ParentContactId { get; set; }
+        public string ContactId { get; set; }
 
         public string ParentContactName { get; set; }
 

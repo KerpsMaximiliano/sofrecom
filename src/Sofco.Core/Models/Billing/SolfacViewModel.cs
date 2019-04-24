@@ -32,6 +32,8 @@ namespace Sofco.Core.Models.Billing
 
         public string ContractNumber { get; set; }
 
+        public string ContactEmail { get; set; }
+
         public string Project { get; set; }
 
         public string ProjectId { get; set; }
@@ -160,6 +162,7 @@ namespace Sofco.Core.Models.Billing
             solfac.Manager = Manager;
             solfac.ManagerId = ManagerId;
             solfac.OpportunityNumber = OpportunityNumber;
+            solfac.ContactEmail = ContactEmail;
 
             if (SolfacHelper.IsCreditNote(solfac) && solfac.TotalAmount > 0)
             {

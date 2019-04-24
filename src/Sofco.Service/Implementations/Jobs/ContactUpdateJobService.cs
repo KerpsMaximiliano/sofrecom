@@ -34,7 +34,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var crmContact in crmContacts)
             {
-                var contact = unitOfWork.ContactRepository.GetByAccountId(crmContact.Id);
+                var contact = unitOfWork.ContactRepository.GetByCrmId(crmContact.Id);
 
                 if (contact == null)
                     Create(crmContact);
@@ -74,7 +74,7 @@ namespace Sofco.Service.Implementations.Jobs
             }
             catch (Exception e)
             {
-                logger.LogError($"Error on insert Customer: {crmContact.Name}", e);
+                logger.LogError($"Error on insert Contact: {crmContact.Name}", e);
             }
         }
 

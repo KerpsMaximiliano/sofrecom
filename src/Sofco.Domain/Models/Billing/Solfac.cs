@@ -40,6 +40,8 @@ namespace Sofco.Domain.Models.Billing
 
         public string Analytic { get; set; }
 
+        public string ContactEmail { get; set; }
+
         public ICollection<Hito> Hitos { get; set; }
         public ICollection<SolfacHistory> Histories { get; set; }
 

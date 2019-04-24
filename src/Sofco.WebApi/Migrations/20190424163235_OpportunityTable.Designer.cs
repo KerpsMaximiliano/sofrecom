@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190424163235_OpportunityTable")]
+    partial class OpportunityTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1465,9 +1467,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("CelPhone")
                         .HasMaxLength(50);
-
-                    b.Property<string>("ContactEmail")
-                        .HasMaxLength(100);
 
                     b.Property<decimal?>("CurrencyExchange");
 

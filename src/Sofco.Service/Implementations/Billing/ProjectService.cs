@@ -111,12 +111,17 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
-            var contact = unitOfWork.ContactRepository.GetByAccountId(project.AccountId);
+            var opp = unitOfWork.OpportunityRepository.GetByCrmId(project.OpportunityId);
 
-            if (contact != null)
+            if (opp != null)
             {
-                project.PrincipalContactName = contact.Name;
-                project.PrincipalContactEmail = contact.Email;
+                var contact = unitOfWork.ContactRepository.GetByCrmId(opp.ContactId);
+
+                if (contact != null)
+                {
+                    project.PrincipalContactName = contact.Name;
+                    project.PrincipalContactEmail = contact.Email;
+                }
             }
 
             response.Data = project;

@@ -27,5 +27,7 @@
         public const string AllocationClean = "AllocationClean";
 
         public const string ContactUpdate = "ContactUpdate";
+
+        public const string OpportunityUpdate = "OpportunityUpdate";
     }
 }

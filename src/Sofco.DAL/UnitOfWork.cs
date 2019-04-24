@@ -68,6 +68,7 @@ namespace Sofco.DAL
         private IServiceRepository serviceRepository;
         private IProjectRepository projectRepository;
         private IContactRepository contactRepository;
+        private IOpportunityRepository opportunityRepository;
 
         #endregion
 
@@ -167,6 +168,7 @@ namespace Sofco.DAL
         public IServiceRepository ServiceRepository => serviceRepository ?? (serviceRepository = new ServiceRepository(context));
         public IProjectRepository ProjectRepository => projectRepository ?? (projectRepository = new ProjectRepository(context));
         public IContactRepository ContactRepository => contactRepository ?? (contactRepository = new ContactRepository(context));
+        public IOpportunityRepository OpportunityRepository => opportunityRepository ?? (opportunityRepository = new OpportunityRepository(context));
 
         #endregion
 
