@@ -6,7 +6,6 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Crm;
-using Sofco.Domain.Crm;
 using Sofco.Domain.Models.Billing;
 using Sofco.Service.Crm.Interfaces;
 

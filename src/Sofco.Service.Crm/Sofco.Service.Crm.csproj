@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Sofco.Domain.Crm\Sofco.Domain.Crm.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TranslatorMaps\NewFolder\" />
+  </ItemGroup>
+
 </Project>

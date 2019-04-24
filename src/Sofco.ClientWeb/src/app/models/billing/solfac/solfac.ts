@@ -43,6 +43,7 @@ export class Solfac {
         public integratorId: string,
         public opportunityNumber: string,
         public manager: string,
-        public managerId: string
+        public managerId: string,
+        public email: string,
     ){}
 }

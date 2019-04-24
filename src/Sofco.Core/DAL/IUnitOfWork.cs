@@ -43,6 +43,7 @@ namespace Sofco.Core.DAL
         ICustomerRepository CustomerRepository { get; }
         IServiceRepository ServiceRepository { get; }
         IProjectRepository ProjectRepository { get; }
+        IContactRepository ContactRepository { get; }
 
         #endregion
 

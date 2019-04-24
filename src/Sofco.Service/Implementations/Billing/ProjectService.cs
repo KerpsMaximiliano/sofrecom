@@ -111,6 +111,14 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
+            var contact = unitOfWork.ContactRepository.GetByAccountId(project.AccountId);
+
+            if (contact != null)
+            {
+                project.PrincipalContactName = contact.Name;
+                project.PrincipalContactEmail = contact.Email;
+            }
+
             response.Data = project;
             return response;
         }
