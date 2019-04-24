@@ -43,16 +43,28 @@
                     <!-- Datos CRM -->
                     <div class="row">
                         <div class="col-sm-6">
-
+          
                             <div class="form-group">
                                 <label class="control-label">{{'billing.solfac.businessName' | translate }}</label>
                                 <solfac-account-control [integratorProject]="integratorProject" [(model)]="model.businessName"></solfac-account-control>
                             </div>
 
-                            <div class="form-group">
-                                <label class="control-label">{{'billing.solfac.clientName' | translate }}</label>
-                                <input type="text" class="form-control" [(ngModel)]="model.clientName">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">{{'billing.solfac.clientName' | translate }}</label>
+                                        <input type="text" class="form-control" [(ngModel)]="model.clientName">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Mail contacto</label>
+                                        <input type="text" class="form-control" [value]="model.email" disabled>
+                                    </div>
+                                </div>
                             </div>
+
+                   
                         </div>
                         <div class="col-sm-6">
                             <dl class="dl-horizontal">

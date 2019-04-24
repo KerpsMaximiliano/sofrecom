@@ -25,5 +25,7 @@
         public const string ProjectUpdate = "ProjectUpdate";
 
         public const string AllocationClean = "AllocationClean";
+
+        public const string ContactUpdate = "ContactUpdate";
     }
 }

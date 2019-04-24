@@ -130,6 +130,7 @@ export class SolfacComponent implements OnInit, OnDestroy {
       this.model.remito = project.remito;
       this.model.opportunityNumber = project.opportunityNumber;
       this.model.clientName = project.principalContactName;
+      this.model.email = project.principalContactEmail;
 
       this.model.hitos = new Array<Hito>();
       this.model.details = new Array<HitoDetail>();

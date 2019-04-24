@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using Autofac;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Sofco.Common.Helpers;
 using Sofco.Common.Logger;
@@ -18,6 +19,7 @@ using Sofco.Service.Crm.Translators;
 using Sofco.Service.Crm.Translators.Interfaces;
 using Sofco.WebJob.Jobs.Interfaces;
 using StackExchange.Redis;
+using IDatabase = StackExchange.Redis.IDatabase;
 
 namespace Sofco.WebJob.Infrastructures
 {

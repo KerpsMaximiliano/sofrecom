@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL.Billing;
 using Sofco.DAL.Repositories.Common;
@@ -19,7 +20,20 @@ namespace Sofco.DAL.Repositories.Billing
 
         public IList<Project> GetAllActives(string serviceId)
         {
-            return context.Projects.Where(x => x.ServiceId.Equals(serviceId) && x.Active).ToList();
+            var projects = context.Projects.Where(x => x.ServiceId.Equals(serviceId) && x.Active).ToList();
+
+            foreach (var project in projects)
+            {
+                var contact = context.Contacts.SingleOrDefault(x => x.AccountId == project.AccountId);
+
+                if (contact != null)
+                {
+                    project.PrincipalContactName = contact.Name;
+                    project.PrincipalContactEmail = contact.Email;
+                }
+            }
+
+            return projects;
         }
 
         public void UpdateInactives(IList<int> idsAdded)

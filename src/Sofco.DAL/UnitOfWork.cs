@@ -67,6 +67,7 @@ namespace Sofco.DAL
         private ICustomerRepository customerRepository;
         private IServiceRepository serviceRepository;
         private IProjectRepository projectRepository;
+        private IContactRepository contactRepository;
 
         #endregion
 
@@ -165,6 +166,7 @@ namespace Sofco.DAL
         public ICustomerRepository CustomerRepository => customerRepository ?? (customerRepository = new CustomerRepository(context));
         public IServiceRepository ServiceRepository => serviceRepository ?? (serviceRepository = new ServiceRepository(context));
         public IProjectRepository ProjectRepository => projectRepository ?? (projectRepository = new ProjectRepository(context));
+        public IContactRepository ContactRepository => contactRepository ?? (contactRepository = new ContactRepository(context));
 
         #endregion
 
@@ -243,17 +245,17 @@ namespace Sofco.DAL
 
         public void BeginTransaction()
         {
-            //contextTransaction = context.Database.BeginTransaction();
+            contextTransaction = context.Database.BeginTransaction();
         }
 
         public void Rollback()
         {
-            //contextTransaction?.Rollback();
+            contextTransaction?.Rollback();
         }
 
         public void Commit()
         {
-            //contextTransaction?.Commit();
+            contextTransaction?.Commit();
         }
     }
 }

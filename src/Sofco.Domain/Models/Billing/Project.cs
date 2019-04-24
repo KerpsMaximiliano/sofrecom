@@ -43,5 +43,7 @@ namespace Sofco.Domain.Models.Billing
         public Guid? PrincipalContactId { get; set; }
 
         public string PrincipalContactName { get; set; }
+
+        public string PrincipalContactEmail { get; set; }
     }
 }
