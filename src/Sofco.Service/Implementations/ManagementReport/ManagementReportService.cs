@@ -162,7 +162,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 var hitos = solfacService.GetHitosByProject(project.CrmId);
 
-                response.Data.Projects.Add(new ProjectOption { Id = project.CrmId, Text = project.Name, OpportunityId = project.OpportunityId });
+                response.Data.Projects.Add(new ProjectOption { Id = project.CrmId, Text = project.Name, OpportunityId = project.OpportunityId, OpportunityNumber = project.OpportunityNumber });
 
                 foreach (var hito in crmProjectHitos.OrderBy(x => x.StartDate))
                 {
@@ -217,7 +217,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     billingTotal.MonthValues = billingTotal.MonthValues.OrderBy(x => x.Year).ThenBy(x => x.Month).ToList();
                 }
             }
-
+            
             return response;
         }
 

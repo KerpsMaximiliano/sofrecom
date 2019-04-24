@@ -42,7 +42,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     hitoSelected: any;
     indexSelected: number = 0
     monthSelectedDisplay: string = "";
-    editItemMonto = new FormControl('', [ Validators.required, Validators.min(0), Validators.max(999999)]);
+    editItemMonto = new FormControl('', [Validators.required, Validators.min(0), Validators.max(999999)]);
 
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -184,47 +184,69 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 }
             }
 
-            this.hitos.forEach(element => {
+            var hito = {
+                            id: response.data,
+                            projectId: project.id,
+                            projectName: project.text,
+                            currencyId: model.moneyId,
+                            description: project.opportunityNumber + " - " + model.name + " - " + currency.text,
+                            values: []
+                        };
 
-                if (!newInserted && moment(element.date).toDate() > model.startDate) {
-                    newInserted = true;
+            this.months.forEach(monthRow => {
+                            var monthValue = { month: monthRow.month, year: monthRow.year, value: null, oldValue: null, status: null };
+    
+                            if (monthRow.month == month && monthRow.year == year) {
+                                monthValue.value = model.ammount;
+                                monthValue.oldValue = model.ammount;
+                                monthValue.status = this.pendingHitoStatus;
+                            }
+    
+                            hito.values.push(monthValue);
+                        });
 
-                    var hito = {
-                        id: response.data,
-                        projectId: this.hito.projectId,
-                        projectName: element.projectName,
-                        currencyId: model.moneyId,
-                        description: element.projectName + " - " + model.name + " - " + currency.text,
-                        values: []
-                    };
+            this.hitos.push(hito)
 
-                    this.months.forEach(monthRow => {
-                        var monthValue = { month: monthRow.month, year: monthRow.year, value: null, oldValue: null, status: null };
+            // this.hitos.forEach(element => {
 
-                        if (monthRow.month == month && monthRow.year == year) {
-                            monthValue.value = model.ammount;
-                            monthValue.oldValue = model.ammount;
-                            monthValue.status = this.pendingHitoStatus;
-                        }
+            //     if (!newInserted && moment(element.date).toDate() > model.startDate) {
+            //         newInserted = true;
 
-                        hito.values.push(monthValue);
-                    });
+            //         var hito = {
+            //             id: response.data,
+            //             projectId: this.hito.projectId,
+            //             projectName: element.projectName,
+            //             currencyId: model.moneyId,
+            //             description: element.projectName + " - " + model.name + " - " + currency.text,
+            //             values: []
+            //         };
 
-                    hitosAux.push(hito);
+            //         this.months.forEach(monthRow => {
+            //             var monthValue = { month: monthRow.month, year: monthRow.year, value: null, oldValue: null, status: null };
 
-                }
-                else{
-                    hitosAux.push(element);
-                }
-            });
+            //             if (monthRow.month == month && monthRow.year == year) {
+            //                 monthValue.value = model.ammount;
+            //                 monthValue.oldValue = model.ammount;
+            //                 monthValue.status = this.pendingHitoStatus;
+            //             }
 
-            this.hitos = hitosAux;
+            //             hito.values.push(monthValue);
+            //         });
+
+            //         hitosAux.push(hito);
+
+            //     }
+            //     hitosAux.push(element);
+
+            // });
+
+            // this.hitos = hitosAux;
         },
             error => this.newHitoModal.resetButtons());
     }
 
     updateHito() {
-    
+
         this.hitoSelected.values[this.indexSelected].value = this.editItemMonto.value
         var hito = this.hitoSelected
 
@@ -291,12 +313,12 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                         monthValue.value -= hitoMonth.value;
                     }
                 }
-                
+
                 var hitoindex = this.hitos.findIndex(x => x.id == hito.id);
 
-                if (hitoindex != undefined ) {
+                if (hitoindex != undefined) {
                     this.hitos.splice(hitoindex, 1);
-                } 
+                }
             },
                 error => this.messageService.closeLoading());
         });
@@ -315,19 +337,19 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     resolveHitoLabel(hito) {
         var cssClass;
         if (hito.status == this.pendingHitoStatus && hito.solfacId && hito.solfacId > 0) {
-           cssClass = 'input-pending-related';
+            cssClass = 'input-pending-related';
         }
-        else{
+        else {
             cssClass = `input-${hito.status}`
         }
 
-       if(this.isEnabled(hito)){
-        cssClass += ' cursor-pointer' 
-       }
-       else{
-           cssClass += ' not-allowed'
-       }
-       return cssClass
+        if (this.isEnabled(hito)) {
+            cssClass += ' cursor-pointer'
+        }
+        else {
+            cssClass += ' not-allowed'
+        }
+        return cssClass
     }
 
     getTotals(month, year) {
@@ -360,9 +382,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     openEditItemModal(value, hito, index) {
 
-         var hitoMonth = hito.values.find(x => x.value && x.value != null);
+        var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
-         if (!this.isEnabled(hitoMonth)) return;
+        if (!this.isEnabled(hitoMonth)) return;
 
         this.editItemValueModal.show();
         this.editItemMonto.setValue(value.value)
@@ -372,6 +394,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     }
 
-   
+
 
 }

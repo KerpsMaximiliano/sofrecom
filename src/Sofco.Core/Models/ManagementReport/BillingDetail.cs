@@ -22,6 +22,8 @@ namespace Sofco.Core.Models.ManagementReport
 
         public string OpportunityId { get; set; }
 
+        public string OpportunityNumber { get; set; }
+
         public string Text { get; set; }
     }
 
