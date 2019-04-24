@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'list-finalized',
@@ -19,6 +20,7 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
 
     constructor(private advancementService: AdvancementService,
                 private datatableService: DataTableService,
+                private router: Router,
                 private messageService: MessageService){}
 
     ngOnInit(): void {
@@ -57,7 +59,7 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
     }
 
     goToDetail(item){
-        window.open('/#/advancementAndRefund/advancement/' + item.id, '_blank');
+        this.router.navigate(['/advancementAndRefund/advancement/' + item.id]);
     }
 
     search(parameters){
