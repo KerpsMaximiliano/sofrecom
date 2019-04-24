@@ -22,7 +22,9 @@
             </tr>
             <tr *ngFor="let hito of hitos">
                 <td class="first-column text-word-break">
-                    {{ hito.description }}
+                   <p>
+                        {{ hito.description }}
+                   </p>
                     <i class="fa fa-2x fa-trash pointer" (click)="delete(hito)" *ngIf="canDeleteHito(hito)"></i>
                 </td>
 

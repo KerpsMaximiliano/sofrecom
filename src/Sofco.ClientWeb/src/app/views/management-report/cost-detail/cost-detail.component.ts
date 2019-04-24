@@ -307,7 +307,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     addOtherCost() {
-        debugger
+      
         var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
         this.fundedResources.push(resource)
 
