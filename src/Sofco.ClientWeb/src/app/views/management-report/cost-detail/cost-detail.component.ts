@@ -140,18 +140,20 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     EditItem() {
 
-        this.monthSelected.originalValue = this.editItemMonto.value
+        this.monthSelected.value = this.editItemMonto.value
         debugger
-        if (this.editItemAdjustment.value > 0) {
-            this.monthSelected.adjustment = this.editItemAdjustment.value
-            this.monthSelected.value = this.monthSelected.originalValue + this.monthSelected.originalValue * this.monthSelected.adjustment / 100
-        }
-        else {
-            this.monthSelected.value = this.editItemMonto.value
-        }
-
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
         if (this.itemSelected.typeName == 'Empleados') {
+
+        this.monthSelected.originalValue = this.editItemMonto.value
+            if (this.editItemAdjustment.value > 0) {
+                this.monthSelected.adjustment = this.editItemAdjustment.value
+                this.monthSelected.value = this.monthSelected.originalValue + this.monthSelected.originalValue * this.monthSelected.adjustment / 100
+            }
+            else {
+                this.monthSelected.value = this.editItemMonto.value
+            }
+
             for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
 
                 if (this.itemSelected.monthsCost[index].hasAlocation) {
