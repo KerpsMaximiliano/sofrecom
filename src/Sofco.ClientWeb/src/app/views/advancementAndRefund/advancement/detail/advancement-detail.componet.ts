@@ -71,14 +71,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
     }
 
     back(){
-        if(window.history.length > 0){
-            window.history.back();
-        }
-        else{
-            setTimeout(() => {
-                window.close();
-            }, 500);
-        }
+        this.router.navigate(['/advancementAndRefund/advancement/search']);
     }
 
     canBack(){

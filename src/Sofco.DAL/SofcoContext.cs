@@ -66,6 +66,7 @@ namespace Sofco.DAL
         public DbSet<Service> Services { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Opportunity> Opportunities { get; set; }
 
         // Allocation Management Mappings
         public DbSet<Analytic> Analytics { get; set; }
@@ -198,6 +199,7 @@ namespace Sofco.DAL
             builder.MapAdvancementRefund();
             builder.MapCostDetail();
             builder.MapContact();
+            builder.MapOpportunity();
         }
     }
 }

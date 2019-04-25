@@ -24,12 +24,17 @@ namespace Sofco.DAL.Repositories.Billing
 
             foreach (var project in projects)
             {
-                var contact = context.Contacts.SingleOrDefault(x => x.AccountId == project.AccountId);
+                var opp = context.Opportunities.SingleOrDefault(x => x.CrmId == project.OpportunityId);
 
-                if (contact != null)
+                if (opp != null)
                 {
-                    project.PrincipalContactName = contact.Name;
-                    project.PrincipalContactEmail = contact.Email;
+                    var contact = context.Contacts.SingleOrDefault(x => x.CrmId == opp.ContactId);
+
+                    if (contact != null)
+                    {
+                        project.PrincipalContactName = contact.Name;
+                        project.PrincipalContactEmail = contact.Email;
+                    }
                 }
             }
 

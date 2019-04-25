@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
+import { Router } from "@angular/router";
 
 declare var moment: any;
 
@@ -20,6 +21,7 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
     public modelFiltered: any[] = new Array();
    
     constructor(private advancementService: AdvancementService,
+        private router: Router,
         private datatableService: DataTableService,
         private messageService: MessageService) { }
 
@@ -76,7 +78,7 @@ export class AdvancementListInProcessComponent implements OnInit, OnDestroy {
     }
 
     goToDetail(item) {
-        window.open('/#/advancementAndRefund/advancement/' + item.id, '_blank');
+        this.router.navigate(['/advancementAndRefund/advancement/' + item.id]);
     }
 
     getStatusClass(type) {

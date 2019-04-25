@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Sofco.Domain.Models.Billing;
 
 namespace Sofco.DAL.Mappings.Billing
@@ -19,6 +18,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<Solfac>().Property(_ => _.InvoiceCode).HasMaxLength(50).IsRequired(false);
             builder.Entity<Solfac>().Property(_ => _.Integrator).HasMaxLength(300);
             builder.Entity<Solfac>().Property(_ => _.IntegratorId).HasMaxLength(50);
+            builder.Entity<Solfac>().Property(_ => _.ContactEmail).HasMaxLength(100);
             builder.Entity<Solfac>().Property(_ => _.Manager).HasMaxLength(300);
             builder.Entity<Solfac>().Property(_ => _.ManagerId).HasMaxLength(100);
             builder.Entity<Solfac>().Property(_ => _.OpportunityNumber).HasMaxLength(100);

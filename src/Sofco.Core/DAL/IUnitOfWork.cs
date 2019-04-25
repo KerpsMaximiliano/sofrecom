@@ -44,6 +44,7 @@ namespace Sofco.Core.DAL
         IServiceRepository ServiceRepository { get; }
         IProjectRepository ProjectRepository { get; }
         IContactRepository ContactRepository { get; }
+        IOpportunityRepository OpportunityRepository { get; }
 
         #endregion
 

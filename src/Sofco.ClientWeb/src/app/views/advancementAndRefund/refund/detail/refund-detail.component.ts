@@ -138,10 +138,18 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
             }
         }
         else{
-            setTimeout(() => {
-                window.close();
-            }, 1000);
+            if(this.canBack()){
+                this.back();
+            }
         }
+    }
+
+    back(){
+        this.router.navigate(['/advancementAndRefund/refund/search']);
+    }
+
+    canBack(){
+        return this.menuService.hasFunctionality('ADVAN', 'REFUND-LIST-VIEW');
     }
 
     goToProfile(){

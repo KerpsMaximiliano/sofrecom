@@ -4,6 +4,7 @@ import { I18nService } from "app/services/common/i18n.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { Subscription } from "rxjs";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'refund-list-grid',
@@ -21,6 +22,7 @@ export class RefundListGridComponent implements OnInit {
     selectParamsVisible = true;
 
     constructor(private refundService: RefundService,
+        private router: Router,
         private datatableService: DataTableService,
         private i18nService: I18nService){}
 
@@ -28,7 +30,7 @@ export class RefundListGridComponent implements OnInit {
     }
 
     goToDetail(id){
-        window.open('/#/advancementAndRefund/refund/' + id, "_blank");
+        this.router.navigate(['/advancementAndRefund/refund/' + id]);
     }
 
     getData(model) {
