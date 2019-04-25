@@ -11,7 +11,7 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public DateTime MonthYear { get; set; }
         public float Cost { get; set; }
-        public int? Adjustment { get; set; }
+        public float? Adjustment { get; set; }
         public int TypeId { get; set; }
         public CostDetailResourceType Type { get; set; }
 
