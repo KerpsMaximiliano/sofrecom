@@ -40,8 +40,8 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
           columns: columns,
           title: title,
           withExport: true,
-          columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
-          currencyColumns: [6]
+          columnDefs: [ {"aTargets": [5], "sType": "date-uk"} ],
+          currencyColumns: [7]
         }
   
         this.datatableService.destroy(params.selector);
@@ -63,10 +63,11 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
     }
 
     search(parameters){
-        this.visible = true;
+        sessionStorage.setItem('lastAdvancementQuery', JSON.stringify(parameters));
         this.messageService.showLoading();
 
         this.getSubscrip = this.advancementService.getAllFinalized(parameters).subscribe(response => {
+            this.visible = true;
             this.messageService.closeLoading();
 
             this.model = [];

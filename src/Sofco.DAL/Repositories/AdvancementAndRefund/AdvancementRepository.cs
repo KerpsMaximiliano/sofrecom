@@ -32,27 +32,18 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .SingleOrDefault(x => x.Id == id);
         }
 
-        public IList<Advancement> GetAllInProcess(int workflowStatusRejectedId, int workflowStatusDraft)
-        {
-            return context.Advancements
-                .Include(x => x.Currency)
-                .Include(x => x.UserApplicant)
-                .Include(x => x.MonthsReturn)
-                .Include(x => x.Status)
-                    .ThenInclude(x => x.ActualTransitions)
-                        .ThenInclude(x => x.WorkflowStateAccesses)
-                            .ThenInclude(x => x.UserSource)
-                .Where(x => x.InWorkflowProcess && x.StatusId != workflowStatusRejectedId && x.StatusId != workflowStatusDraft).ToList();
-        }
-
-        public IList<WorkflowReadAccess> GetWorkflowReadAccess(int advacementWorkflowId)
-        {
-            return context.WorkflowReadAccesses
-                .Include(x => x.Workflow)
-                .Include(x => x.UserSource)
-                .Where(x => x.Workflow.WorkflowTypeId == advacementWorkflowId)
-                .ToList();
-        }
+        //public IList<Advancement> GetAllInProcess(int[] statesToExclude)
+        //{
+        //    return context.Advancements
+        //        .Include(x => x.Currency)
+        //        .Include(x => x.UserApplicant)
+        //        .Include(x => x.MonthsReturn)
+        //        .Include(x => x.Status)
+        //            .ThenInclude(x => x.ActualTransitions)
+        //                .ThenInclude(x => x.WorkflowStateAccesses)
+        //                    .ThenInclude(x => x.UserSource)
+        //        .Where(x => !statesToExclude.Contains(x.StatusId)).ToList();
+        //}
 
         public IList<AdvancementHistory> GetHistories(int id)
         {
@@ -62,7 +53,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Where(x => x.AdvancementId == id).ToList();
         }
 
-        public IList<Advancement> GetAllFinalized(int statusDraft, AdvancementSearchFinalizedModel model)
+        public IList<Advancement> GetAllFinalized(AdvancementSearchFinalizedModel model, int workflowStatusDraft)
         {
             var query = context.Advancements
                 .Include(x => x.Currency)
@@ -72,7 +63,10 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                     .ThenInclude(x => x.ActualTransitions)
                         .ThenInclude(x => x.WorkflowStateAccesses)
                             .ThenInclude(x => x.UserSource)
-                .Where(x => !x.InWorkflowProcess && x.StatusId != statusDraft);
+                .Where(x => x.StatusId != workflowStatusDraft);
+
+            if (model.StateIds != null && model.StateIds.Any())
+                query = query.Where(x => model.StateIds.Contains(x.StatusId));
 
             if (model.ResourceId.HasValue && model.ResourceId.Value > 0)
                 query = query.Where(x => x.UserApplicantId == model.ResourceId.Value);
@@ -85,11 +79,6 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             if (model.DateTo.HasValue)
                 query = query.Where(x => x.CreationDate.Date <= model.DateTo.Value.Date);
-
-            if (model.StateId.HasValue)
-            {
-                query = query.Where(x => x.StatusId == model.StateId);
-            }
 
             return query.ToList();
         }

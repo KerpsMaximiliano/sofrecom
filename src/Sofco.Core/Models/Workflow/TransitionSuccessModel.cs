@@ -11,6 +11,8 @@ namespace Sofco.Core.Models.Workflow
 
         public string UserName { get; set; }
 
+        public string Name { get; set; }
+
         public Func<Response> OnError;
     }
 }

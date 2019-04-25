@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { environment } from "environments/environment";
+import { MenuService } from "app/services/admin/menu.service";
 
 declare var $: any;
 
@@ -9,50 +11,38 @@ declare var $: any;
 })
 export class RefundListComponent implements OnInit {
 
-    public tabInProcess = true;
-
-    public inWorkflowProcess = true;
     @ViewChild('gridFilter') gridFilter;
-    @ViewChild('inProcessGrid') inProcess;
     @ViewChild('finalizedGrid') finalized;
 
-    constructor() { }
+    constructor(private menuService: MenuService) { }
 
     ngOnInit(): void {
         const data = JSON.parse(sessionStorage.getItem('lastRefundQuery'));
 
         if(data){
             this.gridFilter.resourceId = data.userApplicantId;
-            this.gridFilter.stateId = data.stateId;
+            this.gridFilter.stateIds = data.stateIds;
             this.gridFilter.dateSince = data.dateSince;
             this.gridFilter.dateTo = data.dateTo;
-            this.gridFilter.inWorkflowProcess = data.inWorkflowProcess;
             this.gridFilter.bankId = data.bank;
             this.gridFilter.setModel();
-        }
 
-        this.getData();
+            this.getData();
+        }
+        else {
+            if(this.menuService.userIsDaf) this.gridFilter.stateIds.push(environment.dafWorkflowStateId);
+            if(this.menuService.userIsGaf) this.gridFilter.stateIds.push(environment.gafWorkflowStateId);
+            if(this.menuService.userIsDirector) this.gridFilter.stateIds.push(environment.pendingDirectorWorkflowStateId);
+            if(this.menuService.userIsManager) this.gridFilter.stateIds.push(environment.pendingManagerWorkflowStateId);
+            if(this.menuService.userIsCompliance) this.gridFilter.stateIds.push(environment.pendingComplianceWorkflowStateId);
+
+            if(this.gridFilter.stateIds.length > 0){
+                this.getData();
+            }
+        }
     }
 
     getData() {
-        const model = this.getParameterModel();
-
-        if (this.tabInProcess){
-            model.inWorkflowProcess = true;
-            this.inProcess.getData(model);
-        }
-        else {
-            model.inWorkflowProcess = false;
-            this.finalized.getData(model);
-        }
-
-    }
-
-    getParameterModel() {
-        return this.gridFilter.model !== undefined
-            ? this.gridFilter.model
-            : {
-                inWorkflowProcess: this.inWorkflowProcess
-            };
+        this.finalized.getData(this.gridFilter.getModel());
     }
 }

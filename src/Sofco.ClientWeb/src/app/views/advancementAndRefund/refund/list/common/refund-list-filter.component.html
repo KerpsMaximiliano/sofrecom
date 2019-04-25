@@ -2,14 +2,14 @@
     <div class="panel panel-success">
         <div class="panel-heading">
             <h5 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="{{ '#collapse' + controlId}}"
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse"
                     (click)="changeIcon()" style="display: block">
                     <span>{{'refund.searchParameters' | translate }}</span>
                     <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
                 </a>
             </h5>
         </div>
-        <div id="{{ 'collapse' + controlId}}" class="panel-collapse collapse in">
+        <div id="collapse" class="panel-collapse collapse in">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-4">
@@ -34,10 +34,10 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4" *ngIf="inWorkflowProcess">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="control-label">{{ 'refund.status' | translate }}</label>
-                            <ng-select [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateId">
+                            <ng-select [multiple]="true" [closeOnSelect]="true" [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateIds">
                             </ng-select>
                         </div>
                     </div>
@@ -52,10 +52,8 @@
             </div>
             <div class="panel-footer">
                 <div class="text-right">
-                    <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i
-                            class="fa fa-refresh"></i></button>
-                    <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i
-                            class="fa fa-search"></i></button>
+                    <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                    <button class="btn btn-success btn-sm" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
                 </div>
             </div>
         </div>

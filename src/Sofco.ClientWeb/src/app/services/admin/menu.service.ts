@@ -16,6 +16,7 @@ export class MenuService {
     public userIsGaf: boolean;
     public userIsCdg: boolean;
     public userIsRrhh: boolean;
+    public userIsCompliance: boolean;
     public currentUser: any;
     public user: any;
 
@@ -41,6 +42,7 @@ export class MenuService {
                 this.userIsGaf = menu.isGaf;
                 this.userIsCdg = menu.isCdg;
                 this.userIsRrhh = menu.isRrhh;
+                this.userIsCompliance = menu.isCompliance;
 
                 this.dafMail = menu.dafMail;
                 this.cdgMail = menu.cdgMail;
@@ -53,7 +55,7 @@ export class MenuService {
                 this.refundDelegates = menu.refundDelegates;
             }
         }
-
+ 
         if (!this.currentUser) {
             this.currentUser = Cookie.get('currentUser');
         }

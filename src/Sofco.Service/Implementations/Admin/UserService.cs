@@ -226,6 +226,11 @@ namespace Sofco.Service.Implementations.Admin
             return unitOfWork.UserRepository.HasGafGroup(sessionManager.GetUserEmail());
         }
 
+        public bool HasComplianceGroup()
+        {
+            return unitOfWork.UserRepository.HasComplianceGroup(sessionManager.GetUserEmail());
+        }
+
         public Response<UserModel> GetUserInfo()
         {
             var email = sessionManager.GetUserEmail();

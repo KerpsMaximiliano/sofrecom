@@ -14,6 +14,6 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 
         public string Bank { get; set; }
 
-        public int? StateId { get; set; }
+        public int[] StateIds { get; set; }
     }
 }

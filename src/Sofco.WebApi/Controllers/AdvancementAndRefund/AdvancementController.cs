@@ -24,13 +24,13 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             this.workflowService = workflowService;
         }
 
-        [HttpGet("inProcess")]
-        public IActionResult GetAll()
-        {
-            var response = advancementService.GetAllInProcess();
+        //[HttpGet("inProcess")]
+        //public IActionResult GetAll()
+        //{
+        //    var response = advancementService.GetAllInProcess();
 
-            return this.CreateResponse(response);
-        }
+        //    return this.CreateResponse(response);
+        //}
 
         [HttpPost("finalized")]
         public IActionResult GetAllFinalized([FromBody] AdvancementSearchFinalizedModel model)

@@ -5,6 +5,7 @@ import { RefundService } from "app/services/advancement-and-refund/refund.servic
 import { Subscription } from "rxjs";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
 import { Router } from "@angular/router";
+import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'refund-list-grid',
@@ -12,17 +13,12 @@ import { Router } from "@angular/router";
     styleUrls: ['./refund-list-grid.component.scss']
 })
 export class RefundListGridComponent implements OnInit {
-    @Input()
-    public controlId = 'grid1';
-    @Input()
-    public inWorkflowProcess = true;
-    public loading = false;
     subscrip: Subscription;
     public data:any[] = new Array<any>();
-    selectParamsVisible = true;
 
     constructor(private refundService: RefundService,
         private router: Router,
+        private messageService: MessageService,
         private datatableService: DataTableService,
         private i18nService: I18nService){}
 
@@ -34,17 +30,20 @@ export class RefundListGridComponent implements OnInit {
     }
 
     getData(model) {
-        this.selectParamsVisible = false;
-        this.loading = true;
+        this.messageService.showLoading();
+        
         this.subscrip = this.refundService.getAll(model).subscribe(res => {
-            this.loading = false;
+            this.messageService.closeLoading();
+            
+            sessionStorage.setItem('lastRefundQuery', JSON.stringify(model));
+
             this.data = res.data;
             this.initGrid();
         });
     }
 
     initGrid(){
-        const gridSelector = "#gridTable-" + this.controlId;
+        const gridSelector = "#refundTable";
 
         const columns = [0, 1, 2, 3, 4, 5, 6, 7];
 
@@ -53,17 +52,10 @@ export class RefundListGridComponent implements OnInit {
             columns: columns,
             title: this.i18nService.translateByKey('refund.listTitle'),
             withExport: true,
-            columnDefs: [],
+            columnDefs: [ {"aTargets": [6], "sType": "date-uk"} ],
             currencyColumns: [4]
         }
 
-        if(this.inWorkflowProcess){
-            params.columnDefs = [ {"aTargets": [5], "sType": "date-uk"} ]
-        }
-        else{
-            params.columnDefs = [ {"aTargets": [5], "sType": "date-uk"} ]
-        }
-        
         this.datatableService.destroy(gridSelector);
 
         this.datatableService.initialize(params);

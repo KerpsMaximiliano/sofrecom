@@ -50,5 +50,7 @@ namespace Sofco.Core.Models.Admin
         public List<int> SectorIds { get; set; }
 
         public bool IsGaf { get; set; }
+
+        public bool IsCompliance { get; set; }
     }
 }

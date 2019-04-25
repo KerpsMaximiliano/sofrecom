@@ -8,8 +8,7 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
 {
     public interface IRefundRepository : IBaseRepository<Refund>
     {
-        List<Refund> GetByParameters(RefundListParameterModel model, int settingsWorkflowStatusRejectedId,
-            int settingsWorkflowStatusDraft);
+        List<Refund> GetByParameters(RefundListParameterModel model, int workflowStatusDraft);
 
         void InsertFile(RefundFile refundFile);
 
