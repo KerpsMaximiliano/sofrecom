@@ -164,7 +164,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
 
             //Actualiza el sueldo
-           this.salaryPlusIncrease(this.itemSelected, this.indexSelected + 1);
+            this.salaryPlusIncrease(this.itemSelected, this.indexSelected + 1);
         }
 
         //Si estoy editando un aumento se actualiza el sueldo para todos los empleados
@@ -239,8 +239,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             let newSalary = employee.monthsCost[pIndex].value
 
             for (let index = pIndex; index < employee.monthsCost.length; index++) {
-                //Para cada empleado le modifico el valor del ajuste particular
-                employee.monthsCost[index].adjustment = AjusteMensual.monthsCost[index].value
+                
                 //Verifico si tiene aumento en alguno
                 if (AjusteMensual.monthsCost[index].value > 0) {
                     newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
@@ -249,7 +248,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     newSalary = employee.monthsCost[index].originalValue
                 }
 
-                employee.monthsCost[index].value = newSalary;
+                if (employee.monthsCost[index].hasAlocation) {
+                    employee.monthsCost[index].value = newSalary;
+                    employee.monthsCost[index].adjustment = AjusteMensual.monthsCost[index].value
+                }
 
                 if (employee.monthsCost[index + 1]) {
                     if (employee.monthsCost[index + 1].hasAlocation) {
