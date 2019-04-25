@@ -73,6 +73,7 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 currentUser.Id = response.Data.UserApplicantId;
                 currentUser.UserName = response.Data.UserName;
+                currentUser.Name = response.Data.Name;
             }
 
             // Validate Parameters
@@ -216,7 +217,8 @@ namespace Sofco.Service.Implementations.Workflow
                 var user = new UserLiteModel
                 {
                     Id = entity.UserApplicant.Id,
-                    Email = entity.UserApplicant.Email
+                    Email = entity.UserApplicant.Email,
+                    Name = entity.UserApplicant.Name
                 };
 
                 if (ValidatePriviligeAccess(possibleNextTransition, user, entity))
@@ -247,6 +249,7 @@ namespace Sofco.Service.Implementations.Workflow
                     parameters.NextStateId = nextTransition.NextWorkflowStateId;
                     response.Data.UserApplicantId = entity.UserApplicantId;
                     response.Data.UserName = entity.UserApplicant.UserName;
+                    response.Data.Name = entity.UserApplicant.Name;
 
                     response.Data.OnError = () =>
                     {
