@@ -34,7 +34,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     indexSelected: number = 0;
     model: any;
     modalPercentage: boolean = false;
+    modalEmployee: boolean = false;
     editItemMonto = new FormControl();
+    editItemAdjustment = new FormControl();
     canEdit: boolean = false;
 
     otherResourceId: number;
@@ -113,23 +115,40 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.monthSelected = month;
                 this.indexSelected = indexMonth;
                 this.itemSelected = item;
-                this.editItemMonto.setValue(month.value)
-                
-                if (this.itemSelected.typeName == '% Ajuste') {
-                    this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
+                this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
+                this.modalPercentage = false
+
+                if (this.itemSelected.typeName == 'Empleados') {
+                    this.modalEmployee = true
+                    this.editItemMonto.setValue(month.originalValue)
+                    this.editItemAdjustment.setValue(month.adjustment)
+                    this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
                 }
                 else {
-                    this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
+                    this.modalEmployee = false
+                    this.editItemMonto.setValue(month.value)
 
+                    if (this.itemSelected.typeName == '% Ajuste') {
+                        this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
+                        this.modalPercentage = true
+                    }
                 }
             }
-
         }
+
     }
 
     EditItem() {
 
-        this.monthSelected.value = this.editItemMonto.value
+        this.monthSelected.originalValue = this.editItemMonto.value
+        debugger
+        if (this.editItemAdjustment.value > 0) {
+            this.monthSelected.adjustment = this.editItemAdjustment.value
+            this.monthSelected.value = this.monthSelected.originalValue + this.monthSelected.originalValue * this.monthSelected.adjustment / 100
+        }
+        else {
+            this.monthSelected.value = this.editItemMonto.value
+        }
 
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
         if (this.itemSelected.typeName == 'Empleados') {
@@ -137,6 +156,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                 if (this.itemSelected.monthsCost[index].hasAlocation) {
                     this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+                    this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
                 }
                 else {
                     this.itemSelected.monthsCost[index].value = 0
@@ -144,7 +164,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
 
             //Actualiza el sueldo
-            this.salaryPlusIncrease(this.itemSelected, this.indexSelected);
+           this.salaryPlusIncrease(this.itemSelected, this.indexSelected + 1);
         }
 
         //Si estoy editando un aumento se actualiza el sueldo para todos los empleados
@@ -219,13 +239,22 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             let newSalary = employee.monthsCost[pIndex].value
 
             for (let index = pIndex; index < employee.monthsCost.length; index++) {
+                //Para cada empleado le modifico el valor del ajuste particular
+                employee.monthsCost[index].adjustment = AjusteMensual.monthsCost[index].value
                 //Verifico si tiene aumento en alguno
                 if (AjusteMensual.monthsCost[index].value > 0) {
-                    newSalary = employee.monthsCost[index].value + (employee.monthsCost[index].value * AjusteMensual.monthsCost[index].value / 100);
+                    newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
                 }
+                else {
+                    newSalary = employee.monthsCost[index].originalValue
+                }
+
+                employee.monthsCost[index].value = newSalary;
+
                 if (employee.monthsCost[index + 1]) {
                     if (employee.monthsCost[index + 1].hasAlocation) {
                         employee.monthsCost[index + 1].value = newSalary;
+                        employee.monthsCost[index + 1].originalValue = newSalary;
                     }
                 }
             }
@@ -307,7 +336,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     addOtherCost() {
-      
+
         var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
         this.fundedResources.push(resource)
 
@@ -315,6 +344,24 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.otherResources.splice(pos, 1)
 
         this.otherResourceId = this.otherResources[0].typeId;
+    }
+
+    resourcesClass(monthCost, item) {
+
+        let cssClass;
+        if (!this.canEdit) {
+            cssClass = 'not-allowed'
+        }
+        else {
+            cssClass = 'cursor-pointer'
+            if (item.display == '% Ajuste') {
+                if (monthCost.value > 0) {
+                    cssClass += ' label-yellow'
+                }
+            }
+        }
+
+        return cssClass;
     }
 
 }
