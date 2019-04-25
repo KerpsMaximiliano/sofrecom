@@ -38,13 +38,13 @@
                                 </ng-select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">{{ 'advancement.dateSince' | translate }}</label>
                                 <date-picker [(date)]="dateSince"></date-picker>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">{{ 'advancement.dateTo' | translate }}</label>
                                 <date-picker [(date)]="dateTo"></date-picker>
@@ -56,18 +56,18 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">{{ 'advancement.status' | translate }}</label>
-                                <ng-select [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateId">
+                                <ng-select [multiple]="true" [closeOnSelect]="true" [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateIds">
                                 </ng-select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">{{ 'advancement.type' | translate }}</label>
                                 <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId">
                                 </ng-select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label">{{'advancement.bank' | translate }}</label>
                                 <ng-select [items]="banks" bindLabel="name" bindValue="name" [(ngModel)]="bankId">
@@ -88,26 +88,9 @@
         </div>
     </div>
 
-    <div class="tabs-container">
-        <ul class="nav nav-tabs">
-            <li class="active"><a class="tab-link-success" data-toggle="tab" href="#tab-1" (click)="currentTab = 1">
-                    {{ 'advancement.inProcess' | translate }} </a></li>
-            <li class=""><a class="tab-link-primary" data-toggle="tab" href="#tab-2" (click)="currentTab = 3">
-                    {{ 'advancement.finalized' | translate }} </a></li>
-        </ul>
-
-        <div class="tab-content">
-            <div id="tab-1" class="tab-pane active">
-                <div class="panel-body tab-success">
-                    <list-in-process #inProcess></list-in-process>
-                </div>
-            </div>
-
-            <div id="tab-2" class="tab-pane">
-                <div class="panel-body tab-primary">
-                    <list-finalized #finalized></list-finalized>
-                </div>
-            </div>
+    <div class="ibox">
+        <div class="ibox-content">
+            <list-finalized #finalized></list-finalized>
         </div>
     </div>
 </div>

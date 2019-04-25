@@ -125,63 +125,63 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        public Response<IList<AdvancementListItem>> GetAllInProcess()
-        {
-            var response = new Response<IList<AdvancementListItem>>();
-            response.Data = new List<AdvancementListItem>();
+        //public Response<IList<AdvancementListItem>> GetAllInProcess()
+        //{
+        //    var response = new Response<IList<AdvancementListItem>>();
+        //    response.Data = new List<AdvancementListItem>();
 
-            var employeeDicc = new Dictionary<string, string>();
-            var employeeManagerDicc = new Dictionary<string, string>();
+        //    var employeeDicc = new Dictionary<string, string>();
+        //    var employeeManagerDicc = new Dictionary<string, string>();
 
-            var currentUser = userData.GetCurrentUser();
+        //    var currentUser = userData.GetCurrentUser();
 
-            var hasAllAccess = roleManager.HasAdvancementAccess();
+        //    var hasAllAccess = roleManager.HasAdvancementAccess();
 
-            var advancements = unitOfWork.AdvancementRepository.GetAllInProcess(settings.WorkflowStatusRejectedId, settings.WorkflowStatusDraft);
+        //    var advancements = unitOfWork.AdvancementRepository.GetAllInProcess(settings.WorkflowStatusRejectedId, settings.WorkflowStatusDraft);
 
-            if (hasAllAccess)
-            {
-                response.Data = advancements.Select(x =>
-                {
-                    var item = new AdvancementListItem(x);
+        //    if (hasAllAccess)
+        //    {
+        //        response.Data = advancements.Select(x =>
+        //        {
+        //            var item = new AdvancementListItem(x);
 
-                    SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+        //            SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
 
-                    if (x.UserApplicant != null)
-                    {
-                        item.Bank = employeeDicc[x.UserApplicant?.Email];
-                        item.Manager = employeeManagerDicc[x.UserApplicant?.Email];
-                    }
+        //            if (x.UserApplicant != null)
+        //            {
+        //                item.Bank = employeeDicc[x.UserApplicant?.Email];
+        //                item.Manager = employeeManagerDicc[x.UserApplicant?.Email];
+        //            }
 
-                    return item;
-                }).ToList();
-            }
-            else
-            {
-                foreach (var advancement in advancements)
-                {
-                    if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser) || ValidateUserAccess(advancement, currentUser))
-                    { 
-                        if (response.Data.All(x => x.Id != advancement.Id))
-                        {
-                            var item = new AdvancementListItem(advancement);
+        //            return item;
+        //        }).ToList();
+        //    }
+        //    else
+        //    {
+        //        foreach (var advancement in advancements)
+        //        {
+        //            if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser) || ValidateUserAccess(advancement, currentUser))
+        //            { 
+        //                if (response.Data.All(x => x.Id != advancement.Id))
+        //                {
+        //                    var item = new AdvancementListItem(advancement);
 
-                            SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+        //                    SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
 
-                            if (advancement.UserApplicant != null)
-                            {
-                                item.Bank = employeeDicc[advancement.UserApplicant?.Email];
-                                item.Manager = employeeManagerDicc[advancement.UserApplicant?.Email];
-                            }
+        //                    if (advancement.UserApplicant != null)
+        //                    {
+        //                        item.Bank = employeeDicc[advancement.UserApplicant?.Email];
+        //                        item.Manager = employeeManagerDicc[advancement.UserApplicant?.Email];
+        //                    }
 
-                            response.Data.Add(item);
-                        }
-                    }
-                }
-            }
+        //                    response.Data.Add(item);
+        //                }
+        //            }
+        //        }
+        //    }
 
-            return response;
-        }
+        //    return response;
+        //}
 
         public Response Delete(int id)
         {
@@ -294,9 +294,22 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             var salaryAdvs = workflowStateRepository.GetStateByWorkflowTypeCode(settings.SalaryWorkflowTypeCode);
             var viaticumAdvs = workflowStateRepository.GetStateByWorkflowTypeCode(settings.ViaticumWorkflowTypeCode);
 
+            var result = salaryAdvs.Union(viaticumAdvs).Distinct().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+
+            if (result.All(x => x.Id != settings.WorkflowStatusFinalizedId))
+            {
+                var finalizeState = workflowStateRepository.Get(settings.WorkflowStatusFinalizedId);
+
+                result.Add(new Option { Id = finalizeState.Id, Text = finalizeState.Name });
+            }
+
+            var draft = result.SingleOrDefault(x => x.Id == settings.WorkflowStatusDraft);
+
+            if (draft != null) result.Remove(draft);
+
             return new Response<IList<Option>>
             {
-                Data = salaryAdvs.Union(viaticumAdvs).Distinct().Select(x => new Option { Id = x.Id, Text = x.Name }).ToList()
+                Data = result
             };
         }
 
@@ -334,7 +347,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var hasAllAccess = roleManager.HasFullAccess();
 
-            var advancements = unitOfWork.AdvancementRepository.GetAllFinalized(settings.WorkflowStatusDraft, model);
+            var advancements = unitOfWork.AdvancementRepository.GetAllFinalized(model, settings.WorkflowStatusDraft);
 
             if (hasAllAccess)
             {

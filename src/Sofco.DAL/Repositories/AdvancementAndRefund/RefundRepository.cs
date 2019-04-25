@@ -15,9 +15,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
         }
 
-        public List<Refund> GetByParameters(RefundListParameterModel model, int workflowStatusRejectedId,
-            int workflowStatusDraft)
-        {
+        public List<Refund> GetByParameters(RefundListParameterModel model, int workflowStatusDraft)
+        { 
             var query = context.Refunds
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
@@ -30,8 +29,10 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Details)
                 .Include(x => x.AdvancementRefunds)
                     .ThenInclude(x => x.Advancement)
-                .Where(s => s.CreationDate.Date >= model.DateSince.Value.Date
-                            && s.InWorkflowProcess == model.InWorkflowProcess);
+                .Where(s => s.StatusId != workflowStatusDraft);
+
+            if (model.DateSince.HasValue)
+                query = query.Where(x => x.CreationDate.Date >= model.DateSince.Value.Date);
 
             if (model.DateTo.HasValue)
                 query = query.Where(x => x.CreationDate.Date <= model.DateTo.Value.Date);
@@ -39,15 +40,9 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             if (model.UserApplicantId.HasValue && model.UserApplicantId.Value > 0)
                 query = query.Where(x => x.UserApplicantId == model.UserApplicantId.Value);
 
-            if (model.StateId.HasValue)
-            {
-                query = query.Where(x => x.StatusId == model.StateId);
-            }
-            else
-            {
-                query = query.Where(x => x.StatusId != workflowStatusRejectedId && x.StatusId != workflowStatusDraft);
-            }
-
+            if (model.StateIds != null && model.StateIds.Any())
+                query = query.Where(x => model.StateIds.Contains(x.StatusId));
+          
             return query.ToList();
         }
 

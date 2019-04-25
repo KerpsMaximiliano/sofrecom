@@ -9,13 +9,11 @@ import { UtilsService } from "app/services/common/utils.service";
     templateUrl: './refund-list-filter.component.html'
 })
 export class RefundListFilterComponent implements OnInit {
-    @Input()
-    public controlId = 'grid1';
+
     @Input()
     public model: any;
-    @Input()
-    public inWorkflowProcess = true;
-    private collapseSelector = '#grid1';
+
+    private collapseSelector = '#collapse';
     public resources: any[] = new Array<any>();
     public resourceId: number;
     @Output() valueChange = new EventEmitter<any>();
@@ -23,7 +21,7 @@ export class RefundListFilterComponent implements OnInit {
     public dateTo: Date;
     public states: any[] = new Array<any>();
     public banks: any[] = new Array<any>();
-    public stateId: number;
+    public stateIds: number[] = [];
     public bankId: number;
     getResourcesSubscrip: Subscription;
     subscrip: Subscription;
@@ -33,12 +31,8 @@ export class RefundListFilterComponent implements OnInit {
         private refundService: RefundService) { }
 
     ngOnInit(): void {
-        this.collapseSelector = "#collapse" + this.controlId;
-
         this.getResources(); 
-        //  if(this.inWorkflowProcess){
         this.getStates();
-        //}
         this.getBanks();
     }
 
@@ -82,12 +76,24 @@ export class RefundListFilterComponent implements OnInit {
 
     clean() {
         this.resourceId = null;
-        this.stateId = null;
+        this.stateIds = [];
         this.dateSince = null;
         this.dateTo = null;
-        this.inWorkflowProcess = this.inWorkflowProcess;
         this.bankId = null;
-        this.search();
+
+        sessionStorage.removeItem('lastRefundQuery');
+    }
+
+    getModel(){
+        this.model = {
+            userApplicantId: this.resourceId,
+            stateIds: this.stateIds,
+            dateSince: this.dateSince,
+            dateTo: this.dateTo,
+            bank: this.bankId
+        }
+
+        return this.model;
     }
 
     search() {
@@ -98,13 +104,10 @@ export class RefundListFilterComponent implements OnInit {
     setModel(){
         this.model = {
             userApplicantId: this.resourceId,
-            stateId: this.stateId,
+            stateIds: this.stateIds,
             dateSince: this.dateSince,
             dateTo: this.dateTo,
-            inWorkflowProcess: this.inWorkflowProcess,
             bank: this.bankId
         }
-
-        sessionStorage.setItem('lastRefundQuery', JSON.stringify(this.model));
     }
 }

@@ -1,8 +1,3 @@
-<div class="alert alert-gaps-info" *ngIf="!visible">
-    <i class="fa fa-info-circle"></i>
-    {{ 'refund.needParameters' | translate }}
-</div>
-
 <div class="table-responsive">
     <table class="table table-striped dataTable" role="grid" id="advancements-finalized" *ngIf="visible">
         <thead>
@@ -10,6 +5,7 @@
                 <th class="column-sm"># {{ 'advancement.advancementName' | translate }}</th>
                 <th class="column-md">{{ 'advancement.status' | translate }}</th> 
                 <th class="column-md">{{ 'advancement.userApplicant' | translate }}</th>
+                <th class="column-md">Superior</th>
                 <th class="column-sm">{{ 'advancement.type' | translate }}</th>
                 <th class="column-sm">{{ 'advancement.histories.createdDate' | translate }}</th>
                 <th class="column-xs">{{ 'advancement.currency' | translate }}</th>
@@ -25,6 +21,7 @@
                 <td class="column-sm">{{ item.id }}</td>
                 <td class="column-md"><label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusDesc }}</label></td>
                 <td class="column-md text-ellipsis">{{ item.userApplicantDesc }}</td>
+                <td class="column-md text-ellipsis">{{ item.manager }}</td>
                 <td class="column-sm">
                     <span *ngIf="item.type == 1">{{ 'advancement.salary' | translate }}</span>
                     <span *ngIf="item.type == 2">{{ 'advancement.viaticum' | translate }}</span>

@@ -14,7 +14,7 @@ namespace Sofco.Core.Services.AdvancementAndRefund
     {
         Response<string> Add(RefundModel model);
 
-        Response<List<WorkflowStateOptionModel>> GetStates();
+        Response<List<Option>> GetStates();
 
         Task<Response<File>> AttachFile(int refundId, Response<File> response, IFormFile file);
 

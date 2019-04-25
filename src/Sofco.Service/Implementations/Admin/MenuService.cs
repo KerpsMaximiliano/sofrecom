@@ -69,6 +69,7 @@ namespace Sofco.Service.Implementations.Admin
             model.IsGaf = userService.HasGafGroup();
             model.IsCdg = userService.HasCdgGroup();
             model.IsRrhh = userService.HasRrhhGroup();
+            model.IsCompliance = userService.HasComplianceGroup();
             model.DafMail = GetGroupMail(emailConfig.DafCode);
             model.CdgMail = GetGroupMail(emailConfig.CdgCode);
             model.PmoMail = GetGroupMail(emailConfig.PmoCode);

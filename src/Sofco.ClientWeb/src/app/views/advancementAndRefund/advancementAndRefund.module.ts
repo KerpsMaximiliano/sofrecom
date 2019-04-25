@@ -17,7 +17,6 @@ import { AdvancementService } from "app/services/advancement-and-refund/advancem
 import { AdvancementDetailComponent } from "./advancement/detail/advancement-detail.componet";
 import { AdvacementFormModule } from "./advancement/form/advancement-form.module";
 import { WorkflowModule } from "app/components/workflow/workflow.module";
-import { AdvancementListInProcessComponent } from "./advancement/list-in-process/list-in-process.component";
 import { AdvancementHistoryComponent } from "./advancement/history/advancement-histories.component";
 import { AdvancementSearchComponent } from "./advancement/search/advancement-search.component";
 import { NgSelectModule } from "@ng-select/ng-select";
@@ -45,7 +44,7 @@ import { UserApproverService } from "app/services/allocation-management/user-app
 import { PCheckModule } from "app/components/pcheck/pcheck.module";
 
 @NgModule({
-    declarations: [ AdvancementDetailComponent, AdvancementListInProcessComponent, AdvancementHistoryComponent,
+    declarations: [ AdvancementDetailComponent, AdvancementHistoryComponent,
                     AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundDelegateComponent,
                     RefundListComponent, RefundListFilterComponent, RefundListGridComponent, RefundHistoryComponent,
                     ListPaymentPendingComponent, AdvancementRefundSettingComponent, RefundsRelatedComponent, CurrentAccountComponent

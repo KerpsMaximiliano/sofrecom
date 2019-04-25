@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy, Input } from "@angular/core";
+import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
 import { I18nService } from "app/services/common/i18n.service";
 import { UserService } from "app/services/admin/user.service";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { UtilsService } from "app/services/common/utils.service";
+import { MenuService } from "app/services/admin/menu.service";
+import { environment } from "environments/environment";
 
 declare var $: any;
 
@@ -20,21 +22,19 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
 
     public resourceId: number;
     public typeId: number;
-    public stateId: number;
+    public stateIds: number[] = [];
     public dateSince: Date;
     public dateTo: Date;
     public bankId: number;
 
-    @ViewChild('inProcess') inProcess;
     @ViewChild('finalized') finalized;
-
-    public currentTab: number = 1;
 
     getResourcesSubscrip: Subscription;
     getStatesSubscrip: Subscription;
 
     constructor(private userService: UserService,
         private advancementService: AdvancementService,
+        private menuService: MenuService,
         private utilsService: UtilsService,
         private i18nService: I18nService) { }
 
@@ -49,10 +49,23 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         if(data){
             this.resourceId = data.resourceId;
             this.typeId = data.typeId;
-            this.stateId = data.stateId;
+            this.stateIds = data.stateIds;
             this.dateSince = data.dateSince;
             this.dateTo = data.dateTo;
             this.bankId = data.bankId;
+
+            this.search();
+        }
+        else {
+            if(this.menuService.userIsDaf) this.stateIds.push(environment.dafWorkflowStateId);
+            if(this.menuService.userIsGaf) this.stateIds.push(environment.gafWorkflowStateId);
+            if(this.menuService.userIsRrhh) this.stateIds.push(environment.rrhhWorkflowStateId);
+            if(this.menuService.userIsDirector) this.stateIds.push(environment.pendingDirectorWorkflowStateId);
+            if(this.menuService.userIsManager) this.stateIds.push(environment.pendingManagerWorkflowStateId);
+
+            if(this.stateIds.length > 0){
+                this.search();
+            }
         }
     }
 
@@ -87,7 +100,7 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
     clean() {
         this.resourceId = null;
         this.typeId = null;
-        this.stateId = null;
+        this.stateIds = [];
         this.dateSince = null;
         this.dateTo = null;
         this.bankId = null;
@@ -97,19 +110,13 @@ export class AdvancementSearchComponent implements OnInit, OnDestroy {
         var model = {
             resourceId: this.resourceId,
             typeId: this.typeId,
-            stateId: this.stateId,
+            stateIds: this.stateIds,
             dateSince: this.dateSince,
             dateTo: this.dateTo,
             bank: this.bankId
         }
 
-        if (this.currentTab == 1) {
-            this.inProcess.search(model);
-        }
-
-        if (this.currentTab == 3) {
-            this.finalized.search(model);
-        }
+        this.finalized.search(model);
     }
 
     collapse() {

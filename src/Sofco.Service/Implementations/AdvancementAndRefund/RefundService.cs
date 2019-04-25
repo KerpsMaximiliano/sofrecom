@@ -16,7 +16,9 @@ using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
+using Sofco.Domain.Models.Common;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
 using System;
@@ -24,8 +26,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Sofco.Domain.Enums;
-using Sofco.Domain.Models.Common;
 using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
@@ -297,13 +297,26 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        public Response<List<WorkflowStateOptionModel>> GetStates()
+        public Response<List<Option>> GetStates()
         {
-            var result = workflowStateRepository.GetStateByWorkflowTypeCode(settings.RefundWorkflowTypeCode);
+            var result = workflowStateRepository.GetStateByWorkflowTypeCode(settings.RefundWorkflowTypeCode)
+                .Select(x => new Option { Id = x.Id, Text = x.Name })
+                .ToList();
 
-            return new Response<List<WorkflowStateOptionModel>>
+            if (result.All(x => x.Id != settings.WorkflowStatusFinalizedId))
             {
-                Data = Translate(result)
+                var finalizeState = workflowStateRepository.Get(settings.WorkflowStatusFinalizedId);
+
+                result.Add(new Option { Id = finalizeState.Id, Text = finalizeState.Name });
+            }
+
+            var draft = result.SingleOrDefault(x => x.Id == settings.WorkflowStatusDraft);
+
+            if (draft != null) result.Remove(draft);
+
+            return new Response<List<Option>>
+            {
+                Data = result
             };
         }
 
@@ -319,7 +332,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 model.UserApplicantIds = GetUserApplicantIdsByCurrentManager();
             }
 
-            var result = refundRepository.GetByParameters(model, settings.WorkflowStatusRejectedId, settings.WorkflowStatusDraft);
+            var result = refundRepository.GetByParameters(model, settings.WorkflowStatusDraft);
 
             var response = new Response<List<RefundListResultModel>> { Data = new List<RefundListResultModel>() };
 
@@ -329,6 +342,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
             else
             {
+                var employeeDicc = new Dictionary<string, string>();
+
                 foreach (var refund in result)
                 {
                     if (ValidateAnalyticManagerAccess(refund, currentUser) || ValidateSectorAccess(refund, currentUser) || ValidateUserAccess(refund, currentUser))
@@ -337,12 +352,19 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         {
                             var mapped = mapper.Map<Refund, RefundListResultModel>(refund);
 
+                            if (!employeeDicc.ContainsKey(refund.UserApplicant.Email))
+                            {
+                                var employee = unitOfWork.EmployeeRepository.GetByEmail(refund.UserApplicant.Email);
+
+                                employeeDicc.Add(refund.UserApplicant.Email, employee?.Bank);
+                            }
+
+                            mapped.Bank = employeeDicc[refund.UserApplicant.Email];
+
                             response.Data.Add(mapped);
                         }
                     }
                 }
-
-                response.Data = ResolveManagerAndBank(response.Data);
             }
 
             if (!string.IsNullOrEmpty(model.Bank))
@@ -379,35 +401,28 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
         }
 
-        private List<WorkflowStateOptionModel> Translate(List<WorkflowState> data)
-        {
-            return mapper.Map<List<WorkflowState>, List<WorkflowStateOptionModel>>(data);
-        }
-
         private List<RefundListResultModel> Translate(List<Refund> data)
         {
-            var result = mapper.Map<List<Refund>, List<RefundListResultModel>>(data);
+            var employeeDicc = new Dictionary<string, string>();
+            var result = new List<RefundListResultModel>();
 
-            return ResolveManagerAndBank(result);
-        }
-
-        private List<RefundListResultModel> ResolveManagerAndBank(List<RefundListResultModel> models)
-        {
-            var userIds = models.Select(s => s.UserApplicantId).Distinct();
-
-            foreach (var userId in userIds)
+            foreach (var refund in data)
             {
-                var user = userData.GetUserLiteById(userId);
+                var item = mapper.Map<Refund, RefundListResultModel>(refund);
 
-                var employee = unitOfWork.EmployeeRepository.GetByEmail(user.Email);
-
-                foreach (var refundListResultModel in models.Where(s => s.UserApplicantId == userId))
+                if (!employeeDicc.ContainsKey(refund.UserApplicant.Email))
                 {
-                    refundListResultModel.Bank = employee.Bank;
+                    var employee = unitOfWork.EmployeeRepository.GetByEmail(refund.UserApplicant.Email);
+
+                    employeeDicc.Add(refund.UserApplicant.Email, employee?.Bank);
                 }
+
+                item.Bank = employeeDicc[refund.UserApplicant.Email];
+
+                result.Add(item);
             }
 
-            return models;
+            return result;
         }
 
         private bool ValidateSectorAccess(Refund entity, UserLiteModel currentUser)
@@ -436,7 +451,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             bool hasAccess = entity.Status.ActualTransitions.Any(x => x.WorkflowStateAccesses.Any(s => s.UserSource.SourceId == currentUser.Id && s.UserSource.Code == settings.UserUserSource && s.AccessDenied == false));
 
             return hasAccess;
-        } 
+        }
 
         private bool ValidateAnalyticManagerAccess(Refund entity, UserLiteModel currentUser)
         {

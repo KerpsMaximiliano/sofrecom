@@ -11,7 +11,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public DateTime? DateTo { get; set; }
 
-        public int? StateId { get; set; }
+        public int[] StateIds { get; set; }
 
         public bool InWorkflowProcess { get; set; }
 

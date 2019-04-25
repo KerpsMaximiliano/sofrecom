@@ -11,7 +11,7 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<string> Add(AdvancementModel model);
         Response Update(AdvancementModel model);
         Response<AdvancementEditModel> Get(int id);
-        Response<IList<AdvancementListItem>> GetAllInProcess();
+        //Response<IList<AdvancementListItem>> GetAllInProcess();
         Response<IList<WorkflowHistoryModel>> GetHistories(int id);
         Response<IList<AdvancementListItem>> GetAllFinalized(AdvancementSearchFinalizedModel model);
         Response<bool> CanLoad();
