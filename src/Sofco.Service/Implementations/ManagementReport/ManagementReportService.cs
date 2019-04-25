@@ -303,6 +303,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             if (month.Value != entity.Cost)
                             {
                                 entity.Cost = month.Value ?? 0;
+                                entity.Adjustment = month.Adjustment;
                                 entity.ModifiedAt = DateTime.UtcNow;
                                 entity.ModifiedById = currentUser.Id;
 
@@ -315,6 +316,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             {
                                 entity.IdAnalytic = pDetailCost.AnalyticId;
                                 entity.Cost = month.Value ?? 0;
+                                entity.Adjustment = month.Adjustment;
                                 entity.MonthYear = month.MonthYear;
                                 entity.TypeId = resource.TypeId;
                                 entity.EmployeeId = resource.EmployeeId;
@@ -448,6 +450,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     if (monthValue != null)
                     {
                         monthDetail.Value = monthValue.Cost;
+                        monthDetail.OriginalValue = monthValue.Cost;
+                        monthValue.Adjustment = monthValue.Adjustment;
                         monthDetail.CostDetailId = monthValue.Id;
                     }
 

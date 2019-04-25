@@ -28,10 +28,10 @@
                 <td *ngFor="let monthCost of employee.monthsCost; let i = index">
                     <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
                         [ngClass]="AccessEmployeeClass(monthCost)">
-                        {{ CalculateSalary(monthCost, i) | amountFormat }} 
+                        {{ monthCost.value | amountFormat }}
                     </label>
                 </td>
-            </tr>          
+            </tr>
             <tr>
                 <th>Total Sueldo</th>
                 <td *ngFor="let month of months; let i = index">
@@ -52,7 +52,7 @@
                 <th>{{ item.display }}</th>
                 <td *ngFor="let monthCost of item.monthsCost; let i = index">
                     <label class="label" (click)="openEditItemModal(monthCost, item, i)"
-                        [ngClass]="(canEdit == true) ? 'cursor-pointer' : 'not-allowed'">
+                        [ngClass]="resourcesClass(monthCost, item)">
                         {{ monthCost.value | amountFormat }}
                     </label>
                 </td>
@@ -64,18 +64,17 @@
 <br>
 <div class="row" *ngIf="otherResources.length > 0">
     <div class="col-md-4">
-         <select class="form-control" id="otherResourceId" 
-         name="otherResourceId" [(ngModel)]="otherResourceId">
+        <select class="form-control" id="otherResourceId" name="otherResourceId" [(ngModel)]="otherResourceId">
             <option [value]="otherResource.typeId" *ngFor="let otherResource of otherResources">
                 {{otherResource.typeName}}
-            </option> 
-        </select> 
+            </option>
+        </select>
     </div>
     <div class="col-md-4" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
         <button class="btn btn-success btn-sm" type="button" (click)="addOtherCost()">
             Agregar
             <i class="fa fa-plus"></i></button>
-    </div>    
+    </div>
 </div>
 
 <div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
@@ -83,7 +82,8 @@
             class="fa fa-save"></i></button>
 </div>
 
-<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()" (close)="EditItemOnClose()" [isSaveEnabled]="editItemMonto.valid">
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()" (close)="EditItemOnClose()"
+    [isSaveEnabled]="editItemMonto.valid">
 
     <div class="row">
         <div class="col-sm-12">
@@ -94,18 +94,29 @@
                         readonly="">
                 </fieldset>
             </div>
+            <div class="form-group" *ngIf="modalEmployee">
+                <label class="control-label">Monto final</label>
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input class="form-control" id="readOnlyInput" type="text"
+                        placeholder="{{ editItemMonto.value + editItemMonto.value * editItemAdjustment.value / 100}}"
+                        readonly="">
+                </div>
+            </div>
             <div class="form-group">
                 <label class="control-label">Monto</label>
                 <div class="input-group">
                     <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
                     <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto">
-                    <!-- [(ngModel)]="monthSelected.value"> -->
                     <span class="input-group-addon" *ngIf="modalPercentage">%</span>
                 </div>
-                <small class="form-text text-muted">
-                    <i class="fa fa-exclamation-triangle text-warning" aria-hidden="true"></i>
-                    El monto se modificara apartir de la fecha seleccionada hasta el final del proyecto
-                </small>
+            </div>
+            <div class="form-group" *ngIf="modalEmployee">
+                <label class="control-label">% Ajuste</label>
+                <div class="input-group">
+                    <input type="number" decimalFormat class="form-control" [formControl]="editItemAdjustment">
+                    <span class="input-group-addon">%</span>
+                </div>
             </div>
         </div>
     </div>

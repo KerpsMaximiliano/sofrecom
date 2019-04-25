@@ -19,6 +19,8 @@ namespace Sofco.Core.Models.ManagementReport
     {
         public string Display { get; set; }
         public float? Value { get; set; }
+        public float? OriginalValue { get; set; }
+        public int? Adjustment { get; set; }
         public DateTime MonthYear { get; set; }
         public int CostDetailId { get; set; }
         public bool HasAlocation { get; set; }

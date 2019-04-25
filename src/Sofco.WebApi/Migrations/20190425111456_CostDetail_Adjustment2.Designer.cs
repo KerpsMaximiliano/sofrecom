@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190425111456_CostDetail_Adjustment2")]
+    partial class CostDetail_Adjustment2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1176,40 +1178,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("InvoiceHistories");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.Billing.Opportunity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal?>("ActualValue");
-
-                    b.Property<string>("ContactId")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("CrmId")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("Number")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("ParentContactName")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("ProjectManagerId")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("ProjectManagerName")
-                        .HasMaxLength(200);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Opportunities");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Project", b =>
                 {
                     b.Property<int>("Id")
@@ -1465,9 +1433,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("CelPhone")
                         .HasMaxLength(50);
-
-                    b.Property<string>("ContactEmail")
-                        .HasMaxLength(100);
 
                     b.Property<decimal?>("CurrencyExchange");
 
