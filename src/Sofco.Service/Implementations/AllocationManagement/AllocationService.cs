@@ -361,7 +361,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     var percentageSum = allocations.Sum(x => x.Percentage);
 
-                    if (percentageSum < 100) AddUnassginRow(listWithoutMissingPercentage, employee, months, 100 - percentageSum, date);
+                    if (percentageSum < 100)
+                    {
+                        if (!(!parameters.Unassigned && parameters.AnalyticIds.Any()))
+                        {
+                            AddUnassginRow(listWithoutMissingPercentage, employee, months, 100 - percentageSum, date);
+                        }
+                    }
 
                     if (!parameters.Unassigned)
                     {
