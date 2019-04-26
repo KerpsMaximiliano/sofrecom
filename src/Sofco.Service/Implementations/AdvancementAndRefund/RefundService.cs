@@ -343,6 +343,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             else
             {
                 var employeeDicc = new Dictionary<string, string>();
+                var employeeNameDicc = new Dictionary<string, string>();
 
                 foreach (var refund in result)
                 {
@@ -357,9 +358,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                                 var employee = unitOfWork.EmployeeRepository.GetByEmail(refund.UserApplicant.Email);
 
                                 employeeDicc.Add(refund.UserApplicant.Email, employee?.Bank);
+                                employeeNameDicc.Add(refund.UserApplicant.Email, employee?.Name);
                             }
 
                             mapped.Bank = employeeDicc[refund.UserApplicant.Email];
+                            mapped.Bank = employeeNameDicc[refund.UserApplicant.Email];
 
                             response.Data.Add(mapped);
                         }
@@ -404,6 +407,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private List<RefundListResultModel> Translate(List<Refund> data)
         {
             var employeeDicc = new Dictionary<string, string>();
+            var employeeNameDicc = new Dictionary<string, string>();
             var result = new List<RefundListResultModel>();
 
             foreach (var refund in data)
@@ -415,8 +419,10 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     var employee = unitOfWork.EmployeeRepository.GetByEmail(refund.UserApplicant.Email);
 
                     employeeDicc.Add(refund.UserApplicant.Email, employee?.Bank);
+                    employeeNameDicc.Add(refund.UserApplicant.Email, employee?.Name);
                 }
 
+                item.UserApplicantName = employeeNameDicc[refund.UserApplicant.Email];
                 item.Bank = employeeDicc[refund.UserApplicant.Email];
 
                 result.Add(item);
@@ -473,54 +479,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
             return hasAccess;
-        }
-
-        public Response<IList<PaymentPendingModel>> GetAllPaymentPending()
-        {
-            var response = new Response<IList<PaymentPendingModel>>();
-            response.Data = new List<PaymentPendingModel>();
-
-            var employeeDicc = new Dictionary<string, string>();
-
-            var refunds = unitOfWork.RefundRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
-
-            foreach (var refund in refunds)
-            {
-                var item = new PaymentPendingModel
-                {
-                    Id = refund.Id,
-                    UserApplicantId = refund.UserApplicantId,
-                    UserApplicantDesc = refund.UserApplicant?.Name,
-                    CurrencyId = refund.CurrencyId,
-                    CurrencyDesc = refund.Currency?.Text,
-                    WorkflowId = refund.WorkflowId,
-                    Type = "Reintegro",
-                    NextWorkflowStateId = settings.WorkflowStatusFinalizedId,
-                };
-
-                var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
-
-                if (tuple.Item1.Any())
-                {
-                    //item.Ammount = item.AmmountPesos = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
-                }
-                else
-                {
-                    //item.Ammount = item.AmmountPesos = refund.TotalAmmount;
-                }
-
-                if (refund.CurrencyExchange > 0)
-                {
-                    //item.AmmountPesos *= refund.CurrencyExchange;
-                    //item.CurrencyExchange = refund.CurrencyExchange;
-                }
-
-                item.Bank = GetBank(refund.UserApplicant?.Email, employeeDicc);
-
-                response.Data.Add(item);
-            }
-
-            return response;
         }
 
         public Response<IList<Option>> GetAnalitycs()
@@ -637,18 +595,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
             return response;
-        }
-
-        private string GetBank(string email, Dictionary<string, string> employeeDictionary)
-        {
-            if (!employeeDictionary.ContainsKey(email))
-            {
-                var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
-
-                employeeDictionary.Add(email, employee?.Bank);
-            }
-
-            return employeeDictionary[email];
         }
     }
 }

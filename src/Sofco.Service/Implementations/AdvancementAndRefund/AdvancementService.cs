@@ -159,50 +159,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        public Response<IList<PaymentPendingModel>> GetAllPaymentPending()
-        {
-            var response = new Response<IList<PaymentPendingModel>>();
-            response.Data = new List<PaymentPendingModel>();
-
-            var employeeDicc = new Dictionary<string, string>();
-            var employeeManagerDicc = new Dictionary<string, string>();
-
-            var hasAllAccess = roleManager.HasAdvancementAccess();
-
-            if (!hasAllAccess) return response;
-
-            var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
-
-            response.Data = advancements.Select(x =>
-            {
-                var item = new PaymentPendingModel
-                {
-                    Id = x.Id,
-                    UserApplicantId = x.UserApplicantId,
-                    UserApplicantDesc = x.UserApplicant?.Name,
-                    CurrencyId = x.CurrencyId,
-                    CurrencyDesc = x.Currency?.Text,
-                    Ammount = x.Ammount,
-                    //AmmountPesos = x.Ammount,
-                    WorkflowId = x.WorkflowId,
-                    Type = "Adelanto",
-                    NextWorkflowStateId = settings.WorkflowStatusApproveId
-                };
-
-                SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
-
-                if (x.UserApplicant != null)
-                {
-                    item.Bank = employeeDicc[x.UserApplicant?.Email];
-                    item.Manager = employeeManagerDicc[x.UserApplicant?.Email];
-                }
-
-                return item;
-            }).ToList();
-
-            return response;
-        }
-
         public Response<AdvancementRefundModel> GetResume(IList<int> ids)
         {
             var data = unitOfWork.AdvancementRepository.GetAdvancementsAndRefundsByAdvancementId(ids);
@@ -255,7 +211,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             };
         }
 
-        private void SetBankAndManager(string email, Dictionary<string, string> employeeDictionary, Dictionary<string, string> employeeManagerDictionary)
+        private void SetBankAndManager(string email, Dictionary<string, string> employeeDictionary,
+            Dictionary<string, string> employeeManagerDictionary, Dictionary<string, string> employeeNameDictionary)
         {
             if (!employeeDictionary.ContainsKey(email))
             {
@@ -263,6 +220,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 employeeDictionary.Add(email, employee?.Bank);
                 employeeManagerDictionary.Add(email, employee?.Manager?.Name);
+                employeeNameDictionary.Add(email, employee?.Name);
             }
         }
 
@@ -284,6 +242,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var employeeDicc = new Dictionary<string, string>();
             var employeeManagerDicc = new Dictionary<string, string>();
+            var employeeNameDicc = new Dictionary<string, string>();
 
             var currentUser = userData.GetCurrentUser();
 
@@ -297,12 +256,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 {
                     var item = new AdvancementListItem(x);
 
-                    SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+                    SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameDicc);
 
                     if (x.UserApplicant != null)
                     {
                         item.Bank = employeeDicc[x.UserApplicant?.Email];
                         item.Manager = employeeManagerDicc[x.UserApplicant?.Email];
+                        item.UserApplicantDesc = employeeNameDicc[x.UserApplicant?.Email];
                     }
 
                     return item;
@@ -318,12 +278,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         {
                             var item = new AdvancementListItem(advancement);
 
-                            SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+                            SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameDicc);
 
                             if (advancement.UserApplicant != null)
                             {
                                 item.Bank = employeeDicc[advancement.UserApplicant?.Email];
                                 item.Manager = employeeManagerDicc[advancement.UserApplicant?.Email];
+                                item.UserApplicantDesc = employeeNameDicc[advancement.UserApplicant?.Email];
                             }
 
                             response.Data.Add(item);

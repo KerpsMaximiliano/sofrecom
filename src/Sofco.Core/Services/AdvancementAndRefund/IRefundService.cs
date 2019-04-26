@@ -30,8 +30,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
 
         Response Delete(int id);
 
-        Response<IList<PaymentPendingModel>> GetAllPaymentPending();
-
         Response<IList<Option>> GetAnalitycs();
 
         Response<int> Delegate(int userId);

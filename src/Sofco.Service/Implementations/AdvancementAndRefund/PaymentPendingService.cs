@@ -32,19 +32,20 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var employeeDicc = new Dictionary<string, string>();
             var employeeManagerDicc = new Dictionary<string, string>();
+            var employeeNameManagerDicc = new Dictionary<string, string>();
 
             var hasAccess = roleManager.IsDafOrGaf();
 
             if (!hasAccess) return response;
 
-            FillAdvancements(employeeDicc, employeeManagerDicc, response);
+            FillAdvancements(employeeDicc, employeeManagerDicc, employeeNameManagerDicc, response);
 
-            FillRefunds(response, employeeDicc, employeeManagerDicc);
+            FillRefunds(response, employeeDicc, employeeManagerDicc, employeeNameManagerDicc);
 
             return response;
         }
 
-        private void FillRefunds(Response<IList<PaymentPendingModel>> response, Dictionary<string, string> employeeDicc, Dictionary<string, string> employeeManagerDicc)
+        private void FillRefunds(Response<IList<PaymentPendingModel>> response, Dictionary<string, string> employeeDicc, Dictionary<string, string> employeeManagerDicc, Dictionary<string, string> employeeNameManagerDicc)
         {
             var refunds = unitOfWork.RefundRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
 
@@ -70,12 +71,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         } }
                     };
 
-                    SetBankAndManager(refund.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+                    SetBankAndManager(refund.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameManagerDicc);
 
                     if (refund.UserApplicant != null)
                     {
                         item.Bank = employeeDicc[refund.UserApplicant.Email];
                         item.Manager = employeeManagerDicc[refund.UserApplicant?.Email];
+                        item.UserApplicantDesc = employeeNameManagerDicc[refund.UserApplicant?.Email];
                     }
 
                     var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
@@ -120,7 +122,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
         }
 
-        private void FillAdvancements(Dictionary<string, string> employeeDicc, Dictionary<string, string> employeeManagerDicc, Response<IList<PaymentPendingModel>> response)
+        private void FillAdvancements(Dictionary<string, string> employeeDicc, Dictionary<string, string> employeeManagerDicc, Dictionary<string, string> employeeNameManagerDicc, Response<IList<PaymentPendingModel>> response)
         {
             var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStatePaymentPending);
 
@@ -147,12 +149,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         } }
                     };
 
-                    SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
+                    SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameManagerDicc);
 
                     if (advancement.UserApplicant != null)
                     {
                         item.Bank = employeeDicc[advancement.UserApplicant.Email];
                         item.Manager = employeeManagerDicc[advancement.UserApplicant?.Email];
+                        item.UserApplicantDesc = employeeNameManagerDicc[advancement.UserApplicant?.Email];
                     }
 
                     response.Data.Add(item);
@@ -172,14 +175,19 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
         }
 
-        private void SetBankAndManager(string email, Dictionary<string, string> employeeDictionary, Dictionary<string, string> employeeManagerDictionary)
+        private void SetBankAndManager(string email, Dictionary<string, string> employeeDictionary,
+            Dictionary<string, string> employeeManagerDictionary, Dictionary<string, string> employeeNameDictionary)
         {
             if (!employeeDictionary.ContainsKey(email))
             {
                 var employee = unitOfWork.EmployeeRepository.GetByEmail(email);
 
-                employeeDictionary.Add(email, employee?.Bank);
-                employeeManagerDictionary.Add(email, employee?.Manager?.Name);
+                if (employee != null)
+                {
+                    employeeDictionary.Add(email, employee.Bank);
+                    employeeNameDictionary.Add(email, employee.Name);
+                    employeeManagerDictionary.Add(email, employee.Manager?.Name);
+                }
             }
         }
     }

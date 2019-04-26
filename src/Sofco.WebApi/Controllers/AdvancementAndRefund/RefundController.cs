@@ -64,14 +64,6 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
-        [HttpGet("paymentPending")]
-        public IActionResult GetAllPaymentPending()
-        {
-            var response = refundService.GetAllPaymentPending();
-
-            return this.CreateResponse(response);
-        }
-
         [HttpPost("transition")]
         public IActionResult DoTransition([FromBody] WorkflowChangeStatusParameters parameters)
         {
