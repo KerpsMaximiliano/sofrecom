@@ -42,6 +42,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { RefundDelegateComponent } from "./refund/delegate/refund-delegate";
 import { UserApproverService } from "app/services/allocation-management/user-approver.service";
 import { PCheckModule } from "app/components/pcheck/pcheck.module";
+import { PaymentPendingService } from "app/services/advancement-and-refund/paymentPending.service";
 
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementHistoryComponent,
@@ -54,7 +55,8 @@ import { PCheckModule } from "app/components/pcheck/pcheck.module";
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
                    AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule, AmountFormatModule ],
 
-    providers   : [ AdvancementService, UserService, I18nService, RefundService, AdvancementRefundSettingService, CurrentAccountService, MenuService, UserApproverService ],
+    providers   : [ AdvancementService, UserService, I18nService, RefundService, PaymentPendingService,
+                    AdvancementRefundSettingService, CurrentAccountService, MenuService, UserApproverService ],
 
     exports     : []
 })

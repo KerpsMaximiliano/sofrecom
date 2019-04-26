@@ -125,64 +125,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             return response;
         }
 
-        //public Response<IList<AdvancementListItem>> GetAllInProcess()
-        //{
-        //    var response = new Response<IList<AdvancementListItem>>();
-        //    response.Data = new List<AdvancementListItem>();
-
-        //    var employeeDicc = new Dictionary<string, string>();
-        //    var employeeManagerDicc = new Dictionary<string, string>();
-
-        //    var currentUser = userData.GetCurrentUser();
-
-        //    var hasAllAccess = roleManager.HasAdvancementAccess();
-
-        //    var advancements = unitOfWork.AdvancementRepository.GetAllInProcess(settings.WorkflowStatusRejectedId, settings.WorkflowStatusDraft);
-
-        //    if (hasAllAccess)
-        //    {
-        //        response.Data = advancements.Select(x =>
-        //        {
-        //            var item = new AdvancementListItem(x);
-
-        //            SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
-
-        //            if (x.UserApplicant != null)
-        //            {
-        //                item.Bank = employeeDicc[x.UserApplicant?.Email];
-        //                item.Manager = employeeManagerDicc[x.UserApplicant?.Email];
-        //            }
-
-        //            return item;
-        //        }).ToList();
-        //    }
-        //    else
-        //    {
-        //        foreach (var advancement in advancements)
-        //        {
-        //            if (ValidateManagerAccess(advancement, currentUser) || ValidateSectorAccess(advancement, currentUser) || ValidateUserAccess(advancement, currentUser))
-        //            { 
-        //                if (response.Data.All(x => x.Id != advancement.Id))
-        //                {
-        //                    var item = new AdvancementListItem(advancement);
-
-        //                    SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc);
-
-        //                    if (advancement.UserApplicant != null)
-        //                    {
-        //                        item.Bank = employeeDicc[advancement.UserApplicant?.Email];
-        //                        item.Manager = employeeManagerDicc[advancement.UserApplicant?.Email];
-        //                    }
-
-        //                    response.Data.Add(item);
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return response;
-        //}
-
         public Response Delete(int id)
         {
             var response = new Response();
@@ -241,7 +183,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     CurrencyId = x.CurrencyId,
                     CurrencyDesc = x.Currency?.Text,
                     Ammount = x.Ammount,
-                    AmmountPesos = x.Ammount,
+                    //AmmountPesos = x.Ammount,
                     WorkflowId = x.WorkflowId,
                     Type = "Adelanto",
                     NextWorkflowStateId = settings.WorkflowStatusApproveId

@@ -171,6 +171,9 @@
   <data name="PaymentFormRequired" xml:space="preserve">
     <value>advancementAndRefund/advancement.paymentFormRequired</value>
   </data>
+  <data name="PaymentPendingError" xml:space="preserve">
+    <value>Ocurrio un error al actualizar el adelanto #{0} del solicitante {1}</value>
+  </data>
   <data name="StartDateReturnLessThanToday" xml:space="preserve">
     <value>advancementAndRefund/advancement.startDateReturnLessThanToday</value>
   </data>

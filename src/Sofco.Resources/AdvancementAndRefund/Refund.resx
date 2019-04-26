@@ -177,6 +177,9 @@
   <data name="NullModel" xml:space="preserve">
     <value>advancementAndRefund/refund.nullModel</value>
   </data>
+  <data name="PaymentPendingError" xml:space="preserve">
+    <value>Ocurrio un error al actualizar el reintegro #{0} del solicitante {1}</value>
+  </data>
   <data name="UpdateSuccess" xml:space="preserve">
     <value>advancementAndRefund/refund.updateSuccess</value>
   </data>

@@ -18,5 +18,7 @@ namespace Sofco.Core.Managers
         bool HasAccessForRefund();
 
         bool HasAdvancementAccess();
+
+        bool IsDafOrGaf();
     }
 }

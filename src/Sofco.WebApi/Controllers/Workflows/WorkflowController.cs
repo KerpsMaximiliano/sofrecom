@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.Workflow;
+using Sofco.Domain.Models.AdvancementAndRefund;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
+using System.Collections.Generic;
 
 namespace Sofco.WebApi.Controllers.Workflows
 {
@@ -63,6 +66,45 @@ namespace Sofco.WebApi.Controllers.Workflows
             var response = workflowService.GetStates();
 
             return this.CreateResponse(response);
+        }
+
+        [HttpPost("transition")]
+        public IActionResult DoTransition([FromBody] IList<WorkflowChangeStatusMasiveParameters> parameters)
+        {
+            var finalResponse = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel() };
+
+            foreach (var parameter in parameters)
+            {
+                var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel() };
+
+                if (parameter.Type == "refund")
+                {
+                    workflowService.DoTransition<Refund, RefundHistory>(parameter, response);
+
+                    if (response.HasErrors())
+                    {
+                        var msg = string.Format(Resources.AdvancementAndRefund.Refund.PaymentPendingError);
+                        finalResponse.AddErrorAndNoTraslate(msg);
+                    }
+                }
+                else if (parameter.Type == "advancement")
+                {
+                    workflowService.DoTransition<Advancement, AdvancementHistory>(parameter, response);
+
+                    if (response.HasErrors())
+                    {
+                        var msg = string.Format(Resources.AdvancementAndRefund.Advancement.PaymentPendingError, parameter.EntityId, parameter.UserApplicantName);
+                        finalResponse.AddErrorAndNoTraslate(msg);
+                    }
+                }
+            }
+
+            if (!finalResponse.HasErrors())
+            {
+                finalResponse.AddSuccess(Resources.Workflow.Workflow.TransitionSuccess);
+            }
+
+            return this.CreateResponse(finalResponse);
         }
     }
 }

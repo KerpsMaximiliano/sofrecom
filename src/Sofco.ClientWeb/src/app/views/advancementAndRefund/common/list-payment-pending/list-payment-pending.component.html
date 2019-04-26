@@ -30,22 +30,10 @@
                         <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="userId"></ng-select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">{{'advancement.bank' | translate }}</label>
                         <ng-select [items]="banks" bindLabel="text" bindValue="id" [(ngModel)]="bankId"></ng-select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="control-label">{{ 'advancement.currency' | translate }}</label>
-                        <ng-select [items]="currencies" bindLabel="text" bindValue="id" [(ngModel)]="currencyId"></ng-select>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label class="control-label">{{ 'advancement.type' | translate }}</label>
-                        <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId"></ng-select>
                     </div>
                 </div>
             </div>
@@ -64,7 +52,7 @@
                 <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
                 <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
 
-                <button *ngIf="menuService.hasFunctionality('ADVAN', 'PP-MASIVE-APPROVAL')" [disabled]="noneResourseSelected()" class="btn btn-primary btn-sm" (click)="approveAll()">{{ 'ACTIONS.approveSelected' | translate }} <i class="fa fa-plus"></i></button>  
+                <button *ngIf="menuService.hasFunctionality('ADVAN', 'PP-MASIVE-APPROVAL')" [disabled]="noneResourseSelected()" class="btn btn-primary btn-sm" (click)="approveAll()">Pagar seleccionados</button>  
             </div>
         </div>
         <div class="ibox-content">
@@ -73,26 +61,20 @@
                     <tr>
                         <th></th>
                         <th>{{ 'advancement.bank' | translate }}</th>
-                        <th>{{ 'advancement.currency' | translate }}</th>
-                        <th>Cotización</th>
                         <th>{{ 'advancement.userApplicant' | translate }}</th>
+                        <th>{{ 'advancement.currency' | translate }}</th>
                         <th>{{ 'advancement.ammount' | translate }}</th>
-                        <th>Monto Pesos</th>
-                        <th>{{ 'advRefSetting.type' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody> 
-                    <tr *ngFor="let item of model" class="pointer">
+                    <tr *ngFor="let item of modelFiltered" class="pointer">
                         <td class="column-xs text-center">
                             <icheck [(checked)]="item.selected" (checkedChange)="calculateTotals()"></icheck>
                         </td>
                         <td (click)="goToDetail(item)">{{ item.bank }}</td>
-                        <td (click)="goToDetail(item)">{{ item.currencyDesc }}</td>
-                        <td (click)="goToDetail(item)">{{ item.currencyExchange }}</td>
                         <td (click)="goToDetail(item)">{{ item.userApplicantDesc }}</td>
+                        <td (click)="goToDetail(item)">{{ item.currencyDesc }}</td>
                         <td (click)="goToDetail(item)">{{ item.ammount | amountFormat }}</td>
-                        <td (click)="goToDetail(item)">{{ item.ammountPesos | amountFormat }}</td>
-                        <td (click)="goToDetail(item)">{{ item.type }}</td>
                     </tr>
                 </tbody>
             </table>   
