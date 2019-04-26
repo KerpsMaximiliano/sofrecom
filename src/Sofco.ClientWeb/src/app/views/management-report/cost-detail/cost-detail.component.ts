@@ -368,5 +368,40 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return cssClass;
     }
 
+    canDeleteResources(item){
+        var canEdit = false;
+        if(item.otherResource){
+            canEdit = true;
+        }
+        item.monthsCost.forEach(month => {
+            if(month.value > 0){
+                canEdit = false
+                return canEdit
+            }
+        });
+
+        return canEdit
+    }
+
+    deleteResources(item, index){
+
+        this.save()
+
+        this.fundedResources.splice(index, 1)
+        this.otherResources.push(item)
+
+        this.otherResources.sort(function (a, b) {
+            if (a.display > b.display) {
+              return 1;
+            }
+            if (a.display < b.display) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+
+    }
+
 }
 

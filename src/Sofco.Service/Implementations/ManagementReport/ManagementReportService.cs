@@ -217,7 +217,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     billingTotal.MonthValues = billingTotal.MonthValues.OrderBy(x => x.Year).ThenBy(x => x.Month).ToList();
                 }
             }
-            
+
             return response;
         }
 
@@ -508,7 +508,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         monthDetail.Value = monthValue.Cost;
                         monthDetail.CostDetailId = monthValue.Id;
-                        hasValue = true;
+                        if (monthDetail.Value > 0)
+                        {
+                            hasValue = true;
+                        }
                     }
 
                     monthDetail.Display = mounth.Display;
@@ -518,10 +521,16 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 //Separo los campos por defectos de los ocultos
                 //var typeWithoutValue = detailResource.MonthsCost.Where(m => m.Value == null || m.Value == 0).ToList();
-                if(type.Default == true || hasValue)
+                if (type.Default == false)
+                {
+                    detailResource.OtherResource = true;
+                }
+
+                if (type.Default == true || hasValue)
                 {
                     detailResource.show = true;
                 }
+
 
                 fundedResources.Add(detailResource);
             }

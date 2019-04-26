@@ -13,7 +13,17 @@ td {
 }
 
 .first-column {
-  width: 250px;
+  width: 260px;
+
+  p{
+      width: 240px;
+      float: left;
+  }
+
+  i{
+      float: right;
+      color: #BD3446;
+  }
 }
 
 .label {

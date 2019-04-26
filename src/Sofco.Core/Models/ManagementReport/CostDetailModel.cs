@@ -33,6 +33,7 @@ namespace Sofco.Core.Models.ManagementReport
         public string TypeName { get; set; }
         public string Display { get; set; }
         public bool show { get; set; }
+        public bool OtherResource { get; set; }
 
         public IList<MonthDetailCost> MonthsCost { get; set; }
     }
