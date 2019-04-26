@@ -141,7 +141,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     EditItem() {
 
         this.monthSelected.value = this.editItemMonto.value
-        debugger
+  
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
         if (this.itemSelected.typeName == 'Empleados') {
 
@@ -269,7 +269,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var totalSalary = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
-                totalSalary += this.CalculateSalary(employee.monthsCost[index], index)
+                totalSalary += employee.monthsCost[index].value
             }
         })
 
@@ -294,7 +294,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         //Sumo el totol de los sueldos
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
-                totalCost += this.CalculateSalary(employee.monthsCost[index], index)
+                totalCost += employee.monthsCost[index].value
             }
         })
         //Sumo los demas gastos excepto el % de Ajuste
@@ -312,7 +312,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var totalSalary = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
-                totalSalary += this.CalculateSalary(employee.monthsCost[index], index)
+                totalSalary += employee.monthsCost[index].value
             }
         })
 
