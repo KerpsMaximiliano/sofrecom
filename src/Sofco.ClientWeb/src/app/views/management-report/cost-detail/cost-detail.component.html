@@ -3,12 +3,12 @@
         <thead>
             <tr>
                 <th class="first-column"></th>
-                <th class="text-center" *ngFor="let month of months">{{ month.display }}</th>
+                <th class="text-center headcol" *ngFor="let month of months">{{ month.display }}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th>Total Costos</th>
+                <td>Total Costos</td>
                 <td *ngFor="let month of months; let i = index">
                     <label class="label label-total">
                         {{ calculateTotalCosts(i) | amountFormat }}
@@ -16,7 +16,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Cantidad Recursos costeados</th>
+                <td>Cantidad Recursos costeados</td>
                 <td *ngFor="let month of months; let i = index">
                     <label class="label label-cant-resources">
                         {{ calculateAssignedEmployees(i) }}
@@ -24,7 +24,7 @@
                 </td>
             </tr>
             <tr class="active" *ngFor="let employee of employees">
-                <th>{{ employee.display }} </th>
+                <td>{{ employee.display }} </td>
                 <td *ngFor="let monthCost of employee.monthsCost; let i = index">
                     <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
                         [ngClass]="AccessEmployeeClass(monthCost)">
@@ -33,7 +33,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Total Sueldo</th>
+                <td>Total Sueldo</td>
                 <td *ngFor="let month of months; let i = index">
                     <label class="label label-salary">
                         {{ calculateAllSalary(i) | amountFormat }}
@@ -41,7 +41,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Cargas (0.51 del sueldo)</th>
+                <td>Cargas (0.51 del sueldo)</td>
                 <td *ngFor="let month of months; let i = index">
                     <label class="label label-load">
                         {{ calculateLoads(i) | amountFormat }}
@@ -49,12 +49,12 @@
                 </td>
             </tr>
             <tr *ngFor="let item of fundedResources; let i = index">
-                <th class="first-column">
+                <td class="first-column">
                     <p>
                         {{ item.display }}
                     </p>
                     <i class="fa fa-2x fa-trash pointer" (click)="deleteResources(item, i)" *ngIf="canDeleteResources(item)"></i>
-                </th>
+                </td>
                 <td *ngFor="let monthCost of item.monthsCost; let i = index">
                     <label class="label" (click)="openEditItemModal(monthCost, item, i)"
                         [ngClass]="resourcesClass(monthCost, item)">
