@@ -96,12 +96,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             if (this.otherResources.length > 0) {
                 this.otherResourceId = this.otherResources[0].typeId;
             }
-
         },
-            error => {
-                this.messageService.closeLoading();
-            });
-
+        error => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item, indexMonth) {
@@ -116,7 +112,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.indexSelected = indexMonth;
                 this.itemSelected = item;
                 this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
-                this.modalPercentage = false
+                this.modalPercentage = false;
 
                 if (this.itemSelected.typeName == 'Empleados') {
                     this.modalEmployee = true
@@ -151,7 +147,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.monthSelected.value = this.monthSelected.originalValue + this.monthSelected.originalValue * this.monthSelected.adjustment / 100
             }
             else {
-                this.monthSelected.value = this.editItemMonto.value
+                this.monthSelected.adjustment = 0;
+                this.monthSelected.value = this.editItemMonto.value;
             }
 
             for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
