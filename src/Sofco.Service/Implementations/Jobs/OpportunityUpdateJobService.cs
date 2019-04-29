@@ -30,8 +30,6 @@ namespace Sofco.Service.Implementations.Jobs
         {
             var crmOpportunities = crmOpportunityService.GetAll();
 
-            unitOfWork.BeginTransaction();
-
             foreach (var crmOpportunity in crmOpportunities)
             {
                 var opportunity = unitOfWork.OpportunityRepository.GetByCrmId(crmOpportunity.Id.ToString());
@@ -44,7 +42,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             try
             {
-                unitOfWork.Commit();
+                unitOfWork.Save();
             }
             catch (Exception e)
             {
@@ -57,7 +55,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.OpportunityRepository.Update(Translate(crmOpportunity, opportunity));
-                unitOfWork.Save();
             }
             catch (Exception e)
             {
@@ -70,7 +67,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.OpportunityRepository.Insert(Translate(crmOpportunity));
-                unitOfWork.Save();
             }
             catch (Exception e)
             {

@@ -18,7 +18,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     public year: number;
     public monthDesc: string;
 
-
     constructor(private menuService: MenuService,
                 private datesService: DatesService,
                 private managementReportDetail: ManagementReportDetailComponent
@@ -28,14 +27,11 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         this.isManager = this.menuService.userIsManager;
         this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
 
-
         var dateSetting = this.datesService.getMonth(new Date());
         this.setDate(dateSetting);  
-
     }
 
     ngOnDestroy(): void {
-        
     }
 
     setDate(dateSetting){
@@ -71,5 +67,4 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     seeCostDetailMonth(){
         this.managementReportDetail.seeCostDetailMonth(this.month, this.year)
     }
-
 }

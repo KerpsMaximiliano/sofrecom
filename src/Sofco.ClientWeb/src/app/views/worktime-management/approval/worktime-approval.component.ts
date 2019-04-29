@@ -136,7 +136,7 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
                             columns: [1, 2, 3, 4, 5, 6],
                             title: `Horas-Pendientes-${moment(new Date()).format("YYYYMMDD")}`,
                             withExport: true,
-                            columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ] 
+                            columnDefs: [ {'aTargets': [5], "sType": "date-uk"} ] 
                           };
 
             this.initGrid(options);
