@@ -137,6 +137,7 @@ namespace Sofco.DAL
 
         //Management Report
         public DbSet<CostDetail> CostDetail { get; set; }
+        public DbSet<ContratedDetail> ContractedDetail { get; set; }
         public DbSet<CostDetailResourceType> CostDetailResourceType { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -198,6 +199,7 @@ namespace Sofco.DAL
             builder.MapRefund();
             builder.MapAdvancementRefund();
             builder.MapCostDetail();
+            builder.MapContratedDetail();
             builder.MapContact();
             builder.MapOpportunity();
         }

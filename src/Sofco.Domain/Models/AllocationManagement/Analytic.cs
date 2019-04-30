@@ -80,5 +80,7 @@ namespace Sofco.Domain.Models.AllocationManagement
         public ICollection<Refund> Refunds { get; set; }
 
         public ICollection<CostDetail> CostDetail { get; set; }
+
+        public ICollection<ContratedDetail> ContratedDetail { get; set; }
     }
 }

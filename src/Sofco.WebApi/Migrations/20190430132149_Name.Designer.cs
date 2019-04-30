@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190430132149_Name")]
+    partial class Name
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1696,30 +1698,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("UserDelegate");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ContratedDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("IdAnalytic");
-
-                    b.Property<DateTime>("MonthYear");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(250);
-
-                    b.Property<float?>("honorary");
-
-                    b.Property<float?>("insurance");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdAnalytic");
-
-                    b.ToTable("ContractedDetail");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -1745,6 +1723,9 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int?>("ModifiedById");
 
                     b.Property<DateTime>("MonthYear");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(200);
 
                     b.Property<int>("TypeId");
 
@@ -2929,14 +2910,6 @@ namespace Sofco.WebApi.Migrations
                         .WithMany()
                         .HasForeignKey("ApproverUserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ContratedDetail", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
-                        .WithMany("ContratedDetail")
-                        .HasForeignKey("IdAnalytic")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetail", b =>

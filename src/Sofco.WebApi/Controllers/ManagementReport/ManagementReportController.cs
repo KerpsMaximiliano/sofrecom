@@ -56,5 +56,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{serviceId}/contrated")]
+        public IActionResult GetContrated(string serviceId)
+        {
+            var response = managementReportService.GetContracted(serviceId);
+
+            return this.CreateResponse(response);
+        }
     }
 }

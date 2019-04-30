@@ -9,6 +9,8 @@ namespace Sofco.Core.Models.ManagementReport
         public int AnalyticId { get; set; }
         public List<CostMonth> Employees { get; set; }
         public List<CostMonth> OtherResources { get; set; }
+        public List<ContractedModel> Contracted { get; set; } 
+
     }
 
     public class CostMonth
@@ -20,4 +22,6 @@ namespace Sofco.Core.Models.ManagementReport
         public float? Salary { get; set; }
         public float? Charges { get; set; }
     }
+
+   
 }

@@ -1,4 +1,4 @@
-<ng2-modal [config]="costDetailMonthModalConfig" #costDetailMonthModal (accept)="save()"  [size]="'modal-lg'">
+<ng2-modal [config]="costDetailMonthModalConfig" #costDetailMonthModal (accept)="save()" [size]="'modal-lg'">
 
     <div class="row">
         <div class="col-md-6">
@@ -31,10 +31,18 @@
     </div>
 
     <div class="row border-bottom m-b-sm">
-        <div class="col-sm-6"><h4>Costos RD + P</h4></div>
-        <div class="col-sm-2"><h4>Bruto</h4></div>
-        <div class="col-sm-2"><h4>Cargas</h4></div>
-        <div class="col-sm-2"><h4>Total gral</h4></div>
+        <div class="col-sm-6">
+            <h4>Costos RD + P</h4>
+        </div>
+        <div class="col-sm-2">
+            <h4>Bruto</h4>
+        </div>
+        <div class="col-sm-2">
+            <h4>Cargas</h4>
+        </div>
+        <div class="col-sm-2">
+            <h4>Total gral</h4>
+        </div>
     </div>
 
     <div class="row m-t-xs" *ngFor="let resource of resources">
@@ -43,7 +51,8 @@
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.salary" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="number" [digitLimit]="7" decimalFormat class="form-control input-xs" [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
+            <input type="number" [digitLimit]="7" decimalFormat class="form-control input-xs"
+                [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
@@ -51,11 +60,53 @@
     </div>
 
     <hr class="hr-line-dashed">
-    
+
     <div class="row border-bottom m-b-sm">
-        <div class="col-sm-9"><h4>Otros Gastos</h4></div>
+        <div class="col-sm-6">
+            <h4>Costos contratados + subcontratados</h4>
+        </div>
+        <div class="col-sm-2">
+            <h4>Honorarios</h4>
+        </div>
+        <div class="col-sm-2">
+            <h4>Seg</h4>
+        </div>
+        <div class="col-sm-2">
+            <h4>Total gral</h4>
+        </div>
+    </div>
+    <div class="row m-t-xs" *ngFor="let hire of contracted">
+        <div class="col-sm-6">
+            <input type="text" class="form-control input-xs" [(ngModel)]="hire.name" [disabled]="isReadOnly" maxlength="200">
+        </div>
+        <div class="col-sm-2">
+            <input type="number" [digitLimit]="7" decimalFormat class="form-control input-xs" [(ngModel)]="hire.honorary"
+                (ngModelChange)="contractedChange(hire)" [disabled]="isReadOnly">
+        </div>
+        <div class="col-sm-2">
+            <input type="number" [digitLimit]="7" decimalFormat class="form-control input-xs" [(ngModel)]="hire.insurance"
+                (ngModelChange)="contractedChange(hire)" [disabled]="isReadOnly">
+        </div>
+        <div class="col-sm-2">
+            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="hire.total" disabled>
+        </div>
+    </div>
+    <button class="btn btn-success btn-xs m-t-xs" (click)="addContracted()" *ngIf="!isReadOnly" type="button">
+        Agregar
+        <i class="fa fa-plus"></i>
+    </button>
+
+
+    <hr class="hr-line-dashed">
+
+    <div class="row border-bottom m-b-sm">
+        <div class="col-sm-9">
+            <h4>Otros Gastos</h4>
+        </div>
         <!-- <div class="col-sm-5"><h4>Descripción</h4></div> -->
-        <div class="col-sm-2"><h4>Total</h4></div>
+        <div class="col-sm-2">
+            <h4>Total</h4>
+        </div>
         <div class="col-sm-1"></div>
     </div>
 
@@ -72,10 +123,12 @@
             <input type="text" class="form-control input-xs" [(ngModel)]="expense.typeName" [disabled]="isReadOnly" maxlength="200">
         </div> -->
         <div class="col-sm-2">
-            <input type="number" class="form-control input-xs" [digitLimit]="7" [(ngModel)]="expense.salary" (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly">
+            <input type="number" class="form-control input-xs" [digitLimit]="7" [(ngModel)]="expense.salary"
+                (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-1">
-            <button class="btn btn-danger btn-xs" (click)="deleteExpense(i, expense)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-danger btn-xs" (click)="deleteExpense(i, expense)" *ngIf="!isReadOnly"><i
+                    class="fa fa-trash"></i></button>
         </div>
     </div>
 
@@ -97,4 +150,4 @@
         </div>
     </div>
 
-</ng2-modal> 
+</ng2-modal>

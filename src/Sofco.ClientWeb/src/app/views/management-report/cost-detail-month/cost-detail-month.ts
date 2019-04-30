@@ -15,6 +15,7 @@ import { detectBody } from "app/app.helpers";
 export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     updateCostSubscrip: Subscription;
+    getContratedSuscrip: Subscription;
     paramsSubscrip: Subscription;
 
     @ViewChild('costDetailMonthModal') costDetailMonthModal;
@@ -39,6 +40,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     fundedResources: any[] = new Array();
     otherResources: any[] = new Array();
     otherResourceId: number;
+    contracted: any[] = new Array();
 
     isReadOnly: boolean
 
@@ -52,6 +54,15 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
         });
+
+        this.getContratedSuscrip = this.managementReportService.getContrated(this.serviceId).subscribe(response => {
+            this.messageService.closeLoading();
+            this.contracted = response.data;
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.costDetailMonthModal.hide();
+        });
     }
 
     ngOnDestroy(): void {
@@ -61,7 +72,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     addExpense() {
         //  this.expenses.push({ type: "Gasto x", description: "", total: 0 });
-        debugger
         var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
         this.expenses.push(resource)
 
@@ -71,6 +81,15 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.otherResourceId = this.otherResources[0].typeId;
     }
 
+    addContracted(){
+        this.contracted.push({name: "", honorary: 0, insurance: 0, total: 0})
+    }
+
+    contractedChange(hire){
+        hire.total = hire.honorary + hire.insurance;
+
+        this.calculateTotalCosts();
+    }
     deleteExpense(index, item) {
 
         item.salary = 0;
@@ -124,12 +143,14 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         var model = {
             AnalyticId: 0,
             Employees: [],
-            OtherResources: []
+            OtherResources: [],
+            Contracted: []
         }
 
         model.AnalyticId = this.AnalyticId
         model.Employees = this.resources;
         model.OtherResources = this.expenses.concat(this.otherResources);
+        model.Contracted = this.contracted;
         
         this.updateCostSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, model).subscribe(response => {
             this.messageService.closeLoading();
@@ -162,6 +183,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         });
 
         this.resources.forEach(element => {
+            this.totalCosts += element.total;
+        });
+
+        this.contracted.forEach(element => {
             this.totalCosts += element.total;
         });
     }
