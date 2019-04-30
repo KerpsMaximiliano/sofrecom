@@ -1,4 +1,4 @@
-<ng2-modal [config]="costDetailMonthModalConfig" #costDetailMonthModal  [size]="'modal-lg'">
+<ng2-modal [config]="costDetailMonthModalConfig" #costDetailMonthModal (accept)="save()"  [size]="'modal-lg'">
 
     <div class="row">
         <div class="col-md-6">
@@ -53,8 +53,8 @@
     <hr class="hr-line-dashed">
     
     <div class="row border-bottom m-b-sm">
-        <div class="col-sm-4"><h4>Otros Gastos</h4></div>
-        <div class="col-sm-5"><h4>Descripción</h4></div>
+        <div class="col-sm-9"><h4>Otros Gastos</h4></div>
+        <!-- <div class="col-sm-5"><h4>Descripción</h4></div> -->
         <div class="col-sm-2"><h4>Total</h4></div>
         <div class="col-sm-1"></div>
     </div>
@@ -64,18 +64,37 @@
         {{ i18nService.translateByKey('noInfoAvailable') }}
     </div>
 
-    <div class="row m-t-xs" *ngFor="let expense of expenses; let i of index">
-        <div class="col-sm-4">{{ expense.type }}</div>
-        <div class="col-sm-5">
-            <input type="text" class="form-control input-xs" [(ngModel)]="expense.description" [disabled]="isReadOnly" maxlength="200">
+    <div class="row m-t-xs" *ngFor="let expense of expenses; let i = index">
+        <div class="col-sm-9">
+            {{ expense.typeName }}
         </div>
+        <!-- <div class="col-sm-5">
+            <input type="text" class="form-control input-xs" [(ngModel)]="expense.typeName" [disabled]="isReadOnly" maxlength="200">
+        </div> -->
         <div class="col-sm-2">
-            <input type="number" class="form-control input-xs" [digitLimit]="7" [(ngModel)]="expense.total" (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly">
+            <input type="number" class="form-control input-xs" [digitLimit]="7" [(ngModel)]="expense.salary" (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-1">
-            <button class="btn btn-danger btn-xs" (click)="deleteExpense(i)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-danger btn-xs" (click)="deleteExpense(i, expense)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
         </div>
     </div>
 
-    <button class="btn btn-success btn-xs m-t-xs" (click)="addExpense()" *ngIf="!isReadOnly" type="button">Agregar <i class="fa fa-plus"></i></button>
+    <!-- <button class="btn btn-success btn-xs m-t-xs" (click)="addExpense()" *ngIf="!isReadOnly" type="button">Agregar <i class="fa fa-plus"></i></button> -->
+    <br>
+    <div class="row" *ngIf="otherResources.length > 0">
+        <div class="col-md-8">
+            <select class="form-control" id="otherResourceId" name="otherResourceId" [(ngModel)]="otherResourceId">
+                <option [value]="otherResource.typeId" *ngFor="let otherResource of otherResources">
+                    {{otherResource.typeName}}
+                </option>
+            </select>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+            <button class="btn btn-success btn-sm" type="button" (click)="addExpense()">
+                Agregar
+                <i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+
 </ng2-modal> 

@@ -207,16 +207,68 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     return x;
                 }
             });
-
+            
             return {
+                employeeId: element.employeeId,
+                typeId: element.typeId,
+                costDetailId: monthCost.costDetailId,
                 name: element.display,
                 salary: monthCost.value || 0,
-                charges: 0,
-                total: monthCost.value || 0
+                charges: monthCost.charges || 0,
+                total: monthCost.value + monthCost.charges || 0
             }
         });
     }
 
+    getOtherResourcesByMonth(month, year) {
+
+        return this.otherResources.map(element => {
+          
+            var monthCost = element.monthsCost.find(x => {
+                var dateSplitted = x.monthYear.split("-");
+
+                if (dateSplitted[0] == year && dateSplitted[1] == month) {
+                    return x;
+                }
+            });
+
+            return {
+                typeId: element.typeId,
+                typeName: element.typeName,
+                MonthYear: monthCost.monthYear,
+                costDetailId: monthCost.costDetailId,
+                salary: monthCost.value || 0,
+                otherResource: element.otherResource
+            }
+        });
+    }
+
+    getFundedResourcesByMonth(month, year) {
+
+        return this.fundedResources.map(element => {
+          
+            var monthCost = element.monthsCost.find(x => {
+                var dateSplitted = x.monthYear.split("-");
+
+                if (dateSplitted[0] == year && dateSplitted[1] == month) {
+                    return x;
+                }
+            });
+
+            return {
+                typeId: element.typeId,
+                typeName: element.typeName,
+                MonthYear: monthCost.monthYear,
+                costDetailId: monthCost.costDetailId,
+                salary: monthCost.value || 0,
+                otherResource: element.otherResource
+            }
+        });
+    }
+
+    getIdAnalytic(){
+        return this.model.analyticId
+    }
 
     CalculateSalary(monthData, index) {
         var SalaryPlusIncrese = monthData.value;
@@ -230,7 +282,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return SalaryPlusIncrese;
     }
 
-    salaryPlusIncrease(employee, pIndex) {
+    salaryPlusIncrease(employee, pIndex) {        
         //Verifico que exista la fila de ajustes
         var AjusteMensual = this.fundedResources.find(r => r.display == this.generalAdjustment);
         if (AjusteMensual) {

@@ -300,10 +300,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             entity = costDetails.Where(c => c.Id == month.CostDetailId).FirstOrDefault();
 
-                            if (month.Value != entity.Cost)
+                            if (month.Value != entity.Cost || month.Charges != entity.Charges)
                             {
                                 entity.Cost = month.Value ?? 0;
                                 entity.Adjustment = month.Adjustment;
+                                entity.Charges = month.Charges;
                                 entity.ModifiedAt = DateTime.UtcNow;
                                 entity.ModifiedById = currentUser.Id;
 
@@ -312,11 +313,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                         }
                         else
                         {
-                            if (month.Value > 0)
+                            if (month.Value > 0 || month.Charges > 0)
                             {
                                 entity.IdAnalytic = pDetailCost.AnalyticId;
                                 entity.Cost = month.Value ?? 0;
                                 entity.Adjustment = month.Adjustment;
+                                entity.Charges = month.Charges;
                                 entity.MonthYear = month.MonthYear;
                                 entity.TypeId = resource.TypeId;
                                 entity.EmployeeId = resource.EmployeeId;
@@ -330,6 +332,64 @@ namespace Sofco.Service.Implementations.ManagementReport
                 }
 
                 unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response UpdateCostDetailMonth(CostDetailMonthModel pMonthDetail)
+        {
+            var response = new Response();
+            CostDetailModel _detailModel = new CostDetailModel();
+            _detailModel.CostEmployees = new List<CostResource>();
+            _detailModel.FundedResources = new List<CostResource>();
+
+            try
+            {
+                //Mapping
+                _detailModel.AnalyticId = pMonthDetail.AnalyticId;
+
+                foreach (var employee in pMonthDetail.Employees)
+                {
+                    CostResource cost = new CostResource();
+                    cost.MonthsCost = new List<MonthDetailCost>();
+                    MonthDetailCost month = new MonthDetailCost();
+
+                    cost.EmployeeId = employee.EmployeeId;
+                    cost.TypeId = employee.TypeId;
+
+                    month.Value = employee.Salary;
+                    month.Charges = employee.Charges;
+                    month.MonthYear = employee.MonthYear;
+                    month.CostDetailId = employee.CostDetailId;
+
+                    cost.MonthsCost.Add(month);
+                    _detailModel.CostEmployees.Add(cost);
+                }
+
+                foreach (var otherRes in pMonthDetail.OtherResources)
+                {
+                    CostResource cost = new CostResource();
+                    cost.MonthsCost = new List<MonthDetailCost>();
+                    MonthDetailCost month = new MonthDetailCost();
+
+                    cost.TypeId = otherRes.TypeId;
+                    month.Value = otherRes.Salary;
+                    month.MonthYear = otherRes.MonthYear;
+                    month.CostDetailId = otherRes.CostDetailId;
+
+                    cost.MonthsCost.Add(month);
+                    _detailModel.CostEmployees.Add(cost);
+                }
+
+                this.UpdateCostDetail(_detailModel);
 
                 response.AddSuccess(Resources.Common.SaveSuccess);
             }
@@ -451,6 +511,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         monthDetail.Value = monthValue.Cost;
                         monthDetail.OriginalValue = monthValue.Cost;
+                        monthDetail.Charges = monthValue.Charges;
                         monthValue.Adjustment = monthValue.Adjustment;
                         monthDetail.CostDetailId = monthValue.Id;
                     }
@@ -508,6 +569,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         monthDetail.Value = monthValue.Cost;
                         monthDetail.CostDetailId = monthValue.Id;
+                        monthDetail.Charges = monthValue.Charges;
                         if (monthDetail.Value > 0)
                         {
                             hasValue = true;
