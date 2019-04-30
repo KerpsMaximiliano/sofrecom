@@ -10,8 +10,9 @@ namespace Sofco.Domain.Models.ManagementReport
         public Analytic Analytic { get; set; }
 
         public DateTime MonthYear { get; set; }
-        public float Cost { get; set; }
+        public float? Cost { get; set; }
         public float? Adjustment { get; set; }
+        public float? Charges { get; set; }
         public int TypeId { get; set; }
         public CostDetailResourceType Type { get; set; }
 

@@ -9,5 +9,6 @@ namespace Sofco.Core.Services.ManagementReport
         Response<BillingDetail> GetBilling(string serviceId);
         Response<CostDetailModel> GetCostDetail(string serviceId);
         Response UpdateCostDetail(CostDetailModel CostDetail);
+        Response UpdateCostDetailMonth(CostDetailMonthModel CostDetail);
     }
 }

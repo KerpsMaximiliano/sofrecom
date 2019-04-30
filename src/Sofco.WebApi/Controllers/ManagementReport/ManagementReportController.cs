@@ -48,5 +48,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpPost("{serviceId}/costDetailMonth")]
+        public IActionResult PutDetailCostMonth([FromBody] CostDetailMonthModel model)
+        {
+            var response = managementReportService.UpdateCostDetailMonth(model);
+
+            return this.CreateResponse(response);
+        }
     }
 }
