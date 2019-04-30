@@ -223,6 +223,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Ocurrio un error al actualizar el adelanto #{0} del solicitante {1}.
+        /// </summary>
+        public static string PaymentPendingError {
+            get {
+                return ResourceManager.GetString("PaymentPendingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/advancement.startDateReturnLessThanToday.
         /// </summary>
         public static string StartDateReturnLessThanToday {

@@ -137,7 +137,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
                 return;
             }
 
-            if (detail.CreationDate.Value.ToUniversalTime() > DateTime.UtcNow)
+            if (detail.CreationDate.Value.Date > DateTime.UtcNow.Date)
             {
                 response.AddError(Resources.AdvancementAndRefund.Refund.DetailDateInvalidRange);
             }

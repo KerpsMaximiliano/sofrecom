@@ -30,15 +30,11 @@ namespace Sofco.Service.Implementations.Jobs
             this.crmServiceService = crmServiceService;
             this.mapper = mapper;
             this.serviceData = serviceData;
-
-            //IdsAdded = new List<int>();
         }
 
         public void Execute()
         {
             var result = crmServiceService.GetAll();
-
-            unitOfWork.BeginTransaction();
 
             foreach (var crmService in result)
             {
@@ -52,9 +48,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             try
             {
-                //unitOfWork.ServiceRepository.UpdateInactives(IdsAdded);
-
-                unitOfWork.Commit();
+                unitOfWork.Save();
                 serviceData.ClearKeys();
             }
             catch (Exception e)
@@ -68,9 +62,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.ServiceRepository.Update(Translate(crmService, service));
-                unitOfWork.Save();
-
-                //IdsAdded.Add(service.Id);
             }
             catch (Exception e)
             {
@@ -83,7 +74,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.ServiceRepository.Insert(Translate(crmService));
-                unitOfWork.Save();
             }
             catch (Exception e)
             {

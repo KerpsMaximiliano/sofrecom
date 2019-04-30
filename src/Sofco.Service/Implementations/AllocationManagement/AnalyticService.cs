@@ -396,8 +396,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     unitOfWork.ServiceRepository.UpdateAnalyticAndManager(service);
 
-                    customerData.ClearKeys(manager.UserName);
-                    serviceData.ClearKeys(manager.UserName, service.AccountId);
+                    customerData.ClearKeys();
+                    serviceData.ClearKeys();
                 }
 
                 unitOfWork.AnalyticRepository.Update(analytic);

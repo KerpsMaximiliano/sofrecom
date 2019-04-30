@@ -30,8 +30,6 @@ namespace Sofco.Service.Implementations.Jobs
         {
             var crmContacts = crmContactService.GetAll();
 
-            unitOfWork.BeginTransaction();
-
             foreach (var crmContact in crmContacts)
             {
                 var contact = unitOfWork.ContactRepository.GetByCrmId(crmContact.Id);
@@ -44,7 +42,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             try
             {
-                unitOfWork.Commit();
+                unitOfWork.Save();
             }
             catch (Exception e)
             {
@@ -57,7 +55,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.ContactRepository.Update(Translate(crmContact, contact));
-                unitOfWork.Save();
             }
             catch (Exception e)
             {
@@ -70,7 +67,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.ContactRepository.Insert(Translate(crmContact));
-                unitOfWork.Save();
             }
             catch (Exception e)
             {

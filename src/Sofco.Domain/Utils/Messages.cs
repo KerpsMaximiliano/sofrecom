@@ -4,7 +4,21 @@ namespace Sofco.Domain.Utils
 {
     public class Message
     {
+        public Message(string route, MessageType type, bool mustTranslate)
+        {
+            Translate = mustTranslate;
+
+            SetMessage(route, type);
+        }
+
         public Message(string route, MessageType type)
+        {
+            Translate = true;
+
+            SetMessage(route, type);
+        }
+
+        private void SetMessage(string route, MessageType type)
         {
             var routeSplitted = route.Split('.');
 
@@ -29,5 +43,7 @@ namespace Sofco.Domain.Utils
         public string Text { get; set; }
 
         public MessageType Type { get; set; }
+
+        public bool Translate { get; set; }
     }
 }

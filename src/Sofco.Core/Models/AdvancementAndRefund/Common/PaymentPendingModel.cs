@@ -1,4 +1,7 @@
-﻿namespace Sofco.Core.Models.AdvancementAndRefund.Common
+﻿using System.Collections.Generic;
+using Sofco.Domain.Utils;
+
+namespace Sofco.Core.Models.AdvancementAndRefund.Common
 {
     public class PaymentPendingModel
     {
@@ -16,16 +19,25 @@
 
         public decimal Ammount { get; set; }
 
-        public decimal AmmountPesos { get; set; }
-
         public string Type { get; set; }
 
         public int WorkflowId { get; set; }
 
         public int NextWorkflowStateId { get; set; }
 
-        public decimal? CurrencyExchange { get; set; }
-
         public string Manager { get; set; }
+
+        public IList<EntityToPay> Entities { get; set; }
+    }
+
+    public class EntityToPay
+    {
+        public int Id { get; set; }
+
+        public string Type { get; set; }
+
+        public int WorkflowId { get; set; }
+
+        public int NextWorkflowStateId { get; set; }
     }
 }

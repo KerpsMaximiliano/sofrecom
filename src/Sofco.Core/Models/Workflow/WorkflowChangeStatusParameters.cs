@@ -12,4 +12,11 @@ namespace Sofco.Core.Models.Workflow
 
         public Dictionary<string, string> Parameters { get; set; }
     }
+
+    public class WorkflowChangeStatusMasiveParameters : WorkflowChangeStatusParameters
+    {
+        public string Type { get; set; }
+
+        public string UserApplicantName { get; set; }
+    }
 }

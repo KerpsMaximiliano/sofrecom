@@ -7,19 +7,18 @@ import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { MenuService } from "app/services/admin/menu.service";
+import { PaymentPendingService } from "app/services/advancement-and-refund/paymentPending.service";
 
 @Component({
     selector: 'list-payment-pending',
     templateUrl: './list-payment-pending.component.html'
 })
 export class ListPaymentPendingComponent  {
-    getAdvancementsSubscrip: Subscription;
-    getRefundsSubscrip: Subscription;
+    getAllSubscrip: Subscription;
     postSubscrip: Subscription;
 
     public model: any[] = new Array();
-    public advancements: any[] = new Array();
-    public refunds: any[] = new Array();
+    public modelFiltered: any[] = new Array();
 
     public banks: any[] = new Array();
     public users: any[] = new Array();
@@ -28,14 +27,11 @@ export class ListPaymentPendingComponent  {
 
     public bankId: number;
     public userId: number;
-    public currencyId: number;
-    public typeId: number;
 
     public totalAmount: number;
 
-    constructor(private advancementService: AdvancementService,
+    constructor(private paymentPendingService: PaymentPendingService,
                 public menuService: MenuService,
-                private refundService: RefundService,
                 private datatableService: DataTableService,
                 private workflowService: WorkflowService,
                 private router: Router,
@@ -46,13 +42,12 @@ export class ListPaymentPendingComponent  {
     }
 
     ngOnDestroy(): void {
-        if(this.getAdvancementsSubscrip) this.getAdvancementsSubscrip.unsubscribe();
-        if(this.getRefundsSubscrip) this.getRefundsSubscrip.unsubscribe();
+        if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
         if(this.postSubscrip) this.postSubscrip.unsubscribe();
     }
 
     initGrid(){
-        var columns = [1, 2, 3, 4, 5];
+        var columns = [1, 2, 3, 4];
         var title = `Adelantos y reitegros pendientes deposito`;
 
         var params = {
@@ -72,70 +67,30 @@ export class ListPaymentPendingComponent  {
     }
 
     getAll(){
-        var promises = new Array();
-
-        var promise1 = new Promise((resolve, reject) => {
-
-            this.getAdvancementsSubscrip = this.advancementService.getAllPaymentPending().subscribe(response => {
-                this.advancements = [];
-
-                this.advancements = response.data.map(item => {
-                    item.selected = false;
-                    item.entityController = "advancement";
-                    return item;
-                });
-
-                resolve();
-            },
-            error => resolve());
-        });
-
-        var promise2 = new Promise((resolve, reject) => {
-
-            this.getRefundsSubscrip = this.refundService.getAllPaymentPending().subscribe(response => {
-                this.refunds = [];
-
-                this.refunds = response.data.map(item => {
-                    item.selected = false;
-                    item.entityController = "refund";
-                    return item;
-                });
-
-                resolve();
-            },
-            error => resolve());
-        });
-
-        promises.push(promise1);
-        promises.push(promise2);
-
         this.messageService.showLoading();
 
-        Promise.all(promises).then(data => { 
+        this.getAllSubscrip = this.paymentPendingService.get().subscribe(response => {
             this.messageService.closeLoading();
 
             this.model = [];
 
-            this.advancements.forEach(x => {
-                this.model.push(x);
+            this.model = response.data.map(item => {
+                item.selected = false;
+                return item;
             });
 
-            this.refunds.forEach(x => {
-                this.model.push(x);
-            });
+            this.modelFiltered = this.model;
 
             this.calculateTotals();
             this.fillFilters();
             this.initGrid();
-        });
-        
+        },
+        error => this.messageService.closeLoading());
     }
 
     fillFilters(){
         this.banks = [];
         this.users = [];
-        this.currencies = [];
-        this.types = [];
 
         this.model.forEach(x => {
         
@@ -146,14 +101,6 @@ export class ListPaymentPendingComponent  {
             if(this.users.filter(user => user.id == x.userApplicantId).length == 0){
                 this.users.push({ id: x.userApplicantId, text: x.userApplicantDesc });
             }   
-            
-            if(this.currencies.filter(currency => currency.id == x.currencyId).length == 0){
-                this.currencies.push({ id: x.currencyId, text: x.currencyDesc });
-            }  
-
-            if(this.types.filter(type => type.id == x.type).length == 0){
-                this.types.push({ id: x.type, text: x.type });
-            }  
         });
     }
 
@@ -193,102 +140,79 @@ export class ListPaymentPendingComponent  {
         this.totalAmount = 0;
         this.model.forEach(item => {
             if(item.selected){
-                this.totalAmount += item.ammountPesos;
+                this.totalAmount += item.ammount;
             }
         });
     }
 
     approveAll(){
         this.messageService.showConfirm(x => {
+            var list = [];
+            
+            this.model.filter(x => x.selected).forEach(x => {
 
-            var list = this.model.filter(x => x.selected).map(x => {
-                return {
-                    workflowId: x.workflowId,
-                    entityId: x.id,
-                    nextStateId: x.nextWorkflowStateId,
-                    entityController: x.entityController,
-                    type: x.type
-                }
+                x.entities.forEach(e => {
+
+                    var item = {
+                        workflowId: e.workflowId,
+                        entityId: e.id,
+                        nextStateId: e.nextWorkflowStateId,
+                        entityController: e.type,
+                        type: e.type,
+                        userApplicantName: x.userApplicantDesc,
+                        id: x.id
+                    };
+
+                    list.push(item);
+                });
             });
 
             if(list.length > 0){
                 this.messageService.showLoading();
 
-                var entityAdvancmentIds = [];
-                var entityRefundIds = [];
-                var promises = new Array();
-
-                list.forEach(item => {
-                    var promise = new Promise((resolve, reject) => {
-
-                        this.postSubscrip = this.workflowService.post(item).subscribe(response => {
-                            resolve();
-
-                            if(item.type == "Reintegro"){
-                                entityRefundIds.push(item.entityId);
-                            }
-                            else{
-                                entityAdvancmentIds.push(item.entityId);
-                            }
-                        },
-                        error => resolve());
-                    });
-
-                    promises.push(promise);
-                })
-
-                Promise.all(promises).then(data => { 
+                this.postSubscrip = this.workflowService.doMassiveTransitions(list).subscribe(response => {
                     this.messageService.closeLoading();
 
-                    entityRefundIds.forEach(x => {
-                        var indexItemToRemove = this.refunds.map(x => x.id).indexOf(x);
-                        this.refunds.splice(indexItemToRemove, 1);
-                    });
+                    list.forEach(item => {
+                        var itemToDelete = this.model.find(x => x.id == item.id);
 
-                    entityAdvancmentIds.forEach(x => {
-                        var indexItemToRemove = this.advancements.map(x => x.id).indexOf(x);
-                        this.advancements.splice(indexItemToRemove, 1);
+                        if(itemToDelete){
+                            var index = this.model.indexOf(itemToDelete);
+                            this.model.splice(index, 1);
+                        }
                     });
 
                     this.search();
+                },
+                error => {
+                    this.messageService.closeLoading();
+                    this.getAll();
                 });
             }
-        })
+        });
     }
 
     clean(){
-        this.typeId = null;
         this.userId = null;
         this.bankId = null;
-        this.currencyId = null;
 
         this.search();
     }
 
     search(){
-        this.advancements.forEach(x => {
+        this.model.forEach(x => {
             x.selected = false;
         });
 
-        this.refunds.forEach(x => {
-            x.selected = false;
-        });
+        this.modelFiltered = [];
 
-        this.model = [];
-
-        if(!this.userId && !this.typeId && !this.bankId && !this.currencyId){
-            this.advancements.forEach(x => {
-                this.model.push(x);
-            });
-
-            this.refunds.forEach(x => {
-                this.model.push(x);
-            });
+        if(!this.userId && !this.bankId){
+            this.modelFiltered = this.model;
         }
         else{
-            for(var i = 0; i < this.advancements.length; i++){
+            for(var i = 0; i < this.model.length; i++){
                 var addItem = true;
-                var item = this.advancements[i];
+                var item = this.model[i];
 
                 if(this.userId  && this.userId > 0 && this.userId != item.userApplicantId){
                     addItem = false;
@@ -298,41 +222,8 @@ export class ListPaymentPendingComponent  {
                     addItem = false;
                 }
 
-                if(this.typeId && this.typeId  != item.type){
-                    addItem = false;
-                }
-
-                if(this.currencyId && this.currencyId > 0 && this.currencyId  != item.currencyId){
-                    addItem = false;
-                }
-
                 if(addItem){
-                    this.model.push(item);
-                }
-            }
-
-            for(var i = 0; i < this.refunds.length; i++){
-                var addItem = true;
-                var item = this.refunds[i];
-
-                if(this.userId  && this.userId > 0 && this.userId != item.userApplicantId){
-                    addItem = false;
-                }
-
-                if(this.bankId && this.bankId  != item.bank){
-                    addItem = false;
-                }
-
-                if(this.typeId && this.typeId  != item.type){
-                    addItem = false;
-                }
-
-                if(this.currencyId && this.currencyId > 0 && this.currencyId  != item.currencyId){
-                    addItem = false;
-                }
-
-                if(addItem){
-                    this.model.push(item);
+                    this.modelFiltered.push(item);
                 }
             }
         }

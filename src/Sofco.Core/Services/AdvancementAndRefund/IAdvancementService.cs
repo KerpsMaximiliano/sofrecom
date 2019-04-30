@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
-using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.AdvancementAndRefund
@@ -11,13 +10,11 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<string> Add(AdvancementModel model);
         Response Update(AdvancementModel model);
         Response<AdvancementEditModel> Get(int id);
-        //Response<IList<AdvancementListItem>> GetAllInProcess();
         Response<IList<WorkflowHistoryModel>> GetHistories(int id);
         Response<IList<AdvancementListItem>> GetAllFinalized(AdvancementSearchFinalizedModel model);
         Response<bool> CanLoad();
         Response<IList<AdvancementUnrelatedItem>> GetUnrelated(int userId);
         Response Delete(int id);
-        Response<IList<PaymentPendingModel>> GetAllPaymentPending();
         Response<AdvancementRefundModel> GetResume(IList<int> id);
         Response<IList<Option>> GetStates();
     }

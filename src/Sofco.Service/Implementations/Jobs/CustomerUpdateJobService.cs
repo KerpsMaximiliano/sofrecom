@@ -39,8 +39,6 @@ namespace Sofco.Service.Implementations.Jobs
         {
             var crmAccounts = Translate(crmAccountService.GetAll());
 
-            unitOfWork.BeginTransaction();
-
             foreach (var crmCustomer in crmAccounts)
             {
                 var customer = unitOfWork.CustomerRepository.GetByIdCrm(crmCustomer.Id);
@@ -55,7 +53,7 @@ namespace Sofco.Service.Implementations.Jobs
             {
                 unitOfWork.CustomerRepository.UpdateInactives(IdsAdded);
 
-                unitOfWork.Commit();
+                unitOfWork.Save();
                 customerData.ClearKeys();
             }
             catch (Exception e)
@@ -69,7 +67,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.CustomerRepository.Update(Translate(crmCustomer, customer));
-                unitOfWork.Save();
 
                 IdsAdded.Add(customer.Id);
             }
@@ -84,7 +81,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.CustomerRepository.Insert(Translate(crmCustomer));
-                unitOfWork.Save();
             }
             catch (Exception e)
             {

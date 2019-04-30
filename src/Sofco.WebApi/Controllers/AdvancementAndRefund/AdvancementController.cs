@@ -24,14 +24,6 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             this.workflowService = workflowService;
         }
 
-        //[HttpGet("inProcess")]
-        //public IActionResult GetAll()
-        //{
-        //    var response = advancementService.GetAllInProcess();
-
-        //    return this.CreateResponse(response);
-        //}
-
         [HttpPost("finalized")]
         public IActionResult GetAllFinalized([FromBody] AdvancementSearchFinalizedModel model)
         {
@@ -40,14 +32,6 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
          
-        [HttpGet("paymentPending")]
-        public IActionResult GetAllPaymentPending()
-        {
-            var response = advancementService.GetAllPaymentPending();
-
-            return this.CreateResponse(response);
-        }
-
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {

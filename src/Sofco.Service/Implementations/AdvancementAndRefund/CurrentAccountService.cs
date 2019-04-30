@@ -37,6 +37,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 var refunds = unitOfWork.RefundRepository.GetAllInCurrentAccount(settings.WorkflowStatusCurrentAccount);
 
                 var userDiccionary = new Dictionary<int, List<Refund>>();
+                var employeeDiccionary = new Dictionary<string, string>();
 
                 foreach (var refund in refunds)
                 {
@@ -84,6 +85,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                             Advancements = new List<AdvancementUnrelatedItem>()
                         };
 
+                        if (refundAux.UserApplicant != null && !employeeDiccionary.ContainsKey(refundAux.UserApplicant.Email))
+                        {
+                            var employee = unitOfWork.EmployeeRepository.GetByEmail(refundAux.UserApplicant?.Email);
+
+                            employeeDiccionary.Add(refundAux.UserApplicant.Email, employee.Name);
+                        }
+
+                        if (refundAux.UserApplicant != null && employeeDiccionary.ContainsKey(refundAux.UserApplicant.Email))
+                        {
+                            currentAccountModel.User = employeeDiccionary[refundAux.UserApplicant.Email];
+                        }
+                        
                         response.Data.Add(currentAccountModel);
                     }
                 }
@@ -130,6 +143,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                                 }
                             }
                         };
+
+                        if (advancement.UserApplicant != null && !employeeDiccionary.ContainsKey(advancement.UserApplicant.Email))
+                        {
+                            var employee = unitOfWork.EmployeeRepository.GetByEmail(advancement.UserApplicant?.Email);
+
+                            employeeDiccionary.Add(advancement.UserApplicant.Email, employee.Name);
+                        }
+
+                        if (advancement.UserApplicant != null && employeeDiccionary.ContainsKey(advancement.UserApplicant.Email))
+                        {
+                            currentAccountModel.User = employeeDiccionary[advancement.UserApplicant.Email];
+                        }
 
                         response.Data.Add(currentAccountModel);
                     }

@@ -29,7 +29,14 @@ namespace Sofco.Framework.Managers
 
         public UserLiteModel CurrentUser { get; set; }
 
-        public RoleManager(IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager, ILicenseViewDelegateManager licenseViewDelegateManager, ISolfacDelegateManager solfacDelegateManager, IUnitOfWork unitOfWork, ISessionManager sessionManager, IWorkTimeApproverDelegateManager workTimeApproverDelegateManager, IUserData userData)
+        public RoleManager(IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, 
+            IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager, 
+            ILicenseViewDelegateManager licenseViewDelegateManager, 
+            ISolfacDelegateManager solfacDelegateManager, 
+            IUnitOfWork unitOfWork, 
+            ISessionManager sessionManager,
+            IUserData userData,
+            IWorkTimeApproverDelegateManager workTimeApproverDelegateManager)
         {
             this.purchaseOrderApprovalDelegateManager = purchaseOrderApprovalDelegateManager;
             this.purchaseOrderActiveDelegateManager = purchaseOrderActiveDelegateManager;
@@ -102,6 +109,17 @@ namespace Sofco.Framework.Managers
             var hasReadOnlyGroup = unitOfWork.UserRepository.HasReadOnlyGroup(currentUserEmail);
 
             return hasGafGroup || hasDafGroup || hasReadOnlyGroup || hasComplianceGroup;
+        }
+
+        public bool IsDafOrGaf()
+        {
+            var currentUserEmail = CurrentUser.Email;
+
+            var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUserEmail);
+            var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUserEmail);
+            var hasReadOnlyGroup = unitOfWork.UserRepository.HasReadOnlyGroup(currentUserEmail);
+
+            return hasGafGroup || hasDafGroup || hasReadOnlyGroup;
         }
 
         public bool IsDirector()

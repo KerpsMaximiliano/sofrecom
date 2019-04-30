@@ -18,6 +18,10 @@ export class WorkflowService {
     return this.http.post<any>(`${this.baseUrl}/${model.entityController}/transition`, model);
   }
 
+  doMassiveTransitions(model) {
+    return this.http.post<any>(`${this.baseUrl}/workflows/transition`, model);
+  }
+
   put(model) {
     return this.http.put<any>(`${this.baseUrl}/${model.entityController}/transition`, model);
   }

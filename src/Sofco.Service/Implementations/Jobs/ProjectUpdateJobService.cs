@@ -19,8 +19,6 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly ICrmProjectService crmProjectService;
         private readonly IMapper mapper;
 
-        //private IList<int> IdsAdded { get; }
-
         public ProjectUpdateJobService(IUnitOfWork unitOfWork,
             IProjectData projectData,
             ILogMailer<ProjectUpdateJobService> logger, 
@@ -31,15 +29,11 @@ namespace Sofco.Service.Implementations.Jobs
             this.crmProjectService = crmProjectService;
             this.mapper = mapper;
             this.projectData = projectData;
-
-            //IdsAdded = new List<int>();
         }
 
         public void Execute()
         {
             var result = crmProjectService.GetAll();
-
-            unitOfWork.BeginTransaction();
 
             foreach (var crmProject in result)
             {
@@ -53,9 +47,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             try
             {
-                //unitOfWork.ProjectRepository.UpdateInactives(IdsAdded);
-
-                unitOfWork.Commit();
+                unitOfWork.Save();
                 projectData.ClearKeys();
             }
             catch (Exception e)
@@ -69,9 +61,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.ProjectRepository.Update(Translate(crmProject, project));
-                unitOfWork.Save();
-
-                //IdsAdded.Add(project.Id);
             }
             catch (Exception e)
             {
@@ -84,7 +73,6 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.ProjectRepository.Insert(Translate(crmProject));
-                unitOfWork.Save();
             }
             catch (Exception e)
             {

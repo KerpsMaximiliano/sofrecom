@@ -10,7 +10,6 @@ import { modalConfigDefaults } from "ngx-bootstrap/modal/modal-options.class";
 
 import { FormGroup, FormControl, Validators, FormsModule } from "@angular/forms";
 
-
 @Component({
     selector: 'cost-detail',
     templateUrl: './cost-detail.component.html',
@@ -40,6 +39,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     canEdit: boolean = false;
 
     otherResourceId: number;
+
+    readonly generalAdjustment: string = "% Ajuste General";
 
     @ViewChild('editItemModal') editItemModal;
 
@@ -96,12 +97,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             if (this.otherResources.length > 0) {
                 this.otherResourceId = this.otherResources[0].typeId;
             }
-
         },
-            error => {
-                this.messageService.closeLoading();
-            });
-
+        error => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item, indexMonth) {
@@ -116,7 +113,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.indexSelected = indexMonth;
                 this.itemSelected = item;
                 this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
-                this.modalPercentage = false
+                this.modalPercentage = false;
 
                 if (this.itemSelected.typeName == 'Empleados') {
                     this.modalEmployee = true
@@ -128,7 +125,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     this.modalEmployee = false
                     this.editItemMonto.setValue(month.value)
 
-                    if (this.itemSelected.typeName == '% Ajuste') {
+                    if (this.itemSelected.typeName == this.generalAdjustment) {
                         this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
                         this.modalPercentage = true
                     }
@@ -151,7 +148,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.monthSelected.value = this.monthSelected.originalValue + this.monthSelected.originalValue * this.monthSelected.adjustment / 100
             }
             else {
-                this.monthSelected.value = this.editItemMonto.value
+                this.monthSelected.adjustment = 0;
+                this.monthSelected.value = this.editItemMonto.value;
             }
 
             for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
@@ -170,7 +168,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         }
 
         //Si estoy editando un aumento se actualiza el sueldo para todos los empleados
-        if (this.itemSelected.typeName == '% Ajuste') {
+        if (this.itemSelected.typeName == this.generalAdjustment) {
             this.modalPercentage = true;
             this.employees.forEach(employee => {
                 this.salaryPlusIncrease(employee, this.indexSelected);
@@ -275,7 +273,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     CalculateSalary(monthData, index) {
         var SalaryPlusIncrese = monthData.value;
 
-        var AjusteMensual = this.fundedResources.find(r => r.typeName == '% Ajuste');
+        var AjusteMensual = this.fundedResources.find(r => r.typeName == this.generalAdjustment);
         if (AjusteMensual) {
             if (AjusteMensual.monthsCost[index].value > 0) {
                 SalaryPlusIncrese = monthData.value + (monthData.value * AjusteMensual.monthsCost[index].value / 100);
@@ -286,7 +284,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     salaryPlusIncrease(employee, pIndex) {        
         //Verifico que exista la fila de ajustes
-        var AjusteMensual = this.fundedResources.find(r => r.display == '% Ajuste');
+        var AjusteMensual = this.fundedResources.find(r => r.display == this.generalAdjustment);
         if (AjusteMensual) {
             //Si existe, Recorro todos los meses
             //El nuevo salario lo seteo como el primer salario
@@ -351,7 +349,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         })
         //Sumo los demas gastos excepto el % de Ajuste
         this.fundedResources.forEach(resource => {
-            if (resource.typeName != '% Ajuste') {
+            if (resource.typeName != this.generalAdjustment) {
                 totalCost += resource.monthsCost[index].value
             }
         })
@@ -410,7 +408,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         }
         else {
             cssClass = 'cursor-pointer'
-            if (item.display == '% Ajuste') {
+            if (item.display == this.generalAdjustment) {
                 if (monthCost.value > 0) {
                     cssClass += ' label-yellow'
                 }

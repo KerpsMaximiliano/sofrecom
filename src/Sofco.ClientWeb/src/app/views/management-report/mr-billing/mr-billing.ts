@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Input, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { Subscription } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
@@ -7,8 +7,6 @@ import { UtilsService } from "app/services/common/utils.service";
 import { ProjectService } from "app/services/billing/project.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
-import * as moment from 'moment';
-import { I18nService } from "app/services/common/i18n.service";
 
 import { FormControl, Validators } from "@angular/forms";
 
@@ -70,7 +68,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         private utilsService: UtilsService,
         private messageService: MessageService,
         private projectService: ProjectService,
-        private i18nService: I18nService,
         private menuService: MenuService) { }
 
     ngOnInit(): void {
@@ -185,13 +182,13 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             }
 
             var hito = {
-                            id: response.data,
-                            projectId: project.id,
-                            projectName: project.text,
-                            currencyId: model.moneyId,
-                            description: project.opportunityNumber + " - " + model.name + " - " + currency.text,
-                            values: []
-                        };
+                id: response.data,
+                projectId: project.id,
+                projectName: project.text,
+                currencyId: model.moneyId,
+                description: project.opportunityNumber + " - " + model.name + " - " + currency.text,
+                values: []
+            };
 
             this.months.forEach(monthRow => {
                             var monthValue = { month: monthRow.month, year: monthRow.year, value: null, oldValue: null, status: null };
@@ -206,43 +203,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                         });
 
             this.hitos.push(hito)
-
-            // this.hitos.forEach(element => {
-
-            //     if (!newInserted && moment(element.date).toDate() > model.startDate) {
-            //         newInserted = true;
-
-            //         var hito = {
-            //             id: response.data,
-            //             projectId: this.hito.projectId,
-            //             projectName: element.projectName,
-            //             currencyId: model.moneyId,
-            //             description: element.projectName + " - " + model.name + " - " + currency.text,
-            //             values: []
-            //         };
-
-            //         this.months.forEach(monthRow => {
-            //             var monthValue = { month: monthRow.month, year: monthRow.year, value: null, oldValue: null, status: null };
-
-            //             if (monthRow.month == month && monthRow.year == year) {
-            //                 monthValue.value = model.ammount;
-            //                 monthValue.oldValue = model.ammount;
-            //                 monthValue.status = this.pendingHitoStatus;
-            //             }
-
-            //             hito.values.push(monthValue);
-            //         });
-
-            //         hitosAux.push(hito);
-
-            //     }
-            //     hitosAux.push(element);
-
-            // });
-
-            // this.hitos = hitosAux;
         },
-            error => this.newHitoModal.resetButtons());
+        error => this.newHitoModal.resetButtons());
     }
 
     updateHito() {
@@ -325,7 +287,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     isEnabled(hito) {
-        return this.menuService.userIsManager && hito.status == this.pendingHitoStatus && (!hito.solfacId || hito.solfacId == 0);
+        return (this.menuService.userIsManager || this.menuService.userIsCdg) && hito.status == this.pendingHitoStatus && (!hito.solfacId || hito.solfacId == 0);
     }
 
     canDeleteHito(hito) {
@@ -393,7 +355,4 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.monthSelectedDisplay = this.months[index].display
 
     }
-
-
-
 }
