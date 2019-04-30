@@ -22,6 +22,8 @@ namespace Sofco.Framework.Workflow.Conditions.Refund
         {
             var refund = unitOfWork.RefundRepository.GetFullById(entity.Id);
 
+            if (refund.CreditCardId.GetValueOrDefault() > 0) return true;
+
             return !validation.HasUserRefund(refund);
         }
     }

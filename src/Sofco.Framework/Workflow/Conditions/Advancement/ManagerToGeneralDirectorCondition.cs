@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -10,13 +11,13 @@ using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.Workflow.Conditions.Advancement
 {
-    public class PendingApproveManagerToDafCondition : IWorkflowConditionState
+    public class ManagerToGeneralDirectorCondition : IWorkflowConditionState
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IUserData userData;
         private readonly AppSetting settings;
 
-        public PendingApproveManagerToDafCondition(IUnitOfWork unitOfWork, IUserData userData, AppSetting settings)
+        public ManagerToGeneralDirectorCondition(IUnitOfWork unitOfWork, IUserData userData, AppSetting settings)
         {
             this.unitOfWork = unitOfWork;
             this.userData = userData;
@@ -35,17 +36,13 @@ namespace Sofco.Framework.Workflow.Conditions.Advancement
 
             var value = GetValueSetting(advancement.CurrencyId);
 
-            if (advancement.Ammount < value)
-            {
-                return true;
-            }
-            else
+            if (advancement.Ammount >= value)
             {
                 if (sectors.Any(x => x.ResponsableUserId == entity.UserApplicantId || x.ResponsableUserId == currentUser.Id))
                 {
                     var valueB = GetValueSettingB(advancement.CurrencyId);
 
-                    return advancement.Ammount < valueB;
+                    return advancement.Ammount >= valueB;
                 }
             }
 
