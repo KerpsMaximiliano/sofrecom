@@ -1,5 +1,6 @@
 ﻿using Sofco.Core.Models.ManagementReport;
 using Sofco.Domain.Utils;
+using System.Collections.Generic;
 
 namespace Sofco.Core.Services.ManagementReport
 {
@@ -10,5 +11,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response<CostDetailModel> GetCostDetail(string serviceId);
         Response UpdateCostDetail(CostDetailModel CostDetail);
         Response UpdateCostDetailMonth(CostDetailMonthModel CostDetail);
+        Response<List<ContractedModel>> GetContracted(string pServiceId, int pMonth, int pYear);
+        Response DeleteContracted(int ContractedId);
     }
 }

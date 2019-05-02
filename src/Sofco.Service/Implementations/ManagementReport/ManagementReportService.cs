@@ -277,6 +277,49 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        public Response<List<ContractedModel>> GetContracted(string pServiceId, int pMonth, int pYear)
+        {
+            var response = new Response<List<ContractedModel>> { Data = new List<ContractedModel>() };
+            try
+            {
+                var analytic = unitOfWork.AnalyticRepository.GetByService(pServiceId);
+
+                if (analytic == null)
+                {
+                    response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                    return response;
+                }
+
+                //Obtengo los datos
+                var contrated = unitOfWork.ContratedDetailRepository.GetByAnalytic(analytic.Id).ToList();
+
+                return new Response<List<ContractedModel>>
+                {
+                    Data = contrated
+                        .Where(c => c.MonthYear.Year == pYear && c.MonthYear.Month == pMonth)
+                        .Select(x => new ContractedModel
+                        {
+                            AnalyticId = x.IdAnalytic,
+                            ContractedId = x.Id,
+                            Name = x.Name,
+                            honorary = x.honorary,
+                            insurance = x.insurance,
+                            total = x.honorary + x.insurance,
+                            MonthYear = x.MonthYear
+                        })
+                        .OrderBy(x => x.Name)
+                        .ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
+
         public Response UpdateCostDetail(CostDetailModel pDetailCost)
         {
             var response = new Response();
@@ -390,6 +433,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 }
 
                 this.UpdateCostDetail(_detailModel);
+                this.UpdateContracted(pMonthDetail.Contracted, pMonthDetail.AnalyticId);
 
                 response.AddSuccess(Resources.Common.SaveSuccess);
             }
@@ -399,6 +443,73 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
             }
 
+            return response;
+        }
+
+        public Response UpdateContracted(List<ContractedModel> pContracted, int pAnalyticId)
+        {
+            var response = new Response();
+            try
+            {
+                var DBconstract = unitOfWork.ContratedDetailRepository.GetByAnalytic(pAnalyticId);
+
+                foreach (var hired in pContracted)
+                {
+                    ContratedDetail entity = new ContratedDetail();
+
+                    if (hired.ContractedId > 0)
+                    {
+                        entity = DBconstract.Where(c => c.Id == hired.ContractedId).FirstOrDefault();
+
+                        entity.honorary = hired.honorary ?? 0;
+                        entity.insurance = hired.insurance ?? 0;
+                        entity.Name = hired.Name;
+
+                        unitOfWork.ContratedDetailRepository.Update(entity);
+                    }
+                    else
+                    {
+                        entity.honorary = hired.honorary ?? 0;
+                        entity.insurance = hired.insurance ?? 0;
+                        entity.Name = hired.Name;
+                        entity.MonthYear = hired.MonthYear;
+                        entity.IdAnalytic = pAnalyticId;
+
+                        unitOfWork.ContratedDetailRepository.Insert(entity);
+                    }
+                }
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response DeleteContracted(int ContractedId)
+        {
+            var response = new Response();
+            try
+            {
+                var entity = unitOfWork.ContratedDetailRepository.Get(ContractedId);
+
+                if(entity != null) {
+                    unitOfWork.ContratedDetailRepository.Delete(entity);
+                    unitOfWork.Save();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
             return response;
         }
 
@@ -599,5 +710,6 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             return fundedResources;
         }
+
     }
 }

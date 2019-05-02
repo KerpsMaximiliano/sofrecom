@@ -56,5 +56,21 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{serviceId}/contrated/{month}/{year}")]
+        public IActionResult GetContrated(string serviceId, int month, int year)
+        {
+            var response = managementReportService.GetContracted(serviceId, month, year);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpDelete("{contractedId}/contrated")]
+        public IActionResult DeleteContracted(int contractedId)
+        {
+            var response = managementReportService.DeleteContracted(contractedId);
+
+            return this.CreateResponse(response);
+        }
     }
 }
