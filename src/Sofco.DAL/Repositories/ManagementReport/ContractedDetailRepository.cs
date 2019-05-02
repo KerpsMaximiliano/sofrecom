@@ -1,11 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Sofco.Core.DAL.ManagementReport;
+﻿using Sofco.Core.DAL.ManagementReport;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Models.ManagementReport;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Sofco.DAL.Repositories.ManagementReport
 {

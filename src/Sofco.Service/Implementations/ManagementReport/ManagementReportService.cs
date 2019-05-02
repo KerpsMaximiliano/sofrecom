@@ -133,9 +133,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             var projects = unitOfWork.ProjectRepository.GetAllActives(serviceId);
 
-            var today = DateTime.UtcNow;
-
-            var dates = SetDates(analytic, today);
+            var dates = SetDates(analytic);
 
             response.Data.MonthsHeader = new List<MonthBillingHeaderItem>();
             response.Data.Projects = new List<ProjectOption>();
@@ -240,7 +238,9 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 response.Data.ManagerId = analytic.Manager.ExternalManagerId;
 
-                for (DateTime date = new DateTime(analytic.StartDateContract.Year, analytic.StartDateContract.Month, 1).Date; date.Date <= analytic.EndDateContract.Date; date = date.AddMonths(1))
+                var dates = SetDates(analytic);
+
+                for (DateTime date = new DateTime(dates.Item1.Year, dates.Item1.Month, 1).Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
                 {
                     var monthHeader = new MonthDetailCost();
                     monthHeader.Display = DatesHelper.GetDateShortDescription(date);
@@ -513,6 +513,46 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        public Response UpdateDates(int id, ManagementReportUpdateDates model)
+        {
+            var response = new Response();
+
+            var managementReport = unitOfWork.ManagementReportRepository.Get(id);
+
+            if (managementReport == null)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
+                return response;
+            }
+
+            if (!model.StartDate.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.StartDateRequired);
+            if (!model.EndDate.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.EndDateRequired);
+
+            if (response.HasErrors()) return response;
+
+            if (model.StartDate.GetValueOrDefault().Date > model.EndDate.GetValueOrDefault().Date)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.StartDateGreaterThanEndDate);
+                return response;
+            }
+
+            try
+            {
+                managementReport.StartDate = model.StartDate.GetValueOrDefault().Date;
+                managementReport.EndDate = model.EndDate.GetValueOrDefault().Date;
+
+                unitOfWork.ManagementReportRepository.Update(managementReport);
+                unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private void FillTotalBilling(Response<BillingDetail> response, CrmProjectHito hito, Tuple<DateTime, DateTime> dates)
         {
             var totalBilling = response.Data.Totals.FirstOrDefault(x => x.CurrencyId == hito.MoneyId);
@@ -555,26 +595,36 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private Tuple<DateTime, DateTime> SetDates(Analytic analytic, DateTime today)
+        private Tuple<DateTime, DateTime> SetDates(Analytic analytic)
         {
+            var today = DateTime.UtcNow;
+
             DateTime startDate;
             DateTime endDate;
 
-            if (analytic.StartDateContract.Year <= today.Year)
+            if (analytic.ManagementReport != null)
             {
-                startDate = analytic.StartDateContract.Date;
-
-                endDate = analytic.EndDateContract.Year > today.Year
-                    ? new DateTime(today.Year, 12, 31)
-                    : analytic.EndDateContract.Date;
+                startDate = analytic.ManagementReport.StartDate;
+                endDate = analytic.ManagementReport.EndDate;
             }
             else
             {
-                startDate = new DateTime(today.Year, 1, 1);
+                if (analytic.StartDateContract.Year <= today.Year)
+                {
+                    startDate = analytic.StartDateContract.Date;
 
-                endDate = analytic.EndDateContract.Year > today.Year
-                    ? new DateTime(today.Year, 12, 31)
-                    : analytic.EndDateContract.Date;
+                    endDate = analytic.EndDateContract.Year > today.Year
+                        ? new DateTime(today.Year, 12, 31)
+                        : analytic.EndDateContract.Date;
+                }
+                else
+                {
+                    startDate = new DateTime(today.Year, 1, 1);
+
+                    endDate = analytic.EndDateContract.Year > today.Year
+                        ? new DateTime(today.Year, 12, 31)
+                        : analytic.EndDateContract.Date;
+                }
             }
 
             return new Tuple<DateTime, DateTime>(startDate, endDate);

@@ -167,6 +167,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MailSubjectResource.resx</DependentUpon>
     </Compile>
+    <Compile Update="ManagementReport\ManagementReport.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ManagementReport.resx</DependentUpon>
+    </Compile>
     <Compile Update="Months.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -319,6 +324,10 @@
     <EmbeddedResource Update="Mails\MailSubjectResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MailSubjectResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ManagementReport\ManagementReport.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ManagementReport.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Months.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

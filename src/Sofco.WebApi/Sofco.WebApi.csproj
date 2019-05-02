@@ -46,6 +46,8 @@
     <Compile Remove="Migrations\20180906130104_UserApprover.Designer.cs" />
     <Compile Remove="Migrations\20181009185719_ProjectContact.cs" />
     <Compile Remove="Migrations\20181009185719_ProjectContact.Designer.cs" />
+    <Compile Remove="Migrations\20190502151808_ManagementReport.cs" />
+    <Compile Remove="Migrations\20190502151808_ManagementReport.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -136,6 +136,7 @@ namespace Sofco.DAL
         public DbSet<WorkflowType> WorkflowTypes { get; set; }
 
         //Management Report
+        public DbSet<ManagementReport> ManagementReports { get; set; }
         public DbSet<CostDetail> CostDetail { get; set; }
         public DbSet<ContratedDetail> ContractedDetail { get; set; }
         public DbSet<CostDetailResourceType> CostDetailResourceType { get; set; }
@@ -202,6 +203,7 @@ namespace Sofco.DAL
             builder.MapContratedDetail();
             builder.MapContact();
             builder.MapOpportunity();
+            builder.MapManagementReport();
         }
     }
 }

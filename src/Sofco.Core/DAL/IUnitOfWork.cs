@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using Sofco.Core.DAL.Admin;
+﻿using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
@@ -7,7 +6,6 @@ using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.ManagementReport;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
-using Sofco.Core.DAL.Views;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.DAL.WorkTimeManagement;
 
@@ -108,6 +106,7 @@ namespace Sofco.Core.DAL
 
         ICostDetailRepository CostDetailRepository { get; }
         IContractedDetailRepository ContratedDetailRepository { get; }
+        IManagementReportRepository ManagementReportRepository { get; }
 
         #endregion
 

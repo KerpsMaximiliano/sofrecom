@@ -109,7 +109,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public Analytic GetByService(string serviceId)
         {
-            return context.Analytics.Include(x => x.Manager).SingleOrDefault(x => x.ServiceId.Equals(serviceId));
+            return context.Analytics.Include(x => x.Manager).Include(x => x.ManagementReport).SingleOrDefault(x => x.ServiceId.Equals(serviceId));
         }
 
         public Analytic GetByServiceForManagementReport(string serviceId)
