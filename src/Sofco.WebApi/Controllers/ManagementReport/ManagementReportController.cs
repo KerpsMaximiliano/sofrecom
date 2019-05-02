@@ -64,5 +64,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpDelete("{contractedId}/contrated")]
+        public IActionResult DeleteContracted(int contractedId)
+        {
+            var response = managementReportService.DeleteContracted(contractedId);
+
+            return this.CreateResponse(response);
+        }
     }
 }

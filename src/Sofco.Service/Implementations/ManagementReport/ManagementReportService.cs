@@ -499,18 +499,17 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 var entity = unitOfWork.ContratedDetailRepository.Get(ContractedId);
 
-                unitOfWork.ContratedDetailRepository.Delete(entity);
-              
-                unitOfWork.Save();
+                if(entity != null) {
+                    unitOfWork.ContratedDetailRepository.Delete(entity);
+                    unitOfWork.Save();
+                }
 
-               // response.AddSuccess(Resources.Common.SaveSuccess);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
             }
-
             return response;
         }
 

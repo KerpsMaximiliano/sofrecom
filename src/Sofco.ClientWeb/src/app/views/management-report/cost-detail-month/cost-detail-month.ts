@@ -17,6 +17,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     updateCostSubscrip: Subscription;
     getContratedSuscrip: Subscription;
+    deleteContractedSuscrip: Subscription;
     paramsSubscrip: Subscription;
 
     @ViewChild('costDetailMonthModal') costDetailMonthModal;
@@ -43,6 +44,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     otherResourceId: number;
     contracted: any[] = new Array();
     monthYear: Date;
+    canSave: boolean = false;
 
     isReadOnly: boolean
 
@@ -50,18 +52,20 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private managementReportService: ManagementReportService,
         private activatedRoute: ActivatedRoute,
-        private managementReport : ManagementReportDetailComponent
+        private managementReport: ManagementReportDetailComponent
     ) { }
 
     ngOnInit(): void {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
-        });        
+        });
     }
 
     ngOnDestroy(): void {
         if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
+        if (this.deleteContractedSuscrip) this.deleteContractedSuscrip.unsubscribe();
+        if (this.getContratedSuscrip) this.getContratedSuscrip.unsubscribe();
     }
 
     addExpense() {
@@ -75,15 +79,35 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.otherResourceId = this.otherResources[0].typeId;
     }
 
-    addContracted(){
-        this.contracted.push({name: "", honorary: 0, insurance: 0, total: 0, monthYear: this.monthYear})
+    addContracted() {
+        this.canSave = false;
+        this.contracted.push({ contractedId: 0, name: "", honorary: 0, insurance: 0, total: 0, monthYear: this.monthYear })
     }
 
-    contractedChange(hire){
+    contractedChange(hire) {
         hire.total = hire.honorary + hire.insurance;
 
         this.calculateTotalCosts();
     }
+
+    deleteContracted(index, item) {
+
+        if (item.contractedId > 0) {
+            this.deleteContractedSuscrip = this.managementReportService.deleteContracted(item.contractedId).subscribe(response => {
+                this.contracted.splice(index, 1)
+            },
+            error => {
+            });
+        }
+        else {
+             this.contracted.splice(index, 1)
+        }
+
+        if(this.contracted.length == 0){
+            this.canSave = true;
+        }        
+    }
+
     deleteExpense(index, item) {
 
         item.salary = 0;
@@ -99,12 +123,12 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             }
             return 0;
         });
-        
+
         this.otherResourceId = this.otherResources[0].typeId;
-        
+
         this.calculateTotalCosts();
     }
-    
+
     open(data) {
         this.messageService.showLoading()
         this.expenses = [];
@@ -117,9 +141,9 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.otherResources = data.resources.otherResources;
         this.totalBilling = data.totals.totalBilling;
         this.totalProvisioned = data.totals.totalProvisioned;
-        
+
         this.otherResourceId = this.otherResources[0].typeId;
-        
+
         this.fundedResources.forEach(resource => {
             if (resource.otherResource == true) {
                 if (resource.salary > 0) {
@@ -130,20 +154,20 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
                 }
             }
         })
-        
+
         this.getContratedSuscrip = this.managementReportService.getContrated(this.serviceId, data.month, data.year).subscribe(response => {
-           
+
             this.contracted = response.data;
             this.calculateTotalCosts();
-          
+
             this.messageService.closeLoading();
             this.costDetailMonthModal.show();
         },
-        error => {
-            this.messageService.closeLoading();
-            this.costDetailMonthModal.hide();
-        });
-     }
+            error => {
+                this.messageService.closeLoading();
+                this.costDetailMonthModal.hide();
+            });
+    }
 
     save() {
 
@@ -159,16 +183,16 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         model.Employees = this.resources;
         model.OtherResources = this.expenses.concat(this.otherResources);
         model.Contracted = this.contracted;
-        
+
         this.updateCostSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, model).subscribe(response => {
             this.messageService.closeLoading();
             this.costDetailMonthModal.hide();
             this.managementReport.updateDetailCost()
         },
-        error => {
-            this.messageService.closeLoading();
-            this.costDetailMonthModal.hide();
-        });
+            error => {
+                this.messageService.closeLoading();
+                this.costDetailMonthModal.hide();
+            });
     }
 
     subResourceChange(subResource) {
@@ -199,5 +223,5 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         });
     }
 
-  
+
 }

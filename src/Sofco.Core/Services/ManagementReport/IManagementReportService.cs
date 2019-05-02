@@ -12,5 +12,6 @@ namespace Sofco.Core.Services.ManagementReport
         Response UpdateCostDetail(CostDetailModel CostDetail);
         Response UpdateCostDetailMonth(CostDetailMonthModel CostDetail);
         Response<List<ContractedModel>> GetContracted(string pServiceId, int pMonth, int pYear);
+        Response DeleteContracted(int ContractedId);
     }
 }

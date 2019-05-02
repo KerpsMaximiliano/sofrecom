@@ -34,4 +34,8 @@ export class ManagementReportService {
     return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/contrated/${month}/${year}`);
   }
 
+  deleteContracted(contractedId){
+    return this.http.delete<any>(`${this.baseUrl}/managementReport/${contractedId}/contrated`)
+  }
+
 }
