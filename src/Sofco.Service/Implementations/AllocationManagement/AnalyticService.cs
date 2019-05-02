@@ -286,7 +286,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-
                 if (!string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
                     var manager = unitOfWork.UserRepository.Get(analytic.ManagerId.GetValueOrDefault());
@@ -309,6 +308,13 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         serviceData.ClearKeys(manager != null ? manager.UserName : "*", service.AccountId);
                     }
                 }
+
+                analytic.ManagementReport = new Domain.Models.ManagementReport.ManagementReport
+                {
+                    Analytic = analytic,
+                    StartDate = analytic.StartDateContract.Date,
+                    EndDate = analytic.EndDateContract.Date
+                };
 
                 if (analytic.SolutionId == 0) analytic.SolutionId = null;
                 if (analytic.TechnologyId == 0) analytic.TechnologyId = null;

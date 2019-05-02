@@ -33,8 +33,9 @@ namespace Sofco.Framework.StatusHandlers.Analytic
             var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
             var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
+            var mailCalidad = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);
 
-            recipients.AddRange(new[] { mailPmo, mailRrhh, mailDaf });
+            recipients.AddRange(new[] { mailPmo, mailRrhh, mailDaf, mailCalidad });
 
             var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
 

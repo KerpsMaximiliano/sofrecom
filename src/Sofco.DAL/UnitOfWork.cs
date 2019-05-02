@@ -127,6 +127,7 @@ namespace Sofco.DAL
 
         private ICostDetailRepository costDetailRepository;
         private IContractedDetailRepository contractedDetailRepository;
+        private IManagementReportRepository managementReportRepository;
 
         #endregion
 
@@ -239,7 +240,7 @@ namespace Sofco.DAL
 
         public ICostDetailRepository CostDetailRepository => costDetailRepository ?? (costDetailRepository = new CostDetailRepository(context));
         public IContractedDetailRepository ContratedDetailRepository => contractedDetailRepository ?? (contractedDetailRepository = new ContractedDetailRepository(context));
-
+        public IManagementReportRepository ManagementReportRepository => managementReportRepository ?? (managementReportRepository = new ManagementReportRepository(context));
 
         #endregion
 

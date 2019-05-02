@@ -3,7 +3,7 @@ using Sofco.Domain.Models.Billing;
 
 namespace Sofco.Core.Models.Billing
 {
-    public class InvoiceRowDetailModel
+    public class InvoiceRowDetailModel 
     {
         public InvoiceRowDetailModel(Invoice invoice)
         {

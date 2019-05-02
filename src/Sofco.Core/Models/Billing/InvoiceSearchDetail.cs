@@ -19,10 +19,12 @@ namespace Sofco.Core.Models.Billing
             if (invoice.PDfFileData != null)
             {
                 ExcelFileName = invoice.PDfFileData.FileName;
+                FileId = invoice.PdfFileId.GetValueOrDefault();
             }
             else if (invoice.ExcelFileData != null)
             {
                 ExcelFileName = invoice.ExcelFileData.FileName;
+                FileId = invoice.ExcelFileId.GetValueOrDefault();
             }
 
             if (invoice.User != null)
@@ -48,5 +50,7 @@ namespace Sofco.Core.Models.Billing
         public DateTime CreatedDate { get; set; }
 
         public string StatusName { get; set; }
+
+        public int FileId { get; set; }
     }
 }

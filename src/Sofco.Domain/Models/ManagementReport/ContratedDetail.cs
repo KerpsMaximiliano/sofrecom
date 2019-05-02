@@ -1,8 +1,5 @@
-﻿using Sofco.Domain.Models.Admin;
-using Sofco.Domain.Models.AllocationManagement;
+﻿using Sofco.Domain.Models.AllocationManagement;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Sofco.Domain.Models.ManagementReport
 {

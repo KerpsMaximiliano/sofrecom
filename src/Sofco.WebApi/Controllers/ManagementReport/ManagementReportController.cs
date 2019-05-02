@@ -72,5 +72,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("{id}/dates")]
+        public IActionResult UpdateDates(int id, [FromBody] ManagementReportUpdateDates model)
+        {
+            var response = managementReportService.UpdateDates(id, model);
+
+            return this.CreateResponse(response);
+        }
     }
 }
