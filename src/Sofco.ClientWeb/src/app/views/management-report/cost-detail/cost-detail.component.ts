@@ -136,7 +136,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     EditItem() {
-
+debugger
         this.monthSelected.value = this.editItemMonto.value
   
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
@@ -164,14 +164,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
 
             //Actualiza el sueldo
-            this.salaryPlusIncrease(this.itemSelected, this.indexSelected + 1);
+            this.salaryPlusIncrease(this.itemSelected, this.indexSelected + 1, true);
         }
 
         //Si estoy editando un aumento se actualiza el sueldo para todos los empleados
         if (this.itemSelected.typeName == this.generalAdjustment) {
             this.modalPercentage = true;
             this.employees.forEach(employee => {
-                this.salaryPlusIncrease(employee, this.indexSelected);
+                this.salaryPlusIncrease(employee, this.indexSelected, false);
             })
         }
         else {
@@ -281,13 +281,20 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return SalaryPlusIncrese;
     }
 
-    salaryPlusIncrease(employee, pIndex) {        
+    salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {      
+        debugger  
         //Verifico que exista la fila de ajustes
         var AjusteMensual = this.fundedResources.find(r => r.display == this.generalAdjustment);
         if (AjusteMensual) {
             //Si existe, Recorro todos los meses
+            let newSalary;
             //El nuevo salario lo seteo como el primer salario
-            let newSalary = employee.monthsCost[pIndex].value
+            if(isSalaryEmployee == true){
+                newSalary = employee.monthsCost[pIndex - 1].value
+            }
+            else{
+                newSalary = employee.monthsCost[pIndex].value
+            }
 
             for (let index = pIndex; index < employee.monthsCost.length; index++) {
                 
@@ -295,9 +302,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 if (AjusteMensual.monthsCost[index].value > 0) {
                     newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
                 }
-                else {
-                    newSalary = employee.monthsCost[index].originalValue
-                }
+                // else {
+                //     newSalary = employee.monthsCost[index].originalValue
+                // }
 
                 if (employee.monthsCost[index].hasAlocation) {
                     employee.monthsCost[index].value = newSalary;
