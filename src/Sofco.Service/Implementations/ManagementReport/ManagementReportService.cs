@@ -277,12 +277,12 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<List<ContractedModel>> GetContracted(string serviceId)
+        public Response<List<ContractedModel>> GetContracted(string pServiceId, int pMonth, int pYear)
         {
             var response = new Response<List<ContractedModel>> { Data = new List<ContractedModel>() };
             try
             {
-                var analytic = unitOfWork.AnalyticRepository.GetByService(serviceId);
+                var analytic = unitOfWork.AnalyticRepository.GetByService(pServiceId);
 
                 if (analytic == null)
                 {
@@ -296,6 +296,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 return new Response<List<ContractedModel>>
                 {
                     Data = contrated
+                        .Where(c => c.MonthYear.Year == pYear && c.MonthYear.Month == pMonth)
                         .Select(x => new ContractedModel
                         {
                             AnalyticId = x.IdAnalytic,

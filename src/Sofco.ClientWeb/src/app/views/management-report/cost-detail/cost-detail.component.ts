@@ -198,7 +198,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     getResourcesByMonth(month, year) {
 
-        return this.employees.map(element => {
+        var resources = { employees: [], fundedResources: [], otherResources: [] }
+      
+        resources.employees = this.employees.map(element => {
 
             var monthCost = element.monthsCost.find(x => {
                 var dateSplitted = x.monthYear.split("-");
@@ -210,6 +212,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             
             return {
                 employeeId: element.employeeId,
+                hasAlocation: monthCost.hasAlocation,
                 typeId: element.typeId,
                 costDetailId: monthCost.costDetailId,
                 name: element.display,
@@ -218,11 +221,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 total: monthCost.value + monthCost.charges || 0
             }
         });
-    }
 
-    getOtherResourcesByMonth(month, year) {
-
-        return this.otherResources.map(element => {
+        resources.fundedResources = this.fundedResources.map(element => {
           
             var monthCost = element.monthsCost.find(x => {
                 var dateSplitted = x.monthYear.split("-");
@@ -241,11 +241,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 otherResource: element.otherResource
             }
         });
-    }
 
-    getFundedResourcesByMonth(month, year) {
-
-        return this.fundedResources.map(element => {
+        resources.otherResources = this.otherResources.map(element => {
           
             var monthCost = element.monthsCost.find(x => {
                 var dateSplitted = x.monthYear.split("-");
@@ -264,6 +261,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 otherResource: element.otherResource
             }
         });
+
+        return resources;
     }
 
     getIdAnalytic(){

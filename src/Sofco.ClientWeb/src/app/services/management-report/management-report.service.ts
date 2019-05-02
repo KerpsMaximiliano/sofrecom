@@ -30,8 +30,8 @@ export class ManagementReportService {
     return this.http.post<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetailMonth`, model);
   }
 
-  getContrated(serviceId){
-    return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/contrated`);
+  getContrated(serviceId, month, year){
+    return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/contrated/${month}/${year}`);
   }
 
 }

@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { ActivatedRoute } from "@angular/router";
 import { detectBody } from "app/app.helpers";
+import { ManagementReportDetailComponent } from "../detail/mr-detail"
 
 @Component({
     selector: 'cost-detail-month',
@@ -41,6 +42,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     otherResources: any[] = new Array();
     otherResourceId: number;
     contracted: any[] = new Array();
+    monthYear: Date;
 
     isReadOnly: boolean
 
@@ -48,21 +50,13 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private managementReportService: ManagementReportService,
         private activatedRoute: ActivatedRoute,
+        private managementReport : ManagementReportDetailComponent
     ) { }
 
     ngOnInit(): void {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
-        });
-
-        this.getContratedSuscrip = this.managementReportService.getContrated(this.serviceId).subscribe(response => {
-            this.messageService.closeLoading();
-            this.contracted = response.data;
-        },
-        error => {
-            this.messageService.closeLoading();
-            this.costDetailMonthModal.hide();
-        });
+        });        
     }
 
     ngOnDestroy(): void {
@@ -82,7 +76,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     }
 
     addContracted(){
-        this.contracted.push({name: "", honorary: 0, insurance: 0, total: 0})
+        this.contracted.push({name: "", honorary: 0, insurance: 0, total: 0, monthYear: this.monthYear})
     }
 
     contractedChange(hire){
@@ -105,23 +99,27 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             }
             return 0;
         });
-
+        
         this.otherResourceId = this.otherResources[0].typeId;
-
+        
         this.calculateTotalCosts();
     }
-
+    
     open(data) {
+        this.messageService.showLoading()
+        this.expenses = [];
 
         this.isReadOnly = !data.isCdg;
         this.AnalyticId = data.AnalyticId;
-        this.resources = data.resources;
-        this.fundedResources = data.fundedResources;
-        this.otherResources = data.otherResources;
-        this.otherResourceId = this.otherResources[0].typeId;
+        this.monthYear = new Date(data.year, data.month - 1, 1)
+        this.resources = data.resources.employees.filter(e => e.hasAlocation == true)
+        this.fundedResources = data.resources.fundedResources;
+        this.otherResources = data.resources.otherResources;
         this.totalBilling = data.totals.totalBilling;
         this.totalProvisioned = data.totals.totalProvisioned;
-
+        
+        this.otherResourceId = this.otherResources[0].typeId;
+        
         this.fundedResources.forEach(resource => {
             if (resource.otherResource == true) {
                 if (resource.salary > 0) {
@@ -132,10 +130,20 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
                 }
             }
         })
-
-        this.calculateTotalCosts();
-        this.costDetailMonthModal.show();
-    }
+        
+        this.getContratedSuscrip = this.managementReportService.getContrated(this.serviceId, data.month, data.year).subscribe(response => {
+           
+            this.contracted = response.data;
+            this.calculateTotalCosts();
+          
+            this.messageService.closeLoading();
+            this.costDetailMonthModal.show();
+        },
+        error => {
+            this.messageService.closeLoading();
+            this.costDetailMonthModal.hide();
+        });
+     }
 
     save() {
 
@@ -155,7 +163,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.updateCostSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, model).subscribe(response => {
             this.messageService.closeLoading();
             this.costDetailMonthModal.hide();
-            this.expenses = []
+            this.managementReport.updateDetailCost()
         },
         error => {
             this.messageService.closeLoading();
@@ -190,4 +198,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.totalCosts += element.total;
         });
     }
+
+  
 }
