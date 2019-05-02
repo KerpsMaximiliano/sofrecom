@@ -12,6 +12,7 @@ import { MenuService } from '../../../../services/admin/menu.service';
 import { EmployeeService } from '../../../../services/allocation-management/employee.service';
 declare var $: any;
 declare var moment: any;
+import * as FileSaver from "file-saver";
 
 @Component({
   selector: 'app-invoice-search',
@@ -48,7 +49,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
         private projectService: ProjectService,
         private employeeService: EmployeeService,
         private datatableService: DataTableService) {}
-
+ 
     ngOnInit() {
         this.getCustomers();
         this.getUserOptions();
@@ -59,7 +60,7 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             this.customerId = data.customerId;
             this.serviceId = data.serviceId;
             this.projectId = data.projectId;
-            this.userApplicantId = data.userApplicantId;
+            this.userApplicantId = data.userApplicantId == 0 ? null : data.userApplicantId;
             $('#invoiceNumber').val(data.invoiceNumber);
             this.status = data.status,
             this.filterByDates = data.filterByDates;
@@ -159,7 +160,11 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
                 this.data = [];
 
                 if (!res.messages) {
-                    this.data = res;
+                    this.data = res.map(item => {
+                        item.selected = false;
+                        return item;
+                    });
+
                     sessionStorage.setItem('lastInvoiceQuery', JSON.stringify(parameters));
                 }
 
@@ -198,5 +203,29 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
 
         this.datatableService.destroy('#invoiceTable');
         this.data = null;
+    }
+
+    downloadZip(){
+        var invoicesIds = this.data.filter(x => x.selected).map(x => x.fileId);
+
+        if(!invoicesIds || invoicesIds == null || invoicesIds.length == 0) return;
+
+        this.messageService.showLoading();
+
+        this.service.downloadZip(invoicesIds).subscribe(file => {
+            this.messageService.closeLoading();
+            FileSaver.saveAs(file, "remitos.zip");
+        },
+        error => this.messageService.closeLoading());
+    }
+
+    canDownload(){
+        if(this.data == null) return false; 
+
+        var invoices = this.data.filter(x => x.selected && x.fileId > 0);
+
+        if(invoices.length == 0) return false;
+
+        return true;
     }
 }

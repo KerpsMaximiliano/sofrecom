@@ -12,7 +12,7 @@ namespace Sofco.WebApi.Controllers.Billing
     {
         private readonly IProjectService projectService;
 
-        public ProjectController(ISolfacService solfacService, IProjectService projectService)
+        public ProjectController(IProjectService projectService)
         {
             this.projectService = projectService;
         }

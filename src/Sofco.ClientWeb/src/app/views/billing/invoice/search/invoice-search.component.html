@@ -93,14 +93,11 @@
     <div class="row" *ngIf="data != null">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>{{"billing.invoice.list" | translate}}</h5>
-                </div>
                 <div class="ibox-content">
-
                     <table class="table table-striped" id="invoiceTable" width="100%">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>{{'billing.invoice.invoiceNumber' | translate }}</th>
                                 <th>{{'billing.invoice.excelFileName' | translate }}</th>
                                 <th>{{'billing.invoice.account' | translate }}</th>
@@ -110,16 +107,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let invoice of data" (click)="goToDetail(invoice)" class="pointer">
-                                <td>{{invoice.invoiceNumber}}</td>
-                                <td title="{{invoice.excelFileName}}" class="text-ellipsis column-excel-file">{{invoice.excelFileName}}</td>
-                                <td>{{invoice.accountName}}</td>
-                                <td>{{invoice.project}}</td>
-                                <td>{{invoice.createdDate | date: 'dd/MM/yyyy'}}</td>
-                                <td class="text-center"><span class="label label-{{invoice.statusName}}">{{ invoice.statusName | translate}}</span></td>
+                            <tr *ngFor="let invoice of data"  class="pointer">
+                                <td class="col-lg-1">
+                                    <pcheck [(checked)]="invoice.selected"></pcheck>
+                                </td> 
+                                <td (click)="goToDetail(invoice)">{{invoice.invoiceNumber}}</td>
+                                <td (click)="goToDetail(invoice)" title="{{invoice.excelFileName}}" class="text-ellipsis column-excel-file">{{invoice.excelFileName}}</td>
+                                <td (click)="goToDetail(invoice)">{{invoice.accountName}}</td>
+                                <td (click)="goToDetail(invoice)">{{invoice.project}}</td>
+                                <td (click)="goToDetail(invoice)">{{invoice.createdDate | date: 'dd/MM/yyyy'}}</td>
+                                <td (click)="goToDetail(invoice)" class="text-center"><span class="label label-{{invoice.statusName}}">{{ invoice.statusName | translate}}</span></td>
                             </tr>
                         </tbody>
                     </table>       
+                </div>
+                <div class="ibox-footer" *ngIf="canDownload()">
+                    <button class="btn btn-primary btn-sm" (click)="downloadZip()"> Descargar zip <i class="fa fa-download"></i></button>
                 </div>
             </div>
         </div>
