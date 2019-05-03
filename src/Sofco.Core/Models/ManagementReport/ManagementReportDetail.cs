@@ -28,6 +28,12 @@ namespace Sofco.Core.Models.ManagementReport
         public string Name { get; set; }
 
         public string AccountName { get; set; }
+
+        public int  ManagementReportId { get; set; }
+
+        public DateTime ManamementReportStartDate { get; set; }
+
+        public DateTime ManamementReportEndDate { get; set; }
     }
 
     public class AmmountItem

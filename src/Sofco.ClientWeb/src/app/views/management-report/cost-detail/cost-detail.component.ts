@@ -136,7 +136,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     EditItem() {
-debugger
+
         this.monthSelected.value = this.editItemMonto.value
   
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen

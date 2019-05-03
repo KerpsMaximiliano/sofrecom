@@ -1,0 +1,7 @@
+{
+    "startDateGreaterThanEndDate": "Fecha de fin Informe no puede ser menor a la fecha de inicio Informe",
+    "startDateOutOfRange": " La fecha de inicio del informe debe ser mayor o igual al inicio de la analitica",
+    "startDateRequired": "Fecha inicio Informe es requerida",
+    "endDateOutOfRange": " La fecha de fin del informe debe ser menor o igual al fin de la analitica",
+    "endDateRequired": "Fecha fin Informe es requerida"
+}

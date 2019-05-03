@@ -38,4 +38,7 @@ export class ManagementReportService {
     return this.http.delete<any>(`${this.baseUrl}/managementReport/${contractedId}/contrated`)
   }
 
+  updateDates(id, model){
+    return this.http.put<any>(`${this.baseUrl}/managementReport/${id}/dates`, model);
+  }
 }
