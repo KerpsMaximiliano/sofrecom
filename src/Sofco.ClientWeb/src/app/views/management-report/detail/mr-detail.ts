@@ -15,6 +15,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
+    updateDatesSubscrip: Subscription;
 
     customerId: string;
     serviceId: string;
@@ -30,6 +31,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     ReportEndDate: Date;
     ReportStartDateError: boolean = false
     ReportEndDateError: boolean = false
+    ManagementReportId: number
 
     @ViewChild("marginTracking") marginTracking;
     @ViewChild("billing") billing;
@@ -76,6 +78,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if (this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
+        if (this.updateDatesSubscrip) this.updateDatesSubscrip.unsubscribe();
     }
 
     getDetail() {
@@ -84,6 +87,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.getDetailSubscrip = this.managementReportService.getDetail(this.serviceId).subscribe(response => {
 
             this.model = response.data;
+            this.ManagementReportId = response.data.managementReportId;
             this.marginTracking.model = response.data;
             this.billing.init(this.serviceId);
 
@@ -135,8 +139,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     openEditDateModal() {
 
-        this.ReportStartDate = this.model.startDate;
-        this.ReportEndDate = this.model.endDate;
+        this.ReportStartDate = this.model.manamementReportStartDate;
+        this.ReportEndDate = this.model.manamementReportEndDate;
 
         this.ReportStartDateError = false
         this.ReportEndDateError = false
@@ -157,6 +161,28 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         if (new Date(this.ReportEndDate) > new Date(this.model.endDate)) {
             this.ReportEndDateError = true
             this.editDateModal.resetButtons()
+        }
+
+        if (this.ReportStartDateError == false && this.ReportEndDateError == false) {
+
+            var model = {
+                StartDate: new Date(this.ReportStartDate),
+                EndDate: new Date(this.ReportEndDate)
+            }
+            this.updateDatesSubscrip = this.managementReportService.updateDates(this.ManagementReportId, model).subscribe(response => {
+
+                this.messageService.closeLoading();
+                this.model.manamementReportStartDate = this.ReportStartDate
+                this.model.manamementReportEndDate = this.ReportEndDate
+          
+                this.editDateModal.hide();
+            },
+                error => {
+                    this.messageService.closeLoading()
+                    this.editDateModal.resetButtons()
+                }
+            );
+
         }
 
     }

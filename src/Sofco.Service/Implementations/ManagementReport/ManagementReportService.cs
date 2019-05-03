@@ -62,6 +62,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.SolutionType = analytic.Solution?.Text;
                 response.Data.TechnologyType = analytic.Technology?.Text;
                 response.Data.Manager = analytic.Manager?.Name;
+                response.Data.ManagementReportId = analytic.ManagementReport.Id;
+                response.Data.ManamementReportStartDate = analytic.ManagementReport.StartDate;
+                response.Data.ManamementReportEndDate = analytic.ManagementReport.EndDate;
             }
             else
             {
@@ -528,13 +531,13 @@ namespace Sofco.Service.Implementations.ManagementReport
             if (!model.StartDate.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.StartDateRequired);
             if (!model.EndDate.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.EndDateRequired);
 
-            if (response.HasErrors()) return response;
-
             if (model.StartDate.GetValueOrDefault().Date > model.EndDate.GetValueOrDefault().Date)
             {
                 response.AddError(Resources.ManagementReport.ManagementReport.StartDateGreaterThanEndDate);
                 return response;
             }
+
+            if (response.HasErrors()) return response;
 
             try
             {
@@ -543,6 +546,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 unitOfWork.ManagementReportRepository.Update(managementReport);
                 unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
             }
             catch (Exception e)
             {
