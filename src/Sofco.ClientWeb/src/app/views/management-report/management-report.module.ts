@@ -49,7 +49,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
       ReactiveFormsModule,
       BsDatepickerModule
     ],
-    providers: [ ManagementReportService, DatesService, MenuService, UtilsService, ProjectService, MessageService ],
+    providers: [ ManagementReportService, DatesService, UtilsService, ProjectService ],
     exports: [],
   })
   

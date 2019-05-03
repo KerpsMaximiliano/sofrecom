@@ -19,6 +19,8 @@ export class RefundListComponent implements OnInit {
     ngOnInit(): void {
         const data = JSON.parse(sessionStorage.getItem('lastRefundQuery'));
 
+        this.menuService.userIsRrhh = true;
+
         if(data){
             this.gridFilter.resourceId = data.userApplicantId;
             this.gridFilter.stateIds = data.stateIds;

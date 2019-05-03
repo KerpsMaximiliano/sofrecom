@@ -38,7 +38,6 @@ import { AdvancementRefundSettingService } from "app/services/advancement-and-re
 import { RefundsRelatedComponent } from "./advancement/refunds-related/refunds-related";
 import { CurrentAccountService } from "app/services/advancement-and-refund/current-account.sevice";
 import { CurrentAccountComponent } from "./common/current-account/current-account";
-import { MenuService } from "app/services/admin/menu.service";
 import { RefundDelegateComponent } from "./refund/delegate/refund-delegate";
 import { UserApproverService } from "app/services/allocation-management/user-approver.service";
 import { PCheckModule } from "app/components/pcheck/pcheck.module";
@@ -55,8 +54,8 @@ import { PaymentPendingService } from "app/services/advancement-and-refund/payme
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
                    AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule, AmountFormatModule ],
 
-    providers   : [ AdvancementService, UserService, I18nService, RefundService, PaymentPendingService,
-                    AdvancementRefundSettingService, CurrentAccountService, MenuService, UserApproverService ],
+    providers   : [ AdvancementService, UserService, RefundService, PaymentPendingService,
+                    AdvancementRefundSettingService, CurrentAccountService, UserApproverService ],
 
     exports     : []
 })
