@@ -132,7 +132,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     open(data) {
         this.messageService.showLoading()
         this.expenses = [];
-
+debugger
         this.isReadOnly = !data.isCdg;
         this.AnalyticId = data.AnalyticId;
         this.monthYear = new Date(data.year, data.month - 1, 1)
@@ -142,8 +142,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.totalBilling = data.totals.totalBilling;
         this.totalProvisioned = data.totals.totalProvisioned;
 
-        this.otherResourceId = this.otherResources[0].typeId;
-
+        if(this.otherResources.length > 0){
+            this.otherResourceId = this.otherResources[0].typeId;
+        }
+        
         this.fundedResources.forEach(resource => {
             if (resource.otherResource == true) {
                 if (resource.salary > 0) {

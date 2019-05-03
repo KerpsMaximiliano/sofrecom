@@ -282,7 +282,6 @@ debugger
     }
 
     salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {      
-        debugger  
         //Verifico que exista la fila de ajustes
         var AjusteMensual = this.fundedResources.find(r => r.display == this.generalAdjustment);
         if (AjusteMensual) {

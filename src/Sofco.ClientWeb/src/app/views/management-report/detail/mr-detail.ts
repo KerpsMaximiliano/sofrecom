@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 @Component({
     selector: 'management-report-detail',
@@ -25,17 +26,40 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     isManager: boolean = false;
     isCdgOrDirector: boolean = false;
 
+    ReportStartDate: Date;
+    ReportEndDate: Date;
+    ReportStartDateError: boolean = false
+    ReportEndDateError: boolean = false
+
     @ViewChild("marginTracking") marginTracking;
     @ViewChild("billing") billing;
     @ViewChild("detailCost") detailCost;
     @ViewChild('costDetailMonth') costDetailMonth;
+    @ViewChild('dateReportStart') dateReportStart;
+    @ViewChild('dateReportEnd') dateReportEnd;
+    @ViewChild('editDateModal') editDateModal;
+
+    public editDateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Editar Fechas",
+        "editDateModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
+    private today: Date = new Date();
+    private startNewPeriod: Date = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
 
     constructor(private activatedRoute: ActivatedRoute,
-                private messageService: MessageService,
-                private menuService: MenuService,
-                private managementReportService: ManagementReportService){}
+        private messageService: MessageService,
+        private menuService: MenuService,
+        private managementReportService: ManagementReportService) { }
 
     ngOnInit(): void {
+
+        this.editDateModal.size = 'modal-sm'
+
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.customerId = params['customerId'];
             this.serviceId = params['serviceId'];
@@ -43,18 +67,18 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.serviceName = sessionStorage.getItem('serviceName');
 
             this.getDetail();
-          });
+        });
 
-          this.isManager = this.menuService.userIsManager;
-          this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
-    }    
-
-    ngOnDestroy(): void {
-        if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
-        if(this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
+        this.isManager = this.menuService.userIsManager;
+        this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
     }
 
-    getDetail(){
+    ngOnDestroy(): void {
+        if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+        if (this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
+    }
+
+    getDetail() {
         this.messageService.showLoading();
 
         this.getDetailSubscrip = this.managementReportService.getDetail(this.serviceId).subscribe(response => {
@@ -62,9 +86,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.model = response.data;
             this.marginTracking.model = response.data;
             this.billing.init(this.serviceId);
+
+
             this.messageService.closeLoading();
         },
-        error => this.messageService.closeLoading());
+            error => this.messageService.closeLoading());
     }
 
     collapse() {
@@ -87,23 +113,52 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    seeCostDetailMonth(month, year){
+    seeCostDetailMonth(month, year) {
 
-        var resources = this.detailCost.getResourcesByMonth(month+1, year);
+        var resources = this.detailCost.getResourcesByMonth(month + 1, year);
         var AnalyticId = this.detailCost.getIdAnalytic();
 
-        var totals = this.billing.getTotals(month+1, year);
+        var totals = this.billing.getTotals(month + 1, year);
 
-        var data = { 
-                        isCdg: this.menuService.userIsCdg, 
-                        resources, totals, AnalyticId, 
-                        month: month + 1,  year 
-                    }
+        var data = {
+            isCdg: this.menuService.userIsCdg,
+            resources, totals, AnalyticId,
+            month: month + 1, year
+        }
 
         this.costDetailMonth.open(data);
     }
 
-    updateDetailCost(){
+    updateDetailCost() {
         this.detailCost.getCost()
     }
+
+    openEditDateModal() {
+
+        this.ReportStartDate = this.model.startDate;
+        this.ReportEndDate = this.model.endDate;
+
+        this.ReportStartDateError = false
+        this.ReportEndDateError = false
+
+        this.editDateModal.show();
+    }
+
+    EditDate() {
+
+        this.ReportStartDateError = false
+        this.ReportEndDateError = false
+
+        if (new Date(this.ReportStartDate) < new Date(this.model.startDate)) {
+            this.ReportStartDateError = true
+            this.editDateModal.resetButtons()
+        }
+
+        if (new Date(this.ReportEndDate) > new Date(this.model.endDate)) {
+            this.ReportEndDateError = true
+            this.editDateModal.resetButtons()
+        }
+
+    }
+
 }

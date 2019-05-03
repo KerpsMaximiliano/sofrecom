@@ -24,6 +24,8 @@ import { DecimalFormatModule } from "app/components/decimalFormat/decimal-format
 import { CostDetailMonthComponent } from "./cost-detail-month/cost-detail-month";
 import { ReactiveFormsModule } from '@angular/forms';
 import { DigitModule } from "app/components/digit-limit/digit-limit.directive";
+import { BsDatepickerModule } from 'ngx-bootstrap';
+
 
 @NgModule({
     declarations: [
@@ -44,7 +46,8 @@ import { DigitModule } from "app/components/digit-limit/digit-limit.directive";
       PCheckModule,
       NgSelectModule,
       DigitModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      BsDatepickerModule
     ],
     providers: [ ManagementReportService, DatesService, UtilsService, ProjectService ],
     exports: [],
