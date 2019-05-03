@@ -72,13 +72,15 @@ export class LoginComponent implements OnInit {
                 const username = this.model.username.split('@')[0];
                 Cookie.set("currentUser", username);
                 Cookie.set("currentUserMail", username);
-
+ 
                 this.menuService.menu = menu.menus;
                 this.menuService.userIsDirector = menu.isDirector;
                 this.menuService.userIsManager = menu.isManager;
                 this.menuService.userIsDaf = menu.isDaf;
                 this.menuService.userIsCdg = menu.isCdg;
                 this.menuService.userIsRrhh = menu.isRrhh;
+                this.menuService.userIsCompliance = menu.isCompliance;
+                this.menuService.userIsGaf = menu.isGaf;
 
                 this.menuService.dafMail = menu.dafMail;
                 this.menuService.cdgMail = menu.cdgMail;

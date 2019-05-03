@@ -49,7 +49,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
              PCheckModule, WorkTimeRouter, DateRangePickerModule, TooltipModule, NgSelectModule],
 
   providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService, ServiceService, 
-                I18nService, WorktimeControlService, RrhhService],
+                 WorktimeControlService, RrhhService],
 
   exports     : []
 })

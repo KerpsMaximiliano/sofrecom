@@ -46,7 +46,7 @@ import { DigitModule } from "app/components/digit-limit/digit-limit.directive";
       DigitModule,
       ReactiveFormsModule
     ],
-    providers: [ ManagementReportService, DatesService, MenuService, UtilsService, ProjectService, MessageService ],
+    providers: [ ManagementReportService, DatesService, UtilsService, ProjectService ],
     exports: [],
   })
   

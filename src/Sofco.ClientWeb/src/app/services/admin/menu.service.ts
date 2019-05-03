@@ -55,7 +55,7 @@ export class MenuService {
                 this.refundDelegates = menu.refundDelegates;
             }
         }
- 
+
         if (!this.currentUser) {
             this.currentUser = Cookie.get('currentUser');
         }
