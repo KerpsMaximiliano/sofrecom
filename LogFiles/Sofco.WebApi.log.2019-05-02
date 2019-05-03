@@ -1,0 +1,123 @@
+﻿ 2019-05-02 17:07:51,842 ERROR Sofco.Service.Implementations.Billing.ProjectService One or more errors occurred. (A task was canceled.)
+System.AggregateException: One or more errors occurred. (A task was canceled.) ---> System.Threading.Tasks.TaskCanceledException: A task was canceled.
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at Sofco.Service.Crm.HttpClients.CrmApiHttpClient.GetResult[TResult](String urlPath, HttpMethod httpMethod, Object data) in C:\Proyectos\GAPS\src\Sofco.Service.Crm\HttpClients\CrmApiHttpClient.cs:line 103
+   at Sofco.Service.Crm.HttpClients.CrmApiHttpClient.Get[T](String urlPath) in C:\Proyectos\GAPS\src\Sofco.Service.Crm\HttpClients\CrmApiHttpClient.cs:line 45
+   at Sofco.Service.Crm.CrmProjectService.GetAll() in C:\Proyectos\GAPS\src\Sofco.Service.Crm\CrmProjectService.cs:line 32
+   at Sofco.Service.Implementations.Jobs.ProjectUpdateJobService.Execute() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Jobs\ProjectUpdateJobService.cs:line 40
+   at Sofco.Service.Implementations.Billing.ProjectService.Update() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Billing\ProjectService.cs:line 182
+---> (Inner Exception #0) System.Threading.Tasks.TaskCanceledException: A task was canceled.<---
+
+ 2019-05-02 17:16:12,964 ERROR Sofco.Service.Implementations.Billing.ProjectService One or more errors occurred. (A task was canceled.)
+System.AggregateException: One or more errors occurred. (A task was canceled.) ---> System.Threading.Tasks.TaskCanceledException: A task was canceled.
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task`1.GetResultCore(Boolean waitCompletionNotification)
+   at Sofco.Service.Crm.HttpClients.CrmApiHttpClient.GetResult[TResult](String urlPath, HttpMethod httpMethod, Object data) in C:\Proyectos\GAPS\src\Sofco.Service.Crm\HttpClients\CrmApiHttpClient.cs:line 103
+   at Sofco.Service.Crm.HttpClients.CrmApiHttpClient.Get[T](String urlPath) in C:\Proyectos\GAPS\src\Sofco.Service.Crm\HttpClients\CrmApiHttpClient.cs:line 45
+   at Sofco.Service.Crm.CrmProjectService.GetAll() in C:\Proyectos\GAPS\src\Sofco.Service.Crm\CrmProjectService.cs:line 32
+   at Sofco.Service.Implementations.Jobs.ProjectUpdateJobService.Execute() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Jobs\ProjectUpdateJobService.cs:line 40
+   at Sofco.Service.Implementations.Billing.ProjectService.Update() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Billing\ProjectService.cs:line 182
+---> (Inner Exception #0) System.Threading.Tasks.TaskCanceledException: A task was canceled.<---
+
+ 2019-05-02 17:17:46,531 ERROR Sofco.Service.Implementations.Billing.ProjectService Invalid object name 'app.Opportunities'.
+System.Data.SqlClient.SqlException (0x80131904): Invalid object name 'app.Opportunities'.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.Billing.ProjectRepository.GetAllActives(String serviceId) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\Billing\ProjectRepository.cs:line 27
+   at Sofco.Data.Billing.ProjectData.<>c__DisplayClass8_0.<GetProjects>b__0() in C:\Proyectos\GAPS\src\Sofco.Data\Billing\ProjectData.cs:line 33
+   at Sofco.Cache.CacheManager.GetHashList[T](String cacheKey, Func`1 resolver, Func`2 getKey, TimeSpan cacheExpire) in C:\Proyectos\GAPS\src\Sofco.Cache\CacheManager.cs:line 91
+   at Sofco.Data.Billing.ProjectData.GetProjects(String serviceId) in C:\Proyectos\GAPS\src\Sofco.Data\Billing\ProjectData.cs:line 32
+   at Sofco.Service.Implementations.Billing.ProjectService.GetProjects(String serviceId) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Billing\ProjectService.cs:line 78
+ClientConnectionId:b4a2f1bd-6fe1-4a09-a0aa-3fb07977a1a3
+Error Number:208,State:1,Class:16
+ 2019-05-02 17:17:46,994 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Invalid object name 'app.ManagementReports'.
+System.Data.SqlClient.SqlException (0x80131904): Invalid object name 'app.ManagementReports'.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.AllocationManagement.AnalyticRepository.GetByService(String serviceId) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\AllocationManagement\AnalyticRepository.cs:line 112
+   at Sofco.Service.Implementations.Billing.ServicesService.GetAnalyticByService(String serviceId) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Billing\ServicesService.cs:line 92
+   at Sofco.WebApi.Controllers.Billing.ServiceController.GetAnalyticByService(String serviceId) in C:\Proyectos\GAPS\src\Sofco.WebApi\Controllers\Billing\ServiceController.cs:line 78
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Proyectos\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ClientConnectionId:b4a2f1bd-6fe1-4a09-a0aa-3fb07977a1a3
+Error Number:208,State:1,Class:16
+ 2019-05-02 17:17:47,123 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware The process cannot access the file 'C:\Temp\email.2019025T171747.eml' because it is being used by another process.
+System.IO.IOException: The process cannot access the file 'C:\Temp\email.2019025T171747.eml' because it is being used by another process.
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at MimeKit.MimeMessage.WriteTo(String fileName, CancellationToken cancellationToken)
+   at Sofco.Framework.Mail.MailSender.SendMessages(List`1 messages) in C:\Proyectos\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 160
+   at Sofco.Framework.Mail.MailSender.SendMessage(MimeMessage message) in C:\Proyectos\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 140
+   at Sofco.Framework.Mail.MailSender.Send(Email email) in C:\Proyectos\GAPS\src\Sofco.Framework\Mail\MailSender.cs:line 116
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(String message, Exception exception) in C:\Proyectos\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 67
+   at Sofco.Framework.Logger.LogMailer`1.SendMail(Exception exception) in C:\Proyectos\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 54
+   at Sofco.Framework.Logger.LogMailer`1.LogError(Exception exception) in C:\Proyectos\GAPS\src\Sofco.Framework\Logger\LogMailer.cs:line 49
+   at Sofco.Service.Implementations.Billing.ProjectService.GetProjects(String serviceId) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Billing\ProjectService.cs:line 82
+   at Sofco.WebApi.Controllers.Billing.ProjectController.Get(String serviceId) in C:\Proyectos\GAPS\src\Sofco.WebApi\Controllers\Billing\ProjectController.cs:line 49
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Proyectos\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
