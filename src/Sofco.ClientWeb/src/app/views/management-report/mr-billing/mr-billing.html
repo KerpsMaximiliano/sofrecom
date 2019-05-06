@@ -1,4 +1,9 @@
-<div class="table-responsive billing-table">
+<div class="alert alert-gaps-info" *ngIf="hitos.length == 0">
+    <i class="fa fa-warning"></i>
+    Sin información disponible para esta tabla
+</div>
+
+<div class="table-responsive billing-table" *ngIf="hitos.length > 0">
     <table class="table table-striped dataTable table-bordered" role="grid">
         <thead>
             <tr>
