@@ -83,7 +83,7 @@ namespace Sofco.WebApi.Controllers.Workflows
 
                     if (response.HasErrors())
                     {
-                        var msg = string.Format(Resources.AdvancementAndRefund.Refund.PaymentPendingError);
+                        var msg = string.Format(Resources.AdvancementAndRefund.Refund.PaymentPendingError, parameter.EntityId, parameter.UserApplicantName);
                         finalResponse.AddErrorAndNoTraslate(msg);
                     }
                 }

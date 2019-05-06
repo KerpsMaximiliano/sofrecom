@@ -1,0 +1,24 @@
+﻿ 2019-05-03 13:18:05,359 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Timeout performing GET urn:employees:email:LEDrughieri@sofrecom.com.ar, inst: 1, queue: 2, qu: 0, qs: 2, qc: 0, wr: 0, wq: 0, in: 85, ar: 0, clientName: WKS852L, serverEndpoint: Unspecified/AZGAP01WP-RC.redis.cache.windows.net:6380, keyHashSlot: 15054 (Please take a look at this article for some common client-side issues that can cause timeouts: http://stackexchange.github.io/StackExchange.Redis/Timeouts)
+StackExchange.Redis.RedisTimeoutException: Timeout performing GET urn:employees:email:LEDrughieri@sofrecom.com.ar, inst: 1, queue: 2, qu: 0, qs: 2, qc: 0, wr: 0, wq: 0, in: 85, ar: 0, clientName: WKS852L, serverEndpoint: Unspecified/AZGAP01WP-RC.redis.cache.windows.net:6380, keyHashSlot: 15054 (Please take a look at this article for some common client-side issues that can cause timeouts: http://stackexchange.github.io/StackExchange.Redis/Timeouts)
+   at StackExchange.Redis.ConnectionMultiplexer.ExecuteSyncImpl[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\ConnectionMultiplexer.cs:line 2120
+   at StackExchange.Redis.RedisBase.ExecuteSync[T](Message message, ResultProcessor`1 processor, ServerEndPoint server) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\RedisBase.cs:line 81
+   at StackExchange.Redis.RedisDatabase.StringGet(RedisKey key, CommandFlags flags) in c:\code\StackExchange.Redis\StackExchange.Redis\StackExchange\Redis\RedisDatabase.cs:line 1647
+   at Sofco.Cache.CacheManager.Get[T](String cacheKey) in C:\Proyectos\GAPS\src\Sofco.Cache\CacheManager.cs:line 35
+   at Sofco.Cache.CacheManager.Get[T](String cacheKey, Func`1 resolver, Nullable`1 cacheExpire) in C:\Proyectos\GAPS\src\Sofco.Cache\CacheManager.cs:line 46
+   at Sofco.Data.AllocationManagement.EmployeeData.GetCurrentEmployee() in C:\Proyectos\GAPS\src\Sofco.Data\AllocationManagement\EmployeeData.cs:line 35
+   at Sofco.Service.Implementations.AllocationManagement.EmployeeService.GetCurrentCategories() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AllocationManagement\EmployeeService.cs:line 356
+   at Sofco.WebApi.Controllers.AllocationManagement.EmployeeController.GetCurrentCategories() in C:\Proyectos\GAPS\src\Sofco.WebApi\Controllers\AllocationManagement\EmployeeController.cs:line 142
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Proyectos\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
