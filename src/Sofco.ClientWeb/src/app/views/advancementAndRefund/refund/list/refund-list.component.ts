@@ -36,7 +36,12 @@ export class RefundListComponent implements OnInit {
             if(this.menuService.userIsGaf) this.gridFilter.stateIds.push(environment.gafWorkflowStateId);
             if(this.menuService.userIsDirector) this.gridFilter.stateIds.push(environment.pendingDirectorWorkflowStateId);
             if(this.menuService.userIsManager) this.gridFilter.stateIds.push(environment.pendingManagerWorkflowStateId);
-            if(this.menuService.userIsCompliance) this.gridFilter.stateIds.push(environment.pendingComplianceWorkflowStateId);
+            
+            if(this.menuService.userIsCompliance) {
+                this.gridFilter.stateIds.push(environment.pendingComplianceWorkflowStateId);
+                this.gridFilter.stateIds.push(environment.pendingComplianceDWorkflowStateId);
+                this.gridFilter.stateIds.push(environment.pendingComplianceDGWorkflowStateId);
+            }
 
             if(this.gridFilter.stateIds.length > 0){
                 this.getData();

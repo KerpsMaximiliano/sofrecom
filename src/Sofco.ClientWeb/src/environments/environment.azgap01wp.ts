@@ -11,5 +11,7 @@ export const environment = {
   rrhhWorkflowStateId: 6,
   pendingDirectorWorkflowStateId: 12,
   pendingManagerWorkflowStateId: 9,
-  pendingComplianceWorkflowStateId: 5
+  pendingComplianceWorkflowStateId: 5,
+  pendingComplianceDWorkflowStateId: 17,
+  pendingComplianceDGWorkflowStateId: 18
 };
