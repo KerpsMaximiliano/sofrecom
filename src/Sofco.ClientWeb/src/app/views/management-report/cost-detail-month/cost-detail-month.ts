@@ -96,16 +96,16 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.deleteContractedSuscrip = this.managementReportService.deleteContracted(item.contractedId).subscribe(response => {
                 this.contracted.splice(index, 1)
             },
-            error => {
-            });
+                error => {
+                });
         }
         else {
-             this.contracted.splice(index, 1)
+            this.contracted.splice(index, 1)
         }
 
-        if(this.contracted.length == 0){
+        if (this.contracted.length == 0) {
             this.canSave = true;
-        }        
+        }
     }
 
     deleteExpense(index, item) {
@@ -132,7 +132,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     open(data) {
         this.messageService.showLoading()
         this.expenses = [];
-debugger
+
         this.isReadOnly = !data.isCdg;
         this.AnalyticId = data.AnalyticId;
         this.monthYear = new Date(data.year, data.month - 1, 1)
@@ -142,10 +142,6 @@ debugger
         this.totalBilling = data.totals.totalBilling;
         this.totalProvisioned = data.totals.totalProvisioned;
 
-        if(this.otherResources.length > 0){
-            this.otherResourceId = this.otherResources[0].typeId;
-        }
-        
         this.fundedResources.forEach(resource => {
             if (resource.otherResource == true) {
                 if (resource.salary > 0) {
@@ -156,6 +152,20 @@ debugger
                 }
             }
         })
+
+        this.otherResources.sort(function (a, b) {
+            if (a.typeName > b.typeName) {
+                return 1;
+            }
+            if (a.typeName < b.typeName) {
+                return -1;
+            }
+            return 0;
+        });
+        
+        if (this.otherResources.length > 0) {
+            this.otherResourceId = this.otherResources[0].typeId;
+        }
 
         this.getContratedSuscrip = this.managementReportService.getContrated(this.serviceId, data.month, data.year).subscribe(response => {
 
