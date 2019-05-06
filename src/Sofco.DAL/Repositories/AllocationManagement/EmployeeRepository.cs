@@ -125,6 +125,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             if (!string.IsNullOrWhiteSpace(parameters.EmployeeNumber))
                 query = query.Where(x => x.EmployeeNumber != null && x.EmployeeNumber.ToLowerInvariant().Contains(parameters.EmployeeNumber.ToLowerInvariant()));
 
+            if (parameters.SuperiorId.HasValue && parameters.SuperiorId.Value > 0)
+                query = query.Where(x => x.ManagerId.GetValueOrDefault() == parameters.SuperiorId);
+
             if (parameters.Percentage.HasValue)
                 query = query.Where(x => x.BillingPercentage == parameters.Percentage);
 

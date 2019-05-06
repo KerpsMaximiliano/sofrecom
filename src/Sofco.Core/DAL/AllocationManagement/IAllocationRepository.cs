@@ -26,5 +26,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         DateTime GetStartDate(int analitycId, int employeeId);
         int GetResourceQuantityByDate(int analyticId, DateTime dateTime);
         void Clean();
+        bool ExistCurrentAllocationByEmployeeAndManagerId(int employeeId, int managerId, DateTime startDate);
     }
 }

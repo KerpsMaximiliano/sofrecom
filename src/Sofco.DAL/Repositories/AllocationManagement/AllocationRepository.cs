@@ -107,6 +107,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public bool ExistCurrentAllocationByEmployeeAndManagerId(int employeeId, int managerId, DateTime startDate)
+        {
+            return context.Allocations
+                .Include(x => x.Analytic)
+                .Any(x => x.EmployeeId == employeeId
+                          && x.Percentage > 0
+                          && x.Analytic.ManagerId.GetValueOrDefault() == managerId
+                          && x.StartDate.Date == startDate.Date);
+        }
+
         public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters)
         {
             var query = context.Allocations

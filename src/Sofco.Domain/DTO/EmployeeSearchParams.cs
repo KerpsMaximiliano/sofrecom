@@ -9,6 +9,8 @@
         public string EmployeeNumber { get; set; }
         public int? Percentage { get; set; }
         public int? AnalyticId { get; set; }
+        public int? SuperiorId { get; set; }
+        public int? ManagerId { get; set; }
         public bool Unassigned { get; set; }
         public bool ExternalOnly { get; set; }
     }
