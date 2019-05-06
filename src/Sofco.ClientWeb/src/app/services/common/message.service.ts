@@ -18,7 +18,12 @@ export class MessageService {
 
     showMessages(messages: Message[]) {
         messages.forEach((value, index) => {
-            this.showMessage(this.i18nService.translate(value.folder, value.code), value.type);
+            if(value.translate && value.translate == true){
+                this.showMessage(this.i18nService.translate(value.folder, value.code), value.type);
+            }
+            else{
+                this.showMessage(value.text, value.type);
+            }
         });
     }
 

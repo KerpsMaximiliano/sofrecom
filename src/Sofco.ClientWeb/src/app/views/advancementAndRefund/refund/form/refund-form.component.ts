@@ -263,6 +263,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
         if(domain.creditCardId > 0){
             this.hasCreditCard = true;
+            this.userHasCreditCard = true;
         }
 
         this.userApplicantName = domain.userApplicantDesc;

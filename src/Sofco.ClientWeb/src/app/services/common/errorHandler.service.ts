@@ -46,7 +46,7 @@ export class ErrorHandlerService {
     }
 
     private handle500() {
-        const err = new Message('common', 'generalError', 1);
+        const err = new Message('common', 'generalError', 1, true);
         this.messageService.showMessages([err]);
     }
 }

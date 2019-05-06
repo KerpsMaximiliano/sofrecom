@@ -74,6 +74,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         technology: "",
         percentage: null,
         analyticId: null,
+        superiorId: null,
+        managerId: null,
         employeeNumber: "",
         unassigned: false,
         externalOnly: false
@@ -192,6 +194,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.searchModel.employeeNumber = "";
         this.searchModel.percentage = null;
         this.searchModel.analyticId = null;
+        this.searchModel.superiorId = null;
+        this.searchModel.managerId = null;
         this.searchModel.unassigned = false;
         this.searchModel.externalOnly = false;
         this.resources = [];
@@ -204,6 +208,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             !this.searchModel.technology && this.searchModel.technology == "" &&
             !this.searchModel.employeeNumber && this.searchModel.employeeNumber == "" &&
             !this.searchModel.analyticId && this.searchModel.analyticId == 0 &&
+            !this.searchModel.superiorId && this.searchModel.superiorId == 0 &&
+            !this.searchModel.managerId && this.searchModel.managerId == 0 &&
             !this.searchModel.percentage && this.searchModel.percentage == null &&
             !this.searchModel.unassigned && !this.searchModel.externalOnly) {
             return true;
@@ -242,7 +248,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
 
             this.collapse();
         },
-            () => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     initGrid() {
