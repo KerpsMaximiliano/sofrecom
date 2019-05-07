@@ -124,6 +124,8 @@ namespace Sofco.DAL
         public DbSet<MonthsReturn> MonthsReturns { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }
 
+        public DbSet<EmployeeProfile> EmployeeProfile { get; set; }
+
         //Workflow
 
         public DbSet<UserSource> UserSources { get; set; }
