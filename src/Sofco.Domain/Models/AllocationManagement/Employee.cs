@@ -107,5 +107,7 @@ namespace Sofco.Domain.Models.AllocationManagement
         public bool HasCreditCard { get; set; }
 
         public string Bank { get; set; }
+
+        public ICollection<CostDetailResource> CostDetailResources { get; set; }
     }
 }

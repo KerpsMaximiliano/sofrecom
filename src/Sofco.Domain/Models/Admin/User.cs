@@ -78,5 +78,7 @@ namespace Sofco.Domain.Models.Admin
 
         public IList<Refund> Refunds { get; set; }
         public IList<Refund> Refunds2 { get; set; }
+
+        public ICollection<CostDetailResource> CostDetailResources { get; set; }
     }
 }

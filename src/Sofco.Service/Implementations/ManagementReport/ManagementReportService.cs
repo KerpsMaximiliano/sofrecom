@@ -258,9 +258,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var FundedResources = costDetails.Where(cd => cd.Type.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
 
                 //Obtengo los tipos de Recursos
-                List<CostDetailResourceType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
-                List<CostDetailResourceType> TypesFundedResources = Types.Where(t => t.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
-                CostDetailResourceType EmployeeType = Types.Where(t => t.Name == CostDetailTypeResource.Empleados.ToString()).FirstOrDefault();
+                List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
+                List<CostDetailType> TypesFundedResources = Types.Where(t => t.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
+                CostDetailType EmployeeType = Types.Where(t => t.Name == CostDetailTypeResource.Empleados.ToString()).FirstOrDefault();
 
                 //Mapeo Los empleados      
                 response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, CostDetailEmployees, EmployeeType);
@@ -651,7 +651,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return false;
         }
 
-        private List<CostResource> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> CostDetailEmployees, CostDetailResourceType EmployeeType)
+        private List<CostResource> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> CostDetailEmployees, CostDetailType EmployeeType)
         {
             List<CostResource> costEmployees = new List<CostResource>();
 
@@ -712,7 +712,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return costEmployees.OrderBy(e => e.Display).ToList();
         }
 
-        private List<CostResource> FillFundedResoursesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> FundedResources, List<CostDetailResourceType> Types)
+        private List<CostResource> FillFundedResoursesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, List<CostDetail> FundedResources, List<CostDetailType> Types)
         {
             List<CostResource> fundedResources = new List<CostResource>();
 

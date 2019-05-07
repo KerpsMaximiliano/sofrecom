@@ -139,9 +139,13 @@ namespace Sofco.DAL
 
         //Management Report
         public DbSet<ManagementReport> ManagementReports { get; set; }
-        public DbSet<CostDetail> CostDetail { get; set; }
-        public DbSet<ContratedDetail> ContractedDetail { get; set; }
-        public DbSet<CostDetailResourceType> CostDetailResourceType { get; set; }
+        public DbSet<CostDetail> CostDetails { get; set; }
+        public DbSet<ContratedDetail> ContractedDetails { get; set; }
+        public DbSet<CostDetailType> CostDetailTypes { get; set; }
+        public DbSet<CostDetailResource> CostDetailResources { get; set; }
+        public DbSet<CostDetailProfile> CostDetailProfiles { get; set; }
+        public DbSet<CostDetailOther> CostDetailOthers { get; set; }
+        public DbSet<ManagementReportBilling> ManagementReportBillings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

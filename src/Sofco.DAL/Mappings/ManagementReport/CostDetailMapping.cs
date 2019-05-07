@@ -18,8 +18,8 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<CostDetail>().HasOne(r => r.CreatedBy).WithMany(u => u.CostDetail2).HasForeignKey(r => r.CreatedById).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<CostDetail>().HasOne(x => x.ModifiedBy).WithMany(u => u.CostDetail3).HasForeignKey(r => r.ModifiedById).OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<CostDetailResourceType>().HasKey(h => h.Id);
-            builder.Entity<CostDetailResourceType>().Property(x => x.Name).HasMaxLength(250);
+            builder.Entity<CostDetailType>().HasKey(h => h.Id);
+            builder.Entity<CostDetailType>().Property(x => x.Name).HasMaxLength(250);
         }
     }
 }
