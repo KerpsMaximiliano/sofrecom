@@ -18,10 +18,10 @@ namespace Sofco.Core.Models.ManagementReport
     public class MonthDetailCost
     {
         public string Display { get; set; }
-        public float? Value { get; set; }
-        public float? OriginalValue { get; set; }
-        public float? Adjustment { get; set; }
-        public float? Charges { get; set; }
+        public decimal? Value { get; set; }
+        public decimal? OriginalValue { get; set; }
+        public decimal? Adjustment { get; set; }
+        public decimal? Charges { get; set; }
         public DateTime MonthYear { get; set; }
         public int CostDetailId { get; set; }
         public bool HasAlocation { get; set; }

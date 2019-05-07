@@ -5,5 +5,6 @@ namespace Sofco.Core.DAL.ManagementReport
 {
     public interface IManagementReportBillingRepository : IBaseRepository<ManagementReportBilling>
     {
+        ManagementReportBilling GetById(int IdManamentReport);
     }
 }
