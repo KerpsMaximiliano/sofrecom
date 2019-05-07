@@ -10,6 +10,7 @@ import { modalConfigDefaults } from "ngx-bootstrap/modal/modal-options.class";
 import { UtilsService } from "app/services/common/utils.service"
 import { FormGroup, FormControl, Validators, FormsModule } from "@angular/forms";
 import { UserService } from "app/services/admin/user.service";
+import { ignoreElements } from "rxjs/operators";
 
 @Component({
     selector: 'cost-detail',
@@ -45,6 +46,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     otherResourceId: number;
     users: any[] = new Array()
     userId: number
+    showUsers: boolean = false
+    showProfiles: boolean = false
 
     readonly generalAdjustment: string = "% Ajuste General";
 
@@ -484,15 +487,37 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     getUsers() {
         this.messageService.showLoading();
 
-    this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
-        this.messageService.closeLoading();
+        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
+            this.messageService.closeLoading();
 
-        this.users = data;
-    },
-    error => {
-        this.messageService.closeLoading();
-    })
+            this.users = data;
+        },
+            error => {
+                this.messageService.closeLoading();
+            })
     }
+
+    otherResourceChange() {
+
+        debugger
+        switch (this.otherResourceId) {
+            case 22:
+                this.showUsers = true
+                this.showProfiles = false
+                break;
+
+            case 23:
+                this.showUsers = false
+                this.showProfiles = true
+                break;
+            default:
+                this.showUsers = false
+                this.showProfiles = false
+                break;
+        }
+    }
+
+
 
 }
 

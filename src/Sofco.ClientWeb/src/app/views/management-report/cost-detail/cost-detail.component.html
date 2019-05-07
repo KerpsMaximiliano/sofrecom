@@ -68,7 +68,7 @@
 </div>
 
 <br>
-<div class="row" *ngIf="otherResources.length > 0">
+<!-- <div class="row" *ngIf="otherResources.length > 0">
     <div class="col-md-5">
         <select class="form-control" id="otherResourceId" name="otherResourceId" [(ngModel)]="otherResourceId">
             <option [value]="otherResource.typeId" *ngFor="let otherResource of otherResources">
@@ -88,15 +88,34 @@
             Agregar
             <i class="fa fa-plus"></i></button>
     </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label class="control-label">Superior</label>
-                <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="userId">
-                </ng-select>
-            </div>
+</div> -->
+<div class="row" *ngIf="otherResources.length > 0">
+    <div class="col-sm-5">
+        <div class="form-group">
+            <ng-select [items]="otherResources" bindLabel="typeName" bindValue="typeId" [(ngModel)]="otherResourceId"
+                (change)="otherResourceChange()">
+            </ng-select>
+            {{otherResourceId}}
         </div>
     </div>
+    <div class="col-sm-5" *ngIf="showUsers">
+        <div class="form-group">
+            <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="dale">
+            </ng-select>
+        </div>
+    </div>
+    <div class="col-sm-5" *ngIf="showProfiles">
+        <div class="form-group">
+            <ng-select [items]="profiles" bindLabel="text" bindValue="id" [(ngModel)]="dale">
+            </ng-select>
+        </div>
+    </div>
+    <div class="col-md-2" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
+        <button class="btn btn-success btn-sm" type="button" (click)="addOtherCost()">
+            Agregar
+            <i class="fa fa-plus"></i></button>
+    </div>
+
 </div>
 
 <div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
