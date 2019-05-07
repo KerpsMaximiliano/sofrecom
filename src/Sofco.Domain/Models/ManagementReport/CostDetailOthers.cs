@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sofco.Domain.Models.ManagementReport
+﻿namespace Sofco.Domain.Models.ManagementReport
 {
-    class CostDetailOthers
+    public class CostDetailOther : BaseEntity
     {
+        public int CostDetailId { get; set; }
+
+        public CostDetail CostDetail { get; set; }
+
+        public int CostDetailTypeId { get; set; }
+
+        public CostDetailType CostDetailType { get; set; }
+
+        public decimal Value { get; set; }
+
+        public string Description { get; set; }
     }
 }

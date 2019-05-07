@@ -107,6 +107,10 @@ namespace Sofco.Core.DAL
         ICostDetailRepository CostDetailRepository { get; }
         IContractedDetailRepository ContratedDetailRepository { get; }
         IManagementReportRepository ManagementReportRepository { get; }
+        IManagementReportBillingRepository ManagementReportBillingRepository { get; }
+        ICostDetailOtherRepository CostDetailOtherRepository { get; }
+        ICostDetailProfileRepository CostDetailProfileRepository { get; }
+        ICostDetailResourceRepository CostDetailResourceRepository { get; }
 
         #endregion
 

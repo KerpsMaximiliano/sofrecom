@@ -17,7 +17,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
 
         public List<CostDetail> GetByAnalytic(int IdAnalytic)
         {
-            var CostDetail = context.CostDetail
+            var CostDetail = context.CostDetails
                                         .Where(x => x.IdAnalytic == IdAnalytic)
                                         .Include(x => x.Type)
                                         .Include(e => e.Employee)
@@ -25,9 +25,9 @@ namespace Sofco.DAL.Repositories.ManagementReport
             return CostDetail;
         }
 
-        public List<CostDetailResourceType> GetResourceTypes()
+        public List<CostDetailType> GetResourceTypes()
         {
-            return context.CostDetailResourceType.OrderBy(t => t.Id).ToList();
+            return context.CostDetailTypes.OrderBy(t => t.Id).ToList();
         }
 
 

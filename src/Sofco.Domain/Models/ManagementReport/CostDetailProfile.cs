@@ -1,4 +1,6 @@
-﻿namespace Sofco.Domain.Models.ManagementReport
+﻿using Sofco.Domain.Utils;
+
+namespace Sofco.Domain.Models.ManagementReport
 {
     public class CostDetailProfile : BaseEntity
     {
@@ -9,5 +11,9 @@
         public decimal Value { get; set; }
 
         public string Description { get; set; }
+
+        public int EmployeeProfileId { get; set; }
+
+        public EmployeeProfile EmployeeProfile { get; set; }
     }
 }
