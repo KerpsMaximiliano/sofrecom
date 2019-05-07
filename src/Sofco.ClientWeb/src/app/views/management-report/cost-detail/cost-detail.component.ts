@@ -7,8 +7,9 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
 import * as moment from 'moment';
 import { modalConfigDefaults } from "ngx-bootstrap/modal/modal-options.class";
-
+import { UtilsService } from "app/services/common/utils.service"
 import { FormGroup, FormControl, Validators, FormsModule } from "@angular/forms";
+import { UserService } from "app/services/admin/user.service";
 
 @Component({
     selector: 'cost-detail',
@@ -20,6 +21,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getCostSubscrip: Subscription;
     updateCostSubscrip: Subscription;
+    getProfileSuscrip: Subscription
+    getUsersSubscrip: Subscription;
 
     //Propiedades
     serviceId: string;
@@ -37,8 +40,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     editItemMonto = new FormControl();
     editItemAdjustment = new FormControl();
     canEdit: boolean = false;
-
+    profiles: any[] = new Array()
+    profileId: number;
     otherResourceId: number;
+    users: any[] = new Array()
+    userId: number
 
     readonly generalAdjustment: string = "% Ajuste General";
 
@@ -57,13 +63,18 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     constructor(private managementReportService: ManagementReportService,
         private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
-        private menuService: MenuService) { }
+        private menuService: MenuService,
+        private usersService: UserService,
+        private utilsService: UtilsService) { }
 
     ngOnInit(): void {
 
         if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')) {
             this.canEdit = true
         }
+
+        this.getUsers()
+        this.getProfiles()
 
         this.editItemModal.size = 'modal-sm'
 
@@ -98,7 +109,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.otherResourceId = this.otherResources[0].typeId;
             }
         },
-        error => this.messageService.closeLoading());
+            error => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item, indexMonth) {
@@ -138,11 +149,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     EditItem() {
 
         this.monthSelected.value = this.editItemMonto.value
-  
+
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
         if (this.itemSelected.typeName == 'Empleados') {
 
-        this.monthSelected.originalValue = this.editItemMonto.value
+            this.monthSelected.originalValue = this.editItemMonto.value
             if (this.editItemAdjustment.value > 0) {
                 this.monthSelected.adjustment = this.editItemAdjustment.value
                 this.monthSelected.value = this.monthSelected.originalValue + this.monthSelected.originalValue * this.monthSelected.adjustment / 100
@@ -199,7 +210,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     getResourcesByMonth(month, year) {
 
         var resources = { employees: [], fundedResources: [], otherResources: [] }
-      
+
         resources.employees = this.employees.map(element => {
 
             var monthCost = element.monthsCost.find(x => {
@@ -209,7 +220,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     return x;
                 }
             });
-            
+
             return {
                 employeeId: element.employeeId,
                 hasAlocation: monthCost.hasAlocation,
@@ -223,7 +234,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         });
 
         resources.fundedResources = this.fundedResources.map(element => {
-          
+
             var monthCost = element.monthsCost.find(x => {
                 var dateSplitted = x.monthYear.split("-");
 
@@ -243,7 +254,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         });
 
         resources.otherResources = this.otherResources.map(element => {
-          
+
             var monthCost = element.monthsCost.find(x => {
                 var dateSplitted = x.monthYear.split("-");
 
@@ -265,7 +276,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return resources;
     }
 
-    getIdAnalytic(){
+    getIdAnalytic() {
         return this.model.analyticId
     }
 
@@ -281,22 +292,22 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return SalaryPlusIncrese;
     }
 
-    salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {      
+    salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {
         //Verifico que exista la fila de ajustes
         var AjusteMensual = this.fundedResources.find(r => r.display == this.generalAdjustment);
         if (AjusteMensual) {
             //Si existe, Recorro todos los meses
             let newSalary;
             //El nuevo salario lo seteo como el primer salario
-            if(isSalaryEmployee == true){
+            if (isSalaryEmployee == true) {
                 newSalary = employee.monthsCost[pIndex - 1].value
             }
-            else{
+            else {
                 newSalary = employee.monthsCost[pIndex].value
             }
 
             for (let index = pIndex; index < employee.monthsCost.length; index++) {
-                
+
                 //Verifico si tiene aumento en alguno
                 if (AjusteMensual.monthsCost[index].value > 0) {
                     newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
@@ -423,13 +434,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return cssClass;
     }
 
-    canDeleteResources(item){
+    canDeleteResources(item) {
         var canEdit = false;
-        if(item.otherResource){
+        if (item.otherResource) {
             canEdit = true;
         }
         item.monthsCost.forEach(month => {
-            if(month.value > 0){
+            if (month.value > 0) {
                 canEdit = false
                 return canEdit
             }
@@ -438,7 +449,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return canEdit
     }
 
-    deleteResources(item, index){
+    deleteResources(item, index) {
 
         this.save()
 
@@ -447,15 +458,40 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
         this.otherResources.sort(function (a, b) {
             if (a.display > b.display) {
-              return 1;
+                return 1;
             }
             if (a.display < b.display) {
-              return -1;
+                return -1;
             }
             // a must be equal to b
             return 0;
-          });
+        });
+    }
 
+    getProfiles() {
+        this.messageService.showLoading();
+
+        this.getProfileSuscrip = this.utilsService.getEmployeeProfiles().subscribe(response => {
+            this.messageService.closeLoading();
+
+            this.profiles = response;
+        },
+            error => {
+                this.messageService.closeLoading();
+            })
+    }
+
+    getUsers() {
+        this.messageService.showLoading();
+
+    this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
+        this.messageService.closeLoading();
+
+        this.users = data;
+    },
+    error => {
+        this.messageService.closeLoading();
+    })
     }
 
 }

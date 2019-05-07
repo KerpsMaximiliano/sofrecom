@@ -92,5 +92,11 @@ namespace Sofco.WebApi.Controllers
         {
             return Ok(utilsService.GetBanks());
         }
+
+        [HttpGet("EmployeeProfile")]
+        public IActionResult GetEmployeeProfiles()
+        {
+            return Ok(utilsService.GetEmployeeProfiles());
+        }
     }
 }

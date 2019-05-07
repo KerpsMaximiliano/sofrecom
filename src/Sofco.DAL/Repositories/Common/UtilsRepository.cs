@@ -122,5 +122,12 @@ namespace Sofco.DAL.Repositories.Common
         {
             return Context.CreditCards.ToList().AsReadOnly();
         }
+
+        public IList<EmployeeProfile> GetEmployeeProfiles()
+        {
+            return Context.EmployeeProfile
+                    .OrderBy(p => p.Text)
+                    .ToList();
+        }
     }
 }

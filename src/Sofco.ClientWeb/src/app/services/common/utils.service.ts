@@ -51,4 +51,8 @@ export class UtilsService {
   getBanks() {
     return this.http.get<any>(`${this.apiUrl}/Banks`);
   }
+
+  getEmployeeProfiles(){
+    return this.http.get<any>(`${this.apiUrl}/EmployeeProfile`)
+  }
 }

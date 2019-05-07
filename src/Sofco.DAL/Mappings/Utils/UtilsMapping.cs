@@ -73,6 +73,10 @@ namespace Sofco.DAL.Mappings.Utils
             // Primary Key
             builder.Entity<CreditCard>().HasKey(_ => _.Id);
             builder.Entity<CreditCard>().Property(_ => _.Text).HasMaxLength(100);
+
+            // Primary Key
+            builder.Entity<EmployeeProfile>().HasKey(_ => _.Id);
+            builder.Entity<EmployeeProfile>().Property(_ => _.Text).HasMaxLength(150);
         }
     }
 }

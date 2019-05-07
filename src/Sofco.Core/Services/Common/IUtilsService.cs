@@ -1,6 +1,7 @@
 ﻿using Sofco.Domain.Utils;
 using System.Collections.Generic;
 using Sofco.Core.Models.Billing;
+using Sofco.Core.Models.Admin;
 
 namespace Sofco.Core.Services.Common
 {
@@ -38,5 +39,6 @@ namespace Sofco.Core.Services.Common
         IList<Option> GetCreditCards();
 
         IList<BankModel> GetBanks();
+        IList<EmployeeProfileModel> GetEmployeeProfiles();
     }
 }

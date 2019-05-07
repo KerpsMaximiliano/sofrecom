@@ -12,6 +12,7 @@ using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
 using Sofco.Domain.Models.Reports;
 using Sofco.Core.DAL.Views;
+using Sofco.Core.Models.Admin;
 
 namespace Sofco.Service.Implementations.Common
 {
@@ -170,6 +171,13 @@ namespace Sofco.Service.Implementations.Common
             return Translate(data).OrderBy(x => x.Name).ToList();
         }
 
+        public IList<EmployeeProfileModel> GetEmployeeProfiles()
+        {
+            var data = unitOfWork.UtilsRepository.GetEmployeeProfiles().ToList();
+
+            return Translate(data).ToList();
+        }
+
         private List<SectorModel> Translate(List<Sector> data)
         {
             return mapper.Map<List<Sector>, List<SectorModel>>(data);
@@ -193,6 +201,11 @@ namespace Sofco.Service.Implementations.Common
             }
 
             return banks;
+        }
+
+        private List<EmployeeProfileModel> Translate(List<EmployeeProfile> data)
+        {
+            return mapper.Map<List<EmployeeProfile>, List<EmployeeProfileModel>>(data);
         }
     }
 }

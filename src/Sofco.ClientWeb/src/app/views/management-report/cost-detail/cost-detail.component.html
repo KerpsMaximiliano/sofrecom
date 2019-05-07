@@ -53,7 +53,8 @@
                     <p>
                         {{ item.display }}
                     </p>
-                    <i class="fa fa-2x fa-trash pointer" (click)="deleteResources(item, i)" *ngIf="canDeleteResources(item)"></i>
+                    <i class="fa fa-2x fa-trash pointer" (click)="deleteResources(item, i)"
+                        *ngIf="canDeleteResources(item)"></i>
                 </td>
                 <td *ngFor="let monthCost of item.monthsCost; let i = index">
                     <label class="label" (click)="openEditItemModal(monthCost, item, i)"
@@ -68,17 +69,33 @@
 
 <br>
 <div class="row" *ngIf="otherResources.length > 0">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <select class="form-control" id="otherResourceId" name="otherResourceId" [(ngModel)]="otherResourceId">
             <option [value]="otherResource.typeId" *ngFor="let otherResource of otherResources">
                 {{otherResource.typeName}}
             </option>
         </select>
     </div>
-    <div class="col-md-4" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
+    <div class="col-md-5">
+        <select class="form-control" id="profileId" name="profileId" [(ngModel)]="profileId">
+            <option [value]="profile.id" *ngFor="let profile of profiles">
+                {{profile.text}}
+            </option>
+        </select>
+    </div>
+    <div class="col-md-2" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
         <button class="btn btn-success btn-sm" type="button" (click)="addOtherCost()">
             Agregar
             <i class="fa fa-plus"></i></button>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="control-label">Superior</label>
+                <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="userId">
+                </ng-select>
+            </div>
+        </div>
     </div>
 </div>
 

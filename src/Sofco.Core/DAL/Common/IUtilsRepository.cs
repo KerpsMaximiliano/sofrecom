@@ -25,5 +25,6 @@ namespace Sofco.Core.DAL.Common
         bool ExistCurrency(int currencyId);
         bool ExistCreditCard(int creditCardId);
         IList<CreditCard> GetCreditCards();
+        IList<EmployeeProfile> GetEmployeeProfiles();
     }
 }
