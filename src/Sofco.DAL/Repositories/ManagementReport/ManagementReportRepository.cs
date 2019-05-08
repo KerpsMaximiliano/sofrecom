@@ -16,9 +16,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
             var data = context.ManagementReports
                 .Where(mr => mr.Id == IdManamentReport)
                 .Include(mr => mr.CostDetails)
-                    //.ThenInclude(cd => cd.cos
-                    //.Include(mr => mr.CostDetails.Select(prof => prof.CostDetailProfiles))
-                    //.Include(mr => mr.CostDetails.Select(other => other.CostDetailOthers))
+                    .ThenInclude(x => x.CostDetailResources)
+                 .Include(mr => mr.CostDetails)
+                    .ThenInclude(x => x.CostDetailProfiles)
+                 .Include(mr => mr.CostDetails)
+                    .ThenInclude(x => x.CostDetailOthers)
                 .FirstOrDefault();
 
             return data;
