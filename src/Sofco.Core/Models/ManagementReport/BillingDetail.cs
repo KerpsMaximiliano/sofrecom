@@ -36,6 +36,10 @@ namespace Sofco.Core.Models.ManagementReport
         public string Display { get; set; }
 
         public int ResourceQuantity { get; set; }
+
+        public decimal ValueEvalProp { get; set; }
+
+        public int BillingMonthId { get; set; }
     }
 
     public class BillingTotal

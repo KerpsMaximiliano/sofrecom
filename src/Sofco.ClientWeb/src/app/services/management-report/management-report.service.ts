@@ -4,6 +4,7 @@ import { Service } from "app/services/common/service";
 
 @Injectable()
 export class ManagementReportService {
+  
   private baseUrl: string;
 
   constructor(private http: HttpClient, private service: Service) {
@@ -40,5 +41,9 @@ export class ManagementReportService {
 
   updateDates(id, model){
     return this.http.put<any>(`${this.baseUrl}/managementReport/${id}/dates`, model);
+  }
+
+  updateBilling(billingMonthId, json) {
+    return this.http.put<any>(`${this.baseUrl}/managementReportBilling/${billingMonthId}`, json);
   }
 }

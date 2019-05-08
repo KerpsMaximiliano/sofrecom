@@ -22,6 +22,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     getCurrenciesSubscrip: Subscription;
     postHitoSubscrip: Subscription;
     updateHitoSubscrip: Subscription;
+    updateEvalpropValueSubscrip: Subscription;
 
     months: any[] = new Array();
     hitos: any[] = new Array();
@@ -41,6 +42,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     indexSelected: number = 0
     monthSelectedDisplay: string = "";
     editItemMonto = new FormControl('', [Validators.required, Validators.min(0), Validators.max(999999)]);
+    editEvalPropValue = new FormControl('', [Validators.required, Validators.min(1), Validators.max(999999999)]);
 
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -62,7 +64,18 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    @ViewChild('editEvalPropModal') editEvalPropModal;
+    public editEvalPropModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Editar Monto EvalProp",
+        "editEvalPropModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
     columnsCount: number = 1;
+    monthSelected: any;
 
     constructor(private managementReportService: ManagementReportService,
         private utilsService: UtilsService,
@@ -80,6 +93,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         if (this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if (this.postHitoSubscrip) this.postHitoSubscrip.unsubscribe();
         if (this.updateHitoSubscrip) this.updateHitoSubscrip.unsubscribe();
+        if (this.updateEvalpropValueSubscrip) this.updateEvalpropValueSubscrip.unsubscribe();
     }
 
     getCurrencies() {
@@ -343,7 +357,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openEditItemModal(value, hito, index) {
-
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
         if (!this.isEnabled(hitoMonth)) return;
@@ -353,6 +366,28 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.hitoSelected = hito;
         this.indexSelected = index
         this.monthSelectedDisplay = this.months[index].display
+    }
 
+    openEditEvalProp(month){
+        this.editEvalPropValue = month.valueEvalProp;
+
+        this.editEvalPropModal.show()
+        this.editEvalPropValue.setValue(month.valueEvalProp);
+        this.monthSelected = month;
+    }
+
+    updateEvalPropValue(){
+        var json = {
+            value: this.editEvalPropValue.value
+        }
+
+        this.updateEvalpropValueSubscrip = this.managementReportService.updateBilling(this.monthSelected.billingMonthId, json).subscribe(response => {
+
+
+        }, 
+        error => {
+
+
+        });
     }
 }
