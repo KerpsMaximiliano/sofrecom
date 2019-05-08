@@ -43,7 +43,7 @@ export class ManagementReportService {
     return this.http.put<any>(`${this.baseUrl}/managementReport/${id}/dates`, model);
   }
 
-  updateBilling(billingMonthId, json) {
-    return this.http.put<any>(`${this.baseUrl}/managementReportBilling/${billingMonthId}`, json);
+  updateBilling(json) {
+    return this.http.put<any>(`${this.baseUrl}/managementReportBillings`, json);
   }
 }

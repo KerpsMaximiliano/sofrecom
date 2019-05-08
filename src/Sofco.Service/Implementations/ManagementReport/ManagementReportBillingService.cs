@@ -35,6 +35,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 billing.ValueEvalProp = value;
                 unitOfWork.ManagementReportBillingRepository.Update(billing);
                 unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReportBilling.ValueUpdated);
             }
             catch (Exception e)
             {
