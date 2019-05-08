@@ -329,66 +329,66 @@ namespace Sofco.Service.Implementations.ManagementReport
         public Response UpdateCostDetail(CostDetailModel pDetailCost)
         {
             var response = new Response();
-            try
-            {
-                var costDetails = unitOfWork.CostDetailRepository.GetByAnalytic(pDetailCost.AnalyticId);
+            //try
+            //{
+            //    var costDetails = unitOfWork.CostDetailRepository.GetByAnalytic(pDetailCost.AnalyticId);
 
-                List<CostResource> resources = new List<CostResource>();
-                resources.AddRange(pDetailCost.CostEmployees);
-                resources.AddRange(pDetailCost.FundedResources);
+            //    List<CostResource> resources = new List<CostResource>();
+            //    resources.AddRange(pDetailCost.CostEmployees);
+            //    resources.AddRange(pDetailCost.FundedResources);
 
-                var currentUser = userData.GetCurrentUser();
+            //    var currentUser = userData.GetCurrentUser();
 
-                foreach (var resource in resources)
-                {
-                    foreach (var month in resource.MonthsCost)
-                    {
-                        CostDetail entity = new CostDetail();
+            //    foreach (var resource in resources)
+            //    {
+            //        foreach (var month in resource.MonthsCost)
+            //        {
+            //            CostDetail entity = new CostDetail();
 
-                        if (month.CostDetailId > 0)
-                        {
-                            entity = costDetails.Where(c => c.Id == month.CostDetailId).FirstOrDefault();
+            //            if (month.CostDetailId > 0)
+            //            {
+            //                entity = costDetails.Where(c => c.Id == month.CostDetailId).FirstOrDefault();
 
-                            if (month.Value != entity.Cost || month.Charges != entity.Charges)
-                            {
-                                entity.Cost = month.Value ?? 0;
-                                entity.Adjustment = month.Adjustment;
-                                entity.Charges = month.Charges;
-                                entity.ModifiedAt = DateTime.UtcNow;
-                                entity.ModifiedById = currentUser.Id;
+            //                if (month.Value != entity.Cost || month.Charges != entity.Charges)
+            //                {
+            //                    entity.Cost = month.Value ?? 0;
+            //                    entity.Adjustment = month.Adjustment;
+            //                    entity.Charges = month.Charges;
+            //                    entity.ModifiedAt = DateTime.UtcNow;
+            //                    entity.ModifiedById = currentUser.Id;
 
-                                unitOfWork.CostDetailRepository.Update(entity);
-                            }
-                        }
-                        else
-                        {
-                            if (month.Value > 0 || month.Charges > 0)
-                            {
-                                entity.IdAnalytic = pDetailCost.AnalyticId;
-                                entity.Cost = month.Value ?? 0;
-                                entity.Adjustment = month.Adjustment;
-                                entity.Charges = month.Charges;
-                                entity.MonthYear = month.MonthYear;
-                                entity.TypeId = resource.TypeId;
-                                entity.EmployeeId = resource.EmployeeId;
-                                entity.CreatedAt = DateTime.UtcNow;
-                                entity.CreatedById = currentUser.Id;
+            //                    unitOfWork.CostDetailRepository.Update(entity);
+            //                }
+            //            }
+            //            else
+            //            {
+            //                if (month.Value > 0 || month.Charges > 0)
+            //                {
+            //                    entity.IdAnalytic = pDetailCost.AnalyticId;
+            //                    entity.Cost = month.Value ?? 0;
+            //                    entity.Adjustment = month.Adjustment;
+            //                    entity.Charges = month.Charges;
+            //                    entity.MonthYear = month.MonthYear;
+            //                    entity.TypeId = resource.TypeId;
+            //                    entity.EmployeeId = resource.EmployeeId;
+            //                    entity.CreatedAt = DateTime.UtcNow;
+            //                    entity.CreatedById = currentUser.Id;
 
-                                unitOfWork.CostDetailRepository.Insert(entity);
-                            }
-                        }
-                    }
-                }
+            //                    unitOfWork.CostDetailRepository.Insert(entity);
+            //                }
+            //            }
+            //        }
+            //    }
 
-                unitOfWork.Save();
+            //    unitOfWork.Save();
 
-                response.AddSuccess(Resources.Common.SaveSuccess);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex);
-                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
-            }
+            //    response.AddSuccess(Resources.Common.SaveSuccess);
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.LogError(ex);
+            //    response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            //}
 
             return response;
         }
@@ -396,9 +396,9 @@ namespace Sofco.Service.Implementations.ManagementReport
         public Response NewUpdateCostDetail(CostDetailModel pDetailCost, int pIdManagementReport)
         {
             var response = new Response();
-            try
-            {
-                var managementReport = unitOfWork.ManagementReportRepository.GetById(pIdManagementReport);
+            //try
+            //{
+            //    var managementReport = unitOfWork.ManagementReportRepository.GetById(pIdManagementReport);
 
                 //Guardo todos los meses del reporte
             //    foreach (var item in pDetailCost.MonthsHeader)
