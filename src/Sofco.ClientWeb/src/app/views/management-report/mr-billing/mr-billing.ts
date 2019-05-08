@@ -86,6 +86,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.getCurrencies();
         this.editItemValueModal.size = 'modal-sm'
+        this.editEvalPropModal.size = 'modal-sm'
     }
 
     ngOnDestroy(): void {
@@ -369,10 +370,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openEditEvalProp(month){
-        this.editEvalPropValue = month.valueEvalProp;
-
         this.editEvalPropModal.show()
         this.editEvalPropValue.setValue(month.valueEvalProp);
+        this.monthSelectedDisplay = month.display;
         this.monthSelected = month;
     }
 
@@ -382,12 +382,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         }
 
         this.updateEvalpropValueSubscrip = this.managementReportService.updateBilling(this.monthSelected.billingMonthId, json).subscribe(response => {
-
-
+            this.monthSelected.valueEvalProp = this.editEvalPropValue.value;
+            this.monthSelectedDisplay = null;
         }, 
-        error => {
-
-
-        });
+        error => this.editEvalPropModal.hide());
     }
 }

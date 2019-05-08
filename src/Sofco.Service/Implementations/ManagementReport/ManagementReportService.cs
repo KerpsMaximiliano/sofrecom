@@ -318,12 +318,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                         .Where(c => c.MonthYear.Year == pYear && c.MonthYear.Month == pMonth)
                         .Select(x => new ContractedModel
                         {
-                            AnalyticId = x.IdAnalytic,
+                            CostDetailId = x.CostDetailId,
                             ContractedId = x.Id,
                             Name = x.Name,
-                            honorary = x.honorary,
-                            insurance = x.insurance,
-                            total = x.honorary + x.insurance,
+                            Honorary = x.Honorary,
+                            Insurance = x.Insurance,
+                            Total = x.Honorary + x.Insurance,
                             MonthYear = x.MonthYear
                         })
                         .OrderBy(x => x.Name)
@@ -465,51 +465,51 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response UpdateContracted(List<ContractedModel> pContracted, int pAnalyticId)
-        {
-            var response = new Response();
-            try
-            {
-                var DBconstract = unitOfWork.ContratedDetailRepository.GetByAnalytic(pAnalyticId);
+        //public Response UpdateContracted(List<ContractedModel> pContracted, int costDetailId)
+        //{
+        //    var response = new Response();
+        //    try
+        //    {
+        //        var DBconstract = unitOfWork.ContratedDetailRepository.GetByAnalytic(pAnalyticId);
 
-                foreach (var hired in pContracted)
-                {
-                    ContratedDetail entity = new ContratedDetail();
+        //        foreach (var hired in pContracted)
+        //        {
+        //            ContratedDetail entity = new ContratedDetail();
 
-                    if (hired.ContractedId > 0)
-                    {
-                        entity = DBconstract.Where(c => c.Id == hired.ContractedId).FirstOrDefault();
+        //            if (hired.ContractedId > 0)
+        //            {
+        //                entity = DBconstract.Where(c => c.Id == hired.ContractedId).FirstOrDefault();
 
-                        entity.honorary = hired.honorary ?? 0;
-                        entity.insurance = hired.insurance ?? 0;
-                        entity.Name = hired.Name;
+        //                entity.Honorary = hired.Honorary ?? 0;
+        //                entity.Insurance = hired.Insurance ?? 0;
+        //                entity.Name = hired.Name;
 
-                        unitOfWork.ContratedDetailRepository.Update(entity);
-                    }
-                    else
-                    {
-                        entity.honorary = hired.honorary ?? 0;
-                        entity.insurance = hired.insurance ?? 0;
-                        entity.Name = hired.Name;
-                        entity.MonthYear = hired.MonthYear;
-                        entity.IdAnalytic = pAnalyticId;
+        //                unitOfWork.ContratedDetailRepository.Update(entity);
+        //            }
+        //            else
+        //            {
+        //                entity.Honorary = hired.Honorary ?? 0;
+        //                entity.Insurance = hired.Insurance ?? 0;
+        //                entity.Name = hired.Name;
+        //                entity.MonthYear = hired.MonthYear;
+        //                entity.CostDetailId = costDetailId;
 
-                        unitOfWork.ContratedDetailRepository.Insert(entity);
-                    }
-                }
+        //                unitOfWork.ContratedDetailRepository.Insert(entity);
+        //            }
+        //        }
 
-                unitOfWork.Save();
+        //        unitOfWork.Save();
 
-                response.AddSuccess(Resources.Common.SaveSuccess);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex);
-                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
-            }
+        //        response.AddSuccess(Resources.Common.SaveSuccess);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logger.LogError(ex);
+        //        response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+        //    }
 
-            return response;
-        }
+        //    return response;
+        //}
 
         public Response DeleteContracted(int ContractedId)
         {

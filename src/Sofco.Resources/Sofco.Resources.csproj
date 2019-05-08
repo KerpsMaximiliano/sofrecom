@@ -172,6 +172,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ManagementReport.resx</DependentUpon>
     </Compile>
+    <Compile Update="ManagementReport\ManagementReportBilling.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ManagementReportBilling.resx</DependentUpon>
+    </Compile>
     <Compile Update="Months.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -328,6 +333,10 @@
     <EmbeddedResource Update="ManagementReport\ManagementReport.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ManagementReport.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ManagementReport\ManagementReportBilling.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ManagementReportBilling.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Months.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

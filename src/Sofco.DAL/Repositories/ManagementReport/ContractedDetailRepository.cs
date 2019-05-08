@@ -13,10 +13,10 @@ namespace Sofco.DAL.Repositories.ManagementReport
 
         }
 
-        public List<ContratedDetail> GetByAnalytic(int IdAnalytic)
+        public List<ContratedDetail> GetByAnalytic(int costDetailId)
         {
             var Contracted = context.ContractedDetails
-                                        .Where(x => x.IdAnalytic == IdAnalytic)
+                                        .Where(x => x.CostDetailId == costDetailId)
                                         .ToList();
             return Contracted;
         }

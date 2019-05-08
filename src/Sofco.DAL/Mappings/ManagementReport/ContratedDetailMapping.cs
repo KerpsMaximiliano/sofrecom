@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sofco.Domain.Models.ManagementReport;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Sofco.DAL.Mappings.ManagementReport
 {
@@ -14,7 +11,7 @@ namespace Sofco.DAL.Mappings.ManagementReport
 
             builder.Entity<ContratedDetail>().Property(x => x.Name).HasMaxLength(250);
 
-            builder.Entity<ContratedDetail>().HasOne(x => x.Analytic).WithMany(x => x.ContratedDetail).HasForeignKey(x => x.IdAnalytic).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<ContratedDetail>().HasOne(x => x.CostDetail).WithMany(x => x.ContratedDetails).HasForeignKey(x => x.CostDetailId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

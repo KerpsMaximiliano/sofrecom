@@ -1,5 +1,4 @@
-﻿using Sofco.Domain.Models.Admin;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Sofco.Domain.Models.ManagementReport
@@ -17,13 +16,6 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public ICollection<CostDetailOther> CostDetailOthers { get; set; }
 
-        public int CreatedById { get; set; }
-        public User CreatedBy { get; set; }
-        public DateTime CreatedAt { get; set; }
-
-        public int? ModifiedById { get; set; }
-        public User ModifiedBy { get; set; }
-        public DateTime? ModifiedAt { get; set; }
-
+        public ICollection<ContratedDetail> ContratedDetails { get; set; }
     }
 }
