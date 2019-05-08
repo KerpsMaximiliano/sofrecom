@@ -66,5 +66,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<AnalyticLiteModel> GetByDirectorId(int currentUserId);
 
         User GetManager(int analyticId);
+        Analytic GetByProyectId(string projectId);
     }
 }

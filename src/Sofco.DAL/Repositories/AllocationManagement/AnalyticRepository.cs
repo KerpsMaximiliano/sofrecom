@@ -151,6 +151,23 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .SingleOrDefault(x => x.Id == analyticId)?.Manager;
         }
 
+        public Analytic GetByProyectId(string projectId)
+        {
+            var project = context.Projects.SingleOrDefault(x => x.CrmId.Equals(projectId));
+
+            if (project != null)
+            {
+                var analytic = context.Analytics.SingleOrDefault(x => x.ServiceId.Equals(project.ServiceId));
+
+                if (analytic != null)
+                {
+                    return analytic;
+                }
+            }
+
+            return null;
+        }
+
         public List<Analytic> GetByServiceIds(List<string> serviceIds)
         {
             return context.Analytics.Where(x => x.Status == AnalyticStatus.Open
