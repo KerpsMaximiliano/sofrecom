@@ -6,7 +6,6 @@ namespace Sofco.Core.DAL.ManagementReport
 {
     public interface ICostDetailRepository : IBaseRepository<CostDetail>
     {
-        List<CostDetail> GetByAnalytic(int IdAnalytic);
         List<CostDetailType> GetResourceTypes();
     }
 }
