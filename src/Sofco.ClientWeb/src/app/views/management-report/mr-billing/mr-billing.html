@@ -20,7 +20,7 @@
             <tr>
                 <td class="first-column text-ellipsis">Valores EvalProp</td>
                 <td *ngFor="let month of months">
-                    <label class="label label-success" (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
+                    <label class="label label-success pointer" (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
                 </td>
             </tr>
             <tr>

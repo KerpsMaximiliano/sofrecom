@@ -95,7 +95,7 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-            name: "CostDetailTypes",
+                name: "CostDetailTypes",
                 schema: "app",
                 columns: table => new
                 {
@@ -1538,31 +1538,6 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ContractedDetails",
-                schema: "app",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IdAnalytic = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 250, nullable: true),
-                    MonthYear = table.Column<DateTime>(nullable: false),
-                    insurance = table.Column<float>(nullable: true),
-                    honorary = table.Column<float>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContractedDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ContractedDetails_Analytics_IdAnalytic",
-                        column: x => x.IdAnalytic,
-                        principalSchema: "app",
-                        principalTable: "Analytics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ManagementReports",
                 schema: "app",
                 columns: table => new
@@ -2199,39 +2174,11 @@ namespace Sofco.WebApi.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ManagementReportId = table.Column<int>(nullable: false),
-                    MonthYear = table.Column<DateTime>(nullable: false),
-                    CreatedById = table.Column<int>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(nullable: false),
-                    ModifiedById = table.Column<int>(nullable: true),
-                    ModifiedAt = table.Column<DateTime>(nullable: true),
-                    AnalyticId = table.Column<int>(nullable: true),
-                    EmployeeId = table.Column<int>(nullable: true),
-                    UserId = table.Column<int>(nullable: true)
+                    MonthYear = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CostDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CostDetails_Analytics_AnalyticId",
-                        column: x => x.AnalyticId,
-                        principalSchema: "app",
-                        principalTable: "Analytics",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CostDetails_Users_CreatedById",
-                        column: x => x.CreatedById,
-                        principalSchema: "app",
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CostDetails_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalSchema: "app",
-                        principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CostDetails_ManagementReports_ManagementReportId",
                         column: x => x.ManagementReportId,
@@ -2239,20 +2186,6 @@ namespace Sofco.WebApi.Migrations
                         principalTable: "ManagementReports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CostDetails_Users_ModifiedById",
-                        column: x => x.ModifiedById,
-                        principalSchema: "app",
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CostDetails_Users_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "app",
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -2592,6 +2525,31 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ContractedDetails",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CostDetailId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 250, nullable: true),
+                    MonthYear = table.Column<DateTime>(nullable: false),
+                    Insurance = table.Column<decimal>(nullable: false),
+                    Honorary = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContractedDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ContractedDetails_CostDetails_CostDetailId",
+                        column: x => x.CostDetailId,
+                        principalSchema: "app",
+                        principalTable: "CostDetails",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CostDetailOthers",
                 schema: "app",
                 columns: table => new
@@ -2838,10 +2796,10 @@ namespace Sofco.WebApi.Migrations
                 column: "FileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContractedDetails_IdAnalytic",
+                name: "IX_ContractedDetails_CostDetailId",
                 schema: "app",
                 table: "ContractedDetails",
-                column: "IdAnalytic");
+                column: "CostDetailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CostDetailOthers_CostDetailId",
@@ -2874,40 +2832,10 @@ namespace Sofco.WebApi.Migrations
                 column: "CostDetailId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CostDetails_AnalyticId",
-                schema: "app",
-                table: "CostDetails",
-                column: "AnalyticId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CostDetails_CreatedById",
-                schema: "app",
-                table: "CostDetails",
-                column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CostDetails_EmployeeId",
-                schema: "app",
-                table: "CostDetails",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CostDetails_ManagementReportId",
                 schema: "app",
                 table: "CostDetails",
                 column: "ManagementReportId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CostDetails_ModifiedById",
-                schema: "app",
-                table: "CostDetails",
-                column: "ModifiedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CostDetails_UserId",
-                schema: "app",
-                table: "CostDetails",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeCategories_EmployeeId",

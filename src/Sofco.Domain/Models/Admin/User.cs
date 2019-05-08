@@ -48,10 +48,6 @@ namespace Sofco.Domain.Models.Admin
 
         public ICollection<Employee> Employees { get; set; }
 
-        public ICollection<CostDetail> CostDetail { get; set; }
-        public ICollection<CostDetail> CostDetail2 { get; set; }
-        public ICollection<CostDetail> CostDetail3 { get; set; }
-
         public IList<Advancement> Advancements { get; set; }
         public IList<Advancement> Advancements2 { get; set; }
 
