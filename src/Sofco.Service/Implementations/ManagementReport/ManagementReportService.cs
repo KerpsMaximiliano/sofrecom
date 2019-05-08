@@ -143,13 +143,28 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             response.Data.ManagerId = analytic.Manager.ExternalManagerId;
 
+            var costDetails = unitOfWork.CostDetailRepository.GetByManagementReportAndDates(analytic.ManagementReport.Id, dates.Item1.Date, dates.Item2.Date);
+            var billings = unitOfWork.ManagementReportBillingRepository.GetByManagementReportAndDates(analytic.ManagementReport.Id, dates.Item1.Date, dates.Item2.Date);
+
             for (DateTime date = dates.Item1.Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
             {
                 var monthHeader = new MonthBillingHeaderItem();
                 monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                 monthHeader.Year = date.Year;
                 monthHeader.Month = date.Month;
-                monthHeader.ResourceQuantity = unitOfWork.AllocationRepository.GetResourceQuantityByDate(analytic.Id, new DateTime(date.Year, date.Month, 1));
+                
+                var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
+
+                if (costDetailMonth != null)
+                    monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
+
+                var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
+
+                if (billingMonth != null)
+                {
+                    monthHeader.ValueEvalProp = billingMonth.ValueEvalProp;
+                    monthHeader.BillingMonthId = billingMonth.Id;
+                }
 
                 response.Data.MonthsHeader.Add(monthHeader);
             }

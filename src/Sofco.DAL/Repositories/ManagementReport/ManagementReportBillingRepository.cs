@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.ManagementReport;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Models.ManagementReport;
@@ -19,6 +21,13 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .FirstOrDefault();
 
             return data;
+        }
+
+        public IList<ManagementReportBilling> GetByManagementReportAndDates(int managementReportId, DateTime startDate, DateTime endDate)
+        {
+            return context.ManagementReportBillings.Where(x =>
+                x.ManagementReportId == managementReportId && x.MonthYear.Date >= startDate.Date &&
+                x.MonthYear.Date <= endDate.Date).ToList();
         }
     }
 }
