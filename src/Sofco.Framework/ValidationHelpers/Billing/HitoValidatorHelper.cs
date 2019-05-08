@@ -1,4 +1,5 @@
 ﻿using System;
+using Sofco.Core.DAL;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
@@ -40,11 +41,24 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateDate(HitoParameters hito, Response response)
+        public static void ValidateDate(HitoParameters hito, Response response, IUnitOfWork unitOfWork)
         {
             if (!hito.StartDate.HasValue)
             {
                 response.AddError(Resources.Billing.Project.DateRequired);
+            }
+            else if(!string.IsNullOrWhiteSpace(hito.ProjectId) && !hito.ProjectId.Equals("00000000-0000-0000-0000-000000000000"))
+            {
+                var analytic = unitOfWork.AnalyticRepository.GetByProyectId(hito.ProjectId);
+
+                if (analytic != null)
+                {
+                    if (hito.StartDate.GetValueOrDefault().Date < analytic.StartDateContract.Date ||
+                        hito.StartDate.GetValueOrDefault().Date > analytic.EndDateContract.Date)
+                    {
+                        response.AddError(Resources.Billing.Project.HitoDatesOutRange);
+                    }
+                }
             }
         }
 
@@ -61,24 +75,6 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             if (string.IsNullOrWhiteSpace(hito.ProjectId) || hito.ProjectId.Equals("00000000-0000-0000-0000-000000000000"))
             {
                 response.AddError(Resources.Billing.Project.Required);
-            }
-        }
-
-        public static void ValidateDates(Project project, Response response, HitoParameters hito)
-        {
-            var currentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-
-            if (project == null)
-            {
-                response.AddError(Resources.Billing.Project.NotFound);
-            }
-            else
-            {
-                if (!(hito.StartDate.GetValueOrDefault().Date >= currentMonth.Date &&
-                    hito.StartDate.GetValueOrDefault().Date <= project.EndDate.Date))
-                {
-                    response.AddError(Resources.Billing.Project.HitoDatesOutRange);
-                }
             }
         }
     }

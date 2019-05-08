@@ -227,7 +227,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             var response = new Response<CostDetailModel> { Data = new CostDetailModel() };
             try
             {
-                var analytic = unitOfWork.AnalyticRepository.GetByService(serviceId);
+                var analytic = unitOfWork.AnalyticRepository.GetByServiceWithManagementReport(serviceId);
 
                 if (analytic == null)
                 {

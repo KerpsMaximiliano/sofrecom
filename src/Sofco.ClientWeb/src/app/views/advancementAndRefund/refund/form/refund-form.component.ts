@@ -228,8 +228,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     }
 
     setUserApplicant(userInfo){
-    
-
         if(userInfo && userInfo.id && userInfo.name){
             this.userApplicantIdLogged = userInfo.id;
 
@@ -260,10 +258,13 @@ export class RefundFormComponent implements OnInit, OnDestroy {
                 this.detailForms.push(new RefundDetail(detail));
             });
         }
-
+ 
         if(domain.creditCardId > 0){
             this.hasCreditCard = true;
             this.userHasCreditCard = true;
+        }
+        else{
+            this.hasCreditCardChanged(false);
         }
 
         this.userApplicantName = domain.userApplicantDesc;
@@ -298,10 +299,6 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         this.detailForms.forEach(element => {
             refund.details.push(element.getModel());
         });
-
-        // if(!refund.advancements || refund.advancements == null || refund.advancements.length == 0){
-        //     refund.currencyId = this.defaultCurrencyId;
-        // }
 
         refund.cashReturn = this.cashReturn;
         refund.lastRefund = this.lastRefund;
