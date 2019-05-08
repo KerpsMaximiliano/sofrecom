@@ -227,7 +227,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             var response = new Response<CostDetailModel> { Data = new CostDetailModel() };
             try
             {
-                var analytic = unitOfWork.AnalyticRepository.GetByService(serviceId);
+                var analytic = unitOfWork.AnalyticRepository.GetByServiceWithManagementReport(serviceId);
 
                 if (analytic == null)
                 {
@@ -257,8 +257,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 //var CostDetailEmployees = costDetails.Where(cd => cd.Type.Name == CostDetailTypeResource.Empleados.ToString()).ToList();
                 //var FundedResources = costDetails.Where(cd => cd.Type.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
 
-                var managementReport = unitOfWork.ManagementReportBillingRepository.GetById(analytic.ManagementReport.Id);
-                var CostDetail = managementReport.ManagementReport.CostDetails;
+                var CostDetail = analytic.ManagementReport.CostDetails;
 
                 //Obtengo los tipos de Recursos
                 List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
@@ -272,7 +271,6 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 response.Data.FundedResources = AllCostResources.Where(r => r.show == true).ToList();
                 response.Data.OtherResources = AllCostResources.Where(r => r.show == false).OrderBy(r => r.Display).ToList();
-
             }
             catch (Exception ex)
             {

@@ -67,5 +67,7 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         User GetManager(int analyticId);
         Analytic GetByProyectId(string projectId);
+
+        Analytic GetByServiceWithManagementReport(string serviceId);
     }
 }
