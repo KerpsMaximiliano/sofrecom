@@ -45,7 +45,7 @@ BEGIN
 	SET @Cont = @Cont + 1
 END
 
-INSERT INTO app.CostDetails ([ManagementReportId], [MonthYear], [CreatedById], [CreatedAt])
-	SELECT ManagementReportId, MonthYear, CreatedById, CreateAt FROM @MesesAnalitica
+INSERT INTO app.CostDetails ([ManagementReportId], [MonthYear])
+	SELECT ManagementReportId, MonthYear FROM @MesesAnalitica
 
 
