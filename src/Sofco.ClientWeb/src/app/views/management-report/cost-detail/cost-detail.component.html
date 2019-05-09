@@ -95,12 +95,11 @@
             <ng-select [items]="otherResources" bindLabel="typeName" bindValue="typeId" [(ngModel)]="otherResourceId"
                 (change)="otherResourceChange()">
             </ng-select>
-            {{otherResourceId}}
         </div>
     </div>
     <div class="col-sm-5" *ngIf="showUsers">
         <div class="form-group">
-            <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="dale">
+            <ng-select [items]="users" bindLabel="text" [(ngModel)]="dale">
             </ng-select>
         </div>
     </div>

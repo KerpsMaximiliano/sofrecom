@@ -499,7 +499,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     otherResourceChange() {
 
-        debugger
         switch (this.otherResourceId) {
             case 22:
                 this.showUsers = true
