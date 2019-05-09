@@ -68,5 +68,14 @@ namespace Sofco.Resources.ManagementReport {
                 return ResourceManager.GetString("NotFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReportBilling.valueUpdated.
+        /// </summary>
+        public static string ValueUpdated {
+            get {
+                return ResourceManager.GetString("ValueUpdated", resourceCulture);
+            }
+        }
     }
 }

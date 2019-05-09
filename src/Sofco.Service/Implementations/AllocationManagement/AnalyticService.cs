@@ -364,6 +364,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
                         ManagementReport = analytic.ManagementReport,
                         MonthYear = date.Date
                     });
+
+                    analytic.ManagementReport.CostDetails.Add(new CostDetail
+                    {
+                        ManagementReport = analytic.ManagementReport,
+                        MonthYear = date.Date
+                    });
                 }
             }
             catch (Exception e)

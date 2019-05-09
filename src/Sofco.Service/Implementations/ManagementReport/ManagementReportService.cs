@@ -697,8 +697,10 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             if (analytic.ManagementReport != null)
             {
-                startDate = analytic.ManagementReport.StartDate;
-                endDate = analytic.ManagementReport.EndDate;
+                startDate = new DateTime(analytic.ManagementReport.StartDate.Year, analytic.ManagementReport.StartDate.Month, 1);
+                endDate = new DateTime(analytic.ManagementReport.EndDate.Year, analytic.ManagementReport.EndDate.Month,
+                    DateTime.DaysInMonth(analytic.ManagementReport.EndDate.Year,
+                        analytic.ManagementReport.EndDate.Month));
             }
             else
             {

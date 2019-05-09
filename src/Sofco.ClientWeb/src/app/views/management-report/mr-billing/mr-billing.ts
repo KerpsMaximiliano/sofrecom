@@ -378,12 +378,16 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     updateEvalPropValue(){
         var json = {
+            id: this.monthSelected.billingMonthId,
             value: this.editEvalPropValue.value
         }
 
-        this.updateEvalpropValueSubscrip = this.managementReportService.updateBilling(this.monthSelected.billingMonthId, json).subscribe(response => {
+        this.updateEvalpropValueSubscrip = this.managementReportService.updateBilling(json).subscribe(response => {
+            this.editEvalPropModal.hide()
             this.monthSelected.valueEvalProp = this.editEvalPropValue.value;
             this.monthSelectedDisplay = null;
+            this.monthSelected = null;
+            this.editEvalPropValue.setValue(null);
         }, 
         error => this.editEvalPropModal.hide());
     }
