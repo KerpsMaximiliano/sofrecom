@@ -17,8 +17,6 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
     monthSelectedDisplay: string = "";
     monthSelected: any;
 
-    @Output() updateEvalPropValueAction: EventEmitter<any> = new EventEmitter();
-
     @ViewChild('editEvalPropModal') editEvalPropModal;
     public editEvalPropModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Editar Monto EvalProp",
@@ -52,7 +50,8 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
     updateEvalPropValue(){
         var json = {
             id: this.monthSelected.billingMonthId,
-            value: this.editEvalPropValue.value
+            value: this.editEvalPropValue.value,
+            type: this.monthSelected.type
         }
 
         this.updateEvalpropValueSubscrip = this.managementReportService.updateBilling(json).subscribe(response => {
@@ -61,10 +60,6 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
             this.monthSelectedDisplay = null;
             this.monthSelected = null;
             this.editEvalPropValue.setValue(null);
-
-            if (this.updateEvalPropValueAction.observers.length > 0) {
-                this.updateEvalPropValueAction.emit(json);
-            }
         }, 
         error => this.editEvalPropModal.hide());
     }

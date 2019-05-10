@@ -1,9 +1,10 @@
-﻿using Sofco.Domain.Utils;
+﻿using Sofco.Core.Models.ManagementReport;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.ManagementReport
 {
     public interface IManagementReportBillingService
     {
-        Response Update(int id, decimal value);
+        Response Update(UpdateValueModel model);
     }
 }

@@ -10,6 +10,8 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public DateTime MonthYear { get; set; }
 
-        public decimal ValueEvalProp { get; set; }
+        public decimal EvalPropBillingValue { get; set; }
+
+        public decimal EvalPropExpenseValue { get; set; }
     }
 }

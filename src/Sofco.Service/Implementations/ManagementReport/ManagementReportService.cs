@@ -162,7 +162,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 if (billingMonth != null)
                 {
-                    monthHeader.ValueEvalProp = billingMonth.ValueEvalProp;
+                    monthHeader.ValueEvalProp = billingMonth.EvalPropBillingValue;
                     monthHeader.BillingMonthId = billingMonth.Id;
                 }
 
@@ -275,7 +275,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     if (billingMonth != null)
                     {
-                        monthHeader.ValueEvalProp = billingMonth.ValueEvalProp;
+                        monthHeader.ValueEvalProp = billingMonth.EvalPropExpenseValue;
                         monthHeader.BillingMonthId = billingMonth.Id;
                     }
 

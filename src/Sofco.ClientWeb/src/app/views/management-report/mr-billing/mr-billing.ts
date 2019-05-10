@@ -362,15 +362,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     openEditEvalProp(month){
         if (this.openEvalPropModal.observers.length > 0) {
+            month.type = 1;
             this.openEvalPropModal.emit(month);
         }
-    }
-
-    updateEvalpProp(data){
-        this.months.forEach(month => {
-            if(month.billingMonthId == data.id){
-                month.valueEvalProp = data.value;
-            }
-        });
     }
 }
