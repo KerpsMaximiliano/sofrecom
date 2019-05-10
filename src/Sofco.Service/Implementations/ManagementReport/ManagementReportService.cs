@@ -414,66 +414,9 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 var managementReport = unitOfWork.ManagementReportRepository.GetById(pIdManagementReport);
 
-                //Guardo todos los meses del reporte
-                foreach (var mounth in pDetailCost.MonthsHeader)
-                {
-                    var costDetailMonth = managementReport.CostDetails
-                                                    .Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date)
-                                                    .FirstOrDefault();
-                    //Si ese mes no esta en los detalles de costo lo agrego
-                    if(costDetailMonth == null)
-                    {
-                        CostDetail entity = new CostDetail();
-
-                        entity.ManagementReportId = pIdManagementReport;
-                        entity.MonthYear = mounth.MonthYear;
-
-                        unitOfWork.CostDetailRepository.Insert(entity);
-                    }
-                }
-
-                var currentUser = userData.GetCurrentUser();
-
-                foreach (var resource in pDetailCost.CostEmployees)
-                {
-                    foreach (var month in resource.MonthsCost)
-                    {
-                        CostDetailResource entity = new CostDetailResource();
-
-                        if (month.CostDetailId > 0)
-                        {
-                            entity = unitOfWork.CostDetailResourceRepository.Get(month.CostDetailId);
-
-                            if (month.Value != entity.Value || month.Charges != entity.Charges)
-                            {
-                                entity.Value = month.Value ?? 0;
-                                entity.Adjustment = month.Adjustment ?? 0;
-                                entity.Charges = month.Charges ?? 0;
-                               // entity.ModifiedAt = DateTime.UtcNow;
-                                //entity.ModifiedById = currentUser.Id;
-
-                                unitOfWork.CostDetailResourceRepository.Update(entity);
-                            }
-                        }
-                        else
-                        {
-                            if (month.Value > 0 || month.Charges > 0)
-                            {
-                                entity.CostDetailId = managementReport.CostDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
-                                entity.Value = month.Value ?? 0;
-                                entity.Adjustment = month.Adjustment ?? 0;
-                                entity.Charges = month.Charges ?? 0;
-                               // entity.MonthYear = month.MonthYear;
-                                //entity.TypeId = resource.TypeId;
-                                entity.EmployeeId = resource.EmployeeId ?? 0;
-                                //entity.CreatedAt = DateTime.UtcNow;
-                                //entity.CreatedById = currentUser.Id;
-
-                                unitOfWork.CostDetailResourceRepository.Insert(entity);
-                            }
-                        }
-                    }
-                }
+                this.VerifyMonthsCostDetail(pDetailCost.MonthsHeader, managementReport);
+                this.InsertUpdateCostDetailResources(pDetailCost.CostEmployees, managementReport);
+                this.InsertUpdateCostDetailOther(pDetailCost.FundedResources, managementReport);
 
                 unitOfWork.Save();
 
@@ -752,20 +695,23 @@ namespace Sofco.Service.Implementations.ManagementReport
             return false;
         }
 
-        private List<CostResource> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, ICollection<CostDetail> costDetails)
+        private List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, ICollection<CostDetail> costDetails)
         {
-            List<CostResource> costEmployees = new List<CostResource>();
+            List<CostResourceEmployee> costEmployees = new List<CostResourceEmployee>();
 
             //Obtengo los empleados de la analitica
             var EmployeesAnalytic = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(IdAnalytic);
 
             foreach (var employee in EmployeesAnalytic)
             {
-                var detailEmployee = new CostResource();
+                var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
+
+                var detailEmployee = new CostResourceEmployee();
                 detailEmployee.MonthsCost = new List<MonthDetailCost>();
 
                 detailEmployee.EmployeeId = employee.Id;
-                detailEmployee.Display = employee.Name + " - " + employee.Id;
+                detailEmployee.UserId = user?.Id;
+                detailEmployee.Display = employee.Name + " - " + employee.EmployeeNumber;
                 //detailEmployee.TypeId = EmployeeType.Id;
                 detailEmployee.TypeName = CostDetailTypeResource.Empleados.ToString();
 
@@ -876,5 +822,127 @@ namespace Sofco.Service.Implementations.ManagementReport
             return fundedResources;
         }
 
+        private void VerifyMonthsCostDetail(IList<MonthDetailCost> pMonths, Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
+        {
+            // Verifico que todos los meses del reporte esten cargados en base de datos.
+            try
+            {
+                foreach (var mounth in pMonths)
+                {
+                    var costDetailMonth = pManagementReport.CostDetails
+                                                    .Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date)
+                                                    .FirstOrDefault();
+                    if (costDetailMonth == null)
+                    {
+                        var entity = new CostDetail();
+
+                        entity.ManagementReportId = pManagementReport.Id;
+                        entity.MonthYear = mounth.MonthYear;
+
+                        unitOfWork.CostDetailRepository.Insert(entity);
+                    }
+                }
+
+                unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                throw ex;
+            }
+        }
+
+        private void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
+        {
+            try
+            {
+                foreach (var resource in pCostEmployees)
+                {
+                    foreach (var month in resource.MonthsCost)
+                    {
+                        var entity = new CostDetailResource();
+
+                        if (month.CostDetailId > 0)
+                        {
+                            entity = unitOfWork.CostDetailResourceRepository.Get(month.CostDetailId);
+
+                            if (month.Value != entity.Value || month.Charges != entity.Charges)
+                            {
+                                entity.Value = month.Value ?? 0;
+                                entity.Adjustment = month.Adjustment ?? 0;
+                                entity.Charges = month.Charges ?? 0;
+
+                                unitOfWork.CostDetailResourceRepository.Update(entity);
+                            }
+                        }
+                        else
+                        {
+                            if (month.Value > 0 || month.Charges > 0)
+                            {
+                                entity.CostDetailId = pManagementReport.CostDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
+                                entity.Value = month.Value ?? 0;
+                                entity.Adjustment = month.Adjustment ?? 0;
+                                entity.Charges = month.Charges ?? 0;
+                                entity.EmployeeId = resource.EmployeeId;
+                                entity.UserId = resource?.UserId;
+
+                                unitOfWork.CostDetailResourceRepository.Insert(entity);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                throw ex;
+            }
+        }
+
+        private void InsertUpdateCostDetailOther(IList<CostResource> pOtherResources, Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
+        {
+            try
+            {
+                foreach (var resource in pOtherResources)
+                {
+                    foreach (var month in resource.MonthsCost)
+                    {
+                        var entity = new CostDetailOther();
+
+                        if (month.CostDetailId > 0)
+                        {
+                            entity = unitOfWork.CostDetailOtherRepository.Get(month.CostDetailId);
+
+                            if (month.Value != entity.Value)
+                            {
+                                entity.Value = month.Value ?? 0;
+                                entity.Description = resource.Description;
+                                entity.CostDetailTypeId = resource.TypeId;
+
+                                unitOfWork.CostDetailOtherRepository.Update(entity);
+                            }
+                        }
+                        else
+                        {
+                            if (month.Value > 0)
+                            {
+                                entity.CostDetailId = pManagementReport.CostDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
+                                entity.Value = month.Value ?? 0;
+                                entity.Description = resource.Description;
+                                entity.CostDetailTypeId = resource.TypeId;
+
+                                unitOfWork.CostDetailOtherRepository.Insert(entity);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                throw ex;
+            }
+        }
     }
 }
+

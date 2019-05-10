@@ -178,7 +178,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
 
             //Actualiza el sueldo
-            this.salaryPlusIncrease(this.itemSelected, this.indexSelected + 1, true);
+            this.salaryPlusIncrease(this.itemSelected, this.indexSelected, true);
         }
 
         //Si estoy editando un aumento se actualiza el sueldo para todos los empleados
@@ -296,17 +296,16 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {
+
         //Verifico que exista la fila de ajustes
         var AjusteMensual = this.fundedResources.find(r => r.display == this.generalAdjustment);
         if (AjusteMensual) {
             //Si existe, Recorro todos los meses
-            let newSalary;
+            let newSalary = 0;
             //El nuevo salario lo seteo como el primer salario
             if (isSalaryEmployee == true) {
-                newSalary = employee.monthsCost[pIndex - 1].value
-            }
-            else {
                 newSalary = employee.monthsCost[pIndex].value
+                pIndex += 1
             }
 
             for (let index = pIndex; index < employee.monthsCost.length; index++) {
@@ -315,19 +314,20 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 if (AjusteMensual.monthsCost[index].value > 0) {
                     newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
                 }
-                // else {
-                //     newSalary = employee.monthsCost[index].originalValue
-                // }
 
-                if (employee.monthsCost[index].hasAlocation) {
+                if (employee.monthsCost[index].value > 0) {
                     employee.monthsCost[index].value = newSalary;
                     employee.monthsCost[index].adjustment = AjusteMensual.monthsCost[index].value
-                }
 
-                if (employee.monthsCost[index + 1]) {
-                    if (employee.monthsCost[index + 1].hasAlocation) {
-                        employee.monthsCost[index + 1].value = newSalary;
-                        employee.monthsCost[index + 1].originalValue = newSalary;
+                    for (let newindex = index + 1; newindex < employee.monthsCost.length; newindex++) {
+
+                        if (employee.monthsCost[newindex].value > 0) {
+                            employee.monthsCost[newindex].value = newSalary;
+                            employee.monthsCost[newindex].originalValue = newSalary;
+                        }
+                        else {
+                            employee.monthsCost[newindex].value = 0
+                        }
                     }
                 }
             }

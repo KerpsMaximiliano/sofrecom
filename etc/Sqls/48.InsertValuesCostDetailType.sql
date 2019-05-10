@@ -1,6 +1,6 @@
 
 
-INSERT INTO [app].[CostDetailTypes] VALUES  ('% Ajuste', 1)
+INSERT INTO [app].[CostDetailTypes] VALUES  ('% Ajuste General', 1)
 INSERT INTO [app].[CostDetailTypes] VALUES  ('Recupero Vacaciones', 1)
 INSERT INTO [app].[CostDetailTypes] VALUES  ('Gratificaciones', 1)
 INSERT INTO [app].[CostDetailTypes] VALUES  ('Riesgo/Retenciones', 1)
