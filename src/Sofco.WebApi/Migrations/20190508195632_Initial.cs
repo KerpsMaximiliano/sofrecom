@@ -2629,15 +2629,15 @@ namespace Sofco.WebApi.Migrations
                 {
                     table.PrimaryKey("PK_CostDetailResources", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CostDetailResources_Users_CostDetailId",
-                        column: x => x.CostDetailId,
+                        name: "FK_CostDetailResources_Users_UserId",
+                        column: x => x.UserId,
                         principalSchema: "app",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CostDetailResources_Employees_CostDetailId",
-                        column: x => x.CostDetailId,
+                        name: "FK_CostDetailResources_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalSchema: "app",
                         principalTable: "Employees",
                         principalColumn: "Id",
