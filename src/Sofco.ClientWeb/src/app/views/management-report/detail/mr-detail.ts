@@ -40,6 +40,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     @ViewChild('dateReportStart') dateReportStart;
     @ViewChild('dateReportEnd') dateReportEnd;
     @ViewChild('editDateModal') editDateModal;
+    @ViewChild('modalEvalProp') modalEvalProp;
 
     public editDateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Editar Fechas",
@@ -187,7 +188,14 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             );
 
         }
-
     }
 
+    openEvalPropModal(month){
+        this.modalEvalProp.openEditEvalProp(month);
+    }
+
+    updateEvalpProp(data){
+        this.billing.updateEvalpProp(data);
+        this.detailCost.updateEvalpProp(data);
+    }
 }

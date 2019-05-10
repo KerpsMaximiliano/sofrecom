@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, EventEmitter, Output } from "@angular/core";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { Subscription } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
@@ -16,14 +16,11 @@ import { FormControl, Validators } from "@angular/forms";
     styleUrls: ['./mr-billing.scss']
 })
 export class ManagementReportBillingComponent implements OnInit, OnDestroy {
-
-
     getBillingSubscrip: Subscription;
     getCurrenciesSubscrip: Subscription;
     postHitoSubscrip: Subscription;
     updateHitoSubscrip: Subscription;
-    updateEvalpropValueSubscrip: Subscription;
-
+    
     months: any[] = new Array();
     hitos: any[] = new Array();
     currencies: any[] = new Array();
@@ -45,7 +42,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     monthSelectedCurrency: string = "";
     editItemMonto = new FormControl('', [Validators.required, Validators.min(1), Validators.max(999999999)]);
     editItemName = new FormControl('', [Validators.required, Validators.maxLength(250)]);
-    editEvalPropValue = new FormControl('', [Validators.required, Validators.min(1), Validators.max(999999999)]);
+
+    @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -67,18 +65,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
-    @ViewChild('editEvalPropModal') editEvalPropModal;
-    public editEvalPropModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Editar Monto EvalProp",
-        "editEvalPropModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
-
     columnsCount: number = 1;
-    monthSelected: any;
 
     constructor(private managementReportService: ManagementReportService,
         private utilsService: UtilsService,
@@ -88,7 +75,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getCurrencies();
-        this.editEvalPropModal.size = 'modal-sm'
     }
 
     ngOnDestroy(): void {
@@ -96,7 +82,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         if (this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if (this.postHitoSubscrip) this.postHitoSubscrip.unsubscribe();
         if (this.updateHitoSubscrip) this.updateHitoSubscrip.unsubscribe();
-        if (this.updateEvalpropValueSubscrip) this.updateEvalpropValueSubscrip.unsubscribe();
     }
 
     getCurrencies() {
@@ -183,9 +168,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
         this.postHitoSubscrip = this.projectService.createNewHito(model).subscribe(response => {
             this.newHitoModal.hide();
-
-            let hitosAux = [];
-            var newInserted = false;
 
             var month = model.startDate.getMonth() + 1;
             var year = model.startDate.getFullYear();
@@ -307,6 +289,10 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         return (this.menuService.userIsManager || this.menuService.userIsCdg) && hito.status == this.pendingHitoStatus && (!hito.solfacId || hito.solfacId == 0);
     }
 
+    canEditCdg() {
+        return this.menuService.userIsCdg;
+    }
+
     canDeleteHito(hito) {
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
@@ -375,25 +361,16 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openEditEvalProp(month){
-        this.editEvalPropModal.show()
-        this.editEvalPropValue.setValue(month.valueEvalProp);
-        this.monthSelectedDisplay = month.display;
-        this.monthSelected = month;
+        if (this.openEvalPropModal.observers.length > 0) {
+            this.openEvalPropModal.emit(month);
+        }
     }
 
-    updateEvalPropValue(){
-        var json = {
-            id: this.monthSelected.billingMonthId,
-            value: this.editEvalPropValue.value
-        }
-
-        this.updateEvalpropValueSubscrip = this.managementReportService.updateBilling(json).subscribe(response => {
-            this.editEvalPropModal.hide()
-            this.monthSelected.valueEvalProp = this.editEvalPropValue.value;
-            this.monthSelectedDisplay = null;
-            this.monthSelected = null;
-            this.editEvalPropValue.setValue(null);
-        }, 
-        error => this.editEvalPropModal.hide());
+    updateEvalpProp(data){
+        this.months.forEach(month => {
+            if(month.billingMonthId == data.id){
+                month.valueEvalProp = data.value;
+            }
+        });
     }
 }
