@@ -8,6 +8,7 @@ namespace Sofco.Core.Models.ManagementReport
     public class CostDetailModel
     {
         public string ManagerId { get; set; }
+        public int ManagementReportId { get; set; }
         public int AnalyticId { get; set; }
         public IList<MonthDetailCost> MonthsHeader { get; set; }
         public List<CostResourceEmployee> CostEmployees { get; set; }

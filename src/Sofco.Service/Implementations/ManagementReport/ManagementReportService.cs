@@ -255,6 +255,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.MonthsHeader = new List<MonthDetailCost>();
 
                 response.Data.ManagerId = analytic.Manager.ExternalManagerId;
+                response.Data.ManagementReportId = analytic.ManagementReport.Id;
 
                 var dates = SetDates(analytic);
 
@@ -340,79 +341,79 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        //public Response UpdateCostDetail(CostDetailModel pDetailCost)
+        //{
+        //    var response = new Response();
+        //    try
+        //    {
+        //        var costDetails = unitOfWork.CostDetailRepository.GetByAnalytic(pDetailCost.AnalyticId);
+
+        //        List<CostResource> resources = new List<CostResource>();
+        //        resources.AddRange(pDetailCost.CostEmployees);
+        //        resources.AddRange(pDetailCost.FundedResources);
+
+        //        var currentUser = userData.GetCurrentUser();
+
+        //        foreach (var resource in resources)
+        //        {
+        //            foreach (var month in resource.MonthsCost)
+        //            {
+        //                CostDetail entity = new CostDetail();
+
+        //                if (month.CostDetailId > 0)
+        //                {
+        //                    entity = costDetails.Where(c => c.Id == month.CostDetailId).FirstOrDefault();
+
+        //                    if (month.Value != entity.Cost || month.Charges != entity.Charges)
+        //                    {
+        //                        entity.Cost = month.Value ?? 0;
+        //                        entity.Adjustment = month.Adjustment;
+        //                        entity.Charges = month.Charges;
+        //                        entity.ModifiedAt = DateTime.UtcNow;
+        //                        entity.ModifiedById = currentUser.Id;
+
+        //                        unitOfWork.CostDetailRepository.Update(entity);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    if (month.Value > 0 || month.Charges > 0)
+        //                    {
+        //                        entity.IdAnalytic = pDetailCost.AnalyticId;
+        //                        entity.Cost = month.Value ?? 0;
+        //                        entity.Adjustment = month.Adjustment;
+        //                        entity.Charges = month.Charges;
+        //                        entity.MonthYear = month.MonthYear;
+        //                        entity.TypeId = resource.TypeId;
+        //                        entity.EmployeeId = resource.EmployeeId;
+        //                        entity.CreatedAt = DateTime.UtcNow;
+        //                        entity.CreatedById = currentUser.Id;
+
+        //                        unitOfWork.CostDetailRepository.Insert(entity);
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //        unitOfWork.Save();
+
+        //        response.AddSuccess(Resources.Common.SaveSuccess);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logger.LogError(ex);
+        //        response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+        //    }
+
+        //    return response;
+        //}
+
         public Response UpdateCostDetail(CostDetailModel pDetailCost)
-        {
-            var response = new Response();
-            //try
-            //{
-            //    var costDetails = unitOfWork.CostDetailRepository.GetByAnalytic(pDetailCost.AnalyticId);
-
-            //    List<CostResource> resources = new List<CostResource>();
-            //    resources.AddRange(pDetailCost.CostEmployees);
-            //    resources.AddRange(pDetailCost.FundedResources);
-
-            //    var currentUser = userData.GetCurrentUser();
-
-            //    foreach (var resource in resources)
-            //    {
-            //        foreach (var month in resource.MonthsCost)
-            //        {
-            //            CostDetail entity = new CostDetail();
-
-            //            if (month.CostDetailId > 0)
-            //            {
-            //                entity = costDetails.Where(c => c.Id == month.CostDetailId).FirstOrDefault();
-
-            //                if (month.Value != entity.Cost || month.Charges != entity.Charges)
-            //                {
-            //                    entity.Cost = month.Value ?? 0;
-            //                    entity.Adjustment = month.Adjustment;
-            //                    entity.Charges = month.Charges;
-            //                    entity.ModifiedAt = DateTime.UtcNow;
-            //                    entity.ModifiedById = currentUser.Id;
-
-            //                    unitOfWork.CostDetailRepository.Update(entity);
-            //                }
-            //            }
-            //            else
-            //            {
-            //                if (month.Value > 0 || month.Charges > 0)
-            //                {
-            //                    entity.IdAnalytic = pDetailCost.AnalyticId;
-            //                    entity.Cost = month.Value ?? 0;
-            //                    entity.Adjustment = month.Adjustment;
-            //                    entity.Charges = month.Charges;
-            //                    entity.MonthYear = month.MonthYear;
-            //                    entity.TypeId = resource.TypeId;
-            //                    entity.EmployeeId = resource.EmployeeId;
-            //                    entity.CreatedAt = DateTime.UtcNow;
-            //                    entity.CreatedById = currentUser.Id;
-
-            //                    unitOfWork.CostDetailRepository.Insert(entity);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    unitOfWork.Save();
-
-            //    response.AddSuccess(Resources.Common.SaveSuccess);
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.LogError(ex);
-            //    response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
-            //}
-
-            return response;
-        }
-
-        public Response UpdateCostDetailResources(CostDetailModel pDetailCost, int pIdManagementReport)
         {
             var response = new Response();
             try
             {
-                var managementReport = unitOfWork.ManagementReportRepository.GetById(pIdManagementReport);
+                var managementReport = unitOfWork.ManagementReportRepository.GetById(pDetailCost.ManagementReportId);
 
                 this.VerifyMonthsCostDetail(pDetailCost.MonthsHeader, managementReport);
                 this.InsertUpdateCostDetailResources(pDetailCost.CostEmployees, managementReport);
