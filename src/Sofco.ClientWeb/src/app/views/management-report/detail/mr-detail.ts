@@ -175,6 +175,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
                 this.model.manamementReportStartDate = this.ReportStartDate
                 this.model.manamementReportEndDate = this.ReportEndDate
           
+                this.getDetail()
+                this.detailCost.getCost()
+
                 this.editDateModal.hide();
             },
                 error => {

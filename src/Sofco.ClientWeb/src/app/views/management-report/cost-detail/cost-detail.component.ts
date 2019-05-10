@@ -50,6 +50,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     showProfiles: boolean = false
 
     readonly generalAdjustment: string = "% Ajuste General";
+    readonly AddResource: string = "Recursos"
+    readonly AddProfile: string = "Perfiles"
+
 
     @ViewChild('editItemModal') editItemModal;
 
@@ -118,33 +121,33 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     openEditItemModal(month, item, indexMonth) {
 
         if (this.canEdit) {
-            if (item.typeName == 'Empleados' && !month.hasAlocation) {
-                return false
+            // if (item.typeName == 'Empleados' && !month.hasAlocation) {
+            //     return false
+            // }
+            // else {
+            this.editItemModal.show();
+            this.monthSelected = month;
+            this.indexSelected = indexMonth;
+            this.itemSelected = item;
+            this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
+            this.modalPercentage = false;
+
+            if (this.itemSelected.typeName == 'Empleados') {
+                this.modalEmployee = true
+                this.editItemMonto.setValue(month.originalValue)
+                this.editItemAdjustment.setValue(month.adjustment)
+                this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
             }
             else {
-                this.editItemModal.show();
-                this.monthSelected = month;
-                this.indexSelected = indexMonth;
-                this.itemSelected = item;
-                this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
-                this.modalPercentage = false;
+                this.modalEmployee = false
+                this.editItemMonto.setValue(month.value)
 
-                if (this.itemSelected.typeName == 'Empleados') {
-                    this.modalEmployee = true
-                    this.editItemMonto.setValue(month.originalValue)
-                    this.editItemAdjustment.setValue(month.adjustment)
-                    this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
-                }
-                else {
-                    this.modalEmployee = false
-                    this.editItemMonto.setValue(month.value)
-
-                    if (this.itemSelected.typeName == this.generalAdjustment) {
-                        this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
-                        this.modalPercentage = true
-                    }
+                if (this.itemSelected.typeName == this.generalAdjustment) {
+                    this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
+                    this.modalPercentage = true
                 }
             }
+            // }
         }
 
     }
@@ -168,13 +171,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
 
-                if (this.itemSelected.monthsCost[index].hasAlocation) {
+                // if (this.itemSelected.monthsCost[index].hasAlocation) {
                     this.itemSelected.monthsCost[index].value = this.monthSelected.value;
                     this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
-                }
-                else {
-                    this.itemSelected.monthsCost[index].value = 0
-                }
+                // }
+                // else {
+                //     this.itemSelected.monthsCost[index].value = 0
+                // }
             }
 
             //Actualiza el sueldo
@@ -401,7 +404,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         else {
             cssClass = 'cursor-pointer'
             if (!monthCost.hasAlocation) {
-                cssClass = 'not-allowed label-danger'
+                cssClass += ' label-danger'
+                // cssClass = 'not-allowed label-danger'
             }
         }
 
