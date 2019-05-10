@@ -11,7 +11,7 @@ namespace Sofco.Core.Services.Billing
 
         Response<string> Create(HitoParameters hito);
 
-        Response UpdateCurrency(HitoAmmountParameter hito);
+        Response Patch(HitoAmmountParameter hito);
 
         Response Delete(string hitoId, string projectId);
     }

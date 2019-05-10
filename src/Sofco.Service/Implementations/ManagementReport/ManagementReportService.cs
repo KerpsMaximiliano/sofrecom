@@ -190,11 +190,13 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         var billingRowItem = new BillingHitoItem
                         {
-                            Description = $"{project.OpportunityNumber} - {hito.Name} - ({hito.Money})",
+                            Description = hito.Name,
                             Id = hito.Id,
                             ProjectId = project.CrmId,
                             ProjectName = $"{project.OpportunityNumber} {project.Name}",
                             CurrencyId = hito.MoneyId,
+                            CurrencyName = hito.Money,
+                            OpportunityNumber = project.OpportunityNumber,
                             Date = hito.StartDate,
                             MonthValues = new List<MonthBiilingRowItem>()
                         };

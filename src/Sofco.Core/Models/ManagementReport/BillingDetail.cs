@@ -66,6 +66,10 @@ namespace Sofco.Core.Models.ManagementReport
         public string ProjectName { get; set; }
 
         public string CurrencyId { get; set; }
+
+        public string CurrencyName { get; set; }
+
+        public string OpportunityNumber { get; set; }
     }
 
     public class MonthBiilingRowItem
