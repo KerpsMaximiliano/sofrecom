@@ -11,6 +11,7 @@ import { UtilsService } from "app/services/common/utils.service"
 import { FormGroup, FormControl, Validators, FormsModule } from "@angular/forms";
 import { UserService } from "app/services/admin/user.service";
 import { ignoreElements } from "rxjs/operators";
+import { CostDetailEmployee } from "app/models/management-report/costResourceEmployee"
 
 @Component({
     selector: 'cost-detail',
@@ -49,7 +50,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     showUsers: boolean = false
     showProfiles: boolean = false
 
+    otherSelected: any
+    userSelected: any
+
     readonly generalAdjustment: string = "% Ajuste General";
+    readonly typeEmployee: string = "Empleados"
     readonly AddResource: string = "Recursos"
     readonly AddProfile: string = "Perfiles"
 
@@ -112,7 +117,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.employeesOriginal = response.data.costEmployees;
 
             if (this.otherResources.length > 0) {
-                this.otherResourceId = this.otherResources[0].typeId;
+                this.otherSelected.typeId = this.otherResources[0].typeId;
             }
         },
             error => this.messageService.closeLoading());
@@ -132,7 +137,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
             this.modalPercentage = false;
 
-            if (this.itemSelected.typeName == 'Empleados') {
+            if (this.itemSelected.typeName == this.typeEmployee) {
                 this.modalEmployee = true
                 this.editItemMonto.setValue(month.originalValue)
                 this.editItemAdjustment.setValue(month.adjustment)
@@ -157,7 +162,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.monthSelected.value = this.editItemMonto.value
 
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
-        if (this.itemSelected.typeName == 'Empleados') {
+        if (this.itemSelected.typeName == this.typeEmployee) {
 
             this.monthSelected.originalValue = this.editItemMonto.value
             if (this.editItemAdjustment.value > 0) {
@@ -362,6 +367,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     calculateTotalCosts(index) {
+        
         var totalCost = 0;
         //Sumo el totol de los sueldos
         this.employees.forEach(employee => {
@@ -414,13 +420,30 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     addOtherCost() {
 
-        var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
-        this.fundedResources.push(resource)
+        if(this.otherSelected.typeName == this.AddResource){
+            var costEmployee = new CostDetailEmployee() 
 
-        var pos = this.otherResources.findIndex(r => r.typeId == this.otherResourceId);
-        this.otherResources.splice(pos, 1)
+            costEmployee.Display = this.userSelected.text
+            costEmployee.EmployeeId = this.userSelected.index
+            costEmployee.TypeName = this.typeEmployee
+            costEmployee.MontDetailCost = this.months
+           // costEmployee.Display = 
+           console.log(this.userSelected)
+           console.log(costEmployee)
+           console.log(this.months)
+           console.log(this.model.empleados)
 
-        this.otherResourceId = this.otherResources[0].typeId;
+           this.employees.push(costEmployee)
+        }
+        else{
+            var resource = this.otherResources.find(r => r.typeId == this.otherSelected.typeId)
+            this.fundedResources.push(resource)
+        }
+
+        // var pos = this.otherResources.findIndex(r => r.typeId == this.otherResourceId);
+        // this.otherResources.splice(pos, 1)
+
+        // this.otherResourceId = this.otherResources[0].typeId;
     }
 
     resourcesClass(monthCost, item) {
@@ -503,16 +526,17 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     otherResourceChange() {
 
-        switch (this.otherResourceId) {
-            case 22:
+        switch (this.otherSelected.typeName) {
+            case this.AddResource:
                 this.showUsers = true
                 this.showProfiles = false
                 break;
 
-            case 23:
+            case this.AddProfile:
                 this.showUsers = false
                 this.showProfiles = true
                 break;
+
             default:
                 this.showUsers = false
                 this.showProfiles = false

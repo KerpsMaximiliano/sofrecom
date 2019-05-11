@@ -92,14 +92,14 @@
 <div class="row" *ngIf="otherResources.length > 0">
     <div class="col-sm-5">
         <div class="form-group">
-            <ng-select [items]="otherResources" bindLabel="typeName" bindValue="typeId" [(ngModel)]="otherResourceId"
+            <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
                 (change)="otherResourceChange()">
-            </ng-select>
+            </ng-select> 
         </div>
     </div>
     <div class="col-sm-5" *ngIf="showUsers">
         <div class="form-group">
-            <ng-select [items]="users" bindLabel="text" [(ngModel)]="dale">
+            <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected">
             </ng-select>
         </div>
     </div>
