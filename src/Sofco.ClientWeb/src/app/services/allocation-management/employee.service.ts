@@ -99,4 +99,9 @@ export class EmployeeService {
   getCurrentAccount(id){
     return this.http.get<any>(`${this.baseUrl}/employees/${id}/currentAccount`);
   }
+
+  getByEmail(email) {
+    return this.http.get<any>(`${this.baseUrl}/employees/${email}/infoByMail`);
+  }
+
 }

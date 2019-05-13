@@ -38,6 +38,15 @@
                     </label>
                 </td>
             </tr>
+            <tr class="warning" *ngFor="let profile of costProfiles">
+                <td>{{ profile.display }} </td>
+                <td *ngFor="let monthCost of profile.monthsCost; let i = index">
+                    <label class="label" (click)="openEditItemModal(monthCost, profile, i)"
+                        [ngClass]="resourcesClass(monthCost, profile)">
+                        {{ monthCost.value | amountFormat }}
+                    </label>
+                </td>
+            </tr>
             <tr>
                 <td>Total Sueldo</td>
                 <td *ngFor="let month of months; let i = index">
@@ -98,25 +107,25 @@
 <div class="row" *ngIf="otherResources.length > 0">
     <div class="col-sm-5">
         <div class="form-group">
-            <ng-select [items]="otherResources" bindLabel="typeName" bindValue="typeId" [(ngModel)]="otherResourceId"
+            <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
                 (change)="otherResourceChange()">
-            </ng-select>
+            </ng-select> 
         </div>
     </div>
     <div class="col-sm-5" *ngIf="showUsers">
         <div class="form-group">
-            <ng-select [items]="users" bindLabel="text" [(ngModel)]="dale">
+            <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected">
             </ng-select>
         </div>
     </div>
     <div class="col-sm-5" *ngIf="showProfiles">
         <div class="form-group">
-            <ng-select [items]="profiles" bindLabel="text" bindValue="id" [(ngModel)]="dale">
+            <ng-select [items]="profiles" bindLabel="text" [(ngModel)]="profileSelected">
             </ng-select>
         </div>
     </div>
     <div class="col-md-2" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
-        <button class="btn btn-success btn-sm" type="button" (click)="addOtherCost()">
+        <button class="btn btn-success btn-md" type="button" (click)="addOtherCost()">
             Agregar
             <i class="fa fa-plus"></i></button>
     </div>
@@ -167,7 +176,7 @@
         </div>
     </div>
 
-    <div class="alert alert-gaps-warning" *ngIf="!modalEmployee">
+    <div class="alert alert-gaps-warning" *ngIf="modalPercentage">
         <i class="fa fa-warning"></i>
         El valor ingresado modificara el monto de todos los recursos en ese mes
     </div>

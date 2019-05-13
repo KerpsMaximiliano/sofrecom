@@ -8,6 +8,8 @@ import { MessageService } from "app/services/common/message.service";
 import { UtilsService } from "app/services/common/utils.service"
 import { FormControl, Validators } from "@angular/forms";
 import { UserService } from "app/services/admin/user.service";
+import { EmployeeService } from "app/services/allocation-management/employee.service"
+import { Profile } from "selenium-webdriver/firefox";
 
 @Component({
     selector: 'cost-detail',
@@ -21,6 +23,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     updateCostSubscrip: Subscription;
     getProfileSuscrip: Subscription
     getUsersSubscrip: Subscription;
+    getEmployeeSubscrip: Subscription;
 
     //Propiedades
     serviceId: string;
@@ -29,6 +32,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     employeesOriginal: any[] = new Array();
     fundedResources: any[] = new Array();
     otherResources: any[] = new Array();
+    costProfiles: any[] = new Array()
     monthSelected: any = { value: 0, display: '' };
     itemSelected: any;
     indexSelected: number = 0;
@@ -46,7 +50,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     showUsers: boolean = false
     showProfiles: boolean = false
 
+    otherSelected: any
+    userSelected: any
+    profileSelected: any
+
     readonly generalAdjustment: string = "% Ajuste General";
+    readonly typeEmployee: string = "Empleados"
     readonly AddResource: string = "Recursos"
     readonly AddProfile: string = "Perfiles"
 
@@ -69,7 +78,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private menuService: MenuService,
         private usersService: UserService,
-        private utilsService: UtilsService) { }
+        private utilsService: UtilsService,
+        private employeeService: EmployeeService
+    ) { }
 
     ngOnInit(): void {
 
@@ -108,9 +119,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.fundedResources = response.data.fundedResources;
             this.otherResources = response.data.otherResources;
             this.employeesOriginal = response.data.costEmployees;
+            this.costProfiles = response.data.costProfiles;
 
-            if (this.otherResources.length > 0) {
-                this.otherResourceId = this.otherResources[0].typeId;
+             if (this.otherResources.length > 0) {
+                 this.otherSelected = this.otherResources[0];
             }
         },
             () => this.messageService.closeLoading());
@@ -130,7 +142,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
             this.modalPercentage = false;
 
-            if (this.itemSelected.typeName == 'Empleados') {
+            if (this.itemSelected.typeName == this.typeEmployee) {
                 this.modalEmployee = true
                 this.editItemMonto.setValue(month.originalValue)
                 this.editItemAdjustment.setValue(month.adjustment)
@@ -155,7 +167,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.monthSelected.value = this.editItemMonto.value
 
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
-        if (this.itemSelected.typeName == 'Empleados') {
+        if (this.itemSelected.typeName == this.typeEmployee) {
 
             this.monthSelected.originalValue = this.editItemMonto.value
             if (this.editItemAdjustment.value > 0) {
@@ -170,8 +182,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
 
                 // if (this.itemSelected.monthsCost[index].hasAlocation) {
-                    this.itemSelected.monthsCost[index].value = this.monthSelected.value;
-                    this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
+                this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+                this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
                 // }
                 // else {
                 //     this.itemSelected.monthsCost[index].value = 0
@@ -343,6 +355,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         })
 
+        this.costProfiles.forEach(Profile => {
+            if (Profile.monthsCost[index].value) {
+                totalSalary += Profile.monthsCost[index].value
+            }
+        })
+
         return totalSalary
     }
 
@@ -351,6 +369,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
                 if (employee.monthsCost[index].value > 0) {
+                    totalEmployees++
+                }
+            }
+        })
+
+        this.costProfiles.forEach(Profile => {
+            if (Profile.monthsCost[index].value) {
+                if (Profile.monthsCost[index].value > 0) {
                     totalEmployees++
                 }
             }
@@ -367,6 +393,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 totalCost += employee.monthsCost[index].value
             }
         })
+
+        //Sumo los sueldos de los perfiles
+        this.costProfiles.forEach(profile => {
+            if (profile.monthsCost[index].value) {
+                totalCost += profile.monthsCost[index].value
+            }
+        })
+
         //Sumo los demas gastos excepto el % de Ajuste
         this.fundedResources.forEach(resource => {
             if (resource.typeName != this.generalAdjustment) {
@@ -383,6 +417,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
                 totalSalary += employee.monthsCost[index].value
+            }
+        })
+
+        this.costProfiles.forEach(profile => {
+            if (profile.monthsCost[index].value) {
+                totalSalary += profile.monthsCost[index].value
             }
         })
 
@@ -412,13 +452,35 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     addOtherCost() {
 
-        var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
-        this.fundedResources.push(resource)
+        switch (this.otherSelected.typeName) {
+            case this.AddResource:
+                this.addEmployee()
+                break;
 
-        var pos = this.otherResources.findIndex(r => r.typeId == this.otherResourceId);
-        this.otherResources.splice(pos, 1)
+            case this.AddProfile:
+                this.addProfile()
+                break;
 
-        this.otherResourceId = this.otherResources[0].typeId;
+            default:
+                var resource = this.otherResources.find(r => r.typeId == this.otherSelected.typeId)
+                this.fundedResources.push(resource)
+                break;
+        }
+
+        // if (this.otherSelected.typeName == this.AddResource) {
+
+
+        //     this.addEmployee()
+        // }
+        // else {
+        //     var resource = this.otherResources.find(r => r.typeId == this.otherSelected.typeId)
+        //     this.fundedResources.push(resource)
+        // }
+
+        // var pos = this.otherResources.findIndex(r => r.typeId == this.otherResourceId);
+        // this.otherResources.splice(pos, 1)
+
+        // this.otherResourceId = this.otherResources[0].typeId;
     }
 
     resourcesClass(monthCost, item) {
@@ -480,6 +542,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
 
             this.profiles = response;
+            if (this.profiles.length > 0) {
+                this.profileSelected = this.profiles[0];
+           }
         },
             () => {
                 this.messageService.closeLoading();
@@ -493,6 +558,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
 
             this.users = data;
+            if (this.users.length > 0) {
+                this.userSelected = this.users[0];
+           }
         },
             () => {
                 this.messageService.closeLoading();
@@ -505,16 +573,17 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     otherResourceChange() {
 
-        switch (this.otherResourceId) {
-            case 22:
+        switch (this.otherSelected.typeName) {
+            case this.AddResource:
                 this.showUsers = true
                 this.showProfiles = false
                 break;
 
-            case 23:
+            case this.AddProfile:
                 this.showUsers = false
                 this.showProfiles = true
                 break;
+
             default:
                 this.showUsers = false
                 this.showProfiles = false
@@ -522,11 +591,45 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    openEditEvalProp(month){
+    openEditEvalProp(month) {
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 2;
             this.openEvalPropModal.emit(month);
         }
     }
+
+    addEmployee() {
+        this.messageService.showLoading();
+
+        this.getEmployeeSubscrip = this.employeeService.getByEmail(this.userSelected.email).subscribe(response => {
+            this.messageService.closeLoading();
+
+            var costEmployee = {
+
+                employeeId: response.data.id,
+                userId: parseInt(this.userSelected.id),
+                typeName: this.typeEmployee,
+                display: `${this.userSelected.text.toUpperCase()} - ${response.data.employeeNumber}`,
+                monthsCost: this.months
+            }
+
+            this.employees.push(costEmployee)
+        },
+            error => {
+                this.messageService.closeLoading();
+            })
+    }
+
+    addProfile() {
+
+        var costProfile = {
+            display: this.profileSelected.text,
+            employeeProfileId: this.profileSelected.id,
+            monthsCost: this.months
+        }
+
+        this.costProfiles.push(costProfile)
+    }
+
 }
 
