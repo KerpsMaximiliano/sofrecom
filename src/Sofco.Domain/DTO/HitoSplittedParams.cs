@@ -24,5 +24,7 @@ namespace Sofco.Domain.DTO
         public string ProjectId { get; set; }
 
         public decimal? Ammount { get; set; }
+
+        public string Name { get; set; }
     }
 }

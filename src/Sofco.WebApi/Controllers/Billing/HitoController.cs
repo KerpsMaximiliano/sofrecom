@@ -44,9 +44,9 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPatch]
-        public IActionResult UpdateCurrency([FromBody] HitoAmmountParameter hito)
+        public IActionResult Patch([FromBody] HitoAmmountParameter hito)
         {
-            var response = hitoService.UpdateCurrency(hito);
+            var response = hitoService.Patch(hito);
 
             return this.CreateResponse(response);
         }

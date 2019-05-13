@@ -162,7 +162,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 if (billingMonth != null)
                 {
-                    monthHeader.ValueEvalProp = billingMonth.ValueEvalProp;
+                    monthHeader.ValueEvalProp = billingMonth.EvalPropBillingValue;
                     monthHeader.BillingMonthId = billingMonth.Id;
                 }
 
@@ -190,11 +190,13 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         var billingRowItem = new BillingHitoItem
                         {
-                            Description = $"{project.OpportunityNumber} - {hito.Name} - ({hito.Money})",
+                            Description = hito.Name,
                             Id = hito.Id,
                             ProjectId = project.CrmId,
                             ProjectName = $"{project.OpportunityNumber} {project.Name}",
                             CurrencyId = hito.MoneyId,
+                            CurrencyName = hito.Money,
+                            OpportunityNumber = project.OpportunityNumber,
                             Date = hito.StartDate,
                             MonthValues = new List<MonthBiilingRowItem>()
                         };
@@ -259,11 +261,23 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 var dates = SetDates(analytic);
 
+                var managementReport = unitOfWork.ManagementReportRepository.GetById(analytic.ManagementReport.Id);
+                var costDetails = managementReport.CostDetails;
+                var billings = unitOfWork.ManagementReportBillingRepository.GetByManagementReportAndDates(analytic.ManagementReport.Id, dates.Item1.Date, dates.Item2.Date);
+
                 for (DateTime date = new DateTime(dates.Item1.Year, dates.Item1.Month, 1).Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
                 {
                     var monthHeader = new MonthDetailCost();
                     monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                     monthHeader.MonthYear = date;
+
+                    var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
+
+                    if (billingMonth != null)
+                    {
+                        monthHeader.ValueEvalProp = billingMonth.EvalPropExpenseValue;
+                        monthHeader.BillingMonthId = billingMonth.Id;
+                    }
 
                     response.Data.MonthsHeader.Add(monthHeader);
                 }
@@ -273,17 +287,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                 //var CostDetailEmployees = costDetails.Where(cd => cd.Type.Name == CostDetailTypeResource.Empleados.ToString()).ToList();
                 //var FundedResources = costDetails.Where(cd => cd.Type.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
 
-                var managementReport = unitOfWork.ManagementReportRepository.GetById(analytic.ManagementReport.Id);
-                var CostDetail = managementReport.CostDetails;
-
                 //Obtengo los tipos de Recursos
                 List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
                 List<CostDetailType> TypesFundedResources = Types.Where(t => t.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
 
                 //Mapeo Los empleados      
-                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, CostDetail);
+                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails);
                 //Mapeo Los demas datos
-                var AllCostResources = FillFundedResoursesByMonth(analytic.Id, response.Data.MonthsHeader, CostDetail, TypesFundedResources);
+                var AllCostResources = FillFundedResoursesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails, TypesFundedResources);
 
                 response.Data.FundedResources = AllCostResources.Where(r => r.show == true).ToList();
                 response.Data.OtherResources = AllCostResources.Where(r => r.show == false).OrderBy(r => r.Display).ToList();

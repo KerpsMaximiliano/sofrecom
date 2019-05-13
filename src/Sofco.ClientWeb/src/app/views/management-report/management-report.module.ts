@@ -25,13 +25,14 @@ import { CostDetailMonthComponent } from "./cost-detail-month/cost-detail-month"
 import { ReactiveFormsModule } from '@angular/forms';
 import { DigitModule } from "app/components/digit-limit/digit-limit.directive";
 import { BsDatepickerModule } from 'ngx-bootstrap';
+import { ModalEvalPropComponent } from "./modal-evalprop/modal-evalprop";
 import { EmployeeService } from "app/services/allocation-management/employee.service"
 
 
 @NgModule({
     declarations: [
       ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent, 
-      CostDetailMonthComponent
+      CostDetailMonthComponent, ModalEvalPropComponent
     ],
     imports: [
       CommonModule,

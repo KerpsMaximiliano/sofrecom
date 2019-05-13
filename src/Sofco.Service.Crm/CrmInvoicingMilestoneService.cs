@@ -206,6 +206,17 @@ namespace Sofco.Service.Crm
             }
         }
 
+        public void UpdateAmmountAndName(HitoAmmountParameter hito, Response response)
+        {
+            var content = new JObject
+            {
+                ["as_name"] = hito.Name,
+                ["as_amount"] = hito.Ammount
+            };
+
+            Update(content, hito.Id, response);
+        }
+
         public string Create(HitoParameters data, Response response)
         {
             var date = data.StartDate.HasValue ? data.StartDate.Value.ToString("yyyy-MM-dd") : DateTime.UtcNow.ToString("yyyy-MM-dd");

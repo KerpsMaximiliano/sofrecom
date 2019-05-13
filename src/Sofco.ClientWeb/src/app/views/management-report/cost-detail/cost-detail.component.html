@@ -23,6 +23,12 @@
                     </label>
                 </td>
             </tr>
+            <tr>
+                <td class="first-column text-ellipsis"> EVALPROP</td>
+                <td *ngFor="let month of months">
+                    <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''" (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
+                </td>
+            </tr>
             <tr class="active" *ngFor="let employee of employees">
                 <td>{{ employee.display }} </td>
                 <td *ngFor="let monthCost of employee.monthsCost; let i = index">
@@ -166,3 +172,5 @@
         El valor ingresado modificara el monto de todos los recursos en ese mes
     </div>
 </ng2-modal>
+
+

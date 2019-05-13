@@ -20,7 +20,7 @@ namespace Sofco.WebApi.Controllers.ManagementReport
         [HttpPut]
         public IActionResult PutDetailCostMonth([FromBody] UpdateValueModel model)
         {
-            var response = managementReportBillingService.Update(model.Id, model.Value);
+            var response = managementReportBillingService.Update(model);
 
             return this.CreateResponse(response);
         }

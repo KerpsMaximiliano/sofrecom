@@ -103,7 +103,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response UpdateCurrency(HitoAmmountParameter hito)
+        public Response Patch(HitoAmmountParameter hito)
         {
             var response = new Response();
 
@@ -113,9 +113,12 @@ namespace Sofco.Service.Implementations.Billing
             if (!hito.Ammount.HasValue || hito.Ammount == 0)
                 response.AddError(Resources.Billing.Project.HitoAmmoutRequired);
 
+            if(string.IsNullOrWhiteSpace(hito.Name))
+                response.AddError(Resources.Billing.Project.NameRequired);
+
             if (response.HasErrors()) return response;
 
-            crmInvoicingMilestoneService.UpdateAmmount(hito, response);
+            crmInvoicingMilestoneService.UpdateAmmountAndName(hito, response);
 
             if (!response.HasErrors())
             {

@@ -18,14 +18,14 @@
                         class="label label-primary">{{ month.value | amountFormat }}</label></td>
             </tr>
             <tr>
-                <td class="first-column text-ellipsis">Valores EvalProp</td>
-                <td *ngFor="let month of months">
-                    <label class="label label-success pointer" (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
+                <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
+                <td *ngFor="let month of months"><label class="label label-primary">{{ month.resourceQuantity }}</label>
                 </td>
             </tr>
             <tr>
-                <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
-                <td *ngFor="let month of months"><label class="label label-primary">{{ month.resourceQuantity }}</label>
+                <td class="first-column text-ellipsis"> EVALPROP</td>
+                <td *ngFor="let month of months">
+                    <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''" (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
                 </td>
             </tr>
             <tr>
@@ -34,7 +34,7 @@
             <tr *ngFor="let hito of hitos">
                 <td class="first-column text-word-break">
                    <p>
-                        {{ hito.description }}
+                        {{ hito.opportunityNumber }} - {{ hito.description }} - ({{ hito.currencyName }})
                    </p>
                     <i class="fa fa-2x fa-trash pointer" (click)="delete(hito)" *ngIf="canDeleteHito(hito)"></i>
                 </td>
@@ -107,34 +107,31 @@
 
 </ng2-modal>
 
-<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateHito()" [isSaveEnabled]="editItemMonto.valid">
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateHito()" [isSaveEnabled]="editItemMonto.valid && editItemName.valid">
     <div class="form-group">
-        <fieldset>
-            <label class="control-label" for="readOnlyInput">Mes</label>
-            <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelectedDisplay }}"
-                readonly="">
-        </fieldset>
-    </div> 
-    <div class="form-group">
-        <label class="control-label">Monto</label>
+        <label class="control-label">Oportunidad - {{ 'billing.project.detail.milestone.name' | translate }} - Moneda</label>
         <div class="input-group">
-            <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
-            <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto">
-            <span class="input-group-addon" *ngIf="modalPercentage">%</span>
+            <span class="input-group-addon">{{ monthSelectedOpportunity }}</span>
+            <input type="text" class="form-control" maxlength="250" [formControl]="editItemName">
+            <span class="input-group-addon">{{ monthSelectedCurrency }}</span>
         </div> 
-    </div>
-</ng2-modal>
+    </div> 
 
-<ng2-modal [config]="editEvalPropModalConfig" #editEvalPropModal (accept)="updateEvalPropValue()" [isSaveEnabled]="editEvalPropValue.valid">
-    <div class="form-group">
-        <label class="control-label" for="readOnlyInput">Mes</label>
-        <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelectedDisplay }}"readonly="">
-    </div> 
-    <div class="form-group">
-        <label class="control-label">Monto</label>
-        <div class="input-group">
-            <span class="input-group-addon">$</span>
-            <input type="number" decimalFormat class="form-control" [formControl]="editEvalPropValue">
-        </div> 
+    <div class="row">
+        <div class="col-md-7">
+            <div class="form-group">
+                <label class="control-label">Monto</label>
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto">
+                </div> 
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <label class="control-label" for="readOnlyInput">Mes</label>
+                <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelectedDisplay }}" readonly="">
+            </div> 
+        </div>
     </div>
 </ng2-modal>

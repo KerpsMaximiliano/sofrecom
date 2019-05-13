@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, EventEmitter, Output } from "@angular/core";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { Subscription } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
@@ -16,14 +16,11 @@ import { FormControl, Validators } from "@angular/forms";
     styleUrls: ['./mr-billing.scss']
 })
 export class ManagementReportBillingComponent implements OnInit, OnDestroy {
-
-
     getBillingSubscrip: Subscription;
     getCurrenciesSubscrip: Subscription;
     postHitoSubscrip: Subscription;
     updateHitoSubscrip: Subscription;
-    updateEvalpropValueSubscrip: Subscription;
-
+    
     months: any[] = new Array();
     hitos: any[] = new Array();
     currencies: any[] = new Array();
@@ -41,8 +38,12 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     hitoSelected: any;
     indexSelected: number = 0
     monthSelectedDisplay: string = "";
-    editItemMonto = new FormControl('', [Validators.required, Validators.min(0), Validators.max(999999)]);
-    editEvalPropValue = new FormControl('', [Validators.required, Validators.min(1), Validators.max(999999999)]);
+    monthSelectedOpportunity: string = "";
+    monthSelectedCurrency: string = "";
+    editItemMonto = new FormControl('', [Validators.required, Validators.min(1), Validators.max(999999999)]);
+    editItemName = new FormControl('', [Validators.required, Validators.maxLength(250)]);
+
+    @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -64,18 +65,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
-    @ViewChild('editEvalPropModal') editEvalPropModal;
-    public editEvalPropModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Editar Monto EvalProp",
-        "editEvalPropModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
-
     columnsCount: number = 1;
-    monthSelected: any;
 
     constructor(private managementReportService: ManagementReportService,
         private utilsService: UtilsService,
@@ -85,8 +75,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getCurrencies();
-        this.editItemValueModal.size = 'modal-sm'
-        this.editEvalPropModal.size = 'modal-sm'
     }
 
     ngOnDestroy(): void {
@@ -94,7 +82,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         if (this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if (this.postHitoSubscrip) this.postHitoSubscrip.unsubscribe();
         if (this.updateHitoSubscrip) this.updateHitoSubscrip.unsubscribe();
-        if (this.updateEvalpropValueSubscrip) this.updateEvalpropValueSubscrip.unsubscribe();
     }
 
     getCurrencies() {
@@ -116,13 +103,15 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
             response.data.rows.forEach(row => {
 
-                var hito = { id: "", projectId: "", description: "", projectName: "", currencyId: "", date: new Date(), values: [] };
+                var hito = { id: "", projectId: "", description: "", projectName: "", currencyId: "", currencyName: "", opportunityNumber: "", date: new Date(), values: [] };
                 hito.description = row.description;
                 hito.id = row.id;
                 hito.projectId = row.projectId;
                 hito.projectName = row.projectName;
                 hito.date = row.date;
                 hito.currencyId = row.currencyId;
+                hito.currencyName = row.currencyName;
+                hito.opportunityNumber = row.opportunityNumber;
 
                 this.months.forEach(month => {
                     var monthValue = row.monthValues.find(x => x.month == month.month && x.year == month.year);
@@ -180,9 +169,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.postHitoSubscrip = this.projectService.createNewHito(model).subscribe(response => {
             this.newHitoModal.hide();
 
-            let hitosAux = [];
-            var newInserted = false;
-
             var month = model.startDate.getMonth() + 1;
             var year = model.startDate.getFullYear();
 
@@ -223,53 +209,51 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     updateHito() {
-
-        this.hitoSelected.values[this.indexSelected].value = this.editItemMonto.value
+        var descAux = this.editItemName.value;
+        this.hitoSelected.values[this.indexSelected].value = this.editItemMonto.value;
+        this.hitoSelected.description = this.editItemName.value;
         var hito = this.hitoSelected
 
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
         if (!this.isEnabled(hitoMonth)) return;
 
-        if (hitoMonth.value > 0 && hitoMonth.value != hitoMonth.oldValue) {
-            var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
+        var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
 
-            var monthValue;
+        var monthValue;
 
-            if (totalCurrency) {
-                monthValue = totalCurrency.monthValues.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
+        if (totalCurrency) {
+            monthValue = totalCurrency.monthValues.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
 
-                if (monthValue) {
-                    monthValue.value -= hitoMonth.oldValue;
-                    monthValue.value += hitoMonth.value;
-                }
+            if (monthValue) {
+                monthValue.value -= hitoMonth.oldValue;
+                monthValue.value += hitoMonth.value;
             }
-
-            var json = {
-                id: hito.id,
-                ammount: hitoMonth.value,
-                projectId: hito.projectId
-            }
-
-            this.projectService.updateAmmountHito(json).subscribe(response => {
-                hitoMonth.oldValue = hitoMonth.value;
-            },
-                error => {
-                    if (monthValue) {
-                        monthValue.value -= hitoMonth.value;
-                        monthValue.value += hitoMonth.oldValue;
-                    }
-
-                    hitoMonth.value = hitoMonth.oldValue;
-
-                    this.editItemValueModal.hide()
-                });
         }
-        else {
+
+        var json = {
+            id: hito.id,
+            ammount: hitoMonth.value,
+            name: hito.description,
+            projectId: hito.projectId
+        }
+
+        this.projectService.updateAmmountHito(json).subscribe(response => {
+            hitoMonth.oldValue = hitoMonth.value;
+        },
+        error => {
+            if (monthValue) {
+                monthValue.value -= hitoMonth.value;
+                monthValue.value += hitoMonth.oldValue;
+            }
+
             hitoMonth.value = hitoMonth.oldValue;
-        }
+            this.hitoSelected.description = descAux;
 
-        this.editItemValueModal.hide()
+            this.editItemValueModal.hide();
+        });
+
+        this.editItemValueModal.hide();
     }
 
     delete(hito) {
@@ -303,6 +287,10 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     isEnabled(hito) {
         return (this.menuService.userIsManager || this.menuService.userIsCdg) && hito.status == this.pendingHitoStatus && (!hito.solfacId || hito.solfacId == 0);
+    }
+
+    canEditCdg() {
+        return this.menuService.userIsCdg;
     }
 
     canDeleteHito(hito) {
@@ -364,31 +352,18 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
         this.editItemValueModal.show();
         this.editItemMonto.setValue(value.value)
+        this.editItemName.setValue(hito.description)
         this.hitoSelected = hito;
         this.indexSelected = index
-        this.monthSelectedDisplay = this.months[index].display
+        this.monthSelectedDisplay = this.months[index].display;
+        this.monthSelectedOpportunity = hito.opportunityNumber;
+        this.monthSelectedCurrency = hito.currencyName;
     }
 
     openEditEvalProp(month){
-        this.editEvalPropModal.show()
-        this.editEvalPropValue.setValue(month.valueEvalProp);
-        this.monthSelectedDisplay = month.display;
-        this.monthSelected = month;
-    }
-
-    updateEvalPropValue(){
-        var json = {
-            id: this.monthSelected.billingMonthId,
-            value: this.editEvalPropValue.value
+        if (this.openEvalPropModal.observers.length > 0) {
+            month.type = 1;
+            this.openEvalPropModal.emit(month);
         }
-
-        this.updateEvalpropValueSubscrip = this.managementReportService.updateBilling(json).subscribe(response => {
-            this.editEvalPropModal.hide()
-            this.monthSelected.valueEvalProp = this.editEvalPropValue.value;
-            this.monthSelectedDisplay = null;
-            this.monthSelected = null;
-            this.editEvalPropValue.setValue(null);
-        }, 
-        error => this.editEvalPropModal.hide());
     }
 }

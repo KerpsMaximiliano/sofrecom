@@ -1,16 +1,13 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { Subscription } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
-import * as moment from 'moment';
-import { modalConfigDefaults } from "ngx-bootstrap/modal/modal-options.class";
 import { UtilsService } from "app/services/common/utils.service"
-import { FormGroup, FormControl, Validators, FormsModule } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
 import { UserService } from "app/services/admin/user.service";
-import { ignoreElements } from "rxjs/operators";
 import { EmployeeService } from "app/services/allocation-management/employee.service"
 
 @Component({
@@ -59,6 +56,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     readonly AddResource: string = "Recursos"
     readonly AddProfile: string = "Perfiles"
 
+    @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('editItemModal') editItemModal;
 
@@ -123,7 +121,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             //     this.otherSelected.typeId = this.otherResources[0].typeId;
             // }
         },
-            error => this.messageService.closeLoading());
+            () => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item, indexMonth) {
@@ -212,11 +210,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.model.employees = this.employees;
         this.model.fundedResources = this.fundedResources;
 
-        this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, this.model).subscribe(response => {
+        this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, this.model).subscribe(() => {
             this.messageService.closeLoading();
 
         },
-            error => {
+            () => {
                 this.messageService.closeLoading();
             });
     }
@@ -516,7 +514,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             this.profiles = response;
         },
-            error => {
+            () => {
                 this.messageService.closeLoading();
             })
     }
@@ -529,9 +527,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             this.users = data;
         },
-            error => {
+            () => {
                 this.messageService.closeLoading();
             })
+    }
+
+    canEditCdg() {
+        return this.menuService.userIsCdg;
     }
 
     otherResourceChange() {
@@ -554,7 +556,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-
-
+    openEditEvalProp(month){
+        if (this.openEvalPropModal.observers.length > 0) {
+            month.type = 2;
+            this.openEvalPropModal.emit(month);
+        }
+    }
 }
 
