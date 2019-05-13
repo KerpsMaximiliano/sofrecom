@@ -188,12 +188,12 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
             return new Tuple<IList<Refund>, IList<Advancement>>(refunds, advancements);
         }
 
-        public IList<Advancement> GetAllApproved(int workflowStatusApproveId)
+        public IList<Advancement> GetAllApproved(int workflowStatusApproveId, AdvancementType viaticumId)
         {
             return context.Advancements
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Currency)
-                .Where(x => x.StatusId == workflowStatusApproveId).ToList();
+                .Where(x => x.StatusId == workflowStatusApproveId && x.Type == viaticumId).ToList();
         }
 
         public int GetRefundWithLastRefundMarkedCount(int advancementId, int refundId)

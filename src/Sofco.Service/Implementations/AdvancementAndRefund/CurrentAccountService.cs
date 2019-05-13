@@ -8,6 +8,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Services.AdvancementAndRefund;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 
@@ -101,7 +102,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     }
                 }
 
-                var advancements = unitOfWork.AdvancementRepository.GetAllApproved(settings.WorkflowStatusApproveId);
+                var advancements = unitOfWork.AdvancementRepository.GetAllApproved(settings.WorkflowStatusApproveId, AdvancementType.Viaticum);
 
                 foreach (var advancement in advancements)
                 {
