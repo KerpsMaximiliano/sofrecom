@@ -11,7 +11,7 @@ import { UtilsService } from "app/services/common/utils.service"
 import { FormGroup, FormControl, Validators, FormsModule } from "@angular/forms";
 import { UserService } from "app/services/admin/user.service";
 import { ignoreElements } from "rxjs/operators";
-import { CostDetailEmployee } from "app/models/management-report/costResourceEmployee"
+import { EmployeeService } from "app/services/allocation-management/employee.service"
 
 @Component({
     selector: 'cost-detail',
@@ -25,6 +25,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     updateCostSubscrip: Subscription;
     getProfileSuscrip: Subscription
     getUsersSubscrip: Subscription;
+    getEmployeeSubscrip: Subscription;
 
     //Propiedades
     serviceId: string;
@@ -76,7 +77,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private menuService: MenuService,
         private usersService: UserService,
-        private utilsService: UtilsService) { }
+        private utilsService: UtilsService,
+        private employeeService: EmployeeService
+    ) { }
 
     ngOnInit(): void {
 
@@ -116,9 +119,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.otherResources = response.data.otherResources;
             this.employeesOriginal = response.data.costEmployees;
 
-            if (this.otherResources.length > 0) {
-                this.otherSelected.typeId = this.otherResources[0].typeId;
-            }
+            // if (this.otherResources.length > 0) {
+            //     this.otherSelected.typeId = this.otherResources[0].typeId;
+            // }
         },
             error => this.messageService.closeLoading());
     }
@@ -177,8 +180,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
 
                 // if (this.itemSelected.monthsCost[index].hasAlocation) {
-                    this.itemSelected.monthsCost[index].value = this.monthSelected.value;
-                    this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
+                this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+                this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
                 // }
                 // else {
                 //     this.itemSelected.monthsCost[index].value = 0
@@ -367,7 +370,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     calculateTotalCosts(index) {
-        
         var totalCost = 0;
         //Sumo el totol de los sueldos
         this.employees.forEach(employee => {
@@ -420,22 +422,30 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     addOtherCost() {
 
-        if(this.otherSelected.typeName == this.AddResource){
-            var costEmployee = new CostDetailEmployee() 
+        if (this.otherSelected.typeName == this.AddResource) {
 
-            costEmployee.Display = this.userSelected.text
-            costEmployee.EmployeeId = this.userSelected.index
-            costEmployee.TypeName = this.typeEmployee
-            costEmployee.MontDetailCost = this.months
-           // costEmployee.Display = 
-           console.log(this.userSelected)
-           console.log(costEmployee)
-           console.log(this.months)
-           console.log(this.model.empleados)
+            this.messageService.showLoading();
 
-           this.employees.push(costEmployee)
+            this.getEmployeeSubscrip = this.employeeService.getByEmail(this.userSelected.email).subscribe(response => {
+                this.messageService.closeLoading();
+
+                var costEmployee = {
+
+                    employeeId: response.data.id,
+                    userId: parseInt(this.userSelected.id),
+                    typeName: this.typeEmployee,
+                    display: `${this.userSelected.text.toUpperCase()} - ${response.data.employeeNumber}`,
+                    monthsCost: this.months
+                }
+                
+                this.employees.push(costEmployee)
+            },
+            error => {
+                this.messageService.closeLoading();
+            })
+           
         }
-        else{
+        else {
             var resource = this.otherResources.find(r => r.typeId == this.otherSelected.typeId)
             this.fundedResources.push(resource)
         }

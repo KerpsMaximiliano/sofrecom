@@ -191,5 +191,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{mail}/infoByMail")]
+        public IActionResult GetByMail(string mail)
+        {
+            var model = employeeService.GetByMail(mail);
+
+            return Ok(model);
+        }
+
     }
 }

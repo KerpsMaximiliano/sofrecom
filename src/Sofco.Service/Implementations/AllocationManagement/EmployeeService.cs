@@ -518,6 +518,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<EmployeeModel> GetByMail(string email)
+        {
+            var response = new Response<EmployeeModel>();
+
+            var result = unitOfWork.EmployeeRepository.GetByEmail(email);
+
+            response.Data = Translate(result);
+
+            return response;
+        }
+
         private EmployeeProfileModel GetEmployeeModel(Employee employee)
         {
             var model = TranslateToProfile(employee);

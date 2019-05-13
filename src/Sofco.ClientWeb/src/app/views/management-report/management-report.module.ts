@@ -25,6 +25,7 @@ import { CostDetailMonthComponent } from "./cost-detail-month/cost-detail-month"
 import { ReactiveFormsModule } from '@angular/forms';
 import { DigitModule } from "app/components/digit-limit/digit-limit.directive";
 import { BsDatepickerModule } from 'ngx-bootstrap';
+import { EmployeeService } from "app/services/allocation-management/employee.service"
 
 
 @NgModule({
@@ -49,7 +50,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
       ReactiveFormsModule,
       BsDatepickerModule
     ],
-    providers: [ ManagementReportService, DatesService, UtilsService, ProjectService ],
+    providers: [ ManagementReportService, DatesService, UtilsService, ProjectService, EmployeeService ],
     exports: [],
   })
   

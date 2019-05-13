@@ -703,7 +703,18 @@ namespace Sofco.Service.Implementations.ManagementReport
             //Obtengo los empleados de la analitica
             var EmployeesAnalytic = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(IdAnalytic);
 
-            foreach (var employee in EmployeesAnalytic)
+            // Obtengo los empleados del reporte que no estan en la analitica.
+            var IdEmployeesWithOutAnalytic = costDetails
+                                                .SelectMany(x => x.CostDetailResources.Select(d => d.EmployeeId))
+                                                .Distinct()
+                                                .Except(EmployeesAnalytic.Select(x => x.Id))
+                                                .ToArray();
+
+            var employeesWithOutAnalytic = unitOfWork.EmployeeRepository.GetById(IdEmployeesWithOutAnalytic);
+
+            var allEmployees = EmployeesAnalytic.Union(employeesWithOutAnalytic).ToList();
+
+            foreach (var employee in allEmployees)
             {
                 var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
 
@@ -742,19 +753,22 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var startDate = new DateTime(mounth.MonthYear.Year, mounth.MonthYear.Month, 1);
                     var endDate = startDate.AddMonths(1).AddDays(-1);
 
-                    var alocation = employee.Allocations.Where(x => x.AnalyticId == IdAnalytic && x.StartDate >= startDate.Date && x.StartDate <= endDate.Date && x.Percentage > 0).ToList();
-                    if (alocation.Any())
+                    if(employee.Allocations != null)
                     {
-                        monthDetail.HasAlocation = true;
-                    }
-                    else
-                    {
-                        monthDetail.HasAlocation = false;
-                        //Ticket 9471 si se quito la asignacion borrar el valor
-                        monthDetail.Value = null;
-                        monthDetail.OriginalValue = null;
-                        monthDetail.Adjustment = null;
-                    }
+                        var alocation = employee.Allocations.Where(x => x.AnalyticId == IdAnalytic && x.StartDate >= startDate.Date && x.StartDate <= endDate.Date && x.Percentage > 0).ToList();
+                        if (alocation.Any())
+                        {
+                            monthDetail.HasAlocation = true;
+                        }
+                        else
+                        {
+                            monthDetail.HasAlocation = false;
+                            //Ticket 9471 si se quito la asignacion borrar el valor
+                            monthDetail.Value = null;
+                            monthDetail.OriginalValue = null;
+                            monthDetail.Adjustment = null;
+                        }
+                    }                  
 
                     detailEmployee.MonthsCost.Add(monthDetail);
                 }

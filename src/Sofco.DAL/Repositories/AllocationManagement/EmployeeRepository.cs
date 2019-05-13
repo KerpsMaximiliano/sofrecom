@@ -304,6 +304,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees.Include(x => x.Manager).SingleOrDefault(x => x.Id == id);
         }
 
+        public List<Employee> GetById(int[] ids)
+        {
+            return context.Employees
+                .Where(s => ids.Contains(s.Id))
+                .ToList();
+        }
+
         public Employee GetByEmail(string email)
         {
             return context.Employees.Include(x => x.Manager).SingleOrDefault(x => x.Email == email);

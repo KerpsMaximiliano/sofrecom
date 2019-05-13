@@ -17,6 +17,8 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         Employee GetById(int id);
 
+        List<Employee> GetById(int[] ids);
+
         Employee GetByEmail(string email);
 
         void Update(List<Employee> employees);
