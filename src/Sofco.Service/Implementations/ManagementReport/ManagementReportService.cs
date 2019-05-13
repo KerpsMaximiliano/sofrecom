@@ -281,24 +281,18 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     response.Data.MonthsHeader.Add(monthHeader);
                 }
-
-                //Obtengo los datos de las celdas
-                //var costDetails = unitOfWork.CostDetailRepository.GetByAnalytic(analytic.Id);
-                //var CostDetailEmployees = costDetails.Where(cd => cd.Type.Name == CostDetailTypeResource.Empleados.ToString()).ToList();
-                //var FundedResources = costDetails.Where(cd => cd.Type.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
-
+                
                 //Obtengo los tipos de Recursos
                 List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
-                List<CostDetailType> TypesFundedResources = Types.Where(t => t.Name != CostDetailTypeResource.Empleados.ToString()).ToList();
 
-                //Mapeo Los empleados      
-                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails);
                 //Mapeo Los demas datos
-                var AllCostResources = FillFundedResoursesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails, TypesFundedResources);
+                var AllCostResources = FillFundedResoursesByMonth(response.Data.MonthsHeader, costDetails, Types);
+                //Mapeo Los empleados      
 
+                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails);
                 response.Data.FundedResources = AllCostResources.Where(r => r.show == true).ToList();
                 response.Data.OtherResources = AllCostResources.Where(r => r.show == false).OrderBy(r => r.Display).ToList();
-
+                response.Data.CostProfiles = FillProfilesByMonth(response.Data.MonthsHeader, costDetails);
             }
             catch (Exception ex)
             {
@@ -429,6 +423,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 this.VerifyMonthsCostDetail(pDetailCost.MonthsHeader, managementReport);
                 this.InsertUpdateCostDetailResources(pDetailCost.CostEmployees, managementReport);
                 this.InsertUpdateCostDetailOther(pDetailCost.FundedResources, managementReport);
+                this.InsertUpdateCostDetailProfile(pDetailCost.CostProfiles, managementReport);
 
                 unitOfWork.Save();
 
@@ -789,7 +784,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return costEmployees.OrderBy(e => e.Display).ToList();
         }
 
-        private List<CostResource> FillFundedResoursesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, ICollection<CostDetail> costDetails, List<CostDetailType> Types)
+        private List<CostResource> FillFundedResoursesByMonth(IList<MonthDetailCost> Months, ICollection<CostDetail> costDetails, List<CostDetailType> Types)
         {
             List<CostResource> fundedResources = new List<CostResource>();
 
@@ -846,6 +841,54 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
 
             return fundedResources;
+        }
+
+        private List<CostProfile> FillProfilesByMonth(IList<MonthDetailCost> Months, ICollection<CostDetail> costDetails)
+        {
+            var profilesResources = new List<CostProfile>();
+
+            // Obtengo los perfiles del reporte.
+            var profileIds = costDetails
+                                .SelectMany(x => x.CostDetailProfiles.Select(p => p.EmployeeProfileId))
+                                .Distinct()
+                                .ToList();
+
+            var profiles = unitOfWork.UtilsRepository.GetEmployeeProfiles();
+
+            foreach (var profileId in profileIds)
+            {
+                var detailProfile = new CostProfile();
+                detailProfile.MonthsCost = new List<MonthDetailCost>();
+
+                detailProfile.Display = profiles.Where(p => p.Id == profileId).FirstOrDefault().Text;
+                detailProfile.EmployeeProfileId = profileId;
+
+                foreach (var mounth in Months)
+                {
+                    var monthDetail = new MonthDetailCost();
+
+                    var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
+                    if (costDetailMonth != null)
+                    {
+                        var monthValue = costDetailMonth.CostDetailProfiles.Where(p => p.EmployeeProfileId == profileId).ToList();
+
+                        if (monthValue != null)
+                        {
+                            monthDetail.Value = monthValue.Sum(x => x.Value);
+                            monthDetail.CostDetailId = monthValue.Select(x => x.Id).FirstOrDefault();
+                        }
+                    }
+
+                    monthDetail.Display = mounth.Display;
+                    monthDetail.MonthYear = mounth.MonthYear;
+                    detailProfile.MonthsCost.Add(monthDetail);
+                }
+
+
+                profilesResources.Add(detailProfile);
+            }
+
+            return profilesResources;
         }
 
         private void VerifyMonthsCostDetail(IList<MonthDetailCost> pMonths, Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
@@ -958,6 +1001,49 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 entity.CostDetailTypeId = resource.TypeId;
 
                                 unitOfWork.CostDetailOtherRepository.Insert(entity);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                throw ex;
+            }
+        }
+
+        private void InsertUpdateCostDetailProfile(IList<CostProfile> pProfiles, Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
+        {
+            try
+            {
+                foreach (var resource in pProfiles)
+                {
+                    foreach (var month in resource.MonthsCost)
+                    {
+                        var entity = new CostDetailProfile();
+
+                        if (month.CostDetailId > 0)
+                        {
+                            entity = unitOfWork.CostDetailProfileRepository.Get(month.CostDetailId);
+
+                            if (month.Value != entity.Value)
+                            {
+                                entity.Value = month.Value ?? 0;
+
+                                unitOfWork.CostDetailProfileRepository.Update(entity);
+                            }
+                        }
+                        else
+                        {
+                            if (month.Value > 0)
+                            {
+                                entity.CostDetailId = pManagementReport.CostDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
+                                entity.EmployeeProfileId = resource.EmployeeProfileId;
+                                entity.Value = month.Value ?? 0;
+                                entity.Description = resource.Display;
+
+                                unitOfWork.CostDetailProfileRepository.Insert(entity);
                             }
                         }
                     }
