@@ -49,7 +49,7 @@
     <div class="row m-t-xs" *ngFor="let resource of resources">
         <div class="col-sm-6">{{ resource.name }}</div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.salary" disabled>
+            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.salary">
         </div>
         <div class="col-sm-2">
             <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
@@ -139,7 +139,7 @@
             <input type="text" class="form-control input-xs" [(ngModel)]="expense.typeName" [disabled]="isReadOnly" maxlength="200">
         </div> -->
         <div class="col-sm-2">
-            <input type="number" class="form-control input-xs" [digitLimit]="8" [(ngModel)]="expense.salary"
+            <input type="number" class="form-control input-xs" [digitLimit]="8" [(ngModel)]="expense.value"
                 (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly" max="99999999" min="0">
         </div>
         <div class="col-sm-1">

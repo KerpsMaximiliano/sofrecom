@@ -239,9 +239,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             return {
                 employeeId: element.employeeId,
+                userId: element.userId,
+                monthYear: monthCost.monthYear,
                 hasAlocation: monthCost.hasAlocation,
-                typeId: element.typeId,
-                costDetailId: monthCost.costDetailId,
+                id: monthCost.id,
                 name: element.display,
                 salary: monthCost.value || 0,
                 charges: monthCost.charges || 0,
@@ -262,9 +263,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             return {
                 typeId: element.typeId,
                 typeName: element.typeName,
-                MonthYear: monthCost.monthYear,
-                costDetailId: monthCost.costDetailId,
-                salary: monthCost.value || 0,
+                monthYear: monthCost.monthYear,
+                id: monthCost.id,
+                value: monthCost.value || 0,
                 otherResource: element.otherResource
             }
         });
