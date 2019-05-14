@@ -121,8 +121,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.employeesOriginal = response.data.costEmployees;
             this.costProfiles = response.data.costProfiles;
 
-             if (this.otherResources.length > 0) {
-                 this.otherSelected = this.otherResources[0];
+            if (this.otherResources.length > 0) {
+                this.otherSelected = this.otherResources[0];
             }
         },
             () => this.messageService.closeLoading());
@@ -544,7 +544,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.profiles = response;
             if (this.profiles.length > 0) {
                 this.profileSelected = this.profiles[0];
-           }
+            }
         },
             () => {
                 this.messageService.closeLoading();
@@ -560,7 +560,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.users = data;
             if (this.users.length > 0) {
                 this.userSelected = this.users[0];
-           }
+            }
         },
             () => {
                 this.messageService.closeLoading();
@@ -599,21 +599,28 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     addEmployee() {
+
         this.messageService.showLoading();
 
         this.getEmployeeSubscrip = this.employeeService.getByEmail(this.userSelected.email).subscribe(response => {
             this.messageService.closeLoading();
 
-            var costEmployee = {
+            var existingEmployee =  this.employees.find(e => e.employeeId === response.data.id)
+            if (!existingEmployee) {
+                var costEmployee = {
 
-                employeeId: response.data.id,
-                userId: parseInt(this.userSelected.id),
-                typeName: this.typeEmployee,
-                display: `${this.userSelected.text.toUpperCase()} - ${response.data.employeeNumber}`,
-                monthsCost: this.months
+                    employeeId: response.data.id,
+                    userId: parseInt(this.userSelected.id),
+                    typeName: this.typeEmployee,
+                    display: `${this.userSelected.text.toUpperCase()} - ${response.data.employeeNumber}`,
+                    monthsCost: this.months
+                }
+
+                this.employees.push(costEmployee)
             }
-
-            this.employees.push(costEmployee)
+            else{
+                this.messageService.showError("managementReport.existingEmployee")
+            }
         },
             error => {
                 this.messageService.closeLoading();

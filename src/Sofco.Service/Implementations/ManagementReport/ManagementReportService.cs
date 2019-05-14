@@ -748,7 +748,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthDetail.OriginalValue = monthValue.Value;
                             monthDetail.Charges = monthValue.Charges;
                             monthValue.Adjustment = monthValue.Adjustment;
-                            monthDetail.CostDetailId = monthValue.Id;
+                            monthDetail.Id = monthValue.Id;
                         }
                     }
 
@@ -810,7 +810,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         if (monthValue != null)
                         {
                             monthDetail.Value = monthValue.Value;
-                            monthDetail.CostDetailId = monthValue.Id;
+                            monthDetail.Id = monthValue.Id;
                             // monthDetail.Charges = monthValue.Charges;
                             if (monthDetail.Value > 0)
                             {
@@ -849,7 +849,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             // Obtengo los perfiles del reporte.
             var profileIds = costDetails
-                                .SelectMany(x => x.CostDetailProfiles.Select(p => p.EmployeeProfileId))
+                                .SelectMany(x => x.CostDetailProfiles.Select(p => new { ProfileId = p.EmployeeProfileId, Guid = p.Guid }))
                                 .Distinct()
                                 .ToList();
 
@@ -860,8 +860,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var detailProfile = new CostProfile();
                 detailProfile.MonthsCost = new List<MonthDetailCost>();
 
-                detailProfile.Display = profiles.Where(p => p.Id == profileId).FirstOrDefault().Text;
-                detailProfile.EmployeeProfileId = profileId;
+                detailProfile.Display = profiles.Where(p => p.Id == profileId.ProfileId).FirstOrDefault().Text;
+                detailProfile.EmployeeProfileId = profileId.ProfileId;
 
                 foreach (var mounth in Months)
                 {
@@ -870,12 +870,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
                     if (costDetailMonth != null)
                     {
-                        var monthValue = costDetailMonth.CostDetailProfiles.Where(p => p.EmployeeProfileId == profileId).ToList();
+                        var monthValue = costDetailMonth.CostDetailProfiles.Where(p => p.Guid == profileId.Guid).ToList();
 
                         if (monthValue != null)
                         {
                             monthDetail.Value = monthValue.Sum(x => x.Value);
-                            monthDetail.CostDetailId = monthValue.Select(x => x.Id).FirstOrDefault();
+                            monthDetail.Id = monthValue.Select(x => x.Id).FirstOrDefault();
                         }
                     }
 
@@ -931,9 +931,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var entity = new CostDetailResource();
 
-                        if (month.CostDetailId > 0)
+                        if (month.Id > 0)
                         {
-                            entity = unitOfWork.CostDetailResourceRepository.Get(month.CostDetailId);
+                            entity = unitOfWork.CostDetailResourceRepository.Get(month.Id);
 
                             if (month.Value != entity.Value || month.Charges != entity.Charges)
                             {
@@ -978,9 +978,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var entity = new CostDetailOther();
 
-                        if (month.CostDetailId > 0)
+                        if (month.Id > 0)
                         {
-                            entity = unitOfWork.CostDetailOtherRepository.Get(month.CostDetailId);
+                            entity = unitOfWork.CostDetailOtherRepository.Get(month.Id);
 
                             if (month.Value != entity.Value)
                             {
@@ -1017,15 +1017,17 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             try
             {
-                foreach (var resource in pProfiles)
+                foreach (var profile in pProfiles)
                 {
-                    foreach (var month in resource.MonthsCost)
+                    var guid = Guid.NewGuid().ToString();
+
+                    foreach (var month in profile.MonthsCost)
                     {
                         var entity = new CostDetailProfile();
 
-                        if (month.CostDetailId > 0)
+                        if (month.Id > 0)
                         {
-                            entity = unitOfWork.CostDetailProfileRepository.Get(month.CostDetailId);
+                            entity = unitOfWork.CostDetailProfileRepository.Get(month.Id);
 
                             if (month.Value != entity.Value)
                             {
@@ -1038,10 +1040,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             if (month.Value > 0)
                             {
+                                entity.Guid = guid;
                                 entity.CostDetailId = pManagementReport.CostDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
-                                entity.EmployeeProfileId = resource.EmployeeProfileId;
+                                entity.EmployeeProfileId = profile.EmployeeProfileId;
                                 entity.Value = month.Value ?? 0;
-                                entity.Description = resource.Display;
+                                entity.Description = profile.Description;
 
                                 unitOfWork.CostDetailProfileRepository.Insert(entity);
                             }
