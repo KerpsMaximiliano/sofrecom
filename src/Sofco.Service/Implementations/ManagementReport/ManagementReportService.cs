@@ -345,6 +345,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         .ToList();
 
                 List<CostMonthOther> listOther = costDetail.CostDetailOthers
+                                            .Where(t => t.CostDetailType.Name != EnumCostDetailType.AjusteGeneral.ToString())
                                             .Select(x => new CostMonthOther
                                             {
                                                 Id = x.Id,
@@ -830,7 +831,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             monthDetail.Value = monthValue.Sum(x => x.Value);
                             monthDetail.CostDetailId = monthValue.FirstOrDefault().CostDetailId;
-                            //monthDetail.Id = monthValue.FirstOrDefault().Id;
+                            // Cambiar.
+                            monthDetail.Id = monthValue.FirstOrDefault().Id;
                             if (monthDetail.Value > 0)
                             {
                                 hasValue = true;

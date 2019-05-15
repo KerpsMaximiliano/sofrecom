@@ -56,6 +56,14 @@
                 </td>
             </tr>
             <tr>
+                <td>Prepaga</td>
+                <td *ngFor="let month of months; let i = index">
+                    <label class="label label-salary">
+                        {{ calculateAllPrepaid(i) | amountFormat }}
+                    </label>
+                </td>
+            </tr>
+            <tr>
                 <td>Cargas (0.51 del sueldo)</td>
                 <td *ngFor="let month of months; let i = index">
                     <label class="label label-load">
@@ -83,27 +91,6 @@
 </div>
 
 <br>
-<!-- <div class="row" *ngIf="otherResources.length > 0">
-    <div class="col-md-5">
-        <select class="form-control" id="otherResourceId" name="otherResourceId" [(ngModel)]="otherResourceId">
-            <option [value]="otherResource.typeId" *ngFor="let otherResource of otherResources">
-                {{otherResource.typeName}}
-            </option>
-        </select>
-    </div>
-    <div class="col-md-5">
-        <select class="form-control" id="profileId" name="profileId" [(ngModel)]="profileId">
-            <option [value]="profile.id" *ngFor="let profile of profiles">
-                {{profile.text}}
-            </option>
-        </select>
-    </div>
-    <div class="col-md-2" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
-        <button class="btn btn-success btn-sm" type="button" (click)="addOtherCost()">
-            Agregar
-            <i class="fa fa-plus"></i></button>
-    </div>
-</div> -->
 <div class="row" *ngIf="otherResources.length > 0">
     <div class="col-sm-5">
         <div class="form-group">
