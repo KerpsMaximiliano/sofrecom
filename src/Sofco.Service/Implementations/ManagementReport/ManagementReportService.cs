@@ -346,7 +346,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         .OrderBy(x => x.Name)
                                         .ToList();
 
-                List<CostMonthOther> listOther = costDetail.CostDetailOthers                                          
+                List<CostMonthOther> listOther = costDetail.CostDetailOthers
+                                            .Where(t => t.CostDetailType.Name != EnumCostDetailType.AjusteGeneral.ToString())
                                             .Select(x => new CostMonthOther
                                             {
                                                 Id = x.Id,
@@ -354,10 +355,22 @@ namespace Sofco.Service.Implementations.ManagementReport
                                                 CostDetailId = x.CostDetailId,
                                                 TypeId = x.CostDetailTypeId,
                                                 TypeName = x.CostDetailType.Name,
-                                                Value = x.Value                                                
+                                                Value = x.Value
                                             })
                                             .OrderBy(x => x.TypeId)
                                             .ToList();
+
+                //List<CostMonthEmployee> listEmployees = costDetail.CostDetailResources
+                //                                         .Select(empl => new CostMonthEmployee
+                //                                         {
+                //                                             Id = empl.Id,
+                //                                             EmployeeId = empl.EmployeeId,
+                //                                             UserId = empl.UserId,
+                //                                             CostDetailId = empl.CostDetailId,
+                //                                             Salary = empl.Value,
+                //                                             Charges = empl.Charges
+                //                                         })
+                //                                         .ToList();
 
                 response.Data.ManagementReportId = analytic.ManagementReport.Id;
                 response.Data.MonthYear = costDetail.MonthYear;
@@ -373,34 +386,31 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        private List<ContractedModel> GetContracted(List<CostDetail> costDetails)
+        public Response<List<CostDetailTypeModel>> GetOtherResources()
         {
-            var allContracted = new List<ContractedModel>();
+            var response = new Response<List<CostDetailTypeModel>> { Data = new List<CostDetailTypeModel>() };
+
             try
             {
-                var contracted = costDetails.SelectMany(x => x.ContratedDetails).ToList();
+                List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
 
-                allContracted = contracted
-                                    .Select(x => new ContractedModel
-                                    {
-                                        CostDetailId = x.CostDetailId,
-                                        ContractedId = x.Id,
-                                        Name = x.Name,
-                                        Honorary = x.Honorary,
-                                        Insurance = x.Insurance,
-                                        Total = x.Honorary + x.Insurance
-                                    })
-                                    .OrderBy(x => x.Name)
-                                    .ToList();
-          
+                response.Data = Types
+                                     .Where(t => t.Name != EnumCostDetailType.AjusteGeneral.ToString())
+                                     .Select(t => new CostDetailTypeModel
+                                     {
+                                         TypeId = t.Id,
+                                         TypeName = t.Name
+                                     })
+                                     .OrderBy(t => t.TypeName)
+                                     .ToList();
             }
             catch (Exception ex)
             {
                 logger.LogError(ex);
-                throw ex;
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
             }
 
-            return allContracted;
+            return response;
         }
 
         public Response UpdateCostDetail(CostDetailModel pDetailCost)
@@ -466,6 +476,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     month.Value = otherRes.Value;
                     month.MonthYear = pMonthDetail.MonthYear;
                     month.Id = otherRes.Id;
+                    month.Description = otherRes.Description;
 
                     cost.MonthsCost.Add(month);
                     _detailModel.FundedResources.Add(cost);
@@ -476,6 +487,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 this.InsertUpdateCostDetailResources(_detailModel.CostEmployees, costDetails);
                 this.InsertUpdateCostDetailOther(_detailModel.FundedResources, costDetails);
                 this.UpdateContracted(pMonthDetail.Contracted, costDetails, pMonthDetail.MonthYear);
+
+                unitOfWork.Save();
 
                 response.AddSuccess(Resources.Common.SaveSuccess);
             }
@@ -501,9 +514,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         entity = unitOfWork.ContratedDetailRepository.Get(hired.ContractedId);
 
-                        entity.Honorary = hired.Honorary ?? 0;
-                        entity.Insurance = hired.Insurance ?? 0;
-                        entity.Name = hired.Name;
+                        if (entity.Honorary != hired.Honorary || entity.Insurance != hired.Insurance || entity.Name != hired.Name)
+                        {
+                            entity.Honorary = hired.Honorary ?? 0;
+                            entity.Insurance = hired.Insurance ?? 0;
+                            entity.Name = hired.Name;
+                        }
 
                         unitOfWork.ContratedDetailRepository.Update(entity);
                     }
@@ -517,10 +533,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                         unitOfWork.ContratedDetailRepository.Insert(entity);
                     }
                 }
-
-                unitOfWork.Save();
-
-                response.AddSuccess(Resources.Common.SaveSuccess);
             }
             catch (Exception ex)
             {
@@ -542,6 +554,28 @@ namespace Sofco.Service.Implementations.ManagementReport
                 if (entity != null)
                 {
                     unitOfWork.ContratedDetailRepository.Delete(entity);
+                    unitOfWork.Save();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+            return response;
+        }
+
+        public Response DeleteOtherResource(int id)
+        {
+            var response = new Response();
+            try
+            {
+                var entity = unitOfWork.CostDetailOtherRepository.Get(id);
+
+                if (entity != null)
+                {
+                    unitOfWork.CostDetailOtherRepository.Delete(entity);
                     unitOfWork.Save();
                 }
 
@@ -720,7 +754,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 detailEmployee.UserId = user?.Id;
                 detailEmployee.Display = employee.Name + " - " + employee.EmployeeNumber;
                 //detailEmployee.TypeId = EmployeeType.Id;
-                detailEmployee.TypeName = CostDetailTypeResource.Empleados.ToString();
+                detailEmployee.TypeName = EnumCostDetailType.Empleados.ToString();
 
                 foreach (var mounth in Months)
                 {
@@ -794,13 +828,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
                     if (costDetailMonth != null)
                     {
-                        var monthValue = costDetailMonth.CostDetailOthers.FirstOrDefault(o => o.CostDetailTypeId == type.Id);
-                        //var monthValue = FundedResources.Find(r => r.TypeId == type.Id && new DateTime(r.MonthYear.Year, r.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
-                        if (monthValue != null)
+                        var monthValue = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailTypeId == type.Id).ToList();
+                        if (monthValue.Count > 0)
                         {
-                            monthDetail.Value = monthValue.Value;
-                            monthDetail.Id = monthValue.Id;
-                            // monthDetail.Charges = monthValue.Charges;
+                            monthDetail.Value = monthValue.Sum(x => x.Value);
+                            monthDetail.CostDetailId = monthValue.FirstOrDefault().CostDetailId;
+                            // Cambiar.
+                            monthDetail.Id = monthValue.FirstOrDefault().Id;
                             if (monthDetail.Value > 0)
                             {
                                 hasValue = true;
@@ -859,12 +893,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
                     if (costDetailMonth != null)
                     {
-                        var monthValue = costDetailMonth.CostDetailProfiles.Where(p => p.Guid == profileId.Guid).ToList();
+                        var monthValue = costDetailMonth.CostDetailProfiles.FirstOrDefault(p => p.Guid == profileId.Guid);
 
                         if (monthValue != null)
                         {
-                            monthDetail.Value = monthValue.Sum(x => x.Value);
-                            monthDetail.Id = monthValue.Select(x => x.Id).FirstOrDefault();
+                            monthDetail.Value = monthValue.Value;
+                            monthDetail.Id = monthValue.Id;
                         }
                     }
 
@@ -971,11 +1005,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             entity = unitOfWork.CostDetailOtherRepository.Get(month.Id);
 
-                            if (month.Value != entity.Value)
+                            if (month.Value != entity.Value || month.Description != entity.Description)
                             {
                                 entity.Value = month.Value ?? 0;
-                                entity.Description = resource.Description;
-                                entity.CostDetailTypeId = resource.TypeId;
+                                entity.Description = month.Description;
 
                                 unitOfWork.CostDetailOtherRepository.Update(entity);
                             }

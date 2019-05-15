@@ -4,8 +4,10 @@ using System.Text;
 
 namespace Sofco.Domain.Enums
 {
-    public enum CostDetailTypeResource
+    public class EnumCostDetailType
     {
-        Empleados
+        public const string Empleados = "Empleados";
+
+        public const string AjusteGeneral = "% Ajuste General";
     }
 }

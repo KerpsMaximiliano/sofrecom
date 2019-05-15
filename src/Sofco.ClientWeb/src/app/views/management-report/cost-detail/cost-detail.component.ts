@@ -256,47 +256,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 total: monthCost.value + monthCost.charges || 0
             }
         });
-
-        resources.fundedResources = this.fundedResources.map(element => {
-
-            var monthCost = element.monthsCost.find(x => {
-                var dateSplitted = x.monthYear.split("-");
-
-                if (dateSplitted[0] == year && dateSplitted[1] == month) {
-                    return x;
-                }
-            });
-
-            return {
-                typeId: element.typeId,
-                typeName: element.typeName,
-                monthYear: monthCost.monthYear,
-                id: monthCost.id,
-                value: monthCost.value || 0,
-                otherResource: element.otherResource
-            }
-        });
-
-        resources.otherResources = this.otherResources.map(element => {
-
-            var monthCost = element.monthsCost.find(x => {
-                var dateSplitted = x.monthYear.split("-");
-
-                if (dateSplitted[0] == year && dateSplitted[1] == month) {
-                    return x;
-                }
-            });
-
-            return {
-                typeId: element.typeId,
-                typeName: element.typeName,
-                MonthYear: monthCost.monthYear,
-                costDetailId: monthCost.costDetailId,
-                salary: monthCost.value || 0,
-                otherResource: element.otherResource
-            }
-        });
-
+     
         return resources;
     }
 
@@ -403,6 +363,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 totalCost += employee.monthsCost[index].value;
                 totalSalary += employee.monthsCost[index].value;
             }
+            if (employee.monthsCost[index].charges) {
+                totalCost += employee.monthsCost[index].charges
+            }
         })
 
         //Sumo los sueldos de los perfiles
@@ -439,6 +402,16 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         })
 
         return totalSalary * 0.51;
+    }
+
+    calculateAllPrepaid(index){
+        var totalPrepaid = 0
+        this.employees.forEach(employee => {
+            if (employee.monthsCost[index].charges) {
+                totalPrepaid += employee.monthsCost[index].charges
+            }
+        })
+        return totalPrepaid
     }
 
     EditItemOnClose() {
