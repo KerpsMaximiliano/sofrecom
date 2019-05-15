@@ -29,5 +29,9 @@ namespace Sofco.Domain.Crm
         public int SolfacId { get; set; }
 
         public decimal BaseAmount { get; set; }
+
+        public decimal AmountOriginal { get; set; }
+
+        public decimal BaseAmountOriginal { get; set; }
     }
 }

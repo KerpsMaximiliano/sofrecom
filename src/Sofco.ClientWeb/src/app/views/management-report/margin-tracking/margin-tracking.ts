@@ -120,9 +120,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             var billingMonth = this.billingModel.months.find(x => x.month == month && x.year == year);
             var costDetailMonth = this.costsModel.months.find(x => x.month == month && x.year == year);
 
-            marginTracking.ExpectedSales = 0;
-            marginTracking.TotalExpensesExpected = 0;
-
             this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
 
             var hitosMonth = this.billingModel.hitos.filter(hito => {
@@ -132,12 +129,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
                     return hito;
                 }
             });
-
-            marginTracking.SalesOnMonth = 0;
-            marginTracking.TotalSalesToEnd = 0;
-            marginTracking.TotalExpensesToEnd = 0;
-            marginTracking.SalesAccumulatedToDate = 0;
-            marginTracking.ExpectedSales = 0;
 
             if(hitosMonth && hitosMonth.length > 0){
                 hitosMonth.forEach(element => {
@@ -161,7 +152,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
             // Acumulado a la fecha $$ (ventas)
             marginTracking.SalesAccumulatedToDate += totalAcumulatedToEnd;
-            marginTracking.TotalExpensesExpected = 0;
 
             if(costDetailMonth){
                 costsAcumulatedToDate += costDetailMonth.value;
@@ -177,9 +167,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             // Real a la fecha % (costos)
             if(billingAcumulatedToDate > 0){
                 marginTracking.PercentageRealToDate = ((billingAcumulatedToDate-costsAcumulatedToDate) / billingAcumulatedToDate) * 100;
-            }
-            else{
-                marginTracking.PercentageRealToDate = 0;
             }
 
             // Acumulado a la fecha $$ (costos)
@@ -212,10 +199,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
     private calculatePercentageExpected(billingMonth: any, costDetailMonth: any, marginTracking: MarginTracking) {
 
-        if(!billingMonth){
-            marginTracking.PercentageExpected = 0;
-            return;
-        }
+        if(!billingMonth) return;
 
         var evalpropBillingValue = billingMonth.valueEvalProp;
         var evalpropCostValue = 0;
@@ -227,9 +211,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         // Previsto % (ventas)
         if (evalpropBillingValue > 0) {
             marginTracking.PercentageExpected = ((evalpropBillingValue - evalpropCostValue) / evalpropBillingValue) * 100;
-        }
-        else {
-            marginTracking.PercentageExpected = 0;
         }
     }
 }

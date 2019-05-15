@@ -43,6 +43,10 @@ export class ProjectService {
     return this.http.post<any>(`${this.baseUrl}/hitos`, hito);
   }
 
+  getHito(id) {
+    return this.http.get<any>(`${this.baseUrl}/hitos/${id}`);
+  }
+
   spltHito(hito) {
     return this.http.post<any>(`${this.baseUrl}/hitos/split`, hito);
   }

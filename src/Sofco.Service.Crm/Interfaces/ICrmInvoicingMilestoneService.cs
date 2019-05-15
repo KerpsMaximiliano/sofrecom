@@ -32,5 +32,7 @@ namespace Sofco.Service.Crm.Interfaces
         void Delete(string hitoId, Response response);
 
         void UpdateAmmountAndName(HitoAmmountParameter hito, Response response);
+
+        CrmProjectHito GetById(string id);
     }
 }

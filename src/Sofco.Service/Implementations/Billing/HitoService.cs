@@ -10,6 +10,7 @@ using Sofco.Service.Crm.Interfaces;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Domain.Crm;
 using Sofco.Domain.Helpers;
 
 namespace Sofco.Service.Implementations.Billing
@@ -148,6 +149,24 @@ namespace Sofco.Service.Implementations.Billing
 
             if (!response.HasErrors())
                 projectData.ClearHitoKeys(projectId);
+
+            return response;
+        }
+
+        public Response<CrmProjectHito> Get(string id)
+        {
+            var response = new Response<CrmProjectHito>();
+
+            var hito = crmInvoicingMilestoneService.GetById(id);
+
+            if (hito == null)
+            {
+                response.AddError(Resources.Billing.Solfac.HitoNotFound);
+            }
+            else
+            {
+                response.Data = hito;
+            }
 
             return response;
         }

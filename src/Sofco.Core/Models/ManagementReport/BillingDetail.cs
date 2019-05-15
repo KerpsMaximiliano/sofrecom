@@ -85,5 +85,9 @@ namespace Sofco.Core.Models.ManagementReport
         public string Status { get; set; }
 
         public decimal ValuePesos { get; set; }
+
+        public decimal OriginalValue { get; set; }
+
+        public decimal OriginalValuePesos { get; set; }
     }
 }

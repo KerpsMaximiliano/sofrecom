@@ -217,6 +217,15 @@ namespace Sofco.Service.Crm
             Update(content, hito.Id, response);
         }
 
+        public CrmProjectHito GetById(string id)
+        {
+            var result = httpClient.Get<JObject>(UrlPath + $"({id})");
+
+            var data = translator.Translate(result.Data);
+
+            return mapper.Map<CrmInvoicingMilestone, CrmProjectHito>(data);
+        }
+
         public string Create(HitoParameters data, Response response)
         {
             var date = data.StartDate.HasValue ? data.StartDate.Value.ToString("yyyy-MM-dd") : DateTime.UtcNow.ToString("yyyy-MM-dd");
