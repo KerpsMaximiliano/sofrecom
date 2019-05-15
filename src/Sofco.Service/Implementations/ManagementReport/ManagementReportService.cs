@@ -217,6 +217,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                             {
                                 rowItem.ValuePesos = hito.Ammount * existHito.Solfac.CurrencyExchange.Value;
                             }
+                            else
+                            {
+                                rowItem.ValuePesos = hito.BaseAmount > 0 ? hito.BaseAmount : hito.Ammount;
+                            }
+                        }
+                        else
+                        {
+                            rowItem.ValuePesos = hito.BaseAmount > 0 ? hito.BaseAmount : hito.Ammount;
                         }
 
                         if (hito.Status.Equals("A ser facturado"))
@@ -270,6 +278,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var monthHeader = new MonthDetailCost();
                     monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                     monthHeader.MonthYear = date;
+                    monthHeader.Month = date.Month;
+                    monthHeader.Year = date.Year;
 
                     var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
 

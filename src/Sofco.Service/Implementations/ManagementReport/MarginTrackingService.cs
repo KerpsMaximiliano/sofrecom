@@ -26,7 +26,7 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             var response = new Response<IList<MarginTrackingModel>> { Data = new List<MarginTrackingModel>() };
 
-            var managementReport = unitOfWork.ManagementReportRepository.Get(managementReportId);
+            var managementReport = unitOfWork.ManagementReportRepository.GetWithAnalytic(managementReportId);
 
             var billings =
                 unitOfWork.ManagementReportBillingRepository.GetByManagementReportAndDates(managementReportId,
@@ -34,6 +34,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             var costs = unitOfWork.CostDetailRepository.GetByManagementReportAndDates(managementReportId,
                 managementReport.StartDate.Date, managementReport.EndDate.Date);
+
+            var projects = unitOfWork.ProjectRepository.GetAllActives(managementReport.Analytic.ServiceId);
 
             for (DateTime date = managementReport.StartDate.Date; date.Date <= managementReport.EndDate.Date; date = date.AddMonths(1))
             {
@@ -46,7 +48,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 CalculatePercentageExpected(billing, itemModel);
 
-
+                 
           
             }
 

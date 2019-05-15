@@ -143,12 +143,12 @@
                     </div>
                     <div id="tab-2" class="tab-pane">
                         <div class="panel-body">
-                            <cost-detail #detailCost (openEvalPropModal)="openEvalPropModal($event)"></cost-detail>
+                            <cost-detail #detailCost (openEvalPropModal)="openEvalPropModal($event)" (getData)="getCostsData($event)"></cost-detail>
                         </div>
                     </div>
                     <div id="tab-3" class="tab-pane">
                         <div class="panel-body">
-                            <management-report-billing #billing (openEvalPropModal)="openEvalPropModal($event)"></management-report-billing>
+                            <management-report-billing #billing (openEvalPropModal)="openEvalPropModal($event)" (getData)="getBillingData($event)"></management-report-billing>
                         </div>
                     </div>
                 </div>

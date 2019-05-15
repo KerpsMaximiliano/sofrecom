@@ -62,10 +62,6 @@ export class ListPaymentPendingComponent  {
         this.datatableService.initialize(params);
     }
 
-    goToDetail(item){
-        this.router.navigate([`/advancementAndRefund/${item.entityController}/${item.id}`]);
-    }
-
     getAll(){
         this.messageService.showLoading();
 

@@ -33,23 +33,23 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Previsto</td>
+                    <td>Previsto EvalProp</td>
                     <td class="totals">
-                        <div class="value m-r-sm"></div>
+                        <div class="value m-r-sm">{{ marginTrackingSelected.PercentageExpected | amountFormat }}</div>
                         <div class="percentage">%</div>
                     </td>
                 </tr>
                 <tr>
                     <td>Real a la fecha</td>
                     <td class="totals">
-                        <div class="value m-r-sm"></div>
+                        <div class="value m-r-sm">{{ marginTrackingSelected.PercentageRealToDate | amountFormat }}</div>
                         <div class="percentage">%</div>
                     </td>
                 </tr>
                 <tr>
                     <td>A terminación</td>
                     <td class="totals">
-                        <div class="value m-r-sm"></div>
+                        <div class="value m-r-sm">{{ marginTrackingSelected.PercentageToEnd | amountFormat }}</div>
                         <div class="percentage">%</div>
                     </td>
                 </tr>
@@ -69,46 +69,46 @@
                 <tr>
                     <td>Previsto</td>
                     <td class="">
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.ExpectedSales | amountFormat }}</div>
                     </td>
                     <td class="">
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.TotalExpensesExpected | amountFormat }}</div>
                     </td>
                 </tr>
                 <tr>
                     <td>Real del mes</td>
                     <td class="">
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.SalesOnMonth | amountFormat }}</div>
                     </td>
                     <td class="">
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.TotalExpensesOnMonth | amountFormat }}</div>
                     </td>
                 </tr>
                 <tr>
                     <td>Acumulado a la fecha (real)</td>
                     <td class="">
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.SalesAccumulatedToDate | amountFormat }}</div>
                     </td>
                     <td class="">
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.TotalExpensesAccumulatedToDate | amountFormat }}</div>
                     </td>
                 </tr>
                 <tr>
                     <td>Restante a la fecha (proyectado)</td>
                     <td class="">
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.SalesRemainigToDate | amountFormat }}</div>
                     </td>
                     <td class="">
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.TotalExpensesRemainigToDate | amountFormat }}</div>
                     </td>
                 </tr>
                 <tr>
                     <td>Total a la terminación (real + proyectado)</td>
                     <td>
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.TotalSalesToEnd | amountFormat}}</div>
                     </td>
                     <td>
-                        <div class="value-currency">$</div>
+                        <div class="value-currency">$ {{ marginTrackingSelected.TotalExpensesToEnd | amountFormat }}</div>
                     </td>
                 </tr>
             </tbody>

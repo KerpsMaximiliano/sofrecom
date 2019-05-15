@@ -60,6 +60,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     readonly AddProfile: string = "Perfiles"
 
     @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
+    @Output() getData: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('editItemModal') editItemModal;
 
@@ -121,11 +122,17 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.employeesOriginal = response.data.costEmployees;
             this.costProfiles = response.data.costProfiles;
 
-             if (this.otherResources.length > 0) {
+            this.months.forEach((element, index) => {
+                element.value = this.calculateTotalCosts(index);
+            });
+
+            if (this.otherResources.length > 0) {
                  this.otherSelected = this.otherResources[0];
             }
+
+            this.sendDataToDetailView();
         },
-            () => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item, indexMonth) {
@@ -387,28 +394,32 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     calculateTotalCosts(index) {
         var totalCost = 0;
+        var totalSalary = 0;
+        
         //Sumo el totol de los sueldos
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
-                totalCost += employee.monthsCost[index].value
+                totalCost += employee.monthsCost[index].value;
+                totalSalary += employee.monthsCost[index].value;
             }
         })
 
         //Sumo los sueldos de los perfiles
         this.costProfiles.forEach(profile => {
             if (profile.monthsCost[index].value) {
-                totalCost += profile.monthsCost[index].value
+                totalCost += profile.monthsCost[index].value;
+                totalSalary += profile.monthsCost[index].value;
             }
         })
 
         //Sumo los demas gastos excepto el % de Ajuste
         this.fundedResources.forEach(resource => {
             if (resource.typeName != this.generalAdjustment) {
-                totalCost += resource.monthsCost[index].value
+                totalCost += resource.monthsCost[index].value;
             }
         })
 
-        return totalCost;
+        return totalCost + (totalSalary * 0.51);
     }
 
     calculateLoads(index) {
@@ -631,5 +642,17 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.costProfiles.push(costProfile)
     }
 
+    sendDataToDetailView(){
+        if (this.getData.observers.length > 0) {
+            this.getData.emit({
+                model: this.model,
+                employees: this.employees,
+                months: this.months,
+                otherResources: this.otherResources,
+                costProfiles: this.costProfiles,
+                fundedResources: this.fundedResources
+            });
+        }
+    }
 }
 
