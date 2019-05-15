@@ -42,6 +42,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     fundedResources: any[] = new Array();
     otherResources: any[] = new Array();
     otherResourceId: number;
+    managementReportId: number;
     contracted: any[] = new Array();
     monthYear: Date;
     canSave: boolean = false;
@@ -135,7 +136,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
         this.isReadOnly = !data.isCdg;
         this.AnalyticId = data.AnalyticId;
-        this.monthYear = new Date(data.year, data.month - 1, 1)
+        //this.monthYear = new Date(data.year, data.month - 1, 1)
         this.resources = data.resources.employees.filter(e => e.hasAlocation == true)
         this.fundedResources = data.resources.fundedResources;
         this.otherResources = data.resources.otherResources;
@@ -145,7 +146,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.fundedResources.forEach(resource => {
             if (resource.otherResource == true) {
                 if (resource.salary > 0) {
-                    this.expenses.push(resource);
+                  //  this.expenses.push(resource);
                 }
                 else {
                     this.otherResources.push(resource)
@@ -167,9 +168,13 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.otherResourceId = this.otherResources[0].typeId;
         }
 
-        this.getContratedSuscrip = this.managementReportService.getContrated(this.serviceId, data.month, data.year).subscribe(response => {
+        this.getContratedSuscrip = this.managementReportService.getCostDetailMonth(this.serviceId, data.month, data.year).subscribe(response => {
 
-            this.contracted = response.data;
+            this.managementReportId = response.data.managementReportId;
+            this.monthYear = response.data.monthYear
+            this.contracted = response.data.contracted;
+            this.expenses = response.data.otherResources;
+
             this.calculateTotalCosts();
 
             this.messageService.closeLoading();
@@ -186,12 +191,14 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
         var model = {
             AnalyticId: 0,
+            ManagementReportId: 0,
             Employees: [],
             OtherResources: [],
             Contracted: []
         }
 
         model.AnalyticId = this.AnalyticId
+        model.ManagementReportId =  this.managementReportId
         model.Employees = this.resources;
         model.OtherResources = this.expenses.concat(this.otherResources);
         model.Contracted = this.contracted;
@@ -223,7 +230,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.totalCosts = 0;
 
         this.expenses.forEach(element => {
-            this.totalCosts += element.salary;
+            this.totalCosts += element.value;
         });
 
         this.resources.forEach(element => {

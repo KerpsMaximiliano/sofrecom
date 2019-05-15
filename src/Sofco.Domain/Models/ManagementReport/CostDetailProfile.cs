@@ -4,6 +4,7 @@ namespace Sofco.Domain.Models.ManagementReport
 {
     public class CostDetailProfile : BaseEntity
     {
+        public string Guid { get; set; }
         public int CostDetailId { get; set; }
 
         public CostDetail CostDetail { get; set; }

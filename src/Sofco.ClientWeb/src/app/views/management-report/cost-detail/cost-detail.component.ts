@@ -127,7 +127,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             });
 
             if (this.otherResources.length > 0) {
-                 this.otherSelected = this.otherResources[0];
+                this.otherSelected = this.otherResources[0];
             }
 
             this.sendDataToDetailView();
@@ -246,9 +246,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             return {
                 employeeId: element.employeeId,
+                userId: element.userId,
+                monthYear: monthCost.monthYear,
                 hasAlocation: monthCost.hasAlocation,
-                typeId: element.typeId,
-                costDetailId: monthCost.costDetailId,
+                id: monthCost.id,
                 name: element.display,
                 salary: monthCost.value || 0,
                 charges: monthCost.charges || 0,
@@ -269,9 +270,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             return {
                 typeId: element.typeId,
                 typeName: element.typeName,
-                MonthYear: monthCost.monthYear,
-                costDetailId: monthCost.costDetailId,
-                salary: monthCost.value || 0,
+                monthYear: monthCost.monthYear,
+                id: monthCost.id,
+                value: monthCost.value || 0,
                 otherResource: element.otherResource
             }
         });
@@ -555,7 +556,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.profiles = response;
             if (this.profiles.length > 0) {
                 this.profileSelected = this.profiles[0];
-           }
+            }
         },
             () => {
                 this.messageService.closeLoading();
@@ -571,7 +572,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.users = data;
             if (this.users.length > 0) {
                 this.userSelected = this.users[0];
-           }
+            }
         },
             () => {
                 this.messageService.closeLoading();
@@ -610,21 +611,28 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     addEmployee() {
+
         this.messageService.showLoading();
 
         this.getEmployeeSubscrip = this.employeeService.getByEmail(this.userSelected.email).subscribe(response => {
             this.messageService.closeLoading();
 
-            var costEmployee = {
+            var existingEmployee =  this.employees.find(e => e.employeeId === response.data.id)
+            if (!existingEmployee) {
+                var costEmployee = {
 
-                employeeId: response.data.id,
-                userId: parseInt(this.userSelected.id),
-                typeName: this.typeEmployee,
-                display: `${this.userSelected.text.toUpperCase()} - ${response.data.employeeNumber}`,
-                monthsCost: this.months
+                    employeeId: response.data.id,
+                    userId: parseInt(this.userSelected.id),
+                    typeName: this.typeEmployee,
+                    display: `${this.userSelected.text.toUpperCase()} - ${response.data.employeeNumber}`,
+                    monthsCost: this.months
+                }
+
+                this.employees.push(costEmployee)
             }
-
-            this.employees.push(costEmployee)
+            else{
+                this.messageService.showError("managementReport.existingEmployee")
+            }
         },
             error => {
                 this.messageService.closeLoading();

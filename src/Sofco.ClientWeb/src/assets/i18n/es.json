@@ -1171,6 +1171,7 @@
         "currentAccount": "Cuenta Corriente"
     },
     "managementReport":{
-        "costDetailMonth": "Detalle de costos mensual"
+        "costDetailMonth": "Detalle de costos mensual",
+        "existingEmployee": "El recurso ya se encuentra asignado en el informe"
     }
 }

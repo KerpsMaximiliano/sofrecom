@@ -24,7 +24,7 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal? Adjustment { get; set; }
         public decimal? Charges { get; set; }
         public DateTime MonthYear { get; set; }
-        public int CostDetailId { get; set; }
+        public int Id { get; set; }
         public bool HasAlocation { get; set; }
         public decimal ValueEvalProp { get; set; }
         public int BillingMonthId { get; set; }

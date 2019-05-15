@@ -9,7 +9,6 @@ namespace Sofco.Core.Models.ManagementReport
         public int ContractedId { get; set; }
         public int CostDetailId { get; set; }
         public string Name { get; set; }
-        public DateTime MonthYear { get; set; }
         public decimal? Insurance { get; set; }
         public decimal? Honorary { get; set; }
         public decimal? Total { get; set; }

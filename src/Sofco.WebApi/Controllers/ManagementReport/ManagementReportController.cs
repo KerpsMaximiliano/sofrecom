@@ -57,10 +57,10 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
-        [HttpGet("{serviceId}/contrated/{month}/{year}")]
-        public IActionResult GetContrated(string serviceId, int month, int year)
+        [HttpGet("{serviceId}/costDetailMonth/{month}/{year}")]
+        public IActionResult GetCostDetailMonth(string serviceId, int month, int year)
         {
-            var response = managementReportService.GetContracted(serviceId, month, year);
+            var response = managementReportService.GetCostDetailMonth(serviceId, month, year);
 
             return this.CreateResponse(response);
         }
@@ -81,6 +81,5 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
-       
     }
 }

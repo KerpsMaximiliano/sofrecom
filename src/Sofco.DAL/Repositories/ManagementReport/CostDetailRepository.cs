@@ -14,18 +14,39 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
         }
 
+        public IList<CostDetail> GetByManagementReport(int managementReportId)
+        {
+            return context.CostDetails
+                    .Where(x => x.ManagementReportId == managementReportId)
+                    .ToList();
+        }
+
         public List<CostDetailType> GetResourceTypes()
         {
             return context.CostDetailTypes.OrderBy(t => t.Id).ToList();
         }
 
-        public IList<CostDetail> GetByManagementReportAndDates(int managementReportId, DateTime startDate, DateTime endDate)
+        public CostDetail GetByManagementReportAndMonthYear(int managementReportId, DateTime monthYear)
         {
             return context.CostDetails
                 .Include(x => x.CostDetailResources)
                 .Include(x => x.CostDetailProfiles)
                 .Include(x => x.CostDetailOthers)
-                .Where(x => x.ManagementReportId == managementReportId && x.MonthYear.Date >= startDate.Date &&
+                    .ThenInclude(b => b.CostDetailType)
+                .Include(x => x.ContratedDetails)
+                .Where(x => x.ManagementReportId == managementReportId
+                            && new DateTime(x.MonthYear.Year, x.MonthYear.Month, 1).Date == new DateTime(monthYear.Year, monthYear.Month, 1))
+                .FirstOrDefault();
+        }
+
+        public IList<CostDetail> GetByManagementReportAndDates(int managementReportId, DateTime startDate, DateTime endDate)
+        {
+            return context.CostDetails
+               .Include(x => x.CostDetailResources)
+               .Include(x => x.CostDetailProfiles)
+               .Include(x => x.CostDetailOthers)
+               .Include(x => x.ContratedDetails)
+               .Where(x => x.ManagementReportId == managementReportId && x.MonthYear.Date >= startDate.Date &&
                             x.MonthYear.Date <= endDate.Date).ToList();
         }
     }

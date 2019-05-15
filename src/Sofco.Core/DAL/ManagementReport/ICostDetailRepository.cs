@@ -7,7 +7,10 @@ namespace Sofco.Core.DAL.ManagementReport
 {
     public interface ICostDetailRepository : IBaseRepository<CostDetail>
     {
+        IList<CostDetail> GetByManagementReport(int managementReportId);
         List<CostDetailType> GetResourceTypes();
         IList<CostDetail> GetByManagementReportAndDates(int managementReportId, DateTime startDate, DateTime endDate);
+        CostDetail GetByManagementReportAndMonthYear(int managementReportId, DateTime monthYear);
+
     }
 }

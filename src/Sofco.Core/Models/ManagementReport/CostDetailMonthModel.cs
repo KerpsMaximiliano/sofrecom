@@ -7,21 +7,33 @@ namespace Sofco.Core.Models.ManagementReport
     public class CostDetailMonthModel
     {
         public int AnalyticId { get; set; }
-        public List<CostMonth> Employees { get; set; }
-        public List<CostMonth> OtherResources { get; set; }
+        public int ManagementReportId { get; set; }
+        public DateTime MonthYear { get; set; }
+        public List<CostMonthEmployee> Employees { get; set; }
+        public List<CostMonthOther> OtherResources { get; set; }
         public List<ContractedModel> Contracted { get; set; } 
 
     }
 
-    public class CostMonth
+    public class CostMonthEmployee
     {
-        public int? EmployeeId { get; set; }
-        public int TypeId { get; set; }
-        public DateTime MonthYear { get; set; }
         public int CostDetailId { get; set; }
-        public float? Salary { get; set; }
-        public float? Charges { get; set; }
+        public int EmployeeId { get; set; }
+        public int? UserId { get; set; }
+        public int Id { get; set; }
+        public decimal? Salary { get; set; }
+        public decimal? Charges { get; set; }
     }
 
-   
+    public class CostMonthOther
+    {
+        public int CostDetailId { get; set; }
+        public int TypeId { get; set; }
+        public string TypeName { get; set; }
+        public int Id { get; set; }
+        public decimal? Value { get; set; }
+        public string Description { get; set; }
+    }
+
+
 }

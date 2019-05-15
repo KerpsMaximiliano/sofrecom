@@ -291,7 +291,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     response.Data.MonthsHeader.Add(monthHeader);
                 }
-                
+
                 //Obtengo los tipos de Recursos
                 List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
 
@@ -313,115 +313,93 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<List<ContractedModel>> GetContracted(string pServiceId, int pMonth, int pYear)
+        public Response<CostDetailMonthModel> GetCostDetailMonth(string pServiceId, int pMonth, int pYear)
         {
-            var response = new Response<List<ContractedModel>> { Data = new List<ContractedModel>() };
-            //try
-            //{
-            //    var analytic = unitOfWork.AnalyticRepository.GetByService(pServiceId);
+            var response = new Response<CostDetailMonthModel> { Data = new CostDetailMonthModel() };
+            try
+            {
 
-            //    if (analytic == null)
-            //    {
-            //        response.AddError(Resources.AllocationManagement.Analytic.NotFound);
-            //        return response;
-            //    }
+                var analytic = unitOfWork.AnalyticRepository.GetByServiceWithManagementReport(pServiceId);
 
-            //    //Obtengo los datos
-            //    var contrated = unitOfWork.ContratedDetailRepository.GetByAnalytic(analytic.Id).ToList();
+                if (analytic == null)
+                {
+                    response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                    return response;
+                }
 
-            //    return new Response<List<ContractedModel>>
-            //    {
-            //        Data = contrated
-            //            .Where(c => c.MonthYear.Year == pYear && c.MonthYear.Month == pMonth)
-            //            .Select(x => new ContractedModel
-            //            {
-            //                AnalyticId = x.IdAnalytic,
-            //                ContractedId = x.Id,
-            //                Name = x.Name,
-            //                honorary = x.honorary,
-            //                insurance = x.insurance,
-            //                total = x.honorary + x.insurance,
-            //                MonthYear = x.MonthYear
-            //            })
-            //            .OrderBy(x => x.Name)
-            //            .ToList()
-            //    };
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.LogError(ex);
-            //    response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
-            //}
+                var monthYear = new DateTime(pYear, pMonth, 1);
+
+                CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(analytic.ManagementReport.Id, monthYear);
+
+                List<ContractedModel> listContracted = costDetail.ContratedDetails
+                                        .Select(x => new ContractedModel
+                                        {
+                                            CostDetailId = x.CostDetailId,
+                                            ContractedId = x.Id,
+                                            Name = x.Name,
+                                            Honorary = x.Honorary,
+                                            Insurance = x.Insurance,
+                                            Total = x.Honorary + x.Insurance
+                                        })
+                                        .OrderBy(x => x.Name)
+                                        .ToList();
+
+                List<CostMonthOther> listOther = costDetail.CostDetailOthers                                          
+                                            .Select(x => new CostMonthOther
+                                            {
+                                                Id = x.Id,
+                                                Description = x.Description,
+                                                CostDetailId = x.CostDetailId,
+                                                TypeId = x.CostDetailTypeId,
+                                                TypeName = x.CostDetailType.Name,
+                                                Value = x.Value                                                
+                                            })
+                                            .OrderBy(x => x.TypeId)
+                                            .ToList();
+
+                response.Data.ManagementReportId = analytic.ManagementReport.Id;
+                response.Data.MonthYear = costDetail.MonthYear;
+                response.Data.Contracted = listContracted;
+                response.Data.OtherResources = listOther;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
 
             return response;
         }
 
-        //public Response UpdateCostDetail(CostDetailModel pDetailCost)
-        //{
-        //    var response = new Response();
-        //    try
-        //    {
-        //        var costDetails = unitOfWork.CostDetailRepository.GetByAnalytic(pDetailCost.AnalyticId);
+        private List<ContractedModel> GetContracted(List<CostDetail> costDetails)
+        {
+            var allContracted = new List<ContractedModel>();
+            try
+            {
+                var contracted = costDetails.SelectMany(x => x.ContratedDetails).ToList();
 
-        //        List<CostResource> resources = new List<CostResource>();
-        //        resources.AddRange(pDetailCost.CostEmployees);
-        //        resources.AddRange(pDetailCost.FundedResources);
+                allContracted = contracted
+                                    .Select(x => new ContractedModel
+                                    {
+                                        CostDetailId = x.CostDetailId,
+                                        ContractedId = x.Id,
+                                        Name = x.Name,
+                                        Honorary = x.Honorary,
+                                        Insurance = x.Insurance,
+                                        Total = x.Honorary + x.Insurance
+                                    })
+                                    .OrderBy(x => x.Name)
+                                    .ToList();
+          
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                throw ex;
+            }
 
-        //        var currentUser = userData.GetCurrentUser();
-
-        //        foreach (var resource in resources)
-        //        {
-        //            foreach (var month in resource.MonthsCost)
-        //            {
-        //                CostDetail entity = new CostDetail();
-
-        //                if (month.CostDetailId > 0)
-        //                {
-        //                    entity = costDetails.Where(c => c.Id == month.CostDetailId).FirstOrDefault();
-
-        //                    if (month.Value != entity.Cost || month.Charges != entity.Charges)
-        //                    {
-        //                        entity.Cost = month.Value ?? 0;
-        //                        entity.Adjustment = month.Adjustment;
-        //                        entity.Charges = month.Charges;
-        //                        entity.ModifiedAt = DateTime.UtcNow;
-        //                        entity.ModifiedById = currentUser.Id;
-
-        //                        unitOfWork.CostDetailRepository.Update(entity);
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    if (month.Value > 0 || month.Charges > 0)
-        //                    {
-        //                        entity.IdAnalytic = pDetailCost.AnalyticId;
-        //                        entity.Cost = month.Value ?? 0;
-        //                        entity.Adjustment = month.Adjustment;
-        //                        entity.Charges = month.Charges;
-        //                        entity.MonthYear = month.MonthYear;
-        //                        entity.TypeId = resource.TypeId;
-        //                        entity.EmployeeId = resource.EmployeeId;
-        //                        entity.CreatedAt = DateTime.UtcNow;
-        //                        entity.CreatedById = currentUser.Id;
-
-        //                        unitOfWork.CostDetailRepository.Insert(entity);
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        unitOfWork.Save();
-
-        //        response.AddSuccess(Resources.Common.SaveSuccess);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        logger.LogError(ex);
-        //        response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
-        //    }
-
-        //    return response;
-        //}
+            return allContracted;
+        }
 
         public Response UpdateCostDetail(CostDetailModel pDetailCost)
         {
@@ -431,9 +409,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var managementReport = unitOfWork.ManagementReportRepository.GetById(pDetailCost.ManagementReportId);
 
                 this.VerifyMonthsCostDetail(pDetailCost.MonthsHeader, managementReport);
-                this.InsertUpdateCostDetailResources(pDetailCost.CostEmployees, managementReport);
-                this.InsertUpdateCostDetailOther(pDetailCost.FundedResources, managementReport);
-                this.InsertUpdateCostDetailProfile(pDetailCost.CostProfiles, managementReport);
+                this.InsertUpdateCostDetailResources(pDetailCost.CostEmployees, managementReport.CostDetails.ToList());
+                this.InsertUpdateCostDetailOther(pDetailCost.FundedResources, managementReport.CostDetails.ToList());
+                this.InsertUpdateCostDetailProfile(pDetailCost.CostProfiles, managementReport.CostDetails.ToList());
 
                 unitOfWork.Save();
 
@@ -451,104 +429,103 @@ namespace Sofco.Service.Implementations.ManagementReport
         public Response UpdateCostDetailMonth(CostDetailMonthModel pMonthDetail)
         {
             var response = new Response();
-            //CostDetailModel _detailModel = new CostDetailModel();
-            //_detailModel.CostEmployees = new List<CostResource>();
-            //_detailModel.FundedResources = new List<CostResource>();
+            CostDetailModel _detailModel = new CostDetailModel();
+            _detailModel.ManagementReportId = pMonthDetail.ManagementReportId;
+            _detailModel.CostEmployees = new List<CostResourceEmployee>();
+            _detailModel.FundedResources = new List<CostResource>();
 
-            //try
-            //{
-            //    //Mapping
-            //    _detailModel.AnalyticId = pMonthDetail.AnalyticId;
+            try
+            {
+                foreach (var employee in pMonthDetail.Employees)
+                {
+                    var cost = new CostResourceEmployee();
+                    cost.MonthsCost = new List<MonthDetailCost>();
+                    MonthDetailCost month = new MonthDetailCost();
 
-            //    foreach (var employee in pMonthDetail.Employees)
-            //    {
-            //        CostResource cost = new CostResource();
-            //        cost.MonthsCost = new List<MonthDetailCost>();
-            //        MonthDetailCost month = new MonthDetailCost();
+                    cost.EmployeeId = employee.EmployeeId;
+                    cost.UserId = employee.UserId;
 
-            //        cost.EmployeeId = employee.EmployeeId;
-            //        cost.TypeId = employee.TypeId;
+                    month.Value = employee.Salary;
+                    month.Charges = employee.Charges;
+                    month.MonthYear = pMonthDetail.MonthYear;
+                    month.Id = employee.Id;
 
-            //        month.Value = employee.Salary;
-            //        month.Charges = employee.Charges;
-            //        month.MonthYear = employee.MonthYear;
-            //        month.CostDetailId = employee.CostDetailId;
+                    cost.MonthsCost.Add(month);
+                    _detailModel.CostEmployees.Add(cost);
+                }
 
-            //        cost.MonthsCost.Add(month);
-            //        _detailModel.CostEmployees.Add(cost);
-            //    }
+                foreach (var otherRes in pMonthDetail.OtherResources)
+                {
+                    CostResource cost = new CostResource();
+                    cost.MonthsCost = new List<MonthDetailCost>();
+                    MonthDetailCost month = new MonthDetailCost();
 
-            //    foreach (var otherRes in pMonthDetail.OtherResources)
-            //    {
-            //        CostResource cost = new CostResource();
-            //        cost.MonthsCost = new List<MonthDetailCost>();
-            //        MonthDetailCost month = new MonthDetailCost();
+                    cost.TypeId = otherRes.TypeId;
+                    month.Value = otherRes.Value;
+                    month.MonthYear = pMonthDetail.MonthYear;
+                    month.Id = otherRes.Id;
 
-            //        cost.TypeId = otherRes.TypeId;
-            //        month.Value = otherRes.Salary;
-            //        month.MonthYear = otherRes.MonthYear;
-            //        month.CostDetailId = otherRes.CostDetailId;
+                    cost.MonthsCost.Add(month);
+                    _detailModel.FundedResources.Add(cost);
+                }
 
-            //        cost.MonthsCost.Add(month);
-            //        _detailModel.CostEmployees.Add(cost);
-            //    }
+                var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(pMonthDetail.ManagementReportId);
 
-            //    this.UpdateCostDetail(_detailModel);
-            //    this.UpdateContracted(pMonthDetail.Contracted, pMonthDetail.AnalyticId);
+                this.InsertUpdateCostDetailResources(_detailModel.CostEmployees, costDetails);
+                this.InsertUpdateCostDetailOther(_detailModel.FundedResources, costDetails);
+                this.UpdateContracted(pMonthDetail.Contracted, costDetails, pMonthDetail.MonthYear);
 
-            //    response.AddSuccess(Resources.Common.SaveSuccess);
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.LogError(ex);
-            //    response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
-            //}
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
 
             return response;
         }
 
-        public Response UpdateContracted(List<ContractedModel> pContracted, int pAnalyticId)
+        public Response UpdateContracted(List<ContractedModel> pContracted, IList<CostDetail> costDetails, DateTime monthYear)
         {
             var response = new Response();
-            //try
-            //{
-            //    var DBconstract = unitOfWork.ContratedDetailRepository.GetByAnalytic(pAnalyticId);
+            try
+            {
+                foreach (var hired in pContracted)
+                {
+                    ContratedDetail entity = new ContratedDetail();
 
-            //    foreach (var hired in pContracted)
-            //    {
-            //        ContratedDetail entity = new ContratedDetail();
+                    if (hired.ContractedId > 0)
+                    {
+                        entity = unitOfWork.ContratedDetailRepository.Get(hired.ContractedId);
 
-            //        if (hired.ContractedId > 0)
-            //        {
-            //            entity = DBconstract.Where(c => c.Id == hired.ContractedId).FirstOrDefault();
+                        entity.Honorary = hired.Honorary ?? 0;
+                        entity.Insurance = hired.Insurance ?? 0;
+                        entity.Name = hired.Name;
 
-            //            entity.honorary = hired.honorary ?? 0;
-            //            entity.insurance = hired.insurance ?? 0;
-            //            entity.Name = hired.Name;
+                        unitOfWork.ContratedDetailRepository.Update(entity);
+                    }
+                    else
+                    {
+                        entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == monthYear.Date).FirstOrDefault().Id;
+                        entity.Name = hired.Name;
+                        entity.Insurance = hired.Insurance ?? 0;
+                        entity.Honorary = hired.Honorary ?? 0;
 
-            //            unitOfWork.ContratedDetailRepository.Update(entity);
-            //        }
-            //        else
-            //        {
-            //            entity.honorary = hired.honorary ?? 0;
-            //            entity.insurance = hired.insurance ?? 0;
-            //            entity.Name = hired.Name;
-            //            entity.MonthYear = hired.MonthYear;
-            //            entity.IdAnalytic = pAnalyticId;
+                        unitOfWork.ContratedDetailRepository.Insert(entity);
+                    }
+                }
 
-            //            unitOfWork.ContratedDetailRepository.Insert(entity);
-            //        }
-            //    }
+                unitOfWork.Save();
 
-            //    unitOfWork.Save();
-
-            //    response.AddSuccess(Resources.Common.SaveSuccess);
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.LogError(ex);
-            //    response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
-            //}
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+                throw ex;
+            }
 
             return response;
         }
@@ -758,7 +735,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthDetail.OriginalValue = monthValue.Value;
                             monthDetail.Charges = monthValue.Charges;
                             monthValue.Adjustment = monthValue.Adjustment;
-                            monthDetail.CostDetailId = monthValue.Id;
+                            monthDetail.Id = monthValue.Id;
                         }
                     }
 
@@ -769,7 +746,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var startDate = new DateTime(mounth.MonthYear.Year, mounth.MonthYear.Month, 1);
                     var endDate = startDate.AddMonths(1).AddDays(-1);
 
-                    if(employee.Allocations != null)
+                    if (employee.Allocations != null)
                     {
                         var alocation = employee.Allocations.Where(x => x.AnalyticId == IdAnalytic && x.StartDate >= startDate.Date && x.StartDate <= endDate.Date && x.Percentage > 0).ToList();
                         if (alocation.Any())
@@ -784,7 +761,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthDetail.OriginalValue = null;
                             monthDetail.Adjustment = null;
                         }
-                    }                  
+                    }
 
                     detailEmployee.MonthsCost.Add(monthDetail);
                 }
@@ -820,7 +797,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         if (monthValue != null)
                         {
                             monthDetail.Value = monthValue.Value;
-                            monthDetail.CostDetailId = monthValue.Id;
+                            monthDetail.Id = monthValue.Id;
                             // monthDetail.Charges = monthValue.Charges;
                             if (monthDetail.Value > 0)
                             {
@@ -859,7 +836,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             // Obtengo los perfiles del reporte.
             var profileIds = costDetails
-                                .SelectMany(x => x.CostDetailProfiles.Select(p => p.EmployeeProfileId))
+                                .SelectMany(x => x.CostDetailProfiles.Select(p => new { ProfileId = p.EmployeeProfileId, Guid = p.Guid }))
                                 .Distinct()
                                 .ToList();
 
@@ -870,8 +847,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var detailProfile = new CostProfile();
                 detailProfile.MonthsCost = new List<MonthDetailCost>();
 
-                detailProfile.Display = profiles.Where(p => p.Id == profileId).FirstOrDefault().Text;
-                detailProfile.EmployeeProfileId = profileId;
+                detailProfile.Display = profiles.Where(p => p.Id == profileId.ProfileId).FirstOrDefault().Text;
+                detailProfile.EmployeeProfileId = profileId.ProfileId;
 
                 foreach (var mounth in Months)
                 {
@@ -880,12 +857,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
                     if (costDetailMonth != null)
                     {
-                        var monthValue = costDetailMonth.CostDetailProfiles.Where(p => p.EmployeeProfileId == profileId).ToList();
+                        var monthValue = costDetailMonth.CostDetailProfiles.Where(p => p.Guid == profileId.Guid).ToList();
 
                         if (monthValue != null)
                         {
                             monthDetail.Value = monthValue.Sum(x => x.Value);
-                            monthDetail.CostDetailId = monthValue.Select(x => x.Id).FirstOrDefault();
+                            monthDetail.Id = monthValue.Select(x => x.Id).FirstOrDefault();
                         }
                     }
 
@@ -931,7 +908,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
+        private void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails)
         {
             try
             {
@@ -941,9 +918,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var entity = new CostDetailResource();
 
-                        if (month.CostDetailId > 0)
+                        if (month.Id > 0)
                         {
-                            entity = unitOfWork.CostDetailResourceRepository.Get(month.CostDetailId);
+                            entity = unitOfWork.CostDetailResourceRepository.Get(month.Id);
 
                             if (month.Value != entity.Value || month.Charges != entity.Charges)
                             {
@@ -958,7 +935,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             if (month.Value > 0 || month.Charges > 0)
                             {
-                                entity.CostDetailId = pManagementReport.CostDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
+                                entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                 entity.Value = month.Value ?? 0;
                                 entity.Adjustment = month.Adjustment ?? 0;
                                 entity.Charges = month.Charges ?? 0;
@@ -978,7 +955,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private void InsertUpdateCostDetailOther(IList<CostResource> pOtherResources, Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
+        private void InsertUpdateCostDetailOther(IList<CostResource> pOtherResources, IList<CostDetail> costDetails)
         {
             try
             {
@@ -988,9 +965,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var entity = new CostDetailOther();
 
-                        if (month.CostDetailId > 0)
+                        if (month.Id > 0)
                         {
-                            entity = unitOfWork.CostDetailOtherRepository.Get(month.CostDetailId);
+                            entity = unitOfWork.CostDetailOtherRepository.Get(month.Id);
 
                             if (month.Value != entity.Value)
                             {
@@ -1005,7 +982,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             if (month.Value > 0)
                             {
-                                entity.CostDetailId = pManagementReport.CostDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
+                                entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                 entity.Value = month.Value ?? 0;
                                 entity.Description = resource.Description;
                                 entity.CostDetailTypeId = resource.TypeId;
@@ -1023,19 +1000,21 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private void InsertUpdateCostDetailProfile(IList<CostProfile> pProfiles, Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
+        private void InsertUpdateCostDetailProfile(IList<CostProfile> pProfiles, IList<CostDetail> costDetails)
         {
             try
             {
-                foreach (var resource in pProfiles)
+                foreach (var profile in pProfiles)
                 {
-                    foreach (var month in resource.MonthsCost)
+                    var guid = Guid.NewGuid().ToString();
+
+                    foreach (var month in profile.MonthsCost)
                     {
                         var entity = new CostDetailProfile();
 
-                        if (month.CostDetailId > 0)
+                        if (month.Id > 0)
                         {
-                            entity = unitOfWork.CostDetailProfileRepository.Get(month.CostDetailId);
+                            entity = unitOfWork.CostDetailProfileRepository.Get(month.Id);
 
                             if (month.Value != entity.Value)
                             {
@@ -1048,10 +1027,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             if (month.Value > 0)
                             {
-                                entity.CostDetailId = pManagementReport.CostDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
-                                entity.EmployeeProfileId = resource.EmployeeProfileId;
+                                entity.Guid = guid;
+                                entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
+                                entity.EmployeeProfileId = profile.EmployeeProfileId;
                                 entity.Value = month.Value ?? 0;
-                                entity.Description = resource.Display;
+                                entity.Description = profile.Description;
 
                                 unitOfWork.CostDetailProfileRepository.Insert(entity);
                             }
