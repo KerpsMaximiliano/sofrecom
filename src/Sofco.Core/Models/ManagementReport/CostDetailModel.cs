@@ -1,7 +1,5 @@
-﻿using Sofco.Domain.Models.AllocationManagement;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Sofco.Core.Models.ManagementReport
 {
@@ -32,6 +30,8 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal ValueEvalProp { get; set; }
         public int BillingMonthId { get; set; }
         public string Description { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
     }
     
     public class CostResource

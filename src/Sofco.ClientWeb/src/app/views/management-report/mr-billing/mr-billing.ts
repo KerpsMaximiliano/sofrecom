@@ -44,7 +44,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     editItemName = new FormControl('', [Validators.required, Validators.maxLength(250)]);
 
     @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
-
+    @Output() getData: EventEmitter<any> = new EventEmitter();
+ 
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "billing.project.detail.milestone.splitTitle",
@@ -127,7 +128,19 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
                 this.hitos.push(hito);
             });
+
+            this.sendDataToDetailView();
         });
+    }
+
+    sendDataToDetailView(){
+        if (this.getData.observers.length > 0) {
+            this.getData.emit({
+                totals: this.totals,
+                months: this.months,
+                hitos: this.hitos
+            });
+        }
     }
 
     canCreateHito() {
@@ -192,18 +205,21 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             };
 
             this.months.forEach(monthRow => {
-                            var monthValue = { month: monthRow.month, year: monthRow.year, value: null, oldValue: null, status: null };
-    
-                            if (monthRow.month == month && monthRow.year == year) {
-                                monthValue.value = model.ammount;
-                                monthValue.oldValue = model.ammount;
-                                monthValue.status = this.pendingHitoStatus;
-                            }
-    
-                            hito.values.push(monthValue);
-                        });
+                var monthValue = { month: monthRow.month, year: monthRow.year, value: null, valuePesos: null, oldValue: null, status: null };
+
+                if (monthRow.month == month && monthRow.year == year) {
+                    monthValue.value = model.ammount;
+                    monthValue.valuePesos = model.ammount;
+                    monthValue.oldValue = model.ammount;
+                    monthValue.status = this.pendingHitoStatus;
+                }
+
+                hito.values.push(monthValue);
+            });
 
             this.hitos.push(hito)
+
+            this.sendDataToDetailView();
         },
         error => this.newHitoModal.resetButtons());
     }
@@ -240,6 +256,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
         this.projectService.updateAmmountHito(json).subscribe(response => {
             hitoMonth.oldValue = hitoMonth.value;
+
+            this.sendDataToDetailView();
         },
         error => {
             if (monthValue) {
@@ -280,8 +298,10 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 if (hitoindex != undefined) {
                     this.hitos.splice(hitoindex, 1);
                 }
+
+                this.sendDataToDetailView();
             },
-                error => this.messageService.closeLoading());
+            error => this.messageService.closeLoading());
         });
     }
 

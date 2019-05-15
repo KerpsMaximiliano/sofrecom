@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 
 namespace Sofco.Core.DAL.AdvancementAndRefund
@@ -20,7 +21,7 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         void DeleteAdvancementRefund(AdvancementRefund advancementRefund);
         void UpdateStatus(Advancement advancement);
         Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByAdvancementId(IList<int> id);
-        IList<Advancement> GetAllApproved(int workflowStatusApproveId);
+        IList<Advancement> GetAllApproved(int workflowStatusApproveId, AdvancementType viaticumId);
         int GetRefundWithLastRefundMarkedCount(int advancementId, int refundId);
     }
 }

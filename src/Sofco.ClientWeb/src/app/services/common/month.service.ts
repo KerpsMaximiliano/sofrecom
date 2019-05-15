@@ -26,6 +26,7 @@ export class DatesService {
             case 11: montDesc = this.i18nService.translateByKey('months.december'); break;
         }
 
+        month += 1;
         return { month, montDesc, year };
     }
 }

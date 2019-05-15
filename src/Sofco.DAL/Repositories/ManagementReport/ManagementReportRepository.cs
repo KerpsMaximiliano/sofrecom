@@ -11,17 +11,25 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
         }
 
-        public Sofco.Domain.Models.ManagementReport.ManagementReport GetById(int IdManamentReport)
+        public Domain.Models.ManagementReport.ManagementReport GetById(int IdManamentReport)
         {
             var data = context.ManagementReports
-                .Where(mr => mr.Id == IdManamentReport)
                 .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailResources)
-                 .Include(mr => mr.CostDetails)
+                .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailProfiles)
-                 .Include(mr => mr.CostDetails)
+                .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailOthers)
-                .FirstOrDefault();
+                .SingleOrDefault(mr => mr.Id == IdManamentReport);
+
+            return data;
+        }
+
+        public Domain.Models.ManagementReport.ManagementReport GetWithAnalytic(int managementReportId)
+        {
+            var data = context.ManagementReports
+                .Include(x => x.Analytic)
+                .SingleOrDefault(mr => mr.Id == managementReportId);
 
             return data;
         }
