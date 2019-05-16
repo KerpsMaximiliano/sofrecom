@@ -416,7 +416,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 if (pDetailCost.CostEmployees.Count > 0)
                     this.InsertUpdateCostDetailResources(pDetailCost.CostEmployees, managementReport.CostDetails.ToList());
-                if(pDetailCost.FundedResources.Count > 0)
+                if (pDetailCost.FundedResources.Count > 0)
                     this.InsertUpdateCostDetailOther(pDetailCost.FundedResources, managementReport.CostDetails.ToList());
                 if (pDetailCost.CostProfiles.Count > 0)
                     this.InsertUpdateCostDetailProfile(pDetailCost.CostProfiles, managementReport.CostDetails.ToList());
@@ -828,14 +828,15 @@ namespace Sofco.Service.Implementations.ManagementReport
                         if (monthValue.Count > 0)
                         {
                             monthDetail.Value = monthValue.Sum(x => x.Value);
-                            monthDetail.CostDetailId = monthValue.FirstOrDefault().CostDetailId;
-                            // Cambiar.
+                            // monthDetail.CostDetailId = monthValue.FirstOrDefault().CostDetailId;
                             monthDetail.Id = monthValue.FirstOrDefault().Id;
                             if (monthDetail.Value > 0)
                             {
                                 hasValue = true;
                             }
                         }
+
+                        monthDetail.CostDetailId = costDetailMonth.Id;
                     }
 
                     monthDetail.Display = mounth.Display;
@@ -1016,7 +1017,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             {
                                 entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                 entity.Value = month.Value ?? 0;
-                                entity.Description = resource.Description;
+                                entity.Description = month.Description;
                                 entity.CostDetailTypeId = resource.TypeId;
 
                                 unitOfWork.CostDetailOtherRepository.Insert(entity);

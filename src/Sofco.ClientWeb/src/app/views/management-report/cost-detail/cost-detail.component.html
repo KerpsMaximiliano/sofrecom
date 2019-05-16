@@ -146,14 +146,6 @@
                         readonly="">
                 </div>
             </div>
-            <div class="form-group" *ngIf="modalEmployee">
-                <label class="control-label">% Ajuste x Recurso</label>
-                <div class="input-group">
-                    <input type="number" decimalFormat class="form-control" [formControl]="editItemAdjustment">
-                    <span class="input-group-addon">%</span>
-                </div>
-            </div>
-
             <div class="form-group" *ngIf="modalPercentage || modalProfile || modalEmployee">
                 <label class="control-label">Monto</label>
                 <div class="input-group">
@@ -162,7 +154,13 @@
                     <span class="input-group-addon" *ngIf="modalPercentage">%</span>
                 </div>
             </div>
-           
+            <div class="form-group" *ngIf="modalEmployee">
+                <label class="control-label">% Ajuste x Recurso</label>
+                <div class="input-group">
+                    <input type="number" decimalFormat class="form-control" [formControl]="editItemAdjustment">
+                    <span class="input-group-addon">%</span>
+                </div>
+            </div>
 
             <div *ngIf="modalOther">
                 <div class="row border-bottom m-b-sm">
