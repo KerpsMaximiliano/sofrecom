@@ -54,4 +54,8 @@ export class ManagementReportService {
   deleteOtherResources(id){
     return this.http.delete<any>(`${this.baseUrl}/managementReport/${id}/otherResources`)
   }
+
+  GetOtherByMonth(idType, idCostDetail){
+    return this.http.get<any>(`${this.baseUrl}/managementReport/${idType}/otherResources/${idCostDetail}`)
+  }
 }

@@ -26,7 +26,8 @@
             <tr>
                 <td class="first-column text-ellipsis"> EVALPROP</td>
                 <td *ngFor="let month of months">
-                    <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''" (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
+                    <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''"
+                        (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
                 </td>
             </tr>
             <tr class="active" *ngFor="let employee of employees">
@@ -96,7 +97,7 @@
         <div class="form-group">
             <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
                 (change)="otherResourceChange()">
-            </ng-select> 
+            </ng-select>
         </div>
     </div>
     <div class="col-sm-5" *ngIf="showUsers">
@@ -119,10 +120,10 @@
 
 </div>
 
-<div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
+<!-- <div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
     <button class="btn btn-primary cursor-pointer" type="button" (click)="save()">Guardar <i
             class="fa fa-save"></i></button>
-</div>
+</div> -->
 
 <ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()" (close)="EditItemOnClose()"
     [isSaveEnabled]="editItemMonto.valid">
@@ -145,14 +146,6 @@
                         readonly="">
                 </div>
             </div>
-            <div class="form-group">
-                <label class="control-label">Monto</label>
-                <div class="input-group">
-                    <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
-                    <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto">
-                    <span class="input-group-addon" *ngIf="modalPercentage">%</span>
-                </div>
-            </div>
             <div class="form-group" *ngIf="modalEmployee">
                 <label class="control-label">% Ajuste x Recurso</label>
                 <div class="input-group">
@@ -160,6 +153,49 @@
                     <span class="input-group-addon">%</span>
                 </div>
             </div>
+
+            <div class="form-group" *ngIf="modalPercentage || modalProfile || modalEmployee">
+                <label class="control-label">Monto</label>
+                <div class="input-group">
+                    <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
+                    <input type="number" decimalFormat class="form-control" [formControl]="editItemMonto">
+                    <span class="input-group-addon" *ngIf="modalPercentage">%</span>
+                </div>
+            </div>
+           
+
+            <div *ngIf="modalOther">
+                <div class="row border-bottom m-b-sm">
+                    <div class="col-sm-4">
+                        <h4>Gastos</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>Descripción</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>Monto</h4>
+                    </div>
+                </div>
+
+                <div class="row m-t-xs" *ngFor="let other of othersByMonth; let i = index">
+                    <div class="col-sm-4">
+                        {{ other.typeName }}
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-xs" [(ngModel)]="other.description"
+                            maxlength="200">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="number" decimalFormat class="form-control input-xs" [digitLimit]="8"
+                            [(ngModel)]="other.value" max="99999999" min="0">
+                    </div>
+                </div>
+                <button class="btn btn-success btn-sm m-t-xs" (click)="addOtherByMonth()" type="button">
+                    Agregar
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+
         </div>
     </div>
 
@@ -168,5 +204,3 @@
         El valor ingresado modificara el monto de todos los recursos en ese mes
     </div>
 </ng2-modal>
-
-

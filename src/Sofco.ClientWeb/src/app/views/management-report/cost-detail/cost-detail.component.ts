@@ -24,6 +24,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     getProfileSuscrip: Subscription
     getUsersSubscrip: Subscription;
     getEmployeeSubscrip: Subscription;
+    getOtherByMonthSuscrip: Subscription;
 
     //Propiedades
     serviceId: string;
@@ -37,8 +38,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     itemSelected: any;
     indexSelected: number = 0;
     model: any;
+
     modalPercentage: boolean = false;
     modalEmployee: boolean = false;
+    modalOther: boolean = false;
+    modalProfile: boolean = false;
+
     editItemMonto = new FormControl();
     editItemAdjustment = new FormControl();
     canEdit: boolean = false;
@@ -53,11 +58,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     otherSelected: any
     userSelected: any
     profileSelected: any
+    othersByMonth: any[] = new Array()
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
-    readonly AddResource: string = "Recursos"
-    readonly AddProfile: string = "Perfiles"
+    readonly typeResource: string = "Recursos"
+    readonly typeProfile: string = "Perfiles"
 
     @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
     @Output() getData: EventEmitter<any> = new EventEmitter();
@@ -105,6 +111,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if (this.getCostSubscrip) this.getCostSubscrip.unsubscribe();
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
+        if (this.getProfileSuscrip) this.getProfileSuscrip.unsubscribe();
+        if (this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe();
+        if (this.getEmployeeSubscrip) this.getEmployeeSubscrip.unsubscribe();
+        if (this.getOtherByMonthSuscrip) this.getOtherByMonthSuscrip.unsubscribe();
     }
 
     getCost() {
@@ -132,7 +142,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             this.sendDataToDetailView();
         },
-        () => this.messageService.closeLoading());
+            () => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item, indexMonth) {
@@ -142,28 +152,88 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             //     return false
             // }
             // else {
-            this.editItemModal.show();
+            //this.editItemModal.show();
             this.monthSelected = month;
             this.indexSelected = indexMonth;
             this.itemSelected = item;
             this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
+
             this.modalPercentage = false;
+            this.modalOther = false
+            this.modalEmployee = false
+            this.modalProfile = false;
+            this.editItemModal.size = 'modal-sm'
 
-            if (this.itemSelected.typeName == this.typeEmployee) {
-                this.modalEmployee = true
-                this.editItemMonto.setValue(month.originalValue)
-                this.editItemAdjustment.setValue(month.adjustment)
-                this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
-            }
-            else {
-                this.modalEmployee = false
-                this.editItemMonto.setValue(month.value)
+            switch (this.itemSelected.typeName) {
+                case this.typeEmployee:
+                    this.modalEmployee = true
+                    this.editItemMonto.setValue(month.originalValue)
+                    this.editItemAdjustment.setValue(month.adjustment)
+                    this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
+                    this.editItemModal.show();
+                    break;
 
-                if (this.itemSelected.typeName == this.generalAdjustment) {
-                    this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
+                case this.generalAdjustment:
                     this.modalPercentage = true
-                }
+                    this.editItemMonto.setValue(month.value)
+                    this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
+                    this.editItemModal.show();
+                    break;
+
+                case this.typeProfile:
+                    this.modalProfile = true
+                    this.editItemMonto.setValue(month.value)
+                    this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
+                    this.editItemModal.show();
+                    break;
+
+                default:
+                    this.modalOther = true
+                    this.messageService.showLoading();
+                    this.editItemModal.size = 'modal-md'
+                    this.getOtherByMonthSuscrip = this.managementReportService.GetOtherByMonth(item.typeId, month.costDetailId).subscribe(response => {
+                        this.othersByMonth = response.data;
+                        if(this.othersByMonth.length == 0){
+                            this.addOtherByMonth()
+                        }
+                        this.editItemModal.show();
+                        this.messageService.closeLoading();
+                    },
+                    error => {
+                        this.messageService.closeLoading();
+                    });
+                    break;
             }
+
+            // if (this.itemSelected.typeName == this.typeEmployee) {
+            //     this.modalEmployee = true
+            //     this.editItemMonto.setValue(month.originalValue)
+            //     this.editItemAdjustment.setValue(month.adjustment)
+            //     this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
+            //     this.editItemModal.show();
+            // }
+            // else {
+            //     this.editItemMonto.setValue(month.value)
+
+            //     if (this.itemSelected.typeName == this.generalAdjustment) {
+            //         this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
+            //         this.modalPercentage = true
+            //         this.editItemModal.show();
+            //     }
+            //     else {
+            //         this.modalOther = true
+            //         this.messageService.showLoading();
+            //         this.editItemModal.size = 'modal-md'
+            //         this.getOtherByMonthSuscrip = this.managementReportService.GetOtherByMonth(item.typeId, month.costDetailId).subscribe(response => {
+            //             this.othersByMonth = response.data;
+            //             this.editItemModal.show();
+            //             this.messageService.closeLoading();
+            //         },
+            //             error => {
+            //                 this.messageService.closeLoading();
+            //             });
+            //     }
+            // }
             // }
         }
 
@@ -175,7 +245,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
         //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
         if (this.itemSelected.typeName == this.typeEmployee) {
-
+          
             this.monthSelected.originalValue = this.editItemMonto.value
             if (this.editItemAdjustment.value > 0) {
                 this.monthSelected.adjustment = this.editItemAdjustment.value
@@ -199,6 +269,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             //Actualiza el sueldo
             this.salaryPlusIncrease(this.itemSelected, this.indexSelected, true);
+            //Guarda el empleado
+            var listAux = [];
+            listAux.push(this.itemSelected);
+            this.save(listAux, [], [])
         }
 
         //Si estoy editando un aumento se actualiza el sueldo para todos los empleados
@@ -207,27 +281,48 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.employees.forEach(employee => {
                 this.salaryPlusIncrease(employee, this.indexSelected, false);
             })
+
+            var listAux = [];
+            listAux.push(this.itemSelected);
+
+            this.save(this.employees, [], listAux)
         }
         else {
+            var listAux = [];
+            listAux.push(this.itemSelected);
+
             this.modalPercentage = false;
+            if(this.itemSelected.typeName == this.typeProfile){
+                this.save([], listAux, [])
+            }
         }
 
         this.editItemModal.hide();
     }
 
-    save() {
+    save(pEmployees, pProfiles, pFunded) {
         this.messageService.showLoading();
 
-        this.model.employees = this.employees;
-        this.model.fundedResources = this.fundedResources;
+        // this.model.employees = this.employees;
+        // this.model.fundedResources = this.fundedResources;
 
-        this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, this.model).subscribe(() => {
+        var model = {
+            ManagementReportId: this.model.managementReportId,
+            ManagerId: this.model.managerId,
+            AnalyticId: this.model.analyticId,
+            MonthsHeader: this.model.monthsHeader,
+            CostEmployees: pEmployees,
+            CostProfiles: pProfiles,
+            FundedResources: pFunded
+        }
+        debugger
+        this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, model).subscribe(() => {
             this.messageService.closeLoading();
 
         },
-            () => {
-                this.messageService.closeLoading();
-            });
+        () => {
+            this.messageService.closeLoading();
+        });
     }
 
     getResourcesByMonth(month, year) {
@@ -256,7 +351,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 total: monthCost.value + monthCost.charges || 0
             }
         });
-     
+
         return resources;
     }
 
@@ -356,7 +451,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     calculateTotalCosts(index) {
         var totalCost = 0;
         var totalSalary = 0;
-        
+
         //Sumo el totol de los sueldos
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
@@ -404,7 +499,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalSalary * 0.51;
     }
 
-    calculateAllPrepaid(index){
+    calculateAllPrepaid(index) {
         var totalPrepaid = 0
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].charges) {
@@ -438,11 +533,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     addOtherCost() {
 
         switch (this.otherSelected.typeName) {
-            case this.AddResource:
+            case this.typeResource:
                 this.addEmployee()
                 break;
 
-            case this.AddProfile:
+            case this.typeProfile:
                 this.addProfile()
                 break;
 
@@ -503,7 +598,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     deleteResources(item, index) {
 
-        this.save()
+        this.save([], [], this.fundedResources)
 
         this.fundedResources.splice(index, 1)
         this.otherResources.push(item)
@@ -559,12 +654,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     otherResourceChange() {
 
         switch (this.otherSelected.typeName) {
-            case this.AddResource:
+            case this.typeResource:
                 this.showUsers = true
                 this.showProfiles = false
                 break;
 
-            case this.AddProfile:
+            case this.typeProfile:
                 this.showUsers = false
                 this.showProfiles = true
                 break;
@@ -590,7 +685,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.getEmployeeSubscrip = this.employeeService.getByEmail(this.userSelected.email).subscribe(response => {
             this.messageService.closeLoading();
 
-            var existingEmployee =  this.employees.find(e => e.employeeId === response.data.id)
+            var existingEmployee = this.employees.find(e => e.employeeId === response.data.id)
             if (!existingEmployee) {
                 var costEmployee = {
 
@@ -603,7 +698,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                 this.employees.push(costEmployee)
             }
-            else{
+            else {
                 this.messageService.showError("managementReport.existingEmployee")
             }
         },
@@ -617,13 +712,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var costProfile = {
             display: this.profileSelected.text,
             employeeProfileId: this.profileSelected.id,
+            typeName: this.typeProfile,
             monthsCost: this.months
         }
 
         this.costProfiles.push(costProfile)
     }
 
-    sendDataToDetailView(){
+    sendDataToDetailView() {
         if (this.getData.observers.length > 0) {
             this.getData.emit({
                 model: this.model,
@@ -634,6 +730,20 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 fundedResources: this.fundedResources
             });
         }
+    }
+
+    addOtherByMonth() {
+
+        var resource = {
+            id: 0,
+            CostDetailId: this.monthSelected.costDetailId,
+            typeId: this.itemSelected.typeId,
+            typeName: this.itemSelected.typeName,
+            value: 0,
+            description: ""
+        }
+
+        this.othersByMonth.push(resource)
     }
 }
 
