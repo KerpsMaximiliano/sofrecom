@@ -107,12 +107,11 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         var costsAcumulatedToDate = 0;
         var totalAcumulatedToEnd = 0;
         var totalCostsAcumulatedToEnd = 0;
-        var evalpropTotal = 0;
-        var count = 0;
+        var evalpropTotalBilling = 0;
+        var evalpropTotalCosts = 0;
 
         for(var initDate = startDate; initDate <= endDate; initDate.setMonth(initDate.getMonth()+1)){
             var marginTracking = new MarginTracking();
-            count++;
 
             var month = initDate.getMonth()+1;
             var year = initDate.getFullYear();
@@ -123,9 +122,10 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             var billingMonth = this.billingModel.months.find(x => x.month == month && x.year == year);
             var costDetailMonth = this.costsModel.months.find(x => x.month == month && x.year == year);
 
-            this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
+            if(billingMonth) evalpropTotalBilling += billingMonth.valueEvalProp;
+            if(costDetailMonth) evalpropTotalCosts += costDetailMonth.valueEvalProp;
 
-            evalpropTotal += marginTracking.PercentageExpected;
+            this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
 
             var hitosMonth = this.billingModel.hitos.filter(hito => {
                 var hitoDate = moment(hito.date).toDate();
@@ -181,13 +181,57 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         }
 
         var percentageExpectedTotal = 0;
-        if(evalpropTotal > 0 && count > 0){
-            percentageExpectedTotal = evalpropTotal / count;
+        if(evalpropTotalBilling > 0){
+            percentageExpectedTotal = ((evalpropTotalBilling - evalpropTotalCosts) / evalpropTotalBilling) * 100
         }
 
         this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, percentageExpectedTotal);
 
         this.setMarginTracking();
+    }
+
+    updateEvalpropValues(data, startDate, endDate){
+        var billingMonth = this.billingModel.months.find(x => x.month == data.month && x.year == data.year);
+        var costDetailMonth = this.costsModel.months.find(x => x.month == data.month && x.year == data.year);
+
+        if(data.type == 1){
+            billingMonth.valueEvalProp = data.value;
+        }
+        else{
+            costDetailMonth.valueEvalProp = data.value;
+        }
+
+        startDate = moment(startDate).toDate();        
+        endDate = moment(endDate).toDate(); 
+
+        startDate.setDate(1);
+        endDate.setDate(1);
+
+        var evalpropTotalBilling = 0;
+        var evalpropTotalCosts = 0;
+
+        for(var initDate = startDate; initDate <= endDate; initDate.setMonth(initDate.getMonth()+1)){
+            var month = initDate.getMonth()+1;
+            var year = initDate.getFullYear();
+
+            billingMonth = this.billingModel.months.find(x => x.month == month && x.year == year);
+            costDetailMonth = this.costsModel.months.find(x => x.month == month && x.year == year);
+            var marginTracking = this.allMarginTrackings.find(x => x.Month == month && x.Year == year);
+            
+            if(billingMonth) evalpropTotalBilling += billingMonth.valueEvalProp;
+            if(costDetailMonth) evalpropTotalCosts += costDetailMonth.valueEvalProp;
+
+            this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
+        }
+
+        var percentageExpectedTotal = 0;
+        if(evalpropTotalBilling > 0){
+            percentageExpectedTotal = ((evalpropTotalBilling - evalpropTotalCosts) / evalpropTotalBilling) * 100
+        }
+
+        this.allMarginTrackings.forEach(element => {
+            element.PercentageExpectedTotal = percentageExpectedTotal;
+        });
     }
 
     private setRemainingAndTotal(totalAcumulatedToEnd: number, totalCostsAcumulatedToEnd: number, percentageExpectedTotal: number) {
@@ -213,6 +257,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         if(!billingMonth) return;
 
         var evalpropBillingValue = billingMonth.valueEvalProp;
+       
         var evalpropCostValue = 0;
 
         if(costDetailMonth){

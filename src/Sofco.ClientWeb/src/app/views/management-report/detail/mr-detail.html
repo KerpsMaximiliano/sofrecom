@@ -159,7 +159,7 @@
 
 <cost-detail-month #costDetailMonth></cost-detail-month>
 
-<modal-evalprop #modalEvalProp></modal-evalprop>
+<modal-evalprop #modalEvalProp (getData)="getEvalPropData($event)"></modal-evalprop>
 
 <ng2-modal [config]="editDateModalConfig" #editDateModal (accept)="EditDate()">
 
