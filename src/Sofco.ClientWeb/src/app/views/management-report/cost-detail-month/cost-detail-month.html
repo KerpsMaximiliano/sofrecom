@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group row">
-                <label class="col-sm-6 col-form-label">Total Provisionado:</label>
+                <label class="col-sm-6 col-form-label">Ventas:</label>
                 <div class="col-sm-6">
                     <label class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
                 </div>
@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group row">
-                <label class="col-sm-6 col-form-label">Total Facturación (GAPS)</label>
+                <label class="col-sm-6 col-form-label">Facturación:</label>
                 <div class="col-sm-6">
                     <label class="label label-gray">{{ totalBilling | amountFormat }}</label>
                 </div>
@@ -26,6 +26,14 @@
                 <label class="col-sm-6 col-form-label">Total Costos:</label>
                 <div class="col-sm-6">
                     <label class="label label-gray">{{ totalCosts | amountFormat }}</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-6 col-form-label">Provisión:</label>
+                <div class="col-sm-6">
+                    <label class="label label-gray">{{ provision | amountFormat }}</label>
                 </div>
             </div>
         </div>

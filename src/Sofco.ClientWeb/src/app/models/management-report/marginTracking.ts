@@ -1,6 +1,7 @@
 export class MarginTracking {
 
     public PercentageExpected : number;
+    public PercentageExpectedTotal : number;
     public PercentageRealToDate : number;
     public PercentageToEnd : number;
     public ExpectedSales : number;
@@ -18,6 +19,7 @@ export class MarginTracking {
 
     constructor(){
         this.PercentageExpected = 0;
+        this.PercentageExpectedTotal = 0;
         this.PercentageRealToDate = 0;
         this.PercentageToEnd = 0;
         this.ExpectedSales = 0;

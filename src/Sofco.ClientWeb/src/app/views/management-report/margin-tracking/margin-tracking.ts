@@ -107,9 +107,12 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         var costsAcumulatedToDate = 0;
         var totalAcumulatedToEnd = 0;
         var totalCostsAcumulatedToEnd = 0;
+        var evalpropTotal = 0;
+        var count = 0;
 
         for(var initDate = startDate; initDate <= endDate; initDate.setMonth(initDate.getMonth()+1)){
             var marginTracking = new MarginTracking();
+            count++;
 
             var month = initDate.getMonth()+1;
             var year = initDate.getFullYear();
@@ -121,6 +124,8 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             var costDetailMonth = this.costsModel.months.find(x => x.month == month && x.year == year);
 
             this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
+
+            evalpropTotal += marginTracking.PercentageExpected;
 
             var hitosMonth = this.billingModel.hitos.filter(hito => {
                 var hitoDate = moment(hito.date).toDate();
@@ -175,12 +180,17 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             this.allMarginTrackings.push(marginTracking);
         }
 
-        this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd);
+        var percentageExpectedTotal = 0;
+        if(evalpropTotal > 0 && count > 0){
+            percentageExpectedTotal = evalpropTotal / count;
+        }
+
+        this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, percentageExpectedTotal);
 
         this.setMarginTracking();
     }
 
-    private setRemainingAndTotal(totalAcumulatedToEnd: number, totalCostsAcumulatedToEnd: number) {
+    private setRemainingAndTotal(totalAcumulatedToEnd: number, totalCostsAcumulatedToEnd: number, percentageExpectedTotal: number) {
         if(!this.allMarginTrackings || this.allMarginTrackings.length == 0) return;
 
         this.allMarginTrackings.forEach(element => {
@@ -192,6 +202,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             // Total a terminacion
             element.TotalSalesToEnd += totalAcumulatedToEnd;
             element.TotalExpensesToEnd += totalCostsAcumulatedToEnd;
+            element.PercentageExpectedTotal = percentageExpectedTotal;
 
             element.PercentageToEnd = ((totalAcumulatedToEnd-totalCostsAcumulatedToEnd) / totalAcumulatedToEnd) * 100;
         });

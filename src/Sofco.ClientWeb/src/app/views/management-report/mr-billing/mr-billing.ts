@@ -270,10 +270,10 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             hitoMonth.oldValue = hitoMonth.value;
 
             this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
-                monthValue.value = json.ammount;
-                monthValue.valuePesos = response.data.baseAmount;
-                monthValue.originalValue = response.data.amountOriginal;
-                monthValue.originalValuePesos = response.data.baseAmountOriginal;
+                hitoMonth.value = json.ammount;
+                hitoMonth.valuePesos = response.data.baseAmount;
+                hitoMonth.originalValue = response.data.amountOriginal;
+                hitoMonth.originalValuePesos = response.data.baseAmountOriginal;
 
                 this.sendDataToDetailView();
             });
@@ -357,29 +357,30 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     getTotals(month, year) {
+        month--;
         var totals = {
             totalProvisioned: 0,
-            totalBilling: 0
+            totalBilling: 0,
+            provision: 0
         }
 
         this.hitos.forEach(hito => {
 
             var value = hito.values.find(x => x.month == month && x.year == year);
 
-            if (value && value != null) {
+            if (value && value != null && value.valuePesos) {
                 if (value.status == this.billedHitoStatus || value.status == this.cashedHitoStatus) {
 
-                    if (value.valuePesos > 0) {
-                        totals.totalBilling += value.valuePesos;
-                    }
-                    else {
-                        totals.totalBilling += value.value;
-                    }
+                    totals.totalBilling += value.valuePesos;
                 }
 
-                totals.totalProvisioned += value.value;
+                if(value.originalValuePesos){
+                    totals.totalProvisioned += value.originalValuePesos;
+                }
             }
         });
+
+        totals.provision = totals.totalProvisioned-totals.totalBilling;
 
         return totals;
     }

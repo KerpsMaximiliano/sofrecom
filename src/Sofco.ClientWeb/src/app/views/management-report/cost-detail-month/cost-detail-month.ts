@@ -36,6 +36,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     totalProvisioned: number = 0;
     totalCosts: number = 0;
     totalBilling: number = 0;
+    provision: number = 0;
 
     resources: any[] = new Array();
     expenses: any[] = new Array();
@@ -158,6 +159,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.resources = data.resources.employees.filter(e => e.hasAlocation == true)
         this.totalBilling = data.totals.totalBilling;
         this.totalProvisioned = data.totals.totalProvisioned;
+        this.provision = data.totals.provision;
 
         this.getContratedSuscrip = this.managementReportService.getCostDetailMonth(this.serviceId, data.month, data.year).subscribe(response => {
 
