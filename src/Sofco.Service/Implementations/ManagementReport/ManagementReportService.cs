@@ -331,32 +331,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(analytic.ManagementReport.Id, monthYear);
 
-                List<ContractedModel> listContracted = costDetail.ContratedDetails
-                                        .Select(x => new ContractedModel
-                                        {
-                                            CostDetailId = x.CostDetailId,
-                                            ContractedId = x.Id,
-                                            Name = x.Name,
-                                            Honorary = x.Honorary,
-                                            Insurance = x.Insurance,
-                                            Total = x.Honorary + x.Insurance
-                                        })
-                                        .OrderBy(x => x.Name)
-                                        .ToList();
-
-                List<CostMonthOther> listOther = costDetail.CostDetailOthers
-                                            .Where(t => t.CostDetailType.Name != EnumCostDetailType.AjusteGeneral.ToString())
-                                            .Select(x => new CostMonthOther
-                                            {
-                                                Id = x.Id,
-                                                Description = x.Description,
-                                                CostDetailId = x.CostDetailId,
-                                                TypeId = x.CostDetailTypeId,
-                                                TypeName = x.CostDetailType.Name,
-                                                Value = x.Value
-                                            })
-                                            .OrderBy(x => x.TypeId)
-                                            .ToList();
+                List<ContractedModel> listContracted = this.Translate(costDetail.ContratedDetails.ToList());
+                List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.ToList());
 
                 //List<CostMonthEmployee> listEmployees = costDetail.CostDetailResources
                 //                                         .Select(empl => new CostMonthEmployee
@@ -384,6 +360,24 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        public Response<List<CostMonthOther>> GetOtherTypeAndCostDetail(int idType, int idCostDetail)
+        {
+            var response = new Response<List<CostMonthOther>> { Data = new List<CostMonthOther>() };
+
+            try
+            {
+                var listOther = unitOfWork.CostDetailOtherRepository.GetByTypeAndCostDetail(idType, idCostDetail);
+
+                response.Data = this.Translate(listOther);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
         public Response<List<CostDetailTypeModel>> GetOtherResources()
         {
             var response = new Response<List<CostDetailTypeModel>> { Data = new List<CostDetailTypeModel>() };
@@ -883,6 +877,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 detailProfile.Display = profiles.Where(p => p.Id == profileId.ProfileId).FirstOrDefault().Text;
                 detailProfile.EmployeeProfileId = profileId.ProfileId;
+                detailProfile.TypeName = EnumCostDetailType.Profile;
 
                 foreach (var mounth in Months)
                 {
@@ -1078,6 +1073,40 @@ namespace Sofco.Service.Implementations.ManagementReport
                 throw ex;
             }
         }
+
+        private List<CostMonthOther> Translate(List<CostDetailOther> costDetailOthers)
+        {
+            return costDetailOthers
+                    .Where(t => t.CostDetailType.Name != EnumCostDetailType.AjusteGeneral.ToString())
+                    .Select(x => new CostMonthOther
+                    {
+                        Id = x.Id,
+                        Description = x.Description,
+                        CostDetailId = x.CostDetailId,
+                        TypeId = x.CostDetailTypeId,
+                        TypeName = x.CostDetailType.Name,
+                        Value = x.Value
+                    })
+                    .OrderBy(x => x.TypeId)
+                    .ToList();
+        }
+
+        private List<ContractedModel> Translate(List<ContratedDetail> contratedDetails)
+        {
+            return contratedDetails
+                        .Select(x => new ContractedModel
+                        {
+                            CostDetailId = x.CostDetailId,
+                            ContractedId = x.Id,
+                            Name = x.Name,
+                            Honorary = x.Honorary,
+                            Insurance = x.Insurance,
+                            Total = x.Honorary + x.Insurance
+                        })
+                        .OrderBy(x => x.Name)
+                        .ToList();
+        }
+
     }
 }
 

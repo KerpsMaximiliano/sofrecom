@@ -89,6 +89,14 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return Ok(response);
         }
 
+        [HttpGet("{idType}/otherResources/{idCostDetail}")]
+        public IActionResult GetOtherByMonth(int idType, int idCostDetail)
+        {
+            var response = managementReportService.GetOtherTypeAndCostDetail(idType, idCostDetail);
+
+            return Ok(response);
+        }
+
         [HttpDelete("{id}/otherResources")]
         public IActionResult DeleteOtherResources(int id)
         {
