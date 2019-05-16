@@ -33,9 +33,16 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Previsto EvalProp</td>
+                    <td>Previsto EvalProp mensual</td>
                     <td class="totals">
                         <div class="value m-r-sm">{{ marginTrackingSelected.PercentageExpected | amountFormat }}</div>
+                        <div class="percentage">%</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Previsto EvalProp a terminación</td>
+                    <td class="totals">
+                        <div class="value m-r-sm">{{ marginTrackingSelected.PercentageExpectedTotal | amountFormat }}</div>
                         <div class="percentage">%</div>
                     </td>
                 </tr>
@@ -85,7 +92,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Acumulado a la fecha (real)</td>
+                    <td>Acumulado a la fecha</td>
                     <td class="">
                         <div class="value-currency">$ {{ marginTrackingSelected.SalesAccumulatedToDate | amountFormat }}</div>
                     </td>

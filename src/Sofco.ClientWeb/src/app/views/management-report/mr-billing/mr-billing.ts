@@ -20,6 +20,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     getCurrenciesSubscrip: Subscription;
     postHitoSubscrip: Subscription;
     updateHitoSubscrip: Subscription;
+    getHitoSubscrip: Subscription;
     
     months: any[] = new Array();
     hitos: any[] = new Array();
@@ -83,6 +84,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         if (this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if (this.postHitoSubscrip) this.postHitoSubscrip.unsubscribe();
         if (this.updateHitoSubscrip) this.updateHitoSubscrip.unsubscribe();
+        if (this.getHitoSubscrip) this.getHitoSubscrip.unsubscribe();
     }
 
     getCurrencies() {
@@ -204,24 +206,34 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 values: []
             };
 
+            this.getHito(month, year, hito, model);            
+        },
+        error => this.newHitoModal.resetButtons());
+    }
+
+    getHito(month, year, hito, model){
+        this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
+
             this.months.forEach(monthRow => {
-                var monthValue = { month: monthRow.month, year: monthRow.year, value: null, valuePesos: null, oldValue: null, status: null };
+                var monthValue = { month: monthRow.month, year: monthRow.year, value: null, valuePesos: null, 
+                                   oldValue: null, status: null, originalValue: null, originalValuePesos: null  };
 
                 if (monthRow.month == month && monthRow.year == year) {
                     monthValue.value = model.ammount;
-                    monthValue.valuePesos = model.ammount;
+                    monthValue.valuePesos = response.data.baseAmount;
                     monthValue.oldValue = model.ammount;
+                    monthValue.originalValue = response.data.amountOriginal;
+                    monthValue.originalValuePesos = response.data.baseAmountOriginal;
                     monthValue.status = this.pendingHitoStatus;
                 }
 
                 hito.values.push(monthValue);
             });
 
-            this.hitos.push(hito)
+            this.hitos.push(hito);
 
             this.sendDataToDetailView();
-        },
-        error => this.newHitoModal.resetButtons());
+        });
     }
 
     updateHito() {
@@ -257,7 +269,14 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.projectService.updateAmmountHito(json).subscribe(response => {
             hitoMonth.oldValue = hitoMonth.value;
 
-            this.sendDataToDetailView();
+            this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
+                hitoMonth.value = json.ammount;
+                hitoMonth.valuePesos = response.data.baseAmount;
+                hitoMonth.originalValue = response.data.amountOriginal;
+                hitoMonth.originalValuePesos = response.data.baseAmountOriginal;
+
+                this.sendDataToDetailView();
+            });
         },
         error => {
             if (monthValue) {
@@ -338,29 +357,30 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     getTotals(month, year) {
+        month--;
         var totals = {
             totalProvisioned: 0,
-            totalBilling: 0
+            totalBilling: 0,
+            provision: 0
         }
 
         this.hitos.forEach(hito => {
 
             var value = hito.values.find(x => x.month == month && x.year == year);
 
-            if (value && value != null) {
+            if (value && value != null && value.valuePesos) {
                 if (value.status == this.billedHitoStatus || value.status == this.cashedHitoStatus) {
 
-                    if (value.valuePesos > 0) {
-                        totals.totalBilling += value.valuePesos;
-                    }
-                    else {
-                        totals.totalBilling += value.value;
-                    }
+                    totals.totalBilling += value.valuePesos;
                 }
 
-                totals.totalProvisioned += value.value;
+                if(value.originalValuePesos){
+                    totals.totalProvisioned += value.originalValuePesos;
+                }
             }
         });
+
+        totals.provision = totals.totalProvisioned-totals.totalBilling;
 
         return totals;
     }

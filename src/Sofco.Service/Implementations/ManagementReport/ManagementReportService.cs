@@ -206,6 +206,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                             Month = hito.StartDate.Month,
                             Year = hito.StartDate.Year,
                             Value = hito.Ammount,
+                            OriginalValue = hito.AmountOriginal,
+                            OriginalValuePesos = hito.BaseAmountOriginal,
                             Status = hito.Status
                         };
 
@@ -219,12 +221,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                             }
                             else
                             {
-                                rowItem.ValuePesos = hito.BaseAmount > 0 ? hito.BaseAmount : hito.Ammount;
+                                rowItem.ValuePesos = hito.BaseAmount;
                             }
                         }
                         else
                         {
-                            rowItem.ValuePesos = hito.BaseAmount > 0 ? hito.BaseAmount : hito.Ammount;
+                            rowItem.ValuePesos = hito.BaseAmount;
                         }
 
                         if (hito.Status.Equals("A ser facturado"))

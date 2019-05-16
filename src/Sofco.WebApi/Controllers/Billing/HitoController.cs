@@ -17,6 +17,15 @@ namespace Sofco.WebApi.Controllers.Billing
             this.hitoService = hitoService;
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult Get(string id)
+        {
+            var response = hitoService.Get(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPut]
         [Route("{id}/close")]
         public IActionResult Close(string id)
