@@ -413,9 +413,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var managementReport = unitOfWork.ManagementReportRepository.GetById(pDetailCost.ManagementReportId);
 
                 this.VerifyMonthsCostDetail(pDetailCost.MonthsHeader, managementReport);
-                this.InsertUpdateCostDetailResources(pDetailCost.CostEmployees, managementReport.CostDetails.ToList());
-                this.InsertUpdateCostDetailOther(pDetailCost.FundedResources, managementReport.CostDetails.ToList());
-                this.InsertUpdateCostDetailProfile(pDetailCost.CostProfiles, managementReport.CostDetails.ToList());
+
+                if (pDetailCost.CostEmployees.Count > 0)
+                    this.InsertUpdateCostDetailResources(pDetailCost.CostEmployees, managementReport.CostDetails.ToList());
+                if(pDetailCost.FundedResources.Count > 0)
+                    this.InsertUpdateCostDetailOther(pDetailCost.FundedResources, managementReport.CostDetails.ToList());
+                if (pDetailCost.CostProfiles.Count > 0)
+                    this.InsertUpdateCostDetailProfile(pDetailCost.CostProfiles, managementReport.CostDetails.ToList());
 
                 unitOfWork.Save();
 
