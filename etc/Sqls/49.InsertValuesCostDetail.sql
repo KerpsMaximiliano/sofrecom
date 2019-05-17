@@ -25,7 +25,7 @@ DECLARE @Max int
 set @Max = (select max(id) from @Reportes)
 DECLARE @ManagementReportId int 
 
-WHILE @Cont < @Max
+WHILE @Cont <= @Max
 BEGIN
 	SET @beginDate = (select StartDate from @Reportes where id = @Cont)
 	SET @endDate = (select EndDate from @Reportes where id = @Cont)

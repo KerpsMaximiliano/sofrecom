@@ -1172,6 +1172,8 @@
     },
     "managementReport":{
         "costDetailMonth": "Detalle de costos mensual",
-        "existingEmployee": "El recurso ya se encuentra asignado en el informe"
+        "existingEmployee": "El recurso ya se encuentra asignado en el informe",
+        "endDateOutOfRange": " La fecha de fin del informe debe ser menor o igual al fin de la analitica",
+        "startDateOutOfRange": " La fecha de inicio del informe debe ser mayor o igual al inicio de la analitica"
     }
 }
