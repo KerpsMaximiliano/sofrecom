@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { I18nService } from "app/services/common/i18n.service";
 import { MessageService } from "app/services/common/message.service";
@@ -38,11 +38,16 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     );
 
     totalProvisioned: number = 0;
+    totalProvisionedAux: number;
     totalCosts: number = 0;
     totalBilling: number = 0;
+    totalBillingAux: number;
     provision: number = 0;
+    provisionAux: number;
 
-    totalProvisionedFocuced: boolean = false;
+    totalProvisionedEditabled: boolean = false;
+    totalBillingEditabled: boolean = false;
+    provisionEditabled: boolean = false;
 
     resources: any[] = new Array();
     expenses: any[] = new Array();
@@ -85,9 +90,9 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
             this.messageService.closeLoading();
         },
-            error => {
-                this.messageService.closeLoading();
-            });
+        error => {
+            this.messageService.closeLoading();
+        });
 
             this.getUsers()
     }
@@ -103,8 +108,16 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         if(this. getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe()
     }
 
-    asd(value){
-        this.totalProvisionedFocuced = value;
+    totalProvisionedChanged(){
+        this.totalProvisionedAux = this.totalProvisioned;
+    }
+
+    totalBillingChanged(){
+        this.totalBillingAux = this.totalBilling;
+    }
+
+    provisionChanged(){
+        this.provisionAux = this.provision;
     }
 
     addExpense() {
@@ -186,6 +199,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.contracted = response.data.contracted;
             this.expenses = response.data.otherResources;
 
+            if(response.data.totalBilling && response.data.totalBilling != null) this.totalBilling = response.data.totalBilling;
+            if(response.data.provision && response.data.provision != null) this.provision = response.data.provision;
+            if(response.data.totalProvisioned && response.data.totalProvisioned != null) this.totalProvisioned = response.data.totalProvisioned;
+
             this.calculateTotalCosts();
 
             this.messageService.closeLoading();
@@ -198,15 +215,18 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     }
 
     save() {
-
         this.messageService.showLoading();
+
         var model = {
             AnalyticId: 0,
             ManagementReportId: 0,
             MonthYear: new Date(),
             Employees: [],
             OtherResources: [],
-            Contracted: []
+            Contracted: [],
+            totalBilling: this.totalBillingAux != null ? this.totalBillingAux : null,
+            totalProvisioned: this.totalProvisionedAux != null ? this.totalProvisionedAux : null,
+            provision: this.provisionAux != null ? this.provisionAux : null,
         }
 
         model.AnalyticId = this.AnalyticId
@@ -221,9 +241,9 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.costDetailMonthModal.hide();
             this.managementReport.updateDetailCost()
         },
-            error => {
-                this.messageService.closeLoading();
-            });
+        error => {
+            this.messageService.closeLoading();
+        });
     }
 
     subResourceChange(subResource) {

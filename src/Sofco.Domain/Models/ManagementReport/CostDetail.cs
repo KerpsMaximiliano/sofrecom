@@ -10,6 +10,12 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public DateTime MonthYear { get; set; }
 
+        public decimal? TotalProvisioned { get; set; }
+
+        public decimal? TotalBilling { get; set; }
+
+        public decimal? Provision { get; set; }
+
         public ICollection<CostDetailResource> CostDetailResources { get; set; }
 
         public ICollection<CostDetailProfile> CostDetailProfiles { get; set; }

@@ -10,8 +10,6 @@ namespace Sofco.Core.DAL.Admin
     {
         Group GetSingleWithRole(Expression<Func<Group, bool>> predicate);
 
-        Group GetSingleWithUser(Expression<Func<Group, bool>> predicate);
-
         Group GetSingleFull(Expression<Func<Group, bool>> predicate);
 
         bool ExistById(int id);
@@ -25,5 +23,7 @@ namespace Sofco.Core.DAL.Admin
         string GetEmail(string code);
 
         Group GetByCode(string guestCode);
+
+        IList<Group> GetByUsers(IEnumerable<int> userids);
     }
 }

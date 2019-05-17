@@ -12,5 +12,6 @@ namespace Sofco.Core.DAL.ManagementReport
         IList<CostDetail> GetByManagementReportAndDates(int managementReportId, DateTime startDate, DateTime endDate);
         CostDetail GetByManagementReportAndMonthYear(int managementReportId, DateTime monthYear);
 
+        void UpdateTotals(CostDetail costDetailMonth);
     }
 }

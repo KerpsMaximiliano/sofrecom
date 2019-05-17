@@ -60,5 +60,7 @@ namespace Sofco.Core.DAL.Admin
         List<UserLiteModel> GetUserLiteByEmails(List<string> emails);
 
         bool HasReadOnlyGroup(string currentUserEmail);
+
+        IList<User> GetByIdsWithGroups(IEnumerable<int> ids);
     }
 }

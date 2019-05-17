@@ -39,6 +39,13 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .FirstOrDefault();
         }
 
+        public void UpdateTotals(CostDetail costDetailMonth)
+        {
+            context.Entry(costDetailMonth).Property("Provision").IsModified = true;
+            context.Entry(costDetailMonth).Property("TotalBilling").IsModified = true;
+            context.Entry(costDetailMonth).Property("TotalProvisioned").IsModified = true;
+        }
+
         public IList<CostDetail> GetByManagementReportAndDates(int managementReportId, DateTime startDate, DateTime endDate)
         {
             return context.CostDetails
