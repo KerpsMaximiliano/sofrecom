@@ -58,7 +58,10 @@
     </div>
 
     <div class="row m-t-xs" *ngFor="let resource of resources">
-        <div class="col-sm-6">{{ resource.name }}</div>
+        <div class="col-sm-6">
+            <span class="text-danger" *ngIf="!resource.hasAlocation"><strong>* </strong></span>
+            <span>{{ resource.name }}</span>   
+        </div>
         <div class="col-sm-2">
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.salary">
         </div>
@@ -70,7 +73,23 @@
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
         </div>
     </div>
-
+    <br>
+    <small class="text-danger">
+        <strong>* Sin porcentaje de asignacion en la analitica.</strong>
+    </small>  
+    <div class="row">
+        <br>
+        <div class="col-md-6">
+            <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected">
+            </ng-select>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-success btn-md" type="button" (click)="addEmployee()">
+                Agregar
+                <i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    
     <hr class="hr-line-dashed">
 
     <div class="row border-bottom m-b-sm">
@@ -117,8 +136,8 @@
         </div>
 
     </form>
-
-    <button class="btn btn-success btn-sm m-t-xs" (click)="addContracted()" *ngIf="!isReadOnly" type="button">
+    <br>
+    <button class="btn btn-success btn-md m-t-xs" (click)="addContracted()" *ngIf="!isReadOnly" type="button">
         Agregar
         <i class="fa fa-plus"></i>
     </button>
@@ -161,13 +180,13 @@
 
     <br *ngIf="expenses.length > 0">
     <div class="row" *ngIf="otherResources.length > 0">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
                 (change)="otherResourceChange()">
             </ng-select>
         </div>
         <div class="col-md-4">
-            <button class="btn btn-success btn-sm" type="button" (click)="addExpense()">
+            <button class="btn btn-success btn-md" type="button" (click)="addExpense()">
                 Agregar
                 <i class="fa fa-plus"></i></button>
         </div>

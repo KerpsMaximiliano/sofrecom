@@ -245,6 +245,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 var listAux = [];
                 listAux.push(this.itemSelected);
                 this.save(listAux, [], [])
+                this.editItemModal.hide();      
                 break;
 
             case this.generalAdjustment:
@@ -257,6 +258,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 listAux.push(this.itemSelected);
 
                 this.save(this.employees, [], listAux)
+                this.editItemModal.hide();      
                 break
 
             case this.typeProfile:
@@ -267,6 +269,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 if (this.itemSelected.typeName == this.typeProfile) {
                     this.save([], listAux, [])
                 }
+                this.editItemModal.hide();      
                 break
 
             default:
@@ -290,6 +293,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     setTimeout(() => {
                         this.sendDataToDetailView();
                     }, 1500);
+            
+                    this.editItemModal.hide();      
                 },
                 error => {
                     this.messageService.closeLoading();
@@ -297,7 +302,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 break;
         }
 
-        this.editItemModal.hide();      
     }
 
     save(pEmployees, pProfiles, pFunded) {
