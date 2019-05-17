@@ -3,10 +3,11 @@
 
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group row">
+            <div class="form-group row" (focus)="asd(true)" (focusout)="asd(false)">
                 <label class="col-sm-6 col-form-label">Ventas:</label>
                 <div class="col-sm-6">
-                    <label class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
+                    <label *ngIf="totalProvisionedFocuced == false" class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
+                    <input *ngIf="totalProvisionedFocuced == true" type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalProvisioned">
                 </div>
             </div>
         </div>

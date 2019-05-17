@@ -42,6 +42,8 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     totalBilling: number = 0;
     provision: number = 0;
 
+    totalProvisionedFocuced: boolean = false;
+
     resources: any[] = new Array();
     expenses: any[] = new Array();
     users: any[] = new Array()
@@ -99,6 +101,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         if (this.deleteOtherSuscrip) this.deleteOtherSuscrip.unsubscribe();
         if(this. getUsersSubscrip) this.getUsersSubscrip.unsubscribe()
         if(this. getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe()
+    }
+
+    asd(value){
+        this.totalProvisionedFocuced = value;
     }
 
     addExpense() {

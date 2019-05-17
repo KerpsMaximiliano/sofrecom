@@ -206,7 +206,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                             this.messageService.closeLoading();
                         });
                     break;
-
             }
         }
 
@@ -287,6 +286,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     this.othersByMonth.forEach(element => {
                         this.monthSelected.value += element.value
                     });
+
+                    setTimeout(() => {
+                        this.sendDataToDetailView();
+                    }, 1500);
                 },
                 error => {
                     this.messageService.closeLoading();
@@ -314,10 +317,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         }
         this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, model).subscribe(() => {
             this.messageService.closeLoading();
+
+            setTimeout(() => {
+                this.sendDataToDetailView();
+            }, 1500);
         },
-            () => {
-                this.messageService.closeLoading();
-            });
+        () => {
+            this.messageService.closeLoading();
+        });
     }
 
     getResourcesByMonth(month, year) {
@@ -472,6 +479,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 totalCost += resource.monthsCost[index].value;
             }
         })
+
+        if(this.months[index]){
+            this.months[index].value = totalCost + (totalSalary * 0.51);
+        }
 
         return totalCost + (totalSalary * 0.51);
     }
