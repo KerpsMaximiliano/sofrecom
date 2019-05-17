@@ -282,7 +282,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthHeader.MonthYear = date;
                     monthHeader.Month = date.Month;
                     monthHeader.Year = date.Year;
-
+               
                     var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
 
                     if (billingMonth != null)
@@ -336,17 +336,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                 List<ContractedModel> listContracted = this.Translate(costDetail.ContratedDetails.ToList());
                 List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.ToList());
 
-                //List<CostMonthEmployee> listEmployees = costDetail.CostDetailResources
-                //                                         .Select(empl => new CostMonthEmployee
-                //                                         {
-                //                                             Id = empl.Id,
-                //                                             EmployeeId = empl.EmployeeId,
-                //                                             UserId = empl.UserId,
-                //                                             CostDetailId = empl.CostDetailId,
-                //                                             Salary = empl.Value,
-                //                                             Charges = empl.Charges
-                //                                         })
-                //                                         .ToList();
+                response.Data.Id = costDetail.Id;
+
+                response.Data.Provision = costDetail.Provision;
+                response.Data.TotalBilling = costDetail.TotalBilling;
+                response.Data.TotalProvisioned = costDetail.TotalProvisioned;
 
                 response.Data.ManagementReportId = analytic.ManagementReport.Id;
                 response.Data.MonthYear = costDetail.MonthYear;
@@ -485,6 +479,17 @@ namespace Sofco.Service.Implementations.ManagementReport
                 this.InsertUpdateCostDetailResources(_detailModel.CostEmployees, costDetails);
                 this.InsertUpdateCostDetailOther(_detailModel.FundedResources, costDetails);
                 this.UpdateContracted(pMonthDetail.Contracted, costDetails, pMonthDetail.MonthYear);
+
+                var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == pMonthDetail.MonthYear.Date);
+
+                if (costDetailMonth != null)
+                {
+                    costDetailMonth.Provision = pMonthDetail.Provision ?? pMonthDetail.Provision.GetValueOrDefault();
+                    costDetailMonth.TotalBilling = pMonthDetail.TotalBilling ?? pMonthDetail.TotalBilling.GetValueOrDefault();
+                    costDetailMonth.TotalProvisioned = pMonthDetail.TotalProvisioned ?? pMonthDetail.TotalProvisioned.GetValueOrDefault();
+
+                    unitOfWork.CostDetailRepository.UpdateTotals(costDetailMonth);
+                }
 
                 unitOfWork.Save();
 

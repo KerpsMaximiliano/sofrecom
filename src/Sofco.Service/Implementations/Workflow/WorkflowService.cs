@@ -145,13 +145,28 @@ namespace Sofco.Service.Implementations.Workflow
             // Save change status
             try
             {
-                var actualStateId = entity.StatusId;
+                //var actualStateId = entity.StatusId;
 
                 entity.StatusId = parameters.NextStateId;
 
-                WorkflowHelper.CheckEspecialUsers(entity, actualStateId, parameters.NextStateId, appSetting);
+                //WorkflowHelper.CheckEspecialUsers(entity, actualStateId, parameters.NextStateId, appSetting);
+
+                if (string.IsNullOrWhiteSpace(entity.UsersAlreadyApproved))
+                {
+                    entity.UsersAlreadyApproved = currentUser.Id.ToString();
+                }
+                else
+                {
+                    var userSplitted = entity.UsersAlreadyApproved.Split(';');
+
+                    if (!userSplitted.Contains(currentUser.Id.ToString()))
+                    {
+                        entity.UsersAlreadyApproved = string.Concat(entity.UsersAlreadyApproved, $";{currentUser.Id.ToString()}");
+                    }
+                }
 
                 workflowRepository.UpdateStatus(entity);
+                workflowRepository.UpdateUsersAlreadyApproved(entity);
                 workflowRepository.Save();
 
                 if (response.Messages.All(x => x.Text != Resources.Workflow.Workflow.TransitionSuccess))
@@ -201,7 +216,6 @@ namespace Sofco.Service.Implementations.Workflow
             }
         }
 
-
         private void CheckIfMustGoToNextStep<TEntity, THistory>(WorkflowChangeStatusParameters parameters, Response<TransitionSuccessModel> response,
             WorkflowStateTransition transition, TEntity entity) where TEntity : WorkflowEntity where THistory : WorkflowHistory
         {
@@ -212,16 +226,11 @@ namespace Sofco.Service.Implementations.Workflow
 
             var nextTransitions = new List<WorkflowStateTransition>();
 
+            var user = new UserLiteModel();
+
             foreach (var possibleNextTransition in possibleNextTransitions)
             {
-                var user = new UserLiteModel
-                {
-                    Id = entity.UserApplicant.Id,
-                    Email = entity.UserApplicant.Email,
-                    Name = entity.UserApplicant.Name
-                };
-
-                if (ValidatePriviligeAccess(possibleNextTransition, user, entity))
+                if (WorkflowHelper.ValidatePriviligeAccess(possibleNextTransition, user, entity, unitOfWork, appSetting))
                 {
                     if (!string.IsNullOrWhiteSpace(possibleNextTransition.ConditionCode))
                     {
@@ -247,9 +256,9 @@ namespace Sofco.Service.Implementations.Workflow
                 {
                     response.Data.MustDoNextTransition = true;
                     parameters.NextStateId = nextTransition.NextWorkflowStateId;
-                    response.Data.UserApplicantId = entity.UserApplicantId;
-                    response.Data.UserName = entity.UserApplicant.UserName;
-                    response.Data.Name = entity.UserApplicant.Name;
+                    response.Data.UserApplicantId = user.Id;
+                    response.Data.UserName = user.UserName;
+                    response.Data.Name = user.Name;
 
                     response.Data.OnError = () =>
                     {
@@ -328,18 +337,18 @@ namespace Sofco.Service.Implementations.Workflow
             return hasAccess;
         }
 
-        private bool ValidatePriviligeAccess(WorkflowStateTransition transition, UserLiteModel user, WorkflowEntity entity)
-        {
-            bool hasAccess = false;
+        //private bool ValidatePriviligeAccess(WorkflowStateTransition transition, UserLiteModel user, WorkflowEntity entity)
+        //{
+        //    bool hasAccess = false;
 
-            hasAccess = ValidateManagerAccess(transition, user, entity, hasAccess);
+        //    hasAccess = ValidateManagerAccess(transition, user, entity, hasAccess);
 
-            hasAccess = ValidateAnalyticManagerAccess(transition, user, entity, hasAccess);
+        //    hasAccess = ValidateAnalyticManagerAccess(transition, user, entity, hasAccess);
 
-            hasAccess = ValidateSectorAccess(transition, user, entity, hasAccess);
+        //    hasAccess = ValidateSectorAccess(transition, user, entity, hasAccess);
 
-            return hasAccess;
-        }
+        //    return hasAccess;
+        //}
 
         private bool ValidateSectorAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
         {

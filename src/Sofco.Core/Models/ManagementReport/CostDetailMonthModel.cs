@@ -11,8 +11,11 @@ namespace Sofco.Core.Models.ManagementReport
         public DateTime MonthYear { get; set; }
         public List<CostMonthEmployee> Employees { get; set; }
         public List<CostMonthOther> OtherResources { get; set; }
-        public List<ContractedModel> Contracted { get; set; } 
-
+        public List<ContractedModel> Contracted { get; set; }
+        public decimal? Provision { get; set; }
+        public decimal? TotalBilling { get; set; }
+        public decimal? TotalProvisioned { get; set; }
+        public int Id { get; set; }
     }
 
     public class CostMonthEmployee

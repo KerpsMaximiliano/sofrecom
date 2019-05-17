@@ -2,20 +2,21 @@
     [isSaveEnabled]="f.form.valid || canSave">
 
     <div class="row">
-        <div class="col-md-6">
-            <div class="form-group row" (focus)="asd(true)" (focusout)="asd(false)">
+        <div class="col-md-6 pointer" (dblclick)="totalProvisionedEditabled = !totalProvisionedEditabled">
+            <div class="form-group row">
                 <label class="col-sm-6 col-form-label">Ventas:</label>
                 <div class="col-sm-6">
-                    <label *ngIf="totalProvisionedFocuced == false" class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
-                    <input *ngIf="totalProvisionedFocuced == true" type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalProvisioned">
+                    <label *ngIf="totalProvisionedEditabled == false" class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
+                    <input *ngIf="totalProvisionedEditabled == true" (ngModelChange)="totalProvisionedChanged()" type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalProvisioned">
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" (click)="totalBillingEditabled = !totalBillingEditabled">
             <div class="form-group row">
                 <label class="col-sm-6 col-form-label">Facturación:</label>
                 <div class="col-sm-6">
-                    <label class="label label-gray">{{ totalBilling | amountFormat }}</label>
+                    <label *ngIf="totalBillingEditabled == false" class="label label-gray">{{ totalBilling | amountFormat }}</label>
+                    <input *ngIf="totalBillingEditabled == true" (ngModelChange)="totalBillingChanged()" type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalBilling">
                 </div>
             </div>
         </div>
@@ -30,11 +31,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" (click)="provisionEditabled = !provisionEditabled">
             <div class="form-group row">
                 <label class="col-sm-6 col-form-label">Provisión:</label>
                 <div class="col-sm-6">
-                    <label class="label label-gray">{{ provision | amountFormat }}</label>
+                    <label *ngIf="provisionEditabled == false" class="label label-gray">{{ provision | amountFormat }}</label>
+                    <input *ngIf="provisionEditabled == true" type="number" (ngModelChange)="provisionChanged()" decimalFormat class="form-control input-xs" [(ngModel)]="provision">
                 </div>
             </div>
         </div>

@@ -41,6 +41,11 @@ namespace Sofco.DAL.Repositories.Workflow
             return context.WorkflowStateTransitions.Any(x => x.ActualWorkflowStateId == actualStateId && x.NextWorkflowStateId == nextStateId && x.WorkflowId == workflowId && x.Id != transitionId);
         }
 
+        public void UpdateUsersAlreadyApproved(WorkflowEntity entity)
+        {
+            context.Entry(entity).Property("UsersAlreadyApproved").IsModified = true;
+        }
+
         public Domain.Models.Workflow.Workflow GetByTypeActive(int workflowTypeId)
         {
             return context.Workflows.SingleOrDefault(x => x.WorkflowTypeId == workflowTypeId && x.Active);

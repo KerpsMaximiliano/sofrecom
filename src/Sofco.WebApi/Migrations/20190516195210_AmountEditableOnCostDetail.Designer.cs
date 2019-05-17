@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190516195210_AmountEditableOnCostDetail")]
+    partial class AmountEditableOnCostDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,8 +266,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int?>("UserId");
 
-                    b.Property<string>("UsersAlreadyApproved");
-
                     b.Property<int>("WorkflowId");
 
                     b.HasKey("Id");
@@ -358,8 +358,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("UserApplicantId");
 
                     b.Property<int?>("UserId");
-
-                    b.Property<string>("UsersAlreadyApproved");
 
                     b.Property<int>("WorkflowId");
 
