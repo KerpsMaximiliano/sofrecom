@@ -158,11 +158,19 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         if (new Date(this.ReportStartDate) < new Date(this.model.startDate)) {
             this.ReportStartDateError = true
             this.editDateModal.resetButtons()
+            this.messageService.showError("managementReport.startDateOutOfRange")
+        }
+        else{
+            this.ReportStartDateError = false
         }
 
         if (new Date(this.ReportEndDate) > new Date(this.model.endDate)) {
             this.ReportEndDateError = true
             this.editDateModal.resetButtons()
+            this.messageService.showError("managementReport.startDateOutOfRange")
+        }
+        else{
+            this.ReportEndDateError = false
         }
 
         if (this.ReportStartDateError == false && this.ReportEndDateError == false) {

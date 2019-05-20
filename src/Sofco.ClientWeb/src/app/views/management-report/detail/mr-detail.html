@@ -169,18 +169,12 @@
                 <label class="control-label">Fecha de Inicio Informe</label>
                 <div class="input-group">
                     <date-picker [(date)]="ReportStartDate" #dateReportStart></date-picker>
-                    <p class="text-danger" [hidden]="!ReportStartDateError">
-                        La fecha de inicio del informe debe ser mayor o igual al inicio de la analitica
-                    </p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label">Fecha de Fin Informe</label>
                 <div class="input-group">
                     <date-picker [(date)]="ReportEndDate" #dateReportEnd></date-picker>
-                    <p class="text-danger" [hidden]="!ReportEndDateError">
-                        La fecha de fin del informe debe ser menor o igual al fin de la analitica
-                    </p>
                 </div>
             </div>
         </div>
