@@ -23,6 +23,7 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Employee>().Property(x => x.BusinessHoursDescription).HasMaxLength(150);
             builder.Entity<Employee>().Property(x => x.EndReason).HasMaxLength(2000);
             builder.Entity<Employee>().Property(x => x.DocumentNumberType).HasMaxLength(100);
+            builder.Entity<Employee>().Property(x => x.Prepaid).HasMaxLength(100);
             builder.Entity<Employee>().Property(x => x.PhoneNumber).HasMaxLength(100);
             builder.Entity<Employee>().Property(x => x.Bank).HasMaxLength(200);
             builder.Entity<Employee>().Property(x => x.Cuil).HasColumnType("decimal(12, 0)");

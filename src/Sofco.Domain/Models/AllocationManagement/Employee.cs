@@ -106,6 +106,14 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public string Bank { get; set; }
 
+        public decimal Salary { get; set; }
+
+        public int BeneficiariesCount { get; set; }
+
+        public decimal PrepaidAmount { get; set; }
+
+        public string Prepaid { get; set; }
+
         public ICollection<CostDetailResource> CostDetailResources { get; set; }
     }
 }
