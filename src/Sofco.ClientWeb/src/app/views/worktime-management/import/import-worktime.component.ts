@@ -35,13 +35,13 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
                 private i18nService: I18nService,
                 private worktimeService: WorktimeService){    
     }
-
+ 
     ngOnInit(): void {
         this.messageService.showLoading();
 
-        this.getSubscrip = this.analyticService.getByManager().subscribe(response => {
+        this.getSubscrip = this.worktimeService.getAnalytics().subscribe(data => {
             this.messageService.closeLoading();
-            this.analytics = response.data;
+            this.analytics = data;
         });
     }
 

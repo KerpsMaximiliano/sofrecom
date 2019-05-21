@@ -109,5 +109,7 @@
         public int WorkflowStatusGafId { get; set; }
 
         public int WorkflowStatusRrhhId { get; set; }
+
+        public string WorkTimeMassiveImportCode { get; set; }
     }
 }

@@ -385,6 +385,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.referenceWrongMaxLength.
+        /// </summary>
+        public static string ReferenceWrongMaxLength {
+            get {
+                return ResourceManager.GetString("ReferenceWrongMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Rechazada.
         /// </summary>
         public static string Rejected {

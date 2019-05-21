@@ -273,4 +273,7 @@
   <data name="ControlHoursEmpty" xml:space="preserve">
     <value>workTimeManagement/workTime.controlHoursEmpty</value>
   </data>
+  <data name="ReferenceWrongMaxLength" xml:space="preserve">
+    <value>workTimeManagement/workTime.referenceWrongMaxLength</value>
+  </data>
 </root>

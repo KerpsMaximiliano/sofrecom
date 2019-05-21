@@ -13,7 +13,7 @@ DECLARE @Reportes TABLE
 )
 
 INSERT INTO @Reportes
-	SELECT Id, DATEADD(DAY, - (DATEPART(day, StartDate) -1), StartDate), DATEADD(DAY, - (DATEPART(day, EndDate) -1), EndDate) FROM app.ManagementReports where id != 22
+	SELECT Id, DATEADD(DAY, - (DATEPART(day, StartDate) -1), StartDate), DATEADD(DAY, - (DATEPART(day, EndDate) -1), EndDate) FROM app.ManagementReports
 
 DECLARE @beginDate date 
 DECLARE @EndDate date
