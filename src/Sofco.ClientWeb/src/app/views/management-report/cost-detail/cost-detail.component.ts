@@ -554,6 +554,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             default:
                 var resource = this.otherResources.find(r => r.typeId == this.otherSelected.typeId)
                 this.fundedResources.push(resource)
+                
+                var pos = this.otherResources.findIndex(r => r.typeId == this.otherSelected.typeId);
+                this.otherResources.splice(pos, 1)
+              
+                if (this.otherResources.length > 0) {
+                    this.otherSelected = this.otherResources[0];
+                    this.otherResourceChange()
+                }
                 break;
         }  
     }
