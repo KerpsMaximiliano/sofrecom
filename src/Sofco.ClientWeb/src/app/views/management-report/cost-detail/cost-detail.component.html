@@ -2,37 +2,39 @@
     <table class="table dataTable" role="grid">
         <thead>
             <tr>
-                <th class="first-column"></th>
-                <th class="text-center headcol" *ngFor="let month of months">{{ month.display }}</th>
+                <th class="static first-column" scope="col">Meses</th>
+                <th class="text-center headcol" *ngFor="let month of months; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">{{ month.display }}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Total Costos</td>
-                <td *ngFor="let month of months; let i = index">
+                <th class="static first-column" scope="col">Total Costos</th>
+                <td *ngFor="let month of months; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-total">
                         {{ calculateTotalCosts(i) | amountFormat }}
                     </label>
                 </td>
             </tr>
             <tr>
-                <td>Cantidad Recursos costeados</td>
-                <td *ngFor="let month of months; let i = index">
+                <th class="static first-column" scope="col">Cantidad Recursos costeados</th>
+                <td *ngFor="let month of months; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-cant-resources">
                         {{ calculateAssignedEmployees(i) }}
                     </label>
                 </td>
             </tr>
             <tr>
-                <td class="first-column text-ellipsis"> EVALPROP</td>
-                <td *ngFor="let month of months">
+                <th class="static first-column text-ellipsis" scope="col">EVALPROP</th>
+                <td *ngFor="let month of months; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''"
                         (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
                 </td>
             </tr>
             <tr class="active" *ngFor="let employee of employees">
-                <td>{{ employee.display }} </td>
-                <td *ngFor="let monthCost of employee.monthsCost; let i = index">
+                <th class="static first-column" scope="col">{{ employee.display }}</th>
+                <td *ngFor="let monthCost of employee.monthsCost; let i = index; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
                         [ngClass]="AccessEmployeeClass(monthCost)">
                         {{ monthCost.value | amountFormat }}
@@ -40,8 +42,9 @@
                 </td>
             </tr>
             <tr class="warning" *ngFor="let profile of costProfiles">
-                <td>{{ profile.display }} </td>
-                <td *ngFor="let monthCost of profile.monthsCost; let i = index">
+                <th class="static first-column" scope="col">{{ profile.display }}</th>
+                <td *ngFor="let monthCost of profile.monthsCost; let i = index; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label" (click)="openEditItemModal(monthCost, profile, i)"
                         [ngClass]="resourcesClass(monthCost, profile)">
                         {{ monthCost.value | amountFormat }}
@@ -49,38 +52,39 @@
                 </td>
             </tr>
             <tr>
-                <td>Total Sueldo</td>
-                <td *ngFor="let month of months; let i = index">
+                <th class="static first-column" scope="col">Total Sueldo</th>
+                <td *ngFor="let month of months; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-salary">
                         {{ calculateAllSalary(i) | amountFormat }}
                     </label>
                 </td>
             </tr>
             <tr>
-                <td>Prepaga</td>
-                <td *ngFor="let month of months; let i = index">
+                <th class="static first-column" scope="col">Prepaga</th>
+                <td *ngFor="let month of months; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-salary">
                         {{ calculateAllPrepaid(i) | amountFormat }}
                     </label>
                 </td>
             </tr>
             <tr>
-                <td>Cargas (0.51 del sueldo)</td>
-                <td *ngFor="let month of months; let i = index">
+                <th class="static first-column" scope="col">Cargas (0.51 del sueldo)</th>
+                <td *ngFor="let month of months; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-load">
                         {{ calculateLoads(i) | amountFormat }}
                     </label>
                 </td>
             </tr>
             <tr *ngFor="let item of fundedResources; let i = index">
-                <td class="first-column">
+                <th class="static first-column" scope="col">
                     <p>
                         {{ item.display }}
                     </p>
                     <i class="fa fa-2x fa-trash pointer" (click)="deleteResources(item, i)"
                         *ngIf="canDeleteResources(item)"></i>
-                </td>
-                <td *ngFor="let monthCost of item.monthsCost; let i = index">
+                </th>
+                <td *ngFor="let monthCost of item.monthsCost; let i = index; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label" (click)="openEditItemModal(monthCost, item, i)"
                         [ngClass]="resourcesClass(monthCost, item)">
                         {{ monthCost.value | amountFormat }}
