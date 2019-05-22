@@ -5,6 +5,7 @@ import { ManagementReportService } from "app/services/management-report/manageme
 import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 
 @Component({
@@ -58,7 +59,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     constructor(private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
         private menuService: MenuService,
-        private managementReportService: ManagementReportService) { }
+        private managementReportService: ManagementReportService,
+        private router: Router) { }
 
     ngOnInit(): void {
 
@@ -89,6 +91,12 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.getDetailSubscrip = this.managementReportService.getDetail(this.serviceId).subscribe(response => {
 
             this.model = response.data;
+            
+            if(this.menuService.user.id != this.model.managerId || this.menuService.userIsCdg == false){
+                this.router.navigate(['/403']);
+                return false;
+            }
+
             this.ManagementReportId = response.data.managementReportId;
             this.marginTracking.model = response.data;
             this.billing.init(this.serviceId);

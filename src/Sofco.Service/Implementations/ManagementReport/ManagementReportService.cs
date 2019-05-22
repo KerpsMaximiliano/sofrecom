@@ -62,6 +62,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.SolutionType = analytic.Solution?.Text;
                 response.Data.TechnologyType = analytic.Technology?.Text;
                 response.Data.Manager = analytic.Manager?.Name;
+                response.Data.ManagerId = analytic?.ManagerId;
                 response.Data.ManagementReportId = analytic.ManagementReport.Id;
                 response.Data.ManamementReportStartDate = analytic.ManagementReport.StartDate;
                 response.Data.ManamementReportEndDate = analytic.ManagementReport.EndDate;
