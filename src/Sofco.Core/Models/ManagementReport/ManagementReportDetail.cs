@@ -34,6 +34,8 @@ namespace Sofco.Core.Models.ManagementReport
         public DateTime ManamementReportStartDate { get; set; }
 
         public DateTime ManamementReportEndDate { get; set; }
+
+        public int? ManagerId { get; set; }
     }
 
     public class AmmountItem
