@@ -28,7 +28,30 @@
         <table class="table table-striped">
             <thead>
                 <tr class="border-right border-left">
-                    <th colspan="2" class="border-top">Margen Bruto</th>
+                    <th colspan="2" class="border-top">Margen a Terminación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Previsto EvalProp a terminación</td>
+                    <td class="totals">
+                        <div class="value m-r-sm">{{ marginTrackingSelected.PercentageExpectedTotal | amountFormat }}</div>
+                        <div class="percentage">%</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>A terminación</td>
+                    <td class="totals">
+                        <div class="value m-r-sm">{{ marginTrackingSelected.PercentageToEnd | amountFormat }}</div>
+                        <div class="percentage">%</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-striped">
+            <thead>
+                <tr class="border-right border-left">
+                    <th colspan="2" class="border-top">Margen Mensual</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,23 +63,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Previsto EvalProp a terminación</td>
-                    <td class="totals">
-                        <div class="value m-r-sm">{{ marginTrackingSelected.PercentageExpectedTotal | amountFormat }}</div>
-                        <div class="percentage">%</div>
-                    </td>
-                </tr>
-                <tr>
                     <td>Real a la fecha</td>
                     <td class="totals">
                         <div class="value m-r-sm">{{ marginTrackingSelected.PercentageRealToDate | amountFormat }}</div>
-                        <div class="percentage">%</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>A terminación</td>
-                    <td class="totals">
-                        <div class="value m-r-sm">{{ marginTrackingSelected.PercentageToEnd | amountFormat }}</div>
                         <div class="percentage">%</div>
                     </td>
                 </tr>

@@ -92,7 +92,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
             this.model = response.data;
             
-            if(this.menuService.user.id != this.model.managerId || this.menuService.userIsCdg == false){
+            if(this.menuService.user.id != this.model.managerId && this.menuService.userIsCdg == false){
                 this.router.navigate(['/403']);
                 return false;
             }

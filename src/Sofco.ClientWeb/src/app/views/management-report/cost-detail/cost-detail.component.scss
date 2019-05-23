@@ -1,6 +1,8 @@
 table {
   table-layout: fixed;
+  width: max-content;
   font-size: 11px;
+  padding-bottom: 10px;
 }
 
 th,
@@ -51,7 +53,7 @@ td {
 
 .label-load {
   background-color: #b3ffd9;
-  color: #000;
+  color: #5E5E5E;
 }
 
 .cursor-pointer {

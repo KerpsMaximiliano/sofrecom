@@ -76,6 +76,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
+
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
         });
@@ -90,11 +91,11 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
             this.messageService.closeLoading();
         },
-        error => {
-            this.messageService.closeLoading();
-        });
+            error => {
+                this.messageService.closeLoading();
+            });
 
-            this.getUsers()
+        this.getUsers()
     }
 
     ngOnDestroy(): void {
@@ -104,19 +105,19 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         if (this.getContratedSuscrip) this.getContratedSuscrip.unsubscribe();
         if (this.getOtherSuscrip) this.getOtherSuscrip.unsubscribe();
         if (this.deleteOtherSuscrip) this.deleteOtherSuscrip.unsubscribe();
-        if(this. getUsersSubscrip) this.getUsersSubscrip.unsubscribe()
-        if(this. getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe()
+        if (this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe()
+        if (this.getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe()
     }
 
-    totalProvisionedChanged(){
+    totalProvisionedChanged() {
         this.totalProvisionedAux = this.totalProvisioned;
     }
 
-    totalBillingChanged(){
+    totalBillingChanged() {
         this.totalBillingAux = this.totalBilling;
     }
 
-    provisionChanged(){
+    provisionChanged() {
         this.provisionAux = this.provision;
     }
 
@@ -174,8 +175,8 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.deleteContractedSuscrip = this.managementReportService.deleteOtherResources(item.id).subscribe(response => {
                 this.expenses.splice(index, 1);
             },
-            error => {
-            });
+                error => {
+                });
         }
 
         this.calculateTotalCosts();
@@ -199,9 +200,9 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.contracted = response.data.contracted;
             this.expenses = response.data.otherResources;
 
-            if(response.data.totalBilling && response.data.totalBilling != null) this.totalBilling = response.data.totalBilling;
-            if(response.data.provision && response.data.provision != null) this.provision = response.data.provision;
-            if(response.data.totalProvisioned && response.data.totalProvisioned != null) this.totalProvisioned = response.data.totalProvisioned;
+            if (response.data.totalBilling && response.data.totalBilling != null) this.totalBilling = response.data.totalBilling;
+            if (response.data.provision && response.data.provision != null) this.provision = response.data.provision;
+            if (response.data.totalProvisioned && response.data.totalProvisioned != null) this.totalProvisioned = response.data.totalProvisioned;
 
             this.calculateTotalCosts();
 
@@ -241,9 +242,9 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.costDetailMonthModal.hide();
             this.managementReport.updateDetailCost()
         },
-        error => {
-            this.messageService.closeLoading();
-        });
+            error => {
+                this.messageService.closeLoading();
+            });
     }
 
     subResourceChange(subResource) {
@@ -281,9 +282,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
 
             this.users = data;
-            if (this.users.length > 0) {
-                this.userSelected = this.users[0];
-            }
         },
             () => {
                 this.messageService.closeLoading();
@@ -292,31 +290,36 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     addEmployee() {
 
+        if (this.userSelected) {
             this.getEmployeesSubscrip = this.employeeService.getByEmail(this.userSelected.email).subscribe(response => {
-            this.messageService.closeLoading();
+                this.messageService.closeLoading();
 
-            var existingEmployee = this.resources.find(e => e.employeeId === response.data.id)
-            if (!existingEmployee) {
-                var costEmployee = {
-                    id: 0,
-                    costDetailId: 0,
-                    employeeId: response.data.id,
-                    userId: parseInt(this.userSelected.id),
-                    name: `${this.userSelected.text.toUpperCase()} - ${response.data.employeeNumber}`,
-                    salary: 0,
-                    charges: 0,
-                    total: 0,
-                    hasAlocation: false
+                var existingEmployee = this.resources.find(e => e.employeeId === response.data.id)
+                if (!existingEmployee) {
+                    var costEmployee = {
+                        id: 0,
+                        costDetailId: 0,
+                        employeeId: response.data.id,
+                        userId: parseInt(this.userSelected.id),
+                        name: `${this.userSelected.text.toUpperCase()} - ${response.data.employeeNumber}`,
+                        salary: 0,
+                        charges: 0,
+                        total: 0,
+                        hasAlocation: false
+                    }
+
+                    this.resources.push(costEmployee)
                 }
-
-                this.resources.push(costEmployee)
-            }
-            else {
-                this.messageService.showError("managementReport.existingEmployee")
-            }
-        },
-            error => {             
-            })
+                else {
+                    this.messageService.showError("managementReport.existingEmployee")
+                }
+            },
+                error => {
+                })
+        }
+        else {
+            this.messageService.showError("managementReport.userRequired")
+        }
     }
 
 }
