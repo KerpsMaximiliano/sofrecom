@@ -16,6 +16,10 @@ export class UtilsService {
     return this.http.get<any>(`${this.apiUrl}/months`);
   }
 
+  getPrepaids() {
+    return this.http.get<any>(`${this.apiUrl}/prepaids`);
+  }
+
   getCloseMonths() {
     return this.http.get<any>(`${this.apiUrl}/closeMonths`);
   }

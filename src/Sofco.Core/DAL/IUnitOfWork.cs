@@ -68,6 +68,7 @@ namespace Sofco.Core.DAL
 
         ILicenseRepository LicenseRepository { get; }
         ICloseDateRepository CloseDateRepository { get; }
+        IPrepaidImportedDataRepository PrepaidImportedDataRepository { get; }
 
         #endregion
 

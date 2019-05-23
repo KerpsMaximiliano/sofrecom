@@ -8,6 +8,7 @@ import { LicenseDetailComponent } from "./licenses/detail/license-detail.compone
 import { NewsComponent } from "./news/news.component";
 import { LicenseDelegateComponent } from "./licenses/license-delegate/license-delegate.component";
 import { EndNotificationComponent } from "./end-notification/end-notification.component";
+import { PrepaidImportComponent } from "./prepaid-import/prepaid-import";
 
 const RRHH_ROUTER: Routes = [
     { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
@@ -24,6 +25,8 @@ const RRHH_ROUTER: Routes = [
           { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] }
         ]
     },
+
+    { path: "prepaid/import", component: PrepaidImportComponent, canActivate: [AuthGuard] },
 
     { path: "endNotification", component: EndNotificationComponent, canActivate: [AuthGuard] },
 ];

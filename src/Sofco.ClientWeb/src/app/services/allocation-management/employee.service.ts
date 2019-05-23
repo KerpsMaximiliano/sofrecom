@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class EmployeeService {
+  
 
   private baseUrl: string;
 
@@ -104,4 +105,7 @@ export class EmployeeService {
     return this.http.get<any>(`${this.baseUrl}/employees/${email}/infoByMail`);
   }
 
+  getUrlForImportFile(yearId: number, monthId: number, prepaidId: number){
+    return `${this.baseUrl}/prepaid/${prepaidId}/import/${yearId}/${monthId}`;
+  }
 }

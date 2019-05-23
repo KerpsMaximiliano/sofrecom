@@ -93,6 +93,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public Employee GetByDocumentNumber(int dni)
+        {
+            return context.Employees.SingleOrDefault(x => x.DocumentNumber == dni);
+        }
+
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {
             IQueryable<Employee> query = context.Employees.Include(x => x.Manager);
