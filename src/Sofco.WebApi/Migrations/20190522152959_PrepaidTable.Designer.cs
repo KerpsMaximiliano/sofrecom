@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190522152959_PrepaidTable")]
+    partial class PrepaidTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -668,12 +670,12 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(100);
 
+                    b.Property<string>("Prepaid")
+                        .HasMaxLength(100);
+
                     b.Property<decimal>("PrepaidAmount");
 
                     b.Property<int>("PrepaidHealthCode");
-
-                    b.Property<string>("PrepaidPlan")
-                        .HasMaxLength(100);
 
                     b.Property<string>("Profile")
                         .HasMaxLength(100);
@@ -1983,57 +1985,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("LicenseHistories");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.Rrhh.PrepaidImportedData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Comments")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("Cuil")
-                        .HasMaxLength(15);
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Dni")
-                        .HasMaxLength(15);
-
-                    b.Property<int>("EmployeeId");
-
-                    b.Property<string>("EmployeeName")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("EmployeeNumber")
-                        .HasMaxLength(15);
-
-                    b.Property<DateTime>("Period");
-
-                    b.Property<string>("Prepaid")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("PrepaidBeneficiaries");
-
-                    b.Property<decimal>("PrepaidCost");
-
-                    b.Property<string>("PrepaidPlan")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("Status");
-
-                    b.Property<int>("TigerBeneficiaries");
-
-                    b.Property<decimal>("TigerCost");
-
-                    b.Property<string>("TigerPlan")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PrepaidImportedData");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.Workflow.UserSource", b =>
                 {
                     b.Property<int>("Id")
@@ -2596,11 +2547,7 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(250);
+                    b.Property<string>("Text");
 
                     b.HasKey("Id");
 

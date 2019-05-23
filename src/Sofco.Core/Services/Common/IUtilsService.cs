@@ -40,5 +40,7 @@ namespace Sofco.Core.Services.Common
 
         IList<BankModel> GetBanks();
         IList<EmployeeProfileModel> GetEmployeeProfiles();
+
+        IList<Prepaid> GetPrepaids();
     }
 }

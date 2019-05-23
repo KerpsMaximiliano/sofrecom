@@ -90,6 +90,7 @@ namespace Sofco.DAL
         public DbSet<License> Licenses { get; set; }
         public DbSet<LicenseHistory> LicenseHistories { get; set; }
         public DbSet<CloseDate> CloseDates { get; set; }
+        public DbSet<PrepaidImportedData> PrepaidImportedData { get; set; }
 
         // Advancement and Refund
         public DbSet<Advancement> Advancements { get; set; }
@@ -123,8 +124,8 @@ namespace Sofco.DAL
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
         public DbSet<MonthsReturn> MonthsReturns { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }
-
         public DbSet<EmployeeProfile> EmployeeProfile { get; set; }
+        public DbSet<Prepaid> Prepaids { get; set; }
 
         //Workflow
 
@@ -210,6 +211,7 @@ namespace Sofco.DAL
             builder.MapContact();
             builder.MapOpportunity();
             builder.MapManagementReport();
+            builder.MapPrepaid();
         }
     }
 }

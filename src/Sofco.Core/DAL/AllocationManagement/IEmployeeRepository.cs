@@ -58,5 +58,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Sector> GetAnalyticsWithSector(int employeeId);
 
         IList<Employee> GetByManagerId(int managerId);
+        Employee GetByDocumentNumber(int dni);
     }
 }

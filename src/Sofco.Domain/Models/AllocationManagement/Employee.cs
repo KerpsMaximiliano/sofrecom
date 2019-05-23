@@ -112,7 +112,7 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public decimal PrepaidAmount { get; set; }
 
-        public string Prepaid { get; set; }
+        public string PrepaidPlan { get; set; }
 
         public ICollection<CostDetailResource> CostDetailResources { get; set; }
     }

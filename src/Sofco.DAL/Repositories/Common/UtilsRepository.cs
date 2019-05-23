@@ -129,5 +129,15 @@ namespace Sofco.DAL.Repositories.Common
                     .OrderBy(p => p.Text)
                     .ToList();
         }
+
+        public IList<Prepaid> GetPrepaids()
+        {
+            return Context.Prepaids.ToList().AsReadOnly();
+        }
+
+        public Prepaid GetPrepaid(int prepaidId)
+        {
+            return Context.Prepaids.SingleOrDefault(x => x.Id == prepaidId);
+        }
     }
 }

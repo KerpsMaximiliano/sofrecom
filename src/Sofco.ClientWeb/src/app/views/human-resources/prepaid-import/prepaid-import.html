@@ -1,0 +1,79 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Importación masiva control de prepagas </h2>
+
+        <ol class="breadcrumb">
+            <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
+            <li>Recursos humanos</li>
+            <li class="active"><strong> Importación masiva </strong></li>
+        </ol>
+    </div>
+</div> 
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="control-label">Año</label>
+                        <ng-select [items]="years" bindLabel="text" bindValue="id" [(ngModel)]="yearId" (change)="dateChange()"></ng-select>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label class="control-label">Mes</label>
+                        <ng-select [items]="months" bindLabel="text" bindValue="id" [(ngModel)]="monthId" (change)="dateChange()"></ng-select>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label class="control-label">Prepaga</label>
+                        <ng-select [items]="prepaids" bindLabel="text" bindValue="id" [(ngModel)]="prepaidId" (change)="uploaderConfig()"></ng-select>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="m-t-sm" *ngIf="prepaidId > 0 && monthId > 0 && yearId > 0">
+                        <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+            
+                        <div class="uploader-margin-top">
+                            <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+                            <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                            </div>
+        
+                            <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                                <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+                            </button>
+                            <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                                <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3" *ngFor="let item of itemsDashboard">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h5 class="text-center">{{ item.prepaid }} </h5>
+                    <table class="table table-stripped small" style="margin-bottom: 0px">
+                        <tbody>
+                        <tr>
+                            <td class="no-borders"><i class="fa fa-circle text-navy"></i></td>
+                            <td class="no-borders">Registros con exito: {{ item.countSuccess }}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-circle text-danger"></i></td>
+                            <td>Registros a verificar: {{ item.countError }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

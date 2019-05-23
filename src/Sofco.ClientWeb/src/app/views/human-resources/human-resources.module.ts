@@ -33,17 +33,20 @@ import { CustomerService } from '../../services/billing/customer.service';
 import { ApproversModule } from '../common/approvers/approvers.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EndNotificationComponent } from './end-notification/end-notification.component';
+import { PrepaidImportComponent } from './prepaid-import/prepaid-import';
+import { UtilsService } from 'app/services/common/utils.service';
+import { PrepaidService } from 'app/services/human-resources/prepaid.service';
 
 @NgModule({
   declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
                 LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent, LicenseCancelComponent, UnemployeesSearchComponent,
-                NewsComponent, LicenseDelegateComponent, EndNotificationComponent],
+                NewsComponent, LicenseDelegateComponent, EndNotificationComponent, PrepaidImportComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, AddLicenseModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter,
                 ApproversModule, NgSelectModule],
 
-  providers   : [LicenseService, EmployeeService, EmployeeNewsService, ServiceService, CustomerService],
+  providers   : [LicenseService, EmployeeService, EmployeeNewsService, ServiceService, CustomerService, UtilsService, PrepaidService],
 
   exports     : []
 })

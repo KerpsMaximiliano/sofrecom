@@ -192,6 +192,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>License.resx</DependentUpon>
     </Compile>
+    <Compile Update="Rrhh\Prepaid.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Prepaid.resx</DependentUpon>
+    </Compile>
     <Compile Update="Rrhh\TigerReport.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -349,6 +354,10 @@
     <EmbeddedResource Update="Rrhh\License.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>License.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Rrhh\Prepaid.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Prepaid.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Rrhh\TigerReport.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
