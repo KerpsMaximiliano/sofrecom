@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Admin;
@@ -49,6 +50,19 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             options.AddRange(employeeService.GetAll().OrderBy(x => x.Name).Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" }));
 
             return Ok(options);
+        }
+
+        [HttpGet("listItems")]
+        public IActionResult GetListItems()
+        {
+            var model = new List<EmployeeSelectListItem>();
+
+            var employees = employeeService.GetAll().OrderBy(x => x.Name);
+
+            foreach (var employee in employees)
+                model.Add(new EmployeeSelectListItem { Id = employee.Id.ToString(), Text = employee.Name, employeeNumber = employee.EmployeeNumber });
+
+            return Ok(model);
         }
 
         [HttpGet("{id}/profile")]
