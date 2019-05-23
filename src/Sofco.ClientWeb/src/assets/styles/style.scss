@@ -757,3 +757,7 @@ bs-datepicker-container {
   position: initial!important;
   text-align: left!important;
 }
+
+.swal2-container.swal2-center.swal2-fade.swal2-shown {
+  z-index: 2550 !important;
+}

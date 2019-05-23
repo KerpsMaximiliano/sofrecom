@@ -76,6 +76,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
+
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
         });
