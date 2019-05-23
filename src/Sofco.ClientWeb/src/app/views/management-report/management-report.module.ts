@@ -27,6 +27,7 @@ import { DigitModule } from "app/components/digit-limit/digit-limit.directive";
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { ModalEvalPropComponent } from "./modal-evalprop/modal-evalprop";
 import { EmployeeService } from "app/services/allocation-management/employee.service"
+import { fromDateModule } from "app/pipes/form-date.module";
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
       DecimalFormatModule,
       Ng2ModalModule, 
       AmountFormatModule,
+      fromDateModule,
       PCheckModule,
       NgSelectModule,
       DigitModule,
