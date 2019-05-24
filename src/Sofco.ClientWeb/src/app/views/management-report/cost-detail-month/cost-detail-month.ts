@@ -184,7 +184,8 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
         this.isReadOnly = !data.isCdg;
         this.AnalyticId = data.AnalyticId;
-        this.resources = data.resources.employees
+        debugger
+        this.resources = data.resources.employees.filter( x=> x.hasAlocation == true || x.salary > 0 || x.charges > 0)
         this.totalBilling = data.totals.totalBilling;
         this.totalProvisioned = data.totals.totalProvisioned;
         this.provision = data.totals.provision;
