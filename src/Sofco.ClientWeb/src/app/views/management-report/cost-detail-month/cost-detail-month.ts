@@ -8,7 +8,6 @@ import { ActivatedRoute } from "@angular/router";
 import { detectBody } from "app/app.helpers";
 import { ManagementReportDetailComponent } from "../detail/mr-detail"
 import { datepickerLocale } from "fullcalendar";
-import { UserService } from "app/services/admin/user.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service"
 
 @Component({
@@ -24,7 +23,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     deleteContractedSuscrip: Subscription;
     deleteOtherSuscrip: Subscription;
     paramsSubscrip: Subscription;
-    getUsersSubscrip: Subscription;
     getEmployeesSubscrip: Subscription
 
     @ViewChild('costDetailMonthModal') costDetailMonthModal;
@@ -71,7 +69,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         private managementReportService: ManagementReportService,
         private activatedRoute: ActivatedRoute,
         private managementReport: ManagementReportDetailComponent,
-        private usersService: UserService,
         private employeeService: EmployeeService
     ) { }
 
@@ -105,7 +102,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         if (this.getContratedSuscrip) this.getContratedSuscrip.unsubscribe();
         if (this.getOtherSuscrip) this.getOtherSuscrip.unsubscribe();
         if (this.deleteOtherSuscrip) this.deleteOtherSuscrip.unsubscribe();
-        if (this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe()
         if (this.getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe()
     }
 
@@ -278,7 +274,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     getUsers() {
         this.messageService.showLoading();
 
-        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
+        this.getEmployeesSubscrip = this.employeeService.getListItems().subscribe(data => {
             this.messageService.closeLoading();
 
             this.users = data;
@@ -291,31 +287,25 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     addEmployee() {
 
         if (this.userSelected) {
-            this.getEmployeesSubscrip = this.employeeService.getByEmail(this.userSelected.email).subscribe(response => {
-                this.messageService.closeLoading();
-
-                var existingEmployee = this.resources.find(e => e.employeeId === response.data.id)
-                if (!existingEmployee) {
-                    var costEmployee = {
-                        id: 0,
-                        costDetailId: 0,
-                        employeeId: response.data.id,
-                        userId: parseInt(this.userSelected.id),
-                        name: `${this.userSelected.text.toUpperCase()} - ${response.data.employeeNumber}`,
-                        salary: 0,
-                        charges: 0,
-                        total: 0,
-                        hasAlocation: false
-                    }
-
-                    this.resources.push(costEmployee)
+            var existingEmployee = this.resources.find(e => e.employeeId === this.userSelected.id)
+            if (!existingEmployee) {
+                var costEmployee = {
+                    id: 0,
+                    costDetailId: 0,
+                    employeeId: this.userSelected,
+                    userId: this.userSelected.id,
+                    name: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
+                    salary: 0,
+                    charges: 0,
+                    total: 0,
+                    hasAlocation: false
                 }
-                else {
-                    this.messageService.showError("managementReport.existingEmployee")
-                }
-            },
-                error => {
-                })
+
+                this.resources.push(costEmployee)
+            }
+            else {
+                this.messageService.showError("managementReport.existingEmployee")
+            }
         }
         else {
             this.messageService.showError("managementReport.userRequired")
