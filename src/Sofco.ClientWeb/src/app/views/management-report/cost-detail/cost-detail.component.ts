@@ -487,12 +487,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 totalCost += resource.monthsCost[index].value;
             }
         })
-
-        if (this.months[index]) {
-            this.months[index].value = totalCost + (totalSalary * 0.51);
-        }
-
-        return totalCost + (totalSalary * 0.51);
+       
+         return totalCost + (totalSalary * 0.51);
     }
 
     calculateLoads(month) {
