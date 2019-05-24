@@ -60,7 +60,10 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             var employees = employeeService.GetAll().OrderBy(x => x.Name);
 
             foreach (var employee in employees)
-                model.Add(new EmployeeSelectListItem { Id = employee.Id.ToString(), Text = employee.Name, employeeNumber = employee.EmployeeNumber });
+            {
+                var user = userService.GetUserInfo(employee.Id);
+                model.Add(new EmployeeSelectListItem { Id = employee.Id, Text = employee.Name.ToUpper(), employeeNumber = employee.EmployeeNumber, UserId = user.Data?.Id });
+            }
 
             return Ok(model);
         }
