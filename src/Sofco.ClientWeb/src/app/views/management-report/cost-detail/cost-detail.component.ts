@@ -137,10 +137,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.employeesOriginal = response.data.costEmployees;
             this.costProfiles = response.data.costProfiles;
 
-            this.months.forEach((element, index) => {
-                element.value = this.calculateTotalCosts(index);
-            });
-
             if (this.otherResources.length > 0) {
                 this.otherSelected = this.otherResources[0];
             }
@@ -150,7 +146,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             () => this.messageService.closeLoading());
     }
 
-    openEditItemModal(month, item, indexMonth) {
+    openEditItemModal(month, item) {
 
         if (this.canEdit) {
             // if (item.typeName == 'Empleados' && !month.hasAlocation) {
@@ -158,6 +154,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             // }
             // else {
             //this.editItemModal.show();
+            const indexMonth = item.monthsCost.findIndex(cost => cost === month);
+
             this.monthSelected = month;
             this.indexSelected = indexMonth;
             this.itemSelected = item;
@@ -217,7 +215,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     EditItem() {
 
         this.monthSelected.value = this.editItemMonto.value
-
         switch (this.itemSelected.typeName) {
 
             case this.typeEmployee:
@@ -419,7 +416,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    calculateAllSalary(index) {
+    calculateAllSalary(month) {
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalSalary = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
@@ -436,7 +434,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalSalary
     }
 
-    calculateAssignedEmployees(index) {
+    calculateAssignedEmployees(month) {
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalEmployees = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
@@ -457,9 +456,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalEmployees
     }
 
-    calculateTotalCosts(index) {
+    calculateTotalCosts(month) {
+        
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalCost = 0;
-        var totalSalary = 0;
+        var totalSalary = 0;        
 
         //Sumo el totol de los sueldos
         this.employees.forEach(employee => {
@@ -494,8 +495,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalCost + (totalSalary * 0.51);
     }
 
-    calculateLoads(index) {
-
+    calculateLoads(month) {
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalSalary = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
@@ -512,7 +513,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalSalary * 0.51;
     }
 
-    calculateAllPrepaid(index) {
+    calculateAllPrepaid(month) {
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalPrepaid = 0
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].charges) {

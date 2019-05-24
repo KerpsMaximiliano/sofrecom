@@ -12,7 +12,7 @@
                 <th class="static first-column" scope="col">Total Costos</th>
                 <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-total">
-                        {{ calculateTotalCosts(i) | amountFormat }}
+                        {{ calculateTotalCosts(month) | amountFormat }}
                     </label>
                 </td>
             </tr>
@@ -20,7 +20,7 @@
                 <th class="static first-column" scope="col">Cantidad Recursos costeados</th>
                 <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-cant-resources">
-                        {{ calculateAssignedEmployees(i) }}
+                        {{ calculateAssignedEmployees(month) }}
                     </label>
                 </td>
             </tr>
@@ -55,7 +55,7 @@
                 <th class="static first-column" scope="col">Total Sueldo</th>
                 <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-salary">
-                        {{ calculateAllSalary(i) | amountFormat }}
+                        {{ calculateAllSalary(month) | amountFormat }}
                     </label>
                 </td>
             </tr>
@@ -63,7 +63,7 @@
                 <th class="static first-column" scope="col">Prepaga</th>
                 <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-salary">
-                        {{ calculateAllPrepaid(i) | amountFormat }}
+                        {{ calculateAllPrepaid(month) | amountFormat }}
                     </label>
                 </td>
             </tr>
@@ -71,7 +71,7 @@
                 <th class="static first-column" scope="col">Cargas (0.51 del sueldo)</th>
                 <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-load">
-                        {{ calculateLoads(i) | amountFormat }}
+                        {{ calculateLoads(month) | amountFormat }}
                     </label>
                 </td>
             </tr>
