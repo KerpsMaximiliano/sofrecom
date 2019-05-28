@@ -1,0 +1,27 @@
+table{
+    table-layout: fixed;
+}
+
+.row-error {
+    td {
+        background: #ed5565;
+        opacity: 0.8;
+        color: black;
+    }
+}
+
+.row-success {
+    td{
+        background: #1AB38D;
+        opacity: 0.6;
+        color: black;
+    }
+}
+
+.row-provisioned {
+    td{
+        background: #f8ac59;
+        opacity: 0.6;
+        color: black;
+    }
+}

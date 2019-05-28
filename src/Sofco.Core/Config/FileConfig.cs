@@ -8,5 +8,6 @@
         public string InvoicesExcelPath { get; set; }
         public string InvoicesPdfPath { get; set; }
         public string RefundPath { get; set; }
+        public string PrepaidPath { get; set; }
     }
 }

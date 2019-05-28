@@ -14,21 +14,21 @@ using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 {
-    public class SwissPrepaidFileManager : BasePrepaidFileManager, IPrepaidFileManager
+    public class OsdePrepaidFileManager : BasePrepaidFileManager, IPrepaidFileManager
     {
         private readonly IUnitOfWork unitOfWork;
 
-        private const int DocumentColumn = 23;
-        private const int CuilColumn = 9;
-        private const int BeneficiariesColumn = 7;
-        private const int CostColumn = 11;
-        private const int PlanColumn = 3;
-        private const int PeriodColumn = 8;
+        private const int DocumentColumn = 11;
+        private const int CuilColumn = 10;
+        private const int BeneficiariesColumn = 17;
+        private const int CostColumn = 26;
+        private const int PlanColumn = 20;
+        private const int PeriodColumn = 1;
 
-        public SwissPrepaidFileManager(IUnitOfWork unitOfWork)
+        public OsdePrepaidFileManager(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            FileName = "swiss.xlsx";
+            FileName = "osde.xlsx";
         }
 
         public Response<PrepaidDashboard> Process(int yearId, int monthId, IFormFile file, Prepaid prepaid)
@@ -126,7 +126,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
             var dataSplit = data.Split(' ');
 
-            if(dataSplit.Length != 4) return DateTime.MinValue;
+            if (dataSplit.Length != 4) return DateTime.MinValue;
 
             var dateSplit = dataSplit[0].Split('/');
 

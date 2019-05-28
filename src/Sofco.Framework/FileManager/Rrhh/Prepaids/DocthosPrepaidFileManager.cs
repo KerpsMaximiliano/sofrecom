@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using Sofco.Core.DAL;
@@ -14,7 +13,7 @@ using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 {
-    public class SwissPrepaidFileManager : BasePrepaidFileManager, IPrepaidFileManager
+    public class DocthosPrepaidFileManager : BasePrepaidFileManager, IPrepaidFileManager
     {
         private readonly IUnitOfWork unitOfWork;
 
@@ -25,10 +24,10 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
         private const int PlanColumn = 3;
         private const int PeriodColumn = 8;
 
-        public SwissPrepaidFileManager(IUnitOfWork unitOfWork)
+        public DocthosPrepaidFileManager(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            FileName = "swiss.xlsx";
+            FileName = "docthos.xlsx";
         }
 
         public Response<PrepaidDashboard> Process(int yearId, int monthId, IFormFile file, Prepaid prepaid)
@@ -126,7 +125,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
             var dataSplit = data.Split(' ');
 
-            if(dataSplit.Length != 4) return DateTime.MinValue;
+            if (dataSplit.Length != 4) return DateTime.MinValue;
 
             var dateSplit = dataSplit[0].Split('/');
 

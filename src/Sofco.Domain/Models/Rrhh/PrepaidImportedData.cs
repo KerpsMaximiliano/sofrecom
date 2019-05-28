@@ -1,12 +1,11 @@
 ﻿using System;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Domain.Models.Rrhh
 {
     public class PrepaidImportedData : BaseEntity
     {
-        public string Prepaid { get; set; }
-
         public DateTime Period { get; set; }
 
         public int EmployeeId { get; set; }
@@ -36,5 +35,9 @@ namespace Sofco.Domain.Models.Rrhh
         public PrepaidImportedDataStatus Status { get; set; }
 
         public DateTime Date { get; set; }
+
+        public int PrepaidId { get; set; }
+
+        public Prepaid Prepaid { get; set; }
     }
 }

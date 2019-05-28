@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using Sofco.Core.DAL;
@@ -14,21 +13,20 @@ using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 {
-    public class SwissPrepaidFileManager : BasePrepaidFileManager, IPrepaidFileManager
+    public class MedifePrepaidFileManager : BasePrepaidFileManager, IPrepaidFileManager
     {
         private readonly IUnitOfWork unitOfWork;
 
-        private const int DocumentColumn = 23;
-        private const int CuilColumn = 9;
-        private const int BeneficiariesColumn = 7;
-        private const int CostColumn = 11;
-        private const int PlanColumn = 3;
-        private const int PeriodColumn = 8;
+        private const int CuilColumn = 6;
+        private const int BeneficiariesColumn = 8;
+        private const int CostColumn = 2;
+        private const int PlanColumn = 9;
+        private const int PeriodColumn = 7;
 
-        public SwissPrepaidFileManager(IUnitOfWork unitOfWork)
+        public MedifePrepaidFileManager(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            FileName = "swiss.xlsx";
+            FileName = "medife.xlsx";
         }
 
         public Response<PrepaidDashboard> Process(int yearId, int monthId, IFormFile file, Prepaid prepaid)
@@ -60,13 +58,15 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
             while (!end)
             {
-                var dni = sheet.GetValue(index, DocumentColumn)?.ToString();
+                var cuil = sheet.GetValue(index, CuilColumn)?.ToString();
 
-                if (string.IsNullOrWhiteSpace(dni))
+                if (string.IsNullOrWhiteSpace(cuil))
                 {
                     end = true;
                     continue;
                 }
+
+                var dni = GetDocument(cuil);
 
                 var itemToAdd = new PrepaidImportedData();
                 var dniToInt = Convert.ToInt32(dni);
@@ -75,7 +75,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                 itemToAdd.PrepaidId = prepaid.Id;
 
                 itemToAdd.Dni = dni;
-                itemToAdd.Cuil = sheet.GetValue(index, CuilColumn)?.ToString();
+                itemToAdd.Cuil = cuil;
                 itemToAdd.PrepaidBeneficiaries = GetPrepaidBeneficiaries(sheet.GetValue(index, BeneficiariesColumn)?.ToString());
                 itemToAdd.PrepaidCost = GetPrepaidCost(sheet.GetValue(index, CostColumn)?.ToString());
                 itemToAdd.PrepaidPlan = sheet.GetValue(index, PlanColumn)?.ToString();
@@ -120,21 +120,24 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
             return response;
         }
 
+        private string GetDocument(string data)
+        {
+            if (data.Length != 11) return "1";
+
+            return data.Substring(2, 8);
+        }
+
         private DateTime GetPeriod(string data)
         {
             if (string.IsNullOrWhiteSpace(data)) return DateTime.MinValue;
 
-            var dataSplit = data.Split(' ');
+            var dateSplit = data.Split('/');
 
-            if(dataSplit.Length != 4) return DateTime.MinValue;
-
-            var dateSplit = dataSplit[0].Split('/');
-
-            if (dateSplit.Length != 3) return DateTime.MinValue;
+            if (dateSplit.Length != 2) return DateTime.MinValue;
 
             try
             {
-                return new DateTime(Convert.ToInt32(dateSplit[2]), Convert.ToInt32(dateSplit[1]), 1);
+                return new DateTime(Convert.ToInt32(dateSplit[1]), Convert.ToInt32(dateSplit[0]), 1);
             }
             catch (Exception e)
             {
