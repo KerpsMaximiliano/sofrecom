@@ -101,7 +101,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.ManagementReportId = response.data.managementReportId;
             this.marginTracking.model = response.data;
             this.billing.init(this.serviceId);
-
+            this.marginTracking.init(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
 
             this.messageService.closeLoading();
         },

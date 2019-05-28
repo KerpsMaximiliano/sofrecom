@@ -40,9 +40,25 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.isManager = this.menuService.userIsManager;
         this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
+ 
+    }
 
-        var dateSetting = this.datesService.getMonth(new Date());
-        this.setDate(dateSetting);  
+    init(reportStartDate, reportEndDate){
+        
+        const today = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        const dateReportStart = new Date(new Date(reportStartDate).getFullYear(), new Date(reportStartDate).getMonth(), 1)
+        const dateReportEnd = new Date(new Date(reportEndDate).getFullYear(), new Date(reportEndDate).getMonth(), 1)
+
+        let startDate = today;
+        if(today < dateReportStart){
+            startDate = dateReportStart
+        }
+        if(today > dateReportEnd){
+            startDate = dateReportEnd
+        }
+
+        var dateSetting = this.datesService.getMonth(startDate);
+        this.setDate(dateSetting); 
     }
 
     ngOnDestroy(): void {
@@ -95,6 +111,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     }
 
     calculate(manamementReportStartDate, manamementReportEndDate){
+
         if(!this.billingDataLoaded || !this.costDataLoaded) return;
 
         this.allMarginTrackings = [];
