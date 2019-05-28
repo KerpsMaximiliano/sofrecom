@@ -10,7 +10,15 @@ export class PrepaidService {
     this.baseUrl = this.service.UrlApi;
   }
 
+  getDashboard(year, month) {
+    return this.http.get<any>(`${this.baseUrl}/prepaid/${year}/${month}/dashboard`);
+  }
+
   get(year, month) {
     return this.http.get<any>(`${this.baseUrl}/prepaid/${year}/${month}`);
+  }
+
+  update(model) {
+    return this.http.put<any>(`${this.baseUrl}/prepaid`, model);
   }
 }

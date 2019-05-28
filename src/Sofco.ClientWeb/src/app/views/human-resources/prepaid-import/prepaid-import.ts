@@ -75,7 +75,7 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
 
         if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0) return;
 
-        this.getDashboardSubscrip = this.prepaidService.get(this.yearId, this.monthId).subscribe(response => {
+        this.getDashboardSubscrip = this.prepaidService.getDashboard(this.yearId, this.monthId).subscribe(response => {
             if(response && response.data && response.data.length > 0){
                 this.itemsDashboard = response.data;
             }
@@ -106,9 +106,23 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
                 return;
             }
 
-            this.messageService.closeLoading();
-
             var dataJson = JSON.parse(response);
+
+            this.prepaidId = null;
+
+            if(dataJson.messages){
+                this.messageService.showMessages(dataJson.messages);
+            }
+
+            if(dataJson.data){
+                var itemExist = this.itemsDashboard.findIndex(x => x.prepaid == dataJson.data.prepaid);
+
+                if(itemExist >= 0){
+                    this.itemsDashboard.splice(itemExist, 1);
+                }
+
+                this.itemsDashboard.push(dataJson.data);
+            }
 
             this.clearSelectedFile();
         };

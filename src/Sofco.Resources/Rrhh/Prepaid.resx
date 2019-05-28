@@ -135,14 +135,29 @@
   <data name="FileEmpty" xml:space="preserve">
     <value>rrhh/prepaid.fileEmpty</value>
   </data>
+  <data name="FileWrong" xml:space="preserve">
+    <value>rrhh/prepaid.fileWrong</value>
+  </data>
   <data name="MonthError" xml:space="preserve">
     <value>rrhh/prepaid.monthError</value>
+  </data>
+  <data name="NoDataUpdate" xml:space="preserve">
+    <value>rrhh/prepaid.noDataUpdate</value>
+  </data>
+  <data name="NoItemsSelected" xml:space="preserve">
+    <value>rrhh/prepaid.noItemsSelected</value>
   </data>
   <data name="NotFound" xml:space="preserve">
     <value>rrhh/prepaid.notFound</value>
   </data>
   <data name="NotImplemented" xml:space="preserve">
     <value>rrhh/prepaid.notImplemented</value>
+  </data>
+  <data name="StatusEmpty" xml:space="preserve">
+    <value>rrhh/prepaid.statusEmpty</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>rrhh/prepaid.updateSuccess</value>
   </data>
   <data name="YearError" xml:space="preserve">
     <value>rrhh/prepaid.yearError</value>

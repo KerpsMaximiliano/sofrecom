@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
@@ -37,10 +38,26 @@ namespace Sofco.WebApi.Controllers.Rrhh
             }
         }
 
-        [HttpGet("{yearId}/{monthId}")]
-        public IActionResult Import(int yearId, int monthId)
+        [HttpGet("{yearId}/{monthId}/dashboard")]
+        public IActionResult Dashboard(int yearId, int monthId)
         {
             var response = this.prepaidService.GetDashboard(yearId, monthId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{yearId}/{monthId}")]
+        public IActionResult Get(int yearId, int monthId)
+        {
+            var response = this.prepaidService.Get(yearId, monthId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut]
+        public IActionResult Get([FromBody] PrepaidImportedDataUpdateModel model)
+        {
+            var response = this.prepaidService.Update(model);
 
             return this.CreateResponse(response);
         }

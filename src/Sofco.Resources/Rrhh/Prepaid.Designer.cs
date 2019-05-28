@@ -115,11 +115,38 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/prepaid.fileWrong.
+        /// </summary>
+        public static string FileWrong {
+            get {
+                return ResourceManager.GetString("FileWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/prepaid.monthError.
         /// </summary>
         public static string MonthError {
             get {
                 return ResourceManager.GetString("MonthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/prepaid.noDataUpdate.
+        /// </summary>
+        public static string NoDataUpdate {
+            get {
+                return ResourceManager.GetString("NoDataUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/prepaid.noItemsSelected.
+        /// </summary>
+        public static string NoItemsSelected {
+            get {
+                return ResourceManager.GetString("NoItemsSelected", resourceCulture);
             }
         }
         
@@ -138,6 +165,24 @@ namespace Sofco.Resources.Rrhh {
         public static string NotImplemented {
             get {
                 return ResourceManager.GetString("NotImplemented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/prepaid.statusEmpty.
+        /// </summary>
+        public static string StatusEmpty {
+            get {
+                return ResourceManager.GetString("StatusEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/prepaid.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
         
