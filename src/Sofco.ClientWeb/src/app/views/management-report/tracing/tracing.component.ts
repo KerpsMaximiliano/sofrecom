@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DataTableService } from "app/services/common/datatable.service";
+import { DatesService } from "app/services/common/month.service";
 
 @Component({
     selector: 'management-report-tracing',
@@ -11,7 +12,8 @@ export class TracingComponent implements OnInit, OnDestroy {
     AllMarginTracking: any[] = new Array()
     analytic: string
     
-    constructor(private dataTableService : DataTableService){
+    constructor(private dataTableService : DataTableService,
+                private datesService: DatesService,){
 
     }
     
@@ -26,43 +28,23 @@ export class TracingComponent implements OnInit, OnDestroy {
 
         this.hideColumnsDataTable()
         this.analytic = analytic
-        let colum = 0
-        let colums = []
+        let column = 0
+        let columns = []
         this.AllMarginTracking = marginTracking
         
         this.AllMarginTracking.forEach(margin => {
-            margin.display = this.getDateShortDescrip(margin.Month, margin.Year)
-            colums.push(colum)
-            colum++
+            var month =  this.datesService.getMonth(new Date(margin.Year, margin.Month))
+            margin.display = `${month.montShort} ${month.year} `
+            columns.push(column)
+            column++
         })
 
-        this.initGrid(colums)
-
-     
+        columns.push(column)
+        this.initGrid(columns)     
     }
 
-    getDateShortDescrip(month, year){
- 
-        switch (month)
-        {
-            case 1: return `Ene. ${year}`;
-            case 2: return `Feb. ${year}`;
-            case 3: return `Mar. ${year}`;
-            case 4: return `Abr. ${year}`;;
-            case 5: return `May. ${year}`;
-            case 6: return `Jun.${year}`;
-            case 7: return `Jul. ${year}`;
-            case 8: return `Ago. ${year}`;
-            case 9: return `Sep. ${year}`;
-            case 10: return `Oct. ${year}`;
-            case 11: return `Nov. ${year}`;
-            case 12: return `Dic. ${year}`;
-            default: return '';
-        }
-    }
+    initGrid(columns) {
 
-    initGrid(colums) {
-        var columns = colums
         var title = `${this.analytic}`;
 
         var params = {

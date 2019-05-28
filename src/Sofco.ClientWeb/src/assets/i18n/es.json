@@ -1059,6 +1059,20 @@
         "november": "Noviembre",
         "december": "Diciembre"
     },
+    "monthsShort": {
+        "january": "Ene.",
+        "february": "Feb.",
+        "march": "Mar.",
+        "april": "Abr.",
+        "may": "May.",
+        "june": "Jun.",
+        "july": "Jul.",
+        "august": "Ago.",
+        "september": "Sep.",
+        "october": "Oct.",
+        "november": "Nov.",
+        "december": "Dic."
+    },
     "advancement": {
         "navigationTitle": "Adelantos y Reintegros",
         "addTitle": "Solicitud Adelanto",
