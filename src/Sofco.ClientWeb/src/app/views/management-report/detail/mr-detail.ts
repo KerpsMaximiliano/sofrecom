@@ -38,6 +38,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     @ViewChild("marginTracking") marginTracking;
     @ViewChild("billing") billing;
     @ViewChild("detailCost") detailCost;
+    @ViewChild('tracing') tracing;
     @ViewChild('costDetailMonth') costDetailMonth;
     @ViewChild('dateReportStart') dateReportStart;
     @ViewChild('dateReportEnd') dateReportEnd;
@@ -162,8 +163,13 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
         this.ReportStartDateError = false
         this.ReportEndDateError = false
+        
+        const dateReportStart = new Date(new Date(this.ReportStartDate).getFullYear(), new Date(this.ReportStartDate).getMonth(), 1)
+        const dateReportEnd = new Date(new Date(this.ReportEndDate).getFullYear(), new Date(this.ReportEndDate).getMonth(), 1)
+        const dateAnalyticStart = new Date(new Date(this.model.startDate).getFullYear(), new Date(this.model.startDate).getMonth(), 1)
+        const dateAnalyticEnd = new Date(new Date(this.model.endDate).getFullYear(), new Date(this.model.endDate).getMonth(), 1)
 
-        if (new Date(this.ReportStartDate) < new Date(this.model.startDate)) {
+        if (dateReportStart < dateAnalyticStart) {
             this.ReportStartDateError = true
             this.editDateModal.resetButtons()
             this.messageService.showError("managementReport.startDateOutOfRange")
@@ -172,10 +178,10 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.ReportStartDateError = false
         }
 
-        if (new Date(this.ReportEndDate) > new Date(this.model.endDate)) {
+        if (dateReportEnd > dateAnalyticEnd) {
             this.ReportEndDateError = true
             this.editDateModal.resetButtons()
-            this.messageService.showError("managementReport.startDateOutOfRange")
+            this.messageService.showError("managementReport.endDateOutOfRange")
         }
         else{
             this.ReportEndDateError = false
@@ -223,7 +229,13 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate);
     }
 
+    getMarginTracking(allMarginTrackings){    
+      this.tracing.open(allMarginTrackings)
+    }
+
     getEvalPropData(data){
         this.marginTracking.updateEvalpropValues(data, this.model.manamementReportStartDate, this.model.manamementReportEndDate);
     }
+    
+
 }

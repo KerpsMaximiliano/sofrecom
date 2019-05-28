@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, Input } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, Input, Output, EventEmitter } from "@angular/core";
 import { MenuService } from "app/services/admin/menu.service";
 import { DatesService } from "app/services/common/month.service";
 import { ManagementReportDetailComponent } from "../detail/mr-detail"
@@ -30,6 +30,8 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     public marginTrackingSelected: MarginTracking = new MarginTracking();
     private allMarginTrackings: any[] = new Array();
 
+    @Output() getData: EventEmitter<any> = new EventEmitter();
+    
     constructor(private menuService: MenuService,
                 private datesService: DatesService,
                 private managementReportDetail: ManagementReportDetailComponent
@@ -188,6 +190,8 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, percentageExpectedTotal);
 
         this.setMarginTracking();
+
+        this.sendDataToDetailView(this.allMarginTrackings)
     }
 
     updateEvalpropValues(data, startDate, endDate){
@@ -267,6 +271,13 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         // Previsto % (ventas)
         if (evalpropBillingValue > 0) {
             marginTracking.PercentageExpected = ((evalpropBillingValue - evalpropCostValue) / evalpropBillingValue) * 100;
+        }
+    }
+
+    sendDataToDetailView(allMarginTrackings) {
+        
+        if (this.getData.observers.length > 0) {
+            this.getData.emit(allMarginTrackings);
         }
     }
 }

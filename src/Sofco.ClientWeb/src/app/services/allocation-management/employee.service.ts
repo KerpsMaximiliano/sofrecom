@@ -25,6 +25,10 @@ export class EmployeeService {
     return this.http.get<any>(`${this.baseUrl}/employees/options`);
   }
 
+  getListItems() {
+    return this.http.get<any>(`${this.baseUrl}/employees/listItems`);
+  }
+
   getAnalytics(id){
     return this.http.get<any>(`${this.baseUrl}/employees/${id}/analytics`);
   }
