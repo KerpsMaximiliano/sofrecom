@@ -37,11 +37,13 @@
     <div class="ibox" *ngIf="data && data.length > 0"> 
         <div class="ibox-title">
             <div class="ibox-tools">
-                <button class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                <button class="btn btn-success btn-sm pull-left" (click)="selectAllError()"> Seleccionar errores  <i class="fa fa-check"></i></button>
+                <button class="btn btn-success btn-sm pull-left" (click)="selectAllProvisioned()"> Seleccionar provisionados  <i class="fa fa-check"></i></button>
                 <button class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
 
-                <button [disabled]="noneItemsSelected()" class="btn btn-primary btn-sm" (click)="confirmAll()">Confirmar seleccionados <i class="fa fa-check"></i></button>  
-                <button [disabled]="noneItemsSelected()" class="btn btn-warning btn-sm" (click)="toProvisionAll()">Provisionar seleccionados <i class="fa fa-warning"></i></button>  
+                <button *ngIf="!itemsHasNoErrors()" [disabled]="noneItemsSelected()" class="btn btn-primary btn-sm" (click)="confirmAll()">Confirmar seleccionados <i class="fa fa-check"></i></button>  
+                <button *ngIf="!itemsHasNoErrors()" [disabled]="noneItemsSelected()" class="btn btn-warning btn-sm" (click)="toProvisionAll()">Provisionar seleccionados <i class="fa fa-warning"></i></button>  
+                <button *ngIf="itemsHasNoErrors()" class="btn btn-primary btn-sm" (click)="close()"> Cerrar mes <i class="fa fa-check"></i></button>  
             </div>
         </div>
         <div class="ibox-content">

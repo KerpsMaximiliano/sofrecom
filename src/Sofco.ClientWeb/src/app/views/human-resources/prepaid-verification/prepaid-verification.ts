@@ -19,6 +19,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
     getMonthsSubscrip: Subscription;
     getDataSubscrip: Subscription;
     updateSubscrip: Subscription;
+    closeSubscrip: Subscription;
 
     public yearId: number;
     public monthId: number;
@@ -52,6 +53,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
         if(this.getMonthsSubscrip) this.getMonthsSubscrip.unsubscribe();
         if(this.getDataSubscrip) this.getDataSubscrip.unsubscribe();
         if(this.updateSubscrip) this.updateSubscrip.unsubscribe();
+        if(this.closeSubscrip) this.closeSubscrip.unsubscribe();
     }
 
     search(){
@@ -120,7 +122,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
         }
     }
 
-    selectAll(){
+    selectAllError(){
         this.data.forEach((item, index) => {
             if(item.status == PrepaidImportedDataStatus.Error){
                 item.selected = true;
@@ -128,9 +130,17 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
         });
     }
 
+    selectAllProvisioned(){
+        this.data.forEach((item, index) => {
+            if(item.status == PrepaidImportedDataStatus.Provisioned){
+                item.selected = true;
+            }
+        });
+    }
+
     unselectAll(){
         this.data.forEach((item, index) => {
-            if(item.status == PrepaidImportedDataStatus.Error){
+            if(item.status != PrepaidImportedDataStatus.Success){
                 item.selected = false;
             }
         });
@@ -138,6 +148,10 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
 
     noneItemsSelected(){
         return this.data.filter(x => x.selected == true).length == 0;
+    }
+
+    itemsHasNoErrors(){
+        return this.data.filter(x => x.status == PrepaidImportedDataStatus.Error).length == 0;
     }
 
     confirmAll(){
@@ -150,6 +164,19 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
         var items = this.data.filter(x => x.selected == true).map(x => x.id);
         
         this.update({ ids: items, status: PrepaidImportedDataStatus.Provisioned });
+    }
+
+    close(){
+        this.messageService.showLoading();
+
+        this.closeSubscrip = this.prepaidService.close(this.yearId, this.monthId).subscribe(data => {
+            this.messageService.closeLoading();
+
+            this.data.forEach((item, index) => {
+                item.closed = true;
+            });
+        }, 
+        error => this.messageService.closeLoading());
     }
 
     update(model){

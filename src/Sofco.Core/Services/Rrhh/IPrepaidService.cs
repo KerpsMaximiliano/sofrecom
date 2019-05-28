@@ -12,5 +12,7 @@ namespace Sofco.Core.Services.Rrhh
         Response<IList<PrepaidDashboard>> GetDashboard(int yearId, int monthId);
         Response<IList<PrepaidImportedData>> Get(int yearId, int monthId);
         Response Update(PrepaidImportedDataUpdateModel model);
+        Response Close(int yearId, int monthId);
+        Response InformToRrhhPrepaidsImported(int yearId, int monthId);
     }
 }

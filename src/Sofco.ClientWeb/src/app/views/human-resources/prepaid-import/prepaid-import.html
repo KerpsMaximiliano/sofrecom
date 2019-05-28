@@ -26,13 +26,19 @@
                         <ng-select [items]="months" bindLabel="text" bindValue="id" [(ngModel)]="monthId" (change)="dateChange()"></ng-select>
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="form-group">
                         <label class="control-label">Prepaga</label>
                         <ng-select [items]="prepaids" bindLabel="text" bindValue="id" [(ngModel)]="prepaidId" (change)="uploaderConfig()"></ng-select>
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-2" *ngIf="canNotify()">
+                    <button type="button" class="btn btn-success m-t-md" (click)="notifyToRrhh()">
+                        Notificar a RRHH
+                        <span class="fa fa-envelope"></span> 
+                    </button>
+                </div>
+                <div class="col-lg-4">
                     <div class="m-t-sm" *ngIf="prepaidId > 0 && monthId > 0 && yearId > 0">
                         <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
             

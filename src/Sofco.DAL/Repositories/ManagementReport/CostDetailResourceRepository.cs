@@ -21,5 +21,13 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .Where(x => x.CostDetail.ManagementReportId == managementReportId && x.CostDetail.MonthYear.Date >= firstMonthDate && x.CostDetail.MonthYear.Date <= lastMonthDate)
                 .ToList();
         }
+
+        public IList<CostDetailResource> GetByDate(DateTime date)
+        {
+            return context.CostDetailResources
+                .Include(x => x.CostDetail)
+                .ThenInclude(x => x.ManagementReport)
+                .Where(x => x.CostDetail.MonthYear.Date == date.Date).ToList();
+        }
     }
 }

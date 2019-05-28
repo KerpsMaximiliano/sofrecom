@@ -21,4 +21,12 @@ export class PrepaidService {
   update(model) {
     return this.http.put<any>(`${this.baseUrl}/prepaid`, model);
   }
+
+  close(year, month) {
+    return this.http.put<any>(`${this.baseUrl}/prepaid/${year}/${month}/close`, {});
+  }
+
+  notifyToRrhh(year, month) {
+    return this.http.post<any>(`${this.baseUrl}/prepaid/${year}/${month}/imported`, {});
+  }
 }

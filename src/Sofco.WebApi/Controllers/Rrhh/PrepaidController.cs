@@ -54,6 +54,22 @@ namespace Sofco.WebApi.Controllers.Rrhh
             return this.CreateResponse(response);
         }
 
+        [HttpPut("{yearId}/{monthId}/close")]
+        public IActionResult Close(int yearId, int monthId)
+        {
+            var response = this.prepaidService.Close(yearId, monthId);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("{yearId}/{monthId}/imported")]
+        public IActionResult InformToRrhhPrepaidsImported(int yearId, int monthId)
+        {
+            var response = this.prepaidService.InformToRrhhPrepaidsImported(yearId, monthId);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPut]
         public IActionResult Get([FromBody] PrepaidImportedDataUpdateModel model)
         {
