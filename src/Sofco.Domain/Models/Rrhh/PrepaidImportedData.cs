@@ -39,5 +39,7 @@ namespace Sofco.Domain.Models.Rrhh
         public int PrepaidId { get; set; }
 
         public Prepaid Prepaid { get; set; }
+
+        public bool Closed { get; set; }
     }
 }

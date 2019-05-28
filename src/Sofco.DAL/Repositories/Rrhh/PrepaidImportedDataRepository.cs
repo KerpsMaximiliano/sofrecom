@@ -73,5 +73,10 @@ namespace Sofco.DAL.Repositories.Rrhh
 
             context.SaveChanges();
         }
+
+        public void Close(PrepaidImportedData prepaidImportedData)
+        {
+            context.Entry(prepaidImportedData).Property("Closed").IsModified = true;
+        }
     }
 }

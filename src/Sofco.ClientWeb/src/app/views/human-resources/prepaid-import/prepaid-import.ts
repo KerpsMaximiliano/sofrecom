@@ -20,6 +20,7 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
     getMonthsSubscrip: Subscription;
     getPrepaidsSubscrip: Subscription;
     getDashboardSubscrip: Subscription;
+    notifySubscrip: Subscription;
 
     public uploader: FileUploader = new FileUploader({url:""});
 
@@ -63,6 +64,7 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
         if(this.getMonthsSubscrip) this.getMonthsSubscrip.unsubscribe();
         if(this.getPrepaidsSubscrip) this.getPrepaidsSubscrip.unsubscribe();
         if(this.getDashboardSubscrip) this.getDashboardSubscrip.unsubscribe();
+        if(this.notifySubscrip) this.notifySubscrip.unsubscribe();
     }
 
     dateChange(){
@@ -80,6 +82,22 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
                 this.itemsDashboard = response.data;
             }
         });
+    }
+
+    notifyToRrhh(){
+        if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0) return;
+
+        this.messageService.showLoading();
+
+        this.notifySubscrip = this.prepaidService.notifyToRrhh(this.yearId, this.monthId).subscribe(response => {
+          this.messageService.closeLoading();
+        });
+    }
+
+    canNotify(){
+        if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0 || !this.prepaids || !this.itemsDashboard) return false;
+
+        return this.yearId > 0 && this.monthId > 0 && this.itemsDashboard.length == this.prepaids.length;
     }
 
     uploaderConfig(){

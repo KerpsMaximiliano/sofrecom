@@ -8,6 +8,14 @@ using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
+using Sofco.Core.Config;
+using Sofco.Core.Mail;
+using Sofco.Core.Services.ManagementReport;
+using Sofco.Domain.Enums;
+using Sofco.Framework.Helpers;
+using Sofco.Framework.MailData;
 
 namespace Sofco.Service.Implementations.Rrhh
 {
@@ -16,12 +24,23 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<PrepaidService> logger;
         private readonly IPrepaidFactory prepaidFactory;
+        private readonly IMailSender mailSender;
+        private readonly EmailConfig emailConfig;
+        private readonly IManagementReportCalculateCostsService managementReportCalculateCostsService;
 
-        public PrepaidService(IUnitOfWork unitOfWork, ILogMailer<PrepaidService> logger, IPrepaidFactory prepaidFactory)
+        public PrepaidService(IUnitOfWork unitOfWork, 
+            ILogMailer<PrepaidService> logger, 
+            IPrepaidFactory prepaidFactory,             
+            IOptions<EmailConfig> emailOptions,
+            IManagementReportCalculateCostsService managementReportCalculateCostsService,
+            IMailSender mailSender)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.prepaidFactory = prepaidFactory;
+            this.mailSender = mailSender;
+            this.emailConfig = emailOptions.Value;
+            this.managementReportCalculateCostsService = managementReportCalculateCostsService;
         }
 
         public Response<PrepaidDashboard> Import(int prepaidId, int yearId, int monthId, IFormFile file)
@@ -123,6 +142,91 @@ namespace Sofco.Service.Implementations.Rrhh
             }
 
             return response;
+        }
+
+        public Response Close(int yearId, int monthId)
+        {
+            var response = new Response();
+
+            var list = unitOfWork.PrepaidImportedDataRepository.GetByDate(yearId, monthId);
+
+            if (list.Any(x => x.Status == PrepaidImportedDataStatus.Error))
+            {
+                response.AddError(Resources.Rrhh.Prepaid.CannotClose);
+                return response;
+            }
+
+            try
+            {
+                foreach (var prepaidImportedData in list)
+                {
+                    prepaidImportedData.Closed = true;
+                    unitOfWork.PrepaidImportedDataRepository.Close(prepaidImportedData);
+                }
+
+                unitOfWork.Save();
+                response.AddSuccess(Resources.Rrhh.Prepaid.CloseSuccess);
+
+                SendMailToDaf(response, yearId, monthId);
+
+                managementReportCalculateCostsService.UpdateManagementReports(response, yearId, monthId);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response InformToRrhhPrepaidsImported(int yearId, int monthId)
+        {
+            var response = new Response();
+
+            try
+            {
+                var rrhhGroup = unitOfWork.GroupRepository.GetByCode(emailConfig.RrhhCode);
+
+                var data = new MailDefaultData()
+                {
+                    Title = Resources.Mails.MailSubjectResource.PrepaidImported,
+                    Message = string.Format(Resources.Mails.MailMessageResource.PrepaidImported, DatesHelper.GetDateDescription(new DateTime(yearId, monthId, 1))),
+                    Recipients = new List<string> { rrhhGroup.Email }
+                };
+
+                mailSender.Send(data);
+                response.AddSuccess(Resources.Common.MailSent);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSendMail);
+            }
+
+            return response;
+        }
+
+        private void SendMailToDaf(Response response, int yearId, int monthId)
+        {
+            try
+            {
+                var dafGroup = unitOfWork.GroupRepository.GetByCode(emailConfig.DafCode);
+
+                var data = new MailDefaultData()
+                {
+                    Title = Resources.Mails.MailSubjectResource.PrepaidClosed,
+                    Message = string.Format(Resources.Mails.MailMessageResource.PrepaidClosed, DatesHelper.GetDateDescription(new DateTime(yearId, monthId, 1))),
+                    Recipients = new List<string> { dafGroup.Email }
+                };
+
+                mailSender.Send(data);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSendMail);
+            }
         }
     }
 }

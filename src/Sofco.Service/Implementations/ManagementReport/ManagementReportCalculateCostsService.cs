@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL;
-using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.ManagementReport;
-using Sofco.Core.Services.Rrhh;
 using Sofco.Domain.DTO;
-using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.ManagementReport;
-using Sofco.Service.Implementations.AllocationManagement;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -34,6 +31,36 @@ namespace Sofco.Service.Implementations.ManagementReport
             catch (Exception e)
             {
                 logger.LogError(e);
+            }
+        }
+
+        public void UpdateManagementReports(Response response, int year, int month)
+        {
+            try
+            {
+                var date = new DateTime(year, month, 1);
+
+                var costDetailResources = unitOfWork.CostDetailResourceRepository.GetByDate(date);
+                var allocations = unitOfWork.AllocationRepository.GetAllocationsByDate(date);
+
+                foreach (var costDetailResource in costDetailResources)
+                {
+                    var allocation = allocations.SingleOrDefault(x => x.AnalyticId == costDetailResource.CostDetail.ManagementReport.AnalyticId && x.EmployeeId == costDetailResource.EmployeeId);
+
+                    if (allocation != null)
+                    {
+                        costDetailResource.Value = (allocation.Percentage / 100) * allocation.Employee.Salary;
+                        costDetailResource.Charges = (allocation.Percentage / 100) * allocation.Employee.PrepaidAmount;
+                        unitOfWork.CostDetailResourceRepository.Update(costDetailResource);
+                    }
+                }
+
+                unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.ManagementReport.ManagementReport.UpdatePrepaidError);
             }
         }
 

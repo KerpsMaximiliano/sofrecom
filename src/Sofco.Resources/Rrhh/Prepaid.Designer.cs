@@ -61,6 +61,24 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/prepaid.cannotClose.
+        /// </summary>
+        public static string CannotClose {
+            get {
+                return ResourceManager.GetString("CannotClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/prepaid.closeSuccess.
+        /// </summary>
+        public static string CloseSuccess {
+            get {
+                return ResourceManager.GetString("CloseSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a La cantidad de beneficiarios es distinta..
         /// </summary>
         public static string DifferenceInBeneficiaires {

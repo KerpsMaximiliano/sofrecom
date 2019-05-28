@@ -13,5 +13,6 @@ namespace Sofco.Core.DAL.Rrhh
         IList<PrepaidImportedData> GetByIds(IList<int> modelIds);
         void UpdateStatus(PrepaidImportedData prepaidImportedData);
         void DeleteByDateAndPrepaid(int prepaidId, DateTime dateTime);
+        void Close(PrepaidImportedData prepaidImportedData);
     }
 }

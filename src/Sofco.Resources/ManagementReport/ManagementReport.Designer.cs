@@ -95,5 +95,14 @@ namespace Sofco.Resources.ManagementReport {
                 return ResourceManager.GetString("StartDateRequired", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.updatePrepaidError.
+        /// </summary>
+        public static string UpdatePrepaidError {
+            get {
+                return ResourceManager.GetString("UpdatePrepaidError", resourceCulture);
+            }
+        }
     }
 }

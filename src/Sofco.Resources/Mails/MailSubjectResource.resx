@@ -201,4 +201,10 @@
   <data name="WorkflowNotificationRefund" xml:space="preserve">
     <value>Solicitud de Reintegro - {0}</value>
   </data>
+  <data name="PrepaidClosed" xml:space="preserve">
+    <value>Facturación de prepagas</value>
+  </data>
+  <data name="PrepaidImported" xml:space="preserve">
+    <value>Facturación de prepagas - Importación</value>
+  </data>
 </root>

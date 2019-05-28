@@ -27,6 +27,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public IList<Allocation> GetAllocationsByDate(DateTime date)
+        {
+            return context.Allocations.Include(x => x.Employee).Where(x => x.StartDate.Date == date.Date).ToList();
+        }
+
         public void UpdateReleaseDate(Allocation allocation)
         {
             context.Entry(allocation).Property("ReleaseDate").IsModified = true;
