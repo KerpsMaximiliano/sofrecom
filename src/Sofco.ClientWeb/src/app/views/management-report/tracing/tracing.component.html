@@ -1,0 +1,30 @@
+<div class="table-responsive billing-table">
+    <table class="table dataTable" role="grid">
+        <thead>
+            <tr>
+                <th class="static first-column" scope="col">Meses</th>
+                <th class="text-center headcol" *ngFor="let month of AllMarginTracking; first as isFirst"  [ngClass]="{'first-col': isFirst}">
+                    {{ month.display }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="static first-column" scope="col">Previsto EVALPROP a terminación</th>
+                <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                    <label class="label label-total">
+                        {{ month.PercentageExpectedTotal }}%
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <th class="static first-column text-ellipsis" scope="col">A terminación</th>
+                <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                    <label class="label label-cant-resources">
+                        {{ month.PercentageToEnd }}%
+                    </label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

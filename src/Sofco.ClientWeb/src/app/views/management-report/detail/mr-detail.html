@@ -131,14 +131,15 @@
 
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab-1"> Seguimiento de Margen </a></li>
+                    <li class="active"><a data-toggle="tab" href="#tab-1"> Margen </a></li>
                     <li><a data-toggle="tab" href="#tab-2"> Detalle Costos </a></li>
                     <li><a data-toggle="tab" href="#tab-3"> Facturación </a></li>
+                    <li><a data-toggle="tab" href="#tab-4"> Seguimiento </a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
-                            <margin-tracking #marginTracking></margin-tracking>
+                            <margin-tracking #marginTracking (getData)="getMarginTracking($event)"></margin-tracking>
                         </div>
                     </div>
                     <div id="tab-2" class="tab-pane">
@@ -150,6 +151,10 @@
                         <div class="panel-body">
                             <management-report-billing #billing (openEvalPropModal)="openEvalPropModal($event)" (getData)="getBillingData($event)"></management-report-billing>
                         </div>
+                    </div>
+                    <div id="tab-4" class="tab-pane">
+                        <div class="panel-body">
+                            <management-report-tracing #tracing></management-report-tracing>
                     </div>
                 </div>
             </div>

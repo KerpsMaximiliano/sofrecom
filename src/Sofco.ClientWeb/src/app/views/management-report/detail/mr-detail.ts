@@ -38,6 +38,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     @ViewChild("marginTracking") marginTracking;
     @ViewChild("billing") billing;
     @ViewChild("detailCost") detailCost;
+    @ViewChild('tracing') tracing;
     @ViewChild('costDetailMonth') costDetailMonth;
     @ViewChild('dateReportStart') dateReportStart;
     @ViewChild('dateReportEnd') dateReportEnd;
@@ -228,7 +229,13 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate);
     }
 
+    getMarginTracking(allMarginTrackings){    
+      this.tracing.open(allMarginTrackings)
+    }
+
     getEvalPropData(data){
         this.marginTracking.updateEvalpropValues(data, this.model.manamementReportStartDate, this.model.manamementReportEndDate);
     }
+    
+
 }
