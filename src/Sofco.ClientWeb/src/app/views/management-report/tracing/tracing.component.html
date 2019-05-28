@@ -1,9 +1,15 @@
-<div class="table-responsive billing-table">
+<div class="alert alert-gaps-info" *ngIf="AllMarginTracking.length == 0">
+    <i class="fa fa-warning"></i>
+    Sin información disponible para esta tabla
+</div>
+
+<div class="table-responsive billing-table" *ngIf="AllMarginTracking.length > 0">
     <table class="table dataTable" role="grid">
         <thead>
             <tr>
                 <th class="static first-column" scope="col">Meses</th>
-                <th class="text-center headcol" *ngFor="let month of AllMarginTracking; first as isFirst"  [ngClass]="{'first-col': isFirst}">
+                <th class="text-center headcol" *ngFor="let month of AllMarginTracking; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     {{ month.display }}
                 </th>
             </tr>

@@ -1,16 +1,24 @@
-<div class="table-responsive billing-table">
+<div class="alert alert-gaps-info" *ngIf="months == 0">
+    <i class="fa fa-warning"></i>
+    Sin información disponible para esta tabla
+</div>
+
+
+<div class="table-responsive billing-table" *ngIf="months > 0">
     <table class="table dataTable" role="grid">
         <thead>
             <tr>
                 <th class="static first-column" scope="col">Meses</th>
-                <th class="text-center headcol" *ngFor="let month of months | fromDateFilter: fromMonth; first as isFirst"
+                <th class="text-center headcol"
+                    *ngFor="let month of months | fromDateFilter: fromMonth; first as isFirst"
                     [ngClass]="{'first-col': isFirst}">{{ month.display }}</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <th class="static first-column" scope="col">Total Costos</th>
-                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label label-total">
                         {{ calculateTotalCosts(month) | amountFormat }}
                     </label>
@@ -18,7 +26,8 @@
             </tr>
             <tr>
                 <th class="static first-column" scope="col">Cantidad Recursos costeados</th>
-                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label label-cant-resources">
                         {{ calculateAssignedEmployees(month) }}
                     </label>
@@ -26,7 +35,8 @@
             </tr>
             <tr>
                 <th class="static first-column text-ellipsis" scope="col">EVALPROP</th>
-                <td *ngFor="let month of months | fromDateFilter: fromMonth; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                <td *ngFor="let month of months | fromDateFilter: fromMonth; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''"
                         (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
                 </td>
@@ -53,7 +63,8 @@
             </tr>
             <tr>
                 <th class="static first-column" scope="col">Total Sueldo</th>
-                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label label-salary">
                         {{ calculateAllSalary(month) | amountFormat }}
                     </label>
@@ -61,7 +72,8 @@
             </tr>
             <tr>
                 <th class="static first-column" scope="col">Prepaga</th>
-                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label label-salary">
                         {{ calculateAllPrepaid(month) | amountFormat }}
                     </label>
@@ -69,21 +81,23 @@
             </tr>
             <tr>
                 <th class="static first-column" scope="col">Cargas (0.51 del sueldo)</th>
-                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label label-load">
                         {{ calculateLoads(month) | amountFormat }}
                     </label>
                 </td>
             </tr>
             <tr *ngFor="let item of fundedResources; let i = index">
-                    <th class="static first-column" scope="col">
+                <th class="static first-column" scope="col">
                     <p>
                         {{ item.display }}
                     </p>
                     <i class="fa fa-2x fa-trash pointer" (click)="deleteResources(item, i)"
                         *ngIf="canDeleteResources(item)"></i>
                 </th>
-                <td *ngFor="let monthCost of item.monthsCost | fromDateFilter: fromMonth; let i = index; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                <td *ngFor="let monthCost of item.monthsCost | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                    [ngClass]="{'first-col': isFirst}">
                     <label class="label" (click)="openEditItemModal(monthCost, item, i)"
                         [ngClass]="resourcesClass(monthCost, item)">
                         {{ monthCost.value | amountFormat }}
