@@ -4,7 +4,7 @@
 </div>
 
 <div class="table-responsive billing-table" *ngIf="AllMarginTracking.length > 0">
-    <table class="table dataTable" role="grid">
+    <table class="table dataTable" id="tracingTable" role="grid">
         <thead>
             <tr>
                 <th class="static first-column" scope="col">Meses</th>
@@ -16,18 +16,18 @@
         </thead>
         <tbody>
             <tr>
-                <th class="static first-column" scope="col">Margen a la Fecha</th>
+                <th class="static first-column" scope="col">Margen a la Fecha (%)</th>
                 <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-total">
-                        {{ month.PercentageExpectedTotal | number:'1.0-2' }}%
+                        {{ month.PercentageExpectedTotal | number:'1.0-2' }}
                     </label>
                 </td>
             </tr>
             <tr>
-                <th class="static first-column text-ellipsis" scope="col">Margen a Terminacion</th>
+                <th class="static first-column text-ellipsis" scope="col">Margen a Terminacion (%)</th>
                 <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-cant-resources">
-                        {{ month.PercentageToEnd | number:'1.0-2'  }}%
+                        {{ month.PercentageToEnd | number:'1.0-2'  }}
                     </label>
                 </td>
             </tr>

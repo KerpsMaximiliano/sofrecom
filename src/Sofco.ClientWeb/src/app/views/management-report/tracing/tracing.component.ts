@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+import { DataTableService } from "app/services/common/datatable.service";
 
 @Component({
     selector: 'management-report-tracing',
@@ -8,9 +9,9 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 export class TracingComponent implements OnInit, OnDestroy {
     
     AllMarginTracking: any[] = new Array()
-
+    analytic: string
     
-    constructor(){
+    constructor(private dataTableService : DataTableService){
 
     }
     
@@ -21,13 +22,23 @@ export class TracingComponent implements OnInit, OnDestroy {
         
     }
 
-    open(marginTracking){
+    open(marginTracking, analytic){
 
+        this.hideColumnsDataTable()
+        this.analytic = analytic
+        let colum = 0
+        let colums = []
         this.AllMarginTracking = marginTracking
         
         this.AllMarginTracking.forEach(margin => {
             margin.display = this.getDateShortDescrip(margin.Month, margin.Year)
+            colums.push(colum)
+            colum++
         })
+
+        this.initGrid(colums)
+
+     
     }
 
     getDateShortDescrip(month, year){
@@ -48,5 +59,30 @@ export class TracingComponent implements OnInit, OnDestroy {
             case 12: return `Dic. ${year}`;
             default: return '';
         }
+    }
+
+    initGrid(colums) {
+        var columns = colums
+        var title = `${this.analytic}`;
+
+        var params = {
+            selector: '#tracingTable',
+            columns: columns,
+            title: title,
+            withExport: true,
+            withOutSorting: true
+        }
+
+        this.dataTableService.destroy(params.selector);
+        this.dataTableService.initialize(params);
+    }
+
+    hideColumnsDataTable(){
+        setTimeout(function(){
+            $('.dataTables_filter').hide()
+            $('.dataTables_paginate.paging_simple_numbers').hide()
+            $('.dataTables_info').hide()
+            $('.dataTables_length').hide()
+        }, 100);
     }
 }
