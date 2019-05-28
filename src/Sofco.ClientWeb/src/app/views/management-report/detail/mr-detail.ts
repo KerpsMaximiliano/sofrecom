@@ -230,7 +230,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     getMarginTracking(allMarginTrackings){    
-      this.tracing.open(allMarginTrackings)
+      this.tracing.open(allMarginTrackings, this.model.analytic)
     }
 
     getEvalPropData(data){
