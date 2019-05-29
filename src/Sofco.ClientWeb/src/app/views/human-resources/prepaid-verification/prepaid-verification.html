@@ -83,8 +83,8 @@
                             <td class="column-sm">{{ item.tigerBeneficiaries }}</td>
                             <td class="column-sm">{{ item.prepaidPlan }}</td>
                             <td class="column-sm">{{ item.tigerPlan }}</td>
-                            <td class="column-xs">{{ item.prepaidCost }}</td>
-                            <td class="column-xs">{{ item.tigerCost }}</td>
+                            <td class="column-xs">{{ item.prepaidCost | amountFormat }}</td>
+                            <td class="column-xs">{{ item.tigerCost | amountFormat }}</td>
                             <td class="column-xs">{{ item.period | date: 'MM/yyyy' }}</td>
                             <td class="column-xs">{{ item.employeeNumber }}</td>
                             <td class="column-sm">{{ item.cuil }}</td>

@@ -10,5 +10,6 @@
     "yearError": "El año es requerido o es incorrecto",
     "closeSuccess": "Se ha cerrado el mes correctamente",
     "cannotClose": "El mes no se puede cerrar si todavia contiene errores",
+    "dateClosed": "El mes ya se encuentra cerrado",
     "fileWrong": "El archivo es incorrecto o corresponde a otra prepaga"
 }

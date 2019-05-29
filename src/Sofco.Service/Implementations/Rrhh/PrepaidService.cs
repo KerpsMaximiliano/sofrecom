@@ -62,6 +62,12 @@ namespace Sofco.Service.Implementations.Rrhh
 
             if (response.HasErrors()) return response;
 
+            if (unitOfWork.PrepaidImportedDataRepository.DateIsClosed(prepaidId, yearId, monthId))
+            {
+                response.AddError(Resources.Rrhh.Prepaid.DateClosed);
+                return response;
+            }
+
             try
             {
                 var fileManager = prepaidFactory.GetInstance(prepaid?.Code);

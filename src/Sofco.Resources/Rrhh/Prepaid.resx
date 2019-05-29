@@ -123,6 +123,9 @@
   <data name="CloseSuccess" xml:space="preserve">
     <value>rrhh/prepaid.closeSuccess</value>
   </data>
+  <data name="DateClosed" xml:space="preserve">
+    <value>rrhh/prepaid.dateClosed</value>
+  </data>
   <data name="DifferenceInBeneficiaires" xml:space="preserve">
     <value>La cantidad de beneficiarios es distinta.</value>
   </data>

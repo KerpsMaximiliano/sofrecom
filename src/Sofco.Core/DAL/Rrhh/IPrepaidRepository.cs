@@ -14,5 +14,6 @@ namespace Sofco.Core.DAL.Rrhh
         void UpdateStatus(PrepaidImportedData prepaidImportedData);
         void DeleteByDateAndPrepaid(int prepaidId, DateTime dateTime);
         void Close(PrepaidImportedData prepaidImportedData);
+        bool DateIsClosed(int prepaidId, int yearId, int monthId);
     }
 }
