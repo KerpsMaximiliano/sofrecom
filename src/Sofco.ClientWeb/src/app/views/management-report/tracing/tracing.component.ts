@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DataTableService } from "app/services/common/datatable.service";
 import { DatesService } from "app/services/common/month.service";
+import { MessageService } from "app/services/common/message.service"
 
 @Component({
     selector: 'management-report-tracing',
@@ -13,7 +14,8 @@ export class TracingComponent implements OnInit, OnDestroy {
     analytic: string
     
     constructor(private dataTableService : DataTableService,
-                private datesService: DatesService,){
+                private datesService: DatesService,
+                private messageService: MessageService){
 
     }
     
@@ -60,11 +62,13 @@ export class TracingComponent implements OnInit, OnDestroy {
     }
 
     hideColumnsDataTable(){
+
         setTimeout(function(){
             $('.dataTables_filter').hide()
             $('.dataTables_paginate.paging_simple_numbers').hide()
             $('.dataTables_info').hide()
             $('.dataTables_length').hide()
-        }, 100);
+
+        }, 500);
     }
 }

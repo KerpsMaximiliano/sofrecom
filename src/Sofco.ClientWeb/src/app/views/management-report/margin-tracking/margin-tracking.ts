@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, Input, Output, EventEmitter } from "@angular/core";
 import { MenuService } from "app/services/admin/menu.service";
-import { DatesService } from "app/services/common/month.service";
+// import { DatesService } from "app/services/common/month.service";
 import { ManagementReportDetailComponent } from "../detail/mr-detail"
 import * as moment from 'moment';
 import { MarginTracking } from "app/models/management-report/marginTracking";
@@ -23,9 +23,9 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     private costsModel: any;
 
     public model: any;
-    public month: number;
-    public year: number;
-    public monthDesc: string;
+    // public month: number;
+    // public year: number;
+    // public monthDesc: string;
 
     public marginTrackingSelected: MarginTracking = new MarginTracking();
     private allMarginTrackings: any[] = new Array();
@@ -33,7 +33,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     @Output() getData: EventEmitter<any> = new EventEmitter();
     
     constructor(private menuService: MenuService,
-                private datesService: DatesService,
+                // private datesService: DatesService,
                 private managementReportDetail: ManagementReportDetailComponent
                 ){}
 
@@ -43,37 +43,24 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
  
     }
 
-    init(reportStartDate, reportEndDate){
-        
-        const today = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-        const dateReportStart = new Date(new Date(reportStartDate).getFullYear(), new Date(reportStartDate).getMonth(), 1)
-        const dateReportEnd = new Date(new Date(reportEndDate).getFullYear(), new Date(reportEndDate).getMonth(), 1)
-
-        let startDate = today;
-        if(today < dateReportStart){
-            startDate = dateReportStart
-        }
-        if(today > dateReportEnd){
-            startDate = dateReportEnd
-        }
-
-        var dateSetting = this.datesService.getMonth(startDate);
-        this.setDate(dateSetting); 
-    }
+    //init(startDate){
+        // var dateSetting = this.datesService.getMonth(startDate);
+        // this.setDate(dateSetting); 
+    //}
 
     ngOnDestroy(): void {
     }
 
-    setDate(dateSetting){
-        this.monthDesc = dateSetting.montDesc;
-        this.month = dateSetting.month;
-        this.year = dateSetting.year;
+    // setDate(dateSetting){
+    //     this.monthDesc = dateSetting.montDesc;
+    //     this.month = dateSetting.month;
+    //     this.year = dateSetting.year;
 
-        this.setMarginTracking();
-    }
+    //     this.setMarginTracking();
+    // }
 
-    setMarginTracking(){
-        var marginTracking = this.allMarginTrackings.find(x => x.Month == this.month && x.Year == this.year);
+    setMarginTracking(month, year){
+        var marginTracking = this.allMarginTrackings.find(x => x.Month == month && x.Year == year);
 
         if(marginTracking && marginTracking != null){
             this.marginTrackingSelected = marginTracking;
@@ -83,34 +70,34 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         }
     }
 
-    addMonth(){
-        var dateSplitted = this.model.manamementReportEndDate.split("-");
+    // addMonth(){
+    //     var dateSplitted = this.model.manamementReportEndDate.split("-");
 
-        if(this.year == dateSplitted[0] && this.month == dateSplitted[1]){
-            return;
-        }
+    //     if(this.year == dateSplitted[0] && this.month == dateSplitted[1]){
+    //         return;
+    //     }
 
-        var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
-        this.setDate(dateSetting);  
-    }
+    //     var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
+    //     this.setDate(dateSetting);  
+    // }
 
-    substractMonth(){
-        var dateSplitted = this.model.manamementReportStartDate.split("-");
+    // substractMonth(){
+    //     var dateSplitted = this.model.manamementReportStartDate.split("-");
 
-        if(this.year == dateSplitted[0] && this.month == dateSplitted[1]){
-            return;
-        }
+    //     if(this.year == dateSplitted[0] && this.month == dateSplitted[1]){
+    //         return;
+    //     }
 
-        this.month -= 2;
-        var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
-        this.setDate(dateSetting);  
-    }
+    //     this.month -= 2;
+    //     var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
+    //     this.setDate(dateSetting);  
+    // }
 
-    seeCostDetailMonth(){
-        this.managementReportDetail.seeCostDetailMonth(this.month, this.year)
-    }
+     seeCostDetailMonth(){
+         this.managementReportDetail.seeCostDetailMonth()
+     }
 
-    calculate(manamementReportStartDate, manamementReportEndDate){
+    calculate(manamementReportStartDate, manamementReportEndDate, selectedMonth, selectedYear){
 
         if(!this.billingDataLoaded || !this.costDataLoaded) return;
 
@@ -206,7 +193,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
         this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, percentageExpectedTotal);
 
-        this.setMarginTracking();
+        this.setMarginTracking(selectedMonth, selectedYear);
 
         this.sendDataToDetailView(this.allMarginTrackings)
     }

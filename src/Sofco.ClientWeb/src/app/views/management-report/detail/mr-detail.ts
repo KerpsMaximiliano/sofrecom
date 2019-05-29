@@ -6,6 +6,7 @@ import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { DatesService } from "app/services/common/month.service";
 
 
 @Component({
@@ -28,6 +29,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     isManager: boolean = false;
     isCdgOrDirector: boolean = false;
+
+    selectedDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    public selectedMonth: number;
+    public selectedYear: number;
+    public selectedMonthDesc: string;
 
     ReportStartDate: Date;
     ReportEndDate: Date;
@@ -61,6 +67,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private menuService: MenuService,
         private managementReportService: ManagementReportService,
+        private datesService: DatesService,
         private router: Router) { }
 
     ngOnInit(): void {
@@ -100,8 +107,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
             this.ManagementReportId = response.data.managementReportId;
             this.marginTracking.model = response.data;
+
+            this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
+
             this.billing.init(this.serviceId);
-            this.marginTracking.init(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
+            // this.marginTracking.init(this.startDate)
 
             this.messageService.closeLoading();
         },
@@ -128,17 +138,18 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    seeCostDetailMonth(month, year) {
+    seeCostDetailMonth() {
 
-        var resources = this.detailCost.getResourcesByMonth(month, year);
+        var resources = this.detailCost.getResourcesByMonth(this.selectedMonth, this.selectedYear);
         var AnalyticId = this.detailCost.getIdAnalytic();
 
-        var totals = this.billing.getTotals(month + 1, year);
+        var totals = this.billing.getTotals(this.selectedMonth + 1, this.selectedYear);
 
         var data = {
             isCdg: this.menuService.userIsCdg,
             resources, totals, AnalyticId,
-            month: month, year
+            month: this.selectedMonth, 
+            year: this.selectedYear
         }
 
         this.costDetailMonth.open(data);
@@ -220,13 +231,13 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     getBillingData(billingModel){
         this.marginTracking.billingDataLoaded = true;
         this.marginTracking.billingModel = billingModel;
-        this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate);
+        this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
     }
 
     getCostsData(costsModel){
         this.marginTracking.costDataLoaded = true;
         this.marginTracking.costsModel = costsModel;
-        this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate);
+        this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
     }
 
     getMarginTracking(allMarginTrackings){    
@@ -235,6 +246,53 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     getEvalPropData(data){
         this.marginTracking.updateEvalpropValues(data, this.model.manamementReportStartDate, this.model.manamementReportEndDate);
+    }
+
+    setStartDate(reportStartDate, reportEndDate){
+        
+        const dateReportStart = new Date(new Date(reportStartDate).getFullYear(), new Date(reportStartDate).getMonth(), 1)
+        const dateReportEnd = new Date(new Date(reportEndDate).getFullYear(), new Date(reportEndDate).getMonth(), 1)
+
+        if(this.selectedDate < dateReportStart){
+            this.selectedDate = dateReportStart
+        }
+        if(this.selectedDate > dateReportEnd){
+            this.selectedDate = dateReportEnd
+        }
+
+        var dateSetting = this.datesService.getMonth(this.selectedDate);
+        this.setDate(dateSetting); 
+    }
+
+    setDate(dateSetting){
+        this.selectedMonthDesc = dateSetting.montDesc;
+        this.selectedMonth = dateSetting.month;
+        this.selectedYear = dateSetting.year;
+
+        this.marginTracking.setMarginTracking(this.selectedMonth, this.selectedYear);
+    }
+
+    addMonth(){
+        var dateSplitted = this.model.manamementReportEndDate.split("-");
+
+        if(this.selectedYear == dateSplitted[0] && this.selectedMonth == dateSplitted[1]){
+            return;
+        }
+
+        var dateSetting = this.datesService.getMonth(new Date(this.selectedYear, this.selectedMonth));
+        this.setDate(dateSetting);  
+    }
+
+    substractMonth(){
+        var dateSplitted = this.model.manamementReportStartDate.split("-");
+
+        if(this.selectedYear == dateSplitted[0] && this.selectedMonth == dateSplitted[1]){
+            return;
+        }
+
+        this.selectedMonth -= 2;
+        var dateSetting = this.datesService.getMonth(new Date(this.selectedYear, this.selectedMonth));
+        this.setDate(dateSetting);  
     }
     
 
