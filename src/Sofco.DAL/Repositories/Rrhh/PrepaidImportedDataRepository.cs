@@ -78,5 +78,12 @@ namespace Sofco.DAL.Repositories.Rrhh
         {
             context.Entry(prepaidImportedData).Property("Closed").IsModified = true;
         }
+
+        public bool DateIsClosed(int prepaidId, int yearId, int monthId)
+        {
+            var date = new DateTime(yearId, monthId, 1);
+
+            return context.PrepaidImportedData.Any(x => x.PrepaidId == prepaidId && x.Date.Date == date.Date && x.Closed);
+        }
     }
 }

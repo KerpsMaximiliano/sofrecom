@@ -79,6 +79,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/prepaid.dateClosed.
+        /// </summary>
+        public static string DateClosed {
+            get {
+                return ResourceManager.GetString("DateClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a La cantidad de beneficiarios es distinta..
         /// </summary>
         public static string DifferenceInBeneficiaires {

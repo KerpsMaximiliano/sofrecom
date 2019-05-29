@@ -158,12 +158,16 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
         var items = this.data.filter(x => x.selected == true).map(x => x.id);
         
         this.update({ ids: items, status: PrepaidImportedDataStatus.Success });
+
+        this.initGrid();
     }
 
     toProvisionAll(){
         var items = this.data.filter(x => x.selected == true).map(x => x.id);
         
         this.update({ ids: items, status: PrepaidImportedDataStatus.Provisioned });
+
+        this.initGrid();
     }
 
     close(){

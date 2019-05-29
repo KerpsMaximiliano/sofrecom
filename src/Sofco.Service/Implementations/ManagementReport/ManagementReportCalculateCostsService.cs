@@ -47,7 +47,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 {
                     var allocation = allocations.SingleOrDefault(x => x.AnalyticId == costDetailResource.CostDetail.ManagementReport.AnalyticId && x.EmployeeId == costDetailResource.EmployeeId);
 
-                    if (allocation != null)
+                    if (allocation != null && allocation.Percentage > 0)
                     {
                         costDetailResource.Value = (allocation.Percentage / 100) * allocation.Employee.Salary;
                         costDetailResource.Charges = (allocation.Percentage / 100) * allocation.Employee.PrepaidAmount;
@@ -118,6 +118,22 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     var costDetail = unitOfWork.CostDetailRepository.GetWithResourceDetails(managementReportId, date);
 
+                    var newCostDetail = false;
+
+                    if (costDetail == null)
+                    {
+                        newCostDetail = true;
+                        costDetail = new CostDetail
+                        {
+                            ManagementReportId = managementReportId,
+                            ContratedDetails = new List<ContratedDetail>(),
+                            CostDetailOthers = new List<CostDetailOther>(),
+                            CostDetailResources = new List<CostDetailResource>(),
+                            CostDetailProfiles = new List<CostDetailProfile>(),
+                            MonthYear = date,
+                        };
+                    }
+
                     var resource = costDetail.CostDetailResources.SingleOrDefault(x => x.EmployeeId == allocation.EmployeeId);
 
                     if (resource == null)
@@ -130,7 +146,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                             UserId = user.Id
                         });
 
-                        unitOfWork.CostDetailRepository.Update(costDetail);
+                        if (newCostDetail)
+                            unitOfWork.CostDetailRepository.Insert(costDetail);
+                        else
+                            unitOfWork.CostDetailRepository.Update(costDetail);
+                        
                     }
                     else
                     {
