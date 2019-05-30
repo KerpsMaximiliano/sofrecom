@@ -36,7 +36,7 @@ namespace Sofco.Domain.Models.Rrhh
 
         public DateTime Date { get; set; }
 
-        public int PrepaidId { get; set; }
+        public int? PrepaidId { get; set; }
 
         public Prepaid Prepaid { get; set; }
 

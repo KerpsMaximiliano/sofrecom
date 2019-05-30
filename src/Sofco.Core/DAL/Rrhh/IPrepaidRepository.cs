@@ -16,5 +16,6 @@ namespace Sofco.Core.DAL.Rrhh
         void Close(PrepaidImportedData prepaidImportedData);
         bool DateIsClosed(int prepaidId, int yearId, int monthId);
         IList<PrepaidImportedData> GetLastProvisioneds(DateTime dateTime);
+        IList<int> GetEmployeeIds(int yearId, int monthId);
     }
 }

@@ -138,6 +138,9 @@
   <data name="DifferenceInPlan" xml:space="preserve">
     <value>El plan es distinto.</value>
   </data>
+  <data name="EmployeeMissing" xml:space="preserve">
+    <value>El empleado no fue informado en ningun archivo de prepaga</value>
+  </data>
   <data name="EmployeeNotFound" xml:space="preserve">
     <value>El empleado no existe en Tiger.</value>
   </data>

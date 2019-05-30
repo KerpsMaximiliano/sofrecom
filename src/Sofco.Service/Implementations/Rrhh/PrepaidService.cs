@@ -215,6 +215,43 @@ namespace Sofco.Service.Implementations.Rrhh
 
             try
             {
+                var prepaidImportedDataIds = unitOfWork.PrepaidImportedDataRepository.GetEmployeeIds(yearId, monthId);
+
+                var employeeMissingInFiles = unitOfWork.EmployeeRepository.GetMissingEmployess(prepaidImportedDataIds);
+
+                foreach (var employee in employeeMissingInFiles)
+                {
+                    var itemToAdd = new PrepaidImportedData
+                    {
+                        Date = new DateTime(yearId, monthId, 1).Date,
+                        Cuil = employee.Cuil.ToString(),
+                        Dni = employee.DocumentNumber.ToString(),
+                        EmployeeId = employee.Id,
+                        EmployeeName = employee.Name,
+                        EmployeeNumber = employee.EmployeeNumber,
+                        Period = new DateTime(yearId, monthId, 1).Date,
+                        Status = PrepaidImportedDataStatus.Error,
+                        TigerBeneficiaries = employee.BeneficiariesCount,
+                        TigerCost = employee.PrepaidAmount,
+                        TigerPlan = employee.PrepaidPlan,
+                        Comments = Resources.Rrhh.Prepaid.EmployeeMissing
+                    };
+
+                    unitOfWork.PrepaidImportedDataRepository.Insert(itemToAdd);
+                }
+
+                if (employeeMissingInFiles.Any())
+                {
+                    unitOfWork.Save();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
+
+            try
+            {
                 var rrhhGroup = unitOfWork.GroupRepository.GetByCode(emailConfig.RrhhCode);
 
                 var data = new MailDefaultData()

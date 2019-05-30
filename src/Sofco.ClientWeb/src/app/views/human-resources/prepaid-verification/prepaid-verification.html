@@ -99,7 +99,7 @@
                                 <label class="label" [ngClass]="getStatusClass(item.status)">{{ getStatusDesc(item.status) }}</label>
                             </td>
                             <td class="column-xlg text-word-break">{{ item.comments }}</td>
-                            <td class="column-xs">{{ item.prepaid.text }}</td>
+                            <td class="column-xs">{{ item.prepaid?.text }}</td>
                             <td class="column-lg">{{ item.employeeName }}</td>
                             <td class="column-sm">{{ item.prepaidBeneficiaries }}</td>
                             <td class="column-sm">{{ item.tigerBeneficiaries }}</td>
@@ -160,7 +160,7 @@
                                 <td class="column-xs text-center">
                                     <icheck [(checked)]="item.selected"></icheck>
                                 </td>
-                                <td class="column-xs">{{ item.prepaid.text }}</td>
+                                <td class="column-xs">{{ item.prepaid?.text }}</td>
                                 <td class="column-lg">{{ item.employeeName }}</td>
                                 <td class="column-sm">{{ item.prepaidBeneficiaries }}</td>
                                 <td class="column-sm">{{ item.tigerBeneficiaries }}</td>
