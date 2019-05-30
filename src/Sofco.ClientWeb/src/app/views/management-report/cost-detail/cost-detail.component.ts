@@ -59,7 +59,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     profileSelected: any
     othersByMonth: any[] = new Array()
     today: Date = new Date()
-    fromMonth: Date
+    fromMonth: Date = new Date()
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
@@ -91,7 +91,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        this.fromMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 2, 1)
+      //  this.fromMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 2, 1)
         if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')) {
             this.canEdit = true
         }
@@ -116,6 +116,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (this.getProfileSuscrip) this.getProfileSuscrip.unsubscribe();
         if (this.getEmployeeSubscrip) this.getEmployeeSubscrip.unsubscribe();
         if (this.getOtherByMonthSuscrip) this.getOtherByMonthSuscrip.unsubscribe();
+    }
+
+    setFromDate(date : Date){
+        this.fromMonth = new Date(date.getFullYear(), date.getMonth() -2, 1)        
     }
 
     getCost() {

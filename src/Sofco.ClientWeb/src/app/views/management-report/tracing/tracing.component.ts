@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DataTableService } from "app/services/common/datatable.service";
 import { DatesService } from "app/services/common/month.service";
-import { MessageService } from "app/services/common/message.service"
 
 @Component({
     selector: 'management-report-tracing',
@@ -12,10 +11,10 @@ export class TracingComponent implements OnInit, OnDestroy {
     
     AllMarginTracking: any[] = new Array()
     analytic: string
+    fromMonth: Date = new Date()
     
     constructor(private dataTableService : DataTableService,
-                private datesService: DatesService,
-                private messageService: MessageService){
+                private datesService: DatesService){
 
     }
     
@@ -36,13 +35,13 @@ export class TracingComponent implements OnInit, OnDestroy {
         
         this.AllMarginTracking.forEach(margin => {
             var month =  this.datesService.getMonth(new Date(margin.Year, margin.Month))
-            margin.display = `${month.montShort} ${month.year} `
+            margin.display = `${month.montShort} ${month.year}`
             columns.push(column)
             column++
         })
 
         columns.push(column)
-        this.initGrid(columns)     
+        this.initGrid(columns)   
     }
 
     initGrid(columns) {
@@ -69,6 +68,10 @@ export class TracingComponent implements OnInit, OnDestroy {
             $('.dataTables_info').hide()
             $('.dataTables_length').hide()
 
-        }, 500);
+        }, 1000);
+    }
+
+    setFromDate(date : Date){
+        this.fromMonth = new Date(date.getFullYear(), date.getMonth() -2, 1)        
     }
 }

@@ -8,7 +8,7 @@
         <thead>
             <tr>
                 <th class="static first-column" scope="col">Meses</th>
-                <th class="text-center headcol" *ngFor="let month of AllMarginTracking; first as isFirst"
+                <th class="text-center headcol" *ngFor="let month of AllMarginTracking | fromDateFilter: fromMonth; first as isFirst"
                     [ngClass]="{'first-col': isFirst}">
                     {{ month.display }}
                 </th>
@@ -17,7 +17,7 @@
         <tbody>
             <tr>
                 <th class="static first-column" scope="col">Margen a la Fecha (%)</th>
-                <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                <td *ngFor="let month of AllMarginTracking | fromDateFilter: fromMonth; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-total">
                         {{ month.PercentageExpectedTotal | number:'1.0-2' }}
                     </label>
@@ -25,7 +25,7 @@
             </tr>
             <tr>
                 <th class="static first-column text-ellipsis" scope="col">Margen a Terminacion (%)</th>
-                <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                <td *ngFor="let month of AllMarginTracking| fromDateFilter: fromMonth; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-cant-resources">
                         {{ month.PercentageToEnd | number:'1.0-2'  }}
                     </label>
