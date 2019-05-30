@@ -93,16 +93,18 @@ namespace Sofco.Service.Crm.HttpClients
         {
             var requestMessage = new HttpRequestMessage(httpMethod, crmSetting.UrlApi + urlPath);
 
+            StringContent content = null;
+
             if (data != null)
             {
-                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, JsonMediaType);
+                content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, JsonMediaType);
 
                 requestMessage.Content = content;
             }
 
             var response = httpClient.SendAsync(requestMessage).Result;
 
-            response = ProcessExpiredToken(response);
+            response = ProcessExpiredToken(response, content);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -146,7 +148,7 @@ namespace Sofco.Service.Crm.HttpClients
                 : JsonConvert.DeserializeObject<TResult>(resultText, jsonSerializerSettings);
         }
 
-        private HttpResponseMessage ProcessExpiredToken(HttpResponseMessage unauthorizedResponse)
+        private HttpResponseMessage ProcessExpiredToken(HttpResponseMessage unauthorizedResponse, StringContent content)
         {
             if(unauthorizedResponse.IsSuccessStatusCode) return unauthorizedResponse;
 
@@ -158,6 +160,8 @@ namespace Sofco.Service.Crm.HttpClients
             var request = new HttpRequestMessage(
                     unauthorizedResponse.RequestMessage.Method,
                     unauthorizedResponse.RequestMessage.RequestUri);
+
+            if(content != null) request.Content = content;
 
             return httpClient.SendAsync(request).Result;
         }
