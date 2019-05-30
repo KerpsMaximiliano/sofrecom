@@ -125,7 +125,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
             var dataSplit = data.Split(' ');
 
-            if (dataSplit.Length != 4 || dataSplit.Length != 3) return DateTime.MinValue;
+            if (dataSplit.Length != 4 && dataSplit.Length != 3) return DateTime.MinValue;
 
             var dateSplit = dataSplit[0].Split('/');
 
