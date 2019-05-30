@@ -9,12 +9,10 @@ namespace Sofco.Service.Implementations.Rrhh
     public class PrepaidFactory : IPrepaidFactory
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly ILogMailer<IPrepaidFactory> logMailer;
 
-        public PrepaidFactory(IUnitOfWork unitOfWork, ILogMailer<IPrepaidFactory> logger)
+        public PrepaidFactory(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            this.logMailer = logger;
         }
 
         public IPrepaidFileManager GetInstance(string code)
@@ -22,7 +20,7 @@ namespace Sofco.Service.Implementations.Rrhh
             switch (code)
             {
                 case "SWISS": return new SwissPrepaidFileManager(unitOfWork);
-                case "DOCTHOS": return new DocthosPrepaidFileManager(unitOfWork, logMailer);
+                case "DOCTHOS": return new DocthosPrepaidFileManager(unitOfWork);
                 case "OSDE": return new OsdePrepaidFileManager(unitOfWork);
                 case "OMINT": return new OmintPrepaidFileManager(unitOfWork);
                 case "MEDIFE": return new MedifePrepaidFileManager(unitOfWork);

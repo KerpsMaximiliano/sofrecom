@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
-using Sofco.Core.Logger;
 using Sofco.Core.Models.Rrhh;
-using Sofco.Core.Services.Rrhh;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Utils;
@@ -18,7 +16,6 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
     public class DocthosPrepaidFileManager : BasePrepaidFileManager, IPrepaidFileManager
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly ILogMailer<IPrepaidFactory> logMailer;
 
         private const int DocumentColumn = 23;
         private const int CuilColumn = 9;
@@ -27,10 +24,9 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
         private const int PlanColumn = 3;
         private const int PeriodColumn = 8;
 
-        public DocthosPrepaidFileManager(IUnitOfWork unitOfWork, ILogMailer<IPrepaidFactory> logMailer)
+        public DocthosPrepaidFileManager(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
-            this.logMailer = logMailer;
             FileName = "docthos.xlsx";
         }
 
@@ -125,13 +121,11 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
         private DateTime GetPeriod(string data)
         {
-            logMailer.LogError(data, new NotImplementedException());
-
             if (string.IsNullOrWhiteSpace(data)) return DateTime.MinValue;
 
             var dataSplit = data.Split(' ');
 
-            if (dataSplit.Length != 4) return DateTime.MinValue;
+            if (dataSplit.Length != 4 || dataSplit.Length != 3) return DateTime.MinValue;
 
             var dateSplit = dataSplit[0].Split('/');
 
