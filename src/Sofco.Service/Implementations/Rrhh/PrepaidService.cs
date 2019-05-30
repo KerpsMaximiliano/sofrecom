@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Core.Models.Rrhh;
+using Sofco.Core.Services.ManagementReport;
 using Sofco.Core.Services.Rrhh;
-using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Helpers;
+using Sofco.Framework.MailData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Options;
-using Sofco.Common.Settings;
-using Sofco.Core.Config;
-using Sofco.Core.Mail;
-using Sofco.Core.Services.ManagementReport;
-using Sofco.Domain.Enums;
-using Sofco.Framework.Helpers;
-using Sofco.Framework.MailData;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.Service.Implementations.Rrhh
 {
@@ -28,9 +27,9 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly EmailConfig emailConfig;
         private readonly IManagementReportCalculateCostsService managementReportCalculateCostsService;
 
-        public PrepaidService(IUnitOfWork unitOfWork, 
-            ILogMailer<PrepaidService> logger, 
-            IPrepaidFactory prepaidFactory,             
+        public PrepaidService(IUnitOfWork unitOfWork,
+            ILogMailer<PrepaidService> logger,
+            IPrepaidFactory prepaidFactory,
             IOptions<EmailConfig> emailOptions,
             IManagementReportCalculateCostsService managementReportCalculateCostsService,
             IMailSender mailSender)
@@ -51,7 +50,7 @@ namespace Sofco.Service.Implementations.Rrhh
 
             if (prepaid == null)
                 response.AddError(Resources.Rrhh.Prepaid.NotFound);
-             
+
             if (monthId < 1 || monthId > 12)
                 response.AddError(Resources.Rrhh.Prepaid.MonthError);
 
@@ -100,11 +99,35 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        public Response<IList<PrepaidImportedData>> Get(int yearId, int monthId)
+        public Response<PrepaidImportedDataModel> Get(int yearId, int monthId)
         {
-            var response = new Response<IList<PrepaidImportedData>>();
+            var response = new Response<PrepaidImportedDataModel> { Data = new PrepaidImportedDataModel() };
 
-            response.Data = unitOfWork.PrepaidImportedDataRepository.GetByDate(yearId, monthId);
+            response.Data.Items = unitOfWork.PrepaidImportedDataRepository.GetByDate(yearId, monthId);
+
+            response.Data.Totals = new List<PrepaidTotals>();
+
+            var prepaids = unitOfWork.UtilsRepository.GetPrepaids();
+
+            if (prepaids.Any())
+            {
+                var first = prepaids.FirstOrDefault();
+
+                if(first != null)
+                    response.Data.IsClosed = unitOfWork.PrepaidImportedDataRepository.DateIsClosed(first.Id, yearId, monthId);
+            }
+            
+            foreach (var prepaid in prepaids)
+            {
+                response.Data.Totals.Add(new PrepaidTotals
+                {
+                    Prepaid = prepaid.Text,
+                    PrepaidValue = response.Data.Items.Where(x => x.PrepaidId == prepaid.Id).Sum(x => x.PrepaidCost),
+                    TigerValue = response.Data.Items.Where(x => x.PrepaidId == prepaid.Id).Sum(x => x.TigerCost),
+                });
+            }
+
+            response.Data.Provisioneds = unitOfWork.PrepaidImportedDataRepository.GetLastProvisioneds(new DateTime(yearId, monthId, 1));
 
             return response;
         }

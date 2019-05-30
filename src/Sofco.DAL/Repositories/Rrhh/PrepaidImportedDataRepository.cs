@@ -85,5 +85,10 @@ namespace Sofco.DAL.Repositories.Rrhh
 
             return context.PrepaidImportedData.Any(x => x.PrepaidId == prepaidId && x.Date.Date == date.Date && x.Closed);
         }
+
+        public IList<PrepaidImportedData> GetLastProvisioneds(DateTime dateTime)
+        {
+            return context.PrepaidImportedData.Where(x => x.Period.Date < dateTime.Date && x.Status == PrepaidImportedDataStatus.Provisioned).ToList();
+        }
     }
 }
