@@ -268,9 +268,12 @@ namespace Sofco.Framework.FileManager.WorkTime
             datetime = DateTime.MinValue;
 
             if (string.IsNullOrWhiteSpace(date)) return false;
-            if (date.Length != 10) return false;
 
-            var split = date.Split('/');
+            var dataSplit = date.Split(' ');
+
+            if (dataSplit.Length != 1 && dataSplit.Length != 4 && dataSplit.Length != 3) return false;
+
+            var split = dataSplit[0].Split('/');
             if (split.Length != 3) return false;
 
             try
