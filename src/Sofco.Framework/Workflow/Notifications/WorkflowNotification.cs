@@ -72,7 +72,7 @@ namespace Sofco.Framework.Workflow.Notifications
 
                             foreach (var userApprover in userApprovers)
                             {
-                                var userToSend = unitOfWork.UserRepository.Get(userApprover.UserId);
+                                var userToSend = unitOfWork.UserRepository.Get(userApprover.ApproverUserId);
 
                                 if (userToSend != null) recipientsList.Add(userToSend.Email);
                             }
@@ -115,7 +115,7 @@ namespace Sofco.Framework.Workflow.Notifications
 
                             foreach (var userApprover in userApprovers)
                             {
-                                var userToSend = unitOfWork.UserRepository.Get(userApprover.UserId);
+                                var userToSend = unitOfWork.UserRepository.Get(userApprover.ApproverUserId);
 
                                 if (userToSend != null) recipientsList.Add(userToSend.Email);
                             }
@@ -145,7 +145,7 @@ namespace Sofco.Framework.Workflow.Notifications
 
                             foreach (var userApprover in userApprovers)
                             {
-                                var userToSend = unitOfWork.UserRepository.Get(userApprover.UserId);
+                                var userToSend = unitOfWork.UserRepository.Get(userApprover.ApproverUserId);
 
                                 if (userToSend != null) recipientsList.Add(userToSend.Email);
                             }
