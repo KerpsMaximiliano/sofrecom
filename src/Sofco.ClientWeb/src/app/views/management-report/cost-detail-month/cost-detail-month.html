@@ -2,19 +2,21 @@
     [isSaveEnabled]="f.form.valid || canSave">
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 pointer" (dblclick)="totalProvisionedEditabled = !totalProvisionedEditabled">
             <div class="form-group row">
-                <label class="col-sm-6 col-form-label">Total Provisionado:</label>
+                <label class="col-sm-6 col-form-label">Ventas:</label>
                 <div class="col-sm-6">
-                    <label class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
+                    <label *ngIf="totalProvisionedEditabled == false" class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
+                    <input *ngIf="totalProvisionedEditabled == true" (ngModelChange)="totalProvisionedChanged()" type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalProvisioned">
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" (dblclick)="totalBillingEditabled = !totalBillingEditabled">
             <div class="form-group row">
-                <label class="col-sm-6 col-form-label">Total Facturación (GAPS)</label>
+                <label class="col-sm-6 col-form-label">Facturación:</label>
                 <div class="col-sm-6">
-                    <label class="label label-gray">{{ totalBilling | amountFormat }}</label>
+                    <label *ngIf="totalBillingEditabled == false" class="label label-gray">{{ totalBilling | amountFormat }}</label>
+                    <input *ngIf="totalBillingEditabled == true" (ngModelChange)="totalBillingChanged()" type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalBilling">
                 </div>
             </div>
         </div>
@@ -29,6 +31,15 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6" (dblclick)="provisionEditabled = !provisionEditabled">
+            <div class="form-group row">
+                <label class="col-sm-6 col-form-label">Provisión:</label>
+                <div class="col-sm-6">
+                    <label *ngIf="provisionEditabled == false" class="label label-gray">{{ provision | amountFormat }}</label>
+                    <input *ngIf="provisionEditabled == true" type="number" (ngModelChange)="provisionChanged()" decimalFormat class="form-control input-xs" [(ngModel)]="provision">
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row border-bottom m-b-sm">
@@ -39,7 +50,7 @@
             <h4>Bruto</h4>
         </div>
         <div class="col-sm-2">
-            <h4>Cargas</h4>
+            <h4>Prepaga</h4>
         </div>
         <div class="col-sm-2">
             <h4>Total gral</h4>
@@ -47,9 +58,13 @@
     </div>
 
     <div class="row m-t-xs" *ngFor="let resource of resources">
-        <div class="col-sm-6">{{ resource.name }}</div>
+        <div class="col-sm-6">
+            <span class="text-danger" *ngIf="!resource.hasAlocation"><strong>* </strong></span>
+            <span>{{ resource.name }}</span>   
+        </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.salary" disabled>
+            <input type="number"  [digitLimit]="8"  decimalFormat class="form-control input-xs" max="99999999" min="0"
+                [(ngModel)]="resource.salary" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
             <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
@@ -59,7 +74,23 @@
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
         </div>
     </div>
-
+    <br>
+    <small class="text-danger">
+        <strong>* Sin porcentaje de asignacion en la analitica.</strong>
+    </small>  
+    <div class="row">
+        <br>
+        <div class="col-md-6">
+            <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected">
+            </ng-select>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-success btn-md" type="button" (click)="addEmployee()">
+                Agregar
+                <i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+    
     <hr class="hr-line-dashed">
 
     <div class="row border-bottom m-b-sm">
@@ -78,7 +109,7 @@
         <div class="col-sm-1" *ngIf="contracted.length > 0"></div>
     </div>
     <form name="form" #f="ngForm" novalidate>
-        
+
         <div class="row m-t-xs" *ngFor="let hire of contracted; let i = index">
             <div class="col-sm-5">
                 <!-- <input type="text" class="form-control input-xs" [(ngModel)]="hire.name" [disabled]="isReadOnly" maxlength="200" required> -->
@@ -106,20 +137,20 @@
         </div>
 
     </form>
-
-    <button class="btn btn-success btn-sm m-t-xs" (click)="addContracted()" *ngIf="!isReadOnly" type="button">
+    <br>
+    <button class="btn btn-success btn-md m-t-xs" (click)="addContracted()" *ngIf="!isReadOnly" type="button">
         Agregar
         <i class="fa fa-plus"></i>
     </button>
 
 
-    <hr class="hr-line-dashed"> 
+    <hr class="hr-line-dashed">
 
     <div class="row border-bottom m-b-sm">
-        <div class="col-sm-9">
+        <div class="col-sm-5">
             <h4>Otros Gastos</h4>
         </div>
-        <!-- <div class="col-sm-5"><h4>Descripción</h4></div> -->
+        <div class="col-sm-4"><h4>Descripción</h4></div>
         <div class="col-sm-2" *ngIf="expenses.length > 0">
             <h4>Total</h4>
         </div>
@@ -132,14 +163,14 @@
     </div>
 
     <div class="row m-t-xs" *ngFor="let expense of expenses; let i = index">
-        <div class="col-sm-9">
+        <div class="col-sm-5">
             {{ expense.typeName }}
         </div>
-        <!-- <div class="col-sm-5">
-            <input type="text" class="form-control input-xs" [(ngModel)]="expense.typeName" [disabled]="isReadOnly" maxlength="200">
-        </div> -->
+        <div class="col-sm-4">
+            <input type="text" class="form-control input-xs" [(ngModel)]="expense.description" [disabled]="isReadOnly" maxlength="200">
+        </div> 
         <div class="col-sm-2">
-            <input type="number" class="form-control input-xs" [digitLimit]="8" [(ngModel)]="expense.salary"
+            <input type="number" class="form-control input-xs" [digitLimit]="8" [(ngModel)]="expense.value"
                 (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly" max="99999999" min="0">
         </div>
         <div class="col-sm-1">
@@ -148,18 +179,15 @@
         </div>
     </div>
 
-    <!-- <button class="btn btn-success btn-xs m-t-xs" (click)="addExpense()" *ngIf="!isReadOnly" type="button">Agregar <i class="fa fa-plus"></i></button> -->
     <br *ngIf="expenses.length > 0">
     <div class="row" *ngIf="otherResources.length > 0">
-        <div class="col-md-8">
-            <select class="form-control" id="otherResourceId" name="otherResourceId" [(ngModel)]="otherResourceId">
-                <option [value]="otherResource.typeId" *ngFor="let otherResource of otherResources">
-                    {{otherResource.typeName}}
-                </option>
-            </select>
+        <div class="col-md-6">
+            <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
+                (change)="otherResourceChange()">
+            </ng-select>
         </div>
         <div class="col-md-4">
-            <button class="btn btn-success btn-sm" type="button" (click)="addExpense()">
+            <button class="btn btn-success btn-md" type="button" (click)="addExpense()">
                 Agregar
                 <i class="fa fa-plus"></i></button>
         </div>

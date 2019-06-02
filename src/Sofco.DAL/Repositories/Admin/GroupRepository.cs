@@ -58,14 +58,6 @@ namespace Sofco.DAL.Repositories.Admin
                 .SingleOrDefault(predicate);
         }
 
-        public Group GetSingleWithUser(Expression<Func<Group, bool>> predicate)
-        {
-            return context.Set<Group>()
-              .Include(x => x.UserGroups)
-                    .ThenInclude(s => s.User)
-              .SingleOrDefault(predicate);
-        }
-
         public string GetEmail(string code)
         {
             return context.Groups
@@ -77,6 +69,30 @@ namespace Sofco.DAL.Repositories.Admin
         public Group GetByCode(string guestCode)
         {
             return context.Groups.SingleOrDefault(x => x.Code.Equals(guestCode));
+        }
+
+        public IList<Group> GetByUsers(IEnumerable<int> userids)
+        {
+            var users = context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Where(x => userids.Contains(x.Id))
+                .ToList();
+
+            var groups = new List<Group>();
+
+            foreach (var user in users)
+            {
+                foreach (var userGroup in user.UserGroups)
+                {
+                    if (groups.All(x => x.Id != userGroup.GroupId))
+                    {
+                        groups.Add(userGroup.Group);
+                    }
+                }
+            }
+
+            return groups;
         }
     }
 }

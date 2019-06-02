@@ -100,7 +100,9 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
 
     canGoToManagementReport(analytic){
         if(this.menuService.hasFunctionality('MANRE', 'VIEW-DETAIL') && analytic.clientId && analytic.serviceId){
-            return true;
+            if(this.menuService.user.id == analytic.managerId || this.menuService.userIsCdg == true){
+                return true;
+            }
         }
 
         return false;

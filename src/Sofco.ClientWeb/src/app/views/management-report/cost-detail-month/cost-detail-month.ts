@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { I18nService } from "app/services/common/i18n.service";
 import { MessageService } from "app/services/common/message.service";
@@ -7,6 +7,8 @@ import { ManagementReportService } from "app/services/management-report/manageme
 import { ActivatedRoute } from "@angular/router";
 import { detectBody } from "app/app.helpers";
 import { ManagementReportDetailComponent } from "../detail/mr-detail"
+import { datepickerLocale } from "fullcalendar";
+import { EmployeeService } from "app/services/allocation-management/employee.service"
 
 @Component({
     selector: 'cost-detail-month',
@@ -17,8 +19,11 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     updateCostSubscrip: Subscription;
     getContratedSuscrip: Subscription;
+    getOtherSuscrip: Subscription;
     deleteContractedSuscrip: Subscription;
+    deleteOtherSuscrip: Subscription;
     paramsSubscrip: Subscription;
+    getEmployeesSubscrip: Subscription
 
     @ViewChild('costDetailMonthModal') costDetailMonthModal;
     public costDetailMonthModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -31,20 +36,31 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     );
 
     totalProvisioned: number = 0;
+    totalProvisionedAux: number;
     totalCosts: number = 0;
     totalBilling: number = 0;
+    totalBillingAux: number;
+    provision: number = 0;
+    provisionAux: number;
+
+    totalProvisionedEditabled: boolean = false;
+    totalBillingEditabled: boolean = false;
+    provisionEditabled: boolean = false;
 
     resources: any[] = new Array();
     expenses: any[] = new Array();
+    users: any[] = new Array()
 
     serviceId: string;
     AnalyticId: any;
     fundedResources: any[] = new Array();
     otherResources: any[] = new Array();
-    otherResourceId: number;
+    otherSelected: any;
+    managementReportId: number;
     contracted: any[] = new Array();
     monthYear: Date;
     canSave: boolean = false;
+    userSelected: any
 
     isReadOnly: boolean
 
@@ -52,13 +68,31 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private managementReportService: ManagementReportService,
         private activatedRoute: ActivatedRoute,
-        private managementReport: ManagementReportDetailComponent
+        private managementReport: ManagementReportDetailComponent,
+        private employeeService: EmployeeService
     ) { }
 
     ngOnInit(): void {
+
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
         });
+
+        this.getOtherSuscrip = this.managementReportService.getOtherResources().subscribe(response => {
+
+            this.otherResources = response.data;
+
+            if (this.otherResources.length > 0) {
+                this.otherSelected = this.otherResources[0];
+            }
+
+            this.messageService.closeLoading();
+        },
+            error => {
+                this.messageService.closeLoading();
+            });
+
+        this.getUsers()
     }
 
     ngOnDestroy(): void {
@@ -66,17 +100,34 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
         if (this.deleteContractedSuscrip) this.deleteContractedSuscrip.unsubscribe();
         if (this.getContratedSuscrip) this.getContratedSuscrip.unsubscribe();
+        if (this.getOtherSuscrip) this.getOtherSuscrip.unsubscribe();
+        if (this.deleteOtherSuscrip) this.deleteOtherSuscrip.unsubscribe();
+        if (this.getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe()
+    }
+
+    totalProvisionedChanged() {
+        this.totalProvisionedAux = this.totalProvisioned;
+    }
+
+    totalBillingChanged() {
+        this.totalBillingAux = this.totalBilling;
+    }
+
+    provisionChanged() {
+        this.provisionAux = this.provision;
     }
 
     addExpense() {
-        //  this.expenses.push({ type: "Gasto x", description: "", total: 0 });
-        var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
+
+        var resource = {
+            id: 0,
+            typeId: this.otherSelected.typeId,
+            typeName: this.otherSelected.typeName,
+            value: 0,
+            description: ""
+        }
+
         this.expenses.push(resource)
-
-        var pos = this.otherResources.findIndex(r => r.typeId == this.otherResourceId);
-        this.otherResources.splice(pos, 1)
-
-        this.otherResourceId = this.otherResources[0].typeId;
     }
 
     addContracted() {
@@ -96,35 +147,33 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.deleteContractedSuscrip = this.managementReportService.deleteContracted(item.contractedId).subscribe(response => {
                 this.contracted.splice(index, 1)
             },
-            error => {
-            });
+                error => {
+                });
         }
         else {
-             this.contracted.splice(index, 1)
+            this.contracted.splice(index, 1)
         }
 
-        if(this.contracted.length == 0){
+        if (this.contracted.length == 0) {
             this.canSave = true;
-        }        
+        }
     }
 
     deleteExpense(index, item) {
 
-        item.salary = 0;
-        this.expenses.splice(index, 1);
-        this.otherResources.push(item)
-
-        this.otherResources.sort(function (a, b) {
-            if (a.typeName > b.typeName) {
-                return 1;
-            }
-            if (a.typeName < b.typeName) {
-                return -1;
-            }
-            return 0;
-        });
-
-        this.otherResourceId = this.otherResources[0].typeId;
+        console.log(item)
+        //Si el item no esta en base de datos solo lo borro del array
+        if (item.id == 0) {
+            this.expenses.splice(index, 1);
+        }
+        else {
+            //Si esta en base de datos borro el registio
+            this.deleteContractedSuscrip = this.managementReportService.deleteOtherResources(item.id).subscribe(response => {
+                this.expenses.splice(index, 1);
+            },
+                error => {
+                });
+        }
 
         this.calculateTotalCosts();
     }
@@ -132,34 +181,26 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     open(data) {
         this.messageService.showLoading()
         this.expenses = [];
-debugger
+
         this.isReadOnly = !data.isCdg;
         this.AnalyticId = data.AnalyticId;
-        this.monthYear = new Date(data.year, data.month - 1, 1)
-        this.resources = data.resources.employees.filter(e => e.hasAlocation == true)
-        this.fundedResources = data.resources.fundedResources;
-        this.otherResources = data.resources.otherResources;
+        
+        this.resources = data.resources.employees.filter( x=> x.hasAlocation == true || x.salary > 0 || x.charges > 0)
         this.totalBilling = data.totals.totalBilling;
         this.totalProvisioned = data.totals.totalProvisioned;
+        this.provision = data.totals.provision;
 
-        if(this.otherResources.length > 0){
-            this.otherResourceId = this.otherResources[0].typeId;
-        }
-        
-        this.fundedResources.forEach(resource => {
-            if (resource.otherResource == true) {
-                if (resource.salary > 0) {
-                    this.expenses.push(resource);
-                }
-                else {
-                    this.otherResources.push(resource)
-                }
-            }
-        })
+        this.getContratedSuscrip = this.managementReportService.getCostDetailMonth(this.serviceId, data.month, data.year).subscribe(response => {
 
-        this.getContratedSuscrip = this.managementReportService.getContrated(this.serviceId, data.month, data.year).subscribe(response => {
+            this.managementReportId = response.data.managementReportId;
+            this.monthYear = response.data.monthYear
+            this.contracted = response.data.contracted;
+            this.expenses = response.data.otherResources;
 
-            this.contracted = response.data;
+            if (response.data.totalBilling && response.data.totalBilling != null) this.totalBilling = response.data.totalBilling;
+            if (response.data.provision && response.data.provision != null) this.provision = response.data.provision;
+            if (response.data.totalProvisioned && response.data.totalProvisioned != null) this.totalProvisioned = response.data.totalProvisioned;
+
             this.calculateTotalCosts();
 
             this.messageService.closeLoading();
@@ -172,18 +213,25 @@ debugger
     }
 
     save() {
-
         this.messageService.showLoading();
+
         var model = {
             AnalyticId: 0,
+            ManagementReportId: 0,
+            MonthYear: new Date(),
             Employees: [],
             OtherResources: [],
-            Contracted: []
+            Contracted: [],
+            totalBilling: this.totalBillingAux != null ? this.totalBillingAux : null,
+            totalProvisioned: this.totalProvisionedAux != null ? this.totalProvisionedAux : null,
+            provision: this.provisionAux != null ? this.provisionAux : null,
         }
 
         model.AnalyticId = this.AnalyticId
-        model.Employees = this.resources;
-        model.OtherResources = this.expenses.concat(this.otherResources);
+        model.ManagementReportId = this.managementReportId
+        model.MonthYear = this.monthYear
+        model.Employees = this.resources
+        model.OtherResources = this.expenses
         model.Contracted = this.contracted;
 
         this.updateCostSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, model).subscribe(response => {
@@ -193,7 +241,6 @@ debugger
         },
             error => {
                 this.messageService.closeLoading();
-                this.costDetailMonthModal.hide();
             });
     }
 
@@ -213,7 +260,7 @@ debugger
         this.totalCosts = 0;
 
         this.expenses.forEach(element => {
-            this.totalCosts += element.salary;
+            this.totalCosts += element.value;
         });
 
         this.resources.forEach(element => {
@@ -225,5 +272,45 @@ debugger
         });
     }
 
+    getUsers() {
+        this.messageService.showLoading();
+
+        this.getEmployeesSubscrip = this.employeeService.getListItems().subscribe(data => {
+            this.messageService.closeLoading();
+
+            this.users = data;
+        },
+            () => {
+                this.messageService.closeLoading();
+            })
+    }
+
+    addEmployee() {
+
+        if (this.userSelected) {
+            var existingEmployee = this.resources.find(e => e.employeeId === this.userSelected.id)
+            if (!existingEmployee) {
+                var costEmployee = {
+                    id: 0,
+                    costDetailId: 0,
+                    employeeId: this.userSelected,
+                    userId: this.userSelected.id,
+                    name: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
+                    salary: 0,
+                    charges: 0,
+                    total: 0,
+                    hasAlocation: false
+                }
+
+                this.resources.push(costEmployee)
+            }
+            else {
+                this.messageService.showError("managementReport.existingEmployee")
+            }
+        }
+        else {
+            this.messageService.showError("managementReport.userRequired")
+        }
+    }
 
 }

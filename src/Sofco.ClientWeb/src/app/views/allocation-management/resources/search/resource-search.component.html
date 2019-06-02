@@ -36,16 +36,52 @@
                                 <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.name' | translate }}" type="text" [(ngModel)]="searchModel.name">
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <div class="form-group">
                                 <label class="control-label">{{'allocationManagement.resources.grid.employeeNumber' | translate }}</label>
                                 <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.employeeNumber' | translate }}" type="text" [(ngModel)]="searchModel.employeeNumber">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">{{ 'allocationManagement.report.grid.billeability' | translate }}</label>
+                                <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" min="0" max="100" myNumberOnly [(ngModel)]="searchModel.percentage">
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
                                 <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.analyticId"></ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Superior</label>
+                                <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.superiorId"></ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Gerente</label>
+                                <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.managerId"></ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group checkbox-center">
+                                <icheck [(checked)]="searchModel.unassigned">
+                                    <label class="control-label">{{ 'allocationManagement.report.grid.unassigned' | translate }}</label> 
+                                </icheck>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group checkbox-center">
+                                <icheck [(checked)]="searchModel.externalOnly">
+                                    <label class="control-label">{{ 'allocationManagement.report.grid.onlyExternal' | translate }}</label> 
+                                </icheck>
                             </div>
                         </div>
                     </div>
@@ -66,28 +102,6 @@
                             <div class="form-group">
                                 <label class="control-label">{{'allocationManagement.resources.grid.technology' | translate }}</label>
                                 <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.technology' | translate }}" type="text" [(ngModel)]="searchModel.technology">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="control-label">{{ 'allocationManagement.report.grid.billeability' | translate }}</label>
-                                <input (keydown)="onKeydown($event)" class="form-control" placeholder="{{'allocationManagement.resources.grid.percentage' | translate }}" type="number" min="0" max="100" myNumberOnly [(ngModel)]="searchModel.percentage">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group checkbox-center">
-                                <icheck [(checked)]="searchModel.unassigned">
-                                    <label class="control-label">{{ 'allocationManagement.report.grid.unassigned' | translate }}</label> 
-                                </icheck>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group checkbox-center">
-                                <icheck [(checked)]="searchModel.externalOnly">
-                                    <label class="control-label">{{ 'allocationManagement.report.grid.onlyExternal' | translate }}</label> 
-                                </icheck>
                             </div>
                         </div>
                     </div>

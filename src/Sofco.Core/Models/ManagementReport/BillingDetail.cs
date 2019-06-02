@@ -36,6 +36,10 @@ namespace Sofco.Core.Models.ManagementReport
         public string Display { get; set; }
 
         public int ResourceQuantity { get; set; }
+
+        public decimal ValueEvalProp { get; set; }
+
+        public int BillingMonthId { get; set; }
     }
 
     public class BillingTotal
@@ -62,6 +66,10 @@ namespace Sofco.Core.Models.ManagementReport
         public string ProjectName { get; set; }
 
         public string CurrencyId { get; set; }
+
+        public string CurrencyName { get; set; }
+
+        public string OpportunityNumber { get; set; }
     }
 
     public class MonthBiilingRowItem
@@ -77,5 +85,9 @@ namespace Sofco.Core.Models.ManagementReport
         public string Status { get; set; }
 
         public decimal ValuePesos { get; set; }
+
+        public decimal OriginalValue { get; set; }
+
+        public decimal OriginalValuePesos { get; set; }
     }
 }

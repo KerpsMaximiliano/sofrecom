@@ -374,6 +374,24 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Se ha completado la carga y validación de la facturación de las prepagas correspondientes al período {0}.
+        /// </summary>
+        public static string PrepaidClosed {
+            get {
+                return ResourceManager.GetString("PrepaidClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Se ha completado la carga de la facturación de las prepagas correspondientes al período {0}.
+        /// </summary>
+        public static string PrepaidImported {
+            get {
+                return ResourceManager.GetString("PrepaidImported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a ORDEN DE COMPRA: {0}  &lt;br/&gt;&lt;br/&gt;
         ///Estimado,  &lt;br/&gt;
         ///La orden de compra de referencia se ha consumido. &lt;br/&gt;&lt;br/&gt;

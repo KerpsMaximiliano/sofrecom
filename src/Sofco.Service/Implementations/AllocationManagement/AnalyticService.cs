@@ -20,6 +20,7 @@ using Sofco.Domain.Utils;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.ManagementReport;
 using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -309,12 +310,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     }
                 }
 
-                analytic.ManagementReport = new Domain.Models.ManagementReport.ManagementReport
-                {
-                    Analytic = analytic,
-                    StartDate = analytic.StartDateContract.Date,
-                    EndDate = analytic.EndDateContract.Date
-                };
+                CreateManagementReport(analytic);
 
                 if (analytic.SolutionId == 0) analytic.SolutionId = null;
                 if (analytic.TechnologyId == 0) analytic.TechnologyId = null;
@@ -345,6 +341,41 @@ namespace Sofco.Service.Implementations.AllocationManagement
             SendMail(analytic, response);
 
             return response;
+        }
+
+        private void CreateManagementReport(Analytic analytic)
+        {
+            try
+            {
+                analytic.ManagementReport = new Domain.Models.ManagementReport.ManagementReport
+                {
+                    Analytic = analytic,
+                    StartDate = analytic.StartDateContract.Date,
+                    EndDate = analytic.EndDateContract.Date,
+                    Billings = new List<ManagementReportBilling>()
+                };
+
+                for (var date = new DateTime(analytic.StartDateContract.Year, analytic.StartDateContract.Month, 1).Date;
+                    date.Date <= analytic.EndDateContract.Date;
+                    date = date.AddMonths(1))
+                {
+                    analytic.ManagementReport.Billings.Add(new ManagementReportBilling
+                    {
+                        ManagementReport = analytic.ManagementReport,
+                        MonthYear = date.Date
+                    });
+
+                    analytic.ManagementReport.CostDetails.Add(new CostDetail
+                    {
+                        ManagementReport = analytic.ManagementReport,
+                        MonthYear = date.Date
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
         }
 
         public Response<NewTitleModel> GetNewTitle(int costCenterId)

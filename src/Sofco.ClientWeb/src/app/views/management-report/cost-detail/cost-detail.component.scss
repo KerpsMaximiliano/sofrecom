@@ -1,6 +1,8 @@
 table {
   table-layout: fixed;
+  width: max-content;
   font-size: 11px;
+  padding-bottom: 10px;
 }
 
 th,
@@ -46,12 +48,12 @@ td {
 
 .label-salary {
   background-color: #dbf9e3;
-  color: #000;
+  color: #5E5E5E;
 }
 
 .label-load {
   background-color: #b3ffd9;
-  color: #000;
+  color: #5E5E5E;
 }
 
 .cursor-pointer {
@@ -59,14 +61,24 @@ td {
 }
 
 .label-danger{
-  background-color: #f2dede;;
+  background-color: #f2dede;
+  color: #5E5E5E;
 }
 
 .label-yellow{   
   background-color: #ffeeba;
-  color: black;
+  color: #5E5E5E;
 }
 
 .not-allowed{
   cursor: not-allowed;
+}
+
+.static {
+  position: absolute;
+  background-color: white;
+}
+
+.first-col {
+  padding-left: 276px!important;
 }

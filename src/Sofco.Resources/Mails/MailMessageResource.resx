@@ -398,4 +398,10 @@ Analítica: {0}
 Recurso: {1}
 &lt;br/&gt;&lt;br/&gt;</value>
   </data>
+  <data name="PrepaidClosed" xml:space="preserve">
+    <value>Se ha completado la carga y validación de la facturación de las prepagas correspondientes al período {0}</value>
+  </data>
+  <data name="PrepaidImported" xml:space="preserve">
+    <value>Se ha completado la carga de la facturación de las prepagas correspondientes al período {0}</value>
+  </data>
 </root>

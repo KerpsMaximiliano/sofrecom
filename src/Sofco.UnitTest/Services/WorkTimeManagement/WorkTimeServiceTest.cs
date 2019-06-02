@@ -50,8 +50,6 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
         private Mock<IWorkTimeSendManager> workTimeSendManagerMock;
 
-        private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeServiceMock;
-
         private Mock<IOptions<AppSetting>> appSettingMock;
 
         [SetUp]
@@ -83,13 +81,11 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             workTimeSendManagerMock = new Mock<IWorkTimeSendManager>();
 
-            licenseGenerateWorkTimeServiceMock = new Mock<ILicenseGenerateWorkTimeService>();
-
             appSettingMock = new Mock<IOptions<AppSetting>>();
 
             sut = new WorkTimeService(loggerMock.Object, unitOfWorkMock.Object, userDataMock.Object, employeeDataMock.Object,
                 workTimeValidationMock.Object, appSettingMock.Object, workTimeFileManagerMock.Object, workTimeExportFileManagerMock.Object,
-                workTimeResumeMangerMock.Object, licenseGenerateWorkTimeServiceMock.Object, workTimeRejectManagerMock.Object, workTimeSendManagerMock.Object);
+                workTimeResumeMangerMock.Object, workTimeRejectManagerMock.Object, workTimeSendManagerMock.Object);
         }
 
         [Test]

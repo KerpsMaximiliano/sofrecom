@@ -93,6 +93,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public Employee GetByDocumentNumber(int dni)
+        {
+            return context.Employees.SingleOrDefault(x => x.DocumentNumber == dni);
+        }
+
+        public IList<Employee> GetMissingEmployess(IList<int> prepaidImportedDataIds)
+        {
+            return context.Employees.Where(x => !prepaidImportedDataIds.Contains(x.Id) && x.EndDate == null).ToList();
+        }
+
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {
             IQueryable<Employee> query = context.Employees.Include(x => x.Manager);
@@ -124,6 +134,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             if (!string.IsNullOrWhiteSpace(parameters.EmployeeNumber))
                 query = query.Where(x => x.EmployeeNumber != null && x.EmployeeNumber.ToLowerInvariant().Contains(parameters.EmployeeNumber.ToLowerInvariant()));
+
+            if (parameters.SuperiorId.HasValue && parameters.SuperiorId.Value > 0)
+                query = query.Where(x => x.ManagerId.GetValueOrDefault() == parameters.SuperiorId);
 
             if (parameters.Percentage.HasValue)
                 query = query.Where(x => x.BillingPercentage == parameters.Percentage);
@@ -299,6 +312,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public Employee GetById(int id)
         {
             return context.Employees.Include(x => x.Manager).SingleOrDefault(x => x.Id == id);
+        }
+
+        public List<Employee> GetById(int[] ids)
+        {
+            return context.Employees
+                .Where(s => ids.Contains(s.Id))
+                .ToList();
         }
 
         public Employee GetByEmail(string email)

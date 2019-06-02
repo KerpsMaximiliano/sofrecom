@@ -1,5 +1,7 @@
-﻿using Sofco.Core.DAL.ManagementReport;
+﻿using Microsoft.EntityFrameworkCore;
+using Sofco.Core.DAL.ManagementReport;
 using Sofco.DAL.Repositories.Common;
+using System.Linq;
 
 namespace Sofco.DAL.Repositories.ManagementReport
 {
@@ -7,6 +9,29 @@ namespace Sofco.DAL.Repositories.ManagementReport
     {
         public ManagementReportRepository(SofcoContext context) : base(context)
         {
+        }
+
+        public Domain.Models.ManagementReport.ManagementReport GetById(int IdManamentReport)
+        {
+            var data = context.ManagementReports
+                .Include(mr => mr.CostDetails)
+                    .ThenInclude(x => x.CostDetailResources)
+                .Include(mr => mr.CostDetails)
+                    .ThenInclude(x => x.CostDetailProfiles)
+                .Include(mr => mr.CostDetails)
+                    .ThenInclude(x => x.CostDetailOthers)
+                .SingleOrDefault(mr => mr.Id == IdManamentReport);
+
+            return data;
+        }
+
+        public Domain.Models.ManagementReport.ManagementReport GetWithAnalytic(int managementReportId)
+        {
+            var data = context.ManagementReports
+                .Include(x => x.Analytic)
+                .SingleOrDefault(mr => mr.Id == managementReportId);
+
+            return data;
         }
     }
 }

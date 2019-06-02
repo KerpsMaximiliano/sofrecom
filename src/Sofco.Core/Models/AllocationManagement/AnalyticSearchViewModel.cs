@@ -22,6 +22,7 @@ namespace Sofco.Core.Models.AllocationManagement
             StartDate = domain.StartDateContract;
             EndDate = domain.EndDateContract;
             Status = domain.Status;
+            ManagerId = domain.ManagerId;
 
             if (domain.Activity != null)
             {
@@ -50,5 +51,6 @@ namespace Sofco.Core.Models.AllocationManagement
         public string ServiceId { get; set; }
 
         public string ClientId { get; set; }
+        public int? ManagerId { get; set; }
     }
 }

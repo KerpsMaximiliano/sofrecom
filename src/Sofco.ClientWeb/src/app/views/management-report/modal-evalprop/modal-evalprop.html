@@ -1,0 +1,14 @@
+<ng2-modal [config]="editEvalPropModalConfig" #editEvalPropModal (accept)="updateEvalPropValue()" [isSaveEnabled]="editEvalPropValue.valid">
+    <div class="form-group">
+        <label class="control-label" for="readOnlyInput">Mes</label>
+        <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelectedDisplay }}"readonly="">
+    </div> 
+
+    <div class="form-group">
+        <label class="control-label">Monto</label>
+        <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input type="number" decimalFormat class="form-control" [formControl]="editEvalPropValue">
+        </div> 
+    </div>
+</ng2-modal>

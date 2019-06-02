@@ -172,6 +172,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ManagementReport.resx</DependentUpon>
     </Compile>
+    <Compile Update="ManagementReport\ManagementReportBilling.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ManagementReportBilling.resx</DependentUpon>
+    </Compile>
     <Compile Update="Months.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -186,6 +191,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>License.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Rrhh\Prepaid.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Prepaid.resx</DependentUpon>
     </Compile>
     <Compile Update="Rrhh\TigerReport.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -329,6 +339,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ManagementReport.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="ManagementReport\ManagementReportBilling.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ManagementReportBilling.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Months.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Months.Designer.cs</LastGenOutput>
@@ -340,6 +354,10 @@
     <EmbeddedResource Update="Rrhh\License.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>License.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Rrhh\Prepaid.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Prepaid.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Rrhh\TigerReport.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

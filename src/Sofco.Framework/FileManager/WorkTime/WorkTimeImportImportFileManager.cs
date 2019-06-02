@@ -85,7 +85,8 @@ namespace Sofco.Framework.FileManager.WorkTime
                     var date = sheet.GetValue(i, 3)?.ToString();
                     var taskId = sheet.GetValue(i, 4)?.ToString();
                     var hour = sheet.GetValue(i, 5)?.ToString();
-                    var comments = sheet.GetValue(i, 6)?.ToString();
+                    var reference = sheet.GetValue(i, 6)?.ToString();
+                    var comments = sheet.GetValue(i, 7)?.ToString();
 
                     if (IsValidDate(date, out var datetime)) date = datetime.ToString("dd/MM/yyyy");
                
@@ -99,7 +100,9 @@ namespace Sofco.Framework.FileManager.WorkTime
 
                     if (!ValidateTask(response, taskId, i, employeeNumber, employeeDesc, date)) continue;
 
-                    AddWorkTime(analyticId, response, i, employeeNumber, employeeDesc, datetime, taskId, hour, comments, employee);
+                    if (!ValidateReference(response, reference, i, employeeNumber, employeeDesc, date)) continue;
+
+                    AddWorkTime(analyticId, response, i, employeeNumber, employeeDesc, datetime, taskId, hour, comments, employee, reference);
                 }
                 catch (Exception e)
                 {
@@ -136,7 +139,21 @@ namespace Sofco.Framework.FileManager.WorkTime
             }
         }
 
-        private void AddWorkTime(int analyticId, Response<IList<WorkTimeImportResult>> response, int i, string employeeNumber, string employeeDesc, DateTime date, string taskId, string hour, string comments, Employee employee)
+        private bool ValidateReference(Response<IList<WorkTimeImportResult>> response, string reference, int i, string employeeNumber, string employeeDesc, string date)
+        {
+            if (!string.IsNullOrWhiteSpace(reference) && reference.Length > 250)
+            {
+                var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                item.Error = Resources.WorkTimeManagement.WorkTime.ReferenceWrongMaxLength;
+                response.Data.Add(item);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private void AddWorkTime(int analyticId, Response<IList<WorkTimeImportResult>> response, int i, string employeeNumber, string employeeDesc, DateTime date, string taskId, string hour, string comments, Employee employee, string reference)
         {
             var worktime = new Domain.Models.WorkTimeManagement.WorkTime();
 
@@ -150,6 +167,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             worktime.UserComment = comments;
             worktime.Status = WorkTimeStatus.Approved;
             worktime.ApprovalUserId = userData.GetCurrentUser().Id;
+            worktime.Reference = reference;
 
             if (UserMails.ContainsKey(employee.Email))
             {
@@ -250,9 +268,12 @@ namespace Sofco.Framework.FileManager.WorkTime
             datetime = DateTime.MinValue;
 
             if (string.IsNullOrWhiteSpace(date)) return false;
-            if (date.Length != 10) return false;
 
-            var split = date.Split('/');
+            var dataSplit = date.Split(' ');
+
+            if (dataSplit.Length != 1 && dataSplit.Length != 4 && dataSplit.Length != 3) return false;
+
+            var split = dataSplit[0].Split('/');
             if (split.Length != 3) return false;
 
             try

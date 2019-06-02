@@ -27,6 +27,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public IList<Allocation> GetAllocationsByDate(DateTime date)
+        {
+            return context.Allocations.Include(x => x.Employee).Where(x => x.StartDate.Date == date.Date).ToList();
+        }
+
         public void UpdateReleaseDate(Allocation allocation)
         {
             context.Entry(allocation).Property("ReleaseDate").IsModified = true;
@@ -105,6 +110,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                             && (x.StartDate.Date == startDate.Date
                             || x.StartDate.Date == endDate.Date))
                 .ToList();
+        }
+
+        public bool ExistCurrentAllocationByEmployeeAndManagerId(int employeeId, int managerId, DateTime startDate)
+        {
+            return context.Allocations
+                .Include(x => x.Analytic)
+                .Any(x => x.EmployeeId == employeeId
+                          && x.Percentage > 0
+                          && x.Analytic.ManagerId.GetValueOrDefault() == managerId
+                          && x.StartDate.Date == startDate.Date);
         }
 
         public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters)

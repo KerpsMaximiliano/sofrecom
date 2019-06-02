@@ -13,6 +13,7 @@ using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.Services.ManagementReport;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -22,16 +23,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly ILogMailer<AllocationService> logger;
         private readonly IAllocationFileManager allocationFileManager;
         private readonly ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService;
+        private readonly IManagementReportCalculateCostsService managementReportCalculateCostsService;
 
         public AllocationService(IUnitOfWork unitOfWork,
             ILogMailer<AllocationService> logger,
             ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService,
+            IManagementReportCalculateCostsService managementReportCalculateCostsService,
             IAllocationFileManager allocationFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.allocationFileManager = allocationFileManager;
             this.licenseGenerateWorkTimeService = licenseGenerateWorkTimeService;
+            this.managementReportCalculateCostsService = managementReportCalculateCostsService;
         }
 
         public Response<Allocation> Add(AllocationDto allocation)
@@ -62,6 +66,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 SaveAllocation(allocation, response, allocationsBetweenDays);
             }
+
+            managementReportCalculateCostsService.CalculateCosts(allocation, firstMonth.Date, lastMonth.Date);
 
             var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(allocation.EmployeeId, firstMonth.Date.Date, lastMonth.Date.Date);
 

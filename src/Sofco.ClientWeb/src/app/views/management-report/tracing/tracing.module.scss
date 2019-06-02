@@ -1,0 +1,67 @@
+table {
+    table-layout: fixed;
+    width: max-content;
+    font-size: 11px;
+    padding-bottom: 10px;
+  }
+  
+  th,
+  td {
+    width: 100px;
+  }
+  
+  td {
+    padding: 4px !important;
+  }
+  
+  .first-column {
+    width: 260px;
+  }
+  
+  .label {
+    display: block;
+    font-size: 11px;
+    min-height: 17px;
+    min-height: 25px;
+    padding-top: 7px;
+  }
+  
+  .label-total {
+    background-color: #1bb394;
+    color: #ffffff;
+  }
+  
+  .label-cant-resources {
+    background-color: #39e1bf;
+    color: #ffffff;
+  }
+  
+  .label-salary {
+    background-color: #dbf9e3;
+    color: #5E5E5E;
+  }
+  
+  .label-load {
+    background-color: #b3ffd9;
+    color: #5E5E5E;
+  }
+    
+  .label-danger{
+    background-color: #f2dede;
+    color: #5E5E5E;
+  }
+  
+  .label-yellow{   
+    background-color: #ffeeba;
+    color: #5E5E5E;
+  }
+  
+  .static {
+    position: absolute;
+    background-color: white;
+  }
+  
+  .first-col {
+    padding-left: 276px!important;
+  }
+

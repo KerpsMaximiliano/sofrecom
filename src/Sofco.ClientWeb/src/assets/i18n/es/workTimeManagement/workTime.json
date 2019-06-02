@@ -42,5 +42,6 @@
     "fileEmpty": "El archivo importado no contiene registros",
     "invalidAllocationAssignment": "El recurso no está asignado a la analítica seleccionada en el periodo vigente.",
     "noPendingHours": "No se registraron horas pendientes.",
-    "controlHoursEmpty": "No se han encontrado datos para exportar. Realice una nueva consulta o verifique los parametros de busqueda"
+    "controlHoursEmpty": "No se han encontrado datos para exportar. Realice una nueva consulta o verifique los parametros de busqueda",
+    "referenceWrongMaxLength": "El campo referencia no puede ser mayor a 250 caracteres"
 } 

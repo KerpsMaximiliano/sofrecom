@@ -79,6 +79,8 @@
             <li [ngClass]="{active: activeRoute('licenses/views')}" *ngIf="menuService.hasFunctionality('CTRLI', 'LIC_VIEW_DELEGATE')"><a [routerLink]="['/rrhh/licenses/views/delegates']">{{'rrhh.license.delegate.viewTitle' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('workTimeApproval/delegate')}" *ngIf="menuService.hasFunctionality('ALLOC', 'TAPDE')"><a [routerLink]="['/allocationManagement/workTimeApproval/delegate']">{{'allocationManagement.workTimeApproval.delegate.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('endNotification')}" *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE_END_NOTIF')"><a [routerLink]="['/rrhh/endNotification']">{{'rrhh.endNotification.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('prepaid/import')}"><a [routerLink]="['/rrhh/prepaid/import']">Importación Prepagas</a></li>
+            <li [ngClass]="{active: activeRoute('prepaid/verification')}"><a [routerLink]="['/rrhh/prepaid/verification']">Control Prepagas</a></li>
         </ul>
       </li> 
 

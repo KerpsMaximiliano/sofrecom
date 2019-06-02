@@ -32,5 +32,6 @@ namespace Sofco.Core.DAL.Workflow
         Domain.Models.Workflow.Workflow GetByTypeActive(int workflowTypeId);
         void UpdateActive(Domain.Models.Workflow.Workflow entity);
         bool TransitionExist(int transitionId, int actualStateId, int nextStateId, int workflowId);
+        void UpdateUsersAlreadyApproved(WorkflowEntity entity);
     }
 }

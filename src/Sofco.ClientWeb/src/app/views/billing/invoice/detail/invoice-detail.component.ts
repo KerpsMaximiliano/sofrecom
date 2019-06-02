@@ -11,6 +11,7 @@ import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { MenuService } from "../../../../services/admin/menu.service";
 import { InvoiceStatus } from "../../../../models/enums/invoiceStatus";
 import { AuthService } from '../../../../services/common/auth.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-invoice-detail',
@@ -174,7 +175,7 @@ export class InvoiceDetailComponent implements OnInit, OnDestroy {
                 if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
                 
                 this.model.excelFileName = dataJson.data.fileName;
-                this.model.excelFileCreatedDate = new Date(dataJson.data.creationDate).toLocaleDateString();
+                this.model.excelFileCreatedDate = moment(dataJson.data.creationDate).format('DD/MM/YYYY'),
                 this.model.excelFileId = dataJson.data.id;
             }
 

@@ -264,6 +264,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int?>("UserId");
 
+                    b.Property<string>("UsersAlreadyApproved");
+
                     b.Property<int>("WorkflowId");
 
                     b.HasKey("Id");
@@ -356,6 +358,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("UserApplicantId");
 
                     b.Property<int?>("UserId");
+
+                    b.Property<string>("UsersAlreadyApproved");
 
                     b.Property<int>("WorkflowId");
 
@@ -587,6 +591,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Bank")
                         .HasMaxLength(200);
 
+                    b.Property<int>("BeneficiariesCount");
+
                     b.Property<decimal>("BillingPercentage");
 
                     b.Property<DateTime?>("Birthday");
@@ -662,13 +668,20 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(100);
 
+                    b.Property<decimal>("PrepaidAmount");
+
                     b.Property<int>("PrepaidHealthCode");
+
+                    b.Property<string>("PrepaidPlan")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Profile")
                         .HasMaxLength(100);
 
                     b.Property<string>("Province")
                         .HasMaxLength(200);
+
+                    b.Property<decimal>("Salary");
 
                     b.Property<string>("Seniority")
                         .HasMaxLength(100);
@@ -1702,22 +1715,20 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("IdAnalytic");
+                    b.Property<int>("CostDetailId");
 
-                    b.Property<DateTime>("MonthYear");
+                    b.Property<decimal>("Honorary");
+
+                    b.Property<decimal>("Insurance");
 
                     b.Property<string>("Name")
                         .HasMaxLength(250);
 
-                    b.Property<float?>("honorary");
-
-                    b.Property<float?>("insurance");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("IdAnalytic");
+                    b.HasIndex("CostDetailId");
 
-                    b.ToTable("ContractedDetail");
+                    b.ToTable("ContractedDetails");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetail", b =>
@@ -1726,48 +1737,99 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float?>("Adjustment");
-
-                    b.Property<float?>("Charges");
-
-                    b.Property<float?>("Cost");
-
-                    b.Property<DateTime>("CreatedAt");
-
-                    b.Property<int>("CreatedById");
-
-                    b.Property<int?>("EmployeeId");
-
-                    b.Property<int>("IdAnalytic");
-
-                    b.Property<DateTime?>("ModifiedAt");
-
-                    b.Property<int?>("ModifiedById");
+                    b.Property<int>("ManagementReportId");
 
                     b.Property<DateTime>("MonthYear");
 
-                    b.Property<int>("TypeId");
+                    b.Property<decimal?>("Provision");
 
-                    b.Property<int?>("UserId");
+                    b.Property<decimal?>("TotalBilling");
+
+                    b.Property<decimal?>("TotalProvisioned");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById");
+                    b.HasIndex("ManagementReportId");
 
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("IdAnalytic");
-
-                    b.HasIndex("ModifiedById");
-
-                    b.HasIndex("TypeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CostDetail");
+                    b.ToTable("CostDetails");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailResourceType", b =>
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailOther", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CostDetailId");
+
+                    b.Property<int>("CostDetailTypeId");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500);
+
+                    b.Property<decimal>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CostDetailId");
+
+                    b.HasIndex("CostDetailTypeId");
+
+                    b.ToTable("CostDetailOthers");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CostDetailId");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("EmployeeProfileId");
+
+                    b.Property<string>("Guid");
+
+                    b.Property<decimal>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CostDetailId");
+
+                    b.HasIndex("EmployeeProfileId");
+
+                    b.ToTable("CostDetailProfiles");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailResource", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal?>("Adjustment");
+
+                    b.Property<decimal?>("Charges");
+
+                    b.Property<int>("CostDetailId");
+
+                    b.Property<int>("EmployeeId");
+
+                    b.Property<int?>("UserId");
+
+                    b.Property<decimal>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CostDetailId");
+
+                    b.ToTable("CostDetailResources");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1780,7 +1842,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CostDetailResourceType");
+                    b.ToTable("CostDetailTypes");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ManagementReport", b =>
@@ -1801,6 +1863,27 @@ namespace Sofco.WebApi.Migrations
                         .IsUnique();
 
                     b.ToTable("ManagementReports");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ManagementReportBilling", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("EvalPropBillingValue");
+
+                    b.Property<decimal>("EvalPropExpenseValue");
+
+                    b.Property<int>("ManagementReportId");
+
+                    b.Property<DateTime>("MonthYear");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManagementReportId");
+
+                    b.ToTable("ManagementReportBillings");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.CloseDate", b =>
@@ -1898,6 +1981,60 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("LicenseHistories");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Rrhh.PrepaidImportedData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Closed");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Cuil")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Dni")
+                        .HasMaxLength(15);
+
+                    b.Property<int>("EmployeeId");
+
+                    b.Property<string>("EmployeeName")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("EmployeeNumber")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("Period");
+
+                    b.Property<int>("PrepaidBeneficiaries");
+
+                    b.Property<decimal>("PrepaidCost");
+
+                    b.Property<int?>("PrepaidId");
+
+                    b.Property<string>("PrepaidPlan")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Status");
+
+                    b.Property<int>("TigerBeneficiaries");
+
+                    b.Property<decimal>("TigerCost");
+
+                    b.Property<string>("TigerPlan")
+                        .HasMaxLength(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrepaidId");
+
+                    b.ToTable("PrepaidImportedData");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Workflow.UserSource", b =>
@@ -2400,6 +2537,20 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("EmployeeEndReason");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Utils.EmployeeProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(150);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmployeeProfile");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Utils.ImputationNumber", b =>
                 {
                     b.Property<int>("Id")
@@ -2440,6 +2591,23 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PaymentTerms");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Utils.Prepaid", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Prepaids");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Utils.Product", b =>
@@ -2953,42 +3121,62 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ContratedDetail", b =>
                 {
-                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
-                        .WithMany("ContratedDetail")
-                        .HasForeignKey("IdAnalytic")
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetail", "CostDetail")
+                        .WithMany("ContratedDetails")
+                        .HasForeignKey("CostDetailId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetail", b =>
                 {
-                    b.HasOne("Sofco.Domain.Models.Admin.User", "CreatedBy")
-                        .WithMany("CostDetail2")
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.ManagementReport", "ManagementReport")
+                        .WithMany("CostDetails")
+                        .HasForeignKey("ManagementReportId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
-                        .WithMany("CostDetail")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Analytic", "Analytic")
-                        .WithMany("CostDetail")
-                        .HasForeignKey("IdAnalytic")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Sofco.Domain.Models.Admin.User", "ModifiedBy")
-                        .WithMany("CostDetail3")
-                        .HasForeignKey("ModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetailResourceType", "Type")
-                        .WithMany("CostDetail")
-                        .HasForeignKey("TypeId")
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailOther", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetail", "CostDetail")
+                        .WithMany("CostDetailOthers")
+                        .HasForeignKey("CostDetailId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Domain.Models.Admin.User")
-                        .WithMany("CostDetail")
-                        .HasForeignKey("UserId");
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetailType", "CostDetailType")
+                        .WithMany("CostDetailOthers")
+                        .HasForeignKey("CostDetailTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailProfile", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetail", "CostDetail")
+                        .WithMany("CostDetailProfiles")
+                        .HasForeignKey("CostDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Utils.EmployeeProfile", "EmployeeProfile")
+                        .WithMany("CostDetailProfiles")
+                        .HasForeignKey("EmployeeProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailResource", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "User")
+                        .WithMany("CostDetailResources")
+                        .HasForeignKey("CostDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
+                        .WithMany("CostDetailResources")
+                        .HasForeignKey("CostDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetail", "CostDetail")
+                        .WithMany("CostDetailResources")
+                        .HasForeignKey("CostDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ManagementReport", b =>
@@ -2997,6 +3185,14 @@ namespace Sofco.WebApi.Migrations
                         .WithOne("ManagementReport")
                         .HasForeignKey("Sofco.Domain.Models.ManagementReport.ManagementReport", "AnalyticId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ManagementReportBilling", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.ManagementReport", "ManagementReport")
+                        .WithMany("Billings")
+                        .HasForeignKey("ManagementReportId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.License", b =>
@@ -3033,6 +3229,13 @@ namespace Sofco.WebApi.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Rrhh.PrepaidImportedData", b =>
+                {
+                    b.HasOne("Sofco.Domain.Utils.Prepaid", "Prepaid")
+                        .WithMany("PrepaidImportedData")
+                        .HasForeignKey("PrepaidId");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Workflow.Workflow", b =>

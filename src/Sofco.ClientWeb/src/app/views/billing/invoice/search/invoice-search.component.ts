@@ -183,8 +183,8 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
             withExport: true,
             order: [[ 4, "desc" ]],
             title: `REMITOS-${moment(new Date()).format("YYYYMMDD")}`,
-            columns: [0, 1, 2, 3, 4, 5],
-            columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ]
+            columns: [1, 2, 3, 4, 5, 6],
+            columnDefs: [ {"aTargets": [5], "sType": "date-uk"} ]
           }
     
           this.datatableService.destroy(params.selector);

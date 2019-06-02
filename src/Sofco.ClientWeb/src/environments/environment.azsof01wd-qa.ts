@@ -5,10 +5,12 @@ export const environment = {
   currencyPesosId: 1,
   draftWorkflowStateId: 8,
   gafWorkflowStateId: 10,
-  rejectedWorkflowStateId: 2,
   dafWorkflowStateId: 4,
   rrhhWorkflowStateId: 6,
+  rejectedWorkflowStateId: 2,
   pendingDirectorWorkflowStateId: 12,
   pendingManagerWorkflowStateId: 9,
-  pendingComplianceWorkflowStateId: 5
+  pendingComplianceWorkflowStateId: 5,
+  pendingComplianceDWorkflowStateId: 18,
+  pendingComplianceDGWorkflowStateId: 19
 };

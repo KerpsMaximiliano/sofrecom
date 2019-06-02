@@ -25,12 +25,16 @@ import { CostDetailMonthComponent } from "./cost-detail-month/cost-detail-month"
 import { ReactiveFormsModule } from '@angular/forms';
 import { DigitModule } from "app/components/digit-limit/digit-limit.directive";
 import { BsDatepickerModule } from 'ngx-bootstrap';
+import { ModalEvalPropComponent } from "./modal-evalprop/modal-evalprop";
+import { EmployeeService } from "app/services/allocation-management/employee.service"
+import { fromDateModule } from "app/pipes/form-date.module";
+import { TracingComponent } from "./tracing/tracing.component";
 
 
 @NgModule({
     declarations: [
       ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent, 
-      CostDetailMonthComponent
+      CostDetailMonthComponent, ModalEvalPropComponent, TracingComponent
     ],
     imports: [
       CommonModule,
@@ -43,13 +47,14 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
       DecimalFormatModule,
       Ng2ModalModule, 
       AmountFormatModule,
+      fromDateModule,
       PCheckModule,
       NgSelectModule,
       DigitModule,
       ReactiveFormsModule,
       BsDatepickerModule
     ],
-    providers: [ ManagementReportService, DatesService, UtilsService, ProjectService ],
+    providers: [ ManagementReportService, DatesService, UtilsService, ProjectService, EmployeeService ],
     exports: [],
   })
   

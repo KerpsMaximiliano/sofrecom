@@ -4,6 +4,12 @@ namespace Sofco.Domain.Crm
 {
     public class CrmInvoicingMilestone
     {
+        public decimal AmountOriginal { get; set; }
+
+        public decimal BaseAmountOriginal { get; set; }
+
+        public decimal BaseAmount { get; set; }
+
         public Guid Id { get; set; }
 
         public string Name { get; set; }

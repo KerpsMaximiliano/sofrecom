@@ -313,5 +313,16 @@ namespace Sofco.DAL.Repositories.Admin
                 .ThenInclude(x => x.Group)
                 .Any(x => x.Email.Equals(currentUserEmail) && x.UserGroups.Any(s => s.Group.Code == readOnlyCode));
         }
+
+        public IList<User> GetByIdsWithGroups(IEnumerable<int> ids)
+        {
+            var users = context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Where(x => ids.Contains(x.Id))
+                .ToList();
+
+            return users;
+        }
     }
 }

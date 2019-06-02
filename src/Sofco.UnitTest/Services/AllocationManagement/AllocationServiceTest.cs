@@ -11,6 +11,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
+using Sofco.Core.Services.ManagementReport;
 using Sofco.Core.Services.Rrhh;
 using Sofco.DAL;
 using Sofco.Domain.Models.AllocationManagement;
@@ -28,6 +29,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
         private Mock<ILogMailer<AllocationService>> loggerMock;
         private Mock<IAllocationFileManager> fileManagerMock;
         private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeServiceMock;
+        private Mock<IManagementReportCalculateCostsService> managementReportCalculateCostsServiceMock;
 
         private Mock<IUnitOfWork> unitOfWork;
 
@@ -48,6 +50,8 @@ namespace Sofco.UnitTest.Services.AllocationManagement
 
             licenseGenerateWorkTimeServiceMock = new Mock<ILicenseGenerateWorkTimeService>();
 
+            managementReportCalculateCostsServiceMock = new Mock<IManagementReportCalculateCostsService>();
+
             unitOfWork = new Mock<IUnitOfWork>();
 
             loggerMock = new Mock<ILogMailer<AllocationService>>();
@@ -59,7 +63,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
 
             licenseRepositoryMock.Setup(x => x.GetByEmployeeAndDates(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new List<License>());
 
-            sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, fileManagerMock.Object);
+            sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, managementReportCalculateCostsServiceMock.Object, fileManagerMock.Object);
         }
 
         [TestCase]

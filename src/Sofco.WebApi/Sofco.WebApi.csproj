@@ -48,6 +48,10 @@
     <Compile Remove="Migrations\20181009185719_ProjectContact.Designer.cs" />
     <Compile Remove="Migrations\20190502151808_ManagementReport.cs" />
     <Compile Remove="Migrations\20190502151808_ManagementReport.Designer.cs" />
+    <Compile Remove="Migrations\20190508194404_RefactorManagementReport.cs" />
+    <Compile Remove="Migrations\20190508194404_RefactorManagementReport.Designer.cs" />
+    <Compile Remove="Migrations\20190508194914_Initial.cs" />
+    <Compile Remove="Migrations\20190508194914_Initial.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -80,7 +84,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.6">
       <PrivateAssets>All</PrivateAssets>

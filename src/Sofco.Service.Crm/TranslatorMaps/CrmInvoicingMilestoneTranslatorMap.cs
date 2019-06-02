@@ -11,11 +11,14 @@ namespace Sofco.Service.Crm.TranslatorMaps
         private const string Date = "as_date";
         private const string ProjectId = "_as_invoicingmilestonesid_value";
         private const string MoneyId = "_transactioncurrencyid_value";
-        private const string Amount = "as_amount";
         private const string Month = "as_month";
         private const string StatusCode = "statuscode";
         private const string OpportunityId = "_as_opportunityid_value";
         private const string PurchaseOrder = "as_nroordencompra";
+        private const string Amount = "as_amount";
+        private const string BaseAmount = "as_amount_base";
+        private const string AmountOriginal = "as_montoestimado";
+        private const string BaseAmountOriginal = "as_montoestimado_base";
 
         public Dictionary<string, string> KeyMaps()
         {
@@ -35,6 +38,9 @@ namespace Sofco.Service.Crm.TranslatorMaps
                 {nameof(CrmInvoicingMilestone.OpportunityId), OpportunityId},
                 {nameof(CrmInvoicingMilestone.OpportunityName), OpportunityId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmInvoicingMilestone.PurchaseOrder), PurchaseOrder},
+                {nameof(CrmInvoicingMilestone.BaseAmount), BaseAmount},
+                {nameof(CrmInvoicingMilestone.AmountOriginal), AmountOriginal},
+                {nameof(CrmInvoicingMilestone.BaseAmountOriginal), BaseAmountOriginal},
             };
         }
          
@@ -43,7 +49,7 @@ namespace Sofco.Service.Crm.TranslatorMaps
             var list = new List<string>
             {
                 Name, Date, ProjectId, MoneyId, Amount, Month, StatusCode,
-                OpportunityId, PurchaseOrder
+                OpportunityId, PurchaseOrder, BaseAmount, AmountOriginal, BaseAmountOriginal
             };
 
             return string.Join(TranslatorMapConstant.SelectDelimiter, list);

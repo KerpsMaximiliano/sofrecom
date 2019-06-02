@@ -17,6 +17,8 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         Employee GetById(int id);
 
+        List<Employee> GetById(int[] ids);
+
         Employee GetByEmail(string email);
 
         void Update(List<Employee> employees);
@@ -56,5 +58,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Sector> GetAnalyticsWithSector(int employeeId);
 
         IList<Employee> GetByManagerId(int managerId);
+        Employee GetByDocumentNumber(int dni);
+        IList<Employee> GetMissingEmployess(IList<int> prepaidImportedDataIds);
     }
 }

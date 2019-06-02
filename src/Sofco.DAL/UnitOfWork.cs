@@ -93,6 +93,7 @@ namespace Sofco.DAL
 
         private ILicenseRepository licenseRepository;
         private ICloseDateRepository closeDateRepository;
+        private IPrepaidImportedDataRepository prepaidImportedDataRepository;
 
         #endregion
 
@@ -128,6 +129,10 @@ namespace Sofco.DAL
         private ICostDetailRepository costDetailRepository;
         private IContractedDetailRepository contractedDetailRepository;
         private IManagementReportRepository managementReportRepository;
+        private IManagementReportBillingRepository managementReportBillingRepository;
+        private ICostDetailOtherRepository costDetailOtherRepository;
+        private ICostDetailProfileRepository costDetailProfileRepository;
+        private ICostDetailResourceRepository costDetailResourceRepository;
 
         #endregion
 
@@ -204,6 +209,7 @@ namespace Sofco.DAL
 
         public ILicenseRepository LicenseRepository => licenseRepository ?? (licenseRepository = new LicenseRepository(context));
         public ICloseDateRepository CloseDateRepository => closeDateRepository ?? (closeDateRepository = new CloseDateRepository(context));
+        public IPrepaidImportedDataRepository PrepaidImportedDataRepository => prepaidImportedDataRepository ?? (prepaidImportedDataRepository = new PrepaidImportedDataRepository(context));
 
         #endregion
 
@@ -241,6 +247,10 @@ namespace Sofco.DAL
         public ICostDetailRepository CostDetailRepository => costDetailRepository ?? (costDetailRepository = new CostDetailRepository(context));
         public IContractedDetailRepository ContratedDetailRepository => contractedDetailRepository ?? (contractedDetailRepository = new ContractedDetailRepository(context));
         public IManagementReportRepository ManagementReportRepository => managementReportRepository ?? (managementReportRepository = new ManagementReportRepository(context));
+        public IManagementReportBillingRepository ManagementReportBillingRepository => managementReportBillingRepository ?? (managementReportBillingRepository = new ManagementReportBillingRepository(context));
+        public ICostDetailOtherRepository CostDetailOtherRepository => costDetailOtherRepository ?? (costDetailOtherRepository = new CostDetailOtherRepository(context));
+        public ICostDetailProfileRepository CostDetailProfileRepository => costDetailProfileRepository ?? (costDetailProfileRepository = new CostDetailProfileRepository(context));
+        public ICostDetailResourceRepository CostDetailResourceRepository => costDetailResourceRepository ?? (costDetailResourceRepository = new CostDetailResourceRepository(context));
 
         #endregion
 

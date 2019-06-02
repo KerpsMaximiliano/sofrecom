@@ -47,8 +47,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly AppSetting appSetting;
 
-        private readonly ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService;
-
         public WorkTimeService(ILogMailer<WorkTimeService> logger,
             IUnitOfWork unitOfWork,
             IUserData userData,
@@ -58,7 +56,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             IWorkTimeImportFileManager workTimeImportFileManager,
             IWorkTimeExportFileManager workTimeExportFileManager,
             IWorkTimeResumeManager workTimeResumeManger,
-            ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService,
             IWorkTimeRejectManager workTimeRejectManager, IWorkTimeSendManager workTimeSendHoursManager)
         {
             this.unitOfWork = unitOfWork;
@@ -72,7 +69,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.workTimeRejectManager = workTimeRejectManager;
             this.workTimeSendHoursManager = workTimeSendHoursManager;
             this.appSetting = appSetting.Value;
-            this.licenseGenerateWorkTimeService = licenseGenerateWorkTimeService;
         }
 
         public Response<WorkTimeModel> Get(DateTime date)

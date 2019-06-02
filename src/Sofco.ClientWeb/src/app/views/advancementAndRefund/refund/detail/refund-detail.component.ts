@@ -115,7 +115,8 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
 
     update(){
         var model = this.form.getModel();
-
+        model.hasCreditCard = this.form.hasCreditCard;
+        
         this.messageService.showLoading();
 
         this.editSubscrip = this.refundService.edit(model).subscribe(response => {

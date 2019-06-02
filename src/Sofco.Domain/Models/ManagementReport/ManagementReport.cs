@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Domain.Models.ManagementReport
@@ -12,5 +13,9 @@ namespace Sofco.Domain.Models.ManagementReport
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
+
+        public ICollection<CostDetail> CostDetails { get; set; }
+
+        public ICollection<ManagementReportBilling> Billings { get; set; }
     }
 }

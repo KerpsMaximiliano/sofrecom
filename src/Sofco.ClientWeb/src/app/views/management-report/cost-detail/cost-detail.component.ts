@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { Subscription } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
-import * as moment from 'moment';
-import { modalConfigDefaults } from "ngx-bootstrap/modal/modal-options.class";
-
-import { FormGroup, FormControl, Validators, FormsModule } from "@angular/forms";
+import { UtilsService } from "app/services/common/utils.service"
+import { FormControl, Validators } from "@angular/forms";
+import { EmployeeService } from "app/services/allocation-management/employee.service"
+import { Profile } from "selenium-webdriver/firefox";
 
 @Component({
     selector: 'cost-detail',
@@ -20,6 +20,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getCostSubscrip: Subscription;
     updateCostSubscrip: Subscription;
+    updateMonthSubscrip: Subscription;
+    getProfileSuscrip: Subscription
+    getEmployeeSubscrip: Subscription;
+    getOtherByMonthSuscrip: Subscription;
 
     //Propiedades
     serviceId: string;
@@ -28,19 +32,42 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     employeesOriginal: any[] = new Array();
     fundedResources: any[] = new Array();
     otherResources: any[] = new Array();
+    costProfiles: any[] = new Array()
     monthSelected: any = { value: 0, display: '' };
     itemSelected: any;
     indexSelected: number = 0;
     model: any;
+
     modalPercentage: boolean = false;
     modalEmployee: boolean = false;
+    modalOther: boolean = false;
+    modalProfile: boolean = false;
+
     editItemMonto = new FormControl();
     editItemAdjustment = new FormControl();
     canEdit: boolean = false;
-
+    profiles: any[] = new Array()
+    profileId: number;
     otherResourceId: number;
+    users: any[] = new Array()
+    userId: number
+    showUsers: boolean = false
+    showProfiles: boolean = false
+
+    otherSelected: any
+    userSelected: any
+    profileSelected: any
+    othersByMonth: any[] = new Array()
+    today: Date = new Date()
+    fromMonth: Date
 
     readonly generalAdjustment: string = "% Ajuste General";
+    readonly typeEmployee: string = "Empleados"
+    readonly typeResource: string = "Recursos"
+    readonly typeProfile: string = "Perfiles"
+
+    @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
+    @Output() getData: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('editItemModal') editItemModal;
 
@@ -57,13 +84,20 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     constructor(private managementReportService: ManagementReportService,
         private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
-        private menuService: MenuService) { }
+        private menuService: MenuService,
+        private utilsService: UtilsService,
+        private employeeService: EmployeeService
+    ) { }
 
     ngOnInit(): void {
 
+        this.fromMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 2, 1)
         if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')) {
             this.canEdit = true
         }
+
+        this.getUsers()
+        this.getProfiles()
 
         this.editItemModal.size = 'modal-sm'
 
@@ -78,6 +112,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if (this.getCostSubscrip) this.getCostSubscrip.unsubscribe();
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
+        if (this.updateMonthSubscrip) this.updateMonthSubscrip.unsubscribe();
+        if (this.getProfileSuscrip) this.getProfileSuscrip.unsubscribe();
+        if (this.getEmployeeSubscrip) this.getEmployeeSubscrip.unsubscribe();
+        if (this.getOtherByMonthSuscrip) this.getOtherByMonthSuscrip.unsubscribe();
     }
 
     getCost() {
@@ -93,43 +131,78 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.fundedResources = response.data.fundedResources;
             this.otherResources = response.data.otherResources;
             this.employeesOriginal = response.data.costEmployees;
+            this.costProfiles = response.data.costProfiles;
 
             if (this.otherResources.length > 0) {
-                this.otherResourceId = this.otherResources[0].typeId;
+                this.otherSelected = this.otherResources[0];
             }
+
+            this.sendDataToDetailView();
         },
-        error => this.messageService.closeLoading());
+            () => this.messageService.closeLoading());
     }
 
-    openEditItemModal(month, item, indexMonth) {
+    openEditItemModal(month, item) {
 
         if (this.canEdit) {
-            if (item.typeName == 'Empleados' && !month.hasAlocation) {
-                return false
-            }
-            else {
-                this.editItemModal.show();
-                this.monthSelected = month;
-                this.indexSelected = indexMonth;
-                this.itemSelected = item;
-                this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
-                this.modalPercentage = false;
+            // if (item.typeName == 'Empleados' && !month.hasAlocation) {
+            //     return false
+            // }
+            // else {
+            //this.editItemModal.show();
+            const indexMonth = item.monthsCost.findIndex(cost => cost === month);
 
-                if (this.itemSelected.typeName == 'Empleados') {
+            this.monthSelected = month;
+            this.indexSelected = indexMonth;
+            this.itemSelected = item;
+            this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
+
+            this.modalPercentage = false;
+            this.modalOther = false
+            this.modalEmployee = false
+            this.modalProfile = false;
+            this.editItemModal.size = 'modal-sm'
+
+            switch (this.itemSelected.typeName) {
+                case this.typeEmployee:
                     this.modalEmployee = true
                     this.editItemMonto.setValue(month.originalValue)
                     this.editItemAdjustment.setValue(month.adjustment)
                     this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
-                }
-                else {
-                    this.modalEmployee = false
-                    this.editItemMonto.setValue(month.value)
+                    this.editItemModal.show();
+                    break;
 
-                    if (this.itemSelected.typeName == this.generalAdjustment) {
-                        this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
-                        this.modalPercentage = true
-                    }
-                }
+                case this.generalAdjustment:
+                    this.modalPercentage = true
+                    this.editItemMonto.setValue(month.value)
+                    this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
+                    this.editItemModal.show();
+                    break;
+
+                case this.typeProfile:
+                    this.modalProfile = true
+                    this.editItemMonto.setValue(month.value)
+                    this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
+                    this.editItemModal.show();
+                    break;
+
+                default:
+                    this.modalOther = true
+                    this.messageService.showLoading();
+                    this.editItemModal.size = 'modal-md'
+                    this.getOtherByMonthSuscrip = this.managementReportService.GetOtherByMonth(item.typeId, month.costDetailId).subscribe(response => {
+                        this.othersByMonth = response.data;
+
+                        if (this.othersByMonth.length == 0) {
+                            this.addOtherByMonth()
+                        }
+                        this.editItemModal.show();
+                        this.messageService.closeLoading();
+                    },
+                        error => {
+                            this.messageService.closeLoading();
+                        });
+                    break;
             }
         }
 
@@ -138,60 +211,118 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     EditItem() {
 
         this.monthSelected.value = this.editItemMonto.value
-  
-        //Si estoy editando un empleado se actualiza el sueldo para los meses que siguen
-        if (this.itemSelected.typeName == 'Empleados') {
+        switch (this.itemSelected.typeName) {
 
-        this.monthSelected.originalValue = this.editItemMonto.value
-            if (this.editItemAdjustment.value > 0) {
-                this.monthSelected.adjustment = this.editItemAdjustment.value
-                this.monthSelected.value = this.monthSelected.originalValue + this.monthSelected.originalValue * this.monthSelected.adjustment / 100
-            }
-            else {
-                this.monthSelected.adjustment = 0;
-                this.monthSelected.value = this.editItemMonto.value;
-            }
-
-            for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
-
-                if (this.itemSelected.monthsCost[index].hasAlocation) {
-                    this.itemSelected.monthsCost[index].value = this.monthSelected.value;
-                    this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
+            case this.typeEmployee:
+                this.monthSelected.originalValue = this.editItemMonto.value
+                if (this.editItemAdjustment.value > 0) {
+                    this.monthSelected.adjustment = this.editItemAdjustment.value
+                    this.monthSelected.value = this.monthSelected.originalValue + this.monthSelected.originalValue * this.monthSelected.adjustment / 100
                 }
                 else {
-                    this.itemSelected.monthsCost[index].value = 0
+                    this.monthSelected.adjustment = 0;
+                    this.monthSelected.value = this.editItemMonto.value;
                 }
-            }
 
-            //Actualiza el sueldo
-            this.salaryPlusIncrease(this.itemSelected, this.indexSelected + 1, true);
+                for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
+
+                    // if (this.itemSelected.monthsCost[index].hasAlocation) {
+                    this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+                    this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
+                    // }
+                    // else {
+                    //     this.itemSelected.monthsCost[index].value = 0
+                    // }
+                }
+
+                //Actualiza el sueldo
+                this.salaryPlusIncrease(this.itemSelected, this.indexSelected, true);
+                //Guarda el empleado
+                var listAux = [];
+                listAux.push(this.itemSelected);
+                this.save(listAux, [], [])
+                this.editItemModal.hide();
+                break;
+
+            case this.generalAdjustment:
+                this.modalPercentage = true;
+                this.employees.forEach(employee => {
+                    this.salaryPlusIncrease(employee, this.indexSelected, false);
+                })
+
+                var listAux = [];
+                listAux.push(this.itemSelected);
+
+                this.save(this.employees, [], listAux)
+                this.editItemModal.hide();
+                break
+
+            case this.typeProfile:
+                var listAux = [];
+                listAux.push(this.itemSelected);
+
+                this.modalPercentage = false;
+                if (this.itemSelected.typeName == this.typeProfile) {
+                    this.save([], listAux, [])
+                }
+                this.editItemModal.hide();
+                break
+
+            default:
+                var modelMonth = {
+                    AnalyticId: this.model.analyticId,
+                    ManagementReportId: this.model.managementReportId,
+                    MonthYear: this.monthSelected.monthYear,
+                    Employees: [],
+                    OtherResources: this.othersByMonth,
+                    Contracted: []
+                }
+
+                this.updateMonthSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, modelMonth).subscribe(response => {
+                    this.messageService.closeLoading();
+
+                    this.monthSelected.value = 0
+                    this.othersByMonth.forEach(element => {
+                        this.monthSelected.value += element.value
+                    });
+
+                    setTimeout(() => {
+                        this.sendDataToDetailView();
+                    }, 1500);
+
+                    this.editItemModal.hide();
+                },
+                    error => {
+                        this.messageService.closeLoading();
+                    });
+                break;
         }
 
-        //Si estoy editando un aumento se actualiza el sueldo para todos los empleados
-        if (this.itemSelected.typeName == this.generalAdjustment) {
-            this.modalPercentage = true;
-            this.employees.forEach(employee => {
-                this.salaryPlusIncrease(employee, this.indexSelected, false);
-            })
-        }
-        else {
-            this.modalPercentage = false;
-        }
-
-        this.editItemModal.hide();
     }
 
-    save() {
+    save(pEmployees, pProfiles, pFunded) {
         this.messageService.showLoading();
 
-        this.model.employees = this.employees;
-        this.model.fundedResources = this.fundedResources;
+        // this.model.employees = this.employees;
+        // this.model.fundedResources = this.fundedResources;
 
-        this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, this.model).subscribe(response => {
+        var model = {
+            ManagementReportId: this.model.managementReportId,
+            ManagerId: this.model.managerId,
+            AnalyticId: this.model.analyticId,
+            MonthsHeader: this.model.monthsHeader,
+            CostEmployees: pEmployees,
+            CostProfiles: pProfiles,
+            FundedResources: pFunded
+        }
+        this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, model).subscribe(() => {
             this.messageService.closeLoading();
 
+            setTimeout(() => {
+                this.sendDataToDetailView();
+            }, 1500);
         },
-            error => {
+            () => {
                 this.messageService.closeLoading();
             });
     }
@@ -199,7 +330,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     getResourcesByMonth(month, year) {
 
         var resources = { employees: [], fundedResources: [], otherResources: [] }
-      
+
         resources.employees = this.employees.map(element => {
 
             var monthCost = element.monthsCost.find(x => {
@@ -209,12 +340,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     return x;
                 }
             });
-            
+
             return {
                 employeeId: element.employeeId,
+                userId: element.userId,
+                monthYear: monthCost.monthYear,
                 hasAlocation: monthCost.hasAlocation,
-                typeId: element.typeId,
-                costDetailId: monthCost.costDetailId,
+                id: monthCost.id,
                 name: element.display,
                 salary: monthCost.value || 0,
                 charges: monthCost.charges || 0,
@@ -222,50 +354,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         });
 
-        resources.fundedResources = this.fundedResources.map(element => {
-          
-            var monthCost = element.monthsCost.find(x => {
-                var dateSplitted = x.monthYear.split("-");
-
-                if (dateSplitted[0] == year && dateSplitted[1] == month) {
-                    return x;
-                }
-            });
-
-            return {
-                typeId: element.typeId,
-                typeName: element.typeName,
-                MonthYear: monthCost.monthYear,
-                costDetailId: monthCost.costDetailId,
-                salary: monthCost.value || 0,
-                otherResource: element.otherResource
-            }
-        });
-
-        resources.otherResources = this.otherResources.map(element => {
-          
-            var monthCost = element.monthsCost.find(x => {
-                var dateSplitted = x.monthYear.split("-");
-
-                if (dateSplitted[0] == year && dateSplitted[1] == month) {
-                    return x;
-                }
-            });
-
-            return {
-                typeId: element.typeId,
-                typeName: element.typeName,
-                MonthYear: monthCost.monthYear,
-                costDetailId: monthCost.costDetailId,
-                salary: monthCost.value || 0,
-                otherResource: element.otherResource
-            }
-        });
-
         return resources;
     }
 
-    getIdAnalytic(){
+    getIdAnalytic() {
         return this.model.analyticId
     }
 
@@ -281,46 +373,47 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return SalaryPlusIncrese;
     }
 
-    salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {      
+    salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {
+
         //Verifico que exista la fila de ajustes
         var AjusteMensual = this.fundedResources.find(r => r.display == this.generalAdjustment);
         if (AjusteMensual) {
             //Si existe, Recorro todos los meses
-            let newSalary;
+            let newSalary = 0;
             //El nuevo salario lo seteo como el primer salario
-            if(isSalaryEmployee == true){
-                newSalary = employee.monthsCost[pIndex - 1].value
-            }
-            else{
+            if (isSalaryEmployee == true) {
                 newSalary = employee.monthsCost[pIndex].value
+                pIndex += 1
             }
 
             for (let index = pIndex; index < employee.monthsCost.length; index++) {
-                
+
                 //Verifico si tiene aumento en alguno
                 if (AjusteMensual.monthsCost[index].value > 0) {
                     newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
                 }
-                // else {
-                //     newSalary = employee.monthsCost[index].originalValue
-                // }
 
-                if (employee.monthsCost[index].hasAlocation) {
+                if (employee.monthsCost[index].value > 0) {
                     employee.monthsCost[index].value = newSalary;
                     employee.monthsCost[index].adjustment = AjusteMensual.monthsCost[index].value
-                }
 
-                if (employee.monthsCost[index + 1]) {
-                    if (employee.monthsCost[index + 1].hasAlocation) {
-                        employee.monthsCost[index + 1].value = newSalary;
-                        employee.monthsCost[index + 1].originalValue = newSalary;
+                    for (let newindex = index + 1; newindex < employee.monthsCost.length; newindex++) {
+
+                        if (employee.monthsCost[newindex].value > 0) {
+                            employee.monthsCost[newindex].value = newSalary;
+                            employee.monthsCost[newindex].originalValue = newSalary;
+                        }
+                        else {
+                            employee.monthsCost[newindex].value = 0
+                        }
                     }
                 }
             }
         }
     }
 
-    calculateAllSalary(index) {
+    calculateAllSalary(month) {
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalSalary = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
@@ -328,10 +421,17 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         })
 
+        this.costProfiles.forEach(Profile => {
+            if (Profile.monthsCost[index].value) {
+                totalSalary += Profile.monthsCost[index].value
+            }
+        })
+
         return totalSalary
     }
 
-    calculateAssignedEmployees(index) {
+    calculateAssignedEmployees(month) {
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalEmployees = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
@@ -341,29 +441,54 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         })
 
+        this.costProfiles.forEach(Profile => {
+            if (Profile.monthsCost[index].value) {
+                if (Profile.monthsCost[index].value > 0) {
+                    totalEmployees++
+                }
+            }
+        })
+
         return totalEmployees
     }
 
-    calculateTotalCosts(index) {
+    calculateTotalCosts(month) {
+
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalCost = 0;
+        var totalSalary = 0;
+
         //Sumo el totol de los sueldos
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
-                totalCost += employee.monthsCost[index].value
+                totalCost += employee.monthsCost[index].value;
+                totalSalary += employee.monthsCost[index].value;
+            }
+            if (employee.monthsCost[index].charges) {
+                totalCost += employee.monthsCost[index].charges
             }
         })
+
+        //Sumo los sueldos de los perfiles
+        this.costProfiles.forEach(profile => {
+            if (profile.monthsCost[index].value) {
+                totalCost += profile.monthsCost[index].value;
+                totalSalary += profile.monthsCost[index].value;
+            }
+        })
+
         //Sumo los demas gastos excepto el % de Ajuste
         this.fundedResources.forEach(resource => {
             if (resource.typeName != this.generalAdjustment) {
-                totalCost += resource.monthsCost[index].value
+                totalCost += resource.monthsCost[index].value;
             }
         })
 
-        return totalCost;
+        return totalCost + (totalSalary * 0.51);
     }
 
-    calculateLoads(index) {
-
+    calculateLoads(month) {
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalSalary = 0;
         this.employees.forEach(employee => {
             if (employee.monthsCost[index].value) {
@@ -371,7 +496,24 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         })
 
+        this.costProfiles.forEach(profile => {
+            if (profile.monthsCost[index].value) {
+                totalSalary += profile.monthsCost[index].value
+            }
+        })
+
         return totalSalary * 0.51;
+    }
+
+    calculateAllPrepaid(month) {
+        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
+        var totalPrepaid = 0
+        this.employees.forEach(employee => {
+            if (employee.monthsCost[index].charges) {
+                totalPrepaid += employee.monthsCost[index].charges
+            }
+        })
+        return totalPrepaid
     }
 
     EditItemOnClose() {
@@ -387,7 +529,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         else {
             cssClass = 'cursor-pointer'
             if (!monthCost.hasAlocation) {
-                cssClass = 'not-allowed label-danger'
+                cssClass += ' label-danger'
+                // cssClass = 'not-allowed label-danger'
             }
         }
 
@@ -396,13 +539,28 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     addOtherCost() {
 
-        var resource = this.otherResources.find(r => r.typeId == this.otherResourceId)
-        this.fundedResources.push(resource)
+        switch (this.otherSelected.typeName) {
+            case this.typeResource:
+                this.addEmployee()
+                break;
 
-        var pos = this.otherResources.findIndex(r => r.typeId == this.otherResourceId);
-        this.otherResources.splice(pos, 1)
+            case this.typeProfile:
+                this.addProfile()
+                break;
 
-        this.otherResourceId = this.otherResources[0].typeId;
+            default:
+                var resource = this.otherResources.find(r => r.typeId == this.otherSelected.typeId)
+                this.fundedResources.push(resource)
+
+                var pos = this.otherResources.findIndex(r => r.typeId == this.otherSelected.typeId);
+                this.otherResources.splice(pos, 1)
+
+                if (this.otherResources.length > 0) {
+                    this.otherSelected = this.otherResources[0];
+                    this.otherResourceChange()
+                }
+                break;
+        }
     }
 
     resourcesClass(monthCost, item) {
@@ -423,13 +581,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return cssClass;
     }
 
-    canDeleteResources(item){
+    canDeleteResources(item) {
         var canEdit = false;
-        if(item.otherResource){
+        if (item.otherResource) {
             canEdit = true;
         }
         item.monthsCost.forEach(month => {
-            if(month.value > 0){
+            if (month.value > 0) {
                 canEdit = false
                 return canEdit
             }
@@ -438,25 +596,149 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return canEdit
     }
 
-    deleteResources(item, index){
+    deleteResources(item, index) {
 
-        this.save()
+        this.save([], [], this.fundedResources)
 
         this.fundedResources.splice(index, 1)
         this.otherResources.push(item)
 
         this.otherResources.sort(function (a, b) {
             if (a.display > b.display) {
-              return 1;
+                return 1;
             }
             if (a.display < b.display) {
-              return -1;
+                return -1;
             }
             // a must be equal to b
             return 0;
-          });
-
+        });
     }
 
+    getProfiles() {
+        this.messageService.showLoading();
+
+        this.getProfileSuscrip = this.utilsService.getEmployeeProfiles().subscribe(response => {
+            this.messageService.closeLoading();
+
+            this.profiles = response;
+        },
+            () => {
+                this.messageService.closeLoading();
+            })
+    }
+
+    getUsers() {
+        this.messageService.showLoading();
+
+        this.getEmployeeSubscrip = this.employeeService.getListItems().subscribe(data => {
+            this.messageService.closeLoading();
+
+            this.users = data;
+        },
+            () => {
+                this.messageService.closeLoading();
+            })
+    }
+
+    canEditCdg() {
+        return this.menuService.userIsCdg;
+    }
+
+    otherResourceChange() {
+
+        switch (this.otherSelected.typeName) {
+            case this.typeResource:
+                this.showUsers = true
+                this.showProfiles = false
+                break;
+
+            case this.typeProfile:
+                this.showUsers = false
+                this.showProfiles = true
+                break;
+
+            default:
+                this.showUsers = false
+                this.showProfiles = false
+                break;
+        }
+    }
+
+    openEditEvalProp(month) {
+        if (this.openEvalPropModal.observers.length > 0) {
+            month.type = 2;
+            this.openEvalPropModal.emit(month);
+        }
+    }
+
+    addEmployee() {
+
+        if (this.userSelected) {
+            var existingEmployee = this.employees.find(e => e.employeeId === this.userSelected.id)
+            if (!existingEmployee) {
+                var costEmployee = {
+
+                    employeeId: this.userSelected.id,
+                    userId: this.userSelected.userId,
+                    typeName: this.typeEmployee,
+                    display: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
+                    monthsCost: this.months
+                }
+
+                this.employees.push(costEmployee)
+            }
+            else {
+                this.messageService.showError("managementReport.existingEmployee")
+            }
+        }
+        else {
+            this.messageService.showError("managementReport.userRequired")
+        }
+    }
+
+    addProfile() {
+
+        if (this.profileSelected) {
+            var costProfile = {
+                display: this.profileSelected.text,
+                employeeProfileId: this.profileSelected.id,
+                typeName: this.typeProfile,
+                monthsCost: this.months
+            }
+
+            this.costProfiles.push(costProfile)
+        }
+        else {
+            this.messageService.showError("managementReport.profileRequired")
+        }
+    }
+
+    sendDataToDetailView() {
+        if (this.getData.observers.length > 0) {
+            this.getData.emit({
+                model: this.model,
+                employees: this.employees,
+                months: this.months,
+                otherResources: this.otherResources,
+                costProfiles: this.costProfiles,
+                fundedResources: this.fundedResources
+            });
+        }
+    }
+
+    addOtherByMonth() {
+
+        var resource = {
+            id: 0,
+            CostDetailId: this.monthSelected.costDetailId,
+            typeId: this.itemSelected.typeId,
+            typeName: this.itemSelected.typeName,
+            value: 0,
+            description: ""
+        }
+
+        this.othersByMonth.push(resource)
+    }
 }
 

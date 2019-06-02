@@ -10,6 +10,7 @@ using Sofco.Service.Crm.Interfaces;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Domain.Crm;
 using Sofco.Domain.Helpers;
 
 namespace Sofco.Service.Implementations.Billing
@@ -103,7 +104,7 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response UpdateCurrency(HitoAmmountParameter hito)
+        public Response Patch(HitoAmmountParameter hito)
         {
             var response = new Response();
 
@@ -113,26 +114,12 @@ namespace Sofco.Service.Implementations.Billing
             if (!hito.Ammount.HasValue || hito.Ammount == 0)
                 response.AddError(Resources.Billing.Project.HitoAmmoutRequired);
 
+            if(string.IsNullOrWhiteSpace(hito.Name))
+                response.AddError(Resources.Billing.Project.NameRequired);
+
             if (response.HasErrors()) return response;
 
-            //var domain = unitOfWork.SolfacRepository.GetHitoByCrmId(hito.Id);
-
-            //if (domain != null && domain.Solfac != null)
-            //{
-            //    if (SolfacHelper.IsCreditNote(domain.Solfac) && domain.Solfac.IdToCompareByCreditNote.HasValue)
-            //    {
-            //        var totalLimit = Math.Abs(unitOfWork.SolfacRepository.GetTotalAmountById(domain.Solfac.IdToCompareByCreditNote.Value));
-
-            //        if (hito.Ammount > totalLimit)
-            //        {
-            //            response.Messages.Add(new Message(Resources.Billing.Solfac.CreditNoteTotalExceededError, MessageType.Error));
-            //        }
-            //    }
-            //}
-
-            //if (response.HasErrors()) return response;
-
-            crmInvoicingMilestoneService.UpdateAmmount(hito, response);
+            crmInvoicingMilestoneService.UpdateAmmountAndName(hito, response);
 
             if (!response.HasErrors())
             {
@@ -166,6 +153,24 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public Response<CrmProjectHito> Get(string id)
+        {
+            var response = new Response<CrmProjectHito>();
+
+            var hito = crmInvoicingMilestoneService.GetById(id);
+
+            if (hito == null)
+            {
+                response.AddError(Resources.Billing.Solfac.HitoNotFound);
+            }
+            else
+            {
+                response.Data = hito;
+            }
+
+            return response;
+        }
+
         private void UpdateFirstHito(Response response, HitoParameters hito)
         {
             if (hito.AmmountFirstHito == 0 || hito.StatusCode == crmConfig.CloseStatusCode) return;
@@ -188,16 +193,10 @@ namespace Sofco.Service.Implementations.Billing
             HitoValidatorHelper.ValidateProject(hito, response);
             HitoValidatorHelper.ValidateCurrency(hito, response);
             HitoValidatorHelper.ValidateName(hito, response);
-            HitoValidatorHelper.ValidateDate(hito, response);
+            HitoValidatorHelper.ValidateDate(hito, response, unitOfWork);
             HitoValidatorHelper.ValidateMonth(hito, response);
             HitoValidatorHelper.ValidateAmmounts(hito, response);
             HitoValidatorHelper.ValidateOpportunity(hito, response);
-
-            if (response.HasErrors()) return response;
-
-            //var project = unitOfWork.ProjectRepository.GetByIdCrm(hito.ProjectId);
-
-            //HitoValidatorHelper.ValidateDates(project, response, hito);
 
             return response;
         }

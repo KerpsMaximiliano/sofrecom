@@ -13,5 +13,7 @@ namespace Sofco.Domain.Interfaces
         public WorkflowState Status { get; set; }
 
         public bool InWorkflowProcess { get; set; }
+
+        public string UsersAlreadyApproved { get; set; }
     }
 }

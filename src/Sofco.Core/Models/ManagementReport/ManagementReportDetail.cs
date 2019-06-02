@@ -14,6 +14,7 @@ namespace Sofco.Core.Models.ManagementReport
         public string TechnologyType { get; set; }
 
         public string Manager { get; set; }
+        public int? ManagerId { get; set; }
 
         public DateTime StartDate { get; set; }
 

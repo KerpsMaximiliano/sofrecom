@@ -2,7 +2,6 @@ import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { FileUploader } from "ng2-file-upload";
 import { Subscription } from "rxjs/Subscription";
 import { MessageService } from "app/services/common/message.service";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { WorktimeService } from "app/services/worktime-management/worktime.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { I18nService } from "../../../services/common/i18n.service";
@@ -28,26 +27,24 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
 
     public showSuccess: boolean = false;
  
-    constructor(private analyticService: AnalyticService,
-                private messageService: MessageService, 
+    constructor(private messageService: MessageService, 
                 private authService: AuthService,
                 private dataTableService: DataTableService,
                 private i18nService: I18nService,
                 private worktimeService: WorktimeService){    
     }
-
+  
     ngOnInit(): void {
         this.messageService.showLoading();
 
-        this.getSubscrip = this.analyticService.getByManager().subscribe(response => {
+        this.getSubscrip = this.worktimeService.getAnalytics().subscribe(data => {
             this.messageService.closeLoading();
-            this.analytics = response.data;
+            this.analytics = data;
         });
     }
 
     ngOnDestroy(): void {
         if(this.getSubscrip) this.getSubscrip.unsubscribe();
-        this.i18nService.translate
     }
 
     uploaderConfig(){
@@ -104,7 +101,7 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
     upload(){
         this.showSuccess = false;
         this.messageService.showLoading();
-        this.uploader.uploadAll()
+        this.uploader.uploadAll();
     }
 
     clearSelectedFile(){

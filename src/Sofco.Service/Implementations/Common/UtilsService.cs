@@ -12,6 +12,7 @@ using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
 using Sofco.Domain.Models.Reports;
 using Sofco.Core.DAL.Views;
+using Sofco.Core.Models.Admin;
 
 namespace Sofco.Service.Implementations.Common
 {
@@ -33,7 +34,7 @@ namespace Sofco.Service.Implementations.Common
             this.banksViewRepository = banksViewRepository;
         }
 
-        public IList<Currency> GetCurrencies()
+        public IList<Currency> GetCurrencies() 
         {
             return unitOfWork.UtilsRepository.GetCurrencies();
         }
@@ -109,7 +110,9 @@ namespace Sofco.Service.Implementations.Common
 
         public IEnumerable<Option> GetYears()
         {
-            for (int i = 2018; i < 2099; i++)
+            var today = DateTime.UtcNow;
+
+            for (int i = today.AddYears(-2).Year; i < today.AddYears(5).Year; i++)
             {
                 yield return new Option { Id = i, Text = i.ToString() };
             }
@@ -170,6 +173,13 @@ namespace Sofco.Service.Implementations.Common
             return Translate(data).OrderBy(x => x.Name).ToList();
         }
 
+        public IList<EmployeeProfileModel> GetEmployeeProfiles()
+        {
+            var data = unitOfWork.UtilsRepository.GetEmployeeProfiles().ToList();
+
+            return Translate(data).ToList();
+        }
+
         private List<SectorModel> Translate(List<Sector> data)
         {
             return mapper.Map<List<Sector>, List<SectorModel>>(data);
@@ -193,6 +203,16 @@ namespace Sofco.Service.Implementations.Common
             }
 
             return banks;
+        }
+
+        private List<EmployeeProfileModel> Translate(List<EmployeeProfile> data)
+        {
+            return mapper.Map<List<EmployeeProfile>, List<EmployeeProfileModel>>(data);
+        }
+
+        public IList<Prepaid> GetPrepaids()
+        {
+            return unitOfWork.UtilsRepository.GetPrepaids();
         }
     }
 }

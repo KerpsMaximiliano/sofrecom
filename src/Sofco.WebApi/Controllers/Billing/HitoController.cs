@@ -17,6 +17,15 @@ namespace Sofco.WebApi.Controllers.Billing
             this.hitoService = hitoService;
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult Get(string id)
+        {
+            var response = hitoService.Get(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPut]
         [Route("{id}/close")]
         public IActionResult Close(string id)
@@ -44,9 +53,9 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPatch]
-        public IActionResult UpdateCurrency([FromBody] HitoAmmountParameter hito)
+        public IActionResult Patch([FromBody] HitoAmmountParameter hito)
         {
-            var response = hitoService.UpdateCurrency(hito);
+            var response = hitoService.Patch(hito);
 
             return this.CreateResponse(response);
         }

@@ -112,6 +112,22 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Include(x => x.Manager).Include(x => x.ManagementReport).SingleOrDefault(x => x.ServiceId.Equals(serviceId));
         }
 
+        public Analytic GetByServiceWithManagementReport(string serviceId)
+        {
+            return context.Analytics.
+                Include(x => x.Manager)
+                .Include(x => x.ManagementReport)
+                .ThenInclude(x => x.CostDetails)
+                    .ThenInclude(x => x.CostDetailOthers)
+                .Include(x => x.ManagementReport)
+                    .ThenInclude(x => x.CostDetails)
+                        .ThenInclude(x => x.CostDetailProfiles)
+                .Include(x => x.ManagementReport)
+                    .ThenInclude(x => x.CostDetails)
+                        .ThenInclude(x => x.CostDetailResources)
+                .SingleOrDefault(x => x.ServiceId.Equals(serviceId));
+        }
+
         public Analytic GetByServiceForManagementReport(string serviceId)
         {
             return context.Analytics
@@ -149,6 +165,23 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics
                 .Include(x => x.Manager)
                 .SingleOrDefault(x => x.Id == analyticId)?.Manager;
+        }
+
+        public Analytic GetByProyectId(string projectId)
+        {
+            var project = context.Projects.SingleOrDefault(x => x.CrmId.Equals(projectId));
+
+            if (project != null)
+            {
+                var analytic = context.Analytics.SingleOrDefault(x => x.ServiceId.Equals(project.ServiceId));
+
+                if (analytic != null)
+                {
+                    return analytic;
+                }
+            }
+
+            return null;
         }
 
         public List<Analytic> GetByServiceIds(List<string> serviceIds)

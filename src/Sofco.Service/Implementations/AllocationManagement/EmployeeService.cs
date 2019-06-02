@@ -82,10 +82,26 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<ICollection<Employee>> Search(EmployeeSearchParams parameters)
         {
-            var response = new Response<ICollection<Employee>>
+            var response = new Response<ICollection<Employee>>(){ Data = new List<Employee>() };
+
+            var employees = unitOfWork.EmployeeRepository.Search(parameters);
+
+            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+            foreach (var employee in employees)
             {
-                Data = unitOfWork.EmployeeRepository.Search(parameters)
-            };
+                if (parameters.ManagerId.HasValue && parameters.ManagerId.Value > 0)
+                {
+                    if (unitOfWork.AllocationRepository.ExistCurrentAllocationByEmployeeAndManagerId(employee.Id, parameters.ManagerId.Value, startDate))
+                    {
+                        response.Data.Add(employee);
+                    }
+                }
+                else
+                {
+                    response.Data.Add(employee);
+                }
+            }
 
             if (!response.Data.Any())
             {
@@ -498,6 +514,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     }
                 }
             }
+
+            return response;
+        }
+
+        public Response<EmployeeModel> GetByMail(string email)
+        {
+            var response = new Response<EmployeeModel>();
+
+            var result = unitOfWork.EmployeeRepository.GetByEmail(email);
+
+            response.Data = Translate(result);
 
             return response;
         }

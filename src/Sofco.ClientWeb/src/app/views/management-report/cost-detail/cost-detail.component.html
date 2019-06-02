@@ -1,90 +1,148 @@
-<div class="table-responsive billing-table">
-    <table class="table dataTable" role="grid">
-        <thead>
-            <tr>
-                <th class="first-column"></th>
-                <th class="text-center headcol" *ngFor="let month of months">{{ month.display }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Total Costos</td>
-                <td *ngFor="let month of months; let i = index">
-                    <label class="label label-total">
-                        {{ calculateTotalCosts(i) | amountFormat }}
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>Cantidad Recursos costeados</td>
-                <td *ngFor="let month of months; let i = index">
-                    <label class="label label-cant-resources">
-                        {{ calculateAssignedEmployees(i) }}
-                    </label>
-                </td>
-            </tr>
-            <tr class="active" *ngFor="let employee of employees">
-                <td>{{ employee.display }} </td>
-                <td *ngFor="let monthCost of employee.monthsCost; let i = index">
-                    <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
-                        [ngClass]="AccessEmployeeClass(monthCost)">
-                        {{ monthCost.value | amountFormat }}
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>Total Sueldo</td>
-                <td *ngFor="let month of months; let i = index">
-                    <label class="label label-salary">
-                        {{ calculateAllSalary(i) | amountFormat }}
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>Cargas (0.51 del sueldo)</td>
-                <td *ngFor="let month of months; let i = index">
-                    <label class="label label-load">
-                        {{ calculateLoads(i) | amountFormat }}
-                    </label>
-                </td>
-            </tr>
-            <tr *ngFor="let item of fundedResources; let i = index">
-                <td class="first-column">
-                    <p>
-                        {{ item.display }}
-                    </p>
-                    <i class="fa fa-2x fa-trash pointer" (click)="deleteResources(item, i)" *ngIf="canDeleteResources(item)"></i>
-                </td>
-                <td *ngFor="let monthCost of item.monthsCost; let i = index">
-                    <label class="label" (click)="openEditItemModal(monthCost, item, i)"
-                        [ngClass]="resourcesClass(monthCost, item)">
-                        {{ monthCost.value | amountFormat }}
-                    </label>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="alert alert-gaps-info" *ngIf="months.length == 0">
+    <i class="fa fa-warning"></i>
+    Sin información disponible para esta tabla
 </div>
 
-<br>
-<div class="row" *ngIf="otherResources.length > 0">
-    <div class="col-md-4">
-        <select class="form-control" id="otherResourceId" name="otherResourceId" [(ngModel)]="otherResourceId">
-            <option [value]="otherResource.typeId" *ngFor="let otherResource of otherResources">
-                {{otherResource.typeName}}
-            </option>
-        </select>
-    </div>
-    <div class="col-md-4" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
-        <button class="btn btn-success btn-sm" type="button" (click)="addOtherCost()">
-            Agregar
-            <i class="fa fa-plus"></i></button>
-    </div>
-</div>
 
-<div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
+<div *ngIf="months.length > 0">
+    <div class="table-responsive billing-table">
+        <table class="table dataTable" role="grid">
+            <thead>
+                <tr>
+                    <th class="static first-column" scope="col">Meses</th>
+                    <th class="text-center headcol"
+                        *ngFor="let month of months | fromDateFilter: fromMonth; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">{{ month.display }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="static first-column" scope="col">Total Costos</th>
+                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">
+                        <label class="label label-total">
+                            {{ calculateTotalCosts(month) | amountFormat }}
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="static first-column" scope="col">Cantidad Recursos costeados</th>
+                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">
+                        <label class="label label-cant-resources">
+                            {{ calculateAssignedEmployees(month) }}
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="static first-column text-ellipsis" scope="col">EVALPROP</th>
+                    <td *ngFor="let month of months | fromDateFilter: fromMonth; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">
+                        <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''"
+                            (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
+                    </td>
+                </tr>
+                <tr class="active" *ngFor="let employee of employees">
+                    <th class="static first-column" scope="col">{{ employee.display }}</th>
+                    <td *ngFor="let monthCost of employee.monthsCost | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">
+                        <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
+                            [ngClass]="AccessEmployeeClass(monthCost)">
+                            {{ monthCost.value | amountFormat }}
+                        </label>
+                    </td>
+                </tr>
+                <tr class="warning" *ngFor="let profile of costProfiles">
+                    <th class="static first-column" scope="col">{{ profile.display }}</th>
+                    <td *ngFor="let monthCost of profile.monthsCost | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">
+                        <label class="label" (click)="openEditItemModal(monthCost, profile, i)"
+                            [ngClass]="resourcesClass(monthCost, profile)">
+                            {{ monthCost.value | amountFormat }}
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="static first-column" scope="col">Total Sueldo</th>
+                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">
+                        <label class="label label-salary">
+                            {{ calculateAllSalary(month) | amountFormat }}
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="static first-column" scope="col">Prepaga</th>
+                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">
+                        <label class="label label-salary">
+                            {{ calculateAllPrepaid(month) | amountFormat }}
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="static first-column" scope="col">Cargas (0.51 del sueldo)</th>
+                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">
+                        <label class="label label-load">
+                            {{ calculateLoads(month) | amountFormat }}
+                        </label>
+                    </td>
+                </tr>
+                <tr *ngFor="let item of fundedResources; let i = index">
+                    <th class="static first-column" scope="col">
+                        <p>
+                            {{ item.display }}
+                        </p>
+                        <i class="fa fa-2x fa-trash pointer" (click)="deleteResources(item, i)"
+                            *ngIf="canDeleteResources(item)"></i>
+                    </th>
+                    <td *ngFor="let monthCost of item.monthsCost | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                        [ngClass]="{'first-col': isFirst}">
+                        <label class="label" (click)="openEditItemModal(monthCost, item, i)"
+                            [ngClass]="resourcesClass(monthCost, item)">
+                            {{ monthCost.value | amountFormat }}
+                        </label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+    <div class="row" *ngIf="otherResources.length > 0">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
+                    (change)="otherResourceChange()" [clearable]="false">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-5" *ngIf="showUsers">
+            <div class="form-group">
+                <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-sm-5" *ngIf="showProfiles">
+            <div class="form-group">
+                <ng-select [items]="profiles" bindLabel="text" [(ngModel)]="profileSelected">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-md-2" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
+            <button class="btn btn-success btn-md" type="button" (click)="addOtherCost()">
+                Agregar
+                <i class="fa fa-plus"></i></button>
+        </div>
+
+    </div>
+
+    <!-- <div class="detail-actions m-t-sm text-center" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
     <button class="btn btn-primary cursor-pointer" type="button" (click)="save()">Guardar <i
             class="fa fa-save"></i></button>
+</div> -->
+
 </div>
 
 <ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()" (close)="EditItemOnClose()"
@@ -108,7 +166,7 @@
                         readonly="">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" *ngIf="modalPercentage || modalProfile || modalEmployee">
                 <label class="control-label">Monto</label>
                 <div class="input-group">
                     <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
@@ -123,10 +181,43 @@
                     <span class="input-group-addon">%</span>
                 </div>
             </div>
+
+            <div *ngIf="modalOther">
+                <div class="row border-bottom m-b-sm">
+                    <div class="col-sm-4">
+                        <h4>Gastos</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>Descripción</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>Monto</h4>
+                    </div>
+                </div>
+
+                <div class="row m-t-xs" *ngFor="let other of othersByMonth; let i = index">
+                    <div class="col-sm-4">
+                        {{ other.typeName }}
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-xs" [(ngModel)]="other.description"
+                            maxlength="200">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="number" decimalFormat class="form-control input-xs" [digitLimit]="8"
+                            [(ngModel)]="other.value" max="99999999" min="0">
+                    </div>
+                </div>
+                <button class="btn btn-success btn-sm m-t-xs" (click)="addOtherByMonth()" type="button">
+                    Agregar
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+
         </div>
     </div>
 
-    <div class="alert alert-gaps-warning" *ngIf="!modalEmployee">
+    <div class="alert alert-gaps-warning" *ngIf="modalPercentage">
         <i class="fa fa-warning"></i>
         El valor ingresado modificara el monto de todos los recursos en ese mes
     </div>

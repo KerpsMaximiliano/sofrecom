@@ -90,6 +90,7 @@ namespace Sofco.DAL
         public DbSet<License> Licenses { get; set; }
         public DbSet<LicenseHistory> LicenseHistories { get; set; }
         public DbSet<CloseDate> CloseDates { get; set; }
+        public DbSet<PrepaidImportedData> PrepaidImportedData { get; set; }
 
         // Advancement and Refund
         public DbSet<Advancement> Advancements { get; set; }
@@ -123,6 +124,8 @@ namespace Sofco.DAL
         public DbSet<EmployeeEndReason> EmployeeEndReason { get; set; }
         public DbSet<MonthsReturn> MonthsReturns { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }
+        public DbSet<EmployeeProfile> EmployeeProfile { get; set; }
+        public DbSet<Prepaid> Prepaids { get; set; }
 
         //Workflow
 
@@ -137,9 +140,13 @@ namespace Sofco.DAL
 
         //Management Report
         public DbSet<ManagementReport> ManagementReports { get; set; }
-        public DbSet<CostDetail> CostDetail { get; set; }
-        public DbSet<ContratedDetail> ContractedDetail { get; set; }
-        public DbSet<CostDetailResourceType> CostDetailResourceType { get; set; }
+        public DbSet<CostDetail> CostDetails { get; set; }
+        public DbSet<ContratedDetail> ContractedDetails { get; set; }
+        public DbSet<CostDetailType> CostDetailTypes { get; set; }
+        public DbSet<CostDetailResource> CostDetailResources { get; set; }
+        public DbSet<CostDetailProfile> CostDetailProfiles { get; set; }
+        public DbSet<CostDetailOther> CostDetailOthers { get; set; }
+        public DbSet<ManagementReportBilling> ManagementReportBillings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -204,6 +211,7 @@ namespace Sofco.DAL
             builder.MapContact();
             builder.MapOpportunity();
             builder.MapManagementReport();
+            builder.MapPrepaid();
         }
     }
 }

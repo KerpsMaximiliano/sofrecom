@@ -8,6 +8,8 @@ import { LicenseDetailComponent } from "./licenses/detail/license-detail.compone
 import { NewsComponent } from "./news/news.component";
 import { LicenseDelegateComponent } from "./licenses/license-delegate/license-delegate.component";
 import { EndNotificationComponent } from "./end-notification/end-notification.component";
+import { PrepaidImportComponent } from "./prepaid-import/prepaid-import";
+import { PrepaidVerificationComponent } from "./prepaid-verification/prepaid-verification";
 
 const RRHH_ROUTER: Routes = [
     { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
@@ -23,6 +25,14 @@ const RRHH_ROUTER: Routes = [
           { path: "views/delegates", component: LicenseDelegateComponent, canActivate: [AuthGuard], data: { module: "CTRLI", functionality: "LIC_VIEW_DELEGATE" } },
           { path: ":id/detail", component: LicenseDetailComponent, canActivate: [AuthGuard] }
         ]
+    },
+
+    {
+      path: "prepaid",
+      children: [
+        { path: "import", component: PrepaidImportComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PREPAID-IMPORT" } } ,
+        { path: "verification", component: PrepaidVerificationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PREPAID-CONTROL" }},
+      ]
     },
 
     { path: "endNotification", component: EndNotificationComponent, canActivate: [AuthGuard] },

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, EventEmitter, Output } from "@angular/core";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { Subscription } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
@@ -16,13 +16,12 @@ import { FormControl, Validators } from "@angular/forms";
     styleUrls: ['./mr-billing.scss']
 })
 export class ManagementReportBillingComponent implements OnInit, OnDestroy {
-
-
     getBillingSubscrip: Subscription;
     getCurrenciesSubscrip: Subscription;
     postHitoSubscrip: Subscription;
     updateHitoSubscrip: Subscription;
-
+    getHitoSubscrip: Subscription;
+    
     months: any[] = new Array();
     hitos: any[] = new Array();
     currencies: any[] = new Array();
@@ -40,8 +39,14 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     hitoSelected: any;
     indexSelected: number = 0
     monthSelectedDisplay: string = "";
-    editItemMonto = new FormControl('', [Validators.required, Validators.min(0), Validators.max(999999)]);
+    monthSelectedOpportunity: string = "";
+    monthSelectedCurrency: string = "";
+    editItemMonto = new FormControl('', [Validators.required, Validators.min(1), Validators.max(999999999)]);
+    editItemName = new FormControl('', [Validators.required, Validators.maxLength(250)]);
 
+    @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
+    @Output() getData: EventEmitter<any> = new EventEmitter();
+ 
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "billing.project.detail.milestone.splitTitle",
@@ -72,7 +77,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getCurrencies();
-        this.editItemValueModal.size = 'modal-sm'
     }
 
     ngOnDestroy(): void {
@@ -80,6 +84,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         if (this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if (this.postHitoSubscrip) this.postHitoSubscrip.unsubscribe();
         if (this.updateHitoSubscrip) this.updateHitoSubscrip.unsubscribe();
+        if (this.getHitoSubscrip) this.getHitoSubscrip.unsubscribe();
     }
 
     getCurrencies() {
@@ -101,13 +106,15 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
             response.data.rows.forEach(row => {
 
-                var hito = { id: "", projectId: "", description: "", projectName: "", currencyId: "", date: new Date(), values: [] };
+                var hito = { id: "", projectId: "", description: "", projectName: "", currencyId: "", currencyName: "", opportunityNumber: "", date: new Date(), values: [] };
                 hito.description = row.description;
                 hito.id = row.id;
                 hito.projectId = row.projectId;
                 hito.projectName = row.projectName;
                 hito.date = row.date;
                 hito.currencyId = row.currencyId;
+                hito.currencyName = row.currencyName;
+                hito.opportunityNumber = row.opportunityNumber;
 
                 this.months.forEach(month => {
                     var monthValue = row.monthValues.find(x => x.month == month.month && x.year == month.year);
@@ -123,7 +130,19 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
                 this.hitos.push(hito);
             });
+
+            this.sendDataToDetailView();
         });
+    }
+
+    sendDataToDetailView(){
+        if (this.getData.observers.length > 0) {
+            this.getData.emit({
+                totals: this.totals,
+                months: this.months,
+                hitos: this.hitos
+            });
+        }
     }
 
     canCreateHito() {
@@ -165,9 +184,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.postHitoSubscrip = this.projectService.createNewHito(model).subscribe(response => {
             this.newHitoModal.hide();
 
-            let hitosAux = [];
-            var newInserted = false;
-
             var month = model.startDate.getMonth() + 1;
             var year = model.startDate.getFullYear();
 
@@ -190,71 +206,91 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 values: []
             };
 
-            this.months.forEach(monthRow => {
-                            var monthValue = { month: monthRow.month, year: monthRow.year, value: null, oldValue: null, status: null };
-    
-                            if (monthRow.month == month && monthRow.year == year) {
-                                monthValue.value = model.ammount;
-                                monthValue.oldValue = model.ammount;
-                                monthValue.status = this.pendingHitoStatus;
-                            }
-    
-                            hito.values.push(monthValue);
-                        });
-
-            this.hitos.push(hito)
+            this.getHito(month, year, hito, model);            
         },
         error => this.newHitoModal.resetButtons());
     }
 
-    updateHito() {
+    getHito(month, year, hito, model){
+        this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
 
-        this.hitoSelected.values[this.indexSelected].value = this.editItemMonto.value
+            this.months.forEach(monthRow => {
+                var monthValue = { month: monthRow.month, year: monthRow.year, value: null, valuePesos: null, 
+                                   oldValue: null, status: null, originalValue: null, originalValuePesos: null  };
+
+                if (monthRow.month == month && monthRow.year == year) {
+                    monthValue.value = model.ammount;
+                    monthValue.valuePesos = response.data.baseAmount;
+                    monthValue.oldValue = model.ammount;
+                    monthValue.originalValue = response.data.amountOriginal;
+                    monthValue.originalValuePesos = response.data.baseAmountOriginal;
+                    monthValue.status = this.pendingHitoStatus;
+                }
+
+                hito.values.push(monthValue);
+            });
+
+            this.hitos.push(hito);
+
+            this.sendDataToDetailView();
+        });
+    }
+
+    updateHito() {
+        var descAux = this.editItemName.value;
+        this.hitoSelected.values[this.indexSelected].value = this.editItemMonto.value;
+        this.hitoSelected.description = this.editItemName.value;
         var hito = this.hitoSelected
 
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
         if (!this.isEnabled(hitoMonth)) return;
 
-        if (hitoMonth.value > 0 && hitoMonth.value != hitoMonth.oldValue) {
-            var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
+        var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
 
-            var monthValue;
+        var monthValue;
 
-            if (totalCurrency) {
-                monthValue = totalCurrency.monthValues.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
+        if (totalCurrency) {
+            monthValue = totalCurrency.monthValues.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
 
-                if (monthValue) {
-                    monthValue.value -= hitoMonth.oldValue;
-                    monthValue.value += hitoMonth.value;
-                }
+            if (monthValue) {
+                monthValue.value -= hitoMonth.oldValue;
+                monthValue.value += hitoMonth.value;
             }
-
-            var json = {
-                id: hito.id,
-                ammount: hitoMonth.value,
-                projectId: hito.projectId
-            }
-
-            this.projectService.updateAmmountHito(json).subscribe(response => {
-                hitoMonth.oldValue = hitoMonth.value;
-            },
-                error => {
-                    if (monthValue) {
-                        monthValue.value -= hitoMonth.value;
-                        monthValue.value += hitoMonth.oldValue;
-                    }
-
-                    hitoMonth.value = hitoMonth.oldValue;
-
-                    this.editItemValueModal.hide()
-                });
         }
-        else {
+
+        var json = {
+            id: hito.id,
+            ammount: hitoMonth.value,
+            name: hito.description,
+            projectId: hito.projectId
+        }
+
+        this.projectService.updateAmmountHito(json).subscribe(response => {
+            hitoMonth.oldValue = hitoMonth.value;
+
+            this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
+                hitoMonth.value = json.ammount;
+                hitoMonth.valuePesos = response.data.baseAmount;
+                hitoMonth.originalValue = response.data.amountOriginal;
+                hitoMonth.originalValuePesos = response.data.baseAmountOriginal;
+
+                this.sendDataToDetailView();
+            });
+        },
+        error => {
+            if (monthValue) {
+                monthValue.value -= hitoMonth.value;
+                monthValue.value += hitoMonth.oldValue;
+            }
+
             hitoMonth.value = hitoMonth.oldValue;
-        }
+            this.hitoSelected.description = descAux;
 
-        this.editItemValueModal.hide()
+            this.editItemValueModal.hide();
+        });
+
+        this.editItemValueModal.hide();
     }
 
     delete(hito) {
@@ -281,13 +317,19 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 if (hitoindex != undefined) {
                     this.hitos.splice(hitoindex, 1);
                 }
+
+                this.sendDataToDetailView();
             },
-                error => this.messageService.closeLoading());
+            error => this.messageService.closeLoading());
         });
     }
 
     isEnabled(hito) {
         return (this.menuService.userIsManager || this.menuService.userIsCdg) && hito.status == this.pendingHitoStatus && (!hito.solfacId || hito.solfacId == 0);
+    }
+
+    canEditCdg() {
+        return this.menuService.userIsCdg;
     }
 
     canDeleteHito(hito) {
@@ -315,44 +357,53 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     getTotals(month, year) {
+        month--;
         var totals = {
             totalProvisioned: 0,
-            totalBilling: 0
+            totalBilling: 0,
+            provision: 0
         }
 
         this.hitos.forEach(hito => {
 
             var value = hito.values.find(x => x.month == month && x.year == year);
 
-            if (value && value != null) {
+            if (value && value != null && value.valuePesos) {
                 if (value.status == this.billedHitoStatus || value.status == this.cashedHitoStatus) {
 
-                    if (value.valuePesos > 0) {
-                        totals.totalBilling += value.valuePesos;
-                    }
-                    else {
-                        totals.totalBilling += value.value;
-                    }
+                    totals.totalBilling += value.valuePesos;
                 }
 
-                totals.totalProvisioned += value.value;
+                if(value.originalValuePesos){
+                    totals.totalProvisioned += value.originalValuePesos;
+                }
             }
         });
+
+        totals.provision = totals.totalProvisioned-totals.totalBilling;
 
         return totals;
     }
 
     openEditItemModal(value, hito, index) {
-
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
         if (!this.isEnabled(hitoMonth)) return;
 
         this.editItemValueModal.show();
         this.editItemMonto.setValue(value.value)
+        this.editItemName.setValue(hito.description)
         this.hitoSelected = hito;
         this.indexSelected = index
-        this.monthSelectedDisplay = this.months[index].display
+        this.monthSelectedDisplay = this.months[index].display;
+        this.monthSelectedOpportunity = hito.opportunityNumber;
+        this.monthSelectedCurrency = hito.currencyName;
+    }
 
+    openEditEvalProp(month){
+        if (this.openEvalPropModal.observers.length > 0) {
+            month.type = 1;
+            this.openEvalPropModal.emit(month);
+        }
     }
 }

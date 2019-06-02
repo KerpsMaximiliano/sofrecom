@@ -4,6 +4,7 @@ import { Service } from "app/services/common/service";
 
 @Injectable()
 export class ManagementReportService {
+  
   private baseUrl: string;
 
   constructor(private http: HttpClient, private service: Service) {
@@ -30,8 +31,8 @@ export class ManagementReportService {
     return this.http.post<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetailMonth`, model);
   }
 
-  getContrated(serviceId, month, year){
-    return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/contrated/${month}/${year}`);
+  getCostDetailMonth(serviceId, month, year){
+    return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetailMonth/${month}/${year}`);
   }
 
   deleteContracted(contractedId){
@@ -40,5 +41,21 @@ export class ManagementReportService {
 
   updateDates(id, model){
     return this.http.put<any>(`${this.baseUrl}/managementReport/${id}/dates`, model);
+  }
+
+  updateBilling(json) {
+    return this.http.put<any>(`${this.baseUrl}/managementReportBillings`, json);
+  }
+
+  getOtherResources(){
+    return this.http.get<any>(`${this.baseUrl}/managementReport/otherResources`)
+  }
+
+  deleteOtherResources(id){
+    return this.http.delete<any>(`${this.baseUrl}/managementReport/${id}/otherResources`)
+  }
+
+  GetOtherByMonth(idType, idCostDetail){
+    return this.http.get<any>(`${this.baseUrl}/managementReport/${idType}/otherResources/${idCostDetail}`)
   }
 }

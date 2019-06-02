@@ -1,4 +1,5 @@
-﻿using Sofco.Domain.DTO;
+﻿using Sofco.Domain.Crm;
+using Sofco.Domain.DTO;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.Billing
@@ -11,8 +12,10 @@ namespace Sofco.Core.Services.Billing
 
         Response<string> Create(HitoParameters hito);
 
-        Response UpdateCurrency(HitoAmmountParameter hito);
+        Response Patch(HitoAmmountParameter hito);
 
         Response Delete(string hitoId, string projectId);
+
+        Response<CrmProjectHito> Get(string id);
     }
 }

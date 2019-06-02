@@ -69,6 +69,14 @@ namespace Sofco.WebApi.Controllers
             return Ok(currencies);
         }
 
+        [HttpGet("prepaids")]
+        public IActionResult GetPrepaids()
+        {
+            var prepaids = utilsService.GetPrepaids();
+
+            return Ok(prepaids);
+        }
+
         [HttpGet("userDelegateTypes")]
         public IActionResult GetUserDelegateTypes()
         {
@@ -91,6 +99,12 @@ namespace Sofco.WebApi.Controllers
         public IActionResult GetBanks()
         {
             return Ok(utilsService.GetBanks());
+        }
+
+        [HttpGet("EmployeeProfile")]
+        public IActionResult GetEmployeeProfiles()
+        {
+            return Ok(utilsService.GetEmployeeProfiles());
         }
     }
 }

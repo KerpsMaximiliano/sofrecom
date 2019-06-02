@@ -1,0 +1,15 @@
+{
+    "fileEmpty": "El archivo no contiene datos",
+    "monthError": "El mes es requerido o es incorrecto",
+    "noDataUpdate": "No se encontro información para actualizar",
+    "noItemsSelected": "No se han seleccionado items para actualizar",
+    "notFound": "La prepaga seleccionada no existe",
+    "notImplemented": "La prepaga seleccionada no tiene una implementacion especifica",
+    "statusEmpty": "El estado es requerido",
+    "updateSuccess": "Registros actualizados correctamente",
+    "yearError": "El año es requerido o es incorrecto",
+    "closeSuccess": "Se ha cerrado el mes correctamente",
+    "cannotClose": "El mes no se puede cerrar si todavia contiene errores",
+    "dateClosed": "El mes ya se encuentra cerrado",
+    "fileWrong": "El archivo es incorrecto o corresponde a otra prepaga"
+}
