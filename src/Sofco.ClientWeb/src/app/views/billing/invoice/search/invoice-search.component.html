@@ -111,12 +111,12 @@
                                 <td class="col-lg-1">
                                     <pcheck [(checked)]="invoice.selected"></pcheck>
                                 </td> 
-                                <td (click)="goToDetail(invoice)">{{invoice.invoiceNumber}}</td>
-                                <td (click)="goToDetail(invoice)" title="{{invoice.excelFileName}}" class="text-ellipsis column-excel-file">{{invoice.excelFileName}}</td>
-                                <td (click)="goToDetail(invoice)">{{invoice.accountName}}</td>
-                                <td (click)="goToDetail(invoice)">{{invoice.project}}</td>
-                                <td (click)="goToDetail(invoice)">{{invoice.createdDate | date: 'dd/MM/yyyy'}}</td>
-                                <td (click)="goToDetail(invoice)" class="text-center"><span class="label label-{{invoice.statusName}}">{{ invoice.statusName | translate}}</span></td>
+                                <td (click)="goToDetail(invoice)" (dblclick)="goToDetailInNewTab(invoice)">{{invoice.invoiceNumber}}</td>
+                                <td (click)="goToDetail(invoice)" (dblclick)="goToDetailInNewTab(invoice)"title="{{invoice.excelFileName}}" class="text-ellipsis column-excel-file">{{invoice.excelFileName}}</td>
+                                <td (click)="goToDetail(invoice)" (dblclick)="goToDetailInNewTab(invoice)">{{invoice.accountName}}</td>
+                                <td (click)="goToDetail(invoice)" (dblclick)="goToDetailInNewTab(invoice)">{{invoice.project}}</td>
+                                <td (click)="goToDetail(invoice)" (dblclick)="goToDetailInNewTab(invoice)">{{invoice.createdDate | date: 'dd/MM/yyyy'}}</td>
+                                <td (click)="goToDetail(invoice)" (dblclick)="goToDetailInNewTab(invoice)" class="text-center"><span class="label label-{{invoice.statusName}}">{{ invoice.statusName | translate}}</span></td>
                             </tr>
                         </tbody>
                     </table>       
