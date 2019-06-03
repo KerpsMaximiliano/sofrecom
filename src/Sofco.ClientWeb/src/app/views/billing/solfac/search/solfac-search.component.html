@@ -104,25 +104,27 @@
                         <thead>
                             <tr>
                                 <th>{{'billing.solfac.businessName' | translate }}</th>
-                                <th class="column-lg">{{'billing.solfac.project' | translate }}</th>
+                                <th class="column-md">{{'billing.solfac.project' | translate }}</th>
                                 <th>{{'billing.project.grid.manager' | translate }}</th>
                                 <th>{{'billing.solfac.documentType' | translate }}</th>
                                 <th>{{'billing.solfac.date' | translate }}</th>
                                 <th>{{'billing.solfac.currency' | translate }}</th>
                                 <th>{{'billing.solfac.amount' | translate }}</th> 
-                                <th class="text-center">{{'billing.solfac.status' | translate }}</th>
+                                <th>Factura</th> 
+                                <th class="column-sm">{{'billing.solfac.status' | translate }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let solfac of data" (click)="goToDetail(solfac)" (dblclick)="goToDetailInNewTab(solfac)" class="pointer">
                                 <td>{{ solfac.businessName}}</td>
-                                <td class="column-lg text-ellipsis" title="{{ solfac.project}}"> <span *ngIf="solfac.projectQuantity > 1" class="badge badge-primary"> <i class="fa fa-plus"></i> </span> {{ solfac.project}}</td>
+                                <td class="column-md text-ellipsis" title="{{ solfac.project}}"> <span *ngIf="solfac.projectQuantity > 1" class="badge badge-primary"> <i class="fa fa-plus"></i> </span> {{ solfac.project}}</td>
                                 <td>{{ solfac.manager}}</td>
                                 <td>{{ solfac.documentTypeName}}</td>
                                 <td>{{ solfac.startDate | date:'dd/MM/yyyy'}}</td>
                                 <td class="text-center">{{ setCurrencySymbol(solfac.currencyId) }}</td>
                                 <td>{{solfac.totalAmount | number: '1.2-2' }}</td>
-                                <td class="text-center"><span class="label label-{{solfac.statusName}}">{{ solfac.statusName | translate}}</span></td>
+                                <td>{{solfac.invoiceCode }}</td>
+                                <td class="text-ellipsis column-sm"><span class="label label-{{solfac.statusName}}">{{ solfac.statusName | translate}}</span></td>
                             </tr>
                         </tbody>
                     </table>       

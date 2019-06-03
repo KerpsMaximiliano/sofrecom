@@ -236,7 +236,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     }
 
     initGrid() {
-        var columns = [0, 1, 2, 3, 4, 5, 6];
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         var title = `SOLFACs-${moment(new Date()).format("YYYYMMDD")}`;
 
         var params = {
