@@ -39,6 +39,8 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
     public filterByDates = false;
 
+    isSingleClick: Boolean = true;  
+
     constructor(
         private router: Router,
         private service: SolfacService,
@@ -89,7 +91,9 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
       }
     }
 
-    goToDetail(solfac) {
+    goToDetailInNewTab(solfac){
+        this.isSingleClick = false;
+        
         if(this.menuService.hasFunctionality('SOLFA', 'ALTA') && 
         (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || 
          solfac.statusName == SolfacStatus[SolfacStatus.RejectedByDaf] ||
@@ -98,14 +102,40 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
             sessionStorage.setItem("customerId", solfac.customerId);
             sessionStorage.setItem("serviceId", solfac.serviceId);
             sessionStorage.setItem("projectId", solfac.projectId);
-            this.router.navigate(["/billing/solfac/" + solfac.id + "/edit"]);
+            window.open("/#/billing/solfac/" + solfac.id + "/edit", "_blank");
         }
         else{
             sessionStorage.setItem("customerId", solfac.customerId);
             sessionStorage.setItem("serviceId", solfac.serviceId);
             sessionStorage.setItem("projectId", solfac.projectId);
-            this.router.navigate(["/billing/solfac/" + solfac.id]);
+            window.open("/#/billing/solfac/" + solfac.id, "_blank");
         }
+    }
+
+    goToDetail(solfac) {
+        this.isSingleClick = true;
+
+        setTimeout(()=>{
+            if(this.isSingleClick){
+                if(this.menuService.hasFunctionality('SOLFA', 'ALTA') && 
+                (solfac.statusName == SolfacStatus[SolfacStatus.SendPending] || 
+                solfac.statusName == SolfacStatus[SolfacStatus.RejectedByDaf] ||
+                solfac.statusName == SolfacStatus[SolfacStatus.ManagementControlRejected]))
+                { 
+                    sessionStorage.setItem("customerId", solfac.customerId);
+                    sessionStorage.setItem("serviceId", solfac.serviceId);
+                    sessionStorage.setItem("projectId", solfac.projectId);
+                    this.router.navigate(["/billing/solfac/" + solfac.id + "/edit"]);
+                }
+                else{
+                    sessionStorage.setItem("customerId", solfac.customerId);
+                    sessionStorage.setItem("serviceId", solfac.serviceId);
+                    sessionStorage.setItem("projectId", solfac.projectId);
+                    this.router.navigate(["/billing/solfac/" + solfac.id]);
+                }
+            }
+
+         },500)
     }
 
     getUserOptions() {

@@ -114,7 +114,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let solfac of data" (click)="goToDetail(solfac)" class="pointer">
+                            <tr *ngFor="let solfac of data" (click)="goToDetail(solfac)" (dblclick)="goToDetailInNewTab(solfac)" class="pointer">
                                 <td>{{ solfac.businessName}}</td>
                                 <td class="column-lg text-ellipsis" title="{{ solfac.project}}"> <span *ngIf="solfac.projectQuantity > 1" class="badge badge-primary"> <i class="fa fa-plus"></i> </span> {{ solfac.project}}</td>
                                 <td>{{ solfac.manager}}</td>
