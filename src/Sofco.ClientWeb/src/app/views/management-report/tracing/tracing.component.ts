@@ -11,7 +11,6 @@ export class TracingComponent implements OnInit, OnDestroy {
     
     AllMarginTracking: any[] = new Array()
     analytic: string
-    fromMonth: Date = new Date()
     
     constructor(private dataTableService : DataTableService,
                 private datesService: DatesService){
@@ -34,7 +33,7 @@ export class TracingComponent implements OnInit, OnDestroy {
         this.AllMarginTracking = marginTracking
         
         this.AllMarginTracking.forEach(margin => {
-            var month =  this.datesService.getMonth(new Date(margin.Year, margin.Month))
+            var month =  this.datesService.getMonth(margin.monthYear)
             margin.display = `${month.montShort} ${month.year}`
             columns.push(column)
             column++
@@ -71,7 +70,4 @@ export class TracingComponent implements OnInit, OnDestroy {
         }, 1000);
     }
 
-    setFromDate(date : Date){
-        this.fromMonth = new Date(date.getFullYear(), date.getMonth() -2, 1)        
-    }
 }

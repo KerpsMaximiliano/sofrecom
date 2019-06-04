@@ -271,7 +271,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
         this.marginTracking.setMarginTracking(this.selectedMonth, this.selectedYear);
         this.detailCost.setFromDate(this.selectedDate)
-        this.tracing.setFromDate(this.selectedDate)
+        this.billing.setFromDate(this.selectedDate)
     }
 
     addMonth(){

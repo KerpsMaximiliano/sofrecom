@@ -44,6 +44,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     editItemMonto = new FormControl('', [Validators.required, Validators.min(1), Validators.max(999999999)]);
     editItemName = new FormControl('', [Validators.required, Validators.maxLength(250)]);
 
+    fromMonth: Date = new Date()
+
     @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
     @Output() getData: EventEmitter<any> = new EventEmitter();
  
@@ -124,7 +126,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                         hito.values.push(monthValue);
                     }
                     else {
-                        hito.values.push({ month: month.month, year: month.year, value: null, oldValue: null });
+                        hito.values.push({ month: month.month, year: month.year, monthYear: month.monthYear, value: null, oldValue: null });
                     }
                 });
 
@@ -405,5 +407,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             month.type = 1;
             this.openEvalPropModal.emit(month);
         }
+    }
+
+    setFromDate(date : Date){
+        this.fromMonth = new Date(date.getFullYear(), date.getMonth() -2, 1)        
     }
 }
