@@ -256,6 +256,17 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 {
                     var item = new AdvancementListItem(x);
 
+                    if (x.Histories.Any())
+                    {
+                        var lastHistory = x.Histories.OrderByDescending(s => s.CreatedDate).FirstOrDefault();
+
+                        if (lastHistory != null) item.LastUpdate = lastHistory.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+                    }
+                    else
+                    {
+                        item.LastUpdate = x.CreationDate.ToString("dd/MM/yyyy hh:mm");
+                    }
+
                     SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameDicc);
 
                     if (x.UserApplicant != null)
@@ -277,6 +288,17 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         if (response.Data.All(x => x.Id != advancement.Id))
                         {
                             var item = new AdvancementListItem(advancement);
+
+                            if (advancement.Histories.Any())
+                            {
+                                var lastHistory = advancement.Histories.OrderByDescending(s => s.CreatedDate).FirstOrDefault();
+
+                                if (lastHistory != null) item.LastUpdate = lastHistory.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+                            }
+                            else
+                            {
+                                item.LastUpdate = advancement.CreationDate.ToString("dd/MM/yyyy hh:mm");
+                            }
 
                             SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameDicc);
 

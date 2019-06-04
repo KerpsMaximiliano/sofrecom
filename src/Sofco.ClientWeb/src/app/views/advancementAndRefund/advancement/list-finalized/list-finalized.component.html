@@ -8,6 +8,7 @@
                 <th class="column-md">Superior</th>
                 <th class="column-sm">{{ 'advancement.type' | translate }}</th>
                 <th class="column-sm">{{ 'advancement.histories.createdDate' | translate }}</th>
+                <th class="column-sm">Ultima modificación</th>
                 <th class="column-xs">{{ 'advancement.currency' | translate }}</th>
                 <th class="column-xs">{{ 'advancement.ammount' | translate }}</th>
                 <th class="column-sm">{{ 'advancement.bank' | translate }}</th>
@@ -26,7 +27,8 @@
                     <span *ngIf="item.type == 1">{{ 'advancement.salary' | translate }}</span>
                     <span *ngIf="item.type == 2">{{ 'advancement.viaticum' | translate }}</span>
                 </td>
-                <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                <td class="column-sm">{{ item.creationDate }}</td>
+                <td class="column-sm">{{ item.lastUpdate }}</td>
                 <td class="column-xs">{{ item.currencyDesc }}</td>
                 <td class="column-xs">{{ item.ammount | amountFormat }}</td>
                 <td class="column-sm">{{ item.bank }}</td>

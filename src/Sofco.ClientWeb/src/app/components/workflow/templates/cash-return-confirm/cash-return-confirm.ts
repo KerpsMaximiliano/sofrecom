@@ -23,7 +23,9 @@ export class WfCashReturnConfirmComponent implements OnDestroy  {
     status: string;
     text: string;
 
-    constructor(private workflowService: WorkflowService, private messageService: MessageService){}
+    constructor(private workflowService: WorkflowService, private messageService: MessageService){
+
+    }
 
     ngOnDestroy(): void {
         if(this.postSubscrip) this.postSubscrip.unsubscribe();
@@ -40,12 +42,16 @@ export class WfCashReturnConfirmComponent implements OnDestroy  {
     }
 
     showConfirm(){
-        this.messageService.showCustomConfirm("¿ Confirma que esta recibiendo el dinero en efectivo ?", this.save)
-    }
+        this.model.parameters = {
+            'empty': ""
+        };
 
-    save(){
-        this.postSubscrip = this.workflowService.post(this.model).subscribe(response => {
-            this.onConfirm.emit();
+        var self = this;
+        this.messageService.showCustomConfirm("¿ Confirma que esta recibiendo el dinero en efectivo ?", () => {
+
+            self.postSubscrip = self.workflowService.post(self.model).subscribe(response => {
+                self.onConfirm.emit();
+            });
         });
     }
 }
