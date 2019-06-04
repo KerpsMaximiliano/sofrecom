@@ -32,7 +32,7 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
     }
     
     initGrid(){
-        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
         var title = `Adelantos-finalizados`;
 
         var params = {
@@ -40,8 +40,8 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
           columns: columns,
           title: title,
           withExport: true,
-          columnDefs: [ {"aTargets": [5], "sType": "date-uk"} ],
-          currencyColumns: [7]
+          columnDefs: [ {"aTargets": [5, 6], "sType": "de_datetime"} ],
+          currencyColumns: [8]
         }
   
         this.datatableService.destroy(params.selector);

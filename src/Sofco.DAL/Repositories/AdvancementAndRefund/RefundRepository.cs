@@ -29,6 +29,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Details)
                 .Include(x => x.AdvancementRefunds)
                     .ThenInclude(x => x.Advancement)
+                .Include(x => x.Histories)
                 .Where(s => s.StatusId != workflowStatusDraft);
 
             if (model.DateSince.HasValue)

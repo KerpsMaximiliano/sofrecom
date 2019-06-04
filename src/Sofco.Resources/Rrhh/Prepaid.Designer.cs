@@ -124,6 +124,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a El empleado no fue informado en ningun archivo de prepaga.
+        /// </summary>
+        public static string EmployeeMissing {
+            get {
+                return ResourceManager.GetString("EmployeeMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a El empleado no existe en Tiger..
         /// </summary>
         public static string EmployeeNotFound {

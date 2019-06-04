@@ -98,6 +98,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees.SingleOrDefault(x => x.DocumentNumber == dni);
         }
 
+        public IList<Employee> GetMissingEmployess(IList<int> prepaidImportedDataIds)
+        {
+            return context.Employees.Where(x => !prepaidImportedDataIds.Contains(x.Id) && x.EndDate == null).ToList();
+        }
+
         public ICollection<Employee> Search(EmployeeSearchParams parameters)
         {
             IQueryable<Employee> query = context.Employees.Include(x => x.Manager);

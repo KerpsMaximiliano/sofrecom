@@ -93,10 +93,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     //     this.setDate(dateSetting);  
     // }
 
-     seeCostDetailMonth(){
-         this.managementReportDetail.seeCostDetailMonth()
-     }
-
     calculate(manamementReportStartDate, manamementReportEndDate, selectedMonth, selectedYear){
 
         if(!this.billingDataLoaded || !this.costDataLoaded) return;

@@ -141,6 +141,16 @@
                         <h3 class="month-label">{{ selectedMonthDesc }} {{ selectedYear }}</h3>
                     </div>
                 </div>
+                <div class="col-md-6 action-buttons">
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector">Reporte Mensual <i
+                            class="fa fa-file"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdgOrDirector">Cerrar <i
+                            class="fa fa-close"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector">Enviar <i
+                            class="fa fa-paper-plane"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="seeCostDetailMonth()"
+                        *ngIf="isManager || isCdgOrDirector">Costo mensual <i class="fa fa-edit"></i></button>
+                </div>
             </div>
 
             <div class="tabs-container">
@@ -149,7 +159,7 @@
                     <li><a data-toggle="tab" href="#tab-2"> Detalle Costos </a></li>
                     <li><a data-toggle="tab" href="#tab-3"> Facturación </a></li>
                     <li><a data-toggle="tab" href="#tab-4"> Seguimiento </a></li>
-                </ul>
+                </ul> 
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">

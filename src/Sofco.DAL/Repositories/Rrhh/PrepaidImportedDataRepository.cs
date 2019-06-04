@@ -90,5 +90,12 @@ namespace Sofco.DAL.Repositories.Rrhh
         {
             return context.PrepaidImportedData.Where(x => x.Period.Date < dateTime.Date && x.Status == PrepaidImportedDataStatus.Provisioned).ToList();
         }
+
+        public IList<int> GetEmployeeIds(int yearId, int monthId)
+        {
+            var date = new DateTime(yearId, monthId, 1);
+
+            return context.PrepaidImportedData.Where(x => x.Date.Date == date.Date).Select(x => x.EmployeeId).Distinct().ToList();
+        }
     }
 }

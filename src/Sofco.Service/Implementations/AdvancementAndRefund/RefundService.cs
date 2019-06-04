@@ -11,15 +11,12 @@ using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
-using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
-using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Common;
-using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
@@ -144,7 +141,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             return response;
         }
-
 
         public async Task<Response<File>> AttachFile(int refundId, Response<File> response, IFormFile file)
         {
@@ -353,6 +349,28 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         {
                             var mapped = mapper.Map<Refund, RefundListResultModel>(refund);
 
+                            var advancementsAndRefunds = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
+
+                            var diff = advancementsAndRefunds.Item2.Sum(x => x.Ammount) - advancementsAndRefunds.Item1.Sum(x => x.TotalAmmount);
+
+                            if (diff > 0)
+                            {
+                                mapped.CompanyRefund = diff;
+                            }
+
+                            mapped.IsCreditCard = refund.CreditCardId > 0;
+
+                            if (refund.Histories.Any())
+                            {
+                                var lastHistory = refund.Histories.OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+
+                                if (lastHistory != null) mapped.LastUpdate = lastHistory.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+                            }
+                            else
+                            {
+                                mapped.LastUpdate = refund.CreationDate.ToString("dd/MM/yyyy hh:mm");
+                            }
+
                             if (!employeeDicc.ContainsKey(refund.UserApplicant.Email))
                             {
                                 var employee = unitOfWork.EmployeeRepository.GetByEmail(refund.UserApplicant.Email);
@@ -413,6 +431,28 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             foreach (var refund in data)
             {
                 var item = mapper.Map<Refund, RefundListResultModel>(refund);
+
+                var advancementsAndRefunds = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
+
+                var diff = advancementsAndRefunds.Item2.Sum(x => x.Ammount) - advancementsAndRefunds.Item1.Sum(x => x.TotalAmmount);
+
+                if (diff > 0)
+                    item.CompanyRefund = diff;
+                else
+                    item.UserRefund = diff * -1;
+
+                item.IsCreditCard = refund.CreditCardId > 0;
+
+                if (refund.Histories.Any())
+                {
+                    var lastHistory = refund.Histories.OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+
+                    if (lastHistory != null) item.LastUpdate = lastHistory.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+                }
+                else
+                {
+                    item.LastUpdate = refund.CreationDate.ToString("dd/MM/yyyy hh:mm");
+                }
 
                 if (!employeeDicc.ContainsKey(refund.UserApplicant.Email))
                 {

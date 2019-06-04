@@ -1,5 +1,4 @@
-﻿using System;
-using Sofco.Domain.Enums;
+﻿using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 {
@@ -15,7 +14,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
             CurrencyDesc = advancement.Currency?.Text;
             StatusDesc = advancement.Status?.Name;
             StatusId = advancement.StatusId;
-            CreationDate = advancement.CreationDate;
+            CreationDate = advancement.CreationDate.ToString("dd/MM/yyyy hh:mm");
             Ammount = advancement.Ammount;
             WorkflowStatusType = advancement.Status?.Type;
             MonthsReturn = advancement.MonthsReturn?.Text;
@@ -48,7 +47,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 
         public decimal Ammount { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public string CreationDate { get; set; }
 
         public WorkflowStateType? WorkflowStatusType { get; set; }
 
@@ -57,5 +56,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
         public int NextWorkflowStateId { get; set; }
 
         public string Manager { get; set; }
+
+        public string LastUpdate { get; set; }
     }
 }
