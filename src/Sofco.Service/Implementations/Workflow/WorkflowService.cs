@@ -221,6 +221,15 @@ namespace Sofco.Service.Implementations.Workflow
         {
             var nextState = transition.NextWorkflowState;
 
+            if (nextState.Id == appSetting.WorkFlowStatePaymentPending ||
+                nextState.Id == appSetting.WorkflowStatusCurrentAccount ||
+                nextState.Id == appSetting.WorkflowStatusApproveId ||
+                nextState.Id == appSetting.WorkflowStatusPostedId ||
+                nextState.Id == appSetting.WorkflowStatusFinalizedId)
+            {
+                return;
+            }
+
             var possibleNextTransitions = workflowRepository.GetTransitions(nextState.Id, parameters.WorkflowId)
                 .Where(x => x.NextWorkflowStateId != appSetting.WorkflowStatusRejectedId).ToList();
 
