@@ -120,6 +120,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
             marginTracking.Month = month;
             marginTracking.Year = year;
+            marginTracking.monthYear = new Date(year, month - 1, 1)
 
             var billingMonth = this.billingModel.months.find(x => x.month == month && x.year == year);
             var costDetailMonth = this.costsModel.months.find(x => x.month == month && x.year == year);

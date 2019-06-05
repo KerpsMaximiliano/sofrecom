@@ -11,7 +11,7 @@ export class fromDateFilterPipe implements PipeTransform {
              return months;
          }
 
-        return months.filter(month => new Date(month.monthYear) >= fromMonth)
-       // return months;
+        var filteredMonths= months.filter(month => new Date(month.monthYear) >= fromMonth)
+        return filteredMonths;
     }
 }

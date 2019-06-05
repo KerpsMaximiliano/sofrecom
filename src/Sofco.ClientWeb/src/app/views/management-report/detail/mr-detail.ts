@@ -212,6 +212,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
           
                 this.getDetail()
                 this.detailCost.getCost()
+                
+                this.setStartDate(this.ReportStartDate, this.ReportEndDate)
 
                 this.editDateModal.hide();
             },
@@ -270,6 +272,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.selectedYear = dateSetting.year;
 
         this.marginTracking.setMarginTracking(this.selectedMonth, this.selectedYear);
+        this.detailCost.setFromDate(this.selectedDate)
+        this.billing.setFromDate(this.selectedDate)
     }
 
     addMonth(){
@@ -280,6 +284,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         }
 
         var dateSetting = this.datesService.getMonth(new Date(this.selectedYear, this.selectedMonth));
+        this.selectedDate = new Date(this.selectedYear, this.selectedMonth)
+
         this.setDate(dateSetting);  
     }
 
@@ -292,6 +298,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
         this.selectedMonth -= 2;
         var dateSetting = this.datesService.getMonth(new Date(this.selectedYear, this.selectedMonth));
+        this.selectedDate = new Date(this.selectedYear, this.selectedMonth)
+        
         this.setDate(dateSetting);  
     }
     

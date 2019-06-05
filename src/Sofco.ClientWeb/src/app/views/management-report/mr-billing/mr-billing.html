@@ -8,23 +8,23 @@
         <thead>
             <tr>
                 <th class="first-column"></th>
-                <th class="text-center" *ngFor="let month of months">{{ month.display }}</th>
+                <th class="text-center" *ngFor="let month of months | fromDateFilter: fromMonth;">{{ month.display }}</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let total of totals">
                 <td class="first-column text-ellipsis">Total Facturación {{ total.currencyName }}</td>
-                <td *ngFor="let month of total.monthValues"><label class="label"
+                <td *ngFor="let month of total.monthValues | fromDateFilter: fromMonth;"><label class="label"
                         class="label label-primary">{{ month.value | amountFormat }}</label></td>
             </tr>
             <tr>
                 <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
-                <td *ngFor="let month of months"><label class="label label-primary">{{ month.resourceQuantity }}</label>
+                <td *ngFor="let month of months | fromDateFilter: fromMonth;"><label class="label label-primary">{{ month.resourceQuantity }}</label>
                 </td>
             </tr> 
             <tr>
                 <td class="first-column text-ellipsis"> EVALPROP</td>
-                <td *ngFor="let month of months">
+                <td *ngFor="let month of months | fromDateFilter: fromMonth;">
                     <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''" (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
                 </td>
             </tr>
@@ -39,7 +39,7 @@
                     <i class="fa fa-2x fa-trash pointer" (click)="delete(hito)" *ngIf="canDeleteHito(hito)"></i>
                 </td>
 
-                <td *ngFor="let value of hito.values; let i = index">
+                <td *ngFor="let value of hito.values | fromDateFilter: fromMonth; let i = index">
                     <label *ngIf="value.value" 
                             class="form-control input-sm text-center" 
                             [ngClass]="resolveHitoLabel(value)"

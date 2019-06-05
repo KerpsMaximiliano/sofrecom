@@ -16,6 +16,7 @@ export class MarginTracking {
     public TotalExpensesToEnd : number;
     public Month : number;
     public Year : number;
+    public monthYear: Date;
 
     constructor(){
         this.PercentageExpected = 0;

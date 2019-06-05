@@ -153,6 +153,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                 monthHeader.Year = date.Year;
                 monthHeader.Month = date.Month;
+                monthHeader.MonthYear = date;
 
                 var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
 
@@ -206,6 +207,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             Month = hito.StartDate.Month,
                             Year = hito.StartDate.Year,
+                            MonthYear = new DateTime(hito.StartDate.Year, hito.StartDate.Month, 1),
                             Value = hito.Ammount,
                             OriginalValue = hito.AmountOriginal,
                             OriginalValuePesos = hito.BaseAmountOriginal,
@@ -662,11 +664,11 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     if (hito.StartDate.Month == date.Month && hito.StartDate.Year == date.Year)
                     {
-                        biilingRowItem = new MonthBiilingRowItem { Year = date.Year, Month = date.Month, Value = hito.Ammount };
+                        biilingRowItem = new MonthBiilingRowItem { Year = date.Year, Month = date.Month, Value = hito.Ammount, MonthYear = new DateTime(date.Year, date.Month, 1) };
                     }
                     else
                     {
-                        biilingRowItem = new MonthBiilingRowItem { Year = date.Year, Month = date.Month, Value = 0 };
+                        biilingRowItem = new MonthBiilingRowItem { Year = date.Year, Month = date.Month, Value = 0, MonthYear = new DateTime(date.Year, date.Month, 1) };
                     }
 
                     totalBilling.MonthValues.Add(biilingRowItem);
