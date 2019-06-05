@@ -37,7 +37,7 @@ namespace Sofco.Framework.Managers
             {
                 HoursApproved = calendarModels.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours),
                 HoursRejected = calendarModels.Where(x => x.Status == WorkTimeStatus.Rejected).Sum(x => x.Hours),
-                HoursPending = calendarModels.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours),
+                HoursDraft = calendarModels.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours),
                 HoursPendingApproved = calendarModels.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours),
                 HoursWithLicense = calendarModels.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours)
             };

@@ -29,5 +29,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public decimal PendingHours { get; set; }
 
         public int DetailCount { get; set; }
+
+        public decimal RejectHours { get; set; }
     }
 }

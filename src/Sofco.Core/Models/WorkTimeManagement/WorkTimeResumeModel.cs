@@ -10,12 +10,14 @@
 
         public decimal HoursPendingApproved { get; set; }
 
-        public decimal Total => HoursApproved + HoursRejected + HoursPending + HoursPendingApproved;
+        public decimal Total => HoursApproved + HoursRejected + HoursDraft + HoursPendingApproved + HoursWithLicense;
 
         public decimal BusinessHours { get; set; }
 
         public decimal HoursUntilToday { get; set; }
 
         public decimal HoursWithLicense { get; set; }
+
+        public decimal HoursDraft { get; set; }
     }
 }
