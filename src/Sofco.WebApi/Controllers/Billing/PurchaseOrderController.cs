@@ -146,9 +146,9 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPut("{id}/adjustment")]
-        public IActionResult MakeAdjustment(int id, [FromBody] IList<PurchaseOrderAmmountDetailModel> details)
+        public IActionResult MakeAdjustment(int id, [FromBody] PurchaseOrderAdjustmentModel model)
         {
-            var response = purchaseOrderStatusService.MakeAdjustment(id, details);
+            var response = purchaseOrderStatusService.MakeAdjustment(id, model);
 
             return this.CreateResponse(response);
         }

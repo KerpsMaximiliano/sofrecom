@@ -82,12 +82,12 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
             return response;
         }
 
-        public Response MakeAdjustment(int id, IList<PurchaseOrderAmmountDetailModel> details)
+        public Response MakeAdjustment(int id, PurchaseOrderAdjustmentModel model)
         {
             var response = new Response();
 
             var purchaseOrder = PurchaseOrderValidationHelper.Find(id, response, unitOfWork);
-            PurchaseOrderValidationHelper.ValidateAdjustmentAmmount(response, details);
+            PurchaseOrderValidationHelper.ValidateAdjustmentAmmount(response, model.Items);
 
             if (response.HasErrors()) return response;
 
@@ -96,12 +96,13 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
                 purchaseOrder.Status = PurchaseOrderStatus.Closed;
                 purchaseOrder.Adjustment = true;
                 purchaseOrder.AdjustmentDate = DateTime.UtcNow;
+                purchaseOrder.CommentsForAdjustment = model.Comments;
                 unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
                 unitOfWork.PurchaseOrderRepository.UpdateAdjustment(purchaseOrder);
 
                 foreach (var detail in purchaseOrder.AmmountDetails)
                 {
-                    var modelDetail = details.SingleOrDefault(x => x.CurrencyId == detail.CurrencyId);
+                    var modelDetail = model.Items.SingleOrDefault(x => x.CurrencyId == detail.CurrencyId);
 
                     if (modelDetail == null) continue;
 
