@@ -7,6 +7,7 @@ import { CostCenterService } from "../../../../services/allocation-management/co
 import { CustomerService } from "../../../../services/billing/customer.service";
 import { ServiceService } from "../../../../services/billing/service.service";
 import { UserService } from "../../../../services/admin/user.service";
+import * as moment from 'moment';
 
 @Component({
     selector: 'analytic-form',
@@ -83,16 +84,17 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
                 this.model.solutionId = service.solutionTypeId;
                 this.model.technologyId = service.technologyTypeId;
                 this.model.serviceTypeId = service.serviceTypeId;
+                this.model.startDateContract = moment(service.startDate).toDate();
+                this.model.endDateContract = moment(service.endDate).toDate();
 
                 this.getServices();
             }
             else{
                 this.model.clientExternalName = 'No Aplica';
                 this.model.service = 'No Aplica';
+                this.model.startDateContract = new Date();
+                this.model.endDateContract = new Date();
             }
-           
-            this.model.startDateContract = new Date();
-            this.model.endDateContract = new Date();
         }
     }
 
@@ -178,6 +180,8 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
                 this.model.technologyId = response.data.technologyTypeId;
                 this.model.serviceTypeId = response.data.serviceTypeId;
                 this.model.proposal = response.data.proposals;
+                this.model.startDateContract = moment(response.data.startDate).toDate();
+                this.model.endDateContract = moment(response.data.endDate).toDate();
 
                 if(response.data.proposals && response.data.proposals != ""){
                     this.proposals = response.data.proposals.split(";");
