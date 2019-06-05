@@ -96,6 +96,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     init(serviceId) {
+
+        this.hitos = new Array();
+        
         this.getBillingSubscrip = this.managementReportService.getBilling(serviceId).subscribe(response => {
 
             this.managerId = response.data.managerId;

@@ -212,6 +212,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
           
                 this.getDetail()
                 this.detailCost.getCost()
+                
+                this.setStartDate(this.ReportStartDate, this.ReportEndDate)
 
                 this.editDateModal.hide();
             },
