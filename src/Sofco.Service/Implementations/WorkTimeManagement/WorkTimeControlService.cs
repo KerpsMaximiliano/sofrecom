@@ -166,11 +166,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private List<int> GetAnalyticIds(int? analyticId)
         {
-            var currentUser = userData.GetCurrentUser();
+            var analyticsByManagers = roleManager.HasFullAccess()
+                ? unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite()
+                : GetAnalyticByManagerAndDelegated();
 
-            var availableAnalyticIds = unitOfWork.AnalyticRepository
-                .GetAnalyticLiteByManagerId(currentUser.Id).Select(s => s.Id)
-                .ToList();
+            var availableAnalyticIds = analyticsByManagers.Select(x => x.Id).ToList();
 
             if (analyticId.HasValue)
             {
@@ -180,10 +180,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     ? new List<int> { selectedAnalyticId }
                     : new List<int>();
             }
-
-            return roleManager.IsDirector() 
-                ? unitOfWork.AnalyticRepository.GetAllOpenReadOnly().Select(s => s.Id).ToList() 
-                : availableAnalyticIds;
+            else
+            {
+                return availableAnalyticIds;
+            }
         }
 
         private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)
