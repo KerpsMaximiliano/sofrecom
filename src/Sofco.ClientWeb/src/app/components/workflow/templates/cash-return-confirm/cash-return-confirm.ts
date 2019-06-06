@@ -43,9 +43,8 @@ export class WfCashReturnConfirmComponent implements OnDestroy  {
         this.model.parameters = {
             'empty': ""
         };
-        
-        var self = this;
 
+        var self = this;
         this.messageService.showCustomConfirm("¿ Confirma que esta recibiendo el dinero en efectivo ?", () => {
             self.postSubscrip = self.workflowService.post(self.model).subscribe(response => {
                 self.onConfirm.emit();
