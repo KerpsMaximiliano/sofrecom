@@ -441,7 +441,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var analytics = unitOfWork.AnalyticRepository.GetAnalyticLiteByManagerId(userData.GetCurrentUser().Id);
 
-            var employees = unitOfWork.EmployeeRepository.GetByAnalyticIds(analytics.Select(x => x.Id).ToList());
+            var employees = unitOfWork.EmployeeRepository.GetByAnalyticIds(analytics.Select(x => x.Id).ToList()); 
 
             return new Response<List<Option>> { Data = Translate(employees.ToList()) };
         }

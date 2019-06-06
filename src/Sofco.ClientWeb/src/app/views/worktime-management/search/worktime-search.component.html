@@ -50,7 +50,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
-                                <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.analyticId"></ng-select>
+                                <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.analyticId" (change)="getResources()"></ng-select>
                             </div>
                         </div>
                         <div class="col-sm-4">

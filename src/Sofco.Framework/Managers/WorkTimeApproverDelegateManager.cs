@@ -31,7 +31,9 @@ namespace Sofco.Framework.Managers
                 UserApproverType.WorkTime);
 
             return isValid
-                ? new List<Role> { unitOfWork.RoleRepository.GetByCode(appSetting.WorkTimeApprovalCode), unitOfWork.RoleRepository.GetByCode(appSetting.WorkTimeMassiveImportCode) }
+                ? new List<Role> { unitOfWork.RoleRepository.GetByCode(appSetting.WorkTimeApprovalCode),
+                                    unitOfWork.RoleRepository.GetByCode(appSetting.WorkTimeQuery),
+                                    unitOfWork.RoleRepository.GetByCode(appSetting.WorkTimeMassiveImportCode) }
                 : new List<Role>();
         }
     }

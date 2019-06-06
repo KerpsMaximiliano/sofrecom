@@ -93,8 +93,10 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 
             try
             {
+                var history = GetHistory(purchaseOrder, new PurchaseOrderStatusParams());
+
                 purchaseOrder.Status = PurchaseOrderStatus.Closed;
-                purchaseOrder.Adjustment = true;
+                purchaseOrder.Adjustment = true; 
                 purchaseOrder.AdjustmentDate = DateTime.UtcNow;
                 purchaseOrder.CommentsForAdjustment = model.Comments;
                 unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
@@ -109,6 +111,10 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
                     detail.Adjustment = modelDetail.Adjustment;
                     unitOfWork.PurchaseOrderRepository.UpdateDetail(detail);
                 }
+
+                // Add History
+                history.To = purchaseOrder.Status;
+                unitOfWork.PurchaseOrderRepository.AddHistory(history);
 
                 unitOfWork.Save();
                 response.AddSuccess(Resources.Billing.PurchaseOrder.UpdateSuccess);
@@ -136,8 +142,14 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 
             try
             {
+                var history = GetHistory(purchaseOrder, model);
+
                 purchaseOrder.Status = PurchaseOrderStatus.Closed;
                 unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
+
+                // Add History
+                history.To = purchaseOrder.Status;
+                unitOfWork.PurchaseOrderRepository.AddHistory(history);
 
                 unitOfWork.Save();
 

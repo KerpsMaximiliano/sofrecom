@@ -62,6 +62,12 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
             this.searchModel = data;
             this.search();
         }
+
+        if(this.canSeeManagers()){
+            this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(res => {
+                this.resources = res;
+            });
+        }
     }
 
     ngOnDestroy(): void {
@@ -86,23 +92,17 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     }
 
     getResources(){
-        if(this.canSeeManagers()){
-            this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(res => {
-                this.resources = res;
-            });
-        }
-        else{
-            this.getResourcesSubscrip = this.employeeService.getEmployeesOptionByCurrentManager().subscribe(res => {
-                this.resources = res.data;
+        if(!this.canSeeManagers()){
+            this.getResourcesSubscrip = this.analyticService.getResources(this.searchModel.analyticId).subscribe(data => {
+                this.resources = data;
             });
         }
     }
 
     getAnalytics(){
-        this.getAnalyticSubscrip = this.analyticService.getByManager().subscribe(
-            response => {
-                this.analytics = response.data;
-            });
+        this.getAnalyticSubscrip = this.worktimeService.getAnalytics().subscribe(data => {
+            this.analytics = data;
+        });
     }
 
     search(){

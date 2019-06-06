@@ -12,7 +12,7 @@
     "projectIsRequired": "El proyecto es requerido",
     "currencyIsRequired": "Las monedas son requeridas",
     "datesRequired": "Fecha desde y hasta son requeridas",
-    "endDateLessThanStartDate": "La fechca hasta no puede ser menor a fecha desde",
+    "endDateLessThanStartDate": "La fecha hasta no puede ser menor a fecha desde",
     "errorToSaveAnalytics": "Ocurrio un error al relacionar las analiticas",
     "ammountRequired": "Los montos no pueden ser menor a 0 ni mayor a 99.999.999",
     "draftSuccess": "La orden de compra ha sido enviada correctamente al area Compliance",
