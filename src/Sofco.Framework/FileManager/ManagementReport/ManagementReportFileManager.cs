@@ -5,6 +5,7 @@ using Sofco.Core.FileManager;
 using Sofco.Core.Models.ManagementReport;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -43,8 +44,8 @@ namespace Sofco.Framework.FileManager.ManagementReport
                 var item = tracing.MonthsTracking[i - 2];
 
                 sheet.Cells[2, i].Value = item.Display;
-                sheet.Cells[3, i].Value = int.Parse((string.IsNullOrEmpty(item.PercentageExpectedTotal)) ? "0" : item.PercentageExpectedTotal);
-                sheet.Cells[4, i].Value = int.Parse((string.IsNullOrEmpty(item.PercentageToEnd)) ? "0" : item.PercentageToEnd);           
+                sheet.Cells[3, i].Value = float.Parse((string.IsNullOrEmpty(item.PercentageExpectedTotal)) ? "0" : item.PercentageExpectedTotal, CultureInfo.InvariantCulture.NumberFormat);
+                sheet.Cells[4, i].Value = float.Parse((string.IsNullOrEmpty(item.PercentageToEnd)) ? "0" : item.PercentageToEnd, CultureInfo.InvariantCulture.NumberFormat);           
             }
 
             return excel;
