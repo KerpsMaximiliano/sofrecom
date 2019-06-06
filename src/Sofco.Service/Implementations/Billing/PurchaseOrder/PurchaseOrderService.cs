@@ -104,7 +104,7 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
                 model.UpdateDomain(domain, userData.GetCurrentUser().UserName);
 
                 var history = GetHistory(domain, new PurchaseOrderStatusParams());
-                history.To = PurchaseOrderStatus.Draft;
+                history.To = domain.Status;
 
                 domain.Histories.Add(history);
 
