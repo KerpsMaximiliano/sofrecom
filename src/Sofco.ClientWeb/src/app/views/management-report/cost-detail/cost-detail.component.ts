@@ -246,6 +246,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 //Guarda el empleado
                 var listAux = [];
                 listAux.push(this.itemSelected);
+                
                 this.save(listAux, [], [])
                 this.editItemModal.hide();
                 break;
@@ -380,7 +381,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {
-
         //Verifico que exista la fila de ajustes
         var AjusteMensual = this.fundedResources.find(r => r.display == this.generalAdjustment);
         if (AjusteMensual) {
@@ -397,6 +397,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 //Verifico si tiene aumento en alguno
                 if (AjusteMensual.monthsCost[index].value > 0) {
                     newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
+                }
+                else{
+                    //Si el aumento es cero el salario nuevo es igual al salario anterior
+                    if (AjusteMensual.monthsCost[index].value == 0){
+                        newSalary = employee.monthsCost[index].originalValue
+                    }
                 }
 
                 if (employee.monthsCost[index].value > 0) {
