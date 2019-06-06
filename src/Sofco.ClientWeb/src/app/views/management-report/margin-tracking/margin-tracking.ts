@@ -5,6 +5,7 @@ import { ManagementReportDetailComponent } from "../detail/mr-detail"
 import * as moment from 'moment';
 import { MarginTracking } from "app/models/management-report/marginTracking";
 import { HitoStatus } from "app/models/enums/hitoStatus";
+import { AnalyticStatus } from "app/models/enums/analyticStatus";
 
 @Component({
     selector: 'margin-tracking',
@@ -40,7 +41,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.isManager = this.menuService.userIsManager;
         this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
- 
     }
 
     //init(startDate){
@@ -58,6 +58,10 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
     //     this.setMarginTracking();
     // }
+
+    isReadOnly(){
+        this.model.analyticStatus == AnalyticStatus.Close;
+    }
 
     setMarginTracking(month, year){
         var marginTracking = this.allMarginTrackings.find(x => x.Month == month && x.Year == year);

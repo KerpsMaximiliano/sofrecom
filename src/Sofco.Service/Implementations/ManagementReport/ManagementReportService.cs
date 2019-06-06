@@ -70,6 +70,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.ManagementReportId = analytic.ManagementReport.Id;
                 response.Data.ManamementReportStartDate = analytic.ManagementReport.StartDate;
                 response.Data.ManamementReportEndDate = analytic.ManagementReport.EndDate;
+                response.Data.AnalyticStatus = analytic.Status;
             }
             else
             {

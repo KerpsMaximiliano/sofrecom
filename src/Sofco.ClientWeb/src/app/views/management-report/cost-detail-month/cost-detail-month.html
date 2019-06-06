@@ -1,5 +1,5 @@
 <ng2-modal [config]="costDetailMonthModalConfig" #costDetailMonthModal (accept)="save()" [size]="'modal-lg'"
-    [isSaveEnabled]="f.form.valid || canSave">
+    [isSaveEnabled]="(f.form.valid || canSave) && !isReadOnly">
 
     <div class="row">
         <div class="col-md-6 pointer" (dblclick)="totalProvisionedEditabled = !totalProvisionedEditabled">
@@ -78,7 +78,7 @@
     <small class="text-danger">
         <strong>* Sin porcentaje de asignacion en la analitica.</strong>
     </small>  
-    <div class="row">
+    <div class="row" *ngIf="!isReadOnly">
         <br>
         <div class="col-md-6">
             <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected">
@@ -180,7 +180,7 @@
     </div>
 
     <br *ngIf="expenses.length > 0">
-    <div class="row" *ngIf="otherResources.length > 0">
+    <div class="row" *ngIf="otherResources.length > 0 && !isReadOnly">
         <div class="col-md-6">
             <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
                 (change)="otherResourceChange()">

@@ -178,11 +178,11 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.calculateTotalCosts();
     }
 
-    open(data) {
+    open(data, readOnly) {
         this.messageService.showLoading()
         this.expenses = [];
 
-        this.isReadOnly = !data.isCdg;
+        this.isReadOnly = readOnly || !data.isCdg;
         this.AnalyticId = data.AnalyticId;
         
         this.resources = data.resources.employees.filter( x=> x.hasAlocation == true || x.salary > 0 || x.charges > 0)
