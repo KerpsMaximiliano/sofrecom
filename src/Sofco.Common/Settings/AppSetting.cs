@@ -113,5 +113,7 @@
         public int WorkflowStatusRrhhId { get; set; }
 
         public string WorkTimeMassiveImportCode { get; set; }
+
+        public string WorkTimeQuery { get; set; }
     }
 }
