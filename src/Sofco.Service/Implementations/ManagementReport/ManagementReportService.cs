@@ -15,6 +15,7 @@ using System.Linq;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.ManagementReport;
+using Sofco.Core.FileManager;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -26,13 +27,15 @@ namespace Sofco.Service.Implementations.ManagementReport
         private readonly IRoleManager roleManager;
         private readonly IUserData userData;
         private readonly IProjectData projectData;
+        private readonly IManagementReportFileManager managementReportFileManager;
 
         public ManagementReportService(IUnitOfWork unitOfWork,
             ILogMailer<ManagementReportService> logger,
             IUserData userData,
             IProjectData projectData,
             ISolfacService solfacService,
-            IRoleManager roleManager)
+            IRoleManager roleManager,
+            IManagementReportFileManager managementReportFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -40,6 +43,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             this.projectData = projectData;
             this.roleManager = roleManager;
             this.solfacService = solfacService;
+            this.managementReportFileManager = managementReportFileManager;
         }
 
         public Response<ManagementReportDetail> GetDetail(string serviceId)
@@ -591,6 +595,25 @@ namespace Sofco.Service.Implementations.ManagementReport
                 logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
             }
+            return response;
+        }
+
+        public Response<byte[]> CreateTracingReport(TracingModel tracing)
+        {
+            var response = new Response<byte[]>();
+
+            try
+            {
+                var excel = managementReportFileManager.CreateTracingExcel(tracing);
+
+                response.Data = excel.GetAsByteArray();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ExportFileError);
+            }
+
             return response;
         }
 
