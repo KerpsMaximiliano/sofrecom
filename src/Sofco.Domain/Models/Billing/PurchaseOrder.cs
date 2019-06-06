@@ -49,6 +49,8 @@ namespace Sofco.Domain.Models.Billing
 
         public string Comments { get; set; }
 
+        public string CommentsForAdjustment { get; set; }
+
         public string Proposal { get; set; }
 
         public ICollection<PurchaseOrderAnalytic> PurchaseOrderAnalytics { get; set; }

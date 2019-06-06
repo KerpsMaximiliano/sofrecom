@@ -76,17 +76,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             worktimeData.ClearControlHoursReportKey(currentUser.UserName);
             worktimeData.SaveControlHoursReport(resources, currentUser.UserName);
 
+            resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
+            resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
+
             result.Data = new WorkTimeControlModel
             {
                 Resume = resumeModel,
                 Resources = resources
             };
-
-            resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
-
-            resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
-
-            resumeModel.HoursApproved = resources.Sum(s => s.ApprovedHours);
 
             return result;
         }
@@ -140,7 +137,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 if (allocationAnalytic == null)
                 {
-                    resource.BusinessHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
+                    //resource.BusinessHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
                     resource.AllocationPercentage = 0;
                 }
                 else
@@ -153,8 +150,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 resource.LicenseHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
                 resource.SentHours = item.Value.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours);
                 resource.DraftHours = item.Value.Where(x => x.Status == WorkTimeStatus.Draft).Sum(x => x.Hours);
+                resource.RejectHours = item.Value.Where(x => x.Status == WorkTimeStatus.Rejected).Sum(x => x.Hours);
                 resource.PendingHours = resource.BusinessHours - resource.ApprovedHours - resource.LicenseHours - resource.SentHours - resource.DraftHours;
-            
+
+                if (resource.PendingHours < 0) resource.PendingHours = 0;
+
                 var details = list.OrderBy(s => s.Date).ToList();
                 resource.Details = Translate(details);
                 resource.DetailCount = details.Count;
@@ -212,8 +212,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 var currentCloseDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
                 var period = currentCloseDates.GetPeriodIncludeDays();
-                parameters.StartDate = period.Item1.Date;
-                parameters.EndDate = period.Item2.Date;
+                parameters.StartDate = period.Item2.Date;
+                parameters.EndDate = period.Item1.Date;
                 return;
             }
 

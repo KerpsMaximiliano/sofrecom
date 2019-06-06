@@ -98,8 +98,9 @@ namespace Sofco.DAL.Repositories.Rrhh
 
             return context.CloseDates
                 .Where(x => new DateTime(x.Year, x.Month, 1).Date <= today)
-                .OrderBy(x => x.Year)
-                .ThenBy(x => x.Month)
+                .OrderByDescending(x => x.Year)
+                .ThenByDescending(x => x.Month)
+                .Take(5)
                 .ToList();
         }
     }

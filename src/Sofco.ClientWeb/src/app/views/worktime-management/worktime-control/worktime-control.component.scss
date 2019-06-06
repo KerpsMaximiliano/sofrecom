@@ -21,7 +21,14 @@ dd {
     -moz-border-radius: 0px 10px 10px 0px;
     -border-radius: 0px 10px 10px 0px;
     border-radius: 0px 10px 10px 0px;
-    margin-bottom:5px;
     font-weight: bold;
     text-align: right;
+}
+
+dl {
+    margin-bottom: 0px;
+}
+
+dt, dd {
+    line-height: 0.5;
 }
