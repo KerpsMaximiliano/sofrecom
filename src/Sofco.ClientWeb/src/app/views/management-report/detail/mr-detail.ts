@@ -149,6 +149,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             isCdg: this.menuService.userIsCdg,
             resources, totals, AnalyticId,
             month: this.selectedMonth, 
+            monthDesc: this.selectedMonthDesc,
             year: this.selectedYear
         }
 
