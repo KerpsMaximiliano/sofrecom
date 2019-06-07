@@ -282,7 +282,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var i = 1;
             foreach (var item in response.Data.Items)
             {
-                var sumPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.RealPercentage).Sum();
+                var sumPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.AllocationPercentage).Sum();
 
                 if (item.Facturability > 0)
                 {
@@ -293,7 +293,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     item.HoursLoadedSuccesfully = true;
                 }
 
-                var tigerItem = new TigerReportItem(item.EmployeeNumber, item.RealPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
+                var tigerItem = new TigerReportItem(item.EmployeeNumber, item.AllocationPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
                 i++;
 
                 tigerReport.Add(tigerItem);
