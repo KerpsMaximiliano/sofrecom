@@ -16,7 +16,6 @@ using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
-using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
@@ -260,11 +259,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     {
                         var lastHistory = x.Histories.OrderByDescending(s => s.CreatedDate).FirstOrDefault();
 
-                        if (lastHistory != null) item.LastUpdate = lastHistory.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+                        if (lastHistory != null) item.LastUpdate = lastHistory.CreatedDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
                     }
                     else
                     {
-                        item.LastUpdate = x.CreationDate.ToString("dd/MM/yyyy hh:mm");
+                        item.LastUpdate = x.CreationDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
                     }
 
                     SetBankAndManager(x.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameDicc);
@@ -293,11 +292,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                             {
                                 var lastHistory = advancement.Histories.OrderByDescending(s => s.CreatedDate).FirstOrDefault();
 
-                                if (lastHistory != null) item.LastUpdate = lastHistory.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+                                if (lastHistory != null) item.LastUpdate = lastHistory.CreatedDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
                             }
                             else
                             {
-                                item.LastUpdate = advancement.CreationDate.ToString("dd/MM/yyyy hh:mm");
+                                item.LastUpdate = advancement.CreationDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
                             }
 
                             SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameDicc);

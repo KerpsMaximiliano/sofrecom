@@ -8,7 +8,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
     {
         public WorkflowHistoryModel(WorkflowHistory history)
         {
-            CreatedDate = history.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+            CreatedDate = history.CreatedDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
             UserName = history.UserName;
 
             StatusFrom = history.StatusFrom?.Name;

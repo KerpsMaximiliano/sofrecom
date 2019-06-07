@@ -364,11 +364,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                             {
                                 var lastHistory = refund.Histories.OrderByDescending(x => x.CreatedDate).FirstOrDefault();
 
-                                if (lastHistory != null) mapped.LastUpdate = lastHistory.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+                                if (lastHistory != null) mapped.LastUpdate = lastHistory.CreatedDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
                             }
                             else
                             {
-                                mapped.LastUpdate = refund.CreationDate.ToString("dd/MM/yyyy hh:mm");
+                                mapped.LastUpdate = refund.CreationDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
                             }
 
                             if (!employeeDicc.ContainsKey(refund.UserApplicant.Email))
@@ -432,14 +432,21 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 var item = mapper.Map<Refund, RefundListResultModel>(refund);
 
-                var advancementsAndRefunds = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
+                if (refund.AdvancementRefunds.Any())
+                {
+                    var advancementsAndRefunds = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
 
-                var diff = advancementsAndRefunds.Item2.Sum(x => x.Ammount) - advancementsAndRefunds.Item1.Sum(x => x.TotalAmmount);
+                    var diff = advancementsAndRefunds.Item2.Sum(x => x.Ammount) - advancementsAndRefunds.Item1.Sum(x => x.TotalAmmount);
 
-                if (diff > 0)
-                    item.CompanyRefund = diff;
+                    if (diff > 0)
+                        item.CompanyRefund = diff;
+                    else
+                        item.UserRefund = diff * -1;
+                }
                 else
-                    item.UserRefund = diff * -1;
+                {
+                    item.CompanyRefund = refund.Details.Sum(x => x.Ammount);
+                }
 
                 item.IsCreditCard = refund.CreditCardId > 0;
 
@@ -447,11 +454,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 {
                     var lastHistory = refund.Histories.OrderByDescending(x => x.CreatedDate).FirstOrDefault();
 
-                    if (lastHistory != null) item.LastUpdate = lastHistory.CreatedDate.ToString("dd/MM/yyyy hh:mm");
+                    if (lastHistory != null) item.LastUpdate = lastHistory.CreatedDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
                 }
                 else
                 {
-                    item.LastUpdate = refund.CreationDate.ToString("dd/MM/yyyy hh:mm");
+                    item.LastUpdate = refund.CreationDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
                 }
 
                 if (!employeeDicc.ContainsKey(refund.UserApplicant.Email))
