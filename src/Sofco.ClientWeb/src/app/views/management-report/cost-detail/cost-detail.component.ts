@@ -46,13 +46,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     editItemMonto = new FormControl();
     editItemAdjustment = new FormControl();
     canEdit: boolean = false;
-    profiles: any[] = new Array()
+    profiles: any[] = new Array();
     profileId: number;
     otherResourceId: number;
-    users: any[] = new Array()
-    userId: number
-    showUsers: boolean = false
-    showProfiles: boolean = false
+    users: any[] = new Array();
+    userId: number;
+    showUsers: boolean = false;
+    showProfiles: boolean = false;
+    readOnly: boolean = false;
 
     otherSelected: any
     userSelected: any
@@ -147,7 +148,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditItemModal(month, item) {
-
+        if(this.readOnly) return;
+        
         if (this.canEdit) {
             // if (item.typeName == 'Empleados' && !month.hasAlocation) {
             //     return false
@@ -676,6 +678,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditEvalProp(month) {
+        if(this.readOnly) return;
+        
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 2;
             this.openEvalPropModal.emit(month);

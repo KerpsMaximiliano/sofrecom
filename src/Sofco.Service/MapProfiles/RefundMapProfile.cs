@@ -13,7 +13,7 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(s => s.UserApplicantName, x => x.MapFrom(_ => _.UserApplicant.Name))
                 .ForMember(s => s.CurrencyName, x => x.MapFrom(_ => _.Currency.Text))
                 .ForMember(s => s.AdvancementSum, x => x.ResolveUsing(ResolveAdvancementSum))
-                .ForMember(s => s.CreationDate, x => x.MapFrom(_ => _.CreationDate.ToString("dd/MM/yyyy hh:mm")))
+                .ForMember(s => s.CreationDate, x => x.MapFrom(_ => _.CreationDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm")))
                 .ForMember(s => s.RefundItemTotal, x => x.ResolveUsing(ResolveRefundItemTotal))
                 .ForMember(s => s.WorkflowStatusType, x => x.ResolveUsing(_ => _.Status?.Type))
                 .ForMember(s => s.ManagerName, x => x.ResolveUsing(_ => _.Analytic?.Manager?.Name))

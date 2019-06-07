@@ -45,6 +45,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     editItemName = new FormControl('', [Validators.required, Validators.maxLength(250)]);
 
     fromMonth: Date = new Date()
+    readOnly: boolean = false;
 
     @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
     @Output() getData: EventEmitter<any> = new EventEmitter();
@@ -151,6 +152,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     canCreateHito() {
+        if (this.readOnly) return false;
+
         if (!this.menuService.hasFunctionality('SOLFA', 'NEW-HITO')) return false;
 
         return true;
@@ -338,6 +341,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     canDeleteHito(hito) {
+        if (this.readOnly) return false;
+
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
         return this.isEnabled(hitoMonth);
@@ -391,6 +396,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openEditItemModal(value, hito, index) {
+        if (this.readOnly) return false;
+
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
         if (!this.isEnabled(hitoMonth)) return;
@@ -406,6 +413,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openEditEvalProp(month){
+        if (this.readOnly) return false;
+        
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 1;
             this.openEvalPropModal.emit(month);

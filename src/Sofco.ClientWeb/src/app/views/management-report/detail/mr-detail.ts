@@ -7,6 +7,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DatesService } from "app/services/common/month.service";
+import { AnalyticStatus } from "app/models/enums/analyticStatus";
 
 
 @Component({
@@ -37,8 +38,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     ReportStartDate: Date;
     ReportEndDate: Date;
-    ReportStartDateError: boolean = false
-    ReportEndDateError: boolean = false
+    ReportStartDateError: boolean = false;
+    ReportEndDateError: boolean = false;
+    readOnly: boolean = false;
     ManagementReportId: number;
 
     @ViewChild("marginTracking") marginTracking;
@@ -111,6 +113,10 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
 
             this.billing.init(this.serviceId);
+            this.billing.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
+            this.detailCost.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
+            this.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
+
             // this.marginTracking.init(this.startDate)
 
             this.messageService.closeLoading();
@@ -153,7 +159,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             year: this.selectedYear
         }
 
-        this.costDetailMonth.open(data);
+        this.costDetailMonth.open(data, this.readOnly);
     }
 
     updateDetailCost() {
@@ -303,6 +309,4 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         
         this.setDate(dateSetting);  
     }
-    
-
 }
