@@ -25,16 +25,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getEmployeesSubscrip: Subscription
 
-    @ViewChild('costDetailMonthModal') costDetailMonthModal;
-    public costDetailMonthModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "managementReport.costDetailMonth",
-        "costDetailMonthModal",
-        true,
-        true,
-        "ACTIONS.save",
-        "ACTIONS.cancel"
-    );
-
     totalProvisioned: number = 0;
     totalProvisionedAux: number;
     totalCosts: number = 0;
@@ -61,8 +51,19 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     monthYear: Date;
     canSave: boolean = false;
     userSelected: any
+    monthDisplay: string
 
     isReadOnly: boolean
+    
+    @ViewChild('costDetailMonthModal') costDetailMonthModal;
+    public costDetailMonthModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "managementReport.costDetailMonth",
+        "costDetailMonthModal",
+        true,
+        true,
+        "ACTIONS.save",
+        "ACTIONS.cancel"
+    );
 
     constructor(public i18nService: I18nService,
         private messageService: MessageService,
@@ -159,9 +160,16 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         }
     }
 
+    deleteResource(index, item) {
+
+        //Si el item no esta en base de datos solo lo borro del array
+        if (item.id == 0) {
+            this.resources.splice(index, 1);
+        }
+    }
+
     deleteExpense(index, item) {
 
-        console.log(item)
         //Si el item no esta en base de datos solo lo borro del array
         if (item.id == 0) {
             this.expenses.splice(index, 1);
@@ -181,6 +189,8 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     open(data) {
         this.messageService.showLoading()
         this.expenses = [];
+       
+        this.monthDisplay = `${data.monthDesc} ${data.year}` 
 
         this.isReadOnly = !data.isCdg;
         this.AnalyticId = data.AnalyticId;
