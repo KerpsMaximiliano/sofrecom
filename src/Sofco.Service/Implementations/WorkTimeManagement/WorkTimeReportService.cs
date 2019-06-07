@@ -282,7 +282,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var i = 1;
             foreach (var item in response.Data.Items)
             {
-                var sumPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.AllocationPercentage).Sum();
+                var sumPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.RealPercentage).Sum();
 
                 if (item.Facturability > 0)
                 {
