@@ -51,7 +51,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     monthYear: Date;
     canSave: boolean = false;
     userSelected: any
-    monthDisplay: string
 
     isReadOnly: boolean
     
@@ -190,7 +189,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.messageService.showLoading()
         this.expenses = [];
        
-        this.monthDisplay = `${data.monthDesc} ${data.year}` 
+        this.costDetailMonthModal.otherTitle = `${data.monthDesc} ${data.year}`
 
         this.isReadOnly = readOnly || !data.isCdg;
         this.AnalyticId = data.AnalyticId;
@@ -261,6 +260,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     }
 
     resourceChange(resource) {
+        resource.modified = true
         resource.total = resource.salary + resource.charges;
 
         this.calculateTotalCosts();
