@@ -57,8 +57,8 @@
         </div>
     </div>
 
-    <div class="row m-t-xs" *ngFor="let resource of resources">
-        <div class="col-sm-6">
+    <div class="row m-t-xs" *ngFor="let resource of resources; let i = index">
+        <div class="col-sm-5">
             <span class="text-danger" *ngIf="!resource.hasAlocation"><strong>* </strong></span>
             <span>{{ resource.name }}</span>   
         </div>
@@ -72,6 +72,10 @@
         </div>
         <div class="col-sm-2">
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
+        </div>
+        <div class="col-sm-1" *ngIf="resource.id == 0">
+            <button class="btn btn-danger btn-xs" (click)="deleteResource(i, resource)" *ngIf="!isReadOnly"><i
+                    class="fa fa-trash"></i></button>
         </div>
     </div>
     <br>
