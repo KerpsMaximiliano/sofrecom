@@ -96,8 +96,15 @@ namespace Sofco.Service.Crm.Translators
                             }
                             break;
                         case TypeCode.DateTime:
-                            propertyInfo.SetValue(item, DateTime.Parse(stringValue), null);
+                        {
+                            propertyInfo.SetValue(item,
+                                string.IsNullOrWhiteSpace(stringValue)
+                                    ? DateTime.MinValue
+                                    : DateTime.Parse(stringValue), null);
+
                             break;
+                        }
+                       
                         case TypeCode.Boolean:
                             var boolValue = stringValue != string.Empty && bool.Parse(stringValue);
 

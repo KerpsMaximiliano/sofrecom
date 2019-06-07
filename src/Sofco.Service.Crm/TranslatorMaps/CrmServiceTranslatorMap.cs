@@ -12,8 +12,8 @@ namespace Sofco.Service.Crm.TranslatorMaps
         private const string Name = "as_name";
         private const string AccountId = "_as_customerid_value";
         private const string IndustryId = "_as_industryid_value";
-        private const string StartDate = "as_startdate_date";
-        private const string EndDate = "as_enddate_date";
+        private const string StartDate = "as_startdate";
+        private const string EndDate = "as_enddate";
         private const string ManagerId = "_as_projectmanagerid_value";
         private const string ServiceTypeId = "as_servicetype";
         private const string SolutionTypeId = "as_solutiontype";
@@ -30,8 +30,8 @@ namespace Sofco.Service.Crm.TranslatorMaps
                 {nameof(CrmService.AccountId), AccountId},
                 {nameof(CrmService.AccountName), AccountId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmService.Industry), IndustryId + TranslatorMapConstant.ODataFormattedValue},
-                {nameof(CrmService.StartDate), StartDate},
-                {nameof(CrmService.EndDate), EndDate},
+                {nameof(CrmService.StartDate), StartDate + TranslatorMapConstant.ODataFormattedValue},
+                {nameof(CrmService.EndDate), EndDate + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmService.ManagerId), ManagerId},
                 {nameof(CrmService.Manager), ManagerId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmService.ServiceTypeId), ServiceTypeId},
