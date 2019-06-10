@@ -37,8 +37,9 @@ namespace Sofco.Framework.FileManager.WorkTime
             var sentHours = list.Sum(x => x.SentHours);
             var approvedHours = list.Sum(x => x.ApprovedHours);
             var rejectedHours = list.Sum(x => x.RejectHours);
+            var licenseHours = list.Sum(x => x.LicenseHours);
 
-            var total = draftHours + sentHours + approvedHours + rejectedHours;
+            var total = draftHours + sentHours + approvedHours + rejectedHours + licenseHours;
 
             sheet1.Cells[$"B1"].Value = businessHours;
             sheet1.Cells[$"D1"].Value = draftHours;
