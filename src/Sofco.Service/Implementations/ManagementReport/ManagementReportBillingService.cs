@@ -65,6 +65,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                 return response;
             }
 
+            if (model.Type == ReportBillingUpdateDataType.BilledResources && !model.Resources.HasValue)
+                response.AddError(Resources.ManagementReport.ManagementReportBilling.ResourcesRequired);
+
+            if (model.Type == ReportBillingUpdateDataType.EvalPropDifference && !model.EvalPropDifference.HasValue)
+                response.AddError(Resources.ManagementReport.ManagementReportBilling.EvalPropDifferenceRequired);
+
+            if (response.HasErrors()) return response;
+
             try
             {
                 if (model.Type == ReportBillingUpdateDataType.Comments)

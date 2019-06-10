@@ -161,16 +161,28 @@ namespace Sofco.Service.Implementations.ManagementReport
                 monthHeader.MonthYear = date;
 
                 var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
-
-                if (costDetailMonth != null)
-                    monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
-
+         
                 var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
 
                 if (billingMonth != null)
                 {
                     monthHeader.ValueEvalProp = billingMonth.EvalPropBillingValue;
                     monthHeader.BillingMonthId = billingMonth.Id;
+                    monthHeader.EvalPropDifference = billingMonth.EvalPropDifference;
+                    monthHeader.Comments = billingMonth.Comments;
+
+                    if (billingMonth.BilledResources > 0)
+                        monthHeader.ResourceQuantity = billingMonth.BilledResources;
+                    else
+                    {
+                        if (costDetailMonth != null)
+                            monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
+                    }
+                }
+                else
+                {
+                    if (costDetailMonth != null)
+                        monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
                 }
 
                 response.Data.MonthsHeader.Add(monthHeader);

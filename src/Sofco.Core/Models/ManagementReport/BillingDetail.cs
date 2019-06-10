@@ -42,6 +42,10 @@ namespace Sofco.Core.Models.ManagementReport
         public int BillingMonthId { get; set; }
 
         public DateTime MonthYear { get; set; }
+
+        public decimal EvalPropDifference { get; set; }
+
+        public string Comments { get; set; }
     }
 
     public class BillingTotal

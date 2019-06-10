@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Sofco.Service.Crm.TranslatorMaps.Interfaces;
 using Sofco.Service.Crm.Translators.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Sofco.Service.Crm.Translators
 {
@@ -88,39 +87,57 @@ namespace Sofco.Service.Crm.Translators
                         case TypeCode.Object:
                             if (propertyType == typeof(Guid) || propertyType == typeof(Guid?))
                             {
-                                var guidValue = value != null 
+                                var guidValue = value != null
                                                 && stringValue != string.Empty
-                                    ? Guid.Parse(value.ToString()) 
+                                    ? Guid.Parse(value.ToString())
                                     : Guid.Empty;
 
                                 propertyInfo.SetValue(item, guidValue, null);
                             }
                             break;
                         case TypeCode.DateTime:
-                        {
-                            if (string.IsNullOrWhiteSpace(stringValue))
                             {
-                                propertyInfo.SetValue(item, DateTime.MinValue, null);
-                            }
-                            else
-                            {
-                                var split = stringValue.Split('/');
-
-                                if(split.Length != 3)
+                                if (string.IsNullOrWhiteSpace(stringValue))
+                                {
                                     propertyInfo.SetValue(item, DateTime.MinValue, null);
+                                }
                                 else
                                 {
-                                    var day = Convert.ToInt32(split[0]);
-                                    var month = Convert.ToInt32(split[1]);
-                                    var year = Convert.ToInt32(split[2]);
+                                    if (stringValue.Contains("/"))
+                                    {
+                                        var split = stringValue.Split('/');
 
-                                    propertyInfo.SetValue(item, new DateTime(year, month, day), null);
+                                        if (split.Length != 3)
+                                            propertyInfo.SetValue(item, DateTime.MinValue, null);
+                                        else
+                                        {
+                                            var day = Convert.ToInt32(split[0]);
+                                            var month = Convert.ToInt32(split[1]);
+                                            var year = Convert.ToInt32(split[2]);
+
+                                            propertyInfo.SetValue(item, new DateTime(year, month, day), null);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var split = stringValue.Split('-');
+
+                                        if (split.Length != 3)
+                                            propertyInfo.SetValue(item, DateTime.MinValue, null);
+                                        else
+                                        {
+                                            var day = Convert.ToInt32(split[2]);
+                                            var month = Convert.ToInt32(split[1]);
+                                            var year = Convert.ToInt32(split[0]);
+
+                                            propertyInfo.SetValue(item, new DateTime(year, month, day), null);
+                                        }
+                                    }
                                 }
+
+                                break;
                             }
-              
-                            break;
-                        }
-                       
+
                         case TypeCode.Boolean:
                             var boolValue = stringValue != string.Empty && bool.Parse(stringValue);
 
@@ -133,7 +150,7 @@ namespace Sofco.Service.Crm.Translators
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(string.Format(ErrorMapMessage, 
+                    throw new Exception(string.Format(ErrorMapMessage,
                         typeName, key, value, JsonConvert.SerializeObject(item),
                         ex.Message));
                 }
