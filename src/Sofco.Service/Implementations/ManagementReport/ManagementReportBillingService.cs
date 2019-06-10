@@ -52,5 +52,42 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             return response;
         }
+
+        public Response UpdateData(UpdateBillingDataModel model)
+        {
+            var response = new Response();
+
+            var billing = unitOfWork.ManagementReportBillingRepository.Get(model.Id);
+
+            if (billing == null)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReportBilling.NotFound);
+                return response;
+            }
+
+            try
+            {
+                if (model.Type == ReportBillingUpdateDataType.Comments)
+                    billing.Comments = model.Comments;
+
+                if (model.Type == ReportBillingUpdateDataType.BilledResources)
+                    billing.BilledResources = model.Resources.GetValueOrDefault();
+
+                if (model.Type == ReportBillingUpdateDataType.EvalPropDifference)
+                    billing.EvalPropDifference = model.EvalPropDifference.GetValueOrDefault();
+
+                unitOfWork.ManagementReportBillingRepository.Update(billing);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReportBilling.ValueUpdated);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -97,11 +98,26 @@ namespace Sofco.Service.Crm.Translators
                             break;
                         case TypeCode.DateTime:
                         {
-                            propertyInfo.SetValue(item,
-                                string.IsNullOrWhiteSpace(stringValue)
-                                    ? DateTime.MinValue
-                                    : DateTime.Parse(stringValue), null);
+                            if (string.IsNullOrWhiteSpace(stringValue))
+                            {
+                                propertyInfo.SetValue(item, DateTime.MinValue, null);
+                            }
+                            else
+                            {
+                                var split = stringValue.Split('/');
 
+                                if(split.Length != 3)
+                                    propertyInfo.SetValue(item, DateTime.MinValue, null);
+                                else
+                                {
+                                    var day = Convert.ToInt32(split[0]);
+                                    var month = Convert.ToInt32(split[1]);
+                                    var year = Convert.ToInt32(split[2]);
+
+                                    propertyInfo.SetValue(item, new DateTime(year, month, day), null);
+                                }
+                            }
+              
                             break;
                         }
                        
