@@ -98,6 +98,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     init(serviceId) {
 
+        this.messageService.showLoading();
         this.hitos = new Array();
         
         this.getBillingSubscrip = this.managementReportService.getBilling(serviceId).subscribe(response => {
@@ -138,6 +139,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             });
 
             this.sendDataToDetailView();
+            this.messageService.closeLoading();
         });
     }
 

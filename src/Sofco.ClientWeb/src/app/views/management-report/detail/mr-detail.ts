@@ -243,6 +243,10 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
     }
 
+    updateMarginTracking(){
+        this.billing.init(this.serviceId);
+    }
+
     getCostsData(costsModel){
         this.marginTracking.costDataLoaded = true;
         this.marginTracking.costsModel = costsModel;
