@@ -113,7 +113,7 @@ namespace Sofco.Service.Crm.Translators
                                         {
                                             var day = Convert.ToInt32(split[0]);
                                             var month = Convert.ToInt32(split[1]);
-                                            var year = Convert.ToInt32(split[2]);
+                                            var year = Convert.ToInt32(split[2].Split(' ')[0]);
 
                                             propertyInfo.SetValue(item, new DateTime(year, month, day), null);
                                         }
@@ -128,7 +128,7 @@ namespace Sofco.Service.Crm.Translators
                                         {
                                             var day = Convert.ToInt32(split[2]);
                                             var month = Convert.ToInt32(split[1]);
-                                            var year = Convert.ToInt32(split[0]);
+                                            var year = Convert.ToInt32(split[0].Split(' ')[0]);
 
                                             propertyInfo.SetValue(item, new DateTime(year, month, day), null);
                                         }
