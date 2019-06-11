@@ -61,11 +61,29 @@ namespace Sofco.Resources.ManagementReport {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReportBilling.evalPropDifferenceRequired.
+        /// </summary>
+        public static string EvalPropDifferenceRequired {
+            get {
+                return ResourceManager.GetString("EvalPropDifferenceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a managementReport/managementReportBilling.notFound.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReportBilling.resourcesRequired.
+        /// </summary>
+        public static string ResourcesRequired {
+            get {
+                return ResourceManager.GetString("ResourcesRequired", resourceCulture);
             }
         }
         

@@ -13,5 +13,11 @@ namespace Sofco.Domain.Models.ManagementReport
         public decimal EvalPropBillingValue { get; set; }
 
         public decimal EvalPropExpenseValue { get; set; }
+
+        public string Comments { get; set; }
+
+        public int BilledResources { get; set; }
+
+        public decimal EvalPropDifference { get; set; }
     }
 }

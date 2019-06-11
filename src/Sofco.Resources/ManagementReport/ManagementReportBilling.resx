@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EvalPropDifferenceRequired" xml:space="preserve">
+    <value>managementReport/managementReportBilling.evalPropDifferenceRequired</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>managementReport/managementReportBilling.notFound</value>
+  </data>
+  <data name="ResourcesRequired" xml:space="preserve">
+    <value>managementReport/managementReportBilling.resourcesRequired</value>
   </data>
   <data name="ValueUpdated" xml:space="preserve">
     <value>managementReport/managementReportBilling.valueUpdated</value>

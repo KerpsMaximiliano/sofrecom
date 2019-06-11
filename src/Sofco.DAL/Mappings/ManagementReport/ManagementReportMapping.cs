@@ -47,6 +47,7 @@ namespace Sofco.DAL.Mappings.ManagementReport
 
             // Billing
             builder.Entity<ManagementReportBilling>().HasKey(x => x.Id);
+            builder.Entity<ManagementReportBilling>().Property(x => x.Comments).HasMaxLength(2000);
             builder.Entity<ManagementReportBilling>().HasOne(x => x.ManagementReport).WithMany(x => x.Billings).HasForeignKey(x => x.ManagementReportId);
         }
     }
