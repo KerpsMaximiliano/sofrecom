@@ -103,41 +103,42 @@ namespace Sofco.Service.Crm.Translators
                                 }
                                 else
                                 {
-                                    if (stringValue.Contains("/") && !stringValue.Contains(" "))
+                                    if (DateTime.TryParse(stringValue, out DateTime dateValue))
                                     {
-                                        var split = stringValue.Split('/');
-
-                                        if (split.Length != 3)
-                                            propertyInfo.SetValue(item, DateTime.MinValue, null);
-                                        else
-                                        {
-                                            var day = Convert.ToInt32(split[0]);
-                                            var month = Convert.ToInt32(split[1]);
-                                            var year = Convert.ToInt32(split[2]);
-
-                                            propertyInfo.SetValue(item, new DateTime(year, month, day), null);
-                                        }
-                                    }
-                                    else if (stringValue.Contains("-") && !stringValue.Contains(" "))
-                                    {
-                                        var split = stringValue.Split('-');
-
-                                        if (split.Length != 3)
-                                            propertyInfo.SetValue(item, DateTime.MinValue, null);
-                                        else
-                                        {
-                                            var day = Convert.ToInt32(split[2]);
-                                            var month = Convert.ToInt32(split[1]);
-                                            var year = Convert.ToInt32(split[0]);
-
-                                            propertyInfo.SetValue(item, new DateTime(year, month, day), null);
-                                        }
+                                        propertyInfo.SetValue(item, dateValue, null);
                                     }
                                     else
                                     {
-                                        DateTime.TryParse(stringValue, out var date);
+                                        if (stringValue.Contains("/"))
+                                        {
+                                            var split = stringValue.Split('/');
 
-                                        propertyInfo.SetValue(item, date, null);
+                                            if (split.Length != 3)
+                                                propertyInfo.SetValue(item, DateTime.MinValue, null);
+                                            else
+                                            {
+                                                var day = Convert.ToInt32(split[1].Split(' ')[0]);
+                                                var month = Convert.ToInt32(split[0].Split(' ')[0]);
+                                                var year = Convert.ToInt32(split[2].Split(' ')[0]);
+
+                                                propertyInfo.SetValue(item, new DateTime(year, month, day), null);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var split = stringValue.Split('-');
+
+                                            if (split.Length != 3)
+                                                propertyInfo.SetValue(item, DateTime.MinValue, null);
+                                            else
+                                            {
+                                                var day = Convert.ToInt32(split[2].Split(' ')[0]);
+                                                var month = Convert.ToInt32(split[1].Split(' ')[0]);
+                                                var year = Convert.ToInt32(split[0].Split(' ')[0]);
+
+                                                propertyInfo.SetValue(item, new DateTime(year, month, day), null);
+                                            }
+                                        }
                                     }
                                 }
 

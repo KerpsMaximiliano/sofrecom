@@ -132,7 +132,11 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     init(serviceId) {
+<<<<<<< HEAD
+=======
+
         this.messageService.showLoading();
+>>>>>>> 3d996c84e10c5c27d91f70f3fa6a351c167a7773
         this.hitos = new Array();
         
         this.getBillingSubscrip = this.managementReportService.getBilling(serviceId).subscribe(response => {

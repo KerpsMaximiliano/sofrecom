@@ -141,7 +141,7 @@
                         <h3 class="month-label">{{ selectedMonthDesc }} {{ selectedYear }}</h3>
                     </div>
                 </div>
-                <div class="col-md-6 action-buttons">
+                <div class="col-md-8 action-buttons pull-right">
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector">Reporte Mensual <i
                             class="fa fa-file"></i></button>
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdgOrDirector">Cerrar <i
@@ -150,6 +150,8 @@
                             class="fa fa-paper-plane"></i></button>
                     <button class="btn btn-primary btn-sm" type="button" (click)="seeCostDetailMonth()"
                         *ngIf="isManager || isCdgOrDirector">Costo mensual <i class="fa fa-edit"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" (click)="updateMarginTracking()"
+                        *ngIf="isManager || isCdgOrDirector">Actualizar Margen <i class="fa fa-refresh"></i></button>
                 </div>
             </div>
 
