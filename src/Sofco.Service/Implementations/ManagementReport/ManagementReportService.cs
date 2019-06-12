@@ -161,7 +161,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 monthHeader.MonthYear = date;
 
                 var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
-         
+
                 var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
 
                 if (billingMonth != null)
@@ -302,7 +302,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthHeader.MonthYear = date;
                     monthHeader.Month = date.Month;
                     monthHeader.Year = date.Year;
-               
+
                     var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
 
                     if (billingMonth != null)
@@ -428,10 +428,15 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 var managementReport = unitOfWork.ManagementReportRepository.GetById(pDetailCost.ManagementReportId);
 
-                this.VerifyMonthsCostDetail(pDetailCost.MonthsHeader, managementReport);
+                var listMonths = this.VerifyAnalyticMonths(managementReport);
 
                 if (pDetailCost.CostEmployees.Count > 0)
+                {
+
+                    this.AddAnalyticMonthsToEmployees(pDetailCost.CostEmployees, listMonths);
+
                     this.InsertUpdateCostDetailResources(pDetailCost.CostEmployees, managementReport.CostDetails.ToList());
+                }
                 if (pDetailCost.FundedResources.Count > 0)
                     this.InsertUpdateCostDetailOther(pDetailCost.FundedResources, managementReport.CostDetails.ToList());
                 if (pDetailCost.CostProfiles.Count > 0)
@@ -958,12 +963,26 @@ namespace Sofco.Service.Implementations.ManagementReport
             return profilesResources;
         }
 
-        private void VerifyMonthsCostDetail(IList<MonthDetailCost> pMonths, Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
+        private List<MonthDetailCost> VerifyAnalyticMonths(Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport)
         {
-            // Verifico que todos los meses del reporte esten cargados en base de datos.
+            List<MonthDetailCost> MonthsAnalytic = new List<MonthDetailCost>();
             try
             {
-                foreach (var mounth in pMonths)
+                var analytic = unitOfWork.AnalyticRepository.GetById(pManagementReport.AnalyticId);
+                for (DateTime date = new DateTime(analytic.StartDateContract.Year, analytic.StartDateContract.Month, 1).Date; date.Date <= analytic.EndDateContract.Date; date = date.AddMonths(1))
+                {
+                    var month = new MonthDetailCost();
+                    month.Display = DatesHelper.GetDateShortDescription(date);
+                    month.MonthYear = date;
+                    month.Month = date.Month;
+                    month.Year = date.Year;
+
+                    MonthsAnalytic.Add(month);
+                }
+
+                // Verifico que todos los meses de la analitica esten cargados en base de datos.
+
+                foreach (var mounth in MonthsAnalytic)
                 {
                     var costDetailMonth = pManagementReport.CostDetails
                                                     .Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date)
@@ -980,6 +999,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 }
 
                 unitOfWork.Save();
+
+                return MonthsAnalytic;
             }
             catch (Exception ex)
             {
@@ -1125,6 +1146,25 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
+        private void AddAnalyticMonthsToEmployees(IList<CostResourceEmployee> pCostEmployees, List<MonthDetailCost> pMonthsAnalytic)
+        {
+
+
+            foreach (var resource in pCostEmployees)
+            {
+                //var monthsAfterReport = pMonthsAnalytic.Where(x => !resource.MonthsCost..Contains(x.MonthYear))
+                //.OrderBy(x => x.Name)
+                //.ToList();
+                // Obtengo los empleados del reporte que no estan en la analitica.
+
+                var monthsAfterReport = resource.MonthsCost
+                                                    .Select(x => x.MonthYear)
+                                                    .Except(pMonthsAnalytic.Select(x => x.MonthYear))
+                                                    .ToArray();
+
+            }
+        }
+
         private List<CostMonthOther> Translate(List<CostDetailOther> costDetailOthers)
         {
             return costDetailOthers
@@ -1157,6 +1197,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         .OrderBy(x => x.Name)
                         .ToList();
         }
+
 
     }
 }
