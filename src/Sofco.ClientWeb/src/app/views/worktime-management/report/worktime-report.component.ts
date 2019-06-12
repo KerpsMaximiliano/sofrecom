@@ -108,6 +108,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
         this.gridIsVisible = false;
         this.isMissingData = false;
+        this.isCompleted = false;
 
         if(this.searchModel.closeMonthId > 0 && this.searchModel.managerId == 0 && 
            this.searchModel.analyticId == 0 && this.searchModel.employeeId == 0){
