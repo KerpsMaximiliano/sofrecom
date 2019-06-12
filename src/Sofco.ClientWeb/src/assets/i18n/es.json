@@ -1101,7 +1101,7 @@
         "monthsReturn": "Mes de Devolución",
         "finalized": "Aprobados o Finalizados",
         "inProcess": "En proceso de aprobación",
-        "paymentPending": "Pendientes de deposito",
+        "paymentPending": "Pendientes de Control",
         "dateSince": "Fecha desde",
         "dateTo": "Fecha hasta",
         "searchParameters": "Parametros de busqueda",
