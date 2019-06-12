@@ -59,8 +59,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var endDate = parameters.EndDate;
 
+            var analyticIds = GetAnalyticIds(parameters.AnalyticId);
+
             var workTimes = unitOfWork.WorkTimeRepository
-                .GetByAnalyticIds(startDate, endDate, GetAnalyticIds(parameters.AnalyticId))
+                .GetByAnalyticIds(startDate, endDate, analyticIds)
                 .ToList();
 
             workTimes.AddRange(AddDelegatedData(parameters, workTimes));
@@ -71,6 +73,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var resources = GetResources(workTimes.ToList(), startDate, endDate);
 
+            var allResources = unitOfWork.AnalyticRepository.GetResources(analyticIds, startDate, endDate);
+
             var currentUser = userData.GetCurrentUser();
 
             worktimeData.ClearControlHoursReportKey(currentUser.UserName);
@@ -78,6 +82,35 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
             resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
+
+            foreach (var allResource in allResources)
+            {
+                foreach (var allocation in allResource.Allocations)
+                {
+                    if (resources.All(x => x.Id != $"{allocation.AnalyticId}-{allocation.EmployeeId}"))
+                    {
+                        var resume = workTimeResumeManager.GetResume(new List<WorkTimeCalendarModel>(), startDate, endDate);
+
+                        resources.Add(new WorkTimeControlResourceModel
+                        {
+                            Id = $"{allocation.AnalyticId}-{allocation.EmployeeId}",
+                            ApprovedHours = 0,
+                            BusinessHours = resume.BusinessHours * allocation.Percentage / 100,
+                            DraftHours = 0,
+                            EmployeeName = allResource.Name,
+                            EmployeeNumber = allResource.EmployeeNumber,
+                            LicenseHours = 0,
+                            PendingHours = 0,
+                            RejectHours = 0,
+                            SentHours = 0,
+                            DetailCount = 0,
+                            Details = new List<WorkTimeControlResourceDetailModel>(),
+                            AllocationPercentage = allocation.Percentage,
+                            Analytic = allocation.Analytic.Title
+                        });
+                    }
+                }
+            }
 
             result.Data = new WorkTimeControlModel
             {
@@ -128,16 +161,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var resume = workTimeResumeManager.GetResume(models, startDate, endDate);
 
-                var allocations = unitOfWork.AllocationRepository
-                    .GetAllocationsLiteBetweenDaysForWorkTimeControl(model.EmployeeId, startDate, endDate);
+                var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDaysForWorkTimeControl(model.EmployeeId, startDate, endDate);
 
                 var allocationAnalytic = allocations?.FirstOrDefault(s => s.AnalyticId == model.AnalyticId);
 
-                //if (allocationAnalytic == null) continue;
-
                 if (allocationAnalytic == null)
                 {
-                    //resource.BusinessHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
                     resource.AllocationPercentage = 0;
                 }
                 else

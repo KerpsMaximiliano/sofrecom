@@ -50,6 +50,21 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return query.Distinct().ToList();
         }
 
+        public IList<Employee> GetResources(IList<int> ids, DateTime startDate, DateTime endDate)
+        {
+            var dateFrom = new DateTime(startDate.Year, startDate.Month, 1);
+            var dateTo = new DateTime(endDate.Year, endDate.Month, 1);
+
+            var query = (from emp in context.Employees
+                    join allocation in context.Allocations on emp.Id equals allocation.EmployeeId
+                    where allocation.Percentage > 0 && ids.Contains(allocation.AnalyticId) && !emp.EndDate.HasValue &&
+                          (allocation.StartDate.Date == dateFrom.Date || allocation.StartDate.Date == dateTo.Date)
+                    select emp)
+                .Include(x => x.Allocations).ThenInclude(x => x.Analytic);
+
+            return query.Distinct().ToList();
+        }
+
         public Analytic GetLastAnalytic(int costCenterId)
         {
             return context.Analytics.Where(x => x.CostCenterId == costCenterId).OrderByDescending(x => x.TitleId).Include(x => x.CostCenter).FirstOrDefault();
