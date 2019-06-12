@@ -1165,7 +1165,8 @@
         "currencyExchange": "Cotización",
         "lastRefund": "Ultimo reintegro",
         "cashReturn": "Devolución en Efectivo",
-        "documentRevision": "Toda documentación queda sujeta a revisión de Compliance",
+        "documentRevision": "Toda documentación queda sujeta a revisión de Compliance.",
+        "documentRevision2": "RECUERDE PRESENTAR ORIGINALES DE LOS GASTOS JUNTO CON LA IMPRESIÓN DE ESTE FORMULARIO EN LA OFICINA DE FINANZAS",
         "bank": "Banco",
         "histories": {
             "createdDate": "Fecha Creación",
