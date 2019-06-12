@@ -10,6 +10,7 @@ import { AddCostCenterComponent } from "./cost-center/add/add-cost-center.compon
 import { EditCostCenterComponent } from "./cost-center/edit/edit-cost-center.component";
 import { AuthGuard } from "../../guards/auth.guard";
 import { AddCloseDateComponent } from "app/views/contracts/closeDates/add/closeDate-add.component";
+import { CurrencyExchangeComponent } from "./currency-exchange/currency-exchange";
 
 const CONTRACTS_ROUTER: Routes = [
     { path: "analytics",
@@ -32,6 +33,10 @@ const CONTRACTS_ROUTER: Routes = [
     },
 
     { path: "closeDate",  component: AddCloseDateComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CDADD" } },
+
+    { path: "currencyExchange",  component: CurrencyExchangeComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CURRENCY-EXCHANGE" } },
 ];
 
 export const ContractsRouter = RouterModule.forChild(CONTRACTS_ROUTER);
+
+

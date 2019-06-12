@@ -1,21 +1,24 @@
-﻿using Sofco.Core.DAL;
+﻿using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
+using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
+using Sofco.Core.Models.Common;
 using Sofco.Core.Models.ManagementReport;
+using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.ManagementReport;
 using Sofco.Domain.Crm;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sofco.Core.Services.Billing;
-using Sofco.Domain.Enums;
-using Sofco.Domain.Models.ManagementReport;
-using Sofco.Core.FileManager;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -27,12 +30,14 @@ namespace Sofco.Service.Implementations.ManagementReport
         private readonly IRoleManager roleManager;
         private readonly IUserData userData;
         private readonly IProjectData projectData;
+        private readonly AppSetting appSetting;
         private readonly IManagementReportFileManager managementReportFileManager;
 
         public ManagementReportService(IUnitOfWork unitOfWork,
             ILogMailer<ManagementReportService> logger,
             IUserData userData,
             IProjectData projectData,
+            IOptions<AppSetting> appSettingOptions,
             ISolfacService solfacService,
             IRoleManager roleManager,
             IManagementReportFileManager managementReportFileManager)
@@ -40,6 +45,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
+            this.appSetting = appSettingOptions.Value;
             this.projectData = projectData;
             this.roleManager = roleManager;
             this.solfacService = solfacService;
@@ -151,6 +157,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             var costDetails = unitOfWork.CostDetailRepository.GetByManagementReportAndDates(analytic.ManagementReport.Id, dates.Item1.Date, dates.Item2.Date);
             var billings = unitOfWork.ManagementReportBillingRepository.GetByManagementReportAndDates(analytic.ManagementReport.Id, dates.Item1.Date, dates.Item2.Date);
+            var currencyExchanges = unitOfWork.CurrencyExchangeRepository.Get(dates.Item1.Date, dates.Item2.Date);
 
             for (DateTime date = dates.Item1.Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
             {
@@ -161,8 +168,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                 monthHeader.MonthYear = date;
 
                 var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
-         
+
                 var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
+
+                var currencyExchange = currencyExchanges.Where(x => x.Date.Month == date.Month && x.Date.Year == date.Year);
 
                 if (billingMonth != null)
                 {
@@ -170,6 +179,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthHeader.BillingMonthId = billingMonth.Id;
                     monthHeader.EvalPropDifference = billingMonth.EvalPropDifference;
                     monthHeader.Comments = billingMonth.Comments;
+                    monthHeader.Exchanges = currencyExchange.Select(x => new CurrencyExchangeItemModel { CurrencyDesc = x.Currency.Text, Exchange = x.Exchange }).ToList();
 
                     if (billingMonth.BilledResources > 0)
                         monthHeader.ResourceQuantity = billingMonth.BilledResources;
@@ -207,6 +217,15 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var existHito = hitos.SingleOrDefault(x => x.ExternalHitoId == hito.Id);
 
+                        var currencyExchange = currencyExchanges.SingleOrDefault(x => x.Currency.CrmId == hito.MoneyId && x.Date.Month == hito.StartDate.Month && x.Date.Year == hito.StartDate.Year);
+
+                        var montoOriginalPesos = hito.BaseAmountOriginal;
+
+                        if (currencyExchange != null && currencyExchange?.CurrencyId != appSetting.CurrencyPesos)
+                        {
+                            montoOriginalPesos *= currencyExchange.Exchange;
+                        }
+
                         var billingRowItem = new BillingHitoItem
                         {
                             Description = hito.Name,
@@ -227,9 +246,16 @@ namespace Sofco.Service.Implementations.ManagementReport
                             MonthYear = new DateTime(hito.StartDate.Year, hito.StartDate.Month, 1),
                             Value = hito.Ammount,
                             OriginalValue = hito.AmountOriginal,
-                            OriginalValuePesos = hito.BaseAmountOriginal,
+                            OriginalValuePesos = montoOriginalPesos,
                             Status = hito.Status
                         };
+
+                        var montoPesos = hito.BaseAmount;
+
+                        if (currencyExchange != null && currencyExchange.CurrencyId != appSetting.CurrencyPesos)
+                        {
+                            montoPesos *= currencyExchange.Exchange;
+                        }
 
                         if (existHito != null)
                         {
@@ -241,12 +267,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                             }
                             else
                             {
-                                rowItem.ValuePesos = hito.BaseAmount;
+                                rowItem.ValuePesos = montoPesos;
                             }
                         }
                         else
                         {
-                            rowItem.ValuePesos = hito.BaseAmount;
+                            rowItem.ValuePesos = montoPesos;
                         }
 
                         if (hito.Status.Equals("A ser facturado"))
@@ -263,6 +289,26 @@ namespace Sofco.Service.Implementations.ManagementReport
                 foreach (var billingTotal in response.Data.Totals)
                 {
                     billingTotal.MonthValues = billingTotal.MonthValues.OrderBy(x => x.Year).ThenBy(x => x.Month).ToList();
+
+                    foreach (var monthValue in billingTotal.MonthValues)
+                    {
+                        var currencyExchange = currencyExchanges.SingleOrDefault(x => x.Currency.CrmId == billingTotal.CurrencyId && x.Date.Month == monthValue.Month && x.Date.Year == monthValue.Year);
+
+                        var header = response.Data.MonthsHeader.SingleOrDefault(x => x.Month == monthValue.Month && x.Year == monthValue.Year);
+
+                        if (header != null)
+                        {
+                            if (currencyExchange != null)
+                            {
+                                header.TotalBilling += (monthValue.Value * currencyExchange.Exchange);
+                            }
+                            else
+                            {
+                                header.TotalBilling += monthValue.Value;
+                            }
+                        }
+                    }
+
                 }
             }
 
@@ -302,7 +348,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthHeader.MonthYear = date;
                     monthHeader.Month = date.Month;
                     monthHeader.Year = date.Year;
-               
+
                     var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
 
                     if (billingMonth != null)

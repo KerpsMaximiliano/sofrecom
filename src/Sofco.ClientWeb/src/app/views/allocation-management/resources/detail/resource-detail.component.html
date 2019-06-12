@@ -126,7 +126,7 @@
                     <li class="active"><a data-toggle="tab" href="#tab-1"> {{'allocationManagement.resources.generalInfo' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-2"> {{'allocationManagement.resources.allocations' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-3"> {{'allocationManagement.resources.licenses' | translate }} </a></li>
-                    <li class="" *ngIf="model?.history.length > 0"><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
+                    <li class="" *ngIf="hasHistory()"><a data-toggle="tab" href="#tab-4"> {{'allocationManagement.resources.history' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-5"> {{ 'ADMIN.task.title' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-6"> {{ 'advancement.title' | translate }} </a></li>
                     <li class=""><a data-toggle="tab" href="#tab-7"> {{ 'refund.title' | translate }} </a></li>
@@ -241,7 +241,7 @@
                             </table>    
                         </div>
                     </div>
-                    <div id="tab-4" class="tab-pane" *ngIf="model?.history.length > 0">
+                    <div id="tab-4" class="tab-pane" *ngIf="hasHistory()">
                         <div class="panel-body">
                             <table class="table table-striped dataTable" role="grid" id="historyTable">
                                 <thead>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sofco.Domain.Models.Common;
 using Sofco.Domain.Utils;
 
 namespace Sofco.DAL.Mappings.Utils
@@ -23,6 +24,10 @@ namespace Sofco.DAL.Mappings.Utils
             builder.Entity<Currency>().HasKey(_ => _.Id);
             builder.Entity<Currency>().Property(_ => _.Text).HasMaxLength(15);
             builder.Entity<Currency>().Property(_ => _.CrmId).HasMaxLength(100);
+            builder.Entity<Currency>().HasMany(_ => _.CurrencyExchanges).WithOne(x => x.Currency).HasForeignKey(x => x.CurrencyId);
+
+            // Primary Key
+            builder.Entity<CurrencyExchange>().HasKey(_ => _.Id);
 
             // Primary Key
             builder.Entity<Solution>().HasKey(_ => _.Id);

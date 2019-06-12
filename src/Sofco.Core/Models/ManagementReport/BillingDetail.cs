@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Core.Models.Common;
 
 namespace Sofco.Core.Models.ManagementReport
 {
@@ -46,6 +47,10 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal EvalPropDifference { get; set; }
 
         public string Comments { get; set; }
+
+        public decimal TotalBilling { get; set; }
+
+        public IList<CurrencyExchangeItemModel> Exchanges { get; set; }
     }
 
     public class BillingTotal

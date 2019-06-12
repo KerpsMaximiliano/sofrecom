@@ -47,6 +47,10 @@ export class ManagementReportService {
   updateBilling(json) {
     return this.http.put<any>(`${this.baseUrl}/managementReportBillings`, json);
   }
+  
+  updateBillingData(json) {
+    return this.http.put<any>(`${this.baseUrl}/managementReportBillings/data`, json);
+  }
 
   getOtherResources(){
     return this.http.get<any>(`${this.baseUrl}/managementReport/otherResources`)

@@ -9,6 +9,7 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
 
 import { FormControl, Validators } from "@angular/forms";
+import { ReportBillingUpdateDataType } from "app/models/enums/ReportBillingUpdateDataType";
 
 @Component({
     selector: 'management-report-billing',
@@ -21,6 +22,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     postHitoSubscrip: Subscription;
     updateHitoSubscrip: Subscription;
     getHitoSubscrip: Subscription;
+    updateDataSubscrip: Subscription;
     
     months: any[] = new Array();
     hitos: any[] = new Array();
@@ -29,6 +31,12 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     totals: any[] = new Array();
 
     managerId: string;
+
+    billingDetail: any = {
+        exchanges: [],
+        currencies: [],
+        total: 0
+    };
 
     pendingHitoStatus: string = "Pendiente";
     billedHitoStatus: string = "Facturado";
@@ -70,6 +78,32 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    @ViewChild('editBillingDataModal') editBillingDataModal;
+    public editBillingDataModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Editar datos facturación",
+        "editBillingDataModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
+    @ViewChild('billingDetailModal') billingDetailModal;
+    public billingDetailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Detalle facturación mensual",
+        "billingDetailModal",
+        false,
+        true,
+        "",
+        "ACTIONS.close"
+    );
+
+    updateDataType: ReportBillingUpdateDataType;
+    evalPropDifference: number;
+    billingResourceQuantity: number;
+    billingComments: string;
+    monthSelected: any;
+
     columnsCount: number = 1;
 
     constructor(private managementReportService: ManagementReportService,
@@ -88,6 +122,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         if (this.postHitoSubscrip) this.postHitoSubscrip.unsubscribe();
         if (this.updateHitoSubscrip) this.updateHitoSubscrip.unsubscribe();
         if (this.getHitoSubscrip) this.getHitoSubscrip.unsubscribe();
+        if (this.updateDataSubscrip) this.updateDataSubscrip.unsubscribe();
     }
 
     getCurrencies() {
@@ -97,7 +132,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     init(serviceId) {
-
         this.hitos = new Array();
         
         this.getBillingSubscrip = this.managementReportService.getBilling(serviceId).subscribe(response => {
@@ -265,7 +299,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 monthValue.value -= hitoMonth.oldValue;
                 monthValue.value += hitoMonth.value;
             }
-        }
+        } 
 
         var json = {
             id: hito.id,
@@ -363,7 +397,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         else {
             cssClass += ' not-allowed'
         }
-        return cssClass
+        return cssClass;
     }
 
     getTotals(month, year) {
@@ -423,5 +457,76 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     setFromDate(date : Date){
         this.fromMonth = new Date(date.getFullYear(), date.getMonth() -2, 1)        
+    }
+
+    openResourceQuantity(month){
+        this.monthSelected = month;
+        this.updateDataType = ReportBillingUpdateDataType.BilledResources;
+        this.billingResourceQuantity = month.resourceQuantity;
+        this.editBillingDataModal.show();
+    }
+
+    openEvalPropDifferenceModal(month){
+        this.monthSelected = month;
+        this.updateDataType = ReportBillingUpdateDataType.EvalPropDifference;
+        this.evalPropDifference = month.evalPropDifference;
+        this.editBillingDataModal.show();
+    }
+
+    openCommentsModal(month){
+        this.monthSelected = month;
+        this.updateDataType = ReportBillingUpdateDataType.Comments;
+        this.billingComments = month.comments;
+        this.editBillingDataModal.show();
+    }
+
+    updateBillingData(){
+        var json = {
+            id: this.monthSelected.billingMonthId,
+            evalPropDifference: this.evalPropDifference,
+            resources: this.billingResourceQuantity,
+            comments: this.billingComments,
+            type: this.updateDataType
+        }
+ 
+        this.updateDataSubscrip = this.managementReportService.updateBillingData(json).subscribe(response => {
+            this.editBillingDataModal.hide();
+
+            if(this.updateDataType == ReportBillingUpdateDataType.Comments){
+                this.monthSelected.comments = this.billingComments;
+            }
+
+            if(this.updateDataType == ReportBillingUpdateDataType.BilledResources){
+                this.monthSelected.resourceQuantity = this.billingResourceQuantity;
+            }
+
+            if(this.updateDataType == ReportBillingUpdateDataType.EvalPropDifference){
+                this.monthSelected.evalPropDifference = this.evalPropDifference;
+            }
+
+            this.monthSelected = null;
+        },
+        error => this.editBillingDataModal.resetButtons());
+    }
+
+    seeBillingDetail(month){
+        var currencies = [];
+
+        this.totals.forEach(total => {
+
+            var totalMonth = total.monthValues.find(x => x.month == month.month && x.year == month.year);
+
+            if(totalMonth){
+                currencies.push({ currencyName: total.currencyName, value: totalMonth.value });
+            }
+        });
+
+        this.billingDetail = {
+            exchanges: month.exchanges,
+            currencies: currencies,
+            total: month.totalBilling
+        };
+
+        this.billingDetailModal.show();
     }
 }

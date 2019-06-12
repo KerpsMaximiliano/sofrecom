@@ -103,7 +103,7 @@ namespace Sofco.Service.Crm.Translators
                                 }
                                 else
                                 {
-                                    if (stringValue.Contains("/"))
+                                    if (stringValue.Contains("/") && !stringValue.Contains(" "))
                                     {
                                         var split = stringValue.Split('/');
 
@@ -118,7 +118,7 @@ namespace Sofco.Service.Crm.Translators
                                             propertyInfo.SetValue(item, new DateTime(year, month, day), null);
                                         }
                                     }
-                                    else
+                                    else if (stringValue.Contains("-") && !stringValue.Contains(" "))
                                     {
                                         var split = stringValue.Split('-');
 
@@ -132,6 +132,12 @@ namespace Sofco.Service.Crm.Translators
 
                                             propertyInfo.SetValue(item, new DateTime(year, month, day), null);
                                         }
+                                    }
+                                    else
+                                    {
+                                        DateTime.TryParse(stringValue, out var date);
+
+                                        propertyInfo.SetValue(item, date, null);
                                     }
                                 }
 
