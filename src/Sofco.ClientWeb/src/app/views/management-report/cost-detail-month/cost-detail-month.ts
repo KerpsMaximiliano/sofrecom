@@ -287,7 +287,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
         this.getEmployeesSubscrip = this.employeeService.getListItems().subscribe(data => {
             this.messageService.closeLoading();
-
             this.users = data;
         },
             () => {
@@ -303,13 +302,14 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
                 var costEmployee = {
                     id: 0,
                     costDetailId: 0,
-                    employeeId: this.userSelected,
+                    employeeId: this.userSelected.employeeNumber,
                     userId: this.userSelected.id,
                     name: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
                     salary: 0,
                     charges: 0,
                     total: 0,
-                    hasAlocation: false
+                    hasAlocation: false,
+                    new: true
                 }
 
                 this.resources.push(costEmployee)

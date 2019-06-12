@@ -73,7 +73,7 @@
         <div class="col-sm-2">
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
         </div>
-        <div class="col-sm-1" *ngIf="resource.id == 0">
+        <div class="col-sm-1" *ngIf="resource.new == true">
             <button class="btn btn-danger btn-xs" (click)="deleteResource(i, resource)" *ngIf="!isReadOnly"><i
                     class="fa fa-trash"></i></button>
         </div>
