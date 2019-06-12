@@ -167,6 +167,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MailSubjectResource.resx</DependentUpon>
     </Compile>
+    <Compile Update="ManagementReport\CurrencyExchange.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CurrencyExchange.resx</DependentUpon>
+    </Compile>
     <Compile Update="ManagementReport\ManagementReport.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -334,6 +339,10 @@
     <EmbeddedResource Update="Mails\MailSubjectResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MailSubjectResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ManagementReport\CurrencyExchange.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CurrencyExchange.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="ManagementReport\ManagementReport.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
