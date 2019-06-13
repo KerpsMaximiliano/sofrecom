@@ -69,7 +69,7 @@ namespace Sofco.Framework.Managers
 
             holidays.AddRange(holidayData.Get(endDate.Year, endDate.Month));
 
-            holidays = holidays.Where(x => x.Date >= startDate && x.Date <= endDate).ToList();
+            holidays = holidays.Where(x => x.Date >= startDate && x.Date <= endDate && x.Date.DayOfWeek != DayOfWeek.Saturday && x.Date.DayOfWeek != DayOfWeek.Sunday).ToList();
 
             if (holidays.Any())
             {

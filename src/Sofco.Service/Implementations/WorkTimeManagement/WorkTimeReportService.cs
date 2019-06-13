@@ -113,6 +113,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             Activity = allocation.Analytic.Activity?.Text,
                             Facturability = allocation.Employee.BillingPercentage,
                             HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId),
+                            HoursApproved = unitOfWork.WorkTimeRepository.GetTotalHoursApprovedBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId),
                         };
 
                         CalculateEmployeesAllocationResume(response, allocation);
@@ -271,7 +272,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (item.HoursMustLoad != 0)
                     {
-                        item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursLoaded * 100 / item.HoursMustLoad) / 100), MidpointRounding.AwayFromZero);
+                        item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad) / 100), MidpointRounding.AwayFromZero);
                     }
                 }
             }

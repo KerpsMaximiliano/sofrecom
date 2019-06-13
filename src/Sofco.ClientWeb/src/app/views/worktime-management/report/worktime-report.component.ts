@@ -108,6 +108,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
         this.gridIsVisible = false;
         this.isMissingData = false;
+        this.isCompleted = false;
 
         if(this.searchModel.closeMonthId > 0 && this.searchModel.managerId == 0 && 
            this.searchModel.analyticId == 0 && this.searchModel.employeeId == 0){
@@ -153,7 +154,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         var title = "Reporte Insumido vs Previsto";
 
         var options = { 

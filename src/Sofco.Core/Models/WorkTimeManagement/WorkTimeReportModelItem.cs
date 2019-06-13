@@ -40,6 +40,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public bool HoursLoadedSuccesfully { get; set; }
 
         public string Title { get; set; }
+
+        public decimal HoursApproved { get; set; }
     }
 
     public class WorkTimeReportModel
