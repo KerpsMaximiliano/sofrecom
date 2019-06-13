@@ -29,7 +29,7 @@ export class PurchaseOrderSearchComponent implements OnDestroy {
       if(this.suscription) this.suscription.unsubscribe();
     }
 
-    goToEdit(data) {
+    goToEdit(data) { 
         this.router.navigate([`/billing/purchaseOrders/${data.purchaseOrderId}`]);
     }
 
