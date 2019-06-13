@@ -92,7 +92,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-      //  this.fromMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 2, 1)
+        //  this.fromMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 2, 1)
         if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')) {
             this.canEdit = true
         }
@@ -119,8 +119,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (this.getOtherByMonthSuscrip) this.getOtherByMonthSuscrip.unsubscribe();
     }
 
-    setFromDate(date : Date){
-        this.fromMonth = new Date(date.getFullYear(), date.getMonth() -2, 1)        
+    setFromDate(date: Date) {
+        this.fromMonth = new Date(date.getFullYear(), date.getMonth() - 2, 1)
     }
 
     getCost() {
@@ -148,8 +148,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditItemModal(month, item) {
-        if(this.readOnly) return;
-        
+        if (this.readOnly) return;
+
         if (this.canEdit) {
             // if (item.typeName == 'Empleados' && !month.hasAlocation) {
             //     return false
@@ -232,13 +232,15 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                 for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
 
-                    // if (this.itemSelected.monthsCost[index].hasAlocation) {
-                    this.itemSelected.monthsCost[index].value = this.monthSelected.value;
-                    this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
-                    // }
-                    // else {
-                    //     this.itemSelected.monthsCost[index].value = 0
-                    // }
+                    if (this.itemSelected.monthsCost[index].hasAlocation) {
+                        this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+                        this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
+                    }
+                    else {
+                        this.itemSelected.monthsCost[index].value = 0
+                        this.itemSelected.monthsCost[index].originalValue = 0
+                        this.itemSelected.monthsCost[index].adjustment = null
+                    }
                 }
 
                 //Actualiza el sueldo
@@ -246,7 +248,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 //Guarda el empleado
                 var listAux = [];
                 listAux.push(this.itemSelected);
-                
+
                 this.save(listAux, [], [])
                 this.editItemModal.hide();
                 break;
@@ -398,9 +400,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 if (AjusteMensual.monthsCost[index].value > 0) {
                     newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
                 }
-                else{
+                else {
                     //Si el aumento es cero el salario nuevo es igual al salario anterior
-                    if (AjusteMensual.monthsCost[index].value == 0){
+                    if (AjusteMensual.monthsCost[index].value == 0) {
                         newSalary = employee.monthsCost[index].originalValue
                     }
                 }
@@ -678,8 +680,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditEvalProp(month) {
-        if(this.readOnly) return;
-        
+        if (this.readOnly) return;
+
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 2;
             this.openEvalPropModal.emit(month);
