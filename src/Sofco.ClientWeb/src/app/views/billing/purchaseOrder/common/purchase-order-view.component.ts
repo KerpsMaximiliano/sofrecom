@@ -254,6 +254,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
     createPurchaseOrderAdjustment(data): PurchaseOrderBalanceModel {
         const item = new PurchaseOrderBalanceModel();
         item.id = data.id;
+        item.purchaseOrderId = data.purchaseOrderId;
         item.number = data.number + this.adjustmentSuffix;
         item.title = data.title;
         item.clientExternalName = data.clientExternalName;
