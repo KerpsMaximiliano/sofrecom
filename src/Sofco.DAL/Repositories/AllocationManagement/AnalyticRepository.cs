@@ -40,12 +40,29 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> GetResources(int id, DateTime startDate, DateTime endDate)
         {
-            return context.Allocations.Where(x => x.AnalyticId == id && x.Percentage > 0 && !x.Employee.EndDate.HasValue && (x.StartDate.Date == startDate || x.StartDate.Date == endDate))
-                .Include(x => x.Employee)
-                .Select(x => x.Employee)
-                .Distinct()
-                .ToList()
-                .AsReadOnly();
+            var query = (from emp in context.Employees
+                join allocation in context.Allocations on emp.Id equals allocation.EmployeeId
+                where allocation.Percentage > 0 && allocation.AnalyticId == id && !emp.EndDate.HasValue &&
+                      (allocation.StartDate.Date == startDate || allocation.StartDate.Date == endDate)
+                select emp)
+                .Include(x => x.Allocations);
+                        
+            return query.Distinct().ToList();
+        }
+
+        public IList<Employee> GetResources(IList<int> ids, DateTime startDate, DateTime endDate)
+        {
+            var dateFrom = new DateTime(startDate.Year, startDate.Month, 1);
+            var dateTo = new DateTime(endDate.Year, endDate.Month, 1);
+
+            var query = (from emp in context.Employees
+                    join allocation in context.Allocations on emp.Id equals allocation.EmployeeId
+                    where allocation.Percentage > 0 && ids.Contains(allocation.AnalyticId) && !emp.EndDate.HasValue &&
+                          (allocation.StartDate.Date == dateFrom.Date || allocation.StartDate.Date == dateTo.Date)
+                    select emp)
+                .Include(x => x.Allocations).ThenInclude(x => x.Analytic);
+
+            return query.Distinct().ToList();
         }
 
         public Analytic GetLastAnalytic(int costCenterId)

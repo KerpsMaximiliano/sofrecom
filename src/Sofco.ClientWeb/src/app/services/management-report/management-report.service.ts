@@ -1,3 +1,4 @@
+import {map} from 'rxjs/operators';
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Service } from "app/services/common/service";
@@ -46,6 +47,10 @@ export class ManagementReportService {
   updateBilling(json) {
     return this.http.put<any>(`${this.baseUrl}/managementReportBillings`, json);
   }
+  
+  updateBillingData(json) {
+    return this.http.put<any>(`${this.baseUrl}/managementReportBillings/data`, json);
+  }
 
   getOtherResources(){
     return this.http.get<any>(`${this.baseUrl}/managementReport/otherResources`)
@@ -57,5 +62,14 @@ export class ManagementReportService {
 
   GetOtherByMonth(idType, idCostDetail){
     return this.http.get<any>(`${this.baseUrl}/managementReport/${idType}/otherResources/${idCostDetail}`)
+  }
+
+  ExportTracing(model){
+    return this.http.post(`${this.baseUrl}/managementReport/tracingReport`, model, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).pipe(map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    }));
   }
 }

@@ -39,7 +39,6 @@ export class RefundListComponent implements OnInit {
             
             if(this.menuService.userIsCompliance) {
                 this.gridFilter.stateIds.push(environment.pendingComplianceWorkflowStateId);
-                this.gridFilter.stateIds.push(environment.pendingComplianceDWorkflowStateId);
                 this.gridFilter.stateIds.push(environment.pendingComplianceDGWorkflowStateId);
             }
 

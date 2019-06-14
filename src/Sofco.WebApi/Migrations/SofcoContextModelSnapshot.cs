@@ -1306,6 +1306,9 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Comments")
                         .HasMaxLength(2000);
 
+                    b.Property<string>("CommentsForAdjustment")
+                        .HasMaxLength(2000);
+
                     b.Property<string>("Description")
                         .HasMaxLength(2000);
 
@@ -1624,6 +1627,25 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("SolfacHistories");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.Common.CurrencyExchange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CurrencyId");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<decimal>("Exchange");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.ToTable("CurrencyExchanges");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.Common.File", b =>
                 {
                     b.Property<int>("Id")
@@ -1871,7 +1893,14 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BilledResources");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(2000);
+
                     b.Property<decimal>("EvalPropBillingValue");
+
+                    b.Property<decimal>("EvalPropDifference");
 
                     b.Property<decimal>("EvalPropExpenseValue");
 
@@ -3103,6 +3132,14 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Common.CurrencyExchange", b =>
+                {
+                    b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
+                        .WithMany("CurrencyExchanges")
+                        .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

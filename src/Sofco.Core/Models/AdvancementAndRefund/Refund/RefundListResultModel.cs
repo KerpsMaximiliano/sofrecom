@@ -15,7 +15,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public string CurrencyName { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public string CreationDate { get; set; }
 
         public WorkflowStateType? WorkflowStatusType { get; set; }
 
@@ -26,5 +26,15 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public decimal AdvancementSum { get; set; }
 
         public string Bank { get; set; }
+
+        public decimal CompanyRefund { get; set; }
+
+        public bool IsCreditCard { get; set; }
+
+        public decimal CurrencyExchange { get; set; }
+
+        public string LastUpdate { get; set; }
+
+        public decimal UserRefund { get; set; }
     }
 }

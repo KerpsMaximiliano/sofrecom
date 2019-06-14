@@ -24,5 +24,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("data")]
+        public IActionResult PutData([FromBody] UpdateBillingDataModel model)
+        {
+            var response = managementReportBillingService.UpdateData(model);
+
+            return this.CreateResponse(response);
+        }
     }
 }

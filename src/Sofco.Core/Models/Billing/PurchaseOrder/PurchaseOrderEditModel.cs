@@ -30,6 +30,7 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
             Margin = domain.Margin;
             Comments = domain.Comments;
             Proposal = domain.Proposal;
+            CommentsForAdjustment = domain.CommentsForAdjustment;
 
             if (!string.IsNullOrWhiteSpace(domain.Proposal))
             {
@@ -61,6 +62,8 @@ namespace Sofco.Core.Models.Billing.PurchaseOrder
                     .ToList();
             }
         }
+
+        public string CommentsForAdjustment { get; set; }
 
         public string Title { get; set; }
 

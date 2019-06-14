@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
 using Sofco.WebApi.Extensions;
+using System.Collections.Generic;
 
 namespace Sofco.WebApi.Controllers.ManagementReport
 {
@@ -103,6 +104,17 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             var response = managementReportService.DeleteOtherResource(id);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpPost("tracingReport")]
+        public IActionResult Report([FromBody] TracingModel tracing)
+        {
+            var response = managementReportService.CreateTracingReport(tracing);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
         }
     }
 }

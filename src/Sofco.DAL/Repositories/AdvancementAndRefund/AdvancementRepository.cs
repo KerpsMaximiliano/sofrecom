@@ -59,6 +59,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.MonthsReturn)
+                .Include(x => x.Histories)
                 .Include(x => x.Status)
                     .ThenInclude(x => x.ActualTransitions)
                         .ThenInclude(x => x.WorkflowStateAccesses)

@@ -8,24 +8,38 @@
         <thead>
             <tr>
                 <th class="first-column"></th>
-                <th class="text-center" *ngFor="let month of months">{{ month.display }}</th>
+                <th class="text-center" *ngFor="let month of months | fromDateFilter: fromMonth;">{{ month.display }}</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let total of totals">
-                <td class="first-column text-ellipsis">Total Facturación {{ total.currencyName }}</td>
-                <td *ngFor="let month of total.monthValues"><label class="label"
-                        class="label label-primary">{{ month.value | amountFormat }}</label></td>
-            </tr>
             <tr>
-                <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
-                <td *ngFor="let month of months"><label class="label label-primary">{{ month.resourceQuantity }}</label>
+                <td class="first-column text-ellipsis">Total Facturación en pesos</td>
+                <td *ngFor="let month of months | fromDateFilter: fromMonth;" (click)="seeBillingDetail(month)">
+                    <label class="label label-primary" [ngClass]="pointer">{{ month.totalBilling | amountFormat }}</label>
                 </td>
             </tr> 
             <tr>
+                <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
+                <td *ngFor="let month of months | fromDateFilter: fromMonth;">
+                    <label class="label label-primary" [ngClass]="canEditCdg() ? 'pointer' : ''" (click)="openResourceQuantity(month)">{{ month.resourceQuantity }}</label>
+                </td>
+            </tr> 
+            <tr> 
                 <td class="first-column text-ellipsis"> EVALPROP</td>
-                <td *ngFor="let month of months">
+                <td *ngFor="let month of months | fromDateFilter: fromMonth;">
                     <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''" (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
+                </td>
+            </tr>
+            <tr> 
+                <td class="first-column text-ellipsis"> Diferencias de Facturación</td>
+                <td *ngFor="let month of months | fromDateFilter: fromMonth;">
+                    <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''" (click)="openEvalPropDifferenceModal(month)">{{ month.evalPropDifference  | amountFormat }}</label>
+                </td>
+            </tr>
+            <tr> 
+                <td class="first-column text-ellipsis"> Comentarios </td>
+                <td *ngFor="let month of months | fromDateFilter: fromMonth;" class="text-center">
+                    <button (click)="openCommentsModal(month)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
                 </td>
             </tr>
             <tr>
@@ -39,7 +53,7 @@
                     <i class="fa fa-2x fa-trash pointer" (click)="delete(hito)" *ngIf="canDeleteHito(hito)"></i>
                 </td>
 
-                <td *ngFor="let value of hito.values; let i = index">
+                <td *ngFor="let value of hito.values | fromDateFilter: fromMonth; let i = index">
                     <label *ngIf="value.value" 
                             class="form-control input-sm text-center" 
                             [ngClass]="resolveHitoLabel(value)"
@@ -134,4 +148,60 @@
             </div> 
         </div>
     </div>
+</ng2-modal>
+
+<ng2-modal [config]="editBillingDataModalConfig" #editBillingDataModal (accept)="updateBillingData()">
+    <div class="form-group" *ngIf="updateDataType == 2">
+        <label class="control-label">Monto diferencia</label>
+        <input class="form-control" type="number" decimalFormat [(ngModel)]="evalPropDifference">
+    </div> 
+
+    <div class="form-group" *ngIf="updateDataType == 3">
+        <label class="control-label">Recursos Facturados</label>
+        <input class="form-control" type="number" [(ngModel)]="billingResourceQuantity">
+    </div> 
+
+    <div class="form-group" *ngIf="updateDataType == 1">
+        <label class="control-label">Comentarios</label>
+        <textarea class="form-control" rows="10" [(ngModel)]="billingComments"></textarea>
+    </div> 
+</ng2-modal>
+
+<ng2-modal [config]="billingDetailModalConfig" #billingDetailModal [size]="'modal-lg'">
+    <div class="row">
+        <div class="col-md-7">
+            <table class="table table-striped dataTable table-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th class="text-center">Moneda</th>
+                        <th class="text-center">Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of billingDetail.currencies">
+                        <td class="text-center">{{ item.currencyName }}</td>
+                        <td class="text-center">{{ item.value | amountFormat }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-5">
+            <table class="table table-striped dataTable table-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th class="text-center">Moneda</th>
+                        <th class="text-center">Cotización</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of billingDetail.exchanges">
+                        <td class="text-center">{{ item.currencyDesc }}</td>
+                        <td class="text-center">{{ item.exchange | amountFormat }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <label class="m-t-md label label-primary totalBillingMonth">Total de Facturación: ${{ billingDetail.total | amountFormat }}</label>
 </ng2-modal>

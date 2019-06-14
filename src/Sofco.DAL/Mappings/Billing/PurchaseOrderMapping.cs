@@ -16,6 +16,7 @@ namespace Sofco.DAL.Mappings.Billing
             builder.Entity<PurchaseOrder>().Property(_ => _.FicheDeSignature).HasMaxLength(200);
             builder.Entity<PurchaseOrder>().Property(_ => _.PaymentForm).HasMaxLength(200);
             builder.Entity<PurchaseOrder>().Property(_ => _.Comments).HasMaxLength(2000);
+            builder.Entity<PurchaseOrder>().Property(_ => _.CommentsForAdjustment).HasMaxLength(2000);
             builder.Entity<PurchaseOrder>().Property(_ => _.Proposal).HasMaxLength(2000);
             builder.Entity<PurchaseOrder>().Property(_ => _.Title).HasMaxLength(1000);
 

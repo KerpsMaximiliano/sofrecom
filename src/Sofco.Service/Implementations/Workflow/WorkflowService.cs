@@ -305,7 +305,7 @@ namespace Sofco.Service.Implementations.Workflow
                 var history = (THistory)Activator.CreateInstance(typeof(THistory));
 
                 history.UserName = currentUser.Name;
-                history.CreatedDate = DateTime.UtcNow.Date;
+                history.CreatedDate = DateTime.UtcNow;
                 history.StatusFromId = transition.ActualWorkflowStateId;
                 history.StatusToId = entity.StatusId;
 
@@ -547,7 +547,7 @@ namespace Sofco.Service.Implementations.Workflow
 
             foreach (var transition in transitions)
             {
-                if (ValidateAccess(transition, currentUser, entity))
+              if (ValidateAccess(transition, currentUser, entity))
                 {
                     CheckConditionParameterCode(entity, transition);
 

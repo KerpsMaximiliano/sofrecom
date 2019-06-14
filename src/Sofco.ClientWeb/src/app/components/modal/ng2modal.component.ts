@@ -22,6 +22,7 @@ export class Ng2ModalComponent implements OnInit {
   @Output() delete = new EventEmitter<any>();
 
   @Input() size;
+  @Input() otherTitle: string = ""
 
   // @Input() isLoading: boolean = false;
   @Input() isSaveEnabled = true;

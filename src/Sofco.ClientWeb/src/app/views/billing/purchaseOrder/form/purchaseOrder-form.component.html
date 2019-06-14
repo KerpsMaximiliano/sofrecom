@@ -6,13 +6,12 @@
 
 <div class="form-group">
     <label class="control-label"> {{'billing.purchaseOrder.fields.analytic' | translate }} </label>
-
-    <ng-select [items]="analytics" [multiple]="true" [closeOnSelect]="false" bindValue="id" bindLabel="text" [(ngModel)]="model.analyticIds" (close)="searchOpportunities()"></ng-select>
+    <ng-select [disabled]="selectReadOnly" [items]="analytics" [multiple]="true" [closeOnSelect]="false" bindValue="id" bindLabel="text" [(ngModel)]="model.analyticIds" (close)="searchOpportunities()"></ng-select>
 </div>
 
 <div class="form-group">
     <label class="control-label"> {{'billing.purchaseOrder.fields.proposal' | translate }} </label>
-    <ng-select [items]="opportunities" [multiple]="true" [closeOnSelect]="false" bindValue="id" bindLabel="text" [(ngModel)]="model.proposalIds"></ng-select>
+    <ng-select [disabled]="selectReadOnly" [items]="opportunities" [multiple]="true" [closeOnSelect]="false" bindValue="id" bindLabel="text" [(ngModel)]="model.proposalIds"></ng-select>
 </div>
 
 <div class="form-group">
@@ -102,4 +101,9 @@
 <div class="form-group">
     <label class="control-label">{{'billing.purchaseOrder.fields.comments' | translate }}</label>
     <textarea id="comments" class="form-control" maxlength="2000" rows="6" [(ngModel)]="model.comments"></textarea>
+</div>
+
+<div class="form-group" *ngIf="model.commentsForAdjustment && model.commentsForAdjustment != ''">
+    <label class="control-label">Comentario de cierre por Ajuste</label>
+    <textarea id="comments" class="form-control" maxlength="2000" rows="6" [(ngModel)]="model.commentsForAdjustment" disabled></textarea>
 </div>

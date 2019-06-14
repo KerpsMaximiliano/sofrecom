@@ -113,6 +113,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             Activity = allocation.Analytic.Activity?.Text,
                             Facturability = allocation.Employee.BillingPercentage,
                             HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId),
+                            HoursApproved = unitOfWork.WorkTimeRepository.GetTotalHoursApprovedBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId),
                         };
 
                         CalculateEmployeesAllocationResume(response, allocation);
@@ -271,7 +272,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (item.HoursMustLoad != 0)
                     {
-                        item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursLoaded * 100 / item.HoursMustLoad) / 100), MidpointRounding.AwayFromZero);
+                        item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad) / 100), MidpointRounding.AwayFromZero);
                     }
                 }
             }
@@ -293,7 +294,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     item.HoursLoadedSuccesfully = true;
                 }
 
-                var tigerItem = new TigerReportItem(item.EmployeeNumber, item.RealPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
+                var tigerItem = new TigerReportItem(item.EmployeeNumber, item.AllocationPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
                 i++;
 
                 tigerReport.Add(tigerItem);

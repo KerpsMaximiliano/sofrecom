@@ -50,6 +50,7 @@
             <li [ngClass]="{active: activeRoute('costCenter')}" *ngIf="menuService.hasFunctionality('COSTC', 'QUERY')"><a [routerLink]="['/contracts/costCenter']">{{'contracts.costCenter.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('analytics')}" *ngIf="menuService.hasFunctionality('CONTR', 'QUERY')"><a [routerLink]="['/contracts/analytics']">{{'allocationManagement.analytics.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('closeDate')}" *ngIf="menuService.hasFunctionality('CONTR', 'CDADD')"><a [routerLink]="['/contracts/closeDate']">{{'rrhh.closeDate.title' | translate }}</a></li>
+            <li [ngClass]="{active: activeRoute('currencyExchange')}" *ngIf="menuService.hasFunctionality('CONTR', 'CURRENCY-EXCHANGE')"><a [routerLink]="['/contracts/currencyExchange']">Cotizaciones</a></li>
         </ul>
       </li> 
  
@@ -79,11 +80,11 @@
             <li [ngClass]="{active: activeRoute('licenses/views')}" *ngIf="menuService.hasFunctionality('CTRLI', 'LIC_VIEW_DELEGATE')"><a [routerLink]="['/rrhh/licenses/views/delegates']">{{'rrhh.license.delegate.viewTitle' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('workTimeApproval/delegate')}" *ngIf="menuService.hasFunctionality('ALLOC', 'TAPDE')"><a [routerLink]="['/allocationManagement/workTimeApproval/delegate']">{{'allocationManagement.workTimeApproval.delegate.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('endNotification')}" *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE_END_NOTIF')"><a [routerLink]="['/rrhh/endNotification']">{{'rrhh.endNotification.title' | translate }}</a></li>
-            <li [ngClass]="{active: activeRoute('prepaid/import')}"><a [routerLink]="['/rrhh/prepaid/import']">Importación Prepagas</a></li>
-            <li [ngClass]="{active: activeRoute('prepaid/verification')}"><a [routerLink]="['/rrhh/prepaid/verification']">Control Prepagas</a></li>
+            <li [ngClass]="{active: activeRoute('prepaid/import')}" *ngIf="menuService.hasFunctionality('ALLOC', 'PREPAID-IMPORT')"><a [routerLink]="['/rrhh/prepaid/import']">Importación Prepagas</a></li>
+            <li [ngClass]="{active: activeRoute('prepaid/verification')}" *ngIf="menuService.hasFunctionality('ALLOC', 'PREPAID-CONTROL')"><a [routerLink]="['/rrhh/prepaid/verification']">Control Prepagas</a></li>
         </ul>
       </li> 
-
+ 
       <!-- WorkTimeManagement-->
       <li [ngClass]="{active: activeRoute('workTimeManagement')}" *ngIf="menuService.hasWorkTimeManagement()">
         <a href="#"><i class="fa fa-file-text"></i> <span class="nav-label">{{'workTimeManagement.title' | translate }}</span> <span class="fa arrow"></span> </a>

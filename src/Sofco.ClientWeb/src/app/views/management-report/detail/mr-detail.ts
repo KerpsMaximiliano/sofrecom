@@ -7,6 +7,7 @@ import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DatesService } from "app/services/common/month.service";
+import { AnalyticStatus } from "app/models/enums/analyticStatus";
 
 
 @Component({
@@ -37,8 +38,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     ReportStartDate: Date;
     ReportEndDate: Date;
-    ReportStartDateError: boolean = false
-    ReportEndDateError: boolean = false
+    ReportStartDateError: boolean = false;
+    ReportEndDateError: boolean = false;
+    readOnly: boolean = false;
     ManagementReportId: number;
 
     @ViewChild("marginTracking") marginTracking;
@@ -111,6 +113,10 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
 
             this.billing.init(this.serviceId);
+            this.billing.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
+            this.detailCost.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
+            this.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
+
             // this.marginTracking.init(this.startDate)
 
             this.messageService.closeLoading();
@@ -149,10 +155,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             isCdg: this.menuService.userIsCdg,
             resources, totals, AnalyticId,
             month: this.selectedMonth, 
+            monthDesc: this.selectedMonthDesc,
             year: this.selectedYear
         }
 
-        this.costDetailMonth.open(data);
+        this.costDetailMonth.open(data, this.readOnly);
     }
 
     updateDetailCost() {
@@ -212,6 +219,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
           
                 this.getDetail()
                 this.detailCost.getCost()
+                
+                this.setStartDate(this.ReportStartDate, this.ReportEndDate)
 
                 this.editDateModal.hide();
             },
@@ -232,6 +241,10 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.marginTracking.billingDataLoaded = true;
         this.marginTracking.billingModel = billingModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
+    }
+
+    updateMarginTracking(){
+        this.billing.init(this.serviceId);
     }
 
     getCostsData(costsModel){
@@ -270,6 +283,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.selectedYear = dateSetting.year;
 
         this.marginTracking.setMarginTracking(this.selectedMonth, this.selectedYear);
+        this.detailCost.setFromDate(this.selectedDate)
+        this.billing.setFromDate(this.selectedDate)
     }
 
     addMonth(){
@@ -280,6 +295,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         }
 
         var dateSetting = this.datesService.getMonth(new Date(this.selectedYear, this.selectedMonth));
+        this.selectedDate = new Date(this.selectedYear, this.selectedMonth)
+
         this.setDate(dateSetting);  
     }
 
@@ -292,8 +309,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
         this.selectedMonth -= 2;
         var dateSetting = this.datesService.getMonth(new Date(this.selectedYear, this.selectedMonth));
+        this.selectedDate = new Date(this.selectedYear, this.selectedMonth)
+        
         this.setDate(dateSetting);  
     }
-    
-
 }

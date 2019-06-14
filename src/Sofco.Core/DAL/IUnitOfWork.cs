@@ -81,6 +81,7 @@ namespace Sofco.Core.DAL
         IUserDelegateRepository UserDelegateRepository { get; }
 
         IUserApproverRepository UserApproverRepository { get; }
+        ICurrencyExchangeRepository CurrencyExchangeRepository { get; }
 
         #endregion
 

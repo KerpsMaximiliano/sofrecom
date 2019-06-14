@@ -25,16 +25,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getEmployeesSubscrip: Subscription
 
-    @ViewChild('costDetailMonthModal') costDetailMonthModal;
-    public costDetailMonthModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "managementReport.costDetailMonth",
-        "costDetailMonthModal",
-        true,
-        true,
-        "ACTIONS.save",
-        "ACTIONS.cancel"
-    );
-
     totalProvisioned: number = 0;
     totalProvisionedAux: number;
     totalCosts: number = 0;
@@ -63,6 +53,16 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     userSelected: any
 
     isReadOnly: boolean
+    
+    @ViewChild('costDetailMonthModal') costDetailMonthModal;
+    public costDetailMonthModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "managementReport.costDetailMonth",
+        "costDetailMonthModal",
+        true,
+        true,
+        "ACTIONS.save",
+        "ACTIONS.cancel"
+    );
 
     constructor(public i18nService: I18nService,
         private messageService: MessageService,
@@ -159,9 +159,16 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         }
     }
 
+    deleteResource(index, item) {
+
+        //Si el item no esta en base de datos solo lo borro del array
+        if (item.id == 0) {
+            this.resources.splice(index, 1);
+        }
+    }
+
     deleteExpense(index, item) {
 
-        console.log(item)
         //Si el item no esta en base de datos solo lo borro del array
         if (item.id == 0) {
             this.expenses.splice(index, 1);
@@ -178,11 +185,13 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.calculateTotalCosts();
     }
 
-    open(data) {
+    open(data, readOnly) {
         this.messageService.showLoading()
         this.expenses = [];
+       
+        this.costDetailMonthModal.otherTitle = `${data.monthDesc} ${data.year}`
 
-        this.isReadOnly = !data.isCdg;
+        this.isReadOnly = readOnly || !data.isCdg;
         this.AnalyticId = data.AnalyticId;
         
         this.resources = data.resources.employees.filter( x=> x.hasAlocation == true || x.salary > 0 || x.charges > 0)
@@ -251,6 +260,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     }
 
     resourceChange(resource) {
+        resource.modified = true
         resource.total = resource.salary + resource.charges;
 
         this.calculateTotalCosts();
@@ -277,7 +287,6 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
         this.getEmployeesSubscrip = this.employeeService.getListItems().subscribe(data => {
             this.messageService.closeLoading();
-
             this.users = data;
         },
             () => {
@@ -293,13 +302,14 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
                 var costEmployee = {
                     id: 0,
                     costDetailId: 0,
-                    employeeId: this.userSelected,
+                    employeeId: this.userSelected.employeeNumber,
                     userId: this.userSelected.id,
                     name: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
                     salary: 0,
                     charges: 0,
                     total: 0,
-                    hasAlocation: false
+                    hasAlocation: false,
+                    new: true
                 }
 
                 this.resources.push(costEmployee)

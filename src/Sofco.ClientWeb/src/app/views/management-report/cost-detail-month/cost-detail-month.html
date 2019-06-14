@@ -1,10 +1,10 @@
 <ng2-modal [config]="costDetailMonthModalConfig" #costDetailMonthModal (accept)="save()" [size]="'modal-lg'"
-    [isSaveEnabled]="f.form.valid || canSave">
+    [isSaveEnabled]="(f.form.valid || canSave) && !isReadOnly">
 
     <div class="row">
         <div class="col-md-6 pointer" (dblclick)="totalProvisionedEditabled = !totalProvisionedEditabled">
             <div class="form-group row">
-                <label class="col-sm-6 col-form-label">Ventas:</label>
+                <label class="col-sm-6 col-form-label">Real:</label>
                 <div class="col-sm-6">
                     <label *ngIf="totalProvisionedEditabled == false" class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
                     <input *ngIf="totalProvisionedEditabled == true" (ngModelChange)="totalProvisionedChanged()" type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalProvisioned">
@@ -50,16 +50,16 @@
             <h4>Bruto</h4>
         </div>
         <div class="col-sm-2">
-            <h4>Prepaga</h4>
+            <h4>Cargas</h4>
         </div>
         <div class="col-sm-2">
             <h4>Total gral</h4>
         </div>
     </div>
 
-    <div class="row m-t-xs" *ngFor="let resource of resources">
-        <div class="col-sm-6">
-            <span class="text-danger" *ngIf="!resource.hasAlocation"><strong>* </strong></span>
+    <div class="row m-t-xs" *ngFor="let resource of resources; let i = index">
+        <div class="col-sm-5">
+            <span class="text-danger" *ngIf="!resource.hasAlocation || resource.modified"><strong>* </strong></span>
             <span>{{ resource.name }}</span>   
         </div>
         <div class="col-sm-2">
@@ -73,12 +73,16 @@
         <div class="col-sm-2">
             <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
         </div>
+        <div class="col-sm-1" *ngIf="resource.new == true">
+            <button class="btn btn-danger btn-xs" (click)="deleteResource(i, resource)" *ngIf="!isReadOnly"><i
+                    class="fa fa-trash"></i></button>
+        </div>
     </div>
     <br>
     <small class="text-danger">
-        <strong>* Sin porcentaje de asignacion en la analitica.</strong>
+        <strong>* Ajuste</strong>
     </small>  
-    <div class="row">
+    <div class="row" *ngIf="!isReadOnly">
         <br>
         <div class="col-md-6">
             <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected">
@@ -180,7 +184,7 @@
     </div>
 
     <br *ngIf="expenses.length > 0">
-    <div class="row" *ngIf="otherResources.length > 0">
+    <div class="row" *ngIf="otherResources.length > 0 && !isReadOnly">
         <div class="col-md-6">
             <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
                 (change)="otherResourceChange()">

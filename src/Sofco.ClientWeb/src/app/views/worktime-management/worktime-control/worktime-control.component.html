@@ -41,20 +41,28 @@
         <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
             <spinner></spinner>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6"> 
                     <dl class="dl-horizontal">
-                        <dt>{{ 'workTimeManagement.worktimeControl.businessHoursTotal' | translate }}</dt>
+                        <dt>Total horas a cargar</dt>
                         <dd>{{ model?.resume?.businessHours }} hs</dd>
-                        <dt>{{ 'workTimeManagement.worktimeControl.registeredHoursTotal' | translate }}</dt>
-                        <dd>{{ model?.resume?.hoursApproved }} hs</dd>
+
+                        <dt>{{ 'workTimeManagement.worktimeControl.businessHoursTotal' | translate }}</dt>
+                        <dd>{{ model?.resume?.total }} hs</dd>
+
+                        <dt>{{ 'workTimeManagement.worktimeControl.pendingHoursTotal' | translate }}</dt>
+                        <dd>{{ model?.resume?.hoursPending }} hs</dd>
                     </dl>
                 </div>
                 <div class="col-sm-6">
                     <dl class="dl-horizontal">
-                        <dt>{{ 'workTimeManagement.worktimeControl.licenseHoursTotal' | translate }}</dt>
-                        <dd>{{ model?.resume?.hoursWithLicense }} hs</dd>
-                        <dt>{{ 'workTimeManagement.worktimeControl.pendingHoursTotal' | translate }}</dt>
-                        <dd>{{ model?.resume?.hoursPending }} hs</dd>
+                        <dt>Horas en borrador</dt>
+                        <dd>{{ model?.resume?.hoursDraft }} hs</dd>
+
+                        <dt>Horas pendientes aprobacion</dt>
+                        <dd>{{ model?.resume?.hoursPendingApproved }} hs</dd>
+
+                        <dt>{{ 'workTimeManagement.worktimeControl.registeredHoursTotal' | translate }}</dt>
+                        <dd>{{ model?.resume?.hoursApproved }} hs</dd>
                     </dl>
                 </div>
             </div>
@@ -72,13 +80,12 @@
                         <th>{{'workTimeManagement.worktimeControl.analytic' | translate }}</th>
                         <th>{{'workTimeManagement.worktimeControl.employeeNumber' | translate }}</th>
                         <th class="column-lg">{{'workTimeManagement.worktimeControl.employeeName' | translate }}</th>
-                        <th>{{'workTimeManagement.worktimeControl.businessHours' | translate }}</th>
-                        <th>{{'workTimeManagement.worktimeControl.approvedHours' | translate }}</th>
-                        <th>{{'workTimeManagement.worktimeControl.licenseHours' | translate }}</th>
-                        <th>{{'workTimeManagement.worktimeControl.sentHours' | translate }}</th>
-                        <th>{{'workTimeManagement.worktimeControl.draftHours' | translate }}</th>
-                        <th>{{'workTimeManagement.worktimeControl.pendingHours' | translate }}</th>
-                        <th>{{'workTimeManagement.report.allocationPercentage' | translate }}</th>
+                        <th>A cargar</th>
+                        <th>Aprobadas</th>
+                        <th>Pend. Aprobación</th>
+                        <th>Borrador</th>
+                        <th>Faltante</th>
+                        <th>% Asignación</th>
                     </tr>
                 </thead>
                 <tbody *ngIf="model != null && model.resources != null">
@@ -92,7 +99,6 @@
                         <td class="column-lg">{{ item.employeeName }}</td>
                         <td>{{ item.businessHours }}</td>
                         <td>{{ item.approvedHours }}</td>
-                        <td>{{ item.licenseHours }}</td>
                         <td>{{ item.sentHours }}</td>
                         <td>{{ item.draftHours }}</td>
                         <td>{{ item.pendingHours }}</td>

@@ -1,0 +1,44 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Cotizaciones </h2>
+
+        <ol class="breadcrumb">
+            <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
+            <li> {{'contracts.title' | translate }} </li>
+            <li class="active"><strong> Cotizaciones </strong></li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row m-b-md">
+                        <div class="col-sm-12">
+                            <label class="control-label">{{'rrhh.closeDate.dateRange' | translate }}</label>
+                            <date-range-picker [datePickerOptionRange]="'previous'" #dateRangePicker (change)="dateChange()"></date-range-picker>
+                        </div> 
+                    </div>
+
+                    <div class="m-b-sm" *ngFor="let date of dates">
+                        <h3>{{ date.description }}</h3>
+
+                        <div class="row m-b-sm" *ngFor="let item of date.items">
+                            <div class="col-xs-5">
+                                <span>{{ item.currencyDesc }}</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <input type="text" class="form-control input-xs" [(ngModel)]="item.exchange" [disabled]="dateDisable(date.year, date.month)">
+                            </div>
+                            <div class="col-xs-3">
+                                <button type="button" class="btn btn-primary btn-sm" *ngIf="!dateDisable(date.year, date.month)" (click)="save(item, date)"><i class="fa fa-save"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

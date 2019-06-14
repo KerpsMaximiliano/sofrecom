@@ -37,12 +37,14 @@ import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directi
 import { AddCloseDateComponent } from 'app/views/contracts/closeDates/add/closeDate-add.component';
 import { CloseDateService } from 'app/services/human-resources/closeDate.service';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { CurrencyExchangeService } from 'app/services/management-report/currency-exchange.service';
+import { CurrencyExchangeComponent } from './currency-exchange/currency-exchange';
 
 @NgModule({
   declarations: [
     AnalyticSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent,
     EditAnalyticComponent, ViewAnalyticComponent, EditCostCenterComponent, AddAllocationComponent, ResourceByAnalyticComponent,
-    ResourceTimelineComponent, AddCloseDateComponent
+    ResourceTimelineComponent, AddCloseDateComponent, CurrencyExchangeComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +66,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ContractsRouter,
     NgSelectModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, CustomerService, ServiceService, CloseDateService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, CustomerService, ServiceService, CloseDateService, CurrencyExchangeService ],
   exports: [],
 })
 

@@ -45,15 +45,15 @@ export class RefundListGridComponent implements OnInit {
     initGrid(){
         const gridSelector = "#refundTable";
 
-        const columns = [0, 1, 2, 3, 4, 5, 6, 7];
+        const columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12];
 
         const params = {
             selector: gridSelector,
             columns: columns,
             title: this.i18nService.translateByKey('refund.listTitle'),
-            withExport: true,
-            columnDefs: [ {"aTargets": [6], "sType": "date-uk"} ],
-            currencyColumns: [4]
+            withExport: true, 
+            columnDefs: [ {"aTargets": [9, 10], "sType": "de_datetime"} ],
+            currencyColumns: [5, 6, 7, 8]
         }
 
         this.datatableService.destroy(gridSelector);

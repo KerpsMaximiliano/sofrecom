@@ -23,7 +23,9 @@ export class WfCashReturnConfirmComponent implements OnDestroy  {
     status: string;
     text: string;
 
-    constructor(private workflowService: WorkflowService, private messageService: MessageService){}
+    constructor(private workflowService: WorkflowService, private messageService: MessageService){
+
+    }
 
     ngOnDestroy(): void {
         if(this.postSubscrip) this.postSubscrip.unsubscribe();

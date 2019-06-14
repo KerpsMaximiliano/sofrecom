@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.ManagementReport
 {
@@ -35,6 +36,8 @@ namespace Sofco.Core.Models.ManagementReport
         public DateTime ManamementReportStartDate { get; set; }
 
         public DateTime ManamementReportEndDate { get; set; }
+
+        public AnalyticStatus AnalyticStatus { get; set; }
     }
 
     public class AmmountItem

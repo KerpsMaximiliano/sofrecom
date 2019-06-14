@@ -209,7 +209,7 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             //Tuple1: Reintegros
             //Tuple2: Adelantos
             if (!tuple.Item1.Any())
-            {
+            { 
                 return true;
             }
             else

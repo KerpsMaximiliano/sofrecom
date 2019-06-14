@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Sofco.DAL.Mappings.Admin;
 using Sofco.DAL.Mappings.AdvancementAndRefund;
 using Sofco.DAL.Mappings.AllocationManagement;
@@ -105,6 +106,7 @@ namespace Sofco.DAL
         public DbSet<File> Files { get; set; }
 
         public DbSet<UserApprover> UserApprovers { get; set; }
+        public DbSet<CurrencyExchange> CurrencyExchanges { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }

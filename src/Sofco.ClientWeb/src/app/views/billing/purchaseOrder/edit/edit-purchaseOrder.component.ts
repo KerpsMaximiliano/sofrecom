@@ -84,6 +84,13 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
                     $('input[type=file]').removeAttr('disabled');
                     this.form.isReadOnly = true; 
                 }
+
+                if(this.form.model.status == PurchaseOrderStatus.Closed){
+                    $('input').prop("disabled", true);
+                    $('textarea').prop("disabled", true);
+                    this.form.selectReadOnly = true; 
+                }
+
                 this.messageService.closeLoading();
             },
             () => {
@@ -241,5 +248,9 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
     canDelete(){
         return this.menuService.userIsCdg && (this.form.model.status == PurchaseOrderStatus.Draft || this.form.model.status == PurchaseOrderStatus.Reject);
+    }
+
+    canUpdate(){
+        return this.menuService.hasFunctionality('PUROR', 'ALTA') && this.form.model.status != PurchaseOrderStatus.Closed;
     }
 }  

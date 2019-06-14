@@ -22,6 +22,7 @@ export class PurchaseOrderAdjustmentComponent implements OnDestroy {
 
     public details: any[] = new Array();
     public id: number;
+    public comments: string;
 
     addSubscrip: Subscription;
 
@@ -39,7 +40,12 @@ export class PurchaseOrderAdjustmentComponent implements OnDestroy {
     }
 
     create(){
-        this.addSubscrip = this.purchaseOrderService.makeAdjustment(this.id, this.details).subscribe(
+        var model = {
+            comments: this.comments,
+            items: this.details
+        }
+
+        this.addSubscrip = this.purchaseOrderService.makeAdjustment(this.id, model).subscribe(
             () => {
                 this.adjustmentModal.hide();
                 setTimeout(() => {

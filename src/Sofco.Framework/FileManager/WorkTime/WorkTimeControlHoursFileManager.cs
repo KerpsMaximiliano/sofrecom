@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
@@ -31,23 +32,39 @@ namespace Sofco.Framework.FileManager.WorkTime
             var sheet1 = excel.Workbook.Worksheets[1];
             var sheet2 = excel.Workbook.Worksheets[2];
 
-            var j = 2;
-            var count = list.Count + 1;
+            var businessHours = list.Sum(x => x.BusinessHours);
+            var draftHours = list.Sum(x => x.DraftHours);
+            var sentHours = list.Sum(x => x.SentHours);
+            var approvedHours = list.Sum(x => x.ApprovedHours);
+            var rejectedHours = list.Sum(x => x.RejectHours);
+            var licenseHours = list.Sum(x => x.LicenseHours);
 
-            for (int i = 2; i <= count; i++)
+            var total = draftHours + sentHours + approvedHours + rejectedHours + licenseHours;
+
+            sheet1.Cells[$"B1"].Value = businessHours;
+            sheet1.Cells[$"D1"].Value = draftHours;
+            sheet1.Cells[$"D2"].Value = sentHours;
+            sheet1.Cells[$"D3"].Value = approvedHours;
+
+            sheet1.Cells[$"B2"].Value = total;
+            sheet1.Cells[$"B3"].Value = list.Sum(x => x.PendingHours);
+
+            var j = 2;
+            var count = list.Count + 5;
+
+            for (int i = 6; i <= count; i++)
             {
-                var item = list[i - 2];
+                var item = list[i - 6];
 
                 sheet1.Cells[$"A{i}"].Value = item.Analytic;
                 sheet1.Cells[$"B{i}"].Value = item.EmployeeNumber;
                 sheet1.Cells[$"C{i}"].Value = item.EmployeeName;
                 sheet1.Cells[$"D{i}"].Value = item.BusinessHours;
                 sheet1.Cells[$"E{i}"].Value = item.ApprovedHours;
-                sheet1.Cells[$"F{i}"].Value = item.LicenseHours;
-                sheet1.Cells[$"G{i}"].Value = item.SentHours;
-                sheet1.Cells[$"H{i}"].Value = item.DraftHours;
-                sheet1.Cells[$"I{i}"].Value = item.PendingHours;
-                sheet1.Cells[$"J{i}"].Value = item.AllocationPercentage;
+                sheet1.Cells[$"F{i}"].Value = item.SentHours;
+                sheet1.Cells[$"G{i}"].Value = item.DraftHours;
+                sheet1.Cells[$"H{i}"].Value = item.PendingHours;
+                sheet1.Cells[$"I{i}"].Value = item.AllocationPercentage;
 
                 foreach (var detail in item.Details)
                 {

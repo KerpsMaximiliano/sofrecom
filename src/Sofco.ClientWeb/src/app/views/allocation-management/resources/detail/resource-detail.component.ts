@@ -180,13 +180,16 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
 
     getCurrentAccount(){
         this.getRefundDataSubscrip = this.employeeService.getCurrentAccount(this.resourceId).subscribe(response => {
-            this.currentAccount = response.data;
 
-            var params = {
-                selector: "#currentAccountTable"
-            };
-    
-            this.dataTableService.initialize(params);
+            if(response.data && response.data.length > 0){
+                this.currentAccount = response.data;
+
+                var params = {
+                    selector: "#currentAccountTable"
+                };
+        
+                this.dataTableService.initialize(params);
+            }
         });
     }
 
@@ -283,6 +286,12 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             var params = { selector: "#profileHistoryTable" };
             this.dataTableService.initialize(params);
         });
+    }
+
+    hasHistory(){
+        if(this.model && this.model.history && this.model.history.length > 0) return true;
+
+        return false;
     }
 
     mapProfileHistories(data:any[]) {

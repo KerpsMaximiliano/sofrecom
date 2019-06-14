@@ -39,6 +39,8 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
 
     public filterByDates = false;
 
+    isSingleClick: Boolean = true;
+
     constructor(
         private router: Router,
         private service: InvoiceService,
@@ -82,8 +84,20 @@ export class InvoiceSearchComponent implements OnInit, OnDestroy {
       if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
     }
 
+    goToDetailInNewTab(invoice){
+        this.isSingleClick = false;
+        
+        window.open(`/#/billing/invoice/${invoice.id}/project/${invoice.projectId}`, "_blank");
+    }
+
     goToDetail(invoice) {
-        this.router.navigate([`/billing/invoice/${invoice.id}/project/${invoice.projectId}`]);
+        this.isSingleClick = true;
+
+        setTimeout(() => {
+            if(this.isSingleClick){
+                this.router.navigate([`/billing/invoice/${invoice.id}/project/${invoice.projectId}`]);
+            }
+        }, 250);
     }
 
     getUserOptions(){

@@ -93,8 +93,8 @@ namespace Sofco.Service.Implementations.Common
                 var closeDateBefore = closeDates[i - 1];
                 var closeDate = closeDates[i];
 
-                yield return new Option { Id = closeDate.Id, Text = $"{ closeDateBefore.Day+1 } { DatesHelper.GetMonthDesc(closeDateBefore.Month) } {closeDateBefore.Year} al " +
-                                                         $"{ closeDate.Day } { DatesHelper.GetMonthDesc(closeDate.Month) } {closeDateBefore.Year}" };
+                yield return new Option { Id = closeDateBefore.Id, Text = $"{ closeDate.Day+1 } { DatesHelper.GetMonthDesc(closeDate.Month) } {closeDate.Year} al " +
+                                                         $"{ closeDateBefore.Day } { DatesHelper.GetMonthDesc(closeDateBefore.Month) } {closeDateBefore.Year}" };
             }
         }
 

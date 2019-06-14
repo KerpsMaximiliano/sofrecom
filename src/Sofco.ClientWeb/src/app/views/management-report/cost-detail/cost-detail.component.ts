@@ -46,20 +46,21 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     editItemMonto = new FormControl();
     editItemAdjustment = new FormControl();
     canEdit: boolean = false;
-    profiles: any[] = new Array()
+    profiles: any[] = new Array();
     profileId: number;
     otherResourceId: number;
-    users: any[] = new Array()
-    userId: number
-    showUsers: boolean = false
-    showProfiles: boolean = false
+    users: any[] = new Array();
+    userId: number;
+    showUsers: boolean = false;
+    showProfiles: boolean = false;
+    readOnly: boolean = false;
 
     otherSelected: any
     userSelected: any
     profileSelected: any
     othersByMonth: any[] = new Array()
     today: Date = new Date()
-    fromMonth: Date
+    fromMonth: Date = new Date()
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
@@ -91,7 +92,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        this.fromMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 2, 1)
+        //  this.fromMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 2, 1)
         if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')) {
             this.canEdit = true
         }
@@ -116,6 +117,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (this.getProfileSuscrip) this.getProfileSuscrip.unsubscribe();
         if (this.getEmployeeSubscrip) this.getEmployeeSubscrip.unsubscribe();
         if (this.getOtherByMonthSuscrip) this.getOtherByMonthSuscrip.unsubscribe();
+    }
+
+    setFromDate(date: Date) {
+        this.fromMonth = new Date(date.getFullYear(), date.getMonth() - 2, 1)
     }
 
     getCost() {
@@ -143,6 +148,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditItemModal(month, item) {
+        if (this.readOnly) return;
 
         if (this.canEdit) {
             // if (item.typeName == 'Empleados' && !month.hasAlocation) {
@@ -226,13 +232,15 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                 for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
 
-                    // if (this.itemSelected.monthsCost[index].hasAlocation) {
-                    this.itemSelected.monthsCost[index].value = this.monthSelected.value;
-                    this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
-                    // }
-                    // else {
-                    //     this.itemSelected.monthsCost[index].value = 0
-                    // }
+                    if (this.itemSelected.monthsCost[index].hasAlocation) {
+                        this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+                        this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
+                    }
+                    else {
+                        this.itemSelected.monthsCost[index].value = 0
+                        this.itemSelected.monthsCost[index].originalValue = 0
+                        this.itemSelected.monthsCost[index].adjustment = null
+                    }
                 }
 
                 //Actualiza el sueldo
@@ -240,6 +248,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 //Guarda el empleado
                 var listAux = [];
                 listAux.push(this.itemSelected);
+
                 this.save(listAux, [], [])
                 this.editItemModal.hide();
                 break;
@@ -374,7 +383,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {
-
         //Verifico que exista la fila de ajustes
         var AjusteMensual = this.fundedResources.find(r => r.display == this.generalAdjustment);
         if (AjusteMensual) {
@@ -391,6 +399,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 //Verifico si tiene aumento en alguno
                 if (AjusteMensual.monthsCost[index].value > 0) {
                     newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
+                }
+                else {
+                    //Si el aumento es cero el salario nuevo es igual al salario anterior
+                    if (AjusteMensual.monthsCost[index].value == 0) {
+                        newSalary = employee.monthsCost[index].originalValue
+                    }
                 }
 
                 if (employee.monthsCost[index].value > 0) {
@@ -666,6 +680,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditEvalProp(month) {
+        if (this.readOnly) return;
+
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 2;
             this.openEvalPropModal.emit(month);

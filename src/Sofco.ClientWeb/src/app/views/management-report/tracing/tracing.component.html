@@ -2,6 +2,13 @@
     <i class="fa fa-warning"></i>
     Sin información disponible para esta tabla
 </div>
+<div class="pull-left static" *ngIf="AllMarginTracking.length > 0">
+    <button class="btn btn-white" (click)="excelExport()">
+        EXCEL
+    </button>
+</div>
+<br *ngIf="AllMarginTracking.length > 0">
+<br *ngIf="AllMarginTracking.length > 0">
 
 <div class="table-responsive billing-table" *ngIf="AllMarginTracking.length > 0">
     <table class="table dataTable" id="tracingTable" role="grid">
@@ -19,7 +26,7 @@
                 <th class="static first-column" scope="col">Margen a la Fecha (%)</th>
                 <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-total">
-                        {{ month.PercentageExpectedTotal | number:'1.0-2' }}
+                        {{ month.PercentageExpectedTotal || 0 | number:'1.0-2' }} 
                     </label>
                 </td>
             </tr>
@@ -27,7 +34,7 @@
                 <th class="static first-column text-ellipsis" scope="col">Margen a Terminacion (%)</th>
                 <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-cant-resources">
-                        {{ month.PercentageToEnd | number:'1.0-2'  }}
+                        {{ month.PercentageToEnd || 0 | number:'1.0-2'  }}
                     </label>
                 </td>
             </tr>

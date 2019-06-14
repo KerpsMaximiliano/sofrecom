@@ -65,9 +65,11 @@ export class WorkTimeControlComponent implements OnDestroy  {
     }
 
     setDefaultCloseMonth(){
-        const data = this.closeMonths;
-        data.sort((a, b) => b.id - a.id);
-        this.closeMonthId = data[0].id;
+        if(this.closeMonths && this.closeMonths.length > 0){
+            let data = this.closeMonths[0];
+            this.closeMonthId = data.id;
+        }
+
         this.getData();
     }
 
@@ -141,13 +143,11 @@ export class WorkTimeControlComponent implements OnDestroy  {
             "orderable": false,
             "data": null,
             "defaultContent": ''
-        }, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        }, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
         const params = {
             selector: this.gridSelector,
             columns: columns,
-            title: this.i18nService.translateByKey('workTimeManagement.worktimeControl.title'),
-            withExport: true,
             columnDefs: [
                 { "targets": [ 1 ], "visible": false, "searchable": false }
             ]

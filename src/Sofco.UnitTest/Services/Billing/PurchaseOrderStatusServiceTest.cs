@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Core.Config;
-using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers;
@@ -23,6 +20,9 @@ using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
 using Sofco.Framework.StatusHandlers.PurchaseOrder;
 using Sofco.Service.Implementations.Billing.PurchaseOrder;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.UnitTest.Services.Billing
 {
@@ -130,9 +130,11 @@ namespace Sofco.UnitTest.Services.Billing
         [Test]
         public void ShouldValidateAdjustment()
         {
-            var model = new List<PurchaseOrderAmmountDetailModel>
+            var model = new PurchaseOrderAdjustmentModel
             {
-                new PurchaseOrderAmmountDetailModel { Adjustment = 999999999 }
+                Items = new List<PurchaseOrderAmmountDetailModel> {
+                   new PurchaseOrderAmmountDetailModel { Adjustment = 999999999 }
+                }
             };
 
             var response = sut.MakeAdjustment(0, model);
@@ -147,9 +149,11 @@ namespace Sofco.UnitTest.Services.Billing
         [Test]
         public void ShouldCreateAdjustment()
         {
-            var model = new List<PurchaseOrderAmmountDetailModel>
+            var model = new PurchaseOrderAdjustmentModel
             {
-                new PurchaseOrderAmmountDetailModel { Adjustment = 99999999, CurrencyId = 1 }
+                Items = new List<PurchaseOrderAmmountDetailModel> {
+                    new PurchaseOrderAmmountDetailModel { Adjustment = 999999, CurrencyId = 1}
+                }
             };
 
             var response = sut.MakeAdjustment(1, model);

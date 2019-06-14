@@ -1,74 +1,62 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { DataTableService } from "app/services/common/datatable.service";
 import { DatesService } from "app/services/common/month.service";
-import { MessageService } from "app/services/common/message.service"
+import { ManagementReportService } from "app/services/management-report/management-report.service";
+import { MessageService } from "app/services/common/message.service";
+import { Subscription } from "rxjs";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'management-report-tracing',
     templateUrl: './tracing.component.html',
-    styleUrls:['./tracing.module.scss']
+    styleUrls: ['./tracing.module.scss']
 })
 export class TracingComponent implements OnInit, OnDestroy {
-    
+
+    getExcelSubscrip: Subscription;
+
     AllMarginTracking: any[] = new Array()
     analytic: string
-    
-    constructor(private dataTableService : DataTableService,
-                private datesService: DatesService,
-                private messageService: MessageService){
+
+
+    constructor(private datesService: DatesService,
+        private managementReportService: ManagementReportService,
+        private messageService: MessageService) {
 
     }
-    
+
     ngOnInit(): void {
-       
+
     }
     ngOnDestroy(): void {
-        
+        if (this.getExcelSubscrip) this.getExcelSubscrip.unsubscribe();
     }
 
-    open(marginTracking, analytic){
+    open(marginTracking, analytic) {
 
-        this.hideColumnsDataTable()
         this.analytic = analytic
-        let column = 0
-        let columns = []
         this.AllMarginTracking = marginTracking
-        
+
         this.AllMarginTracking.forEach(margin => {
-            var month =  this.datesService.getMonth(new Date(margin.Year, margin.Month))
-            margin.display = `${month.montShort} ${month.year} `
-            columns.push(column)
-            column++
-        })
-
-        columns.push(column)
-        this.initGrid(columns)     
+            var month = this.datesService.getMonth(margin.monthYear)
+            margin.display = `${month.montShort} ${month.year}`
+        })    
     }
 
-    initGrid(columns) {
+    excelExport() {
+        this.messageService.showLoading();
 
-        var title = `${this.analytic}`;
-
-        var params = {
-            selector: '#tracingTable',
-            columns: columns,
-            title: title,
-            withExport: true,
-            withOutSorting: true
+        var tracing = {
+            MonthsTracking: this.AllMarginTracking,
+            AnalyticName: this.analytic
         }
-
-        this.dataTableService.destroy(params.selector);
-        this.dataTableService.initialize(params);
+        this.managementReportService.ExportTracing(tracing).subscribe(
+            file => {
+                this.messageService.closeLoading();
+                FileSaver.saveAs(file, `Seguimiento.xlsx`);
+            },
+            err => {
+                this.messageService.closeLoading();
+            });
     }
 
-    hideColumnsDataTable(){
-
-        setTimeout(function(){
-            $('.dataTables_filter').hide()
-            $('.dataTables_paginate.paging_simple_numbers').hide()
-            $('.dataTables_info').hide()
-            $('.dataTables_length').hide()
-
-        }, 500);
-    }
 }

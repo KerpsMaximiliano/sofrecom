@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Models.Common;
 
 namespace Sofco.Domain.Utils
 {
@@ -15,5 +16,7 @@ namespace Sofco.Domain.Utils
         public ICollection<Advancement> Advancements { get; set; }
 
         public ICollection<Refund> Refunds { get; set; }
+
+        public ICollection<CurrencyExchange> CurrencyExchanges { get; set; }
     }
 }

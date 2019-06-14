@@ -41,9 +41,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public string Title { get; set; }
 
-        public decimal TotalPercentage { get; set; }
-
-        public string MonthPercentage { get; set; }
+        public decimal HoursApproved { get; set; }
     }
 
     public class WorkTimeReportModel

@@ -34,7 +34,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.CurrencyId = CurrencyId.GetValueOrDefault();
             domain.AnalyticId = AnalyticId.GetValueOrDefault();
-            domain.CreationDate = DateTime.UtcNow.Date;
+            domain.CreationDate = DateTime.UtcNow;
             domain.TotalAmmount = Details.Sum(x => x.Ammount);
             domain.InWorkflowProcess = true;
             domain.LastRefund = LastRefund;
@@ -114,7 +114,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
             domain.Description = Description;
             domain.Ammount = Ammount;
-            domain.CreationDate = CreationDate.GetValueOrDefault().Date;
+            domain.CreationDate = CreationDate.GetValueOrDefault();
 
             return domain;
         }
