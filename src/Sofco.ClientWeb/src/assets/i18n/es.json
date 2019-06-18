@@ -133,6 +133,13 @@
             "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes).",
             "WorkingHoursPerDaysMax": "Tope jornada laboral",
             "CloseMonth": "Dia del cierre del mes",
+            "AdvancementAmmountAPesos": "Monto A Pesos",
+            "AdvancementAmmountADolares": "Monto A Dolares",
+            "AdvancementAmmountAEuros": "Monto A Euros",
+            "AdvancementAmmountBPesos": "Monto A Pesos",
+            "AdvancementAmmountBDolares": "Monto B Dolares",
+            "AdvancementAmmountBEuros": "Monto C Euros",
+            "WorkTimeReportByHours": "¿Insumido vs Previsto calculado por horas?",
             "ValidatePeriodCloseMonth": "Validar fecha de cierre"
         },
         "state": {

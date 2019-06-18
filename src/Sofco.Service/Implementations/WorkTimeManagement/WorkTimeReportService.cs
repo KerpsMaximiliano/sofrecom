@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
+using Sofco.Domain;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
@@ -22,11 +24,20 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private int CurrentMonthAllocation { get; set; }
 
+        private readonly bool workTimeReportByHours;
+
         public WorkTimeReportService(IUnitOfWork unitOfWork,
-            IWorktimeData worktimeData)
+            IWorktimeData worktimeData, 
+            ISettingData settingData)
         {
             this.unitOfWork = unitOfWork;
             this.worktimeData = worktimeData;
+
+            var validatePeriodSetting = settingData.GetByKey(SettingConstant.WorkTimeReportByHours);
+            if (validatePeriodSetting != null)
+            {
+                workTimeReportByHours = bool.Parse(validatePeriodSetting.Value);
+            }
         }
 
         public Response<WorkTimeReportModel> CreateReport(ReportParams parameters)
@@ -287,17 +298,34 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 if (item.Facturability > 0)
                 {
-                    if (sumPercentage >= 100) item.HoursLoadedSuccesfully = true;
+                    if (workTimeReportByHours)
+                    {
+                        if (sumPercentage >= 100) item.HoursLoadedSuccesfully = true;
+                    }
+                    else
+                    {
+                        item.HoursLoadedSuccesfully = true;
+                    }
                 }
                 else
                 {
                     item.HoursLoadedSuccesfully = true;
                 }
 
-                var tigerItem = new TigerReportItem(item.EmployeeNumber, item.AllocationPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
-                i++;
+                if (workTimeReportByHours)
+                {
+                    var tigerItem = new TigerReportItem(item.EmployeeNumber, item.RealPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
+                    i++;
 
-                tigerReport.Add(tigerItem);
+                    tigerReport.Add(tigerItem);
+                }
+                else
+                {
+                    var tigerItem = new TigerReportItem(item.EmployeeNumber, item.AllocationPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
+                    i++;
+
+                    tigerReport.Add(tigerItem);
+                }
             }
         }
 
