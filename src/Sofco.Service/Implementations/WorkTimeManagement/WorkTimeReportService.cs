@@ -87,7 +87,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 if (model.EmployeeId == allocation.EmployeeId && model.AnalyticId == allocation.AnalyticId)
                 {
-                    model.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+                    var tuple = CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+                    model.HoursMustLoad += tuple.Item1;
+                    model.AllHoursMustLoad = tuple.Item2;
 
                     CalculateEmployeesAllocationResume(response, allocation);
                 }
@@ -97,7 +99,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                     if (modelAlreadyExist != null)
                     {
-                        modelAlreadyExist.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+                        var tuple = CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+                        modelAlreadyExist.HoursMustLoad += tuple.Item1;
+                        model.AllHoursMustLoad = tuple.Item2;
+
                         modelAlreadyExist.Result = modelAlreadyExist.HoursLoaded >= modelAlreadyExist.HoursMustLoad;
 
                         CalculateEmployeesAllocationResume(response, allocation);
@@ -129,7 +134,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                         CalculateEmployeesAllocationResume(response, allocation);
 
-                        model.HoursMustLoad += CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+                        var tuple = CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+
+                        model.HoursMustLoad += tuple.Item1;
+                        model.AllHoursMustLoad = tuple.Item2;
 
                         mustAddModel = true;
                     }
@@ -268,7 +276,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             foreach (var item in response.Data.Items)
             {
-                var allHoursMustLoaded = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.HoursMustLoad).Sum();
+                var allHoursMustLoaded = response.Data.Items.FirstOrDefault(x => x.EmployeeId == item.EmployeeId).AllHoursMustLoad;
 
                 item.AllocationPercentage = Math.Round(item.HoursMustLoad * 100 / allHoursMustLoaded, MidpointRounding.AwayFromZero);
                 var percentageWithoutRound = item.HoursMustLoad * 100 / allHoursMustLoaded;
@@ -329,9 +337,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        private decimal CalculateHoursToLoad(Allocation allocation, DateTime startDate, DateTime endDate, IList<Holiday> holidays)
+        private Tuple<decimal, decimal> CalculateHoursToLoad(Allocation allocation, DateTime startDate, DateTime endDate, IList<Holiday> holidays)
         {
             var businessDays = 0;
+            var allBusinessDays = 0;
 
             while (startDate.Date <= endDate.Date)
             {
@@ -341,10 +350,16 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         businessDays++;
                 }
 
+                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday && holidays.All(x => x.Date.Date != startDate.Date))
+                    allBusinessDays++;
+
                 startDate = startDate.AddDays(1);
             }
 
-            return Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
+            var hoursMustLoad = Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
+            var allHoursMustLoad = allBusinessDays * allocation.Employee.BusinessHours;
+
+            return new Tuple<decimal, decimal>(hoursMustLoad, allHoursMustLoad);
         }
     }
 }

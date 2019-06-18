@@ -42,6 +42,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public string Title { get; set; }
 
         public decimal HoursApproved { get; set; }
+
+        public decimal AllHoursMustLoad { get; set; }
     }
 
     public class WorkTimeReportModel
