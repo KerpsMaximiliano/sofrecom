@@ -152,6 +152,14 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
+        public static void CanReopen(Response response, PurchaseOrder purchaseOrder)
+        {
+            if (purchaseOrder.Status != PurchaseOrderStatus.Closed)
+            {
+                response.AddError(Resources.Billing.PurchaseOrder.CannotChangeStatus);
+            }
+        }
+
         public static void Delete(Response response, PurchaseOrder purchaseOrder, IUnitOfWork unitOfWork)
         {
             if (purchaseOrder.Status == PurchaseOrderStatus.Draft)
