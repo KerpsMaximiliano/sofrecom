@@ -63,7 +63,7 @@ namespace Sofco.Service.Implementations.Common
         {
             var response = new Response();
 
-            if (!model.Exchange.HasValue || model.Exchange.Value <= 0) response.AddError(Resources.ManagementReport.CurrencyExchange.ExchangeRequired);
+            if (!model.Exchange.HasValue || model.Exchange.Value <= 0 || model.Exchange.Value > 999) response.AddError(Resources.ManagementReport.CurrencyExchange.ExchangeRequired);
 
             var domain = unitOfWork.CurrencyExchangeRepository.Get(id);
 
@@ -149,7 +149,7 @@ namespace Sofco.Service.Implementations.Common
             if (!model.CurrencyId.HasValue || !unitOfWork.UtilsRepository.ExistCurrency(model.CurrencyId.Value))
                 response.AddError(Resources.ManagementReport.CurrencyExchange.CurrencyRequired);
 
-            if (!model.Exchange.HasValue || model.Exchange.Value <= 0)
+            if (!model.Exchange.HasValue || model.Exchange.Value <= 0 || model.Exchange.Value > 999)
                 response.AddError(Resources.ManagementReport.CurrencyExchange.ExchangeRequired);
         }
     }
