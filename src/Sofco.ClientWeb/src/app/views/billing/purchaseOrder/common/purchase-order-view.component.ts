@@ -177,7 +177,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
     customizeExcelExportData(data) {
         const self = this;
         const idPos = 1;
-        const receptionDatePos = 4;
+        //const receptionDatePos = 4;
         const statusTextPos = 5;
         const ammountNumberPos = 7;
         const balanceNumberPos = 8;
@@ -191,7 +191,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             const item = self.data.find(x => x.id == itemId);
             if(item === undefined) continue;
             const statusText = dataBodyItem[statusTextPos];
-            dataBodyItem[receptionDatePos] = this.getReceptionDate(statusText, item);
+            //dataBodyItem[receptionDatePos] = this.getReceptionDate(statusText, item);
             dataBodyItem[ammountNumberPos] = this.getAmmount(statusText, item);
             dataBodyItem[balanceNumberPos] = item.balance;
             result.push(dataBodyItem);

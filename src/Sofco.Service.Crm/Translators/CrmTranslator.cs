@@ -103,7 +103,9 @@ namespace Sofco.Service.Crm.Translators
                                 }
                                 else
                                 {
-                                    if (DateTime.TryParse(stringValue, out DateTime dateValue))
+                                    if (DateTime.TryParse(stringValue, 
+                                        System.Globalization.CultureInfo.GetCultureInfo("es-AR"),
+                                        System.Globalization.DateTimeStyles.None, out DateTime dateValue))
                                     {
                                         propertyInfo.SetValue(item, dateValue, null);
                                     }

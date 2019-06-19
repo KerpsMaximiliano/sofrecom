@@ -154,8 +154,8 @@ export class EndNotificationComponent implements OnInit, OnDestroy {
 
     customizeExcelExportData(data) {
         const idIndex = 0;
-        const endDateIndex = 3;
-        const createdDateIndex = 4;
+        //const endDateIndex = 3;
+        //const createdDateIndex = 4;
         data.header.splice(0, 1);
         const dataBody = data.body;
         for(let index = 0; index < dataBody.length; index++) {
@@ -164,8 +164,8 @@ export class EndNotificationComponent implements OnInit, OnDestroy {
             dataBodyItem.splice(0, 1);
             const item = this.data.find(x => x.id == itemId);
             if(item === undefined) continue;
-            dataBodyItem[createdDateIndex] = this.getCreatedDate(item);
-            dataBodyItem[endDateIndex] = this.getEndDate(item);
+          //  dataBodyItem[createdDateIndex] = this.getCreatedDate(item);
+          //  dataBodyItem[endDateIndex] = this.getEndDate(item);
         };
     }
 
