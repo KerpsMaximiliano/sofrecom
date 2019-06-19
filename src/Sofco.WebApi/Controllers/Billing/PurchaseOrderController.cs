@@ -127,7 +127,6 @@ namespace Sofco.WebApi.Controllers.Billing
             return File(response.Data, "application/octet-stream", string.Empty);
         }
 
-
         [HttpGet("{id}/file")]
         public IActionResult GetFile(int id)
         {
@@ -167,6 +166,15 @@ namespace Sofco.WebApi.Controllers.Billing
         public IActionResult Close(int id, [FromBody]PurchaseOrderStatusParams model)
         {
             var response = purchaseOrderStatusService.Close(id, model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut]
+        [Route("{id}/reopen")]
+        public IActionResult Reopen(int id, [FromBody]PurchaseOrderStatusParams model)
+        {
+            var response = purchaseOrderStatusService.Reopen(id, model);
 
             return this.CreateResponse(response);
         }

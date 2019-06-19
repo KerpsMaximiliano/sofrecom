@@ -87,7 +87,9 @@ export class EditPurchaseOrderComponent implements OnInit, OnDestroy {
 
                 if(this.form.model.status == PurchaseOrderStatus.Closed){
                     $('input').prop("disabled", true);
-                    $('textarea').prop("disabled", true);
+                    $('#commentsForAdjustment').prop("disabled", true);
+                    $('#comments').prop("disabled", true);
+                    $('#description').prop("disabled", true);
                     this.form.selectReadOnly = true; 
                 }
 

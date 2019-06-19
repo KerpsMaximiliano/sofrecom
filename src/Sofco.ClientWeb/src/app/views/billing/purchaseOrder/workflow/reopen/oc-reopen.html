@@ -1,0 +1,10 @@
+<button class="btn btn-primary btn-outline dim btn-sm" (click)="showModal()" *ngIf="canReopen()"> 
+    Re-Abrir <i class="fa fa-folder-open"></i>
+</button>
+
+<ng2-modal [config]="reopenModalConfig" #reopenModal (accept)="send()">
+    <div class="form-group">
+        <label class="control-label">{{'comments' | translate }}</label>
+        <textarea id="reopenComments" class="form-control" rows="10" [(ngModel)]="comments"></textarea>
+    </div>
+</ng2-modal> 
