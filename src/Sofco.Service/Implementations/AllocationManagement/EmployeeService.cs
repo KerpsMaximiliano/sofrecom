@@ -38,20 +38,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailBuilder mailBuilder;
         private readonly EmailConfig emailConfig;
         private readonly IMapper mapper;
-        private readonly ISessionManager sessionManager;
         private readonly IEmployeeData employeeData;
         private readonly IUserData userData;
         private readonly IEmployeeEndNotificationManager employeeEndNotificationManager;
         private readonly ICurrentAccountService currentAccountService;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData, IEmployeeEndNotificationManager employeeEndNotificationManager, ICurrentAccountService currentAccountService)
+        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, IEmployeeData employeeData, IUserData userData, IEmployeeEndNotificationManager employeeEndNotificationManager, ICurrentAccountService currentAccountService)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.mailSender = mailSender;
             this.mailBuilder = mailBuilder;
             this.mapper = mapper;
-            this.sessionManager = sessionManager;
             this.employeeData = employeeData;
             this.userData = userData;
             this.employeeEndNotificationManager = employeeEndNotificationManager;
@@ -516,6 +514,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
 
             return response;
+        }
+
+        public Response<byte[]> GetReport()
+        {
+            throw new NotImplementedException();
         }
 
         public Response<EmployeeModel> GetByMail(string email)
