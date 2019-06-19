@@ -9,6 +9,8 @@ using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.Views;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers.AllocationManagement;
@@ -42,8 +44,21 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IUserData userData;
         private readonly IEmployeeEndNotificationManager employeeEndNotificationManager;
         private readonly ICurrentAccountService currentAccountService;
+        private readonly IEmployeeFileManager employeeFileManager;
+        private readonly IEmployeeViewRepository employeeViewRepository;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, IEmployeeData employeeData, IUserData userData, IEmployeeEndNotificationManager employeeEndNotificationManager, ICurrentAccountService currentAccountService)
+        public EmployeeService(IUnitOfWork unitOfWork, 
+            ILogMailer<EmployeeService> logger, 
+            IMailSender mailSender, 
+            IOptions<EmailConfig> emailOptions, 
+            IMailBuilder mailBuilder, 
+            IMapper mapper, 
+            IEmployeeData employeeData, 
+            IUserData userData, 
+            IEmployeeEndNotificationManager employeeEndNotificationManager,
+            IEmployeeFileManager employeeFileManager,
+            IEmployeeViewRepository employeeViewRepository,
+            ICurrentAccountService currentAccountService)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -55,6 +70,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.employeeEndNotificationManager = employeeEndNotificationManager;
             emailConfig = emailOptions.Value;
             this.currentAccountService = currentAccountService;
+            this.employeeFileManager = employeeFileManager;
+            this.employeeViewRepository = employeeViewRepository;
         }
 
         public ICollection<Employee> GetAll()
@@ -518,7 +535,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<byte[]> GetReport()
         {
-            throw new NotImplementedException();
+            var list = employeeViewRepository.Get();
+
+            var response = new Response<byte[]>();
+
+            if (!list.Any())
+            {
+                response.AddWarning(Resources.Common.SearchEmpty);
+                return response;
+            }
+
+            response.Data = employeeFileManager.CreateReport(list).GetAsByteArray();
+
+            return response;
         }
 
         public Response<EmployeeModel> GetByMail(string email)

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Views;
 using Sofco.Domain.Models.Reports;
 
@@ -14,5 +16,9 @@ namespace Sofco.DAL.Repositories.Reports
         }
 
 
+        public IList<EmployeeView> Get()
+        {
+            return employeeViews.ToList();
+        }
     }
 }
