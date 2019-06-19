@@ -85,7 +85,6 @@
                         <th>Pend. Aprobación</th>
                         <th>Borrador</th>
                         <th>Faltante</th>
-                        <th>% Asignación</th>
                     </tr>
                 </thead>
                 <tbody *ngIf="model != null && model.resources != null">
@@ -102,7 +101,6 @@
                         <td>{{ item.sentHours }}</td>
                         <td>{{ item.draftHours }}</td>
                         <td>{{ item.pendingHours }}</td>
-                        <td>{{ item.allocationPercentage }}</td>
                     </tr>
                 </tbody>
             </table>
