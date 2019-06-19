@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { Service } from "../common/service";
 import { HttpClient } from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class EmployeeService {
@@ -111,5 +112,14 @@ export class EmployeeService {
 
   getUrlForImportFile(yearId: number, monthId: number, prepaidId: number){
     return `${this.baseUrl}/prepaid/${prepaidId}/import/${yearId}/${monthId}`;
+  }
+
+  getReport(){
+    return this.http.get(`${this.baseUrl}/employees/report`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).pipe(map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    }));
   }
 }

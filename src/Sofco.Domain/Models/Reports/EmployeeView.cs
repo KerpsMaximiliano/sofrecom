@@ -20,9 +20,9 @@ namespace Sofco.Domain.Models.Reports
 
         public string Email { get; set; }
 
-        public string Cuil { get; set; }
+        public decimal Cuil { get; set; }
 
-        public string DocumentNumber { get; set; }
+        public int DocumentNumber { get; set; }
 
         public DateTime Birthday { get; set; }
 
@@ -40,7 +40,7 @@ namespace Sofco.Domain.Models.Reports
 
         public int PhoneCountryCode { get; set; }
 
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
 
         /// <summary>
         /// VACACIONES_POR_LEY

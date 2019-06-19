@@ -18,7 +18,7 @@ namespace Sofco.DAL.Repositories.Reports
 
         public IList<EmployeeView> Get()
         {
-            return employeeViews.ToList();
+            return employeeViews.OrderBy(x => x.Name).ToList();
         }
     }
 }

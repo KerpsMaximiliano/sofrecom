@@ -108,6 +108,7 @@
                 </div>
                 <div class="panel-footer">
                     <external-user class="pull-left"></external-user>
+                    <button class="btn btn-success pull-left" *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE-REPORT')" (click)="report()"> Descargar reporte <i class="fa fa-download"></i></button>
 
                     <div class="text-right">
                         <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>

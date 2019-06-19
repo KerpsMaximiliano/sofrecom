@@ -368,7 +368,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
                 this.messageService.showSuccessByFolder('allocationManagement/allocation', 'massiveSuccess');
             }
         },
-            () => this.allocationsModal.hide());
+        () => this.allocationsModal.hide());
     }
 
     onKeydown(event) {
@@ -388,5 +388,21 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         });
 
         this.categoriesModal.show();
+    }
+
+    report(){
+        this.messageService.showLoading();
+
+        this.allocationsSubscrip = this.employeeService.getReport().subscribe(file => {
+            this.messageService.closeLoading()
+
+            if (file.size && file.size > 0) {
+                FileSaver.saveAs(file, 'reporte-empleados.xlsx');
+            }
+            else {
+                this.messageService.showWarningByFolder('common', 'searchEmpty');
+            }
+        },
+        error => this.messageService.closeLoading());
     }
 }

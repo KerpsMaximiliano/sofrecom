@@ -226,7 +226,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
                 return BadRequest(response);
 
             if (response.Data == null)
-                return Ok();
+                return Ok(response);
 
             return File(response.Data, "application/octet-stream", string.Empty);
         }

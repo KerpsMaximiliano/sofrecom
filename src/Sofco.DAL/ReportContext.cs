@@ -10,7 +10,6 @@ namespace Sofco.DAL
         public ReportContext(DbContextOptions<ReportContext> options)
             : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -24,6 +23,8 @@ namespace Sofco.DAL
             builder.Entity<PurchaseOrderBalanceDetailView>().ToTable("PurchaseOrderBalanceDetailView");
 
             builder.Entity<BankView>().ToTable("BanksView");
+
+            builder.Entity<EmployeeView>().ToTable("ResourcesView");
         }
     }
 }
