@@ -217,5 +217,18 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpGet("report")]
+        public IActionResult Report()
+        {
+            var response = employeeService.GetReport();
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            if (response.Data == null)
+                return Ok(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
     }
 }

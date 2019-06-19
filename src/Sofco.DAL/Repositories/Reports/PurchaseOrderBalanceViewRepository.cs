@@ -19,7 +19,7 @@ namespace Sofco.DAL.Repositories.Reports
 
         private readonly DbSet<PurchaseOrderBalanceDetailView> purchaseOrderBalanceDetailViews;
 
-        public PurchaseOrderBalanceViewRepository(ReportContext context)
+        public PurchaseOrderBalanceViewRepository(ReportContext context) 
         {
             purchaseOrderBalanceViews = context.Set<PurchaseOrderBalanceView>();
 

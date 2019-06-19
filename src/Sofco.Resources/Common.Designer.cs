@@ -178,6 +178,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a common.searchEmpty.
+        /// </summary>
+        public static string SearchEmpty {
+            get {
+                return ResourceManager.GetString("SearchEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a common.searchNotFound.
         /// </summary>
         public static string SearchNotFound {

@@ -9,6 +9,8 @@ using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.Views;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers.AllocationManagement;
@@ -38,25 +40,38 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMailBuilder mailBuilder;
         private readonly EmailConfig emailConfig;
         private readonly IMapper mapper;
-        private readonly ISessionManager sessionManager;
         private readonly IEmployeeData employeeData;
         private readonly IUserData userData;
         private readonly IEmployeeEndNotificationManager employeeEndNotificationManager;
         private readonly ICurrentAccountService currentAccountService;
+        private readonly IEmployeeFileManager employeeFileManager;
+        private readonly IEmployeeViewRepository employeeViewRepository;
 
-        public EmployeeService(IUnitOfWork unitOfWork, ILogMailer<EmployeeService> logger, IMailSender mailSender, IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IMapper mapper, ISessionManager sessionManager, IEmployeeData employeeData, IUserData userData, IEmployeeEndNotificationManager employeeEndNotificationManager, ICurrentAccountService currentAccountService)
+        public EmployeeService(IUnitOfWork unitOfWork, 
+            ILogMailer<EmployeeService> logger, 
+            IMailSender mailSender, 
+            IOptions<EmailConfig> emailOptions, 
+            IMailBuilder mailBuilder, 
+            IMapper mapper, 
+            IEmployeeData employeeData, 
+            IUserData userData, 
+            IEmployeeEndNotificationManager employeeEndNotificationManager,
+            IEmployeeFileManager employeeFileManager,
+            IEmployeeViewRepository employeeViewRepository,
+            ICurrentAccountService currentAccountService)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.mailSender = mailSender;
             this.mailBuilder = mailBuilder;
             this.mapper = mapper;
-            this.sessionManager = sessionManager;
             this.employeeData = employeeData;
             this.userData = userData;
             this.employeeEndNotificationManager = employeeEndNotificationManager;
             emailConfig = emailOptions.Value;
             this.currentAccountService = currentAccountService;
+            this.employeeFileManager = employeeFileManager;
+            this.employeeViewRepository = employeeViewRepository;
         }
 
         public ICollection<Employee> GetAll()
@@ -514,6 +529,23 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     }
                 }
             }
+
+            return response;
+        }
+
+        public Response<byte[]> GetReport()
+        {
+            var list = employeeViewRepository.Get();
+
+            var response = new Response<byte[]>();
+
+            if (!list.Any())
+            {
+                response.AddWarning(Resources.Common.SearchEmpty);
+                return response;
+            }
+
+            response.Data = employeeFileManager.CreateReport(list).GetAsByteArray();
 
             return response;
         }

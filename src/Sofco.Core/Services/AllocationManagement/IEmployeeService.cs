@@ -49,5 +49,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<IList<EmployeeRefundDetail>> GetRefunds(int id);
 
         Response<IList<EmployeeCurrentAccount>> GetCurrentAccount(int id);
+
+        Response<byte[]> GetReport();
     }
 }
