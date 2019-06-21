@@ -75,7 +75,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var resumeModel = workTimeResumeManager.GetResume(models, startDate, endDate);
 
-            var resources = GetResources(workTimes.ToList(), startDate, endDate);
+            var resources = GetResources(workTimes.ToList(), startDate, endDate, daysoff);
 
             var allResources = unitOfWork.AnalyticRepository.GetResources(analyticIds, startDate, endDate);
 
@@ -159,7 +159,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return new Response<List<Option>> { Data = result };
         }
 
-        private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate, DateTime endDate)
+        private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate,
+            DateTime endDate, List<Holiday> daysoff)
         {
             var grouped = new Dictionary<string, List<WorkTime>>();
             foreach (var workTime in workTimes)
@@ -184,22 +185,19 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var resource = Translate(model);
 
-                var models = list.Select(x => new WorkTimeCalendarModel(x)).ToList();
+                //var models = list.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
-                var resume = workTimeResumeManager.GetResume(models, startDate, endDate);
+                //var resume = workTimeResumeManager.GetResume(models, startDate, endDate);
 
                 var allocations = unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDaysForWorkTimeControl(model.EmployeeId, startDate, endDate);
 
-                var allocationAnalytic = allocations?.FirstOrDefault(s => s.AnalyticId == model.AnalyticId);
+                var allocationAnalytic = allocations?.Where(s => s.AnalyticId == model.AnalyticId).ToList();
 
-                if (allocationAnalytic == null)
+                if (allocationAnalytic != null)
                 {
-                    resource.AllocationPercentage = 0;
-                }
-                else
-                {
-                    resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
-                    resource.AllocationPercentage = allocationAnalytic.Percentage;
+                    resource.BusinessHours = CalculateHoursToLoad(allocationAnalytic, startDate, endDate, daysoff);
+                    //resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
+                    //resource.AllocationPercentage = allocationAnalytic.Percentage;
                 }
           
                 resource.ApprovedHours = item.Value.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours);
@@ -354,6 +352,30 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             response.Data = excel.GetAsByteArray();
 
             return response;
+        }
+
+        private decimal CalculateHoursToLoad(IList<Allocation> allocations, DateTime startDate, DateTime endDate, IList<Holiday> holidays)
+        {
+            decimal hours = 0;
+
+            while (startDate.Date <= endDate.Date)
+            {
+                foreach (var allocation in allocations)
+                {
+                    if (allocation.StartDate.Month == startDate.Month)
+                    {
+                        if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday &&
+                            holidays.All(x => x.Date.Date != startDate.Date))
+                        {
+                            hours += (allocation.Employee.BusinessHours * allocation.Percentage) / 100;
+                        }
+                    }
+                }
+
+                startDate = startDate.AddDays(1);
+            }
+
+            return Math.Round(hours);
         }
 
         private decimal CalculateHoursToLoad(Allocation allocation, DateTime startDate, DateTime endDate, IList<Holiday> holidays)
