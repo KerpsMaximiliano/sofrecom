@@ -11,6 +11,7 @@ using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 
@@ -67,6 +68,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             workTimes.AddRange(AddDelegatedData(parameters, workTimes));
 
+            var daysoff = unitOfWork.HolidayRepository.Get(startDate.Year, startDate.Month);
+            daysoff.AddRange(unitOfWork.HolidayRepository.Get(endDate.Year, endDate.Month));
+
             var models = workTimes.Select(x => new WorkTimeCalendarModel(x)).ToList();
 
             var resumeModel = workTimeResumeManager.GetResume(models, startDate, endDate);
@@ -83,31 +87,54 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
             resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
 
+            var resourcesAux = resources.ToList();
+
             foreach (var allResource in allResources)
             {
                 foreach (var allocation in allResource.Allocations)
                 {
-                    if (resources.All(x => x.Id != $"{allocation.AnalyticId}-{allocation.EmployeeId}"))
-                    {
-                        var resume = workTimeResumeManager.GetResume(new List<WorkTimeCalendarModel>(), startDate, endDate);
+                    if(parameters.AnalyticId.HasValue && allocation.AnalyticId != parameters.AnalyticId) continue;
 
-                        resources.Add(new WorkTimeControlResourceModel
+                    if(resourcesAux.Any(x => x.Id == $"{allocation.AnalyticId}-{allocation.EmployeeId}")) continue;
+
+                    if ((allocation.StartDate.Year == startDate.Year &&
+                         allocation.StartDate.Month == startDate.Month) ||
+                        (allocation.StartDate.Year == endDate.Year && allocation.StartDate.Month == endDate.Month))
+                    {
+                        var item = resources.SingleOrDefault(x => x.Id == $"{allocation.AnalyticId}-{allocation.EmployeeId}");
+
+                        if (item == null)
                         {
-                            Id = $"{allocation.AnalyticId}-{allocation.EmployeeId}",
-                            ApprovedHours = 0,
-                            BusinessHours = resume.BusinessHours * allocation.Percentage / 100,
-                            DraftHours = 0,
-                            EmployeeName = allResource.Name,
-                            EmployeeNumber = allResource.EmployeeNumber,
-                            LicenseHours = 0,
-                            PendingHours = 0,
-                            RejectHours = 0,
-                            SentHours = 0,
-                            DetailCount = 0,
-                            Details = new List<WorkTimeControlResourceDetailModel>(),
-                            AllocationPercentage = allocation.Percentage,
-                            Analytic = allocation.Analytic.Title
-                        });
+                            var hours = CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+
+                            resources.Add(new WorkTimeControlResourceModel
+                            {
+                                Id = $"{allocation.AnalyticId}-{allocation.EmployeeId}",
+                                ApprovedHours = 0,
+                                BusinessHours = allocation.Employee.BillingPercentage > 0 ? hours : 0,
+                                DraftHours = 0,
+                                EmployeeName = allResource.Name,
+                                EmployeeNumber = allResource.EmployeeNumber,
+                                LicenseHours = 0,
+                                PendingHours = allocation.Employee.BillingPercentage > 0 ?hours : 0,
+                                RejectHours = 0,
+                                SentHours = 0,
+                                DetailCount = 0,
+                                Details = new List<WorkTimeControlResourceDetailModel>(),
+                                AllocationPercentage = allocation.Percentage,
+                                Analytic = allocation.Analytic.Title
+                            });
+                        }
+                        else
+                        {
+                            if (allocation.Employee.BillingPercentage > 0)
+                            {
+                                var hours = CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+
+                                item.BusinessHours += hours;
+                                item.PendingHours += hours;
+                            }
+                        }
                     }
                 }
             }
@@ -327,6 +354,26 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             response.Data = excel.GetAsByteArray();
 
             return response;
+        }
+
+        private decimal CalculateHoursToLoad(Allocation allocation, DateTime startDate, DateTime endDate, IList<Holiday> holidays)
+        {
+            var businessDays = 0;
+
+            while (startDate.Date <= endDate.Date)
+            {
+                if (allocation.StartDate.Month == startDate.Month)
+                {
+                    if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday && holidays.All(x => x.Date.Date != startDate.Date))
+                        businessDays++;
+                }
+
+                startDate = startDate.AddDays(1);
+            }
+
+            var hoursMustLoad = Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
+
+            return hoursMustLoad;
         }
     }
 }

@@ -168,7 +168,7 @@ namespace Sofco.DAL.Repositories.Rrhh
             return context.Licenses
                 .Include(x => x.Employee)
                 .Include(x => x.Type)
-                .Where(s => !s.HasCertificate && s.Status == LicenseStatus.ApprovePending)
+                .Where(s => !s.HasCertificate && s.Status == LicenseStatus.ApprovePending && s.EndDate == null)
                 .ToList();
         }
 
