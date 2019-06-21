@@ -28,16 +28,16 @@ namespace Sofco.Service.Implementations.Common
             this.appSetting = appSettingOptions.Value;
         }
 
-        public Response Add(CurrencyExchangeAddModel model)
+        public Response<int> Add(CurrencyExchangeAddModel model)
         {
-            var response = new Response();
+            var response = new Response<int>();
 
             Validate(model, response);
 
             if (response.HasErrors()) return response;
 
             try
-            {
+            { 
                 var domain = new CurrencyExchange
                 {
                     Date = new DateTime(model.Year.GetValueOrDefault(), model.Month.GetValueOrDefault(), 1).Date,
@@ -47,6 +47,8 @@ namespace Sofco.Service.Implementations.Common
 
                 unitOfWork.CurrencyExchangeRepository.Insert(domain);
                 unitOfWork.Save();
+
+                response.Data = domain.Id;
 
                 response.AddSuccess(Resources.ManagementReport.CurrencyExchange.AddSuccess);
             }
