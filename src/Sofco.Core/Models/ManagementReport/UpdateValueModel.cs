@@ -1,4 +1,5 @@
-﻿using Sofco.Domain.Enums;
+﻿using System;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.ManagementReport
 {
@@ -9,6 +10,10 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal Value { get; set; }
 
         public EvalPropType Type { get; set; }
+
+        public int ManagementReportId { get; set; }
+
+        public DateTime MonthYear { get; set; }
     }
 
     public class UpdateBillingDataModel
@@ -22,5 +27,9 @@ namespace Sofco.Core.Models.ManagementReport
         public string Comments { get; set; }
 
         public ReportBillingUpdateDataType Type { get; set; }
+
+        public int ManagementReportId { get; set; }
+
+        public DateTime MonthYear { get; set; }
     }
 }

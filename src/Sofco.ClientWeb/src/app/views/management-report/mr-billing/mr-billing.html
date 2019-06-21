@@ -163,7 +163,7 @@
 
     <div class="form-group" *ngIf="updateDataType == 1">
         <label class="control-label">Comentarios</label>
-        <textarea class="form-control" rows="10" [(ngModel)]="billingComments"></textarea>
+        <textarea class="form-control" rows="10" maxlength="2000" [(ngModel)]="billingComments"></textarea>
     </div> 
 </ng2-modal>
 

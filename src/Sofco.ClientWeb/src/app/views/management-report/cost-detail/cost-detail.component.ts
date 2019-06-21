@@ -54,6 +54,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     showUsers: boolean = false;
     showProfiles: boolean = false;
     readOnly: boolean = false;
+    managementReportId: number;
 
     otherSelected: any
     userSelected: any

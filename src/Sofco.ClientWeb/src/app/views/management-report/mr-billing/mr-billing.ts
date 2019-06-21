@@ -31,6 +31,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     totals: any[] = new Array();
 
     managerId: string;
+    managementReportId: number;
 
     billingDetail: any = {
         exchanges: [],
@@ -482,17 +483,21 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.editBillingDataModal.show();
     }
 
-    updateBillingData(){
+    updateBillingData(){ 
         var json = {
             id: this.monthSelected.billingMonthId,
             evalPropDifference: this.evalPropDifference,
             resources: this.billingResourceQuantity,
             comments: this.billingComments,
-            type: this.updateDataType
+            type: this.updateDataType,
+            managementReportId: this.managementReportId,
+            monthYear: this.monthSelected.monthYear
         }
  
         this.updateDataSubscrip = this.managementReportService.updateBillingData(json).subscribe(response => {
             this.editBillingDataModal.hide();
+
+            this.monthSelected.billingMonthId = response.data;
 
             if(this.updateDataType == ReportBillingUpdateDataType.Comments){
                 this.monthSelected.comments = this.billingComments;
