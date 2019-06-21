@@ -784,7 +784,7 @@ var _excelSpecials = [
 	{ match: /^\-?[\d,]+$/,         style: 63 }, // Numbers with thousand separators
 	{ match: /^\-?[\d,]+\.\d{2}$/,  style: 64 },  // Numbers with 2 d.p. and thousands separators
 	{ match: /^[\d]{2}\/[\d]{2}\/[\d]{4}$/, style: 67, fmt: function (d) {return Math.round(25569 + (Date.parse(d.substring(4,8)+"-"+d.substring(2, 4)+"-"+d.substring(0, 2)) / (86400 * 1000)));}},//Date dd/mm/yyyy
-	//{ match: /^[\d]{2}\/[\d]{2}\/[\d]{4}[\s]{1}[\d]{2}\:[\d]{2}$/, style: 67, fmt: function (d) { return Math.round(25569 + (Date.parse(d.substring(4, 8) + "-" + d.substring(2, 4) + "-" + d.substring(0, 2)) / (86400 * 1000))) + d.substring(8, 10) / 24 + d.substring(10, 12) / 1440; } },//Date dd/mm/yyyy hh:mm
+	{ match: /^[\d]{2}\/[\d]{2}\/[\d]{4}[\s]{1}[\d]{2}\:[\d]{2}$/, style: 67, fmt: function (d) { return Math.round(25569 + (Date.parse(d.substring(4, 8) + "-" + d.substring(2, 4) + "-" + d.substring(0, 2)) / (86400 * 1000))) + d.substring(8, 10) / 24 + d.substring(10, 12) / 1440; } },//Date dd/mm/yyyy hh:mm
 
 	];
 
