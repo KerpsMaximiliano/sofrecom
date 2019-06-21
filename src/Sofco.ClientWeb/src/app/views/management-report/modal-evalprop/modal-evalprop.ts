@@ -16,6 +16,7 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
     
     monthSelectedDisplay: string = "";
     monthSelected: any;
+    managementReportId: number;
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
@@ -53,7 +54,9 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
         var json = {
             id: this.monthSelected.billingMonthId,
             value: this.editEvalPropValue.value,
-            type: this.monthSelected.type
+            type: this.monthSelected.type,
+            managementReportId: this.managementReportId,
+            monthYear: this.monthSelected.monthYear
         }
 
         this.updateEvalpropValueSubscrip = this.managementReportService.updateBilling(json).subscribe(response => {
@@ -62,6 +65,7 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
             this.sendDataToDetailView(this.monthSelected, this.editEvalPropValue.value);
 
             this.monthSelected.valueEvalProp = this.editEvalPropValue.value;
+            this.monthSelected.billingMonthId = response.data;
             this.monthSelectedDisplay = null;
             this.monthSelected = null;
             this.editEvalPropValue.setValue(null);

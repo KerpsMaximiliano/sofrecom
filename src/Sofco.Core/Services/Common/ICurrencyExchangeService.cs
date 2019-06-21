@@ -6,7 +6,7 @@ namespace Sofco.Core.Services.Common
 {
     public interface ICurrencyExchangeService
     {
-        Response Add(CurrencyExchangeAddModel model);
+        Response<int> Add(CurrencyExchangeAddModel model);
 
         Response Update(int id, CurrencyExchangeUpdateModel model);
 

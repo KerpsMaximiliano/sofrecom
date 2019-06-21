@@ -113,15 +113,20 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
 
             this.billing.init(this.serviceId);
+            this.billing.managementReportId = this.ManagementReportId;
+            this.modalEvalProp.managementReportId = this.ManagementReportId;
+
             this.billing.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
             this.detailCost.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
+            this.detailCost.managementReportId = this.ManagementReportId;
+
             this.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
 
             // this.marginTracking.init(this.startDate)
 
             this.messageService.closeLoading();
         },
-            error => this.messageService.closeLoading());
+        error => this.messageService.closeLoading());
     }
 
     collapse() {
@@ -167,7 +172,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditDateModal() {
-
         this.ReportStartDate = this.model.manamementReportStartDate;
         this.ReportEndDate = this.model.manamementReportEndDate;
 

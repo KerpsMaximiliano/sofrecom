@@ -83,7 +83,7 @@ export class CurrencyExchangeComponent implements OnInit, OnDestroy {
         this.addSubscription = this.currencyExchangeService.post(json).subscribe(response => {
             this.messageService.closeLoading();
 
-            this.getModel();
+            currencyExchange.id = response.data;
         }, 
         error => this.messageService.closeLoading());
     }
