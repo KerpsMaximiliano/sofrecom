@@ -56,7 +56,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             var employeeIdsWithAllocations = context.Allocations.Where(x => x.StartDate.Date == from || x.StartDate.Date == to).Select(x => x.EmployeeId).Distinct().ToList();
 
-            return context.Employees.Include(x => x.Manager).Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null).ToList();
+            return context.Employees.Include(x => x.Manager).Where(x => !employeeIdsWithAllocations.Contains(x.Id) && x.EndDate == null && !x.IsExternal).ToList();
         }
 
         public IList<Employee> GetByAnalyticIds(List<int> analyticIds)

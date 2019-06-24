@@ -132,7 +132,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     .ThenInclude(x => x.CostCenter)
                 .Include(x => x.Analytic)
                     .ThenInclude(x => x.Activity)
-                .Where(x => !x.Employee.EndDate.HasValue && 
+                .Where(x => !x.Employee.EndDate.HasValue && !x.Employee.IsExternal &&
                             (x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
                             x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date));
 
