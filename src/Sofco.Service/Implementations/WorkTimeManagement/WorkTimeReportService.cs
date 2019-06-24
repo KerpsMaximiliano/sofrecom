@@ -27,7 +27,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         private readonly bool workTimeReportByHours;
 
         public WorkTimeReportService(IUnitOfWork unitOfWork,
-            IWorktimeData worktimeData, 
+            IWorktimeData worktimeData,
             ISettingData settingData)
         {
             this.unitOfWork = unitOfWork;
@@ -101,7 +101,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     {
                         var tuple = CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
                         modelAlreadyExist.HoursMustLoad += tuple.Item1;
-                        model.AllHoursMustLoad = tuple.Item2;
+                        modelAlreadyExist.AllHoursMustLoad = tuple.Item2;
 
                         modelAlreadyExist.Result = modelAlreadyExist.HoursLoaded >= modelAlreadyExist.HoursMustLoad;
 
@@ -292,6 +292,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     if (item.HoursMustLoad != 0)
                     {
                         item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad) / 100), MidpointRounding.AwayFromZero);
+
+                        if (item.RealPercentage > 100) item.RealPercentage = 100;
                     }
                 }
             }
