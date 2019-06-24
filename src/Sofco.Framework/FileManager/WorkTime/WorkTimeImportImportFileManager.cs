@@ -40,7 +40,9 @@ namespace Sofco.Framework.FileManager.WorkTime
 
         private int RowsAdded { get; set; }
 
-        public WorkTimeImportImportFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeImportImportFileManager> logger, IUserData userData)
+        private readonly bool validatePeriodCloseMonth;
+
+        public WorkTimeImportImportFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeImportImportFileManager> logger, IUserData userData, ISettingData settingData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -48,6 +50,12 @@ namespace Sofco.Framework.FileManager.WorkTime
 
             WorkTimesToAdd = new List<Domain.Models.WorkTimeManagement.WorkTime>();
             UserMails = new Dictionary<string, int>();
+
+            var validatePeriodSetting = settingData.GetByKey(SettingConstant.ValidatePeriodCloseMonthKey);
+            if (validatePeriodSetting != null)
+            {
+                validatePeriodCloseMonth = bool.Parse(validatePeriodSetting.Value);
+            }
         }
 
         public void Import(int analyticId, MemoryStream memoryStream, Response<IList<WorkTimeImportResult>> response)
@@ -300,23 +308,16 @@ namespace Sofco.Framework.FileManager.WorkTime
             }
             else
             {
-                if (datetime.Date >= DateFrom.Date && datetime.Date <= DateTo.Date)
+                if (validatePeriodCloseMonth)
                 {
-                    if (datetime.DayOfWeek == DayOfWeek.Saturday || datetime.DayOfWeek == DayOfWeek.Sunday ||
-                        Holidays.Any(x => x.Date.Date == datetime.Date))
+                    if (datetime.Date >= DateFrom.Date && datetime.Date <= DateTo.Date)
                     {
-                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
-                        item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateWrong;
-                        response.Data.Add(item);
-
-                        return false;
+                        if (!ValidateWeekendAndHolidays(response, employee, i, employeeNumber, employeeDesc, datetime)) return false;
                     }
-
-                    if (employee.Licenses.Any(x =>
-                        datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date))
+                    else
                     {
                         var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
-                        item.Error = Resources.WorkTimeManagement.WorkTime.ImportEmployeeWithLicense;
+                        item.Error = Resources.WorkTimeManagement.WorkTime.ImportDatesOutOfRange;
                         response.Data.Add(item);
 
                         return false;
@@ -324,12 +325,34 @@ namespace Sofco.Framework.FileManager.WorkTime
                 }
                 else
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
-                    item.Error = Resources.WorkTimeManagement.WorkTime.ImportDatesOutOfRange;
-                    response.Data.Add(item);
-
-                    return false;
+                    if (!ValidateWeekendAndHolidays(response, employee, i, employeeNumber, employeeDesc, datetime)) return false;
                 }
+            }
+
+            return true;
+        }
+
+        private bool ValidateWeekendAndHolidays(Response<IList<WorkTimeImportResult>> response, Employee employee, int i, string employeeNumber,
+            string employeeDesc, DateTime datetime)
+        {
+            if (datetime.DayOfWeek == DayOfWeek.Saturday || datetime.DayOfWeek == DayOfWeek.Sunday ||
+                Holidays.Any(x => x.Date.Date == datetime.Date))
+            {
+                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
+                item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateWrong;
+                response.Data.Add(item);
+
+                return false;
+            }
+
+            if (employee.Licenses.Any(x =>
+                datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date))
+            {
+                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
+                item.Error = Resources.WorkTimeManagement.WorkTime.ImportEmployeeWithLicense;
+                response.Data.Add(item);
+
+                return false;
             }
 
             return true;

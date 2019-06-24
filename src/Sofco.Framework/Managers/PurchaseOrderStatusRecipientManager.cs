@@ -100,7 +100,7 @@ namespace Sofco.Framework.Managers
 
             mails.AddRange(GetOperationMails(purchaseOrder));
 
-            mails.AddRange(GetDafMails());
+            //mails.AddRange(GetDafMails());
 
             var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithManagers(purchaseOrder.Id);
 

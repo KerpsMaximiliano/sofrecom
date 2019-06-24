@@ -7,6 +7,8 @@
         public const string WorkingHoursPerDaysMaxKey = "WorkingHoursPerDaysMax";
 
         public const string ValidatePeriodCloseMonthKey = "ValidatePeriodCloseMonth";
+
+        public const string WorkTimeReportByHours = "WorkTimeReportByHours";
     }
 }
  
