@@ -96,7 +96,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     var reference = sheet.GetValue(i, 6)?.ToString();
                     var comments = sheet.GetValue(i, 7)?.ToString();
 
-                    if (IsValidDate(date, out var datetime)) date = datetime.ToString("dd/MM/yyyy");
+                    if (IsValidDate(date, out var datetime)) date = datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR"));
 
                     var employee = Employees.SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNumber));
 
@@ -195,7 +195,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                 }
                 else
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, date.ToString("dd/MM/yyyy"));
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, date.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportUserWithEmailNull;
                     response.Data.Add(item);
                 }
@@ -224,7 +224,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             {
                 if (string.IsNullOrWhiteSpace(hour))
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportHoursNull;
                     response.Data.Add(item);
 
@@ -242,7 +242,7 @@ namespace Sofco.Framework.FileManager.WorkTime
 
                 if (hours + Convert.ToDecimal(hour) + hoursAlreadyAdded > Convert.ToDecimal(settingHour.Value))
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportHoursExceed;
                     response.Data.Add(item);
 
@@ -321,7 +321,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     }
                     else
                     {
-                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
+                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
                         item.Error = Resources.WorkTimeManagement.WorkTime.ImportDatesOutOfRange;
                         response.Data.Add(item);
 
@@ -343,7 +343,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             if (datetime.DayOfWeek == DayOfWeek.Saturday || datetime.DayOfWeek == DayOfWeek.Sunday ||
                 Holidays.Any(x => x.Date.Date == datetime.Date))
             {
-                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
+                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateWrong;
                 response.Data.Add(item);
 
@@ -353,7 +353,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             if (employee.Licenses.Any(x =>
                 datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date))
             {
-                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
+                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportEmployeeWithLicense;
                 response.Data.Add(item);
 
