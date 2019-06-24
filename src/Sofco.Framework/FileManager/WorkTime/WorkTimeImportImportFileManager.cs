@@ -277,7 +277,9 @@ namespace Sofco.Framework.FileManager.WorkTime
 
             if (string.IsNullOrWhiteSpace(date)) return false;
 
-            if (!DateTime.TryParse(date, out datetime))
+            if (DateTime.TryParse(date,
+                System.Globalization.CultureInfo.GetCultureInfo("es-AR"),
+                System.Globalization.DateTimeStyles.None, out datetime))
             {
                 var dataSplit = date.Split(' ');
 
