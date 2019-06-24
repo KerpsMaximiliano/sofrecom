@@ -101,6 +101,7 @@ namespace Sofco.DAL
         public DbSet<RefundDetail> RefundDetails { get; set; }
         public DbSet<RefundFile> RefundFiles { get; set; }
         public DbSet<AdvancementRefund> AdvancementRefunds { get; set; }
+        public DbSet<SalaryDiscount> AdvancementSalaryDiscounts { get; set; }
 
         // Common
         public DbSet<File> Files { get; set; }

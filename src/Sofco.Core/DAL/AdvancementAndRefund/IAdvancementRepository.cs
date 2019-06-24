@@ -23,5 +23,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByAdvancementId(IList<int> id);
         IList<Advancement> GetAllApproved(int workflowStatusApproveId, AdvancementType viaticumId);
         int GetRefundWithLastRefundMarkedCount(int advancementId, int refundId);
+        IList<Advancement> GetSalaryResume(int settingsSalaryWorkflowId, int settingsWorkflowStatusApproveId);
     }
 }

@@ -204,5 +204,15 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Where(x => x.AdvancementId == advancementId && x.RefundId != refundId)
                 .Count(x => x.Refund.LastRefund);
         }
+
+        public IList<Advancement> GetSalaryResume(int salaryWorkflowId, int workflowStatusApproveId)
+        {
+            return context.Advancements
+                .Include(x => x.Discounts)
+                .Include(x => x.UserApplicant)
+                .Where(x =>x.Type == (AdvancementType) salaryWorkflowId && x.StatusId == workflowStatusApproveId &&
+                           (!x.Discounts.Any() || x.Ammount > x.Discounts.Sum(s => s.Amount)))
+                .ToList();
+        }
     }
 }
