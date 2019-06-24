@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -23,6 +24,7 @@ namespace Sofco.Framework.FileManager.WorkTime
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<WorkTimeImportImportFileManager> logger;
         private readonly IUserData userData;
+        private readonly IHostingEnvironment environment;
 
         private IList<int> TaskIds { get; set; }
 
@@ -42,11 +44,12 @@ namespace Sofco.Framework.FileManager.WorkTime
 
         private readonly bool validatePeriodCloseMonth;
 
-        public WorkTimeImportImportFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeImportImportFileManager> logger, IUserData userData, ISettingData settingData)
+        public WorkTimeImportImportFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeImportImportFileManager> logger, IUserData userData, ISettingData settingData, IHostingEnvironment environment)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
+            this.environment = environment;
 
             WorkTimesToAdd = new List<Domain.Models.WorkTimeManagement.WorkTime>();
             UserMails = new Dictionary<string, int>();
@@ -96,13 +99,13 @@ namespace Sofco.Framework.FileManager.WorkTime
                     var reference = sheet.GetValue(i, 6)?.ToString();
                     var comments = sheet.GetValue(i, 7)?.ToString();
 
-                    if (IsValidDate(date, out var datetime)) date = datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR"));
+                    if (IsValidDate(date, out var datetime)) date = datetime.ToString("dd/MM/yyyy");
 
                     var employee = Employees.SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNumber));
 
                     if (!ValidateEmployee(response, employee, employeeNumber, i, employeeDesc, date)) continue;
 
-                    if (!ValidateDate(response, employee, datetime, i, employeeNumber, employeeDesc)) continue;
+                    if (!ValidateDate(response, employee, date, i, employeeNumber, employeeDesc)) continue;
 
                     if (!ValidateHours(response, employee, datetime, settingHour, i, employeeNumber, employeeDesc, hour)) continue;
 
@@ -195,7 +198,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                 }
                 else
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, date.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, date.ToString("dd/MM/yyyy"));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportUserWithEmailNull;
                     response.Data.Add(item);
                 }
@@ -224,7 +227,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             {
                 if (string.IsNullOrWhiteSpace(hour))
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportHoursNull;
                     response.Data.Add(item);
 
@@ -242,7 +245,7 @@ namespace Sofco.Framework.FileManager.WorkTime
 
                 if (hours + Convert.ToDecimal(hour) + hoursAlreadyAdded > Convert.ToDecimal(settingHour.Value))
                 {
-                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
+                    var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                     item.Error = Resources.WorkTimeManagement.WorkTime.ImportHoursExceed;
                     response.Data.Add(item);
 
@@ -277,35 +280,37 @@ namespace Sofco.Framework.FileManager.WorkTime
 
             if (string.IsNullOrWhiteSpace(date)) return false;
 
-            if (DateTime.TryParse(date,
-                System.Globalization.CultureInfo.GetCultureInfo("es-AR"),
-                System.Globalization.DateTimeStyles.None, out datetime))
+            var dataSplit = date.Split(' ');
+
+            if (dataSplit.Length != 1 && dataSplit.Length != 4 && dataSplit.Length != 3) return false;
+
+            var split = dataSplit[0].Split('/');
+            if (split.Length != 3) return false;
+
+            try
             {
-                var dataSplit = date.Split(' ');
-
-                if (dataSplit.Length != 1 && dataSplit.Length != 4 && dataSplit.Length != 3) return false;
-
-                var split = dataSplit[0].Split('/');
-                if (split.Length != 3) return false;
-
-                try
+                if (environment.IsEnvironment("Development"))
                 {
                     datetime = new DateTime(Convert.ToInt32(split[2]), Convert.ToInt32(split[1]), Convert.ToInt32(split[0]));
                 }
-                catch (Exception e)
+                else
                 {
-                    return false;
+                    datetime = new DateTime(Convert.ToInt32(split[2]), Convert.ToInt32(split[0]), Convert.ToInt32(split[1]));
                 }
+            }
+            catch (Exception e)
+            {
+                return false;
             }
 
             return true;
         }
 
-        private bool ValidateDate(Response<IList<WorkTimeImportResult>> response, Employee employee, DateTime datetime, int i, string employeeNumber, string employeeDesc)
+        private bool ValidateDate(Response<IList<WorkTimeImportResult>> response, Employee employee, string date, int i, string employeeNumber, string employeeDesc)
         {
-            if (datetime == DateTime.MinValue)
+            if (!IsValidDate(date, out var datetime))
             {
-                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
+                var item = FillItemResult(i, employeeNumber, employeeDesc, date);
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateNull;
                 response.Data.Add(item);
 
@@ -321,7 +326,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     }
                     else
                     {
-                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
+                        var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                         item.Error = Resources.WorkTimeManagement.WorkTime.ImportDatesOutOfRange;
                         response.Data.Add(item);
 
@@ -343,7 +348,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             if (datetime.DayOfWeek == DayOfWeek.Saturday || datetime.DayOfWeek == DayOfWeek.Sunday ||
                 Holidays.Any(x => x.Date.Date == datetime.Date))
             {
-                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
+                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateWrong;
                 response.Data.Add(item);
 
@@ -353,7 +358,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             if (employee.Licenses.Any(x =>
                 datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date))
             {
-                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.GetCultureInfo("es-AR")));
+                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportEmployeeWithLicense;
                 response.Data.Add(item);
 
