@@ -479,9 +479,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 totalCost += employee.monthsCost[index].value;
                 totalSalary += employee.monthsCost[index].value;
             }
-            if (employee.monthsCost[index].charges) {
-                totalCost += employee.monthsCost[index].charges
-            }
+            // if (employee.monthsCost[index].charges) {
+            //     totalCost += employee.monthsCost[index].charges
+            // }
         })
 
         //Sumo los sueldos de los perfiles
@@ -520,16 +520,16 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalSalary * 0.51;
     }
 
-    calculateAllPrepaid(month) {
-        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
-        var totalPrepaid = 0
-        this.employees.forEach(employee => {
-            if (employee.monthsCost[index].charges) {
-                totalPrepaid += employee.monthsCost[index].charges
-            }
-        })
-        return totalPrepaid
-    }
+    // calculateAllPrepaid(month) {
+    //     const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
+    //     var totalPrepaid = 0
+    //     this.employees.forEach(employee => {
+    //         if (employee.monthsCost[index].charges) {
+    //             totalPrepaid += employee.monthsCost[index].charges
+    //         }
+    //     })
+    //     return totalPrepaid
+    // }
 
     EditItemOnClose() {
 
