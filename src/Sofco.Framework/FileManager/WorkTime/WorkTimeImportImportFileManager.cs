@@ -105,7 +105,7 @@ namespace Sofco.Framework.FileManager.WorkTime
 
                     if (!ValidateEmployee(response, employee, employeeNumber, i, employeeDesc, date)) continue;
 
-                    if (!ValidateDate(response, employee, date, i, employeeNumber, employeeDesc)) continue;
+                    if (!ValidateDate(response, employee, datetime, i, employeeNumber, employeeDesc)) continue;
 
                     if (!ValidateHours(response, employee, datetime, settingHour, i, employeeNumber, employeeDesc, hour)) continue;
 
@@ -306,11 +306,11 @@ namespace Sofco.Framework.FileManager.WorkTime
             return true;
         }
 
-        private bool ValidateDate(Response<IList<WorkTimeImportResult>> response, Employee employee, string date, int i, string employeeNumber, string employeeDesc)
+        private bool ValidateDate(Response<IList<WorkTimeImportResult>> response, Employee employee, DateTime datetime, int i, string employeeNumber, string employeeDesc)
         {
-            if (!IsValidDate(date, out var datetime))
+            if (datetime == DateTime.MinValue)
             {
-                var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateNull;
                 response.Data.Add(item);
 
@@ -355,8 +355,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                 return false;
             }
 
-            if (employee.Licenses.Any(x =>
-                datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date))
+            if (employee.Licenses.Any(x => datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date && x.Status != LicenseStatus.Cancelled && x.Status != LicenseStatus.Rejected))
             {
                 var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportEmployeeWithLicense;
