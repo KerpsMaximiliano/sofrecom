@@ -65,12 +65,15 @@ namespace Sofco.Framework.FileManager.WorkTime
                 var startDate = period.Item1;
                 var endDate = period.Item2;
                 
+                var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employee.Id, startDate.Date, endDate.Date);
+
                 while (startDate.Date <= endDate.Date)
                 {
                     var firstDayOffMonth = new DateTime(startDate.Year, startDate.Month, 1);
+                    bool hasLicence = licenses.Any(x => startDate.Date >= x.StartDate.Date && startDate.Date <= x.EndDate.Date);
 
                     if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday &&
-                        Holidays.All(x => x.Date.Date != startDate.Date))
+                        Holidays.All(x => x.Date.Date != startDate.Date) && !hasLicence)
                     {
                         if (employee.Allocations.Any(x => x.StartDate.Date == firstDayOffMonth.Date && x.Percentage > 0 && x.AnalyticId == analyticId))
                         {
