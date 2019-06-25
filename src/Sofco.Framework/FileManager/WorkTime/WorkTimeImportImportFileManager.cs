@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -23,6 +24,7 @@ namespace Sofco.Framework.FileManager.WorkTime
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<WorkTimeImportImportFileManager> logger;
         private readonly IUserData userData;
+        private readonly IHostingEnvironment environment;
 
         private IList<int> TaskIds { get; set; }
 
@@ -42,11 +44,12 @@ namespace Sofco.Framework.FileManager.WorkTime
 
         private readonly bool validatePeriodCloseMonth;
 
-        public WorkTimeImportImportFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeImportImportFileManager> logger, IUserData userData, ISettingData settingData)
+        public WorkTimeImportImportFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeImportImportFileManager> logger, IUserData userData, ISettingData settingData, IHostingEnvironment environment)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
+            this.environment = environment;
 
             WorkTimesToAdd = new List<Domain.Models.WorkTimeManagement.WorkTime>();
             UserMails = new Dictionary<string, int>();
@@ -62,12 +65,12 @@ namespace Sofco.Framework.FileManager.WorkTime
         {
             var settingHour = unitOfWork.SettingRepository.GetByKey(SettingConstant.WorkingHoursPerDaysMaxKey);
             var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
-             
+
             TaskIds = unitOfWork.TaskRepository.GetAllIds();
             Employees = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(analyticId);
             FillHolidays(closeDates);
             RowsAdded = 0;
-         
+
             response.Data = new List<WorkTimeImportResult>();
 
             var excel = new ExcelPackage(memoryStream);
@@ -97,12 +100,12 @@ namespace Sofco.Framework.FileManager.WorkTime
                     var comments = sheet.GetValue(i, 7)?.ToString();
 
                     if (IsValidDate(date, out var datetime)) date = datetime.ToString("dd/MM/yyyy");
-               
+
                     var employee = Employees.SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNumber));
 
                     if (!ValidateEmployee(response, employee, employeeNumber, i, employeeDesc, date)) continue;
 
-                    if (!ValidateDate(response, employee, date, i, employeeNumber, employeeDesc)) continue;
+                    if (!ValidateDate(response, employee, datetime, i, employeeNumber, employeeDesc)) continue;
 
                     if (!ValidateHours(response, employee, datetime, settingHour, i, employeeNumber, employeeDesc, hour)) continue;
 
@@ -286,7 +289,14 @@ namespace Sofco.Framework.FileManager.WorkTime
 
             try
             {
-                datetime = new DateTime(Convert.ToInt32(split[2]), Convert.ToInt32(split[1]), Convert.ToInt32(split[0]));
+                if (environment.IsEnvironment("Development"))
+                {
+                    datetime = new DateTime(Convert.ToInt32(split[2]), Convert.ToInt32(split[1]), Convert.ToInt32(split[0]));
+                }
+                else
+                {
+                    datetime = new DateTime(Convert.ToInt32(split[2]), Convert.ToInt32(split[0]), Convert.ToInt32(split[1]));
+                }
             }
             catch (Exception e)
             {
@@ -296,11 +306,11 @@ namespace Sofco.Framework.FileManager.WorkTime
             return true;
         }
 
-        private bool ValidateDate(Response<IList<WorkTimeImportResult>> response, Employee employee, string date, int i, string employeeNumber, string employeeDesc)
+        private bool ValidateDate(Response<IList<WorkTimeImportResult>> response, Employee employee, DateTime datetime, int i, string employeeNumber, string employeeDesc)
         {
-            if (!IsValidDate(date, out var datetime))
+            if (datetime == DateTime.MinValue)
             {
-                var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportDateNull;
                 response.Data.Add(item);
 
@@ -345,8 +355,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                 return false;
             }
 
-            if (employee.Licenses.Any(x =>
-                datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date))
+            if (employee.Licenses.Any(x => datetime.Date >= x.StartDate.Date && datetime.Date <= x.EndDate.Date && x.Status != LicenseStatus.Cancelled && x.Status != LicenseStatus.Rejected))
             {
                 var item = FillItemResult(i, employeeNumber, employeeDesc, datetime.ToString("dd/MM/yyyy"));
                 item.Error = Resources.WorkTimeManagement.WorkTime.ImportEmployeeWithLicense;
