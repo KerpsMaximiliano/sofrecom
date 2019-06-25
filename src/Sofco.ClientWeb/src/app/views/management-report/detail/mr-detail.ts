@@ -110,6 +110,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.ManagementReportId = response.data.managementReportId;
             this.marginTracking.model = response.data;
 
+            this.billing.manamementReportStartDate = this.model.manamementReportStartDate
+            this.billing.manamementReportEndDate = this.model.manamementReportEndDate
+
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
 
             this.billing.init(this.serviceId);

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, EventEmitter, Output } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, EventEmitter, Output, Input } from "@angular/core";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { Subscription } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
@@ -23,7 +23,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     updateHitoSubscrip: Subscription;
     getHitoSubscrip: Subscription;
     updateDataSubscrip: Subscription;
-    
+
     months: any[] = new Array();
     hitos: any[] = new Array();
     currencies: any[] = new Array();
@@ -56,9 +56,12 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     fromMonth: Date = new Date()
     readOnly: boolean = false;
 
+    @Input() manamementReportStartDate: any
+    @Input() manamementReportEndDate: any
+
     @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
     @Output() getData: EventEmitter<any> = new EventEmitter();
- 
+
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "billing.project.detail.milestone.splitTitle",
@@ -135,7 +138,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     init(serviceId) {
         this.messageService.showLoading();
         this.hitos = new Array();
-        
+
         this.getBillingSubscrip = this.managementReportService.getBilling(serviceId).subscribe(response => {
 
             this.managerId = response.data.managerId;
@@ -178,7 +181,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         });
     }
 
-    sendDataToDetailView(){
+    sendDataToDetailView() {
         if (this.getData.observers.length > 0) {
             this.getData.emit({
                 totals: this.totals,
@@ -251,26 +254,28 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 values: []
             };
 
-            this.getHito(month, year, hito, model);            
+            this.getHito(month, year, hito, model);
         },
-        error => this.newHitoModal.resetButtons());
+            error => this.newHitoModal.resetButtons());
     }
 
-    getHito(month, year, hito, model){
+    getHito(month, year, hito, model) {
+        var addToReport = false
+
         this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
 
             this.months.forEach(monthRow => {
-                var monthValue = { 
-                                    month: monthRow.month, 
-                                    year: monthRow.year, 
-                                    monthYear: monthRow.monthYear, 
-                                    value: null, 
-                                    valuePesos: null, 
-                                    oldValue: null, 
-                                    status: null, 
-                                    originalValue: null, 
-                                    originalValuePesos: null  
-                                };
+                var monthValue = {
+                    month: monthRow.month,
+                    year: monthRow.year,
+                    monthYear: monthRow.monthYear,
+                    value: null,
+                    valuePesos: null,
+                    oldValue: null,
+                    status: null,
+                    originalValue: null,
+                    originalValuePesos: null
+                };
 
                 if (monthRow.month == month && monthRow.year == year) {
                     monthValue.value = model.ammount;
@@ -279,13 +284,20 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     monthValue.originalValue = response.data.amountOriginal;
                     monthValue.originalValuePesos = response.data.baseAmountOriginal;
                     monthValue.status = this.pendingHitoStatus;
+
+                    if (new Date(monthValue.monthYear) >= new Date(this.manamementReportStartDate)
+                        && new Date(monthValue.monthYear) <= new Date(this.manamementReportEndDate)) {
+                        addToReport = true
+                    }
                 }
+
                 hito.values.push(monthValue);
             });
 
-            this.hitos.push(hito);
+            if (addToReport) {
+                this.hitos.push(hito);
+            }
 
-            this.setFromDate(this.monthSelected)
             this.sendDataToDetailView();
         });
     }
@@ -311,7 +323,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 monthValue.value -= hitoMonth.oldValue;
                 monthValue.value += hitoMonth.value;
             }
-        } 
+        }
 
         var json = {
             id: hito.id,
@@ -332,17 +344,17 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 this.sendDataToDetailView();
             });
         },
-        error => {
-            if (monthValue) {
-                monthValue.value -= hitoMonth.value;
-                monthValue.value += hitoMonth.oldValue;
-            }
+            error => {
+                if (monthValue) {
+                    monthValue.value -= hitoMonth.value;
+                    monthValue.value += hitoMonth.oldValue;
+                }
 
-            hitoMonth.value = hitoMonth.oldValue;
-            this.hitoSelected.description = descAux;
+                hitoMonth.value = hitoMonth.oldValue;
+                this.hitoSelected.description = descAux;
 
-            this.editItemValueModal.hide();
-        });
+                this.editItemValueModal.hide();
+            });
 
         this.editItemValueModal.hide();
     }
@@ -374,7 +386,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
                 this.sendDataToDetailView();
             },
-            error => this.messageService.closeLoading());
+                error => this.messageService.closeLoading());
         });
     }
 
@@ -430,13 +442,13 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     totals.totalBilling += value.valuePesos;
                 }
 
-                if(value.originalValuePesos){
+                if (value.originalValuePesos) {
                     totals.totalProvisioned += value.originalValuePesos;
                 }
             }
         });
 
-        totals.provision = totals.totalProvisioned-totals.totalBilling;
+        totals.provision = totals.totalProvisioned - totals.totalBilling;
 
         return totals;
     }
@@ -458,41 +470,41 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.monthSelectedCurrency = hito.currencyName;
     }
 
-    openEditEvalProp(month){
+    openEditEvalProp(month) {
         if (this.readOnly) return false;
-        
+
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 1;
             this.openEvalPropModal.emit(month);
         }
     }
 
-    setFromDate(date : Date){
-        this.fromMonth = new Date(date.getFullYear(), date.getMonth() -2, 1)        
+    setFromDate(date: Date) {
+        this.fromMonth = new Date(date.getFullYear(), date.getMonth() - 2, 1)
     }
 
-    openResourceQuantity(month){
+    openResourceQuantity(month) {
         this.monthSelected = month;
         this.updateDataType = ReportBillingUpdateDataType.BilledResources;
         this.billingResourceQuantity = month.resourceQuantity;
         this.editBillingDataModal.show();
     }
 
-    openEvalPropDifferenceModal(month){
+    openEvalPropDifferenceModal(month) {
         this.monthSelected = month;
         this.updateDataType = ReportBillingUpdateDataType.EvalPropDifference;
         this.evalPropDifference = month.evalPropDifference;
         this.editBillingDataModal.show();
     }
 
-    openCommentsModal(month){
+    openCommentsModal(month) {
         this.monthSelected = month;
         this.updateDataType = ReportBillingUpdateDataType.Comments;
         this.billingComments = month.comments;
         this.editBillingDataModal.show();
     }
 
-    updateBillingData(){ 
+    updateBillingData() {
         var json = {
             id: this.monthSelected.billingMonthId,
             evalPropDifference: this.evalPropDifference,
@@ -502,37 +514,37 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             managementReportId: this.managementReportId,
             monthYear: this.monthSelected.monthYear
         }
- 
+
         this.updateDataSubscrip = this.managementReportService.updateBillingData(json).subscribe(response => {
             this.editBillingDataModal.hide();
 
             this.monthSelected.billingMonthId = response.data;
 
-            if(this.updateDataType == ReportBillingUpdateDataType.Comments){
+            if (this.updateDataType == ReportBillingUpdateDataType.Comments) {
                 this.monthSelected.comments = this.billingComments;
             }
 
-            if(this.updateDataType == ReportBillingUpdateDataType.BilledResources){
+            if (this.updateDataType == ReportBillingUpdateDataType.BilledResources) {
                 this.monthSelected.resourceQuantity = this.billingResourceQuantity;
             }
 
-            if(this.updateDataType == ReportBillingUpdateDataType.EvalPropDifference){
+            if (this.updateDataType == ReportBillingUpdateDataType.EvalPropDifference) {
                 this.monthSelected.evalPropDifference = this.evalPropDifference;
             }
 
             this.monthSelected = null;
         },
-        error => this.editBillingDataModal.resetButtons());
+            error => this.editBillingDataModal.resetButtons());
     }
 
-    seeBillingDetail(month){
+    seeBillingDetail(month) {
         var currencies = [];
 
         this.totals.forEach(total => {
 
             var totalMonth = total.monthValues.find(x => x.month == month.month && x.year == month.year);
 
-            if(totalMonth){
+            if (totalMonth) {
                 currencies.push({ currencyName: total.currencyName, value: totalMonth.value });
             }
         });
