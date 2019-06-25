@@ -53,6 +53,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public IList<EmployeeAllocationResume> EmployeesAllocationResume { get; set; }
 
         public bool IsCompleted { get; set; }
+
+        public bool WorkTimeReportByHours { get; set; }
     }
 
     public class EmployeeAllocationResume

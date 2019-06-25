@@ -179,6 +179,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 response.Data.Items = response.Data.Items.Where(e => e.AnalyticId == parameters.AnalyticId).ToList();
             }
 
+            response.Data.EmployeesAllocationResume = response.Data.EmployeesAllocationResume.OrderBy(x => x.Employee).ToList();
+            response.Data.Items = response.Data.Items.OrderBy(x => x.Employee).ToList();
+            response.Data.WorkTimeReportByHours = workTimeReportByHours;
+
             return response;
         }
 
