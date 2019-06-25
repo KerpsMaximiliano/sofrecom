@@ -247,7 +247,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 projectId: project.id,
                 projectName: project.text,
                 currencyId: model.moneyId,
-                description: project.opportunityNumber + " - " + model.name + " - " + currency.text,
+                description: `${project.opportunityNumber} - ${model.name} - ${currency.text}`,
                 values: []
             };
 
@@ -260,8 +260,17 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
 
             this.months.forEach(monthRow => {
-                var monthValue = { month: monthRow.month, year: monthRow.year, value: null, valuePesos: null, 
-                                   oldValue: null, status: null, originalValue: null, originalValuePesos: null  };
+                var monthValue = { 
+                                    month: monthRow.month, 
+                                    year: monthRow.year, 
+                                    monthYear: monthRow.monthYear, 
+                                    value: null, 
+                                    valuePesos: null, 
+                                    oldValue: null, 
+                                    status: null, 
+                                    originalValue: null, 
+                                    originalValuePesos: null  
+                                };
 
                 if (monthRow.month == month && monthRow.year == year) {
                     monthValue.value = model.ammount;
@@ -271,12 +280,12 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     monthValue.originalValuePesos = response.data.baseAmountOriginal;
                     monthValue.status = this.pendingHitoStatus;
                 }
-
                 hito.values.push(monthValue);
             });
 
             this.hitos.push(hito);
 
+            this.setFromDate(this.monthSelected)
             this.sendDataToDetailView();
         });
     }
