@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System;
+using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -8,6 +9,7 @@ using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Domain.Models.AdvancementAndRefund;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
 {
@@ -47,21 +49,21 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     model.UserName = advancement.UserApplicant.Name;
                     model.TotalAmount = advancement.Ammount;
                     model.DiscountedAmount = advancement.Discounts.Sum(x => x.Amount);
+                    model.Advancements = new List<SalaryAdvancementModelItem>();
 
-                    //SalaryAdvancementModelItem
-                    //SalaryDiscountModel
-
-                    model.Advancements = advancement.Discounts.Select(x => new SalaryAdvancementModelItem
+                    model.Advancements.Add(new SalaryAdvancementModelItem
                     {
                         AdvancementId = advancement.Id,
                         ReturnForm = advancement.AdvancementReturnForm,
+                        Total = advancement.Ammount,
                         Discounts = advancement.Discounts.Select(s => new SalaryDiscountModel
                         {
                             Date = s.Date,
+                            Id = s.Id,
                             Amount = s.Amount
                         }).ToList()
 
-                    }).ToList();
+                    });
 
                     response.Data.Add(model);
                 }
@@ -70,18 +72,110 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     modelExist.TotalAmount += advancement.Ammount;
                     modelExist.DiscountedAmount += advancement.Discounts.Sum(x => x.Amount);
 
-                    modelExist.Advancements = advancement.Discounts.Select(x => new SalaryAdvancementModelItem
+                    if(modelExist.Advancements == null) modelExist.Advancements = new List<SalaryAdvancementModelItem>();
+
+                    modelExist.Advancements.Add(new SalaryAdvancementModelItem
                     {
                         AdvancementId = advancement.Id,
                         ReturnForm = advancement.AdvancementReturnForm,
+                        Total = advancement.Ammount,
                         Discounts = advancement.Discounts.Select(s => new SalaryDiscountModel
                         {
                             Date = s.Date,
+                            Id = s.Id,
                             Amount = s.Amount
                         }).ToList()
 
-                    }).ToList();
+                    });
                 }
+            }
+
+            return response;
+        }
+
+        public Response<SalaryDiscountModel> Add(SalaryDiscountAddModel model)
+        {
+            var response = new Response<SalaryDiscountModel>();
+
+            if(!model.Date.HasValue)
+                response.AddError(Resources.AdvancementAndRefund.Advancement.SalaryDateRequired);
+
+            if(!model.Amount.HasValue || model.Amount < 0)
+                response.AddError(Resources.AdvancementAndRefund.Advancement.SalaryAmountRequired);
+
+            var advancement = unitOfWork.AdvancementRepository.GetWithDiscounts(model.AdvancementId);
+
+            if(advancement == null)
+                response.AddError(Resources.AdvancementAndRefund.Advancement.NotFound);
+
+            if (response.HasErrors()) return response;
+
+            var discount = model.Amount.GetValueOrDefault();
+
+            if (advancement.Discounts != null && advancement.Discounts.Any())
+            {
+                discount += advancement.Discounts.Sum(x => x.Amount);
+            }
+
+            if (advancement.Ammount < discount)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.SalaryAmountGreaterThanTotalAdvancement);
+                return response;
+            }
+
+            try
+            {
+                var domain = new SalaryDiscount
+                {
+                    Date = model.Date.GetValueOrDefault().Date,
+                    Amount = model.Amount.GetValueOrDefault(),
+                    AdvancementId = model.AdvancementId
+                };
+
+                unitOfWork.AdvancementRepository.AddSalaryDiscount(domain);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Advancement.SalaryAdvancementAdded);
+
+                response.Data = new SalaryDiscountModel
+                {
+                    Id = domain.Id,
+                    Date = domain.Date,
+                    Amount = domain.Amount
+                };
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response Delete(int id)
+        {
+            var response = new Response();
+
+            var salaryDiscount = unitOfWork.AdvancementRepository.GetSalaryDiscount(id);
+
+            if (salaryDiscount == null)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Advancement.SalaryDiscountNotFound);
+                return response;
+            }
+
+            try
+            {
+                unitOfWork.AdvancementRepository.DeleteSalaryDiscount(salaryDiscount);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.AdvancementAndRefund.Advancement.SalaryAdvancementDeleted);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;

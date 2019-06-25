@@ -25,12 +25,25 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
         public string ReturnForm { get; set; }
 
         public IList<SalaryDiscountModel> Discounts { get; set; }
+
+        public decimal Total { get; set; }
     }
 
     public class SalaryDiscountModel
     {
+        public int Id { get; set; }
+
         public DateTime Date { get; set; }
 
         public decimal Amount { get; set; }
+    }
+
+    public class SalaryDiscountAddModel
+    {
+        public int AdvancementId { get; set; }
+
+        public DateTime? Date { get; set; }
+
+        public decimal? Amount { get; set; }
     }
 }

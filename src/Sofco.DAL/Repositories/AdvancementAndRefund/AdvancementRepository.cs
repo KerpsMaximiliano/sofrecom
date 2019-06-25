@@ -214,5 +214,25 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                            (!x.Discounts.Any() || x.Ammount > x.Discounts.Sum(s => s.Amount)))
                 .ToList();
         }
+
+        public Advancement GetWithDiscounts(int advancementId)
+        {
+            return context.Advancements.Include(x => x.Discounts).SingleOrDefault(x => x.Id == advancementId);
+        }
+
+        public void AddSalaryDiscount(SalaryDiscount domain)
+        {
+            context.AdvancementSalaryDiscounts.Add(domain);
+        }
+
+        public SalaryDiscount GetSalaryDiscount(int id)
+        {
+            return context.AdvancementSalaryDiscounts.SingleOrDefault(x => x.Id == id);
+        }
+
+        public void DeleteSalaryDiscount(SalaryDiscount salaryDiscount)
+        {
+            context.AdvancementSalaryDiscounts.Remove(salaryDiscount);
+        }
     }
 }
