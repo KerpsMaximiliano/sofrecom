@@ -72,10 +72,19 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('editItemModal') editItemModal;
-
     public editItemModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Editar Monto",
         "editItemModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
+    @ViewChild('editResourceQuantity') editResourceQuantityModal;
+    public editResourceQuantityConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Editar Costos",
+        "editResourceQuantity",
         true,
         true,
         "ACTIONS.ACCEPT",
@@ -445,27 +454,27 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalSalary
     }
 
-    calculateAssignedEmployees(month) {
-        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
-        var totalEmployees = 0;
-        this.employees.forEach(employee => {
-            if (employee.monthsCost[index].value) {
-                if (employee.monthsCost[index].value > 0) {
-                    totalEmployees++
-                }
-            }
-        })
+    // calculateAssignedEmployees(month) {
+    //     const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
+    //     var totalEmployees = 0;
+    //     this.employees.forEach(employee => {
+    //         if (employee.monthsCost[index].value) {
+    //             if (employee.monthsCost[index].value > 0) {
+    //                 totalEmployees++
+    //             }
+    //         }
+    //     })
 
-        this.costProfiles.forEach(Profile => {
-            if (Profile.monthsCost[index].value) {
-                if (Profile.monthsCost[index].value > 0) {
-                    totalEmployees++
-                }
-            }
-        })
+    //     this.costProfiles.forEach(Profile => {
+    //         if (Profile.monthsCost[index].value) {
+    //             if (Profile.monthsCost[index].value > 0) {
+    //                 totalEmployees++
+    //             }
+    //         }
+    //     })
 
-        return totalEmployees
-    }
+    //     return totalEmployees
+    // }
 
     calculateTotalCosts(month) {
 
@@ -756,6 +765,34 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         }
 
         this.othersByMonth.push(resource)
+    }
+
+    openEditResourceQuantity(month) {
+        this.monthSelected = month
+        this.editResourceQuantityModal.show()
+    }
+
+    updateResourceQuantity() {
+        this.updateCostSubscrip = this.managementReportService.updateQuantityResources(this.monthSelected.billingMonthId, parseInt(this.monthSelected.resourceQuantity)).subscribe(
+            () => {
+                this.editResourceQuantityModal.hide()
+                this.sendDataToDetailView()
+                this.messageService.closeLoading();
+            },
+            () => {
+                this.editResourceQuantityModal.hide()
+                this.messageService.closeLoading();
+            });
+    }
+
+    setResourceQuantity(months){
+     
+        months.forEach(month => {
+            var monthValue = this.months.find(x => x.month == month.month && x.year == month.year);
+            if (monthValue) {
+                monthValue.resourceQuantity = month.resourceQuantity;
+            }
+        });
     }
 }
 

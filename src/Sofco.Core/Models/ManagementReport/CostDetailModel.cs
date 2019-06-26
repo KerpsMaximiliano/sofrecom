@@ -31,6 +31,7 @@ namespace Sofco.Core.Models.ManagementReport
         public string Description { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
+        public int ResourceQuantity { get; set; }
     }
     
     public class CostResource

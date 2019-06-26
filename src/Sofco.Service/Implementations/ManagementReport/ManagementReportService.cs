@@ -337,7 +337,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.ManagementReportId = analytic.ManagementReport.Id;
 
                 var dates = SetDates(analytic);
-                
+
                 var managementReport = unitOfWork.ManagementReportRepository.GetById(analytic.ManagementReport.Id);
                 var costDetails = managementReport.CostDetails;
                 var billings = unitOfWork.ManagementReportBillingRepository.GetByManagementReportAndDates(analytic.ManagementReport.Id, dates.Item1.Date, dates.Item2.Date);
@@ -356,6 +356,20 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         monthHeader.ValueEvalProp = billingMonth.EvalPropExpenseValue;
                         monthHeader.BillingMonthId = billingMonth.Id;
+
+                        var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
+
+                        if (billingMonth.BilledResources > 0)
+                        {
+                            monthHeader.ResourceQuantity = billingMonth.BilledResources;
+                        }
+                        else
+                        {
+                            if (costDetailMonth != null)
+                            {
+                                monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
+                            }
+                        }
                     }
 
                     response.Data.MonthsHeader.Add(monthHeader);
@@ -832,7 +846,7 @@ namespace Sofco.Service.Implementations.ManagementReport
         private List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, ICollection<CostDetail> costDetails)
         {
             List<CostResourceEmployee> costEmployees = new List<CostResourceEmployee>();
-            
+
             //Obtengo los empleados de la analitica
             var EmployeesAnalytic = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(IdAnalytic);
 
@@ -859,7 +873,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 detailEmployee.Display = employee.Name + " - " + employee.EmployeeNumber;
                 //detailEmployee.TypeId = EmployeeType.Id;
                 detailEmployee.TypeName = EnumCostDetailType.Empleados.ToString();
-                
+
                 foreach (var mounth in Months)
                 {
                     var monthDetail = new MonthDetailCost();
@@ -876,7 +890,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthDetail.Charges = monthValue.Charges;
                             monthValue.Adjustment = monthValue.Adjustment;
                             monthDetail.Id = monthValue.Id;
-                        }                      
+                        }
                     }
 
                     monthDetail.Display = mounth.Display;
@@ -1025,7 +1039,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 {
                     var month = new MonthDetailCost();
                     month.MonthYear = date;
-                  
+
                     MonthsAnalytic.Add(month);
                 }
 
@@ -1217,11 +1231,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                     month.Adjustment = 0;
 
                     var exist = resourcesCosts
-                                    .Where(e => e.EmployeeId == resource.EmployeeId 
+                                    .Where(e => e.EmployeeId == resource.EmployeeId
                                             && new DateTime(e.CostDetail.MonthYear.Year, e.CostDetail.MonthYear.Month, 1).Date == date.Date)
                                     .FirstOrDefault();
 
-                    if(exist != null)
+                    if (exist != null)
                     {
                         month.Id = exist.Id;
                     }

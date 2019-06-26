@@ -133,5 +133,28 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             return response;
         }
+
+        public Response UpdateQuantityResources(int idBilling, int quantityResources)
+        {
+            var response = new Response();                
+            try
+            {
+                ManagementReportBilling entity = unitOfWork.ManagementReportBillingRepository.Get(idBilling);
+
+                entity.BilledResources = quantityResources;
+
+                unitOfWork.ManagementReportBillingRepository.Update(entity);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReportBilling.ValueUpdated);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
     }
 }

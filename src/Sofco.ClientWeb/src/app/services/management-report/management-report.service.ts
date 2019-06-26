@@ -72,4 +72,9 @@ export class ManagementReportService {
       return new Blob([res.body], { type: 'application/octet-stream' });
     }));
   }
+
+  updateQuantityResources(idBilling, quantityResources) {
+    return this.http.put<any>(`${this.baseUrl}/managementReportBillings/${idBilling}/billedResources`, quantityResources);
+  }
+
 }
