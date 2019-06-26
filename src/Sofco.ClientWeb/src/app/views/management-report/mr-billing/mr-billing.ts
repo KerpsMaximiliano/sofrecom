@@ -10,6 +10,7 @@ import { MessageService } from "app/services/common/message.service";
 
 import { FormControl, Validators } from "@angular/forms";
 import { ReportBillingUpdateDataType } from "app/models/enums/ReportBillingUpdateDataType";
+import { detectBody } from "app/app.helpers";
 
 @Component({
     selector: 'management-report-billing',
@@ -531,8 +532,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             if (this.updateDataType == ReportBillingUpdateDataType.EvalPropDifference) {
                 this.monthSelected.evalPropDifference = this.evalPropDifference;
             }
-
+            
             this.monthSelected = null;
+            this.sendDataToDetailView()
         },
             error => this.editBillingDataModal.resetButtons());
     }
@@ -556,5 +558,15 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         };
 
         this.billingDetailModal.show();
+    }
+
+    setResourceQuantity(months){
+        months.forEach(month => {
+            var monthValue = this.months.find(x => x.month == month.month && x.year == month.year);
+
+            if (monthValue) {
+                monthValue.resourceQuantity = month.resourceQuantity;
+            }
+        });
     }
 }

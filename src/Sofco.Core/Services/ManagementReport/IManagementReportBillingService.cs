@@ -8,5 +8,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response<int> Update(UpdateValueModel model);
 
         Response<int> UpdateData(UpdateBillingDataModel model);
+
+        Response UpdateQuantityResources(int idBilling, int quantityResources);
     }
 }

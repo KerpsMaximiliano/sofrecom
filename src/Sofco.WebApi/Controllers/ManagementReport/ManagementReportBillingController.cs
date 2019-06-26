@@ -32,5 +32,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("{idBilling}/billedResources")]
+        public IActionResult PutQuantityResources(int idBilling, [FromBody] int quantityResources)
+        {
+            var response = managementReportBillingService.UpdateQuantityResources(idBilling, quantityResources);
+
+            return this.CreateResponse(response);
+        }
     }
 }

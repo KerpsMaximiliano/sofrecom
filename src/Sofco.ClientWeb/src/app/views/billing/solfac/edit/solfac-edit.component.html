@@ -210,20 +210,20 @@
                                 <table class="table invoice-table">
                                     <thead>
                                         <tr>
-                                            <th></th>
-                                            <th class="text-center">{{'billing.solfac.hito' | translate }}</th>
-                                            <th class="text-center">{{'billing.solfac.milestone.detail' | translate }}</th>
-                                            <th class="text-center">{{'billing.solfac.milestone.quantity' | translate }}</th>
-                                            <th class="text-center">{{'billing.solfac.milestone.unitPrice' | translate }}</th>
-                                            <th class="text-center">{{'billing.solfac.milestone.total' | translate }}</th>
+                                            <th class="col-xs-1"></th>
+                                            <th class="text-center col-xs-2">{{'billing.solfac.hito' | translate }}</th>
+                                            <th class="text-center col-xs-6">{{'billing.solfac.milestone.detail' | translate }}</th>
+                                            <th class="text-center col-xs-1">{{'billing.solfac.milestone.quantity' | translate }}</th>
+                                            <th class="text-center col-xs-1">{{'billing.solfac.milestone.unitPrice' | translate }}</th>
+                                            <th class="text-center col-xs-1">{{'billing.solfac.milestone.total' | translate }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let detail of model.details; let i = index">
-                                            <td class="text-center" style="width: 45px; min-width: 45px">
+                                            <td class="text-center">
                                                 <button class="btn btn-danger btn-xs" (click)="openDeleteDetail(detail, i)" type="button"><i class="fa fa-trash fa-2x"></i></button>
                                             </td>
-                                            <td style="width: 145px; min-width: 145px">
+                                            <td>
                                                 <select class="form-control input-sm" [(ngModel)]="detail.externalHitoId">
                                                     <option *ngFor="let hito of model.hitos" [value]="hito?.externalHitoId">{{hito?.description}}</option>
                                                 </select>
@@ -231,13 +231,13 @@
                                             <td>
                                                 <textarea rows="4" class="form-control" [(ngModel)]="detail.description"></textarea>
                                             </td>
-                                            <td style="width: 45px; min-width: 45px">
+                                            <td>
                                                 <input type="number" class="form-control input-sm" [(ngModel)]="detail.quantity" (ngModelChange)="calculateTotal(detail)">
                                             </td>
-                                            <td style="width: 135px; min-width: 135px">
+                                            <td>
                                                 <input type="number" class="form-control input-sm" [(ngModel)]="detail.unitPrice" decimalFormat (ngModelChange)="calculateTotal(detail)">
                                             </td>
-                                            <td style="width: 135px; min-width: 135px" class="detail-total">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
+                                            <td class="detail-total">{{ currencySymbol }} {{ detail.total | number: '1.2-2' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
