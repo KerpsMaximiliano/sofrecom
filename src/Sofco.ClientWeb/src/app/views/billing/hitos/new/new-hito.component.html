@@ -17,8 +17,10 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <label class="control-label">{{ 'billing.project.detail.milestone.amount' | translate }}</label>
-            <input type="number" decimalFormat class="form-control" [(ngModel)]="hito.ammount">
+            <div class="form-group">
+                <label class="control-label">{{ 'billing.project.detail.milestone.amount' | translate }}</label>
+                <input type="number" decimalFormat class="form-control" [(ngModel)]="hito.ammount">
+            </div>
         </div>
     </div>
 

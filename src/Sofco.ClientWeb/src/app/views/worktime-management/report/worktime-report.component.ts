@@ -34,6 +34,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     public isCompleted: boolean = false;
     public isMissingData: boolean = false;
     public exportTigerVisible: boolean = false;
+    public workTimeReportByHours: boolean = true;
 
     searchSubscrip: Subscription;
     getResourcesSubscrip: Subscription;
@@ -122,6 +123,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data.items;
+            this.workTimeReportByHours = response.data.workTimeReportByHours;
 
             if(this.data.length > 0){
                 this.isCompleted = response.data.isCompleted;

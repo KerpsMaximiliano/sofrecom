@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.WorktimeManagement;
-using Sofco.Core.DAL;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.WorkTimeManagement;
 using Sofco.Domain;
@@ -11,6 +8,9 @@ using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
 {
@@ -179,6 +179,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 response.Data.Items = response.Data.Items.Where(e => e.AnalyticId == parameters.AnalyticId).ToList();
             }
 
+            response.Data.EmployeesAllocationResume = response.Data.EmployeesAllocationResume.OrderBy(x => x.Employee).ToList();
+            response.Data.Items = response.Data.Items.OrderBy(x => x.Employee).ToList();
+            response.Data.WorkTimeReportByHours = workTimeReportByHours;
+
             return response;
         }
 
@@ -346,14 +350,25 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             while (startDate.Date <= endDate.Date)
             {
-                if (allocation.StartDate.Month == startDate.Month)
+                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday &&
+                    holidays.All(x => x.Date.Date != startDate.Date) && allocation.Employee.StartDate.Date <= startDate.Date)
                 {
-                    if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday && holidays.All(x => x.Date.Date != startDate.Date))
-                        businessDays++;
-                }
+                    if (allocation.Employee.EndDate.HasValue)
+                    {
+                        if (allocation.Employee.EndDate.Value.Date >= startDate.Date)
+                        {
+                            if (allocation.StartDate.Month == startDate.Month) businessDays++;
 
-                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday && holidays.All(x => x.Date.Date != startDate.Date))
-                    allBusinessDays++;
+                            allBusinessDays++;
+                        }
+                    }
+                    else
+                    {
+                        if (allocation.StartDate.Month == startDate.Month) businessDays++;
+
+                        allBusinessDays++;
+                    }
+                }
 
                 startDate = startDate.AddDays(1);
             }

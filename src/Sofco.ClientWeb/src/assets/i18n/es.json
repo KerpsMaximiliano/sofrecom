@@ -1119,6 +1119,7 @@
         "bank": "Banco",
         "advancementRelated": "Adelantos relacionados",
         "userCurrentAccountDetail": "Detalle de adelantos y reintegros",
+        "salaryDiscountAdd": "Agregar devolución",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",

@@ -24,5 +24,11 @@
     "cannotLoad": "Su superior no tiene privilegios para autorizar un adelanto. Por favor comuniquese con recursos humanos",
     "startDateReturnLessThanToday": "La fecha aproximada de devolucion no puede ser menor a hoy",
     "cannotDelete": "Solo se puede borrar en estado borrador o rechazado",
-    "deleteSuccess": "El adelanto fue eliminado correctamente"
+    "deleteSuccess": "El adelanto fue eliminado correctamente",
+    "salaryDateRequired": "La fecha de devolución es requerida",
+    "salaryAmountRequired": "El monto de devolución es requerido",
+    "salaryAdvancementAdded": "La devolución fue agregada correctamente",
+    "salaryAmountGreaterThanTotalAdvancement": "El monto de las devoluciónes no puede superar el monto del adelanto",
+    "salaryDiscountNotFound": "La devolución no fue encontrada",
+    "salaryAdvancementDeleted": "La devolución fue eliminada correctamente"
 }
