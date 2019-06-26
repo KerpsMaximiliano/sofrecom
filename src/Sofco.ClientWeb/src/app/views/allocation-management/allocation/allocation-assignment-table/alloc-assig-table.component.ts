@@ -63,7 +63,7 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
 
         if(cleanModel && this.model){
             this.model.allocations = [];
-        }
+        } 
 
         this.dateSince = dateSince;
 
@@ -177,6 +177,11 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         this.allocationSelected = allocation;
 
         let date;
+        let releaseDate;
+
+        if(allocation.releaseDate){
+            releaseDate = moment(allocation.releaseDate).toDate();
+        }
 
         allocation.months.forEach(element => {
             if(element.percentage > 0){
@@ -190,17 +195,22 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.releaseDate = date;
+        if(releaseDate && releaseDate > date){
+            this.releaseDate = releaseDate;
+        }
+        else{
+            this.releaseDate = date;
+        }
         
         this.confirmModal.show();
     }
 
     save(){
-        if(this.releaseDate && this.releaseDate.getMonth() != this.monthLastAllocation){
-            this.messageService.showErrorByFolder("allocationManagement/allocation", "monthDifferent");
-            this.confirmModal.resetButtons();
-            return;
-        }   
+        // if(this.releaseDate && this.releaseDate.getMonth() != this.monthLastAllocation){
+        //     this.messageService.showErrorByFolder("allocationManagement/allocation", "monthDifferent");
+        //     this.confirmModal.resetButtons();
+        //     return;
+        // }   
 
         this.allocationSelected.releaseDate = this.releaseDate;
 
