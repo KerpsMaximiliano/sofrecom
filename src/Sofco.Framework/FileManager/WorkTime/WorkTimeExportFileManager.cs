@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using Sofco.Core.DAL;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
+using Sofco.Core.Managers;
 using Sofco.Core.Models.Common;
 using Sofco.Domain.Models.WorkTimeManagement;
 
@@ -18,14 +20,17 @@ namespace Sofco.Framework.FileManager.WorkTime
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<WorkTimeExportFileManager> logger;
         private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IUserData userData;
 
         private IList<Holiday> Holidays { get; set; }
 
-        public WorkTimeExportFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeExportFileManager> logger, IHostingEnvironment hostingEnvironment)
+        public WorkTimeExportFileManager(IUnitOfWork unitOfWork, ILogMailer<WorkTimeExportFileManager> logger, IHostingEnvironment hostingEnvironment
+                                        , IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.hostingEnvironment = hostingEnvironment;
+            this.userData = userData;
         }
 
         public ExcelPackage CreateTemplateExcel(int analyticId)
@@ -53,42 +58,61 @@ namespace Sofco.Framework.FileManager.WorkTime
             var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
             var periodExcludeDays = closeDates.GetPeriodExcludeDays();
             var period = closeDates.GetPeriodIncludeDays();
-          
-            FillHolidays(period);
-
-            var employees = unitOfWork.AnalyticRepository.GetResources(analyticId, periodExcludeDays.Item1.Date, periodExcludeDays.Item2.Date);
-
-            var index = 2;
-
-            var format = sheet1.Cells[$"C2"].Style.Numberformat.Format;
-
-            foreach (var employee in employees)
+            try
             {
-                var startDate = period.Item1;
-                var endDate = period.Item2;
-                
-                var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employee.Id, startDate.Date, endDate.Date);
+                FillHolidays(period);
 
-                while (startDate.Date <= endDate.Date)
+                var employees = unitOfWork.AnalyticRepository.GetResources(analyticId, periodExcludeDays.Item1.Date, periodExcludeDays.Item2.Date);
+
+                var manager = unitOfWork.AnalyticRepository.GetManager(analyticId);
+                var director = unitOfWork.AnalyticRepository.GetDirector(analyticId);
+
+                //Si no es director ni gerente es aprobador
+                if (manager.Id != userData.GetCurrentUser().Id && director.Id != userData.GetCurrentUser().Id)
                 {
-                    var firstDayOffMonth = new DateTime(startDate.Year, startDate.Month, 1);
-                    bool hasLicence = licenses.Any(x => startDate.Date >= x.StartDate.Date && startDate.Date <= x.EndDate.Date);
+                    //Busca los empleados que tiene para aprobar
+                    var users = unitOfWork.UserApproverRepository.GetByAnalyticAndApproverUserId(userData.GetCurrentUser().Id, analyticId, Domain.Enums.UserApproverType.WorkTime);
 
-                    if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday &&
-                        Holidays.All(x => x.Date.Date != startDate.Date) && !hasLicence)
-                    {
-                        if (employee.Allocations.Any(x => x.StartDate.Date == firstDayOffMonth.Date && x.Percentage > 0 && x.AnalyticId == analyticId))
-                        {
-                            sheet1.Cells[$"A{index}"].Value = employee.EmployeeNumber;
-                            sheet1.Cells[$"B{index}"].Value = employee.Name;
-                            sheet1.Cells[$"C{index}"].Value = startDate.Date;
-                            sheet1.Cells[$"C{index}"].Style.Numberformat.Format = format;
-                            index++;
-                        }
-                    }
-
-                    startDate = startDate.AddDays(1);
+                    employees = employees.Where(d => users.Select(u => u.EmployeeId).Contains(d.Id)).ToList();
                 }
+
+                var index = 2;
+
+                var format = sheet1.Cells[$"C2"].Style.Numberformat.Format;
+
+                foreach (var employee in employees)
+                {
+                    var startDate = period.Item1;
+                    var endDate = period.Item2;
+
+                    var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employee.Id, startDate.Date, endDate.Date);
+
+                    while (startDate.Date <= endDate.Date)
+                    {
+                        var firstDayOffMonth = new DateTime(startDate.Year, startDate.Month, 1);
+                        bool hasLicence = licenses.Any(x => startDate.Date >= x.StartDate.Date && startDate.Date <= x.EndDate.Date);
+
+                        if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday &&
+                            Holidays.All(x => x.Date.Date != startDate.Date) && !hasLicence)
+                        {
+                            if (employee.Allocations.Any(x => x.StartDate.Date == firstDayOffMonth.Date && x.Percentage > 0 && x.AnalyticId == analyticId))
+                            {
+                                sheet1.Cells[$"A{index}"].Value = employee.EmployeeNumber;
+                                sheet1.Cells[$"B{index}"].Value = employee.Name;
+                                sheet1.Cells[$"C{index}"].Value = startDate.Date;
+                                sheet1.Cells[$"C{index}"].Style.Numberformat.Format = format;
+                                index++;
+                            }
+                        }
+
+                        startDate = startDate.AddDays(1);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                throw e;
             }
         }
 
