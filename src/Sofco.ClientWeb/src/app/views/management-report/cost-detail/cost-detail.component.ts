@@ -754,7 +754,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     addOtherByMonth() {
-
         var resource = {
             id: 0,
             CostDetailId: this.monthSelected.costDetailId,
@@ -768,6 +767,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditResourceQuantity(month) {
+        if (this.readOnly) return;
+
         this.monthSelected = month
         this.editResourceQuantityModal.show()
     }
@@ -786,7 +787,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     setResourceQuantity(months){
-     
         months.forEach(month => {
             var monthValue = this.months.find(x => x.month == month.month && x.year == month.year);
             if (monthValue) {

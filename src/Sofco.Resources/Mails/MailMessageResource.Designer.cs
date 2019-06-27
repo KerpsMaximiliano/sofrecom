@@ -258,6 +258,24 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Por favor realizar las gestiones necesarias sobre el informe de gestión, finalizadas enviar la actualización a CDG.
+        /// </summary>
+        public static string ManagementReportCdg {
+            get {
+                return ResourceManager.GetString("ManagementReportCdg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Los datos del informe han sido gestionados por el Gerente de proyecto.
+        /// </summary>
+        public static string ManagementReportManager {
+            get {
+                return ResourceManager.GetString("ManagementReportManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Se informa que la orden de compra {0} ha sido aprobada por el area de &lt;strong&gt;Compliance&lt;/strong&gt; y su nuevo estado es &lt;strong&gt;Pendiente Aprobación Operativa&lt;/strong&gt;
         ///&lt;br/&gt;&lt;br/&gt; 
         ///Cliente: {3}

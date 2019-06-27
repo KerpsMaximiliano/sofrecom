@@ -404,4 +404,10 @@ Recurso: {1}
   <data name="PrepaidImported" xml:space="preserve">
     <value>Se ha completado la carga de la facturación de las prepagas correspondientes al período {0}</value>
   </data>
+  <data name="ManagementReportCdg" xml:space="preserve">
+    <value>Por favor realizar las gestiones necesarias sobre el informe de gestión, finalizadas enviar la actualización a CDG</value>
+  </data>
+  <data name="ManagementReportManager" xml:space="preserve">
+    <value>Los datos del informe han sido gestionados por el Gerente de proyecto</value>
+  </data>
 </root>

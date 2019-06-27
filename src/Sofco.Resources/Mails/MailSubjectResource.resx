@@ -207,4 +207,10 @@
   <data name="PrepaidImported" xml:space="preserve">
     <value>Facturación de prepagas - Importación</value>
   </data>
+  <data name="ManagementReport" xml:space="preserve">
+    <value>Informe de Gestión: {0} {1} {2}</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>

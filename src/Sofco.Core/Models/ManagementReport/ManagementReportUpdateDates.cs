@@ -1,4 +1,5 @@
 ﻿using System;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.ManagementReport
 {
@@ -7,5 +8,12 @@ namespace Sofco.Core.Models.ManagementReport
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+    }
+
+    public class ManagementReportSendModel
+    {
+        public int Id { get; set; }
+
+        public ManagementReportStatus? Status { get; set; }
     }
 }

@@ -11,6 +11,7 @@ import { MessageService } from "app/services/common/message.service";
 import { FormControl, Validators } from "@angular/forms";
 import { ReportBillingUpdateDataType } from "app/models/enums/ReportBillingUpdateDataType";
 import { detectBody } from "app/app.helpers";
+import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 
 @Component({
     selector: 'management-report-billing',
@@ -47,6 +48,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     hito: NewHito = new NewHito();
 
     hitoSelected: any;
+    managementReportStatus: ManagementReportStatus = ManagementReportStatus.CdgPending;
     indexSelected: number = 0
     monthSelectedDisplay: string = "";
     monthSelectedOpportunity: string = "";
@@ -485,6 +487,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openResourceQuantity(month) {
+        if (this.readOnly) return false;
+
         this.monthSelected = month;
         this.updateDataType = ReportBillingUpdateDataType.BilledResources;
         this.billingResourceQuantity = month.resourceQuantity;
@@ -492,6 +496,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openEvalPropDifferenceModal(month) {
+        if (this.readOnly) return false;
+
         this.monthSelected = month;
         this.updateDataType = ReportBillingUpdateDataType.EvalPropDifference;
         this.evalPropDifference = month.evalPropDifference;
@@ -499,6 +505,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openCommentsModal(month) {
+        if (this.readOnly) return false;
+
         this.monthSelected = month;
         this.updateDataType = ReportBillingUpdateDataType.Comments;
         this.billingComments = month.comments;
@@ -540,6 +548,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     seeBillingDetail(month) {
+        if (this.readOnly) return false;
+        
         var currencies = [];
 
         this.totals.forEach(total => {

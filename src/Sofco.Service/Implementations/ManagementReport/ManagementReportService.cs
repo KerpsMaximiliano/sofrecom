@@ -19,6 +19,10 @@ using Sofco.Framework.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.Config;
+using Sofco.Core.Mail;
+using Sofco.Framework.MailData;
+using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -31,13 +35,17 @@ namespace Sofco.Service.Implementations.ManagementReport
         private readonly IUserData userData;
         private readonly IProjectData projectData;
         private readonly AppSetting appSetting;
+        private readonly EmailConfig emailConfig;
         private readonly IManagementReportFileManager managementReportFileManager;
+        private readonly IMailSender mailSender;
 
         public ManagementReportService(IUnitOfWork unitOfWork,
             ILogMailer<ManagementReportService> logger,
+            IMailSender mailSender,
             IUserData userData,
             IProjectData projectData,
             IOptions<AppSetting> appSettingOptions,
+            IOptions<EmailConfig> emailConfigOptions,
             ISolfacService solfacService,
             IRoleManager roleManager,
             IManagementReportFileManager managementReportFileManager)
@@ -45,11 +53,13 @@ namespace Sofco.Service.Implementations.ManagementReport
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
+            this.mailSender = mailSender;
             this.appSetting = appSettingOptions.Value;
             this.projectData = projectData;
             this.roleManager = roleManager;
             this.solfacService = solfacService;
             this.managementReportFileManager = managementReportFileManager;
+            this.emailConfig = emailConfigOptions.Value;
         }
 
         public Response<ManagementReportDetail> GetDetail(string serviceId)
@@ -77,6 +87,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.ManamementReportStartDate = analytic.ManagementReport.StartDate;
                 response.Data.ManamementReportEndDate = analytic.ManagementReport.EndDate;
                 response.Data.AnalyticStatus = analytic.Status;
+                response.Data.Status = analytic.ManagementReport.Status;
             }
             else
             {
@@ -455,6 +466,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             return response;
         }
+
         public Response<List<CostDetailTypeModel>> GetOtherResources()
         {
             var response = new Response<List<CostDetailTypeModel>> { Data = new List<CostDetailTypeModel>() };
@@ -704,6 +716,98 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
 
             return response;
+        }
+
+        public Response Send(ManagementReportSendModel model)
+        {
+            var response = new Response();
+
+            var report = unitOfWork.ManagementReportRepository.GetWithAnalytic(model.Id);
+
+            if (report == null)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
+                return response;
+            }
+
+            if (!model.Status.HasValue)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.StatusRequired);
+                return response;
+            }
+
+            if (report.Status == model.Status)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.CannotChangeStatus);
+                return response;
+            }
+
+            if (report.Status == ManagementReportStatus.Closed)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.IsClosed);
+            }
+            else
+            {
+                if (report.Status == ManagementReportStatus.CdgPending && model.Status == ManagementReportStatus.ManagerPending && !roleManager.IsCdg())
+                {
+                    response.AddError(Resources.ManagementReport.ManagementReport.CannotChangeStatus);
+                }
+
+                if (report.Status == ManagementReportStatus.ManagerPending && model.Status == ManagementReportStatus.CdgPending && !roleManager.IsManager())
+                {
+                    response.AddError(Resources.ManagementReport.ManagementReport.CannotChangeStatus);
+                }
+            }
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                report.Status = model.Status.Value;
+                unitOfWork.ManagementReportRepository.UpdateStatus(report);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReport.SendSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            SendMail(model, report, response);
+
+            return response;
+        }
+
+        private void SendMail(ManagementReportSendModel model, Domain.Models.ManagementReport.ManagementReport report, Response response)
+        {
+            try
+            {
+                var subject = string.Format(MailSubjectResource.ManagementReport, report.Analytic.Title,
+                    report.Analytic.AccountName, report.Analytic.ServiceName);
+
+                var body = model.Status == ManagementReportStatus.CdgPending
+                    ? MailMessageResource.ManagementReportManager
+                    : MailMessageResource.ManagementReportCdg;
+
+                var cdgGroup = unitOfWork.GroupRepository.GetByCode(emailConfig.CdgCode);
+                var recipientsList = new List<string> {report.Analytic.Manager.Email, cdgGroup.Email};
+
+                var data = new MailDefaultData()
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = recipientsList.Distinct().ToList()
+                };
+
+                mailSender.Send(data);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.Common.ErrorSendMail);
+            }
         }
 
         public Response UpdateDates(int id, ManagementReportUpdateDates model)
@@ -1279,8 +1383,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                         .OrderBy(x => x.Name)
                         .ToList();
         }
-
-
     }
 }
 

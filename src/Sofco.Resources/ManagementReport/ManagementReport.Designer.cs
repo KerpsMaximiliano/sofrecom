@@ -61,6 +61,15 @@ namespace Sofco.Resources.ManagementReport {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.cannotChangeStatus.
+        /// </summary>
+        public static string CannotChangeStatus {
+            get {
+                return ResourceManager.GetString("CannotChangeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a managementReport/managementReport.endDateRequired.
         /// </summary>
         public static string EndDateRequired {
@@ -70,11 +79,29 @@ namespace Sofco.Resources.ManagementReport {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.isClosed.
+        /// </summary>
+        public static string IsClosed {
+            get {
+                return ResourceManager.GetString("IsClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a managementReport/managementReport.notFound.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.sendSuccess.
+        /// </summary>
+        public static string SendSuccess {
+            get {
+                return ResourceManager.GetString("SendSuccess", resourceCulture);
             }
         }
         
@@ -93,6 +120,15 @@ namespace Sofco.Resources.ManagementReport {
         public static string StartDateRequired {
             get {
                 return ResourceManager.GetString("StartDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.statusRequired.
+        /// </summary>
+        public static string StatusRequired {
+            get {
+                return ResourceManager.GetString("StatusRequired", resourceCulture);
             }
         }
         

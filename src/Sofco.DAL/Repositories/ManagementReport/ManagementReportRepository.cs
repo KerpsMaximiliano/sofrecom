@@ -29,9 +29,15 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             var data = context.ManagementReports
                 .Include(x => x.Analytic)
+                .ThenInclude(x => x.Manager)
                 .SingleOrDefault(mr => mr.Id == managementReportId);
 
             return data;
+        }
+
+        public void UpdateStatus(Domain.Models.ManagementReport.ManagementReport report)
+        {
+            context.Entry(report).Property("Status").IsModified = true;
         }
     }
 }

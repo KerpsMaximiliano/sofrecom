@@ -18,5 +18,6 @@ namespace Sofco.Core.Services.ManagementReport
         Response DeleteOtherResource(int id);
         Response UpdateDates(int id, ManagementReportUpdateDates model);
         Response<byte[]> CreateTracingReport(TracingModel tracing);
+        Response Send(ManagementReportSendModel model);
     }
 }
