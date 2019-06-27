@@ -1,0 +1,20 @@
+﻿ 2019-06-24 13:28:21,166 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Sequence contains no elements
+System.InvalidOperationException: Sequence contains no elements
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Sofco.Framework.FileManager.WorkTime.WorkTimeImportImportFileManager.Import(Int32 analyticId, MemoryStream memoryStream, Response`1 response) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\WorkTime\WorkTimeImportImportFileManager.cs:line 75
+   at Sofco.Service.Implementations.WorkTimeManagement.WorkTimeService.Import(Int32 analyticId, IFormFile file, Response`1 response) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\WorkTimeManagement\WorkTimeService.cs:line 434
+   at Sofco.WebApi.Controllers.WorkTimeManagement.WorkTimeController.Import(Int32 analyticId) in C:\Proyectos\GAPS\src\Sofco.WebApi\Controllers\WorkTimeManagement\WorkTimeController.cs:line 147
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Proyectos\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28

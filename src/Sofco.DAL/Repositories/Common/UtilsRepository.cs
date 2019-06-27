@@ -120,7 +120,7 @@ namespace Sofco.DAL.Repositories.Common
 
         public IList<CreditCard> GetCreditCards()
         {
-            return Context.CreditCards.ToList().AsReadOnly();
+            return Context.CreditCards.Where(x => x.Active).ToList().AsReadOnly();
         }
 
         public IList<EmployeeProfile> GetEmployeeProfiles()
