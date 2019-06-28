@@ -7,6 +7,7 @@ using Sofco.Core.Services.ManagementReport;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Helpers;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -49,8 +50,11 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     if (allocation != null && allocation.Percentage > 0)
                     {
-                        costDetailResource.Value = (allocation.Percentage / 100) * allocation.Employee.Salary;
-                        costDetailResource.Charges = (allocation.Percentage / 100) * allocation.Employee.PrepaidAmount;
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.Salary), out var salary)) salary = 0;
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.PrepaidAmount), out var prepaidAmount)) prepaidAmount = 0;
+
+                        costDetailResource.Value = (allocation.Percentage / 100) * salary;
+                        costDetailResource.Charges = (allocation.Percentage / 100) * prepaidAmount;
                         unitOfWork.CostDetailResourceRepository.Update(costDetailResource);
                     }
                 }
@@ -136,13 +140,16 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     var resource = costDetail.CostDetailResources.SingleOrDefault(x => x.EmployeeId == allocation.EmployeeId);
 
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.Salary), out var salary)) salary = 0;
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.PrepaidAmount), out var prepaidAmount)) prepaidAmount = 0;
+
                     if (resource == null)
                     {
                         costDetail.CostDetailResources.Add(new CostDetailResource
                         {
-                            Charges = (allocation.Percentage / 100) * employee.PrepaidAmount,
+                            Charges = (allocation.Percentage / 100) * prepaidAmount,
                             EmployeeId = employee.Id,
-                            Value = (allocation.Percentage / 100) * employee.Salary,
+                            Value = (allocation.Percentage / 100) * salary,
                             UserId = user.Id
                         });
 
@@ -156,8 +163,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var allocationPercentage = allocation.Percentage == 100 ? 1 : allocation.Percentage / 100;
 
-                        resource.Charges = allocationPercentage * employee.PrepaidAmount;
-                        resource.Value = allocationPercentage * employee.Salary;
+                        resource.Charges = allocationPercentage * prepaidAmount;
+                        resource.Value = allocationPercentage * salary;
 
                         unitOfWork.CostDetailResourceRepository.Update(resource);
                     }

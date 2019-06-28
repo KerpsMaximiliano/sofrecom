@@ -5,6 +5,7 @@ using Sofco.Domain.Rh.Rhpro;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Helpers;
 using Sofco.Repository.Rh.Settings;
 
 namespace Sofco.Service.MapProfiles
@@ -36,6 +37,9 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.Country, s => s.ResolveUsing(x => ArCountry))
                 .ForMember(d => d.HealthInsuranceCode, s => s.MapFrom(x => x.Obsoc))
                 .ForMember(d => d.PrepaidHealthCode, s => s.MapFrom(x => x.Ospla))
+                .ForMember(d => d.Salary, s =>  s.MapFrom(x => CryptographyHelper.Encrypt(x.Nuse1.ToString())))
+                .ForMember(d => d.PrepaidAmount, s => s.MapFrom(x => CryptographyHelper.Encrypt(x.Nuset.ToString())))
+                .ForMember(d => d.BeneficiariesCount, s => s.MapFrom(x => x.Ayude))
                 .ForMember(d => d.Email, s => s.MapFrom(x => x.Email.Trim()));
 
             CreateMap<RhproEmployeeLicense, EmployeeLicense>()

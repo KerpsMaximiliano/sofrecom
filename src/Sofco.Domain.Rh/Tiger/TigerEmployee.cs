@@ -53,5 +53,11 @@ namespace Sofco.Domain.Rh.Tiger
         public string PhoneNumber { get; set; }
 
         public string Bank { get; set; }
+
+        public decimal Nuset { get; set; }
+
+        public decimal Nuse1 { get; set; }
+
+        public int Ayude { get; set; }
     }
 }
