@@ -1060,9 +1060,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                         // var monthValue = CostDetailEmployees.Find(e => e.CostDetailResources.EmployeeId == employee.Id && new DateTime(e.MonthYear.Year, e.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
                         if (monthValue != null)
                         {
-                            monthDetail.Value = monthValue.Value;
-                            monthDetail.OriginalValue = monthValue.Value;
-                            monthDetail.Charges = monthValue.Charges;
+                            if(!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Value), out var salary)) salary = 0;
+                            if(!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges)) charges = 0;
+
+                            monthDetail.Value = salary;
+                            monthDetail.OriginalValue = salary;
+                            monthDetail.Charges = charges;
                             monthValue.Adjustment = monthValue.Adjustment;
                             monthDetail.Id = monthValue.Id;
                         }
@@ -1262,15 +1265,18 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var entity = new CostDetailResource();
 
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Value), out var salary)) salary = 0;
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Charges), out var charges)) charges = 0;
+
                         if (month.Id > 0)
                         {
                             entity = unitOfWork.CostDetailResourceRepository.Get(month.Id);
 
-                            if (month.Value != entity.Value || month.Charges != entity.Charges)
+                            if (month.Value != salary || month.Charges != charges)
                             {
-                                entity.Value = month.Value ?? 0;
+                                entity.Value = CryptographyHelper.Encrypt(month.Value.ToString());
                                 entity.Adjustment = month.Adjustment ?? 0;
-                                entity.Charges = month.Charges ?? 0;
+                                entity.Charges = CryptographyHelper.Encrypt(month.Charges.ToString());
 
                                 unitOfWork.CostDetailResourceRepository.Update(entity);
                             }
@@ -1280,9 +1286,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                             if (month.Value > 0 || month.Charges > 0)
                             {
                                 entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
-                                entity.Value = month.Value ?? 0;
+                                entity.Value = CryptographyHelper.Encrypt(month.Value.ToString());
                                 entity.Adjustment = month.Adjustment ?? 0;
-                                entity.Charges = month.Charges ?? 0;
+                                entity.Charges = CryptographyHelper.Encrypt(month.Charges.ToString());
                                 entity.EmployeeId = resource.EmployeeId;
                                 entity.UserId = resource?.UserId;
 

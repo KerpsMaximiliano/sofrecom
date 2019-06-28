@@ -53,8 +53,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                         if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.Salary), out var salary)) salary = 0;
                         if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.PrepaidAmount), out var prepaidAmount)) prepaidAmount = 0;
 
-                        costDetailResource.Value = (allocation.Percentage / 100) * salary;
-                        costDetailResource.Charges = (allocation.Percentage / 100) * prepaidAmount;
+                        var newValueSalary = (allocation.Percentage / 100) * salary;
+                        var newValueCharges = (allocation.Percentage / 100) * prepaidAmount;
+
+                        costDetailResource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString());
+                        costDetailResource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString());
                         unitOfWork.CostDetailResourceRepository.Update(costDetailResource);
                     }
                 }
@@ -145,11 +148,14 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     if (resource == null)
                     {
+                        var newValueSalary = (allocation.Percentage / 100) * salary;
+                        var newValueCharges = (allocation.Percentage / 100) * prepaidAmount;
+
                         costDetail.CostDetailResources.Add(new CostDetailResource
                         {
-                            Charges = (allocation.Percentage / 100) * prepaidAmount,
+                            Charges = CryptographyHelper.Encrypt(newValueCharges.ToString()),
                             EmployeeId = employee.Id,
-                            Value = (allocation.Percentage / 100) * salary,
+                            Value = CryptographyHelper.Encrypt(newValueSalary.ToString()),
                             UserId = user.Id
                         });
 
@@ -163,8 +169,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var allocationPercentage = allocation.Percentage == 100 ? 1 : allocation.Percentage / 100;
 
-                        resource.Charges = allocationPercentage * prepaidAmount;
-                        resource.Value = allocationPercentage * salary;
+                        var newValueSalary = allocationPercentage * salary;
+                        var newValueCharges = allocationPercentage * prepaidAmount;
+
+                        resource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString());
+                        resource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString());
 
                         unitOfWork.CostDetailResourceRepository.Update(resource);
                     }

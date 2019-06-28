@@ -9,9 +9,9 @@ namespace Sofco.Domain.Models.ManagementReport
         public int CostDetailId { get; set; }
         public CostDetail CostDetail { get; set; }
 
-        public decimal Value { get; set; }
+        public string Value { get; set; }
         public decimal? Adjustment { get; set; }
-        public decimal? Charges { get; set; }
+        public string Charges { get; set; }
 
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
