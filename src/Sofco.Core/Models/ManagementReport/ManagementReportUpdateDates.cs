@@ -16,4 +16,13 @@ namespace Sofco.Core.Models.ManagementReport
 
         public ManagementReportStatus? Status { get; set; }
     }
+
+    public class ManagementReportCloseModel
+    {
+        public int BillingId { get; set; }
+
+        public int DetailCostId { get; set; }
+
+        public DateTime? Date { get; set; }
+    }
 }

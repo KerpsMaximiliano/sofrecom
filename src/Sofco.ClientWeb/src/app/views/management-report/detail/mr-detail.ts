@@ -23,6 +23,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     getDetailSubscrip: Subscription;
     updateDatesSubscrip: Subscription;
     sendSubscrip: Subscription;
+    closeSubscrip: Subscription;
 
     customerId: string;
     serviceId: string;
@@ -45,6 +46,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     ReportStartDateError: boolean = false;
     ReportEndDateError: boolean = false;
     readOnly: boolean = false;
+    isClosed: boolean = false;
     ManagementReportId: number;
 
     @ViewChild("marginTracking") marginTracking;
@@ -99,6 +101,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         if (this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
         if (this.updateDatesSubscrip) this.updateDatesSubscrip.unsubscribe();
         if (this.sendSubscrip) this.sendSubscrip.unsubscribe();
+        if (this.closeSubscrip) this.closeSubscrip.unsubscribe();
     }
 
     getDetail() {
@@ -173,7 +176,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             year: this.selectedYear
         }
 
-        this.costDetailMonth.open(data, this.readOnly);
+        this.costDetailMonth.open(data, this.readOnly || this.isClosed);
     }
 
     updateDetailCost() {
@@ -242,7 +245,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
                     this.editDateModal.resetButtons()
                 }
             );
-
         }
     }
 
@@ -302,6 +304,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.marginTracking.setMarginTracking(this.selectedMonth, this.selectedYear);
         this.detailCost.setFromDate(this.selectedDate)
         this.billing.setFromDate(this.selectedDate)
+
+        this.isClosed = this.billing.isClosed(this.selectedDate);
     }
 
     addMonth(){
@@ -334,6 +338,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     canSendManager(){
         if(!this.model || !this.model.status) return false;
 
+        if(this.isClosed) return false;
+
         if(this.isManager && this.menuService.hasFunctionality('MANRE', 'SEND-MANAGER') && this.model.status == ManagementReportStatus.ManagerPending){
             return true;
         }
@@ -343,6 +349,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     canSendCdg(){
         if(!this.model || !this.model.status) return false;
+        
+        if(this.isClosed) return false;
 
         if(this.isCdg && this.menuService.hasFunctionality('MANRE', 'SEND-CDG') && this.model.status == ManagementReportStatus.CdgPending){
             return true;
@@ -404,5 +412,23 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         if(this.model.status == ManagementReportStatus.ManagerPending && this.isManager) return true;
 
         return false;
+    }
+
+    close(){
+        var json = {
+            date: this.selectedDate,
+            billingId: this.billing.getId(this.selectedDate),
+            detailCostId: this.detailCost.getId(this.selectedDate)
+        };
+    
+        this.messageService.showConfirm(() => {
+            this.messageService.showLoading();
+
+            this.closeSubscrip = this.managementReportService.close(json).subscribe(response => {
+
+                this.messageService.closeLoading();
+            },
+            error => this.messageService.closeLoading());
+        });
     }
 }

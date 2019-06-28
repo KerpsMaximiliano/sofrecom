@@ -2,6 +2,7 @@
 using Sofco.Core.DAL.ManagementReport;
 using Sofco.DAL.Repositories.Common;
 using System.Linq;
+using Sofco.Core.Models.ManagementReport;
 
 namespace Sofco.DAL.Repositories.ManagementReport
 {
@@ -38,6 +39,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
         public void UpdateStatus(Domain.Models.ManagementReport.ManagementReport report)
         {
             context.Entry(report).Property("Status").IsModified = true;
+        }
+
+        public bool AllMonthsAreClosed(int managementReportId)
+        {
+            return context.ManagementReportBillings.Where(x => x.ManagementReportId == managementReportId).All(x => x.Closed);
         }
     }
 }

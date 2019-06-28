@@ -123,5 +123,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("close")]
+        public IActionResult Close([FromBody] ManagementReportCloseModel model)
+        {
+            var response = managementReportService.Close(model);
+
+            return this.CreateResponse(response);
+        }
     }
 }

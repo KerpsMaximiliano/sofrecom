@@ -70,6 +70,33 @@ namespace Sofco.Resources.ManagementReport {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.cannotClosed.
+        /// </summary>
+        public static string CannotClosed {
+            get {
+                return ResourceManager.GetString("CannotClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.closedSuccess.
+        /// </summary>
+        public static string ClosedSuccess {
+            get {
+                return ResourceManager.GetString("ClosedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.dateRequired.
+        /// </summary>
+        public static string DateRequired {
+            get {
+                return ResourceManager.GetString("DateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a managementReport/managementReport.endDateRequired.
         /// </summary>
         public static string EndDateRequired {

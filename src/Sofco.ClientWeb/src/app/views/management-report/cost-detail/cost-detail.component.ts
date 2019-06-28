@@ -160,6 +160,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     openEditItemModal(month, item) {
         if (this.readOnly) return;
 
+        if(month.closed) return;
+
         if (this.canEdit) {
             // if (item.typeName == 'Empleados' && !month.hasAlocation) {
             //     return false
@@ -692,6 +694,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     openEditEvalProp(month) {
         if (this.readOnly) return;
 
+        if(month.closed) return;
+
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 2;
             this.openEvalPropModal.emit(month);
@@ -769,7 +773,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     openEditResourceQuantity(month) {
         if (this.readOnly) return;
 
-        this.monthSelected = month
+        if(month.closed) return;
+
+        this.monthSelected = month;
         this.editResourceQuantityModal.show()
     }
 
@@ -793,6 +799,16 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 monthValue.resourceQuantity = month.resourceQuantity;
             }
         });
+    }
+
+    getId(date: Date){
+        var item = this.months.find(x => x.month == (date.getMonth()+1) && x.year == date.getFullYear());
+
+        if(item){
+            return item.costDetailId;
+        }
+
+        return 0;
     }
 }
 

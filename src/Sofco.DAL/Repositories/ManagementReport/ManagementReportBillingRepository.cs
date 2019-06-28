@@ -35,5 +35,10 @@ namespace Sofco.DAL.Repositories.ManagementReport
             return context.ManagementReportBillings.SingleOrDefault(x =>
                 x.ManagementReportId == managementReportId && x.MonthYear.Date == monthYear.Date);
         }
+
+        public void Close(ManagementReportBilling billing)
+        {
+            context.Entry(billing).Property("Closed").IsModified = true;
+        }
     }
 }

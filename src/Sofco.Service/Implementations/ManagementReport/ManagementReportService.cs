@@ -189,6 +189,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 {
                     monthHeader.ValueEvalProp = billingMonth.EvalPropBillingValue;
                     monthHeader.BillingMonthId = billingMonth.Id;
+                    monthHeader.Closed = billingMonth.Closed;
                     monthHeader.EvalPropDifference = billingMonth.EvalPropDifference;
                     monthHeader.Comments = billingMonth.Comments;
                     monthHeader.Exchanges = currencyExchange.Select(x => new CurrencyExchangeItemModel { CurrencyDesc = x.Currency.Text, Exchange = x.Exchange }).ToList();
@@ -369,6 +370,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                         monthHeader.BillingMonthId = billingMonth.Id;
 
                         var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
+
+                        if (costDetailMonth != null)
+                        {
+                            monthHeader.Closed = costDetailMonth.Closed;
+                            monthHeader.CostDetailId = costDetailMonth.Id;
+                        }
 
                         if (billingMonth.BilledResources > 0)
                         {
@@ -780,6 +787,70 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        public Response Close(ManagementReportCloseModel model)
+        {
+            var response = new Response();
+
+            var billing = unitOfWork.ManagementReportBillingRepository.Get(model.BillingId);
+
+            if (billing == null) response.AddError(Resources.ManagementReport.ManagementReportBilling.NotFound);
+
+            var detailCost = unitOfWork.CostDetailRepository.Get(model.DetailCostId);
+
+            if (detailCost == null) response.AddError(Resources.ManagementReport.CostDetail.NotFound);
+
+            if(!model.Date.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.DateRequired);
+
+            if (response.HasErrors()) return response;
+
+            var currentMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
+            if (model.Date.GetValueOrDefault().Date >= currentMonth.Date)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.CannotClosed);
+                return response;
+            }
+
+            try
+            {
+                billing.Closed = true;
+                detailCost.Closed = true;
+
+                unitOfWork.ManagementReportBillingRepository.Close(billing);
+                unitOfWork.CostDetailRepository.Close(detailCost);
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReport.ClosedSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            try
+            {
+                if (unitOfWork.ManagementReportRepository.AllMonthsAreClosed(billing.ManagementReportId))
+                {
+                    var managementReport = new Domain.Models.ManagementReport.ManagementReport
+                    {
+                        Id = billing.ManagementReportId,
+                        Status = ManagementReportStatus.Closed
+                    };
+
+                    unitOfWork.ManagementReportRepository.UpdateStatus(managementReport);
+                    unitOfWork.Save();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
+
+            return response;
+        }
+
         private void SendMail(ManagementReportSendModel model, Domain.Models.ManagementReport.ManagementReport report, Response response)
         {
             try
@@ -995,6 +1066,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthValue.Adjustment = monthValue.Adjustment;
                             monthDetail.Id = monthValue.Id;
                         }
+
+                        monthDetail.Closed = costDetailMonth.Closed;
                     }
 
                     monthDetail.Display = mounth.Display;
@@ -1058,6 +1131,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             }
                         }
 
+                        monthDetail.Closed = costDetailMonth.Closed;
                         monthDetail.CostDetailId = costDetailMonth.Id;
                     }
 
@@ -1120,6 +1194,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthDetail.Value = monthValue.Value;
                             monthDetail.Id = monthValue.Id;
                         }
+
+                        monthDetail.Closed = costDetailMonth.Closed;
                     }
 
                     monthDetail.Display = mounth.Display;
