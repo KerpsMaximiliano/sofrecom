@@ -196,6 +196,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Informe de Gestión: {0} {1} {2}.
+        /// </summary>
+        public static string ManagementReport {
+            get {
+                return ResourceManager.GetString("ManagementReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Proceso Aprobación Orden de Compra - {0} - {1} - {2}.
         /// </summary>
         public static string OcProcessTitle {
@@ -291,6 +300,15 @@ namespace Sofco.Resources.Mails {
         public static string SolfacStatusRejectedByDafTitle {
             get {
                 return ResourceManager.GetString("SolfacStatusRejectedByDafTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

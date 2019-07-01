@@ -82,7 +82,10 @@ namespace Sofco.Service.Implementations.Jobs
                 nameof(Employee.PhoneCountryCode),
                 nameof(Employee.PhoneAreaCode),
                 nameof(Employee.PhoneNumber),
-                nameof(Employee.Bank)
+                nameof(Employee.Bank),
+                nameof(Employee.Salary),
+                nameof(Employee.PrepaidAmount),
+                nameof(Employee.BeneficiariesCount)
             };
         }
 

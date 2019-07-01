@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
 using Sofco.WebApi.Extensions;
-using System.Collections.Generic;
 
 namespace Sofco.WebApi.Controllers.ManagementReport
 {
@@ -115,6 +114,22 @@ namespace Sofco.WebApi.Controllers.ManagementReport
                 return BadRequest(response);
 
             return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
+        [HttpPut("send")]
+        public IActionResult Send([FromBody] ManagementReportSendModel model)
+        {
+            var response = managementReportService.Send(model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("close")]
+        public IActionResult Close([FromBody] ManagementReportCloseModel model)
+        {
+            var response = managementReportService.Close(model);
+
+            return this.CreateResponse(response);
         }
     }
 }

@@ -1,7 +1,7 @@
 {
     "dateRequired": "La fecha es requerida",
     "currencyRequired": "La moneda es requerida",
-    "exchangeRequired": "El valor de la cotización es requerido",
+    "exchangeRequired": "El valor ingresado no es correcto",
     "addSuccess": "Cotización creada exitosamente",
     "notFound": "Cotización no encontrada",
     "updateSuccess": "Cotización modificada exitosamente"

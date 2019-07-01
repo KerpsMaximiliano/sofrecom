@@ -5,8 +5,10 @@ namespace Sofco.Core.Services.ManagementReport
 {
     public interface IManagementReportBillingService
     {
-        Response Update(UpdateValueModel model);
+        Response<int> Update(UpdateValueModel model);
 
-        Response UpdateData(UpdateBillingDataModel model);
+        Response<int> UpdateData(UpdateBillingDataModel model);
+
+        Response UpdateQuantityResources(int idBilling, int quantityResources);
     }
 }

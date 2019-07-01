@@ -128,6 +128,42 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
             return response;
         }
 
+        public Response Reopen(int id, PurchaseOrderStatusParams model)
+        {
+            var response = new Response();
+
+            var purchaseOrder = PurchaseOrderValidationHelper.FindLite(id, response, unitOfWork);
+
+            if (response.HasErrors()) return response;
+
+            PurchaseOrderValidationHelper.CanReopen(response, purchaseOrder);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var history = GetHistory(purchaseOrder, model);
+
+                purchaseOrder.Status = PurchaseOrderStatus.Valid;
+                unitOfWork.PurchaseOrderRepository.UpdateStatus(purchaseOrder);
+
+                // Add History
+                history.To = purchaseOrder.Status;
+                unitOfWork.PurchaseOrderRepository.AddHistory(history);
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Billing.PurchaseOrder.CloseSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         public Response Close(int id, PurchaseOrderStatusParams model)
         {
             var response = new Response();

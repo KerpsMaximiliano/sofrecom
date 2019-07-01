@@ -28,16 +28,16 @@ namespace Sofco.Service.Implementations.Common
             this.appSetting = appSettingOptions.Value;
         }
 
-        public Response Add(CurrencyExchangeAddModel model)
+        public Response<int> Add(CurrencyExchangeAddModel model)
         {
-            var response = new Response();
+            var response = new Response<int>();
 
             Validate(model, response);
 
             if (response.HasErrors()) return response;
 
             try
-            {
+            { 
                 var domain = new CurrencyExchange
                 {
                     Date = new DateTime(model.Year.GetValueOrDefault(), model.Month.GetValueOrDefault(), 1).Date,
@@ -47,6 +47,8 @@ namespace Sofco.Service.Implementations.Common
 
                 unitOfWork.CurrencyExchangeRepository.Insert(domain);
                 unitOfWork.Save();
+
+                response.Data = domain.Id;
 
                 response.AddSuccess(Resources.ManagementReport.CurrencyExchange.AddSuccess);
             }
@@ -63,7 +65,7 @@ namespace Sofco.Service.Implementations.Common
         {
             var response = new Response();
 
-            if (!model.Exchange.HasValue || model.Exchange.Value <= 0) response.AddError(Resources.ManagementReport.CurrencyExchange.ExchangeRequired);
+            if (!model.Exchange.HasValue || model.Exchange.Value <= 0 || model.Exchange.Value > 999) response.AddError(Resources.ManagementReport.CurrencyExchange.ExchangeRequired);
 
             var domain = unitOfWork.CurrencyExchangeRepository.Get(id);
 
@@ -149,7 +151,7 @@ namespace Sofco.Service.Implementations.Common
             if (!model.CurrencyId.HasValue || !unitOfWork.UtilsRepository.ExistCurrency(model.CurrencyId.Value))
                 response.AddError(Resources.ManagementReport.CurrencyExchange.CurrencyRequired);
 
-            if (!model.Exchange.HasValue || model.Exchange.Value <= 0)
+            if (!model.Exchange.HasValue || model.Exchange.Value <= 0 || model.Exchange.Value > 999)
                 response.AddError(Resources.ManagementReport.CurrencyExchange.ExchangeRequired);
         }
     }

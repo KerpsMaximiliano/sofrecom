@@ -52,6 +52,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 x.MonthYear.Date == date.Date && x.ManagementReportId == managementReportId);
         }
 
+        public void Close(CostDetail detailCost)
+        {
+            context.Entry(detailCost).Property("Closed").IsModified = true;
+        }
+
         public IList<CostDetail> GetByManagementReportAndDates(int managementReportId, DateTime startDate, DateTime endDate)
         {
             return context.CostDetails

@@ -10,6 +10,7 @@
         OperativePending = 6,
         DafPending = 7,
         Reject = 8,
-        CompliancePending = 9
+        CompliancePending = 9,
+        Reopen = 10
     }
 }

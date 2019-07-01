@@ -16,6 +16,8 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public decimal? Provision { get; set; }
 
+        public bool Closed { get; set; }
+
         public ICollection<CostDetailResource> CostDetailResources { get; set; }
 
         public ICollection<CostDetailProfile> CostDetailProfiles { get; set; }

@@ -130,6 +130,15 @@ namespace Sofco.DAL.Repositories.Common
             return UserApproverSet.Where(x => x.AnalyticId == analyticId && x.UserId == managerId && x.Type == type).ToList();
         }
 
+        public List<UserApprover> GetByAnalyticAndApproverUserId(int approverUserId, int analyticId, UserApproverType type)
+        {
+            return UserApproverSet
+                .Where(x => x.AnalyticId == analyticId 
+                            && x.ApproverUserId == approverUserId 
+                            && x.Type == type)
+                .ToList();
+        }
+
         private void Save(UserApprover item)
         {
             var storedItem = GetUnique(item.AnalyticId, item.EmployeeId, item.Type);

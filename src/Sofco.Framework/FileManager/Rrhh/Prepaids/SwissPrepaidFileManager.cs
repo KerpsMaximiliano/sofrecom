@@ -11,6 +11,7 @@ using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Helpers;
 
 namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 {
@@ -90,11 +91,13 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                 }
                 else
                 {
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(employee.PrepaidAmount), out var prepaidAmount)) prepaidAmount = 0;
+
                     itemToAdd.EmployeeId = employee.Id;
                     itemToAdd.EmployeeName = employee.Name;
                     itemToAdd.TigerBeneficiaries = employee.BeneficiariesCount;
                     itemToAdd.EmployeeNumber = employee.EmployeeNumber;
-                    itemToAdd.TigerCost = employee.PrepaidAmount;
+                    itemToAdd.TigerCost = prepaidAmount;
                     itemToAdd.TigerPlan = employee.PrepaidPlan;
 
                     CheckDifferencies(itemToAdd);

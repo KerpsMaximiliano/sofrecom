@@ -19,5 +19,7 @@ namespace Sofco.Domain.Models.ManagementReport
         public int BilledResources { get; set; }
 
         public decimal EvalPropDifference { get; set; }
+
+        public bool Closed { get; set; }
     }
 }

@@ -42,9 +42,11 @@ import { RefundDelegateComponent } from "./refund/delegate/refund-delegate";
 import { UserApproverService } from "app/services/allocation-management/user-approver.service";
 import { PCheckModule } from "app/components/pcheck/pcheck.module";
 import { PaymentPendingService } from "app/services/advancement-and-refund/paymentPending.service";
+import { SalaryAdvancementService } from "app/services/advancement-and-refund/salary-advancement";
+import { SalaryAdvancementComponent } from "./common/salary-advancement/salary-advancement";
 
 @NgModule({
-    declarations: [ AdvancementDetailComponent, AdvancementHistoryComponent,
+    declarations: [ AdvancementDetailComponent, AdvancementHistoryComponent, SalaryAdvancementComponent,
                     AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundDelegateComponent,
                     RefundListComponent, RefundListFilterComponent, RefundListGridComponent, RefundHistoryComponent,
                     ListPaymentPendingComponent, AdvancementRefundSettingComponent, RefundsRelatedComponent, CurrentAccountComponent
@@ -54,7 +56,7 @@ import { PaymentPendingService } from "app/services/advancement-and-refund/payme
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
                    AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule, AmountFormatModule ],
 
-    providers   : [ AdvancementService, UserService, RefundService, PaymentPendingService,
+    providers   : [ AdvancementService, UserService, RefundService, PaymentPendingService,  SalaryAdvancementService,
                     AdvancementRefundSettingService, CurrentAccountService, UserApproverService ],
 
     exports     : []

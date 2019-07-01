@@ -102,6 +102,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TooltipModule } from 'ngx-bootstrap';
 import { AmountFormatModule } from 'app/pipes/amount-format.module';
 import { HitoModule } from './hitos/hito.module';
+import { OcStatusReopenComponent } from './purchaseOrder/workflow/reopen/oc-reopen';
 
 @NgModule({
   declarations: [CustomersComponent, ServicesComponent, ProjectsComponent, SolfacComponent, SolfacSearchComponent, ProjectDetailComponent,
@@ -117,7 +118,7 @@ import { HitoModule } from './hitos/hito.module';
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
                  OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderApprovalDelegateComponent, PurchaseOrderApprovalDelegateEditComponent,
                  OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent, PurchaseOrderActiveDelegateComponent, PurchaseOrderActiveDelegateEditComponent,
-                 PurchaseOrderViewComponent, PurchaseOrderViewFilterComponent],
+                 PurchaseOrderViewComponent, PurchaseOrderViewFilterComponent, OcStatusReopenComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, HitoModule,
                  TranslateModule, SpinnerModule, FileUploadModule, WidgetModule, Select2Module, LayoutsModule, PdfViewerModule, TooltipModule,

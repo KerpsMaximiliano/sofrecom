@@ -448,6 +448,25 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("RefundHistories");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.SalaryDiscount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AdvancementId");
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<DateTime>("Date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvancementId");
+
+                    b.ToTable("AdvancementSalaryDiscounts");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>
                 {
                     b.Property<int>("Id")
@@ -668,7 +687,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(100);
 
-                    b.Property<decimal>("PrepaidAmount");
+                    b.Property<string>("PrepaidAmount")
+                        .HasMaxLength(200);
 
                     b.Property<int>("PrepaidHealthCode");
 
@@ -681,7 +701,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Province")
                         .HasMaxLength(200);
 
-                    b.Property<decimal>("Salary");
+                    b.Property<string>("Salary")
+                        .HasMaxLength(200);
 
                     b.Property<string>("Seniority")
                         .HasMaxLength(100);
@@ -1759,6 +1780,8 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Closed");
+
                     b.Property<int>("ManagementReportId");
 
                     b.Property<DateTime>("MonthYear");
@@ -1834,7 +1857,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal?>("Adjustment");
 
-                    b.Property<decimal?>("Charges");
+                    b.Property<string>("Charges");
 
                     b.Property<int>("CostDetailId");
 
@@ -1842,7 +1865,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int?>("UserId");
 
-                    b.Property<decimal>("Value");
+                    b.Property<string>("Value");
 
                     b.HasKey("Id");
 
@@ -1879,6 +1902,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime>("StartDate");
 
+                    b.Property<int>("Status");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AnalyticId")
@@ -1894,6 +1919,8 @@ namespace Sofco.WebApi.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BilledResources");
+
+                    b.Property<bool>("Closed");
 
                     b.Property<string>("Comments")
                         .HasMaxLength(2000);
@@ -2514,6 +2541,8 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Active");
+
                     b.Property<string>("Text")
                         .HasMaxLength(100);
 
@@ -2921,6 +2950,14 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("RefundHistories2")
                         .HasForeignKey("StatusToId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.SalaryDiscount", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.AdvancementAndRefund.Advancement", "Advancement")
+                        .WithMany("Discounts")
+                        .HasForeignKey("AdvancementId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.Allocation", b =>

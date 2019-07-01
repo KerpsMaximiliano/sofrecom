@@ -8,6 +8,8 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { DatesService } from "app/services/common/month.service";
 import { AnalyticStatus } from "app/models/enums/analyticStatus";
+import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
+import { I18nService } from "app/services/common/i18n.service";
 
 
 @Component({
@@ -20,6 +22,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
     updateDatesSubscrip: Subscription;
+    sendSubscrip: Subscription;
+    closeSubscrip: Subscription;
 
     customerId: string;
     serviceId: string;
@@ -30,6 +34,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     isManager: boolean = false;
     isCdgOrDirector: boolean = false;
+    isCdg: boolean = false;
 
     selectedDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
     public selectedMonth: number;
@@ -41,6 +46,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     ReportStartDateError: boolean = false;
     ReportEndDateError: boolean = false;
     readOnly: boolean = false;
+    isClosed: boolean = false;
     ManagementReportId: number;
 
     @ViewChild("marginTracking") marginTracking;
@@ -70,10 +76,10 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         private menuService: MenuService,
         private managementReportService: ManagementReportService,
         private datesService: DatesService,
+        private i18nService: I18nService,
         private router: Router) { }
 
     ngOnInit(): void {
-
         this.editDateModal.size = 'modal-sm'
 
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
@@ -87,12 +93,15 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
         this.isManager = this.menuService.userIsManager;
         this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
+        this.isCdg = this.menuService.userIsCdg;
     }
 
     ngOnDestroy(): void {
         if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if (this.getDetailSubscrip) this.getDetailSubscrip.unsubscribe();
         if (this.updateDatesSubscrip) this.updateDatesSubscrip.unsubscribe();
+        if (this.sendSubscrip) this.sendSubscrip.unsubscribe();
+        if (this.closeSubscrip) this.closeSubscrip.unsubscribe();
     }
 
     getDetail() {
@@ -110,18 +119,27 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.ManagementReportId = response.data.managementReportId;
             this.marginTracking.model = response.data;
 
+            this.billing.manamementReportStartDate = this.model.manamementReportStartDate
+            this.billing.manamementReportEndDate = this.model.manamementReportEndDate
+
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
 
             this.billing.init(this.serviceId);
-            this.billing.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
-            this.detailCost.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
-            this.readOnly = this.model.analyticStatus == AnalyticStatus.Close;
+            this.billing.managementReportId = this.ManagementReportId;
+            
+            this.modalEvalProp.managementReportId = this.ManagementReportId;
+
+            this.billing.readOnly = !this.canEdit();
+            this.detailCost.readOnly = !this.canEdit();
+            this.detailCost.managementReportId = this.ManagementReportId;
+
+            this.readOnly = !this.canEdit();
 
             // this.marginTracking.init(this.startDate)
 
             this.messageService.closeLoading();
         },
-            error => this.messageService.closeLoading());
+        error => this.messageService.closeLoading());
     }
 
     collapse() {
@@ -145,7 +163,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     seeCostDetailMonth() {
-
         var resources = this.detailCost.getResourcesByMonth(this.selectedMonth, this.selectedYear);
         var AnalyticId = this.detailCost.getIdAnalytic();
 
@@ -159,7 +176,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             year: this.selectedYear
         }
 
-        this.costDetailMonth.open(data, this.readOnly);
+        this.costDetailMonth.open(data, this.readOnly || this.isClosed);
     }
 
     updateDetailCost() {
@@ -167,7 +184,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditDateModal() {
-
         this.ReportStartDate = this.model.manamementReportStartDate;
         this.ReportEndDate = this.model.manamementReportEndDate;
 
@@ -229,7 +245,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
                     this.editDateModal.resetButtons()
                 }
             );
-
         }
     }
 
@@ -238,9 +253,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     getBillingData(billingModel){
+      
         this.marginTracking.billingDataLoaded = true;
         this.marginTracking.billingModel = billingModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
+        this.detailCost.setResourceQuantity(billingModel.months)
     }
 
     updateMarginTracking(){
@@ -248,9 +265,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     getCostsData(costsModel){
+   
         this.marginTracking.costDataLoaded = true;
         this.marginTracking.costsModel = costsModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
+        this.billing.setResourceQuantity(costsModel.months)
     }
 
     getMarginTracking(allMarginTrackings){    
@@ -285,6 +304,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.marginTracking.setMarginTracking(this.selectedMonth, this.selectedYear);
         this.detailCost.setFromDate(this.selectedDate)
         this.billing.setFromDate(this.selectedDate)
+
+        this.isClosed = this.billing.isClosed(this.selectedDate);
     }
 
     addMonth(){
@@ -312,5 +333,102 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.selectedDate = new Date(this.selectedYear, this.selectedMonth)
         
         this.setDate(dateSetting);  
+    }
+
+    canSendManager(){
+        if(!this.model || !this.model.status) return false;
+
+        if(this.isClosed) return false;
+
+        if(this.isManager && this.menuService.hasFunctionality('MANRE', 'SEND-MANAGER') && this.model.status == ManagementReportStatus.ManagerPending){
+            return true;
+        }
+
+        return false;
+    }
+
+    canSendCdg(){
+        if(!this.model || !this.model.status) return false;
+        
+        if(this.isClosed) return false;
+
+        if(this.isCdg && this.menuService.hasFunctionality('MANRE', 'SEND-CDG') && this.model.status == ManagementReportStatus.CdgPending){
+            return true;
+        }
+
+        return false;
+    }
+
+    sendManager(){
+        this.send(ManagementReportStatus.CdgPending);
+    }
+
+    sendCdg(){
+        this.send(ManagementReportStatus.ManagerPending);
+    }
+
+    send(status){
+        var json = {
+            id: this.ManagementReportId,
+            status: status
+        }
+    
+        this.messageService.showConfirm(() => {
+            this.messageService.showLoading();
+
+            this.updateDatesSubscrip = this.managementReportService.send(json).subscribe(response => {
+                this.model.status = status;
+                this.billing.readOnly = !this.canEdit();
+                this.detailCost.readOnly = !this.canEdit();
+                this.messageService.closeLoading();
+            },
+            error => this.messageService.closeLoading());
+        });
+    }
+
+    getStatusDesc(){
+        if(!this.model || !this.model.status) return "";
+
+        if(this.model.status && this.model.status == ManagementReportStatus.CdgPending){
+            return this.i18nService.translateByKey('managementReport.cdgPending')
+        }
+
+        if(this.model.status && this.model.status == ManagementReportStatus.ManagerPending){
+            return this.i18nService.translateByKey('managementReport.managerPending')
+        }
+
+        if(this.model.status && this.model.status == ManagementReportStatus.Closed){
+            return this.i18nService.translateByKey('managementReport.closed')
+        }
+
+        return "";
+    }
+
+    canEdit(){
+        if(!this.model || !this.model.status) return false;
+
+        if(this.model.status == ManagementReportStatus.CdgPending && this.isCdg) return true;
+
+        if(this.model.status == ManagementReportStatus.ManagerPending && this.isManager) return true;
+
+        return false;
+    }
+
+    close(){
+        var json = {
+            date: this.selectedDate,
+            billingId: this.billing.getId(this.selectedDate),
+            detailCostId: this.detailCost.getId(this.selectedDate)
+        };
+    
+        this.messageService.showConfirm(() => {
+            this.messageService.showLoading();
+
+            this.closeSubscrip = this.managementReportService.close(json).subscribe(response => {
+
+                this.messageService.closeLoading();
+            },
+            error => this.messageService.closeLoading());
+        });
     }
 }

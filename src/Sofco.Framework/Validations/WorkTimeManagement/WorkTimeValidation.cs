@@ -18,7 +18,7 @@ namespace Sofco.Framework.Validations.WorkTimeManagement
 
         private readonly int allowedHoursPerDay = 12;
 
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork; 
 
         private readonly bool validatePeriodCloseMonth;
 

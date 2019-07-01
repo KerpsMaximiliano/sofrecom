@@ -1,7 +1,14 @@
 {
     "startDateGreaterThanEndDate": "Fecha de fin Informe no puede ser menor a la fecha de inicio Informe",
-    "startDateOutOfRange": " La fecha de inicio del informe debe ser mayor o igual al inicio de la analitica",
+    "notFound": "El informe no fue encontrado",
     "startDateRequired": "Fecha inicio Informe es requerida",
-    "endDateOutOfRange": " La fecha de fin del informe debe ser menor o igual al fin de la analitica",
-    "endDateRequired": "Fecha fin Informe es requerida"
+    "endDateRequired": " La fecha de fin es requerida",
+    "statusRequired": "El estado es requerido",
+    "updatePrepaidError": "Ocurrio un error al actualizar las cargas sociales",
+    "isClosed": "El informe ya se encuentra cerrado",
+    "cannotChangeStatus": "No se puede o no tiene permisos para cambiar el estado",
+    "sendSuccess": "EL informe de gestión fue enviado correctamente",
+    "cannotClosed": "El mes seleccionado no se puede cerrar",
+    "closedSuccess": "El mes fue cerrado correctametne",
+    "dateRequired": "El mes es requerido"
 }

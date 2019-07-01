@@ -232,6 +232,60 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.salaryAdvancementAdded.
+        /// </summary>
+        public static string SalaryAdvancementAdded {
+            get {
+                return ResourceManager.GetString("SalaryAdvancementAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.salaryAdvancementDeleted.
+        /// </summary>
+        public static string SalaryAdvancementDeleted {
+            get {
+                return ResourceManager.GetString("SalaryAdvancementDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.salaryAmountGreaterThanTotalAdvancement.
+        /// </summary>
+        public static string SalaryAmountGreaterThanTotalAdvancement {
+            get {
+                return ResourceManager.GetString("SalaryAmountGreaterThanTotalAdvancement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.salaryAmountRequired.
+        /// </summary>
+        public static string SalaryAmountRequired {
+            get {
+                return ResourceManager.GetString("SalaryAmountRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.salaryDateRequired.
+        /// </summary>
+        public static string SalaryDateRequired {
+            get {
+                return ResourceManager.GetString("SalaryDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.salaryDiscountNotFound.
+        /// </summary>
+        public static string SalaryDiscountNotFound {
+            get {
+                return ResourceManager.GetString("SalaryDiscountNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/advancement.startDateReturnLessThanToday.
         /// </summary>
         public static string StartDateReturnLessThanToday {

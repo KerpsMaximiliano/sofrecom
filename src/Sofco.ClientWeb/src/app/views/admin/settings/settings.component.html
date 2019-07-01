@@ -32,7 +32,11 @@
                     <spinner></spinner>
                     <div class="form-group" *ngFor="let item of settings; let dataIndex = index">
                         <label for="example-text-input" class="control-label">{{ 'ADMIN.settings.'+item.key | translate }}</label>
-                        <input class="form-control" [type]="item.type" [(ngModel)]="item.value" min="0">
+                        <input class="form-control" [type]="item.type" [(ngModel)]="item.value" min="0" *ngIf="item.type != 'Boolean'">
+                        <select class="form-control" name="boolean+dataIndex" [(ngModel)]="item.value" *ngIf="item.type == 'Boolean'"> 
+                            <option [value]="true"> {{ 'ACTIONS.yes' | translate }} </option> 
+                            <option [value]="false"> {{ 'ACTIONS.no' | translate }} </option> 
+                        </select> 
                     </div>
                 </div>
             </div>

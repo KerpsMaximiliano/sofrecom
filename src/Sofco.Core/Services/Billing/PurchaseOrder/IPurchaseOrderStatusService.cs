@@ -11,5 +11,7 @@ namespace Sofco.Core.Services.Billing.PurchaseOrder
         Response Close(int id, PurchaseOrderStatusParams model);
 
         Response MakeAdjustment(int id, PurchaseOrderAdjustmentModel model);
+
+        Response Reopen(int id, PurchaseOrderStatusParams model);
     }
 }

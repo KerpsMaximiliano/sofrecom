@@ -117,17 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CannotChangeStatus" xml:space="preserve">
+    <value>managementReport/managementReport.cannotChangeStatus</value>
+  </data>
+  <data name="CannotClosed" xml:space="preserve">
+    <value>managementReport/managementReport.cannotClosed</value>
+  </data>
+  <data name="ClosedSuccess" xml:space="preserve">
+    <value>managementReport/managementReport.closedSuccess</value>
+  </data>
+  <data name="DateRequired" xml:space="preserve">
+    <value>managementReport/managementReport.dateRequired</value>
+  </data>
   <data name="EndDateRequired" xml:space="preserve">
     <value>managementReport/managementReport.endDateRequired</value>
   </data>
+  <data name="IsClosed" xml:space="preserve">
+    <value>managementReport/managementReport.isClosed</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>managementReport/managementReport.notFound</value>
+  </data>
+  <data name="SendSuccess" xml:space="preserve">
+    <value>managementReport/managementReport.sendSuccess</value>
   </data>
   <data name="StartDateGreaterThanEndDate" xml:space="preserve">
     <value>managementReport/managementReport.startDateGreaterThanEndDate</value>
   </data>
   <data name="StartDateRequired" xml:space="preserve">
     <value>managementReport/managementReport.startDateRequired</value>
+  </data>
+  <data name="StatusRequired" xml:space="preserve">
+    <value>managementReport/managementReport.statusRequired</value>
   </data>
   <data name="UpdatePrepaidError" xml:space="preserve">
     <value>managementReport/managementReport.updatePrepaidError</value>

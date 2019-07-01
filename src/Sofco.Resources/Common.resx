@@ -156,6 +156,9 @@
   <data name="SaveSuccess" xml:space="preserve">
     <value>common.saveSuccess</value>
   </data>
+  <data name="SearchEmpty" xml:space="preserve">
+    <value>common.searchEmpty</value>
+  </data>
   <data name="SearchNotFound" xml:space="preserve">
     <value>common.searchNotFound</value>
   </data>

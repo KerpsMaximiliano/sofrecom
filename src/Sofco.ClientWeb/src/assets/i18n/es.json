@@ -133,6 +133,13 @@
             "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes).",
             "WorkingHoursPerDaysMax": "Tope jornada laboral",
             "CloseMonth": "Dia del cierre del mes",
+            "AdvancementAmmountAPesos": "Monto A Pesos",
+            "AdvancementAmmountADolares": "Monto A Dolares",
+            "AdvancementAmmountAEuros": "Monto A Euros",
+            "AdvancementAmmountBPesos": "Monto A Pesos",
+            "AdvancementAmmountBDolares": "Monto B Dolares",
+            "AdvancementAmmountBEuros": "Monto C Euros",
+            "WorkTimeReportByHours": "¿Insumido vs Previsto calculado por horas?",
             "ValidatePeriodCloseMonth": "Validar fecha de cierre"
         },
         "state": {
@@ -1112,6 +1119,7 @@
         "bank": "Banco",
         "advancementRelated": "Adelantos relacionados",
         "userCurrentAccountDetail": "Detalle de adelantos y reintegros",
+        "salaryDiscountAdd": "Agregar devolución",
         "histories": {
             "createdDate": "Fecha Creación",
             "userName": "Usuario",
@@ -1194,6 +1202,9 @@
         "endDateOutOfRange": "La fecha de fin del informe debe ser menor o igual al fin de la analítica",
         "startDateOutOfRange": "La fecha de inicio del informe debe ser mayor o igual al inicio de la analítica",
         "userRequired": "El usuario es requerido",
-        "profileRequired": "El perfil es requerido"
+        "profileRequired": "El perfil es requerido",
+        "closed": "Cerrado",
+        "cdgPending": "Pendiente Control de Gestión",
+        "managerPending": "Pendiente Gerente"
     }
 }
