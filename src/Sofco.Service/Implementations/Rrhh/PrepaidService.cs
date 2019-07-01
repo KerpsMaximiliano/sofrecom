@@ -221,6 +221,8 @@ namespace Sofco.Service.Implementations.Rrhh
 
                 foreach (var employee in employeeMissingInFiles)
                 {
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(employee.PrepaidAmount), out var prepaidAmount)) prepaidAmount = 0;
+
                     var itemToAdd = new PrepaidImportedData
                     {
                         Date = new DateTime(yearId, monthId, 1).Date,
@@ -232,7 +234,7 @@ namespace Sofco.Service.Implementations.Rrhh
                         Period = new DateTime(yearId, monthId, 1).Date,
                         Status = PrepaidImportedDataStatus.Error,
                         TigerBeneficiaries = employee.BeneficiariesCount,
-                        TigerCost = employee.PrepaidAmount,
+                        TigerCost = prepaidAmount,
                         TigerPlan = employee.PrepaidPlan,
                         Comments = Resources.Rrhh.Prepaid.EmployeeMissing
                     };

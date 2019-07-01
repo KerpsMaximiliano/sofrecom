@@ -77,4 +77,11 @@ export class ManagementReportService {
     return this.http.put<any>(`${this.baseUrl}/managementReportBillings/${idBilling}/billedResources`, quantityResources);
   }
 
+  send(model){
+    return this.http.put<any>(`${this.baseUrl}/managementReport/send`, model);
+  }
+
+  close(model){
+    return this.http.put<any>(`${this.baseUrl}/managementReport/close`, model);
+  }
 }

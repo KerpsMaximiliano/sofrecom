@@ -14,5 +14,6 @@ namespace Sofco.Core.DAL.ManagementReport
 
         void UpdateTotals(CostDetail costDetailMonth);
         CostDetail GetWithResourceDetails(int managementReportId, DateTime date);
+        void Close(CostDetail detailCost);
     }
 }

@@ -19,6 +19,10 @@ using Sofco.Framework.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.Config;
+using Sofco.Core.Mail;
+using Sofco.Framework.MailData;
+using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -31,13 +35,17 @@ namespace Sofco.Service.Implementations.ManagementReport
         private readonly IUserData userData;
         private readonly IProjectData projectData;
         private readonly AppSetting appSetting;
+        private readonly EmailConfig emailConfig;
         private readonly IManagementReportFileManager managementReportFileManager;
+        private readonly IMailSender mailSender;
 
         public ManagementReportService(IUnitOfWork unitOfWork,
             ILogMailer<ManagementReportService> logger,
+            IMailSender mailSender,
             IUserData userData,
             IProjectData projectData,
             IOptions<AppSetting> appSettingOptions,
+            IOptions<EmailConfig> emailConfigOptions,
             ISolfacService solfacService,
             IRoleManager roleManager,
             IManagementReportFileManager managementReportFileManager)
@@ -45,11 +53,13 @@ namespace Sofco.Service.Implementations.ManagementReport
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
+            this.mailSender = mailSender;
             this.appSetting = appSettingOptions.Value;
             this.projectData = projectData;
             this.roleManager = roleManager;
             this.solfacService = solfacService;
             this.managementReportFileManager = managementReportFileManager;
+            this.emailConfig = emailConfigOptions.Value;
         }
 
         public Response<ManagementReportDetail> GetDetail(string serviceId)
@@ -77,6 +87,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.ManamementReportStartDate = analytic.ManagementReport.StartDate;
                 response.Data.ManamementReportEndDate = analytic.ManagementReport.EndDate;
                 response.Data.AnalyticStatus = analytic.Status;
+                response.Data.Status = analytic.ManagementReport.Status;
             }
             else
             {
@@ -178,6 +189,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 {
                     monthHeader.ValueEvalProp = billingMonth.EvalPropBillingValue;
                     monthHeader.BillingMonthId = billingMonth.Id;
+                    monthHeader.Closed = billingMonth.Closed;
                     monthHeader.EvalPropDifference = billingMonth.EvalPropDifference;
                     monthHeader.Comments = billingMonth.Comments;
                     monthHeader.Exchanges = currencyExchange.Select(x => new CurrencyExchangeItemModel { CurrencyDesc = x.Currency.Text, Exchange = x.Exchange }).ToList();
@@ -359,6 +371,12 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
 
+                        if (costDetailMonth != null)
+                        {
+                            monthHeader.Closed = costDetailMonth.Closed;
+                            monthHeader.CostDetailId = costDetailMonth.Id;
+                        }
+
                         if (billingMonth.BilledResources > 0)
                         {
                             monthHeader.ResourceQuantity = billingMonth.BilledResources;
@@ -455,6 +473,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             return response;
         }
+
         public Response<List<CostDetailTypeModel>> GetOtherResources()
         {
             var response = new Response<List<CostDetailTypeModel>> { Data = new List<CostDetailTypeModel>() };
@@ -706,6 +725,162 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        public Response Send(ManagementReportSendModel model)
+        {
+            var response = new Response();
+
+            var report = unitOfWork.ManagementReportRepository.GetWithAnalytic(model.Id);
+
+            if (report == null)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
+                return response;
+            }
+
+            if (!model.Status.HasValue)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.StatusRequired);
+                return response;
+            }
+
+            if (report.Status == model.Status)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.CannotChangeStatus);
+                return response;
+            }
+
+            if (report.Status == ManagementReportStatus.Closed)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.IsClosed);
+            }
+            else
+            {
+                if (report.Status == ManagementReportStatus.CdgPending && model.Status == ManagementReportStatus.ManagerPending && !roleManager.IsCdg())
+                {
+                    response.AddError(Resources.ManagementReport.ManagementReport.CannotChangeStatus);
+                }
+
+                if (report.Status == ManagementReportStatus.ManagerPending && model.Status == ManagementReportStatus.CdgPending && !roleManager.IsManager())
+                {
+                    response.AddError(Resources.ManagementReport.ManagementReport.CannotChangeStatus);
+                }
+            }
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                report.Status = model.Status.Value;
+                unitOfWork.ManagementReportRepository.UpdateStatus(report);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReport.SendSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            SendMail(model, report, response);
+
+            return response;
+        }
+
+        public Response Close(ManagementReportCloseModel model)
+        {
+            var response = new Response();
+
+            var billing = unitOfWork.ManagementReportBillingRepository.Get(model.BillingId);
+
+            if (billing == null) response.AddError(Resources.ManagementReport.ManagementReportBilling.NotFound);
+
+            var detailCost = unitOfWork.CostDetailRepository.Get(model.DetailCostId);
+
+            if (detailCost == null) response.AddError(Resources.ManagementReport.CostDetail.NotFound);
+
+            if(!model.Date.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.DateRequired);
+
+            if (response.HasErrors()) return response;
+
+            var currentMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
+            if (model.Date.GetValueOrDefault().Date >= currentMonth.Date)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.CannotClosed);
+                return response;
+            }
+
+            try
+            {
+                billing.Closed = true;
+                detailCost.Closed = true;
+
+                unitOfWork.ManagementReportBillingRepository.Close(billing);
+                unitOfWork.CostDetailRepository.Close(detailCost);
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReport.ClosedSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            try
+            {
+                if (unitOfWork.ManagementReportRepository.AllMonthsAreClosed(billing.ManagementReportId))
+                {
+                    var managementReport = new Domain.Models.ManagementReport.ManagementReport
+                    {
+                        Id = billing.ManagementReportId,
+                        Status = ManagementReportStatus.Closed
+                    };
+
+                    unitOfWork.ManagementReportRepository.UpdateStatus(managementReport);
+                    unitOfWork.Save();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
+
+            return response;
+        }
+
+        private void SendMail(ManagementReportSendModel model, Domain.Models.ManagementReport.ManagementReport report, Response response)
+        {
+            try
+            {
+                var subject = string.Format(MailSubjectResource.ManagementReport, report.Analytic.Title,
+                    report.Analytic.AccountName, report.Analytic.ServiceName);
+
+                var body = model.Status == ManagementReportStatus.CdgPending
+                    ? MailMessageResource.ManagementReportManager
+                    : MailMessageResource.ManagementReportCdg;
+
+                var cdgGroup = unitOfWork.GroupRepository.GetByCode(emailConfig.CdgCode);
+                var recipientsList = new List<string> {report.Analytic.Manager.Email, cdgGroup.Email};
+
+                var data = new MailDefaultData()
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = recipientsList.Distinct().ToList()
+                };
+
+                mailSender.Send(data);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.Common.ErrorSendMail);
+            }
+        }
+
         public Response UpdateDates(int id, ManagementReportUpdateDates model)
         {
             var response = new Response();
@@ -885,12 +1060,17 @@ namespace Sofco.Service.Implementations.ManagementReport
                         // var monthValue = CostDetailEmployees.Find(e => e.CostDetailResources.EmployeeId == employee.Id && new DateTime(e.MonthYear.Year, e.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
                         if (monthValue != null)
                         {
-                            monthDetail.Value = monthValue.Value;
-                            monthDetail.OriginalValue = monthValue.Value;
-                            monthDetail.Charges = monthValue.Charges;
+                            if(!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Value), out var salary)) salary = 0;
+                            if(!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges)) charges = 0;
+
+                            monthDetail.Value = salary;
+                            monthDetail.OriginalValue = salary;
+                            monthDetail.Charges = charges;
                             monthValue.Adjustment = monthValue.Adjustment;
                             monthDetail.Id = monthValue.Id;
                         }
+
+                        monthDetail.Closed = costDetailMonth.Closed;
                     }
 
                     monthDetail.Display = mounth.Display;
@@ -954,6 +1134,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             }
                         }
 
+                        monthDetail.Closed = costDetailMonth.Closed;
                         monthDetail.CostDetailId = costDetailMonth.Id;
                     }
 
@@ -1016,6 +1197,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthDetail.Value = monthValue.Value;
                             monthDetail.Id = monthValue.Id;
                         }
+
+                        monthDetail.Closed = costDetailMonth.Closed;
                     }
 
                     monthDetail.Display = mounth.Display;
@@ -1082,15 +1265,18 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var entity = new CostDetailResource();
 
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Value), out var salary)) salary = 0;
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Charges), out var charges)) charges = 0;
+
                         if (month.Id > 0)
                         {
                             entity = unitOfWork.CostDetailResourceRepository.Get(month.Id);
 
-                            if (month.Value != entity.Value || month.Charges != entity.Charges)
+                            if (month.Value != salary || month.Charges != charges)
                             {
-                                entity.Value = month.Value ?? 0;
+                                entity.Value = CryptographyHelper.Encrypt(month.Value.ToString());
                                 entity.Adjustment = month.Adjustment ?? 0;
-                                entity.Charges = month.Charges ?? 0;
+                                entity.Charges = CryptographyHelper.Encrypt(month.Charges.ToString());
 
                                 unitOfWork.CostDetailResourceRepository.Update(entity);
                             }
@@ -1100,9 +1286,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                             if (month.Value > 0 || month.Charges > 0)
                             {
                                 entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
-                                entity.Value = month.Value ?? 0;
+                                entity.Value = CryptographyHelper.Encrypt(month.Value.ToString());
                                 entity.Adjustment = month.Adjustment ?? 0;
-                                entity.Charges = month.Charges ?? 0;
+                                entity.Charges = CryptographyHelper.Encrypt(month.Charges.ToString());
                                 entity.EmployeeId = resource.EmployeeId;
                                 entity.UserId = resource?.UserId;
 
@@ -1279,8 +1465,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                         .OrderBy(x => x.Name)
                         .ToList();
         }
-
-
     }
 }
 

@@ -38,6 +38,8 @@ namespace Sofco.Core.Models.ManagementReport
         public DateTime ManamementReportEndDate { get; set; }
 
         public AnalyticStatus AnalyticStatus { get; set; }
+
+        public ManagementReportStatus Status { get; set; }
     }
 
     public class AmmountItem

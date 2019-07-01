@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190628152620_EmployeeSalary")]
+    partial class EmployeeSalary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1857,7 +1859,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal?>("Adjustment");
 
-                    b.Property<string>("Charges");
+                    b.Property<decimal?>("Charges");
 
                     b.Property<int>("CostDetailId");
 
@@ -1865,7 +1867,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int?>("UserId");
 
-                    b.Property<string>("Value");
+                    b.Property<decimal>("Value");
 
                     b.HasKey("Id");
 

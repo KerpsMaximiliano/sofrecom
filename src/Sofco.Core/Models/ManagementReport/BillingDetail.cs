@@ -51,6 +51,8 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal TotalBilling { get; set; }
 
         public IList<CurrencyExchangeItemModel> Exchanges { get; set; }
+
+        public bool Closed { get; set; }
     }
 
     public class BillingTotal

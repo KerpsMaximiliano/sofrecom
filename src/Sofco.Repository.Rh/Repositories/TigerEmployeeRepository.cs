@@ -38,7 +38,10 @@ namespace Sofco.Repository.Rh.Repositories
             CAST(teddi as INTEGER) as phoneCountryCode,
             CAST(teddn as INTEGER) as phoneAreaCode,
             telef as phoneNumber,
-            dbanc as bank
+            dbanc as bank,
+            ayude,
+            nuset,
+            nuse1
         FROM
 	        View_A001
         ";

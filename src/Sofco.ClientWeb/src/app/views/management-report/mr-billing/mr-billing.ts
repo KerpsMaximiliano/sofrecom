@@ -11,6 +11,7 @@ import { MessageService } from "app/services/common/message.service";
 import { FormControl, Validators } from "@angular/forms";
 import { ReportBillingUpdateDataType } from "app/models/enums/ReportBillingUpdateDataType";
 import { detectBody } from "app/app.helpers";
+import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 
 @Component({
     selector: 'management-report-billing',
@@ -47,6 +48,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     hito: NewHito = new NewHito();
 
     hitoSelected: any;
+    managementReportStatus: ManagementReportStatus = ManagementReportStatus.CdgPending;
     indexSelected: number = 0
     monthSelectedDisplay: string = "";
     monthSelectedOpportunity: string = "";
@@ -399,7 +401,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         return this.menuService.userIsCdg;
     }
 
-    canDeleteHito(hito) {
+    canDeleteHito(hito, index) {
         if (this.readOnly) return false;
 
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
@@ -457,6 +459,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     openEditItemModal(value, hito, index) {
         if (this.readOnly) return false;
 
+        var monthValue = this.months[index];
+        if(monthValue && monthValue.closed) return;
+
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
         if (!this.isEnabled(hitoMonth)) return;
@@ -474,6 +479,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     openEditEvalProp(month) {
         if (this.readOnly) return false;
 
+        if(month.closed) return;
+
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 1;
             this.openEvalPropModal.emit(month);
@@ -484,7 +491,31 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.fromMonth = new Date(date.getFullYear(), date.getMonth() - 2, 1)
     }
 
+    isClosed(date: Date){   
+        var item = this.months.find(x => x.month == (date.getMonth()+1) && x.year == date.getFullYear());
+
+        if(item){
+            return item.closed;
+        }
+
+        return false;
+    }
+
+    getId(date: Date){
+        var item = this.months.find(x => x.month == (date.getMonth()+1) && x.year == date.getFullYear());
+
+        if(item){
+            return item.billingMonthId;
+        }
+
+        return 0;
+    }
+
     openResourceQuantity(month) {
+        if (this.readOnly) return false;
+
+        if(month.closed) return;
+
         this.monthSelected = month;
         this.updateDataType = ReportBillingUpdateDataType.BilledResources;
         this.billingResourceQuantity = month.resourceQuantity;
@@ -492,6 +523,10 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openEvalPropDifferenceModal(month) {
+        if (this.readOnly) return false;
+
+        if(month.closed) return;
+
         this.monthSelected = month;
         this.updateDataType = ReportBillingUpdateDataType.EvalPropDifference;
         this.evalPropDifference = month.evalPropDifference;
@@ -499,6 +534,10 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     openCommentsModal(month) {
+        if (this.readOnly) return false;
+
+        if(month.closed) return;
+
         this.monthSelected = month;
         this.updateDataType = ReportBillingUpdateDataType.Comments;
         this.billingComments = month.comments;
@@ -540,6 +579,10 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     seeBillingDetail(month) {
+        if (this.readOnly) return false;
+
+        if(month.closed) return;
+
         var currencies = [];
 
         this.totals.forEach(total => {

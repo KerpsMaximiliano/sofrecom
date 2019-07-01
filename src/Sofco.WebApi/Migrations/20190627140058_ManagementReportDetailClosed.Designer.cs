@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190627140058_ManagementReportDetailClosed")]
+    partial class ManagementReportDetailClosed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -687,8 +689,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(100);
 
-                    b.Property<string>("PrepaidAmount")
-                        .HasMaxLength(200);
+                    b.Property<decimal>("PrepaidAmount");
 
                     b.Property<int>("PrepaidHealthCode");
 
@@ -701,8 +702,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("Province")
                         .HasMaxLength(200);
 
-                    b.Property<string>("Salary")
-                        .HasMaxLength(200);
+                    b.Property<decimal>("Salary");
 
                     b.Property<string>("Seniority")
                         .HasMaxLength(100);
@@ -1857,7 +1857,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal?>("Adjustment");
 
-                    b.Property<string>("Charges");
+                    b.Property<decimal?>("Charges");
 
                     b.Property<int>("CostDetailId");
 
@@ -1865,7 +1865,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int?>("UserId");
 
-                    b.Property<string>("Value");
+                    b.Property<decimal>("Value");
 
                     b.HasKey("Id");
 
