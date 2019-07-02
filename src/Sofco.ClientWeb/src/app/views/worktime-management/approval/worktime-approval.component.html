@@ -73,7 +73,7 @@
                                 <td class="column-xlg">{{ item.employee }}</td>
                                 <td class="column-md">{{ item.task }}</td>
                                 <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>
-                                <td class="column-sm text-center">{{ item.hours }}</td>
+                                <td class="column-sm text-center">{{ item.hours | number: '1.2-2' }}</td>
                                 <td class="column-xs text-center">
                                     <button *ngIf="item.comments" (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
                                 </td>
@@ -139,7 +139,7 @@
                                 <td class="column-xlg">{{ item.employee }}</td>
                                 <td class="column-md">{{ item.task }}</td>
                                 <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>
-                                <td class="column-xs text-center">{{ item.hours }} hs</td>
+                                <td class="column-xs text-center">{{ item.hours | number: '1.2-2'}}</td>
                                 <td class="column-xs text-center">
                                     <button *ngIf="item.comments" (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
                                 </td>
