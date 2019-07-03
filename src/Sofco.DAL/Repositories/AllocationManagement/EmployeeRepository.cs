@@ -103,7 +103,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees.Where(x => !prepaidImportedDataIds.Contains(x.Id) && x.EndDate == null).ToList();
         }
 
-        public ICollection<Employee> Search(EmployeeSearchParams parameters)
+        public ICollection<Employee> Search(EmployeeSearchParams parameters, DateTime startDate, DateTime endDate)
         {
             IQueryable<Employee> query = context.Employees.Include(x => x.Manager);
 
@@ -145,7 +145,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             {
                 query = from employee in query
                         from allocation in context.Allocations
-                        where employee.Id == allocation.EmployeeId && allocation.AnalyticId == parameters.AnalyticId
+                        where employee.Id == allocation.EmployeeId && allocation.AnalyticId == parameters.AnalyticId &&
+                              allocation.Percentage > 0 &&
+                              (allocation.StartDate.Date == startDate.Date || allocation.StartDate.Date == endDate.Date)
                         select employee;
             }
 
