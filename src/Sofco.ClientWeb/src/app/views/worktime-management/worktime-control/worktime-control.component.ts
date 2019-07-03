@@ -43,7 +43,6 @@ export class WorkTimeControlComponent implements OnDestroy  {
     }
 
     getAnalytics() {
-        this.loading = true;
         this.messageService.showLoading();
         this.subscription = this.worktimeControlService.getAnalyticOptionsByCurrentManager().subscribe(res => {
             this.messageService.closeLoading();
@@ -52,7 +51,6 @@ export class WorkTimeControlComponent implements OnDestroy  {
             this.getCloseMonths();
         },
         err => {
-            this.loading = false;
             this.messageService.closeLoading();
         });
     }
@@ -70,7 +68,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
             this.closeMonthId = data.id;
         }
 
-        this.getData();
+        // this.getData();
     }
 
     setAnalyticSelect() {
