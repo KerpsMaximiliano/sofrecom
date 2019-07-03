@@ -2,6 +2,8 @@
 {
     public class AppSetting
     {
+        public string CultureInfo { get; set; }
+
         public string Domain { get; set; }
 
         public string SolfacGeneratorCode { get; set; }
