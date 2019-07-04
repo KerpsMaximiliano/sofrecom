@@ -74,6 +74,10 @@
 
         public int SalaryWorkflowId { get; set; }
 
+        public string AdvancementCashAmount { get; set; }
+
+        public int CashWorkflowId { get; set; }
+
         public int RefundWorkflowId { get; set; }
 
         public int ViaticumWorkflowId { get; set; }

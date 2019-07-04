@@ -70,6 +70,15 @@ namespace Sofco.Resources.AdvancementAndRefund {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a advancementAndRefund/advancement.advancementCashAmountExceeded.
+        /// </summary>
+        public static string AdvancementCashAmountExceeded {
+            get {
+                return ResourceManager.GetString("AdvancementCashAmountExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a advancementAndRefund/advancement.advancementReturnFormNotFound.
         /// </summary>
         public static string AdvancementReturnFormNotFound {

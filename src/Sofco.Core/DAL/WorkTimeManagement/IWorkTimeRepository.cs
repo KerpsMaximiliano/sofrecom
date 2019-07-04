@@ -41,7 +41,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         List<WorkTime> GetWorkTimePendingHoursByEmployeeId(int employeeId);
 
-        IList<WorkTime> Search(SearchParams parameters);
+        IList<WorkTime> Search(SearchParams parameters, List<int> analyticIds);
 
         void InsertBulk(IList<WorkTime> workTimesToAdd);
 

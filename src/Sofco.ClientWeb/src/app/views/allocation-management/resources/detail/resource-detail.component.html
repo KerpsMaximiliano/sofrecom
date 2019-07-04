@@ -307,6 +307,7 @@
                                         <td>
                                             <span *ngIf="item.paymentForm == 1">{{ 'advancement.ownBank' | translate }}</span>
                                             <span *ngIf="item.paymentForm == 2">{{ 'advancement.others' | translate }}</span>
+                                            <span *ngIf="item.paymentForm == 3">{{ 'advancement.cash' | translate }}</span>
                                         </td>
                                         <td>{{ item.currencyDesc }}</td>
                                         <td>{{ item.ammount | amountFormat }}</td>

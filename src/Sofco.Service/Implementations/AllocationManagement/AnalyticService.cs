@@ -351,6 +351,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 {
                     Analytic = analytic,
                     StartDate = analytic.StartDateContract.Date,
+                    Status = ManagementReportStatus.CdgPending,
                     EndDate = analytic.EndDateContract.Date,
                     Billings = new List<ManagementReportBilling>()
                 };

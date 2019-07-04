@@ -61,7 +61,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 domain.CreationDate = DateTime.UtcNow;
                 domain.StatusId = settings.WorkflowStatusDraft;
 
-                var workflow = unitOfWork.WorkflowRepository.GetLastByType(domain.Type == AdvancementType.Salary ? settings.SalaryWorkflowId : settings.ViaticumWorkflowId);
+                Domain.Models.Workflow.Workflow workflow = new Domain.Models.Workflow.Workflow();
+
+                if (domain.Type == AdvancementType.Salary)
+                    workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.SalaryWorkflowId);
+
+                if (domain.Type == AdvancementType.Viaticum)
+                {
+                    if (domain.PaymentForm == AdvancementPaymentForm.Cash)
+                        workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.CashWorkflowId);
+                    else
+                        workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.ViaticumWorkflowId);
+                }
 
                 domain.WorkflowId = workflow.Id;
                 domain.InWorkflowProcess = true;
@@ -208,6 +219,35 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 Data = result
             };
+        }
+
+        public Response IsCashEnable()
+        {
+            var response = new Response();
+
+            var workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.CashWorkflowId);
+
+            if (workflow == null)
+            {
+                response.AddError(Resources.Workflow.Workflow.CannotDoTransition);
+                return response;
+            }
+
+            var transitions = unitOfWork.WorkflowRepository.GetTransitionByWorkflowAndState(workflow.Id, settings.WorkflowStatusDraft);
+
+            var currentUser = userData.GetCurrentUser();
+
+            if (transitions.Any(x => x.WorkflowStateAccesses.Any(s =>
+                s.UserSource.Code == settings.UserUserSource && s.UserSource.SourceId == currentUser.Id)))
+            {
+                return response;
+            }
+            else
+            {
+                response.AddError(Resources.Workflow.Workflow.CannotDoTransition);
+            }
+
+            return response;
         }
 
         private void SetBankAndManager(string email, Dictionary<string, string> employeeDictionary,

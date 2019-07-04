@@ -84,9 +84,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             worktimeData.ClearControlHoursReportKey(currentUser.UserName);
             worktimeData.SaveControlHoursReport(resources, currentUser.UserName);
 
-            resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
-            resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
-
             var resourcesAux = resources.ToList();
 
             foreach (var allResource in allResources)
@@ -135,6 +132,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     }
                 }
             }
+
+            resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
+            resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
 
             result.Data = new WorkTimeControlModel
             {

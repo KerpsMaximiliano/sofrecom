@@ -140,7 +140,8 @@
             "AdvancementAmmountBDolares": "Monto B Dolares",
             "AdvancementAmmountBEuros": "Monto C Euros",
             "WorkTimeReportByHours": "¿Insumido vs Previsto calculado por horas?",
-            "ValidatePeriodCloseMonth": "Validar fecha de cierre"
+            "ValidatePeriodCloseMonth": "Validar fecha de cierre",
+            "AdvancementCashAmount": "Monto tope adelanto en efectivo"
         },
         "state": {
             "admin": "Administración de Estados",
@@ -1094,6 +1095,7 @@
         "foreignCurrency": "Moneda extranjera",
         "salary": "Sueldo",
         "viaticum": "Viatico",
+        "cash": "Efectivo",
         "startDateReturn": "Fecha Aproximada de Devolución",
         "advancementReturnForm": "Forma de Devolución",
         "currency":"Moneda",
