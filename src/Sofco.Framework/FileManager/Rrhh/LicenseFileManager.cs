@@ -39,8 +39,6 @@ namespace Sofco.Framework.FileManager.Rrhh
         {
             var sheet = excel.Workbook.Worksheets.First();
 
-            var cultureinfo = new System.Globalization.CultureInfo(appSetting.CultureInfo);
-
             for (int i = 0; i < licenses.Count; i++)
             {
                 var index = i + 2;
@@ -48,9 +46,9 @@ namespace Sofco.Framework.FileManager.Rrhh
                 sheet.Cells[$"A{index}"].Value = licenses[i].Employee.EmployeeNumber;
                 sheet.Cells[$"B{index}"].Value = licenses[i].Employee.Name;
                 sheet.Cells[$"C{index}"].Value = licenses[i].Type.Description;
-                sheet.Cells[$"D{index}"].Value = DateTime.Parse(licenses[i].CreationDate.ToString(), cultureinfo);
-                sheet.Cells[$"E{index}"].Value = DateTime.Parse(licenses[i].StartDate.ToString(), cultureinfo);
-                sheet.Cells[$"F{index}"].Value = DateTime.Parse(licenses[i].EndDate.ToString(), cultureinfo); ;
+                sheet.Cells[$"D{index}"].Value = licenses[i].CreationDate;
+                sheet.Cells[$"E{index}"].Value = licenses[i].StartDate;
+                sheet.Cells[$"F{index}"].Value = licenses[i].EndDate;
                 sheet.Cells[$"G{index}"].Value = licenses[i].DaysQuantityByLaw;
                 sheet.Cells[$"H{index}"].Value = GetStatusDescription(licenses[i].Status);
                 sheet.Cells[$"I{index}"].Value = licenses[i].Employee.HolidaysPending;
