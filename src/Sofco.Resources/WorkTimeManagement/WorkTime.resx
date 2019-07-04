@@ -276,4 +276,7 @@
   <data name="ReferenceWrongMaxLength" xml:space="preserve">
     <value>workTimeManagement/workTime.referenceWrongMaxLength</value>
   </data>
+  <data name="DateGreaterThanCurrent" xml:space="preserve">
+    <value>workTimeManagement/workTime.dateGreaterThanCurrent</value>
+  </data>
 </root>

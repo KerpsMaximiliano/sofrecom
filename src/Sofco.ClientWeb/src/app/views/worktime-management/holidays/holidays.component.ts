@@ -16,6 +16,8 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   public holidayModel: any = {};
   public selectedYear: number = new Date().getFullYear();
+  public minDate: Date = new Date();
+   
 
   public editModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       'workTimeManagement.holiday.title',
@@ -44,6 +46,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   @ViewChild('editModal') editModal;
   @ViewChild('confirmDeleteModal') confirmDeleteModal;
   @ViewChild('confirmImportModal') confirmImportModal;
+  @ViewChild('dateControl') dateControl;
 
   constructor(
       private holidayService: HolidayService,
@@ -59,7 +62,10 @@ export class HolidaysComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  initControls() {
+  initControls() {    
+    this.minDate.setDate(this.minDate.getDate() + 1);
+    this.dateControl.minDate = this.minDate;
+
     const self = this;
     const nextYear = new Date().getFullYear() + 1;
 
@@ -84,7 +90,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
       this.holidayModel = {
         id: 0,
         name: "",
-        date: new Date()
+        date: this.minDate
       };
     }
     this.showSaveModal();
@@ -116,6 +122,7 @@ export class HolidaysComponent implements OnInit, OnDestroy {
       this.messageService.closeLoading();
     },
     error => {
+      this.editModal.resetButtons()
       this.editModal.isLoading = false;
     });
   }

@@ -52,5 +52,6 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         IList<WorkTime> GetByDate(DateTime worktimeDate);
 
         decimal GetTotalHoursApprovedBetweenDays(int employeeId, DateTime startdate, DateTime endDate, int analyticId);
+        void RemoveAllOfDate(DateTime removeDate);
     }
 }
