@@ -19,7 +19,7 @@ namespace Sofco.Resources.WorkTimeManagement {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class WorkTime {
@@ -147,6 +147,15 @@ namespace Sofco.Resources.WorkTimeManagement {
         public static string ControlHoursEmpty {
             get {
                 return ResourceManager.GetString("ControlHoursEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a workTimeManagement/workTime.dateGreaterThanCurrent.
+        /// </summary>
+        public static string DateGreaterThanCurrent {
+            get {
+                return ResourceManager.GetString("DateGreaterThanCurrent", resourceCulture);
             }
         }
         

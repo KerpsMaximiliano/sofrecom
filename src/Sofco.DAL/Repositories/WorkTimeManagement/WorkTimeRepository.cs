@@ -315,5 +315,13 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             stored.Status  = workTime.Status;
             stored.Reference = workTime.Reference;
         }
+
+        //Elimina todas las horas cargadas para una fecha determinada
+        public void RemoveAllOfDate(DateTime removeDate)
+        {
+            var worktimes = context.WorkTimes.Where(x => x.Date.Date == removeDate.Date).ToList();
+
+            Delete(worktimes);
+        }
     }
 }
