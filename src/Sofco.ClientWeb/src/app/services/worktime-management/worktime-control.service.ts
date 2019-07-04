@@ -15,8 +15,8 @@ export class WorktimeControlService {
     return this.http.post<any>(`${this.apiUrl}`, model);
   }
 
-  getAnalyticOptionsByCurrentManager() {
-    return this.http.get<any>(`${this.apiUrl}/analytics/options/currentManager`);
+  getAnalytics() {
+    return this.http.get<any>(`${this.apiUrl}/analytics`);
   }
 
   createReport(){

@@ -81,9 +81,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var currentUser = userData.GetCurrentUser();
 
-            worktimeData.ClearControlHoursReportKey(currentUser.UserName);
-            worktimeData.SaveControlHoursReport(resources, currentUser.UserName);
-
             var resourcesAux = resources.ToList();
 
             foreach (var allResource in allResources)
@@ -136,6 +133,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
             resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
 
+            worktimeData.ClearControlHoursReportKey(currentUser.UserName);
+            worktimeData.SaveControlHoursReport(resources, currentUser.UserName);
+
             result.Data = new WorkTimeControlModel
             {
                 Resume = resumeModel,
@@ -143,17 +143,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             };
 
             return result;
-        }
-
-        public Response<List<Option>> GetAnalyticOptionsByCurrentManager()
-        {
-            var analyticsByManagers = roleManager.HasFullAccess()
-                ? unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite()
-                : GetAnalyticByManagerAndDelegated();
-
-            var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
-
-            return new Response<List<Option>> { Data = result };
         }
 
         private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate,
@@ -349,6 +338,34 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             response.Data = excel.GetAsByteArray();
 
             return response;
+        }
+
+        public IList<Option> GetAnalytics()
+        {
+            if (roleManager.IsPmo() || roleManager.IsRrhh())
+            {
+                var analytics = unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite();
+
+                return analytics.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            }
+            else
+            {
+                var currentUser = userData.GetCurrentUser();
+                var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+                var analyticsByDirectors = unitOfWork.AnalyticRepository.GetByDirectorId(currentUser.Id);
+
+                var list = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+                foreach (var analytic in analyticsByDirectors)
+                {
+                    if (list.All(x => x.Id != analytic.Id))
+                    {
+                        list.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+                    }
+                }
+
+                return list;
+            }
         }
 
         private decimal CalculateHoursToLoad(IList<Allocation> allocations, DateTime startDate, DateTime endDate, IList<Holiday> holidays)

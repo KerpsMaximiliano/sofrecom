@@ -44,9 +44,9 @@ export class WorkTimeControlComponent implements OnDestroy  {
 
     getAnalytics() {
         this.messageService.showLoading();
-        this.subscription = this.worktimeControlService.getAnalyticOptionsByCurrentManager().subscribe(res => {
+        this.subscription = this.worktimeControlService.getAnalytics().subscribe(res => {
             this.messageService.closeLoading();
-            this.analytics = this.sortAnalytics(res.data);
+            this.analytics = this.sortAnalytics(res);
             this.setAnalyticSelect();
             this.getCloseMonths();
         },

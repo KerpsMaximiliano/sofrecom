@@ -25,14 +25,6 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
             return this.CreateResponse(response);
         }
 
-        [HttpGet("analytics/options/currentManager")]
-        public IActionResult GetByCurrentManager()
-        {
-            var response = service.GetAnalyticOptionsByCurrentManager();
-
-            return this.CreateResponse(response);
-        }
-
         [HttpGet("export")]
         public IActionResult ExportControlHoursReport()
         {
@@ -42,6 +34,14 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
                 return BadRequest(response);
 
             return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
+        [HttpGet("analytics")]
+        public IActionResult GetAnalytics()
+        {
+            var analytics = service.GetAnalytics();
+
+            return Ok(analytics);
         }
     }
 }
