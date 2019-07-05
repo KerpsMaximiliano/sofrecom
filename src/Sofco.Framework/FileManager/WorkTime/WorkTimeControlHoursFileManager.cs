@@ -64,7 +64,6 @@ namespace Sofco.Framework.FileManager.WorkTime
                 sheet1.Cells[$"F{i}"].Value = item.SentHours;
                 sheet1.Cells[$"G{i}"].Value = item.DraftHours;
                 sheet1.Cells[$"H{i}"].Value = item.PendingHours;
-                sheet1.Cells[$"I{i}"].Value = item.AllocationPercentage;
 
                 foreach (var detail in item.Details)
                 {

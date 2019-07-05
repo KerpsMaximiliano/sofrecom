@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.AdvancementAndRefund;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
@@ -11,10 +13,12 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
     public class AdvancementValidation : IAdvancemenValidation
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly AppSetting appSetting;
 
-        public AdvancementValidation(IUnitOfWork unitOfWork)
+        public AdvancementValidation(IUnitOfWork unitOfWork, IOptions<AppSetting> appSettingOptions)
         {
             this.unitOfWork = unitOfWork;
+            this.appSetting = appSettingOptions.Value;
         }
 
         public void ValidateAdd(AdvancementModel model, Response response)
@@ -67,12 +71,24 @@ namespace Sofco.Framework.Validations.AdvancementAndRefund
             if (model.Type.GetValueOrDefault() == AdvancementType.Viaticum)
             {
                 ValidateStartDateReturn(model, response);
+                ValidateCashPaymentForm(model, response);
             }
 
             if (model.Type.GetValueOrDefault() == AdvancementType.Salary)
             {
                 ValidateMonthReturn(model, response);
                 ValidateAdvancementReturnForm(model, response);
+            }
+        }
+
+        private void ValidateCashPaymentForm(AdvancementModel model, Response response)
+        {
+            if (model.PaymentForm == AdvancementPaymentForm.Cash)
+            {
+                var setting = unitOfWork.SettingRepository.GetByKey(appSetting.AdvancementCashAmount);
+
+                if (setting != null && model.Ammount > Convert.ToDecimal(setting.Value))
+                    response.AddError(Resources.AdvancementAndRefund.Advancement.AdvancementCashAmountExceeded);
             }
         }
 

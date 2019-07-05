@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
-using Sofco.Core.Managers;
-using Sofco.Core.Models.Common;
 using Sofco.Domain.Models.WorkTimeManagement;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sofco.Framework.FileManager.WorkTime
 {
@@ -86,12 +84,12 @@ namespace Sofco.Framework.FileManager.WorkTime
                     var startDate = period.Item1;
                     var endDate = period.Item2;
 
-                var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employee.Id, startDate.Date, endDate.Date);
+                    var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(employee.Id, startDate.Date, endDate.Date);
 
                     while (startDate.Date <= endDate.Date)
                     {
                         var firstDayOffMonth = new DateTime(startDate.Year, startDate.Month, 1);
-                    bool hasLicence = licenses.Any(x => startDate.Date >= x.StartDate.Date && startDate.Date <= x.EndDate.Date);
+                        bool hasLicence = licenses.Any(x => startDate.Date >= x.StartDate.Date && startDate.Date <= x.EndDate.Date);
 
                         if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday &&
                         Holidays.All(x => x.Date.Date != startDate.Date) && !hasLicence)
@@ -100,8 +98,8 @@ namespace Sofco.Framework.FileManager.WorkTime
                             {
                                 sheet1.Cells[$"A{index}"].Value = employee.EmployeeNumber;
                                 sheet1.Cells[$"B{index}"].Value = employee.Name;
-                            sheet1.Cells[$"C{index}"].Value = startDate.Date;
-                            sheet1.Cells[$"C{index}"].Style.Numberformat.Format = format;
+                                sheet1.Cells[$"C{index}"].Value = startDate.Date;
+                                sheet1.Cells[$"C{index}"].Style.Numberformat.Format = format;
                                 index++;
                             }
                         }

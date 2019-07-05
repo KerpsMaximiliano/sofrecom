@@ -227,7 +227,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .ToList();
         }
 
-        public IList<WorkTime> Search(SearchParams parameters)
+        public IList<WorkTime> Search(SearchParams parameters, List<int> analyticIds)
         {
             IQueryable<WorkTime> query = context.WorkTimes
                 .Include(x => x.Employee)
@@ -242,6 +242,10 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
 
             if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
                 query = query.Where(x => x.AnalyticId == parameters.AnalyticId.Value);
+            else
+            {
+                query = query.Where(x => analyticIds.Contains(x.AnalyticId));
+            }
 
             if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
                 query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);

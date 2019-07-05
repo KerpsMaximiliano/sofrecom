@@ -17,5 +17,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response Delete(int id);
         Response<AdvancementRefundModel> GetResume(IList<int> id);
         Response<IList<Option>> GetStates();
+        Response IsCashEnable();
     }
 }

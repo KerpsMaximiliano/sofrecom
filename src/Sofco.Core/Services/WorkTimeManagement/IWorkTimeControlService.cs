@@ -8,8 +8,8 @@ namespace Sofco.Core.Services.WorkTimeManagement
     {
         Response<WorkTimeControlModel> Get(WorkTimeControlParams parameters);
 
-        Response<List<Option>> GetAnalyticOptionsByCurrentManager();
-
         Response<byte[]> ExportControlHoursReport();
+
+        IList<Option> GetAnalytics();
     }
 }

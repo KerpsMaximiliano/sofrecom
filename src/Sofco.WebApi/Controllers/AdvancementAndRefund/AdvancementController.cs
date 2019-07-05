@@ -124,5 +124,16 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("cashEnable")]
+        public IActionResult IsCashEnable()
+        {
+            var response = advancementService.IsCashEnable();
+
+            if (response.HasErrors())
+                return BadRequest();
+            else
+                return Ok();
+        }
     }
 }

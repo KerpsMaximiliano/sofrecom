@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
+using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
@@ -25,12 +27,15 @@ namespace Sofco.UnitTest.Validations
         private Mock<IUtilsRepository> utilsRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
 
+        private Mock<IOptions<AppSetting>> appSettingMock;
+
         [SetUp]
         public void Setup()
         {
             unitOfWorkMock = new Mock<IUnitOfWork>();
             utilsRepositoryMock = new Mock<IUtilsRepository>();
             userRepositoryMock = new Mock<IUserRepository>();
+            appSettingMock = new Mock<IOptions<AppSetting>>();
 
             unitOfWorkMock.Setup(x => x.UtilsRepository).Returns(utilsRepositoryMock.Object);
             unitOfWorkMock.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
@@ -42,7 +47,7 @@ namespace Sofco.UnitTest.Validations
             userRepositoryMock.Setup(x => x.ExistById(1)).Returns(true);
             userRepositoryMock.Setup(x => x.ExistById(2)).Returns(false);
 
-            sut = new AdvancementValidation(unitOfWorkMock.Object);
+            sut = new AdvancementValidation(unitOfWorkMock.Object, appSettingMock.Object);
         }
 
         [Test]

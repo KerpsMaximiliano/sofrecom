@@ -7,6 +7,7 @@ import { WorkflowStateType } from "app/models/enums/workflowStateType";
 import { environment } from 'environments/environment'
 import { Advancement } from "app/models/advancement-and-refund/advancement";
 import { FormsService } from "app/services/forms/forms.service";
+import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 
 @Component({
     selector: 'advancement-form',
@@ -27,6 +28,7 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     public status: string;
     public isSalary: boolean = true;
     public isLoading: boolean = true;
+    public isCashEnable: boolean = false;
 
     public form: Advancement;
 
@@ -36,14 +38,17 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     getCurrenciesSubscrip: Subscription;
     getAnalyticsSubscrip: Subscription;
     getMonthsReturnSubscrip: Subscription;
+    getCashEnableSubscrip: Subscription;
 
     constructor(private utilsService: UtilsService,
                 public formsService: FormsService,
+                private advancementService: AdvancementService,
                 public i18nService: I18nService){}
 
     ngOnInit(): void {
         this.getMonthsReturn();
-     
+        this.getCashEnable();
+
         if(this.mode == 'add'){
             this.isLoading = false;
             this.form = new Advancement(false);
@@ -61,6 +66,7 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
         if(this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
         if(this.getAnalyticsSubscrip) this.getAnalyticsSubscrip.unsubscribe();
         if(this.getMonthsReturnSubscrip) this.getMonthsReturnSubscrip.unsubscribe();
+        if(this.getCashEnableSubscrip) this.getCashEnableSubscrip.unsubscribe();
     }
 
     getCurrencies(){
@@ -76,6 +82,12 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     getMonthsReturn(){
         this.getMonthsReturnSubscrip = this.utilsService.getMonthsReturn().subscribe(response => {
             this.monthsReturns = response;
+        });
+    }
+
+    getCashEnable(){
+        this.getCashEnableSubscrip = this.advancementService.getCashEnable().subscribe(response => {
+           this.isCashEnable = true;
         });
     }
 
@@ -156,8 +168,15 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
                     this.form.controls.currencyId.setValue(environment.currencyPesosId);
                 }
                 else{
-                    this.currenciesFiltered = this.currencies.filter(x => x.id != environment.currencyPesosId);
+                    if(selectedValue == '2'){
+                        this.currenciesFiltered = this.currencies.filter(x => x.id != environment.currencyPesosId);
+                    }
 
+                    if(selectedValue == '3'){
+                        this.currenciesFiltered = this.currencies;
+                        this.form.controls.currencyId.setValue(environment.currencyPesosId);
+                    }
+               
                     if(!this.isLoading){
                         this.form.controls.currencyId.setValue(null);
                     }
@@ -177,8 +196,13 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
             if(this.form.controls.paymentForm.value == '2'){
                 this.currenciesFiltered = this.currencies.filter(x => x.id != environment.currencyPesosId);
             }
-            else{
+            
+            if(this.form.controls.paymentForm.value == '1'){
                 this.currenciesFiltered = this.currencies.filter(x => x.id == environment.currencyPesosId);
+            }
+
+            if(this.form.controls.paymentForm.value == '3'){
+                this.currenciesFiltered = this.currencies;
             }
         }
     }

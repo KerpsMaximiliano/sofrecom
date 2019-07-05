@@ -120,6 +120,9 @@
   <data name="AddSuccess" xml:space="preserve">
     <value>advancementAndRefund/advancement.addSuccess</value>
   </data>
+  <data name="AdvancementCashAmountExceeded" xml:space="preserve">
+    <value>advancementAndRefund/advancement.advancementCashAmountExceeded</value>
+  </data>
   <data name="AdvancementReturnFormNotFound" xml:space="preserve">
     <value>advancementAndRefund/advancement.advancementReturnFormNotFound</value>
   </data>

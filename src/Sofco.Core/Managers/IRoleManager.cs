@@ -20,5 +20,9 @@ namespace Sofco.Core.Managers
         bool HasAdvancementAccess();
 
         bool IsDafOrGaf();
+
+        bool IsPmo();
+
+        bool IsRrhh();
     }
 }

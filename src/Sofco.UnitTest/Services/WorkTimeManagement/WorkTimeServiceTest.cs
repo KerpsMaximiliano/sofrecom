@@ -34,6 +34,8 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
         private Mock<IUserData> userDataMock;
 
+        private Mock<IRoleManager> roleManagerMock;
+
         private Mock<IEmployeeData> employeeDataMock;
 
         private Mock<IWorkTimeValidation> workTimeValidationMock;
@@ -63,6 +65,8 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
 
             employeeDataMock = new Mock<IEmployeeData>();
 
+            roleManagerMock = new Mock<IRoleManager>();
+
             workTimeValidationMock = new Mock<IWorkTimeValidation>();
 
             workTimeFileManagerMock = new Mock<IWorkTimeImportFileManager>();
@@ -84,7 +88,7 @@ namespace Sofco.UnitTest.Services.WorkTimeManagement
             appSettingMock = new Mock<IOptions<AppSetting>>();
 
             sut = new WorkTimeService(loggerMock.Object, unitOfWorkMock.Object, userDataMock.Object, employeeDataMock.Object,
-                workTimeValidationMock.Object, appSettingMock.Object, workTimeFileManagerMock.Object, workTimeExportFileManagerMock.Object,
+                workTimeValidationMock.Object, appSettingMock.Object, roleManagerMock.Object, workTimeFileManagerMock.Object, workTimeExportFileManagerMock.Object,
                 workTimeResumeMangerMock.Object, workTimeRejectManagerMock.Object, workTimeSendManagerMock.Object);
         }
 
