@@ -139,10 +139,10 @@
                             </td>
                             <td class="column-lg">{{ item.employee }}</td>
                             <td class="column-xs">{{ item.allocationPercentage }} %</td>
-                            <td class="column-xs">{{ item.hoursMustLoad }} hs</td>
+                            <td class="column-xs">{{ item.hoursMustLoad | number: '1.2-2' }}</td>
                             <td class="column-xs">{{ item.realPercentage }} %</td>
-                            <td class="column-xs">{{ item.hoursLoaded }} hs</td>
-                            <td class="column-xs">{{ item.hoursApproved }} hs</td>
+                            <td class="column-xs">{{ item.hoursLoaded | number: '1.2-2' }}</td>
+                            <td class="column-xs">{{ item.hoursApproved | number: '1.2-2' }}</td>
                             <td class="column-xs">{{ item.facturability }} %</td>
                             <td class="column-lg">{{ item.analytic }}</td>
                             <td class="column-lg">{{ item.client }}</td>
