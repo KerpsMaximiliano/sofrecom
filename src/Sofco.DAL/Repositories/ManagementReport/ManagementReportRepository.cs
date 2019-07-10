@@ -49,7 +49,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
             return context.ManagementReportBillings.Where(x => x.ManagementReportId == managementReportId).All(x => x.Closed);
         }
 
-          public Domain.Models.ManagementReport.ManagementReport GetStaffById(int id)
+        public Domain.Models.ManagementReport.ManagementReport GetStaffById(int id)
         {
             return context.ManagementReports
                 .Include(x => x.Analytic)
@@ -59,7 +59,8 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .Include(x => x.Budgets)
                 .SingleOrDefault(x => x.Id == id);
         }
-     public List<Domain.Models.ManagementReport.ManagementReport> GetByDate(DateTime date)
+
+        public List<Domain.Models.ManagementReport.ManagementReport> GetByDate(DateTime date)
         {
             var data = context.ManagementReports
                 .Include(x => x.Analytic)
@@ -68,9 +69,8 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .ToList();
 
             return data;
-            }
-
-
+        }
+        
         public void AddBudget(Budget budget)
         {
             context.Budgets.Add(budget);
