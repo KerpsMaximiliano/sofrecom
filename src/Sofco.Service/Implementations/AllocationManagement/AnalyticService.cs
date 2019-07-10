@@ -220,7 +220,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public ICollection<Analytic> GetAll()
         {
-            return unitOfWork.AnalyticRepository.GetAllReadOnly();
+            return unitOfWork.AnalyticRepository.GetAllReadOnlyWithManagementReport();
         }
 
         public AnalyticOptions GetOptions()
@@ -352,25 +352,34 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     Analytic = analytic,
                     StartDate = analytic.StartDateContract.Date,
                     Status = ManagementReportStatus.CdgPending,
-                    EndDate = analytic.EndDateContract.Date,
-                    Billings = new List<ManagementReportBilling>()
+                    EndDate = analytic.EndDateContract.Date
                 };
 
-                for (var date = new DateTime(analytic.StartDateContract.Year, analytic.StartDateContract.Month, 1).Date;
-                    date.Date <= analytic.EndDateContract.Date;
-                    date = date.AddMonths(1))
+                if (string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
-                    analytic.ManagementReport.Billings.Add(new ManagementReportBilling
-                    {
-                        ManagementReport = analytic.ManagementReport,
-                        MonthYear = date.Date
-                    });
+                    analytic.ManagementReport.Budgets = new List<Budget>();
+                }
+                else
+                {
+                    analytic.ManagementReport.Billings = new List<ManagementReportBilling>();
+                    analytic.ManagementReport.CostDetails = new List<CostDetail>();
 
-                    analytic.ManagementReport.CostDetails.Add(new CostDetail
+                    for (var date = new DateTime(analytic.StartDateContract.Year, analytic.StartDateContract.Month, 1).Date;
+                        date.Date <= analytic.EndDateContract.Date;
+                        date = date.AddMonths(1))
                     {
-                        ManagementReport = analytic.ManagementReport,
-                        MonthYear = date.Date
-                    });
+                        analytic.ManagementReport.Billings.Add(new ManagementReportBilling
+                        {
+                            ManagementReport = analytic.ManagementReport,
+                            MonthYear = date.Date
+                        });
+
+                        analytic.ManagementReport.CostDetails.Add(new CostDetail
+                        {
+                            ManagementReport = analytic.ManagementReport,
+                            MonthYear = date.Date
+                        });
+                    }
                 }
             }
             catch (Exception e)

@@ -24,6 +24,11 @@ namespace Sofco.Core.Models.AllocationManagement
             Status = domain.Status;
             ManagerId = domain.ManagerId;
 
+            if (domain.ManagementReport != null && string.IsNullOrWhiteSpace(domain.ServiceId))
+            {
+                ManagementReportId = domain.ManagementReport.Id;
+            }
+
             if (domain.Activity != null)
             {
                 Activity = domain.Activity.Text;
@@ -51,6 +56,9 @@ namespace Sofco.Core.Models.AllocationManagement
         public string ServiceId { get; set; }
 
         public string ClientId { get; set; }
+
         public int? ManagerId { get; set; }
+
+        public int ManagementReportId { get; set; }
     }
 }

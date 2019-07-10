@@ -3,6 +3,7 @@ using Sofco.Core.DAL.ManagementReport;
 using Sofco.DAL.Repositories.Common;
 using System.Linq;
 using Sofco.Core.Models.ManagementReport;
+using Sofco.Domain.Models.ManagementReport;
 
 namespace Sofco.DAL.Repositories.ManagementReport
 {
@@ -44,6 +45,37 @@ namespace Sofco.DAL.Repositories.ManagementReport
         public bool AllMonthsAreClosed(int managementReportId)
         {
             return context.ManagementReportBillings.Where(x => x.ManagementReportId == managementReportId).All(x => x.Closed);
+        }
+
+        public Domain.Models.ManagementReport.ManagementReport GetStaffById(int id)
+        {
+            return context.ManagementReports
+                .Include(x => x.Analytic)
+                .ThenInclude(x => x.Sector)
+                .Include(x => x.Analytic)
+                .ThenInclude(x => x.Manager)
+                .Include(x => x.Budgets)
+                .SingleOrDefault(x => x.Id == id);
+        }
+
+        public void AddBudget(Budget budget)
+        {
+            context.Budgets.Add(budget);
+        }
+
+        public Budget GetBudget(int id)
+        {
+            return context.Budgets.SingleOrDefault(x => x.Id == id);
+        }
+
+        public void UpdateBudget(Budget budget)
+        {
+            context.Budgets.Update(budget);
+        }
+
+        public void DeleteBudget(Budget budget)
+        {
+            context.Budgets.Remove(budget);
         }
     }
 }

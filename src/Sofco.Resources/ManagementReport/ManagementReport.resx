@@ -117,6 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BudgetAdded" xml:space="preserve">
+    <value>managementReport/managementReport.budgetAdded</value>
+  </data>
+  <data name="BudgetDeleted" xml:space="preserve">
+    <value>managementReport/managementReport.budgetDeleted</value>
+  </data>
+  <data name="BudgetDescriptionRequired" xml:space="preserve">
+    <value>managementReport/managementReport.budgetDescriptionRequired</value>
+  </data>
+  <data name="BudgetModelNull" xml:space="preserve">
+    <value>managementReport/managementReport.budgetModelNull</value>
+  </data>
+  <data name="BudgetNotFound" xml:space="preserve">
+    <value>managementReport/managementReport.budgetNotFound</value>
+  </data>
+  <data name="BudgetStartDateRequired" xml:space="preserve">
+    <value>managementReport/managementReport.budgetStartDateRequired</value>
+  </data>
+  <data name="BudgetUpdated" xml:space="preserve">
+    <value>managementReport/managementReport.budgetUpdated</value>
+  </data>
+  <data name="BudgetValueRequired" xml:space="preserve">
+    <value>managementReport/managementReport.budgetValueRequired</value>
+  </data>
   <data name="CannotChangeStatus" xml:space="preserve">
     <value>managementReport/managementReport.cannotChangeStatus</value>
   </data>
