@@ -3,7 +3,9 @@ using Sofco.Core.DAL.ManagementReport;
 using Sofco.DAL.Repositories.Common;
 using System.Linq;
 using Sofco.Core.Models.ManagementReport;
+using System;
 using Sofco.Domain.Models.ManagementReport;
+using System.Collections.Generic;
 
 namespace Sofco.DAL.Repositories.ManagementReport
 {
@@ -58,6 +60,17 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .SingleOrDefault(x => x.Id == id);
         }
 
+        public List<Domain.Models.ManagementReport.ManagementReport> GetByDate(DateTime date)
+        {
+            var data = context.ManagementReports
+                .Include(x => x.Analytic)
+                .ThenInclude(x => x.Manager)
+                .Where(x => x.StartDate.Date <= date.Date && x.EndDate.Date >= date.Date)
+                .ToList();
+
+            return data;
+        }
+        
         public void AddBudget(Budget budget)
         {
             context.Budgets.Add(budget);
