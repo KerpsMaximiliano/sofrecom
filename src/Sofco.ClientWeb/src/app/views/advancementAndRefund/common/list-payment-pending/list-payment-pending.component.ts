@@ -113,7 +113,7 @@ export class ListPaymentPendingComponent  {
     }
 
     selectAll(){
-        this.model.forEach((item, index) => {
+        this.modelFiltered.forEach((item, index) => {
             item.selected = true;
         });
 
@@ -121,7 +121,7 @@ export class ListPaymentPendingComponent  {
     }
 
     unselectAll(){
-        this.model.forEach((item, index) => {
+        this.modelFiltered.forEach((item, index) => {
             item.selected = false;
         });
 
@@ -129,12 +129,12 @@ export class ListPaymentPendingComponent  {
     }
 
     noneResourseSelected(){
-        return this.model.filter(x => x.selected == true).length == 0;
+        return this.modelFiltered.filter(x => x.selected == true).length == 0;
     }
 
     calculateTotals(){
         this.totalAmount = 0;
-        this.model.forEach(item => {
+        this.modelFiltered.forEach(item => {
             if(item.selected){
                 this.totalAmount += item.ammount;
             }
