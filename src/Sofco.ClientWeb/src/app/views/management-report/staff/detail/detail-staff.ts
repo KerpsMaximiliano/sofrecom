@@ -9,6 +9,8 @@ import { DatesService } from "app/services/common/month.service";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 import { I18nService } from "app/services/common/i18n.service";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
+import { FormControl, Validators } from "@angular/forms";
+import * as moment from 'moment';
 
 @Component({
     selector: 'management-report-detail-staff',
@@ -22,6 +24,11 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     updateDatesSubscrip: Subscription;
     sendSubscrip: Subscription;
     closeSubscrip: Subscription;
+    budgetSubscrip: Subscription;
+
+    budgetAmount = new FormControl('', [Validators.required, Validators.min(0), Validators.max(999999999)]);
+    budgetDescription = new FormControl('', [Validators.required, Validators.maxLength(200)]);
+    budgetDate = new FormControl(null, [Validators.required]);
 
     public model: any;
 
@@ -41,14 +48,26 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     readOnly: boolean = false;
     isClosed: boolean = false;
     ManagementReportId: number;
+    budgetMode: string;
+    budgetId: number;
 
     @ViewChild('dateReportStart') dateReportStart;
     @ViewChild('dateReportEnd') dateReportEnd;
     @ViewChild('editDateModal') editDateModal;
+    @ViewChild('budgetModal') budgetModal;
 
     public editDateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Editar Fechas",
         "editDateModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
+    public budgetModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Presupuesto",
+        "budgetModal",
         true,
         true,
         "ACTIONS.ACCEPT",
@@ -85,6 +104,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         if (this.updateDatesSubscrip) this.updateDatesSubscrip.unsubscribe();
         if (this.sendSubscrip) this.sendSubscrip.unsubscribe();
         if (this.closeSubscrip) this.closeSubscrip.unsubscribe();
+        if (this.budgetSubscrip) this.budgetSubscrip.unsubscribe();
     }
 
     getDetail() {
@@ -330,10 +350,99 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             this.messageService.showLoading();
 
             this.closeSubscrip = this.managementReportService.close(json).subscribe(() => {
-
                 this.messageService.closeLoading();
             },
             () => this.messageService.closeLoading());
         });
     }
+
+    isSaveEnabled(){
+        if(this.budgetAmount.valid && this.budgetDescription.valid && this.budgetDate.valid) return true;
+
+        return false;
+    }
+
+    openBudgetModal(mode, item){
+        this.budgetMode = mode;
+
+        if(this.budgetMode == 'edit'){
+            this.budgetAmount.setValue(item.value);
+            this.budgetDescription.setValue(item.description);
+            this.budgetDate.setValue(moment(item.startDate).format("DD/MM/YYYY"));
+            this.budgetModalConfig.deleteButton = true;
+            this.budgetId = item.id;
+        }
+        else{
+            this.budgetAmount.setValue(null);
+            this.budgetDescription.setValue(null);
+            this.budgetDate.setValue(null);
+            this.budgetModalConfig.deleteButton = false;
+        }
+
+        this.budgetModal.show();
+    }
+
+    saveBudget(){
+        if(this.budgetMode == 'edit'){
+            this.updateBudget();
+        }
+        else{
+            this.addBudget();
+        }
+    }
+
+    addBudget(){
+        var json = {
+            id: 0,
+            description: this.budgetDescription.value,
+            value: this.budgetAmount.value,
+            startDate: this.budgetDate.value
+        };
+
+        this.budgetSubscrip = this.managementReportService.addBudget(this.ManagementReportId, json).subscribe(response => {
+            this.budgetModal.hide();
+
+            if(response.data){
+                this.model.budgets.push(response.data);
+            }
+        },
+        () => this.budgetModal.hide());
+    }
+
+    updateBudget(){
+        var json = {
+            id: this.budgetId,
+            description: this.budgetDescription.value,
+            value: this.budgetAmount.value,
+            startDate: this.budgetDate.value
+        };
+
+        this.budgetSubscrip = this.managementReportService.updateBudget(this.ManagementReportId, json).subscribe(() => {
+            this.budgetModal.hide();
+
+            var item = this.model.budgets.find(x => x.id == this.budgetId);
+
+            if(item){
+                item.description = this.budgetDescription.value;
+                item.value = this.budgetAmount.value;
+                item.startDate = json.startDate;
+            }
+
+            this.budgetId = 0;
+        },
+        () => this.budgetModal.hide());
+    }
+
+    deleteBudget(){
+        this.budgetSubscrip = this.managementReportService.deleteBudget(this.ManagementReportId, this.budgetId).subscribe(() => {
+            this.budgetModal.hide();
+
+            var index = this.model.budgets.findIndex(x => x.id == this.budgetId);
+
+            if(index > 0){
+                this.model.budgets.splice(index, 1);
+            }
+        },
+        () => this.budgetModal.hide());
+    } 
 }

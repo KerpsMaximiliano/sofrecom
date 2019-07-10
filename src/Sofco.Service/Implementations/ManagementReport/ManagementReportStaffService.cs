@@ -72,6 +72,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 if (managementReport.Budgets.Any())
                 {
                     response.Data.Budgets = managementReport.Budgets.Select(x => new BudgetItem(x)).ToList();
+
+                    response.Data.BudgetTotal = response.Data.Budgets.Sum(x => x.Value);
                 }
             }
             catch (Exception e)

@@ -28,10 +28,16 @@ namespace Sofco.Core.Models.ManagementReport
         public DateTime ManamementReportEndDate { get; set; }
 
         public ManagementReportStatus Status { get; set; }
+
+        public decimal BudgetTotal { get; set; }
     }
 
     public class BudgetItem
     {
+        public BudgetItem()
+        {
+        }
+
         public BudgetItem(Budget domain)
         {
             Id = domain.Id;

@@ -8,7 +8,6 @@ import { MessageService } from "app/services/common/message.service";
 import { UtilsService } from "app/services/common/utils.service"
 import { FormControl, Validators } from "@angular/forms";
 import { EmployeeService } from "app/services/allocation-management/employee.service"
-import { Profile } from "selenium-webdriver/firefox";
 
 @Component({
     selector: 'cost-detail',
