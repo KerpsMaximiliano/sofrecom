@@ -20,5 +20,7 @@ namespace Sofco.Domain.Models.ManagementReport
         public ICollection<CostDetail> CostDetails { get; set; }
 
         public ICollection<ManagementReportBilling> Billings { get; set; }
+
+        public IList<Budget> Budgets { get; set; }
     }
 }

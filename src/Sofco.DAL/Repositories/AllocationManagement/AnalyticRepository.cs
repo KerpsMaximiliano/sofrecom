@@ -145,6 +145,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .SingleOrDefault(x => x.ServiceId.Equals(serviceId));
         }
 
+        public ICollection<Analytic> GetAllReadOnlyWithManagementReport()
+        {
+            return context.Analytics.Include(x => x.ManagementReport).ToList().AsReadOnly();
+        }
+
         public Analytic GetByServiceForManagementReport(string serviceId)
         {
             return context.Analytics
@@ -297,7 +302,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public List<Analytic> GetBySearchCriteria(AnalyticSearchParameters searchCriteria)
         {
-            IQueryable<Analytic> query = context.Analytics.Include(x => x.Activity);
+            IQueryable<Analytic> query = context.Analytics.Include(x => x.ManagementReport).Include(x => x.Activity);
 
             if (searchCriteria.AnalyticId.HasValue && searchCriteria.AnalyticId.Value > 0)
             {

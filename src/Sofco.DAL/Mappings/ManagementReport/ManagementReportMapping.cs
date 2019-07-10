@@ -20,6 +20,9 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<Domain.Models.ManagementReport.ManagementReport>().HasMany(x => x.Billings)
                 .WithOne(x => x.ManagementReport).HasForeignKey(x => x.ManagementReportId);
 
+            builder.Entity<Domain.Models.ManagementReport.ManagementReport>().HasMany(x => x.Budgets)
+                .WithOne(x => x.ManagementReport).HasForeignKey(x => x.ManagementReportId);
+
             // Cost Detail
             builder.Entity<CostDetail>().HasKey(x => x.Id);
             builder.Entity<CostDetail>().HasOne(x => x.ManagementReport).WithMany(x => x.CostDetails).HasForeignKey(x => x.ManagementReportId);
@@ -49,6 +52,11 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<ManagementReportBilling>().HasKey(x => x.Id);
             builder.Entity<ManagementReportBilling>().Property(x => x.Comments).HasMaxLength(2000);
             builder.Entity<ManagementReportBilling>().HasOne(x => x.ManagementReport).WithMany(x => x.Billings).HasForeignKey(x => x.ManagementReportId);
+
+            // Budget
+            builder.Entity<Budget>().HasKey(x => x.Id);
+            builder.Entity<Budget>().Property(x => x.Description).HasMaxLength(200);
+            builder.Entity<Budget>().HasOne(x => x.ManagementReport).WithMany(x => x.Budgets).HasForeignKey(x => x.ManagementReportId);
         }
     }
 }

@@ -71,5 +71,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         Analytic GetByProyectId(string projectId);
 
         Analytic GetByServiceWithManagementReport(string serviceId);
+        ICollection<Analytic> GetAllReadOnlyWithManagementReport();
     }
 }

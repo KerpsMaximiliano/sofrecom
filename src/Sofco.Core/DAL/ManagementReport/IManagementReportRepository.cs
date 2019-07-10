@@ -1,6 +1,7 @@
 ﻿using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.ManagementReport;
 using System;
+using Sofco.Domain.Models.ManagementReport;
 using System.Collections.Generic;
 
 namespace Sofco.Core.DAL.ManagementReport
@@ -12,5 +13,10 @@ namespace Sofco.Core.DAL.ManagementReport
         void UpdateStatus(Domain.Models.ManagementReport.ManagementReport report);
         bool AllMonthsAreClosed(int managementReportId);
         List<Domain.Models.ManagementReport.ManagementReport> GetByDate(DateTime date);
+        Domain.Models.ManagementReport.ManagementReport GetStaffById(int id);
+        void AddBudget(Budget budget);
+        Budget GetBudget(int id);
+        void UpdateBudget(Budget budget);
+        void DeleteBudget(Budget budget);
     }
 }
