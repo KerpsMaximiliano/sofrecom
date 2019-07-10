@@ -1,13 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { I18nService } from "app/services/common/i18n.service";
 import { MessageService } from "app/services/common/message.service";
 import { Subscription } from "rxjs";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { ActivatedRoute } from "@angular/router";
-import { detectBody } from "app/app.helpers";
 import { ManagementReportDetailComponent } from "../detail/mr-detail"
-import { datepickerLocale } from "fullcalendar";
 import { EmployeeService } from "app/services/allocation-management/employee.service"
 
 @Component({
@@ -88,7 +86,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
             this.messageService.closeLoading();
         },
-            error => {
+            () => {
                 this.messageService.closeLoading();
             });
 
@@ -144,10 +142,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     deleteContracted(index, item) {
 
         if (item.contractedId > 0) {
-            this.deleteContractedSuscrip = this.managementReportService.deleteContracted(item.contractedId).subscribe(response => {
+            this.deleteContractedSuscrip = this.managementReportService.deleteContracted(item.contractedId).subscribe(() => {
                 this.contracted.splice(index, 1)
             },
-                error => {
+                () => {
                 });
         }
         else {
@@ -175,10 +173,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         }
         else {
             //Si esta en base de datos borro el registio
-            this.deleteContractedSuscrip = this.managementReportService.deleteOtherResources(item.id).subscribe(response => {
+            this.deleteContractedSuscrip = this.managementReportService.deleteOtherResources(item.id).subscribe(() => {
                 this.expenses.splice(index, 1);
             },
-                error => {
+                () => {
                 });
         }
 
@@ -215,7 +213,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.costDetailMonthModal.show();
         },
-            error => {
+            () => {
                 this.messageService.closeLoading();
                 this.costDetailMonthModal.hide();
             });
@@ -243,12 +241,12 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         model.OtherResources = this.expenses
         model.Contracted = this.contracted;
 
-        this.updateCostSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, model).subscribe(response => {
+        this.updateCostSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, model).subscribe(() => {
             this.messageService.closeLoading();
             this.costDetailMonthModal.hide();
             this.managementReport.updateDetailCost()
         },
-            error => {
+            () => {
                 this.messageService.closeLoading();
             });
     }

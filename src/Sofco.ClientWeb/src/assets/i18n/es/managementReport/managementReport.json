@@ -10,5 +10,13 @@
     "sendSuccess": "EL informe de gestión fue enviado correctamente",
     "cannotClosed": "El mes seleccionado no se puede cerrar",
     "closedSuccess": "El mes fue cerrado correctametne",
-    "dateRequired": "El mes es requerido"
+    "dateRequired": "El mes es requerido",
+    "budgetModelNull": "Los datos ingresados son incorrectos",
+    "budgetValueRequired": "El monto es requerido o es incorrecto",
+    "budgetDescriptionRequired": "La descripción es requerida y no puede superar los 200 caracteres",
+    "budgetStartDateRequired": "La fecha es requerida o es incorrecta",
+    "budgetNotFound": "Presupuesto no encontrado",
+    "budgetAdded": "Presupuesto creado correctamente",
+    "budgetUpdated": "Presupuesto actualizado correctamente",
+    "budgetDeleted": "Presupuesto eliminado correctamente"
 }

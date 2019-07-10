@@ -76,26 +76,33 @@
 
                         <div class="col-md-5">
                             <dt class="m-b-xs"><i class="fa fa-calculator"></i> Presupuesto </dt>
-                            <dd>
+                            <dd *ngIf="model?.budgets && model?.budgets.length > 0">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>Descripción</th>
                                             <th>Monto</th>
+                                            <th>Fecha</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let item of model?.budgets">
+                                        <tr *ngFor="let item of model?.budgets" (click)="openBudgetModal('edit', item)" class="pointer">
                                             <td>{{ item.description }}</td>
                                             <td>{{ item.value | amountFormat }}</td>
+                                            <td>{{ item.startDate | date: 'dd/MM/yyyy' }}</td>
                                         </tr>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="3">Total: ${{ model?.budgetTotal | amountFormat }}</th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </dd>
 
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <button class="btn btn-primary btn-xs">
+                                    <button class="btn btn-primary btn-xs" (click)="openBudgetModal('new', null)">
                                         Agregar 
                                         <i class="fa fa-plus"></i>
                                     </button>
@@ -180,6 +187,33 @@
                 </div>
             </div>
         </div>
+    </div>
+
+</ng2-modal>
+
+<ng2-modal [config]="budgetModalConfig" #budgetModal (accept)="saveBudget()" [isSaveEnabled]="isSaveEnabled()" (delete)="deleteBudget()">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Monto</label>
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="number" decimalFormat class="form-control" [formControl]="budgetAmount">
+                </div> 
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Fecha</label>
+                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [formControl]="budgetDate">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Descripción</label>
+        <input type="text" class="form-control" [formControl]="budgetDescription">
     </div>
 
 </ng2-modal>

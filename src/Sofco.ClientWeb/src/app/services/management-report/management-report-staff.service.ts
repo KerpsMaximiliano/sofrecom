@@ -26,4 +26,16 @@ export class ManagementReportStaffService {
   updateDates(id, model){
     return this.http.put<any>(`${this.baseUrl}/managementReport/${id}/dates`, model);
   }
+
+  addBudget(id, model){
+    return this.http.post<any>(`${this.baseUrl}/managementReportStaff/${id}/budget`, model);
+  }
+
+  updateBudget(id, model){
+    return this.http.put<any>(`${this.baseUrl}/managementReportStaff/${id}/budget`, model);
+  }
+
+  deleteBudget(id, budgetId){
+    return this.http.delete<any>(`${this.baseUrl}/managementReportStaff/${id}/budget/${budgetId}`);
+  }
 }
