@@ -199,7 +199,9 @@
                 "incomes": "Ingresos Estimados",
                 "startDate": "Fecha Inicio",
                 "endDate": "Fecha Fin",
-                "manager": "Gerente"
+                "manager": "Gerente",
+                "totalCharged": "Total Facturado",
+                "billPending": "Pendiente Facturar"
             },
             "detail": {
                 "title": "Detalle de Proyecto",

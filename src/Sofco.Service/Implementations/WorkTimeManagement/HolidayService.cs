@@ -8,6 +8,7 @@ using Sofco.Domain.Nolaborables;
 using Sofco.Domain.Utils;
 using System;
 using Sofco.Core.DAL;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
 {
@@ -42,13 +43,24 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 response.AddError(Resources.WorkTimeManagement.WorkTime.DateGreaterThanCurrent);
                 return response;
             }
+            
+            //Busco las licencias por vacaciones de ese dia
+            var licenses =  unitOfWork.LicenseRepository.GetByDateAndType(model.Date.Date, 1);
 
-            repository.Save(model);
-            response.AddSuccess(Resources.Common.SaveSuccess);
+            foreach(var license in licenses) {
+                //Le sumo un dia a los dias pendientes por ley y dias dias pendientes sofre
+                license.Employee.HolidaysPending += 1;
+                license.Employee.HolidaysPendingByLaw += 1;
+
+                unitOfWork.EmployeeRepository.Update(license.Employee);
+            }
 
             //Elimino todas las horas cargadas el dia del feriado
             unitOfWork.WorkTimeRepository.RemoveAllOfDate(model.Date);
             
+            repository.Save(model);
+            response.AddSuccess(Resources.Common.SaveSuccess);
+
             response.Data = model;
 
             return response;

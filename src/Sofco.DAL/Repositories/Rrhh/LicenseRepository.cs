@@ -188,5 +188,15 @@ namespace Sofco.DAL.Repositories.Rrhh
                                              (startDate >= x.StartDate.Date && startDate <= x.EndDate.Date ||
                                               endDate >= x.StartDate.Date && endDate <= x.EndDate.Date));
         }
+
+        public ICollection<License> GetByDateAndType(DateTime date, int typeLicense)
+        {
+            return context.Licenses
+                .Include(x => x.Employee)
+                .Include(x => x.Type)
+                .Where(x => date.Date >= x.StartDate.Date && date.Date <= x.EndDate.Date
+                        && x.TypeId == typeLicense)
+                .ToList();
+        }
     }
 }

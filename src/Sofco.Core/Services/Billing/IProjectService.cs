@@ -12,7 +12,7 @@ namespace Sofco.Core.Services.Billing
     {
         IList<CrmProjectHito> GetHitosByProject(string projectId);
 
-        Response<IList<Project>> GetProjects(string serviceId);
+        Response<IList<ProjectModel>> GetProjects(string serviceId);
 
         Response<IList<SelectListModel>> GetProjectsOptions(string serviceId);
 
