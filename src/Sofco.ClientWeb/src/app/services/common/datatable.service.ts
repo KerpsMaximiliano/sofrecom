@@ -29,10 +29,11 @@ export class DataTableService {
                     oSearch: { "bSmart": false, "bRegex": true },
                     responsive: true,
                     language: lang,
+                    scrollX: true
                 }
 
-                if (params.scrollX && params.scrollX == true) {
-                    options.scrollX = true;
+                if (params.scrollX && params.scrollX == false) {
+                    options.scrollX = false;
                 }
 
                 if (params.columnDefs) {
