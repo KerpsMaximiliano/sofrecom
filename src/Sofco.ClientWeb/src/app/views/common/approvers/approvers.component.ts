@@ -7,9 +7,9 @@ import { DataTableService } from '../../../services/common/datatable.service';
 import { MessageService } from '../../../services/common/message.service';
 import { Ng2ModalConfig } from '../../../components/modal/ng2modal-config';
 import { UserApproverService } from '../../../services/allocation-management/user-approver.service';
-import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { UserApproverType } from 'app/models/enums/userApproverType';
 import { MenuService } from '../../../services/admin/menu.service';
+import { WorktimeService } from 'app/services/worktime-management/worktime.service';
 declare var $: any;
 
 @Component({
@@ -67,7 +67,7 @@ export class ApproversComponent implements OnInit, OnDestroy {
     @ViewChild('confirmModal2') confirmModal2;
 
     constructor(private approversService: UserApproverService,
-        private analyticService: AnalyticService,
+        private worktimeService: WorktimeService,
         private usersService: UserService,
         private dataTableService: DataTableService,
         private messageService: MessageService,
@@ -117,9 +117,9 @@ export class ApproversComponent implements OnInit, OnDestroy {
         () => this.loading = false);
     }
 
-    getAnalytics() {
-        this.subscription = this.analyticService.getByManager().subscribe(res => {
-            this.analytics = res.data;
+    getAnalytics() { 
+        this.subscription = this.worktimeService.getAnalytics().subscribe(res => {
+            this.analytics = res;
             this.setAnalyticSelect();
         });
     }

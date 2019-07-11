@@ -371,8 +371,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     }
                 }
 
-                if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday && holidays.All(x => x.Date.Date != startDate.Date))
-                    allBusinessDays++;
+                //if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday && holidays.All(x => x.Date.Date != startDate.Date))
+                //    allBusinessDays++;
 
                 startDate = startDate.AddDays(1);
             }
