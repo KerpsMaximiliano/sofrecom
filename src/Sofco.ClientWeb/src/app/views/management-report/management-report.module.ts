@@ -31,13 +31,14 @@ import { fromDateModule } from "app/pipes/form-date.module";
 import { TracingComponent } from "./tracing/tracing.component";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
 import { ManagementReportDetailStaffComponent } from "./staff/detail/detail-staff";
+import { BudgetStaffComponent } from "./staff/budget/budget-staff.component";
 import { CostDetailMonthStaffComponent } from "./staff/cost-month-staff/cost-month-staff";
 
 
 @NgModule({
     declarations: [
       ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent, 
-      CostDetailMonthComponent, ModalEvalPropComponent, TracingComponent, ManagementReportDetailStaffComponent, CostDetailMonthStaffComponent
+      CostDetailMonthComponent, ModalEvalPropComponent, TracingComponent, ManagementReportDetailStaffComponent, CostDetailMonthStaffComponent, BudgetStaffComponent
     ],
     imports: [
       CommonModule,
