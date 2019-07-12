@@ -283,6 +283,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             {
                 var allHoursMustLoaded = response.Data.Items.FirstOrDefault(x => x.EmployeeId == item.EmployeeId).AllHoursMustLoad;
 
+                if (allHoursMustLoaded == 0) continue;
+
                 item.AllocationPercentage = Math.Round(item.HoursMustLoad * 100 / allHoursMustLoaded, MidpointRounding.AwayFromZero);
                 var percentageWithoutRound = item.HoursMustLoad * 100 / allHoursMustLoaded;
 

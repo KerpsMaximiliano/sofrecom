@@ -55,6 +55,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     @ViewChild('dateReportEnd') dateReportEnd;
     @ViewChild('editDateModal') editDateModal;
     @ViewChild('budgetModal') budgetModal;
+    @ViewChild('costDetailMonth') costDetailMonth;
 
     public editDateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Editar Fechas",
@@ -148,6 +149,25 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         else {
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         }
+    }
+
+    seeCostDetailMonth() {
+        var data = {
+            isCdg: this.menuService.userIsCdg,
+            managementReportId: this.ManagementReportId,
+            resources: [], 
+            totals: [], 
+            AnalyticId: this.model.analyticId,
+            month: this.selectedMonth, 
+            monthDesc: this.selectedMonthDesc,
+            year: this.selectedYear
+        }
+
+        this.costDetailMonth.open(data, this.readOnly || this.isClosed);
+    }
+
+    updateDetailCost() {
+        // this.detailCost.getCost();
     }
 
     openEditDateModal() {
