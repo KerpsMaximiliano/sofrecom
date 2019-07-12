@@ -99,7 +99,7 @@
                                     </tfoot>
                                 </table>
                             </dd>
-
+ 
                             <div class="row">
                                 <div class="col-xs-12">
                                     <button class="btn btn-primary btn-xs" (click)="openBudgetModal('new', null)">
@@ -140,7 +140,7 @@
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendManager()">Enviar <i class="fa fa-paper-plane"></i></button>
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendCdg()">Enviar <i class="fa fa-paper-plane"></i></button>
 
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector">Costo mensual <i class="fa fa-edit"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector" (click)="seeCostDetailMonth()">Costo mensual <i class="fa fa-edit"></i></button>
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector">Actualizar Margen <i class="fa fa-refresh"></i></button>
                 </div>
             </div>
@@ -169,6 +169,8 @@
         </div>
     </div>
 </div>
+
+<cost-detail-month-staff #costDetailMonth></cost-detail-month-staff>
 
 <ng2-modal [config]="editDateModalConfig" #editDateModal (accept)="EditDate()">
 

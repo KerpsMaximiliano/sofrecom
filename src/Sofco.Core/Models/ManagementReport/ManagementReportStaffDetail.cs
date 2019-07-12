@@ -30,6 +30,8 @@ namespace Sofco.Core.Models.ManagementReport
         public ManagementReportStatus Status { get; set; }
 
         public decimal BudgetTotal { get; set; }
+
+        public int AnalyticId { get; set; }
     }
 
     public class BudgetItem

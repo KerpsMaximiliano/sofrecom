@@ -48,5 +48,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{id}/costDetailMonth/{month}/{year}")]
+        public IActionResult GetDetail(int id, int month, int year)
+        {
+            var response = managementReportStaffService.GetCostDetailMonth(id, month, year);
+
+            return this.CreateResponse(response);
+        }
     }
 }

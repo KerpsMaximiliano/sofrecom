@@ -38,4 +38,8 @@ export class ManagementReportStaffService {
   deleteBudget(id, budgetId){
     return this.http.delete<any>(`${this.baseUrl}/managementReportStaff/${id}/budget/${budgetId}`);
   }
+
+  getCostDetailMonth(id, month, year){
+    return this.http.get<any>(`${this.baseUrl}/managementReportStaff/${id}/costDetailMonth/${month}/${year}`);
+  }
 }

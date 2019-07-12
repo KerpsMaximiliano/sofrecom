@@ -22,10 +22,12 @@ namespace Sofco.DAL.Repositories.Common
 
         public List<UserApproverEmployee> GetByAllocations(UserApproverQuery query, UserApproverType type)
         {
+            var date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
             parameter = query;
 
             Expression<Func<Employee, bool>> where = x => x.EndDate == null 
-                && x.Allocations.Any(s => s.StartDate >= DateTime.UtcNow 
+                && x.Allocations.Any(s => s.StartDate.Date >= date.Date
                                           && s.Percentage > 0);
 
             if (query.AnalyticId > 0)
@@ -33,7 +35,7 @@ namespace Sofco.DAL.Repositories.Common
                 where = e => e.EndDate == null
                     && e.Allocations.Any(s => 
                         s.AnalyticId == query.AnalyticId
-                        && s.StartDate >= DateTime.UtcNow
+                        && s.StartDate.Date >= date.Date
                         && s.Percentage > 0);
             }
 
