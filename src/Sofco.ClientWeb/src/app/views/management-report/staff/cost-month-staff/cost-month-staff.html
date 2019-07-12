@@ -42,6 +42,7 @@
     <div class="row m-t-xs" *ngFor="let resource of resources; let i = index">
         <div class="col-sm-5">
             <span class="text-danger" *ngIf="resource.modified"><strong>* </strong></span>
+            <span class="text-warning" *ngIf="resource.id == 0"><strong>* </strong></span>
             <span>{{ resource.name }}</span>   
         </div>
         <div class="col-sm-2">
@@ -61,9 +62,10 @@
         </div>
     </div>
     <br>
-    <small class="text-danger">
-        <strong>* Ajuste</strong>
-    </small>  
+
+    <small class="text-danger m-r-sm"><strong>* Ajuste</strong></small>  
+    <small class="text-warning"><strong>* Dato no guardado</strong></small> 
+
     <div class="row" *ngIf="!isReadOnly">
         <br>
         <div class="col-md-6">
