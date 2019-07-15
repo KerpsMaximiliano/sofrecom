@@ -2,6 +2,8 @@
 {
     public class AppSetting
     {
+        public string CultureInfo { get; set; }
+
         public string Domain { get; set; }
 
         public string SolfacGeneratorCode { get; set; }
@@ -71,6 +73,10 @@
         public string AmmountBEuros { get; set; }
 
         public int SalaryWorkflowId { get; set; }
+
+        public string AdvancementCashAmount { get; set; }
+
+        public int CashWorkflowId { get; set; }
 
         public int RefundWorkflowId { get; set; }
 

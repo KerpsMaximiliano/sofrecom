@@ -41,7 +41,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         List<WorkTime> GetWorkTimePendingHoursByEmployeeId(int employeeId);
 
-        IList<WorkTime> Search(SearchParams parameters);
+        IList<WorkTime> Search(SearchParams parameters, List<int> analyticIds);
 
         void InsertBulk(IList<WorkTime> workTimesToAdd);
 
@@ -52,5 +52,6 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         IList<WorkTime> GetByDate(DateTime worktimeDate);
 
         decimal GetTotalHoursApprovedBetweenDays(int employeeId, DateTime startdate, DateTime endDate, int analyticId);
+        void RemoveAllOfDate(DateTime removeDate);
     }
 }

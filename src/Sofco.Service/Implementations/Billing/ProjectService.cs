@@ -67,15 +67,40 @@ namespace Sofco.Service.Implementations.Billing
             return crmProjectHitos;
         }
 
-        public Response<IList<Project>> GetProjects(string serviceId)
+        public Response<IList<ProjectModel>> GetProjects(string serviceId)
         {
-            var response = new Response<IList<Project>>();
+            var response = new Response<IList<ProjectModel>>();
 
             if (string.IsNullOrWhiteSpace(serviceId)) return response;
 
             try
             {
-                response.Data = projectData.GetProjects(serviceId);
+                //response.Data = projectData.GetProjects(serviceId);
+
+                IList<Project> proyects = projectData.GetProjects(serviceId);
+
+                List<ProjectModel> projectsModel = proyects.Select(x => new ProjectModel(x)).ToList();
+
+                foreach (var project in projectsModel)
+                {
+                    var crmProjectHitos = projectData.GetHitos(project.CrmId);
+
+                    foreach (var hitoCrm in crmProjectHitos)
+                    {
+                        if (hitoCrm.Status.ToLower().Equals("a ser facturado") || hitoCrm.Status.ToLower().Equals("facturado") 
+                            || hitoCrm.Status.ToLower().Equals("pagado"))
+                        {
+                            project.HitosBilled += hitoCrm.Ammount;
+                        }
+
+                        if (hitoCrm.Status.ToLower().Equals("pendiente"))
+                        {
+                            project.HitosPending += hitoCrm.Ammount;
+                        }
+                    }
+                }
+
+                response.Data = projectsModel;
             }
             catch (Exception ex)
             {

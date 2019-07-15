@@ -137,6 +137,20 @@ namespace Sofco.Framework.Managers
             return hasCdgGroup;
         }
 
+        public bool IsPmo()
+        {
+            var hasPmoGroup = unitOfWork.UserRepository.HasPmoGroup(CurrentUser.Email);
+
+            return hasPmoGroup;
+        }
+
+        public bool IsRrhh()
+        {
+            var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(CurrentUser.Email);
+
+            return hasRrhhGroup;
+        }
+
         public bool IsManager()
         {
             var isManager = unitOfWork.UserRepository.HasManagerGroup(CurrentUser.UserName);

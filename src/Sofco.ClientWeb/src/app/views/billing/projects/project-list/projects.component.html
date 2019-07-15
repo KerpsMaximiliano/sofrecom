@@ -68,6 +68,8 @@
                                 <th>{{"billing.project.grid.name" | translate}}</th>
                                 <th>{{"billing.project.grid.opportunity" | translate}}</th>
                                 <th>{{"billing.project.grid.incomes" | translate}}</th>
+                                <th>{{"billing.project.grid.totalCharged" | translate}}</th>
+                                <th>{{"billing.project.grid.billPending" | translate}}</th>
                                 <th>{{"billing.project.grid.startDate" | translate}}</th>
                                 <th>{{"billing.project.grid.endDate" | translate}}</th>
                             </tr>
@@ -77,6 +79,8 @@
                                 <td>{{project.name}}</td>
                                 <td>{{ project.opportunityNumber }} - {{ project.opportunityName }}</td>
                                 <td>{{ getCurrencySymbol(project.currency) }} {{project.incomes | number: '1.2-2' }}</td>
+                                <td>{{ getCurrencySymbol(project.currency) }} {{ project.hitosBilled | number: '1.2-2' }}</td>
+                                <td>{{ getCurrencySymbol(project.currency) }} {{ project.hitosPending | number: '1.2-2' }}</td>
                                 <td> {{ project.startDate | date:'dd/MM/yyyy' }} </td>
                                 <td> {{ project.endDate | date:'dd/MM/yyyy' }} </td>
                             </tr>

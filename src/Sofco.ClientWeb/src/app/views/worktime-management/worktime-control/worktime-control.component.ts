@@ -43,16 +43,14 @@ export class WorkTimeControlComponent implements OnDestroy  {
     }
 
     getAnalytics() {
-        this.loading = true;
         this.messageService.showLoading();
-        this.subscription = this.worktimeControlService.getAnalyticOptionsByCurrentManager().subscribe(res => {
+        this.subscription = this.worktimeControlService.getAnalytics().subscribe(res => {
             this.messageService.closeLoading();
-            this.analytics = this.sortAnalytics(res.data);
+            this.analytics = this.sortAnalytics(res);
             this.setAnalyticSelect();
             this.getCloseMonths();
         },
         err => {
-            this.loading = false;
             this.messageService.closeLoading();
         });
     }
@@ -70,7 +68,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
             this.closeMonthId = data.id;
         }
 
-        this.getData();
+        // this.getData();
     }
 
     setAnalyticSelect() {

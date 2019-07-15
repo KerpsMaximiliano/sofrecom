@@ -93,13 +93,19 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     }
 
     goToManagementReport(analytic){
-        sessionStorage.setItem('customerName', analytic.clientExternalName);
-        sessionStorage.setItem('serviceName', analytic.serviceName);
-        this.router.navigate([`/managementReport/${analytic.clientId}/service/${analytic.serviceId}/detail`]);
+        if(analytic.managementReportId > 0){
+            this.router.navigate([`/managementReport/${analytic.managementReportId}`]);
+        }
+        else{
+            sessionStorage.setItem('customerName', analytic.clientExternalName);
+            sessionStorage.setItem('serviceName', analytic.serviceName);
+
+            this.router.navigate([`/managementReport/${analytic.clientId}/service/${analytic.serviceId}/detail`]);
+        }
     }
 
     canGoToManagementReport(analytic){
-        if(this.menuService.hasFunctionality('MANRE', 'VIEW-DETAIL') && analytic.clientId && analytic.serviceId){
+        if(this.menuService.hasFunctionality('MANRE', 'VIEW-DETAIL')){
             if(this.menuService.user.id == analytic.managerId || this.menuService.userIsCdg == true){
                 return true;
             }

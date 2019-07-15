@@ -99,15 +99,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response<ICollection<Employee>>(){ Data = new List<Employee>() };
 
-            var employees = unitOfWork.EmployeeRepository.Search(parameters);
+            var setting = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
 
-            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var period = setting.GetPeriodExcludeDays();
+
+            var employees = unitOfWork.EmployeeRepository.Search(parameters, period.Item1, period.Item2);
 
             foreach (var employee in employees)
             {
                 if (parameters.ManagerId.HasValue && parameters.ManagerId.Value > 0)
                 {
-                    if (unitOfWork.AllocationRepository.ExistCurrentAllocationByEmployeeAndManagerId(employee.Id, parameters.ManagerId.Value, startDate))
+                    if (unitOfWork.AllocationRepository.ExistCurrentAllocationByEmployeeAndManagerId(employee.Id, parameters.ManagerId.Value, parameters.AnalyticId, period.Item1, period.Item2))
                     {
                         response.Data.Add(employee);
                     }

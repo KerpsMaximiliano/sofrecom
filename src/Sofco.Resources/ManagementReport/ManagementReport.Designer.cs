@@ -61,6 +61,78 @@ namespace Sofco.Resources.ManagementReport {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.budgetAdded.
+        /// </summary>
+        public static string BudgetAdded {
+            get {
+                return ResourceManager.GetString("BudgetAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.budgetDeleted.
+        /// </summary>
+        public static string BudgetDeleted {
+            get {
+                return ResourceManager.GetString("BudgetDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.budgetDescriptionRequired.
+        /// </summary>
+        public static string BudgetDescriptionRequired {
+            get {
+                return ResourceManager.GetString("BudgetDescriptionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.budgetModelNull.
+        /// </summary>
+        public static string BudgetModelNull {
+            get {
+                return ResourceManager.GetString("BudgetModelNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.budgetNotFound.
+        /// </summary>
+        public static string BudgetNotFound {
+            get {
+                return ResourceManager.GetString("BudgetNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.budgetStartDateRequired.
+        /// </summary>
+        public static string BudgetStartDateRequired {
+            get {
+                return ResourceManager.GetString("BudgetStartDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.budgetUpdated.
+        /// </summary>
+        public static string BudgetUpdated {
+            get {
+                return ResourceManager.GetString("BudgetUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.budgetValueRequired.
+        /// </summary>
+        public static string BudgetValueRequired {
+            get {
+                return ResourceManager.GetString("BudgetValueRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a managementReport/managementReport.cannotChangeStatus.
         /// </summary>
         public static string CannotChangeStatus {

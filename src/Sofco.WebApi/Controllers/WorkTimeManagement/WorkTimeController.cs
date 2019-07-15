@@ -124,7 +124,7 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
         {
             var response = workTimeService.Search(parameters);
 
-            return this.CreateResponse(response);
+            return this.CreateResponse(response); 
         }
 
         [HttpDelete("{id}")]

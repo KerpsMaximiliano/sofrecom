@@ -7,6 +7,7 @@ export class Advancement extends FormGroup {
 
     private id: number;
     public workflowStateType: WorkflowStateType;
+    private readonly: boolean = false;
 
     constructor(isReadonly: boolean, domain?) {
         super({
@@ -47,6 +48,8 @@ export class Advancement extends FormGroup {
             this.id = domain.id || 0;
             this.workflowStateType = domain.workflowStateType;
         }
+
+        this.readonly = isReadonly;
     }
  
     handleSalaryForm(){
@@ -68,7 +71,12 @@ export class Advancement extends FormGroup {
     }
 
     handleViaticumForm(){
-        this.controls.paymentForm.enable();
+        if(this.readonly){
+            this.controls.paymentForm.disable();
+        }
+        else{
+            this.controls.paymentForm.enable();
+        }
 
         this.controls.advancementReturnForm.clearValidators();
         this.controls.advancementReturnForm.updateValueAndValidity();

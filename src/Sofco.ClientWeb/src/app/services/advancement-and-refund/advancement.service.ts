@@ -57,4 +57,8 @@ export class AdvancementService {
     getStates(){
         return this.http.get<any>(`${this.baseUrl}/advancement/states`);
     }
+
+    getCashEnable(){
+        return this.http.get<any>(`${this.baseUrl}/advancement/cashEnable`);
+    }
 }

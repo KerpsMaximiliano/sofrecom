@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
+using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.WorktimeManagement;
-using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.AllocationManagement;
@@ -14,6 +11,9 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
 {
@@ -33,11 +33,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly IWorkTimeControlHoursFileManager workTimeControlHoursFileManager;
 
-        public WorkTimeControlService(IUnitOfWork unitOfWork, 
-            IUserData userData, 
-            IWorkTimeResumeManager workTimeResumeManager, 
-            IMapper mapper, 
-            IRoleManager roleManager, 
+        public WorkTimeControlService(IUnitOfWork unitOfWork,
+            IUserData userData,
+            IWorkTimeResumeManager workTimeResumeManager,
+            IMapper mapper,
+            IRoleManager roleManager,
             IWorktimeData worktimeData,
             IWorkTimeControlHoursFileManager workTimeControlHoursFileManager)
         {
@@ -49,7 +49,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.worktimeData = worktimeData;
             this.workTimeControlHoursFileManager = workTimeControlHoursFileManager;
         }
-         
+
         public Response<WorkTimeControlModel> Get(WorkTimeControlParams parameters)
         {
             var result = new Response<WorkTimeControlModel>();
@@ -81,21 +81,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var currentUser = userData.GetCurrentUser();
 
-            worktimeData.ClearControlHoursReportKey(currentUser.UserName);
-            worktimeData.SaveControlHoursReport(resources, currentUser.UserName);
-
-            resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
-            resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
-
             var resourcesAux = resources.ToList();
 
             foreach (var allResource in allResources)
             {
                 foreach (var allocation in allResource.Allocations)
                 {
-                    if(parameters.AnalyticId.HasValue && allocation.AnalyticId != parameters.AnalyticId) continue;
+                    if (parameters.AnalyticId.HasValue && allocation.AnalyticId != parameters.AnalyticId) continue;
 
-                    if(resourcesAux.Any(x => x.Id == $"{allocation.AnalyticId}-{allocation.EmployeeId}")) continue;
+                    if (resourcesAux.Any(x => x.Id == $"{allocation.AnalyticId}-{allocation.EmployeeId}")) continue;
 
                     if ((allocation.StartDate.Year == startDate.Year &&
                          allocation.StartDate.Month == startDate.Month) ||
@@ -111,12 +105,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             {
                                 Id = $"{allocation.AnalyticId}-{allocation.EmployeeId}",
                                 ApprovedHours = 0,
-                                BusinessHours = allocation.Employee.BillingPercentage > 0 ? hours : 0,
+                                BusinessHours = hours,
                                 DraftHours = 0,
                                 EmployeeName = allResource.Name,
                                 EmployeeNumber = allResource.EmployeeNumber,
                                 LicenseHours = 0,
-                                PendingHours = allocation.Employee.BillingPercentage > 0 ?hours : 0,
+                                PendingHours = hours,
                                 RejectHours = 0,
                                 SentHours = 0,
                                 DetailCount = 0,
@@ -127,17 +121,20 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         }
                         else
                         {
-                            if (allocation.Employee.BillingPercentage > 0)
-                            {
-                                var hours = CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
+                            var hours = CalculateHoursToLoad(allocation, startDate, endDate, daysoff);
 
-                                item.BusinessHours += hours;
-                                item.PendingHours += hours;
-                            }
+                            item.BusinessHours += hours;
+                            item.PendingHours += hours;
                         }
                     }
                 }
             }
+
+            resumeModel.BusinessHours = resources.Sum(s => s.BusinessHours);
+            resumeModel.HoursPending = resources.Sum(s => s.PendingHours);
+
+            worktimeData.ClearControlHoursReportKey(currentUser.UserName);
+            worktimeData.SaveControlHoursReport(resources, currentUser.UserName);
 
             result.Data = new WorkTimeControlModel
             {
@@ -146,17 +143,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             };
 
             return result;
-        }
-
-        public Response<List<Option>> GetAnalyticOptionsByCurrentManager()
-        {
-            var analyticsByManagers = roleManager.HasFullAccess()
-                ? unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite()
-                : GetAnalyticByManagerAndDelegated();
-
-            var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
-
-            return new Response<List<Option>> { Data = result };
         }
 
         private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate,
@@ -199,7 +185,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     //resource.BusinessHours = resume.BusinessHours * allocationAnalytic.Percentage / 100;
                     //resource.AllocationPercentage = allocationAnalytic.Percentage;
                 }
-          
+
                 resource.ApprovedHours = item.Value.Where(x => x.Status == WorkTimeStatus.Approved).Sum(x => x.Hours);
                 resource.LicenseHours = item.Value.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours);
                 resource.SentHours = item.Value.Where(x => x.Status == WorkTimeStatus.Sent).Sum(x => x.Hours);
@@ -352,6 +338,34 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             response.Data = excel.GetAsByteArray();
 
             return response;
+        }
+
+        public IList<Option> GetAnalytics()
+        {
+            if (roleManager.IsPmo() || roleManager.IsRrhh())
+            {
+                var analytics = unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite();
+
+                return analytics.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            }
+            else
+            {
+                var currentUser = userData.GetCurrentUser();
+                var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+                var analyticsByDirectors = unitOfWork.AnalyticRepository.GetByDirectorId(currentUser.Id);
+
+                var list = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+                foreach (var analytic in analyticsByDirectors)
+                {
+                    if (list.All(x => x.Id != analytic.Id))
+                    {
+                        list.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+                    }
+                }
+
+                return list;
+            }
         }
 
         private decimal CalculateHoursToLoad(IList<Allocation> allocations, DateTime startDate, DateTime endDate, IList<Holiday> holidays)

@@ -8,6 +8,7 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { RrhhService } from "app/services/human-resources/rrhh.service";
 import * as FileSaver from "file-saver";
+import { WorktimeControlService } from "app/services/worktime-management/worktime-control.service";
 
 declare var $: any;
 
@@ -55,6 +56,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         private worktimeService: WorktimeService,
         private utilsService: UtilsService,
         private analyticService: AnalyticService,
+        private worktimeControlService: WorktimeControlService,
         private rrhhService: RrhhService,
         private employeeService: EmployeeService,
         private dataTableService: DataTableService){}
@@ -99,9 +101,9 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     }
 
     getAnalytics(){
-        this.getAnalyticSubscrip = this.analyticService.getByManager().subscribe(
+        this.getAnalyticSubscrip = this.worktimeControlService.getAnalytics().subscribe(
             res => {
-                this.analytics = res.data;
+                this.analytics = res;
             });
     }
 

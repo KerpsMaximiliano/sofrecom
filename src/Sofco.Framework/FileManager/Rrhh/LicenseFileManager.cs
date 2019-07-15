@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Options;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using Sofco.Common.Settings;
 using Sofco.Core.FileManager;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Rrhh;
@@ -15,10 +18,12 @@ namespace Sofco.Framework.FileManager.Rrhh
     {
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly char[] excelColumns =  { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I' };
+        private readonly AppSetting appSetting;
 
-        public LicenseFileManager(IHostingEnvironment hostingEnvironment)
+        public LicenseFileManager(IHostingEnvironment hostingEnvironment, IOptions<AppSetting> appSettingOptions)
         {
             this.hostingEnvironment = hostingEnvironment;
+            appSetting = appSettingOptions.Value;
         }
          
         public ExcelPackage CreateLicenseReportExcel(IList<License> licenses)
@@ -41,9 +46,9 @@ namespace Sofco.Framework.FileManager.Rrhh
                 sheet.Cells[$"A{index}"].Value = licenses[i].Employee.EmployeeNumber;
                 sheet.Cells[$"B{index}"].Value = licenses[i].Employee.Name;
                 sheet.Cells[$"C{index}"].Value = licenses[i].Type.Description;
-                sheet.Cells[$"D{index}"].Value = licenses[i].CreationDate.ToString("dd/MM/yyyy");
-                sheet.Cells[$"E{index}"].Value = licenses[i].StartDate.ToString("dd/MM/yyyy");
-                sheet.Cells[$"F{index}"].Value = licenses[i].EndDate.ToString("dd/MM/yyyy");
+                sheet.Cells[$"D{index}"].Value = licenses[i].CreationDate;
+                sheet.Cells[$"E{index}"].Value = licenses[i].StartDate;
+                sheet.Cells[$"F{index}"].Value = licenses[i].EndDate;
                 sheet.Cells[$"G{index}"].Value = licenses[i].DaysQuantityByLaw;
                 sheet.Cells[$"H{index}"].Value = GetStatusDescription(licenses[i].Status);
                 sheet.Cells[$"I{index}"].Value = licenses[i].Employee.HolidaysPending;

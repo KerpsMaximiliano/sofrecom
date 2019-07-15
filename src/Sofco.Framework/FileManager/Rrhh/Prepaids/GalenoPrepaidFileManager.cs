@@ -68,7 +68,18 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                             continue;
                         }
 
-                        var cuil = reader.GetString(DocumentColumn).Trim();
+                        var cuil = reader.GetString(DocumentColumn);
+
+                        if (string.IsNullOrWhiteSpace(cuil))
+                        {
+                            index++;
+                            continue;
+                        }
+                        else
+                        {
+                            cuil = cuil.Trim();
+                        }
+
                         var type = reader.GetString(TypeColumn).Trim();
 
                         var credential = reader.GetDouble(CredentialColumn).ToString();
@@ -106,7 +117,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
                                 itemToAdd.EmployeeId = employee.Id;
                                 itemToAdd.EmployeeName = employee.Name;
-                                itemToAdd.TigerBeneficiaries = employee.BeneficiariesCount;
+                                itemToAdd.TigerBeneficiaries = employee.BeneficiariesCount+1;
                                 itemToAdd.EmployeeNumber = employee.EmployeeNumber;
                                 itemToAdd.TigerCost = prepaidAmount;
                                 itemToAdd.TigerPlan = employee.PrepaidPlan;

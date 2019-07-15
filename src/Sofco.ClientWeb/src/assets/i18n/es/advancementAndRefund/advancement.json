@@ -30,5 +30,6 @@
     "salaryAdvancementAdded": "La devolución fue agregada correctamente",
     "salaryAmountGreaterThanTotalAdvancement": "El monto de las devoluciónes no puede superar el monto del adelanto",
     "salaryDiscountNotFound": "La devolución no fue encontrada",
+    "advancementCashAmountExceeded": "El monto supera el tope de adelanto en efectivo",
     "salaryAdvancementDeleted": "La devolución fue eliminada correctamente"
 }

@@ -1752,6 +1752,28 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("UserDelegate");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.Budget", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200);
+
+                    b.Property<int>("ManagementReportId");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<decimal>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManagementReportId");
+
+                    b.ToTable("Budgets");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ContratedDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -3190,6 +3212,14 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.Admin.User", "ApproverUser")
                         .WithMany()
                         .HasForeignKey("ApproverUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.Budget", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.ManagementReport", "ManagementReport")
+                        .WithMany("Budgets")
+                        .HasForeignKey("ManagementReportId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

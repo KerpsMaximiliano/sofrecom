@@ -37,6 +37,7 @@
                 <td class="column-sm">
                     <span *ngIf="item.paymentForm == 1">{{ 'advancement.ownBank' | translate }}</span>
                     <span *ngIf="item.paymentForm == 2">{{ 'advancement.foreignCurrency' | translate }}</span>
+                    <span *ngIf="item.paymentForm == 3">{{ 'advancement.cash' | translate }}</span>
                 </td>
             </tr>
         </tbody>

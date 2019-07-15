@@ -1,25 +1,24 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
+using Sofco.Core.DAL;
+using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.AllocationManagement;
+using Sofco.Core.FileManager;
+using Sofco.Core.Logger;
+using Sofco.Core.Managers;
+using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Core.Services.WorkTimeManagement;
+using Sofco.Core.Validations;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Sofco.Domain.Utils;
+using Sofco.Framework.ValidationHelpers.AllocationManagement;
+using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Sofco.Common.Settings;
-using Sofco.Core.Data.Admin;
-using Sofco.Core.DAL;
-using Sofco.Core.Logger;
-using Sofco.Core.Models.WorkTimeManagement;
-using Sofco.Core.Services.WorkTimeManagement;
-using Sofco.Framework.ValidationHelpers.WorkTimeManagement;
-using Sofco.Domain.Enums;
-using Sofco.Domain.Utils;
-using Sofco.Core.Data.AllocationManagement;
-using Sofco.Core.FileManager;
-using Sofco.Core.Managers;
-using Sofco.Core.Services.Rrhh;
-using Sofco.Core.Validations;
-using Sofco.Domain.Models.WorkTimeManagement;
-using Sofco.Framework.ValidationHelpers.AllocationManagement;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
 {
@@ -47,12 +46,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private readonly AppSetting appSetting;
 
+        private readonly IRoleManager roleManager;
+
         public WorkTimeService(ILogMailer<WorkTimeService> logger,
             IUnitOfWork unitOfWork,
             IUserData userData,
             IEmployeeData employeeData,
             IWorkTimeValidation workTimeValidation,
             IOptions<AppSetting> appSetting,
+            IRoleManager roleManager,
             IWorkTimeImportFileManager workTimeImportFileManager,
             IWorkTimeExportFileManager workTimeExportFileManager,
             IWorkTimeResumeManager workTimeResumeManger,
@@ -69,6 +71,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             this.workTimeRejectManager = workTimeRejectManager;
             this.workTimeSendHoursManager = workTimeSendHoursManager;
             this.appSetting = appSetting.Value;
+            this.roleManager = roleManager;
         }
 
         public Response<WorkTimeModel> Get(DateTime date)
@@ -240,21 +243,39 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         public IEnumerable<Option> GetAnalytics()
         {
-            var currentUser = userData.GetCurrentUser();
-            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
-            var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
-
-            var list = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
-
-            foreach (var analyticsByDelegate in analyticsByDelegates)
+            if (roleManager.IsPmo() || roleManager.IsRrhh())
             {
-                if (list.All(x => x.Id != analyticsByDelegate.Id))
-                {
-                    list.Add(new Option { Id = analyticsByDelegate.Id, Text = $"{analyticsByDelegate.Title} - {analyticsByDelegate.Name}" });
-                }
-            }
+                var analytics = unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite();
 
-            return list;
+                return analytics.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" });
+            }
+            else
+            {
+                var currentUser = userData.GetCurrentUser();
+                var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+                var analyticsByDirectors = unitOfWork.AnalyticRepository.GetByDirectorId(currentUser.Id);
+                var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
+
+                var list = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+                foreach (var analytic in analyticsByDirectors)
+                {
+                    if (list.All(x => x.Id != analytic.Id))
+                    {
+                        list.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+                    }
+                }
+
+                foreach (var analyticsByDelegate in analyticsByDelegates)
+                {
+                    if (list.All(x => x.Id != analyticsByDelegate.Id))
+                    {
+                        list.Add(new Option { Id = analyticsByDelegate.Id, Text = $"{analyticsByDelegate.Title} - {analyticsByDelegate.Name}" });
+                    }
+                }
+
+                return list;
+            }
         }
 
         public Response Reject(int id, string comments, bool massive)
@@ -311,13 +332,31 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 return response;
             }
 
-            var worktimes = unitOfWork.WorkTimeRepository.Search(parameters);
-
             response.Data = new List<WorkTimeSearchItemResult>();
+
+            var analytics = GetAnalytics();
+
+            if (!analytics.Any()) return response;
+
+            var analyticIds = analytics.Select(x => x.Id).ToList();
+
+            var worktimes = unitOfWork.WorkTimeRepository.Search(parameters, analyticIds);
+
+            var currentUser = userData.GetCurrentUser();
+
+            var userApprovers = unitOfWork.UserApproverRepository.GetByTypeAndApproverUser(currentUser.Id, UserApproverType.WorkTime);
 
             foreach (var worktime in worktimes)
             {
                 var model = new WorkTimeSearchItemResult();
+
+                var userApproverByAnalytic = userApprovers.Where(x => x.AnalyticId == worktime.AnalyticId).ToList();
+
+                if (userApproverByAnalytic.Any())
+                {
+                    if (userApproverByAnalytic.All(x => x.EmployeeId != worktime.EmployeeId))
+                        continue;
+                }
 
                 if (worktime.Analytic != null)
                 {
@@ -477,9 +516,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var selectedAnalyticId = analyticId.Value;
 
-            return availableAnalyticIds.Contains(selectedAnalyticId) 
-                ? new List<int> { selectedAnalyticId } 
-                : new List<int> ();
+            return availableAnalyticIds.Contains(selectedAnalyticId)
+                ? new List<int> { selectedAnalyticId }
+                : new List<int>();
         }
 
         private List<WorkTime> AddDelegatedData(int? analyticId, int? employeeId, WorkTimeStatus status, List<WorkTime> workTimes)
@@ -526,8 +565,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 .GetByEmployeeIds(employeeIds)
                 .ToList();
 
-            result = status != WorkTimeStatus.Approved 
-                ? result.Where(s => s.Status == status).ToList() 
+            result = status != WorkTimeStatus.Approved
+                ? result.Where(s => s.Status == status).ToList()
                 : result.Where(s => s.Status == status || s.Status == WorkTimeStatus.License).ToList();
 
             return result;

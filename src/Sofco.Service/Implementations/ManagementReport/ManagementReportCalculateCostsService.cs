@@ -41,6 +41,8 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 var date = new DateTime(year, month, 1);
 
+                this.InsertMissingEmployees(date);
+
                 var costDetailResources = unitOfWork.CostDetailResourceRepository.GetByDate(date);
                 var allocations = unitOfWork.AllocationRepository.GetAllocationsByDate(date);
 
@@ -71,6 +73,48 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
+        private void InsertMissingEmployees(DateTime date)
+        {
+            try
+            {
+                var reports = unitOfWork.ManagementReportRepository.GetByDate(date);
+
+                foreach (var report in reports)
+                {
+                    var managementReport = unitOfWork.ManagementReportRepository.GetById(report.Id);
+                    var costDetails = managementReport.CostDetails;
+
+                    var IdEmployees = costDetails
+                                       .SelectMany(x => x.CostDetailResources.Select(d => d.EmployeeId))
+                                       .Distinct()
+                                       .ToArray();
+
+                    int costDetailId = costDetails.Where(x => x.MonthYear.Date == date.Date).Select(x => x.Id).FirstOrDefault();
+                    var costDetailResources = costDetails.Where(x => x.MonthYear.Date == date.Date).Select(x => x.CostDetailResources).FirstOrDefault();
+
+                    foreach (var employeeId in IdEmployees)
+                    {
+                        if (!costDetailResources.Any(x => x.EmployeeId == employeeId))
+                        {
+                            var entity = new CostDetailResource();
+
+                            entity.CostDetailId = costDetailId;
+                            entity.EmployeeId = employeeId;
+
+                            unitOfWork.CostDetailResourceRepository.Insert(entity);
+                        }
+                    }
+                }
+
+                unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                throw e;
+            }
+        }
+
         private void Calculate(AllocationDto allocationDto, DateTime firstMonthDate, DateTime lastMonthDate)
         {
             var allocationsBetweenDays = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(allocationDto.EmployeeId, firstMonthDate.Date, lastMonthDate.Date);
@@ -86,11 +130,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                 {
                     var costDetail = unitOfWork.CostDetailRepository.GetWithResourceDetails(managementReport.Id, date);
 
-                    if(costDetail == null) continue;
+                    if (costDetail == null) continue;
 
                     var resource = costDetail.CostDetailResources.SingleOrDefault(x => x.EmployeeId == allocationDto.EmployeeId);
 
-                    if(resource == null) continue;
+                    if (resource == null) continue;
 
                     costDetail.CostDetailResources.Remove(resource);
                     unitOfWork.CostDetailRepository.Update(costDetail);
@@ -163,7 +207,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             unitOfWork.CostDetailRepository.Insert(costDetail);
                         else
                             unitOfWork.CostDetailRepository.Update(costDetail);
-                        
+
                     }
                     else
                     {
