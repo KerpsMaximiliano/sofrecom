@@ -69,13 +69,13 @@
     <div class="row" *ngIf="!isReadOnly">
         <br>
         <div class="col-md-6">
-            <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected">
-            </ng-select>
+            <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected"></ng-select>
         </div>
         <div class="col-md-4">
             <button class="btn btn-success btn-md" type="button" (click)="addEmployee()">
                 Agregar
-                <i class="fa fa-plus"></i></button>
+                <i class="fa fa-plus"></i>
+            </button>
         </div>
     </div>
     
