@@ -63,6 +63,13 @@ namespace Sofco.Framework.Helpers
                 default: return string.Empty;
             }
         }
+
+        public static bool ValidateMonth(int month)
+        {
+            if (month < 1 || month > 12) return false;
+
+            return true;
+        }
     }
 }
  

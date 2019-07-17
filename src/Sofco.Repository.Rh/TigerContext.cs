@@ -14,6 +14,7 @@ namespace Sofco.Repository.Rh
         {
             setting = rhSetting;
         }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

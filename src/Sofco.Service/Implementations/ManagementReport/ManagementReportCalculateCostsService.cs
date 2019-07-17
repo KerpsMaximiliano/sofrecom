@@ -52,11 +52,12 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     if (allocation != null && allocation.Percentage > 0)
                     {
+                        var socialCharge = allocation.Employee.SocialCharges.FirstOrDefault(x => x.Year == year && x.Month == month);
+
                         if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.Salary), out var salary)) salary = 0;
-                        if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.PrepaidAmount), out var prepaidAmount)) prepaidAmount = 0;
 
                         var newValueSalary = (allocation.Percentage / 100) * salary;
-                        var newValueCharges = (allocation.Percentage / 100) * prepaidAmount;
+                        var newValueCharges = (allocation.Percentage / 100) * (socialCharge?.Total ?? 0);
 
                         costDetailResource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString());
                         costDetailResource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString());
@@ -117,7 +118,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
         private void Calculate(AllocationDto allocationDto, DateTime firstMonthDate, DateTime lastMonthDate)
         {
-            var allocationsBetweenDays = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(allocationDto.EmployeeId, firstMonthDate.Date, lastMonthDate.Date);
+            var allocationsBetweenDays = unitOfWork.AllocationRepository.GetAllocationsBetweenDaysWithCharges(allocationDto.EmployeeId, firstMonthDate.Date, lastMonthDate.Date);
 
             var analyticIds = allocationsBetweenDays.Select(x => x.AnalyticId).Distinct();
             var allocationFirst = allocationsBetweenDays.FirstOrDefault();
@@ -187,13 +188,14 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     var resource = costDetail.CostDetailResources.SingleOrDefault(x => x.EmployeeId == allocation.EmployeeId);
 
+                    var socialCharge = allocation.Employee.SocialCharges.FirstOrDefault(x => x.Year == allocation.StartDate.Year && x.Month == allocation.StartDate.Month);
+
                     if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.Salary), out var salary)) salary = 0;
-                    if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.PrepaidAmount), out var prepaidAmount)) prepaidAmount = 0;
 
                     if (resource == null)
-                    {
+                    { 
                         var newValueSalary = (allocation.Percentage / 100) * salary;
-                        var newValueCharges = (allocation.Percentage / 100) * prepaidAmount;
+                        var newValueCharges = (allocation.Percentage / 100) * (socialCharge?.Total ?? 0);
 
                         costDetail.CostDetailResources.Add(new CostDetailResource
                         {
@@ -214,7 +216,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         var allocationPercentage = allocation.Percentage == 100 ? 1 : allocation.Percentage / 100;
 
                         var newValueSalary = allocationPercentage * salary;
-                        var newValueCharges = allocationPercentage * prepaidAmount;
+                        var newValueCharges = (allocation.Percentage / 100) * (socialCharge?.Total ?? 0);
 
                         resource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString());
                         resource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString());

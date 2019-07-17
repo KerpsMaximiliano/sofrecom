@@ -244,7 +244,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(id, monthYear);
 
-            var employees = unitOfWork.AllocationRepository.GetAllocationsByDate(monthYear);
+            var allocations = unitOfWork.AllocationRepository.GetAllocationsByDate(monthYear);
 
             var listContracted = new List<ContractedModel>();
             var listOther = new List<CostMonthOther>();
@@ -254,7 +254,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 listContracted = this.Translate(costDetail.ContratedDetails.ToList());
                 listOther = this.Translate(costDetail.CostDetailOthers.ToList());
-                resources = this.Translate(costDetail.CostDetailResources.ToList(), monthYear, employees, managementReport.AnalyticId);
+                resources = this.Translate(costDetail.CostDetailResources.ToList(), monthYear, allocations, managementReport.AnalyticId);
                 response.Data.Id = costDetail.Id;
                 response.Data.TotalProvisioned = costDetail.TotalProvisioned;
             }
@@ -353,17 +353,18 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 item.EmployeeId = resource.EmployeeId;
 
-                var employee = unitOfWork.EmployeeRepository.Get(resource.EmployeeId);
+                var employee = unitOfWork.EmployeeRepository.GetWithSocialCharges(resource.EmployeeId);
                 item.Name = employee?.Name;
                 item.UserId = resource.UserId;
                 item.MonthYear = monthYear;
 
                 if (!decimal.TryParse(CryptographyHelper.Decrypt(resource.Value), out var salary)) salary = 0;
-                if (!decimal.TryParse(CryptographyHelper.Decrypt(resource.Charges), out var charges)) charges = 0;
+
+                var socialCharge = employee?.SocialCharges.FirstOrDefault(x => x.Year == monthYear.Year && x.Month == monthYear.Month);
 
                 item.Salary = salary;
-                item.Charges = charges;
-                item.Total = salary + charges;
+                item.Charges = (socialCharge?.Total ?? 0);
+                item.Total = salary + (socialCharge?.Total ?? 0);
 
                 list.Add(item);
             }
@@ -385,12 +386,15 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     if (allocation.Employee != null)
                     {
+                        var socialCharge = allocation.Employee.SocialCharges.FirstOrDefault(x => x.Year == allocation.StartDate.Year && x.Month == allocation.StartDate.Month);
+
                         if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.Salary), out var salary)) salary = 0;
-                        if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.PrepaidAmount), out var charges)) charges = 0;
+
+                        var newValueCharges = (allocation.Percentage / 100) * (socialCharge?.Total ?? 0);
 
                         item.Salary = salary * (allocation.Percentage / 100);
-                        item.Charges = charges * (allocation.Percentage / 100);
-                        item.Total = salary + charges;
+                        item.Charges = newValueCharges * (allocation.Percentage / 100);
+                        item.Total = salary + newValueCharges;
                     }
 
                     list.Add(item);

@@ -19,4 +19,8 @@ export class RrhhService {
         return new Blob([res.body], { type: 'application/octet-stream' });
     }));
   }
+
+  syncSocialCharges(year, month) {
+    return this.http.put<any>(`${this.baseUrl}/rrhh/${year}/${month}/socialCharges`, {});
+  }
 }

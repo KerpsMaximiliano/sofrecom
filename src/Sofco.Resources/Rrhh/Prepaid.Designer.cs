@@ -205,6 +205,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/prepaid.socialChargesSynced.
+        /// </summary>
+        public static string SocialChargesSynced {
+            get {
+                return ResourceManager.GetString("SocialChargesSynced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/prepaid.statusEmpty.
         /// </summary>
         public static string StatusEmpty {

@@ -92,6 +92,8 @@ namespace Sofco.DAL
         public DbSet<LicenseHistory> LicenseHistories { get; set; }
         public DbSet<CloseDate> CloseDates { get; set; }
         public DbSet<PrepaidImportedData> PrepaidImportedData { get; set; }
+        public DbSet<SocialCharge> SocialCharges { get; set; }
+        public DbSet<SocialChargeItem> SocialChargeItems { get; set; }
 
         // Advancement and Refund
         public DbSet<Advancement> Advancements { get; set; }

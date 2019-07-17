@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.Rrhh;
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Rrhh
 {
@@ -24,6 +25,14 @@ namespace Sofco.WebApi.Controllers.Rrhh
                 return BadRequest(response);
 
             return File(response.Data, "text/plain", string.Empty);
+        }
+
+        [HttpPut("{year}/{month}/socialCharges")]
+        public IActionResult SocialCharges(int year, int month)
+        {
+            var response = rrhhService.UpdateSocialCharges(year, month);
+
+            return this.CreateResponse(response);
         }
     }
 }

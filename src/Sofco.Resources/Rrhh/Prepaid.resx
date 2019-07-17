@@ -165,6 +165,9 @@
   <data name="NotImplemented" xml:space="preserve">
     <value>rrhh/prepaid.notImplemented</value>
   </data>
+  <data name="SocialChargesSynced" xml:space="preserve">
+    <value>rrhh/prepaid.socialChargesSynced</value>
+  </data>
   <data name="StatusEmpty" xml:space="preserve">
     <value>rrhh/prepaid.statusEmpty</value>
   </data>

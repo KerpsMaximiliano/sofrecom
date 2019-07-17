@@ -56,6 +56,7 @@ namespace Sofco.DAL.Mappings.ManagementReport
             // Budget
             builder.Entity<Budget>().HasKey(x => x.Id);
             builder.Entity<Budget>().Property(x => x.Description).HasMaxLength(200);
+            builder.Entity<Budget>().Property(x => x.ModifiedBy).HasMaxLength(100);
             builder.Entity<Budget>().HasOne(x => x.ManagementReport).WithMany(x => x.Budgets).HasForeignKey(x => x.ManagementReportId);
         }
     }

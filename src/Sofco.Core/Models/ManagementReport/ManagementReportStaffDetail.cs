@@ -46,11 +46,14 @@ namespace Sofco.Core.Models.ManagementReport
             Description = domain.Description;
             Value = domain.Value;
             StartDate = domain.StartDate;
+            ModifiedBy = domain.ModifiedBy;
         }
 
         public int Id { get; set; }
 
         public string Description { get; set; }
+
+        public string ModifiedBy { get; set; }
 
         public decimal Value { get; set; }
 

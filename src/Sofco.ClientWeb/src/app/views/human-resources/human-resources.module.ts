@@ -38,6 +38,7 @@ import { UtilsService } from 'app/services/common/utils.service';
 import { PrepaidService } from 'app/services/human-resources/prepaid.service';
 import { PrepaidVerificationComponent } from './prepaid-verification/prepaid-verification';
 import { AmountFormatModule } from 'app/pipes/amount-format.module';
+import { RrhhService } from 'app/services/human-resources/rrhh.service';
 
 @NgModule({
   declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
@@ -48,7 +49,7 @@ import { AmountFormatModule } from 'app/pipes/amount-format.module';
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter,
                 ApproversModule, NgSelectModule, AmountFormatModule],
 
-  providers   : [LicenseService, EmployeeService, EmployeeNewsService, ServiceService, CustomerService, UtilsService, PrepaidService],
+  providers   : [LicenseService, EmployeeService, EmployeeNewsService, ServiceService, CustomerService, UtilsService, PrepaidService, RrhhService],
 
   exports     : []
 })

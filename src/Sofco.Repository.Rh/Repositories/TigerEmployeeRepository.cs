@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -48,9 +50,12 @@ namespace Sofco.Repository.Rh.Repositories
 
         private DbSet<TigerEmployee> TigerEmployeeSet { get; }
 
+        private readonly TigerContext Context;
+
         public TigerEmployeeRepository(TigerContext context)
         {
             TigerEmployeeSet = context.Set<TigerEmployee>();
+            Context = context;
         }
 
         public IList<TigerEmployee> GetWithStartDate(DateTime startDate)
@@ -97,6 +102,64 @@ namespace Sofco.Repository.Rh.Repositories
             var sql = string.Format("{0} WHERE {1}", TigerEmployeeSql, " febaj IS NOT NULL");
 
             return TigerEmployeeSet.FromSql(sql).ToList();
+        }
+
+        public IList<EmployeeSocialCharges> GetSocialCharges(int year, int month)
+        {
+            var list = new List<EmployeeSocialCharges>();
+
+            using (var command = Context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "proc_Consulta01";
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.Add(new SqlParameter("Anioq", year));
+                command.Parameters.Add(new SqlParameter("meslq", month));
+
+                Context.Database.OpenConnection();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(MapRow(reader));
+                        }
+                    }
+                }
+
+                Context.Database.CloseConnection();
+            }
+
+            return list;
+        }
+
+        private EmployeeSocialCharges MapRow(DbDataReader reader)
+        {
+            var employee =new EmployeeSocialCharges();
+
+            if (!reader.IsDBNull(reader.GetOrdinal("legaj")))
+            {
+                employee.EmployeeNumber = reader.GetInt32(reader.GetOrdinal("legaj")).ToString();
+            }
+
+            if (!reader.IsDBNull(reader.GetOrdinal("nroc")))
+            {
+                employee.AccountNumber = Convert.ToInt32(reader.GetString(reader.GetOrdinal("nroc")));
+            }
+
+            if (!reader.IsDBNull(reader.GetOrdinal("cuenta")))
+            {
+                employee.AccountName = reader.GetString(reader.GetOrdinal("cuenta"));
+            }
+
+            if (!reader.IsDBNull(reader.GetOrdinal("neto")))
+            {
+                employee.Value = reader.GetDecimal(reader.GetOrdinal("neto"));
+            }
+
+            return employee;
         }
     }
 }

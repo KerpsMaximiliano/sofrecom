@@ -8,6 +8,7 @@ import { AuthService } from "app/services/common/auth.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { PrepaidService } from "app/services/human-resources/prepaid.service";
+import { RrhhService } from "app/services/human-resources/rrhh.service";
 
 @Component({
     selector: 'prepaid-import',
@@ -33,9 +34,12 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
     public prepaids: any[] = new Array();
     public itemsDashboard: any[] = new Array();
 
+    public mustSyncWithTiger: boolean = false;
+
     constructor(private utilsService: UtilsService,
                 private i18nService: I18nService,
                 private prepaidService: PrepaidService,
+                private rrhhService: RrhhService,
                 private employeeService: EmployeeService,
                 private messageService: MessageService, 
                 private authService: AuthService,){
@@ -69,7 +73,6 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
 
     dateChange(){
         this.getDashboard();
-        this.uploaderConfig();
     }
 
     getDashboard(){
@@ -78,9 +81,34 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
         if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0) return;
 
         this.getDashboardSubscrip = this.prepaidService.getDashboard(this.yearId, this.monthId).subscribe(response => {
-            if(response && response.data && response.data.length > 0){
-                this.itemsDashboard = response.data;
+            this.mustSyncWithTiger = response.data.mustSyncWithTiger;
+
+            this.uploaderConfig();
+
+            if(response && response.data && response.data.dashboard.length > 0){
+                this.itemsDashboard = response.data.dashboard;
             }
+        });
+    }
+
+    canSyncSocialCharges(){
+        if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0 || !this.prepaids || !this.itemsDashboard) return false;
+
+        return this.yearId > 0 && this.monthId > 0;
+    }
+
+    syncSocialCharges(){
+        if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0) return;
+
+        this.messageService.showLoading();
+
+        this.notifySubscrip = this.rrhhService.syncSocialCharges(this.yearId, this.monthId).subscribe(response => {
+          this.messageService.closeLoading();
+
+          if(this.mustSyncWithTiger){
+            this.mustSyncWithTiger = false;
+            this.uploaderConfig();
+          }
         });
     }
 

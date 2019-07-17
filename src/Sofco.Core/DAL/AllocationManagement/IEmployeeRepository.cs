@@ -60,5 +60,8 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> GetByManagerId(int managerId);
         Employee GetByDocumentNumber(int dni);
         IList<Employee> GetMissingEmployess(IList<int> prepaidImportedDataIds);
+
+        IList<Tuple<int, string>> GetIdAndEmployeeNumber(int year, int month);
+        Employee GetWithSocialCharges(int employeeId);
     }
 }

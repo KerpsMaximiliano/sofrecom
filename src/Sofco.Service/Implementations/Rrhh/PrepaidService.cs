@@ -90,11 +90,12 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        public Response<IList<PrepaidDashboard>> GetDashboard(int yearId, int monthId)
+        public Response<PrepaidResponse> GetDashboard(int yearId, int monthId)
         {
-            var response = new Response<IList<PrepaidDashboard>>();
+            var response = new Response<PrepaidResponse>() { Data = new PrepaidResponse() };
 
-            response.Data = unitOfWork.PrepaidImportedDataRepository.GetDashboard(yearId, monthId);
+            response.Data.Dashboard = unitOfWork.PrepaidImportedDataRepository.GetDashboard(yearId, monthId);
+            response.Data.MustSyncWithTiger = !unitOfWork.RrhhRepository.ExistData(yearId, monthId);
 
             return response;
         }

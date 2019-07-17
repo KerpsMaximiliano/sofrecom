@@ -94,6 +94,7 @@ namespace Sofco.DAL
         private ILicenseRepository licenseRepository;
         private ICloseDateRepository closeDateRepository;
         private IPrepaidImportedDataRepository prepaidImportedDataRepository;
+        private IRrhhRepository rrhhRepository;
 
         #endregion
 
@@ -211,6 +212,7 @@ namespace Sofco.DAL
         public ILicenseRepository LicenseRepository => licenseRepository ?? (licenseRepository = new LicenseRepository(context));
         public ICloseDateRepository CloseDateRepository => closeDateRepository ?? (closeDateRepository = new CloseDateRepository(context));
         public IPrepaidImportedDataRepository PrepaidImportedDataRepository => prepaidImportedDataRepository ?? (prepaidImportedDataRepository = new PrepaidImportedDataRepository(context));
+        public IRrhhRepository RrhhRepository => rrhhRepository ?? (rrhhRepository = new RrhhRepository(context));
 
         #endregion
 

@@ -115,5 +115,7 @@ namespace Sofco.Domain.Models.AllocationManagement
         public string PrepaidPlan { get; set; }
 
         public ICollection<CostDetailResource> CostDetailResources { get; set; }
+
+        public ICollection<SocialCharge> SocialCharges { get; set; }
     }
 }

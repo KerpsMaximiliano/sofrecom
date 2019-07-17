@@ -10,6 +10,8 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public DateTime StartDate { get; set; }
 
+        public string ModifiedBy { get; set; }
+
         public int ManagementReportId { get; set; }
         public ManagementReport ManagementReport { get; set; }
     }

@@ -13,5 +13,7 @@ namespace Sofco.Repository.Rh.Repositories.Interfaces
         List<TigerEmployee> GetByLegajs(int[] legajs);
 
         List<TigerEmployee> GetActive();
+
+        IList<EmployeeSocialCharges> GetSocialCharges(int year, int month);
     }
 }

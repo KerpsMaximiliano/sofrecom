@@ -27,9 +27,20 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public ICollection<Allocation> GetAllocationsBetweenDaysWithCharges(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            return context.Allocations
+                .Where(x => x.EmployeeId == employeeId && x.StartDate >= startDate && x.StartDate <= endDate)
+                .Include(x => x.Analytic)
+                .Include(x => x.Employee)
+                .ThenInclude(x => x.SocialCharges)
+                .OrderBy(x => x.AnalyticId).ThenBy(x => x.StartDate)
+                .ToList();
+        }
+
         public IList<Allocation> GetAllocationsByDate(DateTime date)
         {
-            return context.Allocations.Include(x => x.Employee).Where(x => x.StartDate.Date == date.Date).ToList();
+            return context.Allocations.Include(x => x.Employee).ThenInclude(x => x.SocialCharges).Where(x => x.StartDate.Date == date.Date).ToList();
         }
 
         public void UpdateReleaseDate(Allocation allocation)
