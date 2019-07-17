@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Common.Domains;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Models.WorkTimeManagement;
@@ -117,5 +118,7 @@ namespace Sofco.Domain.Models.AllocationManagement
         public ICollection<CostDetailResource> CostDetailResources { get; set; }
 
         public ICollection<SocialCharge> SocialCharges { get; set; }
+
+        public ICollection<SalaryDiscount> SalaryDiscounts { get; set; }
     }
 }

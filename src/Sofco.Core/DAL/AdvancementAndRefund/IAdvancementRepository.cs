@@ -24,9 +24,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         IList<Advancement> GetAllApproved(int workflowStatusApproveId, AdvancementType viaticumId);
         int GetRefundWithLastRefundMarkedCount(int advancementId, int refundId);
         IList<Advancement> GetSalaryResume(int settingsSalaryWorkflowId, int settingsWorkflowStatusApproveId);
-        Advancement GetWithDiscounts(int advancementId);
         void AddSalaryDiscount(SalaryDiscount domain);
-        SalaryDiscount GetSalaryDiscount(int id);
-        void DeleteSalaryDiscount(SalaryDiscount salaryDiscount);
     }
 }

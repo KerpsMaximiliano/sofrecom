@@ -343,6 +343,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees.Include(x => x.Manager).SingleOrDefault(x => x.Email == email);
         }
 
+        public Employee GetByEmailWithDiscounts(string email)
+        {
+            return context.Employees.Include(x => x.SalaryDiscounts).SingleOrDefault(x => x.Email == email);
+        }
+
         public Employee GetUserInfo(string email)
         {
             return context.Employees.Include(x => x.Manager)

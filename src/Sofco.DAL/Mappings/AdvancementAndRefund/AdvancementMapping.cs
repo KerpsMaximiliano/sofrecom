@@ -16,7 +16,6 @@ namespace Sofco.DAL.Mappings.AdvancementAndRefund
             builder.Entity<Advancement>().HasOne(x => x.Status).WithMany(x => x.Advancements).HasForeignKey(x => x.StatusId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Advancement>().HasOne(x => x.Workflow).WithMany(x => x.Advancements).HasForeignKey(x => x.WorkflowId);
             builder.Entity<Advancement>().HasMany(x => x.Histories).WithOne(x => x.Advancement).HasForeignKey(x => x.AdvancementId);
-            builder.Entity<Advancement>().HasMany(x => x.Discounts).WithOne(x => x.Advancement).HasForeignKey(x => x.AdvancementId);
 
             builder.Entity<AdvancementHistory>().HasKey(x => x.Id);
             builder.Entity<AdvancementHistory>().Property(x => x.Comment).HasMaxLength(400);
@@ -28,6 +27,7 @@ namespace Sofco.DAL.Mappings.AdvancementAndRefund
             builder.Entity<AdvancementHistory>().HasOne(x => x.Advancement).WithMany(x => x.Histories).HasForeignKey(x => x.AdvancementId);
 
             builder.Entity<SalaryDiscount>().HasKey(t => t.Id);
+            builder.Entity<SalaryDiscount>().HasOne(x => x.Employee).WithMany(x => x.SalaryDiscounts).HasForeignKey(x => x.EmployeeId);
         }
     }
 }

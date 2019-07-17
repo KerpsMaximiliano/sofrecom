@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Core.Services.AdvancementAndRefund;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.AdvancementAndRefund
@@ -25,18 +29,21 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             return this.CreateResponse(response);
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] SalaryDiscountAddModel model)
+        [HttpPost("import")]
+        public IActionResult Import(int analyticId)
         {
-            var response = advancementService.Add(model);
+            var response = new Response();
 
-            return this.CreateResponse(response);
-        }
+            if (Request.Form.Files.Any())
+            {
+                var file = Request.Form.Files.First();
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var response = advancementService.Delete(id);
+                advancementService.Import(file, response);
+            }
+            else
+            {
+                response.AddError(Resources.Common.FileMustBeIncluded);
+            }
 
             return this.CreateResponse(response);
         }
