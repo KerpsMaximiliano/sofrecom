@@ -41,7 +41,7 @@ table {
     color: #ffffff;
   }
   
-  .label-cant-resources {
+  .label-success {
     background-color: #39e1bf;
     color: #ffffff;
   }
@@ -51,7 +51,7 @@ table {
     color: #5E5E5E;
   }
   
-  .label-load {
+  .label-budget {
     background-color: #b3ffd9;
     color: #5E5E5E;
   }
@@ -74,14 +74,14 @@ table {
     cursor: not-allowed;
   }
   
-  .static {
-    position: absolute;
-    background-color: white;
-  }
+  // .static {
+  //   position: absolute;
+  //   background-color: white;
+  // }
   
-  .first-col {
-    padding-left: 276px!important;
+  // .first-col {
+  //   padding-left: 276px!important;
 
-    font-size: 13px;
-    color: #676a6c;
-  }
+  //   font-size: 13px;
+  //   color: #676a6c;
+  // }

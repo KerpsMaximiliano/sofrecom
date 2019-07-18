@@ -10,160 +10,167 @@
             <thead>
                 <tr>
                     <th class="static first-column" scope="col">Meses</th>
-                    <th class="text-center headcol"
-                        *ngFor="let month of months | fromDateFilter: fromMonth; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">{{ month.display }}</th>
+                    <ng-template ngFor let-item [ngForOf]="months" let-i="index" let-isFirst="first">
+                        <th class="text-center headcol" [ngClass]="{'first-col': isFirst}">
+                            {{ item.display }}
+                        </th>
+                        <th class="text-center headcol">
+
+                        </th>
+                        <th class="text-center headcol">
+
+                        </th>
+                        <th class="text-center headcol">
+
+                        </th>
+                    </ng-template>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <th class="static first-column" scope="col">PRESUPUESTO</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
+                    <th class="static first-column" scope="col"></th>
+                    <!-- <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
                         [ngClass]="{'first-col': isFirst}">
                         <label class="label label-info">
-                            <!-- {{ calculateTotalCosts(month) | amountFormat }} -->
                             0,00
                         </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="static first-column" scope="col">REAL</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label label-success">
-                            <!-- {{ calculateTotalCosts(month) | amountFormat }} -->
-                            0,00
-                        </label>
-                    </td>
+                    </td> -->
+                    <ng-template ngFor let-item [ngForOf]="months" let-i="index">
+                        <td class="text-center">
+                            <strong>PRESUPUESTO</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>PFA1</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>PFA2</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>REAL</strong>
+                        </td>
+                    </ng-template>
                 </tr>
                 <tr>
                     <th class="static first-column" scope="col">Total de Gastos</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label label-total">
-                            <!-- {{ calculateTotalCosts(month) | amountFormat }} -->
-                            0,00
-                        </label>
-                    </td>
+                    <ng-template ngFor let-month [ngForOf]="months" let-i="index">
+                        <td [ngClass]="{'first-col': isFirst}">
+                            <label class="label label-total">
+                                {{ calculateTotalCosts(month, 'budget') | amountFormat }}
+                            </label>
+                        </td>
+                        <td>
+                            <label class="label label-total">
+                                {{ calculateTotalCosts(month, 'pfa1') | amountFormat }}
+                            </label>
+                        </td>
+                        <td>
+                            <label class="label label-total">
+                               {{ calculateTotalCosts(month, 'pfa2') | amountFormat }} 
+                            </label>
+                        </td>
+                        <td>
+                            <label class="label label-total">
+                                 {{ calculateTotalCosts(month, 'real') | amountFormat }}
+                            </label>
+                        </td>
+                    </ng-template>
                 </tr>
 
-                <tr>
-                    <th class="static first-column" scope="col">SUELDOS</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label label-salary">
-                            <!-- {{ calculateAllSalary(month) | amountFormat }} -->
-                            0,00
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="static first-column" scope="col">Sueldos - Honorarios - Pasantias</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label">
-                            0,00
-                        </label>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th class="static first-column" scope="col">VIATICOS</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label label-salary">
-                            <!-- {{ calculateAllSalary(month) | amountFormat }} -->
-                            0,00
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="static first-column" scope="col">Viajes y Traslados</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label">
-                            0,00
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="static first-column" scope="col">Taxi, peaje y estacionamiento</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label">
-                            0,00
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="static first-column" scope="col">Recepciones</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label">
-                            0,00
-                        </label>
-                    </td>
+                <tr *ngFor="let category of categories">
+                    <th class="static first-column" scope="col">{{category.name}}</th>
+                    <ng-template ngFor let-month [ngForOf]="category.months" let-i="index">
+                        <td [ngClass]="{'first-col': isFirst}">
+                            <label class="label label-budget" (click)="openEditItemModal(category, 'budget', month, i)">
+                                {{ month.budget }}
+                            </label>
+                        </td>
+                        <td>
+                            <label class="label" [ngClass]="month.pfa1 <=  month.real ? 'label-success' : 'label-danger'" (click)="openEditItemModal(category,'pfa1', month, i)">
+                                {{ month.pfa1 }}
+                            </label>
+                        </td>
+                        <td>
+                            <label class="label"  [ngClass]="month.pfa2 <=  month.real ? 'label-success' : 'label-danger'" (click)="openEditItemModal(category, 'pfa2', month, i)">
+                                {{ month.pfa2 }}
+                            </label>
+                        </td>
+                        <td>
+                            <label class="label"  [ngClass]="month.real <=  month.budget ? 'label-success' : 'label-danger'" (click)="openEditItemModal(category, 'real', month, i)">
+                                {{ month.real }}
+                            </label>
+                        </td>
+                    </ng-template>
                 </tr>
 
-                <tr>
-                    <th class="static first-column" scope="col">GASTOS VEHICULOS</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label label-salary">
-                            <!-- {{ calculateAllSalary(month) | amountFormat }} -->
-                            0,00
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="static first-column" scope="col">Amortizacion Rodados</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label">
-                            0,00
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th class="static first-column" scope="col">Combustible</th>
-                    <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
-                        [ngClass]="{'first-col': isFirst}">
-                        <label class="label">
-                            0,00
-                        </label>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
 
-    <br>
-    <!-- <div class="row" *ngIf="otherResources.length > 0 && !readOnly">
-        <div class="col-sm-5">
-            <div class="form-group">
-                <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
-                    (change)="otherResourceChange()" [clearable]="false">
-                </ng-select>
-            </div>
-        </div>
-        <div class="col-sm-5" *ngIf="showUsers">
-            <div class="form-group">
-                <ng-select [items]="users" bindLabel="text" [(ngModel)]="userSelected">
-                </ng-select>
-            </div>
-        </div>
-        <div class="col-sm-5" *ngIf="showProfiles">
-            <div class="form-group">
-                <ng-select [items]="profiles" bindLabel="text" [(ngModel)]="profileSelected">
-                </ng-select>
-            </div>
-        </div>
-        <div class="col-md-2" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
-            <button class="btn btn-success btn-md" type="button" (click)="addOtherCost()">
-                Agregar
-                <i class="fa fa-plus"></i></button>
-        </div>
-
-    </div> -->
-
 </div>
+
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateItem()">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <fieldset>
+                    <div class="col-sm-4">
+                        <label class="control-label" for="readOnlyInput">Mes</label>
+                        <input class="form-control" id="readOnlyInput" type="text"
+                            placeholder="{{ monthSelected.display }}" readonly="">
+                    </div>
+                    <div class="col-sm-8">
+                        <label class="control-label" for="readOnlyInput">Categoria</label>
+                        <input class="form-control" id="readOnlyInput" type="text"
+                            placeholder="{{ categorySelected.name }}" readonly="">
+                    </div>
+                </fieldset>
+            </div>
+
+            <div>
+                <div class="row border-bottom m-b-sm">
+                    <div class="col-sm-5">
+                        <h4>SubCategoria</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <h4>Descripción</h4>
+                    </div>
+                    <div class="col-sm-2">
+                        <h4>Monto</h4>
+                    </div>
+                </div>
+
+                <div class="row m-t-xs" *ngFor="let cost of monthSelected.subCategories; let i = index">
+                    <div class="col-sm-5">
+                        {{ cost.nameSubCategory }}
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="number" decimalFormat class="form-control input-xs" [digitLimit]="8"
+                            [(ngModel)]="cost.value" max="99999999" min="0">
+                    </div>
+                </div>
+                <div class="row">
+                    <br>
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <ng-select [items]="subCategoriesFiltered" bindLabel="name"
+                                [(ngModel)]="subCategorySelected" [clearable]="false">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-success btn-sm m-t-xs" (click)="addCostByMonth()" type="button">
+                            Agregar
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</ng2-modal>
