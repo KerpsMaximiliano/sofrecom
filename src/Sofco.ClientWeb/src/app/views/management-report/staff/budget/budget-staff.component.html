@@ -55,22 +55,22 @@
                     <ng-template ngFor let-month [ngForOf]="months" let-i="index">
                         <td [ngClass]="{'first-col': isFirst}">
                             <label class="label label-total">
-                                {{ calculateTotalCosts(month, 'budget') | amountFormat }}
+                                {{ month.totalBudget }}
                             </label>
                         </td>
                         <td>
                             <label class="label label-total">
-                                {{ calculateTotalCosts(month, 'pfa1') | amountFormat }}
+                                {{ month.totalPfa1 }}
                             </label>
                         </td>
                         <td>
                             <label class="label label-total">
-                               {{ calculateTotalCosts(month, 'pfa2') | amountFormat }} 
+                                {{ month.totalPfa2 }}
                             </label>
                         </td>
                         <td>
                             <label class="label label-total">
-                                 {{ calculateTotalCosts(month, 'real') | amountFormat }}
+                                {{ month.totalReal }}
                             </label>
                         </td>
                     </ng-template>
@@ -85,17 +85,23 @@
                             </label>
                         </td>
                         <td>
-                            <label class="label" [ngClass]="month.pfa1 <=  month.real ? 'label-success' : 'label-danger'" (click)="openEditItemModal(category,'pfa1', month, i)">
+                            <label class="label"
+                                [ngClass]="month.pfa1 <=  month.real ? 'label-success' : 'label-danger'"
+                                (click)="openEditItemModal(category,'pfa1', month, i)">
                                 {{ month.pfa1 }}
                             </label>
                         </td>
                         <td>
-                            <label class="label"  [ngClass]="month.pfa2 <=  month.real ? 'label-success' : 'label-danger'" (click)="openEditItemModal(category, 'pfa2', month, i)">
+                            <label class="label"
+                                [ngClass]="month.pfa2 <=  month.real ? 'label-success' : 'label-danger'"
+                                (click)="openEditItemModal(category, 'pfa2', month, i)">
                                 {{ month.pfa2 }}
                             </label>
                         </td>
                         <td>
-                            <label class="label"  [ngClass]="month.real <=  month.budget ? 'label-success' : 'label-danger'" (click)="openEditItemModal(category, 'real', month, i)">
+                            <label class="label"
+                                [ngClass]="month.real <=  month.budget ? 'label-success' : 'label-danger'"
+                                (click)="openEditItemModal(category, 'real', month, i)">
                                 {{ month.real }}
                             </label>
                         </td>

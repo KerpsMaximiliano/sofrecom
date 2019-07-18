@@ -5,6 +5,8 @@ import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
 import { FormControl, Validators } from "@angular/forms";
+import { months } from "moment";
+import { DebugContext } from "@angular/core/src/view";
 
 @Component({
     selector: 'budget-staff',
@@ -42,31 +44,59 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.months = [
             {
                 display: "May. 2019",
-                monthYear: "2019-05-01"
+                monthYear: "2019-05-01",
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Jun. 2019",
-                monthYear: "2019-06-01"
+                monthYear: "2019-06-01",
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Jul. 2019",
-                monthYear: "2019-07-01"
+                monthYear: "2019-07-01",
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Ago. 2019",
-                monthYear: "2019-08-01"
+                monthYear: "2019-08-01",
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Sep. 2019",
-                monthYear: "2019-09-01"
+                monthYear: "2019-09-01",
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Oct. 2019",
-                monthYear: "2019-10-01"
+                monthYear: "2019-10-01",
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Nov. 2019",
-                monthYear: "2019-11-01"
+                monthYear: "2019-11-01",
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
         ]
 
@@ -1011,6 +1041,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         this.subCategoriesFiltered = this.subCategories
 
+
+        this.calculateTotalCosts()
     }
 
     ngOnDestroy(): void {
@@ -1024,13 +1056,14 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         if (month.closed) return;
 
         this.categorySelected = category
-       //this.subCategorySelected = 
-        this.subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
-         if (this.subCategoriesFiltered.length > 0) {
-             this.subCategorySelected = this.subCategoriesFiltered[0];
-         }
         this.monthSelected = month;
         this.typeBudget = typeBudget
+
+        this.subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
+        if (this.subCategoriesFiltered.length > 0) {
+            this.subCategorySelected = this.subCategoriesFiltered[0];
+        }
+
         this.editItemModal.show();
     }
 
@@ -1052,6 +1085,21 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     updateItem() {
+
+        switch (this.typeBudget) {
+            case 'budget':
+                this.monthSelected.budget = 0
+                break;
+            case 'pfa1':
+                this.monthSelected.pfa1 = 0
+                break;
+            case 'pfa2':
+                this.monthSelected.pfa2 = 0
+                break;
+            case 'real':
+                this.monthSelected.real = 0
+                break;
+        }
 
         this.monthSelected.subCategories.forEach(cost => {
             switch (this.typeBudget) {
@@ -1075,41 +1123,44 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         //this.monthSelected.subCategories = this.costByMonth
 
+        this.calculateTotalCosts()
         this.editItemModal.hide()
     }
 
-    calculateTotalCosts(month, typeBudget) {
-        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
-        var totalCost = 0;
 
-        this.categories.forEach(category => {
-            switch (typeBudget) {
-                case 'budget':
-                    if (category.months[index].budget) {
-                        totalCost += category.months[index].budget;
-                    }
-                    break;
-                case 'pfa1':
-                    if (category.months[index].pfa1) {
-                        totalCost += category.months[index].budget;
-                    }
-                    break;
-                case 'pfa2':
-                    if (category.months[index].pfa2) {
-                        totalCost += category.months[index].budget;
-                    }
-                    break;
-                case 'real':
-                    if (category.months[index].real) {
-                        totalCost += category.months[index].budget;
-                    }
-                    break;
 
-                default:
-                    break;
-            }
-        });
+    calculateTotalCosts() {
 
-        return totalCost
+        this.months.forEach(month => {
+
+            let index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
+            var totalCostBugdet = 0;
+            var totalCostPfa1 = 0;
+            var totalCostPfa2 = 0;
+            var totalCostReal = 0;
+
+            this.categories.forEach(category => {
+                if (category.months[index].budget) {
+                    totalCostBugdet += category.months[index].budget;
+                }
+                if (category.months[index].pfa1) {
+                    totalCostPfa1 += category.months[index].pfa1;
+                }
+                if (category.months[index].pfa2) {
+                    totalCostPfa2 += category.months[index].pfa2;
+                }
+                if (category.months[index].real) {
+                    totalCostReal += category.months[index].real;
+                }
+            });
+
+            debugger
+
+            month.totalBudget = totalCostBugdet
+            month.totalCostPfa1 = totalCostPfa1
+            month.totalCostPfa2 = totalCostPfa2
+            month.totalReal = totalCostReal
+        })
+
     }
 }
