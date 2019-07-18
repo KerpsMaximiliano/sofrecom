@@ -300,8 +300,8 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
                 var costEmployee = {
                     id: 0,
                     costDetailId: 0,
-                    employeeId: this.userSelected.employeeNumber,
-                    userId: this.userSelected.id,
+                    employeeId: this.userSelected.id,
+                    userId: this.userSelected.userId,
                     name: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
                     salary: 0,
                     charges: 0,
