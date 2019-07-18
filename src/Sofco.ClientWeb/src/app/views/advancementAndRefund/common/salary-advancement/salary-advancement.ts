@@ -3,7 +3,9 @@ import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { SalaryAdvancementService } from "app/services/advancement-and-refund/salary-advancement";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { FileUploader } from "ng2-file-upload";
+import { Cookie } from "ng2-cookies/ng2-cookies";
+import { AuthService } from "app/services/common/auth.service";
 
 @Component({
     selector: 'salary-advancement',
@@ -11,40 +13,24 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 })
 export class SalaryAdvancementComponent implements OnInit, OnDestroy  {
     public model: any[] = new Array();
-    public advancementSelecteds: any[] = new Array();
-
-    date: Date;
-    amount: number;
-
-    userIdSelected: number;
-    itemSelected: any;
 
     getSubscrip: Subscription;
-    updateSubscrip: Subscription;
-    deleteSubscrip: Subscription;
 
-    @ViewChild('addModal') addModal;
-    public addModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "advancement.salaryDiscountAdd",
-        "addModal",
-        true,
-        true,
-        "ACTIONS.save",
-        "ACTIONS.cancel"
-    );
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({url:""});
 
     constructor(private messageService: MessageService,
                 private datatableService: DataTableService,
+                private authService: AuthService,
                 private salaryAdvancementService: SalaryAdvancementService){}
 
     ngOnInit(): void {
         this.getData();
+        this.uploaderConfig();
     }
 
     ngOnDestroy(): void {
         if(this.getSubscrip) this.getSubscrip.unsubscribe();
-        if(this.updateSubscrip) this.updateSubscrip.unsubscribe();
-        if(this.deleteSubscrip) this.deleteSubscrip.unsubscribe();
     }
 
     getData(){
@@ -53,18 +39,6 @@ export class SalaryAdvancementComponent implements OnInit, OnDestroy  {
         this.getSubscrip = this.salaryAdvancementService.get().subscribe(response => {
             this.messageService.closeLoading();
             this.model = response.data;
-
-            if(this.userIdSelected){
-                var row = this.model.find(x => x.userId == this.userIdSelected);
-
-                if(row != null){
-                    this.advancementSelecteds = row.advancements;
-                }
-                else{
-                    this.userIdSelected = null;
-                    this.advancementSelecteds = null;
-                }
-            }
 
             this.initGrid();
         },
@@ -86,38 +60,48 @@ export class SalaryAdvancementComponent implements OnInit, OnDestroy  {
         this.datatableService.initialize(params);
     }
 
-    selectItem(item){
-        this.userIdSelected = item.userId;
-        this.advancementSelecteds = item.advancements;
-    }
+    
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.salaryAdvancementService.getUrlForImportFile(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+            maxFileSize: 50*1024*1024,
+            allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+          });
 
-    openModal(item){
-        this.itemSelected = item;
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
 
-        this.addModal.show();
-    }
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
 
-    save(){
-        var json = {
-            AdvancementId: this.itemSelected.advancementId,
-            date: this.date,
-            amount: this.amount
-        }
+                return;
+            }
 
-        this.updateSubscrip = this.salaryAdvancementService.add(json).subscribe(response => {
-            this.addModal.hide();
-            this.itemSelected = null;
+            var dataJson = JSON.parse(response);
+
             this.getData();
-        },
-        () => this.addModal.resetButtons());
+
+            if(dataJson.messages){
+                this.messageService.showMessages(dataJson.messages);
+            }
+
+            this.clearSelectedFile();
+        };
+
+        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     }
 
-    delete(discount){
-        this.messageService.showConfirm(() => {
-
-            this.updateSubscrip = this.salaryAdvancementService.delete(discount.id).subscribe(response => {
-                this.getData();
-            });
-        });
-    }
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
+    } 
 }

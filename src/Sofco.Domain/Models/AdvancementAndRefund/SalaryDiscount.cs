@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Domain.Models.AdvancementAndRefund
 {
@@ -10,8 +9,8 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
 
         public DateTime Date { get; set; }
 
-        public int AdvancementId { get; set; }
+        public int EmployeeId { get; set; }
 
-        public Advancement Advancement { get; set; }
+        public Employee Employee { get; set; }
     }
 }

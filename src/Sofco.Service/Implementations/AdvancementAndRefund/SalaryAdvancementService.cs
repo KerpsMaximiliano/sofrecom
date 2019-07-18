@@ -8,8 +8,10 @@ using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Sofco.Domain.Models.AdvancementAndRefund;
+using Microsoft.AspNetCore.Http;
+using Sofco.Core.FileManager;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
 {
@@ -19,14 +21,17 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly ILogMailer<SalaryAdvancementService> logger;
         private readonly IAdvancemenValidation validation;
         private readonly AppSetting settings;
+        private readonly ISalaryAdvancementFileManager salaryAdvancementFileManager;
 
         public SalaryAdvancementService(IUnitOfWork unitOfWork,
             ILogMailer<SalaryAdvancementService> logger,
             IAdvancemenValidation validation,
+            ISalaryAdvancementFileManager salaryAdvancementFileManager,
             IOptions<AppSetting> settingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.salaryAdvancementFileManager = salaryAdvancementFileManager;
             this.validation = validation;
             this.settings = settingOptions.Value;
         }
@@ -47,138 +52,41 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                     model.UserId = advancement.UserApplicantId;
                     model.UserName = advancement.UserApplicant.Name;
+                    model.Email = advancement.UserApplicant.Email;
                     model.TotalAmount = advancement.Ammount;
-                    model.DiscountedAmount = advancement.Discounts.Sum(x => x.Amount);
-                    model.Advancements = new List<SalaryAdvancementModelItem>();
-
-                    model.Advancements.Add(new SalaryAdvancementModelItem
-                    {
-                        AdvancementId = advancement.Id,
-                        ReturnForm = advancement.AdvancementReturnForm,
-                        Total = advancement.Ammount,
-                        Discounts = advancement.Discounts.Select(s => new SalaryDiscountModel
-                        {
-                            Date = s.Date,
-                            Id = s.Id,
-                            Amount = s.Amount
-                        }).ToList()
-
-                    });
 
                     response.Data.Add(model);
                 }
                 else
                 {
                     modelExist.TotalAmount += advancement.Ammount;
-                    modelExist.DiscountedAmount += advancement.Discounts.Sum(x => x.Amount);
-
-                    if(modelExist.Advancements == null) modelExist.Advancements = new List<SalaryAdvancementModelItem>();
-
-                    modelExist.Advancements.Add(new SalaryAdvancementModelItem
-                    {
-                        AdvancementId = advancement.Id,
-                        ReturnForm = advancement.AdvancementReturnForm,
-                        Total = advancement.Ammount,
-                        Discounts = advancement.Discounts.Select(s => new SalaryDiscountModel
-                        {
-                            Date = s.Date,
-                            Id = s.Id,
-                            Amount = s.Amount
-                        }).ToList()
-
-                    });
                 }
             }
 
-            return response;
-        }
-
-        public Response<SalaryDiscountModel> Add(SalaryDiscountAddModel model)
-        {
-            var response = new Response<SalaryDiscountModel>();
-
-            if(!model.Date.HasValue)
-                response.AddError(Resources.AdvancementAndRefund.Advancement.SalaryDateRequired);
-
-            if(!model.Amount.HasValue || model.Amount < 0)
-                response.AddError(Resources.AdvancementAndRefund.Advancement.SalaryAmountRequired);
-
-            var advancement = unitOfWork.AdvancementRepository.GetWithDiscounts(model.AdvancementId);
-
-            if(advancement == null)
-                response.AddError(Resources.AdvancementAndRefund.Advancement.NotFound);
-
-            if (response.HasErrors()) return response;
-
-            var discount = model.Amount.GetValueOrDefault();
-
-            if (advancement.Discounts != null && advancement.Discounts.Any())
+            foreach (var model in response.Data)
             {
-                discount += advancement.Discounts.Sum(x => x.Amount);
-            }
+                var employee = unitOfWork.EmployeeRepository.GetByEmailWithDiscounts(model.Email);
 
-            if (advancement.Ammount < discount)
-            {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.SalaryAmountGreaterThanTotalAdvancement);
-                return response;
-            }
-
-            try
-            {
-                var domain = new SalaryDiscount
-                {
-                    Date = model.Date.GetValueOrDefault().Date,
-                    Amount = model.Amount.GetValueOrDefault(),
-                    AdvancementId = model.AdvancementId
-                };
-
-                unitOfWork.AdvancementRepository.AddSalaryDiscount(domain);
-                unitOfWork.Save();
-
-                response.AddSuccess(Resources.AdvancementAndRefund.Advancement.SalaryAdvancementAdded);
-
-                response.Data = new SalaryDiscountModel
-                {
-                    Id = domain.Id,
-                    Date = domain.Date,
-                    Amount = domain.Amount
-                };
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
+                model.DiscountedAmount = employee.SalaryDiscounts.Sum(x => x.Amount);
             }
 
             return response;
         }
 
-        public Response Delete(int id)
+        public void Import(IFormFile file, Response response)
         {
-            var response = new Response();
-
-            var salaryDiscount = unitOfWork.AdvancementRepository.GetSalaryDiscount(id);
-
-            if (salaryDiscount == null)
-            {
-                response.AddError(Resources.AdvancementAndRefund.Advancement.SalaryDiscountNotFound);
-                return response;
-            }
-
             try
             {
-                unitOfWork.AdvancementRepository.DeleteSalaryDiscount(salaryDiscount);
-                unitOfWork.Save();
+                var memoryStream = new MemoryStream();
+                file.CopyTo(memoryStream);
 
-                response.AddSuccess(Resources.AdvancementAndRefund.Advancement.SalaryAdvancementDeleted);
+                salaryAdvancementFileManager.Import(memoryStream);
             }
             catch (Exception e)
             {
                 logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
+                response.AddError(Resources.Common.SaveFileError);
             }
-
-            return response;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Domain.Utils;
 
@@ -8,8 +9,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
     {
         Response<IList<SalaryAdvancementModel>> Get();
 
-        Response<SalaryDiscountModel> Add(SalaryDiscountAddModel model);
-
-        Response Delete(int id);
+        void Import(IFormFile file, Response response);
     }
 }

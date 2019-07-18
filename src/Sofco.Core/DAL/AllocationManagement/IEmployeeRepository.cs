@@ -63,5 +63,7 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         IList<Tuple<int, string>> GetIdAndEmployeeNumber(int year, int month);
         Employee GetWithSocialCharges(int employeeId);
+
+        Employee GetByEmailWithDiscounts(string modelEmail);
     }
 }

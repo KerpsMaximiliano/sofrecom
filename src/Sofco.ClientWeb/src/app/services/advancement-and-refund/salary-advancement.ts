@@ -21,4 +21,8 @@ export class SalaryAdvancementService {
     delete(id): any {
         return this.http.delete<any>(`${this.baseUrl}/salaryAdvancement/${id}`);
     }
+
+    getUrlForImportFile(){
+        return `${this.baseUrl}/salaryAdvancement/import`;
+    }
 }

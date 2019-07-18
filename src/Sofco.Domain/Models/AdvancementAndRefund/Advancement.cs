@@ -35,7 +35,5 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
 
         public int WorkflowId { get; set; }
         public Workflow.Workflow Workflow { get; set; }
-
-        public IList<SalaryDiscount> Discounts { get; set; }
     }
 }

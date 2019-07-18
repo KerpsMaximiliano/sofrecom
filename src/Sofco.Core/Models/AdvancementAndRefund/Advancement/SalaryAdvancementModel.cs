@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
+﻿namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 {
     public class SalaryAdvancementModel
     {
@@ -15,35 +12,6 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
 
         public decimal DiscountedAmount { get; set; }
 
-        public IList<SalaryAdvancementModelItem> Advancements { get; set; }
-    }
-
-    public class SalaryAdvancementModelItem
-    {
-        public int AdvancementId { get; set; }
-
-        public string ReturnForm { get; set; }
-
-        public IList<SalaryDiscountModel> Discounts { get; set; }
-
-        public decimal Total { get; set; }
-    }
-
-    public class SalaryDiscountModel
-    {
-        public int Id { get; set; }
-
-        public DateTime Date { get; set; }
-
-        public decimal Amount { get; set; }
-    }
-
-    public class SalaryDiscountAddModel
-    {
-        public int AdvancementId { get; set; }
-
-        public DateTime? Date { get; set; }
-
-        public decimal? Amount { get; set; }
+        public string Email { get; set; }
     }
 }
