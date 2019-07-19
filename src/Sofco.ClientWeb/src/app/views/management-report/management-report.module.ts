@@ -33,12 +33,14 @@ import { ManagementReportStaffService } from "app/services/management-report/man
 import { ManagementReportDetailStaffComponent } from "./staff/detail/detail-staff";
 import { BudgetStaffComponent } from "./staff/budget/budget-staff.component";
 import { CostDetailMonthStaffComponent } from "./staff/cost-month-staff/cost-month-staff";
+import { TracingStaffComponent } from "./staff/tracing/tracing-staff.component";
 
 
 @NgModule({
     declarations: [
       ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent, 
-      CostDetailMonthComponent, ModalEvalPropComponent, TracingComponent, ManagementReportDetailStaffComponent, CostDetailMonthStaffComponent, BudgetStaffComponent
+      CostDetailMonthComponent, ModalEvalPropComponent, TracingComponent, ManagementReportDetailStaffComponent, CostDetailMonthStaffComponent, 
+      BudgetStaffComponent, TracingStaffComponent
     ],
     imports: [
       CommonModule,

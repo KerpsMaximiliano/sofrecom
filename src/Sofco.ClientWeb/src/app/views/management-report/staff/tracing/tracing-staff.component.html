@@ -1,0 +1,156 @@
+<div class="alert alert-gaps-info" *ngIf="months.length == 0">
+    <i class="fa fa-warning"></i>
+    Sin información disponible para esta tabla
+</div>
+
+<div *ngIf="months.length > 0">
+    <div class="table-responsive billing-table">
+        <table class="table dataTable" role="grid">
+            <thead>
+                <tr>
+                    <th class="static first-column" scope="col"></th>
+                    <th class="info first-col text-center" style="width: 700px" colspan="7">Mensual</th>
+                    <th class="warning text-center" style="width: 700px" colspan="7">Acumulado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="static first-column" scope="col"></th>
+
+                    <td class="first-col text-center">
+                        <strong>PRESUPUESTO</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>PFA1</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>PFA2</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>REAL</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>Desvio PRES</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>Desvio PFA1</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>Desvio PFA2</strong>
+                    </td>
+
+                    <td class="text-center">
+                        <strong>PRESUPUESTO</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>PFA1</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>PFA2</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>REAL</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>Desvio PRES</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>Desvio PFA1</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>Desvio PFA2</strong>
+                    </td>
+                </tr>
+                <tr *ngFor="let month of accumulatedMonths">
+                    <th class="static first-column" scope="col">
+                        {{ month.display }}
+                    </th>
+
+                    <td class="first-col">
+                        <label class="label label-total">
+                            {{ month.totalBudget }}
+                        </label>
+                    </td>
+                    <td>
+                        <label class="label label-total">
+                            {{ month.totalPfa1 }}
+                        </label>
+                    </td>
+                    <td>
+                        <label class="label label-total">
+                            {{ month.totalPfa2 }}
+                        </label>
+                    </td>
+                    <td>
+                        <label class="label label-total">
+                            {{ month.totalReal }}
+                        </label>
+                    </td>
+                    <td class="text-center">
+                        <span>
+                            <i class="fa fa-3x"
+                                [ngClass]="month.totalReal <= month.totalBudget ? 'fa-caret-up' : 'fa-caret-down'"
+                                aria-hidden="true"></i>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span>
+                            <i class="fa fa-3x"
+                                [ngClass]="month.totalReal <= month.totalPfa1 ? 'fa-caret-up' : 'fa-caret-down'"
+                                aria-hidden="true"></i>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span>
+                            <i class="fa fa-3x"
+                                [ngClass]="month.totalReal <= month.totalPfa2 ? 'fa-caret-up' : 'fa-caret-down'"
+                                aria-hidden="true"></i>
+                        </span>
+                    </td>
+                    <td>
+                        <label class="label label-total">
+                            {{ month.acomulatedBudget }}
+                        </label>
+                    </td>
+                    <td>
+                        <label class="label label-total">
+                            {{ month.acomulatedPfa1 }}
+                        </label>
+                    </td>
+                    <td>
+                        <label class="label label-total">
+                            {{ month.acomulatedPfa2 }}
+                        </label>
+                    </td>
+                    <td>
+                        <label class="label label-total">
+                            {{ month.acomulatedReal }}
+                        </label>
+                    </td>
+                    <td class="text-center">
+                        <span>
+                            <i class="fa fa-3x"
+                                [ngClass]="month.acomulatedReal <= month.acomulatedBudget ? 'fa-caret-up' : 'fa-caret-down'"
+                                aria-hidden="true"></i>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span>
+                            <i class="fa fa-3x"
+                                [ngClass]="month.acomulatedReal <= month.acomulatedPfa1 ? 'fa-caret-up' : 'fa-caret-down'"
+                                aria-hidden="true"></i>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span>
+                            <i class="fa fa-3x"
+                                [ngClass]="month.acomulatedReal <= month.acomulatedPfa2 ? 'fa-caret-up' : 'fa-caret-down'"
+                                aria-hidden="true"></i>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

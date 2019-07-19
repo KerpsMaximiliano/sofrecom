@@ -41,6 +41,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
+        this.editItemModal.size = 'modal-lg'
+
         this.months = [
             {
                 display: "May. 2019",
@@ -1042,7 +1044,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.subCategoriesFiltered = this.subCategories
 
 
-        this.calculateTotalCosts()
+        //this.calculateTotalCosts()
     }
 
     ngOnDestroy(): void {
@@ -1065,6 +1067,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
 
         this.editItemModal.show();
+        this.fillSubCategories()
     }
 
     addCostByMonth() {
@@ -1123,43 +1126,68 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         //this.monthSelected.subCategories = this.costByMonth
 
-        this.calculateTotalCosts()
+        this.calculateTotalCosts(this.monthSelected)
         this.editItemModal.hide()
     }
 
+    calculateTotalCosts(month) {
 
+        //  this.months.forEach(month => {
 
-    calculateTotalCosts() {
+        let index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
+        let monthTotal = this.months.find(m => m.monthYear === month.monthYear)
+        var totalCostBugdet = 0;
+        var totalCostPfa1 = 0;
+        var totalCostPfa2 = 0;
+        var totalCostReal = 0;
+        debugger
 
-        this.months.forEach(month => {
+        this.categories.forEach(category => {
+            if (category.months[index].budget) {
+                totalCostBugdet += category.months[index].budget;
+            }
+            if (category.months[index].pfa1) {
+                totalCostPfa1 += category.months[index].pfa1;
+            }
+            if (category.months[index].pfa2) {
+                totalCostPfa2 += category.months[index].pfa2;
+            }
+            if (category.months[index].real) {
+                totalCostReal += category.months[index].real;
+            }
+        });
 
-            let index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
-            var totalCostBugdet = 0;
-            var totalCostPfa1 = 0;
-            var totalCostPfa2 = 0;
-            var totalCostReal = 0;
+        monthTotal.totalBudget = totalCostBugdet
+        monthTotal.totalPfa1 = totalCostPfa1
+        monthTotal.totalPfa2 = totalCostPfa2
+        monthTotal.totalReal = totalCostReal
+        // })
+    }
 
-            this.categories.forEach(category => {
-                if (category.months[index].budget) {
-                    totalCostBugdet += category.months[index].budget;
+    fillSubCategories() {
+
+        let subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
+        let index = this.months.findIndex(cost => cost.monthYear === this.monthSelected.monthYear);
+
+        subCategoriesFiltered.forEach(sub => {
+
+            //Si la subcategoria existe no agregarla
+            if (this.categorySelected.months[index].subCategories.findIndex(x => x.idsubCategory == sub.id) == -1) {
+                var cost = {
+                    id: 0,
+                    CostDetailId: 0,
+                    idCategory: this.categorySelected.id,
+                    nameCategory: this.categorySelected.name,
+                    idsubCategory: sub.id,
+                    nameSubCategory: sub.name,
+                    monthYear: this.monthSelected.monthYear,
+                    description: "",
+                    value: 0,
+                    typeBudget: this.typeBudget
                 }
-                if (category.months[index].pfa1) {
-                    totalCostPfa1 += category.months[index].pfa1;
-                }
-                if (category.months[index].pfa2) {
-                    totalCostPfa2 += category.months[index].pfa2;
-                }
-                if (category.months[index].real) {
-                    totalCostReal += category.months[index].real;
-                }
-            });
 
-            debugger
-
-            month.totalBudget = totalCostBugdet
-            month.totalCostPfa1 = totalCostPfa1
-            month.totalCostPfa2 = totalCostPfa2
-            month.totalReal = totalCostReal
+                this.monthSelected.subCategories.push(cost)
+            }
         })
 
     }

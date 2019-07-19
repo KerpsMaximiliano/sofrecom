@@ -1,0 +1,39 @@
+table {
+  table-layout: fixed;
+  width: max-content;
+  font-size: 11px;
+  padding-bottom: 10px;
+}
+
+// th,
+td {
+  width: 100px !important;
+}
+
+td {
+  padding: 4px !important;
+}
+
+.first-column {
+  width: 80px;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  min-height: 17px;
+  min-height: 25px;
+  padding-top: 7px;
+  background-color: #b3ffd9;
+}
+
+.fa.fa-caret-up {
+  color: #3c763d !important;
+}
+
+.fa.fa-caret-down {
+  color: #dc3545 !important;
+}
+
+
+
