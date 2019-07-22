@@ -1,16 +1,17 @@
 table {
-  table-layout: fixed;
+  // table-layout: fixed;
   width: max-content;
   font-size: 11px;
   padding-bottom: 10px;
 }
 
-// th,
-td {
-  width: 100px !important;
+td.budget {
+   width: 100px !important;
+   padding: 4px !important;
 }
 
-td {
+td.desvio {
+  width: 20px !important;
   padding: 4px !important;
 }
 
@@ -34,6 +35,3 @@ td {
 .fa.fa-caret-down {
   color: #dc3545 !important;
 }
-
-
-

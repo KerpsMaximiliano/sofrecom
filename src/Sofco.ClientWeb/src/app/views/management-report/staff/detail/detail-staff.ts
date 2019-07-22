@@ -48,6 +48,8 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     @ViewChild('dateReportEnd') dateReportEnd;
     @ViewChild('editDateModal') editDateModal;
     @ViewChild('costDetailMonth') costDetailMonth;
+    @ViewChild("budget") budgetView;
+    @ViewChild("tracing") tracingView;
 
     public editDateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Editar Fechas",
@@ -365,5 +367,9 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             },
             () => this.messageService.closeLoading());
         });
+    }
+
+    getBudgetData(event){
+        this.tracingView.calculateAccumulated(event.months)
     }
 }

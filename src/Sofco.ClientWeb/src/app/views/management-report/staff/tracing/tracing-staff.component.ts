@@ -26,71 +26,72 @@ export class TracingStaffComponent implements OnInit, OnDestroy {
             {
                 display: "May. 2019",
                 monthYear: "2019-05-01",
-                totalBudget: 100,
-                totalPfa1: 110,
-                totalPfa2: 130,
-                totalReal: 90
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Jun. 2019",
                 monthYear: "2019-06-01",
-                totalBudget: 100,
-                totalPfa1: 110,
-                totalPfa2: 130,
-                totalReal: 120
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Jul. 2019",
                 monthYear: "2019-07-01",
-                totalBudget: 100,
-                totalPfa1: 110,
-                totalPfa2: 130,
-                totalReal: 50
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Ago. 2019",
                 monthYear: "2019-08-01",
-                totalBudget: 100,
-                totalPfa1: 110,
-                totalPfa2: 130,
-                totalReal: 120
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Sep. 2019",
                 monthYear: "2019-09-01",
-                totalBudget: 100,
-                totalPfa1: 110,
-                totalPfa2: 130,
-                totalReal: 100
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Oct. 2019",
                 monthYear: "2019-10-01",
-                totalBudget: 100,
-                totalPfa1: 110,
-                totalPfa2: 130,
-                totalReal: 110
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
             {
                 display: "Nov. 2019",
                 monthYear: "2019-11-01",
-                totalBudget: 100,
-                totalPfa1: 110,
-                totalPfa2: 130,
-                totalReal: 120
+                totalBudget: 0,
+                totalPfa1: 0,
+                totalPfa2: 0,
+                totalReal: 0
             },
         ]
 
-        this.calculateAccumulated()
+        this.calculateAccumulated(this.months)
     }
 
     ngOnDestroy(): void {
     }
    
 
-    calculateAccumulated(){
-        
-        this.months.forEach((month, index) => {
+    calculateAccumulated(months){
+        this.accumulatedMonths = new Array()
+
+        months.forEach((month, index) => {
 
             let acomulatedBudget = 0
             let acomulatedPfa1 = 0
@@ -99,10 +100,10 @@ export class TracingStaffComponent implements OnInit, OnDestroy {
 
             for (let i = 0; i <= index; i++) {
 
-                acomulatedBudget += this.months[i].totalBudget;
-                acomulatedPfa1 += this.months[i].totalPfa1;
-                acomulatedPfa2 += this.months[i].totalPfa2;
-                acomulatedReal += this.months[i].totalReal;
+                acomulatedBudget += months[i].totalBudget;
+                acomulatedPfa1 += months[i].totalPfa1;
+                acomulatedPfa2 += months[i].totalPfa2;
+                acomulatedReal += months[i].totalReal;
             }
 
             var acomulatedMont = {
