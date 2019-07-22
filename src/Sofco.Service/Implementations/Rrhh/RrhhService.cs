@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Sofco.Core.Data.WorktimeManagement;
@@ -98,12 +99,30 @@ namespace Sofco.Service.Implementations.Rrhh
 
                 foreach (var socialCharge in listToAdd)
                 {
-                    socialCharge.Total = socialCharge.Items.Sum(x => x.Value);
+                    var salaryTotal = socialCharge.Items
+                        .Where(x => x.AccountNumber == 641100)
+                        .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
+
+                    var chargesTotal = socialCharge.Items
+                        .Where(x => x.AccountNumber != 641100)
+                        .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
+
+                    socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));
+                    socialCharge.ChargesTotal = CryptographyHelper.Encrypt(chargesTotal.ToString(CultureInfo.InvariantCulture));
                 }
 
                 foreach (var socialCharge in listToUpdate)
                 {
-                    socialCharge.Total = socialCharge.Items.Sum(x => x.Value);
+                    var salaryTotal = socialCharge.Items
+                        .Where(x => x.AccountNumber == 641100)
+                        .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
+
+                    var chargesTotal = socialCharge.Items
+                        .Where(x => x.AccountNumber != 641100)
+                        .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
+
+                    socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));
+                    socialCharge.ChargesTotal = CryptographyHelper.Encrypt(chargesTotal.ToString(CultureInfo.InvariantCulture));
                 }
 
                 try
@@ -136,8 +155,6 @@ namespace Sofco.Service.Implementations.Rrhh
 
             foreach (var data in socialChargesData)
             {
-                if(data.AccountNumber == 641100) continue;
-
                 var employeeSocialCharge =
                     gapsSocialCharge.FirstOrDefault(x => x.Employee.EmployeeNumber == data.EmployeeNumber);
 
@@ -146,10 +163,12 @@ namespace Sofco.Service.Implementations.Rrhh
                     var item = employeeSocialCharge.Items.FirstOrDefault(x => x.AccountNumber == data.AccountNumber);
 
                     if (item != null)
-                    { 
-                        if (item.Value != data.Value)
+                    {
+                        var valueToCompare = Convert.ToDecimal(CryptographyHelper.Decrypt(item.Value));
+
+                        if (valueToCompare != data.Value)
                         {
-                            item.Value = data.Value;
+                            item.Value = CryptographyHelper.Encrypt(data.Value.ToString(CultureInfo.InvariantCulture));
                             listToUpdate.Add(employeeSocialCharge);
                         }
                     }
@@ -159,8 +178,8 @@ namespace Sofco.Service.Implementations.Rrhh
 
                         employeeSocialCharge.Items.Add(new SocialChargeItem
                         {
-                            Value = data.Value,
-                            AccountName = data.AccountName,
+                            Value = CryptographyHelper.Encrypt(data.Value.ToString(CultureInfo.InvariantCulture)),
+                        AccountName = data.AccountName,
                             AccountNumber = data.AccountNumber
                         });
 
@@ -179,7 +198,7 @@ namespace Sofco.Service.Implementations.Rrhh
                     {
                         socialToAdd.Items.Add(new SocialChargeItem
                         {
-                            Value = data.Value,
+                            Value = CryptographyHelper.Encrypt(data.Value.ToString(CultureInfo.InvariantCulture)),
                             AccountName = data.AccountName,
                             AccountNumber = data.AccountNumber
                         });
@@ -195,7 +214,7 @@ namespace Sofco.Service.Implementations.Rrhh
                             {
                                 new SocialChargeItem
                                 {
-                                    Value = data.Value,
+                                    Value = CryptographyHelper.Encrypt(data.Value.ToString(CultureInfo.InvariantCulture)),
                                     AccountName = data.AccountName,
                                     AccountNumber = data.AccountNumber
                                 }

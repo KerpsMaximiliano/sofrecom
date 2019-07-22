@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
@@ -54,13 +55,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var socialCharge = allocation.Employee.SocialCharges.FirstOrDefault(x => x.Year == year && x.Month == month);
 
-                        if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.Salary), out var salary)) salary = 0;
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
 
                         var newValueSalary = (allocation.Percentage / 100) * salary;
-                        var newValueCharges = (allocation.Percentage / 100) * (socialCharge?.Total ?? 0);
+                        var newValueCharges = (allocation.Percentage / 100) * charges;
 
-                        costDetailResource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString());
-                        costDetailResource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString());
+                        costDetailResource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString(CultureInfo.InvariantCulture));
+                        costDetailResource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString(CultureInfo.InvariantCulture));
                         unitOfWork.CostDetailResourceRepository.Update(costDetailResource);
                     }
                 }
@@ -190,12 +192,13 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     var socialCharge = allocation.Employee.SocialCharges.FirstOrDefault(x => x.Year == allocation.StartDate.Year && x.Month == allocation.StartDate.Month);
 
-                    if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.Salary), out var salary)) salary = 0;
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
 
                     if (resource == null)
                     { 
                         var newValueSalary = (allocation.Percentage / 100) * salary;
-                        var newValueCharges = (allocation.Percentage / 100) * (socialCharge?.Total ?? 0);
+                        var newValueCharges = (allocation.Percentage / 100) * charges;
 
                         costDetail.CostDetailResources.Add(new CostDetailResource
                         {
@@ -216,10 +219,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                         var allocationPercentage = allocation.Percentage == 100 ? 1 : allocation.Percentage / 100;
 
                         var newValueSalary = allocationPercentage * salary;
-                        var newValueCharges = (allocation.Percentage / 100) * (socialCharge?.Total ?? 0);
+                        var newValueCharges = (allocation.Percentage / 100) * charges;
 
-                        resource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString());
-                        resource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString());
+                        resource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString(CultureInfo.InvariantCulture));
+                        resource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString(CultureInfo.InvariantCulture));
 
                         unitOfWork.CostDetailResourceRepository.Update(resource);
                     }

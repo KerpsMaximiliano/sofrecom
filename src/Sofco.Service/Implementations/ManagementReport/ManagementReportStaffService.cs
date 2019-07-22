@@ -358,13 +358,26 @@ namespace Sofco.Service.Implementations.ManagementReport
                 item.UserId = resource.UserId;
                 item.MonthYear = monthYear;
 
-                if (!decimal.TryParse(CryptographyHelper.Decrypt(resource.Value), out var salary)) salary = 0;
+                if (string.IsNullOrWhiteSpace(resource.Value))
+                {
+                    var socialCharge = employee?.SocialCharges.FirstOrDefault(x => x.Year == monthYear.Year && x.Month == monthYear.Month);
 
-                var socialCharge = employee?.SocialCharges.FirstOrDefault(x => x.Year == monthYear.Year && x.Month == monthYear.Month);
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
 
-                item.Salary = salary;
-                item.Charges = (socialCharge?.Total ?? 0);
-                item.Total = salary + (socialCharge?.Total ?? 0);
+                    item.Salary = salary;
+                    item.Charges = charges;
+                    item.Total = salary + charges;
+                }
+                else
+                {
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(resource.Value), out var salary)) salary = 0;
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(resource.Charges), out var charges)) charges = 0;
+
+                    item.Salary = salary;
+                    item.Charges = charges;
+                    item.Total = salary + charges;
+                }
 
                 list.Add(item);
             }
@@ -388,9 +401,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var socialCharge = allocation.Employee.SocialCharges.FirstOrDefault(x => x.Year == allocation.StartDate.Year && x.Month == allocation.StartDate.Month);
 
-                        if (!decimal.TryParse(CryptographyHelper.Decrypt(allocation.Employee.Salary), out var salary)) salary = 0;
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
+                        if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
 
-                        var newValueCharges = (allocation.Percentage / 100) * (socialCharge?.Total ?? 0);
+                        var newValueCharges = (allocation.Percentage / 100) * charges;
 
                         item.Salary = salary * (allocation.Percentage / 100);
                         item.Charges = newValueCharges * (allocation.Percentage / 100);
