@@ -25,9 +25,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     subCategoriesFiltered: any[] = new Array()
     subCategorySelected: any = { id: 0, name: '' }
     typeBudget: string = "budget"
-
     costByMonth: any[] = new Array()
 
+    @Output() getData: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('editItemModal') editItemModal;
     public editItemModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -1128,6 +1128,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         this.calculateTotalCosts(this.monthSelected)
         this.editItemModal.hide()
+        this.sendDataToDetailView();
     }
 
     calculateTotalCosts(month) {
@@ -1140,7 +1141,6 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         var totalCostPfa1 = 0;
         var totalCostPfa2 = 0;
         var totalCostReal = 0;
-        debugger
 
         this.categories.forEach(category => {
             if (category.months[index].budget) {
@@ -1189,6 +1189,15 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 this.monthSelected.subCategories.push(cost)
             }
         })
-
     }
+
+    sendDataToDetailView() {
+        if (this.getData.observers.length > 0) {
+            this.getData.emit({
+                months: this.months,
+                categories: this.categories
+            });
+        }
+    }
+
 }
