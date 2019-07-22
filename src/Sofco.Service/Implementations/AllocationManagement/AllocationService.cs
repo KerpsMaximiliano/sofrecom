@@ -67,7 +67,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 SaveAllocation(allocation, response, allocationsBetweenDays);
             }
 
-            managementReportCalculateCostsService.CalculateCosts(allocation, firstMonth.Date, lastMonth.Date);
+            //managementReportCalculateCostsService.CalculateCosts(allocation, firstMonth.Date, lastMonth.Date);
 
             var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(allocation.EmployeeId, firstMonth.Date.Date, lastMonth.Date.Date);
 
