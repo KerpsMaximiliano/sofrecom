@@ -8,6 +8,7 @@ using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.DAL.Repositories.WorkTimeManagement
@@ -327,6 +328,12 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public void SendHours(int employeeId, int analyticId)
         {
             context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 2 where status = 1 and employeeid = {employeeId} and analyticId = {analyticId}");
+        }
+
+        public IList<Analytic> GetAnalyticsToApproveHours(int currentEmployeeId)
+        {
+            return context.WorkTimes.Include(x => x.Analytic)
+                .Where(x => x.EmployeeId == currentEmployeeId && x.Status == WorkTimeStatus.Draft).Select(x => x.Analytic).Distinct().ToList();
         }
     }
 }

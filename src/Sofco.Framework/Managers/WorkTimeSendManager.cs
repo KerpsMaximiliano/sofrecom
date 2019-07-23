@@ -54,7 +54,7 @@ namespace Sofco.Framework.Managers
             {
                 if (isManager)
                 {
-                    var analytics = unitOfWork.WorkflowRepository.GetAnalyticsToApproveHours(currentEmployeeId);
+                    var analytics = unitOfWork.WorkTimeRepository.GetAnalyticsToApproveHours(currentEmployeeId);
 
                     foreach (var analytic in analytics)
                     {

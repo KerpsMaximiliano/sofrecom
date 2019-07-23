@@ -31,10 +31,9 @@ namespace Sofco.Core.DAL.Workflow
         int GetVersion(int workflowTypeId);
         void UpdateInWorkflowProcess(WorkflowEntity entity);
         Domain.Models.Workflow.Workflow GetByTypeActive(int workflowTypeId);
-        void UpdateActive(Domain.Models.Workflow.Workflow entity);
+        void UpdateActive(Domain.Models.Workflow.Workflow entity); 
         bool TransitionExist(int transitionId, int actualStateId, int nextStateId, int workflowId);
         void UpdateUsersAlreadyApproved(WorkflowEntity entity);
         IList<WorkflowStateTransition> GetTransitionByWorkflowAndState(int workflowId, int workflowStatusId);
-        IList<Analytic> GetAnalyticsToApproveHours(int currentEmployeeId);
     }
 }

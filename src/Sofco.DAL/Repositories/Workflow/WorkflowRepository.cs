@@ -57,12 +57,6 @@ namespace Sofco.DAL.Repositories.Workflow
                 .ToList();
         }
 
-        public IList<Analytic> GetAnalyticsToApproveHours(int currentEmployeeId)
-        {
-            return context.WorkTimes.Include(x => x.Analytic)
-                .Where(x => x.EmployeeId == currentEmployeeId && x.Status == WorkTimeStatus.Draft).Select(x => x.Analytic).Distinct().ToList();
-        }
-
         public Domain.Models.Workflow.Workflow GetByTypeActive(int workflowTypeId)
         {
             return context.Workflows.SingleOrDefault(x => x.WorkflowTypeId == workflowTypeId && x.Active);
