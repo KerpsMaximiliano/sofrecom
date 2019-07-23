@@ -75,7 +75,20 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public decimal CurrentPercentage { get; set; }
 
-        public bool MissAnyPercentageAllocation => (LastPercentage + CurrentPercentage) != 200;
+        public bool MissAnyPercentageAllocation
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(LastMonthDescription))
+                {
+                    return (LastPercentage + CurrentPercentage) != 200;
+                }
+                else
+                {
+                    return CurrentPercentage != 100;
+                }
+            }
+        }
     }
 
     public class EmployeeToRecalculate
