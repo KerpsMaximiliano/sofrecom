@@ -150,6 +150,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Include(x => x.ManagementReport).ToList().AsReadOnly();
         }
 
+        public bool IsClosed(int analyticId)
+        {
+            return context.Analytics.Any(x =>
+                x.Id == analyticId && (x.Status == AnalyticStatus.Close || x.Status == AnalyticStatus.CloseToExpenses));
+        }
+
         public Analytic GetByServiceForManagementReport(string serviceId)
         {
             return context.Analytics

@@ -49,6 +49,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (response.HasErrors()) return response;
 
+            AllocationValidationHelper.ValidateAnalyticClose(response, allocation, unitOfWork.AnalyticRepository);
+
+            if (response.HasErrors()) return response;
+
             var firstMonth = allocation.Months.FirstOrDefault();
             var lastMonth = allocation.Months[allocation.Months.Count - 1];
 
