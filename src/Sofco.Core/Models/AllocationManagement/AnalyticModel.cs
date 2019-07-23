@@ -48,7 +48,7 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string Name { get; set; }
 
-        public int CostCenterId { get; set; }
+        public int? CostCenterId { get; set; }
 
         public string ClientExternalId { get; set; }
 
@@ -132,7 +132,7 @@ namespace Sofco.Core.Models.AllocationManagement
                 domain.UsersQv = string.Join(";", UsersQv);
             }
 
-            domain.CostCenterId = CostCenterId;
+            domain.CostCenterId = CostCenterId.GetValueOrDefault();
         }
 
         public Analytic CreateDomainDaf()
