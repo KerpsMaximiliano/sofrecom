@@ -42,7 +42,9 @@ namespace Sofco.Framework.Managers
                 return response;
             }
 
-            var isManager = unitOfWork.UserRepository.HasManagerGroup(userData.GetCurrentUser().UserName);
+            var currentUser = userData.GetCurrentUser();
+
+            var isManager = unitOfWork.UserRepository.HasManagerGroup(currentUser.UserName);
 
             var currentEmployeeId = employeeData.GetCurrentEmployee().Id;
 
@@ -52,7 +54,19 @@ namespace Sofco.Framework.Managers
             {
                 if (isManager)
                 {
-                    unitOfWork.WorkTimeRepository.SendManagerHours(currentEmployeeId);
+                    var analytics = unitOfWork.WorkflowRepository.GetAnalyticsToApproveHours(currentEmployeeId);
+
+                    foreach (var analytic in analytics)
+                    {
+                        if (analytic.ManagerId.GetValueOrDefault() == currentUser.Id)
+                        {
+                            unitOfWork.WorkTimeRepository.SendManagerHours(currentEmployeeId, analytic.Id);
+                        }
+                        else
+                        {
+                            unitOfWork.WorkTimeRepository.SendHours(currentEmployeeId, analytic.Id);
+                        }
+                    }
                 }
                 else
                 {

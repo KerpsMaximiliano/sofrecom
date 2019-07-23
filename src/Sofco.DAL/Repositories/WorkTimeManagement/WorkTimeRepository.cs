@@ -261,9 +261,9 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.BulkInsert(workTimesToAdd);
         }
 
-        public void SendManagerHours(int employeeid)
+        public void SendManagerHours(int employeeid, int analyticId)
         {
-            context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 3 where status = 1 and employeeid = {employeeid}");
+            context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 3 where status = 1 and employeeid = {employeeid} and analyticId = {analyticId}");
         }
 
         public List<WorkTime> GetWorkTimeDraftByEmployeeId(int employeeId)
@@ -322,6 +322,11 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             var worktimes = context.WorkTimes.Where(x => x.Date.Date == removeDate.Date).ToList();
 
             Delete(worktimes);
+        }
+
+        public void SendHours(int employeeId, int analyticId)
+        {
+            context.Database.ExecuteSqlCommand($"UPDATE app.worktimes SET status = 2 where status = 1 and employeeid = {employeeId} and analyticId = {analyticId}");
         }
     }
 }

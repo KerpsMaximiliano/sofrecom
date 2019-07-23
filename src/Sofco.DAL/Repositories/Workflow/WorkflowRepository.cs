@@ -2,7 +2,9 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Workflow;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Workflow;
 
 namespace Sofco.DAL.Repositories.Workflow
@@ -53,6 +55,12 @@ namespace Sofco.DAL.Repositories.Workflow
                 .ThenInclude(x => x.UserSource)
                 .Where(x => x.WorkflowId == workflowId && x.ActualWorkflowStateId == workflowStatusId)
                 .ToList();
+        }
+
+        public IList<Analytic> GetAnalyticsToApproveHours(int currentEmployeeId)
+        {
+            return context.WorkTimes.Include(x => x.Analytic)
+                .Where(x => x.EmployeeId == currentEmployeeId && x.Status == WorkTimeStatus.Draft).Select(x => x.Analytic).Distinct().ToList();
         }
 
         public Domain.Models.Workflow.Workflow GetByTypeActive(int workflowTypeId)

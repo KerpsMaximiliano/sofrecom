@@ -111,7 +111,7 @@ namespace Sofco.UnitTest.Framework.Managers
             Assert.False(actual.HasErrors());
 
             workTimeRepositoryMock.Verify(s => s.SendHours(ValidEmployeeId), Times.Once);
-            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId), Times.Never);
+            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId, It.IsAny<int>()), Times.Never);
 
             workTimeSendMailManagerMock.Verify(s => s.SendEmail(It.IsAny<List<WorkTime>>()), Times.Once);
         }
@@ -126,7 +126,7 @@ namespace Sofco.UnitTest.Framework.Managers
             Assert.False(actual.HasErrors());
 
             workTimeRepositoryMock.Verify(s => s.SendHours(ValidEmployeeId), Times.Never);
-            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId), Times.Once);
+            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId, It.IsAny<int>()), Times.Once);
 
             workTimeSendMailManagerMock.Verify(s => s.SendEmail(It.IsAny<List<WorkTime>>()), Times.Never);
         }
@@ -141,7 +141,7 @@ namespace Sofco.UnitTest.Framework.Managers
             Assert.True(actual.HasErrors());
 
             workTimeRepositoryMock.Verify(s => s.SendHours(ValidEmployeeId), Times.Once);
-            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId), Times.Never);
+            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId, It.IsAny<int>()), Times.Never);
 
             workTimeSendMailManagerMock.Verify(s => s.SendEmail(It.IsAny<List<WorkTime>>()), Times.Never);
         }

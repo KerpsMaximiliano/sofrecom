@@ -53,8 +53,11 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
                 if (analytic != null)
                 {
-                    if (hito.StartDate.GetValueOrDefault().Date < analytic.StartDateContract.Date ||
-                        hito.StartDate.GetValueOrDefault().Date > analytic.EndDateContract.Date)
+                    var startDate = new DateTime(analytic.StartDateContract.Year, analytic.StartDateContract.Month, 1);
+                    var endDate = new DateTime(analytic.EndDateContract.Year, analytic.EndDateContract.Month, DateTime.DaysInMonth(analytic.EndDateContract.Year, analytic.EndDateContract.Month));
+
+                    if (hito.StartDate.GetValueOrDefault().Date < startDate.Date ||
+                        hito.StartDate.GetValueOrDefault().Date > endDate.Date)
                     {
                         response.AddError(Resources.Billing.Project.HitoDatesOutRange);
                     }

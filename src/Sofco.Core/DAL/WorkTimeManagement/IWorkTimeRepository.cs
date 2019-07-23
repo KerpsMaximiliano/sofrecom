@@ -45,7 +45,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         void InsertBulk(IList<WorkTime> workTimesToAdd);
 
-        void SendManagerHours(int id);
+        void SendManagerHours(int id, int analyticId);
 
         List<WorkTime> GetWorkTimeDraftByEmployeeId(int employeeId);
 
@@ -53,5 +53,6 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         decimal GetTotalHoursApprovedBetweenDays(int employeeId, DateTime startdate, DateTime endDate, int analyticId);
         void RemoveAllOfDate(DateTime removeDate);
+        void SendHours(int currentEmployeeId, int analyticId);
     }
 }

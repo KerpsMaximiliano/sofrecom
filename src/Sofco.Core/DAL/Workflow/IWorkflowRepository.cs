@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Workflow;
 
 namespace Sofco.Core.DAL.Workflow
@@ -34,5 +35,6 @@ namespace Sofco.Core.DAL.Workflow
         bool TransitionExist(int transitionId, int actualStateId, int nextStateId, int workflowId);
         void UpdateUsersAlreadyApproved(WorkflowEntity entity);
         IList<WorkflowStateTransition> GetTransitionByWorkflowAndState(int workflowId, int workflowStatusId);
+        IList<Analytic> GetAnalyticsToApproveHours(int currentEmployeeId);
     }
 }
