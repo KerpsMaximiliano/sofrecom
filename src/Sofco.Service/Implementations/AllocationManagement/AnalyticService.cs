@@ -156,7 +156,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 foreach (var analytic in analytics)
                 {
                     if (analytic.ManagerId.GetValueOrDefault() == currentUser.Id ||
-                        analytic.Sector.ResponsableUserId == currentUser.Id || 
+                        analytic.Sector?.ResponsableUserId == currentUser.Id || 
                         analyticsByDelegates.Any(x => x.Id == analytic.Id))
                     {
                         response.Data.Add(new AnalyticSearchViewModel(analytic));
