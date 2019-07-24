@@ -196,7 +196,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
 
             RemovePreventaAnalyticsHoursLoaded(response);
-            RemovePreventaAnalyticsHoursApproved(response);
 
             CalculateRealPercentage(response);
             RecalculatePreventa(response, employeesToRecalculate);
@@ -279,36 +278,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 .Where(x => x.AnalyticId == 146 || x.AnalyticId == 166 || x.AnalyticId == 167)
                 .GroupBy(x => x.EmployeeId, x => x.HoursLoaded).ToList();
 
-            foreach (var preventa in preventaGrouped)
-            {
-                var rows = response.Data.Items.Where(x => x.EmployeeId == preventa.Key).ToList();
-
-                var count = preventa.Count();
-
-                decimal hours = 0;
-
-                if (count > 0) hours = preventa.Sum(x => x) / count;
-
-                foreach (var row in rows)
-                {
-                    if (row.AnalyticId != 146 && row.AnalyticId != 166 && row.AnalyticId != 167)
-                    {
-                        row.HoursLoaded += hours;
-                    }
-                }
-
-                var toRemove = rows.Where(x => x.AnalyticId == 146 || x.AnalyticId == 166 || x.AnalyticId == 167).ToList();
-
-                foreach (var item in toRemove)
-                {
-                    response.Data.Items.Remove(item);
-                }
-            }
-        }
-
-        private void RemovePreventaAnalyticsHoursApproved(Response<WorkTimeReportModel> response)
-        {
-            var preventaGrouped = response.Data.Items
+            var preventaApprovedGrouped = response.Data.Items
                 .Where(x => x.AnalyticId == 146 || x.AnalyticId == 166 || x.AnalyticId == 167)
                 .GroupBy(x => x.EmployeeId, x => x.HoursApproved).ToList();
 
@@ -316,15 +286,26 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             {
                 var rows = response.Data.Items.Where(x => x.EmployeeId == preventa.Key).ToList();
 
+                var preventaAprovedEmployee = preventaApprovedGrouped.FirstOrDefault(x => x.Key == preventa.Key);
+
                 var count = preventa.Count();
 
-                var hours = preventa.Sum(x => x) / count;
+                decimal hoursLoaded = 0;
+                decimal hoursApproved = 0;
+
+                if (count > 0)
+                {
+                    hoursLoaded = preventa.Sum(x => x) / count;
+
+                    if (preventaAprovedEmployee != null) hoursApproved = preventaAprovedEmployee.Sum(x => x) / count;
+                }
 
                 foreach (var row in rows)
                 {
                     if (row.AnalyticId != 146 && row.AnalyticId != 166 && row.AnalyticId != 167)
                     {
-                        row.HoursApproved += hours;
+                        row.HoursLoaded += hoursLoaded;
+                        row.HoursApproved += hoursApproved;
                     }
                 }
 

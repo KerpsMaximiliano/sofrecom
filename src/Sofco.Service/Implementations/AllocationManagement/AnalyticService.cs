@@ -1,13 +1,9 @@
-﻿using System;
-using Sofco.Core.Services.AllocationManagement;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.Data.Billing;
-using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
@@ -15,13 +11,17 @@ using Sofco.Core.Managers;
 using Sofco.Core.Models;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
-using Sofco.Framework.MailData;
-using Sofco.Domain.Utils;
-using Sofco.Framework.ValidationHelpers.AllocationManagement;
+using Sofco.Core.Services.AllocationManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.ManagementReport;
+using Sofco.Domain.Utils;
+using Sofco.Framework.MailData;
+using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Resources.Mails;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -144,13 +144,33 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<List<AnalyticSearchViewModel>> Get(AnalyticSearchParameters searchParameters)
         {
-            var response = new Response<List<AnalyticSearchViewModel>>
+            var response = new Response<List<AnalyticSearchViewModel>> { Data = new List<AnalyticSearchViewModel>() };
+
+            var analytics = unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters);
+
+            if (roleManager.IsManager() || roleManager.IsDirector())
             {
-                Data = Translate(unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters))
-            };
+                var currentUser = userData.GetCurrentUser();
+                var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
+
+                foreach (var analytic in analytics)
+                {
+                    if (analytic.ManagerId.GetValueOrDefault() == currentUser.Id ||
+                        analytic.Sector.ResponsableUserId == currentUser.Id || 
+                        analyticsByDelegates.Any(x => x.Id == analytic.Id))
+                    {
+                        response.Data.Add(new AnalyticSearchViewModel(analytic));
+                    }
+                }
+            }
+            else
+            {
+                response.Data = Translate(analytics);
+            }
 
             return response;
         }
+
 
         public Response<byte[]> CreateReport(List<int> analytics)
         {
