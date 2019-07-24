@@ -79,13 +79,20 @@ namespace Sofco.Core.Models.WorkTimeManagement
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(LastMonthDescription))
+                if (!string.IsNullOrWhiteSpace(LastMonthDescription) && !string.IsNullOrWhiteSpace(CurrentMonthDescription))
                 {
                     return (LastPercentage + CurrentPercentage) != 200;
                 }
                 else
                 {
-                    return CurrentPercentage != 100;
+                    if (string.IsNullOrWhiteSpace(LastMonthDescription))
+                    {
+                        return CurrentPercentage != 100;
+                    }
+                    else
+                    {
+                        return LastPercentage != 100;
+                    }
                 }
             }
         }
