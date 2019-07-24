@@ -66,7 +66,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var daysoff = unitOfWork.HolidayRepository.Get(parameters.StartYear, parameters.StartMonth);
             daysoff.AddRange(unitOfWork.HolidayRepository.Get(parameters.EndYear, parameters.EndMonth));
 
-            var allocations = unitOfWork.AllocationRepository.GetAllocationsForWorkTimeReport(parameters);
+            var allocations = unitOfWork.AllocationRepository.GetAllocationsForWorkTimeReport(parameters, startDate, endDate);
 
             response.Data = new WorkTimeReportModel { Items = new List<WorkTimeReportModelItem>() };
 
