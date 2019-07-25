@@ -65,5 +65,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         Employee GetWithSocialCharges(int employeeId);
 
         Employee GetByEmailWithDiscounts(string modelEmail);
+        IList<Employee> GetByAnalyticWithSocialCharges(int idAnalytic);
     }
 }

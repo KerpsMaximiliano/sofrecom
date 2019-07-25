@@ -72,5 +72,6 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         Analytic GetByServiceWithManagementReport(string serviceId);
         ICollection<Analytic> GetAllReadOnlyWithManagementReport();
+        bool IsClosed(int analyticId);
     }
 }

@@ -14,7 +14,9 @@ namespace Sofco.Domain.Models.Rrhh
 
         public Employee Employee { get; set; }
 
-        public decimal Total { get; set; }
+        public string ChargesTotal { get; set; }
+
+        public string SalaryTotal { get; set; }
 
         public IList<SocialChargeItem> Items { get; set; }
     }
@@ -25,7 +27,7 @@ namespace Sofco.Domain.Models.Rrhh
 
         public int AccountNumber { get; set; }
 
-        public decimal Value { get; set; }
+        public string Value { get; set; }
 
         public int SocialChargeId { get; set; }
         public SocialCharge SocialCharge { get; set; }

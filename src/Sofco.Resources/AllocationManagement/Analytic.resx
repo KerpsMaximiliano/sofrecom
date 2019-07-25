@@ -135,6 +135,9 @@
   <data name="DirectorIsRequired" xml:space="preserve">
     <value>allocationManagement/analytic.directorIsRequired</value>
   </data>
+  <data name="IsClosed" xml:space="preserve">
+    <value>allocationManagement/analytic.isClosed</value>
+  </data>
   <data name="NameIsRequired" xml:space="preserve">
     <value>allocationManagement/analytic.nameIsRequired</value>
   </data>

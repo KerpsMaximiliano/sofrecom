@@ -2,7 +2,9 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Workflow;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Workflow;
 
 namespace Sofco.DAL.Repositories.Workflow

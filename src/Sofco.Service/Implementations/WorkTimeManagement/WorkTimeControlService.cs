@@ -348,11 +348,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 return analytics.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
             }
-            else
+            else 
             {
                 var currentUser = userData.GetCurrentUser();
                 var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
                 var analyticsByDirectors = unitOfWork.AnalyticRepository.GetByDirectorId(currentUser.Id);
+                var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
 
                 var list = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
@@ -361,6 +362,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     if (list.All(x => x.Id != analytic.Id))
                     {
                         list.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+                    }
+                }
+
+                foreach (var analyticsByDelegate in analyticsByDelegates)
+                {
+                    if (list.All(x => x.Id != analyticsByDelegate.Id))
+                    {
+                        list.Add(new Option { Id = analyticsByDelegate.Id, Text = $"{analyticsByDelegate.Title} - {analyticsByDelegate.Name}" });
                     }
                 }
 

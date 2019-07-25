@@ -348,6 +348,19 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees.Include(x => x.SalaryDiscounts).SingleOrDefault(x => x.Email == email);
         }
 
+        public IList<Employee> GetByAnalyticWithSocialCharges(int idAnalytic)
+        {
+            var ids = context.Allocations.Where(x => x.AnalyticId == idAnalytic && x.Percentage > 0)
+                .Select(x => x.Employee.Id)
+                .Distinct()
+                .ToList();
+
+            return context.Employees
+                .Include(x => x.SocialCharges)
+                .Include(x => x.Allocations)
+                .Where(x => ids.Contains(x.Id)).ToList();
+        }
+
         public Employee GetUserInfo(string email)
         {
             return context.Employees.Include(x => x.Manager)

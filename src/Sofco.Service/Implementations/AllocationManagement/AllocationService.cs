@@ -49,6 +49,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (response.HasErrors()) return response;
 
+            AllocationValidationHelper.ValidateAnalyticClose(response, allocation, unitOfWork.AnalyticRepository);
+
+            if (response.HasErrors()) return response;
+
             var firstMonth = allocation.Months.FirstOrDefault();
             var lastMonth = allocation.Months[allocation.Months.Count - 1];
 
@@ -67,7 +71,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 SaveAllocation(allocation, response, allocationsBetweenDays);
             }
 
-            managementReportCalculateCostsService.CalculateCosts(allocation, firstMonth.Date, lastMonth.Date);
+            //managementReportCalculateCostsService.CalculateCosts(allocation, firstMonth.Date, lastMonth.Date);
 
             var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(allocation.EmployeeId, firstMonth.Date.Date, lastMonth.Date.Date);
 

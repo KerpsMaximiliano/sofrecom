@@ -1075,7 +1075,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             List<CostResourceEmployee> costEmployees = new List<CostResourceEmployee>();
 
             //Obtengo los empleados de la analitica
-            var EmployeesAnalytic = unitOfWork.EmployeeRepository.GetByAnalyticWithWorkTimes(IdAnalytic);
+            var EmployeesAnalytic = unitOfWork.EmployeeRepository.GetByAnalyticWithSocialCharges(IdAnalytic);
 
             // Obtengo los empleados del reporte que no estan en la analitica.
             var IdEmployeesWithOutAnalytic = costDetails
@@ -1110,7 +1110,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var monthValue = costDetailMonth.CostDetailResources.FirstOrDefault(e => e.EmployeeId == employee.Id);
                         // var monthValue = CostDetailEmployees.Find(e => e.CostDetailResources.EmployeeId == employee.Id && new DateTime(e.MonthYear.Year, e.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
-                        if (monthValue != null)
+                        if (monthValue != null && !string.IsNullOrWhiteSpace(monthValue.Value))
                         {
                             if(!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Value), out var salary)) salary = 0;
                             if(!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges)) charges = 0;
@@ -1120,6 +1120,17 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthDetail.Charges = charges;
                             monthValue.Adjustment = monthValue.Adjustment;
                             monthDetail.Id = monthValue.Id;
+                        }
+                        else
+                        {
+                            var socialCharge = employee?.SocialCharges.FirstOrDefault(x => x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
+
+                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
+                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
+
+                            monthDetail.Value = salary;
+                            monthDetail.OriginalValue = salary;
+                            monthDetail.Charges = charges;
                         }
 
                         monthDetail.Closed = costDetailMonth.Closed;

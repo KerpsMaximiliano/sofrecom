@@ -147,7 +147,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             }
         }
 
-        public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters)
+        public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters, DateTime startDate, DateTime endDate)
         {
             var query = context.Allocations
                 .Include(x => x.Employee)
@@ -157,7 +157,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     .ThenInclude(x => x.CostCenter)
                 .Include(x => x.Analytic)
                     .ThenInclude(x => x.Activity)
-                .Where(x => !x.Employee.EndDate.HasValue && !x.Employee.IsExternal &&
+                .Where(x => (!x.Employee.EndDate.HasValue || (x.Employee.EndDate.HasValue && x.Employee.EndDate.Value.Date > startDate.Date))&& 
+                            !x.Employee.IsExternal &&
+                            x.Employee.StartDate.Date <= endDate.Date &&
                             (x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
                             x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date));
 

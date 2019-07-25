@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Domain.Utils;
 using Sofco.Domain.DTO;
 using Sofco.Core.Models.AllocationManagement;
@@ -71,6 +72,15 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
             {
                 response.AddError(Resources.AllocationManagement.Allocation.DateToRequired);
             }
+        }
+
+        public static void ValidateAnalyticClose(Response<Allocation> response, AllocationDto allocation,
+            IAnalyticRepository analyticRepository)
+        {
+            if (analyticRepository.IsClosed(allocation.AnalyticId))
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.IsClosed);
+            }   
         }
     }
 }

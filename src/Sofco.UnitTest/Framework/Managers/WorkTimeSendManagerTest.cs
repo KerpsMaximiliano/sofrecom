@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
-using Sofco.Core.Data.Admin;
-using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.WorkTimeManagement;
+using Sofco.Core.Data.Admin;
+using Sofco.Core.Data.AllocationManagement;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
@@ -16,6 +14,8 @@ using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Managers;
+using System;
+using System.Collections.Generic;
 
 namespace Sofco.UnitTest.Framework.Managers
 {
@@ -61,8 +61,8 @@ namespace Sofco.UnitTest.Framework.Managers
 
             sut = new WorkTimeSendManager(workTimeSendMailManagerMock.Object,
                 userDataMock.Object,
-                unitOfWorkMock.Object,  
-                employeeDataMock.Object, 
+                unitOfWorkMock.Object,
+                employeeDataMock.Object,
                 loggerMock.Object,
                 workTimeValidationMock.Object);
 
@@ -111,7 +111,7 @@ namespace Sofco.UnitTest.Framework.Managers
             Assert.False(actual.HasErrors());
 
             workTimeRepositoryMock.Verify(s => s.SendHours(ValidEmployeeId), Times.Once);
-            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId), Times.Never);
+            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId, It.IsAny<int>()), Times.Never);
 
             workTimeSendMailManagerMock.Verify(s => s.SendEmail(It.IsAny<List<WorkTime>>()), Times.Once);
         }
@@ -119,14 +119,26 @@ namespace Sofco.UnitTest.Framework.Managers
         [Test]
         public void ShouldPassSendByManager()
         {
-            userRepositoryMock.Setup(s => s.HasManagerGroup(currentUserModel.UserName)).Returns(true);
+            userRepositoryMock.Setup(s => s.HasManagerGroup(It.IsAny<string>())).Returns(true);
+            workTimeRepositoryMock.Setup(s => s.GetAnalyticsToApproveHours(ValidEmployeeId)).Returns(
+                new List<Analytic>()
+                {
+                    new Analytic() {Id = 1, ManagerId = 1}
+                });
+
+            workTimeRepositoryMock.Setup(s => s.GetWorkTimeDraftByEmployeeId(It.IsAny<int>())).Returns(new List<WorkTime>
+            {
+                new WorkTime{Id = 1}
+            });
+
+            userDataMock.Setup(s => s.GetCurrentUser()).Returns(new UserLiteModel { Id = 1 });
 
             var actual = sut.Send();
 
             Assert.False(actual.HasErrors());
 
             workTimeRepositoryMock.Verify(s => s.SendHours(ValidEmployeeId), Times.Never);
-            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId), Times.Once);
+            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId, It.IsAny<int>()), Times.Once);
 
             workTimeSendMailManagerMock.Verify(s => s.SendEmail(It.IsAny<List<WorkTime>>()), Times.Never);
         }
@@ -141,7 +153,7 @@ namespace Sofco.UnitTest.Framework.Managers
             Assert.True(actual.HasErrors());
 
             workTimeRepositoryMock.Verify(s => s.SendHours(ValidEmployeeId), Times.Once);
-            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId), Times.Never);
+            workTimeRepositoryMock.Verify(s => s.SendManagerHours(ValidEmployeeId, It.IsAny<int>()), Times.Never);
 
             workTimeSendMailManagerMock.Verify(s => s.SendEmail(It.IsAny<List<WorkTime>>()), Times.Never);
         }

@@ -86,7 +86,7 @@
                         
                                 <ul>
                                     <li *ngFor="let item of employeesWithAllocationMissing">
-                                        {{ item.employee }}: {{ item.lastMonthDescription }} {{ item.lastPercentage }}% - {{ item.currentMonthDescription }} {{ item.currentPercentage }}%
+                                        {{ item.employee }}: <span *ngIf="item.lastMonthDescription">{{ item.lastMonthDescription }} {{ item.lastPercentage }}% -</span> {{ item.currentMonthDescription }} {{ item.currentPercentage }}%
                                     </li> 
                                 </ul>
                             </div>

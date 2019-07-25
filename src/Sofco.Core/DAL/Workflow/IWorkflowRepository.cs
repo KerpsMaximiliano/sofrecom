@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Workflow;
 
 namespace Sofco.Core.DAL.Workflow
@@ -30,7 +31,7 @@ namespace Sofco.Core.DAL.Workflow
         int GetVersion(int workflowTypeId);
         void UpdateInWorkflowProcess(WorkflowEntity entity);
         Domain.Models.Workflow.Workflow GetByTypeActive(int workflowTypeId);
-        void UpdateActive(Domain.Models.Workflow.Workflow entity);
+        void UpdateActive(Domain.Models.Workflow.Workflow entity); 
         bool TransitionExist(int transitionId, int actualStateId, int nextStateId, int workflowId);
         void UpdateUsersAlreadyApproved(WorkflowEntity entity);
         IList<WorkflowStateTransition> GetTransitionByWorkflowAndState(int workflowId, int workflowStatusId);

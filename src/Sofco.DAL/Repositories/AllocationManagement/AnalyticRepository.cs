@@ -150,6 +150,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Include(x => x.ManagementReport).ToList().AsReadOnly();
         }
 
+        public bool IsClosed(int analyticId)
+        {
+            return context.Analytics.Any(x =>
+                x.Id == analyticId && (x.Status == AnalyticStatus.Close || x.Status == AnalyticStatus.CloseToExpenses));
+        }
+
         public Analytic GetByServiceForManagementReport(string serviceId)
         {
             return context.Analytics
@@ -302,7 +308,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public List<Analytic> GetBySearchCriteria(AnalyticSearchParameters searchCriteria)
         {
-            IQueryable<Analytic> query = context.Analytics.Include(x => x.ManagementReport).Include(x => x.Activity);
+            IQueryable<Analytic> query = context.Analytics.Include(x => x.ManagementReport).Include(x => x.Activity).Include(x => x.Sector);
 
             if (searchCriteria.AnalyticId.HasValue && searchCriteria.AnalyticId.Value > 0)
             {
