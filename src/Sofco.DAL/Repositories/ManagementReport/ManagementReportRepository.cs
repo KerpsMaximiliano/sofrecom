@@ -97,5 +97,10 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             context.Budgets.Remove(budget);
         }
+
+        public List<BudgetType> GetTypesBudget()
+        {
+            return context.BudgetType.OrderBy(x => x.Id).ToList();
+        }
     }
 }

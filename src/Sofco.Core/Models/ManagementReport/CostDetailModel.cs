@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sofco.Domain.Models.ManagementReport;
+using System;
 using System.Collections.Generic;
 
 namespace Sofco.Core.Models.ManagementReport
@@ -75,6 +76,8 @@ namespace Sofco.Core.Models.ManagementReport
         public int AnalyticId { get; set; }
         public IList<MonthDetailCostStaff> MonthsHeader { get; set; }
         public List<CostCategory> CostCategories { get; set; }
+        public List<CostSubcategory> AllSubcategories { get; set; }
+        public List<BudgetTypeItem> BudgetTypes { get; set; }
     }
 
     public class CostCategory
@@ -103,12 +106,12 @@ namespace Sofco.Core.Models.ManagementReport
     public class CostSubcategory
     {
         public int Id { get; set; }
+        public int CostDetailStaffId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal? Value { get; set; }
-        public string TypeBudget { get; set; }
-        public int TypeBudgetId { get; set; }
-
+        public int IdCategory { get; set; }
+        public int BudgetTypeId { get; set; }
     }
 
 

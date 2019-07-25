@@ -32,6 +32,10 @@ export class ManagementReportService {
     return this.http.post<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetail`, model);
   }
 
+  PostCostDetailStaff(model){
+    return this.http.post<any>(`${this.baseUrl}/managementReport/costDetailStaff`, model);
+  }
+
   PostCostDetailMonth(serviceId, model){
     return this.http.post<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetailMonth`, model);
   }

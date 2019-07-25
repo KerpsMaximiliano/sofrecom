@@ -114,6 +114,7 @@ namespace Sofco.Core.DAL
         ICostDetailOtherRepository CostDetailOtherRepository { get; }
         ICostDetailProfileRepository CostDetailProfileRepository { get; }
         ICostDetailResourceRepository CostDetailResourceRepository { get; }
+        ICostDetailStaffRepository CostDetailStaffRepository { get; }
 
         #endregion
 
