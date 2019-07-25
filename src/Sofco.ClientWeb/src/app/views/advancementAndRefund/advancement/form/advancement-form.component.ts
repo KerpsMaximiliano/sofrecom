@@ -25,6 +25,7 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
 
     @Input() mode: string;
 
+    public statusId: number;
     public status: string;
     public isSalary: boolean = true;
     public isLoading: boolean = true;
@@ -47,9 +48,10 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getMonthsReturn();
-        this.getCashEnable();
 
         if(this.mode == 'add'){
+            this.getCashEnable();
+
             this.isLoading = false;
             this.form = new Advancement(false);
 
@@ -98,6 +100,14 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     setModel(domain, isEdit){
         if(domain.statusId > 0){
             this.status = domain.statusDesc;
+            this.statusId = domain.statusId;
+
+            if(this.statusId == environment.draftWorkflowStateId || this.statusId == environment.rejectedWorkflowStateId){
+                this.getCashEnable();
+            }
+            else{
+                this.isCashEnable = true;
+            }
         }
 
         this.id = domain.id || 0;
