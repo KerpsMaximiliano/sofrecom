@@ -292,20 +292,36 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 decimal hoursLoaded = 0;
                 decimal hoursApproved = 0;
+                decimal totalLeftLoaded = 0;
+                decimal totalLeftApproved = 0;
 
                 if (count > 0)
                 {
                     hoursLoaded = preventa.Sum(x => x) / count;
+                    totalLeftLoaded = preventa.Sum(x => x);
 
-                    if (preventaAprovedEmployee != null) hoursApproved = preventaAprovedEmployee.Sum(x => x) / count;
+                    if (preventaAprovedEmployee != null)
+                    {
+                        hoursApproved = preventaAprovedEmployee.Sum(x => x) / count;
+                        totalLeftApproved = preventaAprovedEmployee.Sum(x => x);
+                    }
                 }
 
                 foreach (var row in rows)
                 {
                     if (row.AnalyticId != 146 && row.AnalyticId != 166 && row.AnalyticId != 167)
                     {
-                        row.HoursLoaded += hoursLoaded;
-                        row.HoursApproved += hoursApproved;
+                        if (totalLeftLoaded > 0)
+                        {
+                            row.HoursLoaded += hoursLoaded;
+                            totalLeftLoaded -= hoursLoaded;
+                        }
+
+                        if (totalLeftApproved > 0)
+                        {
+                            row.HoursApproved += hoursApproved;
+                            totalLeftApproved -= hoursApproved;
+                        }
                     }
                 }
 
