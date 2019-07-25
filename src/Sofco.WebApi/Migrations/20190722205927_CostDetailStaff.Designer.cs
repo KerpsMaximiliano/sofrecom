@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190722205927_CostDetailStaff")]
+    partial class CostDetailStaff
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1777,20 +1779,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Budgets");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.BudgetType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(250);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BudgetType");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ContratedDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -1836,20 +1824,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("ManagementReportId");
 
                     b.ToTable("CostDetails");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailCategories", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(250);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CostDetailCategories");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailOther", b =>
@@ -1925,52 +1899,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("CostDetailId");
 
                     b.ToTable("CostDetailResources");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailStaff", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BudgetTypeId");
-
-                    b.Property<int>("CostDetailId");
-
-                    b.Property<int>("CostDetailSubcategoryId");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500);
-
-                    b.Property<decimal>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BudgetTypeId");
-
-                    b.HasIndex("CostDetailId");
-
-                    b.HasIndex("CostDetailSubcategoryId");
-
-                    b.ToTable("CostDetailStaff");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailSubcategories", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CostDetailCategoryId");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(250);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CostDetailCategoryId");
-
-                    b.ToTable("CostDetailSubcategories");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailType", b =>
@@ -3400,32 +3328,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetail", "CostDetail")
                         .WithMany("CostDetailResources")
                         .HasForeignKey("CostDetailId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailStaff", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.ManagementReport.BudgetType", "BudgetType")
-                        .WithMany("CostDetailStaff")
-                        .HasForeignKey("BudgetTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetail", "CostDetail")
-                        .WithMany("CostDetailStaff")
-                        .HasForeignKey("CostDetailId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetailSubcategories", "CostDetailSubcategory")
-                        .WithMany("CostDetailStaff")
-                        .HasForeignKey("CostDetailSubcategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailSubcategories", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetailCategories", "CostDetailCategory")
-                        .WithMany("CostDetailSubcategories")
-                        .HasForeignKey("CostDetailCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

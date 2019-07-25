@@ -20,5 +20,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response<byte[]> CreateTracingReport(TracingModel tracing);
         Response Send(ManagementReportSendModel model);
         Response Close(ManagementReportCloseModel model);
+        Response<CostDetailStaffModel> GetCostDetailStaff(int managementReportId);
+        Response UpdateCostDetailStaff(CostDetailStaffModel pDetailCost);
     }
 }

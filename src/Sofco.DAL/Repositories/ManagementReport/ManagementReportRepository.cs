@@ -18,12 +18,19 @@ namespace Sofco.DAL.Repositories.ManagementReport
         public Domain.Models.ManagementReport.ManagementReport GetById(int IdManamentReport)
         {
             var data = context.ManagementReports
+                .Include(mr => mr.Analytic)
                 .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailResources)
                 .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailProfiles)
                 .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailOthers)
+                .Include(mr => mr.CostDetails)
+                    .ThenInclude(x => x.CostDetailStaff)
+                        .ThenInclude(y => y.CostDetailSubcategory)
+                .Include(mr => mr.CostDetails)
+                    .ThenInclude(x => x.CostDetailStaff)
+                        .ThenInclude(y => y.BudgetType)
                 .SingleOrDefault(mr => mr.Id == IdManamentReport);
 
             return data;
@@ -89,6 +96,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
         public void DeleteBudget(Budget budget)
         {
             context.Budgets.Remove(budget);
+        }
+
+        public List<BudgetType> GetTypesBudget()
+        {
+            return context.BudgetType.OrderBy(x => x.Id).ToList();
         }
     }
 }

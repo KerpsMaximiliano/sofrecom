@@ -135,6 +135,8 @@ namespace Sofco.DAL
         private ICostDetailOtherRepository costDetailOtherRepository;
         private ICostDetailProfileRepository costDetailProfileRepository;
         private ICostDetailResourceRepository costDetailResourceRepository;
+        private ICostDetailStaffRepository costDetailStaffRepository;
+
 
         #endregion
 
@@ -255,6 +257,7 @@ namespace Sofco.DAL
         public ICostDetailOtherRepository CostDetailOtherRepository => costDetailOtherRepository ?? (costDetailOtherRepository = new CostDetailOtherRepository(context));
         public ICostDetailProfileRepository CostDetailProfileRepository => costDetailProfileRepository ?? (costDetailProfileRepository = new CostDetailProfileRepository(context));
         public ICostDetailResourceRepository CostDetailResourceRepository => costDetailResourceRepository ?? (costDetailResourceRepository = new CostDetailResourceRepository(context));
+        public ICostDetailStaffRepository CostDetailStaffRepository => costDetailStaffRepository ?? (costDetailStaffRepository = new CostDetailStaffRepository(context));
 
         #endregion
 
