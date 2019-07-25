@@ -66,5 +66,15 @@ namespace Sofco.DAL.Repositories.ManagementReport
                .Where(x => x.ManagementReportId == managementReportId && x.MonthYear.Date >= startDate.Date &&
                             x.MonthYear.Date <= endDate.Date).ToList();
         }
+
+        public List<CostDetailCategories> GetCategories()
+        {
+            return context.CostDetailCategories.OrderBy(t => t.Id).ToList();
+        }
+
+        public List<CostDetailSubcategories> GetSubcategories()
+        {
+            return context.CostDetailSubcategories.OrderBy(t => t.Id).ToList();
+        }
     }
 }

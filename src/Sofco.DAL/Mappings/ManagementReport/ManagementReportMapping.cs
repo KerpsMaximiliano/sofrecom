@@ -58,6 +58,18 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<Budget>().Property(x => x.Description).HasMaxLength(200);
             builder.Entity<Budget>().Property(x => x.ModifiedBy).HasMaxLength(100);
             builder.Entity<Budget>().HasOne(x => x.ManagementReport).WithMany(x => x.Budgets).HasForeignKey(x => x.ManagementReportId);
+
+            // Type Budget
+            builder.Entity<BudgetType>().HasKey(x => x.Id);
+            builder.Entity<BudgetType>().Property(x => x.Name).HasMaxLength(250);
+
+            // Cost Detail Other
+            builder.Entity<CostDetailStaff>().HasKey(x => x.Id);
+            builder.Entity<CostDetailStaff>().Property(x => x.Description).HasMaxLength(500);
+            builder.Entity<CostDetailStaff>().HasOne(x => x.CostDetail).WithMany(x => x.CostDetailStaff).HasForeignKey(x => x.CostDetailId);
+            builder.Entity<CostDetailStaff>().HasOne(x => x.CostDetailSubcategory).WithMany(x => x.CostDetailStaff).HasForeignKey(x => x.CostDetailSubcategoryId);
+            builder.Entity<CostDetailStaff>().HasOne(x => x.BudgetType).WithMany(x => x.CostDetailStaff).HasForeignKey(x => x.BudgetTypeId);
+
         }
     }
 }

@@ -18,5 +18,6 @@ namespace Sofco.Core.DAL.ManagementReport
         Budget GetBudget(int id);
         void UpdateBudget(Budget budget);
         void DeleteBudget(Budget budget);
+        List<BudgetType> GetTypesBudget();
     }
 }

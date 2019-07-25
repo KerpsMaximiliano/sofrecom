@@ -1,0 +1,37 @@
+﻿ 2019-07-24 15:56:31,998 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 93
+ 2019-07-24 16:37:06,758 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Sequence contains no elements.
+System.InvalidOperationException: Sequence contains no elements.
+   at Microsoft.EntityFrameworkCore.Query.QueryMethodProvider.GetResult[TResult](IEnumerable`1 valueBuffers, Boolean throwOnNullResult)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at Sofco.DAL.Repositories.Workflow.WorkflowRepository.GetLastByType(Int32 typeId) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\Workflow\WorkflowRepository.cs:line 161
+   at Sofco.Service.Implementations.AdvancementAndRefund.AdvancementService.IsCashEnable() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\AdvancementService.cs:line 228
+   at Sofco.WebApi.Controllers.AdvancementAndRefund.AdvancementController.IsCashEnable() in C:\Proyectos\GAPS\src\Sofco.WebApi\Controllers\AdvancementAndRefund\AdvancementController.cs:line 131
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Proyectos\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ 2019-07-24 16:47:41,090 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 93
+ 2019-07-24 16:49:39,669 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 93
+ 2019-07-24 16:49:51,198 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 93

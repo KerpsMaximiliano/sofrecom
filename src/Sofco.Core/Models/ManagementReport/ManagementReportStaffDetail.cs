@@ -59,4 +59,21 @@ namespace Sofco.Core.Models.ManagementReport
 
         public DateTime StartDate { get; set; }
     }
+
+    public class BudgetTypeItem
+    {
+        public BudgetTypeItem()
+        {
+        }
+
+        public BudgetTypeItem(BudgetType domain)
+        {
+            Id = domain.Id;
+            Name = domain.Name;
+        }
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+    }
 }

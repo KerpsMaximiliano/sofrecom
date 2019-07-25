@@ -1,0 +1,45 @@
+
+GO
+
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Sueldos - Honorarios - Pasantías', 1)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Viajes y Traslados', 2)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Otros gastos ligados a Misiones', 2)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Taxi, peaje y estacionamiento', 2)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Recepciones', 2)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Amortización Rodados', 3)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Combustible', 3)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Conservación y reparación de rodados', 3)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Patentes', 3)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Seguro Rodados', 3)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Alquiler - Expensas - Limpieza', 4)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Reparación y conservación de bienes inmuebles', 4)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Amortizaciones instalaciones general', 4)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Multiriesgo', 5)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Seguro Vida Obligatorio', 5)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Responsabilidad civil', 5)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Caución', 5)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Agua - Luz - Gas', 5)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Telecom Argentina / Phillips', 6)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Celulares, Nextel y otros', 6)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Amortización de muebles', 7)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Reparación y conservación de mobiliarios', 7)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Amortización materiales de oficina', 7)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Proveedores artículos de oficina', 7)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Otros proveedores y materiales', 7)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Fotocopias', 7)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Correo', 7)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Amortización materiales informática', 8)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Amortización de Software', 8)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Hardware TII', 8)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Mantenimiento de software', 8)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Mantenimiento de equipos', 8)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Capacitación', 9)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Honorarios', 10)  
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Gastos reclutamiento personal', 11) 
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Red', 12) 
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Infraestructura', 13)
+
+
+GO
+
+

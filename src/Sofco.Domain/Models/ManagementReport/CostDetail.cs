@@ -25,5 +25,7 @@ namespace Sofco.Domain.Models.ManagementReport
         public ICollection<CostDetailOther> CostDetailOthers { get; set; }
 
         public ICollection<ContratedDetail> ContratedDetails { get; set; }
+
+        public ICollection<CostDetailStaff> CostDetailStaff { get; set; }
     }
 }
