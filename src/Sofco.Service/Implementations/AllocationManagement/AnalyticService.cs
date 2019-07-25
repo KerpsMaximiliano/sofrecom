@@ -330,7 +330,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     }
                 }
 
-                CreateManagementReport(analytic);
+                //CreateManagementReport(analytic);
 
                 if (analytic.SolutionId == 0) analytic.SolutionId = null;
                 if (analytic.TechnologyId == 0) analytic.TechnologyId = null;
