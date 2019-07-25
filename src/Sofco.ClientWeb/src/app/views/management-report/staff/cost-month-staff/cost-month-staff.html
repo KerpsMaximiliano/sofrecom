@@ -45,7 +45,7 @@
             <span class="text-warning" *ngIf="resource.id == 0"><strong>* </strong></span>
             <span>{{ resource.name }}</span>   
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-2"> 
             <input type="number"  [digitLimit]="8"  decimalFormat class="form-control input-xs" max="99999999" min="0"
                 [(ngModel)]="resource.salary" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
         </div>

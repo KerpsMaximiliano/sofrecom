@@ -429,7 +429,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (item.HoursMustLoad != 0)
                     {
-                        item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad) / 100), MidpointRounding.AwayFromZero);
+                        item.RealPercentage = percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad) / 100;
 
                         if (item.RealPercentage > 100) item.RealPercentage = 100;
                     }
@@ -442,13 +442,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var i = 1;
             foreach (var item in response.Data.Items)
             {
-                var sumPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.RealPercentage).Sum();
+                var resource = response.Data.Items.FirstOrDefault(x => x.EmployeeId == item.EmployeeId);
+                var sumAllHoursApproved = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Sum(x => x.HoursApproved);
 
                 if (item.Facturability > 0)
                 {
                     if (workTimeReportByHours)
                     {
-                        if (sumPercentage >= 100) item.HoursLoadedSuccesfully = true;
+                        if (sumAllHoursApproved >= resource.AllHoursMustLoad) item.HoursLoadedSuccesfully = true;
                     }
                     else
                     {
@@ -462,6 +463,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 if (workTimeReportByHours)
                 {
+                    if(item.RealPercentage <= 0) continue;
+
                     var tigerItem = new TigerReportItem(item.EmployeeNumber, item.RealPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
                     i++;
 
@@ -469,6 +472,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 }
                 else
                 {
+                    if (item.AllocationPercentage <= 0) continue;
+
                     var tigerItem = new TigerReportItem(item.EmployeeNumber, item.AllocationPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
                     i++;
 
