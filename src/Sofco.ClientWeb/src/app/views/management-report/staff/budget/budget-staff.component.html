@@ -78,31 +78,31 @@
 
                 <tr *ngFor="let category of categories">
                     <th class="static first-column" scope="col">{{category.name}}</th>
-                    <ng-template ngFor let-month [ngForOf]="category.months" let-i="index">
+                    <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
                         <td [ngClass]="{'first-col': isFirst}">
                             <label class="label label-budget" (click)="openEditItemModal(category, 'budget', month, i)">
-                                {{ month.budget }}
+                                {{ month.totalBudget }}
                             </label>
                         </td>
                         <td>
                             <label class="label"
                                 [ngClass]="month.pfa1 <=  month.real ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category,'pfa1', month, i)">
-                                {{ month.pfa1 }}
+                                {{ month.totalPfa1 }}
                             </label>
                         </td>
                         <td>
                             <label class="label"
                                 [ngClass]="month.pfa2 <=  month.real ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category, 'pfa2', month, i)">
-                                {{ month.pfa2 }}
+                                {{ month.totalPfa2 }}
                             </label>
                         </td>
                         <td>
                             <label class="label"
                                 [ngClass]="month.real <=  month.budget ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category, 'real', month, i)">
-                                {{ month.real }}
+                                {{ month.totalReal }}
                             </label>
                         </td>
                     </ng-template>
@@ -146,9 +146,9 @@
                     </div>
                 </div>
 
-                <div class="row m-t-xs" *ngFor="let cost of monthSelected.subCategories; let i = index">
+                <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index">
                     <div class="col-sm-5">
-                        {{ cost.nameSubCategory }}
+                        {{ cost.name }}
                     </div>
                     <div class="col-sm-4">
                         <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">

@@ -69,4 +69,47 @@ namespace Sofco.Core.Models.ManagementReport
         public IList<MonthDetailCost> MonthsCost { get; set; }
     }
 
+    public class CostDetailStaffModel
+    {
+        public int ManagementReportId { get; set; }
+        public int AnalyticId { get; set; }
+        public IList<MonthDetailCostStaff> MonthsHeader { get; set; }
+        public List<CostCategory> CostCategories { get; set; }
+    }
+
+    public class CostCategory
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public List<MonthDetailCostStaff> MonthsCategory { get; set; }
+    }
+
+    public class MonthDetailCostStaff
+    {
+        public int Id { get; set; }
+        public DateTime MonthYear { get; set; }
+        public string Display { get; set; }
+        public int CostDetailId { get; set; }
+        public decimal TotalBudget { get; set; }
+        public decimal TotalPfa1 { get; set; }
+        public decimal TotalPfa2 { get; set; }
+        public decimal TotalReal { get; set; }
+        public List<CostSubcategory> SubcategoriesBudget { get; set; }
+        public List<CostSubcategory> SubcategoriesPfa1 { get; set; }
+        public List<CostSubcategory> SubcategoriesPfa2 { get; set; }
+        public List<CostSubcategory> SubcategoriesReal { get; set; }
+    }
+
+    public class CostSubcategory
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal? Value { get; set; }
+        public string TypeBudget { get; set; }
+        public int TypeBudgetId { get; set; }
+
+    }
+
+
 }

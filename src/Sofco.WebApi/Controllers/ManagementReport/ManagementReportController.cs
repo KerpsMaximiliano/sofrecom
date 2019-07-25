@@ -131,5 +131,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{id}/costDetailStaff")]
+        public IActionResult GetDetailCostStaff(int id)
+        {
+            var response = managementReportService.GetCostDetailStaff(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }

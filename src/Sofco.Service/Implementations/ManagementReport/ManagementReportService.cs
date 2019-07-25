@@ -414,6 +414,58 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        public Response<CostDetailStaffModel> GetCostDetailStaff(int ManagementReportId)
+        {
+            var response = new Response<CostDetailStaffModel> { Data = new CostDetailStaffModel() };
+            try
+            {
+                //var analytic = unitOfWork.AnalyticRepository.GetByServiceWithManagementReport(serviceId);
+
+                //if (analytic == null)
+                //{
+                //    response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                //    return response;
+                //}
+
+                var managementReport = unitOfWork.ManagementReportRepository.GetById(ManagementReportId);
+                if (managementReport == null)
+                {
+                    response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                    return response;
+                }
+
+                response.Data.AnalyticId = managementReport.Analytic.Id;
+                
+                response.Data.MonthsHeader = new List<MonthDetailCostStaff>();
+                response.Data.ManagementReportId = managementReport.Analytic.ManagementReport.Id;
+                
+                //Obtengo los meses que tiene la analitica
+                var dates = SetDates(managementReport.Analytic);
+
+                var costDetails = managementReport.CostDetails;
+
+                for (DateTime date = new DateTime(dates.Item1.Year, dates.Item1.Month, 1).Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
+                {
+                    var monthHeader = new MonthDetailCostStaff();
+                    monthHeader.Display = DatesHelper.GetDateShortDescription(date);
+                    monthHeader.MonthYear = date;
+
+                    response.Data.MonthsHeader.Add(monthHeader);
+                }
+
+                response.Data.CostCategories = FillCategoriesByMonth(response.Data.MonthsHeader, costDetails);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
+
         public Response<CostDetailMonthModel> GetCostDetailMonth(string pServiceId, int pMonth, int pYear)
         {
             var response = new Response<CostDetailMonthModel> { Data = new CostDetailMonthModel() };
@@ -1211,6 +1263,84 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
 
             return profilesResources;
+        }
+
+        private List<CostCategory> FillCategoriesByMonth(IList<MonthDetailCostStaff> Months, ICollection<CostDetail> costDetails)
+        {
+            List<CostCategory> costCategories = new List<CostCategory>();
+
+            var categories = unitOfWork.CostDetailRepository.GetCategories();
+
+            foreach (var category in categories)
+            {
+                var detailCategory = new CostCategory();
+
+                detailCategory.MonthsCategory = new List<MonthDetailCostStaff>();
+
+                detailCategory.Id = category.Id;
+                detailCategory.Name = category.Name;
+
+                foreach (var mounth in Months)
+                {
+                    var monthDetail = new MonthDetailCostStaff();
+                    monthDetail.SubcategoriesBudget = new List<CostSubcategory>();
+                    monthDetail.SubcategoriesPfa1 = new List<CostSubcategory>();
+                    monthDetail.SubcategoriesPfa2 = new List<CostSubcategory>();
+                    monthDetail.SubcategoriesReal = new List<CostSubcategory>();
+
+                    monthDetail.Display = mounth.Display;
+                    monthDetail.MonthYear = mounth.MonthYear;
+
+                    var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
+                    if (costDetailMonth != null)
+                    {
+                        monthDetail.CostDetailId = costDetailMonth.Id;
+
+                        var subcategories = costDetailMonth.CostDetailStaff.Where(o => o.CostDetailSubcategory.CostDetailCategoryId == category.Id).ToList();
+                        if (subcategories != null)
+                        {
+                            monthDetail.TotalBudget = subcategories.Where(x => x.BudgetType.Name.ToUpper() == "BUDGET").Sum(x => x.Value);
+                            monthDetail.TotalPfa1 = subcategories.Where(x => x.BudgetType.Name.ToUpper() == "PFA1").Sum(x => x.Value);
+                            monthDetail.TotalPfa2 = subcategories.Where(x => x.BudgetType.Name.ToUpper() == "PFA2").Sum(x => x.Value);
+                            monthDetail.TotalReal = subcategories.Where(x => x.BudgetType.Name.ToUpper() == "REAL").Sum(x => x.Value);
+
+                            foreach (var subcategory in subcategories)
+                            {
+                                var detailSubcategory = new CostSubcategory();
+
+                                detailSubcategory.Id = subcategory.Id;
+                                detailSubcategory.Name = subcategory.CostDetailSubcategory.Name;
+                                detailSubcategory.Description = subcategory.Description;
+                                detailSubcategory.Value = subcategory.Value;
+                                detailSubcategory.TypeBudget = subcategory.BudgetType.Name;
+                                detailSubcategory.TypeBudgetId = subcategory.BudgetTypeId;
+
+                                switch (subcategory.BudgetType.Name.ToUpper())
+                                {
+                                    case "BUDGET":
+                                        monthDetail.SubcategoriesBudget.Add(detailSubcategory);
+                                        break;
+                                    case "PFA1":
+                                        monthDetail.SubcategoriesPfa1.Add(detailSubcategory);
+                                        break;
+                                    case "PFA2":
+                                        monthDetail.SubcategoriesPfa2.Add(detailSubcategory);
+                                        break;
+                                    case "REAL":
+                                        monthDetail.SubcategoriesReal.Add(detailSubcategory);
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                    detailCategory.MonthsCategory.Add(monthDetail);
+                }
+
+                costCategories.Add(detailCategory);
+            }
+
+            return costCategories;
         }
 
         private List<MonthDetailCost> VerifyAnalyticMonths(Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport, DateTime startDateAnalytic, DateTime endDateAnalytic)

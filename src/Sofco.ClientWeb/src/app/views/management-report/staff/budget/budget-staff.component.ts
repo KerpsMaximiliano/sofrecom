@@ -7,6 +7,7 @@ import { MessageService } from "app/services/common/message.service";
 import { FormControl, Validators } from "@angular/forms";
 import { months } from "moment";
 import { DebugContext } from "@angular/core/src/view";
+import { ManagementReportService } from "app/services/management-report/management-report.service";
 
 @Component({
     selector: 'budget-staff',
@@ -15,6 +16,10 @@ import { DebugContext } from "@angular/core/src/view";
 })
 export class BudgetStaffComponent implements OnInit, OnDestroy {
 
+    paramsSubscrip: Subscription;
+    getCostSubscrip: Subscription;
+
+    managementReportId: string;
     months: any[] = new Array()
     readOnly: boolean = false
     categorySelected: any = { id: 0, name: '' }
@@ -22,9 +27,10 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     categories: any[] = new Array()
     subCategories: any[] = new Array()
+    subCategoriesData: any[] = new Array()
     subCategoriesFiltered: any[] = new Array()
     subCategorySelected: any = { id: 0, name: '' }
-    typeBudget: string = "budget"
+    typeBudget: string = "BUDGET"
     costByMonth: any[] = new Array()
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
@@ -39,968 +45,18 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    
+    //Constructor
+    constructor(private managementReportService: ManagementReportService,
+        private activatedRoute: ActivatedRoute,
+        private messageService: MessageService,
+        private menuService: MenuService,
+    ) { }
+
     ngOnInit(): void {
 
         this.editItemModal.size = 'modal-lg'
 
-        this.months = [
-            {
-                display: "May. 2019",
-                monthYear: "2019-05-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Jun. 2019",
-                monthYear: "2019-06-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Jul. 2019",
-                monthYear: "2019-07-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Ago. 2019",
-                monthYear: "2019-08-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Sep. 2019",
-                monthYear: "2019-09-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Oct. 2019",
-                monthYear: "2019-10-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Nov. 2019",
-                monthYear: "2019-11-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-        ]
-
-        this.categories = [
-            {
-                id: 1,
-                name: 'Sueldos',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 2,
-                name: 'Viáticos',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 3,
-                name: 'Gastos Vehículos',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 4,
-                name: 'Edificio',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 5,
-                name: 'Seguros',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 5,
-                name: 'Servicios',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 6,
-                name: 'Muebles y útiles',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 7,
-                name: 'Hardware y Software',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 8,
-                name: 'Capacitación',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 9,
-                name: 'Honorarios',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 10,
-                name: 'Gastos reclutamiento personal',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 11,
-                name: 'Red',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            },
-            {
-                id: 12,
-                name: 'Infraestructura',
-                months: [
-                    {
-                        display: "May. 2019",
-                        monthYear: "2019-05-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jun. 2019",
-                        monthYear: "2019-06-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Jul. 2019",
-                        monthYear: "2019-07-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Ago. 2019",
-                        monthYear: "2019-08-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Sep. 2019",
-                        monthYear: "2019-09-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Oct. 2019",
-                        monthYear: "2019-10-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                    {
-                        display: "Nov. 2019",
-                        monthYear: "2019-11-01",
-                        budget: 0,
-                        pfa1: 0,
-                        pfa2: 0,
-                        real: 0,
-                        subCategories: []
-                    },
-                ]
-            }
-        ]
         this.subCategories = [
             { id: 1, name: 'Sueldos - Honorarios - Pasantías', idCategory: 1, Category: 'Sueldos' },
             { id: 2, name: 'Viajes y Traslados', idCategory: 2, Category: 'Viáticos' },
@@ -1044,11 +100,44 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.subCategoriesFiltered = this.subCategories
 
 
-        //this.calculateTotalCosts()
+        this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
+            this.managementReportId = params['id'];
+
+            this.getCost();
+        });
     }
 
     ngOnDestroy(): void {
+        if (this.getCostSubscrip) this.getCostSubscrip.unsubscribe();
+        if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
+    }
 
+    getCost() {
+        this.messageService.showLoading();
+
+        this.getCostSubscrip = this.managementReportService.getCostDetailStaff(this.managementReportId).subscribe(response => {
+            this.messageService.closeLoading();
+
+            //this.model = response.data;
+
+            console.log(response.data)
+            this.months = response.data.monthsHeader;
+            this.categories = response.data.costCategories;
+
+            console.log(this.categories)
+            // this.employees = response.data.costEmployees;
+            // this.fundedResources = response.data.fundedResources;
+            // this.otherResources = response.data.otherResources;
+            // this.employeesOriginal = response.data.costEmployees;
+            // this.costProfiles = response.data.costProfiles;
+
+            // if (this.otherResources.length > 0) {
+            //     this.otherSelected = this.otherResources[0];
+            // }
+
+            this.sendDataToDetailView();
+        },
+            () => this.messageService.closeLoading());
     }
 
     openEditItemModal(category, typeBudget, month, item) {
@@ -1056,7 +145,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         if (this.readOnly) return;
 
         if (month.closed) return;
-
+     
         this.categorySelected = category
         this.monthSelected = month;
         this.typeBudget = typeBudget
@@ -1067,7 +156,24 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
 
         this.editItemModal.show();
-        this.fillSubCategories()
+        //this.fillSubCategories()
+
+        switch (this.typeBudget.toUpperCase()) {
+            case 'BUDGET':
+                this.subCategoriesData = this.monthSelected.subcategoriesBudget
+                break;
+            case 'PFA1':
+                this.subCategoriesData = this.monthSelected.subcategoriesPfa1
+                break;
+            case 'PFA2':
+                this.subCategoriesData = this.monthSelected.subcategoriesPfa2
+                break;
+            case 'REAL':
+                this.subCategoriesData = this.monthSelected.subcategoriesReal
+                break;
+        }
+        // this.subCategoriesData = this.monthSelected.subcategories
+        // console.log(this.subCategoriesData)
     }
 
     addCostByMonth() {
