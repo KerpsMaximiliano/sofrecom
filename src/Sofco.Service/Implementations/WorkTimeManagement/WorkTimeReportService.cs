@@ -489,7 +489,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (allocation.Employee.EndDate.HasValue)
                     {
-                        if (allocation.Employee.EndDate.Value.Date >= startDate.Date)
+                        if (allocation.Employee.EndDate.Value.Date > startDate.Date)
                         {
                             if (allocation.StartDate.Month == startDate.Month) businessDays++;
 
