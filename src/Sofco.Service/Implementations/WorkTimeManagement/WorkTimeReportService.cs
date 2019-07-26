@@ -432,7 +432,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 if (allHoursMustLoaded == 0) continue;
 
-                item.AllocationPercentage = Math.Round(item.HoursMustLoad * 100 / allHoursMustLoaded, MidpointRounding.AwayFromZero);
+                item.AllocationPercentage = Math.Round(item.HoursMustLoad * 100 / allHoursMustLoaded, 2, MidpointRounding.AwayFromZero);
                 var percentageWithoutRound = item.HoursMustLoad * 100 / allHoursMustLoaded;
 
                 if (item.Facturability == 0)
@@ -445,7 +445,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (item.HoursMustLoad != 0)
                     {
-                        item.RealPercentage = percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad) / 100;
+                        item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad)) / 100, 2, MidpointRounding.AwayFromZero);
 
                         if (item.RealPercentage > 100) item.RealPercentage = 100;
                     }

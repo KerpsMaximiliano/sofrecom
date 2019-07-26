@@ -151,6 +151,13 @@ namespace Sofco.Framework.Managers
             return hasRrhhGroup;
         }
 
+        public bool IsCompliance()
+        {
+            var hasComplianceGroup = unitOfWork.UserRepository.HasComplianceGroup(CurrentUser.Email);
+
+            return hasComplianceGroup;
+        }
+
         public bool IsManager()
         {
             var isManager = unitOfWork.UserRepository.HasManagerGroup(CurrentUser.UserName);

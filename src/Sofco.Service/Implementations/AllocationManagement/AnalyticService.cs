@@ -146,26 +146,31 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response<List<AnalyticSearchViewModel>> { Data = new List<AnalyticSearchViewModel>() };
 
-            var analytics = unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters);
-
-            if (roleManager.IsManager() || roleManager.IsDirector())
+            if (roleManager.IsPmo() || roleManager.IsRrhh() || roleManager.IsCdg() || roleManager.IsCompliance())
             {
-                var currentUser = userData.GetCurrentUser();
-                var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
+                var analytics = unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters);
 
-                foreach (var analytic in analytics)
-                {
-                    if (analytic.ManagerId.GetValueOrDefault() == currentUser.Id ||
-                        analytic.Sector?.ResponsableUserId == currentUser.Id || 
-                        analyticsByDelegates.Any(x => x.Id == analytic.Id))
-                    {
-                        response.Data.Add(new AnalyticSearchViewModel(analytic));
-                    }
-                }
+                response.Data = Translate(analytics);
             }
             else
             {
-                response.Data = Translate(analytics);
+                if (roleManager.IsManager() || roleManager.IsDirector())
+                {
+                    var analytics = unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters);
+
+                    var currentUser = userData.GetCurrentUser();
+                    var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
+
+                    foreach (var analytic in analytics)
+                    {
+                        if (analytic.ManagerId.GetValueOrDefault() == currentUser.Id ||
+                            analytic.Sector?.ResponsableUserId == currentUser.Id ||
+                            analyticsByDelegates.Any(x => x.Id == analytic.Id))
+                        {
+                            response.Data.Add(new AnalyticSearchViewModel(analytic));
+                        }
+                    }
+                }
             }
 
             return response;
