@@ -325,6 +325,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var listMonths = this.VerifyAnalyticMonths(managementReport, analytic.StartDateContract, analytic.EndDateContract);
 
                 this.InsertUpdateCostDetailStaff(pDetailCost.CostCategories);
+                this.InsertTotalBudgets(pDetailCost.CostCategories, pDetailCost.ManagementReportId);
 
                 unitOfWork.Save();
 
@@ -715,7 +716,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private void InsertTotalBudgets(List<CostCategory> costCategories)
+        private void InsertTotalBudgets(List<CostCategory> costCategories, int managementReportId)
         {
             decimal totalBudget = 0;
             decimal totalPFA1 = 0;
@@ -736,31 +737,45 @@ namespace Sofco.Service.Implementations.ManagementReport
                         totalBudget += month.SubcategoriesBudget.Sum(x => x.Value) ?? 0;
                         totalPFA1 += month.SubcategoriesPfa1.Sum(x => x.Value) ?? 0;
                         totalPFA2 += month.SubcategoriesPfa2.Sum(x => x.Value) ?? 0;
-                        totalReal += month.SubcategoriesReal.Sum(x => x.Value) ?? 0;
+                        //totalReal += month.SubcategoriesReal.Sum(x => x.Value) ?? 0;
 
-                        if(month.SubcategoriesBudget.Count > 0)
-                            saveBudget = true;
-                        if (month.SubcategoriesPfa1.Count > 0)
-                            savePFA1 = true;
-                        if (month.SubcategoriesPfa2.Count > 0)
-                            savePFA2 = true;
-                        if (month.SubcategoriesReal.Count > 0)
-                            saveReal = true;
+                        //if(month.SubcategoriesBudget.Count > 0)
+                        //    saveBudget = true;
+                        //if (month.SubcategoriesPfa1.Count > 0)
+                        //    savePFA1 = true;
+                        //if (month.SubcategoriesPfa2.Count > 0)
+                        //    savePFA2 = true;
+                        //if (month.SubcategoriesReal.Count > 0)
+                        //    saveReal = true;
                     }
                 }
 
-                //if (saveBudget)
-                //{
-                //    var budget = new Budget
-                //    {
-                //        Value = model.Value,
-                //        Description = model.Description,
-                //        StartDate = model.StartDate,
-                //        ManagementReportId = id
-                //    };
+                var currentUser = userData.GetCurrentUser();
 
-                //    unitOfWork.ManagementReportRepository.AddBudget(budget);
-                //}
+                var budget = new Budget();                             
+                budget.StartDate = DateTime.Now;
+                budget.ManagementReportId = managementReportId;
+                budget.ModifiedBy = currentUser.UserName;
+                budget.Value = totalBudget;
+                budget.Description = "Budget";
+                unitOfWork.ManagementReportRepository.AddBudget(budget);
+
+                var pfa1 = new Budget();
+                pfa1.StartDate = DateTime.Now;
+                pfa1.ManagementReportId = managementReportId;
+                pfa1.ModifiedBy = currentUser.UserName;
+                pfa1.Value = totalPFA1;
+                pfa1.Description = "PFA1";
+                unitOfWork.ManagementReportRepository.AddBudget(pfa1);
+
+                var pfa2 = new Budget();
+                pfa2.StartDate = DateTime.Now;
+                pfa2.ManagementReportId = managementReportId;
+                pfa2.ModifiedBy = currentUser.UserName;
+                pfa2.Value = totalPFA2;
+                pfa2.Description = "PFA2";
+                unitOfWork.ManagementReportRepository.AddBudget(pfa2);
+
             }
             catch (Exception ex)
             {
