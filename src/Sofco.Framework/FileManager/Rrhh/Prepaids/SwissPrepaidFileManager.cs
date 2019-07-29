@@ -129,16 +129,23 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
             try
             {
-                if (DateTime.TryParse(data,
-                    System.Globalization.CultureInfo.GetCultureInfo("es-AR"),
-                    System.Globalization.DateTimeStyles.None, out DateTime dateValue))
-                {
-                    return new DateTime(dateValue.Year, dateValue.Month, 1);
-                }
-                else
-                {
-                    return DateTime.MinValue;
-                }
+                #if DEBUG
+                    if (DateTime.TryParse(data,
+                        System.Globalization.CultureInfo.GetCultureInfo("es-AR"),
+                        System.Globalization.DateTimeStyles.None, out DateTime dateValue))
+                    {
+                        return new DateTime(dateValue.Year, dateValue.Month, 1);
+                    }
+                    else
+                        return DateTime.MinValue;
+                #else
+                        if (DateTime.TryParse(data, out DateTime dateValue))
+                        {
+                            return new DateTime(dateValue.Year, dateValue.Month, 1);
+                        }
+                        else
+                            return DateTime.MinValue;
+                #endif
             }
             catch (Exception e)
             {
