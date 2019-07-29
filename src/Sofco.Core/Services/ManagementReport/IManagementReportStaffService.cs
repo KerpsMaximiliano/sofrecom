@@ -10,5 +10,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response<BudgetItem> UpdateBudget(int id, BudgetItem model);
         Response DeleteBudget(int id, int budgetId);
         Response<CostDetailStaffMonthModel> GetCostDetailMonth(int id, int month, int year);
+        Response<CostDetailStaffModel> GetCostDetailStaff(int managementReportId);
+        Response UpdateCostDetailStaff(CostDetailStaffModel pDetailCost);
     }
 }

@@ -7,7 +7,7 @@ import { MessageService } from "app/services/common/message.service";
 import { FormControl, Validators } from "@angular/forms";
 import { months } from "moment";
 import { DebugContext } from "@angular/core/src/view";
-import { ManagementReportService } from "app/services/management-report/management-report.service";
+import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
 
 @Component({
     selector: 'budget-staff',
@@ -50,7 +50,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
 
     //Constructor
-    constructor(private managementReportService: ManagementReportService,
+    constructor(private ManagementReportStaffService: ManagementReportStaffService,
         private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
         private menuService: MenuService,
@@ -75,7 +75,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     getCost() {
         this.messageService.showLoading();
 
-        this.getCostSubscrip = this.managementReportService.getCostDetailStaff(this.managementReportId).subscribe(response => {
+        this.getCostSubscrip = this.ManagementReportStaffService.getCostDetailStaff(this.managementReportId).subscribe(response => {
             this.messageService.closeLoading();
            
             this.model = response.data
@@ -259,7 +259,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     save() {
         this.messageService.showLoading();
    
-        this.updateCostSubscrip = this.managementReportService.PostCostDetailStaff(this.model).subscribe(() => {
+        this.updateCostSubscrip = this.ManagementReportStaffService.PostCostDetailStaff(this.model).subscribe(() => {
             this.messageService.closeLoading();
 
             setTimeout(() => {
