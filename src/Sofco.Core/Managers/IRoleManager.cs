@@ -24,5 +24,7 @@ namespace Sofco.Core.Managers
         bool IsPmo();
 
         bool IsRrhh();
+
+        bool IsCompliance();
     }
 }

@@ -38,6 +38,7 @@ import { DateRangePickerModule } from '../../components/date-range-picker/date-r
 import { RrhhService } from 'app/services/human-resources/rrhh.service';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AmountFormatModule } from 'app/pipes/amount-format.module';
 
 @NgModule({
   declarations: [WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
@@ -46,7 +47,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
              TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, 
-             PCheckModule, WorkTimeRouter, DateRangePickerModule, TooltipModule, NgSelectModule],
+             PCheckModule, WorkTimeRouter, DateRangePickerModule, TooltipModule, NgSelectModule, AmountFormatModule],
 
   providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService, ServiceService, 
                  WorktimeControlService, RrhhService],

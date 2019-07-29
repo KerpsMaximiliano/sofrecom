@@ -335,7 +335,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             CostProfiles: pProfiles,
             FundedResources: pFunded
         }
-        this.updateCostSubscrip = this.managementReportService.PostCostDetail(this.serviceId, model).subscribe(() => {
+        this.updateCostSubscrip = this.managementReportService.PostCostDetail(model).subscribe(() => {
             this.messageService.closeLoading();
 
             setTimeout(() => {

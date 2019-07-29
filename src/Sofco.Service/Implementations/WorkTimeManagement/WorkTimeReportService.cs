@@ -238,7 +238,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             foreach (var emp in employeesToRecalculate)
             {
-                if(emp.Count == 0) continue;
+                if (emp.Count == 0) continue;
 
                 var percentageToRecalculate = emp.Percentage / emp.Count;
 
@@ -292,20 +292,36 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 decimal hoursLoaded = 0;
                 decimal hoursApproved = 0;
+                decimal totalLeftLoaded = 0;
+                decimal totalLeftApproved = 0;
 
                 if (count > 0)
                 {
                     hoursLoaded = preventa.Sum(x => x) / count;
+                    totalLeftLoaded = preventa.Sum(x => x);
 
-                    if (preventaAprovedEmployee != null) hoursApproved = preventaAprovedEmployee.Sum(x => x) / count;
+                    if (preventaAprovedEmployee != null)
+                    {
+                        hoursApproved = preventaAprovedEmployee.Sum(x => x) / count;
+                        totalLeftApproved = preventaAprovedEmployee.Sum(x => x);
+                    }
                 }
 
                 foreach (var row in rows)
                 {
                     if (row.AnalyticId != 146 && row.AnalyticId != 166 && row.AnalyticId != 167)
                     {
-                        row.HoursLoaded += hoursLoaded;
-                        row.HoursApproved += hoursApproved;
+                        if (totalLeftLoaded > 0)
+                        {
+                            row.HoursLoaded += hoursLoaded;
+                            totalLeftLoaded -= hoursLoaded;
+                        }
+
+                        if (totalLeftApproved > 0)
+                        {
+                            row.HoursApproved += hoursApproved;
+                            totalLeftApproved -= hoursApproved;
+                        }
                     }
                 }
 
@@ -429,7 +445,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (item.HoursMustLoad != 0)
                     {
-                        item.RealPercentage = Math.Round((percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad) / 100), MidpointRounding.AwayFromZero);
+                        item.RealPercentage = (percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad)) / 100;
 
                         if (item.RealPercentage > 100) item.RealPercentage = 100;
                     }
@@ -442,13 +458,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var i = 1;
             foreach (var item in response.Data.Items)
             {
-                var sumPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.RealPercentage).Sum();
+                var resource = response.Data.Items.FirstOrDefault(x => x.EmployeeId == item.EmployeeId);
+                var sumAllHoursApproved = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Sum(x => x.HoursApproved);
 
                 if (item.Facturability > 0)
                 {
                     if (workTimeReportByHours)
                     {
-                        if (sumPercentage >= 100) item.HoursLoadedSuccesfully = true;
+                        if (sumAllHoursApproved >= resource.AllHoursMustLoad) item.HoursLoadedSuccesfully = true;
                     }
                     else
                     {
@@ -462,6 +479,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 if (workTimeReportByHours)
                 {
+                    if (item.RealPercentage <= 0) continue;
+
                     var tigerItem = new TigerReportItem(item.EmployeeNumber, item.RealPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
                     i++;
 
@@ -469,6 +488,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 }
                 else
                 {
+                    if (item.AllocationPercentage <= 0) continue;
+
                     var tigerItem = new TigerReportItem(item.EmployeeNumber, item.AllocationPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
                     i++;
 

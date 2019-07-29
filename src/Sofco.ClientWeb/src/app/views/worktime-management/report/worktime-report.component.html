@@ -72,7 +72,7 @@
                         
                                 <ul>
                                     <li *ngFor="let item of employeesWithHoursMissing">
-                                        {{ item.employee }}:  {{'workTimeManagement.report.hoursLoadedUntil' | translate }} {{ item.realPercentage }}% en {{ item.title }}
+                                        {{ item.employee }}:  {{'workTimeManagement.report.hoursLoadedUntil' | translate }} {{ item.realPercentage | amountFormat }}% en {{ item.title }}
                                     </li> 
                                 </ul>
                             </div>
@@ -138,9 +138,9 @@
                                 <label *ngIf="!item.result && item.hoursLoadedSuccesfully" class="label label-warning">{{'workTimeManagement.report.notAccomplished' | translate }}</label>
                             </td>
                             <td class="column-lg">{{ item.employee }}</td>
-                            <td class="column-xs">{{ item.allocationPercentage }} %</td>
+                            <td class="column-xs">{{ item.allocationPercentage | number: '1.2-2' }} %</td>
                             <td class="column-xs">{{ item.hoursMustLoad | number: '1.2-2' }}</td>
-                            <td class="column-xs">{{ item.realPercentage }} %</td>
+                            <td class="column-xs">{{ item.realPercentage | number: '1.2-2' }} %</td>
                             <td class="column-xs">{{ item.hoursLoaded | number: '1.2-2' }}</td>
                             <td class="column-xs">{{ item.hoursApproved | number: '1.2-2'  }}</td>
                             <td class="column-xs">{{ item.facturability }} %</td>
