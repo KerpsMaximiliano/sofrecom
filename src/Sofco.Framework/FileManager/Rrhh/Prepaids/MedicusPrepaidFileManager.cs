@@ -154,7 +154,6 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                 itemToAdd.PrepaidCost = Convert.ToDecimal(reader.GetDouble(CostColumn));
                 itemToAdd.PrepaidPlan = reader.GetString( PlanColumn).Trim();
                 itemToAdd.Period = GetPeriod(reader.GetDouble( PeriodColumn).ToString(CultureInfo.InvariantCulture));
-
             }
         }
 
