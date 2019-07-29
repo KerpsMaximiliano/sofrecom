@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 using ExcelDataReader;
 using Microsoft.AspNetCore.Http;
-using OfficeOpenXml;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Models.Rrhh;
@@ -90,7 +89,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                             itemToAdd.Dni = dni.ToString();
                             itemToAdd.PrepaidBeneficiaries = 1;
 
-                            SetTitularData(reader, type, itemToAdd, index);
+                            SetTitularData(reader, type, itemToAdd);
 
                             var dniToInt = Convert.ToInt32(dni);
 
@@ -116,7 +115,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                         else
                         {
                             itemToAdd.PrepaidBeneficiaries++;
-                            SetTitularData(reader, type, itemToAdd, index);
+                            SetTitularData(reader, type, itemToAdd);
                         }
 
                         index++;
@@ -148,14 +147,47 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
             return response;
         }
 
-        private void SetTitularData(IExcelDataReader reader, string type, PrepaidImportedData itemToAdd, int index)
+        private void SetTitularData(IExcelDataReader reader, string type, PrepaidImportedData itemToAdd)
         {
             if (type == "TITULAR")
             {
                 itemToAdd.PrepaidCost = Convert.ToDecimal(reader.GetDouble(CostColumn));
                 itemToAdd.PrepaidPlan = reader.GetString( PlanColumn).Trim();
-                itemToAdd.Period = reader.GetDateTime( PeriodColumn);
+                itemToAdd.Period = GetPeriod(reader.GetDouble( PeriodColumn).ToString(CultureInfo.InvariantCulture));
+
             }
+        }
+
+        private DateTime GetPeriod(string data)
+        {
+            if (string.IsNullOrWhiteSpace(data)) return DateTime.MinValue;
+
+            if (data.Length != 7 && data.Length != 8) return DateTime.MinValue;
+
+            try
+            {
+                if (data.Length == 7)
+                {
+                    var month = Convert.ToInt32(data.Substring(1, 2));
+                    var year = Convert.ToInt32(data.Substring(3, 4));
+
+                    return new DateTime(year, month, 1);
+                }
+
+                if (data.Length == 8)
+                {
+                    var month = Convert.ToInt32(data.Substring(0, 2));
+                    var year = Convert.ToInt32(data.Substring(2, 4));
+
+                    return new DateTime(year, month, 1);
+                }
+            }
+            catch (Exception e)
+            {
+                return DateTime.MinValue;
+            }
+
+            return DateTime.MinValue;
         }
     }
 }
