@@ -45,6 +45,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         managerId: null,
         billingPercentage: 0,
         holidaysPending: null,
+        extraHolidays: null,
         hasCreditCard: false
     }
 
@@ -127,10 +128,11 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.editModel.businessHours = response.data.businessHours;
             this.editModel.businessHoursDescription = response.data.businessHoursDescription;
             this.editModel.office = response.data.officeAddress;
-            this.editModel.holidaysPending = response.data.holidaysPendingByLaw;
+            this.editModel.holidaysPending = response.data.holidaysPending;
             this.editModel.managerId = response.data.managerId.toString();
             this.editModel.billingPercentage = response.data.percentage;
             this.editModel.hasCreditCard = response.data.hasCreditCard;
+            this.editModel.extraHolidays = response.data.extraHolidaysQuantity;
 
             this.messageService.closeLoading();
             this.initGrid();
@@ -238,6 +240,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             office: this.editModel.office,
             billingPercentage: this.editModel.billingPercentage,
             managerId: this.editModel.managerId,
+            extraHolidays: this.editModel.extraHolidays,
             hasCreditCard: this.editModel.hasCreditCard
         };
 

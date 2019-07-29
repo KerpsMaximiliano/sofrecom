@@ -310,11 +310,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.BusinessHours = model.BusinessHours.GetValueOrDefault();
                 employee.BusinessHoursDescription = model.BusinessHoursDescription;
                 employee.OfficeAddress = model.Office;
-                employee.HolidaysPendingByLaw = model.HolidaysPending.GetValueOrDefault();
+           
                 employee.ManagerId = model.ManagerId;
                 employee.BillingPercentage = model.BillingPercentage.GetValueOrDefault();
-                employee.HolidaysPending = CalculateHolidaysPending(model);
                 employee.HasCreditCard = model.HasCreditCard;
+
+                employee.HolidaysPendingByLaw = CalculateHolidaysPending(model.HolidaysPending.GetValueOrDefault());
+                employee.HolidaysPending = model.HolidaysPending.GetValueOrDefault();
+
+                employee.ExtraHolidaysQuantityByLaw = CalculateHolidaysPending(model.ExtraHolidays.GetValueOrDefault());
+                employee.ExtraHolidaysQuantity = model.ExtraHolidays.GetValueOrDefault();
+
+                employee.HasExtraHolidays = employee.ExtraHolidaysQuantity != 0;
 
                 unitOfWork.EmployeeRepository.UpdateBusinessHours(employee);
                 unitOfWork.Save();
@@ -374,14 +381,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             };
         }
 
-        private int CalculateHolidaysPending(EmployeeBusinessHoursParams model)
+        private int CalculateHolidaysPending(int days)
         {
-            var daysPending = (model.HolidaysPending.GetValueOrDefault() / 7) * 5;
-            var resto = model.HolidaysPending.GetValueOrDefault() % 7;
+            var daysPending = (days / 5) * 2;
 
-            if (resto < 6) daysPending += resto;
-            if (resto == 6 || resto == 7) daysPending += 5;
-            return daysPending;
+            return daysPending + days;
         }
 
         public Response<IList<EmployeeCategoryOption>> GetCurrentCategories()

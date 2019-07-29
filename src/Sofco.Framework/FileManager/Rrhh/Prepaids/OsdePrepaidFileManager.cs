@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using OfficeOpenXml;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
@@ -127,17 +127,25 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
         {
             if (string.IsNullOrWhiteSpace(data)) return DateTime.MinValue;
 
-            var dataSplit = data.Split(' ');
-
-            if (dataSplit.Length != 4 && dataSplit.Length != 3) return DateTime.MinValue;
-
-            var dateSplit = dataSplit[0].Split('/');
-
-            if (dateSplit.Length != 3) return DateTime.MinValue;
-
             try
             {
-                return new DateTime(Convert.ToInt32(dateSplit[2]), Convert.ToInt32(dateSplit[1]), 1);
+                #if DEBUG
+                    if (DateTime.TryParse(data,
+                         System.Globalization.CultureInfo.GetCultureInfo("es-AR"),
+                         System.Globalization.DateTimeStyles.None, out DateTime dateValue))
+                    {
+                        return new DateTime(dateValue.Year, dateValue.Month, 1);
+                    }
+                    else
+                        return DateTime.MinValue;
+                #else
+                    if (DateTime.TryParse(data, out DateTime dateValue))
+                    {
+                        return new DateTime(dateValue.Year, dateValue.Month, 1);
+                    }
+                    else
+                        return DateTime.MinValue;
+                #endif
             }
             catch (Exception e)
             {

@@ -1,6 +1,5 @@
 ﻿using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
-using Sofco.Core.Logger;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Framework.FileManager.Rrhh.Prepaids;
 
