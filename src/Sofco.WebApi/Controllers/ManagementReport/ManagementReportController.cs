@@ -49,14 +49,6 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
-        [HttpPost("costDetailStaff")]
-        public IActionResult PostDetailCostStaff([FromBody] CostDetailStaffModel model)
-        {
-            var response = managementReportService.UpdateCostDetailStaff(model);
-
-            return this.CreateResponse(response);
-        }
-
         [HttpPost("{serviceId}/costDetailMonth")]
         public IActionResult PutDetailCostMonth([FromBody] CostDetailMonthModel model)
         {
@@ -136,14 +128,6 @@ namespace Sofco.WebApi.Controllers.ManagementReport
         public IActionResult Close([FromBody] ManagementReportCloseModel model)
         {
             var response = managementReportService.Close(model);
-
-            return this.CreateResponse(response);
-        }
-
-        [HttpGet("{id}/costDetailStaff")]
-        public IActionResult GetDetailCostStaff(int id)
-        {
-            var response = managementReportService.GetCostDetailStaff(id);
 
             return this.CreateResponse(response);
         }

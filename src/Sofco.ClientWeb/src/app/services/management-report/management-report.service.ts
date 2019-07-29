@@ -22,20 +22,12 @@ export class ManagementReportService {
 
   getCostDetail(serviceId){
     return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetail`);
-  }
-
-  getCostDetailStaff(serviceId){
-    return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetailStaff`);
-  }
+  }  
 
   PostCostDetail(model){
     return this.http.post<any>(`${this.baseUrl}/managementReport/costDetail`, model);
   }
-
-  PostCostDetailStaff(model){
-    return this.http.post<any>(`${this.baseUrl}/managementReport/costDetailStaff`, model);
-  }
-
+ 
   PostCostDetailMonth(serviceId, model){
     return this.http.post<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetailMonth`, model);
   }

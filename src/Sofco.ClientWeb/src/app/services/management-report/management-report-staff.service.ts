@@ -42,4 +42,12 @@ export class ManagementReportStaffService {
   getCostDetailMonth(id, month, year){
     return this.http.get<any>(`${this.baseUrl}/managementReportStaff/${id}/costDetailMonth/${month}/${year}`);
   }
+
+  getCostDetailStaff(serviceId){
+    return this.http.get<any>(`${this.baseUrl}/managementReportStaff/${serviceId}/costDetailStaff`);
+  }
+
+  PostCostDetailStaff(model){
+    return this.http.post<any>(`${this.baseUrl}/managementReportStaff/costDetailStaff`, model);
+  }
 }

@@ -161,7 +161,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.AddError(Resources.ManagementReport.ManagementReport.BudgetNotFound);
                 return response;
             }
-                
+
             ValidateBudget(model, response);
             if (response.HasErrors()) return response;
 
@@ -266,6 +266,131 @@ namespace Sofco.Service.Implementations.ManagementReport
             response.Data.Employees = resources;
 
             return response;
+        }
+
+        public Response<CostDetailStaffModel> GetCostDetailStaff(int ManagementReportId)
+        {
+            var response = new Response<CostDetailStaffModel> { Data = new CostDetailStaffModel() };
+            try
+            {
+                var managementReport = unitOfWork.ManagementReportRepository.GetById(ManagementReportId);
+                if (managementReport == null)
+                {
+                    response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                    return response;
+                }
+
+                response.Data.AnalyticId = managementReport.Analytic.Id;
+
+                response.Data.MonthsHeader = new List<MonthDetailCostStaff>();
+                response.Data.ManagementReportId = managementReport.Analytic.ManagementReport.Id;
+
+                //Obtengo los meses que tiene la analitica
+                var dates = SetDates(managementReport.Analytic);
+
+                var costDetails = managementReport.CostDetails;
+
+                for (DateTime date = new DateTime(dates.Item1.Year, dates.Item1.Month, 1).Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
+                {
+                    var monthHeader = new MonthDetailCostStaff();
+                    monthHeader.Display = DatesHelper.GetDateShortDescription(date);
+                    monthHeader.MonthYear = date;
+
+                    response.Data.MonthsHeader.Add(monthHeader);
+                }
+
+                response.Data.BudgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget().Select(x => new BudgetTypeItem(x)).ToList();
+                response.Data.AllSubcategories = this.FillAllSubcategories();
+                response.Data.CostCategories = this.FillCategoriesByMonth(response.Data.MonthsHeader, costDetails);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response UpdateCostDetailStaff(CostDetailStaffModel pDetailCost)
+        {
+            var response = new Response();
+            try
+            {
+                var managementReport = unitOfWork.ManagementReportRepository.GetById(pDetailCost.ManagementReportId);
+                var analytic = unitOfWork.AnalyticRepository.GetById(managementReport.AnalyticId);
+
+                var listMonths = this.VerifyAnalyticMonths(managementReport, analytic.StartDateContract, analytic.EndDateContract);
+
+                this.InsertUpdateCostDetailStaff(pDetailCost.CostCategories);
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        private void InsertUpdateCostDetailStaff(List<CostCategory> costCategories)
+        {
+            try
+            {
+                foreach (var category in costCategories)
+                {
+                    foreach (var month in category.MonthsCategory)
+                    {
+                        var allSubcategories = month.SubcategoriesBudget
+                                                        .Union(month.SubcategoriesPfa1)
+                                                        .Union(month.SubcategoriesPfa2)
+                                                        .Union(month.SubcategoriesReal);
+
+                        foreach (var subCatBudget in allSubcategories)
+                        {
+                            var entity = new CostDetailStaff();
+
+                            if (subCatBudget.CostDetailStaffId > 0)
+                            {
+                                entity = unitOfWork.CostDetailStaffRepository.Get(subCatBudget.CostDetailStaffId);
+
+                                if (subCatBudget.Value != entity.Value || subCatBudget.Description != entity.Description)
+                                {
+                                    entity.Value = subCatBudget.Value ?? 0;
+                                    entity.Description = subCatBudget.Description;
+
+                                    unitOfWork.CostDetailStaffRepository.Update(entity);
+                                }
+                            }
+                            else
+                            {
+                                if (subCatBudget.Value > 0 || !string.IsNullOrEmpty(subCatBudget.Description))
+                                {
+                                    entity.Value = subCatBudget.Value ?? 0;
+                                    entity.Description = subCatBudget.Description;
+                                    entity.CostDetailId = month.CostDetailId;
+                                    entity.CostDetailSubcategoryId = subCatBudget.Id;
+                                    entity.BudgetTypeId = subCatBudget.BudgetTypeId;
+
+                                    unitOfWork.CostDetailStaffRepository.Insert(entity);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                throw ex;
+            }
         }
 
         private void ValidateBudget(BudgetItem model, Response<BudgetItem> response)
@@ -417,5 +542,234 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             return list;
         }
+
+        private List<CostCategory> FillCategoriesByMonth(IList<MonthDetailCostStaff> Months, ICollection<CostDetail> costDetails)
+        {
+            List<CostCategory> costCategories = new List<CostCategory>();
+
+            var categories = unitOfWork.CostDetailRepository.GetCategories();
+
+            foreach (var category in categories)
+            {
+                var detailCategory = new CostCategory();
+
+                detailCategory.MonthsCategory = new List<MonthDetailCostStaff>();
+
+                detailCategory.Id = category.Id;
+                detailCategory.Name = category.Name;
+
+                foreach (var mounth in Months)
+                {
+                    var monthDetail = new MonthDetailCostStaff();
+                    monthDetail.SubcategoriesBudget = new List<CostSubcategory>();
+                    monthDetail.SubcategoriesPfa1 = new List<CostSubcategory>();
+                    monthDetail.SubcategoriesPfa2 = new List<CostSubcategory>();
+                    monthDetail.SubcategoriesReal = new List<CostSubcategory>();
+
+                    monthDetail.Display = mounth.Display;
+                    monthDetail.MonthYear = mounth.MonthYear;
+
+                    var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
+                    if (costDetailMonth != null)
+                    {
+                        monthDetail.CostDetailId = costDetailMonth.Id;
+
+                        var subcategories = costDetailMonth.CostDetailStaff.Where(o => o.CostDetailSubcategory.CostDetailCategoryId == category.Id).ToList();
+                        if (subcategories != null)
+                        {
+                            monthDetail.TotalBudget = subcategories.Where(x => x.BudgetType.Name.ToUpper() == "BUDGET").Sum(x => x.Value);
+                            monthDetail.TotalPfa1 = subcategories.Where(x => x.BudgetType.Name.ToUpper() == "PFA1").Sum(x => x.Value);
+                            monthDetail.TotalPfa2 = subcategories.Where(x => x.BudgetType.Name.ToUpper() == "PFA2").Sum(x => x.Value);
+                            monthDetail.TotalReal = subcategories.Where(x => x.BudgetType.Name.ToUpper() == "REAL").Sum(x => x.Value);
+
+                            foreach (var subcategory in subcategories)
+                            {
+                                var detailSubcategory = new CostSubcategory();
+
+                                detailSubcategory.Id = subcategory.CostDetailSubcategoryId;
+                                detailSubcategory.CostDetailStaffId = subcategory.Id;
+                                detailSubcategory.Name = subcategory.CostDetailSubcategory.Name;
+                                detailSubcategory.Description = subcategory.Description;
+                                detailSubcategory.Value = subcategory.Value;
+                                detailSubcategory.BudgetTypeId = subcategory.BudgetTypeId;
+
+                                switch (subcategory.BudgetType.Name.ToUpper())
+                                {
+                                    case "BUDGET":
+                                        monthDetail.SubcategoriesBudget.Add(detailSubcategory);
+                                        break;
+                                    case "PFA1":
+                                        monthDetail.SubcategoriesPfa1.Add(detailSubcategory);
+                                        break;
+                                    case "PFA2":
+                                        monthDetail.SubcategoriesPfa2.Add(detailSubcategory);
+                                        break;
+                                    case "REAL":
+                                        monthDetail.SubcategoriesReal.Add(detailSubcategory);
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                    detailCategory.MonthsCategory.Add(monthDetail);
+                }
+
+                costCategories.Add(detailCategory);
+            }
+
+            return costCategories;
+        }
+
+        private List<CostSubcategory> FillAllSubcategories()
+        {
+            var subcategories = unitOfWork.CostDetailRepository.GetSubcategories();
+
+            return subcategories
+                        .Select(x => new CostSubcategory
+                        {
+                            Id = x.Id,
+                            Name = x.Name,
+                            IdCategory = x.CostDetailCategoryId
+                        })
+                        .OrderBy(x => x.Name)
+                        .ToList();
+        }
+
+        private Tuple<DateTime, DateTime> SetDates(Analytic analytic)
+        {
+            var today = DateTime.UtcNow;
+
+            DateTime startDate;
+            DateTime endDate;
+
+            if (analytic.ManagementReport != null)
+            {
+                startDate = new DateTime(analytic.ManagementReport.StartDate.Year, analytic.ManagementReport.StartDate.Month, 1);
+                endDate = new DateTime(analytic.ManagementReport.EndDate.Year, analytic.ManagementReport.EndDate.Month,
+                    DateTime.DaysInMonth(analytic.ManagementReport.EndDate.Year,
+                        analytic.ManagementReport.EndDate.Month));
+            }
+            else
+            {
+                if (analytic.StartDateContract.Year <= today.Year)
+                {
+                    startDate = analytic.StartDateContract.Date;
+
+                    endDate = analytic.EndDateContract.Year > today.Year
+                        ? new DateTime(today.Year, 12, 31)
+                        : analytic.EndDateContract.Date;
+                }
+                else
+                {
+                    startDate = new DateTime(today.Year, 1, 1);
+
+                    endDate = analytic.EndDateContract.Year > today.Year
+                        ? new DateTime(today.Year, 12, 31)
+                        : analytic.EndDateContract.Date;
+                }
+            }
+
+            return new Tuple<DateTime, DateTime>(startDate, endDate);
+        }
+
+        private List<MonthDetailCost> VerifyAnalyticMonths(Sofco.Domain.Models.ManagementReport.ManagementReport pManagementReport, DateTime startDateAnalytic, DateTime endDateAnalytic)
+        {
+            List<MonthDetailCost> MonthsAnalytic = new List<MonthDetailCost>();
+            try
+            {
+                for (DateTime date = new DateTime(startDateAnalytic.Year, startDateAnalytic.Month, 1).Date; date.Date <= endDateAnalytic.Date; date = date.AddMonths(1))
+                {
+                    var month = new MonthDetailCost();
+                    month.MonthYear = date;
+
+                    MonthsAnalytic.Add(month);
+                }
+
+                // Verifico que todos los meses de la analitica esten cargados en base de datos.
+
+                foreach (var mounth in MonthsAnalytic)
+                {
+                    var costDetailMonth = pManagementReport.CostDetails
+                                                    .Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date)
+                                                    .FirstOrDefault();
+                    if (costDetailMonth == null)
+                    {
+                        var entity = new CostDetail();
+
+                        entity.ManagementReportId = pManagementReport.Id;
+                        entity.MonthYear = mounth.MonthYear;
+
+                        unitOfWork.CostDetailRepository.Insert(entity);
+                    }
+                }
+
+                unitOfWork.Save();
+
+                return MonthsAnalytic;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                throw ex;
+            }
+        }
+
+        private void InsertTotalBudgets(List<CostCategory> costCategories)
+        {
+            decimal totalBudget = 0;
+            decimal totalPFA1 = 0;
+            decimal totalPFA2 = 0;
+            decimal totalReal = 0;
+
+            bool saveBudget = false;
+            bool savePFA1 = false;
+            bool savePFA2 = false;
+            bool saveReal = false;
+
+            try
+            {
+                foreach (var category in costCategories)
+                {
+                    foreach (var month in category.MonthsCategory)
+                    {
+                        totalBudget += month.SubcategoriesBudget.Sum(x => x.Value) ?? 0;
+                        totalPFA1 += month.SubcategoriesPfa1.Sum(x => x.Value) ?? 0;
+                        totalPFA2 += month.SubcategoriesPfa2.Sum(x => x.Value) ?? 0;
+                        totalReal += month.SubcategoriesReal.Sum(x => x.Value) ?? 0;
+
+                        if(month.SubcategoriesBudget.Count > 0)
+                            saveBudget = true;
+                        if (month.SubcategoriesPfa1.Count > 0)
+                            savePFA1 = true;
+                        if (month.SubcategoriesPfa2.Count > 0)
+                            savePFA2 = true;
+                        if (month.SubcategoriesReal.Count > 0)
+                            saveReal = true;
+                    }
+                }
+
+                //if (saveBudget)
+                //{
+                //    var budget = new Budget
+                //    {
+                //        Value = model.Value,
+                //        Description = model.Description,
+                //        StartDate = model.StartDate,
+                //        ManagementReportId = id
+                //    };
+
+                //    unitOfWork.ManagementReportRepository.AddBudget(budget);
+                //}
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                throw ex;
+            }
+        }
+
+
+
     }
 }
