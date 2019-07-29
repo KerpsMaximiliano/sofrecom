@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
+using Sofco.Core.Logger;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Rrhh;
@@ -18,6 +19,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
     public class OsdePrepaidFileManager : BasePrepaidFileManager, IPrepaidFileManager
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly ILogMailer<OsdePrepaidFileManager> logger;
 
         private const int DocumentColumn = 11;
         private const int CuilColumn = 10;
@@ -26,10 +28,11 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
         private const int PlanColumn = 20;
         private const int PeriodColumn = 1;
 
-        public OsdePrepaidFileManager(IUnitOfWork unitOfWork)
+        public OsdePrepaidFileManager(IUnitOfWork unitOfWork, ILogMailer<OsdePrepaidFileManager> logger)
         {
             this.unitOfWork = unitOfWork;
             FileName = "osde.xlsx";
+            this.logger = logger;
         }
 
         public Response<PrepaidDashboard> Process(int yearId, int monthId, IFormFile file, Prepaid prepaid)
@@ -129,6 +132,8 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
             try
             {
+                logger.LogError(data, new Exception());
+
                 if (DateTime.TryParse(data,
                     System.Globalization.CultureInfo.GetCultureInfo("es-AR"),
                     System.Globalization.DateTimeStyles.None, out DateTime dateValue))
