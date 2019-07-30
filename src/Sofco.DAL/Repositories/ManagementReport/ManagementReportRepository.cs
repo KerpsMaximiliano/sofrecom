@@ -88,6 +88,13 @@ namespace Sofco.DAL.Repositories.ManagementReport
             return context.Budgets.SingleOrDefault(x => x.Id == id);
         }
 
+        public List<Budget> GetBudgetByIdStaff(int managementReportId)
+        {
+            return context.Budgets
+                    .Where(x => x.ManagementReportId == managementReportId)
+                    .ToList();
+        }
+
         public void UpdateBudget(Budget budget)
         {
             context.Budgets.Update(budget);

@@ -8,6 +8,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { months } from "moment";
 import { DebugContext } from "@angular/core/src/view";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
+import { ManagementReportDetailStaffComponent } from "app/views/management-report/staff/detail/detail-staff";
 
 @Component({
     selector: 'budget-staff',
@@ -54,6 +55,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
         private menuService: MenuService,
+        private detailStaffComponent: ManagementReportDetailStaffComponent
     ) { }
 
     ngOnInit(): void {
@@ -262,6 +264,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.updateCostSubscrip = this.ManagementReportStaffService.PostCostDetailStaff(this.model).subscribe(() => {
             this.messageService.closeLoading();
 
+            this.detailStaffComponent.getDetail()
+            
             setTimeout(() => {
                 this.sendDataToDetailView();
             }, 1500);

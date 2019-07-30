@@ -16,6 +16,7 @@ namespace Sofco.Core.DAL.ManagementReport
         Domain.Models.ManagementReport.ManagementReport GetStaffById(int id);
         void AddBudget(Budget budget);
         Budget GetBudget(int id);
+        List<Budget> GetBudgetByIdStaff(int managementReportId);
         void UpdateBudget(Budget budget);
         void DeleteBudget(Budget budget);
         List<BudgetType> GetTypesBudget();

@@ -47,6 +47,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     @ViewChild('dateReportStart') dateReportStart;
     @ViewChild('dateReportEnd') dateReportEnd;
     @ViewChild('editDateModal') editDateModal;
+    @ViewChild('budgetHistoryModal') budgetHistoryModal;
     @ViewChild('costDetailMonth') costDetailMonth;
     @ViewChild("budget") budgetView;
     @ViewChild("tracing") tracingView;
@@ -67,6 +68,14 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
+    );
+
+    public budgetHistoryModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Presupuesto",
+        "budgetHistorialModal",
+        false,
+        true,
+        "ACTIONS.ACCEPT",
     );
 
     private today: Date = new Date();
@@ -371,5 +380,10 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
 
     getBudgetData(event){
         this.tracingView.calculateAccumulated(event.months)
+    }
+
+    openBudgetHistory(){
+
+        this.budgetHistoryModal.show();    
     }
 }
