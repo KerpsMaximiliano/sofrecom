@@ -414,8 +414,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-       
-
         public Response<CostDetailMonthModel> GetCostDetailMonth(string pServiceId, int pMonth, int pYear)
         {
             var response = new Response<CostDetailMonthModel> { Data = new CostDetailMonthModel() };
@@ -1048,39 +1046,56 @@ namespace Sofco.Service.Implementations.ManagementReport
                 detailEmployee.EmployeeId = employee.Id;
                 detailEmployee.UserId = user?.Id;
                 detailEmployee.Display = employee.Name + " - " + employee.EmployeeNumber;
-                //detailEmployee.TypeId = EmployeeType.Id;
-                detailEmployee.TypeName = EnumCostDetailType.Empleados.ToString();
+                detailEmployee.TypeName = EnumCostDetailType.Empleados;
+
+                var canViewSensibleData = roleManager.CanViewSensibleData();
 
                 foreach (var mounth in Months)
                 {
                     var monthDetail = new MonthDetailCost();
 
-                    var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
+                    var costDetailMonth = costDetails.FirstOrDefault(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
+
                     if (costDetailMonth != null)
                     {
                         var monthValue = costDetailMonth.CostDetailResources.FirstOrDefault(e => e.EmployeeId == employee.Id);
-                        // var monthValue = CostDetailEmployees.Find(e => e.CostDetailResources.EmployeeId == employee.Id && new DateTime(e.MonthYear.Year, e.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
+
                         if (monthValue != null && !string.IsNullOrWhiteSpace(monthValue.Value))
                         {
-                            if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Value), out var salary)) salary = 0;
-                            if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges)) charges = 0;
+                            if (canViewSensibleData)
+                            {
+                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Value), out var salary)) salary = 0;
+                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges)) charges = 0;
 
-                            monthDetail.Value = salary;
-                            monthDetail.OriginalValue = salary;
-                            monthDetail.Charges = charges;
+                                monthDetail.Value = salary;
+                                monthDetail.OriginalValue = salary;
+                                monthDetail.Charges = charges;
+                                monthDetail.CanViewSensibleData = true;
+                            }
+               
                             monthValue.Adjustment = monthValue.Adjustment;
                             monthDetail.Id = monthValue.Id;
                         }
                         else
                         {
-                            var socialCharge = employee?.SocialCharges.FirstOrDefault(x => x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
+                            if (canViewSensibleData)
+                            {
+                                if (employee.SocialCharges != null && employee.SocialCharges.Any())
+                                {
+                                    var socialCharge = employee?.SocialCharges.FirstOrDefault(x => x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
 
-                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
-                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
+                                    if (socialCharge != null)
+                                    {
+                                        if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
+                                        if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
 
-                            monthDetail.Value = salary;
-                            monthDetail.OriginalValue = salary;
-                            monthDetail.Charges = charges;
+                                        monthDetail.Value = salary;
+                                        monthDetail.OriginalValue = salary;
+                                        monthDetail.Charges = charges;
+                                        monthDetail.CanViewSensibleData = true;
+                                    }
+                                }
+                            }
                         }
 
                         monthDetail.Closed = costDetailMonth.Closed;
@@ -1108,6 +1123,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     detailEmployee.MonthsCost.Add(monthDetail);
                 }
+
                 costEmployees.Add(detailEmployee);
             }
 

@@ -47,9 +47,14 @@
                     <th class="static first-column" scope="col">{{ employee.display }}</th>
                     <td *ngFor="let monthCost of employee.monthsCost | fromDateFilter: fromMonth; let i = index; first as isFirst"
                         [ngClass]="{'first-col': isFirst}">
-                        <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
+
+                        <label class="label" (click)="openEditItemModal(monthCost, employee, i)" *ngIf="monthCost.canViewSensibleData"
                             [ngClass]="AccessEmployeeClass(monthCost)">
                             {{ monthCost.value | amountFormat }}
+                        </label>
+
+                        <label class="label"  *ngIf="!monthCost.canViewSensibleData" [ngClass]="AccessEmployeeClass(monthCost)">
+                            ***
                         </label>
                     </td>
                 </tr>

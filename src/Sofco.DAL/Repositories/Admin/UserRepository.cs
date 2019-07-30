@@ -324,5 +324,13 @@ namespace Sofco.DAL.Repositories.Admin
 
             return users;
         }
+
+        public bool HasSensibleDataGroup(string currentUserEmail)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(currentUserEmail) && x.UserGroups.Any(s => s.Group.Code == appSetting.SensibleFunctionality));
+        }
     }
 }

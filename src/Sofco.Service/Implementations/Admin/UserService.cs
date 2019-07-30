@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
+using Sofco.Common.Settings;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Core.Models.Admin;
 using Sofco.Domain.Utils;
 using Sofco.Core.Services.Admin;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.Common;
 using Sofco.Domain.Relationships;
+using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.AllocationManagement;
 
 namespace Sofco.Service.Implementations.Admin
@@ -25,12 +31,31 @@ namespace Sofco.Service.Implementations.Admin
 
         private readonly IMapper mapper;
 
-        public UserService(IUnitOfWork unitOfWork, ILogMailer<UserService> logger, ISessionManager sessionManager, IMapper mapper)
+        private readonly AppSetting appSetting;
+
+        private readonly IMailSender mailSender;
+
+        private readonly IMailBuilder mailBuilder;
+
+        private readonly EmailConfig emailConfig;
+
+        public UserService(IUnitOfWork unitOfWork, 
+            ILogMailer<UserService> logger, 
+            ISessionManager sessionManager, 
+            IMailSender mailSender,
+            IMailBuilder mailBuilder,
+            IOptions<AppSetting> appSettingsOptions,
+            IOptions<EmailConfig> emailConfigOptions,
+            IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.sessionManager = sessionManager;
             this.mapper = mapper;
+            this.mailSender = mailSender;
+            this.mailBuilder = mailBuilder;
+            this.emailConfig = emailConfigOptions.Value;
+            this.appSetting = appSettingsOptions.Value;
         }
 
         public Response<User> Active(int id, bool active)
@@ -76,9 +101,9 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
             }
 
-            var userGroup = unitOfWork.GroupRepository.GetSingle(x => x.Id == groupId);
+            var group = unitOfWork.GroupRepository.GetSingle(x => x.Id == groupId);
 
-            if (userGroup == null)
+            if (group == null)
             {
                 response.AddError(Resources.Admin.Group.NotFound);
                 return response;
@@ -87,11 +112,56 @@ namespace Sofco.Service.Implementations.Admin
             var entity = new UserGroup { UserId = userId, GroupId = groupId };
 
             unitOfWork.UserGroupRepository.Insert(entity);
+
             unitOfWork.Save();
 
             response.AddSuccess(Resources.Admin.User.GroupAssigned);
 
+            AddLogSensibleData(group, user);
+
             return response;
+        }
+
+        private void AddLogSensibleData(Group group, User user)
+        {
+            if (appSetting.SensibleFunctionality == group.Code)
+            {
+                try
+                {
+                    var log = new Log
+                    {
+                        Created = DateTime.UtcNow,
+                        Username = sessionManager.GetUserName(),
+                        Comment = string.Format(Resources.Mails.MailMessageResource.SensibleData, user.Name)
+                    };
+
+                    unitOfWork.LogRepository.Insert(log);
+                    unitOfWork.Save();
+
+                    var rrhhGroup = unitOfWork.GroupRepository.GetByCode(emailConfig.RRhhAb);
+                    var monica = unitOfWork.UserRepository.Get(appSetting.MonicaBimanUserId);
+
+                    var recipientsList = new List<string>();
+
+                    if (rrhhGroup != null) recipientsList.Add(rrhhGroup.Email);
+                    if (monica != null) recipientsList.Add(monica.Email);
+
+                    var data = new MailDefaultData
+                    {
+                        Title = Resources.Mails.MailSubjectResource.SensibleData,
+                        Message = string.Format(Resources.Mails.MailMessageResource.SensibleData, user.Name),
+                        Recipients = recipientsList.Distinct().ToList()
+                    };
+
+                    var email = mailBuilder.GetEmail(data);
+
+                    mailSender.Send(email);
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e);
+                }
+            }
         }
 
         public IList<User> GetAllReadOnly(bool active)
@@ -159,25 +229,32 @@ namespace Sofco.Service.Implementations.Admin
         {
             var response = new Response<User>();
 
-            var userExist = unitOfWork.UserRepository.ExistById(userId);
+            var userExist = unitOfWork.UserRepository.Get(userId);
 
-            if (!userExist)
+            if (userExist == null)
             {
                 response.AddError(Resources.Admin.User.NotFound);
                 return response;
             }
+
+            Group groupSensible = null;
 
             try
             {
                 foreach (var groupId in groupsToAdd)
                 {
                     var entity = new UserGroup { UserId = userId, GroupId = groupId };
-                    var groupExist = unitOfWork.GroupRepository.ExistById(groupId);
+                    var groupExist = unitOfWork.GroupRepository.Get(groupId);
                     var userGroupExist = unitOfWork.UserGroupRepository.ExistById(userId, groupId);
 
-                    if (groupExist && !userGroupExist)
+                    if (groupExist != null && !userGroupExist)
                     {
                         unitOfWork.UserGroupRepository.Insert(entity);
+
+                        if (appSetting.SensibleFunctionality == groupExist.Code)
+                        {
+                            groupSensible = groupExist;
+                        }
                     }
                 }
 
@@ -201,6 +278,9 @@ namespace Sofco.Service.Implementations.Admin
                 response.AddError(Resources.Common.ErrorSave);
                 logger.LogError(e);
             }
+
+            if(groupSensible != null)
+                AddLogSensibleData(groupSensible, userExist);
 
             return response;
         }

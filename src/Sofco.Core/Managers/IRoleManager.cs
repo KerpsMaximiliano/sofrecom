@@ -26,5 +26,7 @@ namespace Sofco.Core.Managers
         bool IsRrhh();
 
         bool IsCompliance();
+
+        bool CanViewSensibleData();
     }
 }

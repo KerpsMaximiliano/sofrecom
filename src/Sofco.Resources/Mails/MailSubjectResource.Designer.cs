@@ -241,6 +241,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Accesos a datos sensibles del informe de Gestión.
+        /// </summary>
+        public static string SensibleData {
+            get {
+                return ResourceManager.GetString("SensibleData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a SOLFAC - COBRADA - {0} - {1} - {2} - {3}.
         /// </summary>
         public static string SolfacStatusAmountCashedTitle {

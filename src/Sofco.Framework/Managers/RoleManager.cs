@@ -158,6 +158,11 @@ namespace Sofco.Framework.Managers
             return hasComplianceGroup;
         }
 
+        public bool CanViewSensibleData()
+        {
+            return unitOfWork.UserRepository.HasSensibleDataGroup(CurrentUser.Email);
+        }
+
         public bool IsManager()
         {
             var isManager = unitOfWork.UserRepository.HasManagerGroup(CurrentUser.UserName);

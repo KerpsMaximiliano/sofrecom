@@ -107,9 +107,9 @@ namespace Sofco.DAL
 
         // Common
         public DbSet<File> Files { get; set; }
-
         public DbSet<UserApprover> UserApprovers { get; set; }
         public DbSet<CurrencyExchange> CurrencyExchanges { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -221,6 +221,7 @@ namespace Sofco.DAL
             builder.MapOpportunity();
             builder.MapManagementReport();
             builder.MapPrepaid();
+            builder.MapLog();
         }
     }
 }
