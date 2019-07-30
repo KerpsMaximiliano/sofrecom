@@ -77,7 +77,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 if (managementReport.Budgets.Any())
                 {
                     var budgets = managementReport.Budgets.Select(x => new BudgetItem(x)).ToList();
-                    response.Data.Budgets = new IList<BudgetItem>();
+                    response.Data.Budgets = new List<BudgetItem>();
 
                     if (budgets.Any(x => x.Description.ToUpper() == EnumBudgetType.budget))
                     {
