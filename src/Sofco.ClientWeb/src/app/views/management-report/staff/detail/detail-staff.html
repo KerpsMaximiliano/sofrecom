@@ -101,6 +101,12 @@
                                     </tfoot>
                                 </table>
                             </dd>
+                            <div class="pull-right" *ngIf="model?.budgets && model?.budgets.length > 0">
+                                <button class="btn btn-success btn-xs" (click)="openBudgetHistory()">
+                                    Ver Historial
+                                    <i class="fa fa-history"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -118,8 +124,10 @@
                 <div class="col-md-5">
                     <div class="month-header">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-white" (click)="substractMonth()"><i class="fa fa-chevron-left"></i></button>
-                            <button type="button" class="btn btn-white" (click)="addMonth()"><i class="fa fa-chevron-right"></i></button>
+                            <button type="button" class="btn btn-white" (click)="substractMonth()"><i
+                                    class="fa fa-chevron-left"></i></button>
+                            <button type="button" class="btn btn-white" (click)="addMonth()"><i
+                                    class="fa fa-chevron-right"></i></button>
                         </div>
                         <label class="btn btn-white">Mes</label>
                         <h3 class="month-label">{{ selectedMonthDesc }} {{ selectedYear }}</h3>
@@ -128,12 +136,16 @@
                 </div>
                 <div class="col-md-7 action-buttons pull-right">
                     <!-- <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector">Reporte Mensual <i class="fa fa-file"></i></button> -->
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg && !readOnly && !isClosed">Cerrar <i class="fa fa-close"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg && !readOnly && !isClosed">Cerrar
+                        <i class="fa fa-close"></i></button>
 
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendManager()">Enviar <i class="fa fa-paper-plane"></i></button>
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendCdg()">Enviar <i class="fa fa-paper-plane"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendManager()">Enviar <i
+                            class="fa fa-paper-plane"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendCdg()">Enviar <i
+                            class="fa fa-paper-plane"></i></button>
 
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector" (click)="seeCostDetailMonth()">Costo mensual <i class="fa fa-edit"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector"
+                        (click)="seeCostDetailMonth()">Costo mensual <i class="fa fa-edit"></i></button>
                 </div>
             </div>
 
@@ -141,7 +153,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#tab-1"> Presupuesto </a></li>
                     <li><a data-toggle="tab" href="#tab-2"> Seguimiento </a></li>
-                </ul> 
+                </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
@@ -150,7 +162,7 @@
                     </div>
                     <div id="tab-2" class="tab-pane">
                         <div class="panel-body">
-                            <tracing-staff #tracing ></tracing-staff>
+                            <tracing-staff #tracing></tracing-staff>
                         </div>
                     </div>
                 </div>
@@ -179,5 +191,30 @@
             </div>
         </div>
     </div>
+
+</ng2-modal>
+
+<ng2-modal [config]="budgetHistoryModalConfig" #budgetHistoryModal>
+
+    <dd *ngIf="model?.budgets && model?.budgets.length > 0">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Monto</th>
+                    <th>Fecha</th>
+                    <th>Modifcado por</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of model?.budgetsHistory">
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.value | amountFormat }}</td>
+                    <td>{{ item.startDate | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ item.modifiedBy }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </dd>
 
 </ng2-modal>

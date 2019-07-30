@@ -18,7 +18,7 @@ INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VAL
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Seguro Vida Obligatorio', 5)
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Responsabilidad civil', 5)
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Caución', 5)
-INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Agua - Luz - Gas', 5)
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Agua - Luz - Gas', 6)
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Telecom Argentina / Phillips', 6)
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Celulares, Nextel y otros', 6)
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId]) VALUES ('Amortización de muebles', 7)

@@ -22,18 +22,25 @@ export class DataTableService {
         if (this.config.currLang == "fr") {
             lang = this.getLanguageFr();
         }
-
+        
         setTimeout(() => {
             $(document).ready(function () {
+              
+                var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
                 var options: any = {
                     oSearch: { "bSmart": false, "bRegex": true },
                     responsive: true,
                     language: lang,
-                    scrollX: true
+                    scrollX: false
                 }
 
-                if (params.scrollX && params.scrollX == false) {
-                    options.scrollX = false;
+                if(isMobile){
+                    options.scrollX = true;
+                }
+
+                if (params.scrollX && params.scrollX == true) {
+                    options.scrollX = true;
                 }
 
                 if (params.columnDefs) {

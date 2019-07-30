@@ -21,6 +21,8 @@ namespace Sofco.Core.Models.ManagementReport
 
         public IList<BudgetItem> Budgets { get; set; }
 
+        public IList<BudgetItem> BudgetsHistory { get; set; }
+
         public int  ManagementReportId { get; set; }
 
         public DateTime ManamementReportStartDate { get; set; }
