@@ -117,6 +117,7 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal? Value { get; set; }
         public int IdCategory { get; set; }
         public int BudgetTypeId { get; set; }
+        public bool Deleted { get; set; }
     }
 
 

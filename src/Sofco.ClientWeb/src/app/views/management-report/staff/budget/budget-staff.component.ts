@@ -108,9 +108,15 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.subCategorySelected = this.subCategoriesFiltered[0];
         }
 
+        this.fillSubcategoriesData()
+        
+    }
+
+    fillSubcategoriesData(){
+        
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
-                this.subCategoriesData = this.monthSelected.subcategoriesBudget;
+                this.subCategoriesData = this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
                 this.editItemModal.show();
                 break;
             case 'PFA1':{
@@ -118,7 +124,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     this.messageService.showError("budgetRequired");
                 }
                 else{
-                    this.subCategoriesData = this.monthSelected.subcategoriesPfa1;
+                    this.subCategoriesData = this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
                     this.editItemModal.show();
                 }
                 break;
@@ -128,13 +134,13 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     this.messageService.showError("pfa1Required");
                 }
                 else{
-                    this.subCategoriesData = this.monthSelected.subcategoriesPfa2
+			this.subCategoriesData = this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);		
                     this.editItemModal.show();
                 }
                 break;
             }
             case 'REAL':
-                this.subCategoriesData = this.monthSelected.subcategoriesReal;
+                this.subCategoriesData = this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
                 this.editItemModal.show();
                 break;
         }
@@ -149,7 +155,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             monthYear: this.monthSelected.monthYear,
             description: "",
             value: 0,
-            BudgetTypeId: this.typeBudgetSelected.id
+            BudgetTypeId: this.typeBudgetSelected.id,
+            deleted: false
         }
 
         switch (this.typeBudgetSelected.name.toUpperCase()) {
@@ -166,6 +173,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 this.monthSelected.subcategoriesReal.push(cost)
                 break;
         }
+        this.fillSubcategoriesData()
     }
 
     updateItem() {
@@ -285,6 +293,32 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         () => {
             this.messageService.closeLoading();
         });
+    }
+
+    deleteSubcategory(index, subcategory){
+        
+        if (subcategory.CostDetailStaffId == 0) {
+            switch (this.typeBudgetSelected.name.toUpperCase()) {
+                case 'BUDGET':
+                    this.monthSelected.subcategoriesBudget.splice(index, 1)
+                    break;
+                case 'PFA1':
+                    this.monthSelected.subcategoriesPfa1.splice(index, 1)
+                    break;
+                case 'PFA2':
+                    this.monthSelected.subcategoriesPfa2.splice(index, 1)
+                    break;
+                case 'REAL':
+                    this.monthSelected.subcategoriesReal.splice(index, 1)
+                    break;
+            }
+            this.fillSubcategoriesData()
+        }
+        else{
+            subcategory.value = 0
+            subcategory.deleted = true
+            this.fillSubcategoriesData()
+        }
     }
 
     getId(date: Date){

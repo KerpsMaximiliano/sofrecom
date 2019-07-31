@@ -144,6 +144,7 @@
                     <div class="col-sm-2">
                         <h4>Monto</h4>
                     </div>
+                    
                 </div>
 
                 <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index">
@@ -153,9 +154,13 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <input type="number" decimalFormat class="form-control input-xs" [digitLimit]="8"
                             [(ngModel)]="cost.value" max="99999999" min="0">
+                    </div>
+                    <div class="col-sm-1 delete">
+                        <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i, cost)" *ngIf="!isReadOnly"><i
+                                class="fa fa-trash"></i></button>
                     </div>
                 </div>
                 <div class="row">
