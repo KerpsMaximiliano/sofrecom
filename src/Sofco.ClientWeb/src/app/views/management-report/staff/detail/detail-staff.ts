@@ -255,6 +255,8 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.selectedMonthDesc = dateSetting.montDesc;
         this.selectedMonth = dateSetting.month;
         this.selectedYear = dateSetting.year;
+
+        this.isClosed = this.budgetView.isClosed(this.selectedDate);
     }
 
     addMonth(){
@@ -364,8 +366,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     close(){
         var json = {
             date: this.selectedDate,
-            // billingId: this.billing.getId(this.selectedDate),
-            // detailCostId: this.detailCost.getId(this.selectedDate)
+            detailCostId: this.budgetView.getId(this.selectedDate)
         };
     
         this.messageService.showConfirm(() => {

@@ -73,6 +73,14 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
+        [HttpPut("close")]
+        public IActionResult Close([FromBody] ManagementReportCloseModel model)
+        {
+            var response = managementReportStaffService.Close(model);
+
+            return this.CreateResponse(response);
+        }
+        
         [HttpGet("costDetailCategories")]
         public IActionResult GetCostDetailCategories()
         {
@@ -80,5 +88,6 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
     }
 }

@@ -135,17 +135,12 @@
                     </div>
                 </div>
                 <div class="col-md-7 action-buttons pull-right">
-                    <!-- <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector">Reporte Mensual <i class="fa fa-file"></i></button> -->
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg && !readOnly && !isClosed">Cerrar
-                        <i class="fa fa-close"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg && !readOnly && !isClosed" (click)="close()">Cerrar <i class="fa fa-close"></i></button>
+ 
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendManager()" (click)="sendManager()">Enviar <i class="fa fa-paper-plane"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendCdg()" (click)="sendCdg()">Enviar <i class="fa fa-paper-plane"></i></button>
 
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendManager()">Enviar <i
-                            class="fa fa-paper-plane"></i></button>
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendCdg()">Enviar <i
-                            class="fa fa-paper-plane"></i></button>
-
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector"
-                        (click)="seeCostDetailMonth()">Costo mensual <i class="fa fa-edit"></i></button>
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector" (click)="seeCostDetailMonth()">Costo mensual <i class="fa fa-edit"></i></button>
                 </div>
             </div>
 

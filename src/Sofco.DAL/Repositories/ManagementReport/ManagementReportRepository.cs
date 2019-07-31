@@ -53,7 +53,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
 
         public bool AllMonthsAreClosed(int managementReportId)
         {
-            return context.ManagementReportBillings.Where(x => x.ManagementReportId == managementReportId).All(x => x.Closed);
+            return context.CostDetails.Where(x => x.ManagementReportId == managementReportId).All(x => x.Closed);
         }
 
         public Domain.Models.ManagementReport.ManagementReport GetStaffById(int id)

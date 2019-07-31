@@ -16,7 +16,7 @@ export class ManagementReportStaffService {
   }
 
   send(model){
-    return this.http.put<any>(`${this.baseUrl}/managementReportStaff/send`, model);
+    return this.http.put<any>(`${this.baseUrl}/managementReport/send`, model);
   }
 
   close(model){

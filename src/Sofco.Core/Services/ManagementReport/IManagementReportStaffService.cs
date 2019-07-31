@@ -13,5 +13,6 @@ namespace Sofco.Core.Services.ManagementReport
         Response<CostDetailStaffModel> GetCostDetailStaff(int managementReportId);
         Response UpdateCostDetailStaff(CostDetailStaffModel pDetailCost);
         Response GetCategories();
+        Response Close(ManagementReportCloseModel model);
     }
 }
