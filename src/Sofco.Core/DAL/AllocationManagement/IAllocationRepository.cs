@@ -28,7 +28,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         void Clean();
         bool ExistCurrentAllocationByEmployeeAndManagerId(int employeeId, int managerId, int? parametersAnalyticId, DateTime startDate, DateTime endDate);
         IList<Allocation> GetAllocationsByDate(DateTime date);
-
+        IList<Allocation> GetAllocationsBetweenDay(DateTime date);
         ICollection<Allocation> GetAllocationsBetweenDaysWithCharges(int employeeId, DateTime startDate, DateTime endDate);
     }
 }

@@ -81,8 +81,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     if (budgets.Any(x => x.Description.ToUpper() == EnumBudgetType.budget))
                     {
-                       var budget = budgets.Where(x => x.Description == EnumBudgetType.budget)
-                                                .OrderByDescending(x => x.StartDate).FirstOrDefault();
+                        var budget = budgets.Where(x => x.Description == EnumBudgetType.budget)
+                                                 .OrderByDescending(x => x.StartDate).FirstOrDefault();
 
                         response.Data.Budgets.Add(budget);
                     }
@@ -277,16 +277,16 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(id, monthYear);
 
-            var allocations = unitOfWork.AllocationRepository.GetAllocationsByDate(monthYear);
+            var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDay(monthYear);
 
-            var listContracted = new List<ContractedModel>();
-            var listOther = new List<CostMonthOther>();
+            //var listContracted = new List<ContractedModel>();
+            //var listOther = new List<CostMonthOther>();
             var resources = new List<CostMonthEmployeeStaff>();
 
             if (costDetail != null)
             {
-                listContracted = this.Translate(costDetail.ContratedDetails.ToList());
-                listOther = this.Translate(costDetail.CostDetailOthers.ToList());
+                //listContracted = this.Translate(costDetail.ContratedDetails.ToList());
+                //listOther = this.Translate(costDetail.CostDetailOthers.ToList());
                 resources = this.Translate(costDetail.CostDetailResources.ToList(), monthYear, allocations, managementReport.AnalyticId);
                 response.Data.Id = costDetail.Id;
                 response.Data.TotalProvisioned = costDetail.TotalProvisioned;
@@ -294,8 +294,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             response.Data.ManagementReportId = id;
             response.Data.MonthYear = monthYear;
-            response.Data.Contracted = listContracted;
-            response.Data.OtherResources = listOther;
+            //response.Data.Contracted = listContracted;
+            //response.Data.OtherResources = listOther;
             response.Data.Employees = resources;
 
             return response;
@@ -373,6 +373,23 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        public Response GetCategories()
+        {
+            var response = new Response<List<CostDetailCategories>> { Data = new List<CostDetailCategories>() };
+
+            try
+            {
+                response.Data = unitOfWork.ManagementReportRepository.GetCategories();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
+
         private void InsertUpdateCostDetailStaff(List<CostCategory> costCategories)
         {
             try
@@ -393,13 +410,19 @@ namespace Sofco.Service.Implementations.ManagementReport
                             if (subCatBudget.CostDetailStaffId > 0)
                             {
                                 entity = unitOfWork.CostDetailStaffRepository.Get(subCatBudget.CostDetailStaffId);
-
-                                if (subCatBudget.Value != entity.Value || subCatBudget.Description != entity.Description)
+                                if (subCatBudget.Deleted == true)
                                 {
-                                    entity.Value = subCatBudget.Value ?? 0;
-                                    entity.Description = subCatBudget.Description;
+                                    unitOfWork.CostDetailStaffRepository.Delete(entity);
+                                }
+                                else
+                                {
+                                    if (subCatBudget.Value != entity.Value || subCatBudget.Description != entity.Description)
+                                    {
+                                        entity.Value = subCatBudget.Value ?? 0;
+                                        entity.Description = subCatBudget.Description;
 
-                                    unitOfWork.CostDetailStaffRepository.Update(entity);
+                                        unitOfWork.CostDetailStaffRepository.Update(entity);
+                                    }
                                 }
                             }
                             else

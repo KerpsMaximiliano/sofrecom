@@ -552,6 +552,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             _detailModel.ManagementReportId = pMonthDetail.ManagementReportId;
             _detailModel.CostEmployees = new List<CostResourceEmployee>();
             _detailModel.FundedResources = new List<CostResource>();
+            decimal totalSalary = 0;
 
             try
             {
@@ -568,6 +569,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     month.Charges = employee.Charges;
                     month.MonthYear = pMonthDetail.MonthYear;
                     month.Id = employee.Id;
+
+                    totalSalary += employee.Salary ?? 0;
 
                     cost.MonthsCost.Add(month);
                     _detailModel.CostEmployees.Add(cost);
@@ -604,6 +607,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                     costDetailMonth.TotalProvisioned = pMonthDetail.TotalProvisioned ?? pMonthDetail.TotalProvisioned.GetValueOrDefault();
 
                     unitOfWork.CostDetailRepository.UpdateTotals(costDetailMonth);
+                }
+
+                var analytic = unitOfWork.AnalyticRepository.GetById(pMonthDetail.AnalyticId);
+                if(analytic.ServiceId == null && analytic.AccountId == null)
+                {
+                    this.InsertTotalSalaryStaffReport(pMonthDetail.ManagementReportId, totalSalary, pMonthDetail.MonthYear);
                 }
 
                 unitOfWork.Save();
@@ -1493,6 +1502,23 @@ namespace Sofco.Service.Implementations.ManagementReport
                         })
                         .OrderBy(x => x.Name)
                         .ToList();
+        }
+
+        private void InsertTotalSalaryStaffReport(int managementReportId, decimal salary, DateTime monthYear)
+        {
+            var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
+            var subcategories = unitOfWork.CostDetailRepository.GetSubcategories();
+            var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(managementReportId);
+
+            var entity = new CostDetailStaff();
+
+            entity.Value = salary;
+            entity.Description = "Sueldo total empleados";
+            entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == monthYear.Date).FirstOrDefault().Id;
+            entity.CostDetailSubcategoryId = subcategories.Where(x => x.Name == EnumCostDetailSubcategory.Sueldos).FirstOrDefault().Id;
+            entity.BudgetTypeId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
+
+            unitOfWork.CostDetailStaffRepository.Insert(entity);
         }
     }
 }

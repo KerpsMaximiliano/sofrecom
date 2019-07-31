@@ -17,11 +17,12 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
 
     updateCostSubscrip: Subscription;
     getContratedSuscrip: Subscription;
-    getOtherSuscrip: Subscription;
     deleteContractedSuscrip: Subscription;
     deleteOtherSuscrip: Subscription;
     paramsSubscrip: Subscription;
     getEmployeesSubscrip: Subscription
+
+    getCategoriesSuscrip: Subscription;
 
     totalCosts: number = 0;
     totalProvisioned: number = 0;
@@ -30,21 +31,23 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     totalProvisionedEditabled: boolean = false;
 
     resources: any[] = new Array();
-    expenses: any[] = new Array();
+   // expenses: any[] = new Array();
     users: any[] = new Array()
+
+    categories: any[] = new Array();
 
     AnalyticId: any;
     fundedResources: any[] = new Array();
     otherResources: any[] = new Array();
     otherSelected: any;
     managementReportId: number;
-    contracted: any[] = new Array();
+    //contracted: any[] = new Array();
     monthYear: Date;
-    canSave: boolean = false;
+    canSave: boolean = true;
     userSelected: any
 
     isReadOnly: boolean
-    
+
     @ViewChild('costDetailMonthModal') costDetailMonthModal;
     public costDetailMonthModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "managementReport.costDetailMonth",
@@ -64,69 +67,21 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-        this.getOtherSuscrip = this.managementReportService.getOtherResources().subscribe(response => {
-            this.otherResources = response.data;
-
-            if (this.otherResources.length > 0) {
-                this.otherSelected = this.otherResources[0];
-            }
-            },
-        () => {});
-
+  
         this.getUsers()
     }
 
     ngOnDestroy(): void {
         if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
-        if (this.deleteContractedSuscrip) this.deleteContractedSuscrip.unsubscribe();
         if (this.getContratedSuscrip) this.getContratedSuscrip.unsubscribe();
-        if (this.getOtherSuscrip) this.getOtherSuscrip.unsubscribe();
         if (this.deleteOtherSuscrip) this.deleteOtherSuscrip.unsubscribe();
         if (this.getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe()
+        if (this.getCategoriesSuscrip) this.getCategoriesSuscrip.unsubscribe()
     }
 
     totalProvisionedChanged() {
         this.totalProvisionedAux = this.totalProvisioned;
-    }
-
-    addExpense() {
-        var resource = {
-            id: 0,
-            typeId: this.otherSelected.typeId,
-            typeName: this.otherSelected.typeName,
-            value: 0,
-            description: ""
-        }
-
-        this.expenses.push(resource)
-    }
-
-    addContracted() {
-        this.canSave = false;
-        this.contracted.push({ contractedId: 0, name: "", honorary: 0, insurance: 0, total: 0, monthYear: this.monthYear })
-    }
-
-    contractedChange(hire) {
-        hire.total = hire.honorary + hire.insurance;
-
-        this.calculateTotalCosts();
-    }
-
-    deleteContracted(index, item) {
-        if (item.contractedId > 0) {
-            this.deleteContractedSuscrip = this.managementReportService.deleteContracted(item.contractedId).subscribe(() => {
-                this.contracted.splice(index, 1);
-            },
-            () => {});
-        }
-        else {
-            this.contracted.splice(index, 1)
-        }
-
-        if (this.contracted.length == 0) {
-            this.canSave = true;
-        }
     }
 
     deleteResource(index, item) {
@@ -136,36 +91,18 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         }
     }
 
-    deleteExpense(index, item) {
-        //Si el item no esta en base de datos solo lo borro del array
-        if (item.id == 0) {
-            this.expenses.splice(index, 1);
-        }
-        else {
-            //Si esta en base de datos borro el registio
-            this.deleteContractedSuscrip = this.managementReportService.deleteOtherResources(item.id).subscribe(() => {
-                this.expenses.splice(index, 1);
-            },
-            () => {});
-        }
-
-        this.calculateTotalCosts();
-    }
-
     open(data, readOnly) {
         this.messageService.showLoading()
-        this.expenses = [];
-       
+        //this.expenses = [];
+
         this.managementReportId = data.managementReportId;
         this.costDetailMonthModal.otherTitle = `${data.monthDesc} ${data.year}`
 
         this.isReadOnly = readOnly || !data.isCdg;
         this.AnalyticId = data.AnalyticId;
-        
+
         this.getContratedSuscrip = this.managementReportStaffService.getCostDetailMonth(this.managementReportId, data.month, data.year).subscribe(response => {
             this.monthYear = response.data.monthYear
-            this.contracted = response.data.contracted;
-            this.expenses = response.data.otherResources;
             this.resources = response.data.employees;
             this.totalProvisioned = response.data.totalProvisioned;
 
@@ -174,10 +111,10 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.costDetailMonthModal.show();
         },
-        () => {
-            this.messageService.closeLoading();
-            this.costDetailMonthModal.hide();
-        });
+            () => {
+                this.messageService.closeLoading();
+                this.costDetailMonthModal.hide();
+            });
     }
 
     save() {
@@ -197,16 +134,14 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         model.ManagementReportId = this.managementReportId
         model.MonthYear = this.monthYear
         model.Employees = this.resources
-        model.OtherResources = this.expenses
-        model.Contracted = this.contracted;
 
         this.updateCostSubscrip = this.managementReportService.PostCostDetailMonth(this.managementReportId, model).subscribe(() => {
             this.costDetailMonthModal.hide();
             this.managementReport.updateDetailCost();
         },
-        () => {
-            this.costDetailMonthModal.resetButtons();
-        });
+            () => {
+                this.costDetailMonthModal.resetButtons();
+            });
     }
 
     subResourceChange(subResource) {
@@ -225,15 +160,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     calculateTotalCosts() {
         this.totalCosts = 0;
 
-        this.expenses.forEach(element => {
-            this.totalCosts += element.value;
-        });
-
         this.resources.forEach(element => {
-            this.totalCosts += element.total;
-        });
-
-        this.contracted.forEach(element => {
             this.totalCosts += element.total;
         });
     }
@@ -242,7 +169,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.getEmployeesSubscrip = this.employeeService.getListItems().subscribe(data => {
             this.users = data;
         },
-        () => {});
+            () => { });
     }
 
     addEmployee() {
@@ -272,4 +199,5 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
             this.messageService.showError("managementReport.userRequired")
         }
     }
+
 }

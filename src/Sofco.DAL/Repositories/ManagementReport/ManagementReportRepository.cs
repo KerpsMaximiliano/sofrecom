@@ -109,5 +109,13 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             return context.BudgetType.OrderBy(x => x.Id).ToList();
         }
+
+        public List<CostDetailCategories> GetCategories()
+        {
+            return context.CostDetailCategories
+                    .Include(x => x.CostDetailSubcategories)
+                    .OrderBy(x => x.Name)
+                    .ToList();
+        }
     }
 }

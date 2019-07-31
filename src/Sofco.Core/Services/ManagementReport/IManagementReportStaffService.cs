@@ -12,5 +12,6 @@ namespace Sofco.Core.Services.ManagementReport
         Response<CostDetailStaffMonthModel> GetCostDetailMonth(int id, int month, int year);
         Response<CostDetailStaffModel> GetCostDetailStaff(int managementReportId);
         Response UpdateCostDetailStaff(CostDetailStaffModel pDetailCost);
+        Response GetCategories();
     }
 }
