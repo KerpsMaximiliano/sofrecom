@@ -265,7 +265,8 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             var response = new Response<CostDetailStaffMonthModel> { Data = new CostDetailStaffMonthModel() };
 
-            var managementReport = unitOfWork.ManagementReportRepository.Get(id);
+            var managementReport = unitOfWork.ManagementReportRepository.GetById(id);
+            var listMonths = this.VerifyAnalyticMonths(managementReport, managementReport.StartDate, managementReport.EndDate);
 
             if (managementReport == null)
             {
