@@ -422,6 +422,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Se le ha otorgado permiso de visualización de datos a: {0}.
+        /// </summary>
+        public static string SensibleData {
+            get {
+                return ResourceManager.GetString("SensibleData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;
         ///La SOLFAC del asunto se encuentra COBRADA. &lt;/br&gt;
         ///Para acceder, por favor ingresar al siguiente &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;. &lt;/br&gt;&lt;/br&gt;

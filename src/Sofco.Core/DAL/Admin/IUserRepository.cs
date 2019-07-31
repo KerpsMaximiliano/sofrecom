@@ -62,5 +62,6 @@ namespace Sofco.Core.DAL.Admin
         bool HasReadOnlyGroup(string currentUserEmail);
 
         IList<User> GetByIdsWithGroups(IEnumerable<int> ids);
+        bool HasSensibleDataGroup(string currentUserEmail);
     }
 }

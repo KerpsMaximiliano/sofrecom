@@ -104,6 +104,7 @@ namespace Sofco.DAL
         private IFileRepository fileRepository;
         private IUserDelegateRepository userDelegateRepository;
         private ICurrencyExchangeRepository currencyExchangeRepository;
+        private ILogRepository logRepository;
 
         #endregion
 
@@ -224,6 +225,7 @@ namespace Sofco.DAL
         public IFileRepository FileRepository => fileRepository ?? (fileRepository = new FileRepository(context));
         public IUserDelegateRepository UserDelegateRepository => userDelegateRepository ?? (userDelegateRepository = new UserDelegateRepository(context));
         public ICurrencyExchangeRepository CurrencyExchangeRepository => currencyExchangeRepository ?? (currencyExchangeRepository = new CurrencyExchangeRepository(context));
+        public ILogRepository LogRepository => logRepository ?? (logRepository = new LogRepository(context));
 
         #endregion
 

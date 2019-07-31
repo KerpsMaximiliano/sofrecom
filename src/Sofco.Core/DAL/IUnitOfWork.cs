@@ -84,6 +84,8 @@ namespace Sofco.Core.DAL
         IUserApproverRepository UserApproverRepository { get; }
         ICurrencyExchangeRepository CurrencyExchangeRepository { get; }
 
+        ILogRepository LogRepository { get; }
+
         #endregion
 
         #region WorkTimeManagement

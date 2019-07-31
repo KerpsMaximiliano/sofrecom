@@ -410,4 +410,7 @@ Recurso: {1}
   <data name="ManagementReportManager" xml:space="preserve">
     <value>Los datos del informe han sido gestionados por el Gerente de proyecto</value>
   </data>
+  <data name="SensibleData" xml:space="preserve">
+    <value>Se le ha otorgado permiso de visualización de datos a: {0}</value>
+  </data>
 </root>

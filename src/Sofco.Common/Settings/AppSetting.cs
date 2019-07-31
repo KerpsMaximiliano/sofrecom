@@ -121,5 +121,7 @@
         public string WorkTimeMassiveImportCode { get; set; }
 
         public string WorkTimeQuery { get; set; }
+
+        public string SensibleFunctionality { get; set; }
     }
 }

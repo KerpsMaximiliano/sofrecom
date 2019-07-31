@@ -2,12 +2,16 @@
 using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Common.Security.Interfaces;
+using Sofco.Common.Settings;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 using Sofco.Service.Implementations.Admin;
@@ -22,6 +26,10 @@ namespace Sofco.UnitTest.Services
         private Mock<ILogMailer<UserService>> loggerMock;
         private Mock<ISessionManager> sessionManagerMock;
         private Mock<IMapper> mapperMock;
+        private Mock<IOptions<AppSetting>> appSettingMock;
+        private Mock<IMailSender> mailSenderMock;
+        private Mock<IMailBuilder> mailBuilderMock;
+        private Mock<IOptions<EmailConfig>> emailConfigMock;
         private UserService sut;
 
         [SetUp]
@@ -30,6 +38,11 @@ namespace Sofco.UnitTest.Services
             userRepositoryMock = new Mock<IUserRepository>();
 
             unitOfWork = new Mock<IUnitOfWork>();
+
+            mailSenderMock = new Mock<IMailSender>();
+            mailBuilderMock = new Mock<IMailBuilder>();
+            appSettingMock = new Mock<IOptions<AppSetting>>();
+            emailConfigMock = new Mock<IOptions<EmailConfig>>();
 
             unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
             loggerMock = new Mock<ILogMailer<UserService>>();
@@ -40,7 +53,7 @@ namespace Sofco.UnitTest.Services
 
             mapperMock = new Mock<IMapper>();
 
-            sut = new UserService(unitOfWork.Object, loggerMock.Object, sessionManagerMock.Object, mapperMock.Object);
+            sut = new UserService(unitOfWork.Object, loggerMock.Object, sessionManagerMock.Object, mailSenderMock.Object, mailBuilderMock.Object, appSettingMock.Object, emailConfigMock.Object, mapperMock.Object);
         }
 
         [TestCase(true)]
