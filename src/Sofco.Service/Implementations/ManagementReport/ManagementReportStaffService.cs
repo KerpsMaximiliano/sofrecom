@@ -328,6 +328,16 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var monthHeader = new MonthDetailCostStaff();
                     monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                     monthHeader.MonthYear = date;
+                    monthHeader.Month = date.Month;
+                    monthHeader.Year = date.Year;
+
+                    var costDetailMonth = costDetails.FirstOrDefault(x => x.MonthYear.Date == date.Date);
+
+                    if (costDetailMonth != null)
+                    {
+                        monthHeader.CostDetailId = costDetailMonth.Id;
+                        monthHeader.Closed = costDetailMonth.Closed;
+                    }
 
                     response.Data.MonthsHeader.Add(monthHeader);
                 }
@@ -368,6 +378,64 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 logger.LogError(ex);
                 response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response Close(ManagementReportCloseModel model)
+        {
+            var response = new Response();
+
+            var detailCost = unitOfWork.CostDetailRepository.Get(model.DetailCostId);
+
+            if (detailCost == null) response.AddError(Resources.ManagementReport.CostDetail.NotFound);
+
+            if (!model.Date.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.DateRequired);
+
+            if (response.HasErrors()) return response;
+
+            var currentMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
+            if (model.Date.GetValueOrDefault().Date >= currentMonth.Date)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.CannotClosed);
+                return response;
+            }
+
+            try
+            {
+                detailCost.Closed = true;
+
+                unitOfWork.CostDetailRepository.Close(detailCost);
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReport.ClosedSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            try
+            {
+                if (unitOfWork.ManagementReportRepository.AllMonthsAreClosed(detailCost.ManagementReportId))
+                {
+                    var managementReport = new Domain.Models.ManagementReport.ManagementReport
+                    {
+                        Id = detailCost.ManagementReportId,
+                        Status = ManagementReportStatus.Closed
+                    };
+
+                    unitOfWork.ManagementReportRepository.UpdateStatus(managementReport);
+                    unitOfWork.Save();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
             }
 
             return response;
@@ -602,6 +670,9 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
+                    monthDetail.Year = mounth.MonthYear.Year;
+                    monthDetail.Month = mounth.MonthYear.Month;
+                    monthDetail.Closed = mounth.Closed;
 
                     var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
                     if (costDetailMonth != null)

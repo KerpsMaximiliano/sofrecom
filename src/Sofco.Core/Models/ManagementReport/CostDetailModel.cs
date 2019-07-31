@@ -103,6 +103,9 @@ namespace Sofco.Core.Models.ManagementReport
         public List<CostSubcategory> SubcategoriesPfa1 { get; set; }
         public List<CostSubcategory> SubcategoriesPfa2 { get; set; }
         public List<CostSubcategory> SubcategoriesReal { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public bool Closed { get; set; }
     }
 
     public class CostSubcategory
