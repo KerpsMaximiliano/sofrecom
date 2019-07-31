@@ -23,4 +23,8 @@ export class RrhhService {
   syncSocialCharges(year, month) {
     return this.http.put<any>(`${this.baseUrl}/rrhh/${year}/${month}/socialCharges`, {});
   }
+
+  syncPrepaids() {
+    return this.http.put<any>(`${this.baseUrl}/rrhh/prepaid`, {});
+  }
 }

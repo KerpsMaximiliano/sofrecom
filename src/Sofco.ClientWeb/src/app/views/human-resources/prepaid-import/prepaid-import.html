@@ -38,12 +38,20 @@
                         <span class="fa fa-refresh"></span> 
                     </button>
 
+                    <button type="button" class="btn btn-success m-t-md" (click)="syncPrepaids()"> 
+                        Actualizar prepagas
+                        <span class="fa fa-refresh"></span> 
+                    </button>
+
                     <button type="button" class="btn btn-success m-t-md" (click)="notifyToRrhh()" *ngIf="canNotify()">
                         Notificar a RRHH
                         <span class="fa fa-envelope"></span> 
                     </button>
                 </div>
-                <div class="col-lg-4">
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-lg-offset-6">
                     <div class="m-t-sm" *ngIf="prepaidId > 0 && monthId > 0 && yearId > 0 && !mustSyncWithTiger">
                         <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
             
@@ -64,6 +72,16 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="alert alert-gaps-warning" style="margin-bottom: 10px" *ngIf="mustSyncWithTiger && yearId > 0 && monthId > 0">
+        <i class="fa fa-warning"></i>
+        Las cargas sociales todavia no fueron sincronizadas con Tiger para la fecha seleccionada. Por favor seleccione "Sincronizar cargas Tiger".
+    </div>
+
+    <div class="alert alert-gaps-info" style="margin-bottom: 10px" *ngIf="!mustSyncWithTiger && yearId > 0 && monthId > 0">
+        <i class="fa fa-check"></i>
+        Las cargas sociales ya fueron sincronizadas con Tiger para la fecha seleccionada. Si quiere actualizar los datos seleccione "Sincronizar cargas Tiger".
     </div>
 
     <div class="row">

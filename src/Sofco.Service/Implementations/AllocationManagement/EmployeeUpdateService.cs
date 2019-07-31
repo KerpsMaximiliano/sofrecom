@@ -27,11 +27,29 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             try
             {
-                syncProfileJobService.Sync();
+                syncProfileJobService.Sync(true);
 
                 syncActionJobService.SyncEndEmployees();
 
                 syncActionJobService.SyncNewEmployees();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.AddError(Resources.Common.GeneralError);
+            }
+
+            return response;
+        }
+
+        public Response UpdateSalaryAndPrepaids()
+        {
+            var response = new Response();
+
+            try
+            {
+                syncProfileJobService.Sync(false);
+                response.AddSuccess(Resources.Rrhh.Prepaid.SocialChargesSynced);
             }
             catch (Exception ex)
             {

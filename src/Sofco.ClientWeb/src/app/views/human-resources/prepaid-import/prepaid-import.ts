@@ -109,7 +109,17 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
             this.mustSyncWithTiger = false;
             this.uploaderConfig();
           }
-        });
+        },
+        error => this.messageService.closeLoading());
+    }
+
+    syncPrepaids(){
+        this.messageService.showLoading();
+
+        this.notifySubscrip = this.rrhhService.syncPrepaids().subscribe(response => {
+          this.messageService.closeLoading();
+        },
+        error => this.messageService.closeLoading());
     }
 
     notifyToRrhh(){
