@@ -1510,13 +1510,25 @@ namespace Sofco.Service.Implementations.ManagementReport
             var subcategories = unitOfWork.CostDetailRepository.GetSubcategories();
             var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(managementReportId);
 
+            int costDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == monthYear.Date).FirstOrDefault().Id;
+            int subcategorySalaryId = subcategories.Where(x => x.Name == EnumCostDetailSubcategory.Sueldos).FirstOrDefault().Id;
+            int budgetRealId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
+
+            //Elimino los sueldos ya guardados 
+            var entities = unitOfWork.CostDetailStaffRepository.Where
+                                                        (x => x.CostDetailSubcategoryId == subcategorySalaryId 
+                                                        && x.CostDetailId == costDetailId 
+                                                        && x.BudgetTypeId == budgetRealId);
+            unitOfWork.CostDetailStaffRepository.Delete(entities);
+
+            //ingreso el nuevo sueldo total
             var entity = new CostDetailStaff();
 
             entity.Value = salary;
             entity.Description = "Sueldo total empleados";
-            entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == monthYear.Date).FirstOrDefault().Id;
-            entity.CostDetailSubcategoryId = subcategories.Where(x => x.Name == EnumCostDetailSubcategory.Sueldos).FirstOrDefault().Id;
-            entity.BudgetTypeId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
+            entity.CostDetailId = costDetailId;
+            entity.CostDetailSubcategoryId = subcategorySalaryId;
+            entity.BudgetTypeId = budgetRealId;
 
             unitOfWork.CostDetailStaffRepository.Insert(entity);
         }
