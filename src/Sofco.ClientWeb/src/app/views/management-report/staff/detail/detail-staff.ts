@@ -168,8 +168,8 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.costDetailMonth.open(data, this.readOnly || this.isClosed);
     }
 
-    updateDetailCost() {
-        // this.detailCost.getCost();
+    updateBudgetView() {
+        this.budgetView.getCost(this.ManagementReportId);
     }
 
     openEditDateModal() {

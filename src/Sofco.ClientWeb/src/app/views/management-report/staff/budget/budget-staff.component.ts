@@ -63,7 +63,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.managementReportId = params['id'];
-            this.getCost();
+            this.getCost(this.managementReportId);
         });
     }
 
@@ -73,10 +73,10 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
     }
 
-    getCost() {
+    getCost(managementReportId) {
         this.messageService.showLoading();
 
-        this.getCostSubscrip = this.ManagementReportStaffService.getCostDetailStaff(this.managementReportId).subscribe(response => {
+        this.getCostSubscrip = this.ManagementReportStaffService.getCostDetailStaff(managementReportId).subscribe(response => {
             this.messageService.closeLoading();
            
             this.model = response.data

@@ -137,7 +137,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
 
         this.updateCostSubscrip = this.managementReportService.PostCostDetailMonth(this.managementReportId, model).subscribe(() => {
             this.costDetailMonthModal.hide();
-            this.managementReport.updateDetailCost();
+            this.managementReport.updateBudgetView();
         },
             () => {
                 this.costDetailMonthModal.resetButtons();
