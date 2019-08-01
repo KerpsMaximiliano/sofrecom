@@ -64,17 +64,25 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-6" *ngIf="employeesWithHoursMissing.length > 0">
-                            <div class="alert alert-gaps-error">
-                                <h4>
-                                    <i class="fa fa-times"></i> 
-                                    {{'workTimeManagement.report.employeesWithHoursMissing' | translate }}
-                                </h4>  
-                        
-                                <ul>
-                                    <li *ngFor="let item of employeesWithHoursMissing">
-                                        {{ item.employee }}:  {{'workTimeManagement.report.hoursLoadedUntil' | translate }} {{ item.realPercentage | amountFormat }}% en {{ item.title }}
-                                    </li> 
-                                </ul>
+                            <div class="table-responsive">
+                                <table class="table table-striped dataTable" role="grid" id="missingHoursTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Legajo</th>
+                                            <th>Nombre</th>
+                                            <th>Superior</th>
+                                            <th>Hs Faltantes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of employeesWithHoursMissing">
+                                            <td>{{ item.employeeNumber }}</td>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.manager }}</td>
+                                            <td>{{ item.missingHours | number: '1.2-2'  }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>       
                             </div>
                         </div>
                         <div class="col-sm-6" *ngIf="employeesWithAllocationMissing.length > 0 && exportTigerVisible">
@@ -135,7 +143,7 @@
                             <td class="column-sm">
                                 <label *ngIf="item.result" class="label label-primary">{{'workTimeManagement.report.accomplished' | translate }}</label>
                                 <label *ngIf="!item.result && !item.hoursLoadedSuccesfully" class="label label-danger">{{'workTimeManagement.report.notAccomplished' | translate }}</label>
-                                <label *ngIf="!item.result && item.hoursLoadedSuccesfully" class="label label-warning">{{'workTimeManagement.report.notAccomplished' | translate }}</label>
+                                <label *ngIf="!item.result && item.hoursLoadedSuccesfully" class="label label-warning">{{'workTimeManagement.report.compensed' | translate }}</label>
                             </td>
                             <td class="column-lg">{{ item.employee }}</td>
                             <td class="column-xs">{{ item.allocationPercentage | number: '1.2-2' }} %</td>

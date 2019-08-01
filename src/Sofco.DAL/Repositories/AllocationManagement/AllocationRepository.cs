@@ -161,6 +161,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             var query = context.Allocations
                 .Include(x => x.Employee)
+                    .ThenInclude(x => x.Manager)
                 .Include(x => x.Analytic)
                     .ThenInclude(x => x.Manager)
                 .Include(x => x.Analytic)

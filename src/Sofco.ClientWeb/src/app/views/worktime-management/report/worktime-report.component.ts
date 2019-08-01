@@ -126,6 +126,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data.items;
             this.workTimeReportByHours = response.data.workTimeReportByHours;
+            this.employeesWithHoursMissing = response.data.employeesMissingHours;
 
             if(this.data.length > 0){
                 this.isCompleted = response.data.isCompleted;
@@ -139,7 +140,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
                 this.collapse();
 
                 if(this.isMissingData){
-                    this.showEmployeesWithMissingData(response);
+                    this.employeesWithAllocationMissing = response.data.employeesAllocationResume.filter(item => item.missAnyPercentageAllocation == true);
                 }
             }
 
@@ -152,11 +153,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         });
     }
  
-    showEmployeesWithMissingData(response){
-        this.employeesWithHoursMissing = this.data.filter(item => item.hoursLoadedSuccesfully == false);
-        this.employeesWithAllocationMissing = response.data.employeesAllocationResume.filter(item => item.missAnyPercentageAllocation == true);
-    }
-
     initGrid(){
         var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         var title = "Reporte Insumido vs Previsto";
@@ -165,13 +161,25 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             selector: "#reportTable",
             columns: columns,
             title: title,
-            order: [[ 1, "desc" ]],
             withExport: true
         };
 
         this.dataTableService.destroy(options.selector); 
         this.dataTableService.initialize(options);
         this.gridIsVisible = true;
+
+        var columnsMissingHours = [0, 1, 2, 3];
+        var titleMissingHours = "Recursos con horas faltantes";
+
+        var options2 = { 
+            selector: "#missingHoursTable",
+            columns: columnsMissingHours,
+            title: titleMissingHours,
+            withExport: true
+        };
+
+        this.dataTableService.destroy(options2.selector); 
+        this.dataTableService.initialize(options2);
 
         setTimeout(() => {
             $("#reportTable_wrapper").css("float","left");

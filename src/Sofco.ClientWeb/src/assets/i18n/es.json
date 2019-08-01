@@ -996,6 +996,7 @@
             "result": "Resultado",
             "accomplished": "Cumplido",
             "notAccomplished": "No Cumplido",
+            "compensed": "Compensado",
             "realPercentage": "% Real",
             "exportTiger": "Exportar Tiger.txt", 
             "employeesWithAllocationMissing": "Recursos que no cumplen las asignaciones al 100%",
