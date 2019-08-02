@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Core.Models.WorkTimeManagement
 {
@@ -10,9 +11,9 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public int Status { get; set; }
 
-        public int? ManagerId { get; set; }
+        public IList<int> ManagerId { get; set; }
 
-        public int? AnalyticId { get; set; }
+        public IList<int> AnalyticId { get; set; }
 
         public int? EmployeeId { get; set; }
     }

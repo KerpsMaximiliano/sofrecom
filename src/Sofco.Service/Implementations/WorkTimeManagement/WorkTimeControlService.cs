@@ -87,7 +87,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             {
                 foreach (var allocation in allResource.Allocations)
                 {
-                    if (parameters.AnalyticId.HasValue && allocation.AnalyticId != parameters.AnalyticId) continue;
+                    if (parameters.AnalyticId != null && parameters.AnalyticId.Any() && !parameters.AnalyticId.Contains(allocation.AnalyticId)) continue;
 
                     if (resourcesAux.Any(x => x.Id == $"{allocation.AnalyticId}-{allocation.EmployeeId}")) continue;
 
@@ -204,7 +204,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             return result;
         }
 
-        private List<int> GetAnalyticIds(int? analyticId)
+        private List<int> GetAnalyticIds(IList<int> analyticId)
         {
             var analyticsByManagers = roleManager.HasFullAccess()
                 ? unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite()
@@ -212,13 +212,19 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var availableAnalyticIds = analyticsByManagers.Select(x => x.Id).ToList();
 
-            if (analyticId.HasValue)
+            if (analyticId != null && analyticId.Any())
             {
-                var selectedAnalyticId = analyticId.Value;
+                var result = new List<int>();
 
-                return availableAnalyticIds.Contains(selectedAnalyticId)
-                    ? new List<int> { selectedAnalyticId }
-                    : new List<int>();
+                foreach (var id in analyticId)
+                {
+                    if (availableAnalyticIds.Contains(id))
+                    {
+                        result.Add(id);
+                    }    
+                }
+
+                return result;
             }
             else
             {
@@ -296,10 +302,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 unitOfWork.UserApproverRepository
                     .GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
 
-            if (parameter.AnalyticId.HasValue)
+            if (parameter.AnalyticId != null && parameter.AnalyticId.Any())
             {
                 userApprovers = userApprovers
-                    .Where(s => s.AnalyticId == parameter.AnalyticId.Value)
+                    .Where(s => parameter.AnalyticId.Contains(s.AnalyticId))
                     .ToList();
             }
 

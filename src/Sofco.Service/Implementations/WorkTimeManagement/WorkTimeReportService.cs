@@ -210,7 +210,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             var employeeMissing = new EmployeeMissingHours
                             {
                                 Name = allocation.Employee.Name,
-                                Manager = allocation.Employee.Manager.Name,
+                                Manager = allocation.Employee?.Manager?.Name,
                                 EmployeeNumber = allocation.Employee.EmployeeNumber,
                                 Hours = model.HoursApproved,
                                 HoursMustLoad = tuple.Item2,
@@ -232,7 +232,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 response.Data.Items.Add(model);
             }
 
-            RemovePreventaAnalyticsHoursLoaded(response);
+            RemovePreventaAnalyticsHoursLoaded(response, employeesMissingHours);
 
             CalculateRealPercentage(response);
             RecalculatePreventa(response, employeesToRecalculate);
@@ -261,10 +261,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
 
             //Se filtran las analiticas seleccionadas
-            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
-            {
-                response.Data.Items = response.Data.Items.Where(e => e.AnalyticId == parameters.AnalyticId).ToList();
-            }
+            //if (parameters.AnalyticId.Any())
+            //{
+            //    response.Data.Items = response.Data.Items.Where(e => parameters.AnalyticId.Contains(e.AnalyticId)).ToList();
+            //}
 
             response.Data.EmployeesAllocationResume = response.Data.EmployeesAllocationResume.OrderBy(x => x.Employee).ToList();
             response.Data.Items = response.Data.Items.OrderBy(x => x.Employee).ToList();
@@ -286,6 +286,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 var rows = response.Data.Items.Where(x => x.EmployeeId == emp.EmployeeId).ToList();
 
                 if (percentageToRecalculate == 0) continue;
+
+                if (!rows.Any()) continue;
 
                 var index = 0;
                 var end = false;
@@ -313,7 +315,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        private void RemovePreventaAnalyticsHoursLoaded(Response<WorkTimeReportModel> response)
+        private void RemovePreventaAnalyticsHoursLoaded(Response<WorkTimeReportModel> response,
+            List<EmployeeMissingHours> employeesMissingHours)
         {
             var preventaGrouped = response.Data.Items
                 .Where(x => x.AnalyticId == 146 || x.AnalyticId == 166 || x.AnalyticId == 167)

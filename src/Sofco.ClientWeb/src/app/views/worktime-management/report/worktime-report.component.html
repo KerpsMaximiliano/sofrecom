@@ -32,11 +32,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.title'" [(value)]="searchModel.analyticId" [options]="analytics"></select-two>
+                        <div class="col-sm-4"> 
+                            <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
+                            <ng-select [items]="analytics" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="searchModel.analyticId"></ng-select>
                         </div>
                         <div class="col-sm-4">
-                            <select-two [label]="'allocationManagement.analytics.add.manager'" [(value)]="searchModel.managerId" [options]="managers"></select-two>
+                            <label class="control-label">{{ 'allocationManagement.analytics.add.manager' | translate }}</label>
+                            <ng-select [items]="managers" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="searchModel.managerId"></ng-select>
                         </div>
                     </div>
                 </div>
@@ -63,7 +65,7 @@
             <div id="collapseTwo" class="panel-collapse collapse in">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-6" *ngIf="employeesWithHoursMissing.length > 0">
+                        <div [ngClass]="employeesWithAllocationMissing.length > 0 && exportTigerVisible ? 'col-sm-6' : 'col-sm-12'" *ngIf="employeesWithHoursMissing.length > 0">
                             <div class="table-responsive">
                                 <table class="table table-striped dataTable" role="grid" id="missingHoursTable">
                                     <thead>

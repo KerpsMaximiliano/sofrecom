@@ -50,7 +50,7 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
-                                <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.analyticId" (change)="getResources()"></ng-select>
+                                <ng-select [items]="analytics" [multiple]="true" [closeOnSelect]="true" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.analyticId" (change)="getResources()"></ng-select>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -58,11 +58,11 @@
                                 <label class="control-label">{{ 'allocationManagement.allocation.resources' | translate }}</label>
                                 <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.employeeId"></ng-select>
                             </div>
-                        </div>
+                        </div> 
                         <div class="col-sm-4" *ngIf="canSeeManagers()">
                             <div class="form-group">
                                 <label class="control-label">{{ 'allocationManagement.analytics.add.manager' | translate }}</label>
-                                <ng-select [items]="managers" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.managerId"></ng-select>
+                                <ng-select [items]="managers" [multiple]="true" [closeOnSelect]="true" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.managerId"></ng-select>
                             </div>
                         </div>
                     </div>

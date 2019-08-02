@@ -5,7 +5,6 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { WorktimeService } from "../../../services/worktime-management/worktime.service";
 import { UtilsService } from "../../../services/common/utils.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { RrhhService } from "app/services/human-resources/rrhh.service";
 import * as FileSaver from "file-saver";
 import { WorktimeControlService } from "app/services/worktime-management/worktime-control.service";
@@ -46,8 +45,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
     public searchModel = {
         closeMonthId: 0,
-        managerId: 0,
-        analyticId: 0,
+        managerId: null,
+        analyticId: null,
         employeeId: 0,
         exportTigerVisible: false
     };
@@ -55,7 +54,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     constructor(private messageService: MessageService,
         private worktimeService: WorktimeService,
         private utilsService: UtilsService,
-        private analyticService: AnalyticService,
         private worktimeControlService: WorktimeControlService,
         private rrhhService: RrhhService,
         private employeeService: EmployeeService,
@@ -113,8 +111,11 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.isMissingData = false;
         this.isCompleted = false;
 
-        if(this.searchModel.closeMonthId > 0 && this.searchModel.managerId == 0 && 
-           this.searchModel.analyticId == 0 && this.searchModel.employeeId == 0){
+        if(this.searchModel.analyticId == null) this.searchModel.analyticId = [];
+        if(this.searchModel.managerId == null) this.searchModel.managerId = [];
+
+        if(this.searchModel.closeMonthId > 0 && this.searchModel.managerId && this.searchModel.managerId.length > 0 && 
+           this.searchModel.analyticId && this.searchModel.analyticId.length > 0 && this.searchModel.employeeId == 0){
             this.exportTigerVisible = true;
             this.searchModel.exportTigerVisible = true;
         }
@@ -224,8 +225,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     clean(){
         this.searchModel = {
             closeMonthId: 0,
-            managerId: 0,
-            analyticId: 0,
+            managerId: null,
+            analyticId: null,
             employeeId: 0,
             exportTigerVisible: false
         };

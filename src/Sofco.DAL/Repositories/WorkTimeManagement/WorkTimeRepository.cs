@@ -241,8 +241,8 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             if (parameters.Status > 0)
                 query = query.Where(x => x.Status == (WorkTimeStatus) parameters.Status);
 
-            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
-                query = query.Where(x => x.AnalyticId == parameters.AnalyticId.Value);
+            if (parameters.AnalyticId.Any())
+                query = query.Where(x => parameters.AnalyticId.Contains(x.AnalyticId));
             else
             {
                 query = query.Where(x => analyticIds.Contains(x.AnalyticId));
@@ -251,8 +251,8 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
                 query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
 
-            if (parameters.ManagerId.HasValue && parameters.ManagerId > 0)
-                query = query.Where(x => x.Analytic.ManagerId.GetValueOrDefault() == parameters.ManagerId.Value);
+            if (parameters.ManagerId.Any())
+                query = query.Where(x => parameters.ManagerId.Contains(x.Analytic.ManagerId.GetValueOrDefault()));
 
             return query.ToList();
         }
