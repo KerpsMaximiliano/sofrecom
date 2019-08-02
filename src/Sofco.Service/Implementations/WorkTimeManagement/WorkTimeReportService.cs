@@ -174,6 +174,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                                     startDate, endDate, allocation.AnalyticId),
                         };
 
+                        if (allocation.Employee.StartDate.Date > endDate.Date)
+                        {
+                            model.Facturability = 0;
+                        }
+
                         CalculateEmployeesAllocationResume(response, allocation);
 
                         if (allocation.AnalyticId == 146 || allocation.AnalyticId == 166 ||
@@ -232,7 +237,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 response.Data.Items.Add(model);
             }
 
-            RemovePreventaAnalyticsHoursLoaded(response, employeesMissingHours);
+            RemovePreventaAnalyticsHoursLoaded(response);
 
             CalculateRealPercentage(response);
             RecalculatePreventa(response, employeesToRecalculate);
@@ -315,8 +320,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        private void RemovePreventaAnalyticsHoursLoaded(Response<WorkTimeReportModel> response,
-            List<EmployeeMissingHours> employeesMissingHours)
+        private void RemovePreventaAnalyticsHoursLoaded(Response<WorkTimeReportModel> response)
         {
             var preventaGrouped = response.Data.Items
                 .Where(x => x.AnalyticId == 146 || x.AnalyticId == 166 || x.AnalyticId == 167)
@@ -481,8 +485,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 if (allHoursMustLoaded == 0) continue;
 
-                item.AllocationPercentage = Math.Round(item.HoursMustLoad * 100 / allHoursMustLoaded,
-                    MidpointRounding.AwayFromZero);
+                item.AllocationPercentage = Math.Round(item.HoursMustLoad * 100 / allHoursMustLoaded, MidpointRounding.AwayFromZero);
                 var percentageWithoutRound = item.HoursMustLoad * 100 / allHoursMustLoaded;
 
                 if (item.Facturability == 0)

@@ -16,6 +16,7 @@ namespace Sofco.Core.Models.Rrhh
             CreationDate = license.CreationDate;
 
             Days = EndDate.Date.Subtract(StartDate.Date).Days + 1;
+            WorkDays = license.DaysQuantity;
 
             if (license.Employee != null)
             {
@@ -34,6 +35,8 @@ namespace Sofco.Core.Models.Rrhh
                 LicenseTypeName = license.Type.Description;
             }
         }
+
+        public int WorkDays { get; set; }
 
         public bool HasCertificate { get; set; }
 

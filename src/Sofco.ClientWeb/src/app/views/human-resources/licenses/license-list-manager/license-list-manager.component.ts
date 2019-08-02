@@ -49,8 +49,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var columns = [0, 1, 2, 3, 4, 5, 6];
-        var title = `Licencias-Pendientes-${moment(new Date()).format("YYYYMMDD")}`;
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        var title = `Licencias-Aprobadas-${moment(new Date()).format("YYYYMMDD")}`;
 
         var params = {
             selector: "#allLicenses", 

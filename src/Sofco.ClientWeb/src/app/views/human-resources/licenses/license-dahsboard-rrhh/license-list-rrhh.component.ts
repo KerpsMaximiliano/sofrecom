@@ -132,7 +132,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 9];
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10];
         var title = `Licencias-Aprobadas-${moment(new Date()).format("YYYYMMDD")}`;
 
         var params = {

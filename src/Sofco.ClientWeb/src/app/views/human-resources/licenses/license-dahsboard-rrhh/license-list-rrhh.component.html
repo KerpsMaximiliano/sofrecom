@@ -75,6 +75,7 @@
                                     <th class="column-sm"> {{ 'rrhh.license.start' | translate }} </th>
                                     <th class="column-sm"> {{ 'rrhh.license.end' | translate }} </th>
                                     <th class="column-sm text-center"> {{ 'rrhh.license.days' | translate }} </th>
+                                    <th class="column-sm text-center"> {{ 'rrhh.license.workDays' | translate }} </th>
                                     <th class="column-xs text-center"> {{ 'rrhh.license.goce' | translate }} </th>
                                     <th class="column-xs text-center"> {{ 'rrhh.license.status' | translate }} </th>
                                 </tr>
@@ -89,6 +90,7 @@
                                     <td class="column-sm"> {{ item.startDate | date: 'dd/MM/yyyy' }} </td>
                                     <td class="column-sm"> {{ item.endDate | date: 'dd/MM/yyyy' }} </td>
                                     <td class="column-sm text-center"> {{ item.days }} </td>
+                                    <td class="column-sm text-center"> {{ item.workDays }} </td>
                                     <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.withPayment) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
                                     <td class="column-sm text-ellipsis"> <label class="label label-license-{{item.status}} font-9">{{ item.status | translate }}</label>  </td>
                                 </tr>
