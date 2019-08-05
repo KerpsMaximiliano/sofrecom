@@ -7,6 +7,7 @@ import { ManagementReportService } from "app/services/management-report/manageme
 import { EmployeeService } from "app/services/allocation-management/employee.service"
 import { ManagementReportDetailStaffComponent } from "../detail/detail-staff";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
+import { category } from "app/models/management-report/category";
 
 @Component({
     selector: 'cost-detail-month-staff',
@@ -23,6 +24,11 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     getEmployeesSubscrip: Subscription
 
     getCategoriesSuscrip: Subscription;
+    categories: category[] = new Array()
+    categorySelected: category;
+    subcategories: any[] = new Array();
+    subcategorySelected: any;
+    subCategoriesData: any[] = new Array()
 
     totalCosts: number = 0;
     totalProvisioned: number = 0;
@@ -31,10 +37,8 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     totalProvisionedEditabled: boolean = false;
 
     resources: any[] = new Array();
-   // expenses: any[] = new Array();
+    // expenses: any[] = new Array();
     users: any[] = new Array()
-
-    categories: any[] = new Array();
 
     AnalyticId: any;
     fundedResources: any[] = new Array();
@@ -67,8 +71,9 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-  
+
         this.getUsers()
+        this.getCategories()
     }
 
     ngOnDestroy(): void {
@@ -200,4 +205,34 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         }
     }
 
+    getCategories() {
+        this.getCategoriesSuscrip = this.managementReportStaffService.getCostDetailCategories().subscribe(
+            data => {
+                this.categories = data.data;
+            },
+            () => { });
+    }
+
+    categoryChange() {
+        this.subcategorySelected = {}
+        this.subcategories = new Array()
+        this.subcategories = this.categorySelected.subcategories
+    }
+
+    addSubcategoryData() {
+
+        var cost = {
+            CostDetailStaffId: 0,
+            id: this.subcategorySelected.id,
+            name: this.subcategorySelected.name,
+            nameCategory: this.categorySelected.name,
+            monthYear: new Date(),
+            description: "",
+            value: 0,
+            BudgetTypeId: 4,
+            deleted: false
+        }
+
+        this.subCategoriesData.push(cost)
+    }
 }

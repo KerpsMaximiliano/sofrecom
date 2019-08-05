@@ -22,7 +22,7 @@ namespace Sofco.DAL.Mappings.ManagementReport
             //Cost detail subcategories
             builder.Entity<CostDetailSubcategories>().HasKey(h => h.Id);
             builder.Entity<CostDetailSubcategories>().Property(x => x.Name).HasMaxLength(250);
-            builder.Entity<CostDetailSubcategories>().HasOne(x => x.CostDetailCategory).WithMany(x => x.CostDetailSubcategories).HasForeignKey(x => x.CostDetailCategoryId);
+            builder.Entity<CostDetailSubcategories>().HasOne(x => x.CostDetailCategory).WithMany(x => x.Subcategories).HasForeignKey(x => x.CostDetailCategoryId);
 
         }
     }

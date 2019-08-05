@@ -113,7 +113,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
         public List<CostDetailCategories> GetCategories()
         {
             return context.CostDetailCategories
-                    .Include(x => x.CostDetailSubcategories)
+                    .Include(x => x.Subcategories)
                     .OrderBy(x => x.Name)
                     .ToList();
         }

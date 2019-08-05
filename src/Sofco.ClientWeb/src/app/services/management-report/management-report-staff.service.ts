@@ -50,4 +50,8 @@ export class ManagementReportStaffService {
   PostCostDetailStaff(model){
     return this.http.post<any>(`${this.baseUrl}/managementReportStaff/costDetailStaff`, model);
   }
+
+  getCostDetailCategories(){
+    return this.http.get<any>(`${this.baseUrl}/managementReportStaff/costDetailCategories`);
+  }
 }
