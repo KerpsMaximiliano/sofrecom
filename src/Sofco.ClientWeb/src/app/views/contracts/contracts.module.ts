@@ -39,12 +39,14 @@ import { CloseDateService } from 'app/services/human-resources/closeDate.service
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CurrencyExchangeService } from 'app/services/management-report/currency-exchange.service';
 import { CurrencyExchangeComponent } from './currency-exchange/currency-exchange';
+import { CategoryService } from 'app/services/admin/category.service';
+import { ResourceByServiceComponent } from '../allocation-management/resources/by-service/resource-by-service.component';
 
 @NgModule({
   declarations: [
     AnalyticSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent,
     EditAnalyticComponent, ViewAnalyticComponent, EditCostCenterComponent, AddAllocationComponent, ResourceByAnalyticComponent,
-    ResourceTimelineComponent, AddCloseDateComponent, CurrencyExchangeComponent
+    ResourceTimelineComponent, AddCloseDateComponent, CurrencyExchangeComponent, ResourceByServiceComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +68,7 @@ import { CurrencyExchangeComponent } from './currency-exchange/currency-exchange
     ContractsRouter,
     NgSelectModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, CustomerService, ServiceService, CloseDateService, CurrencyExchangeService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CostCenterService, CustomerService, ServiceService, CloseDateService, CurrencyExchangeService, CategoryService ],
   exports: [],
 })
 

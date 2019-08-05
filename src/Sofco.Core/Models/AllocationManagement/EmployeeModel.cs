@@ -22,6 +22,7 @@ namespace Sofco.Core.Models.AllocationManagement
             Percentage = domain.BillingPercentage;
             StartDate = domain.StartDate;
             Manager = domain.Manager?.Name;
+            AssignComments = domain.AssignComments;
 
             if (domain.EmployeeCategories != null && domain.EmployeeCategories.Any())
                 Categories = domain.EmployeeCategories.Select(x => x.CategoryId).ToList();

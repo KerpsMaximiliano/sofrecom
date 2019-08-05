@@ -95,14 +95,14 @@
                     <tr>
                         <td><strong><i class="fa fa-address-card"></i> {{'allocationManagement.resources.grid.employeeNumber' | translate }}: </strong> {{ model?.employeeNumber }} </td>
                         <td><strong><i class="fa fa-cog"></i> {{'allocationManagement.resources.grid.technology' | translate }}: </strong> {{ model?.technology }} </td>
-                        <td><strong><i class="fa fa-paper-plane"></i> {{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.days' | translate }}</td>
-                    </tr>
+                        <td><strong><i class="fa fa-paper-plane"></i> {{'rrhh.license.holidaysPending' | translate }}: </strong> {{ model?.holidaysPending }} {{'rrhh.license.workDays' | translate }}</td>
+                    </tr> 
                     <tr>
                         <td><strong><i class="fa fa-building"></i> {{'allocationManagement.resources.grid.office' | translate }}: </strong> {{ model?.officeAddress }}</td>
                         <td><strong><i class="fa fa-percent"></i> {{'allocationManagement.resources.grid.percentage' | translate }}: </strong> {{ model?.percentage }}% </td>
                     </tr>
                     <tr>
-                        <td><strong><i class="fa fa-paper-plane"></i> {{'allocationManagement.resources.grid.examDaysTaken' | translate }}: </strong> {{ model?.examDaysTaken }} {{'rrhh.license.days' | translate }}</td>
+                        <td><strong><i class="fa fa-paper-plane"></i> {{'allocationManagement.resources.grid.examDaysTaken' | translate }}: </strong> {{ model?.examDaysTaken }} {{'rrhh.license.workDays' | translate }}</td>
                         <td *ngIf="isRrhh || userLoggedIsManager()">
                             <strong><i class="fa fa-credit-card"></i> 
                                 {{'allocationManagement.resources.hasCreditCard' | translate }}: 

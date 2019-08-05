@@ -43,10 +43,9 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
     public resources: any[] = new Array<any>();
     public categories: any[] = new Array<any>();
     public users: any[] = new Array<any>();
-    public serviceName: string;
-    public customerName: string;
-    customerId: string;
-    serviceId: string;
+    
+    public analyticName: string;
+    public analyticId: number;
 
     public endDate: Date = new Date();
     public resourceSelected: any;
@@ -72,16 +71,16 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
-            this.customerId = params['customerId'];
-            this.serviceId = params['serviceId'];
-            this.customerName = sessionStorage.getItem('customerName');
-            this.serviceName = sessionStorage.getItem('serviceName');
+            this.analyticId = params['id'];
+            this.analyticName = sessionStorage.getItem('analyticName');
             this.getAll();
           });
 
-        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
+        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {  
             this.users = data;
         });
+
+        this.getCategories();
     }
 
     ngOnDestroy(): void {
@@ -104,29 +103,16 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
  
     getAll(){
         this.messageService.showLoading();
- 
-        this.getAllSubscrip = this.allocationervice.getAllocationsByService(this.serviceId).subscribe(data => {
+
+        this.getAllSubscrip = this.allocationervice.getAllocationsByAnalytic(this.analyticId).subscribe(data => {
             this.resources = data;
             this.messageService.closeLoading();
-
-            this.getCategories();
 
             this.initGrid();
         },
         () => this.messageService.closeLoading());
     }
  
-    goToServices(){
-        this.router.navigate([`/billing/customers/${this.customerId}/services`]);
-    }
-
-    goToProjects(){
-        sessionStorage.setItem("customerId", this.customerId);
-        sessionStorage.setItem("serviceId", this.serviceId);
-        
-        this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects`]);
-    }
-
     goToProfile(resource){
         this.router.navigate([`/allocationManagement/resources/${resource.id}`]);
     }

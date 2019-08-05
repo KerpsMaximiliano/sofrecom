@@ -44,7 +44,7 @@ export class ResourceByAnalyticComponent implements OnInit, OnDestroy {
     public users: any[] = new Array<any>();
     public analyticName: string;
     analyticId: number;
-
+ 
     public endDate: Date = new Date();
     public resourceSelected: any;
 

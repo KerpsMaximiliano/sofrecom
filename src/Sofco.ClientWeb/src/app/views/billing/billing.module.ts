@@ -73,7 +73,6 @@ import { PdfViewerModule } from '../../components/pdf-viewer/pdf-viewer.module';
 import { DatePickerModule } from '../../components/date-picker/date-picker.module';
 import { ProjectPurchaseOrdersComponent } from './projects/project-detail/purchase-order-detail/purchase-order-detail.component';
 import { BillingRouter } from './billing.router';
-import { ResourceByServiceComponent } from '../allocation-management/resources/by-service/resource-by-service.component';
 import { AnalyticService } from '../../services/allocation-management/analytic.service';
 import { EmployeeService } from '../../services/allocation-management/employee.service';
 import { UtilsService } from '../../services/common/utils.service';
@@ -114,7 +113,7 @@ import { OcStatusReopenComponent } from './purchaseOrder/workflow/reopen/oc-reop
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
                  EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent,
                  CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
-                 ProjectPurchaseOrdersComponent, ResourceByServiceComponent, PurchaseOrderAdjustmentComponent,
+                 ProjectPurchaseOrdersComponent, PurchaseOrderAdjustmentComponent,
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
                  OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderApprovalDelegateComponent, PurchaseOrderApprovalDelegateEditComponent,
                  OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent, PurchaseOrderActiveDelegateComponent, PurchaseOrderActiveDelegateEditComponent,

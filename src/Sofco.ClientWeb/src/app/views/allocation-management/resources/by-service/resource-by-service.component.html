@@ -6,19 +6,10 @@
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
             </li>
             <li>
-                <a>{{'billing.title' | translate }}</a>
+                {{'contracts.title' | translate }}
             </li>
             <li>
-                <a [routerLink]="['/billing/customers/']">{{'billing.customer.title' | translate }}</a>
-            </li>
-            <li>
-                <a>{{customerName}}</a>
-            </li>
-            <li>
-                <a (click)="goToServices()">{{'billing.service.title' | translate }}</a>
-            </li>
-            <li>
-                <a (click)="goToProjects()">{{serviceName}}</a> 
+                {{ analyticName }}
             </li>
             <li class="active">
                 <strong> {{'allocationManagement.resources.title' | translate }} </strong>
@@ -28,7 +19,6 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-
     <div class="alert alert-info" *ngIf="resources && resources.length == 0">
         {{'allocationManagement.resources.empty' | translate }}
     </div>
@@ -45,7 +35,7 @@
                         <th class="column-sm">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody> 
                     <tr *ngFor="let resource of resources" class="pointer">
                         <td class="column-lg">{{ resource.employeeNumber }} - {{ resource.name}}</td>
                         <td>{{ resource.senority}}</td>
@@ -89,6 +79,10 @@
 </ng2-modal> 
 
 <ng2-modal [config]="categoriesModalConfig" #categoriesModal (accept)="saveCategories()">
+    <div class="alert alert-warning">
+        {{'ADMIN.category.areYouSureAdd' | translate }}
+    </div>
+        
     <div *ngFor="let category of categories; let i = index"  style="margin-top:10px;">
         <icheck [(checked)]="category.selected" >
             <label style="padding-left:20px;">{{ category.text }}</label> 

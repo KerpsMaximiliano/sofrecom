@@ -60,6 +60,9 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
             this.resource = resource;
             sessionStorage.removeItem("resource");
             this.resourceId = this.resource.id;
+
+            this.comments = resource.assignComments;
+            if(this.resource.assignComments) this.commentsVisible = true;
         }
         else{
             this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {

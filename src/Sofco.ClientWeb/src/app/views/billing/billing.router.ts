@@ -33,7 +33,6 @@ const BILLING_ROUTER: Routes = [
         { path: "", component: CustomersComponent, canActivate: [AuthGuard], data: { module: "SOLFA", functionality: "ALTA" } },
         { path: ":customerId/services", children: [
           { path: "", component: ServicesComponent, canActivate: [AuthGuard] },
-          { path: ":serviceId/resources", component: ResourceByServiceComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/purchaseOrders", component: PurchaseOrdersByServiceComponent, canActivate: [AuthGuard] },
           { path: ":serviceId/projects", children: [
             { path: "", component: ProjectsComponent, canActivate: [AuthGuard] },

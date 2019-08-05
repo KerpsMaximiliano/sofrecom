@@ -92,6 +92,10 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
         this.router.navigate([`/contracts/analytics/${analytic.id}/view`]);
     }
 
+    goToResources(analytic){
+        this.router.navigate([`/contracts/analytics/${analytic.id}/resources`]);
+    }
+
     goToManagementReport(analytic){
         if(analytic.managementReportId > 0){
             this.router.navigate([`/managementReport/${analytic.managementReportId}`]);

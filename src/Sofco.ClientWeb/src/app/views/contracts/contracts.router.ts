@@ -11,6 +11,7 @@ import { EditCostCenterComponent } from "./cost-center/edit/edit-cost-center.com
 import { AuthGuard } from "../../guards/auth.guard";
 import { AddCloseDateComponent } from "app/views/contracts/closeDates/add/closeDate-add.component";
 import { CurrencyExchangeComponent } from "./currency-exchange/currency-exchange";
+import { ResourceByServiceComponent } from "../allocation-management/resources/by-service/resource-by-service.component";
 
 const CONTRACTS_ROUTER: Routes = [
     { path: "analytics",
@@ -20,7 +21,7 @@ const CONTRACTS_ROUTER: Routes = [
         { path: ":id/edit", component: EditAnalyticComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "ANEDT" } },
         { path: ":id/view", component: ViewAnalyticComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "QUERY" } },
         { path: ":id/allocations", component: AddAllocationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
-        { path: ":id/resources", component: ResourceByAnalyticComponent, canActivate: [AuthGuard] },
+        { path: ":id/resources", component: ResourceByServiceComponent, canActivate: [AuthGuard] },
     ]},
     
     {

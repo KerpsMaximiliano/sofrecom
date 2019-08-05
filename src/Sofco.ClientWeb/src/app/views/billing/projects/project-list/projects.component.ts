@@ -128,10 +128,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.router.navigate([`/contracts/analytics/${this.analytic.id}/edit/`]);
     }
   
-    goToResources(){
-      this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/resources`]);
-    }
-  
     goToPurchaseOrders(){
       this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/purchaseOrders`]);
     }
