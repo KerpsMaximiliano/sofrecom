@@ -74,7 +74,8 @@
                     <th class="static first-column" scope="col">{{category.name}}</th>
                     <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
                         <td [ngClass]="{'first-col': isFirst}">
-                            <label class="label label-budget cursor-pointer" (click)="openEditItemModal(category, 'budget', month, i)">
+                            <label class="label label-budget cursor-pointer"
+                                (click)="openEditItemModal(category, 'budget', month, i)">
                                 {{ month.totalBudget | amountFormat  }}
                             </label>
                         </td>
@@ -144,7 +145,7 @@
                     <div class="col-sm-2">
                         <h4>Monto</h4>
                     </div>
-                    
+
                 </div>
 
                 <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index">
@@ -155,12 +156,11 @@
                         <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">
                     </div>
                     <div class="col-sm-2">
-                        <input type="number" decimalFormat class="form-control input-xs" [digitLimit]="8"
-                            [(ngModel)]="cost.value" max="99999999" min="0">
+                        <math-input (model)="cost.value"></math-input>
                     </div>
                     <div class="col-sm-1 delete">
-                        <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i, cost)" *ngIf="!isReadOnly"><i
-                                class="fa fa-trash"></i></button>
+                        <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i, cost)"
+                            *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
                     </div>
                 </div>
                 <div class="row">

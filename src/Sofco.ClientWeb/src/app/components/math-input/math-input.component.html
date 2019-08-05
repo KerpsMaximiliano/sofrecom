@@ -1,0 +1,2 @@
+<input type="text" class="form-control input-xs" #mathBox [(ngModel)]="model" maxlength="8"
+    (keyup.enter)="model = onEnter(mathBox, mathBox.value)" (blur)="model = onEnter(mathBox, mathBox.value)">

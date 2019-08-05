@@ -59,6 +59,7 @@
     "jszip": "^3.1.5",
     "jvectormap": "1.2.2",
     "lodash": "^4.17.5",
+    "mathjs": "^6.0.3",
     "metismenu": "^2.7.4",
     "moment": "^2.21.0",
     "ng2-charts": "^1.5.0",
