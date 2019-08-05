@@ -9,7 +9,7 @@
                     <label *ngIf="totalProvisionedEditabled == false"
                         class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
                     <input *ngIf="totalProvisionedEditabled == true" (ngModelChange)="totalProvisionedChanged()"
-                        type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalProvisioned">
+                        type="number" decimalFormat [digitLimit]="9" class="form-control input-xs" [(ngModel)]="totalProvisioned">
                 </div>
             </div>
         </div>
