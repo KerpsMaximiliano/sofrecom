@@ -7,20 +7,29 @@ import { evaluate, compile, parse } from 'mathjs/number'
 })
 export class MathComponent {
 
-  @Input() model: string;
-//   @Input() disabled = false;
-//   @Input() label = "";
+  @Input() model;
 
-//   @Output() checkedChange = new EventEmitter<boolean>();
+   @Output() modelChange = new EventEmitter<boolean>();
 
   constructor() { }
 
   onEnter(mathBox, value: string) {
+    var result;
+    
     try {
-        return evaluate(value)
-    } catch (error) {
-        mathBox.value = 0
-        return 0
+      result = evaluate(value)
+
+      this.model = result
+      this.modelChange.emit(this.model);        
+    } 
+    catch (error) {
+        result = 0
+
+        mathBox.value = result
+        this.model = result
+        this.modelChange.emit(this.model);
     }
+
+    return result
 }
 }

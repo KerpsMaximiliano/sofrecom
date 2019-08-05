@@ -156,7 +156,7 @@
                         <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">
                     </div>
                     <div class="col-sm-2">
-                        <math-input (model)="cost.value"></math-input>
+                        <math-input [(model)]="cost.value"></math-input>
                     </div>
                     <div class="col-sm-1 delete">
                         <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i, cost)"
