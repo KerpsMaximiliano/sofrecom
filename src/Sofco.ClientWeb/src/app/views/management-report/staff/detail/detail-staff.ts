@@ -387,4 +387,8 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
 
         this.budgetHistoryModal.show();    
     }
+
+    saveBudget(){
+        this.budgetView.save()
+    }
 }

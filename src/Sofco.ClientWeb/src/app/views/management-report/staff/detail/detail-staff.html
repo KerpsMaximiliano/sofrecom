@@ -147,6 +147,9 @@
 
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector"
                         (click)="seeCostDetailMonth()">Costo mensual <i class="fa fa-edit"></i></button>
+
+                    <button class="btn btn-success btn-sm" type="button" *ngIf="isManager || isCdgOrDirector"
+                    (click)="saveBudget()">Guardar <i class="fa fa-save"></i></button>
                 </div>
             </div>
 
