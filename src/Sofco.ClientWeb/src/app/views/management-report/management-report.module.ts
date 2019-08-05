@@ -34,6 +34,7 @@ import { ManagementReportDetailStaffComponent } from "./staff/detail/detail-staf
 import { BudgetStaffComponent } from "./staff/budget/budget-staff.component";
 import { CostDetailMonthStaffComponent } from "./staff/cost-month-staff/cost-month-staff";
 import { TracingStaffComponent } from "./staff/tracing/tracing-staff.component";
+import { MathModule } from "app/components/math-input/math-input.module";
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { TracingStaffComponent } from "./staff/tracing/tracing-staff.component";
       NgSelectModule,
       DigitModule,
       ReactiveFormsModule,
-      BsDatepickerModule
+      BsDatepickerModule,
+      MathModule
     ],
     providers: [ ManagementReportService, DatesService, UtilsService, ProjectService, EmployeeService, ManagementReportStaffService ],
     exports: [],

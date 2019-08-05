@@ -571,6 +571,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     month.Id = employee.Id;
 
                     totalSalary += employee.Salary ?? 0;
+                    totalSalary += employee.Charges ?? 0;
 
                     cost.MonthsCost.Add(month);
                     _detailModel.CostEmployees.Add(cost);

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Subscription, VirtualTimeScheduler } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
@@ -78,7 +78,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         this.getCostSubscrip = this.ManagementReportStaffService.getCostDetailStaff(managementReportId).subscribe(response => {
             this.messageService.closeLoading();
-           
+
             this.model = response.data
             this.months = response.data.monthsHeader;
             this.categories = response.data.costCategories;
@@ -101,40 +101,40 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         this.categorySelected = category
         this.monthSelected = month;
-        this.typeBudgetSelected = this.budgetTypes.find(x=> x.name.toUpperCase() == typeBudget.toUpperCase())
-       
+        this.typeBudgetSelected = this.budgetTypes.find(x => x.name.toUpperCase() == typeBudget.toUpperCase())
+
         this.subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
         if (this.subCategoriesFiltered.length > 0) {
             this.subCategorySelected = this.subCategoriesFiltered[0];
         }
 
         this.fillSubcategoriesData()
-        
+
     }
 
-    fillSubcategoriesData(){
-        
+    fillSubcategoriesData() {
+
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
                 this.subCategoriesData = this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
                 this.editItemModal.show();
                 break;
-            case 'PFA1':{
-                if(this.monthSelected.totalBudget == 0){
+            case 'PFA1': {
+                if (this.monthSelected.totalBudget == 0) {
                     this.messageService.showError("budgetRequired");
                 }
-                else{
+                else {
                     this.subCategoriesData = this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
                     this.editItemModal.show();
                 }
                 break;
             }
-            case 'PFA2':{
-                if(this.monthSelected.totalBudget == 0 || this.monthSelected.totalPfa1 == 0){
+            case 'PFA2': {
+                if (this.monthSelected.totalBudget == 0 || this.monthSelected.totalPfa1 == 0) {
                     this.messageService.showError("pfa1Required");
                 }
-                else{
-			this.subCategoriesData = this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);		
+                else {
+                    this.subCategoriesData = this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);
                     this.editItemModal.show();
                 }
                 break;
@@ -280,23 +280,23 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     save() {
         this.messageService.showLoading();
-   
+
         this.updateCostSubscrip = this.ManagementReportStaffService.PostCostDetailStaff(this.model).subscribe(() => {
             this.messageService.closeLoading();
 
             this.detailStaffComponent.getDetail()
-            
+
             setTimeout(() => {
                 this.sendDataToDetailView();
             }, 1500);
         },
-        () => {
-            this.messageService.closeLoading();
-        });
+            () => {
+                this.messageService.closeLoading();
+            });
     }
 
-    deleteSubcategory(index, subcategory){
-        
+    deleteSubcategory(index, subcategory) {
+
         if (subcategory.CostDetailStaffId == 0) {
             switch (this.typeBudgetSelected.name.toUpperCase()) {
                 case 'BUDGET':
@@ -314,30 +314,31 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             }
             this.fillSubcategoriesData()
         }
-        else{
+        else {
             subcategory.value = 0
             subcategory.deleted = true
             this.fillSubcategoriesData()
         }
     }
 
-    getId(date: Date){
-        var item = this.months.find(x => x.month == (date.getMonth()+1) && x.year == date.getFullYear());
+    getId(date: Date) {
+        var item = this.months.find(x => x.month == (date.getMonth() + 1) && x.year == date.getFullYear());
 
-        if(item){
+        if (item) {
             return item.costDetailId;
         }
 
         return 0;
     }
 
-    isClosed(date: Date){   
-        var item = this.months.find(x => x.month == (date.getMonth()+1) && x.year == date.getFullYear());
+    isClosed(date: Date) {
+        var item = this.months.find(x => x.month == (date.getMonth() + 1) && x.year == date.getFullYear());
 
-        if(item){
+        if (item) {
             return item.closed;
         }
 
         return false;
     }
+
 }
