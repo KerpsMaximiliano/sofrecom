@@ -116,17 +116,29 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
-                this.subCategoriesData = this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
-                this.editItemModal.show();
+                if(this.monthSelected.totalPfa1 > 0){
+                    this.messageService.showError("cannotUpdateBudget");
+                }
+                else{
+                    this.subCategoriesData = this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
+                    this.editItemModal.show();
+                }
+             
                 break;
             case 'PFA1': {
                 if (this.monthSelected.totalBudget == 0) {
                     this.messageService.showError("budgetRequired");
                 }
                 else {
-                    this.subCategoriesData = this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
-                    this.editItemModal.show();
+                    if(this.monthSelected.totalPfa2 > 0){
+                        this.messageService.showError("cannotUpdatePfa1");
+                    }
+                    else{
+                        this.subCategoriesData = this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
+                        this.editItemModal.show();
+                    }
                 }
+                
                 break;
             }
             case 'PFA2': {
