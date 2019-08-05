@@ -5,6 +5,7 @@ import { MenuService } from "../../../../services/admin/menu.service";
 import { ActivatedRoute } from "@angular/router";
 import { AnalyticService } from "../../../../services/allocation-management/analytic.service";
 import { AppSetting } from '../../../../services/common/app-setting'
+import { MessageService } from "app/services/common/message.service";
 
 declare var $:any;
 
@@ -19,11 +20,14 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
     paramsSubscrip: Subscription;
     getByIdSubscrip: Subscription;
+    commentsSubscrip: Subscription;
 
     analytics: any = new Array<any>();
 
     resource: any;
     resourceId: number;
+    comments: string;
+    commentsVisible: boolean = false;
 
     public monthQuantity: number = 12;
 
@@ -35,6 +39,7 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
   
     constructor(private analyticService: AnalyticService,
         private menuService: MenuService,
+        private messageService: MessageService,
         private activatedRoute: ActivatedRoute,
         private employeeService: EmployeeService,
         private appSetting: AppSetting){}
@@ -43,6 +48,7 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
         if(this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
         if(this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if(this.getByIdSubscrip) this.getByIdSubscrip.unsubscribe();
+        if(this.commentsSubscrip) this.commentsSubscrip.unsubscribe();
     }
 
     ngOnInit(): void {
@@ -61,6 +67,9 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
 
                 this.getByIdSubscrip = this.employeeService.getById(params['id']).subscribe(data => {
                     this.resource = data.data;
+                    this.comments = data.data.assignComments;
+
+                    if(this.resource.assignComments) this.commentsVisible = true;
                 });
             });
         }
@@ -87,5 +96,44 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
         else{
             this.allocations.getAllocations(this.resourceId, new Date(), true);
         }
+    }
+
+    addComment(){
+        this.commentsVisible = true;   
+    }
+
+    deleteComment(){
+        var json = {
+            employeeId: this.resourceId,
+            comment: ""
+        };
+
+        this.saveComments(json, () => { 
+            this.commentsVisible = false;
+            this.comments = null; 
+        });
+    }
+
+    editComments(){
+        var json = {
+            employeeId: this.resourceId,
+            comment: this.comments
+        };
+
+        this.saveComments(json, null);
+    }
+
+    saveComments(json, callback){
+        this.messageService.showLoading();
+
+        this.getAllSubscrip = this.employeeService.updateComments(json).subscribe(data => {
+            this.messageService.closeLoading();
+            this.resource.assignComments = json.comments;
+
+            if(callback){
+                callback();
+            }
+        },
+        error => this.messageService.closeLoading());
     }
 }

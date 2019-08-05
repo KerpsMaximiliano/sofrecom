@@ -17,6 +17,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     public user = <UserDetail>{};
     private groupId: any;
 
+    @ViewChild('modalGroups') modalGroups;
     public modalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ADMIN.USERS.addGroup", //title
         "modalGroups", //id
@@ -25,6 +26,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         "ACTIONS.ACCEPT",     //Accept Button Text
         "ACTIONS.cancel");   //Cancel Button Text
 
+    @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       "ACTIONS.confirmDelete",
       "confirmModal",
@@ -41,8 +43,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     public checkAtLeft:boolean = true;
     public groupsToAdd: any[] = new Array();
     public groupsToAddSubscrip: Subscription;
-    @ViewChild('modalGroups') modalGroups;
-    @ViewChild('confirmModal') confirmModal;
     
     constructor(
         private service: UserService, 

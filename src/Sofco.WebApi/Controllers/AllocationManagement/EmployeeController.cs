@@ -230,5 +230,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return File(response.Data, "application/octet-stream", string.Empty);
         }
+
+        [HttpPut("updateAssingComment")]
+        public IActionResult UpdateAssingComment([FromBody] UpdateAssingCommentModel model)
+        {
+            var response = employeeService.UpdateAssingComment(model);
+
+            return this.CreateResponse(response);
+        }
     }
 }

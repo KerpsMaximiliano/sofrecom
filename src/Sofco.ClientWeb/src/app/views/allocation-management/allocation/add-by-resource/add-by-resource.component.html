@@ -46,7 +46,8 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <a class="btn btn-primary pointer btn-sm m-t-md btn-width-100" (click)="search()"> {{ 'ACTIONS.changeDates' | translate }} <i class="fa fa-refresh" ></i></a>
+                        <button class="btn btn-primary btn-sm m-b-sm btn-width-100" (click)="search()"> {{ 'ACTIONS.changeDates' | translate }} <i class="fa fa-refresh" ></i></button>
+                        <button class="btn btn-success btn-sm btn-width-100" *ngIf="!comments" (click)="addComment()"> Comentario Asig. <i class="fa fa-plus" ></i></button>
                     </div>
                 </div>
             </div>
@@ -58,6 +59,23 @@
                     {{ 'allocationManagement.allocation.resourceWithLicense' | translate }} {{ license.licenseTypeName }} {{ 'allocationManagement.allocation.betweenDays' | translate }} {{ license.startDate | date: 'dd/MM/yyyy' }} {{ 'allocationManagement.allocation.and' | translate }} {{ license.endDate | date: 'dd/MM/yyyy' }}
                 </li>
             </ul>
+        </div>
+
+        <div class="alert alert-info" *ngIf="commentsVisible">
+            <h3>Comentario de asignación</h3>
+
+            <div class="row">
+                <div class="col-md-10">
+
+                    <div class="form-group">
+                        <textarea rows="5" class="form-control" maxlength="1000" [(ngModel)]="comments"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary btn-sm m-b-sm" (click)="editComments()">Actualizar <i class="fa fa-edit"></i></button>
+                    <button class="btn btn-danger btn-sm" *ngIf="comments" (click)="deleteComment()">Eliminar <i class="fa fa-trash"></i></button>
+                </div>
+            </div>
         </div>
 
         <allocation-assignment-table [resourceId]="resourceId" [monthQuantity]="monthQuantity" #allocations></allocation-assignment-table> 

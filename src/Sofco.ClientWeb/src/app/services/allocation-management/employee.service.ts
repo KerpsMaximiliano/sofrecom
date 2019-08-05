@@ -122,4 +122,8 @@ export class EmployeeService {
       return new Blob([res.body], { type: 'application/octet-stream' });
     }));
   }
+
+  updateComments(json){
+    return this.http.put<any>(`${this.baseUrl}/employees/updateAssingComment`, json);
+  }
 }

@@ -556,6 +556,35 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response UpdateAssingComment(UpdateAssingCommentModel model)
+        {
+            var response = new Response();
+
+            var employee = unitOfWork.EmployeeRepository.Get(model.EmployeeId);
+
+            if (employee == null)
+            {
+                response.AddError(Resources.AllocationManagement.Employee.NotFound);
+                return response;
+            }
+
+            try
+            {
+                employee.AssignComments = model.Comment;
+                unitOfWork.EmployeeRepository.UpdateAssignComments(employee);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         public Response<EmployeeModel> GetByMail(string email)
         {
             var response = new Response<EmployeeModel>();
