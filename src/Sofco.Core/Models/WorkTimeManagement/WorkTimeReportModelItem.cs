@@ -55,6 +55,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public bool IsCompleted { get; set; }
 
         public bool WorkTimeReportByHours { get; set; }
+
+        public IList<EmployeeMissingHours> EmployeesMissingHours { get; set; }
     }
 
     public class EmployeeAllocationResume
@@ -105,5 +107,44 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public int Count { get; set; }
 
         public decimal Percentage { get; set; }
+    }
+
+    public class EmployeeMissingHours
+    {
+        public string EmployeeNumber { get; set; }
+
+        public string Name { get; set; }
+
+        public string Manager { get; set; }
+
+        public decimal Hours { get; set; }
+
+        public decimal HoursMustLoad { get; set; }
+
+        public decimal MissingHours
+        {
+            get
+            {
+                if (Facturability > 0)
+                {
+                    if (WorkTimeReportByHours)
+                    {
+                        return HoursMustLoad - Hours;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public decimal Facturability { get; set; }
+
+        public bool WorkTimeReportByHours { get; set; }
     }
 }

@@ -106,6 +106,9 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     }
 
     search(){
+        if(this.searchModel.analyticId == null) this.searchModel.analyticId = [];
+        if(this.searchModel.managerId == null) this.searchModel.managerId = [];
+
         var model = {
             startDate: this.searchModel.startDate,
             endDate: this.searchModel.endDate,

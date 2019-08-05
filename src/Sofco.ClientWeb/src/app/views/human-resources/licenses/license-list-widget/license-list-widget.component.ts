@@ -50,7 +50,7 @@ export class LicenseListWidget implements OnInit, OnDestroy {
     }
  
     initGrid(){
-        var columns = [0, 1, 2, 3, 4, 5, 6, 7];
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         var title = `Licencias-${moment(new Date()).format("YYYYMMDD")}`;
 
         var params = {

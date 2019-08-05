@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Core.Models.WorkTimeManagement
 {
     public class WorkTimeControlParams
     {
-        public int? AnalyticId { get; set; }
+        public IList<int> AnalyticId { get; set; }
 
         public int? CloseMonthId { get; set; }
 

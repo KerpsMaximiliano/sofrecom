@@ -22,7 +22,7 @@ export class WorkTimeControlComponent implements OnDestroy  {
   private textKey = 'text';
   private nullId = '';
   public analytics: any[] = new Array();
-  public analyticId: string = null;
+  public analyticId;
   public model: any;
   public data: any[] = new Array();
   public gridSelector = '#gridTable';
@@ -47,7 +47,6 @@ export class WorkTimeControlComponent implements OnDestroy  {
         this.subscription = this.worktimeControlService.getAnalytics().subscribe(res => {
             this.messageService.closeLoading();
             this.analytics = this.sortAnalytics(res);
-            this.setAnalyticSelect();
             this.getCloseMonths();
         },
         err => {
@@ -67,28 +66,6 @@ export class WorkTimeControlComponent implements OnDestroy  {
             let data = this.closeMonths[0];
             this.closeMonthId = data.id;
         }
-
-        // this.getData();
-    }
-
-    setAnalyticSelect() {
-      const data = this.mapToSelect(this.analytics);
-      const self = this;
-
-      $('#analyticControl').select2({
-          data: data,
-          allowClear: true,
-          placeholder: this.i18nService.translateByKey('selectAnOption')
-      });
-      $('#analyticControl').on('select2:unselecting', function(){
-          self.analyticId = null;
-          self.getData();
-      });
-      $('#analyticControl').on('select2:select', function(evt){
-          const item = evt.params.data;
-          self.analyticId = item.id === this.nullId ? null : item.id;
-          self.getData();
-      });
     }
 
     sortAnalytics(data: Array<any>) {
@@ -116,10 +93,13 @@ export class WorkTimeControlComponent implements OnDestroy  {
     }
 
     getData() {
+        if(this.analyticId == null) this.analyticId = [];
+
         const model = {
             analyticId : this.analyticId,
             closeMonthId: this.closeMonthId
         };
+
         this.loading = true;
         this.messageService.showLoading();
         this.subscription = this.worktimeControlService.getWorkTimeApproved(model).subscribe(res => {

@@ -30,7 +30,7 @@ namespace Sofco.Service.Implementations.Jobs
             this.employeeProfileHistoryRepository = employeeProfileHistoryRepository;
         }
 
-        public void Sync()
+        public void Sync(bool all)
         {
             var procesedEmployees = Translate(tigerEmployeeRepository.GetActive());
 
@@ -43,7 +43,7 @@ namespace Sofco.Service.Implementations.Jobs
                 var newEmployee = procesedEmployees.FirstOrDefault(s => s.EmployeeNumber == stored.EmployeeNumber);
                 if(newEmployee == null) continue;
 
-                var fields = GetFieldToCompare();
+                var fields = GetFieldToCompare(all);
 
                 if (string.IsNullOrEmpty(stored.Email))
                 {
@@ -53,7 +53,7 @@ namespace Sofco.Service.Implementations.Jobs
                 var modifiedFields = ElementComparerHelper.CompareModification(newEmployee, stored, fields.ToArray());
                 if (!modifiedFields.Any()) continue;
 
-                employeeProfileHistoryRepository.Save(CreateProfileHistory(stored, newEmployee, modifiedFields));
+                if(all) employeeProfileHistoryRepository.Save(CreateProfileHistory(stored, newEmployee, modifiedFields));
 
                 ElementComparerHelper.ApplyModifications(stored, newEmployee, modifiedFields);
 
@@ -61,8 +61,18 @@ namespace Sofco.Service.Implementations.Jobs
             }
         }
 
-        private List<string> GetFieldToCompare()
+        private List<string> GetFieldToCompare(bool all)
         {
+            if (!all)
+            {
+                return new List<string>
+                {
+                    nameof(Employee.Salary),
+                    nameof(Employee.PrepaidAmount),
+                    nameof(Employee.BeneficiariesCount)
+                };
+            }
+
             return new List<string>
             {
                 nameof(Employee.Name),

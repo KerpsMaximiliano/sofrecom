@@ -21,16 +21,18 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">{{'allocationManagement.analytics.title' | translate }}</label>
-                        <select id="analyticControl" class="form-control"></select>
+                        <ng-select [items]="analytics" [multiple]="true" [closeOnSelect]="true" bindValue="id" bindLabel="text" [(ngModel)]="analyticId"></ng-select>
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <div class="form-group">
-                        <select-two [label]="'workTimeManagement.month'" [(value)]="closeMonthId" [firstOptionEmpty]="false" [options]="closeMonths" (valueChange)="getData()"></select-two>
+                    <div class="form-group"> 
+                        <label class="control-label">{{'workTimeManagement.month' | translate }}</label>
+                        <ng-select [items]="closeMonths" bindValue="id" bindLabel="text" [(ngModel)]="closeMonthId" (ngModelChange)="getData()"></ng-select>
                     </div>
                 </div>
 
                 <div class="col-sm-4">
+                    <button class="btn btn-success btn-md m-t-md" (click)="getData()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
                     <button class="btn btn-success btn-md m-t-md" (click)="export()"> {{ 'ACTIONS.export' | translate }} <i class="fa fa-download"></i></button>
                 </div>
             </div>

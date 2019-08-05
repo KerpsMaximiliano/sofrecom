@@ -66,11 +66,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var daysoff = unitOfWork.HolidayRepository.Get(parameters.StartYear, parameters.StartMonth);
             daysoff.AddRange(unitOfWork.HolidayRepository.Get(parameters.EndYear, parameters.EndMonth));
 
-            var allocations = unitOfWork.AllocationRepository.GetAllocationsForWorkTimeReport(parameters, startDate, endDate);
+            var allocations =
+                unitOfWork.AllocationRepository.GetAllocationsForWorkTimeReport(parameters, startDate, endDate);
 
-            response.Data = new WorkTimeReportModel { Items = new List<WorkTimeReportModelItem>() };
+            response.Data = new WorkTimeReportModel {Items = new List<WorkTimeReportModelItem>()};
 
             var employeesToRecalculate = new List<EmployeeToRecalculate>();
+            var employeesMissingHours = new List<EmployeeMissingHours>();
 
             response.Data.EmployeesAllocationResume = new List<EmployeeAllocationResume>();
             var model = new WorkTimeReportModelItem();
@@ -95,6 +97,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                     CalculateEmployeesAllocationResume(response, allocation);
 
+                    // Guardo analiticas de preventa
                     if (allocation.AnalyticId == 146 || allocation.AnalyticId == 166 || allocation.AnalyticId == 167)
                     {
                         var emp = employeesToRecalculate.FirstOrDefault(x => x.EmployeeId == allocation.EmployeeId);
@@ -105,13 +108,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         }
                         else
                         {
-                            employeesToRecalculate.Add(new EmployeeToRecalculate { EmployeeId = allocation.EmployeeId, Percentage = allocation.Percentage, Count = 1 });
+                            employeesToRecalculate.Add(new EmployeeToRecalculate
+                                {EmployeeId = allocation.EmployeeId, Percentage = allocation.Percentage, Count = 1});
                         }
                     }
                 }
                 else
                 {
-                    var modelAlreadyExist = response.Data.Items.SingleOrDefault(x => x.EmployeeId == allocation.EmployeeId && x.AnalyticId == allocation.AnalyticId);
+                    var modelAlreadyExist = response.Data.Items.SingleOrDefault(x =>
+                        x.EmployeeId == allocation.EmployeeId && x.AnalyticId == allocation.AnalyticId);
 
                     if (modelAlreadyExist != null)
                     {
@@ -123,7 +128,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                         CalculateEmployeesAllocationResume(response, allocation);
 
-                        if (allocation.AnalyticId == 146 || allocation.AnalyticId == 166 || allocation.AnalyticId == 167)
+                        if (allocation.AnalyticId == 146 || allocation.AnalyticId == 166 ||
+                            allocation.AnalyticId == 167)
                         {
                             var emp = employeesToRecalculate.FirstOrDefault(x => x.EmployeeId == allocation.EmployeeId);
 
@@ -133,7 +139,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             }
                             else
                             {
-                                employeesToRecalculate.Add(new EmployeeToRecalculate { EmployeeId = allocation.EmployeeId, Percentage = allocation.Percentage, Count = 1 });
+                                employeesToRecalculate.Add(new EmployeeToRecalculate
+                                {
+                                    EmployeeId = allocation.EmployeeId, Percentage = allocation.Percentage, Count = 1
+                                });
                             }
                         }
                     }
@@ -158,13 +167,22 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             CostCenter = allocation.Analytic.CostCenter?.Code,
                             Activity = allocation.Analytic.Activity?.Text,
                             Facturability = allocation.Employee.BillingPercentage,
-                            HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId),
-                            HoursApproved = unitOfWork.WorkTimeRepository.GetTotalHoursApprovedBetweenDays(allocation.EmployeeId, startDate, endDate, allocation.AnalyticId),
+                            HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId,
+                                startDate, endDate, allocation.AnalyticId),
+                            HoursApproved =
+                                unitOfWork.WorkTimeRepository.GetTotalHoursApprovedBetweenDays(allocation.EmployeeId,
+                                    startDate, endDate, allocation.AnalyticId),
                         };
+
+                        if (allocation.Employee.StartDate.Date > endDate.Date)
+                        {
+                            model.Facturability = 0;
+                        }
 
                         CalculateEmployeesAllocationResume(response, allocation);
 
-                        if (allocation.AnalyticId == 146 || allocation.AnalyticId == 166 || allocation.AnalyticId == 167)
+                        if (allocation.AnalyticId == 146 || allocation.AnalyticId == 166 ||
+                            allocation.AnalyticId == 167)
                         {
                             var emp = employeesToRecalculate.FirstOrDefault(x => x.EmployeeId == allocation.EmployeeId);
 
@@ -175,7 +193,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             }
                             else
                             {
-                                employeesToRecalculate.Add(new EmployeeToRecalculate { EmployeeId = allocation.EmployeeId, Percentage = allocation.Percentage, Count = 1 });
+                                employeesToRecalculate.Add(new EmployeeToRecalculate
+                                {
+                                    EmployeeId = allocation.EmployeeId, Percentage = allocation.Percentage, Count = 1
+                                });
                             }
                         }
 
@@ -183,6 +204,27 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                         model.HoursMustLoad += tuple.Item1;
                         model.AllHoursMustLoad = tuple.Item2;
+
+                        if (employeesMissingHours.Any(x => x.EmployeeNumber == allocation.Employee.EmployeeNumber))
+                        {
+                            var employeeMissingHour = employeesMissingHours.FirstOrDefault(x => x.EmployeeNumber == allocation.Employee.EmployeeNumber);
+                            if (employeeMissingHour != null) employeeMissingHour.Hours += model.HoursApproved;
+                        }
+                        else
+                        {
+                            var employeeMissing = new EmployeeMissingHours
+                            {
+                                Name = allocation.Employee.Name,
+                                Manager = allocation.Employee?.Manager?.Name,
+                                EmployeeNumber = allocation.Employee.EmployeeNumber,
+                                Hours = model.HoursApproved,
+                                HoursMustLoad = tuple.Item2,
+                                Facturability = allocation.Employee.BillingPercentage,
+                                WorkTimeReportByHours = workTimeReportByHours
+                            };
+
+                            employeesMissingHours.Add(employeeMissing);
+                        }
 
                         mustAddModel = true;
                     }
@@ -215,26 +257,30 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 SaveTigerTxt(response, tigerReport);
 
-                response.Data.IsCompleted = response.Data.Items.All(x => x.HoursLoadedSuccesfully) && response.Data.EmployeesAllocationResume.All(x => !x.MissAnyPercentageAllocation);
+                response.Data.IsCompleted = response.Data.Items.All(x => x.HoursLoadedSuccesfully) &&
+                                            response.Data.EmployeesAllocationResume.All(x =>
+                                                !x.MissAnyPercentageAllocation);
 
                 worktimeData.ClearTigerReportKey();
-                worktimeData.SaveTigerReport(tigerReport);
+                worktimeData.SaveTigerReport(tigerReport.OrderBy(x => x.EmployeeNumber).ToList());
             }
 
             //Se filtran las analiticas seleccionadas
-            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
-            {
-                response.Data.Items = response.Data.Items.Where(e => e.AnalyticId == parameters.AnalyticId).ToList();
-            }
+            //if (parameters.AnalyticId.Any())
+            //{
+            //    response.Data.Items = response.Data.Items.Where(e => parameters.AnalyticId.Contains(e.AnalyticId)).ToList();
+            //}
 
             response.Data.EmployeesAllocationResume = response.Data.EmployeesAllocationResume.OrderBy(x => x.Employee).ToList();
             response.Data.Items = response.Data.Items.OrderBy(x => x.Employee).ToList();
             response.Data.WorkTimeReportByHours = workTimeReportByHours;
+            response.Data.EmployeesMissingHours = employeesMissingHours.Where(x => x.MissingHours > 0).OrderBy(x => x.EmployeeNumber).ToList();
 
             return response;
         }
 
-        private void RecalculatePreventa(Response<WorkTimeReportModel> response, List<EmployeeToRecalculate> employeesToRecalculate)
+        private void RecalculatePreventa(Response<WorkTimeReportModel> response,
+            List<EmployeeToRecalculate> employeesToRecalculate)
         {
             foreach (var emp in employeesToRecalculate)
             {
@@ -245,6 +291,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 var rows = response.Data.Items.Where(x => x.EmployeeId == emp.EmployeeId).ToList();
 
                 if (percentageToRecalculate == 0) continue;
+
+                if (!rows.Any()) continue;
 
                 var index = 0;
                 var end = false;
@@ -325,7 +373,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     }
                 }
 
-                var toRemove = rows.Where(x => x.AnalyticId == 146 || x.AnalyticId == 166 || x.AnalyticId == 167).ToList();
+                var toRemove = rows.Where(x => x.AnalyticId == 146 || x.AnalyticId == 166 || x.AnalyticId == 167)
+                    .ToList();
 
                 foreach (var item in toRemove)
                 {
@@ -340,7 +389,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             foreach (var employee in employeesUnassigned)
             {
-                var employeeMissAllocation = response.Data.EmployeesAllocationResume.SingleOrDefault(x => x.EmployeeId == employee.Id);
+                var employeeMissAllocation =
+                    response.Data.EmployeesAllocationResume.SingleOrDefault(x => x.EmployeeId == employee.Id);
 
                 if (employeeMissAllocation == null)
                 {
@@ -379,7 +429,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         private void CalculateEmployeesAllocationResume(Response<WorkTimeReportModel> response, Allocation allocation)
         {
-            var employeeMissAllocation = response.Data.EmployeesAllocationResume.SingleOrDefault(x => x.EmployeeId == allocation.EmployeeId);
+            var employeeMissAllocation =
+                response.Data.EmployeesAllocationResume.SingleOrDefault(x => x.EmployeeId == allocation.EmployeeId);
 
             if (employeeMissAllocation == null)
             {
@@ -418,7 +469,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 else
                 {
                     employeeMissAllocation.CurrentMonth = allocation.StartDate.Month;
-                    employeeMissAllocation.CurrentMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
+                    employeeMissAllocation.CurrentMonthDescription =
+                        DatesHelper.GetDateDescription(allocation.StartDate);
                     employeeMissAllocation.CurrentPercentage += allocation.Percentage;
                 }
             }
@@ -428,7 +480,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
         {
             foreach (var item in response.Data.Items)
             {
-                var allHoursMustLoaded = response.Data.Items.FirstOrDefault(x => x.EmployeeId == item.EmployeeId).AllHoursMustLoad;
+                var allHoursMustLoaded = response.Data.Items.FirstOrDefault(x => x.EmployeeId == item.EmployeeId)
+                    .AllHoursMustLoad;
 
                 if (allHoursMustLoaded == 0) continue;
 
@@ -445,7 +498,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (item.HoursMustLoad != 0)
                     {
-                        item.RealPercentage = (percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad)) / 100;
+                        item.RealPercentage =
+                            (percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad)) / 100;
 
                         if (item.RealPercentage > 100) item.RealPercentage = 100;
                     }
@@ -459,7 +513,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             foreach (var item in response.Data.Items)
             {
                 var resource = response.Data.Items.FirstOrDefault(x => x.EmployeeId == item.EmployeeId);
-                var sumAllHoursApproved = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Sum(x => x.HoursApproved);
+                var sumAllHoursApproved = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId)
+                    .Sum(x => x.HoursApproved);
 
                 if (item.Facturability > 0)
                 {
@@ -481,7 +536,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (item.RealPercentage <= 0) continue;
 
-                    var tigerItem = new TigerReportItem(item.EmployeeNumber, item.RealPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
+                    var tigerItem = new TigerReportItem(item.EmployeeNumber, item.RealPercentage, item.CostCenter,
+                        item.Activity, item.Title) {Id = i};
                     i++;
 
                     tigerReport.Add(tigerItem);
@@ -490,7 +546,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (item.AllocationPercentage <= 0) continue;
 
-                    var tigerItem = new TigerReportItem(item.EmployeeNumber, item.AllocationPercentage, item.CostCenter, item.Activity, item.Title) { Id = i };
+                    var tigerItem = new TigerReportItem(item.EmployeeNumber, item.AllocationPercentage, item.CostCenter,
+                        item.Activity, item.Title) {Id = i};
                     i++;
 
                     tigerReport.Add(tigerItem);
@@ -498,7 +555,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        private Tuple<decimal, decimal> CalculateHoursToLoad(Allocation allocation, DateTime startDate, DateTime endDate, IList<Holiday> holidays)
+        private Tuple<decimal, decimal> CalculateHoursToLoad(Allocation allocation, DateTime startDate,
+            DateTime endDate, IList<Holiday> holidays)
         {
             var businessDays = 0;
             var allBusinessDays = 0;
@@ -506,7 +564,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             while (startDate.Date <= endDate.Date)
             {
                 if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday &&
-                    holidays.All(x => x.Date.Date != startDate.Date) && allocation.Employee.StartDate.Date <= startDate.Date)
+                    holidays.All(x => x.Date.Date != startDate.Date) &&
+                    allocation.Employee.StartDate.Date <= startDate.Date)
                 {
                     if (allocation.Employee.EndDate.HasValue)
                     {
@@ -531,7 +590,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 startDate = startDate.AddDays(1);
             }
 
-            var hoursMustLoad = Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
+            var hoursMustLoad =
+                Math.Round((businessDays * allocation.Employee.BusinessHours * allocation.Percentage) / 100);
             var allHoursMustLoad = allBusinessDays * allocation.Employee.BusinessHours;
 
             return new Tuple<decimal, decimal>(hoursMustLoad, allHoursMustLoad);

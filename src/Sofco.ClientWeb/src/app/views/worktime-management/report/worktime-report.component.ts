@@ -5,7 +5,6 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { WorktimeService } from "../../../services/worktime-management/worktime.service";
 import { UtilsService } from "../../../services/common/utils.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
-import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { RrhhService } from "app/services/human-resources/rrhh.service";
 import * as FileSaver from "file-saver";
 import { WorktimeControlService } from "app/services/worktime-management/worktime-control.service";
@@ -46,8 +45,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
 
     public searchModel = {
         closeMonthId: 0,
-        managerId: 0,
-        analyticId: 0,
+        managerId: null,
+        analyticId: null,
         employeeId: 0,
         exportTigerVisible: false
     };
@@ -55,7 +54,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     constructor(private messageService: MessageService,
         private worktimeService: WorktimeService,
         private utilsService: UtilsService,
-        private analyticService: AnalyticService,
         private worktimeControlService: WorktimeControlService,
         private rrhhService: RrhhService,
         private employeeService: EmployeeService,
@@ -113,8 +111,11 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.isMissingData = false;
         this.isCompleted = false;
 
-        if(this.searchModel.closeMonthId > 0 && this.searchModel.managerId == 0 && 
-           this.searchModel.analyticId == 0 && this.searchModel.employeeId == 0){
+        if(this.searchModel.analyticId == null) this.searchModel.analyticId = [];
+        if(this.searchModel.managerId == null) this.searchModel.managerId = [];
+
+        if(this.searchModel.closeMonthId > 0 && this.searchModel.managerId && this.searchModel.managerId.length > 0 && 
+           this.searchModel.analyticId && this.searchModel.analyticId.length > 0 && this.searchModel.employeeId == 0){
             this.exportTigerVisible = true;
             this.searchModel.exportTigerVisible = true;
         }
@@ -126,6 +127,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data.items;
             this.workTimeReportByHours = response.data.workTimeReportByHours;
+            this.employeesWithHoursMissing = response.data.employeesMissingHours;
 
             if(this.data.length > 0){
                 this.isCompleted = response.data.isCompleted;
@@ -139,7 +141,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
                 this.collapse();
 
                 if(this.isMissingData){
-                    this.showEmployeesWithMissingData(response);
+                    this.employeesWithAllocationMissing = response.data.employeesAllocationResume.filter(item => item.missAnyPercentageAllocation == true);
                 }
             }
 
@@ -152,11 +154,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         });
     }
  
-    showEmployeesWithMissingData(response){
-        this.employeesWithHoursMissing = this.data.filter(item => item.hoursLoadedSuccesfully == false);
-        this.employeesWithAllocationMissing = response.data.employeesAllocationResume.filter(item => item.missAnyPercentageAllocation == true);
-    }
-
     initGrid(){
         var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         var title = "Reporte Insumido vs Previsto";
@@ -165,13 +162,25 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             selector: "#reportTable",
             columns: columns,
             title: title,
-            order: [[ 1, "desc" ]],
             withExport: true
         };
 
         this.dataTableService.destroy(options.selector); 
         this.dataTableService.initialize(options);
         this.gridIsVisible = true;
+
+        var columnsMissingHours = [0, 1, 2, 3];
+        var titleMissingHours = "Recursos con horas faltantes";
+
+        var options2 = { 
+            selector: "#missingHoursTable",
+            columns: columnsMissingHours,
+            title: titleMissingHours,
+            withExport: true
+        };
+
+        this.dataTableService.destroy(options2.selector); 
+        this.dataTableService.initialize(options2);
 
         setTimeout(() => {
             $("#reportTable_wrapper").css("float","left");
@@ -216,8 +225,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     clean(){
         this.searchModel = {
             closeMonthId: 0,
-            managerId: 0,
-            analyticId: 0,
+            managerId: null,
+            analyticId: null,
             employeeId: 0,
             exportTigerVisible: false
         };

@@ -2,6 +2,6 @@
 {
     public interface IEmployeeSyncProfileJobService
     {
-        void Sync();
+        void Sync(bool all);
     }
 }
