@@ -74,28 +74,28 @@
                     <th class="static first-column" scope="col">{{category.name}}</th>
                     <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
                         <td [ngClass]="{'first-col': isFirst}">
-                            <label class="label label-budget cursor-pointer"
+                            <label class="label  cursor-pointer"
+                            [ngClass]="month.totalReal <=  month.totalBudget ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category, 'budget', month, i)">
                                 {{ month.totalBudget | amountFormat  }}
                             </label>
                         </td>
                         <td>
                             <label class="label cursor-pointer"
-                                [ngClass]="month.totalPfa1 <=  month.totalReal ? 'label-success' : 'label-danger'"
+                                [ngClass]="month.totalReal <=  month.totalPfa1 ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category,'pfa1', month, i)">
                                 {{ month.totalPfa1 | amountFormat }}
                             </label>
                         </td>
                         <td>
                             <label class="label cursor-pointer"
-                                [ngClass]="month.totalPfa2 <=  month.totalReal ? 'label-success' : 'label-danger'"
+                                [ngClass]="month.totalReal <=  month.totalPfa2 ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category, 'pfa2', month, i)">
                                 {{ month.totalPfa2 | amountFormat }}
                             </label>
                         </td>
                         <td>
-                            <label class="label not-allowed"
-                                [ngClass]="month.totalReal <=  month.totalBudget ? 'label-success' : 'label-danger'"
+                            <label class="label label-budget cursor-pointer"                                
                                 (click)="openEditItemModal(category, 'real', month, i)">
                                 {{ month.totalReal | amountFormat }}
                             </label>
