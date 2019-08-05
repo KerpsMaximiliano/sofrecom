@@ -20,6 +20,7 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Employee>().Property(x => x.Province).HasMaxLength(200);
             builder.Entity<Employee>().Property(x => x.Country).HasMaxLength(200);
             builder.Entity<Employee>().Property(x => x.OfficeAddress).HasMaxLength(400);
+            builder.Entity<Employee>().Property(x => x.AssignComments).HasMaxLength(1000);
             builder.Entity<Employee>().Property(x => x.Email).HasMaxLength(150);
             builder.Entity<Employee>().Property(x => x.Salary).HasMaxLength(200);
             builder.Entity<Employee>().Property(x => x.PrepaidAmount).HasMaxLength(200);

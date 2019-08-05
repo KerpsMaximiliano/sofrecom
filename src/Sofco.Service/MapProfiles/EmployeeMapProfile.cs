@@ -52,7 +52,8 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.Id, s => s.Ignore())
                 .ForMember(d => d.EmployeeData, s => s.MapFrom(x => JsonConvert.SerializeObject(x)));
 
-            CreateMap<Employee, EmployeeModel>();
+            CreateMap<Employee, EmployeeModel>()
+                .ForMember(x => x.Manager, s => s.MapFrom(x => x.Manager.Name));
 
             CreateMap<EmployeeHistory, EmployeeHistoryModel>()
                 .AfterMap((src, dest) =>

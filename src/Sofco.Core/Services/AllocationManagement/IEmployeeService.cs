@@ -51,5 +51,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<IList<EmployeeCurrentAccount>> GetCurrentAccount(int id);
 
         Response<byte[]> GetReport();
+
+        Response UpdateAssingComment(UpdateAssingCommentModel model);
     }
 }

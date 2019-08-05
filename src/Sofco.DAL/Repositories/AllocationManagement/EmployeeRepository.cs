@@ -364,6 +364,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Where(x => ids.Contains(x.Id)).ToList();
         }
 
+        public void UpdateAssignComments(Employee employee)
+        {
+            context.Entry(employee).Property("AssignComments").IsModified = true;
+        }
+
         public Employee GetUserInfo(string email)
         {
             return context.Employees.Include(x => x.Manager)

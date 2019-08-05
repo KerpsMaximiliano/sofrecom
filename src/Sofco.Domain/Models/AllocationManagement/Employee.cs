@@ -120,5 +120,7 @@ namespace Sofco.Domain.Models.AllocationManagement
         public ICollection<SocialCharge> SocialCharges { get; set; }
 
         public ICollection<SalaryDiscount> SalaryDiscounts { get; set; }
+
+        public string AssignComments { get; set; }
     }
 }
