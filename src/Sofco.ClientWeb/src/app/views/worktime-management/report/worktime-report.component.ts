@@ -8,6 +8,7 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 import { RrhhService } from "app/services/human-resources/rrhh.service";
 import * as FileSaver from "file-saver";
 import { WorktimeControlService } from "app/services/worktime-management/worktime-control.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 declare var $: any;
 
@@ -54,6 +55,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     constructor(private messageService: MessageService,
         private worktimeService: WorktimeService,
         private utilsService: UtilsService,
+        private menuService: MenuService,
         private worktimeControlService: WorktimeControlService,
         private rrhhService: RrhhService,
         private employeeService: EmployeeService,
@@ -114,15 +116,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         if(this.searchModel.analyticId == null) this.searchModel.analyticId = [];
         if(this.searchModel.managerId == null) this.searchModel.managerId = [];
 
-        if(this.searchModel.closeMonthId > 0 && this.searchModel.managerId && this.searchModel.managerId.length > 0 && 
-           this.searchModel.analyticId && this.searchModel.analyticId.length > 0 && this.searchModel.employeeId == 0){
-            this.exportTigerVisible = true;
-            this.searchModel.exportTigerVisible = true;
-        }
-        else{
-            this.exportTigerVisible = false;
-            this.searchModel.exportTigerVisible = false;
-        }
+        this.searchModel.exportTigerVisible = this.menuService.userIsRrhh;
+        this.exportTigerVisible = this.menuService.userIsRrhh;
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data.items;
@@ -132,10 +127,6 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             if(this.data.length > 0){
                 this.isCompleted = response.data.isCompleted;
                 this.isMissingData = !response.data.isCompleted;
-
-                if(this.employeesWithHoursMissing.length == 0 && !this.exportTigerVisible){
-                    this.isMissingData = false;
-                }
 
                 this.initGrid();
                 this.collapse();

@@ -5,6 +5,7 @@ using Sofco.DAL.Repositories.Common;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
@@ -367,6 +368,23 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public void UpdateAssignComments(Employee employee)
         {
             context.Entry(employee).Property("AssignComments").IsModified = true;
+        }
+
+        public IList<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate, int employeeId)
+        {
+            var from = new DateTime(startDate.Year, startDate.Month, 1).Date;
+            var to = new DateTime(endDate.Year, endDate.Month, 1).Date;
+
+            if (employeeId > 0)
+            {
+                return context.Employees.Include(x => x.Manager).Where(x => x.Id == employeeId && x.EndDate == null && !x.IsExternal).ToList();
+            }
+            else
+            {
+                var filter = context.Allocations.Where(x => x.StartDate.Date == from && x.StartDate.Date == to).Select(x => x.EmployeeId).Distinct().ToList();
+
+                return context.Employees.Include(x => x.Manager).Where(x => !filter.Contains(x.Id) && x.EndDate == null && !x.IsExternal).ToList();
+            }
         }
 
         public Employee GetUserInfo(string email)

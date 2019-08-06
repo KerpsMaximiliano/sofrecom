@@ -65,7 +65,7 @@
             <div id="collapseTwo" class="panel-collapse collapse in">
                 <div class="panel-body">
                     <div class="row">
-                        <div [ngClass]="employeesWithAllocationMissing.length > 0 && exportTigerVisible ? 'col-sm-6' : 'col-sm-12'" *ngIf="employeesWithHoursMissing.length > 0">
+                        <div [ngClass]="employeesWithAllocationMissing.length > 0 ? 'col-sm-6' : 'col-sm-12'" *ngIf="employeesWithHoursMissing.length > 0">
                             <div class="table-responsive">
                                 <table class="table table-striped dataTable" role="grid" id="missingHoursTable">
                                     <thead>
@@ -87,7 +87,7 @@
                                 </table>       
                             </div>
                         </div>
-                        <div class="col-sm-6" *ngIf="employeesWithAllocationMissing.length > 0 && exportTigerVisible">
+                        <div class="col-sm-6" *ngIf="employeesWithAllocationMissing.length > 0">
                             <div class="alert alert-gaps-error">
                                 <h4>
                                     <i class="fa fa-times"></i> 

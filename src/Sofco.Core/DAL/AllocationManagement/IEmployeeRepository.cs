@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.AllocationManagement;
+using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
@@ -67,5 +69,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         Employee GetByEmailWithDiscounts(string modelEmail);
         IList<Employee> GetByAnalyticWithSocialCharges(int idAnalytic);
         void UpdateAssignComments(Employee employee);
+        IList<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate, int employeeId);
     }
 }

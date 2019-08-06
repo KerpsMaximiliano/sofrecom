@@ -124,7 +124,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         modelAlreadyExist.HoursMustLoad += tuple.Item1;
                         modelAlreadyExist.AllHoursMustLoad = tuple.Item2;
 
-                        modelAlreadyExist.Result = modelAlreadyExist.HoursLoaded >= modelAlreadyExist.HoursMustLoad;
+                        modelAlreadyExist.Result = modelAlreadyExist.HoursApproved >= modelAlreadyExist.HoursMustLoad;
 
                         CalculateEmployeesAllocationResume(response, allocation);
 
@@ -150,7 +150,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     {
                         if (mustAddModel)
                         {
-                            model.Result = model.HoursLoaded >= model.HoursMustLoad;
+                            model.Result = model.HoursApproved >= model.HoursMustLoad;
                             response.Data.Items.Add(model);
                         }
 
@@ -233,7 +233,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             if (mustAddModel)
             {
-                model.Result = model.HoursLoaded >= model.HoursMustLoad;
+                model.Result = model.HoursApproved >= model.HoursMustLoad;
                 response.Data.Items.Add(model);
             }
 
@@ -242,9 +242,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             CalculateRealPercentage(response);
             RecalculatePreventa(response, employeesToRecalculate);
 
-            if (parameters.ExportTigerVisible)
+            if (parameters.ExportTigerVisible && !parameters.AnalyticId.Any() && !parameters.ManagerId.Any())
             {
-                FillUnassigned(response, startDate, endDate);
+                FillUnassigned(response, startDate, endDate, parameters.EmployeeId.GetValueOrDefault());
             }
 
             if (!response.Data.Items.Any())
@@ -383,9 +383,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        private void FillUnassigned(Response<WorkTimeReportModel> response, DateTime startDate, DateTime endDate)
+        private void FillUnassigned(Response<WorkTimeReportModel> response, DateTime startDate, DateTime endDate, int employeeId)
         {
-            var employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(startDate, endDate);
+            var employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(startDate, endDate, employeeId);
 
             foreach (var employee in employeesUnassigned)
             {
@@ -524,7 +524,19 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     }
                     else
                     {
-                        item.HoursLoadedSuccesfully = true;
+                 
+
+                        if (response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId)
+                                .Sum(x => x.AllocationPercentage) == 100)
+                        {
+                            item.Result = true;
+                            item.HoursLoadedSuccesfully = true;
+                        }
+                        else
+                        {
+                            item.Result = false;
+                            item.HoursLoadedSuccesfully = false;
+                        }
                     }
                 }
                 else
