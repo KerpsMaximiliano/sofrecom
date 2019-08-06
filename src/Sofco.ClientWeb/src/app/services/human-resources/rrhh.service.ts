@@ -11,8 +11,8 @@ export class RrhhService {
     this.baseUrl = this.service.UrlApi;
   }
 
-  getTigerTxt() {
-    return this.http.get(`${this.baseUrl}/rrhh/tiger/txt/`, {
+  getTigerTxt(allUsers) {
+    return this.http.get(`${this.baseUrl}/rrhh/tiger/txt/${allUsers}`, {
         responseType: 'arraybuffer',
         observe: 'response'
     }).pipe(map((res: any) => {

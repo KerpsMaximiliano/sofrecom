@@ -19,10 +19,10 @@ namespace Sofco.WebApi.Controllers.Rrhh
             this.employeeUpdateService = employeeUpdateService;
         }
 
-        [HttpGet("tiger/txt")]
-        public IActionResult GetTigerTxt()
+        [HttpGet("tiger/txt/{allUsers}")]
+        public IActionResult GetTigerTxt(bool allUsers)
         {
-            var response = rrhhService.GenerateTigerTxt();
+            var response = rrhhService.GenerateTigerTxt(allUsers);
 
             if (response.HasErrors())
                 return BadRequest(response);

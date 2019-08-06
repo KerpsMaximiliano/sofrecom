@@ -122,5 +122,6 @@ namespace Sofco.Domain.Models.AllocationManagement
         public ICollection<SalaryDiscount> SalaryDiscounts { get; set; }
 
         public string AssignComments { get; set; }
+        public bool ExcludeForTigerReport { get; set; }
     }
 }

@@ -26,6 +26,10 @@ export class EmployeeService {
     return this.http.get<any>(`${this.baseUrl}/employees/options`);
   }
 
+  getAllForWorkTimeReport() {
+    return this.http.get<any>(`${this.baseUrl}/employees/worktimeReport`);
+  }
+
   getListItems() {
     return this.http.get<any>(`${this.baseUrl}/employees/listItems`);
   }

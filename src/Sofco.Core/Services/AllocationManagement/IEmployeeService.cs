@@ -53,5 +53,6 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<byte[]> GetReport();
 
         Response UpdateAssingComment(UpdateAssingCommentModel model);
+        ICollection<Employee> GetAllForWorkTimeReport();
     }
 }

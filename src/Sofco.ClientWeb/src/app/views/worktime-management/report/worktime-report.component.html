@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <div class="panel-group" id="accordion2" *ngIf="isMissingData">
+    <div class="panel-group" id="accordion2" *ngIf="isMissingData && employeesWithHoursMissing.length > 0 && employeesWithAllocationMissing.length > 0">
         <div class="panel panel-danger">
             <div class="panel-heading">
                 <h5 class="panel-title">
@@ -111,13 +111,15 @@
         <span *ngIf="workTimeReportByHours">
             <i class="fa fa-check"></i>
             {{'workTimeManagement.report.allResourcesSuccess' | translate }}
-            <a *ngIf="exportTigerVisible" (click)="getTigetTxt()">{{'workTimeManagement.report.exportTiger' | translate }}</a>
+            <a *ngIf="exportTigerVisible && !canExportSingleTigerFile" (click)="getTigetTxt(true)">{{'workTimeManagement.report.exportTiger' | translate }}</a>
+            <a *ngIf="exportTigerVisible && canExportSingleTigerFile" (click)="getTigetTxt(false)">Exportar tiger.txt por baja</a>
         </span>
 
         <span *ngIf="!workTimeReportByHours">
             <i class="fa fa-check"></i>
             Todos los recursos estan correctamente asignados en el periodo seleccionado.
-            <a *ngIf="exportTigerVisible" (click)="getTigetTxt()">{{'workTimeManagement.report.exportTiger' | translate }}</a>
+            <a *ngIf="exportTigerVisible && !canExportSingleTigerFile" (click)="getTigetTxt(true)">{{'workTimeManagement.report.exportTiger' | translate }}</a>
+            <a *ngIf="exportTigerVisible && canExportSingleTigerFile" (click)="getTigetTxt(false)">Exportar tiger.txt por baja</a>
         </span>
     </div>
  

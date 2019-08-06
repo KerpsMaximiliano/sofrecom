@@ -171,7 +171,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     .ThenInclude(x => x.Activity)
                 .Where(x => (!x.Employee.EndDate.HasValue || (x.Employee.EndDate.HasValue && x.Employee.EndDate.Value.Date > startDate.Date))&& 
                             !x.Employee.IsExternal &&
-                            //x.Employee.StartDate.Date <= endDate.Date &&
+                            !x.Employee.ExcludeForTigerReport &&
                             (x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
                             x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date));
 

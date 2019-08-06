@@ -5,7 +5,6 @@ using Sofco.DAL.Repositories.Common;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.Models.AllocationManagement;
-using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Relationships;
@@ -27,6 +26,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public new ICollection<Employee> GetAll()
         {
             return context.Employees.Include(x => x.Manager).Where(x => x.EndDate == null && !x.IsExternal).ToList();
+        }
+
+        public ICollection<Employee> GetAllForWorkTimeReport()
+        {
+            var now = DateTime.UtcNow.AddMonths(-3);
+
+            return context.Employees.Include(x => x.Manager).Where(x => (x.EndDate == null || (x.EndDate.HasValue && x.EndDate.Value.Date >= now.Date)) && !x.IsExternal).ToList();
         }
 
         public List<Employee> GetByEmployeeNumber(string[] employeeNumbers)
@@ -381,7 +387,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             }
             else
             {
-                var filter = context.Allocations.Where(x => x.StartDate.Date == from && x.StartDate.Date == to).Select(x => x.EmployeeId).Distinct().ToList();
+                var filter = context.Allocations.Where(x => x.StartDate.Date == from).Select(x => x.EmployeeId).Distinct().ToList();
+
+                filter.AddRange(context.Allocations.Where(x => x.StartDate.Date == to).Select(x => x.EmployeeId).Distinct().ToList());
+
+                filter = filter.Distinct().ToList();
 
                 return context.Employees.Include(x => x.Manager).Where(x => !filter.Contains(x.Id) && x.EndDate == null && !x.IsExternal).ToList();
             }

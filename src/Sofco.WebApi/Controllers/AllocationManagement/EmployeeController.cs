@@ -34,6 +34,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model.OrderBy(x => x.Name));
         }
 
+        [HttpGet("worktimeReport")]
+        public IActionResult GetAllForWorkTimeReport()
+        {
+            var options = employeeService.GetAllForWorkTimeReport().OrderBy(x => x.Name).Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" });
+
+            return Ok(options);
+        }
+
         [HttpPost("search/unemployees")]
         public IActionResult GetUnemployees([FromBody] UnemployeeSearchParameters parameters)
         {

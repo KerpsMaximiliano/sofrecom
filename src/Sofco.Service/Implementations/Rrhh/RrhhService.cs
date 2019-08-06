@@ -30,7 +30,7 @@ namespace Sofco.Service.Implementations.Rrhh
             this.unitOfWork = unitOfWork;
         }
 
-        public Response<byte[]> GenerateTigerTxt()
+        public Response<byte[]> GenerateTigerTxt(bool allUsers)
         {
             var response = new Response<byte[]>();
 
@@ -40,6 +40,23 @@ namespace Sofco.Service.Implementations.Rrhh
             {
                 response.AddError(Resources.Rrhh.TigerReport.NotFound);
                 return response;
+            }
+
+            if (!allUsers)
+            {
+                try
+                {
+                    var item = items.FirstOrDefault();
+                    var employee = unitOfWork.EmployeeRepository.GetByEmployeeNumber(item.EmployeeNumber);
+                    employee.ExcludeForTigerReport = true;
+
+                    unitOfWork.EmployeeRepository.Update(employee);
+                    unitOfWork.Save();
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e);
+                }
             }
 
             var memoryStream = new MemoryStream();

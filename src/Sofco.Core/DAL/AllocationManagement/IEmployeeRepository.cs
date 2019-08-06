@@ -70,5 +70,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> GetByAnalyticWithSocialCharges(int idAnalytic);
         void UpdateAssignComments(Employee employee);
         IList<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate, int employeeId);
+        ICollection<Employee> GetAllForWorkTimeReport();
     }
 }

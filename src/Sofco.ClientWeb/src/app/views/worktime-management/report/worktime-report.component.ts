@@ -35,6 +35,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     public isCompleted: boolean = false;
     public isMissingData: boolean = false;
     public exportTigerVisible: boolean = false;
+    public canExportSingleTigerFile: boolean = false;
     public workTimeReportByHours: boolean = true;
 
     searchSubscrip: Subscription;
@@ -95,7 +96,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
     }
 
     getResources(){
-        this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(data => {
+        this.getResourcesSubscrip = this.employeeService.getAllForWorkTimeReport().subscribe(data => {
             this.resources = data;
         });
     }
@@ -123,17 +124,18 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
             this.data = response.data.items;
             this.workTimeReportByHours = response.data.workTimeReportByHours;
             this.employeesWithHoursMissing = response.data.employeesMissingHours;
+            this.canExportSingleTigerFile = response.data.canExportSingleTigerFile;
+
+            this.isCompleted = response.data.isCompleted;
+            this.isMissingData = !response.data.isCompleted;
+
+            if(this.isMissingData){
+                this.employeesWithAllocationMissing = response.data.employeesAllocationResume.filter(item => item.missAnyPercentageAllocation == true);
+            }
 
             if(this.data.length > 0){
-                this.isCompleted = response.data.isCompleted;
-                this.isMissingData = !response.data.isCompleted;
-
                 this.initGrid();
                 this.collapse();
-
-                if(this.isMissingData){
-                    this.employeesWithAllocationMissing = response.data.employeesAllocationResume.filter(item => item.missAnyPercentageAllocation == true);
-                }
             }
 
             this.messageService.closeLoading();
@@ -225,10 +227,10 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         sessionStorage.removeItem('lastWorktimeReportQuery')
     }
 
-    getTigetTxt(){
+    getTigetTxt(allUsers){
         this.messageService.showLoading();
 
-        this.rrhhService.getTigerTxt().subscribe(file => {
+        this.rrhhService.getTigerTxt(allUsers).subscribe(file => {
             this.messageService.closeLoading();
 
             FileSaver.saveAs(file, "tiger-txt-file.txt");

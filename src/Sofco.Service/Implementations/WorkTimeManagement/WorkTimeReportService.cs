@@ -174,6 +174,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                                     startDate, endDate, allocation.AnalyticId),
                         };
 
+                        if (parameters.EmployeeId.HasValue && parameters.EmployeeId.Value > 0 &&
+                            allocation.Employee.EndDate.HasValue)
+                        {
+                            model.HasEndDate = true;
+                        }
+
                         if (allocation.Employee.StartDate.Date > endDate.Date)
                         {
                             model.Facturability = 0;
@@ -275,6 +281,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             response.Data.Items = response.Data.Items.OrderBy(x => x.Employee).ToList();
             response.Data.WorkTimeReportByHours = workTimeReportByHours;
             response.Data.EmployeesMissingHours = employeesMissingHours.Where(x => x.MissingHours > 0).OrderBy(x => x.EmployeeNumber).ToList();
+
+            if (parameters.EmployeeId.HasValue && parameters.EmployeeId.Value > 0 && response.Data.Items.All(x => x.HasEndDate))
+            {
+                response.Data.CanExportSingleTigerFile = true;
+            }
 
             return response;
         }

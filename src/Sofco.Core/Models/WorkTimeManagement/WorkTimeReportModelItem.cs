@@ -44,6 +44,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public decimal HoursApproved { get; set; }
 
         public decimal AllHoursMustLoad { get; set; }
+
+        public bool HasEndDate { get; set; }
     }
 
     public class WorkTimeReportModel
@@ -57,6 +59,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public bool WorkTimeReportByHours { get; set; }
 
         public IList<EmployeeMissingHours> EmployeesMissingHours { get; set; }
+
+        public bool CanExportSingleTigerFile { get; set; }
     }
 
     public class EmployeeAllocationResume
