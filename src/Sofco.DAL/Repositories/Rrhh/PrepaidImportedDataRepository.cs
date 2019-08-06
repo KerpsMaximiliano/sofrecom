@@ -67,7 +67,7 @@ namespace Sofco.DAL.Repositories.Rrhh
 
         public void DeleteByDateAndPrepaid(int prepaidId, DateTime dateTime)
         {
-            var itemsToDelete = context.PrepaidImportedData.Where(x => x.PrepaidId == prepaidId && x.Period.Date == dateTime.Date).ToList();
+            var itemsToDelete = context.PrepaidImportedData.Where(x => x.PrepaidId == prepaidId && x.Date.Date == dateTime.Date && x.Status != PrepaidImportedDataStatus.Provisioned).ToList();
 
             Delete(itemsToDelete);
 
