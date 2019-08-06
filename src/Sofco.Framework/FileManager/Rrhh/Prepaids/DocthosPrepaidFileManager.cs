@@ -58,7 +58,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
             var end = false;
             var index = 2;
 
-            while (!end)
+            while (!end) 
             {
                 var dni = sheet.GetValue(index, DocumentColumn)?.ToString();
 
@@ -126,17 +126,25 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
         {
             if (string.IsNullOrWhiteSpace(data)) return DateTime.MinValue;
 
-            var dataSplit = data.Split(' ');
-
-            if (dataSplit.Length != 4 && dataSplit.Length != 3) return DateTime.MinValue;
-
-            var dateSplit = dataSplit[0].Split('/');
-
-            if (dateSplit.Length != 3) return DateTime.MinValue;
-
             try
             {
-                return new DateTime(Convert.ToInt32(dateSplit[2]), Convert.ToInt32(dateSplit[1]), 1);
+#if DEBUG
+                if (DateTime.TryParse(data,
+                    System.Globalization.CultureInfo.GetCultureInfo("es-AR"),
+                    System.Globalization.DateTimeStyles.None, out DateTime dateValue))
+                {
+                    return new DateTime(dateValue.Year, dateValue.Month, 1);
+                }
+                else
+                    return DateTime.MinValue;
+#else
+                        if (DateTime.TryParse(data, out DateTime dateValue))
+                        {
+                            return new DateTime(dateValue.Year, dateValue.Month, 1);
+                        }
+                        else
+                            return DateTime.MinValue;
+#endif
             }
             catch (Exception e)
             {
