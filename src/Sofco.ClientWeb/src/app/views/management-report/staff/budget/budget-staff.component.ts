@@ -108,37 +108,52 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.subCategorySelected = this.subCategoriesFiltered[0];
         }
 
-        this.fillSubcategoriesData()
+        var subData = this.fillSubcategoriesData()
+        this.subCategoriesData = new Array()
+        subData.forEach(subcat => {
 
+            var cost = {
+                costDetailStaffId: subcat.costDetailStaffId,
+                id: subcat.id,
+                name: subcat.name,
+                description: subcat.description,
+                value: subcat.value,
+                budgetTypeId: subcat.budgetTypeId,
+                deleted: subcat.deleted
+            }
+
+            this.subCategoriesData.push(cost)
+        });
     }
 
     fillSubcategoriesData() {
 
+
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
-                if(this.monthSelected.totalPfa1 > 0){
+                if (this.monthSelected.totalPfa1 > 0) {
                     this.messageService.showError("cannotUpdateBudget");
                 }
-                else{
-                    this.subCategoriesData = this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
+                else {
                     this.editItemModal.show();
+                    return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
                 }
-             
+
                 break;
             case 'PFA1': {
                 if (this.monthSelected.totalBudget == 0) {
                     this.messageService.showError("budgetRequired");
                 }
                 else {
-                    if(this.monthSelected.totalPfa2 > 0){
+                    if (this.monthSelected.totalPfa2 > 0) {
                         this.messageService.showError("cannotUpdatePfa1");
                     }
-                    else{
-                        this.subCategoriesData = this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
+                    else {
                         this.editItemModal.show();
+                        return this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
                     }
                 }
-                
+
                 break;
             }
             case 'PFA2': {
@@ -146,14 +161,14 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     this.messageService.showError("pfa1Required");
                 }
                 else {
-                    this.subCategoriesData = this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);
                     this.editItemModal.show();
+                    return this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);
                 }
                 break;
             }
             case 'REAL':
-                this.subCategoriesData = this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
                 this.editItemModal.show();
+                return this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
                 break;
         }
     }
@@ -161,55 +176,44 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     addCostByMonth() {
 
         var cost = {
-            CostDetailStaffId: 0,
+            costDetailStaffId: 0,
             id: this.subCategorySelected.id,
             name: this.subCategorySelected.name,
-            monthYear: this.monthSelected.monthYear,
             description: "",
             value: 0,
-            BudgetTypeId: this.typeBudgetSelected.id,
+            budgetTypeId: this.typeBudgetSelected.id,
             deleted: false
         }
 
-        switch (this.typeBudgetSelected.name.toUpperCase()) {
-            case 'BUDGET':
-                this.monthSelected.subcategoriesBudget.push(cost)
-                break;
-            case 'PFA1':
-                this.monthSelected.subcategoriesPfa1.push(cost)
-                break;
-            case 'PFA2':
-                this.monthSelected.subcategoriesPfa2.push(cost)
-                break;
-            case 'REAL':
-                this.monthSelected.subcategoriesReal.push(cost)
-                break;
-        }
-        this.fillSubcategoriesData()
+        this.subCategoriesData.push(cost)
     }
 
     updateItem() {
 
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
+                this.monthSelected.subcategoriesBudget = this.subCategoriesData
                 this.monthSelected.totalBudget = 0
                 this.monthSelected.subcategoriesBudget.forEach(cost => {
                     this.monthSelected.totalBudget += cost.value
                 })
                 break;
             case 'PFA1':
+                this.monthSelected.subcategoriesPfa1 = this.subCategoriesData
                 this.monthSelected.totalPfa1 = 0
                 this.monthSelected.subcategoriesPfa1.forEach(cost => {
                     this.monthSelected.totalPfa1 += cost.value
                 })
                 break;
             case 'PFA2':
+                this.monthSelected.subcategoriesPfa2 = this.subCategoriesData
                 this.monthSelected.totalPfa2 = 0
                 this.monthSelected.subcategoriesPfa2.forEach(cost => {
                     this.monthSelected.totalPfa2 += cost.value
                 })
                 break;
             case 'REAL':
+                this.monthSelected.subcategoriesReal = this.subCategoriesData
                 this.monthSelected.totalReal = 0
                 this.monthSelected.subcategoriesReal.forEach(cost => {
                     this.monthSelected.totalReal += cost.value
@@ -307,30 +311,16 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             });
     }
 
-    deleteSubcategory(index, subcategory) {
-
-        if (subcategory.CostDetailStaffId == 0) {
-            switch (this.typeBudgetSelected.name.toUpperCase()) {
-                case 'BUDGET':
-                    this.monthSelected.subcategoriesBudget.splice(index, 1)
-                    break;
-                case 'PFA1':
-                    this.monthSelected.subcategoriesPfa1.splice(index, 1)
-                    break;
-                case 'PFA2':
-                    this.monthSelected.subcategoriesPfa2.splice(index, 1)
-                    break;
-                case 'REAL':
-                    this.monthSelected.subcategoriesReal.splice(index, 1)
-                    break;
-            }
-            this.fillSubcategoriesData()
+    deleteSubcategory(index) {
+        
+        if (this.subCategoriesData[index].costDetailStaffId == 0) {
+            this.subCategoriesData.splice(index, 1)
         }
         else {
-            subcategory.value = 0
-            subcategory.deleted = true
-            this.fillSubcategoriesData()
+            this.subCategoriesData[index].value = 0
+            this.subCategoriesData[index].deleted = true
         }
+
     }
 
     getId(date: Date) {

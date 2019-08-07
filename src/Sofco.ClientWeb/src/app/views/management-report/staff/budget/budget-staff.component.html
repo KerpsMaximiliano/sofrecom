@@ -148,7 +148,7 @@
 
                 </div>
 
-                <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index">
+                <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index" [hidden]="cost.deleted" >
                     <div class="col-sm-5">
                         {{ cost.name }}
                     </div>
@@ -159,7 +159,7 @@
                         <math-input [(model)]="cost.value"></math-input>
                     </div>
                     <div class="col-sm-1 delete">
-                        <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i, cost)"
+                        <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)"
                             *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
                     </div>
                 </div>
