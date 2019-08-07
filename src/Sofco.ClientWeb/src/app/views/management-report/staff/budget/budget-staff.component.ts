@@ -167,8 +167,13 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'REAL':
-                this.editItemModal.show();
-                return this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
+                if (this.monthSelected.totalBudget == 0) {
+                    this.messageService.showError("budgetForRealRequired");
+                }
+                else {
+                    this.editItemModal.show();
+                    return this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
+                }
                 break;
         }
     }
@@ -312,7 +317,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     deleteSubcategory(index) {
-        
+
         if (this.subCategoriesData[index].costDetailStaffId == 0) {
             this.subCategoriesData.splice(index, 1)
         }
