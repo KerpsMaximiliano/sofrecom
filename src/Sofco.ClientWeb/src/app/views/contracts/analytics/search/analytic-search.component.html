@@ -113,7 +113,7 @@
                             <button title="{{ 'allocationManagement.analytics.view' | translate }}" class="btn btn-primary btn-xs" (click)="gotToView(analytic)"><i class="fa fa-eye"></i></button>
                             <button title="{{ 'ACTIONS.assign' | translate }}" class="btn btn-success btn-xs" (click)="goToAssignResource(analytic)" *ngIf="analytic.status == 1 && menuService.hasFunctionality('ALLOC', 'ADRES')"><i class="fa fa-user-plus"></i></button>
                             <button title="Informe de gestión" class="btn btn-white btn-xs" (click)="goToManagementReport(analytic)" *ngIf="canGoToManagementReport(analytic)"><i class="fa fa-line-chart"></i></button>
-                            <button class="btn btn-success btn-xs" (click)="goToResources(analytic)"><i class="fa fa-users"></i></button>
+                            <button title="{{ 'allocationManagement.allocation.resourcesList' | translate }}" class="btn btn-success btn-xs" (click)="goToResources(analytic)"><i class="fa fa-users"></i></button>
                         </td>
                     </tr>
                 </tbody>
