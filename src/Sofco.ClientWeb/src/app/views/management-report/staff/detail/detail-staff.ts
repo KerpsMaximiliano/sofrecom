@@ -124,10 +124,17 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
 
             this.model = response.data;
 
+            if(this.isManager){
+                if(this.model.managerId != this.menuService.currentUser.id && this.model.delegateId != this.menuService.currentUser.id){
+                    this.isManager = false;
+                }
+            }
+
             this.ManagementReportId = response.data.managementReportId;
 
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
             this.readOnly = !this.canEdit();
+            this.budgetView.readOnly = !this.canEdit();
         },
         responseError => {
             this.messageService.closeLoading();
