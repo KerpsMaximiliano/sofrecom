@@ -12,6 +12,7 @@ import { AuthGuard } from "../../guards/auth.guard";
 import { AddCloseDateComponent } from "app/views/contracts/closeDates/add/closeDate-add.component";
 import { CurrencyExchangeComponent } from "./currency-exchange/currency-exchange";
 import { ResourceByServiceComponent } from "../allocation-management/resources/by-service/resource-by-service.component";
+import { DelegationComponent } from "./delegation/delegation";
 
 const CONTRACTS_ROUTER: Routes = [
     { path: "analytics",
@@ -32,6 +33,8 @@ const CONTRACTS_ROUTER: Routes = [
         { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "COSTC", functionality: "UPDAT" } }
       ]
     },
+
+    { path: "delegation", component: DelegationComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "DELEGATES" } },
 
     { path: "closeDate",  component: AddCloseDateComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CDADD" } },
 

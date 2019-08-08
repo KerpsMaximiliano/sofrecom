@@ -91,15 +91,20 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.editDateModal.size = 'modal-sm'
 
-        this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
-            this.ManagementReportId = params['id'];
-
-            this.getDetail();
-        });
-
-        this.isManager = this.menuService.userIsManager;
+        this.isManager = this.menuService.userIsManager || this.menuService.isManagementReportDelegate;
         this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
         this.isCdg = this.menuService.userIsCdg;
+
+        if(!this.menuService.userIsDirector && !this.menuService.userIsManager && !this.menuService.isManagementReportDelegate && this.menuService.userIsCdg == false){
+            this.router.navigate(['/403']);
+        }
+        else{
+            this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
+                this.ManagementReportId = params['id'];
+    
+                this.getDetail();
+            });
+        }
     }
 
     ngOnDestroy(): void {
@@ -114,23 +119,27 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.messageService.showLoading();
 
         this.getDetailSubscrip = this.managementReportService.getDetail(this.ManagementReportId).subscribe(response => {
+            this.messageService.closeLoading();
 
             this.model = response.data;
-            
-            if(this.menuService.user.id != this.model.managerId && this.menuService.userIsCdg == false){
-                this.router.navigate(['/403']);
-                return false;
-            }
 
             this.ManagementReportId = response.data.managementReportId;
 
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
 
             this.readOnly = !this.canEdit();
-
-            this.messageService.closeLoading();
         },
-        () => this.messageService.closeLoading());
+        responseError => {
+            this.messageService.closeLoading();
+
+            if(responseError.error.messages && responseError.error.messages.length > 0){
+                var forbidden = responseError.error.messages.find(x => x.code == 'forbidden');
+
+                if(forbidden){
+                    this.router.navigate(['/403']);
+                }
+            }
+        });
     }
 
     collapse() {

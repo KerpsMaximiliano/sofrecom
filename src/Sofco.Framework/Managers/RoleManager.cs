@@ -163,6 +163,11 @@ namespace Sofco.Framework.Managers
             return unitOfWork.UserRepository.HasSensibleDataGroup(CurrentUser.Email);
         }
 
+        public bool IsManagementReportDelegate()
+        {
+            return unitOfWork.UserRepository.HasManagementReportDelegateGroup(CurrentUser.Email);
+        }
+
         public bool IsManager()
         {
             var isManager = unitOfWork.UserRepository.HasManagerGroup(CurrentUser.UserName);

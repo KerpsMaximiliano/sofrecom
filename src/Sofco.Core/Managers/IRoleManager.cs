@@ -28,5 +28,7 @@ namespace Sofco.Core.Managers
         bool IsCompliance();
 
         bool CanViewSensibleData();
+
+        bool IsManagementReportDelegate();
     }
 }

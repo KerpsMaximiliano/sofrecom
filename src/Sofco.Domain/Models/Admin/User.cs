@@ -5,6 +5,7 @@ using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Billing;
+using Sofco.Domain.Models.Common;
 using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Models.WorkTimeManagement;
@@ -76,5 +77,8 @@ namespace Sofco.Domain.Models.Admin
         public IList<Refund> Refunds2 { get; set; }
 
         public ICollection<CostDetailResource> CostDetailResources { get; set; }
+
+        public IList<Delegation> Delegations1 { get; set; }
+        public IList<Delegation> Delegations2 { get; set; }
     }
 }

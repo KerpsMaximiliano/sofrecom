@@ -35,6 +35,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees.Include(x => x.Manager).Where(x => (x.EndDate == null || (x.EndDate.HasValue && x.EndDate.Value.Date >= now.Date)) && !x.IsExternal).ToList();
         }
 
+        public IList<Employee> GetByAnalyticIdInCurrentDate(int analyticId)
+        {
+            var date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
+            return context.Allocations.Include(x => x.Employee).Where(x =>
+                x.AnalyticId == analyticId && x.Percentage > 0 && x.StartDate.Date == date.Date).Select(x => x.Employee).ToList();
+        }
+
         public List<Employee> GetByEmployeeNumber(string[] employeeNumbers)
         {
             return context.Employees

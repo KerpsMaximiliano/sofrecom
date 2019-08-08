@@ -930,6 +930,7 @@
     "errors": "Errores",
     "and": "y",
     "date_to": "al",
+    "ManagementReport": "Informe de gestión",
     "budgetRequired": "Antes de cargar el PFA1 se debe cargar el presupuesto",
     "pfa1Required": "Antes de cargar el PFA2 se debe cargar el presupuesto y el PFA1",
     "cannotUpdateBudget": "No puede modificar el Presupuesto si ya cargo el PFA1",

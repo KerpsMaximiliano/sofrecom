@@ -154,18 +154,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
             else
             {
-                if (roleManager.IsManager() || roleManager.IsDirector())
+                if (roleManager.IsManager() || roleManager.IsDirector() || roleManager.IsManagementReportDelegate())
                 {
                     var analytics = unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters);
 
                     var currentUser = userData.GetCurrentUser();
-                    var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
+                    var analyticsByDelegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.ManagementReport);
 
                     foreach (var analytic in analytics)
                     {
                         if (analytic.ManagerId.GetValueOrDefault() == currentUser.Id ||
                             analytic.Sector?.ResponsableUserId == currentUser.Id ||
-                            analyticsByDelegates.Any(x => x.Id == analytic.Id))
+                            analyticsByDelegates.Any(x => x.AnalyticSourceId == analytic.Id))
                         {
                             response.Data.Add(new AnalyticSearchViewModel(analytic));
                         }

@@ -156,6 +156,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 x.Id == analyticId && (x.Status == AnalyticStatus.Close || x.Status == AnalyticStatus.CloseToExpenses));
         }
 
+        public ICollection<Analytic> GetByManagerIdAndDirectorId(int managerId)
+        {
+            return context.Analytics.Include(x => x.Sector).Where(x => (x.ManagerId == managerId || x.Sector.ResponsableUserId == managerId) && x.Status == AnalyticStatus.Open).ToList();
+        }
+
         public Analytic GetByServiceForManagementReport(string serviceId)
         {
             return context.Analytics

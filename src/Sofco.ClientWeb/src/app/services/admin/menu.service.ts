@@ -16,6 +16,7 @@ export class MenuService {
     public userIsGaf: boolean;
     public userIsCdg: boolean;
     public userIsRrhh: boolean;
+    public isManagementReportDelegate: boolean;
     public userIsCompliance: boolean;
     public currentUser: any;
     public user: any;
@@ -38,6 +39,7 @@ export class MenuService {
                 this.menu = menu.menus;
                 this.userIsDirector = menu.isDirector;
                 this.userIsManager = menu.isManager;
+                this.isManagementReportDelegate = menu.isManagementReportDelegate;
                 this.userIsDaf = menu.isDaf;
                 this.userIsGaf = menu.isGaf;
                 this.userIsCdg = menu.isCdg;

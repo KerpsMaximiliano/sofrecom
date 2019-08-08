@@ -1,0 +1,13 @@
+{
+    "modelNull": "Alguno de los datos cargados es incorrecto",
+    "grantedUserNotFound": "Usuario a delegar no existe",
+    "alreadyExist": "Ya existe una delegación con los parametros seleccionados",
+    "addSuccess": "Delegación creada exitosamente",
+    "typeRequired": "El tipo de permiso es requerido",
+    "notFound": "La delegación no fue encontrada",
+    "analyticRequired": "El contrato es requerido",
+    "userEqualsGrantedUser": "El usuario a delegar no puede ser uno mismo",
+    "deleteSuccess": "La delegación fue eliminada exitosamente",
+    "userSourceEqualsGrantedUser": "El usuario a delegar no puede ser igual al recurso",
+    "resourceRequired": "El recurso es requerido"
+}
