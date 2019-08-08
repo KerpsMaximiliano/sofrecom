@@ -64,43 +64,54 @@
             </div>
             <div id="collapseTwo" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <div class="row">
-                        <div [ngClass]="employeesWithAllocationMissing.length > 0 ? 'col-sm-6' : 'col-sm-12'" *ngIf="employeesWithHoursMissing.length > 0">
-                            <div class="table-responsive">
-                                <table class="table table-striped dataTable" role="grid" id="missingHoursTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Legajo</th>
-                                            <th>Nombre</th>
-                                            <th>Superior</th>
-                                            <th>Hs Faltantes</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let item of employeesWithHoursMissing">
-                                            <td>{{ item.employeeNumber }}</td>
-                                            <td>{{ item.name }}</td>
-                                            <td>{{ item.manager }}</td>
-                                            <td>{{ item.missingHours | number: '1.2-2'  }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>       
-                            </div>
-                        </div>
-                        <div class="col-sm-6" *ngIf="employeesWithAllocationMissing.length > 0">
-                            <div class="alert alert-gaps-error">
-                                <h4>
-                                    <i class="fa fa-times"></i> 
-                                    {{'workTimeManagement.report.employeesWithAllocationMissing' | translate }}
-                                </h4>  
-                        
-                                <ul>
-                                    <li *ngFor="let item of employeesWithAllocationMissing">
-                                        {{ item.employee }}: <span *ngIf="item.lastMonthDescription">{{ item.lastMonthDescription }} {{ item.lastPercentage }}% -</span> {{ item.currentMonthDescription }} {{ item.currentPercentage }}%
-                                    </li> 
-                                </ul>
-                            </div>
-                        </div>
+                    <h3>Recursos con horas faltantes</h3>
+
+                    <div class="table-responsive" *ngIf="employeesWithHoursMissing.length > 0">
+                        <table class="table table-striped dataTable" role="grid" id="missingHoursTable">
+                            <thead>
+                                <tr>
+                                    <th>Legajo</th>
+                                    <th>Nombre</th>
+                                    <th>Superior</th>
+                                    <th>Hs Faltantes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of employeesWithHoursMissing">
+                                    <td>{{ item.employeeNumber }}</td>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.manager }}</td>
+                                    <td>{{ item.missingHours | number: '1.2-2'  }}</td>
+                                </tr>
+                            </tbody>
+                        </table>       
+                    </div>
+
+                    <br/>
+
+                    <h3>Recursos con asignación faltante</h3>
+
+                    <div class="table-responsive" *ngIf="employeesWithAllocationMissing.length > 0">
+                        <table class="table table-striped dataTable" role="grid" id="missingAllocationTable">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Mes inicio</th>
+                                    <th>Asignacion (%)</th>
+                                    <th>Mes Fin</th>
+                                    <th>Asignacion (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of employeesWithAllocationMissing">
+                                    <td>{{ item.employee }}</td>
+                                    <td>{{ item.lastMonthDescription }}</td>
+                                    <td>{{ item.lastPercentage }}</td>
+                                    <td>{{ item.currentMonthDescription }}</td>
+                                    <td>{{ item.currentPercentage }}</td>
+                                </tr>
+                            </tbody>
+                        </table>       
                     </div>
                 </div>
             </div>

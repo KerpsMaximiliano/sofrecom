@@ -539,7 +539,7 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             var currentUser = userData.GetCurrentUser();
 
-            if (roleManager.IsCdg())
+            if (roleManager.IsCdg() || roleManager.IsDafOrGaf())
             {
                 return true;
             }
