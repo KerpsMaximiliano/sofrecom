@@ -146,7 +146,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             var response = new Response<List<AnalyticSearchViewModel>> { Data = new List<AnalyticSearchViewModel>() };
 
-            if (roleManager.IsPmo() || roleManager.IsRrhh() || roleManager.IsCdg() || roleManager.IsCompliance())
+            if (roleManager.IsPmo() || roleManager.IsRrhh() || roleManager.IsCdg() || roleManager.IsCompliance() || roleManager.IsDafOrGaf())
             {
                 var analytics = unitOfWork.AnalyticRepository.GetBySearchCriteria(searchParameters);
 
