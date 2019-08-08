@@ -45,7 +45,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 return response;
             }
 
-            if (!CheckRoles(managementReport.Analytic))
+            if (!CheckRoles(managementReport.Analytic, response))
             {
                 response.AddError(Resources.Common.Forbidden);
                 return response;
@@ -125,7 +125,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 return response;
             }
 
-            if (!CheckRoles(managementReport.Analytic))
+            if (!CheckRoles(managementReport.Analytic, null))
             {
                 response.AddError(Resources.Common.Forbidden);
                 return response;
@@ -172,7 +172,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 return response;
             }
 
-            if (!CheckRoles(managementReport.Analytic))
+            if (!CheckRoles(managementReport.Analytic, null))
             {
                 response.AddError(Resources.Common.Forbidden);
                 return response;
@@ -222,7 +222,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 return response;
             }
 
-            if (!CheckRoles(managementReport.Analytic))
+            if (!CheckRoles(managementReport.Analytic, null))
             {
                 response.AddError(Resources.Common.Forbidden);
                 return response;
@@ -535,11 +535,11 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private bool CheckRoles(Analytic analytic)
+        private bool CheckRoles(Analytic analytic, Response<ManagementReportStaffDetail> response)
         {
             var currentUser = userData.GetCurrentUser();
 
-            if (roleManager.IsCdg())
+            if (roleManager.IsCdg() || roleManager.IsDafOrGaf())
             {
                 return true;
             }
@@ -551,6 +551,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                     (roleManager.IsDirector() && analytic.Sector.ResponsableUserId == currentUser.Id) || 
                     analyticsByDelegates.Any(x => x.AnalyticSourceId == analytic.Id))
                 {
+                    if (response != null)
+                    {
+                        if (analyticsByDelegates.Any(x => x.AnalyticSourceId == analytic.Id))
+                        {
+                            response.Data.DelegateId = currentUser.Id;
+                        }
+                    }
+
                     return true;
                 }
             }

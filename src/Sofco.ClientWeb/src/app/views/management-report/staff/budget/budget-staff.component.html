@@ -123,61 +123,54 @@
                 <fieldset>
                     <div class="col-sm-4">
                         <label class="control-label" for="readOnlyInput">Mes</label>
-                        <input class="form-control" id="readOnlyInput" type="text"
-                            placeholder="{{ monthSelected.display }}" readonly="">
+                        <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelected.display }}" readonly="">
                     </div>
                     <div class="col-sm-8">
                         <label class="control-label" for="readOnlyInput">Categoria</label>
-                        <input class="form-control" id="readOnlyInput" type="text"
-                            placeholder="{{ categorySelected.name }}" readonly="">
+                        <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ categorySelected.name }}" readonly="">
                     </div>
                 </fieldset>
             </div>
 
-            <div>
-                <div class="row border-bottom m-b-sm">
-                    <div class="col-sm-5">
-                        <h4>SubCategoria</h4>
-                    </div>
-                    <div class="col-sm-4">
-                        <h4>Descripción</h4>
-                    </div>
-                    <div class="col-sm-2">
-                        <h4>Monto</h4>
-                    </div>
-
+            <div class="row border-bottom m-b-sm">
+                <div class="col-sm-5">
+                    <h4>SubCategoria</h4>
                 </div>
+                <div class="col-sm-4">
+                    <h4>Descripción</h4>
+                </div>
+                <div class="col-sm-2">
+                    <h4>Monto</h4>
+                </div>
+            </div>
 
-                <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index" [hidden]="cost.deleted" >
-                    <div class="col-sm-5">
-                        {{ cost.name }}
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">
-                    </div>
-                    <div class="col-sm-2">
-                        <math-input [(model)]="cost.value"></math-input>
-                    </div>
-                    <div class="col-sm-1 delete">
-                        <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)"
-                            *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
+            <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index" [hidden]="cost.deleted" >
+                <div class="col-sm-5">
+                    {{ cost.name }}
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">
+                </div>
+                <div class="col-sm-2">
+                    <math-input [(model)]="cost.value"></math-input>
+                </div>
+                <div class="col-sm-1 delete">
+                    <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="row">
+                <br>
+                <div class="col-sm-9">
+                    <div class="form-group">
+                        <ng-select [items]="subCategoriesFiltered" bindLabel="name" [(ngModel)]="subCategorySelected" [clearable]="false">
+                        </ng-select>
                     </div>
                 </div>
-                <div class="row">
-                    <br>
-                    <div class="col-sm-9">
-                        <div class="form-group">
-                            <ng-select [items]="subCategoriesFiltered" bindLabel="name"
-                                [(ngModel)]="subCategorySelected" [clearable]="false">
-                            </ng-select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <button class="btn btn-success btn-sm m-t-xs" (click)="addCostByMonth()" type="button">
-                            Agregar
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-success btn-sm m-t-xs" (click)="addCostByMonth()" type="button">
+                        Agregar
+                        <i class="fa fa-plus"></i>
+                    </button>
                 </div>
             </div>
 

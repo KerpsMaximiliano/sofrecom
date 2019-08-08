@@ -175,11 +175,24 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.dataTableService.destroy(options2.selector); 
         this.dataTableService.initialize(options2);
 
+        var columnsMissingAllocation = [0, 1, 2, 3, 4];
+        var titleMissingAllocation = "Recursos con asignación faltante";
+
+        var options3 = { 
+            selector: "#missingAllocationTable",
+            columns: columnsMissingAllocation,
+            title: titleMissingAllocation,
+            withExport: true
+        };
+
+        this.dataTableService.destroy(options3.selector); 
+        this.dataTableService.initialize(options3);
+
         setTimeout(() => {
             $("#reportTable_wrapper").css("float","left");
             $("#reportTable_wrapper").css("padding-bottom","50px");
             $("#reportTable_filter label").addClass('search-filter');
-            $(".html5buttons").addClass('export-buttons');
+            $("#reportTable_wrapper .html5buttons").addClass('export-buttons');
             $("#reportTable_paginate").addClass('table-pagination');
             $("#reportTable_length").css("margin-right","10px");
             $("#reportTable_info").css("padding-top","4px");
