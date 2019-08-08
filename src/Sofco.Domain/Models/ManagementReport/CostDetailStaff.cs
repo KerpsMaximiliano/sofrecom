@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sofco.Domain.Models.ManagementReport
+﻿namespace Sofco.Domain.Models.ManagementReport
 {
     public class CostDetailStaff : BaseEntity
     {

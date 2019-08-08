@@ -40,7 +40,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Allocation> GetAllocationsByDate(DateTime date)
         {
-            return context.Allocations.Include(x => x.Employee).ThenInclude(x => x.SocialCharges).Where(x => x.StartDate.Date == date.Date).ToList();
+            return context.Allocations
+                .Include(x => x.Analytic)
+                .Include(x => x.Employee)
+                .ThenInclude(x => x.SocialCharges)
+                .Where(x => x.StartDate.Date == date.Date).ToList();
         }
 
         public IList<Allocation> GetAllocationsBetweenDay(DateTime date)
