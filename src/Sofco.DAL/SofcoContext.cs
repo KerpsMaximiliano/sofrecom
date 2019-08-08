@@ -110,6 +110,7 @@ namespace Sofco.DAL
         public DbSet<UserApprover> UserApprovers { get; set; }
         public DbSet<CurrencyExchange> CurrencyExchanges { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<Delegation> Delegations { get; set; }
 
         // Utils Mapping
         public DbSet<DocumentType> DocumentTypes { get; set; }
@@ -222,6 +223,7 @@ namespace Sofco.DAL
             builder.MapManagementReport();
             builder.MapPrepaid();
             builder.MapLog();
+            builder.MapDelegation();
         }
     }
 }

@@ -123,5 +123,7 @@
         public string WorkTimeQuery { get; set; }
 
         public string SensibleFunctionality { get; set; }
+
+        public string ManagementReportDelegateRole { get; set; }
     }
 }

@@ -85,6 +85,7 @@ namespace Sofco.Core.DAL
         ICurrencyExchangeRepository CurrencyExchangeRepository { get; }
 
         ILogRepository LogRepository { get; }
+        IDelegationRepository DelegationRepository { get; }
 
         #endregion
 

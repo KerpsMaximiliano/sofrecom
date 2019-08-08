@@ -105,6 +105,7 @@ namespace Sofco.DAL
         private IUserDelegateRepository userDelegateRepository;
         private ICurrencyExchangeRepository currencyExchangeRepository;
         private ILogRepository logRepository;
+        private IDelegationRepository delegationRepository;
 
         #endregion
 
@@ -226,6 +227,7 @@ namespace Sofco.DAL
         public IUserDelegateRepository UserDelegateRepository => userDelegateRepository ?? (userDelegateRepository = new UserDelegateRepository(context));
         public ICurrencyExchangeRepository CurrencyExchangeRepository => currencyExchangeRepository ?? (currencyExchangeRepository = new CurrencyExchangeRepository(context));
         public ILogRepository LogRepository => logRepository ?? (logRepository = new LogRepository(context));
+        public IDelegationRepository DelegationRepository => delegationRepository ?? (delegationRepository = new DelegationRepository(context));
 
         #endregion
 

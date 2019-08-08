@@ -52,5 +52,7 @@ namespace Sofco.Core.Models.Admin
         public bool IsGaf { get; set; }
 
         public bool IsCompliance { get; set; }
+
+        public bool IsManagementReportDelegate { get; set; }
     }
 }

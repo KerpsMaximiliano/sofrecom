@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Options;
-using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
-using Sofco.Core.Mail;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
@@ -24,21 +21,15 @@ namespace Sofco.Service.Implementations.ManagementReport
         private readonly ILogMailer<ManagementReportStaffService> logger;
         private readonly IRoleManager roleManager;
         private readonly IUserData userData;
-        private readonly AppSetting appSetting;
-        private readonly IMailSender mailSender;
 
         public ManagementReportStaffService(IUnitOfWork unitOfWork,
             ILogMailer<ManagementReportStaffService> logger,
-            IMailSender mailSender,
             IUserData userData,
-            IOptions<AppSetting> appSettingOptions,
             IRoleManager roleManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
-            this.mailSender = mailSender;
-            this.appSetting = appSettingOptions.Value;
             this.roleManager = roleManager;
         }
 
@@ -548,13 +539,20 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             var currentUser = userData.GetCurrentUser();
 
-            if (roleManager.IsCdg() || (roleManager.IsDirector() && analytic.Sector.ResponsableUserId == currentUser.Id))
+            if (roleManager.IsCdg())
             {
                 return true;
             }
-            else if (roleManager.IsManager() && currentUser.Id == analytic.ManagerId.GetValueOrDefault())
+            else 
             {
-                return true;
+                var analyticsByDelegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.ManagementReport);
+
+                if ((roleManager.IsManager() && currentUser.Id == analytic.ManagerId.GetValueOrDefault()) ||
+                    (roleManager.IsDirector() && analytic.Sector.ResponsableUserId == currentUser.Id) || 
+                    analyticsByDelegates.Any(x => x.AnalyticSourceId == analytic.Id))
+                {
+                    return true;
+                }
             }
 
             return false;

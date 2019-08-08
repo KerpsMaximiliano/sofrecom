@@ -82,18 +82,23 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.editDateModal.size = 'modal-sm'
 
-        this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
-            this.customerId = params['customerId'];
-            this.serviceId = params['serviceId'];
-            this.customerName = sessionStorage.getItem('customerName');
-            this.serviceName = sessionStorage.getItem('serviceName');
-
-            this.getDetail();
-        });
-
-        this.isManager = this.menuService.userIsManager;
+        this.isManager = this.menuService.userIsManager || this.menuService.isManagementReportDelegate;
         this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
         this.isCdg = this.menuService.userIsCdg;
+
+        if(!this.menuService.userIsDirector && !this.menuService.userIsManager && !this.menuService.isManagementReportDelegate && this.menuService.userIsCdg == false){
+            this.router.navigate(['/403']);
+        }
+        else{
+            this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
+                this.customerId = params['customerId'];
+                this.serviceId = params['serviceId'];
+                this.customerName = sessionStorage.getItem('customerName');
+                this.serviceName = sessionStorage.getItem('serviceName');
+    
+                this.getDetail();
+            });
+        }
     }
 
     ngOnDestroy(): void {
@@ -110,11 +115,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.getDetailSubscrip = this.managementReportService.getDetail(this.serviceId).subscribe(response => {
 
             this.model = response.data;
-            
-            if(this.menuService.user.id != this.model.managerId && this.menuService.userIsCdg == false){
-                this.router.navigate(['/403']);
-                return false;
-            }
 
             this.ManagementReportId = response.data.managementReportId;
             this.marginTracking.model = response.data;
@@ -139,7 +139,17 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
             this.messageService.closeLoading();
         },
-        error => this.messageService.closeLoading());
+        responseError => {
+            this.messageService.closeLoading();
+
+            if(responseError.error.messages && responseError.error.messages.length > 0){
+                var forbidden = responseError.error.messages.find(x => x.code == 'forbidden');
+
+                if(forbidden){
+                    this.router.navigate(['/403']);
+                }
+            }
+        });
     }
 
     collapse() {

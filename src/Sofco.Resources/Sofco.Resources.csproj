@@ -22,6 +22,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Category.resx</DependentUpon>
     </Compile>
+    <Compile Update="Admin\Delegation.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Delegation.resx</DependentUpon>
+    </Compile>
     <Compile Update="Admin\Group.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -228,6 +233,10 @@
     <EmbeddedResource Update="Admin\Area.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Area.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Admin\Delegation.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Delegation.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Admin\Group.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

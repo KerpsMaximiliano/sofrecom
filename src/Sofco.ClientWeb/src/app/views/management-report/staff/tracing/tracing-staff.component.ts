@@ -19,7 +19,6 @@ export class TracingStaffComponent implements OnInit, OnDestroy {
     months: any[] = new Array()
     accumulatedMonths: any[] = new Array()
 
-   
     ngOnInit(): void {
        
         this.months = [

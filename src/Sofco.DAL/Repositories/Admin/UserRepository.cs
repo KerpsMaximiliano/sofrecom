@@ -332,5 +332,13 @@ namespace Sofco.DAL.Repositories.Admin
                 .ThenInclude(x => x.Group)
                 .Any(x => x.Email.Equals(currentUserEmail) && x.UserGroups.Any(s => s.Group.Code == appSetting.SensibleFunctionality));
         }
+
+        public bool HasManagementReportDelegateGroup(string currentUserEmail)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(currentUserEmail) && x.UserGroups.Any(s => s.Group.Code == appSetting.ManagementReportDelegateRole));
+        }
     }
 }

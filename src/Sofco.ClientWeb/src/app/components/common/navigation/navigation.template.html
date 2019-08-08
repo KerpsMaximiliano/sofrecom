@@ -51,6 +51,7 @@
             <li [ngClass]="{active: activeRoute('analytics')}" *ngIf="menuService.hasFunctionality('CONTR', 'QUERY')"><a [routerLink]="['/contracts/analytics']">{{'allocationManagement.analytics.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('closeDate')}" *ngIf="menuService.hasFunctionality('CONTR', 'CDADD')"><a [routerLink]="['/contracts/closeDate']">{{'rrhh.closeDate.title' | translate }}</a></li>
             <li [ngClass]="{active: activeRoute('currencyExchange')}" *ngIf="menuService.hasFunctionality('CONTR', 'CURRENCY-EXCHANGE')"><a [routerLink]="['/contracts/currencyExchange']">Cotizaciones</a></li>
+            <li [ngClass]="{active: activeRoute('delegation')}" *ngIf="menuService.hasFunctionality('CONTR', 'DELEGATES')"><a [routerLink]="['/contracts/delegation']">Delegaciones</a></li>
         </ul>
       </li> 
  
