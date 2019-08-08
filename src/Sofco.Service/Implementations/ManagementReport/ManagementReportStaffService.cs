@@ -359,7 +359,9 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 var listMonths = this.VerifyAnalyticMonths(managementReport, analytic.StartDateContract, analytic.EndDateContract);
 
-                this.InsertUpdateCostDetailStaff(pDetailCost.CostCategories);
+                var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(pDetailCost.ManagementReportId);
+
+                this.InsertUpdateCostDetailStaff(pDetailCost.CostCategories, costDetails);
                 this.InsertTotalBudgets(pDetailCost.CostCategories, pDetailCost.ManagementReportId);
 
                 unitOfWork.Save();
@@ -450,7 +452,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
         
-        private void InsertUpdateCostDetailStaff(List<CostCategory> costCategories)
+        private void InsertUpdateCostDetailStaff(List<CostCategory> costCategories, IList<CostDetail> costDetails)
         {
             try
             {
@@ -491,7 +493,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 {
                                     entity.Value = subCatBudget.Value ?? 0;
                                     entity.Description = subCatBudget.Description;
-                                    entity.CostDetailId = month.CostDetailId;
+                                    entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                     entity.CostDetailSubcategoryId = subCatBudget.Id;
                                     entity.BudgetTypeId = subCatBudget.BudgetTypeId;
 

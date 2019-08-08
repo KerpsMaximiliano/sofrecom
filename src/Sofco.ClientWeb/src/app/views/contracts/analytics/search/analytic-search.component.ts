@@ -97,7 +97,8 @@ export class AnalyticSearchComponent implements OnInit, OnDestroy {
     }
 
     goToManagementReport(analytic){
-        if(analytic.managementReportId > 0){
+        
+        if(analytic.serviceId == null && analytic.clientId == null) {
             this.router.navigate([`/managementReport/${analytic.managementReportId}`]);
         }
         else{
