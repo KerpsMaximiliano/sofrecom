@@ -102,7 +102,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
 
         this.managementReportId = data.managementReportId;
         this.costDetailMonthModal.otherTitle = `${data.monthDesc} ${data.year}`
-
+      
         this.isReadOnly = readOnly || !data.isCdg;
         this.AnalyticId = data.AnalyticId;
 
