@@ -18,5 +18,6 @@ namespace Sofco.Core.DAL.ManagementReport
         List<CostDetailCategories> GetCategories();
         List<CostDetailSubcategories> GetSubcategories();
 
+        void UpdateTotalProvisioned(CostDetail costDetail);
     }
 }

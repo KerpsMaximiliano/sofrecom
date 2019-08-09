@@ -47,6 +47,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var costDetailResources = unitOfWork.CostDetailResourceRepository.GetByDate(date);
                 var allocations = unitOfWork.AllocationRepository.GetAllocationsByDate(date);
 
+                var costDetailList = new List<CostDetail>();
+
                 foreach (var costDetailResource in costDetailResources)
                 {
                     var allocation = allocations.SingleOrDefault(x => x.AnalyticId == costDetailResource.CostDetail.ManagementReport.AnalyticId && x.EmployeeId == costDetailResource.EmployeeId);
@@ -61,10 +63,29 @@ namespace Sofco.Service.Implementations.ManagementReport
                         var newValueSalary = (allocation.Percentage / 100) * salary;
                         var newValueCharges = (allocation.Percentage / 100) * charges;
 
+                        if (string.IsNullOrWhiteSpace(allocation.Analytic.AccountId))
+                        {
+                            var costDetail = costDetailList.FirstOrDefault(x => x.Id == costDetailResource.CostDetailId);
+
+                            if (costDetail == null)
+                            {
+                                costDetailList.Add(new CostDetail { Id = costDetailResource.CostDetailId, TotalProvisioned = newValueSalary+newValueCharges });
+                            }
+                            else
+                            {
+                                costDetail.TotalProvisioned += newValueSalary+newValueCharges;
+                            }
+                        }
+
                         costDetailResource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString(CultureInfo.InvariantCulture));
                         costDetailResource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString(CultureInfo.InvariantCulture));
                         unitOfWork.CostDetailResourceRepository.Update(costDetailResource);
                     }
+                }
+
+                foreach (var costDetail in costDetailList)
+                {
+                    unitOfWork.CostDetailRepository.UpdateTotalProvisioned(costDetail);
                 }
 
                 unitOfWork.Save();

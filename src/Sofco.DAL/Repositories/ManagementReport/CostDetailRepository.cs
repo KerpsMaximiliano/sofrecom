@@ -76,5 +76,10 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             return context.CostDetailSubcategories.OrderBy(t => t.Id).ToList();
         }
+
+        public void UpdateTotalProvisioned(CostDetail costDetail)
+        {
+            context.Entry(costDetail).Property("TotalProvisioned").IsModified = true;
+        }
     }
 }
