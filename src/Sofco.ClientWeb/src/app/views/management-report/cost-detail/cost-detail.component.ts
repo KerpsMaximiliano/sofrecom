@@ -8,6 +8,7 @@ import { MessageService } from "app/services/common/message.service";
 import { UtilsService } from "app/services/common/utils.service"
 import { FormControl, Validators } from "@angular/forms";
 import { EmployeeService } from "app/services/allocation-management/employee.service"
+import { evaluate } from 'mathjs/number'
 
 @Component({
     selector: 'cost-detail',
@@ -808,6 +809,21 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         }
 
         return 0;
+    }
+
+    onEnter(mathBox, value: string) {
+        var result;
+        
+        try {
+          result = evaluate(value)
+        } 
+        catch (error) {
+            result = 0
+    
+            mathBox.value = result
+        }
+    
+        this.editItemMonto.setValue(result)
     }
 }
 
