@@ -100,7 +100,7 @@ namespace Sofco.Framework.Managers
 
             mails.AddRange(GetOperationMails(purchaseOrder));
 
-            //mails.AddRange(GetDafMails());
+            mails.AddRange(GetGafMails());
 
             var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithManagers(purchaseOrder.Id);
 
@@ -191,6 +191,27 @@ namespace Sofco.Framework.Managers
             var mails = new List<string>();
 
             var users = unitOfWork.UserRepository.GetByGroup(appSetting.DafPurchaseOrderGroupCode);
+
+            mails.AddRange(users.Select(s => s.Email).ToList());
+
+            foreach (var user in users)
+            {
+                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalDaf,
+                        user.Id)
+                    .Select(s => s.UserId);
+
+                mails.AddRange(userIds.Select(userId => userData.GetById(userId))
+                    .Select(delegated => delegated.Email));
+            }
+
+            return mails;
+        }
+
+        private List<string> GetGafMails()
+        {
+            var mails = new List<string>();
+
+            var users = unitOfWork.UserRepository.GetByGroup(emailConfig.GafCode);
 
             mails.AddRange(users.Select(s => s.Email).ToList());
 
