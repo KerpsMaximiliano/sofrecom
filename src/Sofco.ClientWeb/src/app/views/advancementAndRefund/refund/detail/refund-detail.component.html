@@ -19,8 +19,11 @@
     <div class="alert alert-gaps-info" *ngIf="canUpdate()">
         <i class="fa fa-info-circle"></i>
         {{'refund.documentRevision' | translate }}
+        <p class="m-t-sm">{{'refund.documentRevision2' | translate }}</p>
+        <p>{{'refund.documentRevision3' | translate }}</p>
+        <p>{{'refund.documentRevision4' | translate }}</p>
     </div>
-    
+
     <div class="row">
         <div class="col-lg-12">
             <button type="button" class="btn btn-sm btn-outline dim btn-success" (click)="back()" *ngIf="canBack()">
