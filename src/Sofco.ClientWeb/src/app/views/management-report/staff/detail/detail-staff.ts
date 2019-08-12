@@ -11,6 +11,7 @@ import { I18nService } from "app/services/common/i18n.service";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
 import { FormControl, Validators } from "@angular/forms";
 import * as moment from 'moment';
+import { UserInfoService } from "app/services/common/user-info.service";
 
 @Component({
     selector: 'management-report-detail-staff',
@@ -118,6 +119,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
 
     getDetail() {
         this.messageService.showLoading();
+        const userInfo = UserInfoService.getUserInfo();
 
         this.getDetailSubscrip = this.managementReportService.getDetail(this.ManagementReportId).subscribe(response => {
             this.messageService.closeLoading();
@@ -125,7 +127,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             this.model = response.data;
 
             if(this.isManager){
-                if(this.model.managerId != this.menuService.currentUser.id && this.model.delegateId != this.menuService.currentUser.id){
+                if(this.model.managerId != userInfo.id && this.model.delegateId != userInfo.id){
                     this.isManager = false;
                 }
             }
