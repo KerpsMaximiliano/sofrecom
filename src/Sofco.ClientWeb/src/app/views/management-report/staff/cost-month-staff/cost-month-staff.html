@@ -56,7 +56,7 @@
                 [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
         </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
+            <input type="text" class="form-control input-xs text-right" [ngModel]="resource.total | amountFormat" disabled>
         </div>
         <div class="col-sm-1" *ngIf="resource.new == true">
             <button class="btn btn-danger btn-xs" (click)="deleteResource(i, resource)" *ngIf="!isReadOnly"><i
