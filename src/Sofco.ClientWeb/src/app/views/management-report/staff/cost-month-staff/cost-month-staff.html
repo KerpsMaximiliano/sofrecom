@@ -48,12 +48,14 @@
             <span>{{ resource.name }}</span>
         </div>
         <div class="col-sm-2">
-            <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
-                [(ngModel)]="resource.salary" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
+            <!-- <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
+                [(ngModel)]="resource.salary" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly"> -->
+            <math-input [(model)]="resource.salary" (modelChange)="resourceChange(resource)" [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
-            <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
-                [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
+            <!-- <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
+                [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly"> -->
+            <math-input [(model)]="resource.charges" (modelChange)="resourceChange(resource)" [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
             <input type="text" class="form-control input-xs text-right" [ngModel]="resource.total | amountFormat" disabled>
@@ -106,7 +108,7 @@
             {{ cost.name }}
         </div>
         <div class="col-sm-3">
-            <input type="text" class="form-control input-md" [(ngModel)]="cost.description" maxlength="200">
+            <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">
         </div>
         <div class="col-sm-2">
             <math-input [(model)]="cost.value"></math-input>

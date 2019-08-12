@@ -6,8 +6,10 @@
             <div class="form-group row">
                 <label class="col-sm-6 col-form-label">Real:</label>
                 <div class="col-sm-6">
-                    <label *ngIf="totalProvisionedEditabled == false" class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
-                    <input *ngIf="totalProvisionedEditabled == true" (ngModelChange)="totalProvisionedChanged()" type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalProvisioned">
+                    <label *ngIf="totalProvisionedEditabled == false"
+                        class="label label-gray">{{ totalProvisioned | amountFormat }}</label>
+                    <input *ngIf="totalProvisionedEditabled == true" (ngModelChange)="totalProvisionedChanged()"
+                        type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalProvisioned">
                 </div>
             </div>
         </div>
@@ -15,8 +17,10 @@
             <div class="form-group row">
                 <label class="col-sm-6 col-form-label">Facturación:</label>
                 <div class="col-sm-6">
-                    <label *ngIf="totalBillingEditabled == false" class="label label-gray">{{ totalBilling | amountFormat }}</label>
-                    <input *ngIf="totalBillingEditabled == true" (ngModelChange)="totalBillingChanged()" type="number" decimalFormat class="form-control input-xs" [(ngModel)]="totalBilling">
+                    <label *ngIf="totalBillingEditabled == false"
+                        class="label label-gray">{{ totalBilling | amountFormat }}</label>
+                    <input *ngIf="totalBillingEditabled == true" (ngModelChange)="totalBillingChanged()" type="number"
+                        decimalFormat class="form-control input-xs" [(ngModel)]="totalBilling">
                 </div>
             </div>
         </div>
@@ -35,8 +39,10 @@
             <div class="form-group row">
                 <label class="col-sm-6 col-form-label">Provisión:</label>
                 <div class="col-sm-6">
-                    <label *ngIf="provisionEditabled == false" class="label label-gray">{{ provision | amountFormat }}</label>
-                    <input *ngIf="provisionEditabled == true" type="number" (ngModelChange)="provisionChanged()" decimalFormat class="form-control input-xs" [(ngModel)]="provision">
+                    <label *ngIf="provisionEditabled == false"
+                        class="label label-gray">{{ provision | amountFormat }}</label>
+                    <input *ngIf="provisionEditabled == true" type="number" (ngModelChange)="provisionChanged()"
+                        decimalFormat class="form-control input-xs" [(ngModel)]="provision">
                 </div>
             </div>
         </div>
@@ -61,28 +67,33 @@
         <div class="col-sm-5">
             <span class="text-danger" *ngIf="!resource.hasAlocation || resource.modified"><strong>* </strong></span>
             <span class="text-warning" *ngIf="resource.id == 0"><strong>* </strong></span>
-            <span>{{ resource.name }}</span>   
+            <span>{{ resource.name }}</span>
         </div>
         <div class="col-sm-2">
-            <input type="number"  [digitLimit]="8"  decimalFormat class="form-control input-xs" max="99999999" min="0"
-                [(ngModel)]="resource.salary" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
+            <!-- <input type="number"  [digitLimit]="8"  decimalFormat class="form-control input-xs" max="99999999" min="0"
+                [(ngModel)]="resource.salary" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly"> -->
+            <math-input [(model)]="resource.salary" (modelChange)="resourceChange(resource)"
+                [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
-            <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
-                [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
+            <!-- <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
+                [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly"> -->
+            <math-input [(model)]="resource.charges" (modelChange)="resourceChange(resource)"
+                [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resource.total | amountFormat"
+                disabled>
         </div>
         <div class="col-sm-1" *ngIf="resource.new == true">
             <button class="btn btn-danger btn-xs" (click)="deleteResource(i, resource)" *ngIf="!isReadOnly"><i
                     class="fa fa-trash"></i></button>
         </div>
     </div>
-    
+
     <br>
 
-    <small class="text-danger m-r-sm"><strong>* Ajuste</strong></small>  
+    <small class="text-danger m-r-sm"><strong>* Ajuste</strong></small>
     <small class="text-warning"><strong>* Dato no guardado</strong></small> .
 
     <div class="row" *ngIf="!isReadOnly">
@@ -97,7 +108,7 @@
                 <i class="fa fa-plus"></i></button>
         </div>
     </div>
-    
+
     <hr class="hr-line-dashed">
 
     <div class="row border-bottom m-b-sm">
@@ -124,18 +135,22 @@
                     [(ngModel)]="hire.name" #name{{i}}="ngModel">
             </div>
             <div class="col-sm-2">
-                <input type="number" name="honorary" [digitLimit]="8" decimalFormat class="form-control input-xs"
+                <!-- <input type="number" name="honorary" [digitLimit]="8" decimalFormat class="form-control input-xs"
                     [(ngModel)]="hire.honorary" (ngModelChange)="contractedChange(hire)" [disabled]="isReadOnly"
-                    max="99999999" min="0">
+                    max="99999999" min="0"> -->
+                <math-input [(model)]="hire.honorary" (modelChange)="contractedChange(hire)"
+                    [(modelDisabled)]="isReadOnly"></math-input>
             </div>
             <div class="col-sm-2">
-                <input type="number" name="insurance" [digitLimit]="8" decimalFormat class="form-control input-xs"
+                <!-- <input type="number" name="insurance" [digitLimit]="8" decimalFormat class="form-control input-xs"
                     [(ngModel)]="hire.insurance" (ngModelChange)="contractedChange(hire)" [disabled]="isReadOnly"
-                    max="99999999" min="0">
+                    max="99999999" min="0"> -->
+                    <math-input [(model)]="hire.insurance" (modelChange)="contractedChange(hire)"
+                    [(modelDisabled)]="isReadOnly"></math-input>
             </div>
             <div class="col-sm-2">
-                <input type="number" name="total" decimalFormat class="form-control input-xs" [(ngModel)]="hire.total"
-                    disabled>
+                <input type="text" name="total" decimalFormat class="form-control input-xs"
+                    [ngModel]="hire.total | amountFormat" disabled>
             </div>
             <div class="col-sm-1">
                 <button class="btn btn-danger btn-xs" (click)="deleteContracted(i, hire)" *ngIf="!isReadOnly"><i
@@ -157,7 +172,9 @@
         <div class="col-sm-5">
             <h4>Otros Gastos</h4>
         </div>
-        <div class="col-sm-4"><h4>Descripción</h4></div>
+        <div class="col-sm-4">
+            <h4>Descripción</h4>
+        </div>
         <div class="col-sm-2" *ngIf="expenses.length > 0">
             <h4>Total</h4>
         </div>
@@ -174,11 +191,14 @@
             {{ expense.typeName }}
         </div>
         <div class="col-sm-4">
-            <input type="text" class="form-control input-xs" [(ngModel)]="expense.description" [disabled]="isReadOnly" maxlength="200">
-        </div> 
+            <input type="text" class="form-control input-xs" [(ngModel)]="expense.description" [disabled]="isReadOnly"
+                maxlength="200">
+        </div>
         <div class="col-sm-2">
-            <input type="number" class="form-control input-xs" [digitLimit]="8" [(ngModel)]="expense.value"
-                (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly" max="99999999" min="0">
+            <!-- <input type="number" class="form-control input-xs" [digitLimit]="8" [(ngModel)]="expense.value"
+                (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly" max="99999999" min="0"> -->
+                <math-input [(model)]="expense.value" (modelChange)="calculateTotalCosts()"
+                [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-1">
             <button class="btn btn-danger btn-xs" (click)="deleteExpense(i, expense)" *ngIf="!isReadOnly"><i
