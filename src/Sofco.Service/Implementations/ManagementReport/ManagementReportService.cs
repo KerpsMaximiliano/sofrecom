@@ -1090,6 +1090,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             if (canViewSensibleData)
                             {
+                                monthDetail.CanViewSensibleData = true;
+
                                 if (employee.SocialCharges != null && employee.SocialCharges.Any())
                                 {
                                     var socialCharge = employee?.SocialCharges.FirstOrDefault(x => x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
@@ -1102,7 +1104,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         monthDetail.Value = salary;
                                         monthDetail.OriginalValue = salary;
                                         monthDetail.Charges = charges;
-                                        monthDetail.CanViewSensibleData = true;
                                     }
                                 }
                             }
