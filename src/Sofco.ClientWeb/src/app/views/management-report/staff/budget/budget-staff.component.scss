@@ -15,17 +15,7 @@ table {
   }
   
   .first-column {
-    width: 260px;
-  
-    p{
-        width: 240px;
-        float: left;
-    }
-  
-    i{
-        float: right;
-        color: #BD3446;
-    }
+    width: 170px;
   }
   
   .label {
@@ -86,14 +76,12 @@ table {
     border-radius: 3px;
 }
 
-  // .static {
-  //   position: absolute;
-  //   background-color: white;
-  // }
+  .static {
+    position: absolute;
+    background-color: white;
+  }
   
-  // .first-col {
-  //   padding-left: 276px!important;
+  .first-col {
+     padding-left: 186px!important;
 
-  //   font-size: 13px;
-  //   color: #676a6c;
-  // }
+  }

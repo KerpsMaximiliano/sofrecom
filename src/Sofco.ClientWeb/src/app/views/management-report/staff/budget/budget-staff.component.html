@@ -5,6 +5,15 @@
 
 
 <div *ngIf="months.length > 0">
+
+    <div class="row col-xs-offset-9">
+        <div class="btn-group btn-group-justified">
+            <a (click)="showPFA1 = !showPFA1" class="btn btn-xs btn-default" [ngClass]="{'active': showPFA1}">PFA1</a>
+            <a (click)="showPFA2 = !showPFA2" class="btn btn-xs btn-default" [ngClass]="{'active': showPFA2}">PFA2</a>
+            <a (click)="showReal = !showReal" class="btn btn-xs btn-default" [ngClass]="{'active': showReal}">REAL</a>
+        </div>
+    </div>
+
     <div class="table-responsive billing-table">
         <table class="table dataTable" role="grid">
             <thead>
@@ -14,13 +23,13 @@
                         <th class="text-center headcol" [ngClass]="{'first-col': isFirst}">
                             {{ item.display }}
                         </th>
-                        <th class="text-center headcol">
+                        <th class="text-center headcol" [hidden]="!showPFA1">
 
                         </th>
-                        <th class="text-center headcol">
+                        <th class="text-center headcol" [hidden]="!showPFA2">
 
                         </th>
-                        <th class="text-center headcol">
+                        <th class="text-center headcol" [hidden]="!showReal">
 
                         </th>
                     </ng-template>
@@ -30,16 +39,16 @@
                 <tr>
                     <th class="static first-column" scope="col"></th>
                     <ng-template ngFor let-item [ngForOf]="months" let-i="index">
-                        <td class="text-center">
+                        <td [ngClass]="{'first-col': i == 0}" class="text-center">
                             <strong>PRESUPUESTO</strong>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center" [hidden]="!showPFA1">
                             <strong>PFA1</strong>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center" [hidden]="!showPFA2">
                             <strong>PFA2</strong>
                         </td>
-                        <td class="text-center">
+                        <td class="text-center" [hidden]="!showReal">
                             <strong>REAL</strong>
                         </td>
                     </ng-template>
@@ -47,23 +56,23 @@
                 <tr>
                     <th class="static first-column" scope="col">Total de Gastos</th>
                     <ng-template ngFor let-month [ngForOf]="months" let-i="index">
-                        <td [ngClass]="{'first-col': isFirst}">
+                        <td [ngClass]="{'first-col': i == 0}">
                             <label class="label label-total">
                                 {{ month.totalBudget | amountFormat }}
                             </label>
                         </td>
                         <td>
-                            <label class="label label-total">
+                            <label class="label label-total" [hidden]="!showPFA1">
                                 {{ month.totalPfa1 | amountFormat }}
                             </label>
                         </td>
                         <td>
-                            <label class="label label-total">
+                            <label class="label label-total" [hidden]="!showPFA2">
                                 {{ month.totalPfa2 | amountFormat }}
                             </label>
                         </td>
                         <td>
-                            <label class="label label-total">
+                            <label class="label label-total" [hidden]="!showReal">
                                 {{ month.totalReal | amountFormat }}
                             </label>
                         </td>
@@ -73,29 +82,29 @@
                 <tr *ngFor="let category of categories">
                     <th class="static first-column" scope="col">{{category.name}}</th>
                     <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
-                        <td [ngClass]="{'first-col': isFirst}">
+                        <td [ngClass]="{'first-col': i == 0}">
                             <label class="label  cursor-pointer"
-                            [ngClass]="month.totalReal <=  month.totalBudget ? 'label-success' : 'label-danger'"
+                                [ngClass]="month.totalReal <=  month.totalBudget ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category, 'budget', month, i)">
                                 {{ month.totalBudget | amountFormat  }}
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showPFA1">
                             <label class="label cursor-pointer"
                                 [ngClass]="month.totalReal <=  month.totalPfa1 ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category,'pfa1', month, i)">
                                 {{ month.totalPfa1 | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showPFA2">
                             <label class="label cursor-pointer"
                                 [ngClass]="month.totalReal <=  month.totalPfa2 ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category, 'pfa2', month, i)">
                                 {{ month.totalPfa2 | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label label-budget cursor-pointer"                                
+                        <td [hidden]="!showReal">
+                            <label class="label label-budget cursor-pointer"
                                 (click)="openEditItemModal(category, 'real', month, i)">
                                 {{ month.totalReal | amountFormat }}
                             </label>
@@ -123,11 +132,13 @@
                 <fieldset>
                     <div class="col-sm-4">
                         <label class="control-label" for="readOnlyInput">Mes</label>
-                        <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelected.display }}" readonly="">
+                        <input class="form-control" id="readOnlyInput" type="text"
+                            placeholder="{{ monthSelected.display }}" readonly="">
                     </div>
                     <div class="col-sm-8">
                         <label class="control-label" for="readOnlyInput">Categoria</label>
-                        <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ categorySelected.name }}" readonly="">
+                        <input class="form-control" id="readOnlyInput" type="text"
+                            placeholder="{{ categorySelected.name }}" readonly="">
                     </div>
                 </fieldset>
             </div>
@@ -144,7 +155,7 @@
                 </div>
             </div>
 
-            <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index" [hidden]="cost.deleted" >
+            <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index" [hidden]="cost.deleted">
                 <div class="col-sm-5">
                     {{ cost.name }}
                 </div>
@@ -155,14 +166,16 @@
                     <math-input [(model)]="cost.value"></math-input>
                 </div>
                 <div class="col-sm-1 delete">
-                    <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
+                    <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)" *ngIf="!isReadOnly"><i
+                            class="fa fa-trash"></i></button>
                 </div>
             </div>
             <div class="row">
                 <br>
                 <div class="col-sm-9">
                     <div class="form-group">
-                        <ng-select [items]="subCategoriesFiltered" bindLabel="name" [(ngModel)]="subCategorySelected" [clearable]="false">
+                        <ng-select [items]="subCategoriesFiltered" bindLabel="name" [(ngModel)]="subCategorySelected"
+                            [clearable]="false">
                         </ng-select>
                     </div>
                 </div>
