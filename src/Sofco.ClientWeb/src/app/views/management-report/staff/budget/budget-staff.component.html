@@ -61,18 +61,18 @@
                                 {{ month.totalBudget | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label label-total" [hidden]="!showPFA1">
+                        <td [hidden]="!showPFA1">
+                            <label class="label label-total">
                                 {{ month.totalPfa1 | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label label-total" [hidden]="!showPFA2">
+                        <td [hidden]="!showPFA2">
+                            <label class="label label-total">
                                 {{ month.totalPfa2 | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label label-total" [hidden]="!showReal">
+                        <td [hidden]="!showReal">
+                            <label class="label label-total">
                                 {{ month.totalReal | amountFormat }}
                             </label>
                         </td>
