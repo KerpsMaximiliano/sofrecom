@@ -239,7 +239,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
                 this.model.manamementReportEndDate = this.ReportEndDate
           
                 this.getDetail()
-                
+                this.updateBudgetView()
                 this.setStartDate(this.ReportStartDate, this.ReportEndDate)
 
                 this.editDateModal.hide();
