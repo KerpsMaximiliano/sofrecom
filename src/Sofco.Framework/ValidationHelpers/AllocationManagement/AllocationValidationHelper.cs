@@ -82,5 +82,36 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 response.AddError(Resources.AllocationManagement.Analytic.IsClosed);
             }   
         }
+
+        public static void ValidateEmployeeDates(Response<Allocation> response, AllocationDto allocation, IEmployeeRepository employeeRepository)
+        {
+            var employee = employeeRepository.Get(allocation.EmployeeId);
+
+            foreach (var month in allocation.Months)
+            {
+                var startDate = new DateTime(employee.StartDate.Year, employee.StartDate.Month, 1);
+
+                if (month.Date.Date < startDate)
+                {
+                    if (response.Messages.All(x => x.Text != Resources.AllocationManagement.Allocation.DateLessThanEmployeeStartDate))
+                    {
+                        response.AddError(Resources.AllocationManagement.Allocation.DateLessThanEmployeeStartDate);
+                    }
+                }
+
+                if (employee.EndDate.HasValue)
+                {
+                    var endDate = new DateTime(employee.EndDate.Value.Year, employee.EndDate.Value.Month, 1);
+
+                    if (employee.EndDate.Value > endDate.Date)
+                    {
+                        if (response.Messages.All(x => x.Text != Resources.AllocationManagement.Allocation.DateGreaterThanEmployeeEndDate))
+                        {
+                            response.AddError(Resources.AllocationManagement.Allocation.DateGreaterThanEmployeeEndDate);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

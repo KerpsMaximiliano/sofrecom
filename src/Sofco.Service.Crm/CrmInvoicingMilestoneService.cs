@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Sofco.Core.Logger;
@@ -13,6 +10,9 @@ using Sofco.Service.Crm.HttpClients.Interfaces;
 using Sofco.Service.Crm.Interfaces;
 using Sofco.Service.Crm.TranslatorMaps;
 using Sofco.Service.Crm.Translators.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Service.Crm
 {
@@ -30,9 +30,9 @@ namespace Sofco.Service.Crm
 
         private readonly ILogMailer<CrmInvoicingMilestoneService> logger;
 
-        public CrmInvoicingMilestoneService(ICrmApiHttpClient httpClient, 
-            ICrmTranslator<CrmInvoicingMilestone, CrmInvoicingMilestoneTranslatorMap> translator, 
-            ICrmProjectService crmProjectService, IMapper mapper, 
+        public CrmInvoicingMilestoneService(ICrmApiHttpClient httpClient,
+            ICrmTranslator<CrmInvoicingMilestone, CrmInvoicingMilestoneTranslatorMap> translator,
+            ICrmProjectService crmProjectService, IMapper mapper,
             ILogMailer<CrmInvoicingMilestoneService> logger)
         {
             this.httpClient = httpClient;
@@ -228,7 +228,30 @@ namespace Sofco.Service.Crm
 
         public string Create(HitoParameters data, Response response)
         {
-            var date = data.StartDate.HasValue ? data.StartDate.Value.ToString("yyyy-MM-dd") : DateTime.UtcNow.ToString("yyyy-MM-dd");
+            var date = string.Empty;
+
+            if (data.StartDate.HasValue)
+            {
+#if DEBUG
+                date = $"{data.StartDate.Value.Year}-{data.StartDate.Value.Month}-{data.StartDate.Value.Day}";
+#else
+                if(data.StartDate.Value.Day > 12){
+                    date = $"{data.StartDate.Value.Year}-{data.StartDate.Value.Month}-{data.StartDate.Value.Day}";
+                }
+                else{
+                    date = $"{data.StartDate.Value.Year}-{data.StartDate.Value.Day}-{data.StartDate.Value.Month}";
+                }
+#endif
+            }
+            else
+            {
+                var now = DateTime.UtcNow;
+#if DEBUG
+                date = $"{now.Year}-{now.Month}-{now.Day}";
+#else
+                date = $"{now.Year}-{now.Day}-{now.Month}";
+#endif
+            }
 
             var content = new JObject
             {
@@ -287,7 +310,7 @@ namespace Sofco.Service.Crm
             {
                 var project = projects.FirstOrDefault(s => s.Id == crmHito.ProjectId.ToString());
 
-                if(project == null) continue;
+                if (project == null) continue;
 
                 crmHito.ServiceId = Guid.Parse(project.ServiceId);
                 crmHito.CustomerId = Guid.Parse(project.AccountId);

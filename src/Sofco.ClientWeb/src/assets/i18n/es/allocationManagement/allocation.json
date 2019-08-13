@@ -11,5 +11,7 @@
     "wrongPercentage": "Porcentaje ingresado es incorrecto",
     "monthDifferent": "La fecha ingresada no puede ser diferente a la del mes en curso de la última asignación",
     "employeeWithErrors": "Las asignaciones masivas fueron realizadas con exito pero algunas contienen impedimentos",
-    "massiveSuccess": "Las asignaciones masivas fueron realizadas con exito"
+    "massiveSuccess": "Las asignaciones masivas fueron realizadas con exito",
+    "dateLessThanEmployeeStartDate": "Se ha seleccionado un mes anterior a la fecha de ingreso del recurso",
+    "dateGreaterThanEmployeeEndDate": "Se ha seleccionado un mes posterior a la fecha de baja del recurso"
 }
