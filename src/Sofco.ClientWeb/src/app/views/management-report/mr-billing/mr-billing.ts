@@ -10,7 +10,6 @@ import { MessageService } from "app/services/common/message.service";
 
 import { FormControl, Validators } from "@angular/forms";
 import { ReportBillingUpdateDataType } from "app/models/enums/ReportBillingUpdateDataType";
-import { detectBody } from "app/app.helpers";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 
 @Component({
@@ -253,7 +252,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 projectId: project.id,
                 projectName: project.text,
                 currencyId: model.moneyId,
-                description: `${project.opportunityNumber} - ${model.name} - ${currency.text}`,
+                opportunityNumber: project.opportunityNumber,
+                currencyName: currency.text,
+                description: model.name,
                 values: []
             };
 
@@ -266,6 +267,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         var addToReport = false
 
         this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
+            hito.date = response.data.startDate;
 
             this.months.forEach(monthRow => {
                 var monthValue = {
@@ -287,7 +289,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     monthValue.originalValue = response.data.amountOriginal;
                     monthValue.originalValuePesos = response.data.baseAmountOriginal;
                     monthValue.status = this.pendingHitoStatus;
-
+            
                     monthRow.totalBilling += response.data.baseAmount;
 
                     if (new Date(monthValue.monthYear) >= new Date(this.manamementReportStartDate)

@@ -3,7 +3,6 @@
     Sin información disponible para esta tabla
 </div>
 
-
 <div *ngIf="months.length > 0">
     <div class="table-responsive billing-table">
         <table class="table dataTable" role="grid">
@@ -21,7 +20,7 @@
                     <td *ngFor="let month of months | fromDateFilter: fromMonth; let i = index; first as isFirst"
                         [ngClass]="{'first-col': isFirst}">
                         <label class="label label-total">
-                            {{ calculateTotalCosts(month) | amountFormat }}
+                            {{ month.value | amountFormat }}
                         </label>
                     </td>
                 </tr>

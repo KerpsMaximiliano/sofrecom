@@ -1,0 +1,6 @@
+﻿ 2019-08-13 09:33:49,203 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 93
+ 2019-08-13 10:36:52,861 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 93

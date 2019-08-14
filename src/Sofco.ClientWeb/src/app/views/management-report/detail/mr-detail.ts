@@ -135,8 +135,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
             this.readOnly = !this.canEdit();
 
-            // this.marginTracking.init(this.startDate)
-
             this.messageService.closeLoading();
         },
         responseError => {
@@ -204,7 +202,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     EditDate() {
-
         this.ReportStartDateError = false
         this.ReportEndDateError = false
         
@@ -263,7 +260,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     getBillingData(billingModel){
-      
         this.marginTracking.billingDataLoaded = true;
         this.marginTracking.billingModel = billingModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
@@ -275,7 +271,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     getCostsData(costsModel){
-   
         this.marginTracking.costDataLoaded = true;
         this.marginTracking.costsModel = costsModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
