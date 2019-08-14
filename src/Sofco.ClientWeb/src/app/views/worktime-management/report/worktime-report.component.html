@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <div class="panel-group" id="accordion2" *ngIf="isMissingData && employeesWithHoursMissing.length > 0 && employeesWithAllocationMissing.length > 0">
+    <div class="panel-group" id="accordion2" *ngIf="isMissingData && (employeesWithHoursMissing.length > 0 || employeesWithAllocationMissing.length > 0)">
         <div class="panel panel-danger">
             <div class="panel-heading">
                 <h5 class="panel-title">
@@ -64,7 +64,7 @@
             </div>
             <div id="collapseTwo" class="panel-collapse collapse in">
                 <div class="panel-body">
-                    <h3>Recursos con horas faltantes</h3>
+                    <h3 *ngIf="employeesWithHoursMissing.length > 0">Recursos con horas faltantes</h3>
 
                     <div class="table-responsive" *ngIf="employeesWithHoursMissing.length > 0">
                         <table class="table table-striped dataTable" role="grid" id="missingHoursTable">
@@ -87,9 +87,9 @@
                         </table>       
                     </div>
 
-                    <br/>
+                    <br *ngIf="employeesWithHoursMissing.length > 0" />
 
-                    <h3>Recursos con asignación faltante</h3>
+                    <h3 *ngIf="employeesWithAllocationMissing.length > 0">Recursos con asignación faltante</h3>
 
                     <div class="table-responsive" *ngIf="employeesWithAllocationMissing.length > 0">
                         <table class="table table-striped dataTable" role="grid" id="missingAllocationTable">
