@@ -473,9 +473,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             workTimeImportFileManager.Import(analyticId, memoryStream, response);
         }
 
-        public byte[] ExportTemplate(int analyticId)
+        public byte[] ExportTemplate(int analyticId, int periodId)
         {
-            var excel = workTimeExportFileManager.CreateTemplateExcel(analyticId);
+            var excel = workTimeExportFileManager.CreateTemplateExcel(analyticId, periodId);
 
             return excel.GetAsByteArray();
         }

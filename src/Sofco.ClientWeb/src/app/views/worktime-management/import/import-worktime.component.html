@@ -14,14 +14,22 @@
     <div class="ibox">
         <div class="ibox-content">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="control-label">{{ 'allocationManagement.analytics.title' | translate }}</label>
                         <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analyticId" (change)="uploaderConfig()"></ng-select>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="m-t-sm" *ngIf="analyticId > 0">
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label">{{ 'workTimeManagement.month' | translate }}</label>
+                        <ng-select [items]="months" bindLabel="text" bindValue="id" [(ngModel)]="closeMonthId"></ng-select>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="m-t-sm" *ngIf="analyticId > 0 && closeMonthId > 0">
                         <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
             
                         <div class="uploader-margin-top">

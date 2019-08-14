@@ -37,6 +37,6 @@ namespace Sofco.Core.Services.WorkTimeManagement
 
         void Import(int analyticId, IFormFile file, Response<IList<WorkTimeImportResult>> response);
 
-        byte[] ExportTemplate(int analyticId);
+        byte[] ExportTemplate(int analyticId, int periodId);
     }
 }
