@@ -400,4 +400,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Recruitment\" />
+  </ItemGroup>
+
 </Project>

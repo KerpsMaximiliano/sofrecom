@@ -1,7 +1,7 @@
 import { TranslateModule } from '@ngx-translate/core';
 import { Ng2ModalModule } from '../../components/modal/ng2modal.module';
 import { ICheckModule } from '../../components/icheck/icheck.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
@@ -61,23 +61,28 @@ import { WorkflowTransitionEditComponent } from './workflow/transition-edit/tran
 import { WorkflowStateListComponent } from './workflow/state-list/state-list.component';
 import { WorkflowStateAddComponent } from './workflow/state-add/state-add.component';
 import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
+import { GenericOptionService } from 'app/services/admin/generic-option.service';
+import { SeniorityComponent } from './options/seniority';
+import { SkillComponent } from './options/skill';
+import { ProfileComponent } from './options/profile';
 
 @NgModule({
-  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
+  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, SkillComponent, ProfileComponent,
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
                  TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent, WorkflowTransitionEditComponent,
                  SectorListComponent, WorkflowListComponent, WorkflowDetailComponent, WorkflowAddComponent, WorkflowTransitionAddComponent, WorkflowTransitionFormComponent,
-                 WorkflowStateListComponent, WorkflowStateAddComponent, WorkflowStateEditComponent],
+                 WorkflowStateListComponent, WorkflowStateAddComponent, WorkflowStateEditComponent, SeniorityComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
-                 SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule],
+                 SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule, ReactiveFormsModule],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService,
-                 TaskService, AreaService, SectorService, WorkflowService, UtilsService],
+                 TaskService, AreaService, SectorService, WorkflowService, UtilsService, GenericOptionService],
 
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, SettingsComponent]
 })
 
 export class AdminModule {}
+ 

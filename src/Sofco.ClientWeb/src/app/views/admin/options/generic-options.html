@@ -1,0 +1,61 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>{{ title }}</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>{{ title }}</strong>
+            </li>
+        </ol>
+    </div>
+</div> 
+    
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h4 class="pull-left">Listado</h4>
+            
+            <div class="ibox-tools" >
+                <a class="btn btn-primary btn-sm btn-link" (click)="add()"> {{ 'ACTIONS.ADD' | translate }} <i class="fa fa-plus"></i></a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table class="table table-striped" id="table" width="100%">
+                <thead>
+                    <tr>
+                        <th class="text-center">Código</th>
+                        <th>Descripción</th>
+                        <th class="text-center">Activo</th>
+                        <th class="text-center">{{ 'ACTIONS.title' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of list">
+                        <td class="text-center">{{ item.id }}</td>
+                        <td>{{ item.text }}</td>
+                        <td class="text-center"><span class="fa" [ngClass]="item.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                        <td class="text-center">
+                            <button class="btn btn-warning btn-xs" (click)="update(item)"><i class="fa fa-edit"></i></button>
+
+                            <button class="btn btn-xs" [ngClass]="(item.active)?'btn-danger':'btn-success'" (click)="habInhabClick(item)">
+                                <span [ngClass]="(item.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>        
+        </div>
+    </div>
+</div>
+
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="save()" [isSaveEnabled]="text.valid">
+    <div class="form-group">
+        <label class="control-label">Descripción</label>
+        <input class="form-control" type="text" [formControl]="text" maxlength="76">
+    </div>
+</ng2-modal> 
