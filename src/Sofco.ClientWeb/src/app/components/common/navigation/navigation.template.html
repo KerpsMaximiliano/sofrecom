@@ -200,6 +200,15 @@
           <li [ngClass]="{active: activeRoute('contacts')}"><a
               [routerLink]="['/recruitment/contacts']">{{'recruitment.contacts.title' | translate }}</a>
           </li>
+          <li [ngClass]="{active: activeRoute('perfiles')}" *ngIf="menuService.hasFunctionality('RECRU', 'PROFILE')"><a
+            [routerLink]="['/recruitment/perfiles']">Perfiles</a>
+          </li>
+          <li [ngClass]="{active: activeRoute('seniorities')}" *ngIf="menuService.hasFunctionality('RECRU', 'SENIORITY')"><a
+            [routerLink]="['/recruitment/seniorities']">Seniorities</a>
+          </li>
+          <li [ngClass]="{active: activeRoute('skills')}" *ngIf="menuService.hasFunctionality('RECRU', 'SKILL')"><a
+            [routerLink]="['/recruitment/skills']">Conocimientos</a>
+          </li>
         </ul>
       </li>
 

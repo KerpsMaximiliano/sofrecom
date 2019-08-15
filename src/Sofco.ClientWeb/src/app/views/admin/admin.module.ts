@@ -61,24 +61,20 @@ import { WorkflowTransitionEditComponent } from './workflow/transition-edit/tran
 import { WorkflowStateListComponent } from './workflow/state-list/state-list.component';
 import { WorkflowStateAddComponent } from './workflow/state-add/state-add.component';
 import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
-import { GenericOptionService } from 'app/services/admin/generic-option.service';
-import { SeniorityComponent } from './options/seniority';
-import { SkillComponent } from './options/skill';
-import { ProfileComponent } from './options/profile';
 
 @NgModule({
-  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, SkillComponent, ProfileComponent,
+  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent,
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
                  TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent, WorkflowTransitionEditComponent,
                  SectorListComponent, WorkflowListComponent, WorkflowDetailComponent, WorkflowAddComponent, WorkflowTransitionAddComponent, WorkflowTransitionFormComponent,
-                 WorkflowStateListComponent, WorkflowStateAddComponent, WorkflowStateEditComponent, SeniorityComponent],
+                 WorkflowStateListComponent, WorkflowStateAddComponent, WorkflowStateEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
                  SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule, ReactiveFormsModule],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService,
-                 TaskService, AreaService, SectorService, WorkflowService, UtilsService, GenericOptionService],
+                 TaskService, AreaService, SectorService, WorkflowService, UtilsService],
 
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, SettingsComponent]

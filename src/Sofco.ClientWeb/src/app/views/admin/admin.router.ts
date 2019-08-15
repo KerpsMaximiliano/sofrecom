@@ -32,9 +32,6 @@ import { WorkflowTransitionEditComponent } from "./workflow/transition-edit/tran
 import { WorkflowStateListComponent } from "./workflow/state-list/state-list.component";
 import { WorkflowStateAddComponent } from "./workflow/state-add/state-add.component";
 import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
-import { SeniorityComponent } from "./options/seniority";
-import { SkillComponent } from "./options/skill";
-import { ProfileComponent } from "./options/profile";
 
 const ADMIN_ROUTER: Routes = [
     { path: 'roles', children:[
@@ -95,12 +92,6 @@ const ADMIN_ROUTER: Routes = [
       { path: 'settings', children: [
         { path: '', component: SettingsComponent, canActivate: [AuthGuard], data: { module: "PARMS", functionality: "UPDAT" } }
       ]},
-
-      { path: "seniorities", component: SeniorityComponent, canActivate: [AuthGuard]},
-
-      { path: "skills", component: SkillComponent, canActivate: [AuthGuard]},
-      
-      { path: "profiles", component: ProfileComponent, canActivate: [AuthGuard]},
 
       { path: "workflows", children: [
         { path: '', component: WorkflowListComponent, canActivate: [AuthGuard] },
