@@ -1221,5 +1221,11 @@
         "closed": "Cerrado",
         "cdgPending": "Pendiente Control de Gestión",
         "managerPending": "Pendiente Gerente"
+    },
+    "recruitment":{
+        "title": "Reclutamiento",
+        "contacts": {
+            "title": "Contactos"
+        }
     }
 }
