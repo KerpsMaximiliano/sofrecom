@@ -88,6 +88,12 @@ export const ROUTES:Routes = [
     loadChildren: 'app/views/management-report/management-report.module#ManagementReportModule'
   },
 
+  {
+    path: 'recruitment',
+    component: BasicLayoutComponent,
+    loadChildren: 'app/views/recruitment/recruitment.module#RecruitmentModule'
+  },
+
   // Handle all other routes
   { path: '**',  redirectTo: 'inicio' }
 ];
