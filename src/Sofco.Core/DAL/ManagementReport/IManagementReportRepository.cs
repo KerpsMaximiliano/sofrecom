@@ -21,5 +21,8 @@ namespace Sofco.Core.DAL.ManagementReport
         void DeleteBudget(Budget budget);
         List<BudgetType> GetTypesBudget();
         List<CostDetailCategories> GetCategories();
+        bool Exist(int id);
+        void AddComment(ManagementReportComment mrComment);
+        IList<ManagementReportComment> GetComments(int id);
     }
 }

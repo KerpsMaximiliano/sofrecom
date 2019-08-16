@@ -21,5 +21,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response Send(ManagementReportSendModel model);
         Response Close(ManagementReportCloseModel model);
         bool InsertTotalSalaryStaffReport(int managementReportId, decimal salary, System.DateTime monthYear);
+        Response<ManagementReportCommentModel> AddComment(ManagementReportAddCommentModel model);
+        Response<IList<ManagementReportCommentModel>> GetComments(int id);
     }
 }

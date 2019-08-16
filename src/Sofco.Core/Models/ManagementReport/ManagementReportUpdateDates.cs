@@ -25,4 +25,20 @@ namespace Sofco.Core.Models.ManagementReport
 
         public DateTime? Date { get; set; }
     }
+
+    public class ManagementReportAddCommentModel
+    {
+        public int Id { get; set; }
+
+        public string Comment { get; set; }
+    }
+
+    public class ManagementReportCommentModel
+    {
+        public string Comment { get; set; }
+
+        public string UserName { get; set; }
+
+        public DateTime Date { get; set; }
+    }
 }
