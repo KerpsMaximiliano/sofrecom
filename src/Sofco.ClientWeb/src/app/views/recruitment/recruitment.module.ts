@@ -5,15 +5,16 @@ import { AddContactsComponent } from './contacts/add-contacts/add-contacts.compo
 import { DetailContactsComponent } from './contacts/detail-contacts/detail-contacts.component';
 import { RouterModule } from '@angular/router';
 import { RecruitmentRouter } from './recruitment.router';
+import { Select2Module } from 'app/components/select2/select2';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
     ListContactsComponent, AddContactsComponent, DetailContactsComponent
   ],
   imports: [
-    CommonModule,
-    RouterModule,
-    RecruitmentRouter
+    CommonModule, RouterModule, RecruitmentRouter, TranslateModule, Select2Module, NgSelectModule
   ],
   providers: [],
   exports: []

@@ -1,3 +1,99 @@
-<p>
-  list-contacts works!
-</p>
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-12">
+    <h2> {{'rrhh.endNotification.title' | translate }} </h2>
+
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
+      <li>{{'rrhh.title' | translate }}</li>
+      <li class="active"><strong> {{'rrhh.endNotification.title' | translate }}</strong></li>
+    </ol>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h5 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()"
+            style="display: block">
+            <span>{{'ACTIONS.search' | translate }}</span>
+            <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+          </a>
+        </h5>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label">{{'allocationManagement.resources.grid.name' | translate }}</label>
+                <input (keydown)="onKeydown($event)" class="form-control"
+                  placeholder="{{'allocationManagement.resources.grid.name' | translate }}" type="text"
+                  [(ngModel)]="searchModel.name">
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label">{{'allocationManagement.resources.dateTo' | translate }}</label>
+                <!-- <ng-select [items]="knowledge" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.applicantId"></ng-select> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label">{{ 'billing.solfac.userApplicant' | translate }}</label>
+                <!-- <ng-select [items]="applicants" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.applicantId"></ng-select> -->
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label">{{ 'allocationManagement.allocation.resources' | translate }}</label>
+                <!-- <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.employeeId"></ng-select> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="text-right">
+            <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i
+                class="fa fa-refresh"></i></button>
+            <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i
+                class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ibox" *ngIf="gridIsVisible">
+    <div class="ibox-content">
+      <div class="table-responsive">
+        <table class="table table-striped dataTable" role="grid" id="searchTable">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="column-sm">{{'rrhh.endNotification.employeeNumber' | translate }}</th>
+              <th class="column-md">{{'rrhh.endNotification.employeeName' | translate }}</th>
+              <th class="column-md">{{'rrhh.endNotification.applicantName' | translate }}</th>
+              <th class="column-xs">{{'rrhh.endNotification.endDate' | translate }}</th>
+              <th class="column-xs">{{'rrhh.endNotification.createdDate' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data">
+              <td>{{ item.id }}</td>
+              <td class="column-sm">{{ item.employeeNumber }}</td>
+              <td class="column-md">{{ item.employeeName }}</td>
+              <td class="column-md">{{ item.applicantName }}</td>
+              <td class="column-xs">{{ item.endDate | date:'dd/MM/yyyy' }}</td>
+              <td class="column-xs">{{ item.createdDate | date:'dd/MM/yyyy' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
