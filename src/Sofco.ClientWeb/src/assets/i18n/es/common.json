@@ -23,5 +23,8 @@
     "searchNotFound": "No se han encontrado resultados con los parámetros especificados",
     "searchEmpty": "No se han encontrado resultados",
     "fileMustReupload": "Las credenciales expiraron y fueron regeneradas. Por favor, es necesario volver a cargar los archivos.",
+    "optionNotFound": "Dato no encontrado",
+    "deleteSuccess": "Datos eliminados exitosamente",
+    "textRequired": "La descripción es requerida",
     "saveSuccess": "Datos actualizados exitosamente"
 }

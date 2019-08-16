@@ -123,6 +123,9 @@
   <data name="CurrencyRequired" xml:space="preserve">
     <value>common.currencyRequired</value>
   </data>
+  <data name="DeleteSuccess" xml:space="preserve">
+    <value>common.deleteSuccess</value>
+  </data>
   <data name="ErrorSave" xml:space="preserve">
     <value>common.errorSave</value>
   </data>
@@ -150,6 +153,9 @@
   <data name="MailSent" xml:space="preserve">
     <value>common.mailSent</value>
   </data>
+  <data name="OptionNotFound" xml:space="preserve">
+    <value>common.optionNotFound</value>
+  </data>
   <data name="SaveFileError" xml:space="preserve">
     <value>common.saveFileError</value>
   </data>
@@ -161,6 +167,9 @@
   </data>
   <data name="SearchNotFound" xml:space="preserve">
     <value>common.searchNotFound</value>
+  </data>
+  <data name="TextRequired" xml:space="preserve">
+    <value>common.textRequired</value>
   </data>
   <data name="UpdateSuccess" xml:space="preserve">
     <value>common.updateSuccess</value>
