@@ -60,9 +60,11 @@ namespace Sofco.DAL.Repositories.Common
 
         public List<UserApproverEmployee> GetByAllocationAnalytics(List<int> analyticIds, int approvalId, UserApproverType type)
         {
+            var date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
             Expression<Func<Employee, bool>> where = e => e.EndDate == null 
                 && e.Allocations.Any(x => analyticIds.Contains(x.AnalyticId)
-                && x.StartDate >= DateTime.UtcNow
+                && x.StartDate >= date.Date
                 && x.Percentage > 0);
 
             var result = context
@@ -87,6 +89,8 @@ namespace Sofco.DAL.Repositories.Common
 
         public List<UserApproverEmployee> GetByAllocationManagersBySectors(List<int> sectorIds, UserApproverType type)
         {
+            var date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
             var managerIds = context.Analytics.Where(s => sectorIds.Contains(s.SectorId) && s.ManagerId.HasValue)
                 .Select(s => s.ManagerId)
                 .Distinct()
@@ -96,7 +100,7 @@ namespace Sofco.DAL.Repositories.Common
 
             Expression<Func<Employee, bool>> where = e => e.EndDate == null
                 && userEmails.Contains(e.Email)
-                && e.Allocations.Any(x => x.StartDate >= DateTime.UtcNow && x.Percentage > 0);
+                && e.Allocations.Any(x => x.StartDate >= date.Date && x.Percentage > 0);
 
             var result = context
                 .Employees
@@ -114,11 +118,13 @@ namespace Sofco.DAL.Repositories.Common
 
         public UserApproverEmployee Translate(Employee employee, IEnumerable<UserApprover> userApprovers)
         {
-            var allocation = employee.Allocations.FirstOrDefault(s => s.StartDate >= DateTime.UtcNow);
+            var date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
+            var allocation = employee.Allocations.FirstOrDefault(s => s.StartDate >= date.Date);
             if (parameter.AnalyticId > 0)
             {
                 allocation = employee.Allocations.FirstOrDefault(s =>
-                    s.AnalyticId == parameter.AnalyticId && s.StartDate >= DateTime.UtcNow);
+                    s.AnalyticId == parameter.AnalyticId && s.StartDate >= date.Date);
             }
 
             var analyticId = parameter.AnalyticId > 0 ? parameter.AnalyticId : allocation?.AnalyticId;
