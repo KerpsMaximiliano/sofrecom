@@ -21,6 +21,8 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public ICollection<ManagementReportBilling> Billings { get; set; }
 
-        public IList<Budget> Budgets { get; set; }
+        public IList<Budget> Budgets { get; set; } 
+
+        public IList<ManagementReportComment> Comments { get; set; } 
     }
 }

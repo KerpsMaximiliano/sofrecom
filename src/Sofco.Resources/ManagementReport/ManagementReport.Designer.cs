@@ -160,6 +160,24 @@ namespace Sofco.Resources.ManagementReport {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.commentAdded.
+        /// </summary>
+        public static string CommentAdded {
+            get {
+                return ResourceManager.GetString("CommentAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/managementReport.commentRequired.
+        /// </summary>
+        public static string CommentRequired {
+            get {
+                return ResourceManager.GetString("CommentRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a managementReport/managementReport.dateRequired.
         /// </summary>
         public static string DateRequired {

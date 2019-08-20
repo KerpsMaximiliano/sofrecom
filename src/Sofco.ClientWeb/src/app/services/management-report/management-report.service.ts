@@ -84,4 +84,12 @@ export class ManagementReportService {
   close(model){
     return this.http.put<any>(`${this.baseUrl}/managementReport/close`, model);
   }
+
+  addComment(model){
+    return this.http.post<any>(`${this.baseUrl}/managementReport/comments`, model);
+  }
+
+  getComments(id){
+    return this.http.get<any>(`${this.baseUrl}/managementReport/${id}/comments`);
+  }
 }

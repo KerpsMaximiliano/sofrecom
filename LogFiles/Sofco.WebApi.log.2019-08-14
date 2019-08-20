@@ -1,0 +1,30 @@
+﻿ 2019-08-14 10:15:35,405 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 93
+ 2019-08-14 10:26:07,957 ERROR Sofco.Service.Implementations.ManagementReport.ManagementReportService Sequence contains more than one matching element
+System.InvalidOperationException: Sequence contains more than one matching element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at Sofco.Service.Implementations.ManagementReport.ManagementReportService.GetCostDetail(String serviceId) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\ManagementReport\ManagementReportService.cs:line 372
+ 2019-08-14 10:33:07,866 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Sequence contains more than one matching element
+System.InvalidOperationException: Sequence contains more than one matching element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source, Func`2 predicate)
+   at Sofco.Service.Implementations.ManagementReport.ManagementReportService.GetBilling(String serviceId) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\ManagementReport\ManagementReportService.cs:line 182
+   at Sofco.WebApi.Controllers.ManagementReport.ManagementReportController.GetBilling(String serviceId) in C:\Proyectos\GAPS\src\Sofco.WebApi\Controllers\ManagementReport\ManagementReportController.cs:line 31
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Proyectos\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ 2019-08-14 15:58:17,367 ERROR Sofco.Service.Implementations.Workflow.WorkflowService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Framework.Workflow.OnSuccess.UpdateCurrencyExchangeProcess.Process(WorkflowEntity entity, WorkflowChangeStatusParameters parameters) in C:\Proyectos\GAPS\src\Sofco.Framework\Workflow\OnSuccess\UpdateCurrencyExchangeProcess.cs:line 26
+   at Sofco.Service.Implementations.Workflow.WorkflowService.DoTransition[TEntity,THistory](WorkflowChangeStatusParameters parameters, Response`1 response) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Workflow\WorkflowService.cs:line 198

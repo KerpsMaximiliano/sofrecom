@@ -70,6 +70,9 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<CostDetailStaff>().HasOne(x => x.CostDetailSubcategory).WithMany(x => x.CostDetailStaff).HasForeignKey(x => x.CostDetailSubcategoryId);
             builder.Entity<CostDetailStaff>().HasOne(x => x.BudgetType).WithMany(x => x.CostDetailStaff).HasForeignKey(x => x.BudgetTypeId);
 
+            builder.Entity<ManagementReportComment>().HasKey(x => x.Id);
+            builder.Entity<ManagementReportComment>().Property(x => x.Comment).HasMaxLength(2000);
+            builder.Entity<ManagementReportComment>().HasOne(x => x.ManagementReport).WithMany(x => x.Comments).HasForeignKey(x => x.ManagementReportId);
         }
     }
 }

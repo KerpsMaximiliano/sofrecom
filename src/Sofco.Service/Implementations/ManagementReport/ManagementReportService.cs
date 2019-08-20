@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Common;
 using Sofco.Core.Models.ManagementReport;
@@ -16,13 +18,11 @@ using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
+using Sofco.Framework.MailData;
+using Sofco.Resources.Mails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sofco.Core.Config;
-using Sofco.Core.Mail;
-using Sofco.Framework.MailData;
-using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -1547,6 +1547,72 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
 
             return result;
+        }
+
+        public Response<ManagementReportCommentModel> AddComment(ManagementReportAddCommentModel model)
+        {
+            var response = new Response<ManagementReportCommentModel>();
+
+            if (!unitOfWork.ManagementReportRepository.Exist(model.Id))
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
+                return response;
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Comment))
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.CommentRequired);
+                return response;
+            }
+
+            try
+            {
+                var mrComment = new ManagementReportComment();
+                mrComment.Comment = model.Comment;
+                mrComment.ManagementReportId = model.Id;
+                mrComment.CreatedDate = DateTime.UtcNow;
+                mrComment.UserName = userData.GetCurrentUser().UserName;
+
+                unitOfWork.ManagementReportRepository.AddComment(mrComment);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReport.CommentAdded);
+
+                response.Data = new ManagementReportCommentModel
+                {
+                    Comment = mrComment.Comment,
+                    Date = mrComment.CreatedDate.AddHours(-3),
+                    UserName = mrComment.UserName
+                };
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<ManagementReportCommentModel>> GetComments(int id)
+        {
+            var response = new Response<IList<ManagementReportCommentModel>> { Data = new List<ManagementReportCommentModel>() };
+
+            var comments = unitOfWork.ManagementReportRepository.GetComments(id);
+
+            if (comments.Any())
+            {
+                response.Data = comments.Select(x => new ManagementReportCommentModel
+                {
+                    Comment = x.Comment,
+                    Date = x.CreatedDate.AddHours(-3),
+                    UserName = x.UserName
+                })
+                .OrderBy(x => x.Date)
+                .ToList();
+            }
+
+            return response;
         }
     }
 }

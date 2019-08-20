@@ -131,5 +131,21 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpPost("comments")]
+        public IActionResult AddComment([FromBody] ManagementReportAddCommentModel model)
+        {
+            var response = managementReportService.AddComment(model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/comments")]
+        public IActionResult GetComments(int id)
+        {
+            var response = managementReportService.GetComments(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }
