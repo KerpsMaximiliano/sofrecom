@@ -407,8 +407,13 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     openBudgetHistory(){
         this.budgetHistoryModal.show();    
 
-        this.dataTableService.destroy("#budgetTable");
-        this.dataTableService.initialize({ selector: "#budgetTable" })
+        var params = {
+            selector: '#budgetTable',
+            columnDefs: [ {"aTargets": [3], "sType": "date-uk"} ]
+          }
+
+        this.dataTableService.destroy(params.selector);
+        this.dataTableService.initialize(params)
     }
 
     saveBudget(){
