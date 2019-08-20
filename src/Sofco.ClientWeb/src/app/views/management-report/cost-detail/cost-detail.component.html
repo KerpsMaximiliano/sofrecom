@@ -58,7 +58,10 @@
                     </td>
                 </tr>
                 <tr class="warning" *ngFor="let profile of costProfiles">
-                    <th class="static first-column" scope="col">{{ profile.display }}</th>
+                    <th class="static first-column" scope="col">
+                        <p>{{ profile.display }}</p>
+                        <i class="fa fa-2x fa-trash"></i>
+                    </th>
                     <td *ngFor="let monthCost of profile.monthsCost | fromDateFilter: fromMonth; let i = index; first as isFirst"
                         [ngClass]="{'first-col': isFirst}">
                         <label class="label" (click)="openEditItemModal(monthCost, profile, i)"
