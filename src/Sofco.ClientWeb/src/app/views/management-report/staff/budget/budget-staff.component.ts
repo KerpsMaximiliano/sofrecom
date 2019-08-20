@@ -21,6 +21,14 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     getCostSubscrip: Subscription;
     updateCostSubscrip: Subscription;
 
+    showColumn = {
+        budget: true,
+        pfa1: false,
+        pfa2: false,
+        real: false
+    }
+    dateSelected: Date
+
     model: any
     managementReportId: string;
     months: any[] = new Array()
@@ -87,6 +95,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
             this.subCategoriesFiltered = this.subCategories
 
+            this.selectDefaultColumn(this.dateSelected)
             this.calculateTotalCosts()
             this.sendDataToDetailView();
         },
@@ -347,5 +356,85 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         return false;
     }
+
+    isFirstColumn(column, index) {
+        var isFirst = false
+
+        if (index == 0) {
+            switch (column) {
+                case "budget":
+                    if (this.showColumn.budget) {
+                        isFirst = true
+                    }
+                    break;
+                case "pfa1":
+                    if (!this.showColumn.budget) {
+                        isFirst = true
+                    }
+                    break;
+                case "pfa2":
+                    if (!this.showColumn.budget && !this.showColumn.pfa1) {
+                        isFirst = true
+                    }
+                    break;
+                case "real":
+                    if (!this.showColumn.budget && !this.showColumn.pfa1 && !this.showColumn.pfa2) {
+                        isFirst = true
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        return isFirst
+    }
+
+    toggleColumn(column){
+
+        this.showColumn[column] = !this.showColumn[column]
+        if(!this.showColumn.budget && !this.showColumn.pfa1 && !this.showColumn.pfa2 && !this.showColumn.real){
+            this.showColumn[column] = true
+        }
+    }
+
+    selectDefaultColumn(date: Date){
+        
+        this.dateSelected = date
+        var month = this.months.find(x => x.month == (this.dateSelected.getMonth() + 1) && x.year == this.dateSelected.getFullYear());
+
+        if(month){
+            if(month.totalReal > 0){
+                this.showColumn.budget = false
+                this.showColumn.pfa1 = false
+                this.showColumn.pfa2 = false
+                this.showColumn.real = true
+            }
+            else{
+                if(month.totalPfa2 > 0){
+                    this.showColumn.budget = false
+                    this.showColumn.pfa1 = false
+                    this.showColumn.pfa2 = true
+                    this.showColumn.real = false
+                }
+                else{
+                    if(month.totalPfa1 > 0){
+                        this.showColumn.budget = false
+                        this.showColumn.pfa1 = true
+                        this.showColumn.pfa2 = false
+                        this.showColumn.real = false
+                    }
+                    else{
+                        this.showColumn.budget = true
+                        this.showColumn.pfa1 = false
+                        this.showColumn.pfa2 = false
+                        this.showColumn.real = false
+                    }
+                }
+            }
+        }
+    }
+
 
 }

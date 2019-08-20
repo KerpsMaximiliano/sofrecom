@@ -1224,6 +1224,9 @@
     },
     "recruitment":{
         "title": "Reclutamiento",
+        "knowledge": "Conocimientos",
+        "profile": "Perfil",
+        "seniority": "Seniority",
         "contacts": {
             "title": "Contactos"
         }
