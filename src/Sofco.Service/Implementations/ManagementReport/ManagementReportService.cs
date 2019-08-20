@@ -419,7 +419,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             var response = new Response<CostDetailMonthModel> { Data = new CostDetailMonthModel() };
             try
             {
-
                 var analytic = unitOfWork.AnalyticRepository.GetByServiceWithManagementReport(pServiceId);
 
                 if (analytic == null)
@@ -1081,6 +1080,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 monthDetail.OriginalValue = salary;
                                 monthDetail.Charges = charges;
                                 monthDetail.CanViewSensibleData = true;
+
+                                if (salary > 0)
+                                {
+                                    monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                }
                             }
 
                             monthValue.Adjustment = monthValue.Adjustment;
@@ -1104,6 +1108,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         monthDetail.Value = salary;
                                         monthDetail.OriginalValue = salary;
                                         monthDetail.Charges = charges;
+
+                                        if (salary > 0)
+                                        {
+                                            monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                        }
                                     }
                                 }
                             }

@@ -38,6 +38,8 @@ namespace Sofco.Core.Models.ManagementReport
         public bool CanViewSensibleData { get; set; }
 
         public decimal AllocationPercentage { get; set; }
+
+        public decimal ChargesPercentage { get; set; }
     }
     
     public class CostResource

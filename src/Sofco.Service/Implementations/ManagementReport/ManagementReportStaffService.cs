@@ -488,6 +488,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                     item.Salary = salary;
                     item.Charges = charges;
                     item.Total = salary + charges;
+
+                    if (salary > 0)
+                    {
+                        item.ChargesPercentage = (charges / salary) * 100;
+                    }
                 }
                 else
                 {
@@ -497,6 +502,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                     item.Salary = salary;
                     item.Charges = charges;
                     item.Total = salary + charges;
+
+                    if (salary > 0)
+                    {
+                        item.ChargesPercentage = (charges / salary) * 100;
+                    }
                 }
 
                 list.Add(item);
@@ -529,6 +539,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                         item.Salary = salary * (allocation.Percentage / 100);
                         item.Charges = newValueCharges * (allocation.Percentage / 100);
                         item.Total = salary + newValueCharges;
+
+                        if (salary > 0)
+                        {
+                            item.ChargesPercentage = (charges / salary) * 100;
+                        }
                     }
 
                     list.Add(item);
