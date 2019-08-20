@@ -1,11 +1,11 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-12">
-    <h2> {{'rrhh.endNotification.title' | translate }} </h2>
+    <h2> {{'recruitment.contacts.title' | translate }} </h2>
 
     <ol class="breadcrumb">
       <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
-      <li>{{'rrhh.title' | translate }}</li>
-      <li class="active"><strong> {{'rrhh.endNotification.title' | translate }}</strong></li>
+      <li>{{'recruitment.title' | translate }}</li>
+      <li class="active"><strong> {{'recruitment.contacts.title' | translate }}</strong></li>
     </ol>
   </div>
 </div>
@@ -28,15 +28,14 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label">{{'allocationManagement.resources.grid.name' | translate }}</label>
-                <input (keydown)="onKeydown($event)" class="form-control"
-                  placeholder="{{'allocationManagement.resources.grid.name' | translate }}" type="text"
-                  [(ngModel)]="searchModel.name">
+                <input (keydown)="onKeydown($event)" class="form-control" type="text" [(ngModel)]="searchModel.name">
               </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group">
-                <label class="control-label">{{'allocationManagement.resources.dateTo' | translate }}</label>
-                <!-- <ng-select [items]="knowledge" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.applicantId"></ng-select> -->
+                <label class="control-label">{{'recruitment.knowledge' | translate }}</label>
+                <ng-select [items]="knowledges" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.applicantId" [multiple]="true">
+                </ng-select>
               </div>
             </div>
           </div>
@@ -44,14 +43,16 @@
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
-                <label class="control-label">{{ 'billing.solfac.userApplicant' | translate }}</label>
-                <!-- <ng-select [items]="applicants" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.applicantId"></ng-select> -->
+                <label class="control-label">{{ 'recruitment.profile' | translate }}</label>
+                <ng-select [items]="profiles" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.applicantId" [multiple]="true">
+                </ng-select>
               </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group">
-                <label class="control-label">{{ 'allocationManagement.allocation.resources' | translate }}</label>
-                <!-- <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.employeeId"></ng-select> -->
+                <label class="control-label">{{ 'recruitment.seniority' | translate }}</label>
+                <ng-select [items]="seniorities" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.employeeId" [multiple]="true">
+                </ng-select>
               </div>
             </div>
           </div>
@@ -68,7 +69,7 @@
     </div>
   </div>
 
-  <div class="ibox" *ngIf="gridIsVisible">
+  <!-- <div class="ibox" *ngIf="gridIsVisible">
     <div class="ibox-content">
       <div class="table-responsive">
         <table class="table table-striped dataTable" role="grid" id="searchTable">
@@ -95,5 +96,5 @@
         </table>
       </div>
     </div>
-  </div>
+  </div> -->
 </div>
