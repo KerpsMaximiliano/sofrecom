@@ -113,145 +113,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<BudgetItem> AddBudget(int id, BudgetItem model)
-        {
-            var response = new Response<BudgetItem>();
-
-            var managementReport = unitOfWork.ManagementReportRepository.GetStaffById(id);
-
-            if (managementReport == null)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
-                return response;
-            }
-
-            if (!CheckRoles(managementReport.Analytic, null))
-            {
-                response.AddError(Resources.Common.Forbidden);
-                return response;
-            }
-
-            ValidateBudget(model, response);
-            if (response.HasErrors()) return response;
-
-            try
-            {
-                var budget = new Budget
-                {
-                    Value = model.Value,
-                    Description = model.Description,
-                    StartDate = model.StartDate,
-                    ManagementReportId = id
-                };
-
-                unitOfWork.ManagementReportRepository.AddBudget(budget);
-                unitOfWork.Save();
-
-                response.Data = new BudgetItem(budget);
-
-                response.AddSuccess(Resources.ManagementReport.ManagementReport.BudgetAdded);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            return response;
-        }
-
-        public Response<BudgetItem> UpdateBudget(int id, BudgetItem model)
-        {
-            var response = new Response<BudgetItem>();
-
-            var managementReport = unitOfWork.ManagementReportRepository.GetStaffById(id);
-
-            if (managementReport == null)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
-                return response;
-            }
-
-            if (!CheckRoles(managementReport.Analytic, null))
-            {
-                response.AddError(Resources.Common.Forbidden);
-                return response;
-            }
-
-            var budget = unitOfWork.ManagementReportRepository.GetBudget(model.Id);
-
-            if (budget == null)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.BudgetNotFound);
-                return response;
-            }
-
-            ValidateBudget(model, response);
-            if (response.HasErrors()) return response;
-
-            try
-            {
-                budget.Value = model.Value;
-                budget.Description = model.Description;
-
-                unitOfWork.ManagementReportRepository.UpdateBudget(budget);
-                unitOfWork.Save();
-
-                response.Data = new BudgetItem(budget);
-
-                response.AddSuccess(Resources.ManagementReport.ManagementReport.BudgetUpdated);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            return response;
-        }
-
-        public Response DeleteBudget(int id, int budgetId)
-        {
-            var response = new Response();
-
-            var managementReport = unitOfWork.ManagementReportRepository.GetStaffById(id);
-
-            if (managementReport == null)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
-                return response;
-            }
-
-            if (!CheckRoles(managementReport.Analytic, null))
-            {
-                response.AddError(Resources.Common.Forbidden);
-                return response;
-            }
-
-            var budget = unitOfWork.ManagementReportRepository.GetBudget(budgetId);
-
-            if (budget == null)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.BudgetNotFound);
-                return response;
-            }
-
-            try
-            {
-                unitOfWork.ManagementReportRepository.DeleteBudget(budget);
-                unitOfWork.Save();
-
-                response.AddSuccess(Resources.ManagementReport.ManagementReport.BudgetDeleted);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            return response;
-        }
-
         public Response<CostDetailStaffMonthModel> GetCostDetailMonth(int id, int month, int year)
         {
             var response = new Response<CostDetailStaffMonthModel> { Data = new CostDetailStaffMonthModel() };
@@ -901,6 +762,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         ManagementReportId = managementReportId,
                         ModifiedBy = currentUser.UserName,
                         Value = totalBudget,
+                        LastValue = lastBudget,
                         Description = EnumBudgetType.budget
                     };
                     unitOfWork.ManagementReportRepository.AddBudget(budget);
@@ -914,6 +776,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         ManagementReportId = managementReportId,
                         ModifiedBy = currentUser.UserName,
                         Value = totalPFA1,
+                        LastValue = lastPfa1,
                         Description = EnumBudgetType.pfa1
                     };
                     unitOfWork.ManagementReportRepository.AddBudget(pfa1);
@@ -927,11 +790,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                         ManagementReportId = managementReportId,
                         ModifiedBy = currentUser.UserName,
                         Value = totalPFA2,
+                        LastValue = totalPFA2,
                         Description = EnumBudgetType.pfa2
                     };
                     unitOfWork.ManagementReportRepository.AddBudget(pfa2);
                 }
-
             }
             catch (Exception ex)
             {
@@ -939,8 +802,5 @@ namespace Sofco.Service.Implementations.ManagementReport
                 throw ex;
             }
         }
-
-
-
     }
 }

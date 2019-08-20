@@ -12,6 +12,7 @@ import { ManagementReportStaffService } from "app/services/management-report/man
 import { FormControl, Validators } from "@angular/forms";
 import * as moment from 'moment';
 import { UserInfoService } from "app/services/common/user-info.service";
+import { DataTableService } from "app/services/common/datatable.service";
 
 @Component({
     selector: 'management-report-detail-staff',
@@ -84,6 +85,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
 
     constructor(private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
+        private dataTableService: DataTableService,
         private menuService: MenuService,
         private managementReportService: ManagementReportStaffService,
         private datesService: DatesService,
@@ -403,8 +405,10 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     }
 
     openBudgetHistory(){
-
         this.budgetHistoryModal.show();    
+
+        this.dataTableService.destroy("#budgetTable");
+        this.dataTableService.initialize({ selector: "#budgetTable" })
     }
 
     saveBudget(){

@@ -25,30 +25,6 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
-        [HttpPost("{id}/budget")]
-        public IActionResult AddBudget(int id, [FromBody] BudgetItem model)
-        {
-            var response = managementReportStaffService.AddBudget(id, model);
-
-            return this.CreateResponse(response);
-        }
-
-        [HttpPut("{id}/budget")]
-        public IActionResult UpdateBudget(int id, [FromBody] BudgetItem model)
-        {
-            var response = managementReportStaffService.UpdateBudget(id, model);
-
-            return this.CreateResponse(response);
-        }
-
-        [HttpDelete("{id}/budget/{budgetId}")]
-        public IActionResult DeleteBudget(int id, int budgetId)
-        {
-            var response = managementReportStaffService.DeleteBudget(id, budgetId);
-
-            return this.CreateResponse(response);
-        }
-
         [HttpGet("{id}/costDetailMonth/{month}/{year}")]
         public IActionResult GetDetail(int id, int month, int year)
         {
