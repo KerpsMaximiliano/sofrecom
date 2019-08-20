@@ -1116,15 +1116,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthDetail.MonthYear = mounth.MonthYear;
 
                     //Verifico si este mes el recurso se encontro en la analitica
-                    var startDate = new DateTime(mounth.MonthYear.Year, mounth.MonthYear.Month, 1);
-                    var endDate = startDate.AddMonths(1).AddDays(-1);
-
                     if (employee.Allocations != null)
                     {
-                        var alocation = employee.Allocations.Where(x => x.AnalyticId == IdAnalytic && x.StartDate >= startDate.Date && x.StartDate <= endDate.Date && x.Percentage > 0).ToList();
-                        if (alocation.Any())
+                        var alocation = employee.Allocations.FirstOrDefault(x => x.AnalyticId == IdAnalytic && x.StartDate.Date == monthDetail.MonthYear.Date && x.Percentage > 0);
+
+                        if (alocation != null)
                         {
                             monthDetail.HasAlocation = true;
+                            monthDetail.AllocationPercentage = alocation.Percentage;
                         }
                         else
                         {
