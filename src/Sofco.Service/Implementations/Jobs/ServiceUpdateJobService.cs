@@ -62,6 +62,14 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 unitOfWork.ServiceRepository.Update(Translate(crmService, service));
+
+                var analytic = unitOfWork.AnalyticRepository.GetByService(service.CrmId);
+
+                if (analytic != null)
+                {
+                    analytic.EndDateContract = service.EndDate.Date;
+                    unitOfWork.AnalyticRepository.Update(analytic);
+                }
             }
             catch (Exception e)
             {
