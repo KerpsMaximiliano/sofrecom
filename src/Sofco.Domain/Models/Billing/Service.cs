@@ -38,6 +38,8 @@ namespace Sofco.Domain.Models.Billing
 
         public string Analytic { get; set; }
 
+        public string Description { get; set; }
+
         public bool Active { get; set; }
     }
 }

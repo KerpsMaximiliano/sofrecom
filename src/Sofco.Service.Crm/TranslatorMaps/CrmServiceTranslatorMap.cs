@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Sofco.Domain.Crm;
 using Sofco.Service.Crm.TranslatorMaps.Interfaces;
 
@@ -20,6 +18,7 @@ namespace Sofco.Service.Crm.TranslatorMaps
         private const string TechnologyTypeId = "as_technologytype";
         private const string Analytic = "as_analitica";
         private const string StateCode = "statecode";
+        private const string Description = "as_descriptionspanish";
 
         public Dictionary<string, string> KeyMaps()
         {
@@ -42,6 +41,7 @@ namespace Sofco.Service.Crm.TranslatorMaps
                 {nameof(CrmService.TechnologyType), TechnologyTypeId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmService.Analytic), Analytic},
                 {nameof(CrmService.StateCode), StateCode},
+                {nameof(CrmService.Description), Description},
             };
         }
 
@@ -49,8 +49,8 @@ namespace Sofco.Service.Crm.TranslatorMaps
         {
             var list = new List<string>
             {
-                Name, AccountId, IndustryId, StartDate, EndDate, ManagerId,
-                ServiceTypeId, SolutionTypeId, TechnologyTypeId, Analytic, StateCode
+                Name, AccountId, IndustryId, StartDate, EndDate, ManagerId, ServiceTypeId,
+                SolutionTypeId, TechnologyTypeId, Analytic, StateCode, Description
             };
 
             return string.Join(TranslatorMapConstant.SelectDelimiter, list);

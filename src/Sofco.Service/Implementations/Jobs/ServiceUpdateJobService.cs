@@ -17,8 +17,6 @@ namespace Sofco.Service.Implementations.Jobs
         private readonly ICrmServiceService crmServiceService;
         private readonly IMapper mapper;
 
-        //private IList<int> IdsAdded { get; }
-
         public ServiceUpdateJobService(IUnitOfWork unitOfWork,
             IServiceData serviceData,
             ILogMailer<ServiceUpdateJobService> logger, 

@@ -14,6 +14,8 @@ namespace Sofco.Domain.Models.AllocationManagement
     {
         public string Title { get; set; }
 
+        public string Description { get; set; }
+
         public int TitleId { get; set; }
 
         public int CostCenterId { get; set; }

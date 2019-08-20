@@ -44,6 +44,7 @@ namespace Sofco.Framework.Managers
                 AnalyticTitle = analyticTitle,
                 StartDate = analytic.StartDateContract,
                 EndDate = analytic.EndDateContract,
+                Description = analytic.Description,
                 ServiceTypeId = analytic.ServiceTypeId,
                 SoluctionTypeId = analytic.SolutionId,
                 TechnologyTypeId = analytic.TechnologyId

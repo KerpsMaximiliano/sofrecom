@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sofco.Common.Extensions;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
