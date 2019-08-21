@@ -82,6 +82,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
                 this.model.serviceId = this.serviceId = sessionStorage.getItem('serviceId');
                 this.model.service = sessionStorage.getItem('serviceName');
                 this.model.solutionId = service.solutionTypeId;
+                this.model.description = service.description;
                 this.model.technologyId = service.technologyTypeId;
                 this.model.serviceTypeId = service.serviceTypeId;
                 this.model.startDateContract = moment(service.startDate).toDate();
@@ -180,6 +181,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
                 this.model.technologyId = response.data.technologyTypeId;
                 this.model.serviceTypeId = response.data.serviceTypeId;
                 this.model.proposal = response.data.proposals;
+                this.model.description = response.data.description;
                 this.model.startDateContract = moment(response.data.startDate).toDate();
                 this.model.endDateContract = moment(response.data.endDate).toDate();
 

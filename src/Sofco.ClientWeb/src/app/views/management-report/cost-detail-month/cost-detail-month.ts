@@ -30,6 +30,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     totalBillingAux: number;
     provision: number = 0;
     provisionAux: number;
+    totalChargesPercentage: number = 0;
 
     totalProvisionedEditabled: boolean = false;
     totalBillingEditabled: boolean = false;
@@ -261,6 +262,13 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         resource.modified = true
         resource.total = resource.salary + resource.charges;
 
+        if(resource.salary > 0){
+            resource.chargesPercentage = (resource.charges/resource.salary)*100;
+        }
+        else{
+            resource.chargesPercentage = 0;
+        }
+
         this.calculateTotalCosts();
     }
 
@@ -278,6 +286,18 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.contracted.forEach(element => {
             this.totalCosts += element.total;
         });
+
+        var totalCharges = 0;
+        var totalSalary= 0;
+
+        this.resources.forEach(element => {
+            totalCharges += element.charges;
+            totalSalary += element.salary;
+        });
+
+        if(totalSalary > 0){
+            this.totalChargesPercentage = (totalCharges/totalSalary)*100;
+        }
     }
 
     getUsers() {

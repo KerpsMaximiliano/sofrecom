@@ -122,7 +122,7 @@
         </div>
         <div class="ibox-content">
 
-            <div class="row">
+            <div class="row"> 
                 <div class="col-md-5">
                     <div class="month-header">
                         <div class="btn-group">
@@ -137,6 +137,8 @@
                     </div>
                 </div>
                 <div class="col-md-7 action-buttons pull-right">
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdg" (click)="openComments()"> Comentarios <i class="fa fa-edit"></i></button>
+
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg && !readOnly && !isClosed"
                         (click)="close()">Cerrar <i class="fa fa-close"></i></button>
 
@@ -147,7 +149,7 @@
                         <i class="fa fa-paper-plane"></i></button>
 
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdgOrDirector"
-                        (click)="seeCostDetailMonth()">Costo mensual <i class="fa fa-edit"></i></button>
+                        (click)="seeCostDetailMonth()">Detalle Mensual <i class="fa fa-edit"></i></button>
 
                     <button class="btn btn-success btn-sm" type="button" *ngIf="isManager || isCdgOrDirector"
                     (click)="saveBudget()">Guardar <i class="fa fa-save"></i></button>
@@ -199,14 +201,15 @@
 
 </ng2-modal>
 
-<ng2-modal [config]="budgetHistoryModalConfig" #budgetHistoryModal>
+<ng2-modal [config]="budgetHistoryModalConfig" #budgetHistoryModal [size]="'modal-lg'">
 
     <dd *ngIf="model?.budgets && model?.budgets.length > 0">
-        <table class="table table-striped">
+        <table class="table table-striped" id="budgetTable">
             <thead>
                 <tr>
                     <th>Descripción</th>
                     <th>Monto</th>
+                    <th>Monto Anterior</th>
                     <th>Fecha</th>
                     <th>Modifcado por</th>
                 </tr>
@@ -215,6 +218,7 @@
                 <tr *ngFor="let item of model?.budgetsHistory">
                     <td>{{ item.description }}</td>
                     <td>{{ item.value | amountFormat }}</td>
+                    <td>{{ item.lastValue | amountFormat }}</td>
                     <td>{{ item.startDate | date: 'dd/MM/yyyy' }}</td>
                     <td>{{ item.modifiedBy }}</td>
                 </tr>
@@ -222,4 +226,24 @@
         </table>
     </dd>
 
+</ng2-modal>
+
+<ng2-modal [config]="addCommentModalConfig" #addCommentModal (accept)="saveComment()" [isSaveEnabled]="canEdit() && comments && comments != ''">
+
+    <div class="form-group">    
+        <label class="control-label">Comentarios</label>
+        <textarea class="form-control" name="comments" rows="5" [(ngModel)]="comments" maxlength="2000"></textarea>
+    </div>
+
+    <div class="history-comments" *ngFor="let item of allComments">
+        <div class="social-comment">
+            <div class="media-body">
+                <a href="#">{{ item.userName }}</a>
+                <small class="text-muted comment-date">{{ item.date | date:'dd/MM/yyyy' }}</small>
+                <pre>
+                    {{ item.comment }}
+                </pre>
+            </div>
+        </div>
+    </div>
 </ng2-modal>

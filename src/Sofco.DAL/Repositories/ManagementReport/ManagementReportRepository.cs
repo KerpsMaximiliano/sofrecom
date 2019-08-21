@@ -132,5 +132,14 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             return context.ManagementReportComments.Where(x => x.ManagementReportId == id).ToList();
         }
+
+        public Domain.Models.ManagementReport.ManagementReport GetWithCostDetailsAndBillings(int id)
+        {
+            return context.ManagementReports
+                .Include(x => x.CostDetails)
+                .Include(x => x.Analytic)
+                .Include(x => x.Billings)
+                .SingleOrDefault(x => x.Id == id);
+        }
     }
 }

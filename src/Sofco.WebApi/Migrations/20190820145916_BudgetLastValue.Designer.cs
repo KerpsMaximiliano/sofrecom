@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190820145916_BudgetLastValue")]
+    partial class BudgetLastValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -513,9 +515,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("CostCenterId");
 
                     b.Property<DateTime>("CreationDate");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000);
 
                     b.Property<DateTime>("EndDateContract");
 
@@ -1449,8 +1448,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("CrmId")
                         .HasMaxLength(200);
-
-                    b.Property<string>("Description");
 
                     b.Property<DateTime>("EndDate");
 

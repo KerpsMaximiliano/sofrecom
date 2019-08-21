@@ -61,6 +61,7 @@ export class Ng2ModalComponent implements OnInit {
   hide(){
     this.resetButtons();
     $('#' + this.config.id).modal('toggle');
+    $('body').css('padding-right', '0px')
   }
 
   resetButtons(){

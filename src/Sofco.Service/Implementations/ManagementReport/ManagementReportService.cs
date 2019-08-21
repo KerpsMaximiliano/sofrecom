@@ -419,7 +419,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             var response = new Response<CostDetailMonthModel> { Data = new CostDetailMonthModel() };
             try
             {
-
                 var analytic = unitOfWork.AnalyticRepository.GetByServiceWithManagementReport(pServiceId);
 
                 if (analytic == null)
@@ -895,7 +894,7 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             var response = new Response();
 
-            var managementReport = unitOfWork.ManagementReportRepository.Get(id);
+            var managementReport = unitOfWork.ManagementReportRepository.GetWithCostDetailsAndBillings(id);
 
             if (managementReport == null)
             {
@@ -906,18 +905,62 @@ namespace Sofco.Service.Implementations.ManagementReport
             if (!model.StartDate.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.StartDateRequired);
             if (!model.EndDate.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.EndDateRequired);
 
-            if (model.StartDate.GetValueOrDefault().Date > model.EndDate.GetValueOrDefault().Date)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.StartDateGreaterThanEndDate);
-                return response;
-            }
-
             if (response.HasErrors()) return response;
 
             try
             {
                 managementReport.StartDate = model.StartDate.GetValueOrDefault().Date;
                 managementReport.EndDate = model.EndDate.GetValueOrDefault().Date;
+
+                for (var date = new DateTime(managementReport.StartDate.Year, managementReport.StartDate.Month, 1).Date;
+                    date.Date <= managementReport.EndDate.Date;
+                    date = date.AddMonths(1))
+                {
+                    if (managementReport.CostDetails != null)
+                    {
+                        if (managementReport.CostDetails.All(x => x.MonthYear.Date != date.Date))
+                        {
+                            managementReport.CostDetails.Add(new CostDetail
+                            {
+                                ManagementReportId = managementReport.Id,
+                                MonthYear = date.Date
+                            });
+                        }
+                    }
+                    else
+                    {
+                        managementReport.CostDetails = new List<CostDetail>();
+                        managementReport.CostDetails.Add(new CostDetail
+                        {
+                            ManagementReportId = managementReport.Id,
+                            MonthYear = date.Date
+                        });
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(managementReport.Analytic.AccountId))
+                    {
+                        if (managementReport.Billings != null)
+                        {
+                            if (managementReport.Billings.All(x => x.MonthYear.Date != date.Date))
+                            {
+                                managementReport.Billings.Add(new ManagementReportBilling
+                                {
+                                    ManagementReportId = managementReport.Id,
+                                    MonthYear = date.Date
+                                });
+                            }
+                        }
+                        else
+                        {
+                            managementReport.Billings = new List<ManagementReportBilling>();
+                            managementReport.Billings.Add(new ManagementReportBilling
+                            {
+                                ManagementReportId = managementReport.Id,
+                                MonthYear = date.Date
+                            });
+                        }
+                    }
+                }
 
                 unitOfWork.ManagementReportRepository.Update(managementReport);
                 unitOfWork.Save();
@@ -1081,6 +1124,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 monthDetail.OriginalValue = salary;
                                 monthDetail.Charges = charges;
                                 monthDetail.CanViewSensibleData = true;
+
+                                if (salary > 0)
+                                {
+                                    monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                }
                             }
 
                             monthValue.Adjustment = monthValue.Adjustment;
@@ -1104,6 +1152,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         monthDetail.Value = salary;
                                         monthDetail.OriginalValue = salary;
                                         monthDetail.Charges = charges;
+
+                                        if (salary > 0)
+                                        {
+                                            monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                        }
                                     }
                                 }
                             }
@@ -1116,15 +1169,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthDetail.MonthYear = mounth.MonthYear;
 
                     //Verifico si este mes el recurso se encontro en la analitica
-                    var startDate = new DateTime(mounth.MonthYear.Year, mounth.MonthYear.Month, 1);
-                    var endDate = startDate.AddMonths(1).AddDays(-1);
-
                     if (employee.Allocations != null)
                     {
-                        var alocation = employee.Allocations.Where(x => x.AnalyticId == IdAnalytic && x.StartDate >= startDate.Date && x.StartDate <= endDate.Date && x.Percentage > 0).ToList();
-                        if (alocation.Any())
+                        var alocation = employee.Allocations.FirstOrDefault(x => x.AnalyticId == IdAnalytic && x.StartDate.Date == monthDetail.MonthYear.Date && x.Percentage > 0);
+
+                        if (alocation != null)
                         {
                             monthDetail.HasAlocation = true;
+                            monthDetail.AllocationPercentage = alocation.Percentage;
                         }
                         else
                         {
@@ -1608,7 +1660,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     Date = x.CreatedDate.AddHours(-3),
                     UserName = x.UserName
                 })
-                .OrderBy(x => x.Date)
+                .OrderByDescending(x => x.Date)
                 .ToList();
             }
 

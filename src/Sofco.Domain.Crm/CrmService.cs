@@ -37,5 +37,7 @@ namespace Sofco.Domain.Crm
         public string Analytic { get; set; }
 
         public int StateCode { get; set; }
+
+        public string Description { get; set; }
     }
 }

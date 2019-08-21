@@ -49,9 +49,12 @@ namespace Sofco.Core.Models.ManagementReport
             Id = domain.Id;
             Description = domain.Description;
             Value = domain.Value;
+            LastValue = domain.LastValue;
             StartDate = domain.StartDate;
             ModifiedBy = domain.ModifiedBy;
         }
+
+        public decimal LastValue { get; set; }
 
         public int Id { get; set; }
 
