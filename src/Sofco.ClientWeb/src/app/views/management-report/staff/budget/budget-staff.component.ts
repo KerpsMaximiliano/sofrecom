@@ -110,7 +110,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         this.categorySelected = category
         this.monthSelected = month;
-        debugger
+        
         this.typeBudgetSelected = this.budgetTypes.find(x => x.name.toUpperCase() == typeBudget.toUpperCase())
 
         this.subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
@@ -142,7 +142,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         let isCdg = this.menuService.userIsCdg
         this.readOnly = true
-        debugger
+        
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
                 if (this.monthSelected.totalPfa1 > 0) {
