@@ -21,15 +21,24 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
     updateSubscrip: Subscription;
     closeSubscrip: Subscription;
 
-    public yearId: number;
-    public monthId: number;
-    public isClosed: boolean = false;
+    yearId: number;
+    monthId: number;
+    isClosed: boolean = false;
+    gridVisible: boolean = false;
 
-    public years: any[] = new Array();
-    public months: any[] = new Array();
-    public data: any[] = new Array();
-    public totals: any[] = new Array();
-    public provisioneds: any[] = new Array();
+    years: any[] = new Array();
+    months: any[] = new Array();
+    data: any[] = new Array();
+    allData: any[] = new Array();
+    totals: any[] = new Array();
+    provisioneds: any[] = new Array();
+    resources: any[] = new Array();
+    states: any[] = new Array();
+    prepaids: any[] = new Array();
+
+    prepaidSelected: string;
+    stateSelected: string;
+    resourceSelected: string;
 
     constructor(private utilsService: UtilsService,
                 private i18nService: I18nService,
@@ -60,19 +69,54 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
     }
 
     search(){
-        this.data = [];
-
         if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0) return;
 
         this.messageService.showLoading();
+
+        this.allData = [];
+        this.data = [];
+        this.prepaids = [];
+        this.states = [];
+        this.resources = [];
+
+        this.gridVisible = false;
 
         this.getDataSubscrip = this.prepaidService.get(this.yearId, this.monthId).subscribe(response => {
             this.messageService.closeLoading();
 
             if(response && response.data && response.data.items.length > 0){
-                this.data = response.data.items.map(item => {
+                this.gridVisible = true;
+
+                this.allData = response.data.items.map(item => {
                     item.selected = false;
+
+                    if(!this.prepaids.includes(item.prepaid.text)){
+                        this.prepaids.push(item.prepaid.text);
+                    }
+
+                    if(!this.states.includes(item.status)){
+                        this.states.push(item.status);
+                    }
+
+                    if(item && item != null && !this.resources.includes(`${item.employeeNumber} - ${item.employeeName}`)){
+                        this.resources.push(`${item.employeeNumber} - ${item.employeeName}`);
+                    }
+
                     return item;
+                });
+
+                this.data = this.allData;
+
+                this.prepaids = this.prepaids.map(item => {
+                    return { id: item, text: item };
+                });
+
+                this.states = this.states.map(item => {
+                    return { id: item, text: this.getStatusDesc(item) };
+                });
+
+                this.resources = this.resources.map(item => {
+                    return { id: item, text: item };
                 });
 
                 this.isClosed = response.data.isClosed;
@@ -91,7 +135,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13];
+        var columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
         var title = "informacion-prepaga";
 
         var options = { 
@@ -99,7 +143,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
             columns: columns, 
             title: title,
             withExport: true,
-            columnDefs: [ {"aTargets": [2], "sType": "date-uk"} ],
+            columnDefs: [ {"aTargets": [5], "sType": "date-uk"} ],
         };
 
         this.datatableService.destroy(options.selector); 
@@ -273,5 +317,30 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
             this.initProvisionedGrid();
         }, 
         error => this.messageService.closeLoading());
+    }
+
+    filter(){
+        var itemsFiltered = [];
+
+        this.allData.forEach((item, index) => {
+            var addItem = true;
+
+            if(this.stateSelected && item.state != this.stateSelected){
+                addItem = false;
+            }
+
+            if(this.prepaidSelected && item.prepaid.text != this.prepaidSelected){
+                addItem = false;
+            }
+
+            if(this.resourceSelected && `${item.employeeNumber} - ${item.employeeName}` != this.resourceSelected){
+                addItem = false;
+            }
+
+            if(addItem) itemsFiltered.push(item);
+        });
+
+        this.data = itemsFiltered;
+        this.initGrid();
     }
 }
