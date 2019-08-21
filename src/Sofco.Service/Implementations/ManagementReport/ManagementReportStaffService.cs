@@ -575,6 +575,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthDetail.SubcategoriesPfa1 = new List<CostSubcategory>();
                     monthDetail.SubcategoriesPfa2 = new List<CostSubcategory>();
                     monthDetail.SubcategoriesReal = new List<CostSubcategory>();
+                    monthDetail.SubcategoriesProjected = new List<CostSubcategory>();
 
                     monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
@@ -615,6 +616,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                                     case EnumBudgetType.Real:
                                         monthDetail.SubcategoriesReal.Add(detailSubcategory);
                                         break;
+                                    case EnumBudgetType.Projected:
+                                        monthDetail.SubcategoriesProjected.Add(detailSubcategory);
+                                        break;
                                 }
                             }
 
@@ -622,6 +626,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthDetail.TotalPfa1 = monthDetail.SubcategoriesPfa1.Sum(x => x.Value) ?? 0;
                             monthDetail.TotalPfa2 = monthDetail.SubcategoriesPfa2.Sum(x => x.Value) ?? 0;
                             monthDetail.TotalReal = monthDetail.SubcategoriesReal.Sum(x => x.Value) ?? 0;
+                            monthDetail.TotalProjected = monthDetail.SubcategoriesProjected.Sum(x => x.Value) ?? 0;
                         }
                     }
 
