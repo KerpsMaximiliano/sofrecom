@@ -262,6 +262,13 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         resource.modified = true
         resource.total = resource.salary + resource.charges;
 
+        if(resource.salary > 0){
+            resource.chargesPercentage = (resource.charges/resource.salary)*100;
+        }
+        else{
+            resource.chargesPercentage = 0;
+        }
+
         this.calculateTotalCosts();
     }
 

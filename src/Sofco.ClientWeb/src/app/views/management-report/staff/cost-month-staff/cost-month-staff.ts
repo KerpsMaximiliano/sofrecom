@@ -160,6 +160,13 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         resource.modified = true
         resource.total = resource.salary + resource.charges;
 
+        if(resource.salary > 0){
+            resource.chargesPercentage = (resource.charges/resource.salary)*100;
+        }
+        else{
+            resource.chargesPercentage = 0;
+        }
+
         this.calculateTotalCosts();
     }
 
@@ -187,7 +194,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.getEmployeesSubscrip = this.employeeService.getListItems().subscribe(data => {
             this.users = data;
         },
-            () => { });
+        () => { });
     }
 
     addEmployee() {
@@ -202,6 +209,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
                     name: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
                     salary: 0,
                     charges: 0,
+                    chargesPercentage: 0,
                     total: 0,
                     hasAlocation: false,
                     new: true
