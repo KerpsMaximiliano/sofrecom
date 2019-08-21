@@ -225,9 +225,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.ReportEndDateError = false
         
         const dateReportStart = new Date(new Date(this.ReportStartDate).getFullYear(), new Date(this.ReportStartDate).getMonth(), 1)
-        const dateReportEnd = new Date(new Date(this.ReportEndDate).getFullYear(), new Date(this.ReportEndDate).getMonth(), 1)
         const dateAnalyticStart = new Date(new Date(this.model.startDate).getFullYear(), new Date(this.model.startDate).getMonth(), 1)
-        const dateAnalyticEnd = new Date(new Date(this.model.endDate).getFullYear(), new Date(this.model.endDate).getMonth(), 1)
 
         if (dateReportStart < dateAnalyticStart) {
             this.ReportStartDateError = true
@@ -236,15 +234,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         }
         else{
             this.ReportStartDateError = false
-        }
-
-        if (dateReportEnd > dateAnalyticEnd) {
-            this.ReportEndDateError = true
-            this.editDateModal.resetButtons()
-            this.messageService.showError("managementReport.endDateOutOfRange")
-        }
-        else{
-            this.ReportEndDateError = false
         }
 
         if (this.ReportStartDateError == false && this.ReportEndDateError == false) {
@@ -469,7 +458,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.getDetailSubscrip = this.managementReportService.addComment(json).subscribe(response => {
             this.addCommentModal.hide();
 
-            this.allComments.push(response.data);
+            this.allComments.unshift(response.data);
             this.comments = "";
         },
         error => this.addCommentModal.hide());

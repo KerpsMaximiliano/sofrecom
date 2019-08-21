@@ -383,6 +383,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 if (string.IsNullOrWhiteSpace(analytic.ServiceId))
                 {
                     analytic.ManagementReport.Budgets = new List<Budget>();
+                    analytic.ManagementReport.CostDetails = new List<CostDetail>();
+
+                    for (var date = new DateTime(analytic.StartDateContract.Year, analytic.StartDateContract.Month, 1).Date;
+                        date.Date <= analytic.EndDateContract.Date;
+                        date = date.AddMonths(1))
+                    {
+                        analytic.ManagementReport.CostDetails.Add(new CostDetail
+                        {
+                            ManagementReport = analytic.ManagementReport,
+                            MonthYear = date.Date
+                        });
+                    }
                 }
                 else
                 {

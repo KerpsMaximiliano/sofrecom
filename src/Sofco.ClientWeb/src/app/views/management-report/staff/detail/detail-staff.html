@@ -122,7 +122,7 @@
         </div>
         <div class="ibox-content">
 
-            <div class="row">
+            <div class="row"> 
                 <div class="col-md-5">
                     <div class="month-header">
                         <div class="btn-group">
@@ -137,6 +137,8 @@
                     </div>
                 </div>
                 <div class="col-md-7 action-buttons pull-right">
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdg" (click)="openComments()"> Comentarios <i class="fa fa-edit"></i></button>
+
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg && !readOnly && !isClosed"
                         (click)="close()">Cerrar <i class="fa fa-close"></i></button>
 
@@ -224,4 +226,24 @@
         </table>
     </dd>
 
+</ng2-modal>
+
+<ng2-modal [config]="addCommentModalConfig" #addCommentModal (accept)="saveComment()" [isSaveEnabled]="canEdit() && comments && comments != ''">
+
+    <div class="form-group">    
+        <label class="control-label">Comentarios</label>
+        <textarea class="form-control" name="comments" rows="5" [(ngModel)]="comments" maxlength="2000"></textarea>
+    </div>
+
+    <div class="history-comments" *ngFor="let item of allComments">
+        <div class="social-comment">
+            <div class="media-body">
+                <a href="#">{{ item.userName }}</a>
+                <small class="text-muted comment-date">{{ item.date | date:'dd/MM/yyyy' }}</small>
+                <pre>
+                    {{ item.comment }}
+                </pre>
+            </div>
+        </div>
+    </div>
 </ng2-modal>

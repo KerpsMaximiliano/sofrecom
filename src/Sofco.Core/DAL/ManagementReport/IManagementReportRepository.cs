@@ -24,5 +24,6 @@ namespace Sofco.Core.DAL.ManagementReport
         bool Exist(int id);
         void AddComment(ManagementReportComment mrComment);
         IList<ManagementReportComment> GetComments(int id);
+        Domain.Models.ManagementReport.ManagementReport GetWithCostDetailsAndBillings(int id);
     }
 }

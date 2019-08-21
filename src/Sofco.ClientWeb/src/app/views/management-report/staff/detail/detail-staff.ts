@@ -13,6 +13,7 @@ import { FormControl, Validators } from "@angular/forms";
 import * as moment from 'moment';
 import { UserInfoService } from "app/services/common/user-info.service";
 import { DataTableService } from "app/services/common/datatable.service";
+import { ManagementReportService } from "app/services/management-report/management-report.service";
 
 @Component({
     selector: 'management-report-detail-staff',
@@ -38,6 +39,18 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     public selectedYear: number;
     public selectedMonthDesc: string;
 
+    comments: string;
+    allComments: any[] = new Array();
+
+    public addCommentModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Agregar comentario",
+        "addCommentModal",
+        true,
+        true,
+        "ACTIONS.ADD",
+        "ACTIONS.cancel"
+    );
+
     ReportStartDate: Date;
     ReportEndDate: Date;
     ReportStartDateError: boolean = false;
@@ -53,6 +66,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     @ViewChild('costDetailMonth') costDetailMonth;
     @ViewChild("budget") budgetView;
     @ViewChild("tracing") tracingView;
+    @ViewChild('addCommentModal') addCommentModal;
 
     public editDateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Editar Fechas",
@@ -88,6 +102,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         private dataTableService: DataTableService,
         private menuService: MenuService,
         private managementReportService: ManagementReportStaffService,
+        private mrService: ManagementReportService,
         private datesService: DatesService,
         private i18nService: I18nService,
         private router: Router) { }
@@ -125,6 +140,8 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
 
         this.getDetailSubscrip = this.managementReportService.getDetail(this.ManagementReportId).subscribe(response => {
             this.messageService.closeLoading();
+
+            this.getComment();
 
             this.model = response.data;
 
@@ -206,9 +223,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.ReportEndDateError = false
         
         const dateReportStart = new Date(new Date(this.ReportStartDate).getFullYear(), new Date(this.ReportStartDate).getMonth(), 1)
-        const dateReportEnd = new Date(new Date(this.ReportEndDate).getFullYear(), new Date(this.ReportEndDate).getMonth(), 1)
         const dateAnalyticStart = new Date(new Date(this.model.startDate).getFullYear(), new Date(this.model.startDate).getMonth(), 1)
-        const dateAnalyticEnd = new Date(new Date(this.model.endDate).getFullYear(), new Date(this.model.endDate).getMonth(), 1)
 
         if (dateReportStart < dateAnalyticStart) {
             this.ReportStartDateError = true
@@ -217,15 +232,6 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         }
         else{
             this.ReportStartDateError = false
-        }
-
-        if (dateReportEnd > dateAnalyticEnd) {
-            this.ReportEndDateError = true
-            this.editDateModal.resetButtons()
-            this.messageService.showError("managementReport.endDateOutOfRange")
-        }
-        else{
-            this.ReportEndDateError = false
         }
 
         if (this.ReportStartDateError == false && this.ReportEndDateError == false) {
@@ -418,5 +424,31 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
 
     saveBudget(){
         this.budgetView.save()
+    }
+
+    openComments(){
+        this.addCommentModal.show();
+    }
+
+    saveComment(){
+        var json = {
+            id: this.ManagementReportId,
+            comment: this.comments
+        };
+
+        this.getDetailSubscrip = this.mrService.addComment(json).subscribe(response => {
+            this.addCommentModal.hide();
+
+            this.allComments.unshift(response.data);
+            this.comments = "";
+        },
+        error => this.addCommentModal.hide());
+    }
+
+    getComment(){
+        this.getDetailSubscrip = this.mrService.getComments(this.ManagementReportId).subscribe(response => {
+            this.allComments = response.data;
+        },
+        error => {});
     }
 }
