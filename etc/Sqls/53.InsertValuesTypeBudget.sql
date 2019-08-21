@@ -6,5 +6,3 @@ INSERT INTO [app].[BudgetType] ([Name]) VALUES ('REAL')
 INSERT INTO [app].[BudgetType] ([Name]) VALUES ('PROJECTED')
 
 GO
-
-

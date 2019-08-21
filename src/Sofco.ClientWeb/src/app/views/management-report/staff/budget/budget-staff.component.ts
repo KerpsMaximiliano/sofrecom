@@ -23,12 +23,12 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     showColumn = {
         budget: true,
+        projected: true,
         pfa1: false,
         pfa2: false,
         real: false
     }
     dateSelected: Date
-
     model: any
     managementReportId: string;
     months: any[] = new Array()
@@ -104,12 +104,13 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     openEditItemModal(category, typeBudget, month, item) {
 
-        if (this.readOnly) return;
+        // if (this.readOnly) return;
 
         if (month.closed) return;
 
         this.categorySelected = category
         this.monthSelected = month;
+        debugger
         this.typeBudgetSelected = this.budgetTypes.find(x => x.name.toUpperCase() == typeBudget.toUpperCase())
 
         this.subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
@@ -118,35 +119,48 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
 
         var subData = this.fillSubcategoriesData()
-        this.subCategoriesData = new Array()
-        subData.forEach(subcat => {
+        if (subData) {
+            this.subCategoriesData = new Array()
+            subData.forEach(subcat => {
 
-            var cost = {
-                costDetailStaffId: subcat.costDetailStaffId,
-                id: subcat.id,
-                name: subcat.name,
-                description: subcat.description,
-                value: subcat.value,
-                budgetTypeId: subcat.budgetTypeId,
-                deleted: subcat.deleted
-            }
+                var cost = {
+                    costDetailStaffId: subcat.costDetailStaffId,
+                    id: subcat.id,
+                    name: subcat.name,
+                    description: subcat.description,
+                    value: subcat.value,
+                    budgetTypeId: subcat.budgetTypeId,
+                    deleted: subcat.deleted
+                }
 
-            this.subCategoriesData.push(cost)
-        });
+                this.subCategoriesData.push(cost)
+            });
+        }
     }
 
     fillSubcategoriesData() {
 
-
+        let isCdg = this.menuService.userIsCdg
+        this.readOnly = true
+        debugger
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
                 if (this.monthSelected.totalPfa1 > 0) {
                     this.messageService.showError("cannotUpdateBudget");
                 }
                 else {
+                    if(isCdg) { this.readOnly = false }
                     this.editItemModal.show();
                     return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
                 }
+
+                break;
+            case 'PROJECTED':                
+                if (this.menuService.userIsDirector || this.menuService.userIsManager || this.menuService.isManagementReportDelegate) {
+                    this.readOnly = false
+                }
+                this.editItemModal.show();
+                return this.monthSelected.subcategoriesProjected.filter(sub => sub.deleted == false);
 
                 break;
             case 'PFA1': {
@@ -158,6 +172,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                         this.messageService.showError("cannotUpdatePfa1");
                     }
                     else {
+                        if(isCdg) { this.readOnly = false }
                         this.editItemModal.show();
                         return this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
                     }
@@ -170,6 +185,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     this.messageService.showError("pfa1Required");
                 }
                 else {
+                    if(isCdg) { this.readOnly = false }
                     this.editItemModal.show();
                     return this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);
                 }
@@ -180,6 +196,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     this.messageService.showError("budgetForRealRequired");
                 }
                 else {
+                    if(isCdg) { this.readOnly = false }
                     this.editItemModal.show();
                     return this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
                 }
@@ -210,6 +227,13 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 this.monthSelected.totalBudget = 0
                 this.monthSelected.subcategoriesBudget.forEach(cost => {
                     this.monthSelected.totalBudget += cost.value
+                })
+                break;
+            case 'PROJECTED':
+                this.monthSelected.SubcategoriesProjected = this.subCategoriesData
+                this.monthSelected.totalProjected = 0
+                this.monthSelected.SubcategoriesProjected.forEach(cost => {
+                    this.monthSelected.totalProjected += cost.value
                 })
                 break;
             case 'PFA1':
@@ -246,6 +270,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             let index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
             let monthTotal = this.months.find(m => m.monthYear === month.monthYear)
             var totalCostBugdet = 0;
+            var totalCostProjected = 0
             var totalCostPfa1 = 0;
             var totalCostPfa2 = 0;
             var totalCostReal = 0;
@@ -253,6 +278,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.categories.forEach(category => {
                 if (category.monthsCategory[index].totalBudget) {
                     totalCostBugdet += category.monthsCategory[index].totalBudget;
+                }
+                if (category.monthsCategory[index].totalProjected) {
+                    totalCostProjected += category.monthsCategory[index].totalProjected;
                 }
                 if (category.monthsCategory[index].totalPfa1) {
                     totalCostPfa1 += category.monthsCategory[index].totalPfa1;
@@ -266,6 +294,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             });
 
             monthTotal.totalBudget = totalCostBugdet
+            monthTotal.totalProjected = totalCostProjected
             monthTotal.totalPfa1 = totalCostPfa1
             monthTotal.totalPfa2 = totalCostPfa2
             monthTotal.totalReal = totalCostReal
@@ -367,18 +396,23 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                         isFirst = true
                     }
                     break;
-                case "pfa1":
+                case "projected":
                     if (!this.showColumn.budget) {
                         isFirst = true
                     }
                     break;
+                case "pfa1":
+                    if (!this.showColumn.budget && !this.showColumn.projected) {
+                        isFirst = true
+                    }
+                    break;
                 case "pfa2":
-                    if (!this.showColumn.budget && !this.showColumn.pfa1) {
+                    if (!this.showColumn.budget && !this.showColumn.projected && !this.showColumn.pfa1) {
                         isFirst = true
                     }
                     break;
                 case "real":
-                    if (!this.showColumn.budget && !this.showColumn.pfa1 && !this.showColumn.pfa2) {
+                    if (!this.showColumn.budget && !this.showColumn.projected && !this.showColumn.pfa1 && !this.showColumn.pfa2) {
                         isFirst = true
                     }
                     break;
@@ -391,41 +425,43 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         return isFirst
     }
 
-    toggleColumn(column){
+    toggleColumn(column) {
 
         this.showColumn[column] = !this.showColumn[column]
-        if(!this.showColumn.budget && !this.showColumn.pfa1 && !this.showColumn.pfa2 && !this.showColumn.real){
+        if (!this.showColumn.budget && !this.showColumn.pfa1 && !this.showColumn.pfa2
+            && !this.showColumn.real && !this.showColumn.projected) {
             this.showColumn[column] = true
         }
     }
 
-    selectDefaultColumn(date: Date){
-        
+    selectDefaultColumn(date: Date) {
+
         this.dateSelected = date
         var month = this.months.find(x => x.month == (this.dateSelected.getMonth() + 1) && x.year == this.dateSelected.getFullYear());
 
-        if(month){
-            if(month.totalReal > 0){
+        if (month) {
+            this.showColumn.projected = true
+            if (month.totalReal > 0) {
                 this.showColumn.budget = false
                 this.showColumn.pfa1 = false
                 this.showColumn.pfa2 = false
                 this.showColumn.real = true
             }
-            else{
-                if(month.totalPfa2 > 0){
+            else {
+                if (month.totalPfa2 > 0) {
                     this.showColumn.budget = false
                     this.showColumn.pfa1 = false
                     this.showColumn.pfa2 = true
                     this.showColumn.real = false
                 }
-                else{
-                    if(month.totalPfa1 > 0){
+                else {
+                    if (month.totalPfa1 > 0) {
                         this.showColumn.budget = false
                         this.showColumn.pfa1 = true
                         this.showColumn.pfa2 = false
                         this.showColumn.real = false
                     }
-                    else{
+                    else {
                         this.showColumn.budget = true
                         this.showColumn.pfa1 = false
                         this.showColumn.pfa2 = false
