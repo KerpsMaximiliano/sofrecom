@@ -325,6 +325,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
                     name: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
                     salary: 0,
                     charges: 0,
+                    chargesPercentage: 0,
                     total: 0,
                     hasAlocation: false,
                     new: true
