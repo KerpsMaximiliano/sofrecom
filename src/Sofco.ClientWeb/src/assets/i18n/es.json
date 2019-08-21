@@ -1212,7 +1212,7 @@
         "currentAccount": "Cuenta Corriente"
     },
     "managementReport":{
-        "costDetailMonth": "Detalle de costos mensual",
+        "costDetailMonth": "Detalle mensual",
         "existingEmployee": "El recurso ya se encuentra asignado en el informe",
         "endDateOutOfRange": "La fecha de fin del informe debe ser menor o igual al fin de la analítica",
         "startDateOutOfRange": "La fecha de inicio del informe debe ser mayor o igual al inicio de la analítica",
