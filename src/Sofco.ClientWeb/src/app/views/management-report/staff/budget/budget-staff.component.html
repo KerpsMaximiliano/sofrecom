@@ -5,23 +5,57 @@
 
 
 <div *ngIf="months.length > 0">
+
+    <div class="row col-xs-0 col-md-offset-6 col-lg-offset-7">
+        <div class="btn-group btn-group-justified">
+            <a (click)="toggleColumn('budget')" class="btn btn-xs btn-default"
+                [ngClass]="{'active': showColumn.budget}">BUDGET</a>
+            <a (click)="toggleColumn('projected')" class="btn btn-xs btn-default"
+                [ngClass]="{'active': showColumn.projected}">PROYECTADO</a>
+            <a (click)="toggleColumn('pfa1')" class="btn btn-xs btn-default"
+                [ngClass]="{'active': showColumn.pfa1}">PFA1</a>
+            <a (click)="toggleColumn('pfa2')" class="btn btn-xs btn-default"
+                [ngClass]="{'active': showColumn.pfa2}">PFA2</a>
+            <a (click)="toggleColumn('real')" class="btn btn-xs btn-default"
+                [ngClass]="{'active': showColumn.real}">REAL</a>
+        </div>
+    </div>
+
     <div class="table-responsive billing-table">
         <table class="table dataTable" role="grid">
             <thead>
                 <tr>
                     <th class="static first-column" scope="col">Meses</th>
-                    <ng-template ngFor let-item [ngForOf]="months" let-i="index" let-isFirst="first">
-                        <th class="text-center headcol" [ngClass]="{'first-col': isFirst}">
-                            {{ item.display }}
+                    <ng-template ngFor let-item [ngForOf]="months" let-i="index">
+                        <th [ngClass]="{'first-col': isFirstColumn('budget', i)}" class="text-center headcol"
+                            [hidden]="!showColumn.budget">
+                            <span>
+                                {{ item.display }}
+                            </span>
                         </th>
-                        <th class="text-center headcol">
-
+                        <th [ngClass]="{'first-col': isFirstColumn('projected', i)}" class="text-center headcol"
+                            [hidden]="!showColumn.projected">
+                            <span [hidden]="showColumn.budget">
+                                {{ item.display }}
+                            </span>
                         </th>
-                        <th class="text-center headcol">
-
+                        <th [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" class="text-center headcol"
+                            [hidden]="!showColumn.pfa1">
+                            <span [hidden]="showColumn.projected || showColumn.budget">
+                                {{ item.display }}
+                            </span>
                         </th>
-                        <th class="text-center headcol">
-
+                        <th [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" class="text-center headcol"
+                            [hidden]="!showColumn.pfa2">
+                            <span [hidden]="showColumn.pfa1 || showColumn.projected || showColumn.budget">
+                                {{ item.display }}
+                            </span>
+                        </th>
+                        <th [ngClass]="{'first-col': isFirstColumn('real', i)}" class="text-center headcol"
+                            [hidden]="!showColumn.real">
+                            <span [hidden]="showColumn.pfa2 || showColumn.pfa1 || showColumn.projected || showColumn.budget">
+                                {{ item.display }}
+                            </span>
                         </th>
                     </ng-template>
                 </tr>
@@ -30,16 +64,24 @@
                 <tr>
                     <th class="static first-column" scope="col"></th>
                     <ng-template ngFor let-item [ngForOf]="months" let-i="index">
-                        <td class="text-center">
-                            <strong>PRESUPUESTO</strong>
+                        <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" class="text-center"
+                            [hidden]="!showColumn.budget">
+                            <strong>BUDGET</strong>
                         </td>
-                        <td class="text-center">
+                        <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" class="text-center"
+                            [hidden]="!showColumn.projected">
+                            <strong>PROYECTADO</strong>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" class="text-center"
+                            [hidden]="!showColumn.pfa1">
                             <strong>PFA1</strong>
                         </td>
-                        <td class="text-center">
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" class="text-center"
+                            [hidden]="!showColumn.pfa2">
                             <strong>PFA2</strong>
                         </td>
-                        <td class="text-center">
+                        <td [ngClass]="{'first-col': isFirstColumn('real', i)}" class="text-center"
+                            [hidden]="!showColumn.real">
                             <strong>REAL</strong>
                         </td>
                     </ng-template>
@@ -47,22 +89,27 @@
                 <tr>
                     <th class="static first-column" scope="col">Total de Gastos</th>
                     <ng-template ngFor let-month [ngForOf]="months" let-i="index">
-                        <td [ngClass]="{'first-col': isFirst}">
+                        <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label label-total">
                                 {{ month.totalBudget | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" [hidden]="!showColumn.projected">
+                            <label class="label label-total">
+                                {{ month.totalProjected | amountFormat }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" [hidden]="!showColumn.pfa1">
                             <label class="label label-total">
                                 {{ month.totalPfa1 | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" [hidden]="!showColumn.pfa2">
                             <label class="label label-total">
                                 {{ month.totalPfa2 | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [ngClass]="{'first-col': isFirstColumn('real', i)}" [hidden]="!showColumn.real">
                             <label class="label label-total">
                                 {{ month.totalReal | amountFormat }}
                             </label>
@@ -73,29 +120,36 @@
                 <tr *ngFor="let category of categories">
                     <th class="static first-column" scope="col">{{category.name}}</th>
                     <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
-                        <td [ngClass]="{'first-col': isFirst}">
+                        <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label  cursor-pointer"
-                            [ngClass]="month.totalReal <=  month.totalBudget ? 'label-success' : 'label-danger'"
+                                [ngClass]="month.totalReal <=  month.totalBudget ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category, 'budget', month, i)">
                                 {{ month.totalBudget | amountFormat  }}
                             </label>
                         </td>
-                        <td>
+                        <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" [hidden]="!showColumn.projected">
+                            <label class="label  cursor-pointer"
+                                [ngClass]="month.totalReal <=  month.totalProjected ? 'label-success' : 'label-danger'"
+                                (click)="openEditItemModal(category, 'projected', month, i)">
+                                {{ month.totalProjected | amountFormat  }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" [hidden]="!showColumn.pfa1">
                             <label class="label cursor-pointer"
                                 [ngClass]="month.totalReal <=  month.totalPfa1 ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category,'pfa1', month, i)">
                                 {{ month.totalPfa1 | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" [hidden]="!showColumn.pfa2">
                             <label class="label cursor-pointer"
                                 [ngClass]="month.totalReal <=  month.totalPfa2 ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category, 'pfa2', month, i)">
                                 {{ month.totalPfa2 | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label label-budget cursor-pointer"                                
+                        <td [ngClass]="{'first-col': isFirstColumn('real', i)}" [hidden]="!showColumn.real">
+                            <label class="label label-budget cursor-pointer"
                                 (click)="openEditItemModal(category, 'real', month, i)">
                                 {{ month.totalReal | amountFormat }}
                             </label>
@@ -115,7 +169,7 @@
 
 </div>
 
-<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateItem()">
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateItem()" [isSaveEnabled]="!readOnly">
 
     <div class="row">
         <div class="col-sm-12">
@@ -123,11 +177,13 @@
                 <fieldset>
                     <div class="col-sm-4">
                         <label class="control-label" for="readOnlyInput">Mes</label>
-                        <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelected.display }}" readonly="">
+                        <input class="form-control" id="readOnlyInput" type="text"
+                            placeholder="{{ monthSelected.display }}" [disabled]="true">
                     </div>
                     <div class="col-sm-8">
                         <label class="control-label" for="readOnlyInput">Categoria</label>
-                        <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ categorySelected.name }}" readonly="">
+                        <input class="form-control" id="readOnlyInput" type="text"
+                            placeholder="{{ categorySelected.name }}" [disabled]="true">
                     </div>
                 </fieldset>
             </div>
@@ -144,25 +200,27 @@
                 </div>
             </div>
 
-            <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index" [hidden]="cost.deleted" >
+            <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index" [hidden]="cost.deleted">
                 <div class="col-sm-5">
                     {{ cost.name }}
                 </div>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">
+                    <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200" [disabled]="readOnly">
                 </div>
                 <div class="col-sm-2">
-                    <math-input [(model)]="cost.value"></math-input>
+                    <math-input [(model)]="cost.value"  [modelDisabled]="readOnly"></math-input>
                 </div>
-                <div class="col-sm-1 delete">
-                    <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)" *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
+                <div class="col-sm-1 delete" [hidden]="readOnly">
+                    <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)"><i
+                            class="fa fa-trash"></i></button>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" [hidden]="readOnly">
                 <br>
                 <div class="col-sm-9">
                     <div class="form-group">
-                        <ng-select [items]="subCategoriesFiltered" bindLabel="name" [(ngModel)]="subCategorySelected" [clearable]="false">
+                        <ng-select [items]="subCategoriesFiltered" bindLabel="name" [(ngModel)]="subCategorySelected"
+                            [clearable]="false">
                         </ng-select>
                     </div>
                 </div>

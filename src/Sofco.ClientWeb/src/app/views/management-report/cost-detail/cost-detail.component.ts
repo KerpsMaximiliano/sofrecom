@@ -152,9 +152,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.otherSelected = this.otherResources[0];
             }
 
+            this.calculateTotalCosts();
             this.sendDataToDetailView();
         },
-            () => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item) {
@@ -307,6 +308,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                         this.monthSelected.value += element.value
                     });
 
+                    this.calculateTotalCosts();
+
                     setTimeout(() => {
                         this.sendDataToDetailView();
                     }, 1500);
@@ -324,9 +327,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     save(pEmployees, pProfiles, pFunded) {
         this.messageService.showLoading();
 
-        // this.model.employees = this.employees;
-        // this.model.fundedResources = this.fundedResources;
-
         var model = {
             ManagementReportId: this.model.managementReportId,
             ManagerId: this.model.managerId,
@@ -339,6 +339,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.updateCostSubscrip = this.managementReportService.PostCostDetail(model).subscribe(() => {
             this.messageService.closeLoading();
 
+            this.calculateTotalCosts();
+
             setTimeout(() => {
                 this.sendDataToDetailView();
             }, 1500);
@@ -349,7 +351,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     getResourcesByMonth(month, year) {
-
         var resources = { employees: [], fundedResources: [], otherResources: [] }
 
         resources.employees = this.employees.map(element => {
@@ -371,6 +372,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 name: element.display,
                 salary: monthCost.value || 0,
                 charges: monthCost.charges || 0,
+                chargesPercentage: monthCost.chargesPercentage,
                 total: monthCost.value + monthCost.charges || 0
             }
         });
@@ -456,61 +458,36 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalSalary
     }
 
-    // calculateAssignedEmployees(month) {
-    //     const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
-    //     var totalEmployees = 0;
-    //     this.employees.forEach(employee => {
-    //         if (employee.monthsCost[index].value) {
-    //             if (employee.monthsCost[index].value > 0) {
-    //                 totalEmployees++
-    //             }
-    //         }
-    //     })
+    calculateTotalCosts() {
+        this.months.forEach((month, index) => {
+            var totalCost = 0;
+            var totalSalary = 0;
 
-    //     this.costProfiles.forEach(Profile => {
-    //         if (Profile.monthsCost[index].value) {
-    //             if (Profile.monthsCost[index].value > 0) {
-    //                 totalEmployees++
-    //             }
-    //         }
-    //     })
+            //Sumo el totol de los sueldos
+            this.employees.forEach(employee => {
+                if (employee.monthsCost[index].value) {
+                    totalCost += employee.monthsCost[index].value;
+                    totalSalary += employee.monthsCost[index].value;
+                }
+            })
 
-    //     return totalEmployees
-    // }
+            //Sumo los sueldos de los perfiles
+            this.costProfiles.forEach(profile => {
+                if (profile.monthsCost[index].value) {
+                    totalCost += profile.monthsCost[index].value;
+                    totalSalary += profile.monthsCost[index].value;
+                }
+            })
 
-    calculateTotalCosts(month) {
+            //Sumo los demas gastos excepto el % de Ajuste
+            this.fundedResources.forEach(resource => {
+                if (resource.typeName != this.generalAdjustment) {
+                    totalCost += resource.monthsCost[index].value;
+                }
+            })
 
-        const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
-        var totalCost = 0;
-        var totalSalary = 0;
-
-        //Sumo el totol de los sueldos
-        this.employees.forEach(employee => {
-            if (employee.monthsCost[index].value) {
-                totalCost += employee.monthsCost[index].value;
-                totalSalary += employee.monthsCost[index].value;
-            }
-            // if (employee.monthsCost[index].charges) {
-            //     totalCost += employee.monthsCost[index].charges
-            // }
+            month.value = totalCost + (totalSalary * 0.51);
         })
-
-        //Sumo los sueldos de los perfiles
-        this.costProfiles.forEach(profile => {
-            if (profile.monthsCost[index].value) {
-                totalCost += profile.monthsCost[index].value;
-                totalSalary += profile.monthsCost[index].value;
-            }
-        })
-
-        //Sumo los demas gastos excepto el % de Ajuste
-        this.fundedResources.forEach(resource => {
-            if (resource.typeName != this.generalAdjustment) {
-                totalCost += resource.monthsCost[index].value;
-            }
-        })
-
-        return totalCost + (totalSalary * 0.51);
     }
 
     calculateLoads(month) {
@@ -531,19 +508,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return totalSalary * 0.51;
     }
 
-    // calculateAllPrepaid(month) {
-    //     const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
-    //     var totalPrepaid = 0
-    //     this.employees.forEach(employee => {
-    //         if (employee.monthsCost[index].charges) {
-    //             totalPrepaid += employee.monthsCost[index].charges
-    //         }
-    //     })
-    //     return totalPrepaid
-    // }
-
     EditItemOnClose() {
-
     }
 
     AccessEmployeeClass(monthCost) {
@@ -742,7 +707,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         else {
             this.messageService.showError("managementReport.profileRequired")
         }
-    }
+    } 
 
     sendDataToDetailView() {
         if (this.getData.observers.length > 0) {

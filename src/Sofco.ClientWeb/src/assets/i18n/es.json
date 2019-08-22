@@ -932,10 +932,10 @@
     "and": "y",
     "date_to": "al",
     "ManagementReport": "Informe de gestión",
-    "budgetRequired": "Antes de cargar el PFA1 se debe cargar el presupuesto",
-    "budgetForRealRequired": "Antes de cargar el REAL se debe cargar el presupuesto",
-    "pfa1Required": "Antes de cargar el PFA2 se debe cargar el presupuesto y el PFA1",
-    "cannotUpdateBudget": "No puede modificar el Presupuesto si ya cargo el PFA1",
+    "budgetRequired": "Antes de cargar el PFA1 se debe cargar el budget",
+    "budgetForRealRequired": "Antes de cargar el REAL se debe cargar el budget",
+    "pfa1Required": "Antes de cargar el PFA2 se debe cargar el budget y el PFA1",
+    "cannotUpdateBudget": "No puede modificar el Budget si ya cargo el PFA1",
     "cannotUpdatePfa1": "No puede modificar el PFA1 si ya cargo el PFA2",
     "report":{
         "title": "Reporte",
@@ -1212,7 +1212,7 @@
         "currentAccount": "Cuenta Corriente"
     },
     "managementReport":{
-        "costDetailMonth": "Detalle de costos mensual",
+        "costDetailMonth": "Detalle mensual",
         "existingEmployee": "El recurso ya se encuentra asignado en el informe",
         "endDateOutOfRange": "La fecha de fin del informe debe ser menor o igual al fin de la analítica",
         "startDateOutOfRange": "La fecha de inicio del informe debe ser mayor o igual al inicio de la analítica",
@@ -1221,5 +1221,14 @@
         "closed": "Cerrado",
         "cdgPending": "Pendiente Control de Gestión",
         "managerPending": "Pendiente Gerente"
+    },
+    "recruitment":{
+        "title": "Reclutamiento",
+        "knowledge": "Conocimientos",
+        "profile": "Perfil",
+        "seniority": "Seniority",
+        "contacts": {
+            "title": "Contactos"
+        }
     }
 }

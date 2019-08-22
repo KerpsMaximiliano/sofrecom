@@ -117,5 +117,29 @@ namespace Sofco.DAL.Repositories.ManagementReport
                     .OrderBy(x => x.Name)
                     .ToList();
         }
+
+        public bool Exist(int id)
+        {
+            return context.ManagementReports.Any(x => x.Id == id);
+        }
+
+        public void AddComment(ManagementReportComment mrComment)
+        {
+            context.ManagementReportComments.Add(mrComment);
+        }
+
+        public IList<ManagementReportComment> GetComments(int id)
+        {
+            return context.ManagementReportComments.Where(x => x.ManagementReportId == id).ToList();
+        }
+
+        public Domain.Models.ManagementReport.ManagementReport GetWithCostDetailsAndBillings(int id)
+        {
+            return context.ManagementReports
+                .Include(x => x.CostDetails)
+                .Include(x => x.Analytic)
+                .Include(x => x.Billings)
+                .SingleOrDefault(x => x.Id == id);
+        }
     }
 }

@@ -18,17 +18,20 @@ import { I18nService } from "app/services/common/i18n.service";
     styleUrls: ['./mr-detail.scss']
 })
 export class ManagementReportDetailComponent implements OnInit, OnDestroy {
-
     paramsSubscrip: Subscription;
     getDetailSubscrip: Subscription;
     updateDatesSubscrip: Subscription;
     sendSubscrip: Subscription;
     closeSubscrip: Subscription;
+    addCommentSubscrip: Subscription;
+    getCommentsSubscrip: Subscription;
 
     customerId: string;
     serviceId: string;
     customerName: string;
     serviceName: string;
+
+    comments: string;
 
     public model: any;
 
@@ -49,6 +52,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     isClosed: boolean = false;
     ManagementReportId: number;
 
+    allComments: any[] = new Array();
+
     @ViewChild("marginTracking") marginTracking;
     @ViewChild("billing") billing;
     @ViewChild("detailCost") detailCost;
@@ -58,6 +63,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     @ViewChild('dateReportEnd') dateReportEnd;
     @ViewChild('editDateModal') editDateModal;
     @ViewChild('modalEvalProp') modalEvalProp;
+    @ViewChild('addCommentModal') addCommentModal;
  
     public editDateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Editar Fechas",
@@ -65,6 +71,15 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         true,
         true,
         "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+
+    public addCommentModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Agregar comentario",
+        "addCommentModal",
+        true,
+        true,
+        "ACTIONS.ADD",
         "ACTIONS.cancel"
     );
 
@@ -107,6 +122,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         if (this.updateDatesSubscrip) this.updateDatesSubscrip.unsubscribe();
         if (this.sendSubscrip) this.sendSubscrip.unsubscribe();
         if (this.closeSubscrip) this.closeSubscrip.unsubscribe();
+        if (this.addCommentSubscrip) this.addCommentSubscrip.unsubscribe();
+        if (this.getCommentsSubscrip) this.getCommentsSubscrip.unsubscribe();
     }
 
     getDetail() {
@@ -118,6 +135,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
             this.ManagementReportId = response.data.managementReportId;
             this.marginTracking.model = response.data;
+
+            this.getComment();
 
             this.billing.manamementReportStartDate = this.model.manamementReportStartDate
             this.billing.manamementReportEndDate = this.model.manamementReportEndDate
@@ -134,8 +153,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.detailCost.managementReportId = this.ManagementReportId;
 
             this.readOnly = !this.canEdit();
-
-            // this.marginTracking.init(this.startDate)
 
             this.messageService.closeLoading();
         },
@@ -204,14 +221,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     EditDate() {
-
         this.ReportStartDateError = false
         this.ReportEndDateError = false
         
         const dateReportStart = new Date(new Date(this.ReportStartDate).getFullYear(), new Date(this.ReportStartDate).getMonth(), 1)
-        const dateReportEnd = new Date(new Date(this.ReportEndDate).getFullYear(), new Date(this.ReportEndDate).getMonth(), 1)
         const dateAnalyticStart = new Date(new Date(this.model.startDate).getFullYear(), new Date(this.model.startDate).getMonth(), 1)
-        const dateAnalyticEnd = new Date(new Date(this.model.endDate).getFullYear(), new Date(this.model.endDate).getMonth(), 1)
 
         if (dateReportStart < dateAnalyticStart) {
             this.ReportStartDateError = true
@@ -220,15 +234,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         }
         else{
             this.ReportStartDateError = false
-        }
-
-        if (dateReportEnd > dateAnalyticEnd) {
-            this.ReportEndDateError = true
-            this.editDateModal.resetButtons()
-            this.messageService.showError("managementReport.endDateOutOfRange")
-        }
-        else{
-            this.ReportEndDateError = false
         }
 
         if (this.ReportStartDateError == false && this.ReportEndDateError == false) {
@@ -263,7 +268,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     getBillingData(billingModel){
-      
         this.marginTracking.billingDataLoaded = true;
         this.marginTracking.billingModel = billingModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
@@ -275,7 +279,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     getCostsData(costsModel){
-   
         this.marginTracking.costDataLoaded = true;
         this.marginTracking.costsModel = costsModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
@@ -440,5 +443,31 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             },
             error => this.messageService.closeLoading());
         });
+    }
+
+    openComments(){
+        this.addCommentModal.show();
+    }
+
+    saveComment(){
+        var json = {
+            id: this.ManagementReportId,
+            comment: this.comments
+        };
+
+        this.getDetailSubscrip = this.managementReportService.addComment(json).subscribe(response => {
+            this.addCommentModal.hide();
+
+            this.allComments.unshift(response.data);
+            this.comments = "";
+        },
+        error => this.addCommentModal.hide());
+    }
+
+    getComment(){
+        this.getDetailSubscrip = this.managementReportService.getComments(this.ManagementReportId).subscribe(response => {
+            this.allComments = response.data;
+        },
+        error => {});
     }
 }

@@ -24,9 +24,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     private costsModel: any;
 
     public model: any;
-    // public month: number;
-    // public year: number;
-    // public monthDesc: string;
 
     public marginTrackingSelected: MarginTracking = new MarginTracking();
     private allMarginTrackings: any[] = new Array();
@@ -34,7 +31,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     @Output() getData: EventEmitter<any> = new EventEmitter();
     
     constructor(private menuService: MenuService,
-                // private datesService: DatesService,
                 private managementReportDetail: ManagementReportDetailComponent
                 ){}
 
@@ -43,21 +39,8 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         this.isCdgOrDirector = this.menuService.userIsDirector || this.menuService.userIsCdg;
     }
 
-    //init(startDate){
-        // var dateSetting = this.datesService.getMonth(startDate);
-        // this.setDate(dateSetting); 
-    //}
-
     ngOnDestroy(): void {
     }
-
-    // setDate(dateSetting){
-    //     this.monthDesc = dateSetting.montDesc;
-    //     this.month = dateSetting.month;
-    //     this.year = dateSetting.year;
-
-    //     this.setMarginTracking();
-    // }
 
     isReadOnly(){
         this.model.analyticStatus == AnalyticStatus.Close;
@@ -73,29 +56,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             this.marginTrackingSelected = new MarginTracking();
         }
     }
-
-    // addMonth(){
-    //     var dateSplitted = this.model.manamementReportEndDate.split("-");
-
-    //     if(this.year == dateSplitted[0] && this.month == dateSplitted[1]){
-    //         return;
-    //     }
-
-    //     var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
-    //     this.setDate(dateSetting);  
-    // }
-
-    // substractMonth(){
-    //     var dateSplitted = this.model.manamementReportStartDate.split("-");
-
-    //     if(this.year == dateSplitted[0] && this.month == dateSplitted[1]){
-    //         return;
-    //     }
-
-    //     this.month -= 2;
-    //     var dateSetting = this.datesService.getMonth(new Date(this.year, this.month));
-    //     this.setDate(dateSetting);  
-    // }
 
     calculate(manamementReportStartDate, manamementReportEndDate, selectedMonth, selectedYear){
 

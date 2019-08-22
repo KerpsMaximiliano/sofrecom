@@ -14,5 +14,7 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public int ManagementReportId { get; set; }
         public ManagementReport ManagementReport { get; set; }
+
+        public decimal LastValue { get; set; }
     }
 }

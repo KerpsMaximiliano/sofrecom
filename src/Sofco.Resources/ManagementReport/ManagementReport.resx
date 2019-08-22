@@ -150,6 +150,12 @@
   <data name="ClosedSuccess" xml:space="preserve">
     <value>managementReport/managementReport.closedSuccess</value>
   </data>
+  <data name="CommentAdded" xml:space="preserve">
+    <value>managementReport/managementReport.commentAdded</value>
+  </data>
+  <data name="CommentRequired" xml:space="preserve">
+    <value>managementReport/managementReport.commentRequired</value>
+  </data>
   <data name="DateRequired" xml:space="preserve">
     <value>managementReport/managementReport.dateRequired</value>
   </data>

@@ -31,31 +31,35 @@ namespace Sofco.Framework.FileManager.WorkTime
             this.userData = userData;
         }
 
-        public ExcelPackage CreateTemplateExcel(int analyticId)
+        public ExcelPackage CreateTemplateExcel(int analyticId, int periodId)
         {
             var memoryStream = this.GetTemplateStream().Result;
 
             var excel = new ExcelPackage(memoryStream);
 
-            return Create(excel, analyticId);
+            return Create(excel, analyticId, periodId);
         }
 
-        private ExcelPackage Create(ExcelPackage excel, int analyticId)
+        private ExcelPackage Create(ExcelPackage excel, int analyticId, int periodId)
         {
             var sheet1 = excel.Workbook.Worksheets[1];
             var sheet2 = excel.Workbook.Worksheets[2];
 
             FillCategories(sheet2);
-            FillResources(sheet1, analyticId);
+            FillResources(sheet1, analyticId, periodId);
 
             return excel;
         }
 
-        private void FillResources(ExcelWorksheet sheet1, int analyticId)
+        private void FillResources(ExcelWorksheet sheet1, int analyticId, int periodId)
         {
-            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
-            var periodExcludeDays = closeDates.GetPeriodExcludeDays();
-            var period = closeDates.GetPeriodIncludeDays();
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeAndCurrent(periodId);
+
+            var periodExcludeDays = new Tuple<DateTime, DateTime>(new DateTime(closeDates.Item2.Year, closeDates.Item2.Month, 1, 0, 0, 0),
+                                                                  new DateTime(closeDates.Item1.Year, closeDates.Item1.Month, 1, 0, 0, 0));
+
+            var period = new Tuple<DateTime, DateTime>(new DateTime(closeDates.Item2.Year, closeDates.Item2.Month, closeDates.Item2.Day+1, 0, 0, 0),
+                                                       new DateTime(closeDates.Item1.Year, closeDates.Item1.Month, closeDates.Item1.Day, 0, 0, 0));
 
             try
             {

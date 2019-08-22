@@ -17,6 +17,7 @@ namespace Sofco.Core.Models.Billing
             this.Manager = service.Manager;
             this.ManagerId = service.ManagerId;
             this.Name = service.Name;
+            this.Description = service.Description;
             this.ServiceType = service.ServiceType;
             this.ServiceTypeId = service.ServiceTypeId;
             this.SolutionType = service.SolutionType;

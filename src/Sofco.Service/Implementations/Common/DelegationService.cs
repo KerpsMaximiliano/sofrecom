@@ -173,11 +173,21 @@ namespace Sofco.Service.Implementations.Common
                 var itemToAdd = new AnalyticsWithEmployees
                 {
                     Id = analytic.Id,
-                    Text = $"{analytic.Title} - {analytic.Name}"
+                    Text = $"{analytic.Title} - {analytic.Name}",
+                    Resources = new List<ResourceOption>()
                 };
 
-                itemToAdd.Resources = unitOfWork.EmployeeRepository.GetByAnalyticIdInCurrentDate(analytic.Id)
-                    .Select(x => new ResourceOption { Id = x.Id, Text = x.Name, UserId = unitOfWork.UserRepository.GetByEmail(x.Email).Id }).ToList();
+                var resources = unitOfWork.EmployeeRepository.GetByAnalyticIdInCurrentDate(analytic.Id).ToList();
+
+                foreach (var resource in resources)
+                {
+                    var user = unitOfWork.UserRepository.GetByEmail(resource.Email);
+
+                    if (user != null)
+                    {
+                        itemToAdd.Resources.Add(new ResourceOption { Id = resource.Id, Text = resource.Name, UserId = user.Id });
+                    }
+                }
 
                 response.Data.Add(itemToAdd);
             }
@@ -193,11 +203,21 @@ namespace Sofco.Service.Implementations.Common
                         var itemToAdd = new AnalyticsWithEmployees
                         {
                             Id = analytic.Id,
-                            Text = $"{analytic.Title} - {analytic.Name}"
+                            Text = $"{analytic.Title} - {analytic.Name}",
+                            Resources = new List<ResourceOption>()
                         };
 
-                        itemToAdd.Resources = unitOfWork.EmployeeRepository.GetByAnalyticIdInCurrentDate(analytic.Id)
-                            .Select(x => new ResourceOption { Id = x.Id, Text = x.Name, UserId = unitOfWork.UserRepository.GetByEmail(x.Email).Id }).ToList();
+                        var resources = unitOfWork.EmployeeRepository.GetByAnalyticIdInCurrentDate(analytic.Id).ToList();
+
+                        foreach (var resource in resources)
+                        {
+                            var user = unitOfWork.UserRepository.GetByEmail(resource.Email);
+
+                            if (user != null)
+                            {
+                                itemToAdd.Resources.Add(new ResourceOption { Id = resource.Id, Text = resource.Name, UserId = user.Id });
+                            }
+                        }
 
                         response.Data.Add(itemToAdd);
                     }

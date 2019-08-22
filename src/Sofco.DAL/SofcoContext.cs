@@ -21,6 +21,8 @@ using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Models.ManagementReport;
 using Sofco.DAL.Mappings.ManagementReport;
+using Sofco.DAL.Mappings.Recruitment;
+using Sofco.Domain.Models.Recruitment;
 
 namespace Sofco.DAL
 {
@@ -157,6 +159,12 @@ namespace Sofco.DAL
         public DbSet<ManagementReportBilling> ManagementReportBillings { get; set; }
         public DbSet<CostDetailCategories> CostDetailCategories { get; set; }
         public DbSet<CostDetailSubcategories> CostDetailSubcategories { get; set; }
+        public DbSet<ManagementReportComment> ManagementReportComments { get; set; }
+
+        //Recruitment
+        public DbSet<Seniority> Seniorities { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
+        public DbSet<Skill> Skills { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -224,6 +232,7 @@ namespace Sofco.DAL
             builder.MapPrepaid();
             builder.MapLog();
             builder.MapDelegation();
+            builder.MapRecruitmentOptions();
         }
     }
 }

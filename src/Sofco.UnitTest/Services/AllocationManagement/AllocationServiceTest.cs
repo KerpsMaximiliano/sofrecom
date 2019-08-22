@@ -62,6 +62,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             unitOfWork.Setup(x => x.LicenseRepository).Returns(licenseRepositoryMock.Object);
 
             licenseRepositoryMock.Setup(x => x.GetByEmployeeAndDates(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new List<License>());
+            employeeRepositoryMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Employee { StartDate = new DateTime(2017, 1,1)});
 
             sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, managementReportCalculateCostsServiceMock.Object, fileManagerMock.Object);
         }

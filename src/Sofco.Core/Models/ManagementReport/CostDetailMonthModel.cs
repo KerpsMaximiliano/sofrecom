@@ -46,6 +46,8 @@ namespace Sofco.Core.Models.ManagementReport
         public string Name { get; set; }
 
         public DateTime MonthYear { get; set; }
+
+        public decimal ChargesPercentage { get; set; }
     }
 
     public class CostMonthOther

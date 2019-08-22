@@ -91,6 +91,7 @@ namespace Sofco.Service.Crm
                 ["as_analitica"] = crmServiceUpdate.AnalyticTitle,
                 ["as_startdate_date"] = crmServiceUpdate.StartDate,
                 ["as_enddate_date"] = crmServiceUpdate.EndDate,
+                ["as_descriptionspanish"] = crmServiceUpdate.Description,
             };
 
             if (crmServiceUpdate.ManagerId.HasValue)

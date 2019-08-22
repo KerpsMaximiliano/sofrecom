@@ -10,7 +10,7 @@ namespace Sofco.DAL.Repositories.Admin
 {
     public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(SofcoContext context) : base(context)
+        public CategoryRepository(SofcoContext context) : base(context) 
         {
         }
 

@@ -33,6 +33,7 @@ namespace Sofco.Core.Models.AllocationManagement
             TechnologyId = domain.TechnologyId;
             ClientGroupId = domain.ClientGroupId;
             ServiceTypeId = domain.ServiceTypeId;
+            Description = domain.Description;
 
             if (!string.IsNullOrWhiteSpace(domain.UsersQv))
             {
@@ -54,7 +55,7 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string ClientExternalName { get; set; }
 
-        public string ContractNumber { get; set; }
+        public string Description { get; set; }
 
         public string Service { get; set; }
 
@@ -126,6 +127,7 @@ namespace Sofco.Core.Models.AllocationManagement
             domain.TechnologyId = TechnologyId;
             domain.ClientGroupId = ClientGroupId;
             domain.ServiceTypeId = ServiceTypeId;
+            domain.Description = Description;
 
             if (UsersQv != null && UsersQv.Any())
             {

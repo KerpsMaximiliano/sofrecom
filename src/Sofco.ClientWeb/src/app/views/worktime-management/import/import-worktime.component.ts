@@ -8,6 +8,7 @@ import { I18nService } from "../../../services/common/i18n.service";
 import * as FileSaver from "file-saver";
 import { DataTableService } from "../../../services/common/datatable.service";
 import { AuthService } from "../../../services/common/auth.service";
+import { UtilsService } from "app/services/common/utils.service";
 
 @Component({
     selector: 'import-worktime',
@@ -17,18 +18,22 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
     @ViewChild('selectedFile') selectedFile: any;
 
     getSubscrip: Subscription;
+    getMonthsSubscrip: Subscription;
 
     public uploader: FileUploader = new FileUploader({url:""});
 
     public analyticId: number;
+    public closeMonthId: number;
 
     public analytics: any[] = new Array();
     public errors: any[] = new Array();
+    public months: any[] = new Array<any>();
 
     public showSuccess: boolean = false;
  
     constructor(private messageService: MessageService, 
                 private authService: AuthService,
+                private utilsService: UtilsService,
                 private dataTableService: DataTableService,
                 private i18nService: I18nService,
                 private worktimeService: WorktimeService){    
@@ -36,6 +41,8 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
   
     ngOnInit(): void {
         this.messageService.showLoading();
+
+        this.getMonths();
 
         this.getSubscrip = this.worktimeService.getAnalytics().subscribe(data => {
             this.messageService.closeLoading();
@@ -45,6 +52,10 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if(this.getSubscrip) this.getSubscrip.unsubscribe();
+    }
+
+    getMonths(){
+        this.getMonthsSubscrip = this.utilsService.getCloseMonths().subscribe(data => this.months = data);
     }
 
     uploaderConfig(){
@@ -120,7 +131,7 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
     exportTemplate(){
         this.messageService.showLoading();
 
-        this.worktimeService.exportTemplate(this.analyticId).subscribe(file => {
+        this.worktimeService.exportTemplate(this.analyticId, this.closeMonthId).subscribe(file => {
             this.messageService.closeLoading();
             FileSaver.saveAs(file, "template carga de horas.xlsx");
         },

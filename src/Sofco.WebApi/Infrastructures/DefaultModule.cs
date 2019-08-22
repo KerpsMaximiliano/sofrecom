@@ -8,15 +8,20 @@ using Sofco.Common.Helpers;
 using Sofco.Common.Logger;
 using Sofco.Common.Logger.Interfaces;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.Common;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
+using Sofco.Core.Services.Common;
 using Sofco.DAL;
+using Sofco.DAL.Repositories.Common;
+using Sofco.Domain.Models.Recruitment;
 using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
 using Sofco.Service.Crm.HttpClients;
 using Sofco.Service.Crm.HttpClients.Interfaces;
 using Sofco.Service.Crm.Translators;
 using Sofco.Service.Crm.Translators.Interfaces;
+using Sofco.Service.Implementations.Common;
 using StackExchange.Redis;
 using IDatabase = StackExchange.Redis.IDatabase;
 
@@ -85,6 +90,15 @@ namespace Sofco.WebApi.Infrastructures
                 .SingleInstance();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+
+            builder.RegisterType<OptionRepository<Seniority>>().As<IOptionRepository<Seniority>>();
+            builder.RegisterType<OptionService<Seniority>>().As<IOptionService<Seniority>>();
+
+            builder.RegisterType<OptionRepository<Skill>>().As<IOptionRepository<Skill>>();
+            builder.RegisterType<OptionService<Skill>>().As<IOptionService<Skill>>();
+
+            builder.RegisterType<OptionRepository<Profile>>().As<IOptionRepository<Profile>>();
+            builder.RegisterType<OptionService<Profile>>().As<IOptionService<Profile>>();
 
             RegisterRedisDependencies(builder);
 

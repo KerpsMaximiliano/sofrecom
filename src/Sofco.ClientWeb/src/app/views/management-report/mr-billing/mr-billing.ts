@@ -10,7 +10,6 @@ import { MessageService } from "app/services/common/message.service";
 
 import { FormControl, Validators } from "@angular/forms";
 import { ReportBillingUpdateDataType } from "app/models/enums/ReportBillingUpdateDataType";
-import { detectBody } from "app/app.helpers";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 
 @Component({
@@ -242,7 +241,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
             if (totalCurrency) {
                 var monthValue = totalCurrency.monthValues.find(x => x.month == month && x.year == year);
-
+  
                 if (monthValue) {
                     monthValue.value += model.ammount;
                 }
@@ -253,7 +252,9 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 projectId: project.id,
                 projectName: project.text,
                 currencyId: model.moneyId,
-                description: `${project.opportunityNumber} - ${model.name} - ${currency.text}`,
+                opportunityNumber: project.opportunityNumber,
+                currencyName: currency.text,
+                description: model.name,
                 values: []
             };
 
@@ -266,6 +267,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         var addToReport = false
 
         this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
+            hito.date = response.data.startDate;
 
             this.months.forEach(monthRow => {
                 var monthValue = {
@@ -287,6 +289,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     monthValue.originalValue = response.data.amountOriginal;
                     monthValue.originalValuePesos = response.data.baseAmountOriginal;
                     monthValue.status = this.pendingHitoStatus;
+            
+                    monthRow.totalBilling += response.data.baseAmount;
 
                     if (new Date(monthValue.monthYear) >= new Date(this.manamementReportStartDate)
                         && new Date(monthValue.monthYear) <= new Date(this.manamementReportEndDate)) {
@@ -328,6 +332,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             }
         }
 
+        var oldValuePesos = hitoMonth.valuePesos;
+
         var json = {
             id: hito.id,
             ammount: hitoMonth.value,
@@ -343,6 +349,13 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 hitoMonth.valuePesos = response.data.baseAmount;
                 hitoMonth.originalValue = response.data.amountOriginal;
                 hitoMonth.originalValuePesos = response.data.baseAmountOriginal;
+
+                var month = this.months.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
+
+                if(month != null){
+                    month.totalBilling -= oldValuePesos;
+                    month.totalBilling += hitoMonth.valuePesos;
+                }
 
                 this.sendDataToDetailView();
             });
@@ -379,6 +392,12 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                     if (monthValue) {
                         monthValue.value -= hitoMonth.value;
                     }
+                }
+
+                var month = this.months.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
+
+                if(month != null){
+                    month.totalBilling -= hitoMonth.valuePesos;
                 }
 
                 var hitoindex = this.hitos.findIndex(x => x.id == hito.id);

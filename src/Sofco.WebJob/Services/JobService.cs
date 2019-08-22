@@ -71,6 +71,8 @@ namespace Sofco.WebJob.Services
             RecurringJob.AddOrUpdate<ILicenseCertificatePendingJob>(JobNames.LicenseCertificatePending, j => j.Execute(), licenseCertificatePending, localTimeZone);
 
             RecurringJob.AddOrUpdate<IEmployeeSyncProfileJobService>(JobNames.EmployeeProfileHistory, j => j.Sync(true), Cron.Daily(8, 0), localTimeZone);
+
+            RecurringJob.AddOrUpdate<ISocialChargesJob>(JobNames.SocialCharges, j => j.Execute(), Cron.Monthly(DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month), 8), localTimeZone);
         }
 
         private void ClearJobs()

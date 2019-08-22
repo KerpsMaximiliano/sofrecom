@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
+using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Common;
 using Sofco.Core.Models.ManagementReport;
@@ -16,13 +18,11 @@ using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
+using Sofco.Framework.MailData;
+using Sofco.Resources.Mails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sofco.Core.Config;
-using Sofco.Core.Mail;
-using Sofco.Framework.MailData;
-using Sofco.Resources.Mails;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -419,7 +419,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             var response = new Response<CostDetailMonthModel> { Data = new CostDetailMonthModel() };
             try
             {
-
                 var analytic = unitOfWork.AnalyticRepository.GetByServiceWithManagementReport(pServiceId);
 
                 if (analytic == null)
@@ -543,7 +542,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
 
             return response;
-        }      
+        }
 
         public Response UpdateCostDetailMonth(CostDetailMonthModel pMonthDetail)
         {
@@ -611,7 +610,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 }
 
                 var analytic = unitOfWork.AnalyticRepository.GetById(pMonthDetail.AnalyticId);
-                if(analytic.ServiceId == null && analytic.AccountId == null)
+                if (analytic.ServiceId == null && analytic.AccountId == null)
                 {
                     this.InsertTotalSalaryStaffReport(pMonthDetail.ManagementReportId, totalSalary, pMonthDetail.MonthYear);
                 }
@@ -895,7 +894,7 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             var response = new Response();
 
-            var managementReport = unitOfWork.ManagementReportRepository.Get(id);
+            var managementReport = unitOfWork.ManagementReportRepository.GetWithCostDetailsAndBillings(id);
 
             if (managementReport == null)
             {
@@ -906,18 +905,62 @@ namespace Sofco.Service.Implementations.ManagementReport
             if (!model.StartDate.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.StartDateRequired);
             if (!model.EndDate.HasValue) response.AddError(Resources.ManagementReport.ManagementReport.EndDateRequired);
 
-            if (model.StartDate.GetValueOrDefault().Date > model.EndDate.GetValueOrDefault().Date)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.StartDateGreaterThanEndDate);
-                return response;
-            }
-
             if (response.HasErrors()) return response;
 
             try
             {
                 managementReport.StartDate = model.StartDate.GetValueOrDefault().Date;
                 managementReport.EndDate = model.EndDate.GetValueOrDefault().Date;
+
+                for (var date = new DateTime(managementReport.StartDate.Year, managementReport.StartDate.Month, 1).Date;
+                    date.Date <= managementReport.EndDate.Date;
+                    date = date.AddMonths(1))
+                {
+                    if (managementReport.CostDetails != null)
+                    {
+                        if (managementReport.CostDetails.All(x => x.MonthYear.Date != date.Date))
+                        {
+                            managementReport.CostDetails.Add(new CostDetail
+                            {
+                                ManagementReportId = managementReport.Id,
+                                MonthYear = date.Date
+                            });
+                        }
+                    }
+                    else
+                    {
+                        managementReport.CostDetails = new List<CostDetail>();
+                        managementReport.CostDetails.Add(new CostDetail
+                        {
+                            ManagementReportId = managementReport.Id,
+                            MonthYear = date.Date
+                        });
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(managementReport.Analytic.AccountId))
+                    {
+                        if (managementReport.Billings != null)
+                        {
+                            if (managementReport.Billings.All(x => x.MonthYear.Date != date.Date))
+                            {
+                                managementReport.Billings.Add(new ManagementReportBilling
+                                {
+                                    ManagementReportId = managementReport.Id,
+                                    MonthYear = date.Date
+                                });
+                            }
+                        }
+                        else
+                        {
+                            managementReport.Billings = new List<ManagementReportBilling>();
+                            managementReport.Billings.Add(new ManagementReportBilling
+                            {
+                                ManagementReportId = managementReport.Id,
+                                MonthYear = date.Date
+                            });
+                        }
+                    }
+                }
 
                 unitOfWork.ManagementReportRepository.Update(managementReport);
                 unitOfWork.Save();
@@ -1081,8 +1124,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 monthDetail.OriginalValue = salary;
                                 monthDetail.Charges = charges;
                                 monthDetail.CanViewSensibleData = true;
+
+                                if (salary > 0)
+                                {
+                                    monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                }
                             }
-               
+
                             monthValue.Adjustment = monthValue.Adjustment;
                             monthDetail.Id = monthValue.Id;
                         }
@@ -1090,6 +1138,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             if (canViewSensibleData)
                             {
+                                monthDetail.CanViewSensibleData = true;
+
                                 if (employee.SocialCharges != null && employee.SocialCharges.Any())
                                 {
                                     var socialCharge = employee?.SocialCharges.FirstOrDefault(x => x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
@@ -1102,7 +1152,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         monthDetail.Value = salary;
                                         monthDetail.OriginalValue = salary;
                                         monthDetail.Charges = charges;
-                                        monthDetail.CanViewSensibleData = true;
+
+                                        if (salary > 0)
+                                        {
+                                            monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                        }
                                     }
                                 }
                             }
@@ -1115,15 +1169,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthDetail.MonthYear = mounth.MonthYear;
 
                     //Verifico si este mes el recurso se encontro en la analitica
-                    var startDate = new DateTime(mounth.MonthYear.Year, mounth.MonthYear.Month, 1);
-                    var endDate = startDate.AddMonths(1).AddDays(-1);
-
                     if (employee.Allocations != null)
                     {
-                        var alocation = employee.Allocations.Where(x => x.AnalyticId == IdAnalytic && x.StartDate >= startDate.Date && x.StartDate <= endDate.Date && x.Percentage > 0).ToList();
-                        if (alocation.Any())
+                        var alocation = employee.Allocations.FirstOrDefault(x => x.AnalyticId == IdAnalytic && x.StartDate.Date == monthDetail.MonthYear.Date && x.Percentage > 0);
+
+                        if (alocation != null)
                         {
                             monthDetail.HasAlocation = true;
+                            monthDetail.AllocationPercentage = alocation.Percentage;
                         }
                         else
                         {
@@ -1505,33 +1558,113 @@ namespace Sofco.Service.Implementations.ManagementReport
                         .ToList();
         }
 
-        private void InsertTotalSalaryStaffReport(int managementReportId, decimal salary, DateTime monthYear)
+        public bool InsertTotalSalaryStaffReport(int managementReportId, decimal salary, DateTime monthYear)
         {
-            var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
-            var subcategories = unitOfWork.CostDetailRepository.GetSubcategories();
-            var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(managementReportId);
+            bool result;
+            try
+            {
+                var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
+                var subcategories = unitOfWork.CostDetailRepository.GetSubcategories();
+                var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(managementReportId);
 
-            int costDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == monthYear.Date).FirstOrDefault().Id;
-            int subcategorySalaryId = subcategories.Where(x => x.Name == EnumCostDetailSubcategory.Sueldos).FirstOrDefault().Id;
-            int budgetRealId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
+                int costDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == monthYear.Date).FirstOrDefault().Id;
+                int subcategorySalaryId = subcategories.Where(x => x.Name == EnumCostDetailSubcategory.Sueldos).FirstOrDefault().Id;
+                int budgetRealId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
 
-            //Elimino los sueldos ya guardados 
-            var entities = unitOfWork.CostDetailStaffRepository.Where
-                                                        (x => x.CostDetailSubcategoryId == subcategorySalaryId 
-                                                        && x.CostDetailId == costDetailId 
-                                                        && x.BudgetTypeId == budgetRealId);
-            unitOfWork.CostDetailStaffRepository.Delete(entities);
+                //Elimino los sueldos ya guardados 
+                var entities = unitOfWork.CostDetailStaffRepository.Where
+                                                            (x => x.CostDetailSubcategoryId == subcategorySalaryId
+                                                            && x.CostDetailId == costDetailId
+                                                            && x.BudgetTypeId == budgetRealId);
+                unitOfWork.CostDetailStaffRepository.Delete(entities);
 
-            //ingreso el nuevo sueldo total
-            var entity = new CostDetailStaff();
+                //ingreso el nuevo sueldo total
+                var entity = new CostDetailStaff();
 
-            entity.Value = salary;
-            entity.Description = "Sueldo total empleados";
-            entity.CostDetailId = costDetailId;
-            entity.CostDetailSubcategoryId = subcategorySalaryId;
-            entity.BudgetTypeId = budgetRealId;
+                entity.Value = salary;
+                entity.Description = "Sueldo total empleados";
+                entity.CostDetailId = costDetailId;
+                entity.CostDetailSubcategoryId = subcategorySalaryId;
+                entity.BudgetTypeId = budgetRealId;
 
-            unitOfWork.CostDetailStaffRepository.Insert(entity);
+                unitOfWork.CostDetailStaffRepository.Insert(entity);
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                logger.LogError(ex);
+                throw ex;
+            }
+
+            return result;
+        }
+
+        public Response<ManagementReportCommentModel> AddComment(ManagementReportAddCommentModel model)
+        {
+            var response = new Response<ManagementReportCommentModel>();
+
+            if (!unitOfWork.ManagementReportRepository.Exist(model.Id))
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
+                return response;
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Comment))
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.CommentRequired);
+                return response;
+            }
+
+            try
+            {
+                var mrComment = new ManagementReportComment();
+                mrComment.Comment = model.Comment;
+                mrComment.ManagementReportId = model.Id;
+                mrComment.CreatedDate = DateTime.UtcNow;
+                mrComment.UserName = userData.GetCurrentUser().UserName;
+
+                unitOfWork.ManagementReportRepository.AddComment(mrComment);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.ManagementReport.ManagementReport.CommentAdded);
+
+                response.Data = new ManagementReportCommentModel
+                {
+                    Comment = mrComment.Comment,
+                    Date = mrComment.CreatedDate.AddHours(-3),
+                    UserName = mrComment.UserName
+                };
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<IList<ManagementReportCommentModel>> GetComments(int id)
+        {
+            var response = new Response<IList<ManagementReportCommentModel>> { Data = new List<ManagementReportCommentModel>() };
+
+            var comments = unitOfWork.ManagementReportRepository.GetComments(id);
+
+            if (comments.Any())
+            {
+                response.Data = comments.Select(x => new ManagementReportCommentModel
+                {
+                    Comment = x.Comment,
+                    Date = x.CreatedDate.AddHours(-3),
+                    UserName = x.UserName
+                })
+                .OrderByDescending(x => x.Date)
+                .ToList();
+            }
+
+            return response;
         }
     }
 }

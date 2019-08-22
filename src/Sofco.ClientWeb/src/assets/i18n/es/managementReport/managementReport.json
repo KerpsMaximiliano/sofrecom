@@ -18,5 +18,7 @@
     "budgetNotFound": "Presupuesto no encontrado",
     "budgetAdded": "Presupuesto creado correctamente",
     "budgetUpdated": "Presupuesto actualizado correctamente",
-    "budgetDeleted": "Presupuesto eliminado correctamente"
+    "commentRequired": "El comentario es requerido",
+    "commentAdded": "Comentario agregado correctamente",
+    "budgetDeleted": "Presupuesto eliminado correctamente" 
 }

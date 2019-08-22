@@ -50,6 +50,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
             if (response.HasErrors()) return response;
 
             AllocationValidationHelper.ValidateAnalyticClose(response, allocation, unitOfWork.AnalyticRepository);
+            AllocationValidationHelper.ValidateEmployeeDates(response, allocation, unitOfWork.EmployeeRepository);
 
             if (response.HasErrors()) return response;
 
@@ -71,7 +72,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 SaveAllocation(allocation, response, allocationsBetweenDays);
             }
 
-            //managementReportCalculateCostsService.CalculateCosts(allocation, firstMonth.Date, lastMonth.Date);
+            managementReportCalculateCostsService.CalculateCosts(allocation, firstMonth.Date, lastMonth.Date);
 
             var licenses = unitOfWork.LicenseRepository.GetByEmployeeAndDates(allocation.EmployeeId, firstMonth.Date.Date, lastMonth.Date.Date);
 

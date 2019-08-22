@@ -31,10 +31,34 @@
                     <button class="btn btn-primary m-t-md" type="button" (click)="search()">Buscar</button>
                 </div>
             </div>
+
+            <div class="row" *ngIf="gridVisible">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label class="control-label">Prepaga</label>
+                        <ng-select [items]="prepaids" bindLabel="text" bindValue="id" [(ngModel)]="prepaidSelected"></ng-select>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label class="control-label">Estado</label>
+                        <ng-select [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateSelected"></ng-select>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label">Recurso</label>
+                        <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="resourceSelected"></ng-select>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-primary m-t-md" type="button" (click)="filter()">Filtrar</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="ibox" *ngIf="data && data.length > 0"> 
+    <div class="ibox" *ngIf="gridVisible"> 
         <div class="ibox-title">
             <div class="ibox-tools">
                 <button class="btn btn-success btn-sm pull-left" (click)="selectAllError()"> Seleccionar errores  <i class="fa fa-check"></i></button>
@@ -74,8 +98,71 @@
                     <thead>
                         <tr>
                             <th class="column-xs"></th>
+                            <th class="column-xs">Legajo</th>
+                            <th class="column-lg">Recurso</th>
+                            <th class="column-sm">Cuil</th>
+                            <th class="column-xs">Prepaga</th>
+                            <th class="column-xs">Periodo</th>
+                            <th class="column-sm">Benef. (prepaga)</th>
+                            <th class="column-sm">Benef. (tiger)</th>
+                            <th class="column-sm">Plan (prepaga)</th>
+                            <th class="column-sm">Plan (tiger)</th>
+                            <th class="column-xs">Costo (prepaga)</th>
+                            <th class="column-xs">Costo (tiger)</th>
                             <th class="column-xs">Estado</th>
                             <th class="column-xlg text-word-break">Error</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data">
+                            <td class="column-xs text-center">
+                                <icheck *ngIf="item.status != 0" [(checked)]="item.selected"></icheck>
+                            </td>
+                            <td class="column-xs">{{ item.employeeNumber }}</td>
+                            <td class="column-lg">{{ item.employeeName }}</td>
+                            <td class="column-sm">{{ item.cuil }}</td>
+                            <td class="column-xs">{{ item.prepaid?.text }}</td>
+                            <td class="column-xs">{{ item.period | date: 'MM/yyyy' }}</td>
+                            <td class="column-sm">{{ item.prepaidBeneficiaries }}</td>
+                            <td class="column-sm">{{ item.tigerBeneficiaries }}</td>
+                            <td class="column-sm">{{ item.prepaidPlan }}</td>
+                            <td class="column-sm">{{ item.tigerPlan }}</td>
+                            <td class="column-xs">{{ item.prepaidCost | amountFormat }}</td>
+                            <td class="column-xs">{{ item.tigerCost | amountFormat }}</td>
+                            <td class="column-xs">
+                                <label class="label" [ngClass]="getStatusClass(item.status)">{{ getStatusDesc(item.status) }}</label>
+                            </td>
+                            <td class="column-xlg text-word-break">{{ item.comments }}</td>
+                        </tr>
+                    </tbody>
+                </table>       
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox" *ngIf="provisioneds && provisioneds.length > 0"> 
+        <div class="ibox-title">
+            <div class="ibox-tools">
+                <div class="row">
+                    <div class="col-md-3">
+                        <button class="btn btn-success btn-sm pull-left" (click)="selectAllProvisionedTable()"> Seleccionar todos  <i class="fa fa-check"></i></button>
+                        <button class="btn btn-warning btn-sm pull-left" (click)="unselectAllProvisioned()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="text-center">Provisionados meses anteriores</h3>
+                    </div>
+                    <div class="col-md-3">
+                        <button [disabled]="noneItemsProvisionedSelected()" class="btn btn-primary btn-sm" (click)="confirmProvisioned()">Confirmar seleccionados <i class="fa fa-check"></i></button>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped dataTable" role="grid" id="provisionedTable">
+                    <thead>
+                        <tr>
+                            <th class="column-xs"></th>
                             <th class="column-xs">Prepaga</th>
                             <th class="column-lg">Recurso</th>
                             <th class="column-sm">Benef. (prepaga)</th>
@@ -91,14 +178,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of data">
+                        <tr *ngFor="let item of provisioneds">
                             <td class="column-xs text-center">
-                                <icheck *ngIf="item.status != 0" [(checked)]="item.selected"></icheck>
+                                <icheck [(checked)]="item.selected"></icheck>
                             </td>
-                            <td class="column-xs">
-                                <label class="label" [ngClass]="getStatusClass(item.status)">{{ getStatusDesc(item.status) }}</label>
-                            </td>
-                            <td class="column-xlg text-word-break">{{ item.comments }}</td>
                             <td class="column-xs">{{ item.prepaid?.text }}</td>
                             <td class="column-lg">{{ item.employeeName }}</td>
                             <td class="column-sm">{{ item.prepaidBeneficiaries }}</td>
@@ -117,65 +200,4 @@
             </div>
         </div>
     </div>
-
-    <div class="ibox" *ngIf="provisioneds && provisioneds.length > 0"> 
-            <div class="ibox-title">
-                <div class="ibox-tools">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <button class="btn btn-success btn-sm pull-left" (click)="selectAllProvisionedTable()"> Seleccionar todos  <i class="fa fa-check"></i></button>
-                            <button class="btn btn-warning btn-sm pull-left" (click)="unselectAllProvisioned()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
-                        </div>
-                        <div class="col-md-6">
-                            <h3 class="text-center">Provisionados meses anteriores</h3>
-                        </div>
-                        <div class="col-md-3">
-                            <button [disabled]="noneItemsProvisionedSelected()" class="btn btn-primary btn-sm" (click)="confirmProvisioned()">Confirmar seleccionados <i class="fa fa-check"></i></button>  
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <div class="table-responsive">
-                    <table class="table table-striped dataTable" role="grid" id="provisionedTable">
-                        <thead>
-                            <tr>
-                                <th class="column-xs"></th>
-                                <th class="column-xs">Prepaga</th>
-                                <th class="column-lg">Recurso</th>
-                                <th class="column-sm">Benef. (prepaga)</th>
-                                <th class="column-sm">Benef. (tiger)</th>
-                                <th class="column-sm">Plan (prepaga)</th>
-                                <th class="column-sm">Plan (tiger)</th>
-                                <th class="column-xs">Costo (prepaga)</th>
-                                <th class="column-xs">Costo (tiger)</th>
-                                <th class="column-xs">Periodo</th>
-                                <th class="column-xs">Legajo</th>
-                                <th class="column-sm">Cuil</th>
-                                <th class="column-sm">Documento</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of provisioneds">
-                                <td class="column-xs text-center">
-                                    <icheck [(checked)]="item.selected"></icheck>
-                                </td>
-                                <td class="column-xs">{{ item.prepaid?.text }}</td>
-                                <td class="column-lg">{{ item.employeeName }}</td>
-                                <td class="column-sm">{{ item.prepaidBeneficiaries }}</td>
-                                <td class="column-sm">{{ item.tigerBeneficiaries }}</td>
-                                <td class="column-sm">{{ item.prepaidPlan }}</td>
-                                <td class="column-sm">{{ item.tigerPlan }}</td>
-                                <td class="column-xs">{{ item.prepaidCost | amountFormat }}</td>
-                                <td class="column-xs">{{ item.tigerCost | amountFormat }}</td>
-                                <td class="column-xs">{{ item.period | date: 'MM/yyyy' }}</td>
-                                <td class="column-xs">{{ item.employeeNumber }}</td>
-                                <td class="column-sm">{{ item.cuil }}</td>
-                                <td class="column-sm">{{ item.dni }}</td>
-                            </tr>
-                        </tbody>
-                    </table>       
-                </div>
-            </div>
-        </div>
 </div>

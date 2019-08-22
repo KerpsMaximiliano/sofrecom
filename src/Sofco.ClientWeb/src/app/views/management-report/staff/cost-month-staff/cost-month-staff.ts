@@ -33,6 +33,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     totalCosts: number = 0;
     totalProvisioned: number = 0;
     totalProvisionedAux: number = 0;
+    totalChargesPercentage: number = 0;
 
     totalProvisionedEditabled: boolean = false;
 
@@ -159,6 +160,13 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         resource.modified = true
         resource.total = resource.salary + resource.charges;
 
+        if(resource.salary > 0){
+            resource.chargesPercentage = (resource.charges/resource.salary)*100;
+        }
+        else{
+            resource.chargesPercentage = 0;
+        }
+
         this.calculateTotalCosts();
     }
 
@@ -168,13 +176,25 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.resources.forEach(element => {
             this.totalCosts += element.total;
         });
+
+        var totalCharges = 0;
+        var totalSalary= 0;
+
+        this.resources.forEach(element => {
+            totalCharges += element.charges;
+            totalSalary += element.salary;
+        });
+
+        if(totalSalary > 0){
+            this.totalChargesPercentage = (totalCharges/totalSalary)*100;
+        }
     }
 
     getUsers() {
         this.getEmployeesSubscrip = this.employeeService.getListItems().subscribe(data => {
             this.users = data;
         },
-            () => { });
+        () => { });
     }
 
     addEmployee() {
@@ -189,6 +209,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
                     name: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
                     salary: 0,
                     charges: 0,
+                    chargesPercentage: 0,
                     total: 0,
                     hasAlocation: false,
                     new: true

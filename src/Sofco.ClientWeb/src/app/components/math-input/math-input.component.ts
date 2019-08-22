@@ -3,33 +3,40 @@ import { evaluate, compile, parse } from 'mathjs/number'
 
 @Component({
   selector: 'math-input',
-  templateUrl: './math-input.component.html'
+  templateUrl: './math-input.component.html',
+  styleUrls: ['./math-input.component.scss']
 })
 export class MathComponent {
 
   @Input() model;
+  @Input() modelDisabled: boolean = false
 
-   @Output() modelChange = new EventEmitter<boolean>();
+  @Output() modelChange = new EventEmitter<boolean>();
 
   constructor() { }
 
   onEnter(mathBox, value: string) {
     var result;
-    
+
     try {
-      result = evaluate(value)
+      if(value == null || value == ""){
+        result = 0
+      }
+      else{
+        result = evaluate(value)
+      }
 
       this.model = result
-      this.modelChange.emit(this.model);        
-    } 
+      this.modelChange.emit(this.model);
+    }
     catch (error) {
-        result = 0
+      result = 0
 
-        mathBox.value = result
-        this.model = result
-        this.modelChange.emit(this.model);
+      mathBox.value = result
+      this.model = result
+      this.modelChange.emit(this.model);
     }
 
     return result
-}
+  }
 }

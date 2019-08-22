@@ -79,6 +79,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a common.deleteSuccess.
+        /// </summary>
+        public static string DeleteSuccess {
+            get {
+                return ResourceManager.GetString("DeleteSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a common.errorSave.
         /// </summary>
         public static string ErrorSave {
@@ -160,6 +169,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a common.optionNotFound.
+        /// </summary>
+        public static string OptionNotFound {
+            get {
+                return ResourceManager.GetString("OptionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a common.saveFileError.
         /// </summary>
         public static string SaveFileError {
@@ -192,6 +210,15 @@ namespace Sofco.Resources {
         public static string SearchNotFound {
             get {
                 return ResourceManager.GetString("SearchNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a common.textRequired.
+        /// </summary>
+        public static string TextRequired {
+            get {
+                return ResourceManager.GetString("TextRequired", resourceCulture);
             }
         }
         

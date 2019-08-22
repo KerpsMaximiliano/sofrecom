@@ -15,17 +15,7 @@ table {
   }
   
   .first-column {
-    width: 260px;
-  
-    p{
-        width: 240px;
-        float: left;
-    }
-  
-    i{
-        float: right;
-        color: #BD3446;
-    }
+    width: 170px;
   }
   
   .label {
@@ -78,14 +68,26 @@ table {
     padding-top: 6px;
   }
   
-  // .static {
-  //   position: absolute;
-  //   background-color: white;
-  // }
-  
-  // .first-col {
-  //   padding-left: 276px!important;
+.input-xs {
+    height: 26px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
 
-  //   font-size: 13px;
-  //   color: #676a6c;
-  // }
+  .static {
+    position: absolute;
+    background-color: white;
+  }
+  
+  .first-col {
+     padding-left: 186px!important;
+
+  }
+
+  .btn.btn-xs.btn-default.active{
+    background-color: #1a7bb9;
+    border-color: #1a7bb9;
+    color: #ffffff
+  }

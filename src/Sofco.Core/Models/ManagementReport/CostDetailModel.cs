@@ -36,6 +36,10 @@ namespace Sofco.Core.Models.ManagementReport
         public bool Closed { get; set; }
 
         public bool CanViewSensibleData { get; set; }
+
+        public decimal AllocationPercentage { get; set; }
+
+        public decimal ChargesPercentage { get; set; }
     }
     
     public class CostResource
@@ -99,10 +103,12 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal TotalPfa1 { get; set; }
         public decimal TotalPfa2 { get; set; }
         public decimal TotalReal { get; set; }
+        public decimal TotalProjected { get; set; }
         public List<CostSubcategory> SubcategoriesBudget { get; set; }
         public List<CostSubcategory> SubcategoriesPfa1 { get; set; }
         public List<CostSubcategory> SubcategoriesPfa2 { get; set; }
         public List<CostSubcategory> SubcategoriesReal { get; set; }
+        public List<CostSubcategory> SubcategoriesProjected { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
         public bool Closed { get; set; }

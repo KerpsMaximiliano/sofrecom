@@ -16,12 +16,15 @@ namespace Sofco.Service.Implementations.ManagementReport
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<ManagementReportCalculateCostsService> logger;
+        private readonly IManagementReportService managementReportService;
 
         public ManagementReportCalculateCostsService(IUnitOfWork unitOfWork,
-            ILogMailer<ManagementReportCalculateCostsService> logger)
+            ILogMailer<ManagementReportCalculateCostsService> logger,
+            IManagementReportService managementReportService)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.managementReportService = managementReportService;
         }
 
         public void CalculateCosts(AllocationDto allocationDto, DateTime firstMonthDate, DateTime lastMonthDate)
@@ -69,7 +72,13 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                             if (costDetail == null)
                             {
-                                costDetailList.Add(new CostDetail { Id = costDetailResource.CostDetailId, TotalProvisioned = newValueSalary+newValueCharges });
+                                costDetailList.Add(new CostDetail
+                                    {
+                                        Id = costDetailResource.CostDetailId,
+                                        TotalProvisioned = newValueSalary+newValueCharges,
+                                        ManagementReportId = costDetailResource.CostDetail.ManagementReportId,
+                                        MonthYear = costDetailResource.CostDetail.MonthYear
+                                    });
                             }
                             else
                             {
@@ -86,6 +95,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                 foreach (var costDetail in costDetailList)
                 {
                     unitOfWork.CostDetailRepository.UpdateTotalProvisioned(costDetail);
+                    var analytic = costDetail.ManagementReport.Analytic;
+                    if (analytic.ServiceId == null && analytic.AccountId == null)
+                    {
+                        managementReportService.InsertTotalSalaryStaffReport(costDetail.ManagementReportId, costDetail.TotalProvisioned ?? 0, costDetail.MonthYear);
+                    }
                 }
 
                 unitOfWork.Save();
@@ -252,5 +266,6 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             unitOfWork.Save();
         }
+      
     }
 }

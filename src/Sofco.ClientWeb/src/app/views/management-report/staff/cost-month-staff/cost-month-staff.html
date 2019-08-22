@@ -24,10 +24,18 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-6 col-form-label">% Cargas</label>
+                <div class="col-sm-6">
+                    <label class="label label-gray">{{ totalChargesPercentage | amountFormat }}</label>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row border-bottom m-b-sm">
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <h4>Costos RD + P</h4>
         </div>
         <div class="col-sm-2">
@@ -39,30 +47,32 @@
         <div class="col-sm-2">
             <h4>Total gral</h4>
         </div>
+        <div class="col-sm-2">
+            <h4>% Cargas</h4>
+        </div>
     </div>
 
     <div class="row m-t-xs" *ngFor="let resource of resources; let i = index">
-        <div class="col-sm-5">
+        <div class="col-sm-4">
             <span class="text-danger" *ngIf="resource.modified"><strong>* </strong></span>
             <span class="text-warning" *ngIf="resource.id == 0"><strong>* </strong></span>
             <span>{{ resource.name }}</span>
+            <button class="btn btn-danger btn-xs pull-right" *ngIf="resource.new == true && !isReadOnly" (click)="deleteResource(i, resource)"><i class="fa fa-trash"></i></button>
         </div>
         <div class="col-sm-2">
-            <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
-                [(ngModel)]="resource.salary" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
+            <math-input [(model)]="resource.salary" (modelChange)="resourceChange(resource)" [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
-            <input type="number" [digitLimit]="8" decimalFormat class="form-control input-xs" max="99999999" min="0"
-                [(ngModel)]="resource.charges" (ngModelChange)="resourceChange(resource)" [disabled]="isReadOnly">
+            <math-input [(model)]="resource.charges" (modelChange)="resourceChange(resource)" [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
-            <input type="number" decimalFormat class="form-control input-xs" [(ngModel)]="resource.total" disabled>
+            <input type="text" class="form-control input-xs text-right" [ngModel]="resource.total | amountFormat" disabled>
         </div>
-        <div class="col-sm-1" *ngIf="resource.new == true">
-            <button class="btn btn-danger btn-xs" (click)="deleteResource(i, resource)" *ngIf="!isReadOnly"><i
-                    class="fa fa-trash"></i></button>
+        <div class="col-sm-2">
+            <input type="text" class="form-control input-xs" [ngModel]="resource.chargesPercentage | amountFormat" disabled>
         </div>
     </div>
+
     <br>
 
     <small class="text-danger m-r-sm"><strong>* Ajuste</strong></small>
@@ -106,7 +116,7 @@
             {{ cost.name }}
         </div>
         <div class="col-sm-3">
-            <input type="text" class="form-control input-md" [(ngModel)]="cost.description" maxlength="200">
+            <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200">
         </div>
         <div class="col-sm-2">
             <math-input [(model)]="cost.value"></math-input>

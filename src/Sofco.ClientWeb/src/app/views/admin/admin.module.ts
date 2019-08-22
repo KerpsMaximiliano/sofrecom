@@ -1,7 +1,7 @@
 import { TranslateModule } from '@ngx-translate/core';
 import { Ng2ModalModule } from '../../components/modal/ng2modal.module';
 import { ICheckModule } from '../../components/icheck/icheck.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
@@ -63,7 +63,7 @@ import { WorkflowStateAddComponent } from './workflow/state-add/state-add.compon
 import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
 
 @NgModule({
-  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
+  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent,
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
                  TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent, WorkflowTransitionEditComponent,
@@ -71,7 +71,7 @@ import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.com
                  WorkflowStateListComponent, WorkflowStateAddComponent, WorkflowStateEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
-                 SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule],
+                 SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule, ReactiveFormsModule],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService,
                  TaskService, AreaService, SectorService, WorkflowService, UtilsService],
@@ -81,3 +81,4 @@ import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.com
 })
 
 export class AdminModule {}
+ 

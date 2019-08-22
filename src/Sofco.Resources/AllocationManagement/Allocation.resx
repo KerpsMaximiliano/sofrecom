@@ -126,6 +126,12 @@
   <data name="CannotBeAssign" xml:space="preserve">
     <value>allocationManagement/allocation.cannotBeAssign</value>
   </data>
+  <data name="DateGreaterThanEmployeeEndDate" xml:space="preserve">
+    <value>allocationManagement/allocation.dateGreaterThanEmployeeEndDate</value>
+  </data>
+  <data name="DateLessThanEmployeeStartDate" xml:space="preserve">
+    <value>allocationManagement/allocation.dateLessThanEmployeeStartDate</value>
+  </data>
   <data name="DateSinceOutOfRange" xml:space="preserve">
     <value>allocationManagement/allocation.dateSinceOutOfRange</value>
   </data>

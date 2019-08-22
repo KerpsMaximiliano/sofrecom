@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.AllocationManagement {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.AllocationManagement {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.AllocationManagement.Allocation", typeof(Allocation).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.AllocationManagement.Allocation", typeof(Allocation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -85,6 +84,24 @@ namespace Sofco.Resources.AllocationManagement {
         public static string CannotBeAssign {
             get {
                 return ResourceManager.GetString("CannotBeAssign", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.dateGreaterThanEmployeeEndDate.
+        /// </summary>
+        public static string DateGreaterThanEmployeeEndDate {
+            get {
+                return ResourceManager.GetString("DateGreaterThanEmployeeEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/allocation.dateLessThanEmployeeStartDate.
+        /// </summary>
+        public static string DateLessThanEmployeeStartDate {
+            get {
+                return ResourceManager.GetString("DateLessThanEmployeeStartDate", resourceCulture);
             }
         }
         

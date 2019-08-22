@@ -18,7 +18,7 @@
                     <th class="static first-column" scope="col"></th>
 
                     <td class="first-col text-center budget">
-                        <strong>PRESUPUESTO</strong>
+                        <strong>BUDGET</strong>
                     </td>
                     <td class="text-center">
                         <strong>PFA1</strong>
@@ -40,7 +40,7 @@
                     </td>
 
                     <td class="text-center">
-                        <strong>PRESUPUESTO</strong>
+                        <strong>BUDGET</strong>
                     </td>
                     <td class="text-center">
                         <strong>PFA1</strong>
@@ -94,14 +94,20 @@
                         </span>
                     </td>
                     <td class="text-center desvio">
-                        <span>
+                        <span [hidden]="month.totalPfa1 > 0">
+                            <i class="fa fa-2x fa-ellipsis-h" aria-hidden="true"></i>
+                        </span>
+                        <span [hidden]="!month.totalPfa1 > 0">
                             <i class="fa fa-3x"
                                 [ngClass]="month.totalReal <= month.totalPfa1 ? 'fa-caret-up' : 'fa-caret-down'"
                                 aria-hidden="true"></i>
                         </span>
                     </td>
                     <td class="text-center desvio">
-                        <span>
+                        <span [hidden]="month.totalPfa2 > 0">
+                            <i class="fa fa-2x fa-ellipsis-h" aria-hidden="true"></i>
+                        </span>
+                        <span [hidden]="!month.totalPfa2 > 0">
                             <i class="fa fa-3x"
                                 [ngClass]="month.totalReal <= month.totalPfa2 ? 'fa-caret-up' : 'fa-caret-down'"
                                 aria-hidden="true"></i>
@@ -135,14 +141,20 @@
                         </span>
                     </td>
                     <td class="text-center desvio">
-                        <span>
+                        <span [hidden]="month.acomulatedPfa1 > 0">
+                            <i class="fa fa-2x fa-ellipsis-h" aria-hidden="true"></i>
+                        </span>
+                        <span [hidden]="!month.acomulatedPfa1 > 0">
                             <i class="fa fa-3x"
                                 [ngClass]="month.acomulatedReal <= month.acomulatedPfa1 ? 'fa-caret-up' : 'fa-caret-down'"
                                 aria-hidden="true"></i>
                         </span>
                     </td>
                     <td class="text-center desvio">
-                        <span>
+                        <span [hidden]="month.acomulatedPfa2 > 0">
+                            <i class="fa fa-2x fa-ellipsis-h" aria-hidden="true"></i>
+                        </span>
+                        <span [hidden]="!month.acomulatedPfa2 > 0">
                             <i class="fa fa-3x"
                                 [ngClass]="month.acomulatedReal <= month.acomulatedPfa2 ? 'fa-caret-up' : 'fa-caret-down'"
                                 aria-hidden="true"></i>

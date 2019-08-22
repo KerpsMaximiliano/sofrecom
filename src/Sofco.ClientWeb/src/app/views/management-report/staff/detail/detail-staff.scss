@@ -40,3 +40,30 @@ tfoot {
     font-size: 13px;
     border-bottom: 1px solid #e7eaec;
 }
+
+
+.history-comments {
+    background-color: #F8EFFF;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.history-comments:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+pre {
+    border: 0px!important;
+    border-radius: 0px!important;
+    padding: 0px!important;
+    margin-top: 5px;
+    margin-bottom: 0px!important;
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: 12px;
+    white-space: pre-line;
+}
+
+.comment-date {
+    margin-left: 10px;
+}
