@@ -31,6 +31,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     projects: any[] = new Array();
     totals: any[] = new Array();
 
+    hitosHide: boolean = true;
+
     managerId: string;
     managementReportId: number;
 

@@ -131,6 +131,13 @@ export class MenuService {
        return false;
     }
 
+    hasRecruitment(){
+        if (this.hasModule("RECRU")) {
+            return true;
+       }
+       return false;
+    }
+
     hasAreaAccess(areaId:number):boolean {
         return this.areaIds.indexOf(areaId)>-1;
     }

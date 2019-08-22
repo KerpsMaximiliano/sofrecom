@@ -43,9 +43,13 @@
                 </td>
             </tr>
             <tr>
-                <td [attr.colspan]="months.length+1" class="hitos-title">Hitos</td>
+                <td [attr.colspan]="months.length+1" class="hitos-title pointer" (click)="hitosHide = !hitosHide">
+                    <label class="first-column">Hitos</label>
+                    <i class="fa fa-plus " *ngIf="hitosHide"></i>
+                    <i class="fa fa-minus" *ngIf="!hitosHide"></i>
+                </td>
             </tr>
-            <tr *ngFor="let hito of hitos">
+            <tr *ngFor="let hito of hitos" [hidden]="hitosHide" class="animated fadeIn">
                 <td class="first-column text-word-break">
                    <p>
                         {{ hito.opportunityNumber }} - {{ hito.description }} - ({{ hito.currencyName }})
