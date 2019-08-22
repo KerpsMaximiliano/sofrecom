@@ -149,9 +149,14 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     this.messageService.showError("cannotUpdateBudget");
                 }
                 else {
-                    if(isCdg) { this.readOnly = false }
-                    this.editItemModal.show();
-                    return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
+                    if(this.monthSelected.totalReal > 0){
+                        this.messageService.showWarning("realHasValue");
+                    }
+                    else{
+                        if(isCdg) { this.readOnly = false }
+                        this.editItemModal.show();
+                        return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
+                    }
                 }
 
                 break;
