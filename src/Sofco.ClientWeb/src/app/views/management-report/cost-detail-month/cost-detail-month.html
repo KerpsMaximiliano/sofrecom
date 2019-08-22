@@ -69,9 +69,12 @@
         <div class="col-sm-2">
             <h4>Total gral</h4>
         </div>
-        <div class="col-sm-2">
-            <h4>% Cargas</h4>
+        <div class="col-sm-1">
+            <h4>%Cargas</h4>
         </div>
+        <div class="col-sm-1">
+               
+            </div>
     </div>
 
     <div class="row m-t-xs" *ngFor="let resource of resources; let i = index">
@@ -79,7 +82,6 @@
             <span class="text-danger" *ngIf="!resource.hasAlocation || resource.modified"><strong>* </strong></span>
             <span class="text-warning" *ngIf="resource.id == 0"><strong>* </strong></span>
             <span>{{ resource.name }}</span>
-            <button class="btn btn-danger btn-xs" *ngIf="resource.new == true && !isReadOnly" (click)="deleteResource(i, resource)"><i class="fa fa-trash"></i></button>
         </div>
         <div class="col-sm-2">
             <math-input [(model)]="resource.salary" (modelChange)="resourceChange(resource)"
@@ -92,8 +94,11 @@
         <div class="col-sm-2">
             <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resource.total | amountFormat" disabled>
         </div>
-        <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resource.chargesPercentage | amountFormat" disabled>
+        <div class="col-sm-1">
+            <input type="text" decimalFormat class="percentageLoads form-control input-xs" [ngModel]="resource.chargesPercentage | amountFormat" disabled>
+        </div>
+        <div class="col-sm-1">
+            <button class="btn btn-danger btn-xs" *ngIf="resource.new == true && !isReadOnly" (click)="deleteResource(i, resource)"><i class="fa fa-trash"></i></button>
         </div>
     </div>
 
