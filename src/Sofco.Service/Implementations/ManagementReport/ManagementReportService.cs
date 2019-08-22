@@ -1273,6 +1273,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 detailProfile.Display = profiles.Where(p => p.Id == profileId.ProfileId).FirstOrDefault().Text;
                 detailProfile.EmployeeProfileId = profileId.ProfileId;
+                detailProfile.Guid = profileId.Guid;
                 detailProfile.TypeName = EnumCostDetailType.Profile;
 
                 foreach (var mounth in Months)
@@ -1662,6 +1663,30 @@ namespace Sofco.Service.Implementations.ManagementReport
                 })
                 .OrderByDescending(x => x.Date)
                 .ToList();
+            }
+
+            return response;
+        }
+
+        public Response DeleteProfile(string guid)
+        {
+            var response = new Response();
+            try
+            {
+                if (!string.IsNullOrEmpty(guid))
+                {
+                    var entities = unitOfWork.CostDetailProfileRepository.Where
+                                                                (x => x.Guid == guid);
+
+                    unitOfWork.CostDetailProfileRepository.Delete(entities);
+                }
+
+                unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
             }
 
             return response;

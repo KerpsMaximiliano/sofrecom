@@ -70,6 +70,7 @@ namespace Sofco.Core.Models.ManagementReport
     {
         public string Display { get; set; }
         public int EmployeeProfileId { get; set; }
+        public string Guid { get; set; }
         public string TypeName { get; set; }
         public string Description { get; set; }
 

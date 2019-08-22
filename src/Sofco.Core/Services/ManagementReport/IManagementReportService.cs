@@ -23,5 +23,6 @@ namespace Sofco.Core.Services.ManagementReport
         bool InsertTotalSalaryStaffReport(int managementReportId, decimal salary, System.DateTime monthYear);
         Response<ManagementReportCommentModel> AddComment(ManagementReportAddCommentModel model);
         Response<IList<ManagementReportCommentModel>> GetComments(int id);
+        Response DeleteProfile(string guid);
     }
 }

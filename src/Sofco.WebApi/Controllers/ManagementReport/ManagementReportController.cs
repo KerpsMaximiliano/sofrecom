@@ -147,5 +147,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpDelete("{guid}/profile")]
+        public IActionResult DeleteProfile(string guid)
+        {
+            var response = managementReportService.DeleteProfile(guid);
+
+            return this.CreateResponse(response);
+        }
     }
 }

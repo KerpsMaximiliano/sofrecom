@@ -60,7 +60,7 @@
                 <tr class="warning" *ngFor="let profile of costProfiles">
                     <th class="static first-column" scope="col">
                         <p>{{ profile.display }}</p>
-                        <i class="fa fa-2x fa-trash"></i>
+                        <i class="fa fa-2x fa-trash pointer" (click)="deleteProfile(profile, i)"></i>
                     </th>
                     <td *ngFor="let monthCost of profile.monthsCost | fromDateFilter: fromMonth; let i = index; first as isFirst"
                         [ngClass]="{'first-col': isFirst}">
