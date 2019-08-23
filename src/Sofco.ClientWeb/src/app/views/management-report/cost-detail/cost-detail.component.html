@@ -116,6 +116,27 @@
                         </td>
                     </ng-template>
                 </tr>
+                <tr *ngFor="let item of fundedResourcesEmployees; let i = index">
+                    <th class="static first-column" scope="col">
+                        <p>
+                            {{ item.display }}
+                        </p>
+                    </th>
+                    <ng-template ngFor let-monthCost [ngForOf]="item.monthsCost | fromDateFilter: fromMonth"
+                        let-i="index">
+                        <td [ngClass]="{'first-col': (i == 0)}">
+                            <label class="label" (click)="openEditItemModal(monthCost, item, i)"
+                                [ngClass]="resourcesClass(monthCost, item)">
+                                {{ monthCost.value | amountFormat }}
+                            </label>
+                        </td>
+                        <td>
+                            <label class="label bg-warning">
+                                {{ monthCost.value | amountFormat }}
+                            </label>
+                        </td>
+                    </ng-template>
+                </tr>
                 <tr>
                     <th class="static first-column" scope="col">Total Sueldo</th>
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
@@ -219,6 +240,16 @@
                 <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelected.display }}"
                     readonly="">
             </div>
+
+            <div class="form-group" *ngIf="modalEmployee">
+                <label class="control-label" for="readOnlyInput">Asignación</label>
+                <div class="input-group">
+                    <input class="form-control" id="readOnlyInput" type="text"
+                        placeholder="{{ monthSelected.allocationPercentage }}" readonly="">
+                    <span class="input-group-addon">%</span>
+                </div>
+            </div>
+
             <div class="form-group" *ngIf="modalEmployee">
                 <label class="control-label">Monto final</label>
                 <div class="input-group">
@@ -226,15 +257,6 @@
                     <input class="form-control" id="readOnlyInput" type="text"
                         placeholder="{{ editItemMonto.value + editItemMonto.value * editItemAdjustment.value / 100}}"
                         readonly="">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label" for="readOnlyInput">Asignación</label>
-                <div class="input-group">
-                    <span class="input-group-addon">%</span>
-                    <input class="form-control" id="readOnlyInput" type="text"
-                        placeholder="{{ monthSelected.allocationPercentage }}" readonly="">
                 </div>
             </div>
 
