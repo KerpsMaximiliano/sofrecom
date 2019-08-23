@@ -65,6 +65,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     othersByMonth: any[] = new Array()
     today: Date = new Date()
     fromMonth: Date = new Date()
+    employeesHide: boolean = true;
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"

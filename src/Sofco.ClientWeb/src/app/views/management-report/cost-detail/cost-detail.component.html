@@ -70,17 +70,35 @@
                         </td>
                     </ng-template>
                 </tr>
-                <tr class="active" *ngFor="let employee of employees">
-                    <th class="static first-column" scope="col">{{ employee.display }}</th>
+                <tr class="showHideColumn">
+                    <th class="static first-column active" scope="col" [attr.colspan]="months.length+1"
+                        (click)="employeesHide = !employeesHide">
+                        RECURSOS
+                        <i class="fa fa-plus fa-2x" *ngIf="employeesHide"></i>
+                        <i class="fa fa-minus fa-2x" *ngIf="!employeesHide"></i>
+                    </th>
+                    <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
+                        <td [ngClass]="{'first-col': (i == 0)}">
+
+                        </td>
+                        <td>
+
+                        </td>
+                    </ng-template>
+                </tr>
+                <tr class="animated fadeIn" *ngFor="let employee of employees" [hidden]="employeesHide">
+                    <th class="static first-column active" scope="col">
+                        <p>
+                            {{ employee.display }}
+                        </p>
+                    </th>
                     <ng-template ngFor let-monthCost [ngForOf]="employee.monthsCost | fromDateFilter: fromMonth"
                         let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
-
                             <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
                                 *ngIf="monthCost.canViewSensibleData" [ngClass]="AccessEmployeeClass(monthCost)">
                                 {{ monthCost.value | amountFormat }}
                             </label>
-
                             <label class="label" *ngIf="!monthCost.canViewSensibleData"
                                 [ngClass]="AccessEmployeeClass(monthCost)">
                                 ***
@@ -96,8 +114,8 @@
                         </td>
                     </ng-template>
                 </tr>
-                <tr class="warning" *ngFor="let profile of costProfiles">
-                    <th class="static first-column" scope="col">
+                <tr class="animated fadeIn" *ngFor="let profile of costProfiles" [hidden]="employeesHide">
+                    <th class="static first-column active" scope="col">
                         <p>{{ profile.display }}</p>
                         <i class="fa fa-2x fa-trash pointer" (click)="deleteProfile(profile, i)"></i>
                     </th>
@@ -116,8 +134,9 @@
                         </td>
                     </ng-template>
                 </tr>
-                <tr *ngFor="let item of fundedResourcesEmployees; let i = index">
-                    <th class="static first-column" scope="col">
+                <tr *ngFor="let item of fundedResourcesEmployees; let i = index" [hidden]="employeesHide"
+                    class="animated fadeIn">
+                    <th class="static first-column active" scope="col">
                         <p>
                             {{ item.display }}
                         </p>
