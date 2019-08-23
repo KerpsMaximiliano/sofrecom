@@ -6,6 +6,7 @@ export class RefundDetail extends FormGroup {
 
     private id: number;
     private refundId: number;
+    public order: number;
 
     constructor(domain?) {
         super({
@@ -27,6 +28,7 @@ export class RefundDetail extends FormGroup {
         if(domain){
             this.id = domain.id || 0;
             this.refundId = domain.refundId || 0;
+            this.order = domain.order || 0;
         }
     }
 
@@ -36,7 +38,8 @@ export class RefundDetail extends FormGroup {
             creationDate: this.controls.creationDate.value,
             description: this.controls.description.value,
             ammount: this.controls.ammount.value,
-            refundId: this.refundId
+            refundId: this.refundId,
+            order: this.order
         }
     }
 }

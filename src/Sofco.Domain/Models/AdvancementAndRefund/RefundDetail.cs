@@ -13,5 +13,7 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
         public int RefundId { get; set; }
 
         public Refund Refund { get; set; }
+
+        public int Order { get; set; }
     }
 }

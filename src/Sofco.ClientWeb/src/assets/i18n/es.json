@@ -937,6 +937,8 @@
     "pfa1Required": "Antes de cargar el PFA2 se debe cargar el budget y el PFA1",
     "cannotUpdateBudget": "No puede modificar el Budget si ya cargo el PFA1",
     "cannotUpdatePfa1": "No puede modificar el PFA1 si ya cargo el PFA2",
+    "realHasValue": "Debe quitar valor en el campo Real",
+    "onlyCdgCanModify": "Solo Control de Gestión puede modificar este dato",
     "report":{
         "title": "Reporte",
         "solfacs": {

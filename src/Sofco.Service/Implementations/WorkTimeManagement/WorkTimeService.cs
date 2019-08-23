@@ -545,13 +545,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     .ToList();
             }
 
-            if (employeeId.HasValue && employeeId.Value > 0)
-            {
-                userApprovers = userApprovers
-                    .Where(s => s.EmployeeId == employeeId.Value)
-                    .ToList();
-            }
-
             if (!userApprovers.Any()) return result;
 
             var employeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
@@ -565,9 +558,28 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 .GetByEmployeeIds(employeeIds)
                 .ToList();
 
-            result = status != WorkTimeStatus.Approved
-                ? result.Where(s => s.Status == status).ToList()
-                : result.Where(s => s.Status == status || s.Status == WorkTimeStatus.License).ToList();
+            if (status != WorkTimeStatus.Approved)
+            {
+                if (analyticId.HasValue && analyticId.Value > 0)
+                {
+                    result = result.Where(s => s.Status == status && s.AnalyticId == analyticId.Value).ToList();
+                }
+                else
+                {
+                    result = result.Where(s => s.Status == status).ToList();
+                }
+            }
+            else
+            {
+                if (analyticId.HasValue && analyticId.Value > 0)
+                {
+                    result = result.Where(s => (s.Status == status || s.Status == WorkTimeStatus.License) && s.AnalyticId == analyticId.Value).ToList();
+                }
+                else
+                {
+                    result = result.Where(s => s.Status == status || s.Status == WorkTimeStatus.License).ToList();
+                }
+            }
 
             return result;
         }

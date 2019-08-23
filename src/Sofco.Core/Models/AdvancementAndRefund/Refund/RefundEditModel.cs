@@ -53,7 +53,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
                 });
             }
 
-            foreach (var detail in refund.Details)
+            foreach (var detail in refund.Details.OrderBy(x => x.Order))
             {
                 Details.Add(new RefundEditDetailModel(detail));
             }

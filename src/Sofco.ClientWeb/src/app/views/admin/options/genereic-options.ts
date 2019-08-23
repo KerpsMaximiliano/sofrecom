@@ -103,14 +103,14 @@ export class GenericOptionComponent implements OnDestroy {
         this.confirmModal.show();
     }
 
-    save(){
-        if(this.id > 0){
-            this.updateSubscrip = this.genericOptionService.edit(this.id, this.text.value).subscribe(response => {
+    save(json){
+        if(json.id > 0){
+            this.updateSubscrip = this.genericOptionService.edit(json.id, json.text).subscribe(response => {
                 this.confirmModal.hide();
 
-                var item = this.list.find(x => x.id == this.id);
+                var item = this.list.find(x => x.id == json.id);
 
-                if(item) item.text = this.text.value;
+                if(item) item.text = json.text;
 
                 this.id = 0;
                 this.text.setValue("");
@@ -118,10 +118,10 @@ export class GenericOptionComponent implements OnDestroy {
             () => this.confirmModal.hide());
         }
         else{
-            this.addSubscrip = this.genericOptionService.add(this.text.value).subscribe(response => {
+            this.addSubscrip = this.genericOptionService.add(json.text).subscribe(response => {
                 this.confirmModal.hide();
                 
-                this.list.push({ id: response.data, text: this.text.value, active: true });
+                this.list.push({ id: response.data, text: json.text, active: true });
 
                 this.initGrid();
 

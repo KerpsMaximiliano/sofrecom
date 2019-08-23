@@ -98,13 +98,28 @@ namespace Sofco.Framework.FileManager.WorkTime
                         if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday &&
                         Holidays.All(x => x.Date.Date != startDate.Date) && !hasLicence)
                         {
-                            if (employee.Allocations.Any(x => x.StartDate.Date == firstDayOffMonth.Date && x.Percentage > 0 && x.AnalyticId == analyticId))
+                            if (employee.Allocations.Any(x => x.StartDate.Date == firstDayOffMonth.Date && x.Percentage > 0 && x.AnalyticId == analyticId) &&
+                                startDate.Date >= employee.StartDate.Date)
                             {
-                                sheet1.Cells[$"A{index}"].Value = employee.EmployeeNumber;
-                                sheet1.Cells[$"B{index}"].Value = employee.Name;
-                                sheet1.Cells[$"C{index}"].Value = startDate.Date;
-                                sheet1.Cells[$"C{index}"].Style.Numberformat.Format = format;
-                                index++;
+                                if (employee.EndDate.HasValue)
+                                {
+                                    if (startDate.Date <= employee.EndDate.Value.Date)
+                                    {
+                                        sheet1.Cells[$"A{index}"].Value = employee.EmployeeNumber;
+                                        sheet1.Cells[$"B{index}"].Value = employee.Name;
+                                        sheet1.Cells[$"C{index}"].Value = startDate.Date;
+                                        sheet1.Cells[$"C{index}"].Style.Numberformat.Format = format;
+                                        index++;
+                                    }
+                                }
+                                else
+                                {
+                                    sheet1.Cells[$"A{index}"].Value = employee.EmployeeNumber;
+                                    sheet1.Cells[$"B{index}"].Value = employee.Name;
+                                    sheet1.Cells[$"C{index}"].Value = startDate.Date;
+                                    sheet1.Cells[$"C{index}"].Style.Numberformat.Format = format;
+                                    index++;
+                                }
                             }
                         }
 

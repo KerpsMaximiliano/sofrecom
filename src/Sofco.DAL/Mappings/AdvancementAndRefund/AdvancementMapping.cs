@@ -18,7 +18,7 @@ namespace Sofco.DAL.Mappings.AdvancementAndRefund
             builder.Entity<Advancement>().HasMany(x => x.Histories).WithOne(x => x.Advancement).HasForeignKey(x => x.AdvancementId);
 
             builder.Entity<AdvancementHistory>().HasKey(x => x.Id);
-            builder.Entity<AdvancementHistory>().Property(x => x.Comment).HasMaxLength(400);
+            builder.Entity<AdvancementHistory>().Property(x => x.Comment).HasMaxLength(1000);
             builder.Entity<AdvancementHistory>().Property(x => x.UserName).HasMaxLength(100);
 
             builder.Entity<AdvancementHistory>().HasOne(x => x.StatusFrom).WithMany(x => x.AdvancementHistories).HasForeignKey(x => x.StatusFromId).OnDelete(DeleteBehavior.Restrict);

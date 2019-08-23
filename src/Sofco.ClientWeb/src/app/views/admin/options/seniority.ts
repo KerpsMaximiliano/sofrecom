@@ -21,4 +21,13 @@ export class SeniorityComponent extends GenericOptionComponent implements OnInit
         this.setEntity(GenericOptions.Seniority);
         this.title = "Seniorities";
     }
+
+    create() {
+        var json = {
+            id: this.id,
+            text: this.text.value
+        };
+
+        this.save(json);
+    }
 }
