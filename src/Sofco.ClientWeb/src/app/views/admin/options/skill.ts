@@ -21,4 +21,13 @@ export class SkillComponent extends GenericOptionComponent implements OnInit {
         this.setEntity(GenericOptions.Skill);
         this.title = "Conocimientos";
     }
+
+    create() {
+        var json = {
+            id: this.id,
+            text: this.text.value
+        };
+
+        this.save(json);
+    }
 }

@@ -53,7 +53,7 @@
     </div>
 </div>
 
-<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="save()" [isSaveEnabled]="text.valid">
+<ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="create()" [isSaveEnabled]="text.valid">
     <div class="form-group">
         <label class="control-label">Descripción</label>
         <input class="form-control" type="text" [formControl]="text" maxlength="75">
