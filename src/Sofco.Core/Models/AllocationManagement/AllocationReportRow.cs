@@ -45,6 +45,8 @@ namespace Sofco.Core.Models.AllocationManagement
         public string EmployeeNumber { get; set; }
 
         public string AnalyticTitle { get; set; }
+
+        public string AssignComments { get; set; }
     }
 
     public class AllocationDateReport
