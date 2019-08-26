@@ -401,8 +401,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                 //Mapeo Los empleados      
 
                 response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails);
-                response.Data.FundedResources = AllCostResources.Where(r => r.show == true).ToList();
-                response.Data.OtherResources = AllCostResources.Where(r => r.show == false).OrderBy(r => r.Display).ToList();
+                response.Data.FundedResourcesEmployees = AllCostResources.Where(r => r.BelongEmployee == true).ToList();
+                response.Data.FundedResources = AllCostResources.Where(r => r.show == true && r.BelongEmployee == false).ToList();
+                response.Data.OtherResources = AllCostResources.Where(r => r.show == false && r.BelongEmployee == false).OrderBy(r => r.Display).ToList();
                 response.Data.CostProfiles = FillProfilesByMonth(response.Data.MonthsHeader, costDetails);
             }
             catch (Exception ex)
@@ -1240,6 +1241,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                 if (type.Default == false)
                 {
                     detailResource.OtherResource = true;
+                }
+
+                if (type.BelongEmployee == true)
+                {
+                    detailResource.BelongEmployee = true;
                 }
 
                 if (type.Default == true || hasValue)

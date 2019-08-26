@@ -33,6 +33,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     employees: any[] = new Array();
     employeesOriginal: any[] = new Array();
     fundedResources: any[] = new Array();
+    fundedResourcesEmployees: any[] = new Array();
     otherResources: any[] = new Array();
     costProfiles: any[] = new Array()
     monthSelected: any = { value: 0, display: '' };
@@ -64,6 +65,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     othersByMonth: any[] = new Array()
     today: Date = new Date()
     fromMonth: Date = new Date()
+    employeesHide: boolean = true;
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
@@ -147,6 +149,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.months = response.data.monthsHeader;
             this.employees = response.data.costEmployees;
             this.fundedResources = response.data.fundedResources;
+            this.fundedResourcesEmployees = response.data.fundedResourcesEmployees
             this.otherResources = response.data.otherResources;
             this.employeesOriginal = response.data.costEmployees;
             this.costProfiles = response.data.costProfiles;
@@ -464,6 +467,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         })
 
+        this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
+            if (resourceEmpleyee.monthsCost[index].value) {
+                totalSalary += resourceEmpleyee.monthsCost[index].value
+            }
+        })
+
         return totalSalary
     }
 
@@ -495,6 +504,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
             })
 
+            //Sumo los gastos de los empleados
+            this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
+                if (resourceEmpleyee.monthsCost[index].value) {
+                    totalCost += resourceEmpleyee.monthsCost[index].value
+                }
+            })
+
             month.value = totalCost + (totalSalary * 0.51);
         })
     }
@@ -511,6 +527,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.costProfiles.forEach(profile => {
             if (profile.monthsCost[index].value) {
                 totalSalary += profile.monthsCost[index].value
+            }
+        })
+
+        this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
+            if (resourceEmpleyee.monthsCost[index].value) {
+                totalSalary += resourceEmpleyee.monthsCost[index].value
             }
         })
 
@@ -729,7 +751,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 months: this.months,
                 otherResources: this.otherResources,
                 costProfiles: this.costProfiles,
-                fundedResources: this.fundedResources
+                fundedResources: this.fundedResources.concat(this.fundedResourcesEmployees)
             });
         }
     }
@@ -792,7 +814,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var result;
 
         try {
-            result = evaluate(value)
+            if (value == null || value == "") {
+                result = 0
+            }
+            else {
+                result = evaluate(value)
+            }
         }
         catch (error) {
             result = 0
