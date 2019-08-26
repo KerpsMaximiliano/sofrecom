@@ -193,7 +193,7 @@
       </li>
 
       <!-- Recruitment -->
-      <li [ngClass]="{active: activeRoute('recruitment')}">
+      <li [ngClass]="{active: activeRoute('recruitment')}" *ngIf="menuService.hasRecruitment()">
         <a href="#"><i class="fa fa-user-plus"></i> <span class="nav-label">{{'recruitment.title' | translate }}</span> <span
             class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('recruitment')}">

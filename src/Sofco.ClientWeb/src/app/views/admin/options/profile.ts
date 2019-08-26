@@ -21,4 +21,13 @@ export class ProfileComponent extends GenericOptionComponent implements OnInit {
         this.setEntity(GenericOptions.Profile);
         this.title = "Perfiles";
     }
+
+    create() {
+        var json = {
+            id: this.id,
+            text: this.text.value
+        };
+
+        this.save(json);
+    }
 }

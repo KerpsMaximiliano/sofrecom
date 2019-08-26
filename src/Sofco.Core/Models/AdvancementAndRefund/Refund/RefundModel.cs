@@ -77,6 +77,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
                     if (domainDetail != null)
                     {
+                        domainDetail.Order = detail.Order;
                         domainDetail.Description = detail.Description;
                         domainDetail.Ammount = detail.Ammount;
                         domainDetail.CreationDate = detail.CreationDate.GetValueOrDefault();
@@ -108,6 +109,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public decimal Ammount { get; set; }
 
+        public int Order { get; set; }
+
         public RefundDetail CreateDomain()
         {
             var domain = new RefundDetail();
@@ -115,6 +118,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.Description = Description;
             domain.Ammount = Ammount;
             domain.CreationDate = CreationDate.GetValueOrDefault();
+            domain.Order = Order;
 
             return domain;
         }

@@ -12,5 +12,7 @@ export const environment = {
   pendingManagerWorkflowStateId: 9,
   pendingComplianceWorkflowStateId: 5,
   pendingComplianceDWorkflowStateId: 18,
-  pendingComplianceDGWorkflowStateId: 20
+  pendingComplianceDGWorkflowStateId: 20,
+  redCategoryId: 12,
+  infrastructureCategoryId: 13
 };

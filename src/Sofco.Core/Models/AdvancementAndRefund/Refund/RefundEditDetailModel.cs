@@ -11,7 +11,10 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             CreationDate = detail.CreationDate;
             Ammount = detail.Ammount;
             Description = detail.Description;
+            Order = detail.Order;
         }
+
+        public int Order { get; set; }
 
         public int Id { get; set; }
 

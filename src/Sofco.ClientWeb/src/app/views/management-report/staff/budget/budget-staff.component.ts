@@ -4,11 +4,9 @@ import { Subscription, VirtualTimeScheduler } from "rxjs";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { MessageService } from "app/services/common/message.service";
-import { FormControl, Validators } from "@angular/forms";
-import { months } from "moment";
-import { DebugContext } from "@angular/core/src/view";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
 import { ManagementReportDetailStaffComponent } from "app/views/management-report/staff/detail/detail-staff";
+import { environment } from "environments/environment";
 
 @Component({
     selector: 'budget-staff',
@@ -99,7 +97,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.calculateTotalCosts()
             this.sendDataToDetailView();
         },
-            () => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     openEditItemModal(category, typeBudget, month, item) {
@@ -107,6 +105,11 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         // if (this.readOnly) return;
 
         if (month.closed) return;
+
+        if(typeBudget == 'projected' && (environment.infrastructureCategoryId == category.id || environment.redCategoryId == category.id) && !this.menuService.userIsCdg){
+          this.messageService.showError("onlyCdgCanModify");
+          return;
+        }
 
         this.categorySelected = category
         this.monthSelected = month;
@@ -149,9 +152,14 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     this.messageService.showError("cannotUpdateBudget");
                 }
                 else {
-                    if(isCdg) { this.readOnly = false }
-                    this.editItemModal.show();
-                    return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
+                    if(this.monthSelected.totalReal > 0){
+                        this.messageService.showWarning("realHasValue");
+                    }
+                    else{
+                        if(isCdg) { this.readOnly = false }
+                        this.editItemModal.show();
+                        return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
+                    }
                 }
 
                 break;

@@ -27,32 +27,27 @@
                 <tr>
                     <th class="static first-column" scope="col">Meses</th>
                     <ng-template ngFor let-item [ngForOf]="months" let-i="index">
-                        <th [ngClass]="{'first-col': isFirstColumn('budget', i)}" class="text-center headcol"
-                            [hidden]="!showColumn.budget">
+                        <th [ngClass]="{'first-col': isFirstColumn('budget', i)}" class="text-center headcol" [hidden]="!showColumn.budget">
                             <span>
                                 {{ item.display }}
                             </span>
                         </th>
-                        <th [ngClass]="{'first-col': isFirstColumn('projected', i)}" class="text-center headcol"
-                            [hidden]="!showColumn.projected">
+                        <th [ngClass]="{'first-col': isFirstColumn('projected', i)}" class="text-center headcol" [hidden]="!showColumn.projected">
                             <span [hidden]="showColumn.budget">
                                 {{ item.display }}
                             </span>
                         </th>
-                        <th [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" class="text-center headcol"
-                            [hidden]="!showColumn.pfa1">
+                        <th [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" class="text-center headcol" [hidden]="!showColumn.pfa1">
                             <span [hidden]="showColumn.projected || showColumn.budget">
                                 {{ item.display }}
                             </span>
                         </th>
-                        <th [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" class="text-center headcol"
-                            [hidden]="!showColumn.pfa2">
+                        <th [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" class="text-center headcol" [hidden]="!showColumn.pfa2">
                             <span [hidden]="showColumn.pfa1 || showColumn.projected || showColumn.budget">
                                 {{ item.display }}
                             </span>
                         </th>
-                        <th [ngClass]="{'first-col': isFirstColumn('real', i)}" class="text-center headcol"
-                            [hidden]="!showColumn.real">
+                        <th [ngClass]="{'first-col': isFirstColumn('real', i)}" class="text-center headcol" [hidden]="!showColumn.real">
                             <span [hidden]="showColumn.pfa2 || showColumn.pfa1 || showColumn.projected || showColumn.budget">
                                 {{ item.display }}
                             </span>
@@ -122,7 +117,7 @@
                     <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label  cursor-pointer"
-                                [ngClass]="month.totalReal <=  month.totalBudget ? 'label-success' : 'label-danger'"
+                                [ngClass]="month.totalReal <= month.totalBudget ? 'label-success' : 'label-danger'"
                                 (click)="openEditItemModal(category, 'budget', month, i)">
                                 {{ month.totalBudget | amountFormat  }}
                             </label>

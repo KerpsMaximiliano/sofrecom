@@ -46,6 +46,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public decimal AllHoursMustLoad { get; set; }
 
         public bool HasEndDate { get; set; }
+
+        public int ManagerId { get; set; }
     }
 
     public class WorkTimeReportModel

@@ -92,4 +92,8 @@ export class ManagementReportService {
   getComments(id){
     return this.http.get<any>(`${this.baseUrl}/managementReport/${id}/comments`);
   }
+
+  deleteProfile(guid){
+    return this.http.delete<any>(`${this.baseUrl}/managementReport/${guid}/profile`)
+  }
 }

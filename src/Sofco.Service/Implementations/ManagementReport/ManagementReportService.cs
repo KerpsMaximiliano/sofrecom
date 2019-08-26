@@ -401,8 +401,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                 //Mapeo Los empleados      
 
                 response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails);
-                response.Data.FundedResources = AllCostResources.Where(r => r.show == true).ToList();
-                response.Data.OtherResources = AllCostResources.Where(r => r.show == false).OrderBy(r => r.Display).ToList();
+                response.Data.FundedResourcesEmployees = AllCostResources.Where(r => r.BelongEmployee == true).ToList();
+                response.Data.FundedResources = AllCostResources.Where(r => r.show == true && r.BelongEmployee == false).ToList();
+                response.Data.OtherResources = AllCostResources.Where(r => r.show == false && r.BelongEmployee == false).OrderBy(r => r.Display).ToList();
                 response.Data.CostProfiles = FillProfilesByMonth(response.Data.MonthsHeader, costDetails);
             }
             catch (Exception ex)
@@ -1242,6 +1243,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                     detailResource.OtherResource = true;
                 }
 
+                if (type.BelongEmployee == true)
+                {
+                    detailResource.BelongEmployee = true;
+                }
+
                 if (type.Default == true || hasValue)
                 {
                     detailResource.show = true;
@@ -1273,6 +1279,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 detailProfile.Display = profiles.Where(p => p.Id == profileId.ProfileId).FirstOrDefault().Text;
                 detailProfile.EmployeeProfileId = profileId.ProfileId;
+                detailProfile.Guid = profileId.Guid;
                 detailProfile.TypeName = EnumCostDetailType.Profile;
 
                 foreach (var mounth in Months)
@@ -1662,6 +1669,30 @@ namespace Sofco.Service.Implementations.ManagementReport
                 })
                 .OrderByDescending(x => x.Date)
                 .ToList();
+            }
+
+            return response;
+        }
+
+        public Response DeleteProfile(string guid)
+        {
+            var response = new Response();
+            try
+            {
+                if (!string.IsNullOrEmpty(guid))
+                {
+                    var entities = unitOfWork.CostDetailProfileRepository.Where
+                                                                (x => x.Guid == guid);
+
+                    unitOfWork.CostDetailProfileRepository.Delete(entities);
+                }
+
+                unitOfWork.Save();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
             }
 
             return response;

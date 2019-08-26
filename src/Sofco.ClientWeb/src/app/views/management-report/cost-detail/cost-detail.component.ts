@@ -24,6 +24,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     getProfileSuscrip: Subscription
     getEmployeeSubscrip: Subscription;
     getOtherByMonthSuscrip: Subscription;
+    deleteProfileSubscrip: Subscription;
+
 
     //Propiedades
     serviceId: string;
@@ -31,6 +33,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     employees: any[] = new Array();
     employeesOriginal: any[] = new Array();
     fundedResources: any[] = new Array();
+    fundedResourcesEmployees: any[] = new Array();
     otherResources: any[] = new Array();
     costProfiles: any[] = new Array()
     monthSelected: any = { value: 0, display: '' };
@@ -62,6 +65,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     othersByMonth: any[] = new Array()
     today: Date = new Date()
     fromMonth: Date = new Date()
+    employeesHide: boolean = true;
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
@@ -127,6 +131,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (this.getProfileSuscrip) this.getProfileSuscrip.unsubscribe();
         if (this.getEmployeeSubscrip) this.getEmployeeSubscrip.unsubscribe();
         if (this.getOtherByMonthSuscrip) this.getOtherByMonthSuscrip.unsubscribe();
+        if (this.deleteProfileSubscrip) this.getOtherByMonthSuscrip.unsubscribe();
     }
 
     setFromDate(date: Date) {
@@ -144,6 +149,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.months = response.data.monthsHeader;
             this.employees = response.data.costEmployees;
             this.fundedResources = response.data.fundedResources;
+            this.fundedResourcesEmployees = response.data.fundedResourcesEmployees
             this.otherResources = response.data.otherResources;
             this.employeesOriginal = response.data.costEmployees;
             this.costProfiles = response.data.costProfiles;
@@ -155,13 +161,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.calculateTotalCosts();
             this.sendDataToDetailView();
         },
-        () => this.messageService.closeLoading());
+            () => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item) {
         if (this.readOnly) return;
 
-        if(month.closed) return;
+        if (month.closed) return;
 
         if (this.canEdit) {
             // if (item.typeName == 'Empleados' && !month.hasAlocation) {
@@ -280,6 +286,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 break
 
             case this.typeProfile:
+
+                for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
+                    this.itemSelected.monthsCost[index].value = this.monthSelected.value;
+                    this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
+                }
+
                 var listAux = [];
                 listAux.push(this.itemSelected);
 
@@ -455,6 +467,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         })
 
+        this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
+            if (resourceEmpleyee.monthsCost[index].value) {
+                totalSalary += resourceEmpleyee.monthsCost[index].value
+            }
+        })
+
         return totalSalary
     }
 
@@ -486,6 +504,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
             })
 
+            //Sumo los gastos de los empleados
+            this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
+                if (resourceEmpleyee.monthsCost[index].value) {
+                    totalCost += resourceEmpleyee.monthsCost[index].value
+                }
+            })
+
             month.value = totalCost + (totalSalary * 0.51);
         })
     }
@@ -502,6 +527,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.costProfiles.forEach(profile => {
             if (profile.monthsCost[index].value) {
                 totalSalary += profile.monthsCost[index].value
+            }
+        })
+
+        this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
+            if (resourceEmpleyee.monthsCost[index].value) {
+                totalSalary += resourceEmpleyee.monthsCost[index].value
             }
         })
 
@@ -659,7 +690,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     openEditEvalProp(month) {
         if (this.readOnly) return;
 
-        if(month.closed) return;
+        if (month.closed) return;
 
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 2;
@@ -672,13 +703,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (this.userSelected) {
             var existingEmployee = this.employees.find(e => e.employeeId === this.userSelected.id)
             if (!existingEmployee) {
+                var monthsEmpty = this.createEmptyMonths()
                 var costEmployee = {
 
                     employeeId: this.userSelected.id,
                     userId: this.userSelected.userId,
                     typeName: this.typeEmployee,
                     display: `${this.userSelected.text.toUpperCase()} - ${this.userSelected.employeeNumber}`,
-                    monthsCost: this.months
+                    monthsCost: monthsEmpty
                 }
 
                 this.employees.push(costEmployee)
@@ -695,11 +727,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     addProfile() {
 
         if (this.profileSelected) {
+            var monthsEmpty = this.createEmptyMonths()
             var costProfile = {
                 display: this.profileSelected.text,
                 employeeProfileId: this.profileSelected.id,
+                guid: "",
                 typeName: this.typeProfile,
-                monthsCost: this.months
+                monthsCost: monthsEmpty
             }
 
             this.costProfiles.push(costProfile)
@@ -707,7 +741,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         else {
             this.messageService.showError("managementReport.profileRequired")
         }
-    } 
+    }
 
     sendDataToDetailView() {
         if (this.getData.observers.length > 0) {
@@ -717,7 +751,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 months: this.months,
                 otherResources: this.otherResources,
                 costProfiles: this.costProfiles,
-                fundedResources: this.fundedResources
+                fundedResources: this.fundedResources.concat(this.fundedResourcesEmployees)
             });
         }
     }
@@ -738,7 +772,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     openEditResourceQuantity(month) {
         if (this.readOnly) return;
 
-        if(month.closed) return;
+        if (month.closed) return;
 
         this.monthSelected = month;
         this.editResourceQuantityModal.show()
@@ -757,7 +791,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             });
     }
 
-    setResourceQuantity(months){
+    setResourceQuantity(months) {
         months.forEach(month => {
             var monthValue = this.months.find(x => x.month == month.month && x.year == month.year);
             if (monthValue) {
@@ -766,10 +800,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    getId(date: Date){
-        var item = this.months.find(x => x.month == (date.getMonth()+1) && x.year == date.getFullYear());
+    getId(date: Date) {
+        var item = this.months.find(x => x.month == (date.getMonth() + 1) && x.year == date.getFullYear());
 
-        if(item){
+        if (item) {
             return item.costDetailId;
         }
 
@@ -778,17 +812,63 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     onEnter(mathBox, value: string) {
         var result;
-        
+
         try {
-          result = evaluate(value)
-        } 
+            if (value == null || value == "") {
+                result = 0
+            }
+            else {
+                result = evaluate(value)
+            }
+        }
         catch (error) {
             result = 0
-    
+
             mathBox.value = result
         }
-    
+
         this.editItemMonto.setValue(result)
+    }
+
+    createEmptyMonths() {
+        var monthsEmpty = new Array()
+        this.months.forEach(element => {
+            let month = {
+                canViewSensibleData: false,
+                charges: null,
+                costDetailId: element.costDetailId,
+                description: null,
+                display: element.display,
+                id: element.id,
+                month: element.month,
+                monthYear: element.monthYear,
+                originalValue: null,
+                value: 0,
+                year: element.year
+            }
+            monthsEmpty.push(month)
+        });
+
+        return monthsEmpty
+    }
+
+    deleteProfile(profile, index) {
+
+        if (profile.guid == "") {
+            this.costProfiles.splice(index, 1)
+        }
+        else {
+            this.messageService.showLoading();
+
+            this.deleteProfileSubscrip = this.managementReportService.deleteProfile(profile.guid).subscribe(
+                () => {
+                    this.messageService.closeLoading();
+                    this.costProfiles.splice(index, 1)
+                },
+                () => {
+                    this.messageService.closeLoading();
+                });
+        }
     }
 }
 

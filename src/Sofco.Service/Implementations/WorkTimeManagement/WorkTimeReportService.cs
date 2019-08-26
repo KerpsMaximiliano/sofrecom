@@ -66,8 +66,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var daysoff = unitOfWork.HolidayRepository.Get(parameters.StartYear, parameters.StartMonth);
             daysoff.AddRange(unitOfWork.HolidayRepository.Get(parameters.EndYear, parameters.EndMonth));
 
-            var allocations =
-                unitOfWork.AllocationRepository.GetAllocationsForWorkTimeReport(parameters, startDate, endDate);
+            var allocations = unitOfWork.AllocationRepository.GetAllocationsForWorkTimeReport(parameters, startDate, endDate);
 
             response.Data = new WorkTimeReportModel {Items = new List<WorkTimeReportModelItem>()};
 
@@ -161,6 +160,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             Analytic = $"{allocation.Analytic.Title} - {allocation.Analytic.Name}",
                             Title = $"{allocation.Analytic.Title}",
                             Manager = allocation.Analytic.Manager.Name,
+                            ManagerId = allocation.Analytic.ManagerId.GetValueOrDefault(),
                             EmployeeId = allocation.Employee.Id,
                             EmployeeNumber = allocation.Employee.EmployeeNumber,
                             Employee = allocation.Employee.Name,
@@ -278,7 +278,24 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             //}
 
             response.Data.EmployeesAllocationResume = response.Data.EmployeesAllocationResume.OrderBy(x => x.Employee).ToList();
-            response.Data.Items = response.Data.Items.OrderBy(x => x.Employee).ToList();
+
+            if (parameters.AnalyticId.Any() || parameters.ManagerId.Any())
+            {
+                if (parameters.AnalyticId.Any())
+                {
+                    response.Data.Items = response.Data.Items.Where(x => parameters.AnalyticId.Contains(x.AnalyticId)).ToList();
+                }
+
+                if (parameters.ManagerId.Any())
+                {
+                    response.Data.Items = response.Data.Items.Where(x => parameters.ManagerId.Contains(x.ManagerId)).ToList();
+                }
+            }
+            else
+            {
+                response.Data.Items = response.Data.Items.OrderBy(x => x.Employee).ToList();
+            }
+            
             response.Data.WorkTimeReportByHours = workTimeReportByHours;
             response.Data.EmployeesMissingHours = employeesMissingHours.Where(x => x.MissingHours > 0).OrderBy(x => x.EmployeeNumber).ToList();
 

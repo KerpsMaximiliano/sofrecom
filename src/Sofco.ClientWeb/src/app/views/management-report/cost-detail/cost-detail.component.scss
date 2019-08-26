@@ -82,3 +82,19 @@ td {
 .first-col {
   padding-left: 276px!important;
 }
+
+.input-xs {
+  height: 26px;
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.showHideColumn{
+  height: 37px;
+  cursor: pointer;
+  .fa{
+    color: #5E5E5E !important; 
+  }
+}

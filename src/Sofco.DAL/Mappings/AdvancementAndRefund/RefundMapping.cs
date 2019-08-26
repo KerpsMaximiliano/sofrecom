@@ -20,7 +20,7 @@ namespace Sofco.DAL.Mappings.AdvancementAndRefund
             builder.Entity<Refund>().HasMany(x => x.Attachments).WithOne(x => x.Refund).HasForeignKey(x => x.RefundId);
 
             builder.Entity<RefundHistory>().HasKey(x => x.Id);
-            builder.Entity<RefundHistory>().Property(x => x.Comment).HasMaxLength(400);
+            builder.Entity<RefundHistory>().Property(x => x.Comment).HasMaxLength(1000);
             builder.Entity<RefundHistory>().Property(x => x.UserName).HasMaxLength(100);
 
             builder.Entity<RefundHistory>().HasOne(x => x.StatusFrom).WithMany(x => x.RefundHistories).HasForeignKey(x => x.StatusFromId).OnDelete(DeleteBehavior.Restrict);

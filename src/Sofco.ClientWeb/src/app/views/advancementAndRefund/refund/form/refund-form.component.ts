@@ -296,8 +296,12 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     getModel(){
         const refund = this.form.getModel();
 
+        var order = 1;
         this.detailForms.forEach(element => {
-            refund.details.push(element.getModel());
+            var model = element.getModel();
+            model.order = order;
+            refund.details.push(model);
+            order++;
         });
 
         refund.cashReturn = this.cashReturn;

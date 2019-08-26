@@ -164,31 +164,64 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters, DateTime startDate, DateTime endDate)
         {
-            var query = context.Allocations
-                .Include(x => x.Employee)
+            if (!parameters.AnalyticId.Any() && (!parameters.EmployeeId.HasValue || parameters.EmployeeId.Value == 0) && !parameters.ManagerId.Any())
+            {
+                return context.Allocations
+                    .Include(x => x.Employee)
+                        .ThenInclude(x => x.Manager)
+                    .Include(x => x.Analytic)
+                        .ThenInclude(x => x.Manager)
+                    .Include(x => x.Analytic)
+                        .ThenInclude(x => x.CostCenter)
+                    .Include(x => x.Analytic)
+                        .ThenInclude(x => x.Activity)
+                    .Where(x => (!x.Employee.EndDate.HasValue || (x.Employee.EndDate.HasValue && x.Employee.EndDate.Value.Date > startDate.Date)) &&
+                                !x.Employee.IsExternal &&
+                                !x.Employee.ExcludeForTigerReport &&
+                                (x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
+                                 x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date))
+                    .ToList();
+            }
+            else
+            {
+                var query = context.Allocations
+                     .Include(x => x.Analytic)
+                     .Where(x => (!x.Employee.EndDate.HasValue || (x.Employee.EndDate.HasValue && x.Employee.EndDate.Value.Date > startDate.Date)) &&
+                     !x.Employee.IsExternal &&
+                     !x.Employee.ExcludeForTigerReport &&
+                     (x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
+                     x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date));
+
+                if (parameters.AnalyticId.Any())
+                    query = query.Where(x => parameters.AnalyticId.Contains(x.AnalyticId));
+
+                if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
+                    query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
+
+                if (parameters.ManagerId.Any())
+                    query = query.Where(x => parameters.ManagerId.Contains(x.Analytic.ManagerId.GetValueOrDefault()));
+
+                var allocations = query.ToList();
+
+                var employeeIds = allocations.Select(x => x.EmployeeId).Distinct().ToList();
+
+                return context.Allocations
+                    .Include(x => x.Employee)
                     .ThenInclude(x => x.Manager)
-                .Include(x => x.Analytic)
+                    .Include(x => x.Analytic)
                     .ThenInclude(x => x.Manager)
-                .Include(x => x.Analytic)
+                    .Include(x => x.Analytic)
                     .ThenInclude(x => x.CostCenter)
-                .Include(x => x.Analytic)
+                    .Include(x => x.Analytic)
                     .ThenInclude(x => x.Activity)
-                .Where(x => (!x.Employee.EndDate.HasValue || (x.Employee.EndDate.HasValue && x.Employee.EndDate.Value.Date > startDate.Date))&& 
-                            !x.Employee.IsExternal &&
-                            !x.Employee.ExcludeForTigerReport &&
-                            (x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
-                            x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date));
-
-            if (parameters.AnalyticId.Any())
-                query = query.Where(x => parameters.AnalyticId.Contains(x.AnalyticId));
-
-            if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
-                query = query.Where(x => x.EmployeeId == parameters.EmployeeId.Value);
-
-            if (parameters.ManagerId.Any())
-                query = query.Where(x => parameters.ManagerId.Contains(x.Analytic.ManagerId.GetValueOrDefault()));
-
-            return query.ToList();
+                    .Where(x => (employeeIds.Contains(x.EmployeeId) &&
+                                (!x.Employee.EndDate.HasValue || (x.Employee.EndDate.HasValue && x.Employee.EndDate.Value.Date > startDate.Date))) &&
+                                !x.Employee.IsExternal &&
+                                !x.Employee.ExcludeForTigerReport &&
+                                (x.StartDate.Date == new DateTime(parameters.StartYear, parameters.StartMonth, 1).Date ||
+                                 x.StartDate.Date == new DateTime(parameters.EndYear, parameters.EndMonth, 1).Date))
+                    .ToList();
+            }
         }
 
         public bool Exist(int allocationId)
