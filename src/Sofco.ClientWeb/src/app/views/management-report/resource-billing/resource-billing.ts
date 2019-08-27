@@ -34,6 +34,7 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
     month: string;
     resourceQuantity: number;
     total: number;
+    billingMonthId: number;
 
     constructor(private genericOptionsService: GenericOptionService,
         private serviceService: ServiceService){
@@ -84,7 +85,7 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
     open(month){
         this.month = month.display;
         this.resourceQuantity = month.resourceQuantity;
-        this.total = 0;
+        this.billingMonthId = month.billingMonthId;
 
         this.resourceBillingModal.show();
     }
@@ -97,9 +98,35 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
         if(item.monthHour == 1){
             item.quantity = 1;
         }
+
+        this.calculateTotal();
     }
 
-    removeItem(item){
-        
+    removeItem(item, index){
+        if(item.id > 0){
+            item.deleted = true;
+        }
+        else{
+            this.items.splice(index, 1);
+        }
+    }
+
+    save(){
+
+    }
+
+    calculateTotal(){
+        this.total = 0;
+
+        this.items.forEach(item => {
+            item.subTotal = item.amount * item.quantity;
+            
+            if(!isNaN(item.subTotal)){
+                this.total += item.subTotal;
+            }
+            else{
+                item.subTotal = 0;
+            }
+        });
     }
 }

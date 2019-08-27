@@ -1,5 +1,6 @@
 export class ResourceBillingItem {
 
+    public id: number;
     public profileId: number;
     public seniorityId: number;
     public purchaseOrderId: number;
@@ -7,6 +8,7 @@ export class ResourceBillingItem {
     public quantity: number;
     public amount: number;
     public subTotal: number;
+    public deleted: boolean;
 
     constructor(data){
         
@@ -18,6 +20,11 @@ export class ResourceBillingItem {
             this.quantity = data.quantity;
             this.amount = data.amount;
             this.subTotal = data.subTotal;
+            this.deleted = false;
+            this.id = data.id;
+        }
+        else{
+            this.id = 0;
         }
     }
 }

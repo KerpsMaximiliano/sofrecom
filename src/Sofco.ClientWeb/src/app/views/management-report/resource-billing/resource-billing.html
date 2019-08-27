@@ -16,7 +16,7 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label class="label-control">Monto a Facturar</label>
-                <input type="number" class="form-control input-xs" [ngModel]="total" disabled>
+                <input type="text" class="form-control input-xs" [ngModel]="total | amountFormat" disabled>
             </div>
         </div>
     </div>
@@ -45,42 +45,44 @@
         </div>
     </div>
 
-    <div class="row no-gutters" *ngFor="let item of items">
-        <div class="col-md-2">
-            <div class="form-group">
-                <ng-select [items]="profiles" bindLabel="text" bindValue="id" [(ngModel)]="item.profileId"></ng-select>
+    <div *ngFor="let item of items; let i = index">
+        <div class="row no-gutters" *ngIf="!item.deleted">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <ng-select [items]="profiles" bindLabel="text" bindValue="id" [(ngModel)]="item.profileId"></ng-select>
+                </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <ng-select [items]="seniorities" bindLabel="text" bindValue="id" [(ngModel)]="item.seniorityId"></ng-select>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <ng-select [items]="seniorities" bindLabel="text" bindValue="id" [(ngModel)]="item.seniorityId"></ng-select>
+                </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <ng-select [items]="purchaseOrders" bindLabel="text" bindValue="id" [(ngModel)]="item.purchaseOrderId"></ng-select>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <ng-select [items]="purchaseOrders" bindLabel="text" bindValue="id" [(ngModel)]="item.purchaseOrderId"></ng-select>
+                </div>
             </div>
-        </div>
-        <div class="col-md-1">
-            <div class="form-group">
-                <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="item.monthHour" (ngModelChange)="monthHourChange(item)"></ng-select>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="item.monthHour" (ngModelChange)="monthHourChange(item)"></ng-select>
+                </div>
             </div>
-        </div>
-        <div class="col-md-1">
-            <div class="form-group">
-                <input class="form-control" type="text" [(ngModel)]="item.quantity" [disabled]="item.monthHour == 1" />
+            <div class="col-md-1">
+                <div class="form-group">
+                    <input class="form-control" decimalFormat type="text" [(ngModel)]="item.quantity" (ngModelChange)="calculateTotal()" [disabled]="item.monthHour == 1" />
+                </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <input class="form-control" type="text" [(ngModel)]="item.amount" />
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input class="form-control" decimalFormat type="text" [(ngModel)]="item.amount" (ngModelChange)="calculateTotal()" />
+                </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="form-group">
-                <div class="input-group">
-                    <input class="form-control" type="number" [(ngModel)]="item.subTotal" disabled>
-                    <span class="input-group-btn"> <button type="button" class="btn btn-danger" (click)="removeItem(item)"><i class="fa fa-trash"></i></button> </span>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" type="text" [ngModel]="item.subTotal | amountFormat" disabled>
+                        <span class="input-group-btn"> <button type="button" class="btn btn-danger" (click)="removeItem(item, i)"><i class="fa fa-trash"></i></button> </span>
+                    </div>
                 </div>
             </div>
         </div>
