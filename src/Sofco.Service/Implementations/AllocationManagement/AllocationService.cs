@@ -512,6 +512,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     Seniority = allocation.Employee.Seniority,
                     Technology = allocation.Employee.Technology,
                     AnalyticTitle = allocation.Analytic?.Title,
+                    AssignComments = allocation.Employee.AssignComments,
                     Analytic = allocation.Analytic?.Name,
                     Months = months.Select(x => new AllocationDateReport(x)).ToList()
                 };

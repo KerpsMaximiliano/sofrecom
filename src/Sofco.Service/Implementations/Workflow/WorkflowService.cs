@@ -145,11 +145,7 @@ namespace Sofco.Service.Implementations.Workflow
             // Save change status
             try
             {
-                //var actualStateId = entity.StatusId;
-
                 entity.StatusId = parameters.NextStateId;
-
-                //WorkflowHelper.CheckEspecialUsers(entity, actualStateId, parameters.NextStateId, appSetting);
 
                 if (string.IsNullOrWhiteSpace(entity.UsersAlreadyApproved))
                 {
