@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { GenericOptionService } from "app/services/admin/generic-option.service";
 import { ServiceService } from "app/services/billing/service.service";
 import { ResourceBillingItem } from "app/models/management-report/resourceBillingItem";
+import { ManagementReportService } from "app/services/management-report/management-report.service";
 
 @Component({
     selector: 'resource-billing-modal',
@@ -33,10 +34,11 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
 
     month: string;
     resourceQuantity: number;
-    total: number;
+    total: number = 0;
     billingMonthId: number;
 
     constructor(private genericOptionsService: GenericOptionService,
+        private managementReportBillingService: ManagementReportService,
         private serviceService: ServiceService){
     }
 
@@ -112,7 +114,10 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
     }
 
     save(){
-
+        this.getProfilesSubscrip = this.managementReportBillingService.saveResources(this.billingMonthId, this.items).subscribe(response => {
+            this.resourceBillingModal.hide();
+        },
+        () => this.resourceBillingModal.resetButtons());
     }
 
     calculateTotal(){

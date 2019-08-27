@@ -96,4 +96,8 @@ export class ManagementReportService {
   deleteProfile(guid){
     return this.http.delete<any>(`${this.baseUrl}/managementReport/${guid}/profile`)
   }
+
+  saveResources(id, json) {
+    return this.http.post<any>(`${this.baseUrl}/managementReportBillings/${id}/resources`, json);
+  }
 }

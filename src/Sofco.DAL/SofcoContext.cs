@@ -160,6 +160,7 @@ namespace Sofco.DAL
         public DbSet<CostDetailCategories> CostDetailCategories { get; set; }
         public DbSet<CostDetailSubcategories> CostDetailSubcategories { get; set; }
         public DbSet<ManagementReportComment> ManagementReportComments { get; set; }
+        public DbSet<ResourceBilling> ResourceBillings { get; set; }
 
         //Recruitment
         public DbSet<Seniority> Seniorities { get; set; }

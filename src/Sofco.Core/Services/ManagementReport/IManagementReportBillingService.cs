@@ -1,4 +1,5 @@
-﻿using Sofco.Core.Models.ManagementReport;
+﻿using System.Collections.Generic;
+using Sofco.Core.Models.ManagementReport;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Services.ManagementReport
@@ -10,5 +11,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response<int> UpdateData(UpdateBillingDataModel model);
 
         Response UpdateQuantityResources(int idBilling, int quantityResources);
+
+        Response AddResources(int idBilling, IList<ResourceBillingRequest> resources);
     }
 }

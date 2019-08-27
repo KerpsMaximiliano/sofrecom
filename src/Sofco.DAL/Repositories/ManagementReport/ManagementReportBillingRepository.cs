@@ -40,5 +40,20 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             context.Entry(billing).Property("Closed").IsModified = true;
         }
+
+        public void AddResource(ResourceBilling domain)
+        {
+            context.ResourceBillings.Add(domain);
+        }
+
+        public void DeleteResource(ResourceBilling domain)
+        {
+            context.ResourceBillings.Remove(domain);
+        }
+
+        public void UpdateResource(ResourceBilling domain)
+        {
+            context.ResourceBillings.Update(domain);
+        }
     }
 }

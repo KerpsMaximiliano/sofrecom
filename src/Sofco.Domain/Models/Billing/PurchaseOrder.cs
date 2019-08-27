@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Common;
+using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
 
@@ -60,5 +61,7 @@ namespace Sofco.Domain.Models.Billing
         public ICollection<PurchaseOrderAmmountDetail> AmmountDetails { get; set; }
 
         public ICollection<PurchaseOrderHistory> Histories { get; set; }
+
+        public IList<ResourceBilling> ResourceBillings { get; set; }
     }
 }
