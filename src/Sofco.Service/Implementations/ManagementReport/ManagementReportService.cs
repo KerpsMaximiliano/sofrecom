@@ -363,8 +363,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthHeader.Year = date.Year;
 
                     var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
-                    var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
+                    if (costDetailMonth != null)
+                    {
+                        monthHeader.HasReal = costDetailMonth.HasReal;
+                        monthHeader.TotalContracted = costDetailMonth.ContratedDetails.Sum(x => x.Honorary) + costDetailMonth.ContratedDetails.Sum(x => x.Insurance);
+                    }
 
+                    var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
                     if (billingMonth != null)
                     {
                         monthHeader.ValueEvalProp = billingMonth.EvalPropExpenseValue;
@@ -430,9 +435,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var monthYear = new DateTime(pYear, pMonth, 1);
 
                 CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(analytic.ManagementReport.Id, monthYear);
+                bool getReal = false;
+                if (costDetail.HasReal)
+                {
+                    getReal = true;
+                }
 
                 List<ContractedModel> listContracted = this.Translate(costDetail.ContratedDetails.ToList());
-                List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.Where(x => x.IsReal == true).ToList());
+                List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.Where(x => x.IsReal == getReal).ToList());
 
                 response.Data.Id = costDetail.Id;
 
@@ -627,6 +637,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                     costDetailMonth.TotalProvisioned = pMonthDetail.TotalProvisioned ?? pMonthDetail.TotalProvisioned.GetValueOrDefault();
 
                     unitOfWork.CostDetailRepository.UpdateTotals(costDetailMonth);
+                }
+
+                if(costDetailMonth.HasReal == false && pMonthDetail.IsReal == true)
+                {
+                    costDetailMonth.HasReal = true;
+                    unitOfWork.CostDetailRepository.UpdateHasReal(costDetailMonth);
                 }
 
                 var analytic = unitOfWork.AnalyticRepository.GetById(pMonthDetail.AnalyticId);

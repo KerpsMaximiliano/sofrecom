@@ -66,6 +66,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     today: Date = new Date()
     fromMonth: Date = new Date()
     employeesHide: boolean = true;
+    showColumn = {
+        real: true
+    }
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
@@ -319,7 +322,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                     this.monthSelected.budget.value = 0
                     this.othersByMonth.forEach(element => {
-                        this.monthSelected.budget.value += element.budget.value
+                        this.monthSelected.budget.value += element.value
                     });
 
                     this.calculateTotalCosts();
@@ -367,6 +370,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     getResourcesByMonth(month, year) {
         var resources = { employees: [], fundedResources: [], otherResources: [] }
 
+        var monthHeader = this.months.find(x => {
+            var dateSplitted = x.monthYear.split("-");
+            if (dateSplitted[0] == year && dateSplitted[1] == month) {
+                return x;
+            }
+        });
+
         resources.employees = this.employees.map(element => {
 
             var monthCost = element.monthsCost.find(x => {
@@ -377,17 +387,29 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
             });
 
+            var _id = monthCost.budget.id
+            var _salary = monthCost.budget.value || 0
+            var _charges = monthCost.budget.charges || 0
+            var _total = monthCost.budget.value + monthCost.budget.charges || 0
+
+            if (monthHeader.hasReal) {
+                _id = monthCost.real.id
+                _salary = monthCost.real.value || 0
+                _charges = monthCost.real.charges || 0
+                _total = monthCost.real.value + monthCost.real.charges || 0
+            }
+
             return {
                 employeeId: element.employeeId,
                 userId: element.userId,
                 monthYear: monthCost.monthYear,
                 hasAlocation: monthCost.hasAlocation,
                 name: element.display,
-                id: monthCost.real.id,
-                salary: monthCost.real.value || 0,
-                charges: monthCost.real.charges || 0,
+                id: _id,
+                salary: _salary,
+                charges: _charges,
                 chargesPercentage: monthCost.chargesPercentage,
-                total: monthCost.real.value + monthCost.real.charges || 0
+                total: _total
             }
         });
 
@@ -912,6 +934,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 });
         }
     }
- 
+
 }
 

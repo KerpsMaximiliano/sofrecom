@@ -4,6 +4,14 @@
 </div>
 
 <div *ngIf="months.length > 0">
+
+        <div class="row col-md-offset-11">
+                <div class="btn-group btn-group-justified">
+                    <a (click)="showColumn.real = !showColumn.real" class="btn btn-xs btn-default"
+                        [ngClass]="{'active': showColumn.real}">REAL</a>
+                </div>
+            </div>
+
     <div class="table-responsive billing-table">
         <table class="table dataTable" role="grid">
             <thead>
@@ -11,7 +19,7 @@
                     <th class="static first-column" scope="col">Meses</th>
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <th class="text-center headcol" [ngClass]="{'first-col': (i == 0)}">{{ month.display }}</th>
-                        <th></th>
+                        <th [hidden]="!showColumn.real"></th>
                     </ng-template>
                 </tr>
             </thead>
@@ -20,7 +28,7 @@
                     <th class="static first-column" scope="col">Tipo</th>
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <th class="text-center" [ngClass]="{'first-col': (i == 0)}">PROYECTADO</th>
-                        <th class="text-center">REAL</th>
+                        <th class="text-center" [hidden]="!showColumn.real">REAL</th>
                     </ng-template>
                 </tr>
                 <tr>
@@ -31,7 +39,7 @@
                                 {{ month.budget.totalCost | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
                             <label class="label bg-info">
                                 {{ month.real.totalCost | amountFormat }}
                             </label>
@@ -48,7 +56,7 @@
                                 {{ month.resourceQuantity }}
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
                             <label class="label bg-info">
                                 <!-- {{ calculateAssignedEmployees(month) }} -->
                                 {{ month.resourceQuantity }}
@@ -63,7 +71,7 @@
                             <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''"
                                 (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
                             <label class="label bg-info">
                                 {{ month.valueEvalProp  | amountFormat }}
                             </label>
@@ -81,7 +89,7 @@
                         <td [ngClass]="{'first-col': (i == 0)}">
 
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
 
                         </td>
                     </ng-template>
@@ -104,7 +112,7 @@
                                 <i class="fa fa-lock text-danger" aria-hidden="true"></i>
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
                             <label class="label bg-info" *ngIf="monthCost.canViewSensibleData">
                                 {{ monthCost.real.value | amountFormat }}
                             </label>
@@ -127,7 +135,7 @@
                                 {{ monthCost.budget.value | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
                             <label class="label bg-info text-center">
                                 <i class="fa fa-minus" aria-hidden="true"></i>
                             </label>
@@ -149,7 +157,7 @@
                                 {{ monthCost.budget.value | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
                             <label class="label bg-info">
                                 {{ monthCost.real.value | amountFormat }}
                             </label>
@@ -161,12 +169,12 @@
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label label-salary">
-                                 {{ month.budget.totalSalary | amountFormat }} 
+                                {{ month.budget.totalSalary | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
                             <label class="label bg-info">
-                                 {{ month.real.totalSalary | amountFormat }} 
+                                {{ month.real.totalSalary | amountFormat }}
                             </label>
                         </td>
                     </ng-template>
@@ -179,9 +187,24 @@
                                 {{ month.budget.totalLoads | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
                             <label class="label bg-info">
-                                 {{ month.real.totalLoads | amountFormat }}
+                                {{ month.real.totalLoads | amountFormat }}
+                            </label>
+                        </td>
+                    </ng-template>
+                </tr>
+                <tr>
+                    <th class="static first-column" scope="col">Costos contratados + subcontratados</th>
+                    <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
+                        <td [ngClass]="{'first-col': (i == 0)}">
+                            <label class="label label-success">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </label>
+                        </td>
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-info">
+                                {{ month.totalContracted | amountFormat }}
                             </label>
                         </td>
                     </ng-template>
@@ -202,7 +225,7 @@
                                 {{ monthCost.budget.value | amountFormat }}
                             </label>
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
                             <label class="label bg-info">
                                 {{ monthCost.real.value | amountFormat }}
                             </label>
@@ -274,7 +297,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
                     <input class="form-control" id="readOnlyInput" type="number"
-                        placeholder="{{ editItemMonto.value + (editItemMonto.value * editItemAdjustment.value / 100) }}"
+                        placeholder="{{ (editItemMonto.value * editItemAdjustment.value / 100) + editItemMonto.value }}"
                         readonly="">
                 </div>
             </div>

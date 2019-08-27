@@ -21,7 +21,10 @@ namespace Sofco.Core.Models.ManagementReport
     {
         public decimal ValueEvalProp { get; set; }
         public int BillingMonthId { get; set; }
-        public int ResourceQuantity { get; set; }        
+        public int ResourceQuantity { get; set; }    
+        public bool HasReal { get; set; }
+        public decimal TotalContracted { get; set; }
+
     }
 
     public class MonthDetailCost

@@ -135,8 +135,8 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     }
 
     contractedChange(hire) {
+        
         hire.total = hire.honorary + hire.insurance;
-
         this.calculateTotalCosts();
     }
 
