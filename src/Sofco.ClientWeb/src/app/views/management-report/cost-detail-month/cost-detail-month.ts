@@ -227,6 +227,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             AnalyticId: 0,
             ManagementReportId: 0,
             MonthYear: new Date(),
+            IsReal: true,
             Employees: [],
             OtherResources: [],
             Contracted: [],

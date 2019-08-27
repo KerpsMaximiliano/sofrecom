@@ -158,8 +158,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.otherSelected = this.otherResources[0];
             }
 
-            this.calculateTotalCosts();
             this.calculateTotalReal();
+            this.calculateTotalCosts();
             this.sendDataToDetailView();
         },
             () => this.messageService.closeLoading());
@@ -382,12 +382,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 userId: element.userId,
                 monthYear: monthCost.monthYear,
                 hasAlocation: monthCost.hasAlocation,
-                id: monthCost.id,
                 name: element.display,
-                salary: monthCost.budget.value || 0,
-                charges: monthCost.budget.charges || 0,
+                id: monthCost.real.id,
+                salary: monthCost.real.value || 0,
+                charges: monthCost.real.charges || 0,
                 chargesPercentage: monthCost.chargesPercentage,
-                total: monthCost.budget.value + monthCost.budget.charges || 0
+                total: monthCost.real.value + monthCost.real.charges || 0
             }
         });
 
@@ -475,7 +475,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         })
 
-        return totalSalary
+        month.budget.totalSalary = totalSalary
     }
 
     calculateTotalCosts() {
@@ -510,10 +510,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
                 if (resourceEmpleyee.monthsCost[index].budget.value) {
                     totalCost += resourceEmpleyee.monthsCost[index].budget.value
+                    totalSalary += resourceEmpleyee.monthsCost[index].budget.value;
                 }
             })
 
             month.budget.totalCost = totalCost + (totalSalary * 0.51);
+            month.budget.totalSalary = totalSalary
+            month.budget.totalLoads = (totalSalary * 0.51)
         })
     }
 
@@ -572,7 +575,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             }
         })
 
-        return totalSalary * 0.51;
+        month.budget.totalLoads = totalSalary * 0.51;
     }
 
     EditItemOnClose() {
@@ -909,5 +912,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 });
         }
     }
+ 
 }
 

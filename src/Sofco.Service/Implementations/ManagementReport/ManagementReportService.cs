@@ -432,7 +432,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(analytic.ManagementReport.Id, monthYear);
 
                 List<ContractedModel> listContracted = this.Translate(costDetail.ContratedDetails.ToList());
-                List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.ToList());
+                List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.Where(x => x.IsReal == true).ToList());
 
                 response.Data.Id = costDetail.Id;
 
@@ -1126,6 +1126,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 foreach (var mounth in Months)
                 {
                     var monthDetail = new MonthDetailCost();
+                    monthDetail.Budget.Adjustment = 0;
 
                     var costDetailMonth = costDetails.FirstOrDefault(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
 
@@ -1144,14 +1145,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 monthDetail.Budget.OriginalValue = salary;
                                 monthDetail.Budget.Charges = charges;
                                 monthDetail.CanViewSensibleData = true;
+                                monthDetail.Budget.Adjustment = monthValue.Adjustment ?? 0;
 
                                 if (salary > 0)
                                 {
                                     monthDetail.ChargesPercentage = (charges / salary) * 100;
                                 }
                             }
-
-                            monthValue.Adjustment = monthValue.Adjustment;
                             monthDetail.Budget.Id = monthValue.Id;
                         }
                         else
@@ -1172,6 +1172,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         monthDetail.Budget.Value = salary;
                                         monthDetail.Budget.OriginalValue = salary;
                                         monthDetail.Budget.Charges = charges;
+                                        monthDetail.Budget.Adjustment = monthValue.Adjustment ?? 0;
 
                                         if (salary > 0)
                                         {
@@ -1187,8 +1188,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             if (canViewSensibleData)
                             {
-                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Value), out var salary)) salary = 0;
-                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges)) charges = 0;
+                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValueReal.Value), out var salary)) salary = 0;
+                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValueReal.Charges), out var charges)) charges = 0;
 
                                 monthDetail.Real.Id = monthValueReal.Id;
                                 monthDetail.Real.Value = salary;

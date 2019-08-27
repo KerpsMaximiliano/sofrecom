@@ -101,7 +101,7 @@
                             </label>
                             <label class="label" *ngIf="!monthCost.canViewSensibleData"
                                 [ngClass]="AccessEmployeeClass(monthCost)">
-                                ***
+                                <i class="fa fa-lock text-danger" aria-hidden="true"></i>
                             </label>
                         </td>
                         <td>
@@ -109,7 +109,7 @@
                                 {{ monthCost.real.value | amountFormat }}
                             </label>
                             <label class="label bg-info" *ngIf="!monthCost.canViewSensibleData">
-                                ***
+                                <i class="fa fa-lock text-danger" aria-hidden="true"></i>
                             </label>
                         </td>
                     </ng-template>
@@ -129,7 +129,7 @@
                         </td>
                         <td>
                             <label class="label bg-info text-center">
-                                --
+                                <i class="fa fa-minus" aria-hidden="true"></i>
                             </label>
                         </td>
                     </ng-template>
@@ -161,7 +161,7 @@
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label label-salary">
-                                 {{ calculateAllSalary(month) | amountFormat }} 
+                                 {{ month.budget.totalSalary | amountFormat }} 
                             </label>
                         </td>
                         <td>
@@ -176,7 +176,7 @@
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label label-load">
-                                {{ calculateLoads(month) | amountFormat }}
+                                {{ month.budget.totalLoads | amountFormat }}
                             </label>
                         </td>
                         <td>
@@ -273,8 +273,8 @@
                 <label class="control-label">Monto final</label>
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    <input class="form-control" id="readOnlyInput" type="text"
-                        placeholder="{{ editItemMonto.value + editItemMonto.value * editItemAdjustment.value / 100}}"
+                    <input class="form-control" id="readOnlyInput" type="number"
+                        placeholder="{{ editItemMonto.value + (editItemMonto.value * editItemAdjustment.value / 100) }}"
                         readonly="">
                 </div>
             </div>
