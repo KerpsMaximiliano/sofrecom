@@ -12,6 +12,7 @@ namespace Sofco.Domain.Models.ManagementReport
         public string Value { get; set; }
         public decimal? Adjustment { get; set; }
         public string Charges { get; set; }
+        public bool IsReal { get; set; }
 
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
