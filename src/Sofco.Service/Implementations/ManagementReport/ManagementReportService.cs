@@ -381,17 +381,17 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthHeader.CostDetailId = costDetailMonth.Id;
                         }
 
-                        if (billingMonth.BilledResources > 0)
-                        {
-                            monthHeader.ResourceQuantity = billingMonth.BilledResources;
-                        }
-                        else
-                        {
-                            if (costDetailMonth != null)
-                            {
-                                monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
-                            }
-                        }
+                        //if (billingMonth.BilledResources > 0)
+                        //{
+                        //    monthHeader.ResourceQuantity = billingMonth.BilledResources;
+                        //}
+                        //else
+                        //{
+                        //    if (costDetailMonth != null)
+                        //    {
+                        //        monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
+                        //    }
+                        //}
                     }
 
                     response.Data.MonthsHeader.Add(monthHeader);

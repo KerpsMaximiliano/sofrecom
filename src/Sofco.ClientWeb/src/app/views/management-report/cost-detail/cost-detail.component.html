@@ -5,12 +5,12 @@
 
 <div *ngIf="months.length > 0">
 
-        <div class="row col-md-offset-11">
-                <div class="btn-group btn-group-justified">
-                    <a (click)="showColumn.real = !showColumn.real" class="btn btn-xs btn-default"
-                        [ngClass]="{'active': showColumn.real}">REAL</a>
-                </div>
-            </div>
+    <div class="row col-md-offset-11">
+        <div class="btn-group btn-group-justified">
+            <a (click)="showColumn.real = !showColumn.real" class="btn btn-xs btn-default"
+                [ngClass]="{'active': showColumn.real}">REAL</a>
+        </div>
+    </div>
 
     <div class="table-responsive billing-table">
         <table class="table dataTable" role="grid">
@@ -50,16 +50,18 @@
                     <th class="static first-column" scope="col">Cantidad Recursos costeados</th>
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
-                            <label (click)="openEditResourceQuantity(month)" class="label label-cant-resources"
-                                [ngClass]="canEditCdg() ? 'pointer' : ''">
-                                <!-- {{ calculateAssignedEmployees(month) }} -->
-                                {{ month.resourceQuantity }}
+                            <!-- <label (click)="openEditResourceQuantity(month)" class="label label-cant-resources"
+                                [ngClass]="canEditCdg() ? 'pointer' : ''"> -->
+                            <!-- {{ calculateAssignedEmployees(month) }} -->
+                            <label class="label label-cant-resources">
+                                {{ month.resourceQuantity | amountFormat }}
                             </label>
                         </td>
                         <td [hidden]="!showColumn.real">
-                            <label class="label bg-info">
+                            <label class="label bg-muted">
                                 <!-- {{ calculateAssignedEmployees(month) }} -->
-                                {{ month.resourceQuantity }}
+                                <!-- {{ month.resourceQuantity | amountFormat }} -->
+                                <i class="fa fa-minus" aria-hidden="true"></i>
                             </label>
                         </td>
                     </ng-template>
@@ -72,8 +74,8 @@
                                 (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
                         </td>
                         <td [hidden]="!showColumn.real">
-                            <label class="label bg-info">
-                                {{ month.valueEvalProp  | amountFormat }}
+                            <label class="label bg-muted">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
                             </label>
                         </td>
                     </ng-template>
@@ -136,7 +138,7 @@
                             </label>
                         </td>
                         <td [hidden]="!showColumn.real">
-                            <label class="label bg-info text-center">
+                            <label class="label bg-muted text-center">
                                 <i class="fa fa-minus" aria-hidden="true"></i>
                             </label>
                         </td>
@@ -198,7 +200,7 @@
                     <th class="static first-column" scope="col">Costos contratados + subcontratados</th>
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
-                            <label class="label label-success">
+                            <label class="label bg-muted">
                                 <i class="fa fa-minus" aria-hidden="true"></i>
                             </label>
                         </td>

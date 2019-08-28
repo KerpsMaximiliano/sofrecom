@@ -504,6 +504,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.months.forEach((month, index) => {
             var totalCost = 0;
             var totalSalary = 0;
+            var asignacion = 0
 
             //Sumo el totol de los sueldos
             this.employees.forEach(employee => {
@@ -511,6 +512,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     totalCost += employee.monthsCost[index].budget.value;
                     totalSalary += employee.monthsCost[index].budget.value;
                 }
+                
+                asignacion += employee.monthsCost[index].allocationPercentage
+                console.log('Empleado: ' + employee.display +  ' Mes: ' + month.display + ' Asignacion: ' + employee.monthsCost[index].allocationPercentage)
             })
 
             //Sumo los sueldos de los perfiles
@@ -539,6 +543,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             month.budget.totalCost = totalCost + (totalSalary * 0.51);
             month.budget.totalSalary = totalSalary
             month.budget.totalLoads = (totalSalary * 0.51)
+            month.resourceQuantity = asignacion / 100
         })
     }
 
@@ -830,36 +835,36 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.othersByMonth.push(resource)
     }
 
-    openEditResourceQuantity(month) {
-        if (this.readOnly) return;
+    // openEditResourceQuantity(month) {
+    //     if (this.readOnly) return;
 
-        if (month.closed) return;
+    //     if (month.closed) return;
 
-        this.monthSelected = month;
-        this.editResourceQuantityModal.show()
-    }
+    //     this.monthSelected = month;
+    //     this.editResourceQuantityModal.show()
+    // }
 
-    updateResourceQuantity() {
-        this.updateCostSubscrip = this.managementReportService.updateQuantityResources(this.monthSelected.billingMonthId, parseInt(this.monthSelected.resourceQuantity)).subscribe(
-            () => {
-                this.editResourceQuantityModal.hide()
-                this.sendDataToDetailView()
-                this.messageService.closeLoading();
-            },
-            () => {
-                this.editResourceQuantityModal.hide()
-                this.messageService.closeLoading();
-            });
-    }
+    // updateResourceQuantity() {
+    //     this.updateCostSubscrip = this.managementReportService.updateQuantityResources(this.monthSelected.billingMonthId, parseInt(this.monthSelected.resourceQuantity)).subscribe(
+    //         () => {
+    //             this.editResourceQuantityModal.hide()
+    //             this.sendDataToDetailView()
+    //             this.messageService.closeLoading();
+    //         },
+    //         () => {
+    //             this.editResourceQuantityModal.hide()
+    //             this.messageService.closeLoading();
+    //         });
+    // }
 
-    setResourceQuantity(months) {
-        months.forEach(month => {
-            var monthValue = this.months.find(x => x.month == month.month && x.year == month.year);
-            if (monthValue) {
-                monthValue.resourceQuantity = month.resourceQuantity;
-            }
-        });
-    }
+    // setResourceQuantity(months) {
+    //     months.forEach(month => {
+    //         var monthValue = this.months.find(x => x.month == month.month && x.year == month.year);
+    //         if (monthValue) {
+    //             monthValue.resourceQuantity = month.resourceQuantity;
+    //         }
+    //     });
+    // }
 
     getId(date: Date) {
         var item = this.months.find(x => x.month == (date.getMonth() + 1) && x.year == date.getFullYear());
