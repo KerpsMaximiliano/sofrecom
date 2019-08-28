@@ -1222,7 +1222,8 @@
         "profileRequired": "El perfil es requerido",
         "closed": "Cerrado",
         "cdgPending": "Pendiente Control de Gestión",
-        "managerPending": "Pendiente Gerente"
+        "managerPending": "Pendiente Gerente",
+        "existProfiles": "Existen perfiles proyectados para el mes, con monto asignado, por favor corroborar con el gerente la asignación/recursos"
     },
     "recruitment":{
         "title": "Reclutamiento",
