@@ -41,6 +41,7 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
     isLoading: boolean = false;
 
     month: any;
+    months: any;
 
     constructor(private genericOptionsService: GenericOptionService,
         private managementReportBillingService: ManagementReportService,
@@ -107,9 +108,10 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
         () => {});
     }
 
-    open(month){
+    open(month, months){
         this.items = [];
         this.month = month;
+        this.months = months;
         
         this.monthDisplay = month.display;
         this.resourceQuantity = month.resourceQuantity;
@@ -150,6 +152,16 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
         this.getProfilesSubscrip = this.managementReportBillingService.saveResources(this.billingMonthId, this.items).subscribe(response => {
             this.resourceBillingModal.hide();
             this.month.resourceQuantity = this.items.filter(x => !x.deleted).length;
+
+            if(response.data && response.data.length > 0){
+                response.data.forEach(item => {
+                    var month = this.months.find(x => x.billingMonthId == item.id);
+
+                    if(month){
+                        month.resourceQuantity = item.quantity;
+                    }
+                });
+            }
         },
         () => this.resourceBillingModal.resetButtons());
     }

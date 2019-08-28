@@ -161,9 +161,9 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response AddResources(int idBilling, IList<ResourceBillingRequest> resources)
+        public Response<IList<ResourceBillingRequest>> AddResources(int idBilling, IList<ResourceBillingRequest> resources)
         {
-            var response = new Response();
+            var response = new Response<IList<ResourceBillingRequest>> { Data = new List<ResourceBillingRequest>() };
 
             var billing = unitOfWork.ManagementReportBillingRepository.Get(idBilling);
 
@@ -283,6 +283,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                             }
                         }
                     }
+
+                    response.Data.Add(new ResourceBillingRequest
+                    {
+                        Id = reportBilling.Id,
+                        Quantity = reportBilling.BilledResources,
+                        SubTotal = reportBilling.BilledResourceTotal
+                    });
                 }
 
                 unitOfWork.Save();

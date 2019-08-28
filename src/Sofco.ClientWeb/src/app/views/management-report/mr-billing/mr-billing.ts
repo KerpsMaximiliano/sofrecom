@@ -541,7 +541,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
         if(month.closed) return;
 
-        this.resourceBillingModal.open(month);
+        this.resourceBillingModal.open(month, this.months);
 
         // this.monthSelected = month;
         // this.updateDataType = ReportBillingUpdateDataType.BilledResources;
