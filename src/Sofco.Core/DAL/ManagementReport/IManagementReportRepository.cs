@@ -25,5 +25,6 @@ namespace Sofco.Core.DAL.ManagementReport
         void AddComment(ManagementReportComment mrComment);
         IList<ManagementReportComment> GetComments(int id);
         Domain.Models.ManagementReport.ManagementReport GetWithCostDetailsAndBillings(int id);
+        IList<ManagementReportBilling> GetBillingsByMonthYear(DateTime monthYear, int managementReportId);
     }
 }

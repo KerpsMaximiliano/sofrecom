@@ -49,5 +49,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{idBilling}/resources")]
+        public IActionResult GetResources(int idBilling)
+        {
+            var response = managementReportBillingService.GetResources(idBilling);
+
+            return this.CreateResponse(response);
+        }
     }
 }

@@ -25,6 +25,7 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
     getProfilesSubscrip: Subscription;
     getSenioritiesSubscrip: Subscription;
     getPurchaseOrdersSubscrip: Subscription;
+    getSubscrip: Subscription;
 
     profiles: any[] = new Array();
     seniorities: any[] = new Array();
@@ -32,10 +33,14 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
     types: any[] = new Array();
     items: ResourceBillingItem[] = new Array();
 
-    month: string;
+    monthDisplay: string;
     resourceQuantity: number;
     total: number = 0;
     billingMonthId: number;
+
+    isLoading: boolean = false;
+
+    month: any;
 
     constructor(private genericOptionsService: GenericOptionService,
         private managementReportBillingService: ManagementReportService,
@@ -54,6 +59,24 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
         if (this.getProfilesSubscrip) this.getProfilesSubscrip.unsubscribe();
         if (this.getSenioritiesSubscrip) this.getSenioritiesSubscrip.unsubscribe();
         if (this.getPurchaseOrdersSubscrip) this.getPurchaseOrdersSubscrip.unsubscribe();
+        if (this.getSubscrip) this.getSubscrip.unsubscribe();
+    }
+
+    getData(billingMonthId){
+        this.isLoading = true;
+
+        this.getSubscrip = this.managementReportBillingService.getResources(billingMonthId).subscribe(response => {
+            this.isLoading = false;
+
+            if(response.data && response.data.length > 0){
+                response.data.forEach(item => {
+                    this.items.push(new ResourceBillingItem(item));
+                });
+
+                this.calculateTotal();
+            }
+        },
+        () => this.isLoading = false);
     }
 
     getProfiles(){
@@ -85,15 +108,22 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
     }
 
     open(month){
-        this.month = month.display;
+        this.items = [];
+        this.month = month;
+        
+        this.monthDisplay = month.display;
         this.resourceQuantity = month.resourceQuantity;
         this.billingMonthId = month.billingMonthId;
+
+        this.getData(this.billingMonthId);
 
         this.resourceBillingModal.show();
     }
 
     addItem(){
         this.items.push(new ResourceBillingItem(null));
+
+        this.resourceQuantity = this.items.filter(x => !x.deleted).length;
     }
 
     monthHourChange(item){
@@ -111,11 +141,15 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
         else{
             this.items.splice(index, 1);
         }
+
+        this.resourceQuantity = this.items.filter(x => !x.deleted).length;
+        this.calculateTotal();
     }
 
     save(){
         this.getProfilesSubscrip = this.managementReportBillingService.saveResources(this.billingMonthId, this.items).subscribe(response => {
             this.resourceBillingModal.hide();
+            this.month.resourceQuantity = this.items.filter(x => !x.deleted).length;
         },
         () => this.resourceBillingModal.resetButtons());
     }
@@ -127,7 +161,9 @@ export class ResourceBillingModalComponent implements OnInit, OnDestroy {
             item.subTotal = item.amount * item.quantity;
             
             if(!isNaN(item.subTotal)){
-                this.total += item.subTotal;
+                if(!item.deleted){
+                    this.total += item.subTotal;
+                }
             }
             else{
                 item.subTotal = 0;

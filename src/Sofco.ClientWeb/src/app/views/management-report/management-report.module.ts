@@ -38,6 +38,8 @@ import { MathModule } from "app/components/math-input/math-input.module";
 import { ServiceService } from "app/services/billing/service.service";
 import { GenericOptionService } from "app/services/admin/generic-option.service";
 import { ResourceBillingModalComponent } from "./resource-billing/resource-billing";
+import { ButtonsModule } from "app/components/buttons/buttons.module";
+import { LaddaModule } from "angular2-ladda";
 
 
 @NgModule({
@@ -56,6 +58,7 @@ import { ResourceBillingModalComponent } from "./resource-billing/resource-billi
       NumbersOnlyModule,
       DecimalFormatModule,
       Ng2ModalModule, 
+      LaddaModule,
       AmountFormatModule,
       fromDateModule,
       PCheckModule,

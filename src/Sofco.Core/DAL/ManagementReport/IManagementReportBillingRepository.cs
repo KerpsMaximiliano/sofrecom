@@ -14,5 +14,8 @@ namespace Sofco.Core.DAL.ManagementReport
         void AddResource(ResourceBilling domain);
         void DeleteResource(ResourceBilling resourceBilling);
         void UpdateResource(ResourceBilling domain);
+        IList<ResourceBilling> GetResources(int idBilling);
+        void DeleteResources(IList<ResourceBilling> reportBillingResourceBillings);
+        int GetResourcesCount(int reportBillingId);
     }
 }

@@ -4,7 +4,7 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label class="label-control">Mes</label>
-                <input type="text" class="form-control input-xs" [ngModel]="month" disabled>
+                <input type="text" class="form-control input-xs" [ngModel]="monthDisplay" disabled>
             </div>
         </div>
         <div class="col-md-2">
@@ -88,6 +88,6 @@
         </div>
     </div>
 
-    <button class="btn btn-primary btn-sm" type="button" (click)="addItem()"> Agregar <i class="fa fa-plus"></i></button>
+    <button class="btn btn-primary btn-sm ladda-button" type="button" (click)="addItem()" [ladda]="isLoading"> Agregar <i class="fa fa-plus"></i></button>
 
 </ng2-modal>

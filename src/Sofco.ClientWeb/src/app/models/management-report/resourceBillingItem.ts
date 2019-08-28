@@ -25,6 +25,7 @@ export class ResourceBillingItem {
         }
         else{
             this.id = 0;
+            this.subTotal = 0;
         }
     }
 }

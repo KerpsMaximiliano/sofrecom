@@ -4,13 +4,13 @@
     {
         public int Id { get; set; }
 
-        public int ProfileId { get; set; }
+        public int? ProfileId { get; set; }
 
-        public int SeniorityId { get; set; }
+        public int? SeniorityId { get; set; }
 
-        public int PurchaseOrderId { get; set; }
+        public int? PurchaseOrderId { get; set; }
 
-        public int MonthHour { get; set; }
+        public int? MonthHour { get; set; }
 
         public int Quantity { get; set; }
 
