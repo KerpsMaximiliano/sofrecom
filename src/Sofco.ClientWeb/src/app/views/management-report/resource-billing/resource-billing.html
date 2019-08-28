@@ -69,12 +69,12 @@
             </div>
             <div class="col-md-1">
                 <div class="form-group">
-                    <input class="form-control" decimalFormat type="text" [(ngModel)]="item.quantity" (ngModelChange)="calculateTotal()" [disabled]="item.monthHour == 1" />
+                    <input class="form-control" decimalFormat="3" type="text" [(ngModel)]="item.quantity" (ngModelChange)="calculateTotal()" [disabled]="item.monthHour == 1" />
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group">
-                    <input class="form-control" decimalFormat type="text" [(ngModel)]="item.amount" (ngModelChange)="calculateTotal()" />
+                    <input class="form-control" decimalFormat="10"  type="text" [(ngModel)]="item.amount" (ngModelChange)="calculateTotal()" />
                 </div>
             </div>
             <div class="col-md-2">
