@@ -444,6 +444,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                 List<ContractedModel> listContracted = this.Translate(costDetail.ContratedDetails.ToList());
                 List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.Where(x => x.IsReal == getReal).ToList());
 
+                if (costDetail.CostDetailProfiles.Sum(x => x.Value) > 0)
+                {
+                    response.Data.HasCostProfile = true;
+                }
+
                 response.Data.Id = costDetail.Id;
 
                 response.Data.Provision = costDetail.Provision;
@@ -1150,25 +1155,56 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var monthValue = costDetailMonth.CostDetailResources.FirstOrDefault(e => e.EmployeeId == employee.Id && e.IsReal == false);
 
-                        if (monthValue != null && !string.IsNullOrWhiteSpace(monthValue.Value))
+                        if (monthValue != null)
                         {
-                            if (canViewSensibleData)
+                            if (!string.IsNullOrWhiteSpace(monthValue.Value))
                             {
-                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Value), out var salary)) salary = 0;
-                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges)) charges = 0;
-
-                                monthDetail.Budget.Value = salary;
-                                monthDetail.Budget.OriginalValue = salary;
-                                monthDetail.Budget.Charges = charges;
-                                monthDetail.CanViewSensibleData = true;
-                                monthDetail.Budget.Adjustment = monthValue.Adjustment ?? 0;
-
-                                if (salary > 0)
+                                if (canViewSensibleData)
                                 {
-                                    monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                    if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Value), out var salary)) salary = 0;
+                                    if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges)) charges = 0;
+
+                                    monthDetail.Budget.Value = salary;
+                                    monthDetail.Budget.OriginalValue = salary;
+                                    monthDetail.Budget.Charges = charges;
+                                    monthDetail.CanViewSensibleData = true;
+                                    monthDetail.Budget.Adjustment = monthValue.Adjustment ?? 0;
+
+                                    if (salary > 0)
+                                    {
+                                        monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                    }
+                                }
+                                monthDetail.Budget.Id = monthValue.Id;
+                            }
+                            else
+                            {
+                                if (canViewSensibleData)
+                                {
+                                    monthDetail.CanViewSensibleData = true;
+
+                                    if (employee.SocialCharges != null && employee.SocialCharges.Any())
+                                    {
+                                        var socialCharge = employee?.SocialCharges.FirstOrDefault(x => x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
+
+                                        if (socialCharge != null)
+                                        {
+                                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
+                                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
+
+                                            monthDetail.Budget.Value = salary;
+                                            monthDetail.Budget.OriginalValue = salary;
+                                            monthDetail.Budget.Charges = charges;
+                                            monthDetail.Budget.Adjustment = monthValue.Adjustment ?? 0;
+
+                                            if (salary > 0)
+                                            {
+                                                monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                            }
+                                        }
+                                    }
                                 }
                             }
-                            monthDetail.Budget.Id = monthValue.Id;
                         }
                         else
                         {
@@ -1188,7 +1224,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         monthDetail.Budget.Value = salary;
                                         monthDetail.Budget.OriginalValue = salary;
                                         monthDetail.Budget.Charges = charges;
-                                        monthDetail.Budget.Adjustment = monthValue.Adjustment ?? 0;
 
                                         if (salary > 0)
                                         {

@@ -16,6 +16,7 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal? TotalBilling { get; set; }
         public decimal? TotalProvisioned { get; set; }
         public bool IsReal { get; set; }
+        public bool HasCostProfile { get; set; }
         public int Id { get; set; }
     }
 
