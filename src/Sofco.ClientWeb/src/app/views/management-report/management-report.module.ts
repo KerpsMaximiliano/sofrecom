@@ -35,13 +35,18 @@ import { BudgetStaffComponent } from "./staff/budget/budget-staff.component";
 import { CostDetailMonthStaffComponent } from "./staff/cost-month-staff/cost-month-staff";
 import { TracingStaffComponent } from "./staff/tracing/tracing-staff.component";
 import { MathModule } from "app/components/math-input/math-input.module";
+import { ServiceService } from "app/services/billing/service.service";
+import { GenericOptionService } from "app/services/admin/generic-option.service";
+import { ResourceBillingModalComponent } from "./resource-billing/resource-billing";
+import { ButtonsModule } from "app/components/buttons/buttons.module";
+import { LaddaModule } from "angular2-ladda";
 
 
 @NgModule({
     declarations: [
       ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent, 
       CostDetailMonthComponent, ModalEvalPropComponent, TracingComponent, ManagementReportDetailStaffComponent, CostDetailMonthStaffComponent, 
-      BudgetStaffComponent, TracingStaffComponent
+      BudgetStaffComponent, TracingStaffComponent, ResourceBillingModalComponent
     ],
     imports: [
       CommonModule,
@@ -53,6 +58,7 @@ import { MathModule } from "app/components/math-input/math-input.module";
       NumbersOnlyModule,
       DecimalFormatModule,
       Ng2ModalModule, 
+      LaddaModule,
       AmountFormatModule,
       fromDateModule,
       PCheckModule,
@@ -62,7 +68,7 @@ import { MathModule } from "app/components/math-input/math-input.module";
       BsDatepickerModule,
       MathModule
     ],
-    providers: [ ManagementReportService, DatesService, UtilsService, ProjectService, EmployeeService, ManagementReportStaffService ],
+    providers: [ ManagementReportService, DatesService, UtilsService, ProjectService, EmployeeService, ManagementReportStaffService, ServiceService, GenericOptionService ],
     exports: [],
   })
   

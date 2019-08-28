@@ -117,8 +117,8 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         if(this.searchModel.analyticId == null) this.searchModel.analyticId = [];
         if(this.searchModel.managerId == null) this.searchModel.managerId = [];
 
-        this.searchModel.exportTigerVisible = this.menuService.userIsRrhh;
-        this.exportTigerVisible = this.menuService.userIsRrhh;
+        this.searchModel.exportTigerVisible = this.menuService.userIsRrhh || this.menuService.userIsCdg;
+        this.exportTigerVisible = this.menuService.userIsRrhh || this.menuService.userIsCdg;
 
         this.searchSubscrip = this.worktimeService.createReport(this.searchModel).subscribe(response => {
             this.data = response.data.items;

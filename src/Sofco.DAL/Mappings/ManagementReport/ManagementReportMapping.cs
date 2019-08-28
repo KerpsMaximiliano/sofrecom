@@ -73,6 +73,12 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<ManagementReportComment>().HasKey(x => x.Id);
             builder.Entity<ManagementReportComment>().Property(x => x.Comment).HasMaxLength(2000);
             builder.Entity<ManagementReportComment>().HasOne(x => x.ManagementReport).WithMany(x => x.Comments).HasForeignKey(x => x.ManagementReportId);
+
+            builder.Entity<ResourceBilling>().HasKey(x => x.Id);
+            builder.Entity<ResourceBilling>().HasOne(x => x.Profile).WithMany(x => x.ResourceBillings).HasForeignKey(x => x.ProfileId);
+            builder.Entity<ResourceBilling>().HasOne(x => x.Seniority).WithMany(x => x.ResourceBillings).HasForeignKey(x => x.SeniorityId);
+            builder.Entity<ResourceBilling>().HasOne(x => x.PurchaseOrder).WithMany(x => x.ResourceBillings).HasForeignKey(x => x.PurchaseOrderId);
+            builder.Entity<ResourceBilling>().HasOne(x => x.ManagementReportBilling).WithMany(x => x.ResourceBillings).HasForeignKey(x => x.ManagementReportBillingId);
         }
     }
 }

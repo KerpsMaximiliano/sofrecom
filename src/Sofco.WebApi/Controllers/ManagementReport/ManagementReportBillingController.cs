@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
@@ -37,6 +38,22 @@ namespace Sofco.WebApi.Controllers.ManagementReport
         public IActionResult PutQuantityResources(int idBilling, [FromBody] int quantityResources)
         {
             var response = managementReportBillingService.UpdateQuantityResources(idBilling, quantityResources);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("{idBilling}/resources")]
+        public IActionResult AddResources(int idBilling, [FromBody] IList<ResourceBillingRequest> resources)
+        {
+            var response = managementReportBillingService.AddResources(idBilling, resources);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{idBilling}/resources")]
+        public IActionResult GetResources(int idBilling)
+        {
+            var response = managementReportBillingService.GetResources(idBilling);
 
             return this.CreateResponse(response);
         }

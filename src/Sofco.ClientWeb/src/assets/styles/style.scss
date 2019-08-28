@@ -761,3 +761,20 @@ bs-datepicker-container {
 .swal2-container.swal2-center.swal2-fade.swal2-shown {
   z-index: 2550 !important;
 }
+
+@media (min-width: 992px){
+  .modal-xlg {
+    width: 1250px;
+  }
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+
+  > .col,
+  > [class*="col-"] {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}

@@ -139,5 +139,15 @@ namespace Sofco.DAL.Repositories.Common
         {
             return Context.Prepaids.SingleOrDefault(x => x.Id == prepaidId);
         }
+
+        public bool ExistProfile(int id)
+        {
+            return Context.Profiles.Any(x => x.Id == id);
+        }
+
+        public bool ExistSeniority(int id)
+        {
+            return Context.Seniorities.Any(x => x.Id == id);
+        }
     }
 }

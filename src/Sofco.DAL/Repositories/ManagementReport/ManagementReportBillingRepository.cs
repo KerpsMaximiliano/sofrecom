@@ -40,5 +40,35 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             context.Entry(billing).Property("Closed").IsModified = true;
         }
+
+        public void AddResource(ResourceBilling domain)
+        {
+            context.ResourceBillings.Add(domain);
+        }
+
+        public void DeleteResource(ResourceBilling domain)
+        {
+            context.ResourceBillings.Remove(domain);
+        }
+
+        public void UpdateResource(ResourceBilling domain)
+        {
+            context.ResourceBillings.Update(domain);
+        }
+
+        public IList<ResourceBilling> GetResources(int idBilling)
+        {
+            return context.ResourceBillings.Where(x => x.ManagementReportBillingId == idBilling).ToList();
+        }
+
+        public void DeleteResources(IList<ResourceBilling> reportBillingResourceBillings)
+        {
+            context.ResourceBillings.RemoveRange(reportBillingResourceBillings);
+        }
+
+        public int GetResourcesCount(int reportBillingId)
+        {
+            return context.ResourceBillings.Count(x => x.ManagementReportBillingId == reportBillingId);
+        }
     }
 }

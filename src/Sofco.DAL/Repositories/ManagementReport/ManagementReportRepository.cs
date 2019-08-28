@@ -143,5 +143,12 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .Include(x => x.Billings)
                 .SingleOrDefault(x => x.Id == id);
         }
+
+        public IList<ManagementReportBilling> GetBillingsByMonthYear(DateTime monthYear, int managementReportId)
+        {
+            return context.ManagementReportBillings
+                .Where(x => x.ManagementReportId == managementReportId && x.MonthYear.Date >= monthYear.Date)
+                .ToList();
+        }
     }
 }
