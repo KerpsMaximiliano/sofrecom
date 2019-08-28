@@ -26,6 +26,8 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailOthers)
                 .Include(mr => mr.CostDetails)
+                    .ThenInclude(x => x.ContratedDetails)
+                .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailStaff)
                         .ThenInclude(y => y.CostDetailSubcategory)
                 .Include(mr => mr.CostDetails)

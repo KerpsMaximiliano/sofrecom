@@ -343,7 +343,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 response.Data.AnalyticId = analytic.Id;
                 //Obtengo los meses que tiene la analitica
-                response.Data.MonthsHeader = new List<MonthDetailCost>();
+                response.Data.MonthsHeader = new List<MonthHeaderCost>();
 
                 response.Data.ManagerId = analytic.Manager.ExternalManagerId;
                 response.Data.ManagementReportId = analytic.ManagementReport.Id;
@@ -356,20 +356,24 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 for (DateTime date = new DateTime(dates.Item1.Year, dates.Item1.Month, 1).Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
                 {
-                    var monthHeader = new MonthDetailCost();
+                    var monthHeader = new MonthHeaderCost();
                     monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                     monthHeader.MonthYear = date;
                     monthHeader.Month = date.Month;
                     monthHeader.Year = date.Year;
 
-                    var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
+                    var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
+                    if (costDetailMonth != null)
+                    {
+                        monthHeader.HasReal = costDetailMonth.HasReal;
+                        monthHeader.TotalContracted = costDetailMonth.ContratedDetails.Sum(x => x.Honorary) + costDetailMonth.ContratedDetails.Sum(x => x.Insurance);
+                    }
 
+                    var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);
                     if (billingMonth != null)
                     {
                         monthHeader.ValueEvalProp = billingMonth.EvalPropExpenseValue;
                         monthHeader.BillingMonthId = billingMonth.Id;
-
-                        var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
 
                         if (costDetailMonth != null)
                         {
@@ -377,17 +381,17 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthHeader.CostDetailId = costDetailMonth.Id;
                         }
 
-                        if (billingMonth.BilledResources > 0)
-                        {
-                            monthHeader.ResourceQuantity = billingMonth.BilledResources;
-                        }
-                        else
-                        {
-                            if (costDetailMonth != null)
-                            {
-                                monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
-                            }
-                        }
+                        //if (billingMonth.BilledResources > 0)
+                        //{
+                        //    monthHeader.ResourceQuantity = billingMonth.BilledResources;
+                        //}
+                        //else
+                        //{
+                        //    if (costDetailMonth != null)
+                        //    {
+                        //        monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
+                        //    }
+                        //}
                     }
 
                     response.Data.MonthsHeader.Add(monthHeader);
@@ -431,9 +435,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var monthYear = new DateTime(pYear, pMonth, 1);
 
                 CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(analytic.ManagementReport.Id, monthYear);
+                bool getReal = false;
+                if (costDetail.HasReal)
+                {
+                    getReal = true;
+                }
 
                 List<ContractedModel> listContracted = this.Translate(costDetail.ContratedDetails.ToList());
-                List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.ToList());
+                List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.Where(x => x.IsReal == getReal).ToList());
 
                 response.Data.Id = costDetail.Id;
 
@@ -462,8 +471,9 @@ namespace Sofco.Service.Implementations.ManagementReport
             try
             {
                 var listOther = unitOfWork.CostDetailOtherRepository.GetByTypeAndCostDetail(idType, idCostDetail);
+                var listBudget = listOther.Where(x => x.IsReal == false).ToList();
 
-                response.Data = this.Translate(listOther);
+                response.Data = this.Translate(listBudget);
             }
             catch (Exception ex)
             {
@@ -564,11 +574,20 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     cost.EmployeeId = employee.EmployeeId;
                     cost.UserId = employee.UserId;
-
-                    month.Value = employee.Salary;
-                    month.Charges = employee.Charges;
                     month.MonthYear = pMonthDetail.MonthYear;
-                    month.Id = employee.Id;
+
+                    if (pMonthDetail.IsReal)
+                    {
+                        month.Real.Id = employee.Id;
+                        month.Real.Value = employee.Salary;
+                        month.Real.Charges = employee.Charges;
+                    }
+                    else
+                    {
+                        month.Budget.Id = employee.Id;
+                        month.Budget.Value = employee.Salary;
+                        month.Budget.Charges = employee.Charges;
+                    }
 
                     totalSalary += employee.Salary ?? 0;
                     totalSalary += employee.Charges ?? 0;
@@ -584,10 +603,20 @@ namespace Sofco.Service.Implementations.ManagementReport
                     MonthDetailCost month = new MonthDetailCost();
 
                     cost.TypeId = otherRes.TypeId;
-                    month.Value = otherRes.Value;
                     month.MonthYear = pMonthDetail.MonthYear;
-                    month.Id = otherRes.Id;
-                    month.Description = otherRes.Description;
+
+                    if (pMonthDetail.IsReal)
+                    {
+                        month.Real.Id = otherRes.Id;
+                        month.Real.Value = otherRes.Value;
+                        month.Real.Description = otherRes.Description;
+                    }
+                    else
+                    {
+                        month.Budget.Id = otherRes.Id;
+                        month.Budget.Value = otherRes.Value;
+                        month.Budget.Description = otherRes.Description;
+                    }
 
                     cost.MonthsCost.Add(month);
                     _detailModel.FundedResources.Add(cost);
@@ -595,8 +624,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(pMonthDetail.ManagementReportId);
 
-                this.InsertUpdateCostDetailResources(_detailModel.CostEmployees, costDetails);
-                this.InsertUpdateCostDetailOther(_detailModel.FundedResources, costDetails);
+                this.InsertUpdateCostDetailResources(_detailModel.CostEmployees, costDetails, pMonthDetail.IsReal);
+                this.InsertUpdateCostDetailOther(_detailModel.FundedResources, costDetails, pMonthDetail.IsReal);
                 this.UpdateContracted(pMonthDetail.Contracted, costDetails, pMonthDetail.MonthYear);
 
                 var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == pMonthDetail.MonthYear.Date);
@@ -608,6 +637,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                     costDetailMonth.TotalProvisioned = pMonthDetail.TotalProvisioned ?? pMonthDetail.TotalProvisioned.GetValueOrDefault();
 
                     unitOfWork.CostDetailRepository.UpdateTotals(costDetailMonth);
+                }
+
+                if(costDetailMonth.HasReal == false && pMonthDetail.IsReal == true)
+                {
+                    costDetailMonth.HasReal = true;
+                    unitOfWork.CostDetailRepository.UpdateHasReal(costDetailMonth);
                 }
 
                 var analytic = unitOfWork.AnalyticRepository.GetById(pMonthDetail.AnalyticId);
@@ -1072,7 +1107,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return false;
         }
 
-        private List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthDetailCost> Months, ICollection<CostDetail> costDetails)
+        private List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails)
         {
             List<CostResourceEmployee> costEmployees = new List<CostResourceEmployee>();
 
@@ -1107,12 +1142,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                 foreach (var mounth in Months)
                 {
                     var monthDetail = new MonthDetailCost();
+                    monthDetail.Budget.Adjustment = 0;
 
                     var costDetailMonth = costDetails.FirstOrDefault(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date);
 
                     if (costDetailMonth != null)
                     {
-                        var monthValue = costDetailMonth.CostDetailResources.FirstOrDefault(e => e.EmployeeId == employee.Id);
+                        var monthValue = costDetailMonth.CostDetailResources.FirstOrDefault(e => e.EmployeeId == employee.Id && e.IsReal == false);
 
                         if (monthValue != null && !string.IsNullOrWhiteSpace(monthValue.Value))
                         {
@@ -1121,19 +1157,18 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Value), out var salary)) salary = 0;
                                 if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges)) charges = 0;
 
-                                monthDetail.Value = salary;
-                                monthDetail.OriginalValue = salary;
-                                monthDetail.Charges = charges;
+                                monthDetail.Budget.Value = salary;
+                                monthDetail.Budget.OriginalValue = salary;
+                                monthDetail.Budget.Charges = charges;
                                 monthDetail.CanViewSensibleData = true;
+                                monthDetail.Budget.Adjustment = monthValue.Adjustment ?? 0;
 
                                 if (salary > 0)
                                 {
                                     monthDetail.ChargesPercentage = (charges / salary) * 100;
                                 }
                             }
-
-                            monthValue.Adjustment = monthValue.Adjustment;
-                            monthDetail.Id = monthValue.Id;
+                            monthDetail.Budget.Id = monthValue.Id;
                         }
                         else
                         {
@@ -1150,15 +1185,35 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
                                         if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
 
-                                        monthDetail.Value = salary;
-                                        monthDetail.OriginalValue = salary;
-                                        monthDetail.Charges = charges;
+                                        monthDetail.Budget.Value = salary;
+                                        monthDetail.Budget.OriginalValue = salary;
+                                        monthDetail.Budget.Charges = charges;
+                                        monthDetail.Budget.Adjustment = monthValue.Adjustment ?? 0;
 
                                         if (salary > 0)
                                         {
                                             monthDetail.ChargesPercentage = (charges / salary) * 100;
                                         }
                                     }
+                                }
+                            }
+                        }
+
+                        var monthValueReal = costDetailMonth.CostDetailResources.FirstOrDefault(e => e.EmployeeId == employee.Id && e.IsReal == true);
+                        if (monthValueReal != null)
+                        {
+                            if (canViewSensibleData)
+                            {
+                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValueReal.Value), out var salary)) salary = 0;
+                                if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValueReal.Charges), out var charges)) charges = 0;
+
+                                monthDetail.Real.Id = monthValueReal.Id;
+                                monthDetail.Real.Value = salary;
+                                monthDetail.Real.Charges = charges;
+
+                                if (salary > 0)
+                                {
+                                    monthDetail.ChargesPercentage = (charges / salary) * 100;
                                 }
                             }
                         }
@@ -1194,7 +1249,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return costEmployees.OrderBy(e => e.Display).ToList();
         }
 
-        private List<CostResource> FillFundedResoursesByMonth(IList<MonthDetailCost> Months, ICollection<CostDetail> costDetails, List<CostDetailType> Types)
+        private List<CostResource> FillFundedResoursesByMonth(IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails, List<CostDetailType> Types)
         {
             List<CostResource> fundedResources = new List<CostResource>();
 
@@ -1215,13 +1270,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
                     if (costDetailMonth != null)
                     {
-                        var monthValue = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailTypeId == type.Id).ToList();
+                        var monthValue = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailTypeId == type.Id && o.IsReal == false).ToList();
                         if (monthValue.Count > 0)
                         {
-                            monthDetail.Value = monthValue.Sum(x => x.Value);
+                            monthDetail.Budget.Value = monthValue.Sum(x => x.Value);
                             // monthDetail.CostDetailId = monthValue.FirstOrDefault().CostDetailId;
-                            monthDetail.Id = monthValue.FirstOrDefault().Id;
-                            if (monthDetail.Value > 0)
+                            monthDetail.Budget.Id = monthValue.FirstOrDefault().Id;
+                            if (monthDetail.Budget.Value > 0)
                             {
                                 hasValue = true;
                             }
@@ -1229,6 +1284,17 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         monthDetail.Closed = costDetailMonth.Closed;
                         monthDetail.CostDetailId = costDetailMonth.Id;
+                    }
+
+                    var monthValueReal = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailTypeId == type.Id && o.IsReal == true).ToList();
+                    if (monthValueReal.Count > 0)
+                    {
+                        monthDetail.Real.Id = monthValueReal.FirstOrDefault().Id;
+                        monthDetail.Real.Value = monthValueReal.Sum(x => x.Value);
+                        if (monthDetail.Real.Value > 0)
+                        {
+                            hasValue = true;
+                        }
                     }
 
                     monthDetail.Display = mounth.Display;
@@ -1260,7 +1326,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return fundedResources;
         }
 
-        private List<CostProfile> FillProfilesByMonth(IList<MonthDetailCost> Months, ICollection<CostDetail> costDetails)
+        private List<CostProfile> FillProfilesByMonth(IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails)
         {
             var profilesResources = new List<CostProfile>();
 
@@ -1293,8 +1359,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         if (monthValue != null)
                         {
-                            monthDetail.Value = monthValue.Value;
-                            monthDetail.Id = monthValue.Id;
+                            monthDetail.Budget.Value = monthValue.Value;
+                            monthDetail.Budget.Id = monthValue.Id;
                         }
 
                         monthDetail.Closed = costDetailMonth.Closed;
@@ -1354,7 +1420,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails)
+        private void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails, bool isReal = false)
         {
             try
             {
@@ -1367,29 +1433,46 @@ namespace Sofco.Service.Implementations.ManagementReport
                         if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Value), out var salary)) salary = 0;
                         if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Charges), out var charges)) charges = 0;
 
-                        if (month.Id > 0)
+                        var aux = new Cost();
+                        if (isReal)
                         {
-                            entity = unitOfWork.CostDetailResourceRepository.Get(month.Id);
+                            aux.Id = month.Real.Id;
+                            aux.Value = month.Real.Value;
+                            aux.Charges = month.Real.Charges;
+                            aux.Adjustment = month.Real.Adjustment;
+                        }
+                        else
+                        {
+                            aux.Id = month.Budget.Id;
+                            aux.Value = month.Budget.Value;
+                            aux.Charges = month.Budget.Charges;
+                            aux.Adjustment = month.Budget.Adjustment;
+                        }
 
-                            if (month.Value != salary || month.Charges != charges)
+                        if (aux.Id > 0)
+                        {
+                            entity = unitOfWork.CostDetailResourceRepository.Get(aux.Id);
+
+                            if (aux.Value != salary || aux.Charges != charges)
                             {
-                                entity.Value = CryptographyHelper.Encrypt(month.Value.ToString());
-                                entity.Adjustment = month.Adjustment ?? 0;
-                                entity.Charges = CryptographyHelper.Encrypt(month.Charges.ToString());
+                                entity.Value = CryptographyHelper.Encrypt(aux.Value.ToString());
+                                entity.Adjustment = aux.Adjustment ?? 0;
+                                entity.Charges = CryptographyHelper.Encrypt(aux.Charges.ToString());
 
                                 unitOfWork.CostDetailResourceRepository.Update(entity);
                             }
                         }
                         else
                         {
-                            if (month.Value > 0 || month.Charges > 0)
+                            if (aux.Value > 0 || aux.Charges > 0)
                             {
                                 entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
-                                entity.Value = CryptographyHelper.Encrypt(month.Value.ToString());
-                                entity.Adjustment = month.Adjustment ?? 0;
-                                entity.Charges = CryptographyHelper.Encrypt(month.Charges.ToString());
+                                entity.Value = CryptographyHelper.Encrypt(aux.Value.ToString());
+                                entity.Adjustment = aux.Adjustment ?? 0;
+                                entity.Charges = CryptographyHelper.Encrypt(aux.Charges.ToString());
                                 entity.EmployeeId = resource.EmployeeId;
                                 entity.UserId = resource?.UserId;
+                                entity.IsReal = isReal;
 
                                 unitOfWork.CostDetailResourceRepository.Insert(entity);
                             }
@@ -1404,7 +1487,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private void InsertUpdateCostDetailOther(IList<CostResource> pOtherResources, IList<CostDetail> costDetails)
+        private void InsertUpdateCostDetailOther(IList<CostResource> pOtherResources, IList<CostDetail> costDetails, bool isReal = false)
         {
             try
             {
@@ -1414,26 +1497,43 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var entity = new CostDetailOther();
 
-                        if (month.Id > 0)
+                        var aux = new Cost();
+                        if (isReal)
                         {
-                            entity = unitOfWork.CostDetailOtherRepository.Get(month.Id);
+                            aux.Id = month.Real.Id;
+                            aux.Value = month.Real.Value;
+                            aux.Charges = month.Real.Charges;
+                            aux.Adjustment = month.Real.Adjustment;
+                        }
+                        else
+                        {
+                            aux.Id = month.Budget.Id;
+                            aux.Value = month.Budget.Value;
+                            aux.Charges = month.Budget.Charges;
+                            aux.Adjustment = month.Budget.Adjustment;
+                        }
 
-                            if (month.Value != entity.Value || month.Description != entity.Description)
+                        if (aux.Id > 0)
+                        {
+                            entity = unitOfWork.CostDetailOtherRepository.Get(aux.Id);
+
+                            if (aux.Value != entity.Value || aux.Description != entity.Description)
                             {
-                                entity.Value = month.Value ?? 0;
-                                entity.Description = month.Description;
+                                entity.Value = aux.Value ?? 0;
+                                entity.Description = aux.Description;
 
                                 unitOfWork.CostDetailOtherRepository.Update(entity);
                             }
                         }
                         else
                         {
-                            if (month.Value > 0)
+                            if (aux.Value > 0)
                             {
                                 entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
-                                entity.Value = month.Value ?? 0;
-                                entity.Description = month.Description;
+                                entity.Value = aux.Value ?? 0;
+                                entity.Description = aux.Description;
                                 entity.CostDetailTypeId = resource.TypeId;
+                                entity.IsReal = isReal;
 
                                 unitOfWork.CostDetailOtherRepository.Insert(entity);
                             }
@@ -1460,25 +1560,25 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         var entity = new CostDetailProfile();
 
-                        if (month.Id > 0)
+                        if (month.Budget.Id > 0)
                         {
-                            entity = unitOfWork.CostDetailProfileRepository.Get(month.Id);
+                            entity = unitOfWork.CostDetailProfileRepository.Get(month.Budget.Id);
 
-                            if (month.Value != entity.Value)
+                            if (month.Budget.Value != entity.Value)
                             {
-                                entity.Value = month.Value ?? 0;
+                                entity.Value = month.Budget.Value ?? 0;
 
                                 unitOfWork.CostDetailProfileRepository.Update(entity);
                             }
                         }
                         else
                         {
-                            if (month.Value > 0)
+                            if (month.Budget.Value > 0)
                             {
                                 entity.Guid = guid;
                                 entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                 entity.EmployeeProfileId = profile.EmployeeProfileId;
-                                entity.Value = month.Value ?? 0;
+                                entity.Value = month.Budget.Value ?? 0;
                                 entity.Description = profile.Description;
 
                                 unitOfWork.CostDetailProfileRepository.Insert(entity);
@@ -1511,9 +1611,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var month = new MonthDetailCost();
 
                     month.MonthYear = date;
-                    month.Value = lastMonthReport.Value;
-                    month.Charges = 0;
-                    month.Adjustment = 0;
+                    month.Budget.Value = lastMonthReport.Budget.Value;
+                    month.Budget.Charges = 0;
+                    month.Budget.Adjustment = 0;
 
                     var exist = resourcesCosts
                                     .Where(e => e.EmployeeId == resource.EmployeeId
@@ -1522,7 +1622,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     if (exist != null)
                     {
-                        month.Id = exist.Id;
+                        month.Budget.Id = exist.Id;
                     }
 
                     resource.MonthsCost.Add(month);

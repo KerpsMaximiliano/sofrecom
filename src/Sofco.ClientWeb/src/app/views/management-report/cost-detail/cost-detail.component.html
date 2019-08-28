@@ -4,6 +4,14 @@
 </div>
 
 <div *ngIf="months.length > 0">
+
+    <div class="row col-md-offset-11">
+        <div class="btn-group btn-group-justified">
+            <a (click)="showColumn.real = !showColumn.real" class="btn btn-xs btn-default"
+                [ngClass]="{'active': showColumn.real}">REAL</a>
+        </div>
+    </div>
+
     <div class="table-responsive billing-table">
         <table class="table dataTable" role="grid">
             <thead>
@@ -11,7 +19,7 @@
                     <th class="static first-column" scope="col">Meses</th>
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <th class="text-center headcol" [ngClass]="{'first-col': (i == 0)}">{{ month.display }}</th>
-                        <th></th>
+                        <th [hidden]="!showColumn.real"></th>
                     </ng-template>
                 </tr>
             </thead>
@@ -20,7 +28,7 @@
                     <th class="static first-column" scope="col">Tipo</th>
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <th class="text-center" [ngClass]="{'first-col': (i == 0)}">PROYECTADO</th>
-                        <th class="text-center">REAL</th>
+                        <th class="text-center" [hidden]="!showColumn.real">REAL</th>
                     </ng-template>
                 </tr>
                 <tr>
@@ -28,12 +36,12 @@
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label label-total">
-                                {{ month.value | amountFormat }}
+                                {{ month.budget.totalCost | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label bg-warning">
-                                {{ month.value | amountFormat }}
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-info">
+                                {{ month.real.totalCost | amountFormat }}
                             </label>
                         </td>
                     </ng-template>
@@ -42,16 +50,18 @@
                     <th class="static first-column" scope="col">Cantidad Recursos costeados</th>
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
-                            <label (click)="openEditResourceQuantity(month)" class="label label-cant-resources"
-                                [ngClass]="canEditCdg() ? 'pointer' : ''">
-                                <!-- {{ calculateAssignedEmployees(month) }} -->
-                                {{ month.resourceQuantity }}
+                            <!-- <label (click)="openEditResourceQuantity(month)" class="label label-cant-resources"
+                                [ngClass]="canEditCdg() ? 'pointer' : ''"> -->
+                            <!-- {{ calculateAssignedEmployees(month) }} -->
+                            <label class="label label-cant-resources">
+                                {{ month.resourceQuantity | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label bg-warning">
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-muted">
                                 <!-- {{ calculateAssignedEmployees(month) }} -->
-                                {{ month.resourceQuantity }}
+                                <!-- {{ month.resourceQuantity | amountFormat }} -->
+                                <i class="fa fa-minus" aria-hidden="true"></i>
                             </label>
                         </td>
                     </ng-template>
@@ -63,9 +73,9 @@
                             <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''"
                                 (click)="openEditEvalProp(month)">{{ month.valueEvalProp  | amountFormat }}</label>
                         </td>
-                        <td>
-                            <label class="label bg-warning">
-                                {{ month.valueEvalProp  | amountFormat }}
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-muted">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
                             </label>
                         </td>
                     </ng-template>
@@ -81,7 +91,7 @@
                         <td [ngClass]="{'first-col': (i == 0)}">
 
                         </td>
-                        <td>
+                        <td [hidden]="!showColumn.real">
 
                         </td>
                     </ng-template>
@@ -97,19 +107,19 @@
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
                                 *ngIf="monthCost.canViewSensibleData" [ngClass]="AccessEmployeeClass(monthCost)">
-                                {{ monthCost.value | amountFormat }}
+                                {{ monthCost.budget.value | amountFormat }}
                             </label>
                             <label class="label" *ngIf="!monthCost.canViewSensibleData"
                                 [ngClass]="AccessEmployeeClass(monthCost)">
-                                ***
+                                <i class="fa fa-lock text-danger" aria-hidden="true"></i>
                             </label>
                         </td>
-                        <td>
-                            <label class="label bg-warning" *ngIf="monthCost.canViewSensibleData">
-                                {{ monthCost.value | amountFormat }}
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-info" *ngIf="monthCost.canViewSensibleData">
+                                {{ monthCost.real.value | amountFormat }}
                             </label>
-                            <label class="label bg-warning" *ngIf="!monthCost.canViewSensibleData">
-                                ***
+                            <label class="label bg-info" *ngIf="!monthCost.canViewSensibleData">
+                                <i class="fa fa-lock text-danger" aria-hidden="true"></i>
                             </label>
                         </td>
                     </ng-template>
@@ -124,12 +134,12 @@
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label" (click)="openEditItemModal(monthCost, profile, i)"
                                 [ngClass]="resourcesClass(monthCost, profile)">
-                                {{ monthCost.value | amountFormat }}
+                                {{ monthCost.budget.value | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label bg-warning">
-                                {{ monthCost.value | amountFormat }}
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-muted text-center">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
                             </label>
                         </td>
                     </ng-template>
@@ -146,12 +156,12 @@
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label" (click)="openEditItemModal(monthCost, item, i)"
                                 [ngClass]="resourcesClass(monthCost, item)">
-                                {{ monthCost.value | amountFormat }}
+                                {{ monthCost.budget.value | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label bg-warning">
-                                {{ monthCost.value | amountFormat }}
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-info">
+                                {{ monthCost.real.value | amountFormat }}
                             </label>
                         </td>
                     </ng-template>
@@ -161,12 +171,12 @@
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label label-salary">
-                                {{ calculateAllSalary(month) | amountFormat }}
+                                {{ month.budget.totalSalary | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label bg-warning">
-                                {{ calculateAllSalary(month) | amountFormat }}
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-info">
+                                {{ month.real.totalSalary | amountFormat }}
                             </label>
                         </td>
                     </ng-template>
@@ -176,12 +186,27 @@
                     <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label label-load">
-                                {{ calculateLoads(month) | amountFormat }}
+                                {{ month.budget.totalLoads | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label bg-warning">
-                                {{ calculateLoads(month) | amountFormat }}
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-info">
+                                {{ month.real.totalLoads | amountFormat }}
+                            </label>
+                        </td>
+                    </ng-template>
+                </tr>
+                <tr>
+                    <th class="static first-column" scope="col">Costos contratados + subcontratados</th>
+                    <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
+                        <td [ngClass]="{'first-col': (i == 0)}">
+                            <label class="label bg-muted">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </label>
+                        </td>
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-info">
+                                {{ month.totalContracted | amountFormat }}
                             </label>
                         </td>
                     </ng-template>
@@ -199,12 +224,12 @@
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label" (click)="openEditItemModal(monthCost, item, i)"
                                 [ngClass]="resourcesClass(monthCost, item)">
-                                {{ monthCost.value | amountFormat }}
+                                {{ monthCost.budget.value | amountFormat }}
                             </label>
                         </td>
-                        <td>
-                            <label class="label bg-warning">
-                                {{ monthCost.value | amountFormat }}
+                        <td [hidden]="!showColumn.real">
+                            <label class="label bg-info">
+                                {{ monthCost.real.value | amountFormat }}
                             </label>
                         </td>
                     </ng-template>
@@ -273,8 +298,8 @@
                 <label class="control-label">Monto final</label>
                 <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    <input class="form-control" id="readOnlyInput" type="text"
-                        placeholder="{{ editItemMonto.value + editItemMonto.value * editItemAdjustment.value / 100}}"
+                    <input class="form-control" id="readOnlyInput" type="number"
+                        placeholder="{{ (editItemMonto.value * editItemAdjustment.value / 100) + editItemMonto.value }}"
                         readonly="">
                 </div>
             </div>

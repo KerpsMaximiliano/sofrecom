@@ -66,6 +66,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     today: Date = new Date()
     fromMonth: Date = new Date()
     employeesHide: boolean = true;
+    showColumn = {
+        real: true
+    }
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
@@ -158,6 +161,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.otherSelected = this.otherResources[0];
             }
 
+            this.calculateTotalReal();
             this.calculateTotalCosts();
             this.sendDataToDetailView();
         },
@@ -191,22 +195,22 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             switch (this.itemSelected.typeName) {
                 case this.typeEmployee:
                     this.modalEmployee = true
-                    this.editItemMonto.setValue(month.originalValue)
-                    this.editItemAdjustment.setValue(month.adjustment)
+                    this.editItemMonto.setValue(month.budget.originalValue)
+                    this.editItemAdjustment.setValue(month.budget.adjustment)
                     this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
                     this.editItemModal.show();
                     break;
 
                 case this.generalAdjustment:
                     this.modalPercentage = true
-                    this.editItemMonto.setValue(month.value)
+                    this.editItemMonto.setValue(month.budget.value)
                     this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
                     this.editItemModal.show();
                     break;
 
                 case this.typeProfile:
                     this.modalProfile = true
-                    this.editItemMonto.setValue(month.value)
+                    this.editItemMonto.setValue(month.budget.value)
                     this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
                     this.editItemModal.show();
                     break;
@@ -235,30 +239,30 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     EditItem() {
 
-        this.monthSelected.value = this.editItemMonto.value
+        this.monthSelected.budget.value = this.editItemMonto.value
         switch (this.itemSelected.typeName) {
 
             case this.typeEmployee:
-                this.monthSelected.originalValue = this.editItemMonto.value
+                this.monthSelected.budget.originalValue = this.editItemMonto.value
                 if (this.editItemAdjustment.value > 0) {
-                    this.monthSelected.adjustment = this.editItemAdjustment.value
-                    this.monthSelected.value = this.monthSelected.originalValue + this.monthSelected.originalValue * this.monthSelected.adjustment / 100
+                    this.monthSelected.budget.adjustment = this.editItemAdjustment.value
+                    this.monthSelected.budget.value = this.monthSelected.budget.originalValue + this.monthSelected.budget.originalValue * this.monthSelected.budget.adjustment / 100
                 }
                 else {
-                    this.monthSelected.adjustment = 0;
-                    this.monthSelected.value = this.editItemMonto.value;
+                    this.monthSelected.budget.adjustment = 0;
+                    this.monthSelected.budget.value = this.editItemMonto.value;
                 }
 
                 for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
 
                     if (this.itemSelected.monthsCost[index].hasAlocation) {
-                        this.itemSelected.monthsCost[index].value = this.monthSelected.value;
-                        this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
+                        this.itemSelected.monthsCost[index].budget.value = this.monthSelected.budget.value;
+                        this.itemSelected.monthsCost[index].budget.originalValue = this.monthSelected.budget.value;
                     }
                     else {
-                        this.itemSelected.monthsCost[index].value = 0
-                        this.itemSelected.monthsCost[index].originalValue = 0
-                        this.itemSelected.monthsCost[index].adjustment = null
+                        this.itemSelected.monthsCost[index].budget.value = 0
+                        this.itemSelected.monthsCost[index].budget.originalValue = 0
+                        this.itemSelected.monthsCost[index].budget.adjustment = null
                     }
                 }
 
@@ -288,8 +292,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             case this.typeProfile:
 
                 for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
-                    this.itemSelected.monthsCost[index].value = this.monthSelected.value;
-                    this.itemSelected.monthsCost[index].originalValue = this.monthSelected.value;
+                    this.itemSelected.monthsCost[index].budget.value = this.monthSelected.budget.value;
+                    this.itemSelected.monthsCost[index].budget.originalValue = this.monthSelected.budget.value;
                 }
 
                 var listAux = [];
@@ -307,6 +311,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     AnalyticId: this.model.analyticId,
                     ManagementReportId: this.model.managementReportId,
                     MonthYear: this.monthSelected.monthYear,
+                    IsReal: false,
                     Employees: [],
                     OtherResources: this.othersByMonth,
                     Contracted: []
@@ -315,9 +320,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.updateMonthSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, modelMonth).subscribe(response => {
                     this.messageService.closeLoading();
 
-                    this.monthSelected.value = 0
+                    this.monthSelected.budget.value = 0
                     this.othersByMonth.forEach(element => {
-                        this.monthSelected.value += element.value
+                        this.monthSelected.budget.value += element.value
                     });
 
                     this.calculateTotalCosts();
@@ -365,6 +370,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     getResourcesByMonth(month, year) {
         var resources = { employees: [], fundedResources: [], otherResources: [] }
 
+        var monthHeader = this.months.find(x => {
+            var dateSplitted = x.monthYear.split("-");
+            if (dateSplitted[0] == year && dateSplitted[1] == month) {
+                return x;
+            }
+        });
+
         resources.employees = this.employees.map(element => {
 
             var monthCost = element.monthsCost.find(x => {
@@ -375,17 +387,29 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
             });
 
+            var _id = monthCost.budget.id
+            var _salary = monthCost.budget.value || 0
+            var _charges = monthCost.budget.charges || 0
+            var _total = monthCost.budget.value + monthCost.budget.charges || 0
+
+            if (monthHeader.hasReal) {
+                _id = monthCost.real.id
+                _salary = monthCost.real.value || 0
+                _charges = monthCost.real.charges || 0
+                _total = monthCost.real.value + monthCost.real.charges || 0
+            }
+
             return {
                 employeeId: element.employeeId,
                 userId: element.userId,
                 monthYear: monthCost.monthYear,
                 hasAlocation: monthCost.hasAlocation,
-                id: monthCost.id,
                 name: element.display,
-                salary: monthCost.value || 0,
-                charges: monthCost.charges || 0,
+                id: _id,
+                salary: _salary,
+                charges: _charges,
                 chargesPercentage: monthCost.chargesPercentage,
-                total: monthCost.value + monthCost.charges || 0
+                total: _total
             }
         });
 
@@ -401,8 +425,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
         var AjusteMensual = this.fundedResources.find(r => r.typeName == this.generalAdjustment);
         if (AjusteMensual) {
-            if (AjusteMensual.monthsCost[index].value > 0) {
-                SalaryPlusIncrese = monthData.value + (monthData.value * AjusteMensual.monthsCost[index].value / 100);
+            if (AjusteMensual.monthsCost[index].budget.value > 0) {
+                SalaryPlusIncrese = monthData.budget.value + (monthData.budget.value * AjusteMensual.monthsCost[index].budget.value / 100);
             }
         }
         return SalaryPlusIncrese;
@@ -416,15 +440,15 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             let newSalary = 0;
             //El nuevo salario lo seteo como el primer salario
             if (isSalaryEmployee == true) {
-                newSalary = employee.monthsCost[pIndex].value
+                newSalary = employee.monthsCost[pIndex].budget.value
                 pIndex += 1
             }
 
             for (let index = pIndex; index < employee.monthsCost.length; index++) {
 
                 //Verifico si tiene aumento en alguno
-                if (AjusteMensual.monthsCost[index].value > 0) {
-                    newSalary = employee.monthsCost[index].originalValue + (employee.monthsCost[index].originalValue * AjusteMensual.monthsCost[index].value / 100);
+                if (AjusteMensual.monthsCost[index].budget.value > 0) {
+                    newSalary = employee.monthsCost[index].budget.originalValue + (employee.monthsCost[index].budget.originalValue * AjusteMensual.monthsCost[index].budget.value / 100);
                 }
                 else {
                     //Si el aumento es cero el salario nuevo es igual al salario anterior
@@ -433,15 +457,15 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                if (employee.monthsCost[index].value > 0) {
-                    employee.monthsCost[index].value = newSalary;
-                    employee.monthsCost[index].adjustment = AjusteMensual.monthsCost[index].value
+                if (employee.monthsCost[index].budget.value > 0) {
+                    employee.monthsCost[index].budget.value = newSalary;
+                    employee.monthsCost[index].budget.adjustment = AjusteMensual.monthsCost[index].budget.value
 
                     for (let newindex = index + 1; newindex < employee.monthsCost.length; newindex++) {
 
-                        if (employee.monthsCost[newindex].value > 0) {
-                            employee.monthsCost[newindex].value = newSalary;
-                            employee.monthsCost[newindex].originalValue = newSalary;
+                        if (employee.monthsCost[newindex].budget.value > 0) {
+                            employee.monthsCost[newindex].budget.value = newSalary;
+                            employee.monthsCost[newindex].budget.originalValue = newSalary;
                         }
                         else {
                             employee.monthsCost[newindex].value = 0
@@ -456,62 +480,104 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalSalary = 0;
         this.employees.forEach(employee => {
-            if (employee.monthsCost[index].value) {
-                totalSalary += employee.monthsCost[index].value
+            if (employee.monthsCost[index].budget.value) {
+                totalSalary += employee.monthsCost[index].budget.value
             }
         })
 
         this.costProfiles.forEach(Profile => {
-            if (Profile.monthsCost[index].value) {
-                totalSalary += Profile.monthsCost[index].value
+            if (Profile.monthsCost[index].budget.value) {
+                totalSalary += Profile.monthsCost[index].budget.value
             }
         })
 
         this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
-            if (resourceEmpleyee.monthsCost[index].value) {
-                totalSalary += resourceEmpleyee.monthsCost[index].value
+            if (resourceEmpleyee.monthsCost[index].budget.value) {
+                totalSalary += resourceEmpleyee.monthsCost[index].budget.value
             }
         })
 
-        return totalSalary
+        month.budget.totalSalary = totalSalary
     }
 
     calculateTotalCosts() {
         this.months.forEach((month, index) => {
             var totalCost = 0;
             var totalSalary = 0;
+            var asignacion = 0
 
             //Sumo el totol de los sueldos
             this.employees.forEach(employee => {
-                if (employee.monthsCost[index].value) {
-                    totalCost += employee.monthsCost[index].value;
-                    totalSalary += employee.monthsCost[index].value;
+                if (employee.monthsCost[index].budget.value) {
+                    totalCost += employee.monthsCost[index].budget.value;
+                    totalSalary += employee.monthsCost[index].budget.value;
                 }
+                
+                asignacion += employee.monthsCost[index].allocationPercentage
+                console.log('Empleado: ' + employee.display +  ' Mes: ' + month.display + ' Asignacion: ' + employee.monthsCost[index].allocationPercentage)
             })
 
             //Sumo los sueldos de los perfiles
             this.costProfiles.forEach(profile => {
-                if (profile.monthsCost[index].value) {
-                    totalCost += profile.monthsCost[index].value;
-                    totalSalary += profile.monthsCost[index].value;
+                if (profile.monthsCost[index].budget.value) {
+                    totalCost += profile.monthsCost[index].budget.value;
+                    totalSalary += profile.monthsCost[index].budget.value;
                 }
             })
 
             //Sumo los demas gastos excepto el % de Ajuste
             this.fundedResources.forEach(resource => {
                 if (resource.typeName != this.generalAdjustment) {
-                    totalCost += resource.monthsCost[index].value;
+                    totalCost += resource.monthsCost[index].budget.value;
                 }
             })
 
             //Sumo los gastos de los empleados
             this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
-                if (resourceEmpleyee.monthsCost[index].value) {
-                    totalCost += resourceEmpleyee.monthsCost[index].value
+                if (resourceEmpleyee.monthsCost[index].budget.value) {
+                    totalCost += resourceEmpleyee.monthsCost[index].budget.value
+                    totalSalary += resourceEmpleyee.monthsCost[index].budget.value;
                 }
             })
 
-            month.value = totalCost + (totalSalary * 0.51);
+            month.budget.totalCost = totalCost + (totalSalary * 0.51);
+            month.budget.totalSalary = totalSalary
+            month.budget.totalLoads = (totalSalary * 0.51)
+            month.resourceQuantity = asignacion / 100
+        })
+    }
+
+    calculateTotalReal() {
+        this.months.forEach((month, index) => {
+            var totalCost = 0;
+            var totalSalary = 0;
+
+            //Sumo el totol de los sueldos
+            this.employees.forEach(employee => {
+                if (employee.monthsCost[index].real.value) {
+                    totalCost += employee.monthsCost[index].real.value;
+                    totalSalary += employee.monthsCost[index].real.value;
+                }
+            })
+
+            //Sumo los demas gastos excepto el % de Ajuste
+            this.fundedResources.forEach(resource => {
+                if (resource.typeName != this.generalAdjustment) {
+                    totalCost += resource.monthsCost[index].real.value;
+                }
+            })
+
+            //Sumo los gastos de los empleados
+            this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
+                if (resourceEmpleyee.monthsCost[index].real.value) {
+                    totalCost += resourceEmpleyee.monthsCost[index].real.value
+                    totalSalary += resourceEmpleyee.monthsCost[index].real.value
+                }
+            })
+
+            month.real.totalCost = totalCost + (totalSalary * 0.51)
+            month.real.totalSalary = totalSalary
+            month.real.totalLoads = (totalSalary * 0.51)
         })
     }
 
@@ -519,24 +585,24 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         const index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
         var totalSalary = 0;
         this.employees.forEach(employee => {
-            if (employee.monthsCost[index].value) {
-                totalSalary += employee.monthsCost[index].value
+            if (employee.monthsCost[index].budget.value) {
+                totalSalary += employee.monthsCost[index].budget.value
             }
         })
 
         this.costProfiles.forEach(profile => {
-            if (profile.monthsCost[index].value) {
-                totalSalary += profile.monthsCost[index].value
+            if (profile.monthsCost[index].budget.value) {
+                totalSalary += profile.monthsCost[index].budget.value
             }
         })
 
         this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
-            if (resourceEmpleyee.monthsCost[index].value) {
-                totalSalary += resourceEmpleyee.monthsCost[index].value
+            if (resourceEmpleyee.monthsCost[index].budget.value) {
+                totalSalary += resourceEmpleyee.monthsCost[index].budget.value
             }
         })
 
-        return totalSalary * 0.51;
+        month.budget.totalLoads = totalSalary * 0.51;
     }
 
     EditItemOnClose() {
@@ -769,36 +835,36 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.othersByMonth.push(resource)
     }
 
-    openEditResourceQuantity(month) {
-        if (this.readOnly) return;
+    // openEditResourceQuantity(month) {
+    //     if (this.readOnly) return;
 
-        if (month.closed) return;
+    //     if (month.closed) return;
 
-        this.monthSelected = month;
-        this.editResourceQuantityModal.show()
-    }
+    //     this.monthSelected = month;
+    //     this.editResourceQuantityModal.show()
+    // }
 
-    updateResourceQuantity() {
-        this.updateCostSubscrip = this.managementReportService.updateQuantityResources(this.monthSelected.billingMonthId, parseInt(this.monthSelected.resourceQuantity)).subscribe(
-            () => {
-                this.editResourceQuantityModal.hide()
-                this.sendDataToDetailView()
-                this.messageService.closeLoading();
-            },
-            () => {
-                this.editResourceQuantityModal.hide()
-                this.messageService.closeLoading();
-            });
-    }
+    // updateResourceQuantity() {
+    //     this.updateCostSubscrip = this.managementReportService.updateQuantityResources(this.monthSelected.billingMonthId, parseInt(this.monthSelected.resourceQuantity)).subscribe(
+    //         () => {
+    //             this.editResourceQuantityModal.hide()
+    //             this.sendDataToDetailView()
+    //             this.messageService.closeLoading();
+    //         },
+    //         () => {
+    //             this.editResourceQuantityModal.hide()
+    //             this.messageService.closeLoading();
+    //         });
+    // }
 
-    setResourceQuantity(months) {
-        months.forEach(month => {
-            var monthValue = this.months.find(x => x.month == month.month && x.year == month.year);
-            if (monthValue) {
-                monthValue.resourceQuantity = month.resourceQuantity;
-            }
-        });
-    }
+    // setResourceQuantity(months) {
+    //     months.forEach(month => {
+    //         var monthValue = this.months.find(x => x.month == month.month && x.year == month.year);
+    //         if (monthValue) {
+    //             monthValue.resourceQuantity = month.resourceQuantity;
+    //         }
+    //     });
+    // }
 
     getId(date: Date) {
         var item = this.months.find(x => x.month == (date.getMonth() + 1) && x.year == date.getFullYear());
@@ -835,16 +901,19 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.months.forEach(element => {
             let month = {
                 canViewSensibleData: false,
-                charges: null,
                 costDetailId: element.costDetailId,
-                description: null,
                 display: element.display,
-                id: element.id,
                 month: element.month,
                 monthYear: element.monthYear,
-                originalValue: null,
-                value: 0,
-                year: element.year
+                year: element.year,
+                budget: {
+                    id: element.id,
+                    value: 0,
+                    originalValue: null,
+                    adjustment: 0,
+                    charges: null,
+                    description: null,
+                }
             }
             monthsEmpty.push(month)
         });
@@ -870,5 +939,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 });
         }
     }
+
 }
 

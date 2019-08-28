@@ -45,6 +45,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
             context.Entry(costDetailMonth).Property("TotalProvisioned").IsModified = true;
         }
 
+        public void UpdateHasReal(CostDetail costDetailMonth)
+        {
+            context.Entry(costDetailMonth).Property("HasReal").IsModified = true;
+        }
+
         public CostDetail GetWithResourceDetails(int managementReportId, DateTime date)
         {
             return context.CostDetails.Include(x => x.CostDetailResources).SingleOrDefault(x =>

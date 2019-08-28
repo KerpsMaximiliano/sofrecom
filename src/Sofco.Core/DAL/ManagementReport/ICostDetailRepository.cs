@@ -13,6 +13,7 @@ namespace Sofco.Core.DAL.ManagementReport
         CostDetail GetByManagementReportAndMonthYear(int managementReportId, DateTime monthYear);
 
         void UpdateTotals(CostDetail costDetailMonth);
+        void UpdateHasReal(CostDetail costDetailMonth);
         CostDetail GetWithResourceDetails(int managementReportId, DateTime date);
         void Close(CostDetail detailCost);
         List<CostDetailCategories> GetCategories();

@@ -1,4 +1,12 @@
 UPDATE [app].[CostDetailTypes] SET [Default] = 0
  WHERE Name = 'Gratificaciones'
  
-INSERT INTO [app].[CostDetailTypes] VALUES ('Horas Extras', 1)
+UPDATE [app].[CostDetailTypes]
+   SET [BelongEmployee] = 1
+ WHERE [Name] ='Recupero Vacaciones'
+
+UPDATE [app].[CostDetailTypes]
+   SET [BelongEmployee] = 1
+ WHERE [Name] ='Riesgo/Retenciones'
+ 
+INSERT INTO [app].[CostDetailTypes] VALUES ('Horas Extras', 1, 1)

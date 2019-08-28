@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190826174259_RealCost")]
+    partial class RealCost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1883,8 +1885,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<bool>("Closed");
 
-                    b.Property<bool>("HasReal");
-
                     b.Property<int>("ManagementReportId");
 
                     b.Property<DateTime>("MonthYear");
@@ -1956,6 +1956,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("EmployeeProfileId");
 
                     b.Property<string>("Guid");
+
+                    b.Property<bool>("IsReal");
 
                     b.Property<decimal>("Value");
 
@@ -2087,8 +2089,6 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<decimal>("BilledResourceTotal");
-
                     b.Property<int>("BilledResources");
 
                     b.Property<bool>("Closed");
@@ -2133,41 +2133,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("ManagementReportId");
 
                     b.ToTable("ManagementReportComments");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ResourceBilling", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Amount");
-
-                    b.Property<int>("ManagementReportBillingId");
-
-                    b.Property<int>("MonthHour");
-
-                    b.Property<int>("ProfileId");
-
-                    b.Property<int>("PurchaseOrderId");
-
-                    b.Property<int>("Quantity");
-
-                    b.Property<int>("SeniorityId");
-
-                    b.Property<decimal>("SubTotal");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ManagementReportBillingId");
-
-                    b.HasIndex("ProfileId");
-
-                    b.HasIndex("PurchaseOrderId");
-
-                    b.HasIndex("SeniorityId");
-
-                    b.ToTable("ResourceBillings");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.Profile", b =>
@@ -3674,29 +3639,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.ManagementReport.ManagementReport", "ManagementReport")
                         .WithMany("Comments")
                         .HasForeignKey("ManagementReportId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ResourceBilling", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.ManagementReport.ManagementReportBilling", "ManagementReportBilling")
-                        .WithMany("ResourceBillings")
-                        .HasForeignKey("ManagementReportBillingId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Profile", "Profile")
-                        .WithMany("ResourceBillings")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Billing.PurchaseOrder", "PurchaseOrder")
-                        .WithMany("ResourceBillings")
-                        .HasForeignKey("PurchaseOrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Seniority", "Seniority")
-                        .WithMany("ResourceBillings")
-                        .HasForeignKey("SeniorityId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
