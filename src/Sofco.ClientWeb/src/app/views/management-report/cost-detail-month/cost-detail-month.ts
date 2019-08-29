@@ -191,7 +191,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
        
         this.costDetailMonthModal.otherTitle = `${data.monthDesc} ${data.year}`
 
-        this.isReadOnly = readOnly || !data.isCdg;
+        this.isReadOnly = readOnly;
         this.AnalyticId = data.AnalyticId;
         
         this.resources = data.resources.employees.filter( x=> x.hasAlocation == true || x.salary > 0 || x.charges > 0)

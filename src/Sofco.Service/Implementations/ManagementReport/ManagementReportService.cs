@@ -1100,11 +1100,17 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             var currentUser = userData.GetCurrentUser();
 
-            if (roleManager.IsDirector() || roleManager.IsCdg())
+            if (roleManager.IsCdg())
             {
                 return true;
             }
-            else if (roleManager.IsManager() && currentUser.Id == analytic.ManagerId.GetValueOrDefault())
+
+            if (roleManager.IsDirector() && currentUser.Id == analytic.Sector.ResponsableUserId)
+            {
+                return true;
+            }
+
+            if (roleManager.IsManager() && currentUser.Id == analytic.ManagerId.GetValueOrDefault())
             {
                 return true;
             }

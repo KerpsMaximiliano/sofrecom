@@ -117,9 +117,8 @@ namespace Sofco.Framework.Managers
 
             var hasDafGroup = unitOfWork.UserRepository.HasDafGroup(currentUserEmail);
             var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUserEmail);
-            var hasReadOnlyGroup = unitOfWork.UserRepository.HasReadOnlyGroup(currentUserEmail);
 
-            return hasGafGroup || hasDafGroup || hasReadOnlyGroup;
+            return hasGafGroup || hasDafGroup;
         }
 
         public bool IsDirector()
