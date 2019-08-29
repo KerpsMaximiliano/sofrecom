@@ -3,7 +3,8 @@
     public enum EvalPropType
     {
         Billing = 1,
-        Expense = 2
+        Expense = 2,
+        margin = 3
     }
 
     public enum ReportBillingUpdateDataType
