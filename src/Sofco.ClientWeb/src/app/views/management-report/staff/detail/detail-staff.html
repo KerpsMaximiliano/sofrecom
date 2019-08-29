@@ -96,11 +96,6 @@
                                             <td>{{ item.modifiedBy }}</td>
                                         </tr>
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="4">Total: ${{ model?.budgetTotal | amountFormat }}</th>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </dd>
                             <div class="pull-right" *ngIf="model?.budgets && model?.budgets.length > 0">
