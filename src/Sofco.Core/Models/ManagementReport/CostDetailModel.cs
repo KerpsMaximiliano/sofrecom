@@ -20,6 +20,8 @@ namespace Sofco.Core.Models.ManagementReport
     public class MonthHeaderCost : MonthDetailCost
     {
         public decimal ValueEvalProp { get; set; }
+        public decimal ValueMarginEvalProp { get; set; }
+
         public int BillingMonthId { get; set; }
         public int ResourceQuantity { get; set; }    
         public bool HasReal { get; set; }

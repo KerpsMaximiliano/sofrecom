@@ -373,6 +373,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     if (billingMonth != null)
                     {
                         monthHeader.ValueEvalProp = billingMonth.EvalPropExpenseValue;
+                        monthHeader.ValueMarginEvalProp = billingMonth.EvalPropMarginValue;
+
                         monthHeader.BillingMonthId = billingMonth.Id;
 
                         if (costDetailMonth != null)
@@ -1493,7 +1495,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 entity.Value = CryptographyHelper.Encrypt(aux.Value.ToString());
                                 entity.Adjustment = aux.Adjustment ?? 0;
                                 entity.Charges = CryptographyHelper.Encrypt(aux.Charges.ToString());
-
+                                entity.IsReal = isReal;
+                                
                                 unitOfWork.CostDetailResourceRepository.Update(entity);
                             }
                         }
@@ -1556,6 +1559,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             {
                                 entity.Value = aux.Value ?? 0;
                                 entity.Description = aux.Description;
+                                entity.IsReal = isReal;
 
                                 unitOfWork.CostDetailOtherRepository.Update(entity);
                             }

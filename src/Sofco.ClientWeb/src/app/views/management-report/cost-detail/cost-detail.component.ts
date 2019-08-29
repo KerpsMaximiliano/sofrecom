@@ -514,7 +514,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
                 
                 asignacion += employee.monthsCost[index].allocationPercentage
-                console.log('Empleado: ' + employee.display +  ' Mes: ' + month.display + ' Asignacion: ' + employee.monthsCost[index].allocationPercentage)
             })
 
             //Sumo los sueldos de los perfiles
@@ -551,12 +550,16 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.months.forEach((month, index) => {
             var totalCost = 0;
             var totalSalary = 0;
+            var totalCharges = 0;
 
             //Sumo el totol de los sueldos
             this.employees.forEach(employee => {
                 if (employee.monthsCost[index].real.value) {
                     totalCost += employee.monthsCost[index].real.value;
                     totalSalary += employee.monthsCost[index].real.value;
+                }
+                if (employee.monthsCost[index].real.charges) {
+                    totalCharges += employee.monthsCost[index].real.charges
                 }
             })
 
@@ -577,7 +580,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             month.real.totalCost = totalCost + (totalSalary * 0.51)
             month.real.totalSalary = totalSalary
-            month.real.totalLoads = (totalSalary * 0.51)
+            month.real.totalLoads = totalCharges
         })
     }
 

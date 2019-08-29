@@ -17,6 +17,9 @@ export class MarginTracking {
     public Month : number;
     public Year : number;
     public monthYear: Date;
+    public hasReal: boolean
+    public valueEvalProp: number;
+    public billingMonthId: number;
 
     constructor(){
         this.PercentageExpected = 0;
@@ -33,5 +36,8 @@ export class MarginTracking {
         this.TotalExpensesRemainigToDate = 0;
         this.TotalSalesToEnd = 0;
         this.TotalExpensesToEnd = 0;
+        this.hasReal = false;
+        this.valueEvalProp = 0;
+        this.billingMonthId = 0;
     }
 }

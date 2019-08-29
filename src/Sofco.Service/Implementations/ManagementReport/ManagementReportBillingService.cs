@@ -33,10 +33,23 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             try
             {
-                if (model.Type == EvalPropType.Billing)
-                    billing.EvalPropBillingValue = model.Value;
-                else
-                    billing.EvalPropExpenseValue = model.Value;
+                switch (model.Type)
+                {
+                    case EvalPropType.Billing:
+                        billing.EvalPropBillingValue = model.Value;
+                        break;
+                    case EvalPropType.Expense:
+                        billing.EvalPropExpenseValue = model.Value;
+                        break;
+                    case EvalPropType.margin:
+                        billing.EvalPropMarginValue = model.Value;
+                        break;
+                }
+
+                //if (model.Type == EvalPropType.Billing)
+                //    billing.EvalPropBillingValue = model.Value;
+                //else
+                //    billing.EvalPropExpenseValue = model.Value;
 
                 if (billing.Id > 0)
                 {
@@ -140,7 +153,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
         public Response UpdateQuantityResources(int idBilling, int quantityResources)
         {
-            var response = new Response();                
+            var response = new Response();
             try
             {
                 ManagementReportBilling entity = unitOfWork.ManagementReportBillingRepository.Get(idBilling);
@@ -177,7 +190,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             foreach (var item in resources)
             {
-                if(item.Deleted) continue;
+                if (item.Deleted) continue;
 
                 if (!unitOfWork.UtilsRepository.ExistProfile(item.ProfileId.GetValueOrDefault()))
                 {

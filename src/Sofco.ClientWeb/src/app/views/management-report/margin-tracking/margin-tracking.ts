@@ -91,7 +91,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
             if(billingMonth) evalpropTotalBilling += billingMonth.valueEvalProp;
             if(costDetailMonth) evalpropTotalCosts += costDetailMonth.valueEvalProp;
-
+           
             this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
 
             var hitosMonth = this.billingModel.hitos.filter(hito => {
@@ -127,7 +127,11 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
             if(costDetailMonth){
                 costsAcumulatedToDate += costDetailMonth.value;
-         
+
+                marginTracking.hasReal = costDetailMonth.hasReal
+                marginTracking.valueEvalProp = costDetailMonth.valueMarginEvalProp
+                marginTracking.billingMonthId = costDetailMonth.billingMonthId
+
                 // Previsto $$
                 marginTracking.TotalExpensesExpected = costDetailMonth.value;
 
