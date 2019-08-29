@@ -427,39 +427,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             return false;
         }
 
-        private List<CostMonthOther> Translate(List<CostDetailOther> costDetailOthers)
-        {
-            return costDetailOthers
-                .Where(t => t.CostDetailType.Name != EnumCostDetailType.AjusteGeneral.ToString())
-                .Select(x => new CostMonthOther
-                {
-                    Id = x.Id,
-                    Description = x.Description,
-                    CostDetailId = x.CostDetailId,
-                    TypeId = x.CostDetailTypeId,
-                    TypeName = x.CostDetailType.Name,
-                    Value = x.Value
-                })
-                .OrderBy(x => x.TypeId)
-                .ToList();
-        }
-
-        private List<ContractedModel> Translate(List<ContratedDetail> contratedDetails)
-        {
-            return contratedDetails
-                .Select(x => new ContractedModel
-                {
-                    CostDetailId = x.CostDetailId,
-                    ContractedId = x.Id,
-                    Name = x.Name,
-                    Honorary = x.Honorary,
-                    Insurance = x.Insurance,
-                    Total = x.Honorary + x.Insurance
-                })
-                .OrderBy(x => x.Name)
-                .ToList();
-        }
-
         private List<CostMonthEmployeeStaff> Translate(List<CostDetailResource> resources, DateTime monthYear,
             IList<Allocation> allocations, int managementReportAnalyticId)
         {

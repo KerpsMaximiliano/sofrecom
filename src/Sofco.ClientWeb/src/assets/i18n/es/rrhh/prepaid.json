@@ -12,5 +12,6 @@
     "cannotClose": "El mes no se puede cerrar si todavia contiene errores",
     "dateClosed": "El mes ya se encuentra cerrado",
     "socialChargesSynced": "La cargas sociales fueron sincronizadas correctamente",
-    "fileWrong": "El archivo es incorrecto o corresponde a otra prepaga"
+    "fileWrong": "El archivo es incorrecto o corresponde a otra prepaga",
+    "dateRequired": "El año y mes son requeridos"
 }

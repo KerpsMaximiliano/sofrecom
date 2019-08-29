@@ -72,9 +72,8 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-
-        this.getUsers()
-        this.getCategories()
+        this.getUsers();
+        this.getCategories();
     }
 
     ngOnDestroy(): void {
@@ -104,7 +103,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.managementReportId = data.managementReportId;
         this.costDetailMonthModal.otherTitle = `${data.monthDesc} ${data.year}`
       
-        this.isReadOnly = readOnly || !data.isCdg;
+        this.isReadOnly = readOnly;
         this.AnalyticId = data.AnalyticId;
 
         this.getContratedSuscrip = this.managementReportStaffService.getCostDetailMonth(this.managementReportId, data.month, data.year).subscribe(response => {

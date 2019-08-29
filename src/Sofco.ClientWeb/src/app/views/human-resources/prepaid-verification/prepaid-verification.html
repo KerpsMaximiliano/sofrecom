@@ -45,14 +45,15 @@
                         <ng-select [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateSelected"></ng-select>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="form-group">
                         <label class="control-label">Recurso</label>
                         <ng-select [items]="resources" bindLabel="text" bindValue="id" [(ngModel)]="resourceSelected"></ng-select>
                     </div>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <button class="btn btn-primary m-t-md" type="button" (click)="filter()">Filtrar</button>
+                    <button class="btn btn-warning m-t-md" type="button" (click)="clean()">Limpiar</button>
                 </div>
             </div>
         </div>
