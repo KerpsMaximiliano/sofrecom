@@ -343,16 +343,16 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     save(pEmployees, pProfiles, pFunded) {
         this.messageService.showLoading();
-
+        
         var model = {
             ManagementReportId: this.model.managementReportId,
             ManagerId: this.model.managerId,
             AnalyticId: this.model.analyticId,
-            MonthsHeader: this.model.monthsHeader,
             CostEmployees: pEmployees,
             CostProfiles: pProfiles,
             FundedResources: pFunded
         }
+
         this.updateCostSubscrip = this.managementReportService.PostCostDetail(model).subscribe(() => {
             this.messageService.closeLoading();
 
