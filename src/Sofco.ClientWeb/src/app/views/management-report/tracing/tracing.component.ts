@@ -38,7 +38,6 @@ export class TracingComponent implements OnInit, OnDestroy {
 
         this.analytic = analytic
         this.AllMarginTracking = marginTracking
-        console.log(this.AllMarginTracking)
 
         this.AllMarginTracking.forEach(margin => {
             var month = this.datesService.getMonth(margin.monthYear)
