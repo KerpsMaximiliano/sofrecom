@@ -30,6 +30,7 @@
                     <tr>
                         <th class="text-center">Código</th>
                         <th>Descripción</th>
+                        <th *ngIf="isReasonCause">Tipo</th>
                         <th class="text-center">Activo</th>
                         <th class="text-center">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
@@ -38,9 +39,16 @@
                     <tr *ngFor="let item of list">
                         <td class="text-center">{{ item.id }}</td>
                         <td>{{ item.text }}</td>
-                        <td class="text-center"><span class="fa" [ngClass]="item.active ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                        <td *ngIf="isReasonCause">
+                            <span *ngIf="item.type == 1">Busqueda</span>
+                            <span *ngIf="item.type == 2">Contacto</span>
+                        </td>
                         <td class="text-center">
-                            <button class="btn btn-warning btn-xs" (click)="update(item)"><i class="fa fa-edit"></i></button>
+                            <label *ngIf="item.active" class="label label-primary">Si</label>
+                            <label *ngIf="!item.active" class="label label-danger">No</label>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-warning btn-xs" (click)="edit(item)"><i class="fa fa-edit"></i></button>
 
                             <button class="btn btn-xs" [ngClass]="(item.active)?'btn-danger':'btn-success'" (click)="habInhabClick(item)">
                                 <span [ngClass]="(item.active)?'fa-trash':'fa-mail-reply'" class="fa"></span>
@@ -57,5 +65,18 @@
     <div class="form-group">
         <label class="control-label">Descripción</label>
         <input class="form-control" type="text" [formControl]="text" maxlength="75">
+    </div>
+
+    <div class="form-group" *ngIf="isReasonCause">
+        <label class="control-label">Tipo</label>
+        <div class="radio radio-success">
+            <input value="1" type="radio" [formControl]="type">
+            <label> Busqueda </label>
+        </div>
+    
+        <div class="radio radio-success">
+            <input value="2" type="radio" [formControl]="type">
+            <label> Contacto </label>
+        </div>
     </div>
 </ng2-modal> 

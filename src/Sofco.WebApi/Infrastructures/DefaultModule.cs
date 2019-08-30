@@ -100,6 +100,9 @@ namespace Sofco.WebApi.Infrastructures
             builder.RegisterType<OptionRepository<Profile>>().As<IOptionRepository<Profile>>();
             builder.RegisterType<OptionService<Profile>>().As<IOptionService<Profile>>();
 
+            builder.RegisterType<OptionRepository<ReasonCause>>().As<IOptionRepository<ReasonCause>>();
+            builder.RegisterType<OptionService<ReasonCause>>().As<IOptionService<ReasonCause>>();
+
             RegisterRedisDependencies(builder);
 
             RegisterLogger(builder);

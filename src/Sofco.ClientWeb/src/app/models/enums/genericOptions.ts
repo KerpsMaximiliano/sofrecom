@@ -1,5 +1,6 @@
 export enum GenericOptions {
     Seniority = "seniority",
     Profile = "profile",
-    Skill = "skill"
+    Skill = "skill",
+    ReasonCause = "ReasonCause"
 } 

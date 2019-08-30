@@ -18,9 +18,13 @@ export class GenericOptionComponent implements OnDestroy {
     public list: any[] = new Array();
 
     private entity: string;
+
+    isReasonCause: boolean;
     public title: string;
     public id: number = 0;
     public text = new FormControl('', [Validators.required, Validators.maxLength(75)]);
+
+    columns: any[] = new Array();
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -48,6 +52,10 @@ export class GenericOptionComponent implements OnDestroy {
         this.genericOptionService.controller = controller;
         this.entity = controller;
         this.getAll();
+
+        if(this.entity == "ReasonCause"){
+            this.isReasonCause = true;
+        }
     }
 
     getAll() {
@@ -78,12 +86,11 @@ export class GenericOptionComponent implements OnDestroy {
     }
 
     initGrid() {
-        var columns = [0, 1];
         var title = `${this.entity}-${moment(new Date()).format("YYYYMMDD")}`;
 
         var params = {
             selector: '#table',
-            columns: columns,
+            columns: this.columns,
             title: title,
             withExport: true,
         }
@@ -103,14 +110,18 @@ export class GenericOptionComponent implements OnDestroy {
         this.confirmModal.show();
     }
 
-    save(json){
+    save(json, callback = null){
         if(json.id > 0){
-            this.updateSubscrip = this.genericOptionService.edit(json.id, json.text).subscribe(response => {
+            this.updateSubscrip = this.genericOptionService.edit(json).subscribe(response => {
                 this.confirmModal.hide();
 
                 var item = this.list.find(x => x.id == json.id);
 
-                if(item) item.text = json.text;
+                if(item) {
+                    item.text = json.text;
+                    
+                    if(callback) callback(this, item);
+                };
 
                 this.id = 0;
                 this.text.setValue("");
@@ -118,10 +129,15 @@ export class GenericOptionComponent implements OnDestroy {
             () => this.confirmModal.hide());
         }
         else{
-            this.addSubscrip = this.genericOptionService.add(json.text).subscribe(response => {
+            this.addSubscrip = this.genericOptionService.add(json).subscribe(response => {
                 this.confirmModal.hide();
                 
-                this.list.push({ id: response.data, text: json.text, active: true });
+                if(callback) {
+                    callback(this, response.data);
+                }
+                else{
+                    this.list.push({ id: response.data, text: json.text, active: true });
+                }
 
                 this.initGrid();
 
