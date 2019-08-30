@@ -15,5 +15,6 @@
     "hoursRequired": "La jornada laboral es requerida",
     "managerRequired": "El superior es requerido",
     "officeRequired": "La oficina es requerida",
+    "mailEmpty": "El mail en TIGER esta vacio",
     "billingPercentageRequired": "El % de facturabilidad es requerido"
 }
