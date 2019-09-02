@@ -106,6 +106,13 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     }
 
     search(){
+        if(this.searchModel.startDate && this.searchModel.endDate){
+            if(this.searchModel.endDate < this.searchModel.startDate){
+                this.messageService.showError('dateToLessThanSince');
+                return;
+            }
+        }
+
         if(this.searchModel.analyticId == null) this.searchModel.analyticId = [];
         if(this.searchModel.managerId == null) this.searchModel.managerId = [];
 
