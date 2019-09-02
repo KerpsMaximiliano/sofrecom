@@ -95,8 +95,9 @@ namespace Sofco.Framework.Managers
             var hasComplianceGroup = unitOfWork.UserRepository.HasComplianceGroup(currentUserEmail);
             var hasReadOnlyGroup = unitOfWork.UserRepository.HasReadOnlyGroup(currentUserEmail);
             var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUserEmail);
+            var hasCdgGroup = unitOfWork.UserRepository.HasCdgGroup(currentUserEmail);
 
-            return  hasGafGroup || hasDafGroup || hasReadOnlyGroup || hasRrhhGroup || hasComplianceGroup;
+            return  hasGafGroup || hasDafGroup || hasReadOnlyGroup || hasRrhhGroup || hasComplianceGroup || hasCdgGroup;
         }
 
         public bool HasAccessForRefund()
@@ -107,8 +108,10 @@ namespace Sofco.Framework.Managers
             var hasGafGroup = unitOfWork.UserRepository.HasGafGroup(currentUserEmail);
             var hasComplianceGroup = unitOfWork.UserRepository.HasComplianceGroup(currentUserEmail);
             var hasReadOnlyGroup = unitOfWork.UserRepository.HasReadOnlyGroup(currentUserEmail);
+            var hasRrhhGroup = unitOfWork.UserRepository.HasRrhhGroup(currentUserEmail);
+            var hasCdgGroup = unitOfWork.UserRepository.HasCdgGroup(currentUserEmail);
 
-            return hasGafGroup || hasDafGroup || hasReadOnlyGroup || hasComplianceGroup;
+            return hasGafGroup || hasDafGroup || hasReadOnlyGroup || hasComplianceGroup || hasRrhhGroup || hasCdgGroup;
         }
 
         public bool IsDafOrGaf()
