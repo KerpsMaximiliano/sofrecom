@@ -20,6 +20,11 @@ export class SeniorityComponent extends GenericOptionComponent implements OnInit
     ngOnInit(): void {
         this.setEntity(GenericOptions.Seniority);
         this.title = "Seniorities";
+        this.columns = [0, 1, 2];
+    }
+
+    edit(item){
+        this.update(item);
     }
 
     create() {

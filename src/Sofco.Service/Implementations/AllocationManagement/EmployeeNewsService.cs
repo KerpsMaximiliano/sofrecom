@@ -101,6 +101,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
             try
             {
                 var employee = JsonConvert.DeserializeObject<Employee>(response.Data.EmployeeData);
+
+                if (string.IsNullOrWhiteSpace(employee.Email))
+                {
+                    response.AddError(Resources.AllocationManagement.Employee.MailEmpty);
+                    response.Data = null;
+                    return response;
+                }
+
                 employee.Created = DateTime.UtcNow;
                 employee.Modified = DateTime.UtcNow;
                 employee.CreatedByUser = userName;

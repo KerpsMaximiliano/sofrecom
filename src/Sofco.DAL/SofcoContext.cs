@@ -166,6 +166,7 @@ namespace Sofco.DAL
         public DbSet<Seniority> Seniorities { get; set; }
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Skill> Skills { get; set; }
+        public DbSet<ReasonCause> ReasonCauses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

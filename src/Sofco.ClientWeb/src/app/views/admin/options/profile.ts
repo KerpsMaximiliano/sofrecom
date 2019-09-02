@@ -20,6 +20,11 @@ export class ProfileComponent extends GenericOptionComponent implements OnInit {
     ngOnInit(): void {
         this.setEntity(GenericOptions.Profile);
         this.title = "Perfiles";
+        this.columns = [0, 1, 2];
+    }
+
+    edit(item){
+        this.update(item);
     }
 
     create() {

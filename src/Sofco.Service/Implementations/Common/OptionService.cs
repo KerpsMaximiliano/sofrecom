@@ -5,6 +5,7 @@ using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.Managers;
 
 namespace Sofco.Service.Implementations.Common
 {
@@ -12,14 +13,16 @@ namespace Sofco.Service.Implementations.Common
     {
         private readonly IOptionRepository<TEntity> repository;
         private readonly ILogMailer<OptionService<TEntity>> logger;
+        private readonly IGenericOptionManager genericOptionManager;
 
-        public OptionService(IOptionRepository<TEntity> repository, ILogMailer<OptionService<TEntity>> logger)
+        public OptionService(IOptionRepository<TEntity> repository, ILogMailer<OptionService<TEntity>> logger, IGenericOptionManager genericOptionManager)
         {
             this.repository = repository;
             this.logger = logger;
+            this.genericOptionManager = genericOptionManager;
         }
 
-        public Response<string> Add(string description)
+        public Response<string> Add(string description, Dictionary<string, string> parameters)
         {
             var response = new Response<string>();
 
@@ -32,6 +35,8 @@ namespace Sofco.Service.Implementations.Common
 
                 domain.Text = description;
                 domain.Active = true;
+
+                genericOptionManager.SetParameters(domain, parameters);
 
                 repository.Insert(domain);
 
@@ -50,7 +55,7 @@ namespace Sofco.Service.Implementations.Common
             return response;
         }
 
-        public Response Update(int id, string description)
+        public Response Update(int id, string description, Dictionary<string, string> parameters)
         {
             var response = new Response();
 
@@ -68,6 +73,8 @@ namespace Sofco.Service.Implementations.Common
             try
             {
                 domain.Text = description;
+
+                genericOptionManager.SetParameters(domain, parameters);
 
                 repository.Update(domain);
 

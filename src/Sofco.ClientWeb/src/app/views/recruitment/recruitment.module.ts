@@ -15,10 +15,11 @@ import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ReasonCauseComponent } from '../admin/options/reasonCause';
 
 @NgModule({
   declarations: [
-    ListContactsComponent, AddContactsComponent, DetailContactsComponent, SkillComponent, ProfileComponent, SeniorityComponent
+    ListContactsComponent, AddContactsComponent, DetailContactsComponent, SkillComponent, ProfileComponent, SeniorityComponent, ReasonCauseComponent
   ],
 
   imports: [CommonModule, RouterModule, RecruitmentRouter, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, DatePickerModule, NgSelectModule, ReactiveFormsModule],

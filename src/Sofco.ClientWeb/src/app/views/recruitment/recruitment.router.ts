@@ -6,6 +6,7 @@ import { DetailContactsComponent } from "./contacts/detail-contacts/detail-conta
 import { SeniorityComponent } from "../admin/options/seniority";
 import { SkillComponent } from "../admin/options/skill";
 import { ProfileComponent } from "../admin/options/profile";
+import { ReasonCauseComponent } from "../admin/options/reasonCause";
 
 const RECRUITMENT_ROUTER: Routes = [
     {
@@ -22,6 +23,8 @@ const RECRUITMENT_ROUTER: Routes = [
     { path: "skills", component: SkillComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "SKILL" } },
     
     { path: "perfiles", component: ProfileComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "PROFILE" } },
+
+    { path: "reasonCauses", component: ReasonCauseComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "REASONCAUSE" } },
 ] 
 
 export const RecruitmentRouter = RouterModule.forChild(RECRUITMENT_ROUTER)

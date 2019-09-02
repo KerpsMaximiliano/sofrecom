@@ -142,6 +142,15 @@ namespace Sofco.Resources.AllocationManagement {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a allocationManagement/employee.mailEmpty.
+        /// </summary>
+        public static string MailEmpty {
+            get {
+                return ResourceManager.GetString("MailEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a allocationManagement/employee.managerRequired.
         /// </summary>
         public static string ManagerRequired {
