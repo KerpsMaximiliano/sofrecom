@@ -29,10 +29,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DAL\Recruitment\" />
-    <Folder Include="Models\Recruitment\" />
-    <Folder Include="Services\Recruitment\" />
-  </ItemGroup>
-
 </Project>

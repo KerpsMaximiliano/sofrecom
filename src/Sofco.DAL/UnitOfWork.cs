@@ -9,6 +9,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.ManagementReport;
+using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.Views;
@@ -20,6 +21,7 @@ using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.DAL.Repositories.ManagementReport;
+using Sofco.DAL.Repositories.Recruitment;
 using Sofco.DAL.Repositories.Reports;
 using Sofco.DAL.Repositories.Rrhh;
 using Sofco.DAL.Repositories.Workflow;
@@ -106,6 +108,12 @@ namespace Sofco.DAL
         private ICurrencyExchangeRepository currencyExchangeRepository;
         private ILogRepository logRepository;
         private IDelegationRepository delegationRepository;
+
+        #endregion
+
+        #region Recruitment
+
+        private IJobSearchRepository jobSearchRepository;
 
         #endregion
 
@@ -262,6 +270,12 @@ namespace Sofco.DAL
         public ICostDetailProfileRepository CostDetailProfileRepository => costDetailProfileRepository ?? (costDetailProfileRepository = new CostDetailProfileRepository(context));
         public ICostDetailResourceRepository CostDetailResourceRepository => costDetailResourceRepository ?? (costDetailResourceRepository = new CostDetailResourceRepository(context));
         public ICostDetailStaffRepository CostDetailStaffRepository => costDetailStaffRepository ?? (costDetailStaffRepository = new CostDetailStaffRepository(context));
+
+        #endregion
+
+        #region Recruitment
+
+        public IJobSearchRepository JobSearchRepository => jobSearchRepository ?? (jobSearchRepository = new JobSearchRepository(context));
 
         #endregion
 

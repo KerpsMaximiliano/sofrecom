@@ -167,6 +167,10 @@ namespace Sofco.DAL
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<ReasonCause> ReasonCauses { get; set; }
+        public DbSet<JobSearch> JobSearchs { get; set; }
+        public DbSet<JobSearchProfile> JobSearchProfiles { get; set; }
+        public DbSet<JobSearchSeniority> JobSearchSeniorities { get; set; }
+        public DbSet<JobSearchSkill> JobSearchSkills { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -235,6 +239,7 @@ namespace Sofco.DAL
             builder.MapLog();
             builder.MapDelegation();
             builder.MapRecruitmentOptions();
+            builder.MapJobSearch();
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace Sofco.Domain.Models.Billing
+﻿using System.Collections.Generic;
+using Sofco.Domain.Models.Recruitment;
+
+namespace Sofco.Domain.Models.Billing
 {
     public class Customer
     {
@@ -35,5 +38,7 @@
         public string OwnerId { get; set; }
 
         public bool Active { get; set; }
+
+        public IList<JobSearch> JobSearchs { get; set; }
     }
 }
