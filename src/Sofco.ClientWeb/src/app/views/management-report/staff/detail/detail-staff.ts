@@ -133,7 +133,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         if (this.sendSubscrip) this.sendSubscrip.unsubscribe();
         if (this.closeSubscrip) this.closeSubscrip.unsubscribe();
     }
-
+ 
     getDetail() {
         this.messageService.showLoading();
         const userInfo = UserInfoService.getUserInfo();

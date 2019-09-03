@@ -10,6 +10,7 @@ import { DatesService } from "app/services/common/month.service";
 import { AnalyticStatus } from "app/models/enums/analyticStatus";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 import { I18nService } from "app/services/common/i18n.service";
+import { UserInfoService } from "app/services/common/user-info.service";
 
 
 @Component({
@@ -128,6 +129,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     getDetail() {
         this.messageService.showLoading();
+        const userInfo = UserInfoService.getUserInfo();
 
         this.getDetailSubscrip = this.managementReportService.getDetail(this.serviceId).subscribe(response => {
 
@@ -147,6 +149,12 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.billing.managementReportId = this.ManagementReportId;
             
             this.modalEvalProp.managementReportId = this.ManagementReportId;
+
+            if(this.isManager){
+                if(this.model.managerId != userInfo.id){
+                    this.isManager = false;
+                }
+            }
 
             this.billing.readOnly = !this.canEdit();
             this.detailCost.readOnly = !this.canEdit();
