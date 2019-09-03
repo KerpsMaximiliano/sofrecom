@@ -451,6 +451,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                     response.Data.HasCostProfile = true;
                 }
 
+                if (!getReal)
+                {
+                    foreach (var other in listOther)
+                    {
+                        other.Id = 0;
+                    }
+                }
+
                 response.Data.Id = costDetail.Id;
 
                 response.Data.Provision = costDetail.Provision;
@@ -1546,15 +1554,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             aux.Id = month.Real.Id;
                             aux.Value = month.Real.Value;
-                            aux.Charges = month.Real.Charges;
-                            aux.Adjustment = month.Real.Adjustment;
+                            aux.Description = month.Real.Description;
                         }
                         else
                         {
                             aux.Id = month.Budget.Id;
                             aux.Value = month.Budget.Value;
-                            aux.Charges = month.Budget.Charges;
-                            aux.Adjustment = month.Budget.Adjustment;
+                            aux.Description = month.Budget.Description;
                         }
 
                         if (aux.Id > 0)

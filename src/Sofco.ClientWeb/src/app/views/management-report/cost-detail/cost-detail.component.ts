@@ -387,7 +387,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
             });
 
-            var _id = monthCost.budget.id
+            var _id = 0
             var _salary = monthCost.budget.value || 0
             var _charges = monthCost.budget.charges || 0
             var _total = monthCost.budget.value + monthCost.budget.charges || 0
