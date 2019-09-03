@@ -108,6 +108,11 @@
         </div>
     </div>
 
+    <div class="alert alert-gaps-info" *ngIf="subCategoriesData.length == 0">
+        <i class="fa fa-info"></i>
+        {{ i18nService.translateByKey('noInfoAvailable') }}
+    </div>
+
     <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index">
         <div class="col-sm-3">
             {{ cost.name }}

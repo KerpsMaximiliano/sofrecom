@@ -95,6 +95,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/billMultiple`]);
     }
 
+    goToResources(){
+      this.router.navigate([`/contracts/analytics/${this.analytic.id}/resources`]);
+    }
+
     goToProjectDetail(project){
       sessionStorage.setItem("customerId", this.customerId);
       sessionStorage.setItem("serviceId", this.serviceId);
