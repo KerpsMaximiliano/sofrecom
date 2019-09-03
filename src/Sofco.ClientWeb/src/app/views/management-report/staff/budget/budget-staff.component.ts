@@ -93,7 +93,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
             this.subCategoriesFiltered = this.subCategories
 
-            this.selectDefaultColumn(this.dateSelected)
+           // this.selectDefaultColumn(this.dateSelected)
             this.calculateTotalCosts()
             this.sendDataToDetailView();
         },
@@ -442,43 +442,43 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
     }
 
-    selectDefaultColumn(date: Date) {
+    // selectDefaultColumn(date: Date) {
 
-        this.dateSelected = date
-        var month = this.months.find(x => x.month == (this.dateSelected.getMonth() + 1) && x.year == this.dateSelected.getFullYear());
+    //     this.dateSelected = date
+    //     var month = this.months.find(x => x.month == (this.dateSelected.getMonth() + 1) && x.year == this.dateSelected.getFullYear());
 
-        if (month) {
-            this.showColumn.projected = true
-            if (month.totalReal > 0) {
-                this.showColumn.budget = false
-                this.showColumn.pfa1 = false
-                this.showColumn.pfa2 = false
-                this.showColumn.real = true
-            }
-            else {
-                if (month.totalPfa2 > 0) {
-                    this.showColumn.budget = false
-                    this.showColumn.pfa1 = false
-                    this.showColumn.pfa2 = true
-                    this.showColumn.real = false
-                }
-                else {
-                    if (month.totalPfa1 > 0) {
-                        this.showColumn.budget = false
-                        this.showColumn.pfa1 = true
-                        this.showColumn.pfa2 = false
-                        this.showColumn.real = false
-                    }
-                    else {
-                        this.showColumn.budget = true
-                        this.showColumn.pfa1 = false
-                        this.showColumn.pfa2 = false
-                        this.showColumn.real = false
-                    }
-                }
-            }
-        }
-    }
+    //     if (month) {
+    //         this.showColumn.projected = true
+    //         if (month.totalReal > 0) {
+    //             this.showColumn.budget = false
+    //             this.showColumn.pfa1 = false
+    //             this.showColumn.pfa2 = false
+    //             this.showColumn.real = true
+    //         }
+    //         else {
+    //             if (month.totalPfa2 > 0) {
+    //                 this.showColumn.budget = false
+    //                 this.showColumn.pfa1 = false
+    //                 this.showColumn.pfa2 = true
+    //                 this.showColumn.real = false
+    //             }
+    //             else {
+    //                 if (month.totalPfa1 > 0) {
+    //                     this.showColumn.budget = false
+    //                     this.showColumn.pfa1 = true
+    //                     this.showColumn.pfa2 = false
+    //                     this.showColumn.real = false
+    //                 }
+    //                 else {
+    //                     this.showColumn.budget = true
+    //                     this.showColumn.pfa1 = false
+    //                     this.showColumn.pfa2 = false
+    //                     this.showColumn.real = false
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
 
 }
