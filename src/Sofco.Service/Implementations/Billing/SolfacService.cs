@@ -64,7 +64,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 CreateHitoOnCrm(solfac, response);
 
-                solfac.UpdatedDate = DateTime.Now;
+                solfac.UpdatedDate = DateTime.UtcNow.Date;
                 solfac.ModifiedByUserId = solfac.UserApplicantId;
 
                 // Add History
@@ -337,7 +337,7 @@ namespace Sofco.Service.Implementations.Billing
 
             try
             {
-                solfac.UpdatedDate = DateTime.Now;
+                solfac.UpdatedDate = DateTime.UtcNow.Date;
 
                 // Add History
                 solfac.Histories.Add(GetHistory(solfac.Status, solfac.Status, solfac.UserApplicantId, comments));
@@ -380,7 +380,7 @@ namespace Sofco.Service.Implementations.Billing
             {
                 SolfacId = solfacId,
                 Name = fileFileName,
-                CreationDate = DateTime.Now,
+                CreationDate = DateTime.UtcNow.Date,
                 File = fileAsArrayBytes
             };
 
@@ -519,7 +519,7 @@ namespace Sofco.Service.Implementations.Billing
                 SolfacStatusTo = statusTo,
                 UserId = userId,
                 Comment = comment,
-                CreatedDate = DateTime.Now
+                CreatedDate = DateTime.UtcNow.Date
             };
 
             return history;
@@ -812,7 +812,7 @@ namespace Sofco.Service.Implementations.Billing
             hitoParams.Ammount = SolfacHelper.IsCreditNote(solfac) ? (-1) * hito.Total : hito.Total;
             hitoParams.Name = hito.Description = GetPrefixTitle(solfac) + hito.Description;
             hitoParams.StatusCode = Convert.ToInt32(HitoStatus.Pending).ToString();
-            hitoParams.StartDate = DateTime.UtcNow;
+            hitoParams.StartDate = DateTime.UtcNow.Date;
             hitoParams.Month = hito.Month;
             hitoParams.ProjectId = hito.ProjectId;
             hitoParams.OpportunityId = hito.OpportunityId;
