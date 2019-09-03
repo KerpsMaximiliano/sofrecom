@@ -201,7 +201,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             monthDesc: this.selectedMonthDesc,
             year: this.selectedYear
         }
-        this.costDetailMonth.open(data, this.readOnly || this.isClosed);
+        this.costDetailMonth.open(data, !this.canEditDetailMonth() || this.isClosed);
     }
 
     updateBudgetView() {
@@ -377,6 +377,14 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         }
 
         return "";
+    }
+
+    canEditDetailMonth(){
+        if(!this.model || !this.model.status) return false;
+
+        if(this.model.status == ManagementReportStatus.CdgPending && this.isCdg) return true;
+
+        return false;
     }
 
     canEdit(){
