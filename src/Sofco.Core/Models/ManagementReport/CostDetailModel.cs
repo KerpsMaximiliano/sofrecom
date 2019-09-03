@@ -26,7 +26,7 @@ namespace Sofco.Core.Models.ManagementReport
         public int ResourceQuantity { get; set; }    
         public bool HasReal { get; set; }
         public decimal TotalContracted { get; set; }
-
+        public decimal? TotalBilling { get; set; }
     }
 
     public class MonthDetailCost

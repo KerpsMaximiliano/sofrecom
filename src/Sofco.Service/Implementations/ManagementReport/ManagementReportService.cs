@@ -367,6 +367,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         monthHeader.HasReal = costDetailMonth.HasReal;
                         monthHeader.TotalContracted = costDetailMonth.ContratedDetails.Sum(x => x.Honorary) + costDetailMonth.ContratedDetails.Sum(x => x.Insurance);
+                        monthHeader.TotalBilling = costDetailMonth.TotalBilling;
                     }
 
                     var billingMonth = billings.SingleOrDefault(x => x.MonthYear.Date == date.Date);

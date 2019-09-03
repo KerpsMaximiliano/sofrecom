@@ -92,12 +92,12 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
             var billingMonth = this.billingModel.months.find(x => x.month == month && x.year == year);
             var costDetailMonth = this.costsModel.months.find(x => x.month == month && x.year == year);
-
+           
             if (billingMonth) {
                 evalpropTotalBilling += billingMonth.valueEvalProp;
 
                 // Real del mes $$ (ventas)
-                marginTracking.SalesOnMonth += billingMonth.totalBilling;
+                //marginTracking.SalesOnMonth += billingMonth.totalBilling;
 
                 billingAcumulatedToDate += billingMonth.totalBilling;
             
@@ -154,7 +154,11 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
                 // Real al mes $$ (costos)
                 marginTracking.TotalExpensesOnMonth = costDetailMonth.real.totalCost;
               
-                totalCostsAcumulatedToEnd += costDetailMonth.budget.totalCost;
+
+                // Real del mes $$ (ventas)
+                marginTracking.SalesOnMonth = costDetailMonth.totalBilling;
+
+                totalCostsAcumulatedToEnd += costDetailMonth.real.totalCost;
 
                 // Previsto % (ventas)
                 if (costDetailMonth.valueMarginEvalProp > 0) {
