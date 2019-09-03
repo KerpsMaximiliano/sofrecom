@@ -105,7 +105,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             }
             if (costDetailMonth) {
                 evalpropTotalCosts += costDetailMonth.valueEvalProp;
-                evalpropTotalTracing += costDetailMonth.valueMarginEvalProp
             }
 
             //this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
@@ -179,7 +178,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         // if (evalpropTotalBilling > 0) {
         //     percentageExpectedTotal = ((evalpropTotalBilling - evalpropTotalCosts) / evalpropTotalBilling) * 100
         // }
-
+        
         percentageExpectedTotal = evalpropTotalTracing / cantMonths
 
         this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, percentageExpectedTotal);

@@ -342,10 +342,14 @@
                         <input type="text" class="form-control input-xs" [(ngModel)]="other.description"
                             maxlength="200">
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <!-- <input type="number" decimalFormat class="form-control input-xs" [digitLimit]="8"
                             [(ngModel)]="other.value" max="99999999" min="0"> -->
                         <math-input [(model)]="other.value"></math-input>
+                    </div>
+                    <div class="col-sm-1">
+                        <button class="btn btn-danger btn-xs" (click)="deleteOthersByMonth(i, other)" *ngIf="!isReadOnly"><i
+                                class="fa fa-trash"></i></button>
                     </div>
                 </div>
                 <button class="btn btn-success btn-sm m-t-xs" (click)="addOtherByMonth()" type="button">

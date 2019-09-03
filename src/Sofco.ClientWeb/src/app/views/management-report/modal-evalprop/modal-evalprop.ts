@@ -47,6 +47,11 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
 
         if(month.icon){
             this.icon = month.icon;
+            this.editEvalPropValue.setValidators([Validators.required, Validators.min(-100), Validators.max(100)]);
+        }
+        else{
+            this.icon = "$"
+            this.editEvalPropValue.setValidators([Validators.required, Validators.min(0), Validators.max(999999999)])
         }
 
         this.editEvalPropModal.show()

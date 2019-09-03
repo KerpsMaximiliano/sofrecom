@@ -25,6 +25,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     getEmployeeSubscrip: Subscription;
     getOtherByMonthSuscrip: Subscription;
     deleteProfileSubscrip: Subscription;
+    deleteOthersByMonthSubscrip: Subscription;
 
 
     //Propiedades
@@ -135,6 +136,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (this.getEmployeeSubscrip) this.getEmployeeSubscrip.unsubscribe();
         if (this.getOtherByMonthSuscrip) this.getOtherByMonthSuscrip.unsubscribe();
         if (this.deleteProfileSubscrip) this.getOtherByMonthSuscrip.unsubscribe();
+        if (this.deleteOthersByMonthSubscrip) this.getOtherByMonthSuscrip.unsubscribe();
     }
 
     setFromDate(date: Date) {
@@ -673,12 +675,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     canDeleteResources(item) {
+        
         var canEdit = false;
         if (item.otherResource) {
             canEdit = true;
         }
         item.monthsCost.forEach(month => {
-            if (month.value > 0) {
+            if (month.budget.value > 0 || month.real.value > 0 ) {
                 canEdit = false
                 return canEdit
             }
@@ -688,12 +691,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     deleteResources(item, index) {
-
-        this.save([], [], this.fundedResources)
-
+        
         this.fundedResources.splice(index, 1)
         this.otherResources.push(item)
-
+        
+        this.save([], [], this.fundedResources)
+        
         this.otherResources.sort(function (a, b) {
             if (a.display > b.display) {
                 return 1;
@@ -941,6 +944,23 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     this.messageService.closeLoading();
                 });
         }
+    }
+
+    deleteOthersByMonth(index, item) {
+
+        //Si el item no esta en base de datos solo lo borro del array
+        if (item.id == 0) {
+            this.othersByMonth.splice(index, 1);
+        }
+        else {
+            //Si esta en base de datos borro el registio
+            this.deleteOthersByMonthSubscrip = this.managementReportService.deleteOtherResources(item.id).subscribe(() => {
+                this.othersByMonth.splice(index, 1);
+            },
+                () => {
+                });
+        }
+
     }
 
 }
