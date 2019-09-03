@@ -52,8 +52,12 @@
         <button class="btn btn-sm btn-sm btn-success btn-outline dim" (click)="update()" *ngIf="menuService.hasFunctionality('SOLFA', 'PROJECT-UPDATE')">
             {{ 'allocationManagement.news.updateRrhh' | translate }} <i class="fa fa-file"></i>
         </button>
-    </div>
 
+        <button class="btn btn-sm btn-sm btn-success btn-outline dim" (click)="goToResources()" *ngIf="analytic?.id > 0">
+            {{ 'allocationManagement.allocation.resourcesList' | translate }} <i class="fa fa-users"></i>
+        </button>
+    </div>
+ 
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
