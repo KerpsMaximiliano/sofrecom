@@ -22,5 +22,21 @@ namespace Sofco.WebApi.Controllers.Recruitment
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("applicants")]
+        public IActionResult GetApplicants()
+        {
+            var response = jobSearchService.GetApplicants();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("recruiters")]
+        public IActionResult GetRecruiters()
+        {
+            var response = jobSearchService.GetRecruiters();
+
+            return this.CreateResponse(response);
+        }
     }
 }

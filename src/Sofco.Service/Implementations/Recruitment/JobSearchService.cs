@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Common;
 using Sofco.Core.Models.Recruitment;
 using Sofco.Core.Services.Recruitment;
 using Sofco.Domain.Models.Recruitment;
@@ -14,12 +19,14 @@ namespace Sofco.Service.Implementations.Recruitment
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<JobSearchService> logger;
         private readonly IUserData userData;
+        private readonly EmailConfig emailConfig;
 
-        public JobSearchService(IUnitOfWork unitOfWork, ILogMailer<JobSearchService> logger, IUserData userData)
+        public JobSearchService(IUnitOfWork unitOfWork, ILogMailer<JobSearchService> logger, IUserData userData, IOptions<EmailConfig> emailConfigOptions)
         {
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
+            this.emailConfig = emailConfigOptions.Value;
         }
 
         public Response Add(JobSearchAddModel model)
@@ -57,6 +64,46 @@ namespace Sofco.Service.Implementations.Recruitment
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
+
+            return response;
+        }
+
+        public Response<IList<OptionModel>> GetApplicants()
+        {
+            var response = new Response<IList<OptionModel>> { Data = new List<OptionModel>() };
+
+            var leaders = unitOfWork.UserRepository.GetByGroup(emailConfig.LeadersCode);
+            var recruiters = unitOfWork.UserRepository.GetByGroup(emailConfig.RecruitersCode);
+            var managers = unitOfWork.UserRepository.GetByGroup(emailConfig.ManagersCode);
+
+            response.Data = leaders.Select(x => new OptionModel {Id = x.Id, Text = x.Name}).ToList();
+
+            foreach (var recruiter in recruiters)
+            {
+                if (response.Data.All(x => x.Id != recruiter.Id))
+                {
+                    response.Data.Add(new OptionModel { Id = recruiter.Id, Text = recruiter.Name });
+                }
+            }
+
+            foreach (var manager in managers)
+            {
+                if (response.Data.All(x => x.Id != manager.Id))
+                {
+                    response.Data.Add(new OptionModel { Id = manager.Id, Text = manager.Name });
+                }
+            }
+
+            return response;
+        }
+
+        public Response<IList<OptionModel>> GetRecruiters()
+        {
+            var response = new Response<IList<OptionModel>> { Data = new List<OptionModel>() };
+
+            var recruiters = unitOfWork.UserRepository.GetByGroup(emailConfig.RecruitersCode);
+
+            response.Data = recruiters.Select(x => new OptionModel { Id = x.Id, Text = x.Name }).ToList();
 
             return response;
         }
