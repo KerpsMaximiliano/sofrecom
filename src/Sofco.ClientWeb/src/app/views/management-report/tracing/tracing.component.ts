@@ -72,6 +72,7 @@ export class TracingComponent implements OnInit, OnDestroy {
 
         if (this.openEvalPropModal.observers.length > 0) {
             month.type = 3;
+            month.icon = "%";
             this.openEvalPropModal.emit(month);
         }
     }

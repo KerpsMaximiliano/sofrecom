@@ -17,6 +17,7 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
     monthSelectedDisplay: string = "";
     monthSelected: any;
     managementReportId: number;
+    icon: string = "$";
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
@@ -43,6 +44,10 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
 
     openEditEvalProp(month){
         if(!this.menuService.userIsCdg) return;
+
+        if(month.icon){
+            this.icon = month.icon;
+        }
 
         this.editEvalPropModal.show()
         this.editEvalPropValue.setValue(month.valueEvalProp);
