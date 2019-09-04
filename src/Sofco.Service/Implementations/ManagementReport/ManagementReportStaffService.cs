@@ -324,7 +324,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                         var allSubcategories = month.SubcategoriesBudget
                                                         .Union(month.SubcategoriesPfa1)
                                                         .Union(month.SubcategoriesPfa2)
-                                                        .Union(month.SubcategoriesReal);
+                                                        .Union(month.SubcategoriesReal)
+                                                        .Union(month.SubcategoriesProjected);
+
 
                         foreach (var subCatBudget in allSubcategories)
                         {
