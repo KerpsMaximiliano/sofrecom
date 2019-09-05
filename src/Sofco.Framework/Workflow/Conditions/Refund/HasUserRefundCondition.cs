@@ -6,13 +6,13 @@ using Sofco.Domain.Utils;
  
 namespace Sofco.Framework.Workflow.Conditions.Refund
 {
-    public class GafToFinalizedCondition : IWorkflowConditionState
+    public class HasUserRefundCondition : IWorkflowConditionState
     {
         private readonly IRefundValidation validation;
 
         private readonly IUnitOfWork unitOfWork;
 
-        public GafToFinalizedCondition(IRefundValidation validation, IUnitOfWork unitOfWork)
+        public HasUserRefundCondition(IRefundValidation validation, IUnitOfWork unitOfWork)
         {
             this.validation = validation;
             this.unitOfWork = unitOfWork;
@@ -22,9 +22,9 @@ namespace Sofco.Framework.Workflow.Conditions.Refund
         {
             var refund = unitOfWork.RefundRepository.GetFullById(entity.Id);
 
-            if (refund.CreditCardId.GetValueOrDefault() > 0) return true;
+            if (refund.CreditCardId.GetValueOrDefault() > 0) return false;
 
-            return !validation.HasUserRefund(refund);
+            return validation.HasUserRefund(refund);
         }
     }
 }

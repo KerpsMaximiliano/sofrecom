@@ -35,7 +35,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             try
             {
-                var refunds = unitOfWork.RefundRepository.GetAllInCurrentAccount(settings.WorkflowStatusCurrentAccount);
+                var refunds = unitOfWork.RefundRepository.GetAllInCurrentAccount(settings.WorkFlowStateAccounted);
 
                 var userDiccionary = new Dictionary<int, List<Refund>>();
                 var employeeDiccionary = new Dictionary<string, string>();
@@ -90,7 +90,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         {
                             var employee = unitOfWork.EmployeeRepository.GetByEmail(refundAux.UserApplicant?.Email);
 
-                            employeeDiccionary.Add(refundAux.UserApplicant.Email, employee.Name);
+                            if(employee != null)
+                                employeeDiccionary.Add(refundAux.UserApplicant.Email, employee.Name);
                         }
 
                         if (refundAux.UserApplicant != null && employeeDiccionary.ContainsKey(refundAux.UserApplicant.Email))
@@ -149,7 +150,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         {
                             var employee = unitOfWork.EmployeeRepository.GetByEmail(advancement.UserApplicant?.Email);
 
-                            employeeDiccionary.Add(advancement.UserApplicant.Email, employee.Name);
+                            if (employee != null)
+                                employeeDiccionary.Add(advancement.UserApplicant.Email, employee.Name);
                         }
 
                         if (advancement.UserApplicant != null && employeeDiccionary.ContainsKey(advancement.UserApplicant.Email))

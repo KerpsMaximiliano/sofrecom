@@ -41,7 +41,7 @@ namespace Sofco.Framework.Workflow.Conditions
                 case "DIRECTOR-TO-GENERAL-DIRECTOR": return new DirectorToGeneralDirectorRefundCondition(unitOfWork, settings);
                 case "DIRECTOR-TO-DAF": return new DirectorToDafRefundCondition(unitOfWork, settings);
                 case "GAF-TO-PAYMENT-PENDING": return new GafToPaymentPendingCondition(validation, unitOfWork);
-                case "GAF-TO-FINALIZED": return new GafToFinalizedCondition(validation, unitOfWork);
+                case "HAS-USER-REFUND": return new HasUserRefundCondition(validation, unitOfWork);
                 case "GAF-TO-CURRENT-ACCOUNT": return new GafToCurrentAccountCondition(unitOfWork);
                 case "DRAFT-TO-GAF": return new DraftToGafCondition(unitOfWork);
                 case "DRAFT-TO-MANAGER": return new DraftToManagerCondition(unitOfWork);
