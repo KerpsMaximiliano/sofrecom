@@ -26,7 +26,7 @@ namespace Sofco.Service.Crm.TranslatorMaps
             {
                 {nameof(CrmInvoicingMilestone.Id), Id},
                 {nameof(CrmInvoicingMilestone.Name), Name},
-                {nameof(CrmInvoicingMilestone.Date), Date},
+                {nameof(CrmInvoicingMilestone.Date), Date + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmInvoicingMilestone.ProjectId), ProjectId},
                 {nameof(CrmInvoicingMilestone.ProjectName), ProjectId + TranslatorMapConstant.ODataFormattedValue},
                 {nameof(CrmInvoicingMilestone.MoneyId), MoneyId},
