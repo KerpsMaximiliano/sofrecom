@@ -130,6 +130,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(id, monthYear);
 
+            var costDetailStaff = costDetail.CostDetailStaff.Where(x => x.BudgetType.Name == EnumBudgetType.Real).ToList();
+
             var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDay(monthYear);
 
             //var listContracted = new List<ContractedModel>();
