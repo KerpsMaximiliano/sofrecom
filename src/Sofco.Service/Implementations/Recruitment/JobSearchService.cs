@@ -44,6 +44,7 @@ namespace Sofco.Service.Implementations.Recruitment
             ValidateQuantity(model, response);
             ValidateReasonCause(model, response);
             ValidateUser(model, response);
+            ValidateSelector(model, response);
             ValidateTimeHiring(model, response);
 
             if (response.HasErrors()) return response;
@@ -128,6 +129,18 @@ namespace Sofco.Service.Implementations.Recruitment
             }
         }
 
+        private void ValidateSelector(JobSearchAddModel model, Response response)
+        {
+            if (!model.UserId.HasValue)
+            {
+                response.AddError(Resources.Recruitment.JobSearch.SelectorRequired);
+            }
+            else if (!unitOfWork.UserRepository.ExistById(model.UserId.Value))
+            {
+                response.AddError(Resources.Admin.User.NotFound);
+            }
+        }
+
         private void ValidateReasonCause(JobSearchAddModel model, Response response)
         {
             if (!model.ReasonCauseId.HasValue)
@@ -154,16 +167,21 @@ namespace Sofco.Service.Implementations.Recruitment
 
         private void ValidateClient(JobSearchAddModel model, Response response)
         {
-            if (!model.ClientId.HasValue)
+            if (string.IsNullOrWhiteSpace(model.ClientCrmId))
             {
                 response.AddError(Resources.Recruitment.JobSearch.ClientRequired);
             }
             else
             {
-                var customer = unitOfWork.CustomerRepository.Get(model.ClientId.Value);
+                var customer = unitOfWork.CustomerRepository.GetByIdCrm(model.ClientCrmId);
+
                 if (customer == null)
                 {
                     response.AddError(Resources.Billing.Customer.NotFound);
+                }
+                else
+                {
+                    model.ClientId = customer.Id;
                 }
             }
         }

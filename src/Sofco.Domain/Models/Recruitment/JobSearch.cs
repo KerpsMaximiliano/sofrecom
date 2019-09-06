@@ -12,6 +12,9 @@ namespace Sofco.Domain.Models.Recruitment
         public int UserId { get; set; }
         public User User { get; set; }
 
+        public int RecruiterId { get; set; }
+        public User Recruiter { get; set; }
+
         public int ReasonCauseId { get; set; }
         public ReasonCause ReasonCause { get; set; }
 

@@ -15,7 +15,8 @@ namespace Sofco.DAL.Mappings.Recruitment
 
             builder.Entity<JobSearch>().HasOne(x => x.Client).WithMany(x => x.JobSearchs).HasForeignKey(x => x.ClientId);
             builder.Entity<JobSearch>().HasOne(x => x.ReasonCause).WithMany(x => x.JobSearchs).HasForeignKey(x => x.ReasonCauseId);
-            builder.Entity<JobSearch>().HasOne(x => x.User).WithMany(x => x.JobSearchs).HasForeignKey(x => x.UserId);
+            builder.Entity<JobSearch>().HasOne(x => x.User).WithMany(x => x.JobSearchs).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<JobSearch>().HasOne(x => x.Recruiter).WithMany(x => x.JobSearchs2).HasForeignKey(x => x.RecruiterId).OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<JobSearchProfile>().HasKey(t => new { t.JobSearchId, t.ProfileId });
 

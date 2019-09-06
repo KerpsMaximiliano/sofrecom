@@ -10,9 +10,13 @@ namespace Sofco.Core.Models.Recruitment
     {
         public int? UserId { get; set; }
 
+        public int? RecruiterId { get; set; }
+
         public int? ReasonCauseId { get; set; }
 
-        public int? ClientId { get; set; }
+        public string ClientCrmId { get; set; }
+
+        public int ClientId { get; set; }
 
         public IList<int> Profiles { get; set; }
 
@@ -32,13 +36,14 @@ namespace Sofco.Core.Models.Recruitment
         {
             var domain = new JobSearch();
 
-            domain.ClientId = ClientId.GetValueOrDefault();
+            domain.ClientId = ClientId;
             domain.ReasonCauseId = ReasonCauseId.GetValueOrDefault();
             domain.UserId = UserId.GetValueOrDefault();
             domain.Comments = Comments;
             domain.MaximunSalary = MaximunSalary.GetValueOrDefault();
             domain.Quantity = Quantity.GetValueOrDefault();
             domain.TimeHiring = TimeHiring;
+            domain.RecruiterId = RecruiterId.GetValueOrDefault();
 
             domain.Status = JobSearchStatus.Open;
 
