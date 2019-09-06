@@ -213,7 +213,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     addCostByMonth() {
-
+        
         var cost = {
             costDetailStaffId: 0,
             id: this.subCategorySelected.id,
@@ -238,9 +238,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 })
                 break;
             case 'PROJECTED':
-                this.monthSelected.SubcategoriesProjected = this.subCategoriesData
+                this.monthSelected.subcategoriesProjected = this.subCategoriesData
                 this.monthSelected.totalProjected = 0
-                this.monthSelected.SubcategoriesProjected.forEach(cost => {
+                this.monthSelected.subcategoriesProjected.forEach(cost => {
                     this.monthSelected.totalProjected += cost.value
                 })
                 break;
@@ -310,7 +310,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     fillSubCategories() {
-
+        
         let subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
         let index = this.months.findIndex(cost => cost.monthYear === this.monthSelected.monthYear);
 
