@@ -25,9 +25,9 @@ namespace Sofco.Framework.Workflow.OnSuccess
                 case "REJECT": return new OnTransitionRejectSuccess(unitOfWork);
                 case "GAF-TO-FINALIZE": return new OnGafToFinalizeSuccess(unitOfWork);
                 case "UPDATE-CURRENCY-EXCHANGE": return new UpdateCurrencyExchangeProcess(unitOfWork, appSetting);
-                case "FINALIZE-WORKFLOW-PROCESS": return new FinalizeWorkflowProcess(workflowManager);
-                case "CLOSE-REFUND": return new OnCloseRefundSuccess(workflowManager);
-                case "CLOSE-CASH-RETURN": return new CloseCashReturnProcess(workflowManager, unitOfWork);
+                case "FINALIZE-ADVANCEMENT-WORKFLOW": return new FinalizeAdvancementWorkflow(workflowManager);
+                case "FINALIZE-REFUND-WORKFLOW": return new FinalizeRefundWorkflow(workflowManager, unitOfWork);
+                case "CLOSE-REFUND": return new OnCloseRefundSuccess(workflowManager, unitOfWork);
                 default: return null;
             }
         }

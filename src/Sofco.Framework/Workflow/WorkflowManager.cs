@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
@@ -24,24 +25,38 @@ namespace Sofco.Framework.Workflow
         {
             var data = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(entityId);
 
-            CloseAdvancementsAndRefunds(data, entityId);
+            if(data.Item2.Any()) CloseAdvancements(data.Item2);
+
+            CloseRefunds(data.Item1);
         }
 
-        public void CloseAdvancementsAndRefunds(Tuple<IList<Refund>, IList<Advancement>> data, int entityId)
+        public void CloseRefunds(IList<Refund> refunds)
         {
-            foreach (var refund in data.Item1)
+            foreach (var refund in refunds)
             {
-                if (refund.Id != entityId)
-                {
-                    refund.StatusId = appSetting.WorkflowStatusFinalizedId;
-                    unitOfWork.WorkflowRepository.UpdateStatus(refund);
-                }
+                refund.StatusId = appSetting.WorkflowStatusFinalizedId;
+                unitOfWork.WorkflowRepository.UpdateStatus(refund);
 
                 refund.InWorkflowProcess = false;
                 unitOfWork.WorkflowRepository.UpdateInWorkflowProcess(refund);
             }
+        }
 
-            foreach (var advancement in data.Item2)
+        public void PayRefunds(IList<Refund> refunds)
+        {
+            foreach (var refund in refunds)
+            {
+                refund.StatusId = appSetting.WorkflowStatusApproveId;
+                unitOfWork.WorkflowRepository.UpdateStatus(refund);
+
+                refund.InWorkflowProcess = false;
+                unitOfWork.WorkflowRepository.UpdateInWorkflowProcess(refund);
+            }
+        }
+
+        public void CloseAdvancements(IList<Advancement> advancements)
+        {
+            foreach (var advancement in advancements)
             {
                 advancement.StatusId = appSetting.WorkflowStatusFinalizedId;
                 advancement.InWorkflowProcess = false;

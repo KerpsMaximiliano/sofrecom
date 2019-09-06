@@ -195,7 +195,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Currency)
                 .Include(x => x.AdvancementRefunds)
-                .Where(x => x.StatusId == workflowStatusCurrentAccount)
+                .Where(x => x.StatusId == workflowStatusCurrentAccount && !x.CreditCardId.HasValue && x.UserApplicant.Active)
                 .ToList();
         }
 

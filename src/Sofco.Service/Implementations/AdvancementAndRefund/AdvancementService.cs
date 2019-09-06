@@ -285,7 +285,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var currentUser = userData.GetCurrentUser();
 
-            var hasAllAccess = roleManager.HasFullAccess();
+            var hasAllAccess = roleManager.HasAdvancementAccess();
 
             var advancements = unitOfWork.AdvancementRepository.GetAllFinalized(model, settings.WorkflowStatusDraft);
 

@@ -1,17 +1,23 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Sofco.Core.DAL;
 using Sofco.Core.Models.Workflow;
+using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
+using Sofco.Domain.Models.AdvancementAndRefund;
 
 namespace Sofco.Framework.Workflow.OnSuccess
 {
-    public class OnCloseRefundSuccess : IOnTransitionSuccessState
+    public class FinalizeRefundWorkflow : IOnTransitionSuccessState
     {
         private readonly IWorkflowManager workflowManager;
+
         private readonly IUnitOfWork unitOfWork;
 
-        public OnCloseRefundSuccess(IWorkflowManager workflowManager, IUnitOfWork unitOfWork)
+        public FinalizeRefundWorkflow(IWorkflowManager workflowManager, IUnitOfWork unitOfWork)
         {
             this.workflowManager = workflowManager;
             this.unitOfWork = unitOfWork;
@@ -19,6 +25,10 @@ namespace Sofco.Framework.Workflow.OnSuccess
 
         public void Process(WorkflowEntity entity, WorkflowChangeStatusParameters parameters)
         {
+            this.workflowManager.CloseEntity(entity);
+
+            if(entity is Refund refund && refund.CreditCardId.HasValue) return;
+
             var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(entity.Id);
 
             //Tuple1: Reintegros
@@ -28,10 +38,10 @@ namespace Sofco.Framework.Workflow.OnSuccess
             {
                 var diff = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
 
-                if (diff > 0)
+                if (diff == 0)
                 {
                     workflowManager.CloseAdvancements(tuple.Item2);
-                    workflowManager.PayRefunds(tuple.Item1);
+                    workflowManager.CloseRefunds(tuple.Item1);
                 }
             }
         }

@@ -4,11 +4,11 @@ using Sofco.Domain.Interfaces;
 
 namespace Sofco.Framework.Workflow.OnSuccess
 {
-    public class FinalizeWorkflowProcess : IOnTransitionSuccessState
+    public class FinalizeAdvancementWorkflow : IOnTransitionSuccessState
     {
         private readonly IWorkflowManager workflowManager;
 
-        public FinalizeWorkflowProcess(IWorkflowManager workflowManager)
+        public FinalizeAdvancementWorkflow(IWorkflowManager workflowManager)
         {
             this.workflowManager = workflowManager;
         }
