@@ -148,19 +148,19 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
-                if (this.monthSelected.totalPfa1 > 0) {
-                    this.messageService.showError("cannotUpdateBudget");
-                }
-                else {
-                    if(this.monthSelected.totalReal > 0){
-                        this.messageService.showWarning("realHasValue");
-                    }
-                    else{
+                // if (this.monthSelected.totalPfa1 > 0) {
+                //     this.messageService.showError("cannotUpdateBudget");
+                // }
+                // else {
+                //     if(this.monthSelected.totalReal > 0){
+                //         this.messageService.showWarning("realHasValue");
+                //     }
+                //     else{
                         if(isCdg) { this.readOnly = false }
                         this.editItemModal.show();
                         return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
-                    }
-                }
+                //     }
+                // }
 
                 break;
             case 'PROJECTED':                
@@ -172,42 +172,42 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
                 break;
             case 'PFA1': {
-                if (this.monthSelected.totalBudget == 0) {
-                    this.messageService.showError("budgetRequired");
-                }
-                else {
-                    if (this.monthSelected.totalPfa2 > 0) {
-                        this.messageService.showError("cannotUpdatePfa1");
-                    }
-                    else {
+                // if (this.monthSelected.totalBudget == 0) {
+                //     this.messageService.showError("budgetRequired");
+                // }
+                // else {
+                //     if (this.monthSelected.totalPfa2 > 0) {
+                //         this.messageService.showError("cannotUpdatePfa1");
+                //     }
+                //     else {
                         if(isCdg) { this.readOnly = false }
                         this.editItemModal.show();
                         return this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
-                    }
-                }
+                //     }
+                // }
 
                 break;
             }
             case 'PFA2': {
-                if (this.monthSelected.totalBudget == 0 || this.monthSelected.totalPfa1 == 0) {
-                    this.messageService.showError("pfa1Required");
-                }
-                else {
+                // if (this.monthSelected.totalBudget == 0 || this.monthSelected.totalPfa1 == 0) {
+                //     this.messageService.showError("pfa1Required");
+                // }
+                // else {
                     if(isCdg) { this.readOnly = false }
                     this.editItemModal.show();
                     return this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);
                 }
                 break;
-            }
+           // }
             case 'REAL':
-                if (this.monthSelected.totalBudget == 0) {
-                    this.messageService.showError("budgetForRealRequired");
-                }
-                else {
+                // if (this.monthSelected.totalBudget == 0) {
+                //     this.messageService.showError("budgetForRealRequired");
+                // }
+                // else {
                     if(isCdg) { this.readOnly = false }
                     this.editItemModal.show();
                     return this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
-                }
+                // }
                 break;
         }
     }
