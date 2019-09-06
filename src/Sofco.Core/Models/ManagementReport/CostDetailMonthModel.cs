@@ -26,7 +26,7 @@ namespace Sofco.Core.Models.ManagementReport
         public int ManagementReportId { get; set; }
         public DateTime MonthYear { get; set; }
         public List<CostMonthEmployeeStaff> Employees { get; set; }
-      
+        public List<CostSubcategoryMonth> Subcategories { get; set; }
         public decimal? TotalProvisioned { get; set; }
         public int Id { get; set; }
     }

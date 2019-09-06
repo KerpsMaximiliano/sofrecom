@@ -27,7 +27,9 @@ table {
   }
   
   .label-total {
-    background-color: #1bb394;
+    //background-color: #f8ac59;
+    //border-color: #1a7bb9;
+    background-color: #23c6c8;
     color: #ffffff;
   }
   
@@ -44,6 +46,12 @@ table {
   .label-budget {
     background-color: #b3ffd9;
     color: #5E5E5E;
+  }
+
+  .label-real {
+    //background-color: #23c6c8;
+    background-color: #f8ac59;
+    color: #ffffff;
   }
   
   .cursor-pointer {

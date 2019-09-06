@@ -16,15 +16,15 @@ namespace Sofco.Service.Implementations.ManagementReport
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<ManagementReportCalculateCostsService> logger;
-        private readonly IManagementReportService managementReportService;
+        private readonly IManagementReportStaffService managementStaffReportService;
 
         public ManagementReportCalculateCostsService(IUnitOfWork unitOfWork,
             ILogMailer<ManagementReportCalculateCostsService> logger,
-            IManagementReportService managementReportService)
+            IManagementReportStaffService managementStaffReportService)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
-            this.managementReportService = managementReportService;
+            this.managementStaffReportService = managementStaffReportService;
         }
 
         public void CalculateCosts(AllocationDto allocationDto, DateTime firstMonthDate, DateTime lastMonthDate)
@@ -98,7 +98,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var analytic = costDetail.ManagementReport.Analytic;
                     if (analytic.ServiceId == null && analytic.AccountId == null)
                     {
-                        managementReportService.InsertTotalSalaryStaffReport(costDetail.ManagementReportId, costDetail.TotalProvisioned ?? 0, costDetail.MonthYear);
+                        managementStaffReportService.InsertTotalSalaryStaffReport(costDetail.ManagementReportId, costDetail.TotalProvisioned ?? 0, costDetail.MonthYear);
                     }
                 }
 

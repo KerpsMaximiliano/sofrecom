@@ -3,7 +3,6 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { I18nService } from "app/services/common/i18n.service";
 import { MessageService } from "app/services/common/message.service";
 import { Subscription } from "rxjs";
-import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service"
 import { ManagementReportDetailStaffComponent } from "../detail/detail-staff";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
@@ -65,7 +64,6 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
 
     constructor(public i18nService: I18nService,
         private messageService: MessageService,
-        private managementReportService: ManagementReportService,
         private managementReportStaffService: ManagementReportStaffService,
         private managementReport: ManagementReportDetailStaffComponent,
         private employeeService: EmployeeService
@@ -109,6 +107,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.getContratedSuscrip = this.managementReportStaffService.getCostDetailMonth(this.managementReportId, data.month, data.year).subscribe(response => {
             this.monthYear = response.data.monthYear
             this.resources = response.data.employees;
+            this.subCategoriesData = response.data.subcategories;
             this.totalProvisioned = response.data.totalProvisioned;
 
             this.calculateTotalCosts();
@@ -133,6 +132,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
             totalBilling: 0,
             totalProvisioned: this.totalProvisionedAux != null ? this.totalProvisionedAux : null,
             provision: 0,
+            Subcategories: this.subCategoriesData
         }
 
         model.AnalyticId = this.AnalyticId
@@ -140,7 +140,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         model.MonthYear = this.monthYear
         model.Employees = this.resources
 
-        this.updateCostSubscrip = this.managementReportService.PostCostDetailMonth(this.managementReportId, model).subscribe(() => {
+        this.updateCostSubscrip = this.managementReportStaffService.PostCostDetailStaffMonth(this.managementReportId, model).subscribe(() => {
             this.costDetailMonthModal.hide();
             this.managementReport.updateBudgetView();
         },
@@ -242,17 +242,28 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     addSubcategoryData() {
 
         var cost = {
-            CostDetailStaffId: 0,
+            costDetailStaffId: 0,
             id: this.subcategorySelected.id,
             name: this.subcategorySelected.name,
             nameCategory: this.categorySelected.name,
-            monthYear: new Date(),
+            monthYear: this.monthYear,
             description: "",
             value: 0,
-            BudgetTypeId: 4,
             deleted: false
         }
 
         this.subCategoriesData.push(cost)
+    }
+
+    deleteSubcategory(index) {
+        
+        if (this.subCategoriesData[index].costDetailStaffId == 0) {
+            this.subCategoriesData.splice(index, 1)
+        }
+        else {
+            this.subCategoriesData[index].value = 0
+            this.subCategoriesData[index].deleted = true
+        }
+
     }
 }

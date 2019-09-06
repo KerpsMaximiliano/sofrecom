@@ -144,7 +144,7 @@
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('real', i)}" [hidden]="!showColumn.real">
-                            <label class="label label-budget cursor-pointer"
+                            <label class="label label-real cursor-pointer"
                                 (click)="openEditItemModal(category, 'real', month, i)">
                                 {{ month.totalReal | amountFormat }}
                             </label>
