@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Models.AdvancementAndRefund.Common
 {
