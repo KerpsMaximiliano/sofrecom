@@ -8,8 +8,10 @@ namespace Sofco.Core.Services.ManagementReport
         Response<ManagementReportStaffDetail> GetDetail(int id);
         Response<CostDetailStaffMonthModel> GetCostDetailMonth(int id, int month, int year);
         Response<CostDetailStaffModel> GetCostDetailStaff(int managementReportId);
-        Response UpdateCostDetailStaff(CostDetailStaffModel pDetailCost);
+        Response SaveCostDetailStaff(CostDetailStaffModel pDetailCost);
         Response GetCategories();
         Response Close(ManagementReportCloseModel model);
+        bool InsertTotalSalaryStaffReport(int managementReportId, decimal salary, System.DateTime monthYear);
+        Response SaveCostDetailStaffMonth(CostDetailStaffMonthModel pMonthDetail);
     }
 }

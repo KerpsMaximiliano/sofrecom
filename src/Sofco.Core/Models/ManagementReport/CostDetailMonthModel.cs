@@ -26,8 +26,7 @@ namespace Sofco.Core.Models.ManagementReport
         public int ManagementReportId { get; set; }
         public DateTime MonthYear { get; set; }
         public List<CostMonthEmployeeStaff> Employees { get; set; }
-        public List<CostMonthOther> OtherResources { get; set; }
-        public List<ContractedModel> Contracted { get; set; }
+        public List<CostSubcategoryMonth> Subcategories { get; set; }
         public decimal? TotalProvisioned { get; set; }
         public int Id { get; set; }
     }
@@ -60,5 +59,18 @@ namespace Sofco.Core.Models.ManagementReport
         public int Id { get; set; }
         public decimal? Value { get; set; }
         public string Description { get; set; }
+    }
+
+    public class CostSubcategoryMonth
+    {
+        public int Id { get; set; }
+        public int CostDetailStaffId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal? Value { get; set; }
+        public int IdCategory { get; set; }
+        public string NameCategory { get; set; }
+        public int BudgetTypeId { get; set; }
+        public bool Deleted { get; set; }
     }
 }

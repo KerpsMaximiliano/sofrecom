@@ -282,7 +282,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.selectedYear = dateSetting.year;
 
         this.isClosed = this.budgetView.isClosed(this.selectedDate);
-        this.budgetView.selectDefaultColumn(this.selectedDate)
+        //this.budgetView.selectDefaultColumn(this.selectedDate)
     }
 
     addMonth(){

@@ -661,12 +661,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                     unitOfWork.CostDetailRepository.UpdateHasReal(costDetailMonth);
                 }
 
-                var analytic = unitOfWork.AnalyticRepository.GetById(pMonthDetail.AnalyticId);
-                if (analytic.ServiceId == null && analytic.AccountId == null)
-                {
-                    this.InsertTotalSalaryStaffReport(pMonthDetail.ManagementReportId, totalSalary, pMonthDetail.MonthYear);
-                }
-
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.Common.SaveSuccess);
@@ -1472,7 +1466,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails, bool isReal = false)
+        public void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails, bool isReal = false)
         {
             try
             {
@@ -1715,49 +1709,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                         })
                         .OrderBy(x => x.Name)
                         .ToList();
-        }
-
-        public bool InsertTotalSalaryStaffReport(int managementReportId, decimal salary, DateTime monthYear)
-        {
-            bool result;
-            try
-            {
-                var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
-                var subcategories = unitOfWork.CostDetailRepository.GetSubcategories();
-                var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(managementReportId);
-
-                int costDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == monthYear.Date).FirstOrDefault().Id;
-                int subcategorySalaryId = subcategories.Where(x => x.Name == EnumCostDetailSubcategory.Sueldos).FirstOrDefault().Id;
-                int budgetRealId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
-
-                //Elimino los sueldos ya guardados 
-                var entities = unitOfWork.CostDetailStaffRepository.Where
-                                                            (x => x.CostDetailSubcategoryId == subcategorySalaryId
-                                                            && x.CostDetailId == costDetailId
-                                                            && x.BudgetTypeId == budgetRealId);
-                unitOfWork.CostDetailStaffRepository.Delete(entities);
-
-                //ingreso el nuevo sueldo total
-                var entity = new CostDetailStaff();
-
-                entity.Value = salary;
-                entity.Description = "Sueldo total empleados";
-                entity.CostDetailId = costDetailId;
-                entity.CostDetailSubcategoryId = subcategorySalaryId;
-                entity.BudgetTypeId = budgetRealId;
-
-                unitOfWork.CostDetailStaffRepository.Insert(entity);
-
-                result = true;
-            }
-            catch (Exception ex)
-            {
-                result = false;
-                logger.LogError(ex);
-                throw ex;
-            }
-
-            return result;
         }
 
         public Response<ManagementReportCommentModel> AddComment(ManagementReportAddCommentModel model)

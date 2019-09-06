@@ -103,48 +103,48 @@ namespace Sofco.Service.Crm.Translators
                                 }
                                 else
                                 {
-                                    propertyInfo.SetValue(item, value.Value<DateTime>().Date, null);
+                                    //propertyInfo.SetValue(item, value.Value<DateTime>().Date, null);
 
                                     //if (DateTime.TryParse(stringValue,
                                     //    System.Globalization.CultureInfo.GetCultureInfo("es-AR"),
-                                    //    System.Globalization.DateTimeStyles.AssumeLocal, out DateTime dateValue))
+                                    //    System.Globalization.DateTimeStyles.None, out DateTime dateValue))
                                     //{
                                     //    propertyInfo.SetValue(item, dateValue, null);
                                     //}
                                     //else
                                     //{
-                                    //    if (stringValue.Contains("/"))
-                                    //    {
-                                    //        var split = stringValue.Split('/');
+                                    if (stringValue.Contains("/"))
+                                    {
+                                        var split = stringValue.Split('/');
 
-                                    //        if (split.Length != 3)
-                                    //            propertyInfo.SetValue(item, DateTime.MinValue, null);
-                                    //        else
-                                    //        {
-                                    //            var day = Convert.ToInt32(split[1].Split(' ')[0]);
-                                    //            var month = Convert.ToInt32(split[0].Split(' ')[0]);
-                                    //            var year = Convert.ToInt32(split[2].Split(' ')[0]);
+                                        if (split.Length != 3)
+                                            propertyInfo.SetValue(item, DateTime.MinValue, null);
+                                        else
+                                        {
+                                            var day = Convert.ToInt32(split[0].Split(' ')[0]);
+                                            var month = Convert.ToInt32(split[1].Split(' ')[0]);
+                                            var year = Convert.ToInt32(split[2].Split(' ')[0]);
 
-                                    //            propertyInfo.SetValue(item, new DateTime(year, month, day), null);
-                                    //        }
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        var split = stringValue.Split('-');
+                                            propertyInfo.SetValue(item, new DateTime(year, month, day), null);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var split = stringValue.Split('-');
 
-                                    //        if (split.Length != 3)
-                                    //            propertyInfo.SetValue(item, DateTime.MinValue, null);
-                                    //        else
-                                    //        {
-                                    //            var day = Convert.ToInt32(split[2].Split(' ')[0]);
-                                    //            var month = Convert.ToInt32(split[1].Split(' ')[0]);
-                                    //            var year = Convert.ToInt32(split[0].Split(' ')[0]);
+                                        if (split.Length != 3)
+                                            propertyInfo.SetValue(item, DateTime.MinValue, null);
+                                        else
+                                        {
+                                            var day = Convert.ToInt32(split[2].Split(' ')[0]);
+                                            var month = Convert.ToInt32(split[1].Split(' ')[0]);
+                                            var year = Convert.ToInt32(split[0].Split(' ')[0]);
 
-                                    //            propertyInfo.SetValue(item, new DateTime(year, month, day), null);
-                                    //        }
-                                    //    }
-                                    //}
+                                            propertyInfo.SetValue(item, new DateTime(year, month, day), null);
+                                        }
+                                    }
                                 }
+                                //}
 
                                 break;
                             }
