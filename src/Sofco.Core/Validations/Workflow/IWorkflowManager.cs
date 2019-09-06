@@ -8,7 +8,9 @@ namespace Sofco.Core.Validations.Workflow
     public interface IWorkflowManager
     {
         void CloseAdvancementsAndRefunds(int entityId);
-        void CloseAdvancementsAndRefunds(Tuple<IList<Refund>, IList<Advancement>> data, int entityId);
+        void CloseAdvancements(IList<Advancement> advancements);
+        void CloseRefunds(IList<Refund> refunds);
         void CloseEntity(WorkflowEntity entity);
+        void PayRefunds(IList<Refund> refunds);
     }
 }

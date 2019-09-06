@@ -103,7 +103,7 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
         public Response<List<UserSelectListItem>> GetComplianceUsers()
         {
             var result = unitOfWork.UserRepository.GetByGroup(emailConfig.ComplianceCode)
-                .Where(s => s.Email == sessionManager.GetUserEmail())
+                .Where(s => s.Email != sessionManager.GetUserEmail())
                 .ToList();
 
             return new Response<List<UserSelectListItem>>
@@ -114,8 +114,8 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 
         public Response<List<UserSelectListItem>> GetDafUsers()
         {
-            var result = unitOfWork.UserRepository.GetByGroup(appSetting.DafPurchaseOrderGroupCode)
-                .Where(s => s.Email == sessionManager.GetUserEmail())
+            var result = unitOfWork.UserRepository.GetByGroup(emailConfig.DafCode)
+                .Where(s => s.Email != sessionManager.GetUserEmail())
                 .ToList();
 
             return new Response<List<UserSelectListItem>>

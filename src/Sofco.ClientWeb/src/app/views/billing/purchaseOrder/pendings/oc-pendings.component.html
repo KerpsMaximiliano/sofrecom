@@ -24,7 +24,7 @@
             <table class="table table-striped" id="purchaseOrderTable" width="100%">
                 <thead>
                     <tr>
-                        <th>{{'billing.purchaseOrder.fields.number' | translate }}</th>
+                        <th class="column-md">{{'billing.purchaseOrder.fields.number' | translate }}</th>
                         <th>{{'billing.purchaseOrder.fields.client' | translate }}</th>
                         <th>{{'billing.purchaseOrder.fields.area' | translate }}</th>
                         <th>{{'billing.purchaseOrder.fields.receptionDate' | translate }}</th>
@@ -33,7 +33,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let purchaseOrder of model" (click)="goToDetail(purchaseOrder)" class="pointer">
-                        <td>{{ purchaseOrder.number }}</td>
+                        <td class="column-md text-ellipsis">{{ purchaseOrder.number }}</td>
                         <td>{{ purchaseOrder.client }}</td>
                         <td>{{ purchaseOrder.area }}</td>
                         <td>{{ purchaseOrder.receptionDate | date:'dd/MM/yyyy' }}</td>

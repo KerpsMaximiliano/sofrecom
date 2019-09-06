@@ -15,15 +15,42 @@ import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ReasonCauseComponent } from '../admin/options/reasonCause';
+import { JobSearchService } from 'app/services/recruitment/jobsearch.service';
+import { JobSearchComponent } from './job-search/add/job-search-add';
+import { FormsService } from 'app/services/forms/forms.service';
+import { CustomerService } from 'app/services/billing/customer.service';
+import { DecimalFormatModule } from 'app/components/decimalFormat/decimal-format.directive';
+import { DigitModule } from 'app/components/digit-limit/digit-limit.directive';
 
 @NgModule({
   declarations: [
-    ListContactsComponent, AddContactsComponent, DetailContactsComponent, SkillComponent, ProfileComponent, SeniorityComponent
+    ListContactsComponent, 
+    AddContactsComponent, 
+    DetailContactsComponent, 
+    SkillComponent, 
+    ProfileComponent, 
+    SeniorityComponent, 
+    ReasonCauseComponent,
+    JobSearchComponent
   ],
 
-  imports: [CommonModule, RouterModule, RecruitmentRouter, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, DatePickerModule, NgSelectModule, ReactiveFormsModule],
+  imports: [
+    CommonModule, 
+    RouterModule, 
+    RecruitmentRouter, 
+    FormsModule, 
+    ICheckModule, 
+    Ng2ModalModule, 
+    TranslateModule, 
+    DatePickerModule, 
+    DigitModule,
+    NgSelectModule,  
+    DecimalFormatModule,
+    ReactiveFormsModule
+  ],
 
-  providers: [GenericOptionService],
+  providers: [GenericOptionService, JobSearchService, FormsService, CustomerService],
   exports: []
 })
 

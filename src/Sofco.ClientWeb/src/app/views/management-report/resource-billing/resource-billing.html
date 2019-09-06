@@ -1,0 +1,93 @@
+<ng2-modal [config]="resourceBillingModalConfig" #resourceBillingModal (accept)="save()" [size]="'modal-xlg'">
+
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="label-control">Mes</label>
+                <input type="text" class="form-control input-xs" [ngModel]="monthDisplay" disabled>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="label-control">Recursos facturados</label>
+                <input type="number" class="form-control input-xs" [ngModel]="resourceQuantity" disabled>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="label-control">Monto a Facturar</label>
+                <input type="text" class="form-control input-xs" [ngModel]="total | amountFormat" disabled>
+            </div>
+        </div>
+    </div>
+
+    <div class="row no-gutters" *ngIf="items.length > 0">
+        <div class="col-md-2">
+            <label class="control-label">Perfil</label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Seniority</label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Orden de Compra</label>
+        </div>
+        <div class="col-md-1">
+            <label class="control-label">Mes/Hora</label>
+        </div>
+        <div class="col-md-1">
+            <label class="control-label">Cant.</label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Monto</label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Sub Total</label>
+        </div>
+    </div>
+
+    <div *ngFor="let item of items; let i = index">
+        <div class="row no-gutters" *ngIf="!item.deleted">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <ng-select [items]="profiles" bindLabel="text" bindValue="id" [(ngModel)]="item.profileId"></ng-select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <ng-select [items]="seniorities" bindLabel="text" bindValue="id" [(ngModel)]="item.seniorityId"></ng-select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <ng-select [items]="purchaseOrders" bindLabel="text" bindValue="id" [(ngModel)]="item.purchaseOrderId"></ng-select>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="item.monthHour" (ngModelChange)="monthHourChange(item)"></ng-select>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <input class="form-control" decimalFormat="3" type="text" [(ngModel)]="item.quantity" (ngModelChange)="calculateTotal()" [disabled]="item.monthHour == 1" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input class="form-control" decimalFormat="10"  type="text" [(ngModel)]="item.amount" (ngModelChange)="calculateTotal()" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" type="text" [ngModel]="item.subTotal | amountFormat" disabled>
+                        <span class="input-group-btn"> <button type="button" class="btn btn-danger" (click)="removeItem(item, i)"><i class="fa fa-trash"></i></button> </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-sm ladda-button" type="button" (click)="addItem()" [ladda]="isLoading"> Agregar <i class="fa fa-plus"></i></button>
+
+</ng2-modal>

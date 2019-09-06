@@ -4,6 +4,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.ManagementReport;
+using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.Workflow;
@@ -119,6 +120,12 @@ namespace Sofco.Core.DAL
         ICostDetailProfileRepository CostDetailProfileRepository { get; }
         ICostDetailResourceRepository CostDetailResourceRepository { get; }
         ICostDetailStaffRepository CostDetailStaffRepository { get; }
+
+        #endregion
+
+        #region Recruitment
+
+        IJobSearchRepository JobSearchRepository { get; }
 
         #endregion
 

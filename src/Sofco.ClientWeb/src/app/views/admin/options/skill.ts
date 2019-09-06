@@ -20,6 +20,11 @@ export class SkillComponent extends GenericOptionComponent implements OnInit {
     ngOnInit(): void {
         this.setEntity(GenericOptions.Skill);
         this.title = "Conocimientos";
+        this.columns = [0, 1, 2];
+    }
+
+    edit(item){
+        this.update(item);
     }
 
     create() {

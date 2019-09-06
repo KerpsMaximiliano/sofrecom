@@ -15,7 +15,7 @@ export class DecimalFormatDirective implements OnInit {
 
     ngOnInit(): void {
         if(this.digits && this.digits > 0){
-            var expression = '^[0-9]{1,' + this.digits + '}([.][0-9][0-9])?$';
+            var expression = '^[0-9]{1,' + this.digits + '}([.][0-9]{0,2})?$';
 
             this.regex = new RegExp(expression, 'g');
         }

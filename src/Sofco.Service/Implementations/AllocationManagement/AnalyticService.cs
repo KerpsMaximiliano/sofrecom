@@ -521,7 +521,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
-                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafAnalytic);
+                var mailGaf = unitOfWork.GroupRepository.GetEmail(emailConfig.GafCode);
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
                 var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
                 var mailQuality = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);
@@ -529,7 +529,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 var recipientsList = new List<string>();
 
-                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailDaf, mailCompliance, mailQuality, mailCdg });
+                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailGaf, mailCompliance, mailQuality, mailCdg });
 
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);

@@ -10,6 +10,7 @@ import { DatesService } from "app/services/common/month.service";
 import { AnalyticStatus } from "app/models/enums/analyticStatus";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 import { I18nService } from "app/services/common/i18n.service";
+import { UserInfoService } from "app/services/common/user-info.service";
 
 
 @Component({
@@ -128,6 +129,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     getDetail() {
         this.messageService.showLoading();
+        const userInfo = UserInfoService.getUserInfo();
 
         this.getDetailSubscrip = this.managementReportService.getDetail(this.serviceId).subscribe(response => {
 
@@ -147,6 +149,12 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.billing.managementReportId = this.ManagementReportId;
             
             this.modalEvalProp.managementReportId = this.ManagementReportId;
+
+            if(this.isManager){
+                if(this.model.managerId != userInfo.id){
+                    this.isManager = false;
+                }
+            }
 
             this.billing.readOnly = !this.canEdit();
             this.detailCost.readOnly = !this.canEdit();
@@ -203,7 +211,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             year: this.selectedYear
         }
 
-        this.costDetailMonth.open(data, this.readOnly || this.isClosed);
+        this.costDetailMonth.open(data, !this.canEditDetailMonth() || this.isClosed);
     }
 
     updateDetailCost() {
@@ -271,7 +279,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.marginTracking.billingDataLoaded = true;
         this.marginTracking.billingModel = billingModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
-        this.detailCost.setResourceQuantity(billingModel.months)
+       // this.detailCost.setResourceQuantity(billingModel.months)
     }
 
     updateMarginTracking(){
@@ -415,6 +423,14 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         }
 
         return "";
+    }
+
+    canEditDetailMonth(){
+        if(!this.model || !this.model.status) return false;
+
+        if(this.model.status == ManagementReportStatus.CdgPending && this.isCdg) return true;
+
+        return false;
     }
 
     canEdit(){

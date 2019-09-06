@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Domain.Models.ManagementReport
 {
@@ -11,8 +12,8 @@ namespace Sofco.Domain.Models.ManagementReport
         public DateTime MonthYear { get; set; }
 
         public decimal EvalPropBillingValue { get; set; }
-
         public decimal EvalPropExpenseValue { get; set; }
+        public decimal EvalPropMarginValue { get; set; }
 
         public string Comments { get; set; }
 
@@ -21,5 +22,9 @@ namespace Sofco.Domain.Models.ManagementReport
         public decimal EvalPropDifference { get; set; }
 
         public bool Closed { get; set; }
+
+        public IList<ResourceBilling> ResourceBillings { get; set; }
+
+        public decimal BilledResourceTotal { get; set; }
     }
 }

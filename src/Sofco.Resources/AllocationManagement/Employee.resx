@@ -144,6 +144,9 @@
   <data name="HoursRequired" xml:space="preserve">
     <value>allocationManagement/employee.hoursRequired</value>
   </data>
+  <data name="MailEmpty" xml:space="preserve">
+    <value>allocationManagement/employee.mailEmpty</value>
+  </data>
   <data name="ManagerRequired" xml:space="preserve">
     <value>allocationManagement/employee.managerRequired</value>
   </data>

@@ -197,6 +197,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Months.resx</DependentUpon>
     </Compile>
+    <Compile Update="Recruitment\JobSearch.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JobSearch.resx</DependentUpon>
+    </Compile>
     <Compile Update="Rrhh\CloseDate.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -374,6 +379,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Months.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Recruitment\JobSearch.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>JobSearch.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Rrhh\CloseDate.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CloseDate.Designer.cs</LastGenOutput>
@@ -398,10 +407,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>WorkTime.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Recruitment\" />
   </ItemGroup>
 
 </Project>

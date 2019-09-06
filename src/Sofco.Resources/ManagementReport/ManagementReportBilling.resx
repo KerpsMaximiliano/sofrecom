@@ -126,6 +126,9 @@
   <data name="ResourcesRequired" xml:space="preserve">
     <value>managementReport/managementReportBilling.resourcesRequired</value>
   </data>
+  <data name="ResourcesUpdated" xml:space="preserve">
+    <value>managementReport/managementReportBilling.resourcesUpdated</value>
+  </data>
   <data name="ValueUpdated" xml:space="preserve">
     <value>managementReport/managementReportBilling.valueUpdated</value>
   </data>

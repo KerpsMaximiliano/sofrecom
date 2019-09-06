@@ -133,7 +133,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         if (this.sendSubscrip) this.sendSubscrip.unsubscribe();
         if (this.closeSubscrip) this.closeSubscrip.unsubscribe();
     }
-
+ 
     getDetail() {
         this.messageService.showLoading();
         const userInfo = UserInfoService.getUserInfo();
@@ -201,7 +201,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             monthDesc: this.selectedMonthDesc,
             year: this.selectedYear
         }
-        this.costDetailMonth.open(data, this.readOnly || this.isClosed);
+        this.costDetailMonth.open(data, !this.canEditDetailMonth() || this.isClosed);
     }
 
     updateBudgetView() {
@@ -282,7 +282,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.selectedYear = dateSetting.year;
 
         this.isClosed = this.budgetView.isClosed(this.selectedDate);
-        this.budgetView.selectDefaultColumn(this.selectedDate)
+        //this.budgetView.selectDefaultColumn(this.selectedDate)
     }
 
     addMonth(){
@@ -377,6 +377,14 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         }
 
         return "";
+    }
+
+    canEditDetailMonth(){
+        if(!this.model || !this.model.status) return false;
+
+        if(this.model.status == ManagementReportStatus.CdgPending && this.isCdg) return true;
+
+        return false;
     }
 
     canEdit(){

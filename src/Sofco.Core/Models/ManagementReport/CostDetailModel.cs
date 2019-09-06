@@ -9,7 +9,7 @@ namespace Sofco.Core.Models.ManagementReport
         public string ManagerId { get; set; }
         public int ManagementReportId { get; set; }
         public int AnalyticId { get; set; }
-        public IList<MonthDetailCost> MonthsHeader { get; set; }
+        public IList<MonthHeaderCost> MonthsHeader { get; set; }
         public List<CostResourceEmployee> CostEmployees { get; set; }
         public List<CostProfile> CostProfiles { get; set; }
         public List<CostResource> FundedResources { get; set; }
@@ -17,23 +17,35 @@ namespace Sofco.Core.Models.ManagementReport
         public List<CostResource> OtherResources { get; set; }
     }
 
+    public class MonthHeaderCost : MonthDetailCost
+    {
+        public decimal ValueEvalProp { get; set; }
+        public decimal ValueMarginEvalProp { get; set; }
+
+        public int BillingMonthId { get; set; }
+        public int ResourceQuantity { get; set; }    
+        public bool HasReal { get; set; }
+        public decimal TotalContracted { get; set; }
+        public decimal? TotalBilling { get; set; }
+    }
+
     public class MonthDetailCost
     {
-        public int Id { get; set; }
+       // public int Id { get; set; }
         public int CostDetailId { get; set; }
         public string Display { get; set; }
-        public decimal? Value { get; set; }
-        public decimal? OriginalValue { get; set; }
-        public decimal? Adjustment { get; set; }
-        public decimal? Charges { get; set; }
+        //public decimal? Value { get; set; }
+        //public decimal? OriginalValue { get; set; }
+        //public decimal? Adjustment { get; set; }
+        //public decimal? Charges { get; set; }
         public DateTime MonthYear { get; set; }
         public bool HasAlocation { get; set; }
-        public decimal ValueEvalProp { get; set; }
-        public int BillingMonthId { get; set; }
-        public string Description { get; set; }
+        //public decimal ValueEvalProp { get; set; }
+        //public int BillingMonthId { get; set; }
+        //public string Description { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
-        public int ResourceQuantity { get; set; }
+        //public int ResourceQuantity { get; set; }
         public bool Closed { get; set; }
 
         public bool CanViewSensibleData { get; set; }
@@ -41,8 +53,26 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal AllocationPercentage { get; set; }
 
         public decimal ChargesPercentage { get; set; }
+
+        public Cost Budget { get; set; } = new Cost();
+        public Cost Real { get; set; } = new Cost();
+
     }
-    
+
+    public class Cost
+    {
+        public int Id { get; set; }
+        public decimal? Value { get; set; }
+        public decimal? OriginalValue { get; set; }
+        public decimal? Adjustment { get; set; }
+        public decimal? Charges { get; set; }
+        public string Description { get; set; }
+
+        public decimal? TotalCost { get; set; }
+        public decimal? TotalLoads { get; set; }
+        public decimal? TotalSalary { get; set; }
+    }
+
     public class CostResource
     {
        // public int? EmployeeId { get; set; }
@@ -107,11 +137,11 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal TotalPfa2 { get; set; }
         public decimal TotalReal { get; set; }
         public decimal TotalProjected { get; set; }
-        public List<CostSubcategory> SubcategoriesBudget { get; set; }
-        public List<CostSubcategory> SubcategoriesPfa1 { get; set; }
-        public List<CostSubcategory> SubcategoriesPfa2 { get; set; }
-        public List<CostSubcategory> SubcategoriesReal { get; set; }
-        public List<CostSubcategory> SubcategoriesProjected { get; set; }
+        public List<CostSubcategory> SubcategoriesBudget { get; set; } = new List<CostSubcategory>();
+        public List<CostSubcategory> SubcategoriesPfa1 { get; set; } = new List<CostSubcategory>();
+        public List<CostSubcategory> SubcategoriesPfa2 { get; set; } = new List<CostSubcategory>();
+        public List<CostSubcategory> SubcategoriesReal { get; set; } = new List<CostSubcategory>();
+        public List<CostSubcategory> SubcategoriesProjected { get; set; } = new List<CostSubcategory>();
         public int Month { get; set; }
         public int Year { get; set; }
         public bool Closed { get; set; }

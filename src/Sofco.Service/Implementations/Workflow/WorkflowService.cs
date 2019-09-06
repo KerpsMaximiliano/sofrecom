@@ -145,11 +145,7 @@ namespace Sofco.Service.Implementations.Workflow
             // Save change status
             try
             {
-                //var actualStateId = entity.StatusId;
-
                 entity.StatusId = parameters.NextStateId;
-
-                //WorkflowHelper.CheckEspecialUsers(entity, actualStateId, parameters.NextStateId, appSetting);
 
                 if (string.IsNullOrWhiteSpace(entity.UsersAlreadyApproved))
                 {
@@ -221,10 +217,9 @@ namespace Sofco.Service.Implementations.Workflow
         {
             var nextState = transition.NextWorkflowState;
 
-            if (nextState.Id == appSetting.WorkFlowStatePaymentPending ||
-                nextState.Id == appSetting.WorkflowStatusCurrentAccount ||
+            if (nextState.Id == appSetting.WorkFlowStateAccounted ||
+                nextState.Id == appSetting.WorkflowStatusGafId ||
                 nextState.Id == appSetting.WorkflowStatusApproveId ||
-                nextState.Id == appSetting.WorkflowStatusPostedId ||
                 nextState.Id == appSetting.WorkflowStatusFinalizedId)
             {
                 return;
@@ -345,19 +340,6 @@ namespace Sofco.Service.Implementations.Workflow
 
             return hasAccess;
         }
-
-        //private bool ValidatePriviligeAccess(WorkflowStateTransition transition, UserLiteModel user, WorkflowEntity entity)
-        //{
-        //    bool hasAccess = false;
-
-        //    hasAccess = ValidateManagerAccess(transition, user, entity, hasAccess);
-
-        //    hasAccess = ValidateAnalyticManagerAccess(transition, user, entity, hasAccess);
-
-        //    hasAccess = ValidateSectorAccess(transition, user, entity, hasAccess);
-
-        //    return hasAccess;
-        //}
 
         private bool ValidateSectorAccess(WorkflowStateTransition transition, UserLiteModel currentUser, WorkflowEntity entity, bool hasAccess)
         {
@@ -574,7 +556,7 @@ namespace Sofco.Service.Implementations.Workflow
         {
             if (entity is Refund refund)
             {
-                if (appSetting.WorkFlowStatePaymentPending == transition.NextWorkflowStateId ||
+                if (appSetting.WorkFlowStateAccounted == transition.NextWorkflowStateId ||
                     appSetting.WorkflowStatusFinalizedId == transition.NextWorkflowStateId)
                 {
                     var domain = unitOfWork.RefundRepository.GetFullById(entity.Id);

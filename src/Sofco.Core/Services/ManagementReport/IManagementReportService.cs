@@ -1,4 +1,5 @@
 ﻿using Sofco.Core.Models.ManagementReport;
+using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Utils;
 using System.Collections.Generic;
 
@@ -19,10 +20,10 @@ namespace Sofco.Core.Services.ManagementReport
         Response UpdateDates(int id, ManagementReportUpdateDates model);
         Response<byte[]> CreateTracingReport(TracingModel tracing);
         Response Send(ManagementReportSendModel model);
-        Response Close(ManagementReportCloseModel model);
-        bool InsertTotalSalaryStaffReport(int managementReportId, decimal salary, System.DateTime monthYear);
+        Response Close(ManagementReportCloseModel model);     
         Response<ManagementReportCommentModel> AddComment(ManagementReportAddCommentModel model);
         Response<IList<ManagementReportCommentModel>> GetComments(int id);
         Response DeleteProfile(string guid);
+        void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails, bool isReal = false);
     }
 }

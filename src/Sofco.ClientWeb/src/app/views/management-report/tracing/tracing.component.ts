@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from "@angular/core";
 import { DatesService } from "app/services/common/month.service";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { MessageService } from "app/services/common/message.service";
 import { Subscription } from "rxjs";
 import * as FileSaver from "file-saver";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
     selector: 'management-report-tracing',
@@ -17,10 +18,12 @@ export class TracingComponent implements OnInit, OnDestroy {
     AllMarginTracking: any[] = new Array()
     analytic: string
 
+    @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
 
     constructor(private datesService: DatesService,
         private managementReportService: ManagementReportService,
-        private messageService: MessageService) {
+        private messageService: MessageService,
+        private menuService: MenuService) {
 
     }
 
@@ -57,6 +60,21 @@ export class TracingComponent implements OnInit, OnDestroy {
             err => {
                 this.messageService.closeLoading();
             });
+    }
+
+    canEditCdg() {
+        return this.menuService.userIsCdg;
+    }
+
+    openEditEvalProp(month) {
+
+        if (month.closed) return;
+
+        if (this.openEvalPropModal.observers.length > 0) {
+            month.type = 3;
+            month.icon = "%";
+            this.openEvalPropModal.emit(month);
+        }
     }
 
 }

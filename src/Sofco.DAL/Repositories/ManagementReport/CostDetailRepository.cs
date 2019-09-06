@@ -34,6 +34,9 @@ namespace Sofco.DAL.Repositories.ManagementReport
                     .ThenInclude(b => b.CostDetailType)
                 .Include(x => x.ContratedDetails)
                 .Include(x => x.CostDetailResources)
+                .Include(x => x.CostDetailStaff)
+                        .ThenInclude(y => y.CostDetailSubcategory)
+                            .ThenInclude(z => z.CostDetailCategory)
                 .FirstOrDefault(x => x.ManagementReportId == managementReportId
                                      && new DateTime(x.MonthYear.Year, x.MonthYear.Month, 1).Date == new DateTime(monthYear.Year, monthYear.Month, 1).Date);
         }
@@ -43,6 +46,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
             context.Entry(costDetailMonth).Property("Provision").IsModified = true;
             context.Entry(costDetailMonth).Property("TotalBilling").IsModified = true;
             context.Entry(costDetailMonth).Property("TotalProvisioned").IsModified = true;
+        }
+
+        public void UpdateHasReal(CostDetail costDetailMonth)
+        {
+            context.Entry(costDetailMonth).Property("HasReal").IsModified = true;
         }
 
         public CostDetail GetWithResourceDetails(int managementReportId, DateTime date)

@@ -26,6 +26,8 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailOthers)
                 .Include(mr => mr.CostDetails)
+                    .ThenInclude(x => x.ContratedDetails)
+                .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailStaff)
                         .ThenInclude(y => y.CostDetailSubcategory)
                 .Include(mr => mr.CostDetails)
@@ -140,6 +142,13 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .Include(x => x.Analytic)
                 .Include(x => x.Billings)
                 .SingleOrDefault(x => x.Id == id);
+        }
+
+        public IList<ManagementReportBilling> GetBillingsByMonthYear(DateTime monthYear, int managementReportId)
+        {
+            return context.ManagementReportBillings
+                .Where(x => x.ManagementReportId == managementReportId && x.MonthYear.Date >= monthYear.Date)
+                .ToList();
         }
     }
 }

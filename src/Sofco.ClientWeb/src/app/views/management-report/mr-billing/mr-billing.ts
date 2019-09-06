@@ -66,6 +66,8 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
+    @ViewChild('resourceBillingModal') resourceBillingModal;
+
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "billing.project.detail.milestone.splitTitle",
@@ -137,13 +139,15 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
             this.currencies = d;
         });
-    }
+    } 
 
     init(serviceId) {
         this.messageService.showLoading();
         this.hitos = new Array();
 
         this.getBillingSubscrip = this.managementReportService.getBilling(serviceId).subscribe(response => {
+
+            this.resourceBillingModal.getPurchaseOrders(serviceId);
 
             this.managerId = response.data.managerId;
 
@@ -537,10 +541,12 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
         if(month.closed) return;
 
-        this.monthSelected = month;
-        this.updateDataType = ReportBillingUpdateDataType.BilledResources;
-        this.billingResourceQuantity = month.resourceQuantity;
-        this.editBillingDataModal.show();
+        this.resourceBillingModal.open(month, this.months);
+
+        // this.monthSelected = month;
+        // this.updateDataType = ReportBillingUpdateDataType.BilledResources;
+        // this.billingResourceQuantity = month.resourceQuantity;
+        // this.editBillingDataModal.show();
     }
 
     openEvalPropDifferenceModal(month) {

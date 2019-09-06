@@ -109,8 +109,8 @@
                             <th class="column-lg">{{'allocationManagement.resources.grid.profile' | translate }}</th>
                             <th class="column-md">{{'allocationManagement.resources.grid.technology' | translate }}</th>
                             <th class="column-lg">{{'allocationManagement.report.grid.boss' | translate }}</th>
+                            <th class="column-lg">Comentario Asignación</th>
                             <th class="column-sm">{{'allocationManagement.report.grid.billeability' | translate }}</th>
-
                             <th class="column-xs" *ngFor="let month of model?.monthsHeader">{{ month }} (%)</th>
                         </tr>
                     </thead>
@@ -124,8 +124,8 @@
                             <td class="column-lg">{{ resource.profile}}</td>
                             <td class="column-md">{{ resource.technology}}</td>
                             <td class="column-lg">{{ resource.manager}}</td>
+                            <td class="column-lg text-ellipsis">{{ resource.assignComments}}</td>
                             <td class="column-sm">{{ resource.percentage}}</td>
-
                             <td class="column-xs" *ngFor="let month of resource.months">{{ month.percentage }}</td>
                         </tr>
                     </tbody>

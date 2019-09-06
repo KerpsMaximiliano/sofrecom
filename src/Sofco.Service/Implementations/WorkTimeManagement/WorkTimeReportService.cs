@@ -183,6 +183,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         if (allocation.Employee.StartDate.Date > endDate.Date)
                         {
                             model.Facturability = 0;
+                            model.RealPercentage = allocation.Percentage;
+                            model.AllocationPercentage = allocation.Percentage;
                         }
 
                         CalculateEmployeesAllocationResume(response, allocation);

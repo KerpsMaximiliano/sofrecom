@@ -1883,6 +1883,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<bool>("Closed");
 
+                    b.Property<bool>("HasReal");
+
                     b.Property<int>("ManagementReportId");
 
                     b.Property<DateTime>("MonthYear");
@@ -1926,6 +1928,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(500);
+
+                    b.Property<bool>("IsReal");
 
                     b.Property<decimal>("Value");
 
@@ -1977,6 +1981,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("CostDetailId");
 
                     b.Property<int>("EmployeeId");
+
+                    b.Property<bool>("IsReal");
 
                     b.Property<int?>("UserId");
 
@@ -2081,6 +2087,8 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<decimal>("BilledResourceTotal");
+
                     b.Property<int>("BilledResources");
 
                     b.Property<bool>("Closed");
@@ -2093,6 +2101,8 @@ namespace Sofco.WebApi.Migrations
                     b.Property<decimal>("EvalPropDifference");
 
                     b.Property<decimal>("EvalPropExpenseValue");
+
+                    b.Property<decimal>("EvalPropMarginValue");
 
                     b.Property<int>("ManagementReportId");
 
@@ -2127,6 +2137,91 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("ManagementReportComments");
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ResourceBilling", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<int>("ManagementReportBillingId");
+
+                    b.Property<int>("MonthHour");
+
+                    b.Property<int>("ProfileId");
+
+                    b.Property<int>("PurchaseOrderId");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("SeniorityId");
+
+                    b.Property<decimal>("SubTotal");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManagementReportBillingId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.HasIndex("SeniorityId");
+
+                    b.ToTable("ResourceBillings");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ClientId");
+
+                    b.Property<DateTime?>("CloseDate");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(3000);
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<decimal>("MaximunSalary");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("ReasonCauseId");
+
+                    b.Property<int>("RecruiterId");
+
+                    b.Property<DateTime?>("ReopenDate");
+
+                    b.Property<int>("Status");
+
+                    b.Property<DateTime?>("SuspendedDate");
+
+                    b.Property<string>("TimeHiring")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("ReasonCauseId");
+
+                    b.HasIndex("RecruiterId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("JobSearchs");
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.Profile", b =>
                 {
                     b.Property<int>("Id")
@@ -2141,6 +2236,24 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Profiles");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.ReasonCause", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(75);
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReasonCauses");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.Seniority", b =>
@@ -2708,6 +2821,45 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("EmployeeCategories");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchProfile", b =>
+                {
+                    b.Property<int>("JobSearchId");
+
+                    b.Property<int>("ProfileId");
+
+                    b.HasKey("JobSearchId", "ProfileId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("JobSearchProfiles");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSeniority", b =>
+                {
+                    b.Property<int>("JobSearchId");
+
+                    b.Property<int>("SeniorityId");
+
+                    b.HasKey("JobSearchId", "SeniorityId");
+
+                    b.HasIndex("SeniorityId");
+
+                    b.ToTable("JobSearchSeniorities");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSkill", b =>
+                {
+                    b.Property<int>("JobSearchId");
+
+                    b.Property<int>("SkillId");
+
+                    b.HasKey("JobSearchId", "SkillId");
+
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("JobSearchSkills");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Relationships.LicenseFile", b =>
@@ -3634,6 +3786,52 @@ namespace Sofco.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ResourceBilling", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.ManagementReportBilling", "ManagementReportBilling")
+                        .WithMany("ResourceBillings")
+                        .HasForeignKey("ManagementReportBillingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Recruitment.Profile", "Profile")
+                        .WithMany("ResourceBillings")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Billing.PurchaseOrder", "PurchaseOrder")
+                        .WithMany("ResourceBillings")
+                        .HasForeignKey("PurchaseOrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Recruitment.Seniority", "Seniority")
+                        .WithMany("ResourceBillings")
+                        .HasForeignKey("SeniorityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearch", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Billing.Customer", "Client")
+                        .WithMany("JobSearchs")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Recruitment.ReasonCause", "ReasonCause")
+                        .WithMany("JobSearchs")
+                        .HasForeignKey("ReasonCauseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "Recruiter")
+                        .WithMany("JobSearchs2")
+                        .HasForeignKey("RecruiterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "User")
+                        .WithMany("JobSearchs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.License", b =>
                 {
                     b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
@@ -3867,6 +4065,45 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
                         .WithMany("EmployeeCategories")
                         .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchProfile", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Recruitment.JobSearch", "JobSearch")
+                        .WithMany("JobSearchProfiles")
+                        .HasForeignKey("JobSearchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Recruitment.Profile", "Profile")
+                        .WithMany("JobSearchProfiles")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSeniority", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Recruitment.JobSearch", "JobSearch")
+                        .WithMany("JobSearchSeniorities")
+                        .HasForeignKey("JobSearchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Recruitment.Seniority", "Seniority")
+                        .WithMany("JobSearchSeniorities")
+                        .HasForeignKey("SeniorityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSkill", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Recruitment.JobSearch", "JobSearch")
+                        .WithMany("JobSearchSkills")
+                        .HasForeignKey("JobSearchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Recruitment.Skill", "Skill")
+                        .WithMany("JobSearchSkills")
+                        .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

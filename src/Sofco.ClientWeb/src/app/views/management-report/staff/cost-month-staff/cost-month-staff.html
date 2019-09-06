@@ -108,11 +108,16 @@
         </div>
     </div>
 
+    <div class="alert alert-gaps-info" *ngIf="subCategoriesData.length == 0">
+        <i class="fa fa-info"></i>
+        {{ i18nService.translateByKey('noInfoAvailable') }}
+    </div>
+
     <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index">
         <div class="col-sm-3">
             {{ cost.name }}
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             {{ cost.name }}
         </div>
         <div class="col-sm-3">
@@ -121,10 +126,10 @@
         <div class="col-sm-2">
             <math-input [(model)]="cost.value"></math-input>
         </div>
-        <!-- <div class="col-sm-1 delete">
-            <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i, cost)" *ngIf="!isReadOnly"><i
+        <div class="col-sm-1 delete" [hidden]="readOnly">
+            <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)"><i
                     class="fa fa-trash"></i></button>
-        </div> -->
+        </div>
     </div>
     <br>
     <div class="row" *ngIf="!isReadOnly">

@@ -19,12 +19,12 @@ export class GenericOptionService {
        return this.http.get<any>(`${this.baseUrl}/${this.controller}/options`);
     }
 
-    add(text){
-        return this.http.post<any>(`${this.baseUrl}/${this.controller}`, { id: 0, text });
+    add(json){
+        return this.http.post<any>(`${this.baseUrl}/${this.controller}`, json);
     }
 
-    edit(id, text){
-        return this.http.put<any>(`${this.baseUrl}/${this.controller}`, { id: id, text });
+    edit(json){
+        return this.http.put<any>(`${this.baseUrl}/${this.controller}`, json);
     }
     
     active(id, active){

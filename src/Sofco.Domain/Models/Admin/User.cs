@@ -7,6 +7,7 @@ using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Models.Common;
 using Sofco.Domain.Models.ManagementReport;
+using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Relationships;
@@ -80,5 +81,8 @@ namespace Sofco.Domain.Models.Admin
 
         public IList<Delegation> Delegations1 { get; set; }
         public IList<Delegation> Delegations2 { get; set; }
+
+        public IList<JobSearch> JobSearchs { get; set; }
+        public IList<JobSearch> JobSearchs2 { get; set; }
     }
 }

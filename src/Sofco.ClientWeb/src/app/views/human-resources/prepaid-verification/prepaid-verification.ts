@@ -68,8 +68,11 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
         if(this.closeSubscrip) this.closeSubscrip.unsubscribe();
     }
 
-    search(){
-        if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0) return;
+    search(){ 
+        if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0) {
+            this.messageService.showErrorByFolder("rrhh/prepaid", "dateRequired");
+            return;
+        };
 
         this.messageService.showLoading();
 
@@ -130,13 +133,16 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
                 this.initGrid();
                 this.initProvisionedGrid();
             }
+            else{
+                this.messageService.showWarningByFolder("common", "searchNotFound");
+            }
         }, 
         error => this.messageService.closeLoading());
     }
 
     initGrid(){
         var columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-        var title = "informacion-prepaga";
+        var title = "informacion-prepaga - " + this.monthId + "-" + this.yearId;
 
         var options = { 
             selector: "#searchTable",
@@ -325,7 +331,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
         this.allData.forEach((item, index) => {
             var addItem = true;
 
-            if(this.stateSelected && item.state != this.stateSelected){
+            if(this.stateSelected != undefined && item.status != this.stateSelected){
                 addItem = false;
             }
 
@@ -342,5 +348,11 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
 
         this.data = itemsFiltered;
         this.initGrid();
+    }
+
+    clean(){
+        this.stateSelected = null;
+        this.prepaidSelected = null;
+        this.resourceSelected = null;
     }
 }

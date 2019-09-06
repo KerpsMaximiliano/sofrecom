@@ -20,6 +20,10 @@
 
         public string DirectorsCode { get; set; }
 
+        public string LeadersCode { get; set; }
+
+        public string RecruitersCode { get; set; }
+
         public string GuestCode { get; set; }
 
         public string CdgCode { get; set; }

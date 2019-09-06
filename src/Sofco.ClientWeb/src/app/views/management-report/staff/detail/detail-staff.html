@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
+                                <div class="row" *ngIf="canEditDetailMonth()">
                                     <div class="col-md-offset-6 col-md-6">
                                         <button class="btn btn-warning btn-xs" (click)="openEditDateModal()">
                                             Editar Fechas
@@ -96,11 +96,6 @@
                                             <td>{{ item.modifiedBy }}</td>
                                         </tr>
                                     </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="4">Total: ${{ model?.budgetTotal | amountFormat }}</th>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </dd>
                             <div class="pull-right" *ngIf="model?.budgets && model?.budgets.length > 0">

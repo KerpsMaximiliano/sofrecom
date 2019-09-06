@@ -50,6 +50,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     monthYear: Date;
     canSave: boolean = false;
     userSelected: any
+    hasCostProfile: boolean = false
 
     isReadOnly: boolean
     
@@ -135,8 +136,8 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     }
 
     contractedChange(hire) {
+        
         hire.total = hire.honorary + hire.insurance;
-
         this.calculateTotalCosts();
     }
 
@@ -190,7 +191,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
        
         this.costDetailMonthModal.otherTitle = `${data.monthDesc} ${data.year}`
 
-        this.isReadOnly = readOnly || !data.isCdg;
+        this.isReadOnly = readOnly;
         this.AnalyticId = data.AnalyticId;
         
         this.resources = data.resources.employees.filter( x=> x.hasAlocation == true || x.salary > 0 || x.charges > 0)
@@ -204,12 +205,17 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.monthYear = response.data.monthYear
             this.contracted = response.data.contracted;
             this.expenses = response.data.otherResources;
+            this.hasCostProfile = response.data.hasCostProfile
 
             if (response.data.totalBilling && response.data.totalBilling != null) this.totalBilling = response.data.totalBilling;
             if (response.data.provision && response.data.provision != null) this.provision = response.data.provision;
             if (response.data.totalProvisioned && response.data.totalProvisioned != null) this.totalProvisioned = response.data.totalProvisioned;
 
             this.calculateTotalCosts();
+
+            if(this.hasCostProfile){
+                this.messageService.showWarning('managementReport.existProfiles')
+            }
 
             this.messageService.closeLoading();
             this.costDetailMonthModal.show();
@@ -221,12 +227,20 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     }
 
     save() {
+
+        if(this.hasCostProfile){
+            this.messageService.showError('managementReport.existProfiles')
+            this.costDetailMonthModal.resetButtons()
+            return
+        }
+
         this.messageService.showLoading();
 
         var model = {
             AnalyticId: 0,
             ManagementReportId: 0,
             MonthYear: new Date(),
+            IsReal: true,
             Employees: [],
             OtherResources: [],
             Contracted: [],

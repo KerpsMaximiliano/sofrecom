@@ -28,5 +28,7 @@ namespace Sofco.Core.DAL.Common
         IList<EmployeeProfile> GetEmployeeProfiles();
         IList<Prepaid> GetPrepaids();
         Prepaid GetPrepaid(int prepaidId);
+        bool ExistProfile(int id);
+        bool ExistSeniority(int id);
     }
 }

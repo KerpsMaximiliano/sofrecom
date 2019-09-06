@@ -167,6 +167,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Include(x => x.ServiceType)
                 .Include(x => x.Technology)
                 .Include(x => x.Solution)
+                .Include(x => x.Sector)
                 .Include(x => x.Manager)
                 .Include(x => x.ManagementReport)
                 .SingleOrDefault(x => x.ServiceId.Equals(serviceId));

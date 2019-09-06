@@ -122,7 +122,7 @@
 
     <hr class="hr-line-dashed">
 
-    <div class="row border-bottom m-b-sm">
+    <div class="row border-bottom">
         <div class="col-sm-5">
             <h4>Costos contratados + subcontratados</h4>
         </div>
@@ -137,7 +137,13 @@
         </div>
         <div class="col-sm-1" *ngIf="contracted.length > 0"></div>
     </div>
-    <form name="form" #f="ngForm" novalidate>
+
+    <div class="alert alert-gaps-info" *ngIf="contracted.length == 0">
+        <i class="fa fa-info"></i>
+        {{ i18nService.translateByKey('noInfoAvailable') }}
+    </div>
+    
+    <form name="form" #f="ngForm" novalidate (keydown.enter)="$event.preventDefault()">
 
         <div class="row m-t-xs" *ngFor="let hire of contracted; let i = index">
             <div class="col-sm-5">
@@ -146,22 +152,22 @@
                     [(ngModel)]="hire.name" #name{{i}}="ngModel">
             </div>
             <div class="col-sm-2">
-                <!-- <input type="number" name="honorary" [digitLimit]="8" decimalFormat class="form-control input-xs"
-                    [(ngModel)]="hire.honorary" (ngModelChange)="contractedChange(hire)" [disabled]="isReadOnly"
-                    max="99999999" min="0"> -->
+                <!-- <input type="number" name="honorary{{i}}" [digitLimit]="8" decimalFormat class="form-control input-xs"
+                    [(ngModel)]="hire.honorary" [disabled]="isReadOnly" (change)="contractedChange(hire)"
+                    max="99999999" min="0" #honorary{{i}}="ngModel"> -->
                 <math-input [(model)]="hire.honorary" (modelChange)="contractedChange(hire)"
                     [(modelDisabled)]="isReadOnly"></math-input>
             </div>
             <div class="col-sm-2">
-                <!-- <input type="number" name="insurance" [digitLimit]="8" decimalFormat class="form-control input-xs"
-                    [(ngModel)]="hire.insurance" (ngModelChange)="contractedChange(hire)" [disabled]="isReadOnly"
-                    max="99999999" min="0"> -->
+                <!-- <input type="number" name="insurance{{i}}" [digitLimit]="8" decimalFormat class="form-control input-xs"
+                    [(ngModel)]="hire.insurance" [disabled]="isReadOnly" (change)="contractedChange(hire)"
+                    max="99999999" min="0" #insurance{{i}}="ngModel"> -->
                     <math-input [(model)]="hire.insurance" (modelChange)="contractedChange(hire)"
                     [(modelDisabled)]="isReadOnly"></math-input>
             </div>
             <div class="col-sm-2">
-                <input type="text" name="total" decimalFormat class="form-control input-xs"
-                    [ngModel]="hire.total | amountFormat" disabled>
+                <input type="text" name="total{{i}}" decimalFormat class="form-control input-xs"
+                    [ngModel]="hire.total | amountFormat" #total{{i}}="ngModel" disabled>
             </div>
             <div class="col-sm-1">
                 <button class="btn btn-danger btn-xs" (click)="deleteContracted(i, hire)" *ngIf="!isReadOnly"><i
@@ -170,8 +176,8 @@
         </div>
 
     </form>
-    <br>
-    <button class="btn btn-success btn-md m-t-xs" (click)="addContracted()" *ngIf="!isReadOnly" type="button">
+
+    <button class="btn btn-success btn-md" (click)="addContracted()" *ngIf="!isReadOnly" type="button">
         Agregar
         <i class="fa fa-plus"></i>
     </button>
@@ -192,7 +198,7 @@
         <div class="col-sm-1"></div>
     </div>
 
-    <div class="alert alert-gaps-info" *ngIf="isReadOnly">
+    <div class="alert alert-gaps-info" *ngIf="expenses.length == 0">
         <i class="fa fa-info"></i>
         {{ i18nService.translateByKey('noInfoAvailable') }}
     </div>
@@ -218,6 +224,7 @@
     </div>
 
     <br *ngIf="expenses.length > 0">
+
     <div class="row" *ngIf="otherResources.length > 0 && !isReadOnly">
         <div class="col-md-6">
             <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"

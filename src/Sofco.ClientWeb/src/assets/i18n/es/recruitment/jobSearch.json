@@ -1,0 +1,11 @@
+{
+    "modelNull": "Datos incorrectos",
+    "addSuccess": "La busqueda fue dada de alta correctamente",
+    "clientRequired": "El cliente es requerido",
+    "maximunSalaryIsRequired": "El salario máximo es requerido",
+    "quantityRequired": "La cantidad es requerida",
+    "reasonCauseRequired": "El motivo es requerido",
+    "selectorRequired": "El selector es requerido",
+    "timeHiringRequired": "El tiempo de contratación es requerido",
+    "userRequired": "El solicitante es requerido"
+}

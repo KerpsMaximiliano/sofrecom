@@ -25,18 +25,34 @@
             <tr>
                 <th class="static first-column" scope="col">Margen a la Fecha (%)</th>
                 <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
-                    <label class="label label-total">
-                        {{ month.PercentageExpectedTotal || 0 | number:'1.0-2' }} 
+                    <label class="label label-total" *ngIf="month.hasReal">
+                        {{ month.PercentageExpectedTotal || 0 | number:'1.0-2' }}
+                    </label>
+                    <label class="label bg-muted" *ngIf="!month.hasReal">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
                     </label>
                 </td>
             </tr>
             <tr>
                 <th class="static first-column text-ellipsis" scope="col">Margen a Terminacion (%)</th>
                 <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
-                    <label class="label label-cant-resources">
+                    <label class="label label-cant-resources" *ngIf="month.hasReal">
                         {{ month.PercentageToEnd || 0 | number:'1.0-2'  }}
                     </label>
+                    <label class="label bg-muted" *ngIf="!month.hasReal">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </label>
                 </td>
+            </tr>
+            <tr>
+                <th class="static first-column text-ellipsis" scope="col">EVALPROP</th>
+                <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
+                    <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''"
+                        (click)="openEditEvalProp(month)">
+                        {{ month.valueEvalProp  | amountFormat }}
+                    </label>
+                </td>
+
             </tr>
         </tbody>
     </table>

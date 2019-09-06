@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.Common;
 using Sofco.Core.Services.Common;
 using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
@@ -34,17 +35,17 @@ namespace Sofco.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Option option)
+        public IActionResult Post([FromBody] GenericOptionModel option)
         {
-            var response = service.Add(option.Text);
+            var response = service.Add(option.Text, option.Parameters);
 
             return this.CreateResponse(response);
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Option option)
+        public IActionResult Put([FromBody] GenericOptionModel option)
         {
-            var response = service.Update(option.Id, option.Text);
+            var response = service.Update(option.Id, option.Text, option.Parameters);
 
             return this.CreateResponse(response);
         }
