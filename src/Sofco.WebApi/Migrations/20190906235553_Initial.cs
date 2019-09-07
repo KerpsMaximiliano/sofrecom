@@ -12,6 +12,20 @@ namespace Sofco.WebApi.Migrations
                 name: "app");
 
             migrationBuilder.CreateTable(
+                name: "BudgetType",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BudgetType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 schema: "app",
                 columns: table => new
@@ -35,7 +49,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,6 +110,20 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CostDetailCategories",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CostDetailCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CostDetailTypes",
                 schema: "app",
                 columns: table => new
@@ -102,7 +131,8 @@ namespace Sofco.WebApi.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 250, nullable: true),
-                    Default = table.Column<bool>(nullable: false)
+                    Default = table.Column<bool>(nullable: false),
+                    BelongEmployee = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -116,7 +146,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 100, nullable: true)
+                    Text = table.Column<string>(maxLength: 100, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,6 +162,7 @@ namespace Sofco.WebApi.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(maxLength: 15, nullable: true),
+                    Active = table.Column<bool>(nullable: false),
                     CrmId = table.Column<string>(maxLength: 100, nullable: true)
                 },
                 constraints: table =>
@@ -174,7 +206,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,7 +240,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(nullable: true)
+                    Text = table.Column<string>(nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -260,7 +294,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 150, nullable: true)
+                    Text = table.Column<string>(maxLength: 150, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -366,7 +401,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 50, nullable: true)
+                    Text = table.Column<string>(maxLength: 50, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -392,6 +428,22 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Logs",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Username = table.Column<string>(maxLength: 50, nullable: true),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Comment = table.Column<string>(maxLength: 1000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Modules",
                 schema: "app",
                 columns: table => new
@@ -414,7 +466,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 100, nullable: true)
+                    Text = table.Column<string>(maxLength: 100, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -449,7 +502,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -476,17 +530,49 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Prepaids",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(maxLength: 250, nullable: true),
+                    Active = table.Column<bool>(nullable: false),
+                    Code = table.Column<string>(maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prepaids", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 schema: "app",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Profiles",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(maxLength: 75, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profiles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -529,7 +615,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -543,11 +630,28 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PurchaseOrderOptions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReasonCauses",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(maxLength: 75, nullable: true),
+                    Active = table.Column<bool>(nullable: false),
+                    Type = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReasonCauses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -566,6 +670,21 @@ namespace Sofco.WebApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Seniorities",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(maxLength: 75, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seniorities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -591,6 +710,7 @@ namespace Sofco.WebApi.Migrations
                     TechnologyType = table.Column<string>(maxLength: 200, nullable: true),
                     TechnologyTypeId = table.Column<int>(nullable: false),
                     Analytic = table.Column<string>(maxLength: 200, nullable: true),
+                    Description = table.Column<string>(nullable: true),
                     Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -605,7 +725,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -632,13 +753,29 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Skills",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(maxLength: 75, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skills", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SoftwareLaws",
                 schema: "app",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -652,7 +789,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -666,7 +804,8 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 60, nullable: true)
+                    Text = table.Column<string>(maxLength: 60, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -754,6 +893,51 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CostDetailSubcategories",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 250, nullable: true),
+                    CostDetailCategoryId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CostDetailSubcategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CostDetailSubcategories_CostDetailCategories_CostDetailCategoryId",
+                        column: x => x.CostDetailCategoryId,
+                        principalSchema: "app",
+                        principalTable: "CostDetailCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CurrencyExchanges",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Date = table.Column<DateTime>(nullable: false),
+                    Exchange = table.Column<decimal>(nullable: false),
+                    CurrencyId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CurrencyExchanges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CurrencyExchanges_Currencies_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalSchema: "app",
+                        principalTable: "Currencies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Certificates",
                 schema: "app",
                 columns: table => new
@@ -802,6 +986,43 @@ namespace Sofco.WebApi.Migrations
                         principalTable: "Modules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PrepaidImportedData",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Period = table.Column<DateTime>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: false),
+                    EmployeeName = table.Column<string>(maxLength: 100, nullable: true),
+                    EmployeeNumber = table.Column<string>(maxLength: 15, nullable: true),
+                    PrepaidBeneficiaries = table.Column<int>(nullable: false),
+                    TigerBeneficiaries = table.Column<int>(nullable: false),
+                    PrepaidPlan = table.Column<string>(maxLength: 100, nullable: true),
+                    TigerPlan = table.Column<string>(maxLength: 100, nullable: true),
+                    PrepaidCost = table.Column<decimal>(nullable: false),
+                    TigerCost = table.Column<decimal>(nullable: false),
+                    Dni = table.Column<string>(maxLength: 15, nullable: true),
+                    Cuil = table.Column<string>(maxLength: 15, nullable: true),
+                    Comments = table.Column<string>(maxLength: 500, nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    PrepaidId = table.Column<int>(nullable: true),
+                    Closed = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrepaidImportedData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PrepaidImportedData_Prepaids_PrepaidId",
+                        column: x => x.PrepaidId,
+                        principalSchema: "app",
+                        principalTable: "Prepaids",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -857,6 +1078,40 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Delegations",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    GrantedUserId = table.Column<int>(nullable: false),
+                    AnalyticSourceId = table.Column<int>(nullable: true),
+                    UserSourceId = table.Column<int>(nullable: true),
+                    SourceType = table.Column<int>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Delegations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Delegations_Users_GrantedUserId",
+                        column: x => x.GrantedUserId,
+                        principalSchema: "app",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Delegations_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "app",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 schema: "app",
                 columns: table => new
@@ -903,7 +1158,13 @@ namespace Sofco.WebApi.Migrations
                     PhoneNumber = table.Column<string>(maxLength: 100, nullable: true),
                     IsExternal = table.Column<bool>(nullable: false),
                     HasCreditCard = table.Column<bool>(nullable: false),
-                    Bank = table.Column<string>(maxLength: 200, nullable: true)
+                    Bank = table.Column<string>(maxLength: 200, nullable: true),
+                    Salary = table.Column<string>(maxLength: 200, nullable: true),
+                    BeneficiariesCount = table.Column<int>(nullable: false),
+                    PrepaidAmount = table.Column<string>(maxLength: 200, nullable: true),
+                    PrepaidPlan = table.Column<string>(maxLength: 100, nullable: true),
+                    AssignComments = table.Column<string>(maxLength: 1000, nullable: true),
+                    ExcludeForTigerReport = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -920,6 +1181,61 @@ namespace Sofco.WebApi.Migrations
                         column: x => x.TypeEndReasonId,
                         principalSchema: "app",
                         principalTable: "EmployeeEndReason",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobSearchs",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
+                    RecruiterId = table.Column<int>(nullable: false),
+                    ReasonCauseId = table.Column<int>(nullable: false),
+                    ClientId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    TimeHiring = table.Column<string>(maxLength: 100, nullable: true),
+                    MaximunSalary = table.Column<decimal>(nullable: false),
+                    Comments = table.Column<string>(maxLength: 3000, nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    ReopenDate = table.Column<DateTime>(nullable: true),
+                    SuspendedDate = table.Column<DateTime>(nullable: true),
+                    CloseDate = table.Column<DateTime>(nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobSearchs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_JobSearchs_Customers_ClientId",
+                        column: x => x.ClientId,
+                        principalSchema: "app",
+                        principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobSearchs_ReasonCauses_ReasonCauseId",
+                        column: x => x.ReasonCauseId,
+                        principalSchema: "app",
+                        principalTable: "ReasonCauses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobSearchs_Users_RecruiterId",
+                        column: x => x.RecruiterId,
+                        principalSchema: "app",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_JobSearchs_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "app",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -1097,6 +1413,7 @@ namespace Sofco.WebApi.Migrations
                     PaymentForm = table.Column<string>(maxLength: 200, nullable: true),
                     Margin = table.Column<decimal>(nullable: false),
                     Comments = table.Column<string>(maxLength: 2000, nullable: true),
+                    CommentsForAdjustment = table.Column<string>(maxLength: 2000, nullable: true),
                     Proposal = table.Column<string>(maxLength: 2000, nullable: true)
                 },
                 constraints: table =>
@@ -1116,6 +1433,29 @@ namespace Sofco.WebApi.Migrations
                         principalTable: "Files",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AdvancementSalaryDiscounts",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Amount = table.Column<decimal>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdvancementSalaryDiscounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdvancementSalaryDiscounts_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalSchema: "app",
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1146,6 +1486,112 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SocialCharges",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Year = table.Column<int>(nullable: false),
+                    Month = table.Column<int>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: false),
+                    ChargesTotal = table.Column<string>(nullable: true),
+                    SalaryTotal = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SocialCharges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SocialCharges_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalSchema: "app",
+                        principalTable: "Employees",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobSearchProfiles",
+                schema: "app",
+                columns: table => new
+                {
+                    JobSearchId = table.Column<int>(nullable: false),
+                    ProfileId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobSearchProfiles", x => new { x.JobSearchId, x.ProfileId });
+                    table.ForeignKey(
+                        name: "FK_JobSearchProfiles_JobSearchs_JobSearchId",
+                        column: x => x.JobSearchId,
+                        principalSchema: "app",
+                        principalTable: "JobSearchs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobSearchProfiles_Profiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalSchema: "app",
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobSearchSeniorities",
+                schema: "app",
+                columns: table => new
+                {
+                    JobSearchId = table.Column<int>(nullable: false),
+                    SeniorityId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobSearchSeniorities", x => new { x.JobSearchId, x.SeniorityId });
+                    table.ForeignKey(
+                        name: "FK_JobSearchSeniorities_JobSearchs_JobSearchId",
+                        column: x => x.JobSearchId,
+                        principalSchema: "app",
+                        principalTable: "JobSearchs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobSearchSeniorities_Seniorities_SeniorityId",
+                        column: x => x.SeniorityId,
+                        principalSchema: "app",
+                        principalTable: "Seniorities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobSearchSkills",
+                schema: "app",
+                columns: table => new
+                {
+                    JobSearchId = table.Column<int>(nullable: false),
+                    SkillId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobSearchSkills", x => new { x.JobSearchId, x.SkillId });
+                    table.ForeignKey(
+                        name: "FK_JobSearchSkills_JobSearchs_JobSearchId",
+                        column: x => x.JobSearchId,
+                        principalSchema: "app",
+                        principalTable: "JobSearchs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobSearchSkills_Skills_SkillId",
+                        column: x => x.SkillId,
+                        principalSchema: "app",
+                        principalTable: "Skills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Analytics",
                 schema: "app",
                 columns: table => new
@@ -1153,6 +1599,7 @@ namespace Sofco.WebApi.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(maxLength: 150, nullable: true),
+                    Description = table.Column<string>(maxLength: 2000, nullable: true),
                     TitleId = table.Column<int>(nullable: false),
                     CostCenterId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 200, nullable: true),
@@ -1506,6 +1953,30 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SocialChargeItems",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AccountName = table.Column<string>(maxLength: 500, nullable: true),
+                    AccountNumber = table.Column<int>(nullable: false),
+                    Value = table.Column<string>(nullable: true),
+                    SocialChargeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SocialChargeItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SocialChargeItems_SocialCharges_SocialChargeId",
+                        column: x => x.SocialChargeId,
+                        principalSchema: "app",
+                        principalTable: "SocialCharges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Allocations",
                 schema: "app",
                 columns: table => new
@@ -1546,7 +2017,8 @@ namespace Sofco.WebApi.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AnalyticId = table.Column<int>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false)
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1747,6 +2219,7 @@ namespace Sofco.WebApi.Migrations
                     UserApplicantId = table.Column<int>(nullable: false),
                     StatusId = table.Column<int>(nullable: false),
                     InWorkflowProcess = table.Column<bool>(nullable: false),
+                    UsersAlreadyApproved = table.Column<string>(nullable: true),
                     PaymentForm = table.Column<int>(nullable: false),
                     Type = table.Column<int>(nullable: false),
                     MonthsReturnId = table.Column<int>(nullable: true),
@@ -1816,6 +2289,7 @@ namespace Sofco.WebApi.Migrations
                     UserApplicantId = table.Column<int>(nullable: false),
                     StatusId = table.Column<int>(nullable: false),
                     InWorkflowProcess = table.Column<bool>(nullable: false),
+                    UsersAlreadyApproved = table.Column<string>(nullable: true),
                     AnalyticId = table.Column<int>(nullable: false),
                     CurrencyId = table.Column<int>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
@@ -2167,6 +2641,32 @@ namespace Sofco.WebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Budgets",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(maxLength: 200, nullable: true),
+                    Value = table.Column<decimal>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    ModifiedBy = table.Column<string>(maxLength: 100, nullable: true),
+                    ManagementReportId = table.Column<int>(nullable: false),
+                    LastValue = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Budgets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Budgets_ManagementReports_ManagementReportId",
+                        column: x => x.ManagementReportId,
+                        principalSchema: "app",
+                        principalTable: "ManagementReports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CostDetails",
                 schema: "app",
                 columns: table => new
@@ -2174,7 +2674,12 @@ namespace Sofco.WebApi.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ManagementReportId = table.Column<int>(nullable: false),
-                    MonthYear = table.Column<DateTime>(nullable: false)
+                    MonthYear = table.Column<DateTime>(nullable: false),
+                    TotalProvisioned = table.Column<decimal>(nullable: true),
+                    TotalBilling = table.Column<decimal>(nullable: true),
+                    Provision = table.Column<decimal>(nullable: true),
+                    Closed = table.Column<bool>(nullable: false),
+                    HasReal = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -2197,13 +2702,44 @@ namespace Sofco.WebApi.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ManagementReportId = table.Column<int>(nullable: false),
                     MonthYear = table.Column<DateTime>(nullable: false),
-                    ValueEvalProp = table.Column<decimal>(nullable: false)
+                    EvalPropBillingValue = table.Column<decimal>(nullable: false),
+                    EvalPropExpenseValue = table.Column<decimal>(nullable: false),
+                    EvalPropMarginValue = table.Column<decimal>(nullable: false),
+                    Comments = table.Column<string>(maxLength: 2000, nullable: true),
+                    BilledResources = table.Column<int>(nullable: false),
+                    EvalPropDifference = table.Column<decimal>(nullable: false),
+                    Closed = table.Column<bool>(nullable: false),
+                    BilledResourceTotal = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ManagementReportBillings", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ManagementReportBillings_ManagementReports_ManagementReportId",
+                        column: x => x.ManagementReportId,
+                        principalSchema: "app",
+                        principalTable: "ManagementReports",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ManagementReportComments",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Comment = table.Column<string>(maxLength: 2000, nullable: true),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    UserName = table.Column<string>(nullable: true),
+                    ManagementReportId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ManagementReportComments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ManagementReportComments_ManagementReports_ManagementReportId",
                         column: x => x.ManagementReportId,
                         principalSchema: "app",
                         principalTable: "ManagementReports",
@@ -2222,7 +2758,7 @@ namespace Sofco.WebApi.Migrations
                     UserName = table.Column<string>(maxLength: 100, nullable: true),
                     StatusFromId = table.Column<int>(nullable: false),
                     StatusToId = table.Column<int>(nullable: false),
-                    Comment = table.Column<string>(maxLength: 400, nullable: true),
+                    Comment = table.Column<string>(maxLength: 1000, nullable: true),
                     AdvancementId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -2288,7 +2824,8 @@ namespace Sofco.WebApi.Migrations
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(maxLength: 300, nullable: true),
                     Ammount = table.Column<decimal>(nullable: false),
-                    RefundId = table.Column<int>(nullable: false)
+                    RefundId = table.Column<int>(nullable: false),
+                    Order = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -2340,7 +2877,7 @@ namespace Sofco.WebApi.Migrations
                     UserName = table.Column<string>(maxLength: 100, nullable: true),
                     StatusFromId = table.Column<int>(nullable: false),
                     StatusToId = table.Column<int>(nullable: false),
-                    Comment = table.Column<string>(maxLength: 400, nullable: true),
+                    Comment = table.Column<string>(maxLength: 1000, nullable: true),
                     RefundId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -2533,7 +3070,6 @@ namespace Sofco.WebApi.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CostDetailId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 250, nullable: true),
-                    MonthYear = table.Column<DateTime>(nullable: false),
                     Insurance = table.Column<decimal>(nullable: false),
                     Honorary = table.Column<decimal>(nullable: false)
                 },
@@ -2559,7 +3095,8 @@ namespace Sofco.WebApi.Migrations
                     CostDetailId = table.Column<int>(nullable: false),
                     CostDetailTypeId = table.Column<int>(nullable: false),
                     Value = table.Column<decimal>(nullable: false),
-                    Description = table.Column<string>(maxLength: 500, nullable: true)
+                    Description = table.Column<string>(maxLength: 500, nullable: true),
+                    IsReal = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -2587,6 +3124,7 @@ namespace Sofco.WebApi.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Guid = table.Column<string>(nullable: true),
                     CostDetailId = table.Column<int>(nullable: false),
                     Value = table.Column<decimal>(nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
@@ -2619,25 +3157,26 @@ namespace Sofco.WebApi.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CostDetailId = table.Column<int>(nullable: false),
-                    Value = table.Column<decimal>(nullable: false),
-                    Adjustment = table.Column<decimal>(nullable: false),
-                    Charges = table.Column<decimal>(nullable: false),
+                    Value = table.Column<string>(nullable: true),
+                    Adjustment = table.Column<decimal>(nullable: true),
+                    Charges = table.Column<string>(nullable: true),
+                    IsReal = table.Column<bool>(nullable: false),
                     EmployeeId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CostDetailResources", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CostDetailResources_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_CostDetailResources_Users_CostDetailId",
+                        column: x => x.CostDetailId,
                         principalSchema: "app",
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CostDetailResources_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_CostDetailResources_Employees_CostDetailId",
+                        column: x => x.CostDetailId,
                         principalSchema: "app",
                         principalTable: "Employees",
                         principalColumn: "Id",
@@ -2647,6 +3186,94 @@ namespace Sofco.WebApi.Migrations
                         column: x => x.CostDetailId,
                         principalSchema: "app",
                         principalTable: "CostDetails",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CostDetailStaff",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Value = table.Column<decimal>(nullable: true),
+                    Description = table.Column<string>(maxLength: 500, nullable: true),
+                    CostDetailId = table.Column<int>(nullable: false),
+                    CostDetailSubcategoryId = table.Column<int>(nullable: false),
+                    BudgetTypeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CostDetailStaff", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CostDetailStaff_BudgetType_BudgetTypeId",
+                        column: x => x.BudgetTypeId,
+                        principalSchema: "app",
+                        principalTable: "BudgetType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CostDetailStaff_CostDetails_CostDetailId",
+                        column: x => x.CostDetailId,
+                        principalSchema: "app",
+                        principalTable: "CostDetails",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CostDetailStaff_CostDetailSubcategories_CostDetailSubcategoryId",
+                        column: x => x.CostDetailSubcategoryId,
+                        principalSchema: "app",
+                        principalTable: "CostDetailSubcategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ResourceBillings",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ProfileId = table.Column<int>(nullable: false),
+                    SeniorityId = table.Column<int>(nullable: false),
+                    PurchaseOrderId = table.Column<int>(nullable: false),
+                    MonthHour = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false),
+                    SubTotal = table.Column<decimal>(nullable: false),
+                    ManagementReportBillingId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResourceBillings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResourceBillings_ManagementReportBillings_ManagementReportBillingId",
+                        column: x => x.ManagementReportBillingId,
+                        principalSchema: "app",
+                        principalTable: "ManagementReportBillings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResourceBillings_Profiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalSchema: "app",
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResourceBillings_PurchaseOrders_PurchaseOrderId",
+                        column: x => x.PurchaseOrderId,
+                        principalSchema: "app",
+                        principalTable: "PurchaseOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ResourceBillings_Seniorities_SeniorityId",
+                        column: x => x.SeniorityId,
+                        principalSchema: "app",
+                        principalTable: "Seniorities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -2710,6 +3337,12 @@ namespace Sofco.WebApi.Migrations
                 schema: "app",
                 table: "Advancements",
                 column: "WorkflowId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdvancementSalaryDiscounts_EmployeeId",
+                schema: "app",
+                table: "AdvancementSalaryDiscounts",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Allocations_AnalyticId",
@@ -2790,6 +3423,12 @@ namespace Sofco.WebApi.Migrations
                 column: "ResponsableUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Budgets_ManagementReportId",
+                schema: "app",
+                table: "Budgets",
+                column: "ManagementReportId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Certificates_FileId",
                 schema: "app",
                 table: "Certificates",
@@ -2836,6 +3475,48 @@ namespace Sofco.WebApi.Migrations
                 schema: "app",
                 table: "CostDetails",
                 column: "ManagementReportId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CostDetailStaff_BudgetTypeId",
+                schema: "app",
+                table: "CostDetailStaff",
+                column: "BudgetTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CostDetailStaff_CostDetailId",
+                schema: "app",
+                table: "CostDetailStaff",
+                column: "CostDetailId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CostDetailStaff_CostDetailSubcategoryId",
+                schema: "app",
+                table: "CostDetailStaff",
+                column: "CostDetailSubcategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CostDetailSubcategories_CostDetailCategoryId",
+                schema: "app",
+                table: "CostDetailSubcategories",
+                column: "CostDetailCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CurrencyExchanges_CurrencyId",
+                schema: "app",
+                table: "CurrencyExchanges",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Delegations_GrantedUserId",
+                schema: "app",
+                table: "Delegations",
+                column: "GrantedUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Delegations_UserId",
+                schema: "app",
+                table: "Delegations",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeCategories_EmployeeId",
@@ -2931,6 +3612,48 @@ namespace Sofco.WebApi.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_JobSearchProfiles_ProfileId",
+                schema: "app",
+                table: "JobSearchProfiles",
+                column: "ProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobSearchs_ClientId",
+                schema: "app",
+                table: "JobSearchs",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobSearchs_ReasonCauseId",
+                schema: "app",
+                table: "JobSearchs",
+                column: "ReasonCauseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobSearchs_RecruiterId",
+                schema: "app",
+                table: "JobSearchs",
+                column: "RecruiterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobSearchs_UserId",
+                schema: "app",
+                table: "JobSearchs",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobSearchSeniorities_SeniorityId",
+                schema: "app",
+                table: "JobSearchSeniorities",
+                column: "SeniorityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobSearchSkills_SkillId",
+                schema: "app",
+                table: "JobSearchSkills",
+                column: "SkillId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LicenseFiles_FileId",
                 schema: "app",
                 table: "LicenseFiles",
@@ -2979,11 +3702,23 @@ namespace Sofco.WebApi.Migrations
                 column: "ManagementReportId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ManagementReportComments_ManagementReportId",
+                schema: "app",
+                table: "ManagementReportComments",
+                column: "ManagementReportId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ManagementReports_AnalyticId",
                 schema: "app",
                 table: "ManagementReports",
                 column: "AnalyticId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrepaidImportedData_PrepaidId",
+                schema: "app",
+                table: "PrepaidImportedData",
+                column: "PrepaidId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PurchaseOrderAmmountDetails_CurrencyId",
@@ -3094,6 +3829,30 @@ namespace Sofco.WebApi.Migrations
                 column: "WorkflowId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ResourceBillings_ManagementReportBillingId",
+                schema: "app",
+                table: "ResourceBillings",
+                column: "ManagementReportBillingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResourceBillings_ProfileId",
+                schema: "app",
+                table: "ResourceBillings",
+                column: "ProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResourceBillings_PurchaseOrderId",
+                schema: "app",
+                table: "ResourceBillings",
+                column: "PurchaseOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ResourceBillings_SeniorityId",
+                schema: "app",
+                table: "ResourceBillings",
+                column: "SeniorityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoleFunctionality_FunctionalityId",
                 schema: "app",
                 table: "RoleFunctionality",
@@ -3104,6 +3863,18 @@ namespace Sofco.WebApi.Migrations
                 schema: "app",
                 table: "Sectors",
                 column: "ResponsableUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SocialChargeItems_SocialChargeId",
+                schema: "app",
+                table: "SocialChargeItems",
+                column: "SocialChargeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SocialCharges_EmployeeId",
+                schema: "app",
+                table: "SocialCharges",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SolfacAttachments_SolfacId",
@@ -3370,7 +4141,15 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
+                name: "AdvancementSalaryDiscounts",
+                schema: "app");
+
+            migrationBuilder.DropTable(
                 name: "Allocations",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Budgets",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3398,7 +4177,15 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
-                name: "Customers",
+                name: "CostDetailStaff",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "CurrencyExchanges",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Delegations",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3442,6 +4229,18 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
+                name: "JobSearchProfiles",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "JobSearchSeniorities",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "JobSearchSkills",
+                schema: "app");
+
+            migrationBuilder.DropTable(
                 name: "LicenseFiles",
                 schema: "app");
 
@@ -3450,7 +4249,11 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
-                name: "ManagementReportBillings",
+                name: "Logs",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "ManagementReportComments",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3463,6 +4266,10 @@ namespace Sofco.WebApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "PrepaidHealths",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "PrepaidImportedData",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3506,6 +4313,10 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
+                name: "ResourceBillings",
+                schema: "app");
+
+            migrationBuilder.DropTable(
                 name: "RoleFunctionality",
                 schema: "app");
 
@@ -3515,6 +4326,10 @@ namespace Sofco.WebApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Settings",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "SocialChargeItems",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3570,7 +4385,15 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
+                name: "BudgetType",
+                schema: "app");
+
+            migrationBuilder.DropTable(
                 name: "CostDetails",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "CostDetailSubcategories",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3582,7 +4405,19 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
+                name: "JobSearchs",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Skills",
+                schema: "app");
+
+            migrationBuilder.DropTable(
                 name: "Licenses",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Prepaids",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3590,7 +4425,23 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
+                name: "ManagementReportBillings",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Profiles",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Seniorities",
+                schema: "app");
+
+            migrationBuilder.DropTable(
                 name: "Functionalities",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "SocialCharges",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3618,7 +4469,7 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
-                name: "ManagementReports",
+                name: "CostDetailCategories",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3626,7 +4477,11 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
-                name: "Employees",
+                name: "Customers",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "ReasonCauses",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3638,7 +4493,15 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
+                name: "ManagementReports",
+                schema: "app");
+
+            migrationBuilder.DropTable(
                 name: "Modules",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Employees",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3658,10 +4521,6 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
-                name: "Analytics",
-                schema: "app");
-
-            migrationBuilder.DropTable(
                 name: "Currencies",
                 schema: "app");
 
@@ -3674,11 +4533,23 @@ namespace Sofco.WebApi.Migrations
                 schema: "app");
 
             migrationBuilder.DropTable(
+                name: "Analytics",
+                schema: "app");
+
+            migrationBuilder.DropTable(
                 name: "EmployeeEndReason",
                 schema: "app");
 
             migrationBuilder.DropTable(
                 name: "WorkflowTypes",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Areas",
+                schema: "app");
+
+            migrationBuilder.DropTable(
+                name: "Files",
                 schema: "app");
 
             migrationBuilder.DropTable(
@@ -3711,14 +4582,6 @@ namespace Sofco.WebApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Technologies",
-                schema: "app");
-
-            migrationBuilder.DropTable(
-                name: "Areas",
-                schema: "app");
-
-            migrationBuilder.DropTable(
-                name: "Files",
                 schema: "app");
 
             migrationBuilder.DropTable(
