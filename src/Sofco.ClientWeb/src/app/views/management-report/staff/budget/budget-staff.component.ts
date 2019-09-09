@@ -7,6 +7,7 @@ import { MessageService } from "app/services/common/message.service";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
 import { ManagementReportDetailStaffComponent } from "app/views/management-report/staff/detail/detail-staff";
 import { environment } from "environments/environment";
+import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 
 @Component({
     selector: 'budget-staff',
@@ -163,10 +164,16 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 // }
 
                 break;
-            case 'PROJECTED':                
+            case 'PROJECTED': 
+
                 if (this.menuService.userIsDirector || this.menuService.userIsManager || this.menuService.isManagementReportDelegate) {
                     this.readOnly = false
+                    if(this.model.status == ManagementReportStatus.CdgPending){
+                        this.messageService.showWarning("managementReport.cdgPending")
+                        this.readOnly = true
+                    }
                 }
+
                 this.editItemModal.show();
                 return this.monthSelected.subcategoriesProjected.filter(sub => sub.deleted == false);
 

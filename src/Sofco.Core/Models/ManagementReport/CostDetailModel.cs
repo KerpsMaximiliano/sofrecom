@@ -1,4 +1,5 @@
-﻿using Sofco.Domain.Models.ManagementReport;
+﻿using Sofco.Domain.Enums;
+using Sofco.Domain.Models.ManagementReport;
 using System;
 using System.Collections.Generic;
 
@@ -113,6 +114,7 @@ namespace Sofco.Core.Models.ManagementReport
     {
         public int ManagementReportId { get; set; }
         public int AnalyticId { get; set; }
+        public ManagementReportStatus Status { get; set; }
         public IList<MonthDetailCostStaff> MonthsHeader { get; set; }
         public List<CostCategory> CostCategories { get; set; }
         public List<CostSubcategory> AllSubcategories { get; set; }

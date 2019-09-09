@@ -111,7 +111,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
 
         //  this.fromMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 2, 1)
-        if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')) {
+        if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL') && this.menuService.userIsDirector || this.menuService.userIsManager || this.menuService.isManagementReportDelegate) {
             this.canEdit = true
         }
 
