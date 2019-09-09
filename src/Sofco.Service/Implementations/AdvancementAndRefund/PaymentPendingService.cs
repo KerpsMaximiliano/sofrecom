@@ -42,6 +42,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             FillRefunds(response, employeeDicc, employeeManagerDicc, employeeNameManagerDicc);
 
+            response.Data = response.Data.Where(x => x.Ammount > 0).ToList();
+
             return response;
         }
 

@@ -115,6 +115,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.selectorRequired.
+        /// </summary>
+        public static string SelectorRequired {
+            get {
+                return ResourceManager.GetString("SelectorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearch.timeHiringRequired.
         /// </summary>
         public static string TimeHiringRequired {

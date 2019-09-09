@@ -219,9 +219,7 @@ namespace Sofco.Service.Implementations.Workflow
 
             if (nextState.Id == appSetting.WorkFlowStateAccounted ||
                 nextState.Id == appSetting.WorkflowStatusGafId ||
-                nextState.Id == appSetting.WorkflowStatusCurrentAccount ||
                 nextState.Id == appSetting.WorkflowStatusApproveId ||
-                nextState.Id == appSetting.WorkflowStatusPostedId ||
                 nextState.Id == appSetting.WorkflowStatusFinalizedId)
             {
                 return;

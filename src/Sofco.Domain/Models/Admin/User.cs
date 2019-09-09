@@ -83,5 +83,6 @@ namespace Sofco.Domain.Models.Admin
         public IList<Delegation> Delegations2 { get; set; }
 
         public IList<JobSearch> JobSearchs { get; set; }
+        public IList<JobSearch> JobSearchs2 { get; set; }
     }
 }

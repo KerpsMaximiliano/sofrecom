@@ -2196,6 +2196,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("ReasonCauseId");
 
+                    b.Property<int>("RecruiterId");
+
                     b.Property<DateTime?>("ReopenDate");
 
                     b.Property<int>("Status");
@@ -2212,6 +2214,8 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("ClientId");
 
                     b.HasIndex("ReasonCauseId");
+
+                    b.HasIndex("RecruiterId");
 
                     b.HasIndex("UserId");
 
@@ -3817,10 +3821,15 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("ReasonCauseId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("Sofco.Domain.Models.Admin.User", "Recruiter")
+                        .WithMany("JobSearchs2")
+                        .HasForeignKey("RecruiterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany("JobSearchs")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.License", b =>
