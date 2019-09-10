@@ -34,7 +34,7 @@ const RECRUITMENT_ROUTER: Routes = [
         children: [
             { path: "add", component: JobSearchComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "ADD-JOBSEARCH" }},
             { path: "", component: JobSearchListComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "SEARCH-JOBSEARCH" }},
-            { path: ":id", component: JobSearchEditComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "SEARCH-JOBSEARCH" }},
+            { path: ":id", component: JobSearchEditComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "EDIT-JOBSEARCH" }},
         ]
     },
 ] 
