@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Core.Models.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.ManagementReport;
 
@@ -36,6 +37,8 @@ namespace Sofco.Core.Models.ManagementReport
         public int AnalyticId { get; set; }
 
         public int DelegateId { get; set; }
+
+        public IList<CurrencyExchangeModel> Months { get; set; }
     }
 
     public class BudgetItem

@@ -37,6 +37,24 @@
                                 <dt class="m-b-xs"><i class="fa fa-wrench"></i> Gerente </dt>
                                 <dd class="text-ellipsis"> {{ model?.manager }}</dd>
                             </dl>
+
+                            <dt class="m-b-xs" *ngIf="selectedExchanges && selectedExchanges.length > 0"><i class="fa fa-money"></i> Cotizaciones </dt>
+                            <dd  *ngIf="selectedExchanges && selectedExchanges.length > 0">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Moneda</th>
+                                            <th>Cotizacion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of selectedExchanges">
+                                            <td>{{ item.currencyDesc }}</td>
+                                            <td>{{ item.exchange | amountFormat }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </dd>
                         </div>
 
                         <div [ngClass]="model?.budgets && model?.budgets.length > 0 ? 'col-md-4' : 'col-md-6'">

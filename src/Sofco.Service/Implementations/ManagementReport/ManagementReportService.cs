@@ -173,7 +173,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             for (DateTime date = dates.Item1.Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
             {
-                var monthHeader = new MonthBillingHeaderItem();
+                var monthHeader = new MonthBillingHeaderItem(); 
                 monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                 monthHeader.Year = date.Year;
                 monthHeader.Month = date.Month;
@@ -185,6 +185,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 var currencyExchange = currencyExchanges.Where(x => x.Date.Month == date.Month && x.Date.Year == date.Year);
 
+                monthHeader.Exchanges = currencyExchange.Select(x => new CurrencyExchangeItemModel { CurrencyDesc = x.Currency.Text, Exchange = x.Exchange }).ToList();
+
                 if (billingMonth != null)
                 {
                     monthHeader.ValueEvalProp = billingMonth.EvalPropBillingValue;
@@ -192,7 +194,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthHeader.Closed = billingMonth.Closed;
                     monthHeader.EvalPropDifference = billingMonth.EvalPropDifference;
                     monthHeader.Comments = billingMonth.Comments;
-                    monthHeader.Exchanges = currencyExchange.Select(x => new CurrencyExchangeItemModel { CurrencyDesc = x.Currency.Text, Exchange = x.Exchange }).ToList();
 
                     if (billingMonth.BilledResources > 0)
                         monthHeader.ResourceQuantity = billingMonth.BilledResources;

@@ -5,6 +5,7 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
+using Sofco.Core.Models.Common;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
 using Sofco.Domain.Enums;
@@ -54,6 +55,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 return response;
             }
 
+            var dates = SetDates(managementReport.Analytic);
+
             try
             {
                 response.Data.StartDate = managementReport.Analytic.StartDateContract;
@@ -67,6 +70,23 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.ManamementReportEndDate = managementReport.EndDate;
                 response.Data.Sector = managementReport.Analytic.Sector.Text;
                 response.Data.Status = managementReport.Status;
+
+                response.Data.Months = new List<CurrencyExchangeModel>();
+
+                var currencyExchanges = unitOfWork.CurrencyExchangeRepository.Get(dates.Item1.Date, dates.Item2.Date);
+
+                for (DateTime date = dates.Item1.Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
+                {
+                    var currencyExchange = currencyExchanges.Where(x => x.Date.Month == date.Month && x.Date.Year == date.Year);
+
+                    response.Data.Months.Add(new CurrencyExchangeModel
+                    {
+                        Month = date.Month,
+                        Year = date.Year,
+                        Description = DatesHelper.GetDateDescription(date),
+                        Items = currencyExchange.Select(x => new CurrencyExchangeItemModel { CurrencyDesc = x.Currency.Text, Exchange = x.Exchange }).ToList(),
+                    });
+                }
 
                 if (managementReport.Budgets.Any())
                 {
