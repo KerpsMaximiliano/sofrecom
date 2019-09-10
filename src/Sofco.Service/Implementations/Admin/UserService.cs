@@ -356,7 +356,11 @@ namespace Sofco.Service.Implementations.Admin
                 }
             }
 
-            var allocationFirst = employee?.Allocations.FirstOrDefault();
+            var today = DateTime.UtcNow.Date;
+
+            if (today.Day > 1) today = today.AddDays(today.Day - (today.Day - 1));
+
+            var allocationFirst = employee?.Allocations.FirstOrDefault(x => x.StartDate.Date == today);
 
             if (allocationFirst != null)
             {
