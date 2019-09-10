@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { FormControl, Validators, FormGroup } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { GenericOptionService } from "app/services/admin/generic-option.service";
@@ -6,13 +6,16 @@ import { CustomerService } from "app/services/billing/customer.service";
 import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { FormsService } from "app/services/forms/forms.service";
 import { MessageService } from "app/services/common/message.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { JobSearchStatus } from "app/models/enums/jobSearchStatus";
 
 @Component({
     selector: 'job-search',
-    templateUrl: './job-search-add.html'
+    templateUrl: './job-search-edit.html',
+    styleUrls: ['job-search-edit.scss']
 })
-export class JobSearchComponent implements OnInit, OnDestroy {
+export class JobSearchEditComponent implements OnInit, OnDestroy {
 
     form: FormGroup = new FormGroup({
         comments: new FormControl('', [Validators.maxLength(3000)]),
@@ -26,6 +29,11 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         profiles: new FormControl(null),
         skills: new FormControl(null),
         seniorities: new FormControl(null),
+    });
+
+    dateModalForm: FormGroup = new FormGroup({
+        date: new FormControl(null, [Validators.required]),
+        comments: new FormControl(null, [Validators.maxLength(1000)]),
     });
 
     profileOptions: any[] = new Array();
@@ -44,38 +52,43 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     getSkilsSubscrip: Subscription;
     getSenioritySubscrip: Subscription;
     getRecruiterSubscrip: Subscription;
+    getSubscrip: Subscription;
+    changeStatusSubscrip: Subscription;
+
+    entityId: number;
+    status: number;
+    statusSelected: JobSearchStatus;
+
+    @ViewChild('dateModal') dateModal;
+    public dateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "dateModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(private genericOptionsService: GenericOptionService,
                 private jobSearchService: JobSearchService,
                 private messageService: MessageService,
+                private activateRoute: ActivatedRoute,
                 public formsService: FormsService,
-                private router: Router,
                 private customerService: CustomerService){
     }
 
     ngOnInit(): void {
-        this.messageService.showLoading();
+        this.getProfiles();
+        this.getSeniorities();
+        this.getSkills();
+        this.getReasons();
+        this.getCustomers();
+        this.getRecruiters();
+        this.getApplicants();
 
-        var promises = new Array();
-
-        var promise1 = new Promise((resolve, reject) => this.getProfiles(resolve));
-        var promise2 = new Promise((resolve, reject) => this.getSeniorities(resolve));
-        var promise3 = new Promise((resolve, reject) => this.getSkills(resolve));
-        var promise4 = new Promise((resolve, reject) => this.getReasons(resolve));
-        var promise5 = new Promise((resolve, reject) => this.getCustomers(resolve));
-        var promise6 = new Promise((resolve, reject) => this.getRecruiters(resolve));
-        var promise7 = new Promise((resolve, reject) => this.getApplicants(resolve));
-
-        promises.push(promise1);
-        promises.push(promise2);
-        promises.push(promise3);
-        promises.push(promise4);
-        promises.push(promise5);
-        promises.push(promise6);
-        promises.push(promise7);
-
-        Promise.all(promises).then(data => { 
-            this.messageService.closeLoading();
+        this.activateRoute.params.subscribe(routeParams => {
+            this.entityId = routeParams.id;
+            this.getData(routeParams.id);
         });
     }
 
@@ -88,66 +101,96 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         if (this.getSkilsSubscrip) this.getSkilsSubscrip.unsubscribe();
         if (this.getSenioritySubscrip) this.getSenioritySubscrip.unsubscribe();
         if (this.getRecruiterSubscrip) this.getRecruiterSubscrip.unsubscribe();
+        if (this.getSubscrip) this.getSubscrip.unsubscribe();
+        if (this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
     }
 
-    getApplicants(resolve){
+    getStatusDesc(){
+        switch(this.status){
+            case JobSearchStatus.Open: return "Abierta";
+            case JobSearchStatus.Reopen: return "Re-Abierta";
+            case JobSearchStatus.Suspended: return "Suspendida";
+            case JobSearchStatus.Close: return "Cerrada";
+            default: return "";
+        }
+    }
+
+    getData(id){
+        this.messageService.showLoading();
+
+        this.getSubscrip = this.jobSearchService.get(id).subscribe(response => {
+            this.messageService.closeLoading();
+
+            this.entityId = id;
+
+            this.form.controls.userId.setValue(response.data.userId);
+            this.form.controls.recruiterId.setValue(response.data.recruiterId);
+            this.form.controls.reasonCauseId.setValue(response.data.reasonCauseId);
+            this.form.controls.clientId.setValue(response.data.clientCrmId);
+            this.form.controls.profiles.setValue(response.data.profiles);
+            this.form.controls.skills.setValue(response.data.skills);
+            this.form.controls.seniorities.setValue(response.data.seniorities);
+            this.form.controls.quantity.setValue(response.data.quantity);
+            this.form.controls.timeHiring.setValue(response.data.timeHiring);
+            this.form.controls.maximunSalary.setValue(response.data.maximunSalary);
+            this.form.controls.comments.setValue(response.data.comments);
+
+            this.status = response.data.status;
+        }, 
+        error => this.messageService.closeLoading());
+    }
+
+    getApplicants(){
         this.getUsersSubscrip = this.jobSearchService.getApplicants().subscribe(response => {
-            resolve();
             this.applicantOptions = response.data;
         },
-        () => resolve());
+        () => {});
     }
 
-    getRecruiters(resolve){
+    getRecruiters(){
         this.getRecruiterSubscrip = this.jobSearchService.getRecruiters().subscribe(response => {
-            resolve();
             this.recruitersOptions = response.data;
         },
-        () => resolve());
+        () => {});
     }
 
-    getProfiles(resolve){
+    getProfiles(){
         this.genericOptionsService.controller = "profile";
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
-            resolve();
             this.profileOptions = response.data;
         },
-        () => resolve());
+        () => {});
     }
 
-    getSeniorities(resolve){
+    getSeniorities(){
         this.genericOptionsService.controller = "seniority";
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
-            resolve();
             this.seniorityOptions = response.data;
         },
-        () => resolve());
+        () => {});
     }
 
-    getSkills(resolve){
+    getSkills(){
         this.genericOptionsService.controller = "skill";
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
-            resolve();
             this.skillOptions = response.data;
         },
-        () => resolve());
+        () => {});
     }
 
-    getReasons(resolve){
+    getReasons(){
         this.genericOptionsService.controller = "reasonCause";
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
-            resolve();
             this.reasonOptions = response.data;
         },
-        () => resolve());
+        () => {});
     }
 
-    getCustomers(resolve) {
+    getCustomers() {
         this.getClientsSubscrip = this.customerService.getOptions().subscribe(d => {
-            resolve();
             this.customerOptions = d.data;
         },
-        () => resolve());
+        () => {});
     }
 
     add(){
@@ -170,12 +213,57 @@ export class JobSearchComponent implements OnInit, OnDestroy {
 
         this.messageService.showLoading();
 
-        this.addSubscrip = this.jobSearchService.post(json).subscribe(response => {
+        this.addSubscrip = this.jobSearchService.put(this.entityId, json).subscribe(response => {
             this.messageService.closeLoading();
-            this.router.navigate(['recruitment/jobSearch/']);
         }, 
         error => {
             this.messageService.closeLoading();
+        });
+    }
+
+    canClose(){
+        return this.status == JobSearchStatus.Open || this.status == JobSearchStatus.Reopen;
+    }
+
+    canReopen(){
+        return this.status == JobSearchStatus.Suspended;
+    }
+
+    canSuspend(){
+        return this.status == JobSearchStatus.Open;
+    }
+
+    close(){
+        this.statusSelected = JobSearchStatus.Close;
+        this.dateModal.show();
+    }
+
+    reopen(){
+        this.statusSelected = JobSearchStatus.Reopen;
+        this.dateModal.show();
+    }
+
+    suspend(){
+        this.statusSelected = JobSearchStatus.Suspended;
+        this.dateModal.show();
+    }
+
+    changeStatus(){
+        var json = {
+            status: this.statusSelected,
+            date: this.dateModalForm.controls.date.value,
+            reason: this.dateModalForm.controls.comments.value
+        }
+
+        this.changeStatusSubscrip = this.jobSearchService.changeStatus(this.entityId, json).subscribe(response => {
+            this.dateModal.hide();
+            this.status = this.statusSelected;
+
+            this.dateModalForm.controls.date.setValue(null);
+            this.dateModalForm.controls.comments.setValue(null);
+        }, 
+        error => {
+            this.dateModal.resetButtons();
         });
     }
 }

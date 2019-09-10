@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2> Nueva Busqueda </h2>
+        <h2> Editar Busqueda </h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
@@ -9,15 +9,29 @@
                 Reclutamiento
             </li>
             <li class="active">
-                <strong> Nueva Busqueda </strong>
+                <strong> Editar Busqueda </strong>
             </li>
         </ol>
     </div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
+
+    <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="close()" *ngIf="canClose()"> Cerrar </button>
+    <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="reopen()" *ngIf="canReopen()"> Re-Abrir </button>
+    <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="suspend()" *ngIf="canSuspend()"> Suspender </button>
+
     <div class="ibox">
         <div class="ibox-content">
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label class="jobsearch-name">Busqueda #{{ entityId }}</label>
+                </div>
+                <div class="col-md-6">
+                    <label style="font-size: 20px" class="label label-success pull-right">Estado: {{ getStatusDesc() }}</label>
+                </div>
+            </div>
 
             <form [formGroup]="form">
                 <div class="row">
@@ -139,3 +153,29 @@
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="dateModalConfig" #dateModal (accept)="changeStatus()" [isSaveEnabled]="dateModalForm.valid">
+
+    <form [formGroup]="dateModalForm" *ngIf="dateModalForm">   
+
+        <div class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'date')">
+            <label class="control-label">Fecha</label>
+            <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="date">
+    
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(dateModalForm, 'date')">
+                <p *ngIf="formsService.hasError(dateModalForm, 'date', 'required')">La fecha es requerida</p>
+            </div>
+        </div>
+
+        <div *ngIf="statusSelected == 3" class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'comments')">
+            <label class="control-label">Motivo de cierre</label>
+            <textarea rows="6" class="form-control" formControlName="comments" maxlength="1000"></textarea>
+    
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(dateModalForm, 'comments')">
+                <p *ngIf="formsService.hasError(dateModalForm, 'comments', 'maxLength')">Los comentarios no pueden superar los 1000 caracteres</p>
+            </div>
+        </div>
+        
+    </form>
+
+</ng2-modal> 

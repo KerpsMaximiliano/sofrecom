@@ -875,6 +875,7 @@
         "reassingAllocation": "Asignación masiva de recursos",
         "doRelate": "Relacionar"
     }, 
+    "searchEmpty": "No se han encontrado resultados para la busqueda seleccionada",
     "SendPending": "Borrador",
     "PendingByManagementControl": "P. Revisión Control Gestión",
     "ManagementControlRejected": "Rechazado Control Gestión",

@@ -10,6 +10,10 @@ export class JobSearchService {
         this.baseUrl = this.service.UrlApi;
     }
 
+    get(id){
+        return this.http.get<any>(`${this.baseUrl}/jobSearch/${id}`);
+    }
+
     getApplicants(){
         return this.http.get<any>(`${this.baseUrl}/jobSearch/applicants`);
     }
@@ -20,5 +24,17 @@ export class JobSearchService {
 
     post(json){
         return this.http.post<any>(`${this.baseUrl}/jobSearch`, json);
+    }
+
+    put(id, json){
+        return this.http.put<any>(`${this.baseUrl}/jobSearch/${id}`, json);
+    }
+
+    changeStatus(id, json){
+        return this.http.put<any>(`${this.baseUrl}/jobSearch/${id}/status`, json);
+    }
+
+    search(json){
+        return this.http.post<any>(`${this.baseUrl}/jobSearch/search`, json);
     }
 }

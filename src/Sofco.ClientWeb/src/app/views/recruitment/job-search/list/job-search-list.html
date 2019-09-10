@@ -1,0 +1,171 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Busqueda </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                Reclutamiento
+            </li>
+            <li class="active">
+                <strong> Busqueda </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()" style="display: block">
+                        <span>{{'allocationManagement.resources.search' | translate }}</span>
+                        <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+                    </a>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Número</label>
+                                <input type="number" class="form-control" [(ngModel)]="id">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label"> Estado </label>
+                                <ng-select [items]="statusOptions" bindValue="id" bindLabel="text" [(ngModel)]="statusId"></ng-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label"> Cliente </label>
+                                <ng-select [items]="customerOptions" bindValue="id" bindLabel="text" [(ngModel)]="clientId"></ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label"> Conocimientos </label>
+                                <ng-select [multiple]="true" [closeOnSelect]="false" [items]="skillOptions" bindValue="id" bindLabel="text" [(ngModel)]="skills"></ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label"> Perfiles </label>
+                                <ng-select [multiple]="true" [closeOnSelect]="false" [items]="profileOptions" bindValue="id" bindLabel="text" [(ngModel)]="profiles"></ng-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label"> Solicitante </label>
+                                <ng-select [items]="applicantOptions" bindValue="id" bindLabel="text" [(ngModel)]="userId"></ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label"> Motivo </label>
+                                <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" [(ngModel)]="reasonCauseId"></ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label"> Selector </label>
+                                <ng-select [items]="recruitersOptions" bindValue="id" bindLabel="text" [(ngModel)]="recruiterId"></ng-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-success pull-left" (click)="goToNew()" *ngIf="canCreate()"> Nueva <i class="fa fa-plus"></i></button>
+
+                    <div class="text-right">
+                        <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                        <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox" *ngIf="data.length > 0"> 
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped dataTable" role="grid" id="jobSearchTable">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Fecha Creación</th>
+                            <th>Cliente</th>
+                            <th>Motivo</th>
+                            <th>Solicitante</th>
+                            <th>Conocimientos</th>
+                            <th>Perfil</th>
+                            <th>Seniority</th>
+                            <th>Cantidad</th>
+                            <th>Tiempo Contratación</th>
+                            <th>Sueldo Máximo</th>
+                            <th>Selector</th>
+                            <th>Fecha Reapertura</th>
+                            <th>Fecha Suspensión</th>
+                            <th>Fecha Cierre</th>
+                            <th>Comentarios</th>
+                            <th>Estado</th>
+                            <th>{{ 'ACTIONS.title' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data" class="pointer">
+                            <td># {{ item.id }}</td>
+                            <td>{{ item.creationDate | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ item.client }}</td>
+                            <td>{{ item.reason }}</td>
+                            <td>{{ item.user }}</td> 
+                            <td>{{ item.skills }}</td>
+                            <td>{{ item.profiles }}</td>
+                            <td>{{ item.seniorities }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.timeHiring }}</td>
+                            <td>{{ item.maxiumSalary | amountFormat }}</td>
+                            <td>{{ item.recruiter }}</td>
+
+                            <td>
+                                <span *ngIf="item.reopenDate">{{ item.reopenDate | date:'dd/MM/yyyy' }}</span>
+                            </td>
+                            <td>
+                                <span *ngIf="item.suspendedDate">{{ item.suspendedDate | date:'dd/MM/yyyy' }}</span>
+                            </td>
+                            <td>
+                                <span *ngIf="item.closeDate">{{ item.closeDate | date:'dd/MM/yyyy' }}</span>
+                            </td>
+
+                            <td class="column-lg text-ellipsis">{{ item.comments }}</td>
+                            <td>{{ getStatusDesc(item.status) }}</td>
+                        
+                            <td>
+                                <button class="btn btn-success btn-xs" (click)="goToDetail(item.id)"><i class="fa fa-edit"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>       
+            </div>
+        </div>
+    </div>
+    
+</div>

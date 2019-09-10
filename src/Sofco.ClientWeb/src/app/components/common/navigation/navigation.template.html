@@ -212,6 +212,9 @@
           <li [ngClass]="{active: activeRoute('reasonCause')}" *ngIf="menuService.hasFunctionality('RECRU', 'REASONCAUSE')"><a
             [routerLink]="['/recruitment/reasonCauses']">Motivos/Causas</a>
           </li>
+          <li [ngClass]="{active: activeRoute('jobSearch')}" *ngIf="menuService.hasFunctionality('RECRU', 'SEARCH-JOBSEARCH')"><a
+            [routerLink]="['/recruitment/jobSearch']">Busquedas</a>
+          </li>
         </ul>
       </li>
 

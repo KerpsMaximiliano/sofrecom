@@ -120,14 +120,26 @@
   <data name="AddSuccess" xml:space="preserve">
     <value>recruitment/jobSearch.addSuccess</value>
   </data>
+  <data name="CannotChangeStatus" xml:space="preserve">
+    <value>recruitment/jobSearch.cannotChangeStatus</value>
+  </data>
   <data name="ClientRequired" xml:space="preserve">
     <value>recruitment/jobSearch.clientRequired</value>
+  </data>
+  <data name="CreatedDateGreaterThanSuspendedDate" xml:space="preserve">
+    <value>recruitment/jobSearch.createdDateGreaterThanSuspendedDate</value>
+  </data>
+  <data name="DateRequired" xml:space="preserve">
+    <value>recruitment/jobSearch.dateRequired</value>
   </data>
   <data name="MaximunSalaryIsRequired" xml:space="preserve">
     <value>recruitment/jobSearch.maximunSalaryIsRequired</value>
   </data>
   <data name="ModelNull" xml:space="preserve">
     <value>recruitment/jobSearch.modelNull</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>recruitment/jobSearch.notFound</value>
   </data>
   <data name="QuantityRequired" xml:space="preserve">
     <value>recruitment/jobSearch.quantityRequired</value>
@@ -138,8 +150,17 @@
   <data name="SelectorRequired" xml:space="preserve">
     <value>recruitment/jobSearch.selectorRequired</value>
   </data>
+  <data name="StatusRequired" xml:space="preserve">
+    <value>recruitment/jobSearch.statusRequired</value>
+  </data>
+  <data name="SuspendedDateGreaterThanReopenDate" xml:space="preserve">
+    <value>recruitment/jobSearch.suspendedDateGreaterThanReopenDate</value>
+  </data>
   <data name="TimeHiringRequired" xml:space="preserve">
     <value>recruitment/jobSearch.timeHiringRequired</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>recruitment/jobSearch.updateSuccess</value>
   </data>
   <data name="UserRequired" xml:space="preserve">
     <value>recruitment/jobSearch.userRequired</value>

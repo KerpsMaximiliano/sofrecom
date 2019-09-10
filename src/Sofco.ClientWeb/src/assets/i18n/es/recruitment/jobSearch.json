@@ -7,5 +7,12 @@
     "reasonCauseRequired": "El motivo es requerido",
     "selectorRequired": "El selector es requerido",
     "timeHiringRequired": "El tiempo de contratación es requerido",
+    "notFound": "Busqueda no encontrada",
+    "updateSuccess": "La busqueda fue actualizada correctamente",
+    "cannotChangeStatus": "No se puede cambiar el estado",
+    "suspendedDateGreaterThanReopenDate": "La fecha de suspensión no puede ser mayor a la seleccionada",
+    "createdDateGreaterThanSuspendedDate": "La fecha de creacion no puede ser mayor a la seleccionada",
+    "dateRequired": "La fecha es requerida",
+    "statusRequired": "El estado es requerido",
     "userRequired": "El solicitante es requerido"
 }

@@ -8,6 +8,8 @@ import { SkillComponent } from "../admin/options/skill";
 import { ProfileComponent } from "../admin/options/profile";
 import { ReasonCauseComponent } from "../admin/options/reasonCause";
 import { JobSearchComponent } from "./job-search/add/job-search-add";
+import { JobSearchListComponent } from "./job-search/list/job-search-list";
+import { JobSearchEditComponent } from "./job-search/edit/job-search-edit";
 
 const RECRUITMENT_ROUTER: Routes = [
     {
@@ -27,7 +29,14 @@ const RECRUITMENT_ROUTER: Routes = [
 
     { path: "reasonCauses", component: ReasonCauseComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "REASONCAUSE" } },
 
-    { path: "jobSearch", component: JobSearchComponent, canActivate: [AuthGuard] },
+    {
+        path: "jobSearch",
+        children: [
+            { path: "add", component: JobSearchComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "ADD-JOBSEARCH" }},
+            { path: "", component: JobSearchListComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "SEARCH-JOBSEARCH" }},
+            { path: ":id", component: JobSearchEditComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "EDIT-JOBSEARCH" }},
+        ]
+    },
 ] 
 
 export const RecruitmentRouter = RouterModule.forChild(RECRUITMENT_ROUTER)
