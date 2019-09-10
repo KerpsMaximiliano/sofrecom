@@ -71,6 +71,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         real: true
     }
 
+    intAux: number = 0
+
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
     readonly typeResource: string = "Recursos"
@@ -345,7 +347,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     save(pEmployees, pProfiles, pFunded) {
         this.messageService.showLoading();
-        
+
         var model = {
             ManagementReportId: this.model.managementReportId,
             ManagerId: this.model.managerId,
@@ -514,7 +516,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     totalCost += employee.monthsCost[index].budget.value;
                     totalSalary += employee.monthsCost[index].budget.value;
                 }
-                
+
                 asignacion += employee.monthsCost[index].allocationPercentage
             })
 
@@ -613,9 +615,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     EditItemOnClose() {
     }
 
-    AccessEmployeeClass(monthCost) {
+    AccessEmployeeClass(monthCost, employee, index) {
 
         let cssClass;
+        let arrayClass = [' label-secondary', ' label-yellow']
+
         if (!this.canEdit) {
             cssClass = 'not-allowed'
         }
@@ -625,6 +629,20 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 cssClass += ' label-danger'
                 // cssClass = 'not-allowed label-danger'
             }
+        }
+
+        if (index > 0 && monthCost.hasAlocation) {
+
+            if (monthCost.budget.value != employee.monthsCost[index - 1].budget.value) {                
+                if (this.intAux > arrayClass.length - 1) {
+                    this.intAux = 0
+                }
+                else {
+                    this.intAux++
+                }
+            }
+
+            cssClass += arrayClass[this.intAux]
         }
 
         return cssClass;
@@ -675,13 +693,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     canDeleteResources(item) {
-        
+
         var canEdit = false;
         if (item.otherResource) {
             canEdit = true;
         }
         item.monthsCost.forEach(month => {
-            if (month.budget.value > 0 || month.real.value > 0 ) {
+            if (month.budget.value > 0 || month.real.value > 0) {
                 canEdit = false
                 return canEdit
             }
@@ -691,12 +709,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     deleteResources(item, index) {
-        
+
         this.fundedResources.splice(index, 1)
         this.otherResources.push(item)
-        
+
         this.save([], [], this.fundedResources)
-        
+
         this.otherResources.sort(function (a, b) {
             if (a.display > b.display) {
                 return 1;
