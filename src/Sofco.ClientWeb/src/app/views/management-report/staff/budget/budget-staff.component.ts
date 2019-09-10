@@ -211,7 +211,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 //     this.messageService.showError("budgetForRealRequired");
                 // }
                 // else {
-                    if(isCdg) { this.readOnly = false }
+                    this.readOnly = true
                     this.editItemModal.show();
                     return this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
                 // }
