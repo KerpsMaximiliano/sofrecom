@@ -106,7 +106,7 @@
                         let-i="index">
                         <td [ngClass]="{'first-col': (i == 0)}">
                             <label class="label" (click)="openEditItemModal(monthCost, employee, i)"
-                                *ngIf="monthCost.canViewSensibleData" [ngClass]="AccessEmployeeClass(monthCost)">
+                                *ngIf="monthCost.canViewSensibleData" [ngClass]="AccessEmployeeClass(monthCost, employee, i)">
                                 {{ monthCost.budget.value | amountFormat }}
                             </label>
                             <label class="label" *ngIf="!monthCost.canViewSensibleData"
