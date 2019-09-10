@@ -200,9 +200,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     seeCostDetailMonth() {
         var resources = this.detailCost.getResourcesByMonth(this.selectedMonth, this.selectedYear);
         var AnalyticId = this.detailCost.getIdAnalytic();
-
         var totals = this.billing.getTotals(this.selectedMonth + 1, this.selectedYear);
-
+        
         var data = {
             isCdg: this.menuService.userIsCdg,
             resources, totals, AnalyticId,
@@ -284,6 +283,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     updateMarginTracking(){
         this.billing.init(this.serviceId);
+        this.detailCost.getCost()
     }
 
     getCostsData(costsModel){
