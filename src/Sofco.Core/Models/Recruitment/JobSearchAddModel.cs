@@ -36,6 +36,35 @@ namespace Sofco.Core.Models.Recruitment
         {
             var domain = new JobSearch();
 
+            SetData(domain);
+
+            domain.Status = JobSearchStatus.Open;
+
+            return domain;
+        }
+
+        public void UpdateDomain(JobSearch domain)
+        {
+            SetData(domain);
+
+            if (Profiles == null || !Profiles.Any())
+            {
+                domain.JobSearchProfiles = new List<JobSearchProfile>();
+            }
+
+            if (Seniorities == null || !Seniorities.Any())
+            {
+                domain.JobSearchSeniorities = new List<JobSearchSeniority>();
+            }
+
+            if (Skills == null || !Skills.Any())
+            {
+                domain.JobSearchSkills = new List<JobSearchSkill>();
+            }
+        }
+
+        private void SetData(JobSearch domain)
+        {
             domain.ClientId = ClientId;
             domain.ReasonCauseId = ReasonCauseId.GetValueOrDefault();
             domain.UserId = UserId.GetValueOrDefault();
@@ -44,8 +73,6 @@ namespace Sofco.Core.Models.Recruitment
             domain.Quantity = Quantity.GetValueOrDefault();
             domain.TimeHiring = TimeHiring;
             domain.RecruiterId = RecruiterId.GetValueOrDefault();
-
-            domain.Status = JobSearchStatus.Open;
 
             if (Profiles != null && Profiles.Any())
             {
@@ -61,8 +88,6 @@ namespace Sofco.Core.Models.Recruitment
             {
                 domain.JobSearchSkills = Skills.Select(x => new JobSearchSkill { SkillId = x }).ToList();
             }
-
-            return domain;
         }
     }
 }

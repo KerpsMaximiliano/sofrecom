@@ -6,6 +6,7 @@ import { CustomerService } from "app/services/billing/customer.service";
 import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { FormsService } from "app/services/forms/forms.service";
 import { MessageService } from "app/services/common/message.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'job-search',
@@ -48,6 +49,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
                 private jobSearchService: JobSearchService,
                 private messageService: MessageService,
                 public formsService: FormsService,
+                private router: Router,
                 private customerService: CustomerService){
     }
 
@@ -170,6 +172,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
 
         this.addSubscrip = this.jobSearchService.post(json).subscribe(response => {
             this.messageService.closeLoading();
+            this.router.navigate(['recruitment/jobSearch/']);
         }, 
         error => {
             this.messageService.closeLoading();

@@ -23,6 +23,14 @@ namespace Sofco.WebApi.Controllers.Recruitment
             return this.CreateResponse(response);
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] JobSearchAddModel model)
+        {
+            var response = jobSearchService.Update(id, model);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("search")]
         public IActionResult Search([FromBody] JobSearchParameter parameter)
         {
@@ -51,6 +59,14 @@ namespace Sofco.WebApi.Controllers.Recruitment
         public IActionResult GetRecruiters()
         {
             var response = jobSearchService.GetRecruiters();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("{id}/status")]
+        public IActionResult ChangeStatus(int id, [FromBody] JobSearchChangeStatusModel parameter)
+        {
+            var response = jobSearchService.ChangeStatus(id, parameter);
 
             return this.CreateResponse(response);
         }

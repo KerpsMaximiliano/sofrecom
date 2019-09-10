@@ -70,11 +70,38 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.cannotChangeStatus.
+        /// </summary>
+        public static string CannotChangeStatus {
+            get {
+                return ResourceManager.GetString("CannotChangeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearch.clientRequired.
         /// </summary>
         public static string ClientRequired {
             get {
                 return ResourceManager.GetString("ClientRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.createdDateGreaterThanSuspendedDate.
+        /// </summary>
+        public static string CreatedDateGreaterThanSuspendedDate {
+            get {
+                return ResourceManager.GetString("CreatedDateGreaterThanSuspendedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.dateRequired.
+        /// </summary>
+        public static string DateRequired {
+            get {
+                return ResourceManager.GetString("DateRequired", resourceCulture);
             }
         }
         
@@ -133,11 +160,38 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.statusRequired.
+        /// </summary>
+        public static string StatusRequired {
+            get {
+                return ResourceManager.GetString("StatusRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.suspendedDateGreaterThanReopenDate.
+        /// </summary>
+        public static string SuspendedDateGreaterThanReopenDate {
+            get {
+                return ResourceManager.GetString("SuspendedDateGreaterThanReopenDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearch.timeHiringRequired.
         /// </summary>
         public static string TimeHiringRequired {
             get {
                 return ResourceManager.GetString("TimeHiringRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
         

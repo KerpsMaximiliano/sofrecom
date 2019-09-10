@@ -30,6 +30,10 @@ export class JobSearchService {
         return this.http.put<any>(`${this.baseUrl}/jobSearch/${id}`, json);
     }
 
+    changeStatus(id, json){
+        return this.http.put<any>(`${this.baseUrl}/jobSearch/${id}/status`, json);
+    }
+
     search(json){
         return this.http.post<any>(`${this.baseUrl}/jobSearch/search`, json);
     }

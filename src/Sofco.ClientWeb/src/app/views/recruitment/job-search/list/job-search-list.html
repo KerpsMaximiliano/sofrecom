@@ -155,7 +155,7 @@
                                 <span *ngIf="item.closeDate">{{ item.closeDate | date:'dd/MM/yyyy' }}</span>
                             </td>
 
-                            <td>{{ item.comments }}</td>
+                            <td class="column-lg text-ellipsis">{{ item.comments }}</td>
                             <td>{{ getStatusDesc(item.status) }}</td>
                         
                             <td>

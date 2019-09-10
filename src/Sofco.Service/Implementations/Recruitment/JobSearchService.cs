@@ -70,6 +70,156 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
+        public Response Update(int id, JobSearchAddModel model)
+        {
+            var response = new Response();
+
+            if (model == null)
+            {
+                response.AddError(Resources.Recruitment.JobSearch.ModelNull);
+                return response;
+            }
+
+            var jobsearch = unitOfWork.JobSearchRepository.GetDetail(id);
+
+            if (jobsearch == null)
+            {
+                response.AddError(Resources.Recruitment.JobSearch.NotFound);
+                return response;
+            }
+
+            ValidateClient(model, response);
+            ValidateMaximunSalary(model, response);
+            ValidateQuantity(model, response);
+            ValidateReasonCause(model, response);
+            ValidateUser(model, response);
+            ValidateSelector(model, response);
+            ValidateTimeHiring(model, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                model.UpdateDomain(jobsearch);
+
+                unitOfWork.JobSearchRepository.Update(jobsearch);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Recruitment.JobSearch.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response ChangeStatus(int id, JobSearchChangeStatusModel parameter)
+        {
+            var response = new Response();
+
+            if (!parameter.Date.HasValue) response.AddError(Resources.Recruitment.JobSearch.DateRequired);
+
+            if(!parameter.Status.HasValue) response.AddError(Resources.Recruitment.JobSearch.StatusRequired);
+
+            if (response.HasErrors()) return response;
+
+            var jobsearch = unitOfWork.JobSearchRepository.Get(id);
+
+            if (jobsearch == null)
+            {
+                response.AddError(Resources.Recruitment.JobSearch.NotFound);
+                return response;
+            }
+
+            if (parameter.Status == JobSearchStatus.Reopen)
+            {
+                if (jobsearch.Status != JobSearchStatus.Suspended)
+                {
+                    response.AddError(Resources.Recruitment.JobSearch.CannotChangeStatus);
+                }
+                else
+                {
+                    if (jobsearch.SuspendedDate.GetValueOrDefault().Date > parameter.Date.GetValueOrDefault())
+                    {
+                        response.AddError(Resources.Recruitment.JobSearch.SuspendedDateGreaterThanReopenDate);
+                    }
+                    else
+                    {
+                        jobsearch.ReopenDate = parameter.Date.GetValueOrDefault();
+                    }
+                }
+            }
+
+            if (parameter.Status == JobSearchStatus.Suspended)
+            {
+                if (jobsearch.Status != JobSearchStatus.Open)
+                {
+                    response.AddError(Resources.Recruitment.JobSearch.CannotChangeStatus);
+                }
+                else
+                {
+                    if (jobsearch.CreatedDate.Date > parameter.Date.GetValueOrDefault())
+                    {
+                        response.AddError(Resources.Recruitment.JobSearch.CreatedDateGreaterThanSuspendedDate);
+                    }
+                    else
+                    {
+                        jobsearch.SuspendedDate = parameter.Date.GetValueOrDefault();
+                    }
+                }
+            }
+
+            if (parameter.Status == JobSearchStatus.Close)
+            {
+                if (jobsearch.Status == JobSearchStatus.Suspended)
+                {
+                    response.AddError(Resources.Recruitment.JobSearch.CannotChangeStatus);
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(parameter.Reason))
+                    {
+                        response.AddError(Resources.Recruitment.JobSearch.ReasonCauseRequired);
+                    }
+                    else
+                    {
+                        DateTime dateToCompare = jobsearch.ReopenDate ?? jobsearch.CreatedDate;
+
+                        if (dateToCompare.Date > parameter.Date.GetValueOrDefault())
+                        {
+                            response.AddError(Resources.Recruitment.JobSearch.CreatedDateGreaterThanSuspendedDate);
+                        }
+                        else
+                        {
+                            jobsearch.CloseDate = parameter.Date.GetValueOrDefault();
+                            jobsearch.ReasonComments = parameter.Reason;
+                        }
+                    }
+                }
+            }
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                jobsearch.Status = parameter.Status.GetValueOrDefault();
+                unitOfWork.JobSearchRepository.Update(jobsearch);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Recruitment.JobSearch.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         public Response<IList<OptionModel>> GetApplicants()
         {
             var response = new Response<IList<OptionModel>> { Data = new List<OptionModel>() };

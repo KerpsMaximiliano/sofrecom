@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 
 namespace Sofco.Core.Models.Recruitment
@@ -15,6 +16,7 @@ namespace Sofco.Core.Models.Recruitment
             TimeHiring = jobsearch.TimeHiring;
             MaximunSalary = jobsearch.MaximunSalary;
             Comments = jobsearch.Comments;
+            Status = jobsearch.Status;
 
             if (jobsearch.Client != null) ClientCrmId = jobsearch.Client.CrmId;
 
@@ -27,6 +29,8 @@ namespace Sofco.Core.Models.Recruitment
             if (jobsearch.JobSearchSkills != null && jobsearch.JobSearchSkills.Any())
                 Skills = jobsearch.JobSearchSkills.Select(x => x.SkillId).ToList();
         }
+
+        public JobSearchStatus Status { get; set; }
 
         public int UserId { get; set; }
 

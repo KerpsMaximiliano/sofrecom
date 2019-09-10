@@ -25,6 +25,7 @@ import { DigitModule } from 'app/components/digit-limit/digit-limit.directive';
 import { JobSearchListComponent } from './job-search/list/job-search-list';
 import { AmountFormatModule } from 'app/pipes/amount-format.module';
 import { JobSearchEditComponent } from './job-search/edit/job-search-edit';
+import { BsDatepickerModule } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { JobSearchEditComponent } from './job-search/edit/job-search-edit';
     DigitModule,
     NgSelectModule,  
     DecimalFormatModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BsDatepickerModule
   ],
 
   providers: [GenericOptionService, JobSearchService, FormsService, CustomerService],

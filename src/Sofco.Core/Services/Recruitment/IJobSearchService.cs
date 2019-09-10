@@ -12,5 +12,7 @@ namespace Sofco.Core.Services.Recruitment
         Response<IList<OptionModel>> GetRecruiters();
         Response<IList<JobSearchResultModel>> Search(JobSearchParameter parameter);
         Response<JobSearchModel> Get(int id);
+        Response Update(int id, JobSearchAddModel model);
+        Response ChangeStatus(int id, JobSearchChangeStatusModel parameter);
     }
 }

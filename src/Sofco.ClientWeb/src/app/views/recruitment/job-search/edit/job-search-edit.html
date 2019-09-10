@@ -1,142 +1,181 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-12">
-            <h2> Editar Busqueda </h2>
-            <ol class="breadcrumb">
-                <li>
-                    <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
-                </li>
-                <li>
-                    Reclutamiento
-                </li>
-                <li class="active">
-                    <strong> Editar Busqueda </strong>
-                </li>
-            </ol>
+    <div class="col-lg-12">
+        <h2> Editar Busqueda </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                Reclutamiento
+            </li>
+            <li class="active">
+                <strong> Editar Busqueda </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="close()" *ngIf="canClose()"> Cerrar </button>
+    <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="reopen()" *ngIf="canReopen()"> Re-Abrir </button>
+    <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="suspend()" *ngIf="canSuspend()"> Suspender </button>
+
+    <div class="ibox">
+        <div class="ibox-content">
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <label class="jobsearch-name">Busqueda #{{ entityId }}</label>
+                </div>
+                <div class="col-md-6">
+                    <label style="font-size: 20px" class="label label-success pull-right">Estado: {{ getStatusDesc() }}</label>
+                </div>
+            </div>
+
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'userId')">
+                            <label class="control-label"> Solicitante </label>
+                            <ng-select [items]="applicantOptions" bindValue="id" bindLabel="text" formControlName="userId"></ng-select>
+            
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'userId')">
+                                <p *ngIf="formsService.hasError(form, 'userId', 'required')">El solicitante es requerido</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonCauseId')">
+                            <label class="control-label"> Motivo </label>
+                            <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonCauseId"></ng-select>
+            
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonCauseId')">
+                                <p *ngIf="formsService.hasError(form, 'reasonCauseId', 'required')">El motivo es requerido</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'clientId')">
+                            <label class="control-label"> Cliente </label>
+                            <ng-select [items]="customerOptions" bindValue="id" bindLabel="text" formControlName="clientId"></ng-select>
+            
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'clientId')">
+                                <p *ngIf="formsService.hasError(form, 'clientId', 'required')">El cliente es requerido</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label"> Conocimientos </label>
+                            <ng-select [multiple]="true" [closeOnSelect]="false" [items]="skillOptions" bindValue="id" bindLabel="text" formControlName="skills"></ng-select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label"> Perfiles </label>
+                            <ng-select [multiple]="true" [closeOnSelect]="false" [items]="profileOptions" bindValue="id" bindLabel="text" formControlName="profiles"></ng-select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label"> Seniority </label>
+                            <ng-select [multiple]="true" [closeOnSelect]="false" [items]="seniorityOptions" bindValue="id" bindLabel="text" formControlName="seniorities"></ng-select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'quantity')">
+                            <label class="control-label">Cantidad</label>
+                            <input type="number" [digitLimit]="3" class="form-control" formControlName="quantity">
+                
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'quantity')">
+                                <p *ngIf="formsService.hasError(form, 'quantity', 'required')">La cantidad es requerida</p>
+                                <p *ngIf="formsService.hasError(form, 'quantity', 'min')">La cantidad no puede ser menor a 1</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'timeHiring')">
+                            <label class="control-label">Tiempo contratación</label>
+                            <input type="text" maxlength="100" class="form-control" formControlName="timeHiring">
+                
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'timeHiring')">
+                                <p *ngIf="formsService.hasError(form, 'timeHiring', 'maxLength')">No puede contener mas de 100 caracteres</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'maximunSalary')">
+                            <label class="control-label">Sueldo máximo</label>
+                            <input type="text" decimalFormat="9" class="form-control" formControlName="maximunSalary">
+                
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'maximunSalary')">
+                                <p *ngIf="formsService.hasError(form, 'maximunSalary', 'required')">El sueldo máximo es requerido</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'recruiterId')">
+                            <label class="control-label"> Selector </label>
+                            <ng-select [items]="recruitersOptions" bindValue="id" bindLabel="text" formControlName="recruiterId"></ng-select>
+            
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'recruiterId')">
+                                <p *ngIf="formsService.hasError(form, 'recruiterId', 'required')">El selector es requerido</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'comments')">
+                    <label class="control-label">Comentarios</label>
+                    <textarea rows="6" class="form-control" formControlName="comments" maxlength="3000"></textarea>
+            
+                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'description')">
+                        <p *ngIf="formsService.hasError(form, 'comments', 'maxLength')">Los comentarios no pueden superar los 3000 caracteres</p>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="ibox-footer text-center">
+            <button [disabled]="!form.valid" (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
         </div>
     </div>
+</div>
+
+<ng2-modal [config]="dateModalConfig" #dateModal (accept)="changeStatus()" [isSaveEnabled]="dateModalForm.valid">
+
+    <form [formGroup]="dateModalForm" *ngIf="dateModalForm">   
+
+        <div class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'date')">
+            <label class="control-label">Fecha</label>
+            <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="date">
     
-    <div class="wrapper wrapper-content animated fadeInRight">
-        <div class="ibox">
-            <div class="ibox-content">
-    
-                <form [formGroup]="form">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'userId')">
-                                <label class="control-label"> Solicitante </label>
-                                <ng-select [items]="applicantOptions" bindValue="id" bindLabel="text" formControlName="userId"></ng-select>
-                
-                                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'userId')">
-                                    <p *ngIf="formsService.hasError(form, 'userId', 'required')">El solicitante es requerido</p>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <div class="col-md-4">
-                            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonCauseId')">
-                                <label class="control-label"> Motivo </label>
-                                <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonCauseId"></ng-select>
-                
-                                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonCauseId')">
-                                    <p *ngIf="formsService.hasError(form, 'reasonCauseId', 'required')">El motivo es requerido</p>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <div class="col-md-4">
-                            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'clientId')">
-                                <label class="control-label"> Cliente </label>
-                                <ng-select [items]="customerOptions" bindValue="id" bindLabel="text" formControlName="clientId"></ng-select>
-                
-                                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'clientId')">
-                                    <p *ngIf="formsService.hasError(form, 'clientId', 'required')">El cliente es requerido</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label"> Conocimientos </label>
-                                <ng-select [multiple]="true" [closeOnSelect]="false" [items]="skillOptions" bindValue="id" bindLabel="text" formControlName="skills"></ng-select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label"> Perfiles </label>
-                                <ng-select [multiple]="true" [closeOnSelect]="false" [items]="profileOptions" bindValue="id" bindLabel="text" formControlName="profiles"></ng-select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label"> Seniority </label>
-                                <ng-select [multiple]="true" [closeOnSelect]="false" [items]="seniorityOptions" bindValue="id" bindLabel="text" formControlName="seniorities"></ng-select>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'quantity')">
-                                <label class="control-label">Cantidad</label>
-                                <input type="number" [digitLimit]="3" class="form-control" formControlName="quantity">
-                    
-                                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'quantity')">
-                                    <p *ngIf="formsService.hasError(form, 'quantity', 'required')">La cantidad es requerida</p>
-                                    <p *ngIf="formsService.hasError(form, 'quantity', 'min')">La cantidad no puede ser menor a 1</p>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <div class="col-md-3">
-                            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'timeHiring')">
-                                <label class="control-label">Tiempo contratación</label>
-                                <input type="text" maxlength="100" class="form-control" formControlName="timeHiring">
-                    
-                                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'timeHiring')">
-                                    <p *ngIf="formsService.hasError(form, 'timeHiring', 'maxLength')">No puede contener mas de 100 caracteres</p>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <div class="col-md-3">
-                            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'maximunSalary')">
-                                <label class="control-label">Sueldo máximo</label>
-                                <input type="text" decimalFormat="9" class="form-control" formControlName="maximunSalary">
-                    
-                                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'maximunSalary')">
-                                    <p *ngIf="formsService.hasError(form, 'maximunSalary', 'required')">El sueldo máximo es requerido</p>
-                                </div>
-                            </div>
-                        </div>
-    
-                        <div class="col-md-4">
-                            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'recruiterId')">
-                                <label class="control-label"> Selector </label>
-                                <ng-select [items]="recruitersOptions" bindValue="id" bindLabel="text" formControlName="recruiterId"></ng-select>
-                
-                                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'recruiterId')">
-                                    <p *ngIf="formsService.hasError(form, 'recruiterId', 'required')">El selector es requerido</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'comments')">
-                        <label class="control-label">Comentarios</label>
-                        <textarea rows="6" class="form-control" formControlName="comments" maxlength="3000"></textarea>
-                
-                        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'description')">
-                            <p *ngIf="formsService.hasError(form, 'comments', 'maxLength')">Los comentarios no pueden superar los 3000 caracteres</p>
-                        </div>
-                    </div>
-                </form>
-    
-            </div>
-            <div class="ibox-footer text-center">
-                <button [disabled]="!form.valid" (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(dateModalForm, 'date')">
+                <p *ngIf="formsService.hasError(dateModalForm, 'date', 'required')">La fecha es requerida</p>
             </div>
         </div>
-    </div>
+
+        <div *ngIf="statusSelected == 3" class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'comments')">
+            <label class="control-label">Motivo de cierre</label>
+            <textarea rows="6" class="form-control" formControlName="comments" maxlength="1000"></textarea>
     
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(dateModalForm, 'comments')">
+                <p *ngIf="formsService.hasError(dateModalForm, 'comments', 'maxLength')">Los comentarios no pueden superar los 1000 caracteres</p>
+            </div>
+        </div>
+        
+    </form>
+
+</ng2-modal> 

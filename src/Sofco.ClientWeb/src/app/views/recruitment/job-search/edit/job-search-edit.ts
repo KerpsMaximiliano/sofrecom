@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { FormControl, Validators, FormGroup } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { GenericOptionService } from "app/services/admin/generic-option.service";
@@ -7,10 +7,13 @@ import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { FormsService } from "app/services/forms/forms.service";
 import { MessageService } from "app/services/common/message.service";
 import { ActivatedRoute } from "@angular/router";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { JobSearchStatus } from "app/models/enums/jobSearchStatus";
 
 @Component({
     selector: 'job-search',
-    templateUrl: './job-search-edit.html'
+    templateUrl: './job-search-edit.html',
+    styleUrls: ['job-search-edit.scss']
 })
 export class JobSearchEditComponent implements OnInit, OnDestroy {
 
@@ -26,6 +29,11 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         profiles: new FormControl(null),
         skills: new FormControl(null),
         seniorities: new FormControl(null),
+    });
+
+    dateModalForm: FormGroup = new FormGroup({
+        date: new FormControl(null, [Validators.required]),
+        comments: new FormControl(null, [Validators.maxLength(1000)]),
     });
 
     profileOptions: any[] = new Array();
@@ -45,8 +53,21 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     getSenioritySubscrip: Subscription;
     getRecruiterSubscrip: Subscription;
     getSubscrip: Subscription;
+    changeStatusSubscrip: Subscription;
 
     entityId: number;
+    status: number;
+    statusSelected: JobSearchStatus;
+
+    @ViewChild('dateModal') dateModal;
+    public dateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "dateModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(private genericOptionsService: GenericOptionService,
                 private jobSearchService: JobSearchService,
@@ -81,6 +102,17 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         if (this.getSenioritySubscrip) this.getSenioritySubscrip.unsubscribe();
         if (this.getRecruiterSubscrip) this.getRecruiterSubscrip.unsubscribe();
         if (this.getSubscrip) this.getSubscrip.unsubscribe();
+        if (this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
+    }
+
+    getStatusDesc(){
+        switch(this.status){
+            case JobSearchStatus.Open: return "Abierta";
+            case JobSearchStatus.Reopen: return "Re-Abierta";
+            case JobSearchStatus.Suspended: return "Suspendida";
+            case JobSearchStatus.Close: return "Cerrada";
+            default: return "";
+        }
     }
 
     getData(id){
@@ -102,6 +134,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.form.controls.timeHiring.setValue(response.data.timeHiring);
             this.form.controls.maximunSalary.setValue(response.data.maximunSalary);
             this.form.controls.comments.setValue(response.data.comments);
+
+            this.status = response.data.status;
         }, 
         error => this.messageService.closeLoading());
     }
@@ -184,6 +218,52 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         }, 
         error => {
             this.messageService.closeLoading();
+        });
+    }
+
+    canClose(){
+        return this.status == JobSearchStatus.Open || this.status == JobSearchStatus.Reopen;
+    }
+
+    canReopen(){
+        return this.status == JobSearchStatus.Suspended;
+    }
+
+    canSuspend(){
+        return this.status == JobSearchStatus.Open;
+    }
+
+    close(){
+        this.statusSelected = JobSearchStatus.Close;
+        this.dateModal.show();
+    }
+
+    reopen(){
+        this.statusSelected = JobSearchStatus.Reopen;
+        this.dateModal.show();
+    }
+
+    suspend(){
+        this.statusSelected = JobSearchStatus.Suspended;
+        this.dateModal.show();
+    }
+
+    changeStatus(){
+        var json = {
+            status: this.statusSelected,
+            date: this.dateModalForm.controls.date.value,
+            reason: this.dateModalForm.controls.comments.value
+        }
+
+        this.changeStatusSubscrip = this.jobSearchService.changeStatus(this.entityId, json).subscribe(response => {
+            this.dateModal.hide();
+            this.status = this.statusSelected;
+
+            this.dateModalForm.controls.date.setValue(null);
+            this.dateModalForm.controls.comments.setValue(null);
+        }, 
+        error => {
+            this.dateModal.resetButtons();
         });
     }
 }
