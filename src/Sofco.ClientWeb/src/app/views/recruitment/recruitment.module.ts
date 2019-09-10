@@ -22,6 +22,8 @@ import { FormsService } from 'app/services/forms/forms.service';
 import { CustomerService } from 'app/services/billing/customer.service';
 import { DecimalFormatModule } from 'app/components/decimalFormat/decimal-format.directive';
 import { DigitModule } from 'app/components/digit-limit/digit-limit.directive';
+import { JobSearchListComponent } from './job-search/list/job-search-list';
+import { AmountFormatModule } from 'app/pipes/amount-format.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { DigitModule } from 'app/components/digit-limit/digit-limit.directive';
     ProfileComponent, 
     SeniorityComponent, 
     ReasonCauseComponent,
-    JobSearchComponent
+    JobSearchComponent,
+    JobSearchListComponent
   ],
 
   imports: [
@@ -40,6 +43,7 @@ import { DigitModule } from 'app/components/digit-limit/digit-limit.directive';
     RouterModule, 
     RecruitmentRouter, 
     FormsModule, 
+    AmountFormatModule,
     ICheckModule, 
     Ng2ModalModule, 
     TranslateModule, 

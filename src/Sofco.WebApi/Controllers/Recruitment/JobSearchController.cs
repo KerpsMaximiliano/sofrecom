@@ -23,6 +23,22 @@ namespace Sofco.WebApi.Controllers.Recruitment
             return this.CreateResponse(response);
         }
 
+        [HttpPost("search")]
+        public IActionResult Search([FromBody] JobSearchParameter parameter)
+        {
+            var response = jobSearchService.Search(parameter);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var response = jobSearchService.Get(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("applicants")]
         public IActionResult GetApplicants()
         {

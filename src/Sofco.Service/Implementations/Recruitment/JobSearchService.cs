@@ -9,6 +9,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.Common;
 using Sofco.Core.Models.Recruitment;
 using Sofco.Core.Services.Recruitment;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Utils;
 
@@ -105,6 +106,39 @@ namespace Sofco.Service.Implementations.Recruitment
             var recruiters = unitOfWork.UserRepository.GetByGroup(emailConfig.RecruitersCode);
 
             response.Data = recruiters.Select(x => new OptionModel { Id = x.Id, Text = x.Name }).ToList();
+
+            return response;
+        }
+
+        public Response<IList<JobSearchResultModel>> Search(JobSearchParameter parameter)
+        {
+            var response = new Response<IList<JobSearchResultModel>> { Data = new List<JobSearchResultModel>() };
+
+            if (parameter.Status == null || !parameter.Status.Any())
+            {
+                parameter.Status = new List<JobSearchStatus>();
+
+                parameter.Status.Add(JobSearchStatus.Open);
+                parameter.Status.Add(JobSearchStatus.Close);
+                parameter.Status.Add(JobSearchStatus.Reopen);
+                parameter.Status.Add(JobSearchStatus.Suspended);
+            }
+
+            var list = unitOfWork.JobSearchRepository.Search(parameter);
+
+            if (list.Any())
+            {
+                response.Data = list.Select(x => new JobSearchResultModel(x)).ToList();
+            }
+
+            return response;
+        }
+
+        public Response<JobSearchModel> Get(int id)
+        {
+            var response = new Response<JobSearchModel>();
+
+
 
             return response;
         }
