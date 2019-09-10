@@ -453,6 +453,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     }
 
     getTotals(month, year) {
+        
         month--;
         var totals = {
             totalProvisioned: 0,
@@ -471,7 +472,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 }
 
                 if (value.originalValuePesos) {
-                    totals.totalProvisioned += value.originalValuePesos;
+                    totals.totalProvisioned += value.valuePesos;
                 }
             }
         });

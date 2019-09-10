@@ -221,6 +221,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.BudgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget().Select(x => new BudgetTypeItem(x)).ToList();
                 response.Data.AllSubcategories = this.FillAllSubcategories();
                 response.Data.CostCategories = this.FillCategoriesByMonth(response.Data.MonthsHeader, costDetails);
+                response.Data.Status = managementReport.Status;
 
                 return response;
             }

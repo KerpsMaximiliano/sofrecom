@@ -11,7 +11,7 @@ import { AnalyticStatus } from "app/models/enums/analyticStatus";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 import { I18nService } from "app/services/common/i18n.service";
 import { UserInfoService } from "app/services/common/user-info.service";
-
+declare var moment: any;
 
 @Component({
     selector: 'management-report-detail',
@@ -200,9 +200,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     seeCostDetailMonth() {
         var resources = this.detailCost.getResourcesByMonth(this.selectedMonth, this.selectedYear);
         var AnalyticId = this.detailCost.getIdAnalytic();
-
         var totals = this.billing.getTotals(this.selectedMonth + 1, this.selectedYear);
-
+        
         var data = {
             isCdg: this.menuService.userIsCdg,
             resources, totals, AnalyticId,
@@ -284,6 +283,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     updateMarginTracking(){
         this.billing.init(this.serviceId);
+        this.detailCost.getCost()
     }
 
     getCostsData(costsModel){
@@ -303,9 +303,12 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     setStartDate(reportStartDate, reportEndDate){
         
-        const dateReportStart = new Date(new Date(reportStartDate).getFullYear(), new Date(reportStartDate).getMonth(), 1)
-        const dateReportEnd = new Date(new Date(reportEndDate).getFullYear(), new Date(reportEndDate).getMonth(), 1)
-
+        //const dateReportStart = new Date(new Date(reportStartDate).getFullYear(), new Date(reportStartDate).getMonth() + 1, 1)
+        //const dateReportEnd = new Date(new Date(reportEndDate).getFullYear(), new Date(reportEndDate).getMonth(), 1)
+       
+        const dateReportStart = moment(reportStartDate).toDate();
+        const dateReportEnd = moment(reportEndDate).toDate();
+      
         if(this.selectedDate < dateReportStart){
             this.selectedDate = dateReportStart
         }
