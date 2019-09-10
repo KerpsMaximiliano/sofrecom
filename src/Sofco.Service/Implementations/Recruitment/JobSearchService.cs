@@ -138,7 +138,15 @@ namespace Sofco.Service.Implementations.Recruitment
         {
             var response = new Response<JobSearchModel>();
 
+            var jobsearch = unitOfWork.JobSearchRepository.GetDetail(id);
 
+            if (jobsearch == null)
+            {
+                response.AddError(Resources.Recruitment.JobSearch.NotFound);
+                return response;
+            }
+
+            response.Data = new JobSearchModel(jobsearch);
 
             return response;
         }

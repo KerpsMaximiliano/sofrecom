@@ -243,6 +243,10 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality('RECRU', 'ADD-JOBSEARCH');
     }
 
+    goToDetail(id){
+        this.router.navigate(['recruitment/jobSearch/' + id]);
+    }
+
     goToNew(){
         this.router.navigate(['recruitment/jobSearch/add']);
     }

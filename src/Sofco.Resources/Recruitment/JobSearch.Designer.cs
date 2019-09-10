@@ -97,6 +97,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.notFound.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearch.quantityRequired.
         /// </summary>
         public static string QuantityRequired {

@@ -129,6 +129,9 @@
   <data name="ModelNull" xml:space="preserve">
     <value>recruitment/jobSearch.modelNull</value>
   </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>recruitment/jobSearch.notFound</value>
+  </data>
   <data name="QuantityRequired" xml:space="preserve">
     <value>recruitment/jobSearch.quantityRequired</value>
   </data>

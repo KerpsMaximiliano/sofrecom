@@ -94,7 +94,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.form.controls.userId.setValue(response.data.userId);
             this.form.controls.recruiterId.setValue(response.data.recruiterId);
             this.form.controls.reasonCauseId.setValue(response.data.reasonCauseId);
-            this.form.controls.clientId.setValue(response.data.clientId);
+            this.form.controls.clientId.setValue(response.data.clientCrmId);
             this.form.controls.profiles.setValue(response.data.profiles);
             this.form.controls.skills.setValue(response.data.skills);
             this.form.controls.seniorities.setValue(response.data.seniorities);

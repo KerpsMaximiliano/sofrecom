@@ -126,7 +126,7 @@
                             <th>Fecha Suspensión</th>
                             <th>Fecha Cierre</th>
                             <th>Comentarios</th>
-                            <th></th>Estado</th>
+                            <th>Estado</th>
                             <th>{{ 'ACTIONS.title' | translate }}</th>
                         </tr>
                     </thead>
@@ -159,7 +159,7 @@
                             <td>{{ getStatusDesc(item.status) }}</td>
                         
                             <td>
-                                <button class="btn btn-success btn-xs"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-success btn-xs" (click)="goToDetail(item.id)"><i class="fa fa-edit"></i></button>
                             </td>
                         </tr>
                     </tbody>

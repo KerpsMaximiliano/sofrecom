@@ -8,5 +8,6 @@ namespace Sofco.Core.DAL.Recruitment
     public interface IJobSearchRepository : IBaseRepository<JobSearch>
     {
         IList<JobSearch> Search(JobSearchParameter parameter);
+        JobSearch GetDetail(int id);
     }
 }

@@ -56,5 +56,15 @@ namespace Sofco.DAL.Repositories.Recruitment
 
             return query.ToList();
         }
+
+        public JobSearch GetDetail(int id)
+        {
+            return context.JobSearchs
+                .Include(x => x.JobSearchProfiles)
+                .Include(x => x.JobSearchSeniorities)
+                .Include(x => x.JobSearchSkills)
+                .Include(x => x.Client)
+                .SingleOrDefault(x => x.Id == id);
+        }
     }
 }

@@ -24,6 +24,7 @@ import { DecimalFormatModule } from 'app/components/decimalFormat/decimal-format
 import { DigitModule } from 'app/components/digit-limit/digit-limit.directive';
 import { JobSearchListComponent } from './job-search/list/job-search-list';
 import { AmountFormatModule } from 'app/pipes/amount-format.module';
+import { JobSearchEditComponent } from './job-search/edit/job-search-edit';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AmountFormatModule } from 'app/pipes/amount-format.module';
     SeniorityComponent, 
     ReasonCauseComponent,
     JobSearchComponent,
-    JobSearchListComponent
+    JobSearchListComponent,
+    JobSearchEditComponent
   ],
 
   imports: [
