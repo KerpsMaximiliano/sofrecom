@@ -116,30 +116,30 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             if (purchaseOrders != null && purchaseOrders.Any())
             {
-                var diccionary = new Dictionary<string, decimal>();
+                //var diccionary = new Dictionary<string, decimal>();
 
-                response.Data.PurchaseOrders = purchaseOrders.Select(x => x.Title).ToList();
-                response.Data.Ammounts = new List<AmmountItem>();
+                response.Data.PurchaseOrders = purchaseOrders.Where(x => x.Status == PurchaseOrderStatus.Valid).Select(x => x.Title).ToList();
+                //response.Data.Ammounts = new List<AmmountItem>();
 
-                foreach (var purchaseOrder in purchaseOrders)
-                {
-                    foreach (var detail in purchaseOrder.AmmountDetails)
-                    {
-                        if (diccionary.ContainsKey(detail.Currency.Text))
-                        {
-                            diccionary[detail.Currency.Text] += detail.Ammount;
-                        }
-                        else
-                        {
-                            diccionary.Add(detail.Currency.Text, detail.Ammount);
-                        }
-                    }
-                }
+                //foreach (var purchaseOrder in purchaseOrders)
+                //{
+                //    foreach (var detail in purchaseOrder.AmmountDetails)
+                //    {
+                //        if (diccionary.ContainsKey(detail.Currency.Text))
+                //        {
+                //            diccionary[detail.Currency.Text] += detail.Ammount;
+                //        }
+                //        else
+                //        {
+                //            diccionary.Add(detail.Currency.Text, detail.Ammount);
+                //        }
+                //    }
+                //}
 
-                foreach (var key in diccionary.Keys)
-                {
-                    response.Data.Ammounts.Add(new AmmountItem { Currency = key, Value = diccionary[key] });
-                }
+                //foreach (var key in diccionary.Keys)
+                //{
+                //    response.Data.Ammounts.Add(new AmmountItem { Currency = key, Value = diccionary[key] });
+                //}
             }
 
             return response;
