@@ -20,7 +20,7 @@
 
         public string DirectorsCode { get; set; }
 
-        public string LeadersCode { get; set; }
+        public string JobSearchApplicantsCode { get; set; }
 
         public string RecruitersCode { get; set; }
 
