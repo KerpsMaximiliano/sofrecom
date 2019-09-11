@@ -135,13 +135,13 @@
                             <td># {{ item.id }}</td>
                             <td>{{ item.creationDate | date:'dd/MM/yyyy' }}</td>
                             <td>{{ item.client }}</td>
-                            <td>{{ item.reason }}</td>
+                            <td class="column-lg text-ellipsis">{{ item.reason }}</td>
                             <td>{{ item.user }}</td> 
-                            <td>{{ item.skills }}</td>
-                            <td>{{ item.profiles }}</td>
-                            <td>{{ item.seniorities }}</td>
+                            <td class="column-lg text-ellipsis">{{ item.skills }}</td>
+                            <td class="column-lg text-ellipsis">{{ item.profiles }}</td>
+                            <td class="column-lg text-ellipsis">{{ item.seniorities }}</td>
                             <td>{{ item.quantity }}</td>
-                            <td>{{ item.timeHiring }}</td>
+                            <td class="column-lg text-ellipsis">{{ item.timeHiring }}</td>
                             <td>{{ item.maxiumSalary | amountFormat }}</td>
                             <td>{{ item.recruiter }}</td>
 
