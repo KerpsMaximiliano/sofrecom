@@ -163,8 +163,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.detailCost.managementReportId = this.ManagementReportId;
 
             this.readOnly = !this.canEdit();
-
-            this.messageService.closeLoading();
         },
         responseError => {
             this.messageService.closeLoading();
@@ -422,7 +420,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             id: this.ManagementReportId,
             status: status
         }
-    
+     
         this.messageService.showConfirm(() => {
             this.messageService.showLoading();
 

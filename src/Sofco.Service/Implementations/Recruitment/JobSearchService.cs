@@ -224,27 +224,9 @@ namespace Sofco.Service.Implementations.Recruitment
         {
             var response = new Response<IList<OptionModel>> { Data = new List<OptionModel>() };
 
-            var leaders = unitOfWork.UserRepository.GetByGroup(emailConfig.LeadersCode);
-            var recruiters = unitOfWork.UserRepository.GetByGroup(emailConfig.RecruitersCode);
-            var managers = unitOfWork.UserRepository.GetByGroup(emailConfig.ManagersCode);
+            var leaders = unitOfWork.UserRepository.GetByGroup(emailConfig.JobSearchApplicantsCode);
 
             response.Data = leaders.Select(x => new OptionModel {Id = x.Id, Text = x.Name}).ToList();
-
-            foreach (var recruiter in recruiters)
-            {
-                if (response.Data.All(x => x.Id != recruiter.Id))
-                {
-                    response.Data.Add(new OptionModel { Id = recruiter.Id, Text = recruiter.Name });
-                }
-            }
-
-            foreach (var manager in managers)
-            {
-                if (response.Data.All(x => x.Id != manager.Id))
-                {
-                    response.Data.Add(new OptionModel { Id = manager.Id, Text = manager.Name });
-                }
-            }
 
             return response;
         }

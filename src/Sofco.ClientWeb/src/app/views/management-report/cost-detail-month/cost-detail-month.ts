@@ -79,18 +79,12 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         });
 
         this.getOtherSuscrip = this.managementReportService.getOtherResources().subscribe(response => {
-
             this.otherResources = response.data;
 
             if (this.otherResources.length > 0) {
                 this.otherSelected = this.otherResources[0];
             }
-
-            this.messageService.closeLoading();
-        },
-            () => {
-                this.messageService.closeLoading();
-            });
+        });
 
         this.getUsers()
     }
@@ -315,15 +309,9 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     }
 
     getUsers() {
-        this.messageService.showLoading();
-
         this.getEmployeesSubscrip = this.employeeService.getListItems().subscribe(data => {
-            this.messageService.closeLoading();
             this.users = data;
-        },
-            () => {
-                this.messageService.closeLoading();
-            })
+        });
     }
 
     addEmployee() {
