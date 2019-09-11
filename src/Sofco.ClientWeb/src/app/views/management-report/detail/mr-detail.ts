@@ -316,6 +316,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
     getEvalPropData(data){
         this.marginTracking.updateEvalpropValues(data, this.model.manamementReportStartDate, this.model.manamementReportEndDate);
+        this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
     }
 
     setStartDate(reportStartDate, reportEndDate){
