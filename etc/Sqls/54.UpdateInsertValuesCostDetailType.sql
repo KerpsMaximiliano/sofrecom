@@ -1,4 +1,6 @@
-UPDATE [app].[CostDetailTypes] SET [Default] = 0
+UPDATE [app].[CostDetailTypes] 
+	SET [Default] = 0,
+	    [BelongEmployee] = 1
  WHERE Name = 'Gratificaciones'
  
 UPDATE [app].[CostDetailTypes]

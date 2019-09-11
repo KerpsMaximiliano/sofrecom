@@ -165,6 +165,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 this.otherSelected = this.otherResources[0];
             }
 
+            if (this.employees.length > 0) {
+                this.addClassEmployee();
+            }
+
             this.calculateTotalReal();
             this.calculateTotalCosts();
             this.sendDataToDetailView();
@@ -361,6 +365,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
 
             this.calculateTotalCosts();
+            this.addClassEmployee();
 
             setTimeout(() => {
                 this.sendDataToDetailView();
@@ -613,39 +618,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     EditItemOnClose() {
-    }
-
-    AccessEmployeeClass(monthCost, employee, index) {
-
-        let cssClass;
-        let arrayClass = [' label-secondary', ' label-yellow']
-
-        if (!this.canEdit) {
-            cssClass = 'not-allowed'
-        }
-        else {
-            cssClass = 'cursor-pointer'
-            if (!monthCost.hasAlocation) {
-                cssClass += ' label-danger'
-                // cssClass = 'not-allowed label-danger'
-            }
-        }
-
-        if (index > 0 && monthCost.hasAlocation) {
-
-            if (monthCost.budget.value != employee.monthsCost[index - 1].budget.value) {                
-                if (this.intAux > arrayClass.length - 1) {
-                    this.intAux = 0
-                }
-                else {
-                    this.intAux++
-                }
-            }
-
-            cssClass += arrayClass[this.intAux]
-        }
-
-        return cssClass;
     }
 
     addOtherCost() {
@@ -979,6 +951,42 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 });
         }
 
+    }
+
+    addClassEmployee() {
+
+        let arrayClass = ['label-yellow', 'label-warning']
+
+        this.employees.forEach(employee => {
+            let aux = 0
+            employee.monthsCost.forEach((month, index) => {
+
+                if (month.hasAlocation) {                    
+                    if (index > 0) {
+                        if (month.budget.value != employee.monthsCost[index - 1].budget.value) {
+                            if (aux >= arrayClass.length - 1) {
+                                aux = 0
+                            }
+                            else {
+                                aux++
+                            }
+                        }
+                    }
+                    month.class = arrayClass[aux]
+                }
+                else{
+                    month.class = 'label-danger'
+                }
+
+                if (!this.canEdit) {
+                    month.class += ' not-allowed'
+                }
+                else {
+                    month.class += ' cursor-pointer'
+                }
+
+            })
+        });
     }
 
 }
