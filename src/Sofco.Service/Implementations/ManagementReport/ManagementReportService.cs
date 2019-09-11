@@ -375,7 +375,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     if (billingMonth != null)
                     {
                         monthHeader.ValueEvalProp = billingMonth.EvalPropExpenseValue;
-                        monthHeader.ValueMarginEvalProp = billingMonth.EvalPropMarginValue;
+                        //monthHeader.ValueMarginEvalProp = billingMonth.EvalPropMarginValue;
 
                         monthHeader.BillingMonthId = billingMonth.Id;
 

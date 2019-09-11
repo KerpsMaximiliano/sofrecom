@@ -18,7 +18,7 @@ export class TracingComponent implements OnInit, OnDestroy {
     AllMarginTracking: any[] = new Array()
     analytic: string
 
-    @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
+    //@Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
 
     constructor(private datesService: DatesService,
         private managementReportService: ManagementReportService,
@@ -66,15 +66,16 @@ export class TracingComponent implements OnInit, OnDestroy {
         return this.menuService.userIsCdg;
     }
 
-    openEditEvalProp(month) {
+    // openEditEvalProp(month) {
 
-        if (month.closed) return;
+    //     if (month.closed) return;
 
-        if (this.openEvalPropModal.observers.length > 0) {
-            month.type = 3;
-            month.icon = "%";
-            this.openEvalPropModal.emit(month);
-        }
-    }
+    //     if (this.openEvalPropModal.observers.length > 0) {
+    //         month.type = 3;
+    //         month.icon = "%";
+    //         this.openEvalPropModal.emit(month);
+    //     }
+    // }
+
 
 }

@@ -149,7 +149,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             if (costDetailMonth) {
                 
                 marginTracking.hasReal = costDetailMonth.hasReal
-                marginTracking.valueEvalProp = costDetailMonth.valueMarginEvalProp
+               // marginTracking.valueEvalProp = costDetailMonth.valueMarginEvalProp
                 marginTracking.billingMonthId = costDetailMonth.billingMonthId
                 
                 // Previsto $$
@@ -166,13 +166,23 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
                 
                 totalCostsAcumulatedToEnd += costDetailMonth.real.totalCost;
                 
-                // Previsto % (ventas)
-                if (costDetailMonth.valueMarginEvalProp > 0) {
-                    marginTracking.PercentageExpected = costDetailMonth.valueMarginEvalProp
-                    evalpropTotalTracing += costDetailMonth.valueMarginEvalProp
+            }
+            
+            marginTracking.valueEvalProp = 0;
+            if(billingMonth && costDetailMonth){
+                if(billingMonth.valueEvalProp > 0)
+                {
+                    //Evalprop (((FACTURACION-COSTO)/FACTURACION)*100)
+                    marginTracking.valueEvalProp = ((billingMonth.valueEvalProp - costDetailMonth.valueEvalProp) / billingMonth.valueEvalProp) * 100;
                 }
             }
             
+            // Previsto % (ventas)
+           // if (marginTracking.valueEvalProp > 0) {
+                marginTracking.PercentageExpected = marginTracking.valueEvalProp
+                evalpropTotalTracing += marginTracking.valueEvalProp
+            //}
+
             //Acumulado a la fecha de proyectado $$ (Vemtas -> hitos no facturados)
            marginTracking.SalesRemainigToDate = billingAcumulateProyected;
             
@@ -224,41 +234,41 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             costDetailMonth.valueEvalProp = data.value;
         }
 
-        startDate = moment(startDate).toDate();
-        endDate = moment(endDate).toDate();
+        // startDate = moment(startDate).toDate();
+        // endDate = moment(endDate).toDate();
 
-        startDate.setDate(1);
-        endDate.setDate(1);
+        // startDate.setDate(1);
+        // endDate.setDate(1);
 
-        var evalpropTotalBilling = 0;
-        var evalpropTotalCosts = 0;
-        var evalpropTotalTracing = 0;
+        // var evalpropTotalBilling = 0;
+        // var evalpropTotalCosts = 0;
+        // var evalpropTotalTracing = 0;
 
-        for (var initDate = startDate; initDate <= endDate; initDate.setMonth(initDate.getMonth() + 1)) {
-            var month = initDate.getMonth() + 1;
-            var year = initDate.getFullYear();
+        // for (var initDate = startDate; initDate <= endDate; initDate.setMonth(initDate.getMonth() + 1)) {
+        //     var month = initDate.getMonth() + 1;
+        //     var year = initDate.getFullYear();
 
-            billingMonth = this.billingModel.months.find(x => x.month == month && x.year == year);
-            costDetailMonth = this.costsModel.months.find(x => x.month == month && x.year == year);
-            var marginTracking = this.allMarginTrackings.find(x => x.Month == month && x.Year == year);
+        //     billingMonth = this.billingModel.months.find(x => x.month == month && x.year == year);
+        //     costDetailMonth = this.costsModel.months.find(x => x.month == month && x.year == year);
+        //     var marginTracking = this.allMarginTrackings.find(x => x.Month == month && x.Year == year);
 
-            if (billingMonth) evalpropTotalBilling += billingMonth.valueEvalProp;
-            if (costDetailMonth) {
-                evalpropTotalCosts += costDetailMonth.valueEvalProp;
-                evalpropTotalTracing += costDetailMonth.valueMarginEvalProp
-            }
+        //     if (billingMonth) evalpropTotalBilling += billingMonth.valueEvalProp;
+        //     if (costDetailMonth) {
+        //         evalpropTotalCosts += costDetailMonth.valueEvalProp;
+        //         evalpropTotalTracing += costDetailMonth.valueMarginEvalProp
+        //     }
 
-            this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
-        }
+        //     this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
+        // }
 
-        var percentageExpectedTotal = 0;
-        if (evalpropTotalBilling > 0) {
-            percentageExpectedTotal = ((evalpropTotalBilling - evalpropTotalCosts) / evalpropTotalBilling) * 100
-        }
+        // var percentageExpectedTotal = 0;
+        // if (evalpropTotalBilling > 0) {
+        //     percentageExpectedTotal = ((evalpropTotalBilling - evalpropTotalCosts) / evalpropTotalBilling) * 100
+        // }
 
-        this.allMarginTrackings.forEach(element => {
-            element.PercentageExpectedTotal = percentageExpectedTotal;
-        });
+        // this.allMarginTrackings.forEach(element => {
+        //     element.PercentageExpectedTotal = percentageExpectedTotal;
+        // });
     }
 
     private setRemainingAndTotal(totalAcumulatedToEnd: number, totalCostsAcumulatedToEnd: number, percentageExpectedTotal: number) {
@@ -279,23 +289,23 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         });
     }
 
-    private calculatePercentageExpected(billingMonth: any, costDetailMonth: any, marginTracking: MarginTracking) {
+    // private calculatePercentageExpected(billingMonth: any, costDetailMonth: any, marginTracking: MarginTracking) {
 
-        if (!billingMonth) return;
+    //     if (!billingMonth) return;
 
-        var evalpropBillingValue = billingMonth.valueEvalProp;
+    //     var evalpropBillingValue = billingMonth.valueEvalProp;
 
-        var evalpropCostValue = 0;
+    //     var evalpropCostValue = 0;
 
-        if (costDetailMonth) {
-            evalpropCostValue = costDetailMonth.valueEvalProp;
-        }
+    //     if (costDetailMonth) {
+    //         evalpropCostValue = costDetailMonth.valueEvalProp;
+    //     }
 
-        // Previsto % (ventas)
-        if (evalpropBillingValue > 0) {
-            marginTracking.PercentageExpected = ((evalpropBillingValue - evalpropCostValue) / evalpropBillingValue) * 100;
-        }
-    }
+    //     // Previsto % (ventas)
+    //     if (evalpropBillingValue > 0) {
+    //         marginTracking.PercentageExpected = ((evalpropBillingValue - evalpropCostValue) / evalpropBillingValue) * 100;
+    //     }
+    // }
 
     sendDataToDetailView(allMarginTrackings) {
 

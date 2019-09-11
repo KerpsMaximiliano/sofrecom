@@ -41,9 +41,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                     case EvalPropType.Expense:
                         billing.EvalPropExpenseValue = model.Value;
                         break;
-                    case EvalPropType.margin:
-                        billing.EvalPropMarginValue = model.Value;
-                        break;
+                    //case EvalPropType.margin:
+                    //    billing.EvalPropMarginValue = model.Value;
+                    //    break;
                 }
 
                 //if (model.Type == EvalPropType.Billing)
