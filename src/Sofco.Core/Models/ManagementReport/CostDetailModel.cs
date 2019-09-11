@@ -57,6 +57,7 @@ namespace Sofco.Core.Models.ManagementReport
 
         public Cost Budget { get; set; } = new Cost();
         public Cost Real { get; set; } = new Cost();
+        public string Class { get; set; }
 
     }
 
