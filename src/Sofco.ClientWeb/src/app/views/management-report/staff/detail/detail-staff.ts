@@ -38,9 +38,11 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     public selectedMonth: number;
     public selectedYear: number;
     public selectedMonthDesc: string;
+    selectedExchanges: any[] = new Array();
 
     comments: string;
     allComments: any[] = new Array();
+    months: any[] = new Array();
 
     public addCommentModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Agregar comentario",
@@ -144,6 +146,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             this.getComment();
 
             this.model = response.data;
+            this.months = response.data.months;
 
             if(this.isManager){
                 if(this.model.managerId != userInfo.id && this.model.delegateId != userInfo.id){
@@ -282,6 +285,13 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.selectedYear = dateSetting.year;
 
         this.isClosed = this.budgetView.isClosed(this.selectedDate);
+
+        var month = this.months.find(x => x.year == this.selectedYear && x.month == this.selectedMonth);
+
+        if(month){
+            this.selectedExchanges = month.items;
+        }
+
         //this.budgetView.selectDefaultColumn(this.selectedDate)
     }
 

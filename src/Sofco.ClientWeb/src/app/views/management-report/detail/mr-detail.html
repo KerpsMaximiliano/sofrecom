@@ -44,6 +44,25 @@
                                 <dt class="m-b-xs"><i class="fa fa-wrench"></i> Tipo de Tecnología </dt>
                                 <dd class="text-ellipsis"> {{ model?.technologyType }} </dd>
                             </dl>
+
+                            <dt class="m-b-xs" *ngIf="selectedExchanges && selectedExchanges.length > 0"><i class="fa fa-money"></i> Cotizaciones </dt>
+                            <dd  *ngIf="selectedExchanges && selectedExchanges.length > 0">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Moneda</th>
+                                            <th>Cotizacion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of selectedExchanges">
+                                            <td>{{ item.currencyDesc }}</td>
+                                            <td>{{ item.exchange | amountFormat }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </dd>
+                         
                         </div>
 
                         <div class="col-md-5">
@@ -143,6 +162,7 @@
                         <label *ngIf="isClosed" class="label label-black">Cerrado</label>
                     </div>
                 </div>
+
                 <div class="col-md-7 action-buttons pull-right">
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdg" (click)="openComments()"> Comentarios <i class="fa fa-edit"></i></button>
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg && !readOnly && !isClosed" (click)="close()">Cerrar <i class="fa fa-close"></i></button>

@@ -44,6 +44,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     public selectedMonth: number;
     public selectedYear: number;
     public selectedMonthDesc: string;
+    selectedExchanges: any[] = new Array();
 
     ReportStartDate: Date;
     ReportEndDate: Date;
@@ -54,6 +55,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     ManagementReportId: number;
 
     allComments: any[] = new Array();
+    months: any[] = new Array();
 
     @ViewChild("marginTracking") marginTracking;
     @ViewChild("billing") billing;
@@ -144,7 +146,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.billing.manamementReportEndDate = this.model.manamementReportEndDate
 
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
-
+ 
             this.billing.init(this.serviceId);
             this.billing.managementReportId = this.ManagementReportId;
             
@@ -278,6 +280,23 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.marginTracking.billingDataLoaded = true;
         this.marginTracking.billingModel = billingModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
+       
+        this.months = billingModel.months.map(item => {
+            return {
+                month: item.month,
+                year: item.year,
+                exchanges: item.exchanges
+            }
+        });
+
+        if(!this.selectedExchanges || this.selectedExchanges.length == 0){
+            var month = this.months.find(x => x.year == this.selectedYear && x.month == this.selectedMonth);
+
+            if(month){
+                this.selectedExchanges = month.exchanges;
+            }
+        }
+
        // this.detailCost.setResourceQuantity(billingModel.months)
     }
 
@@ -330,6 +349,12 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.billing.setFromDate(this.selectedDate)
 
         this.isClosed = this.billing.isClosed(this.selectedDate);
+
+        var month = this.months.find(x => x.year == this.selectedYear && x.month == this.selectedMonth);
+
+        if(month){
+            this.selectedExchanges = month.exchanges;
+        }
     }
 
     addMonth(){
