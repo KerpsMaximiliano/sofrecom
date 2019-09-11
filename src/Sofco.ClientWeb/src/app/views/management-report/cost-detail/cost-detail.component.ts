@@ -146,11 +146,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     getCost() {
-        this.messageService.showLoading();
-
         this.getCostSubscrip = this.managementReportService.getCostDetail(this.serviceId).subscribe(response => {
-            this.messageService.closeLoading();
-
             this.model = response.data;
 
             this.months = response.data.monthsHeader;
@@ -173,7 +169,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.calculateTotalCosts();
             this.sendDataToDetailView();
         },
-            () => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item) {
@@ -700,29 +696,15 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     getProfiles() {
-        this.messageService.showLoading();
-
         this.getProfileSuscrip = this.utilsService.getEmployeeProfiles().subscribe(response => {
-            this.messageService.closeLoading();
-
             this.profiles = response;
-        },
-            () => {
-                this.messageService.closeLoading();
-            })
+        });
     }
 
     getUsers() {
-        this.messageService.showLoading();
-
         this.getEmployeeSubscrip = this.employeeService.getListItems().subscribe(data => {
-            this.messageService.closeLoading();
-
             this.users = data;
-        },
-            () => {
-                this.messageService.closeLoading();
-            })
+        });
     }
 
     canEditCdg() {
