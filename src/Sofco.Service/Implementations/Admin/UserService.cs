@@ -358,9 +358,9 @@ namespace Sofco.Service.Implementations.Admin
 
             var today = DateTime.UtcNow.Date;
 
-            if (today.Day > 1) today = today.AddDays(today.Day - (today.Day - 1));
+            if (today.Day > 1) today = today.AddDays((today.Day - 1)*-1);
 
-            var allocationFirst = employee?.Allocations.FirstOrDefault(x => x.StartDate.Date == today);
+            var allocationFirst = employee?.Allocations.FirstOrDefault(x => x.StartDate.Date == today.Date);
 
             if (allocationFirst != null)
             {
