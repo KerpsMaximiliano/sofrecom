@@ -56,6 +56,20 @@ td{
     height: 25px;
 }
 
+.input-billing-modal.form-control{
+    margin-top: 2px;
+    padding: 2px 4px;
+}
+
+.input-billing-modal {
+    font-size: 11px;
+    height: 30px;
+
+    .ng-select-container{
+        padding: 2px 2px;
+    }
+}
+
 .input-pending-related {
     background-color: firebrick;
     color: #FFFFFF;

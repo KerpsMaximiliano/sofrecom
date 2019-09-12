@@ -123,5 +123,7 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public string AssignComments { get; set; }
         public bool ExcludeForTigerReport { get; set; }
+
+        public IList<ResourceBilling> ResourceBillings { get; set; }
     }
 }

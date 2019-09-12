@@ -248,6 +248,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             ProjectName = $"{project.OpportunityNumber} {project.Name}",
                             CurrencyId = hito.MoneyId,
                             CurrencyName = hito.Money,
+                            Month = hito.Month,
                             OpportunityNumber = project.OpportunityNumber,
                             Date = hito.StartDate,
                             MonthValues = new List<MonthBiilingRowItem>()

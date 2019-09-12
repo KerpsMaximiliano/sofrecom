@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Domain.DTO
 {
@@ -19,6 +20,19 @@ namespace Sofco.Domain.DTO
 
     public class HitoAmmountParameter
     {
+        public HitoAmmountParameter()
+        {
+        }
+
+        public HitoAmmountParameter(string id, string projectId, decimal amount, string name, int month)
+        {
+            Id = id;
+            ProjectId = projectId;
+            Ammount = amount;
+            Name = name;
+            Month = month;
+        }
+
         public string Id { get; set; }
 
         public string ProjectId { get; set; }
@@ -26,5 +40,7 @@ namespace Sofco.Domain.DTO
         public decimal? Ammount { get; set; }
 
         public string Name { get; set; }
+
+        public int Month { get; set; }
     }
 }

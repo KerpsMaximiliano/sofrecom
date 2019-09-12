@@ -10,6 +10,8 @@ using Sofco.Service.Crm.Interfaces;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.ManagementReport;
+using Sofco.Core.Services.ManagementReport;
 using Sofco.Domain.Crm;
 using Sofco.Domain.Helpers;
 
@@ -19,12 +21,14 @@ namespace Sofco.Service.Implementations.Billing
     {
         private readonly CrmConfig crmConfig;
         private readonly ICrmInvoicingMilestoneService crmInvoicingMilestoneService;
+        private readonly IManagementReportBillingService managementReportBillingService;
         private readonly IProjectData projectData;
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<HitoService> logger;
 
         public HitoService(IOptions<CrmConfig> crmOptions,
             IProjectData projectData,
+            IManagementReportBillingService managementReportBillingService,
             IUnitOfWork unitOfWork,
             ILogMailer<HitoService> logger,
             ICrmInvoicingMilestoneService crmInvoicingMilestoneService)
@@ -34,6 +38,7 @@ namespace Sofco.Service.Implementations.Billing
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.crmInvoicingMilestoneService = crmInvoicingMilestoneService;
+            this.managementReportBillingService = managementReportBillingService;
         }
 
         public Response Close(string id)
@@ -104,26 +109,34 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response Patch(HitoAmmountParameter hito)
+        public Response Patch(UpdateResourceBillingRequest data)
         {
             var response = new Response();
 
-            if (string.IsNullOrWhiteSpace(hito.Id))
+            if (string.IsNullOrWhiteSpace(data.Id))
                 response.AddError(Resources.Billing.Solfac.HitoNotFound);
 
-            if (!hito.Ammount.HasValue || hito.Ammount == 0)
+            if (!data.Ammount.HasValue || data.Ammount == 0)
                 response.AddError(Resources.Billing.Project.HitoAmmoutRequired);
 
-            if(string.IsNullOrWhiteSpace(hito.Name))
+            if(string.IsNullOrWhiteSpace(data.Name))
                 response.AddError(Resources.Billing.Project.NameRequired);
 
             if (response.HasErrors()) return response;
 
-            crmInvoicingMilestoneService.UpdateAmmountAndName(hito, response);
+            response = managementReportBillingService.ValidateAddResources(data.BillingMonthId, data.Resources);
+
+            if (response.HasErrors()) return response;
+
+            response = managementReportBillingService.AddResources(data.BillingMonthId, data.Resources, data.Id);
+
+            if (response.HasErrors()) return response;
+
+            crmInvoicingMilestoneService.UpdateAmmountAndName(new HitoAmmountParameter(data.Id, data.ProjectId, data.Ammount.GetValueOrDefault(), data.Name, data.Month), response);
 
             if (!response.HasErrors())
             {
-                projectData.ClearHitoKeys(hito.ProjectId);
+                projectData.ClearHitoKeys(data.ProjectId);
                 response.AddSuccess(Resources.Billing.Solfac.HitoUpdateSuccess);
             }
             else

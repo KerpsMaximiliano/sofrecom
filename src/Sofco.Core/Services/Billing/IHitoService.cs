@@ -1,4 +1,5 @@
-﻿using Sofco.Domain.Crm;
+﻿using Sofco.Core.Models.ManagementReport;
+using Sofco.Domain.Crm;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Utils;
 
@@ -12,7 +13,7 @@ namespace Sofco.Core.Services.Billing
 
         Response<string> Create(HitoParameters hito);
 
-        Response Patch(HitoAmmountParameter hito);
+        Response Patch(UpdateResourceBillingRequest hito);
 
         Response Delete(string hitoId, string projectId);
 

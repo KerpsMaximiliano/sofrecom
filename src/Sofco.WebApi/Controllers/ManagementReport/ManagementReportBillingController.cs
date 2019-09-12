@@ -42,13 +42,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
-        [HttpPost("{idBilling}/resources")]
-        public IActionResult AddResources(int idBilling, [FromBody] IList<ResourceBillingRequest> resources)
-        {
-            var response = managementReportBillingService.AddResources(idBilling, resources);
+        //[HttpPost("{idBilling}/resources")]
+        //public IActionResult AddResources(int idBilling, [FromBody] IList<ResourceBillingRequestItem> resources)
+        //{
+        //    var response = managementReportBillingService.AddResources(idBilling, resources);
 
-            return this.CreateResponse(response);
-        }
+        //    return this.CreateResponse(response);
+        //}
 
         [HttpGet("{idBilling}/resources")]
         public IActionResult GetResources(int idBilling)
