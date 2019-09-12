@@ -360,7 +360,7 @@ namespace Sofco.Service.Implementations.Admin
 
             if (today.Day > 1) today = today.AddDays(today.Day - (today.Day - 1));
 
-            var allocationFirst = employee?.Allocations.FirstOrDefault(x => x.StartDate.Date == today);
+            var allocationFirst = employee?.Allocations.FirstOrDefault(x => today.Date >= x.StartDate.Date && today.Date <= x.ReleaseDate.Date);
 
             if (allocationFirst != null)
             {
