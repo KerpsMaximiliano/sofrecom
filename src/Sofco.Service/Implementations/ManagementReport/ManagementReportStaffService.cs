@@ -170,7 +170,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 var costDetailStaff = costDetail.CostDetailStaff.Where(x => x.BudgetType.Name == typeBudget).ToList();
                 subcategories = this.Translate(costDetailStaff);
-                resources = this.Translate(costDetail.CostDetailResources.Where(x=> x.IsReal == getReal).ToList(), monthYear, allocations, managementReport.AnalyticId);
+                resources = this.Translate(costDetail.CostDetailResources.Where(x => x.IsReal == getReal).ToList(), monthYear, allocations, managementReport.AnalyticId);
 
                 if (!getReal)
                 {
@@ -453,6 +453,74 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             return response;
         }
+
+        public Response GeneratePFA1(int ManagementReportId)
+        {
+            var response = new Response<CostDetailStaffModel> { Data = new CostDetailStaffModel() };
+
+            var managementReport = unitOfWork.ManagementReportRepository.GetById(ManagementReportId);
+            if (managementReport == null)
+            {
+                response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                return response;
+            }
+
+            //Obtengo los meses que tiene la analitica
+            var dates = this.SetDates(managementReport.Analytic);
+
+            var costDetails = managementReport.CostDetails;
+            var Months = new List<MonthDetailCostStaff>();
+
+            for (DateTime date = new DateTime(dates.Item1.Year, dates.Item1.Month, 1).Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
+            {
+                var monthHeader = new MonthDetailCostStaff();
+                monthHeader.MonthYear = date;
+
+                Months.Add(monthHeader);
+            }
+
+            foreach (var mounth in Months)
+            {
+                var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
+
+                if (costDetailMonth != null)
+                {
+                    List<CostDetailStaff> subcategories;
+                    if (mounth.MonthYear.Date < DateTime.Now.Date)
+                    {
+                        subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == 1).ToList();
+                    }
+                    else
+                    {
+                        subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == 5).ToList();
+                    }
+                    if (subcategories != null)
+                    {
+                        foreach (var subcategory in subcategories)
+                        {
+                            var entity = new CostDetailStaff();
+
+                            //entity.Id = subcategory.CostDetailSubcategoryId;
+                            entity.Description = subcategory.Description;
+                            entity.Value = subcategory.Value;
+                            entity.BudgetTypeId = subcategory.BudgetTypeId;
+
+                            entity.Value = subcategory.Value ?? 0;
+                            entity.Description = subcategory.Description;
+                            entity.CostDetailId = costDetailMonth.Id;
+                            entity.CostDetailSubcategoryId = subcategory.Id;
+                            entity.BudgetTypeId = 3;
+
+                            //unitOfWork.CostDetailStaffRepository.Insert(entity);
+                        }
+                    }
+                }
+            }
+
+            return response;
+        }
+
+
 
         private void InsertUpdateCostDetailStaff(List<CostCategory> costCategories, IList<CostDetail> costDetails)
         {
