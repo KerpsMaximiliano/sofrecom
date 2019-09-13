@@ -183,11 +183,14 @@
             </div>
 
             <div class="row border-bottom m-b-sm">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <h4>SubCategoria</h4>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <h4>Descripción</h4>
+                </div>
+                <div class="col-sm-2">
+                    <h4>Moneda</h4>
                 </div>
                 <div class="col-sm-2">
                     <h4>Monto</h4>
@@ -195,11 +198,17 @@
             </div>
 
             <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index" [hidden]="cost.deleted">
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     {{ cost.name }}
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200" [disabled]="readOnly">
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <ng-select class="input-billing-modal" [items]="currencies" bindLabel="text" bindValue="id" [(ngModel)]="cost.currencyId" [clearable]="false">
+                        </ng-select>
+                    </div>
                 </div>
                 <div class="col-sm-2">
                     <math-input [(model)]="cost.value"  [modelDisabled]="readOnly"></math-input>
@@ -210,7 +219,6 @@
                 </div>
             </div>
             <div class="row" [hidden]="readOnly">
-                <br>
                 <div class="col-sm-9">
                     <div class="form-group">
                         <ng-select [items]="subCategoriesFiltered" bindLabel="name" [(ngModel)]="subCategorySelected"

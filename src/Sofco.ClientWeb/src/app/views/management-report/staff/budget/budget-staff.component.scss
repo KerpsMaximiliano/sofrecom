@@ -99,3 +99,11 @@ table {
     border-color: #1a7bb9;
     color: #ffffff
   }
+
+.input-billing-modal.ng-select {
+    font-size: 11px;
+
+    .ng-select-container{
+        padding: 2px 2px;
+    }
+}

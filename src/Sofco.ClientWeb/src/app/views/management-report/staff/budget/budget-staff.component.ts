@@ -8,6 +8,7 @@ import { ManagementReportStaffService } from "app/services/management-report/man
 import { ManagementReportDetailStaffComponent } from "app/views/management-report/staff/detail/detail-staff";
 import { environment } from "environments/environment";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
+import { UtilsService } from "app/services/common/utils.service";
 
 @Component({
     selector: 'budget-staff',
@@ -20,6 +21,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     getCostSubscrip: Subscription;
     updateCostSubscrip: Subscription;
     generatePFASuscrip: Subscription;
+    getCurrenciesSubscrip: Subscription;
 
     showColumn = {
         budget: true,
@@ -44,6 +46,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     typeBudgetSelected: any = { id: 0, name: '' }
     budgetTypes: any[] = new Array()
     costByMonth: any[] = new Array()
+    currencies: any[] = new Array()
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
@@ -62,6 +65,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
         private menuService: MenuService,
+        private utilsService: UtilsService,
         private detailStaffComponent: ManagementReportDetailStaffComponent
     ) { }
 
@@ -73,14 +77,24 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.managementReportId = params['id'];
             this.getCost(this.managementReportId);
         });
+
+        this.getCurrencies();
+
     }
 
     ngOnDestroy(): void {
         if (this.getCostSubscrip) this.getCostSubscrip.unsubscribe();
         if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
-        if (this.generatePFASuscrip) this.generatePFASuscrip.unsubscribe()
+        if (this.generatePFASuscrip) this.generatePFASuscrip.unsubscribe();
+        if (this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
     }
+
+    getCurrencies() {
+        this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
+            this.currencies = d;
+        });
+    } 
 
     getCost(managementReportId) {
         this.messageService.showLoading();
@@ -136,11 +150,17 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     description: subcat.description,
                     value: subcat.value,
                     budgetTypeId: subcat.budgetTypeId,
-                    deleted: subcat.deleted
+                    deleted: subcat.deleted,
+                    currencyId: subcat.currencyId
                 }
 
                 this.subCategoriesData.push(cost)
             });
+
+            setTimeout(() => {
+                $('.input-billing-modal.ng-select .ng-select-container').css('min-height', '28px');
+                $('.input-billing-modal.ng-select .ng-select-container').css('height', '28px');
+            }, 200);
         }
     }
 
@@ -230,10 +250,16 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             description: "",
             value: 0,
             budgetTypeId: this.typeBudgetSelected.id,
+            currencyId: this.currencies[0].id,
             deleted: false
         }
 
-        this.subCategoriesData.push(cost)
+        this.subCategoriesData.push(cost);
+
+        setTimeout(() => {
+            $('.input-billing-modal.ng-select .ng-select-container').css('min-height', '28px');
+            $('.input-billing-modal.ng-select .ng-select-container').css('height', '28px');
+        }, 100);
     }
 
     updateItem() {
