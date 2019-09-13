@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
+using Sofco.Domain.Enums;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.ManagementReport
@@ -73,5 +74,18 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
+        [HttpPost("generatePFA")]
+        public IActionResult GeneratePFA1([FromBody] ManagementGeneratePFAModel model)
+        {
+            string enumPFA = EnumBudgetType.pfa1;
+            if (model.TypePFA == 2)
+            {
+                enumPFA = EnumBudgetType.pfa2;
+            }
+
+            var response = managementReportStaffService.GeneratePFA(model.IdManagementReport, enumPFA);
+
+            return this.CreateResponse(response);
+        }
     }
 }

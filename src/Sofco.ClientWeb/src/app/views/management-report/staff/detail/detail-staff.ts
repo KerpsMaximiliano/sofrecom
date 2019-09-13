@@ -444,6 +444,14 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.budgetView.save()
     }
 
+    generatePFA1(){
+        this.budgetView.generatePfa(1)
+    }
+
+    generatePFA2(){
+        this.budgetView.generatePfa(2)
+    }
+
     openComments(){
         this.addCommentModal.show();
     }

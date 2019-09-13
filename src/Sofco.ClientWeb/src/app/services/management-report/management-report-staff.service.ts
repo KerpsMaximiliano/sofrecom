@@ -58,4 +58,8 @@ export class ManagementReportStaffService {
   PostCostDetailStaffMonth(serviceId, model){
     return this.http.post<any>(`${this.baseUrl}/managementReportStaff/costDetailMonth`, model);
   }
+
+  PostGeneratePfa(model){
+    return this.http.post<any>(`${this.baseUrl}/managementReportStaff/generatePFA`, model);
+  }
 }
