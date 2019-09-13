@@ -166,6 +166,13 @@
 
                     <button class="btn btn-success btn-sm" type="button" *ngIf="isManager || isCdgOrDirector"
                     (click)="saveBudget()">Guardar <i class="fa fa-save"></i></button>
+
+                    <button class="btn btn-white btn-sm" type="button" *ngIf="isCdg"
+                    (click)="generatePFA1()">Generar PFA1 <i class="fa fa-arrow-right"></i></button>
+
+                    <button class="btn btn-white btn-sm" type="button" *ngIf="isCdg"
+                    (click)="generatePFA2()">Generar PFA2 <i class="fa fa-arrow-right"></i></button>
+
                 </div>
             </div>
 

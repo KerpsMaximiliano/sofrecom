@@ -45,7 +45,7 @@
                 </td>
             </tr>
             <tr>
-                <th class="static first-column text-ellipsis" scope="col">EVALPROP</th>
+                <th class="static first-column text-ellipsis" scope="col">EVALPROP (%)</th>
                 <td *ngFor="let month of AllMarginTracking; first as isFirst" [ngClass]="{'first-col': isFirst}">
                     <label class="label label-success" [ngClass]="canEditCdg() ? 'pointer' : ''">
                         {{ month.valueEvalProp  | amountFormat }}

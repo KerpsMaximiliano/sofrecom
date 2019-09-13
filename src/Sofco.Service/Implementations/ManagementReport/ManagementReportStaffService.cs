@@ -115,6 +115,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                         response.Data.Budgets.Add(budget);
                     }
 
+                    if (budgets.Any(x => x.Description.ToUpper() == EnumBudgetType.Projected))
+                    {
+                        var budget = budgets.Where(x => x.Description.ToUpper() == EnumBudgetType.Projected)
+                                .OrderByDescending(x => x.StartDate).FirstOrDefault();
+
+                        response.Data.Budgets.Add(budget);
+                    }
+
                     if (budgets.Any(x => x.Description.ToUpper() == EnumBudgetType.Real))
                     {
                         var budget = budgets.Where(x => x.Description.ToUpper() == EnumBudgetType.Real)
@@ -170,7 +178,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 var costDetailStaff = costDetail.CostDetailStaff.Where(x => x.BudgetType.Name == typeBudget).ToList();
                 subcategories = this.Translate(costDetailStaff);
-                resources = this.Translate(costDetail.CostDetailResources.Where(x=> x.IsReal == getReal).ToList(), monthYear, allocations, managementReport.AnalyticId);
+                resources = this.Translate(costDetail.CostDetailResources.Where(x => x.IsReal == getReal).ToList(), monthYear, allocations, managementReport.AnalyticId);
 
                 if (!getReal)
                 {
@@ -444,6 +452,93 @@ namespace Sofco.Service.Implementations.ManagementReport
             try
             {
                 response.Data = unitOfWork.ManagementReportRepository.GetCategories();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
+                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+            }
+
+            return response;
+        }
+
+        public Response GeneratePFA(int ManagementReportId, string PFA)
+        {
+            var response = new Response<CostDetailStaffModel> { Data = new CostDetailStaffModel() };
+            try
+            {
+                var managementReport = unitOfWork.ManagementReportRepository.GetById(ManagementReportId);
+                if (managementReport == null)
+                {
+                    response.AddError(Resources.AllocationManagement.Analytic.NotFound);
+                    return response;
+                }
+
+                var typesBudgets = unitOfWork.ManagementReportRepository.GetTypesBudget().Select(x => new BudgetTypeItem(x)).ToList();
+                int idPFA;
+
+                if (PFA == EnumBudgetType.pfa1)
+                {
+                    idPFA = typesBudgets.Where(x => x.Name == EnumBudgetType.pfa1).FirstOrDefault().Id;
+                }
+                else
+                {
+                    idPFA = typesBudgets.Where(x => x.Name == EnumBudgetType.pfa2).FirstOrDefault().Id;
+                }
+
+                var costDetails = managementReport.CostDetails;
+
+                //Obtengo los meses que tiene la analitica
+                var dates = this.SetDates(managementReport.Analytic);
+                var Months = new List<MonthDetailCostStaff>();
+
+                for (DateTime date = new DateTime(dates.Item1.Year, dates.Item1.Month, 1).Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
+                {
+                    var monthHeader = new MonthDetailCostStaff();
+                    monthHeader.MonthYear = date;
+
+                    Months.Add(monthHeader);
+                }
+
+                foreach (var mounth in Months)
+                {
+                    var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
+
+                    //Elimino todos los registros del PFA ya guardados para ese mes
+                    unitOfWork.CostDetailStaffRepository.Delete(costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == idPFA).ToList());
+
+                    if (costDetailMonth != null)
+                    {
+                        List<CostDetailStaff> subcategories;
+                        if (mounth.MonthYear.Date < DateTime.Now.Date.AddMonths(-1))
+                        {
+                            subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Real).FirstOrDefault().Id).ToList();
+                        }
+                        else
+                        {
+                            subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Projected).FirstOrDefault().Id).ToList();
+                        }
+                        if (subcategories != null)
+                        {
+                            foreach (var subcategory in subcategories)
+                            {
+                                var entity = new CostDetailStaff();
+
+                                entity.Value = subcategory.Value ?? 0;
+                                entity.Description = subcategory.Description;
+                                entity.CostDetailId = costDetailMonth.Id;
+                                entity.CostDetailSubcategoryId = subcategory.CostDetailSubcategoryId;
+                                entity.BudgetTypeId = idPFA;
+
+                                unitOfWork.CostDetailStaffRepository.Insert(entity);
+                            }
+                        }
+                    }
+                }
+
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
             }
             catch (Exception ex)
             {
@@ -848,6 +943,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             decimal totalBudget = 0;
             decimal totalPFA1 = 0;
             decimal totalPFA2 = 0;
+            decimal totalProyected = 0;
 
             try
             {
@@ -858,6 +954,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         totalBudget += month.SubcategoriesBudget.Sum(x => x.Value) ?? 0;
                         totalPFA1 += month.SubcategoriesPfa1.Sum(x => x.Value) ?? 0;
                         totalPFA2 += month.SubcategoriesPfa2.Sum(x => x.Value) ?? 0;
+                        totalProyected += month.SubcategoriesProjected.Sum(x => x.Value) ?? 0;
                     }
                 }
 
@@ -866,6 +963,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 decimal lastBudget = 0;
                 decimal lastPfa1 = 0;
                 decimal lastPfa2 = 0;
+                decimal lastProyected = 0;
 
                 if (budgestDB.Any())
                 {
@@ -881,6 +979,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 budgestDB.Where(x => x.Description.ToUpper() == EnumBudgetType.pfa2)
                                             .OrderByDescending(x => x.StartDate)
                                             .FirstOrDefault().Value : 0;
+                    lastProyected = budgestDB.Any(x => x.Description.ToUpper() == EnumBudgetType.Projected) ?
+                               budgestDB.Where(x => x.Description.ToUpper() == EnumBudgetType.Projected)
+                                           .OrderByDescending(x => x.StartDate)
+                                           .FirstOrDefault().Value : 0;
                 }
 
                 if (lastBudget != totalBudget)
@@ -924,6 +1026,20 @@ namespace Sofco.Service.Implementations.ManagementReport
                         Description = EnumBudgetType.pfa2
                     };
                     unitOfWork.ManagementReportRepository.AddBudget(pfa2);
+                }
+
+                if (lastProyected != totalProyected)
+                {
+                    var proyected = new Budget
+                    {
+                        StartDate = DateTime.Now,
+                        ManagementReportId = managementReportId,
+                        ModifiedBy = currentUser.UserName,
+                        Value = totalProyected,
+                        LastValue = lastProyected,
+                        Description = EnumBudgetType.Projected
+                    };
+                    unitOfWork.ManagementReportRepository.AddBudget(proyected);
                 }
             }
             catch (Exception ex)

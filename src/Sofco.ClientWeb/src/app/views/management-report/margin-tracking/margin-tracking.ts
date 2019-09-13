@@ -83,6 +83,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
         for (var initDate = startDate; initDate <= endDate; initDate.setMonth(initDate.getMonth() + 1)) {
             var marginTracking = new MarginTracking();
+            var billingRealMonth = 0
 
             cantMonths += 1
 
@@ -130,6 +131,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
                                 // // Real del mes $$ (ventas)
                                 // marginTracking.SalesOnMonth += valueMonth.valuePesos;
+                                billingRealMonth +=valueMonth.valuePesos
                             }
                             else{
                                 billingAcumulateProyected += valueMonth.valuePesos;
@@ -161,9 +163,15 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
                 costsAcumulatedToDate += costDetailMonth.real.totalCost;
                 
                 // Real del mes $$ (ventas)
+                if(costDetailMonth.totalBilling && costDetailMonth.totalBilling != null){
                 marginTracking.SalesOnMonth = costDetailMonth.totalBilling;
                 billingRealAcumulatedToDate += costDetailMonth.totalBilling;
-                
+                }
+                else{
+                    marginTracking.SalesOnMonth = billingRealMonth
+                    billingRealAcumulatedToDate += billingRealMonth
+                }
+
                 totalCostsAcumulatedToEnd += costDetailMonth.real.totalCost;
                 
             }

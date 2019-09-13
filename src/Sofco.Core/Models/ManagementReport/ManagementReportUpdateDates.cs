@@ -41,4 +41,11 @@ namespace Sofco.Core.Models.ManagementReport
 
         public DateTime Date { get; set; }
     }
+
+    public class ManagementGeneratePFAModel
+    {
+        public int IdManagementReport { get; set; }
+
+        public int TypePFA { get; set; }
+    }
 }

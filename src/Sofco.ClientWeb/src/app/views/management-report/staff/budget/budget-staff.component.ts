@@ -19,6 +19,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getCostSubscrip: Subscription;
     updateCostSubscrip: Subscription;
+    generatePFASuscrip: Subscription;
 
     showColumn = {
         budget: true,
@@ -78,6 +79,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         if (this.getCostSubscrip) this.getCostSubscrip.unsubscribe();
         if (this.paramsSubscrip) this.paramsSubscrip.unsubscribe();
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
+        if (this.generatePFASuscrip) this.generatePFASuscrip.unsubscribe()
     }
 
     getCost(managementReportId) {
@@ -447,6 +449,25 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             && !this.showColumn.real && !this.showColumn.projected) {
             this.showColumn[column] = true
         }
+    }
+
+    generatePfa(typePfa){
+        this.messageService.showLoading()
+
+        var model = {
+            IdManagementReport: this.managementReportId,
+            TypePFA: typePfa
+        }
+
+        this.generatePFASuscrip = this.ManagementReportStaffService.PostGeneratePfa(model).subscribe(
+            ()=>{
+                this.messageService.closeLoading()
+                this.getCost(this.managementReportId);
+            },
+            () =>{
+                this.messageService.closeLoading()
+            }
+        )
     }
 
     // selectDefaultColumn(date: Date) {
