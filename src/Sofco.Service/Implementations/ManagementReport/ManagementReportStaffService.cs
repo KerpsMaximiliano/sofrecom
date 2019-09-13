@@ -115,6 +115,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                         response.Data.Budgets.Add(budget);
                     }
 
+                    if (budgets.Any(x => x.Description.ToUpper() == EnumBudgetType.Projected))
+                    {
+                        var budget = budgets.Where(x => x.Description.ToUpper() == EnumBudgetType.Projected)
+                                .OrderByDescending(x => x.StartDate).FirstOrDefault();
+
+                        response.Data.Budgets.Add(budget);
+                    }
+
                     if (budgets.Any(x => x.Description.ToUpper() == EnumBudgetType.Real))
                     {
                         var budget = budgets.Where(x => x.Description.ToUpper() == EnumBudgetType.Real)
@@ -529,6 +537,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                 }
 
                 unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
             }
             catch (Exception ex)
             {
@@ -933,6 +943,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             decimal totalBudget = 0;
             decimal totalPFA1 = 0;
             decimal totalPFA2 = 0;
+            decimal totalProyected = 0;
 
             try
             {
@@ -943,6 +954,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         totalBudget += month.SubcategoriesBudget.Sum(x => x.Value) ?? 0;
                         totalPFA1 += month.SubcategoriesPfa1.Sum(x => x.Value) ?? 0;
                         totalPFA2 += month.SubcategoriesPfa2.Sum(x => x.Value) ?? 0;
+                        totalProyected += month.SubcategoriesProjected.Sum(x => x.Value) ?? 0;
                     }
                 }
 
@@ -951,6 +963,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 decimal lastBudget = 0;
                 decimal lastPfa1 = 0;
                 decimal lastPfa2 = 0;
+                decimal lastProyected = 0;
 
                 if (budgestDB.Any())
                 {
@@ -966,6 +979,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 budgestDB.Where(x => x.Description.ToUpper() == EnumBudgetType.pfa2)
                                             .OrderByDescending(x => x.StartDate)
                                             .FirstOrDefault().Value : 0;
+                    lastProyected = budgestDB.Any(x => x.Description.ToUpper() == EnumBudgetType.Projected) ?
+                               budgestDB.Where(x => x.Description.ToUpper() == EnumBudgetType.Projected)
+                                           .OrderByDescending(x => x.StartDate)
+                                           .FirstOrDefault().Value : 0;
                 }
 
                 if (lastBudget != totalBudget)
@@ -1009,6 +1026,20 @@ namespace Sofco.Service.Implementations.ManagementReport
                         Description = EnumBudgetType.pfa2
                     };
                     unitOfWork.ManagementReportRepository.AddBudget(pfa2);
+                }
+
+                if (lastProyected != totalProyected)
+                {
+                    var proyected = new Budget
+                    {
+                        StartDate = DateTime.Now,
+                        ManagementReportId = managementReportId,
+                        ModifiedBy = currentUser.UserName,
+                        Value = totalProyected,
+                        LastValue = lastProyected,
+                        Description = EnumBudgetType.Projected
+                    };
+                    unitOfWork.ManagementReportRepository.AddBudget(proyected);
                 }
             }
             catch (Exception ex)
