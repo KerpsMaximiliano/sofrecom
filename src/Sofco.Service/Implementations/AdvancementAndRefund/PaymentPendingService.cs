@@ -132,9 +132,58 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
         private void FillAdvancements(Dictionary<string, string> employeeDicc, Dictionary<string, string> employeeManagerDicc, Dictionary<string, string> employeeNameManagerDicc, Response<IList<PaymentPendingModel>> response)
         {
-            var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkflowStatusApproveId);
+            var advancementsAccounted = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStateAccounted);
+            var advancementsPaid = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkflowStatusApproveId);
 
-            foreach (var advancement in advancements)
+            foreach (var advancement in advancementsPaid)
+            {
+                var itemAlreadyInList = response.Data.SingleOrDefault(x => x.UserApplicantId == advancement.UserApplicantId && x.CurrencyId == advancement.CurrencyId);
+
+                if (itemAlreadyInList == null)
+                {
+                    var item = new PaymentPendingModel
+                    {
+                        Id = response.Data.Count + 1,
+                        UserApplicantId = advancement.UserApplicantId,
+                        UserApplicantDesc = advancement.UserApplicant?.Name,
+                        CurrencyId = advancement.CurrencyId,
+                        CurrencyDesc = advancement.Currency?.Text,
+                        Ammount = advancement.Ammount*-1,
+                        Entities = new List<EntityToPay> { new EntityToPay
+                        {
+                            Id = advancement.Id,
+                            Type = "advancement",
+                            WorkflowId = advancement.WorkflowId,
+                            NextWorkflowStateId = settings.WorkflowStatusApproveId
+                        } }
+                    };
+
+                    SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameManagerDicc);
+
+                    if (advancement.UserApplicant != null)
+                    {
+                        item.Bank = employeeDicc[advancement.UserApplicant.Email];
+                        item.Manager = employeeManagerDicc[advancement.UserApplicant?.Email];
+                        item.UserApplicantDesc = employeeNameManagerDicc[advancement.UserApplicant?.Email];
+                    }
+
+                    response.Data.Add(item);
+                }
+                else
+                {
+                    itemAlreadyInList.Entities.Add(new EntityToPay
+                    {
+                        Id = advancement.Id,
+                        Type = "advancement",
+                        WorkflowId = advancement.WorkflowId,
+                        NextWorkflowStateId = settings.WorkflowStatusApproveId
+                    });
+
+                    itemAlreadyInList.Ammount -= advancement.Ammount;
+                }
+            }
+
+            foreach (var advancement in advancementsAccounted)
             {
                 var itemAlreadyInList = response.Data.SingleOrDefault(x => x.UserApplicantId == advancement.UserApplicantId && x.CurrencyId == advancement.CurrencyId);
 
@@ -178,7 +227,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         NextWorkflowStateId = settings.WorkflowStatusApproveId
                     });
 
-                    itemAlreadyInList.Ammount -= advancement.Ammount;
+                    itemAlreadyInList.Ammount += advancement.Ammount;
                 }
             }
         }
