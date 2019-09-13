@@ -8,5 +8,6 @@ namespace Sofco.Core.DAL.Common
     {
         bool Exist(int idValue);
         IList<CurrencyExchange> Get(DateTime startDate, DateTime endDate);
+        CurrencyExchange Get(DateTime date, string hitoMoneyId);
     }
 }

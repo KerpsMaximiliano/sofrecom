@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Billing;
 using Sofco.Framework.ValidationHelpers.Billing;
@@ -13,7 +15,6 @@ using Sofco.Core.Logger;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
 using Sofco.Domain.Crm;
-using Sofco.Domain.Helpers;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -25,12 +26,14 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IProjectData projectData;
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<HitoService> logger;
+        private readonly AppSetting appSetting;
 
         public HitoService(IOptions<CrmConfig> crmOptions,
             IProjectData projectData,
             IManagementReportBillingService managementReportBillingService,
             IUnitOfWork unitOfWork,
             ILogMailer<HitoService> logger,
+            IOptions<AppSetting> appSettingOptions,
             ICrmInvoicingMilestoneService crmInvoicingMilestoneService)
         {
             this.crmConfig = crmOptions.Value;
@@ -39,6 +42,7 @@ namespace Sofco.Service.Implementations.Billing
             this.unitOfWork = unitOfWork;
             this.crmInvoicingMilestoneService = crmInvoicingMilestoneService;
             this.managementReportBillingService = managementReportBillingService;
+            this.appSetting = appSettingOptions.Value;
         }
 
         public Response Close(string id)
@@ -109,9 +113,9 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
-        public Response Patch(UpdateResourceBillingRequest data)
+        public Response<ResourceBillingRequestItem> Patch(UpdateResourceBillingRequest data)
         {
-            var response = new Response();
+            var response = new Response<ResourceBillingRequestItem>();
 
             if (string.IsNullOrWhiteSpace(data.Id))
                 response.AddError(Resources.Billing.Solfac.HitoNotFound);
@@ -124,13 +128,20 @@ namespace Sofco.Service.Implementations.Billing
 
             if (response.HasErrors()) return response;
 
-            response = managementReportBillingService.ValidateAddResources(data.BillingMonthId, data.Resources);
+            var responseResources = managementReportBillingService.ValidateAddResources(data.BillingMonthId, data.Resources);
 
-            if (response.HasErrors()) return response;
+            if (responseResources.HasErrors())
+            {
+                response.Messages = responseResources.Messages;
+                return response;
+            }
 
-            response = managementReportBillingService.AddResources(data.BillingMonthId, data.Resources, data.Id);
+            if (data.Resources.Any())
+            {
+                response = managementReportBillingService.AddResources(data.BillingMonthId, data.Resources, data.Id);
 
-            if (response.HasErrors()) return response;
+                if (response.HasErrors()) return response;
+            }
 
             crmInvoicingMilestoneService.UpdateAmmountAndName(new HitoAmmountParameter(data.Id, data.ProjectId, data.Ammount.GetValueOrDefault(), data.Name, data.Month), response);
 
@@ -178,7 +189,29 @@ namespace Sofco.Service.Implementations.Billing
             }
             else
             {
-                response.Data = hito;
+                var currencies = unitOfWork.UtilsRepository.GetCurrencies();
+                var currency = currencies.SingleOrDefault(x => x.CrmId.Equals(hito.MoneyId));
+
+                if (appSetting.CurrencyPesos != currency?.Id)
+                {
+                    var currencyExchange = unitOfWork.CurrencyExchangeRepository.Get(hito.StartDate, hito.MoneyId);
+
+                    if (currencyExchange != null)
+                    {
+                        hito.BaseAmount = hito.Ammount * currencyExchange.Exchange;
+                        hito.BaseAmountOriginal = hito.AmountOriginal * currencyExchange.Exchange;
+                        response.Data = hito;
+                    }
+                    else
+                    {
+                        response.AddError(Resources.ManagementReport.CurrencyExchange.NotFound);
+                        return response;
+                    }
+                }
+                else
+                {
+                    response.Data = hito;
+                }
             }
 
             return response;

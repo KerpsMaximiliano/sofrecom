@@ -22,5 +22,11 @@ namespace Sofco.DAL.Repositories.Common
         {
             return context.CurrencyExchanges.Include(x => x.Currency).Where(x => x.Date.Date >= startDate.Date && x.Date.Date <= endDate.Date).ToList();
         }
+
+        public CurrencyExchange Get(DateTime date, string hitoMoneyId)
+        {
+            return context.CurrencyExchanges.Include(x => x.Currency)
+                .SingleOrDefault(x => x.Date.Month == date.Month && x.Date.Year == date.Year && x.Currency.CrmId.Equals(hitoMoneyId));
+        }
     }
 }

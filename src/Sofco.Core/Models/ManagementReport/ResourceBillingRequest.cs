@@ -6,7 +6,7 @@ namespace Sofco.Core.Models.ManagementReport
     {
         public int Id { get; set; }
 
-        public int? ProfileId { get; set; }
+        public string Profile { get; set; }
 
         public int? SeniorityId { get; set; }
 

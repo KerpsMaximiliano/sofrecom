@@ -56,9 +56,9 @@ namespace Sofco.DAL.Repositories.ManagementReport
             context.ResourceBillings.Update(domain);
         }
 
-        public IList<ResourceBilling> GetResources(int idBilling)
+        public IList<ResourceBilling> GetResources(int idBilling, string hitoId)
         {
-            return context.ResourceBillings.Where(x => x.ManagementReportBillingId == idBilling).ToList();
+            return context.ResourceBillings.Where(x => x.ManagementReportBillingId == idBilling && x.HitoCrmId.Equals(hitoId)).ToList();
         }
 
         public void DeleteResources(IList<ResourceBilling> reportBillingResourceBillings)
@@ -69,6 +69,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
         public int GetResourcesCount(int reportBillingId)
         {
             return context.ResourceBillings.Count(x => x.ManagementReportBillingId == reportBillingId);
+        }
+
+        public IList<ResourceBilling> GetResources(int billingId)
+        {
+            return context.ResourceBillings.Where(x => x.ManagementReportBillingId == billingId).ToList();
         }
     }
 }

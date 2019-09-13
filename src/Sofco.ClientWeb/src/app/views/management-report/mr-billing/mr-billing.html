@@ -21,7 +21,7 @@
             <tr>
                 <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
                 <td *ngFor="let month of months | fromDateFilter: fromMonth;">
-                    <label class="label label-primary" [ngClass]="canEditCdg() ? 'pointer' : ''" (click)="openResourceQuantity(month)">{{ month.resourceQuantity }}</label>
+                    <label class="label label-primary" [ngClass]="canEditCdg() ? 'pointer' : ''">{{ month.resourceQuantity }}</label>
                 </td>
             </tr> 
             <tr> 
@@ -160,7 +160,7 @@
         <div class="col-md-2">
             <div class="form-group">
                 <label class="label-control">Recursos facturados</label>
-                <input type="number" class="form-control" [(ngModel)]="resourceQuantity">
+                <input type="number" class="form-control" disabled [(ngModel)]="resourceQuantity">
             </div>
         </div>
     </div>
@@ -198,7 +198,7 @@
             </div>
             <div class="col-md-2">
                 <div class="form-group">
-                    <ng-select class="input-billing-modal" [items]="profiles" bindLabel="text" bindValue="id" [(ngModel)]="item.profileId"></ng-select>
+                    <input class="form-control input-billing-modal" type="text" [(ngModel)]="item.profile" />
                 </div>
             </div>
             <div class="col-md-2">
@@ -213,7 +213,7 @@
             </div>
             <div class="col-md-1">
                 <div class="form-group">
-                    <input class="form-control input-billing-modal" decimalFormat="3" type="text" [(ngModel)]="item.quantity" (ngModelChange)="calculateTotal()" [disabled]="item.monthHour == 1" />
+                    <input class="form-control input-billing-modal" decimalFormat="3" type="text" [(ngModel)]="item.quantity" (ngModelChange)="calculateTotal()" />
                 </div>
             </div>
             <div class="col-md-2">

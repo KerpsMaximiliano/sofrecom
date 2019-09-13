@@ -13,7 +13,7 @@ namespace Sofco.Core.Services.Billing
 
         Response<string> Create(HitoParameters hito);
 
-        Response Patch(UpdateResourceBillingRequest hito);
+        Response<ResourceBillingRequestItem> Patch(UpdateResourceBillingRequest hito);
 
         Response Delete(string hitoId, string projectId);
 

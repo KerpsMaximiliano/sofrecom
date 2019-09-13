@@ -151,29 +151,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response UpdateQuantityResources(int idBilling, int quantityResources)
-        {
-            var response = new Response();
-            try
-            {
-                ManagementReportBilling entity = unitOfWork.ManagementReportBillingRepository.Get(idBilling);
-
-                entity.BilledResources = quantityResources;
-
-                unitOfWork.ManagementReportBillingRepository.Update(entity);
-                unitOfWork.Save();
-
-                response.AddSuccess(Resources.ManagementReport.ManagementReportBilling.ValueUpdated);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-                response.AddError(Resources.Common.ErrorSave);
-            }
-
-            return response;
-        }
-
         public Response ValidateAddResources(int idBilling, IList<ResourceBillingRequestItem> resources)
         {
             var response = new Response();
@@ -191,21 +168,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             foreach (var item in resources)
             {
                 if (item.Deleted) continue;
-
-                if (!unitOfWork.UtilsRepository.ExistProfile(item.ProfileId.GetValueOrDefault()))
-                {
-                    response.AddErrorAndNoTraslate($"Item {index}: Perfil no existe");
-                }
-
-                if (!unitOfWork.UtilsRepository.ExistSeniority(item.SeniorityId.GetValueOrDefault()))
-                {
-                    response.AddErrorAndNoTraslate($"Item {index}: Seniority no existe");
-                }
-
-                if (!unitOfWork.PurchaseOrderRepository.Exist(item.EmployeeId.GetValueOrDefault()))
-                {
-                    response.AddErrorAndNoTraslate($"Item {index}: Orden de compra no existe");
-                }
 
                 if (!item.MonthHour.HasValue || item.MonthHour == 0)
                 {
@@ -228,10 +190,9 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<IList<ResourceBillingRequestItem>> AddResources(int idBilling,
-            IList<ResourceBillingRequestItem> resources, string hitoId)
+        public Response<ResourceBillingRequestItem> AddResources(int idBilling, IList<ResourceBillingRequestItem> resources, string hitoId)
         {
-            var response = new Response<IList<ResourceBillingRequestItem>> { Data = new List<ResourceBillingRequestItem>() };
+            var response = new Response<ResourceBillingRequestItem>();
 
             var billing = unitOfWork.ManagementReportBillingRepository.Get(idBilling);
 
@@ -255,32 +216,34 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             var domain = GetResourceBillingDomain(billing.Id, item);
                             domain.Id = item.Id;
+                            domain.HitoCrmId = hitoId;
 
                             unitOfWork.ManagementReportBillingRepository.UpdateResource(domain);
                         }
                     }
                 }
 
-                if (resources.Any())
-                {
-                    if (billing.Id == idBilling)
-                    {
-                        billing.BilledResources = resources.Count(x => !x.Deleted);
-                        billing.BilledResourceTotal = resources.Where(x => !x.Deleted).Sum(x => x.SubTotal);
+                unitOfWork.Save();
+                response.AddSuccess(Resources.ManagementReport.ManagementReportBilling.ResourcesUpdated);
 
-                        unitOfWork.ManagementReportBillingRepository.Update(billing);
-                    }
+                var billingResources = unitOfWork.ManagementReportBillingRepository.GetResources(billing.Id);
+
+                if (billingResources.Any())
+                {
+                    billing.BilledResources = billingResources.Count;
+                    billing.BilledResourceTotal = billingResources.Sum(x => x.SubTotal);
+
+                    unitOfWork.ManagementReportBillingRepository.Update(billing);
                 }
 
-                response.Data.Add(new ResourceBillingRequestItem
+                unitOfWork.Save();
+
+                response.Data = new ResourceBillingRequestItem
                 {
                     Id = billing.Id,
                     Quantity = billing.BilledResources,
                     SubTotal = billing.BilledResourceTotal
-                });
-
-                unitOfWork.Save();
-                response.AddSuccess(Resources.ManagementReport.ManagementReportBilling.ResourcesUpdated);
+                };
             }
             catch (Exception e)
             {
@@ -291,11 +254,11 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<IList<ResourceBillingRequestItem>> GetResources(int idBilling)
+        public Response<IList<ResourceBillingRequestItem>> GetResources(int idBilling, string hitoId)
         {
             var response = new Response<IList<ResourceBillingRequestItem>> { Data = new List<ResourceBillingRequestItem>() };
 
-            var list = unitOfWork.ManagementReportBillingRepository.GetResources(idBilling);
+            var list = unitOfWork.ManagementReportBillingRepository.GetResources(idBilling, hitoId);
 
             if (list.Any())
             {
@@ -308,7 +271,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     SeniorityId = x.SeniorityId,
                     Quantity = x.Quantity,
                     MonthHour = x.MonthHour,
-                    ProfileId = x.ProfileId
+                    Profile = x.Profile
                 })
                 .ToList();
             }
@@ -323,12 +286,29 @@ namespace Sofco.Service.Implementations.ManagementReport
                 Amount = item.Amount,
                 ManagementReportBillingId = idBilling,
                 MonthHour = item.MonthHour.GetValueOrDefault(),
-                ProfileId = item.ProfileId.GetValueOrDefault(),
-                EmployeeId = item.EmployeeId.GetValueOrDefault(),
+                Profile = item.Profile,
                 Quantity = item.Quantity,
-                SeniorityId = item.SeniorityId.GetValueOrDefault(),
                 SubTotal = item.SubTotal
             };
+
+            if (item.EmployeeId.HasValue)
+            {
+                domain.EmployeeId = item.EmployeeId.Value;
+            }
+            else
+            {
+                domain.EmployeeId = null;
+            }
+
+            if (item.SeniorityId.HasValue)
+            {
+                domain.SeniorityId = item.SeniorityId.Value;
+            }
+            else
+            {
+                domain.SeniorityId = null;
+            }
+
             return domain;
         }
     }

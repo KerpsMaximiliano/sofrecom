@@ -6,13 +6,12 @@ namespace Sofco.Domain.Models.ManagementReport
 {
     public class ResourceBilling : BaseEntity
     {
-        public int ProfileId { get; set; }
-        public Profile Profile { get; set; }
+        public string Profile { get; set; }
 
-        public int SeniorityId { get; set; }
+        public int? SeniorityId { get; set; }
         public Seniority Seniority { get; set; }
 
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         public Employee Employee { get; set; }
 
         /// <summary>

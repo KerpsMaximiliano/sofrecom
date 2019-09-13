@@ -10,12 +10,9 @@ namespace Sofco.Core.Services.ManagementReport
 
         Response<int> UpdateData(UpdateBillingDataModel model);
 
-        Response UpdateQuantityResources(int idBilling, int quantityResources);
+        Response<ResourceBillingRequestItem> AddResources(int idBilling, IList<ResourceBillingRequestItem> resources, string hitoId);
 
-        Response<IList<ResourceBillingRequestItem>> AddResources(int idBilling,
-            IList<ResourceBillingRequestItem> resources, string hitoId);
-
-        Response<IList<ResourceBillingRequestItem>> GetResources(int idBilling);
+        Response<IList<ResourceBillingRequestItem>> GetResources(int idBilling, string hitoId);
 
         Response ValidateAddResources(int idBilling, IList<ResourceBillingRequestItem> resources);
     }

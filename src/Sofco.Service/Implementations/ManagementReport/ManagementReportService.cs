@@ -233,7 +233,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         var currencyExchange = currencyExchanges.SingleOrDefault(x => x.Currency.CrmId == hito.MoneyId && x.Date.Month == hito.StartDate.Month && x.Date.Year == hito.StartDate.Year);
 
-                        var montoOriginalPesos = hito.BaseAmountOriginal;
+                        var montoOriginalPesos = hito.AmountOriginal;
 
                         if (currencyExchange != null && currencyExchange?.CurrencyId != appSetting.CurrencyPesos)
                         {
@@ -265,7 +265,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             Status = hito.Status
                         };
 
-                        var montoPesos = hito.BaseAmount;
+                        var montoPesos = hito.Ammount;
 
                         if (currencyExchange != null && currencyExchange.CurrencyId != appSetting.CurrencyPesos)
                         {
