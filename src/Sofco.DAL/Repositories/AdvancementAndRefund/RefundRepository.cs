@@ -120,7 +120,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                     .ThenInclude(x => x.Advancement)
                 .Include(x => x.Details)
                 .Include(x => x.Status).ThenInclude(x => x.ActualTransitions)
-                .Where(x => x.StatusId == workFlowStatePaymentPending);
+                .Where(x => x.StatusId == workFlowStatePaymentPending && !x.CreditCardId.HasValue);
 
             return query.ToList();
         }

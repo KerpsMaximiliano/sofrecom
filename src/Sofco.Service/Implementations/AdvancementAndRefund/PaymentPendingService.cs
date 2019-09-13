@@ -132,7 +132,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
         private void FillAdvancements(Dictionary<string, string> employeeDicc, Dictionary<string, string> employeeManagerDicc, Dictionary<string, string> employeeNameManagerDicc, Response<IList<PaymentPendingModel>> response)
         {
-            var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkflowStatusApproveId);
+            var advancements = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStateAccounted);
 
             foreach (var advancement in advancements)
             {
