@@ -107,7 +107,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         Id = refund.Id,
                         Type = "refund",
                         WorkflowId = refund.WorkflowId,
-                        NextWorkflowStateId = settings.WorkflowStatusFinalizedId
+                        NextWorkflowStateId = settings.WorkflowStatusApproveId
                     });
 
                     //var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
@@ -149,13 +149,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         CurrencyId = advancement.CurrencyId,
                         CurrencyDesc = advancement.Currency?.Text,
                         Ammount = advancement.Ammount*-1,
-                        Entities = new List<EntityToPay> { new EntityToPay
-                        {
-                            Id = advancement.Id,
-                            Type = "advancement",
-                            WorkflowId = advancement.WorkflowId,
-                            NextWorkflowStateId = settings.WorkflowStatusApproveId
-                        } }
+                        Entities = new List<EntityToPay>()
                     };
 
                     SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameManagerDicc);
@@ -171,14 +165,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 }
                 else
                 {
-                    itemAlreadyInList.Entities.Add(new EntityToPay
-                    {
-                        Id = advancement.Id,
-                        Type = "advancement",
-                        WorkflowId = advancement.WorkflowId,
-                        NextWorkflowStateId = settings.WorkflowStatusApproveId
-                    });
-
                     itemAlreadyInList.Ammount -= advancement.Ammount;
                 }
             }

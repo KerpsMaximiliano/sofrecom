@@ -161,7 +161,6 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             var dates = SetDates(analytic);
 
-
             response.Data.MonthsHeader = new List<MonthBillingHeaderItem>();
             response.Data.Projects = new List<ProjectOption>();
 

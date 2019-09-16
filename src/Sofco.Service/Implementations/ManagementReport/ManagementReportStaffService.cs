@@ -84,7 +84,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         Month = date.Month,
                         Year = date.Year,
                         Description = DatesHelper.GetDateDescription(date),
-                        Items = currencyExchange.Select(x => new CurrencyExchangeItemModel { CurrencyDesc = x.Currency.Text, Exchange = x.Exchange }).ToList(),
+                        Items = currencyExchange.Select(x => new CurrencyExchangeItemModel { CurrencyDesc = x.Currency.Text, Exchange = x.Exchange, CurrencyId = x.CurrencyId }).ToList(),
                     });
                 }
 
