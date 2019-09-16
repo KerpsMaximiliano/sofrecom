@@ -43,6 +43,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     comments: string;
     allComments: any[] = new Array();
     months: any[] = new Array();
+   
 
     public addCommentModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Agregar comentario",
@@ -159,6 +160,8 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
             this.readOnly = !this.canEdit();
             this.budgetView.readOnly = !this.canEdit();
+
+            this.budgetView.monthExchanges = this.months;
         },
         responseError => {
             this.messageService.closeLoading();

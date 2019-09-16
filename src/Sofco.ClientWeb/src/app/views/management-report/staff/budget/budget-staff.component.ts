@@ -47,8 +47,25 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     budgetTypes: any[] = new Array()
     costByMonth: any[] = new Array()
     currencies: any[] = new Array()
+    monthExchanges: any[] = new Array();
+
+    totalCostsExchanges: any = {
+        exchanges: [],
+        currencies: [],
+        total: 0
+    };
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
+
+    @ViewChild('totalCostsExchangesModal') totalCostsExchangesModal;
+    public totalCostsExchangesModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Total de costos por moneda",
+        "totalCostsExchangesModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     @ViewChild('editItemModal') editItemModal;
     public editItemModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -148,7 +165,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     id: subcat.id,
                     name: subcat.name,
                     description: subcat.description,
-                    value: subcat.value,
+                    value: subcat.originalValue,
                     budgetTypeId: subcat.budgetTypeId,
                     deleted: subcat.deleted,
                     currencyId: subcat.currencyId
@@ -263,41 +280,55 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     updateItem() {
+        var hasError = false;
+        this.subCategoriesData.forEach(cost => {
+            if(!cost.currencyId || cost.currencyId == 0){
+                hasError = true;
+                this.messageService.showErrorByFolder('managementReport/currencyExchange', 'currencyRequired');
+            }
+        });
+
+        if(hasError) {
+            this.editItemModal.resetButtons();
+            return;
+        };
+
+        var currencyMonth = this.monthExchanges.find(x => x.month == this.monthSelected.month && x.year == this.monthSelected.year);
 
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
                 this.monthSelected.subcategoriesBudget = this.subCategoriesData
                 this.monthSelected.totalBudget = 0
                 this.monthSelected.subcategoriesBudget.forEach(cost => {
-                    this.monthSelected.totalBudget += cost.value
+                    this.monthSelected.totalBudget += this.setExchangeValue(currencyMonth, cost);
                 })
                 break;
             case 'PROJECTED':
                 this.monthSelected.subcategoriesProjected = this.subCategoriesData
                 this.monthSelected.totalProjected = 0
                 this.monthSelected.subcategoriesProjected.forEach(cost => {
-                    this.monthSelected.totalProjected += cost.value
+                    this.monthSelected.totalProjected += this.setExchangeValue(currencyMonth, cost);
                 })
                 break;
             case 'PFA1':
                 this.monthSelected.subcategoriesPfa1 = this.subCategoriesData
                 this.monthSelected.totalPfa1 = 0
                 this.monthSelected.subcategoriesPfa1.forEach(cost => {
-                    this.monthSelected.totalPfa1 += cost.value
+                    this.monthSelected.totalPfa1 += this.setExchangeValue(currencyMonth, cost);
                 })
                 break;
             case 'PFA2':
                 this.monthSelected.subcategoriesPfa2 = this.subCategoriesData
                 this.monthSelected.totalPfa2 = 0
                 this.monthSelected.subcategoriesPfa2.forEach(cost => {
-                    this.monthSelected.totalPfa2 += cost.value
+                    this.monthSelected.totalPfa2 += this.setExchangeValue(currencyMonth, cost);
                 })
                 break;
             case 'REAL':
                 this.monthSelected.subcategoriesReal = this.subCategoriesData
                 this.monthSelected.totalReal = 0
                 this.monthSelected.subcategoriesReal.forEach(cost => {
-                    this.monthSelected.totalReal += cost.value
+                    this.monthSelected.totalReal += this.setExchangeValue(currencyMonth, cost);
                 })
                 break;
         }
@@ -305,6 +336,29 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.calculateTotalCosts()
         this.sendDataToDetailView();
         this.editItemModal.hide()
+    }
+
+    setExchangeValue(currencyMonth, cost){
+        var total = 0;
+
+        cost.originalValue = cost.value;
+
+        if(currencyMonth){
+            var currencyExchange = currencyMonth.items.find(x => x.currencyId == cost.currencyId);
+
+            if(currencyExchange){
+                cost.value *= currencyExchange.exchange;
+                total += cost.value;
+            }
+            else{
+                total += cost.value
+            }
+        }
+        else{
+            total += cost.value
+        }
+
+        return total;
     }
 
     calculateTotalCosts() {
@@ -494,6 +548,58 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 this.messageService.closeLoading()
             }
         )
+    }
+
+    setAllCosts(month, total, type){
+        var exchanges = [];
+        var currencies = [];
+
+        this.currencies.forEach(currency => {
+            currencies.push({value: 0, valuePesos: 0, currencyName: currency.text, id: currency.id });        
+        });
+
+        var currencyMonth = this.monthExchanges.find(x => x.month == month.month && x.year == month.year);
+
+        if(currencyMonth){
+            currencyMonth.items.forEach(item => {
+                exchanges.push({ currencyName: item.currencyDesc, exchange: item.exchange });
+            });
+        }
+
+        this.categories.forEach(category => {
+            var monthCategory = category.monthsCategory.find(x => x.month == month.month && x.year == month.year);
+
+            if(monthCategory){
+                var subCategories = this.getSubcategories(monthCategory, type);
+
+                subCategories.forEach(subcategory => {
+                    var curr = currencies.find(x => x.id == subcategory.currencyId);
+
+                    if(curr){
+                        curr.value += subcategory.originalValue;
+                        curr.valuePesos += subcategory.value;
+                    }
+                });
+            }
+        });
+
+        this.totalCostsExchanges = {
+            exchanges: exchanges,
+            currencies: currencies,
+            total: total
+        };
+
+        this.totalCostsExchangesModal.show();
+    }
+
+    getSubcategories(monthCategory, type){
+        switch(type){
+            case 'budget': return monthCategory.subcategoriesBudget;
+            case 'projected': return monthCategory.subcategoriesProjected;
+            case 'pfa1': return monthCategory.subcategoriesPfa1;
+            case 'pfa2': return monthCategory.subcategoriesPfa2;
+            case 'real': return monthCategory.subcategoriesReal;
+        }
     }
 
     // selectDefaultColumn(date: Date) {

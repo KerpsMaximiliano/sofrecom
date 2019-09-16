@@ -563,7 +563,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                                                         .Union(month.SubcategoriesReal)
                                                         .Union(month.SubcategoriesProjected);
 
-
                         foreach (var subCatBudget in allSubcategories)
                         {
                             var entity = new CostDetailStaff();
@@ -581,6 +580,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                                     {
                                         entity.Value = subCatBudget.Value ?? 0;
                                         entity.Description = subCatBudget.Description;
+                                        entity.CurrencyId = subCatBudget.CurrencyId.GetValueOrDefault();
+                                        entity.OriginalValue = subCatBudget.OriginalValue ?? 0;
 
                                         unitOfWork.CostDetailStaffRepository.Update(entity);
                                     }
@@ -591,7 +592,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 if (subCatBudget.Value > 0 || !string.IsNullOrEmpty(subCatBudget.Description))
                                 {
                                     entity.Value = subCatBudget.Value ?? 0;
+                                    entity.OriginalValue = subCatBudget.OriginalValue ?? 0;
                                     entity.Description = subCatBudget.Description;
+                                    entity.CurrencyId = subCatBudget.CurrencyId.GetValueOrDefault();
                                     entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                     entity.CostDetailSubcategoryId = subCatBudget.Id;
                                     entity.BudgetTypeId = subCatBudget.BudgetTypeId;
@@ -805,6 +808,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 detailSubcategory.Name = subcategory.CostDetailSubcategory.Name;
                                 detailSubcategory.Description = subcategory.Description;
                                 detailSubcategory.Value = subcategory.Value;
+                                detailSubcategory.OriginalValue = subcategory.OriginalValue;
+                                detailSubcategory.CurrencyId = subcategory.CurrencyId;
                                 detailSubcategory.BudgetTypeId = subcategory.BudgetTypeId;
 
                                 switch (subcategory.BudgetType.Name.ToUpper())

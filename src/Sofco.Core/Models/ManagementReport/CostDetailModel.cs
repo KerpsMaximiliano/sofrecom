@@ -1,5 +1,4 @@
 ﻿using Sofco.Domain.Enums;
-using Sofco.Domain.Models.ManagementReport;
 using System;
 using System.Collections.Generic;
 
@@ -157,10 +156,10 @@ namespace Sofco.Core.Models.ManagementReport
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal? Value { get; set; }
+        public int? CurrencyId { get; set; }
+        public decimal? OriginalValue { get; set; }
         public int IdCategory { get; set; }
         public int BudgetTypeId { get; set; }
         public bool Deleted { get; set; }
     }
-
-
 }

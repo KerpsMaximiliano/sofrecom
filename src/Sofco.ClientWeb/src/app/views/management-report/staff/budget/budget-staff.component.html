@@ -85,27 +85,27 @@
                     <th class="static first-column" scope="col">Total de Gastos</th>
                     <ng-template ngFor let-month [ngForOf]="months" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
-                            <label class="label label-total">
+                            <label class="label label-total" (click)="setAllCosts(month, month.totalBudget, 'budget')">
                                 {{ month.totalBudget | amountFormat }}
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" [hidden]="!showColumn.projected">
-                            <label class="label label-total">
+                            <label class="label label-total" (click)="setAllCosts(month, month.totalProjected, 'projected')">
                                 {{ month.totalProjected | amountFormat }}
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" [hidden]="!showColumn.pfa1">
-                            <label class="label label-total">
+                            <label class="label label-total" (click)="setAllCosts(month, month.totalPfa1, 'pfa1')">
                                 {{ month.totalPfa1 | amountFormat }}
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" [hidden]="!showColumn.pfa2">
-                            <label class="label label-total">
+                            <label class="label label-total" (click)="setAllCosts(month, month.totalPfa2, 'pfa2')">
                                 {{ month.totalPfa2 | amountFormat }}
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('real', i)}" [hidden]="!showColumn.real">
-                            <label class="label label-total">
+                            <label class="label label-total" (click)="setAllCosts(month, month.totalReal, 'real')">
                                 {{ month.totalReal | amountFormat }}
                             </label>
                         </td>
@@ -214,8 +214,7 @@
                     <math-input [(model)]="cost.value"  [modelDisabled]="readOnly"></math-input>
                 </div>
                 <div class="col-sm-1 delete" [hidden]="readOnly">
-                    <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)"><i
-                            class="fa fa-trash"></i></button>
+                    <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)"><i class="fa fa-trash"></i></button>
                 </div>
             </div>
             <div class="row" [hidden]="readOnly">
@@ -237,4 +236,45 @@
         </div>
     </div>
 
+</ng2-modal>
+
+<ng2-modal [config]="totalCostsExchangesModalConfig" #totalCostsExchangesModal [size]="'modal-lg'">
+    <div class="row">
+        <div class="col-md-7">
+            <table class="table table-striped dataTable table-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th class="text-center">Moneda</th>
+                        <th class="text-center">Monto</th>
+                        <th class="text-center">Monto Pesos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of totalCostsExchanges.currencies">
+                        <td class="text-center">{{ item.currencyName }}</td>
+                        <td class="text-center">{{ item.value | amountFormat }}</td>
+                        <td class="text-center">{{ item.valuePesos | amountFormat }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-5">
+            <table class="table table-striped dataTable table-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th class="text-center">Moneda</th>
+                        <th class="text-center">Cotización</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of totalCostsExchanges.exchanges">
+                        <td class="text-center">{{ item.currencyName }}</td>
+                        <td class="text-center">{{ item.exchange | amountFormat }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <label class="m-t-md label label-primary totalBillingMonth">Total de Costos: ${{ totalCostsExchanges.total | amountFormat }}</label>
 </ng2-modal>

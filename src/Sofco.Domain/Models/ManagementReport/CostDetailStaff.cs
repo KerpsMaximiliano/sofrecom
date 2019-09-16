@@ -1,4 +1,6 @@
-﻿namespace Sofco.Domain.Models.ManagementReport
+﻿using Sofco.Domain.Utils;
+
+namespace Sofco.Domain.Models.ManagementReport
 {
     public class CostDetailStaff : BaseEntity
     {
@@ -13,6 +15,8 @@
 
         public int BudgetTypeId { get; set; }
         public BudgetType BudgetType { get; set; }
-
+        public decimal OriginalValue { get; set; }
+        public int CurrencyId { get; set; }
+        public Currency Currency { get; set; }
     }
 }
