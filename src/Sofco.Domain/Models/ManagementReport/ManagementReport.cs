@@ -17,6 +17,7 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public ManagementReportStatus Status { get; set; }
 
+        public int? StateId { get; set; }
         public BudgetType State { get; set; }
 
         public ICollection<CostDetail> CostDetails { get; set; }

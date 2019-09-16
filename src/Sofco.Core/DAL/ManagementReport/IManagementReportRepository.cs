@@ -11,6 +11,7 @@ namespace Sofco.Core.DAL.ManagementReport
         Domain.Models.ManagementReport.ManagementReport GetById(int IdManamentReport);
         Domain.Models.ManagementReport.ManagementReport GetWithAnalytic(int managementReportId);
         void UpdateStatus(Domain.Models.ManagementReport.ManagementReport report);
+        void UpdateState(Domain.Models.ManagementReport.ManagementReport report);
         bool AllMonthsAreClosed(int managementReportId);
         List<Domain.Models.ManagementReport.ManagementReport> GetByDate(DateTime date);
         Domain.Models.ManagementReport.ManagementReport GetStaffById(int id);

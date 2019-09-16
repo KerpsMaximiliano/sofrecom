@@ -23,6 +23,10 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<Domain.Models.ManagementReport.ManagementReport>().HasMany(x => x.Budgets)
                 .WithOne(x => x.ManagementReport).HasForeignKey(x => x.ManagementReportId);
 
+            builder.Entity<Domain.Models.ManagementReport.ManagementReport>().HasOne(x => x.State)
+                .WithMany(x => x.ManagementReport).HasForeignKey(x => x.StateId);
+
+
             // Cost Detail
             builder.Entity<CostDetail>().HasKey(x => x.Id);
             builder.Entity<CostDetail>().HasOne(x => x.ManagementReport).WithMany(x => x.CostDetails).HasForeignKey(x => x.ManagementReportId);

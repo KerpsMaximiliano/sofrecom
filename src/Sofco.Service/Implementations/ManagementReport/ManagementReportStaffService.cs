@@ -271,13 +271,48 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 var managementReport = unitOfWork.ManagementReportRepository.GetById(pDetailCost.ManagementReportId);
                 var analytic = unitOfWork.AnalyticRepository.GetById(managementReport.AnalyticId);
-
+                var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
+                
                 var listMonths = this.VerifyAnalyticMonths(managementReport, analytic.StartDateContract, analytic.EndDateContract);
 
-                var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(pDetailCost.ManagementReportId);
+                // var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(pDetailCost.ManagementReportId);
+                var costDetails = managementReport.CostDetails.ToList();
 
                 this.InsertUpdateCostDetailStaff(pDetailCost.CostCategories, costDetails);
                 this.InsertTotalBudgets(pDetailCost.CostCategories, pDetailCost.ManagementReportId);
+
+                //Cambiar estado de budget
+                if (pDetailCost.CloseState)
+                {
+                    BudgetType nextState = budgetTypes.Where(x => x.Name == EnumBudgetType.pfa1).FirstOrDefault();
+                    if (managementReport.State != null)
+                    {
+                        switch (managementReport.State.Name.ToUpper())
+                        {
+                            case EnumBudgetType.budget:
+                                nextState = budgetTypes.Where(x => x.Name == EnumBudgetType.pfa1).FirstOrDefault();
+                                break;
+                            case EnumBudgetType.pfa1:
+                                nextState = budgetTypes.Where(x => x.Name == EnumBudgetType.pfa2).FirstOrDefault();
+                                break;
+                            case EnumBudgetType.pfa2:
+                                nextState = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault();
+                                break;
+                        }
+                    }
+
+                    managementReport.State = nextState;
+                    unitOfWork.ManagementReportRepository.UpdateState(managementReport);
+                }
+                else
+                {
+                    //Si no estoy finalizando el estado pero mi estado actual es nulo pasarlo a budget
+                    if (managementReport.State == null)
+                    {
+                        managementReport.StateId = budgetTypes.Where(x => x.Name == EnumBudgetType.budget).FirstOrDefault().Id;
+                        unitOfWork.ManagementReportRepository.UpdateState(managementReport);
+                    }
+                }
 
                 unitOfWork.Save();
 
@@ -375,7 +410,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     costDetailMonth.HasReal = true;
                     unitOfWork.CostDetailRepository.UpdateHasReal(costDetailMonth);
                 }
-
+                              
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.Common.SaveSuccess);

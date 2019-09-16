@@ -121,6 +121,7 @@ namespace Sofco.Core.Models.ManagementReport
         public List<CostCategory> CostCategories { get; set; }
         public List<CostSubcategory> AllSubcategories { get; set; }
         public List<BudgetTypeItem> BudgetTypes { get; set; }
+        public bool CloseState { get; set; }
     }
 
     public class CostCategory

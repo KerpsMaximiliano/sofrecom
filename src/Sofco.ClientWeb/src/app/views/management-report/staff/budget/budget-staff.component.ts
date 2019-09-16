@@ -98,11 +98,11 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
             this.subCategoriesFiltered = this.subCategories
 
-           // this.selectDefaultColumn(this.dateSelected)
+            // this.selectDefaultColumn(this.dateSelected)
             this.calculateTotalCosts()
             this.sendDataToDetailView();
         },
-        () => this.messageService.closeLoading());
+            () => this.messageService.closeLoading());
     }
 
     openEditItemModal(category, typeBudget, month, item) {
@@ -111,14 +111,14 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         if (month.closed) return;
 
-        if(typeBudget == 'projected' && (environment.infrastructureCategoryId == category.id || environment.redCategoryId == category.id) && !this.menuService.userIsCdg){
-          this.messageService.showError("onlyCdgCanModify");
-          return;
+        if (typeBudget == 'projected' && (environment.infrastructureCategoryId == category.id || environment.redCategoryId == category.id) && !this.menuService.userIsCdg) {
+            this.messageService.showError("onlyCdgCanModify");
+            return;
         }
 
         this.categorySelected = category
         this.monthSelected = month;
-        
+
         this.typeBudgetSelected = this.budgetTypes.find(x => x.name.toUpperCase() == typeBudget.toUpperCase())
 
         this.subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
@@ -150,29 +150,20 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
         let isCdg = this.menuService.userIsCdg
         this.readOnly = true
-        
+
         switch (this.typeBudgetSelected.name.toUpperCase()) {
             case 'BUDGET':
-                // if (this.monthSelected.totalPfa1 > 0) {
-                //     this.messageService.showError("cannotUpdateBudget");
-                // }
-                // else {
-                //     if(this.monthSelected.totalReal > 0){
-                //         this.messageService.showWarning("realHasValue");
-                //     }
-                //     else{
-                        if(isCdg && this.actualState == 'budget') { this.readOnly = false }
-                        this.editItemModal.show();
-                        return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
-                //     }
-                // }
-
+                if (isCdg && this.actualState == 'budget') { this.readOnly = false }
+                if (isCdg && this.actualState != 'budget') { this.messageService.showWarning("managementReport.budgetClosed") }
+                this.editItemModal.show();
+                return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
                 break;
-            case 'PROJECTED': 
+
+            case 'PROJECTED':
 
                 if (this.menuService.userIsDirector || this.menuService.userIsManager || this.menuService.isManagementReportDelegate) {
                     this.readOnly = false
-                    if(this.model.status == ManagementReportStatus.CdgPending){
+                    if (this.model.status == ManagementReportStatus.CdgPending) {
                         this.messageService.showWarning("managementReport.cdgPending")
                         this.readOnly = true
                     }
@@ -180,51 +171,46 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
                 this.editItemModal.show();
                 return this.monthSelected.subcategoriesProjected.filter(sub => sub.deleted == false);
-
                 break;
-            case 'PFA1': {
-                // if (this.monthSelected.totalBudget == 0) {
-                //     this.messageService.showError("budgetRequired");
-                // }
-                // else {
-                //     if (this.monthSelected.totalPfa2 > 0) {
-                //         this.messageService.showError("cannotUpdatePfa1");
-                //     }
-                //     else {
-                        if(isCdg  && this.actualState == 'pfa1') { this.readOnly = false }
-                        this.editItemModal.show();
-                        return this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
-                //     }
-                // }
 
-                break;
-            }
-            case 'PFA2': {
-                // if (this.monthSelected.totalBudget == 0 || this.monthSelected.totalPfa1 == 0) {
-                //     this.messageService.showError("pfa1Required");
-                // }
-                // else {
-                    if(isCdg  && this.actualState == 'pfa2') { this.readOnly = false }
-                    this.editItemModal.show();
-                    return this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);
+            case 'PFA1':
+                if (isCdg && this.actualState == 'pfa1') { this.readOnly = false }
+                if (isCdg && this.actualState == 'pfa2' || this.actualState == 'real') {
+                    this.messageService.showWarning("managementReport.pfa1Closed")
                 }
+                if (this.actualState == 'budget') {
+                    this.messageService.showWarning("managementReport.pfa1NotAvailable")
+                    return
+                }
+
+                this.editItemModal.show();
+                return this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
                 break;
-           // }
+
+            case 'PFA2':
+                if (isCdg && this.actualState == 'pfa2') { this.readOnly = false }
+                if (isCdg && this.actualState == 'pfa2' || this.actualState == 'real') {
+                    this.messageService.showWarning("managementReport.pfa2Closed")
+                }
+                if (this.actualState == 'budget' || this.actualState == 'pfa1') {
+                    this.messageService.showWarning("managementReport.pfa2NotAvailable")
+                    return
+                }
+
+                this.editItemModal.show();
+                return this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);
+                break;
+
             case 'REAL':
-                // if (this.monthSelected.totalBudget == 0) {
-                //     this.messageService.showError("budgetForRealRequired");
-                // }
-                // else {
-                    this.readOnly = true
-                    this.editItemModal.show();
-                    return this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
-                // }
+                this.readOnly = true
+                this.editItemModal.show();
+                return this.monthSelected.subcategoriesReal.filter(sub => sub.deleted == false);
                 break;
         }
     }
 
     addCostByMonth() {
-        
+
         var cost = {
             costDetailStaffId: 0,
             id: this.subCategorySelected.id,
@@ -321,7 +307,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     fillSubCategories() {
-        
+
         let subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
         let index = this.months.findIndex(cost => cost.monthYear === this.monthSelected.monthYear);
 
@@ -357,14 +343,17 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
     }
 
-    save() {
+    save(endState = false) {
         this.messageService.showLoading();
+
+        this.model.closeState = endState
 
         this.updateCostSubscrip = this.ManagementReportStaffService.PostCostDetailStaff(this.model).subscribe(() => {
             this.messageService.closeLoading();
 
             this.detailStaffComponent.getDetail()
-
+            this.getCost(this.managementReportId);
+            
             setTimeout(() => {
                 this.sendDataToDetailView();
             }, 1500);
@@ -454,7 +443,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
     }
 
-    generatePfa(typePfa){
+    generatePfa(typePfa) {
         this.messageService.showLoading()
 
         var model = {
@@ -463,11 +452,11 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
 
         this.generatePFASuscrip = this.ManagementReportStaffService.PostGeneratePfa(model).subscribe(
-            ()=>{
+            () => {
                 this.messageService.closeLoading()
                 this.getCost(this.managementReportId);
             },
-            () =>{
+            () => {
                 this.messageService.closeLoading()
             }
         )

@@ -54,6 +54,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
             context.Entry(report).Property("Status").IsModified = true;
         }
 
+        public void UpdateState(Domain.Models.ManagementReport.ManagementReport report)
+        {
+            context.Entry(report).Property("StateId").IsModified = true;
+        }
+
         public bool AllMonthsAreClosed(int managementReportId)
         {
             return context.CostDetails.Where(x => x.ManagementReportId == managementReportId).All(x => x.Closed);
