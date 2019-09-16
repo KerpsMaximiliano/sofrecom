@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190912122725_RefactorResourceBilling")]
+    partial class RefactorResourceBilling
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2071,16 +2073,12 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime>("StartDate");
 
-                    b.Property<int?>("StateId");
-
                     b.Property<int>("Status");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AnalyticId")
                         .IsUnique();
-
-                    b.HasIndex("StateId");
 
                     b.ToTable("ManagementReports");
                 });
@@ -2147,7 +2145,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<int?>("EmployeeId");
+                    b.Property<int>("EmployeeId");
 
                     b.Property<string>("HitoCrmId");
 
@@ -2155,13 +2153,11 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("MonthHour");
 
-                    b.Property<string>("Profile");
-
-                    b.Property<int?>("ProfileId");
+                    b.Property<int>("ProfileId");
 
                     b.Property<int>("Quantity");
 
-                    b.Property<int?>("SeniorityId");
+                    b.Property<int>("SeniorityId");
 
                     b.Property<decimal>("SubTotal");
 
@@ -3777,10 +3773,6 @@ namespace Sofco.WebApi.Migrations
                         .WithOne("ManagementReport")
                         .HasForeignKey("Sofco.Domain.Models.ManagementReport.ManagementReport", "AnalyticId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Sofco.Domain.Models.ManagementReport.BudgetType", "State")
-                        .WithMany()
-                        .HasForeignKey("StateId");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ManagementReportBilling", b =>
@@ -3803,20 +3795,23 @@ namespace Sofco.WebApi.Migrations
                 {
                     b.HasOne("Sofco.Domain.Models.AllocationManagement.Employee", "Employee")
                         .WithMany("ResourceBillings")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Domain.Models.ManagementReport.ManagementReportBilling", "ManagementReportBilling")
                         .WithMany("ResourceBillings")
                         .HasForeignKey("ManagementReportBillingId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Profile")
+                    b.HasOne("Sofco.Domain.Models.Recruitment.Profile", "Profile")
                         .WithMany("ResourceBillings")
-                        .HasForeignKey("ProfileId");
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Domain.Models.Recruitment.Seniority", "Seniority")
                         .WithMany("ResourceBillings")
-                        .HasForeignKey("SeniorityId");
+                        .HasForeignKey("SeniorityId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearch", b =>

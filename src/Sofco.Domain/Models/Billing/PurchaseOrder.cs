@@ -61,7 +61,5 @@ namespace Sofco.Domain.Models.Billing
         public ICollection<PurchaseOrderAmmountDetail> AmmountDetails { get; set; }
 
         public ICollection<PurchaseOrderHistory> Histories { get; set; }
-
-        public IList<ResourceBilling> ResourceBillings { get; set; }
     }
 }

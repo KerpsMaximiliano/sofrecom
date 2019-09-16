@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.Billing;
 using Sofco.Domain.DTO;
 using Sofco.WebApi.Extensions;
@@ -53,9 +54,9 @@ namespace Sofco.WebApi.Controllers.Billing
         }
 
         [HttpPatch]
-        public IActionResult Patch([FromBody] HitoAmmountParameter hito)
+        public IActionResult Patch([FromBody] UpdateResourceBillingRequest data)
         {
-            var response = hitoService.Patch(hito);
+            var response = hitoService.Patch(data);
 
             return this.CreateResponse(response);
         }

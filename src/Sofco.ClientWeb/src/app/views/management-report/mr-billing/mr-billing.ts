@@ -11,6 +11,9 @@ import { MessageService } from "app/services/common/message.service";
 import { FormControl, Validators } from "@angular/forms";
 import { ReportBillingUpdateDataType } from "app/models/enums/ReportBillingUpdateDataType";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
+import { ResourceBillingItem } from "app/models/management-report/resourceBillingItem";
+import { GenericOptionService } from "app/services/admin/generic-option.service";
+import { EmployeeService } from "app/services/allocation-management/employee.service";
 
 @Component({
     selector: 'management-report-billing',
@@ -24,6 +27,24 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     updateHitoSubscrip: Subscription;
     getHitoSubscrip: Subscription;
     updateDataSubscrip: Subscription;
+
+    //region recursos facturados
+    getSenioritiesSubscrip: Subscription;
+    getPurchaseOrdersSubscrip: Subscription;
+    getSubscrip: Subscription;
+
+    seniorities: any[] = new Array();
+    employees: any[] = new Array();
+    types: any[] = new Array();
+    items: ResourceBillingItem[] = new Array();
+    month: any;
+    billingMonthId: number;
+    resourceQuantity: number;
+    hitoMonth: number;
+    total: number;
+    profile: string;
+    isLoading: boolean = false;
+    //endregion 
 
     months: any[] = new Array();
     hitos: any[] = new Array();
@@ -50,7 +71,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     hitoSelected: any;
     managementReportStatus: ManagementReportStatus = ManagementReportStatus.CdgPending;
-    indexSelected: number = 0
     monthSelectedDisplay: string = "";
     monthSelectedOpportunity: string = "";
     monthSelectedCurrency: string = "";
@@ -66,7 +86,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     @Output() openEvalPropModal: EventEmitter<any> = new EventEmitter();
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
-    @ViewChild('resourceBillingModal') resourceBillingModal;
+    // @ViewChild('resourceBillingModal') resourceBillingModal;
 
     @ViewChild('newHitoModal') newHitoModal;
     public newHitoModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -80,7 +100,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     @ViewChild('editItemModal') editItemValueModal;
     public editItemModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Editar Monto",
+        "Detalles Hito",
         "editItemValueModal",
         true,
         true,
@@ -118,12 +138,19 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     constructor(private managementReportService: ManagementReportService,
         private utilsService: UtilsService,
+        private employeeService: EmployeeService,
         private messageService: MessageService,
+        private genericOptionsService: GenericOptionService,
         private projectService: ProjectService,
         private menuService: MenuService) { }
 
     ngOnInit(): void {
         this.getCurrencies();
+        this.getSeniorities();
+        this.getEmployees();
+
+        this.types.push({ id: 1, text: "Mes" });
+        this.types.push({ id: 2, text: "Horas" });
     }
 
     ngOnDestroy(): void {
@@ -133,6 +160,17 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         if (this.updateHitoSubscrip) this.updateHitoSubscrip.unsubscribe();
         if (this.getHitoSubscrip) this.getHitoSubscrip.unsubscribe();
         if (this.updateDataSubscrip) this.updateDataSubscrip.unsubscribe();
+        if (this.getSenioritiesSubscrip) this.getSenioritiesSubscrip.unsubscribe();
+        if (this.getPurchaseOrdersSubscrip) this.getPurchaseOrdersSubscrip.unsubscribe();
+        if (this.getSubscrip) this.getSubscrip.unsubscribe();
+    }
+
+    getSeniorities(){
+        this.genericOptionsService.controller = "seniority";
+        this.getSenioritiesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+            this.seniorities = response.data;
+        },
+        () => {});
     }
 
     getCurrencies() {
@@ -141,12 +179,18 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         });
     } 
 
+    getEmployees() {
+        this.getCurrenciesSubscrip = this.employeeService.getOptions().subscribe(d => {
+            this.employees = d;
+        });
+    } 
+
     init(serviceId) {
         this.hitos = new Array();
 
         this.getBillingSubscrip = this.managementReportService.getBilling(serviceId).subscribe(response => {
 
-            this.resourceBillingModal.getPurchaseOrders(serviceId);
+            // this.resourceBillingModal.getPurchaseOrders(serviceId);
 
             this.managerId = response.data.managerId;
 
@@ -158,12 +202,13 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
             response.data.rows.forEach(row => {
 
-                var hito = { id: "", projectId: "", description: "", projectName: "", currencyId: "", currencyName: "", opportunityNumber: "", date: new Date(), values: [] };
+                var hito = { id: "", projectId: "", description: "", projectName: "", currencyId: "", currencyName: "", opportunityNumber: "", date: new Date(), values: [], month: 0 };
                 hito.description = row.description;
                 hito.id = row.id;
                 hito.projectId = row.projectId;
                 hito.projectName = row.projectName;
                 hito.date = row.date;
+                hito.month = row.month;
                 hito.currencyId = row.currencyId;
                 hito.currencyName = row.currencyName;
                 hito.opportunityNumber = row.opportunityNumber;
@@ -261,12 +306,13 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 opportunityNumber: project.opportunityNumber,
                 currencyName: currency.text,
                 description: model.name,
+                month: model.month,
                 values: []
             };
 
             this.getHito(month, year, hito, model);
         },
-            error => this.newHitoModal.resetButtons());
+        error => this.newHitoModal.resetButtons());
     }
 
     getHito(month, year, hito, model) {
@@ -317,12 +363,17 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     updateHito() {
         var descAux = this.editItemName.value;
-        this.hitoSelected.values[this.indexSelected].value = this.editItemMonto.value;
-        this.hitoSelected.description = this.editItemName.value;
         var hito = this.hitoSelected
 
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
 
+        var oldValuePesos = hitoMonth.valuePesos;
+
+        hitoMonth.value = this.editItemMonto.value;
+
+        this.hitoSelected.description = this.editItemName.value;
+        this.hitoSelected.month = this.hitoMonth;
+      
         if (!this.isEnabled(hitoMonth)) return;
 
         var totalCurrency = this.totals.find(x => x.currencyId == hito.currencyId);
@@ -338,17 +389,26 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             }
         }
 
-        var oldValuePesos = hitoMonth.valuePesos;
-
         var json = {
             id: hito.id,
             ammount: hitoMonth.value,
             name: hito.description,
-            projectId: hito.projectId
+            projectId: hito.projectId,
+            month: hito.month,
+            resources: this.items,
+            billingMonthId: this.billingMonthId
         }
 
         this.projectService.updateAmmountHito(json).subscribe(response => {
-            hitoMonth.oldValue = hitoMonth.value;
+            hitoMonth.oldValue = hitoMonth.value; 
+
+            var monthValueChange = this.months.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
+
+            if(response.data && response.data.quantity){
+                monthValueChange.resourceQuantity = response.data.quantity;
+            }
+
+            this.editItemValueModal.hide();
 
             this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
                 hitoMonth.value = json.ammount;
@@ -366,19 +426,17 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 this.sendDataToDetailView();
             });
         },
-            error => {
-                if (monthValue) {
-                    monthValue.value -= hitoMonth.value;
-                    monthValue.value += hitoMonth.oldValue;
-                }
+        error => {
+            if (monthValue) {
+                monthValue.value -= hitoMonth.value;
+                monthValue.value += hitoMonth.oldValue;
+            }
 
-                hitoMonth.value = hitoMonth.oldValue;
-                this.hitoSelected.description = descAux;
+            hitoMonth.value = hitoMonth.oldValue;
+            this.hitoSelected.description = descAux;
 
-                this.editItemValueModal.hide();
-            });
-
-        this.editItemValueModal.hide();
+            this.editItemValueModal.hide();
+        });
     }
 
     delete(hito) {
@@ -485,7 +543,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     openEditItemModal(value, hito, index) {
         if (this.readOnly) return false;
 
-        var monthValue = this.months[index];
+        var monthValue = this.months.find(x => x.month == value.month && x.year == value.year);
         if(monthValue && monthValue.closed) return;
 
         var hitoMonth = hito.values.find(x => x.value && x.value != null);
@@ -496,10 +554,16 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.editItemMonto.setValue(value.value)
         this.editItemName.setValue(hito.description)
         this.hitoSelected = hito;
-        this.indexSelected = index
-        this.monthSelectedDisplay = this.months[index].display;
+        this.monthSelectedDisplay = monthValue.display;
         this.monthSelectedOpportunity = hito.opportunityNumber;
         this.monthSelectedCurrency = hito.currencyName;
+        this.hitoMonth = hito.month;
+
+        this.items = [];
+
+        this.billingMonthId = monthValue.billingMonthId;
+
+        this.getDataResources(this.billingMonthId);
     }
 
     openEditEvalProp(month) {
@@ -535,19 +599,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         }
 
         return 0;
-    }
-
-    openResourceQuantity(month) {
-        if (this.readOnly) return false;
-
-        if(month.closed) return;
-
-        this.resourceBillingModal.open(month, this.months);
-
-        // this.monthSelected = month;
-        // this.updateDataType = ReportBillingUpdateDataType.BilledResources;
-        // this.billingResourceQuantity = month.resourceQuantity;
-        // this.editBillingDataModal.show();
     }
 
     openEvalPropDifferenceModal(month) {
@@ -603,7 +654,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             this.monthSelected = null;
             this.sendDataToDetailView()
         },
-            error => this.editBillingDataModal.resetButtons());
+        error => this.editBillingDataModal.resetButtons());
     }
 
     seeBillingDetail(month) {
@@ -631,13 +682,71 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.billingDetailModal.show();
     }
 
-    setResourceQuantity(months){
-        months.forEach(month => {
-            var monthValue = this.months.find(x => x.month == month.month && x.year == month.year);
+    // Region facturacion de recursos
 
-            if (monthValue) {
-                monthValue.resourceQuantity = month.resourceQuantity;
+    getDataResources(billingMonthId){
+        this.isLoading = true;
+
+        this.getSubscrip = this.managementReportService.getResources(billingMonthId, this.hitoSelected.id).subscribe(response => {
+            this.isLoading = false;
+
+            if(response.data && response.data.length > 0){
+                response.data.forEach(item => {
+                    this.items.push(new ResourceBillingItem(item));
+                });
+
+                this.resourceQuantity = response.data.length;
+                this.calculateTotal();
+            }
+            else{
+                this.resourceQuantity = 0;
+            }
+        },
+        () => this.isLoading = false);
+    }
+
+    calculateTotal(){
+        this.total = 0;
+
+        this.items.forEach(item => {
+            item.subTotal = item.amount * item.quantity;
+            
+            if(!isNaN(item.subTotal)){
+                if(!item.deleted){
+                    this.total += item.subTotal;
+                }
+            }
+            else{
+                item.subTotal = 0;
             }
         });
+
+        this.editItemMonto.setValue(this.total);
+    }
+
+    addItem(){
+        this.items.push(new ResourceBillingItem(null));
+
+        this.resourceQuantity = this.items.filter(x => !x.deleted).length;
+    }
+
+    monthHourChange(item){
+        if(item.monthHour == 1){
+            item.quantity = 1;
+        }
+
+        this.calculateTotal();
+    }
+
+    removeItem(item, index){
+        if(item.id > 0){
+            item.deleted = true;
+        }
+        else{
+            this.items.splice(index, 1);
+        }
+
+        this.resourceQuantity = this.items.filter(x => !x.deleted).length;
+        this.calculateTotal();
     }
 }

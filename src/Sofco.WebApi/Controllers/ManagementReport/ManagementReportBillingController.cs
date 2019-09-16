@@ -34,26 +34,18 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
-        [HttpPut("{idBilling}/billedResources")]
-        public IActionResult PutQuantityResources(int idBilling, [FromBody] int quantityResources)
+        //[HttpPost("{idBilling}/resources")]
+        //public IActionResult AddResources(int idBilling, [FromBody] IList<ResourceBillingRequestItem> resources)
+        //{
+        //    var response = managementReportBillingService.AddResources(idBilling, resources);
+
+        //    return this.CreateResponse(response);
+        //}
+
+        [HttpGet("{idBilling}/{hitoId}/resources")]
+        public IActionResult GetResources(int idBilling, string hitoId)
         {
-            var response = managementReportBillingService.UpdateQuantityResources(idBilling, quantityResources);
-
-            return this.CreateResponse(response);
-        }
-
-        [HttpPost("{idBilling}/resources")]
-        public IActionResult AddResources(int idBilling, [FromBody] IList<ResourceBillingRequest> resources)
-        {
-            var response = managementReportBillingService.AddResources(idBilling, resources);
-
-            return this.CreateResponse(response);
-        }
-
-        [HttpGet("{idBilling}/resources")]
-        public IActionResult GetResources(int idBilling)
-        {
-            var response = managementReportBillingService.GetResources(idBilling);
+            var response = managementReportBillingService.GetResources(idBilling, hitoId);
 
             return this.CreateResponse(response);
         }

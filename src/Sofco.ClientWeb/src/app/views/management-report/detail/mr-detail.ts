@@ -294,8 +294,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
                 this.selectedExchanges = month.exchanges;
             }
         }
-
-       // this.detailCost.setResourceQuantity(billingModel.months)
     }
 
     updateMarginTracking(){
@@ -307,7 +305,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.marginTracking.costDataLoaded = true;
         this.marginTracking.costsModel = costsModel;
         this.marginTracking.calculate(this.model.manamementReportStartDate, this.model.manamementReportEndDate, this.selectedMonth, this.selectedYear);
-        this.billing.setResourceQuantity(costsModel.months)
     }
 
     getMarginTracking(allMarginTrackings){    

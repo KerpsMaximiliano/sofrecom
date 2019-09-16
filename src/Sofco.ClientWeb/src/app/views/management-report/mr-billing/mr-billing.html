@@ -21,7 +21,7 @@
             <tr>
                 <td class="first-column text-ellipsis">Cantidad recursos facturados</td>
                 <td *ngFor="let month of months | fromDateFilter: fromMonth;">
-                    <label class="label label-primary" [ngClass]="canEditCdg() ? 'pointer' : ''" (click)="openResourceQuantity(month)">{{ month.resourceQuantity }}</label>
+                    <label class="label label-primary" [ngClass]="canEditCdg() ? 'pointer' : ''">{{ month.resourceQuantity }}</label>
                 </td>
             </tr> 
             <tr> 
@@ -125,18 +125,22 @@
 
 </ng2-modal>
 
-<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateHito()" [isSaveEnabled]="editItemMonto.valid && editItemName.valid">
-    <div class="form-group">
-        <label class="control-label">Oportunidad - {{ 'billing.project.detail.milestone.name' | translate }} - Moneda</label>
-        <div class="input-group">
-            <span class="input-group-addon">{{ monthSelectedOpportunity }}</span>
-            <input type="text" class="form-control" maxlength="250" [formControl]="editItemName">
-            <span class="input-group-addon">{{ monthSelectedCurrency }}</span>
-        </div> 
-    </div> 
-
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateHito()" [size]="'modal-xlg'" [isSaveEnabled]="editItemMonto.valid && editItemName.valid">
     <div class="row">
         <div class="col-md-7">
+            <div class="form-group">
+                <label class="control-label">Oportunidad - {{ 'billing.project.detail.milestone.name' | translate }} - Moneda</label>
+                <div class="input-group">
+                    <span class="input-group-addon">{{ monthSelectedOpportunity }}</span>
+                    <input type="text" class="form-control" maxlength="250" [formControl]="editItemName">
+                    <span class="input-group-addon">{{ monthSelectedCurrency }}</span>
+                </div> 
+            </div> 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
             <div class="form-group">
                 <label class="control-label">Monto</label>
                 <div class="input-group">
@@ -145,13 +149,91 @@
                 </div> 
             </div>
         </div>
-        <div class="col-md-5">
+
+        <div class="col-md-2">
             <div class="form-group">
-                <label class="control-label" for="readOnlyInput">Mes</label>
-                <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelectedDisplay }}" readonly="">
+                <label class="control-label">Mes</label>
+                <input class="form-control" type="text" [(ngModel)]="hitoMonth">
             </div> 
         </div>
+
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="label-control">Recursos facturados</label>
+                <input type="number" class="form-control" disabled [(ngModel)]="resourceQuantity">
+            </div>
+        </div>
     </div>
+
+    <div class="row no-gutters" *ngIf="items.length > 0">
+        <div class="col-md-2">
+            <label class="control-label">Recurso</label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Perfil</label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Seniority</label>
+        </div>
+        <div class="col-md-1">
+            <label class="control-label">Mes/Hora</label>
+        </div>
+        <div class="col-md-1">
+            <label class="control-label">Cant.</label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Monto</label>
+        </div>
+        <div class="col-md-2">
+            <label class="control-label">Sub Total</label>
+        </div>
+    </div>
+
+    <div *ngFor="let item of items; let i = index">
+        <div class="row no-gutters" *ngIf="!item.deleted">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <ng-select class="input-billing-modal" [items]="employees" bindLabel="text" bindValue="id" [(ngModel)]="item.employeeId"></ng-select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input class="form-control input-billing-modal" type="text" [(ngModel)]="item.profile" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <ng-select class="input-billing-modal" [items]="seniorities" bindLabel="text" bindValue="id" [(ngModel)]="item.seniorityId"></ng-select>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <ng-select class="input-billing-modal" [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="item.monthHour" (ngModelChange)="monthHourChange(item)"></ng-select>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <input class="form-control input-billing-modal" decimalFormat="3" type="text" [(ngModel)]="item.quantity" (ngModelChange)="calculateTotal()" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <input class="form-control input-billing-modal" decimalFormat="10"  type="text" [(ngModel)]="item.amount" (ngModelChange)="calculateTotal()" />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control input-billing-modal" type="text" [ngModel]="item.subTotal | amountFormat" disabled>
+                        <span class="input-group-btn btn-billing-modal"> <button type="button" class="btn btn-danger" (click)="removeItem(item, i)"><i class="fa fa-trash"></i></button> </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-primary btn-sm ladda-button" type="button" (click)="addItem()" [ladda]="isLoading"> Agregar <i class="fa fa-plus"></i></button>
+
 </ng2-modal>
 
 <ng2-modal [config]="editBillingDataModalConfig" #editBillingDataModal (accept)="updateBillingData()">
@@ -210,4 +292,4 @@
     <label class="m-t-md label label-primary totalBillingMonth">Total de Facturación: ${{ billingDetail.total | amountFormat }}</label>
 </ng2-modal>
 
-<resource-billing-modal #resourceBillingModal></resource-billing-modal>
+<!-- <resource-billing-modal #resourceBillingModal></resource-billing-modal> -->

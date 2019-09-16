@@ -101,7 +101,7 @@ export class ManagementReportService {
     return this.http.post<any>(`${this.baseUrl}/managementReportBillings/${id}/resources`, json);
   }
 
-  getResources(id) {
-    return this.http.get<any>(`${this.baseUrl}/managementReportBillings/${id}/resources`);
+  getResources(id, hitoId) {
+    return this.http.get<any>(`${this.baseUrl}/managementReportBillings/${id}/${hitoId}/resources`);
   }
 }

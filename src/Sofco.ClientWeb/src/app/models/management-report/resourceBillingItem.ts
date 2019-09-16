@@ -1,9 +1,9 @@
 export class ResourceBillingItem {
 
     public id: number;
-    public profileId: number;
+    public profile: string;
     public seniorityId: number;
-    public purchaseOrderId: number;
+    public employeeId: number;
     public monthHour: number;
     public quantity: number;
     public amount: number;
@@ -13,9 +13,9 @@ export class ResourceBillingItem {
     constructor(data){
         
         if(data){
-            this.profileId = data.profileId;
+            this.profile = data.profile;
             this.seniorityId = data.seniorityId;
-            this.purchaseOrderId = data.purchaseOrderId;
+            this.employeeId = data.employeeId;
             this.monthHour = data.monthHour;
             this.quantity = data.quantity;
             this.amount = data.amount;

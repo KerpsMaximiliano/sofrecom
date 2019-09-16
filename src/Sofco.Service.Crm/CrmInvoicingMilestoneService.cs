@@ -211,6 +211,7 @@ namespace Sofco.Service.Crm
             var content = new JObject
             {
                 ["as_name"] = hito.Name,
+                ["as_month"] = hito.Month,
                 ["as_amount"] = hito.Ammount
             };
 
