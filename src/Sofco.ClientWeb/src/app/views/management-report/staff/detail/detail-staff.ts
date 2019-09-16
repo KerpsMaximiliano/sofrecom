@@ -60,6 +60,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     readOnly: boolean = false;
     isClosed: boolean = false;
     ManagementReportId: number;
+    actualState: string
 
     @ViewChild('dateReportStart') dateReportStart;
     @ViewChild('dateReportEnd') dateReportEnd;
@@ -426,6 +427,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
 
     getBudgetData(event){
         this.tracingView.calculateAccumulated(event.months)
+        this.actualState = event.actualState
     }
 
     openBudgetHistory(){

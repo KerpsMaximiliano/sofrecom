@@ -44,6 +44,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     typeBudgetSelected: any = { id: 0, name: '' }
     budgetTypes: any[] = new Array()
     costByMonth: any[] = new Array()
+    actualState: string
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
@@ -93,6 +94,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.categories = response.data.costCategories;
             this.subCategories = response.data.allSubcategories;
             this.budgetTypes = response.data.budgetTypes;
+            this.actualState = response.data.state
 
             this.subCategoriesFiltered = this.subCategories
 
@@ -159,7 +161,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 //         this.messageService.showWarning("realHasValue");
                 //     }
                 //     else{
-                        if(isCdg) { this.readOnly = false }
+                        if(isCdg && this.actualState == 'budget') { this.readOnly = false }
                         this.editItemModal.show();
                         return this.monthSelected.subcategoriesBudget.filter(sub => sub.deleted == false);
                 //     }
@@ -189,7 +191,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 //         this.messageService.showError("cannotUpdatePfa1");
                 //     }
                 //     else {
-                        if(isCdg) { this.readOnly = false }
+                        if(isCdg  && this.actualState == 'pfa1') { this.readOnly = false }
                         this.editItemModal.show();
                         return this.monthSelected.subcategoriesPfa1.filter(sub => sub.deleted == false);
                 //     }
@@ -202,7 +204,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 //     this.messageService.showError("pfa1Required");
                 // }
                 // else {
-                    if(isCdg) { this.readOnly = false }
+                    if(isCdg  && this.actualState == 'pfa2') { this.readOnly = false }
                     this.editItemModal.show();
                     return this.monthSelected.subcategoriesPfa2.filter(sub => sub.deleted == false);
                 }
@@ -349,7 +351,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         if (this.getData.observers.length > 0) {
             this.getData.emit({
                 months: this.months,
-                categories: this.categories
+                categories: this.categories,
+                actualState: this.actualState
             });
         }
     }

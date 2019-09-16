@@ -246,10 +246,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                     response.Data.MonthsHeader.Add(monthHeader);
                 }
 
+
                 response.Data.BudgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget().Select(x => new BudgetTypeItem(x)).ToList();
                 response.Data.AllSubcategories = this.FillAllSubcategories();
                 response.Data.CostCategories = this.FillCategoriesByMonth(response.Data.MonthsHeader, costDetails);
                 response.Data.Status = managementReport.Status;
+                response.Data.State = managementReport.State == null ? EnumBudgetType.budget.ToLower() : managementReport.State.Name.ToLower();
 
                 return response;
             }
