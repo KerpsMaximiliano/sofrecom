@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190916134812_state-management-report-new")]
+    partial class statemanagementreportnew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2007,12 +2009,8 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("CostDetailSubcategoryId");
 
-                    b.Property<int>("CurrencyId");
-
                     b.Property<string>("Description")
                         .HasMaxLength(500);
-
-                    b.Property<decimal>("OriginalValue");
 
                     b.Property<decimal?>("Value");
 
@@ -2023,8 +2021,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("CostDetailId");
 
                     b.HasIndex("CostDetailSubcategoryId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("CostDetailStaff");
                 });
@@ -3766,11 +3762,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetailSubcategories", "CostDetailSubcategory")
                         .WithMany("CostDetailStaff")
                         .HasForeignKey("CostDetailSubcategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

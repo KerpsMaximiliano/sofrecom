@@ -9,5 +9,6 @@ namespace Sofco.Domain.Models.ManagementReport
         public string Name { get; set; }
 
         public ICollection<CostDetailStaff> CostDetailStaff { get; set; }
+        public ICollection<ManagementReport> ManagementReport { get; set; }
     }
 }

@@ -33,6 +33,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .Include(mr => mr.CostDetails)
                     .ThenInclude(x => x.CostDetailStaff)
                         .ThenInclude(y => y.BudgetType)
+                .Include(mr=> mr.State)
                 .SingleOrDefault(mr => mr.Id == IdManamentReport);
 
             return data;
@@ -51,6 +52,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
         public void UpdateStatus(Domain.Models.ManagementReport.ManagementReport report)
         {
             context.Entry(report).Property("Status").IsModified = true;
+        }
+
+        public void UpdateState(Domain.Models.ManagementReport.ManagementReport report)
+        {
+            context.Entry(report).Property("StateId").IsModified = true;
         }
 
         public bool AllMonthsAreClosed(int managementReportId)

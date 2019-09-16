@@ -1224,7 +1224,12 @@
         "closed": "Cerrado",
         "cdgPending": "Pendiente Control de Gestión",
         "managerPending": "Pendiente Gerente",
-        "existProfiles": "Existen perfiles proyectados para el mes, con monto asignado, por favor corroborar con el gerente la asignación/recursos"
+        "existProfiles": "Existen perfiles proyectados para el mes, con monto asignado, por favor corroborar con el gerente la asignación/recursos",
+        "budgetClosed": "Se encuentra finalizada la carga del budget",
+        "pfa1Closed": "Se encuentra finalizada la carga del PFA1",
+        "pfa2Closed": "Se encuentra finalizada la carga del PFA2",
+        "pfa1NotAvailable": "Aún no se encuentra disponible el PFA1",
+        "pfa2NotAvailable": "Aún no se encuentra disponible el PFA2"
     },
     "recruitment":{
         "title": "Reclutamiento",

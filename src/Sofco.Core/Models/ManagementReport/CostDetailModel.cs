@@ -115,10 +115,12 @@ namespace Sofco.Core.Models.ManagementReport
         public int ManagementReportId { get; set; }
         public int AnalyticId { get; set; }
         public ManagementReportStatus Status { get; set; }
+        public string State { get; set; }
         public IList<MonthDetailCostStaff> MonthsHeader { get; set; }
         public List<CostCategory> CostCategories { get; set; }
         public List<CostSubcategory> AllSubcategories { get; set; }
         public List<BudgetTypeItem> BudgetTypes { get; set; }
+        public bool CloseState { get; set; }
     }
 
     public class CostCategory
