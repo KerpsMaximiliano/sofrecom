@@ -181,7 +181,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
             skills: this.skills,
             profiles: this.profiles,
             userId: this.userId,
-            status: this.statusId,
+            status: this.statusId ? [this.statusId] : [],
             reasonId: this.reasonCauseId,
             recruiterId: this.recruiterId
         };

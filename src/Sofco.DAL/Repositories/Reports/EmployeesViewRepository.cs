@@ -71,7 +71,7 @@ namespace Sofco.DAL.Repositories.Reports
                 employee.StartDate = reader.GetDateTime(reader.GetOrdinal("StartDate"));
 
             if (!reader.IsDBNull(reader.GetOrdinal("EndDate")))
-                employee.StartDate = reader.GetDateTime(reader.GetOrdinal("EndDate"));
+                employee.EndDate = reader.GetDateTime(reader.GetOrdinal("EndDate"));
 
             if (!reader.IsDBNull(reader.GetOrdinal("Email")))
                 employee.Email = reader.GetString(reader.GetOrdinal("Email"));
