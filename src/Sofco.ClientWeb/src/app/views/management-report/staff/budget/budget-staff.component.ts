@@ -60,7 +60,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     @ViewChild('totalCostsExchangesModal') totalCostsExchangesModal;
     public totalCostsExchangesModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "Total de costos por moneda",
+        "Detalle costos mensual",
         "totalCostsExchangesModal",
         true,
         true,
