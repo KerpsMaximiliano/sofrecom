@@ -178,4 +178,8 @@ export class JobSearchComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
         });
     }
+
+    back(){
+        this.router.navigate(['recruitment/jobSearch/']);
+    }
 }
