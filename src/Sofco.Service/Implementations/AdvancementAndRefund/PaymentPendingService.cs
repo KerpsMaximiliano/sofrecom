@@ -154,7 +154,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                             Id = advancement.Id,
                             Type = "advancement",
                             WorkflowId = advancement.WorkflowId,
-                            NextWorkflowStateId = settings.WorkflowStatusApproveId
+                            NextWorkflowStateId = settings.WorkflowStatusFinalizedId
                         } }
                     };
 
@@ -176,7 +176,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         Id = advancement.Id,
                         Type = "advancement",
                         WorkflowId = advancement.WorkflowId,
-                        NextWorkflowStateId = settings.WorkflowStatusApproveId
+                        NextWorkflowStateId = settings.WorkflowStatusFinalizedId
                     });
 
                     itemAlreadyInList.Ammount -= advancement.Ammount;
