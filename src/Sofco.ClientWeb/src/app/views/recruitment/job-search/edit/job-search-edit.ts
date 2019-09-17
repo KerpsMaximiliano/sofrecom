@@ -188,7 +188,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     }
 
     getCustomers() {
-        this.getClientsSubscrip = this.customerService.getOptions().subscribe(d => {
+        this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
             this.customerOptions = d.data;
         },
         () => {});
