@@ -6,7 +6,7 @@ import { CustomerService } from "app/services/billing/customer.service";
 import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { FormsService } from "app/services/forms/forms.service";
 import { MessageService } from "app/services/common/message.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { JobSearchStatus } from "app/models/enums/jobSearchStatus";
 
@@ -73,6 +73,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
                 private jobSearchService: JobSearchService,
                 private messageService: MessageService,
                 private activateRoute: ActivatedRoute,
+                private router: Router,
                 public formsService: FormsService,
                 private customerService: CustomerService){
     }
@@ -221,6 +222,10 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         });
     }
 
+    canSave(){
+        return this.status != JobSearchStatus.Close;
+    }
+
     canClose(){
         return this.status == JobSearchStatus.Open || this.status == JobSearchStatus.Reopen;
     }
@@ -230,7 +235,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     }
 
     canSuspend(){
-        return this.status == JobSearchStatus.Open;
+        return this.status == JobSearchStatus.Open || this.status == JobSearchStatus.Reopen;
     }
 
     close(){
@@ -265,5 +270,9 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         error => {
             this.dateModal.resetButtons();
         });
+    }
+
+    back(){
+        this.router.navigate(['recruitment/jobSearch/']);
     }
 }

@@ -13,7 +13,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ICheckModule } from 'app/components/icheck/icheck.module';
 import { Ng2ModalModule } from 'app/components/modal/ng2modal.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { DatePickerModule } from 'app/components/date-picker/date-picker.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ReasonCauseComponent } from '../admin/options/reasonCause';
 import { JobSearchService } from 'app/services/recruitment/jobsearch.service';
@@ -50,7 +49,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
     ICheckModule, 
     Ng2ModalModule, 
     TranslateModule, 
-    DatePickerModule, 
     DigitModule,
     NgSelectModule,  
     DecimalFormatModule,
