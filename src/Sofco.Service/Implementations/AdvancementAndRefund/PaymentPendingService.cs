@@ -107,7 +107,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         Id = refund.Id,
                         Type = "refund",
                         WorkflowId = refund.WorkflowId,
-                        NextWorkflowStateId = settings.WorkflowStatusApproveId
+                        NextWorkflowStateId = settings.WorkflowStatusFinalizedId
                     });
 
                     //var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
@@ -148,8 +148,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         UserApplicantDesc = advancement.UserApplicant?.Name,
                         CurrencyId = advancement.CurrencyId,
                         CurrencyDesc = advancement.Currency?.Text,
-                        Ammount = advancement.Ammount*-1,
-                        Entities = new List<EntityToPay>()
+                        Ammount = advancement.Ammount * -1,
+                        Entities = new List<EntityToPay> { new EntityToPay
+                        {
+                            Id = advancement.Id,
+                            Type = "advancement",
+                            WorkflowId = advancement.WorkflowId,
+                            NextWorkflowStateId = settings.WorkflowStatusFinalizedId
+                        } }
                     };
 
                     SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameManagerDicc);
@@ -165,6 +171,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 }
                 else
                 {
+                    itemAlreadyInList.Entities.Add(new EntityToPay
+                    {
+                        Id = advancement.Id,
+                        Type = "advancement",
+                        WorkflowId = advancement.WorkflowId,
+                        NextWorkflowStateId = settings.WorkflowStatusFinalizedId
+                    });
+
                     itemAlreadyInList.Ammount -= advancement.Ammount;
                 }
             }
