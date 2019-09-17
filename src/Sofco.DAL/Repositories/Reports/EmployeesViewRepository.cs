@@ -164,7 +164,7 @@ namespace Sofco.DAL.Repositories.Reports
                 employee.AnalyticName = reader.GetString(reader.GetOrdinal("AnalyticName"));
 
             if (!reader.IsDBNull(reader.GetOrdinal("ServiceName")))
-                employee.AnalyticName = reader.GetString(reader.GetOrdinal("ServiceName"));
+                employee.ServiceName = reader.GetString(reader.GetOrdinal("ServiceName"));
 
             return employee;
         }
