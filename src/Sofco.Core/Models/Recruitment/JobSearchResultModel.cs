@@ -22,7 +22,6 @@ namespace Sofco.Core.Models.Recruitment
             if (jobSearch.Recruiter != null) Recruiter = jobSearch.Recruiter.Name;
 
             Quantity = jobSearch.Quantity;
-            TimeHiring = jobSearch.TimeHiring;
             MaxiumSalary = jobSearch.MaximunSalary;
             Comments = jobSearch.Comments;
             Status = jobSearch.Status;
@@ -33,8 +32,8 @@ namespace Sofco.Core.Models.Recruitment
             if (jobSearch.JobSearchSeniorities != null && jobSearch.JobSearchSeniorities.Any())
                 Seniorities = string.Join(";", jobSearch.JobSearchSeniorities.Select(x => x.Seniority.Text));
 
-            if (jobSearch.JobSearchSkills != null && jobSearch.JobSearchSkills.Any())
-                Skills = string.Join(";", jobSearch.JobSearchSkills.Select(x => x.Skill.Text));
+            if (jobSearch.JobSearchSkillsRequired != null && jobSearch.JobSearchSkillsRequired.Any())
+                Skills = string.Join(";", jobSearch.JobSearchSkillsRequired.Select(x => x.Skill.Text));
         }
 
         public int Id { get; set; }

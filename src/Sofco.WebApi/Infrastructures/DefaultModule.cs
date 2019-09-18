@@ -103,6 +103,9 @@ namespace Sofco.WebApi.Infrastructures
             builder.RegisterType<OptionRepository<ReasonCause>>().As<IOptionRepository<ReasonCause>>();
             builder.RegisterType<OptionService<ReasonCause>>().As<IOptionService<ReasonCause>>();
 
+            builder.RegisterType<OptionRepository<TimeHiring>>().As<IOptionRepository<TimeHiring>>();
+            builder.RegisterType<OptionService<TimeHiring>>().As<IOptionService<TimeHiring>>();
+
             RegisterRedisDependencies(builder);
 
             RegisterLogger(builder);

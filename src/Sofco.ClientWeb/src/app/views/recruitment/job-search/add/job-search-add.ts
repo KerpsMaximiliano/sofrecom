@@ -7,26 +7,48 @@ import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { FormsService } from "app/services/forms/forms.service";
 import { MessageService } from "app/services/common/message.service";
 import { Router } from "@angular/router";
+import { GenericOptions } from "app/models/enums/genericOptions";
 
 @Component({
     selector: 'job-search',
-    templateUrl: './job-search-add.html'
+    templateUrl: './job-search-add.html',
+    styleUrls: ['job-search-add.scss']
 })
 export class JobSearchComponent implements OnInit, OnDestroy {
 
     form: FormGroup = new FormGroup({
-        comments: new FormControl('', [Validators.maxLength(3000)]),
-        timeHiring: new FormControl('', [Validators.maxLength(100)]),
+        comments: new FormControl(null, [Validators.maxLength(3000)]),
+        timeHiringId: new FormControl(null, [Validators.required]),
         userId: new FormControl(null, [Validators.required]),
         reasonCauseId: new FormControl(null, [Validators.required]),
         clientId: new FormControl(null, [Validators.required]),
-        quantity: new FormControl(null, [Validators.required, Validators.min(1)]),
+        quantity: new FormControl(null, [Validators.required, Validators.min(0)]),
+        yearsExperience: new FormControl(null, [Validators.max(99), Validators.min(0)]),
         maximunSalary: new FormControl(null, [Validators.required]),
         recruiterId: new FormControl(null, [Validators.required]),
         profiles: new FormControl(null),
-        skills: new FormControl(null),
+        skillsNotRequired: new FormControl(null),
+        skillsRequired: new FormControl(null),
         seniorities: new FormControl(null),
+        email: new FormControl(null),
+        area: new FormControl(null),
+        telephone: new FormControl(null),
+        clientContact: new FormControl(null),
+        jobType: new FormControl('1'),
+        resourceAssignment: new FormControl('1'),
+        language: new FormControl(null, [Validators.maxLength(100)]),
+        study: new FormControl(null, [Validators.maxLength(100)]),
+        jobTime: new FormControl(null, [Validators.maxLength(100)]),
+        location: new FormControl(null, [Validators.maxLength(200)]),
+        benefits: new FormControl(null, [Validators.maxLength(3000)]),
+        observations: new FormControl(null, [Validators.maxLength(3000)]),
+        tasksToDo: new FormControl(null, [Validators.maxLength(3000)]),
     });
+
+    hasExtraHours: boolean;
+    extraHoursPaid: boolean;
+    hasGuards: boolean;
+    guardsPaid: boolean;
 
     profileOptions: any[] = new Array();
     skillOptions: any[] = new Array();
@@ -35,6 +57,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     customerOptions: any[] = new Array();
     applicantOptions: any[] = new Array();
     recruitersOptions: any[] = new Array();
+    timeHiringOptions: any[] = new Array();
 
     addSubscrip: Subscription;
     getUsersSubscrip: Subscription;
@@ -44,6 +67,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     getSkilsSubscrip: Subscription;
     getSenioritySubscrip: Subscription;
     getRecruiterSubscrip: Subscription;
+    getTimeHiringSubscrip: Subscription;
 
     constructor(private genericOptionsService: GenericOptionService,
                 private jobSearchService: JobSearchService,
@@ -65,6 +89,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         var promise5 = new Promise((resolve, reject) => this.getCustomers(resolve));
         var promise6 = new Promise((resolve, reject) => this.getRecruiters(resolve));
         var promise7 = new Promise((resolve, reject) => this.getApplicants(resolve));
+        var promise8 = new Promise((resolve, reject) => this.getTimeHirings(resolve));
 
         promises.push(promise1);
         promises.push(promise2);
@@ -73,6 +98,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         promises.push(promise5);
         promises.push(promise6);
         promises.push(promise7);
+        promises.push(promise8);
 
         Promise.all(promises).then(data => { 
             this.messageService.closeLoading();
@@ -88,6 +114,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         if (this.getSkilsSubscrip) this.getSkilsSubscrip.unsubscribe();
         if (this.getSenioritySubscrip) this.getSenioritySubscrip.unsubscribe();
         if (this.getRecruiterSubscrip) this.getRecruiterSubscrip.unsubscribe();
+        if (this.getTimeHiringSubscrip) this.getTimeHiringSubscrip.unsubscribe();
     }
 
     getApplicants(resolve){
@@ -106,8 +133,17 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         () => resolve());
     }
 
+    getTimeHirings(resolve){
+        this.genericOptionsService.controller = GenericOptions.TimeHiring;
+        this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+            resolve();
+            this.timeHiringOptions = response.data;
+        },
+        () => resolve());
+    }
+
     getProfiles(resolve){
-        this.genericOptionsService.controller = "profile";
+        this.genericOptionsService.controller = GenericOptions.Profile;
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             resolve();
             this.profileOptions = response.data;
@@ -116,7 +152,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     }
 
     getSeniorities(resolve){
-        this.genericOptionsService.controller = "seniority";
+        this.genericOptionsService.controller = GenericOptions.Seniority;
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             resolve();
             this.seniorityOptions = response.data;
@@ -125,7 +161,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     }
 
     getSkills(resolve){
-        this.genericOptionsService.controller = "skill";
+        this.genericOptionsService.controller = GenericOptions.Skill;
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             resolve();
             this.skillOptions = response.data;
@@ -134,7 +170,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     }
 
     getReasons(resolve){
-        this.genericOptionsService.controller = "reasonCause";
+        this.genericOptionsService.controller =  GenericOptions.ReasonCause;
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             resolve();
             this.reasonOptions = response.data;
@@ -159,12 +195,31 @@ export class JobSearchComponent implements OnInit, OnDestroy {
             reasonCauseId: this.form.controls.reasonCauseId.value,
             clientCrmId: this.form.controls.clientId.value,
             profiles: this.form.controls.profiles.value,
-            skills: this.form.controls.skills.value,
+            skillsNotRequired: this.form.controls.skillsNotRequired.value,
+            skillsRequired: this.form.controls.skillsRequired.value,
             seniorities: this.form.controls.seniorities.value,
             quantity: this.form.controls.quantity.value,
-            timeHiring: this.form.controls.timeHiring.value,
+            timeHiringId: this.form.controls.timeHiringId.value,
             maximunSalary: this.form.controls.maximunSalary.value,
             comments: this.form.controls.comments.value,
+            yearsExperience: this.form.controls.yearsExperience.value,
+            email: this.form.controls.email.value,
+            area: this.form.controls.area.value,
+            telephone: this.form.controls.telephone.value,
+            clientContact: this.form.controls.clientContact.value,
+            jobType: this.form.controls.jobType.value,
+            resourceAssignment: this.form.controls.resourceAssignment.value,
+            language: this.form.controls.language.value,
+            study: this.form.controls.study.value,
+            jobTime: this.form.controls.jobTime.value,
+            location: this.form.controls.location.value,
+            benefits: this.form.controls.benefits.value,
+            observations: this.form.controls.observations.value,
+            tasksToDo: this.form.controls.observations.value,
+            hasExtraHours: this.hasExtraHours,
+            extraHoursPaid: this.extraHoursPaid,
+            hasGuards: this.hasGuards,
+            guardsPaid: this.guardsPaid,
             clientId: 0
         }
 

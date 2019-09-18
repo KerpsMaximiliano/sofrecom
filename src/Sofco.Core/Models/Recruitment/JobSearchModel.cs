@@ -13,7 +13,6 @@ namespace Sofco.Core.Models.Recruitment
             RecruiterId = jobsearch.RecruiterId;
             ReasonCauseId = jobsearch.ReasonCauseId;
             Quantity = jobsearch.Quantity;
-            TimeHiring = jobsearch.TimeHiring;
             MaximunSalary = jobsearch.MaximunSalary;
             Comments = jobsearch.Comments;
             Status = jobsearch.Status;
@@ -26,8 +25,8 @@ namespace Sofco.Core.Models.Recruitment
             if (jobsearch.JobSearchSeniorities != null && jobsearch.JobSearchSeniorities.Any())
                 Seniorities = jobsearch.JobSearchSeniorities.Select(x => x.SeniorityId).ToList();
 
-            if (jobsearch.JobSearchSkills != null && jobsearch.JobSearchSkills.Any())
-                Skills = jobsearch.JobSearchSkills.Select(x => x.SkillId).ToList();
+            if (jobsearch.JobSearchSkillsRequired != null && jobsearch.JobSearchSkillsRequired.Any())
+                Skills = jobsearch.JobSearchSkillsRequired.Select(x => x.SkillId).ToList();
         }
 
         public JobSearchStatus Status { get; set; }
@@ -47,8 +46,6 @@ namespace Sofco.Core.Models.Recruitment
         public IList<int> Seniorities { get; set; }
 
         public int Quantity { get; set; }
-
-        public string TimeHiring { get; set; }
 
         public decimal MaximunSalary { get; set; }
 

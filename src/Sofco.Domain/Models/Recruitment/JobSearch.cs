@@ -23,13 +23,13 @@ namespace Sofco.Domain.Models.Recruitment
 
         public IList<JobSearchProfile> JobSearchProfiles { get; set; }
 
-        public IList<JobSearchSkill> JobSearchSkills { get; set; }
+        public IList<JobSearchSkillRequired> JobSearchSkillsRequired { get; set; }
+
+        public IList<JobSearchSkillNotRequired> JobSearchSkillsNotRequired { get; set; }
 
         public IList<JobSearchSeniority> JobSearchSeniorities { get; set; }
 
         public int Quantity { get; set; }
-
-        public string TimeHiring { get; set; }
 
         public decimal MaximunSalary { get; set; }
 
@@ -48,5 +48,42 @@ namespace Sofco.Domain.Models.Recruitment
         public string CreatedBy { get; set; }
 
         public string ReasonComments { get; set; }
+
+        public int TimeHiringId { get; set; }
+        public TimeHiring TimeHiring { get; set; }
+
+        public int YearsExperience { get; set; }
+
+        public string Email { get; set; }
+
+        public string Telephone { get; set; }
+
+        public string ClientContact { get; set; }
+
+        public int JobType { get; set; }
+
+        public int ResourceAssignment { get; set; }
+
+        public string Language { get; set; }
+
+        public string Study { get; set; }
+
+        public string JobTime { get; set; }
+
+        public string Location { get; set; }
+
+        public string Benefits { get; set; }
+
+        public string Observations { get; set; }
+
+        public string TasksToDo { get; set; }
+
+        public bool HasExtraHours { get; set; }
+
+        public bool ExtraHoursPaid { get; set; }
+
+        public bool HasGuards { get; set; }
+
+        public bool GuardsPaid { get; set; }
     }
 }

@@ -22,6 +22,10 @@ namespace Sofco.DAL.Mappings.Recruitment
             // Primary Key
             builder.Entity<ReasonCause>().HasKey(_ => _.Id);
             builder.Entity<ReasonCause>().Property(_ => _.Text).HasMaxLength(75);
+
+            // Primary Key
+            builder.Entity<TimeHiring>().HasKey(_ => _.Id);
+            builder.Entity<TimeHiring>().Property(_ => _.Text).HasMaxLength(75);
         }
     }
 }

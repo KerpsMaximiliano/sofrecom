@@ -25,6 +25,7 @@ import { JobSearchListComponent } from './job-search/list/job-search-list';
 import { AmountFormatModule } from 'app/pipes/amount-format.module';
 import { JobSearchEditComponent } from './job-search/edit/job-search-edit';
 import { BsDatepickerModule } from 'ngx-bootstrap';
+import { TimeHiringComponent } from '../admin/options/timeHiring';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
     DetailContactsComponent, 
     SkillComponent, 
     ProfileComponent, 
+    TimeHiringComponent,
     SeniorityComponent, 
     ReasonCauseComponent,
     JobSearchComponent,

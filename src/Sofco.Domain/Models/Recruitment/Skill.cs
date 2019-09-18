@@ -6,6 +6,7 @@ namespace Sofco.Domain.Models.Recruitment
 {
     public class Skill : Option
     {
-        public IList<JobSearchSkill> JobSearchSkills { get; set; }
+        public IList<JobSearchSkillRequired> JobSearchSkillsRequired { get; set; }
+        public IList<JobSearchSkillNotRequired> JobSearchSkillsNotRequired { get; set; }
     }
 }
