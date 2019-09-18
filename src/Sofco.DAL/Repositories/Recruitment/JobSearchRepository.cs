@@ -50,6 +50,9 @@ namespace Sofco.DAL.Repositories.Recruitment
                 if (parameter.Profiles != null && parameter.Profiles.Any())
                     query = query.Where(x => x.JobSearchProfiles.Any(s => parameter.Profiles.Contains(s.ProfileId)));
 
+                if (parameter.Seniorities != null && parameter.Seniorities.Any())
+                    query = query.Where(x => x.JobSearchSeniorities.Any(s => parameter.Seniorities.Contains(s.SeniorityId)));
+
                 if (parameter.Skills != null && parameter.Skills.Any())
                     query = query.Where(x => x.JobSearchSkills.Any(s => parameter.Skills.Contains(s.SkillId)));
             }

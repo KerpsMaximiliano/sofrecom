@@ -13,6 +13,8 @@ namespace Sofco.Core.Models.Recruitment
 
         public IList<int> Profiles { get; set; }
 
+        public IList<int> Seniorities { get; set; }
+
         public int? UserId { get; set; }
 
         public IList<JobSearchStatus> Status { get; set; }

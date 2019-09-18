@@ -17,6 +17,7 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
+    <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="back()"> <i class="fa fa-arrow-left"></i> Volver </button>
     <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="close()" *ngIf="canClose()"> Cerrar </button>
     <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="reopen()" *ngIf="canReopen()"> Re-Abrir </button>
     <button type="button" class="btn btn-md btn-outline dim btn-success" (click)="suspend()" *ngIf="canSuspend()"> Suspender </button>
@@ -148,7 +149,7 @@
             </form>
 
         </div>
-        <div class="ibox-footer text-center">
+        <div class="ibox-footer text-center" *ngIf="canSave()">
             <button [disabled]="!form.valid" (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
         </div>
     </div>
@@ -159,7 +160,7 @@
     <form [formGroup]="dateModalForm" *ngIf="dateModalForm">   
 
         <div class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'date')">
-            <label class="control-label">Fecha</label>
+            <label class="control-label">Fecha</label> 
             <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="date">
     
             <div class="form-control-feedback" *ngIf="formsService.hasErrors(dateModalForm, 'date')">

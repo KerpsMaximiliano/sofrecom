@@ -24,6 +24,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
     getProfilesSubscrip: Subscription;
     getSkilsSubscrip: Subscription;
     getRecruiterSubscrip: Subscription;
+    getSenioritySubscrip: Subscription;
 
     profileOptions: any[] = new Array();
     skillOptions: any[] = new Array();
@@ -32,6 +33,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
     applicantOptions: any[] = new Array();
     recruitersOptions: any[] = new Array();
     statusOptions: any[] = new Array();
+    seniorityOptions: any[] = new Array();
 
     data: any[] = new Array();
 
@@ -43,6 +45,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
     clientId: string;
     skills: any;
     profiles: any;
+    seniorities: any;
 
     constructor(private router: Router,
         private messageService: MessageService,
@@ -64,6 +67,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
         var promise5 = new Promise((resolve, reject) => this.getCustomers(resolve));
         var promise6 = new Promise((resolve, reject) => this.getRecruiters(resolve));
         var promise7 = new Promise((resolve, reject) => this.getApplicants(resolve));
+        var promise8 = new Promise((resolve, reject) => this.getSeniorities(resolve));
 
         promises.push(promise1);
         promises.push(promise3);
@@ -71,6 +75,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
         promises.push(promise5);
         promises.push(promise6);
         promises.push(promise7);
+        promises.push(promise8);
 
         Promise.all(promises).then(data => { 
             this.messageService.closeLoading();
@@ -90,6 +95,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
         if (this.getProfilesSubscrip) this.getProfilesSubscrip.unsubscribe();
         if (this.getSkilsSubscrip) this.getSkilsSubscrip.unsubscribe();
         if (this.getRecruiterSubscrip) this.getRecruiterSubscrip.unsubscribe();
+        if (this.getSenioritySubscrip) this.getSenioritySubscrip.unsubscribe();
     }
 
     collapse() {
@@ -139,7 +145,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
 
     getSkills(resolve){
         this.genericOptionsService.controller = "skill";
-        this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+        this.getSkilsSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             resolve();
             this.skillOptions = response.data;
         },
@@ -155,8 +161,17 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
         () => resolve());
     }
 
+    getSeniorities(resolve){
+        this.genericOptionsService.controller = "seniority";
+        this.getSenioritySubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+            resolve();
+            this.seniorityOptions = response.data;
+        },
+        () => resolve());
+    }
+
     getCustomers(resolve) {
-        this.getClientsSubscrip = this.customerService.getOptions().subscribe(d => {
+        this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
             resolve();
             this.customerOptions = d.data;
         },
@@ -172,16 +187,27 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
         this.statusId = null;
         this.reasonCauseId = null;
         this.recruiterId = null;
+        this.seniorities = null;
     }
 
     search(){
+        var status;
+
+        if(this.statusId >= 0){
+            status = [this.statusId];
+        }
+        else{
+            status = [];
+        }
+
         var json = {
             id: this.id,
             clientId: this.clientId,
             skills: this.skills,
+            seniorities: this.seniorities,
             profiles: this.profiles,
             userId: this.userId,
-            status: this.statusId ? [this.statusId] : [],
+            status: status,
             reasonId: this.reasonCauseId,
             recruiterId: this.recruiterId
         };
@@ -212,7 +238,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
             selector: "#jobSearchTable",
             columns: columns,
             title: title,
-            columnDefs: [{ 'aTargets': [1, 12, 13, 14], "sType": "date-uk" }],
+            columnDefs: [ { "aTargets": [1, 12, 13, 14], "sType": "date-uk" }],
             withExport: true,
         };
 

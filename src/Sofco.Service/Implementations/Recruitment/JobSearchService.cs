@@ -155,7 +155,7 @@ namespace Sofco.Service.Implementations.Recruitment
 
             if (parameter.Status == JobSearchStatus.Suspended)
             {
-                if (jobsearch.Status != JobSearchStatus.Open)
+                if (jobsearch.Status != JobSearchStatus.Open && jobsearch.Status != JobSearchStatus.Reopen)
                 {
                     response.AddError(Resources.Recruitment.JobSearch.CannotChangeStatus);
                 }

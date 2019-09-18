@@ -27,7 +27,7 @@ namespace Sofco.WebApi.Controllers.Billing
         [HttpGet("all/options")]
         public IActionResult GetAllOptions()
         {
-            var response = customerService.GetCustomersOptions();
+            var response = customerService.GetAllCustomersOptions();
 
             return this.CreateResponse(response);
         }

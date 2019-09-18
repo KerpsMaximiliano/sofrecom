@@ -129,6 +129,21 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public Response<IList<SelectListModel>> GetAllCustomersOptions()
+        {
+            var result = unitOfWork.CustomerRepository.GetAllActives();
+
+            var response = new Response<IList<SelectListModel>>
+            {
+                Data = result
+                    .Select(x => new SelectListModel { Id = x.CrmId, Text = x.Name })
+                    .OrderBy(x => x.Text)
+                    .ToList()
+            };
+
+            return response;
+        }
+
         private Response<IList<Customer>> GetCustomersByCurrentManager()
         {
             var response = new Response<IList<Customer>>();

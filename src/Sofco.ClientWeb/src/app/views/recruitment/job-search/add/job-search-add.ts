@@ -143,7 +143,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     }
 
     getCustomers(resolve) {
-        this.getClientsSubscrip = this.customerService.getOptions().subscribe(d => {
+        this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
             resolve();
             this.customerOptions = d.data;
         },
@@ -177,5 +177,9 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         error => {
             this.messageService.closeLoading();
         });
+    }
+
+    back(){
+        this.router.navigate(['recruitment/jobSearch/']);
     }
 }

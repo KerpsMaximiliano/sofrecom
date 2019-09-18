@@ -16,5 +16,7 @@ namespace Sofco.Core.Services.Billing
         Response<Customer> GetCustomerById(string customerId);
 
         Response Update();
+
+        Response<IList<SelectListModel>> GetAllCustomersOptions();
     }
 }

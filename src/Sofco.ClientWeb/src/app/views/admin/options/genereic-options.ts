@@ -16,6 +16,8 @@ export class GenericOptionComponent implements OnDestroy {
     activateSubscrip: Subscription;
 
     public list: any[] = new Array();
+    public listFiltered: any[] = new Array();
+    public actives: boolean = true;
 
     private entity: string;
 
@@ -64,7 +66,7 @@ export class GenericOptionComponent implements OnDestroy {
         this.getSubscrip = this.genericOptionService.getAll().subscribe(response => {
             this.messageService.closeLoading();
             this.list = response.data;
-            this.initGrid();
+            this.filterActives(true);
         },
         () => this.messageService.closeLoading());
     }
@@ -77,12 +79,30 @@ export class GenericOptionComponent implements OnDestroy {
             this.activateSubscrip = this.genericOptionService.active(item.id, newState).subscribe(() => {
                 this.messageService.closeLoading();
                 item.active = newState;
+                this.filterActives(this.actives);
             },
             () => {
                 this.messageService.closeLoading();
             });
-
+ 
         });
+    }
+
+    filterActives(active){
+        this.actives = active;
+
+        if(active){
+            this.listFiltered = this.list.filter((element) => {
+                return element.active == true;
+            });
+        }
+        else{
+            this.listFiltered = this.list.filter((element) => {
+                return element;
+            });
+        }
+
+        this.initGrid();
     }
 
     initGrid() {
