@@ -481,16 +481,18 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<List<CostMonthOther>> GetOtherTypeAndCostDetail(int idType, int idCostDetail)
+        public Response<MonthOther> GetOtherTypeAndCostDetail(int idType, int idCostDetail)
         {
-            var response = new Response<List<CostMonthOther>> { Data = new List<CostMonthOther>() };
+            var response = new Response<MonthOther> { Data = new MonthOther() };
 
             try
             {
                 var listOther = unitOfWork.CostDetailOtherRepository.GetByTypeAndCostDetail(idType, idCostDetail);
                 var listBudget = listOther.Where(x => x.IsReal == false).ToList();
+                var subtypes = unitOfWork.CostDetailRepository.GetSubtypes(idType);
 
-                response.Data = this.Translate(listBudget);
+                response.Data.CostMonthOther = this.Translate(listBudget);
+                response.Data.Subtypes = this.Translate(subtypes);
             }
             catch (Exception ex)
             {
@@ -619,7 +621,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     cost.MonthsCost = new List<MonthDetailCost>();
                     MonthDetailCost month = new MonthDetailCost();
 
-                    cost.TypeId = otherRes.TypeId;
+                    cost.TypeId = otherRes.SubtypeId;
+                    cost.CurrencyId = otherRes.CurrencyId;
                     month.MonthYear = pMonthDetail.MonthYear;
 
                     if (pMonthDetail.IsReal)
@@ -1317,7 +1320,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
                     if (costDetailMonth != null)
                     {
-                        var monthValue = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailTypeId == type.Id && o.IsReal == false).ToList();
+                        var monthValue = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailSubtype.CostDetailType.Id == type.Id && o.IsReal == false).ToList();
                         if (monthValue.Count > 0)
                         {
                             monthDetail.Budget.Value = monthValue.Sum(x => x.Value);
@@ -1333,7 +1336,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         monthDetail.CostDetailId = costDetailMonth.Id;
                     }
 
-                    var monthValueReal = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailTypeId == type.Id && o.IsReal == true).ToList();
+                    var monthValueReal = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailSubtypeId == type.Id && o.IsReal == true).ToList();
                     if (monthValueReal.Count > 0)
                     {
                         monthDetail.Real.Id = monthValueReal.FirstOrDefault().Id;
@@ -1563,10 +1566,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             entity = unitOfWork.CostDetailOtherRepository.Get(aux.Id);
 
-                            if (aux.Value != entity.Value || aux.Description != entity.Description)
+                            if (aux.Value != entity.Value || aux.Description != entity.Description || resource.CurrencyId != entity.CurrencyId)
                             {
                                 entity.Value = aux.Value ?? 0;
                                 entity.Description = aux.Description;
+                                entity.CurrencyId = resource.CurrencyId;
                                 entity.IsReal = isReal;
 
                                 unitOfWork.CostDetailOtherRepository.Update(entity);
@@ -1579,7 +1583,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                 entity.Value = aux.Value ?? 0;
                                 entity.Description = aux.Description;
-                                entity.CostDetailTypeId = resource.TypeId;
+                                entity.CostDetailSubtypeId = resource.TypeId;
+                                entity.CurrencyId = resource.CurrencyId;
                                 entity.IsReal = isReal;
 
                                 unitOfWork.CostDetailOtherRepository.Insert(entity);
@@ -1682,17 +1687,18 @@ namespace Sofco.Service.Implementations.ManagementReport
         private List<CostMonthOther> Translate(List<CostDetailOther> costDetailOthers)
         {
             return costDetailOthers
-                    .Where(t => t.CostDetailType.Name != EnumCostDetailType.AjusteGeneral.ToString())
+                    .Where(t => t.CostDetailSubtype.Name != EnumCostDetailType.AjusteGeneral.ToString())
                     .Select(x => new CostMonthOther
                     {
                         Id = x.Id,
                         Description = x.Description,
                         CostDetailId = x.CostDetailId,
-                        TypeId = x.CostDetailTypeId,
-                        TypeName = x.CostDetailType.Name,
+                        SubtypeId = x.CostDetailSubtypeId,
+                        SubtypeName = x.CostDetailSubtype.Name,
+                        CurrencyId = x.CurrencyId,
                         Value = x.Value
                     })
-                    .OrderBy(x => x.TypeId)
+                    .OrderBy(x => x.SubtypeName)
                     .ToList();
         }
 
@@ -1710,6 +1716,15 @@ namespace Sofco.Service.Implementations.ManagementReport
                         })
                         .OrderBy(x => x.Name)
                         .ToList();
+        }
+
+        private List<CostSubtype> Translate(List<CostDetailSubtype> subtipes)
+        {
+            return subtipes.Select(x => new CostSubtype()
+                        {
+                            Id = x.Id,
+                            Name = x.Name
+                        }).ToList();
         }
 
         public Response<ManagementReportCommentModel> AddComment(ManagementReportAddCommentModel model)

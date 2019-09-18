@@ -85,6 +85,7 @@ namespace Sofco.Core.Models.ManagementReport
         public bool OtherResource { get; set; }
         public string Description { get; set; }
         public bool BelongEmployee { get; set; }
+        public int CurrencyId { get; set; }
 
         public IList<MonthDetailCost> MonthsCost { get; set; }
     }

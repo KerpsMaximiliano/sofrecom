@@ -52,6 +52,8 @@
     <Compile Remove="Migrations\20190508194404_RefactorManagementReport.Designer.cs" />
     <Compile Remove="Migrations\20190508194914_Initial.cs" />
     <Compile Remove="Migrations\20190508194914_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20190917204218_cost-subtype.cs" />
+    <Compile Remove="Migrations\20190917204218_cost-subtype.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -26,12 +26,20 @@ namespace Sofco.DAL.Repositories.ManagementReport
             return context.CostDetailTypes.OrderBy(t => t.Id).ToList();
         }
 
+        public List<CostDetailSubtype> GetSubtypes(int idType)
+        {
+            return context.CostDetailSubtype
+                .Where(s => s.CostDetailTypeId == idType)
+                .OrderBy(s => s.Name)
+                .ToList();
+        }
+
         public CostDetail GetByManagementReportAndMonthYear(int managementReportId, DateTime monthYear)
         {
             return context.CostDetails
                 .Include(x => x.CostDetailProfiles)
                 .Include(x => x.CostDetailOthers)
-                    .ThenInclude(b => b.CostDetailType)
+                    .ThenInclude(b => b.CostDetailSubtype)
                 .Include(x => x.ContratedDetails)
                 .Include(x => x.CostDetailResources)
                 .Include(x => x.CostDetailStaff)

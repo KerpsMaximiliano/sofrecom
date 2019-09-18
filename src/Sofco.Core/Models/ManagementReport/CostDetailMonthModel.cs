@@ -51,11 +51,23 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal ChargesPercentage { get; set; }
     }
 
+    public class MonthOther
+    {
+        public List<CostSubtype> Subtypes { get; set; }
+        public List<CostMonthOther> CostMonthOther { get; set; }
+    }
+    public class CostSubtype
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     public class CostMonthOther
     {
         public int CostDetailId { get; set; }
-        public int TypeId { get; set; }
-        public string TypeName { get; set; }
+        public int SubtypeId { get; set; }
+        public string SubtypeName { get; set; }
+        public int CurrencyId { get; set; }
         public int Id { get; set; }
         public decimal? Value { get; set; }
         public string Description { get; set; }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190917204512_cost-subtype")]
+    partial class costsubtype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1926,8 +1928,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("CostDetailSubtypeId");
 
-                    b.Property<int>("CurrencyId");
-
                     b.Property<string>("Description")
                         .HasMaxLength(500);
 
@@ -1940,8 +1940,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("CostDetailId");
 
                     b.HasIndex("CostDetailSubtypeId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("CostDetailOthers");
                 });
@@ -2057,14 +2055,14 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CostDetailTypeId");
-
                     b.Property<string>("Name")
                         .HasMaxLength(250);
 
+                    b.Property<int?>("TypeId");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CostDetailTypeId");
+                    b.HasIndex("TypeId");
 
                     b.ToTable("CostDetailSubtype");
                 });
@@ -3740,11 +3738,6 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("CostDetailOther")
                         .HasForeignKey("CostDetailSubtypeId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Utils.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailProfile", b =>
@@ -3811,10 +3804,9 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.CostDetailSubtype", b =>
                 {
-                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetailType", "CostDetailType")
+                    b.HasOne("Sofco.Domain.Models.ManagementReport.CostDetailType", "Type")
                         .WithMany("CostDetailSubtype")
-                        .HasForeignKey("CostDetailTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TypeId");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.ManagementReport.ManagementReport", b =>

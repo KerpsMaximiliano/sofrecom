@@ -16,8 +16,10 @@ namespace Sofco.DAL.Repositories.ManagementReport
         public List<CostDetailOther> GetByTypeAndCostDetail(int costTipeId, int costDetailId)
         {
             return context.CostDetailOthers
-                        .Include(x => x.CostDetailType)
-                        .Where(x => x.CostDetailTypeId == costTipeId
+                        //.Include(x => x.CostDetailType)
+                        .Include(x => x.CostDetailSubtype)
+                            .ThenInclude(y => y.CostDetailType)
+                        .Where(x => x.CostDetailSubtype.CostDetailTypeId == costTipeId
                                 && x.CostDetailId == costDetailId)
                         .ToList();
         }
