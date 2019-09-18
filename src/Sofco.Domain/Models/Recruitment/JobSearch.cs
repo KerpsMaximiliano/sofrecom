@@ -85,5 +85,7 @@ namespace Sofco.Domain.Models.Recruitment
         public bool HasGuards { get; set; }
 
         public bool GuardsPaid { get; set; }
+
+        public string Area { get; set; }
     }
 }

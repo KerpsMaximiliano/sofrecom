@@ -66,7 +66,9 @@ namespace Sofco.DAL.Repositories.Recruitment
                 .Include(x => x.JobSearchProfiles)
                 .Include(x => x.JobSearchSeniorities)
                 .Include(x => x.JobSearchSkillsRequired)
+                .Include(x => x.JobSearchSkillsNotRequired)
                 .Include(x => x.Client)
+                .Include(x => x.TimeHiring)
                 .SingleOrDefault(x => x.Id == id);
         }
     }

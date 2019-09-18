@@ -16,6 +16,24 @@ namespace Sofco.Core.Models.Recruitment
             MaximunSalary = jobsearch.MaximunSalary;
             Comments = jobsearch.Comments;
             Status = jobsearch.Status;
+            Telephone = jobsearch.Telephone;
+            ClientContact = jobsearch.ClientContact;
+            Language = jobsearch.Language;
+            Study = jobsearch.Study;
+            JobTime = jobsearch.JobTime;
+            Location = jobsearch.Location;
+            Benefits = jobsearch.Benefits;
+            Observations = jobsearch.Observations;
+            TasksToDo = jobsearch.TasksToDo;
+            Area = jobsearch.Area;
+            HasExtraHours = jobsearch.HasExtraHours;
+            ExtraHoursPaid = jobsearch.ExtraHoursPaid;
+            HasGuards = jobsearch.HasGuards;
+            GuardsPaid = jobsearch.GuardsPaid;
+            Email = jobsearch.Email;
+            JobType = jobsearch.JobType;
+            ResourceAssignment = jobsearch.ResourceAssignment;
+            YearsExperience = jobsearch.YearsExperience;
 
             if (jobsearch.Client != null) ClientCrmId = jobsearch.Client.CrmId;
 
@@ -26,10 +44,17 @@ namespace Sofco.Core.Models.Recruitment
                 Seniorities = jobsearch.JobSearchSeniorities.Select(x => x.SeniorityId).ToList();
 
             if (jobsearch.JobSearchSkillsRequired != null && jobsearch.JobSearchSkillsRequired.Any())
-                Skills = jobsearch.JobSearchSkillsRequired.Select(x => x.SkillId).ToList();
+                SkillsRequired = jobsearch.JobSearchSkillsRequired.Select(x => x.SkillId).ToList();
+
+            if (jobsearch.JobSearchSkillsNotRequired != null && jobsearch.JobSearchSkillsNotRequired.Any())
+                SkillsNotRequired = jobsearch.JobSearchSkillsNotRequired.Select(x => x.SkillId).ToList();
+
+            if (jobsearch.TimeHiring != null) TimeHiringId = jobsearch.TimeHiringId;
         }
 
         public JobSearchStatus Status { get; set; }
+
+        public int TimeHiringId { get; set; }
 
         public int UserId { get; set; }
 
@@ -41,7 +66,9 @@ namespace Sofco.Core.Models.Recruitment
 
         public IList<int> Profiles { get; set; }
 
-        public IList<int> Skills { get; set; }
+        public IList<int> SkillsRequired { get; set; }
+
+        public IList<int> SkillsNotRequired { get; set; }
 
         public IList<int> Seniorities { get; set; }
 
@@ -50,5 +77,41 @@ namespace Sofco.Core.Models.Recruitment
         public decimal MaximunSalary { get; set; }
 
         public string Comments { get; set; }
+
+        public string Email { get; set; }
+
+        public string Telephone { get; set; }
+
+        public string ClientContact { get; set; }
+
+        public string Language { get; set; }
+
+        public string Study { get; set; }
+
+        public string JobTime { get; set; }
+
+        public string Location { get; set; }
+
+        public string Benefits { get; set; }
+
+        public string Observations { get; set; }
+
+        public string TasksToDo { get; set; }
+
+        public string Area { get; set; }
+
+        public bool HasExtraHours { get; set; }
+
+        public bool ExtraHoursPaid { get; set; }
+
+        public bool HasGuards { get; set; }
+
+        public bool GuardsPaid { get; set; }
+
+        public int JobType { get; set; }
+
+        public int ResourceAssignment { get; set; }
+
+        public int YearsExperience { get; set; }
     }
 }

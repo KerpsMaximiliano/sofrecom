@@ -54,6 +54,8 @@ namespace Sofco.Core.Models.Recruitment
 
         public string TasksToDo { get; set; }
 
+        public string Area { get; set; }
+
         public bool HasExtraHours { get; set; }
 
         public bool ExtraHoursPaid { get; set; }
@@ -131,6 +133,7 @@ namespace Sofco.Core.Models.Recruitment
             domain.ExtraHoursPaid = ExtraHoursPaid;
             domain.HasGuards = HasGuards;
             domain.GuardsPaid = GuardsPaid;
+            domain.Area = Area;
 
             if (Profiles != null && Profiles.Any())
             {

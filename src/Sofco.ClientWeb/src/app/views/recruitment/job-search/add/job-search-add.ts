@@ -31,7 +31,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         skillsRequired: new FormControl(null),
         seniorities: new FormControl(null),
         email: new FormControl(null),
-        area: new FormControl(null),
+        area: new FormControl(null, [Validators.maxLength(100)]),
         telephone: new FormControl(null),
         clientContact: new FormControl(null),
         jobType: new FormControl('1'),
@@ -135,7 +135,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
 
     getTimeHirings(resolve){
         this.genericOptionsService.controller = GenericOptions.TimeHiring;
-        this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+        this.getTimeHiringSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             resolve();
             this.timeHiringOptions = response.data;
         },
@@ -236,5 +236,13 @@ export class JobSearchComponent implements OnInit, OnDestroy {
 
     back(){
         this.router.navigate(['recruitment/jobSearch/']);
+    }
+
+    hasExtraHoursChanged(){
+        this.extraHoursPaid = false;
+    }
+
+    hasGuardsChanged(){
+        this.guardsPaid = false;
     }
 }

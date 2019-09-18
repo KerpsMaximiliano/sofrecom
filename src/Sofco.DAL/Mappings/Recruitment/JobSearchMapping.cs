@@ -14,6 +14,7 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<JobSearch>().Property(x => x.CreatedBy).HasMaxLength(50);
             builder.Entity<JobSearch>().Property(x => x.Language).HasMaxLength(100);
             builder.Entity<JobSearch>().Property(x => x.Study).HasMaxLength(100);
+            builder.Entity<JobSearch>().Property(x => x.Area).HasMaxLength(100);
             builder.Entity<JobSearch>().Property(x => x.JobTime).HasMaxLength(100);
             builder.Entity<JobSearch>().Property(x => x.Location).HasMaxLength(200);
             builder.Entity<JobSearch>().Property(x => x.Benefits).HasMaxLength(3000);
