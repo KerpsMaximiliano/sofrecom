@@ -109,8 +109,7 @@
                                 *ngIf="monthCost.canViewSensibleData" [ngClass]="monthCost.class">
                                 {{ monthCost.budget.value | amountFormat }}
                             </label>
-                            <label class="label" *ngIf="!monthCost.canViewSensibleData"
-                                [ngClass]="monthCost.class">
+                            <label class="label" *ngIf="!monthCost.canViewSensibleData" [ngClass]="monthCost.class">
                                 <i class="fa fa-lock text-danger" aria-hidden="true"></i>
                             </label>
                         </td>
@@ -280,9 +279,18 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="form-group">
-                <label class="control-label" for="readOnlyInput">Mes</label>
-                <input class="form-control" id="readOnlyInput" type="text" placeholder="{{ monthSelected.display }}"
-                    readonly="">
+                <fieldset>
+                    <div class="col-sm-4">
+                        <label class="control-label" for="readOnlyInput">Mes</label>
+                        <input class="form-control" id="readOnlyInput" type="text"
+                            placeholder="{{ monthSelected.display }}" readonly="">
+                    </div>
+                    <div class="col-sm-8" *ngIf="modalOther">
+                        <label class="control-label" for="readOnlyInput">Categoria</label>
+                        <input class="form-control" id="readOnlyInput" type="text"
+                            placeholder="{{ categorySelected.name }}" [disabled]="true">
+                    </div>
+                </fieldset>
             </div>
 
             <div class="form-group" *ngIf="modalEmployee">
@@ -324,38 +332,58 @@
             <div *ngIf="modalOther">
                 <div class="row border-bottom m-b-sm">
                     <div class="col-sm-4">
-                        <h4>Gastos</h4>
+                        <h4>SubCategoria</h4>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <h4>Descripción</h4>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-2">
+                        <h4>Moneda</h4>
+                    </div>
+                    <div class="col-sm-2">
                         <h4>Monto</h4>
                     </div>
                 </div>
 
                 <div class="row m-t-xs" *ngFor="let other of othersByMonth; let i = index">
                     <div class="col-sm-4">
-                        {{ other.typeName }}
+                        {{ other.subtypeName }}
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <input type="text" class="form-control input-xs" [(ngModel)]="other.description"
                             maxlength="200">
                     </div>
-                    <div class="col-sm-3">
-                        <!-- <input type="number" decimalFormat class="form-control input-xs" [digitLimit]="8"
-                            [(ngModel)]="other.value" max="99999999" min="0"> -->
-                        <math-input [(model)]="other.value"></math-input>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <ng-select class="input-billing-modal" [items]="currencies" bindLabel="text" bindValue="id"
+                                [(ngModel)]="other.currencyId" [clearable]="false">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <math-input [(model)]="other.value" [modelDisabled]="readOnly"></math-input>
                     </div>
                     <div class="col-sm-1">
-                        <button class="btn btn-danger btn-xs" (click)="deleteOthersByMonth(i, other)" *ngIf="!isReadOnly"><i
-                                class="fa fa-trash"></i></button>
+                        <button class="btn btn-danger btn-xs" (click)="deleteOthersByMonth(i, other)"
+                            *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
                     </div>
                 </div>
-                <button class="btn btn-success btn-sm m-t-xs" (click)="addOtherByMonth()" type="button">
-                    Agregar
-                    <i class="fa fa-plus"></i>
-                </button>
+                <div class="row" [hidden]="readOnly">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <ng-select [items]="subtypes" bindLabel="name"
+                                [(ngModel)]="subtypeSelected" [clearable]="false">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-success btn-sm m-t-xs" (click)="addOtherByMonth()" type="button">
+                            Agregar
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
             </div>
 
         </div>

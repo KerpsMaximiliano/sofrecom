@@ -15,6 +15,10 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<CostDetailType>().HasKey(h => h.Id);
             builder.Entity<CostDetailType>().Property(x => x.Name).HasMaxLength(250);
 
+            builder.Entity<CostDetailSubtype>().HasKey(h => h.Id);
+            builder.Entity<CostDetailSubtype>().Property(x => x.Name).HasMaxLength(250);
+            builder.Entity<CostDetailSubtype>().HasOne(x => x.CostDetailType).WithMany(x => x.CostDetailSubtype).HasForeignKey(x => x.CostDetailTypeId);
+
             //Cost detail categories
             builder.Entity<CostDetailCategories>().HasKey(h => h.Id);
             builder.Entity<CostDetailCategories>().Property(x => x.Name).HasMaxLength(250);

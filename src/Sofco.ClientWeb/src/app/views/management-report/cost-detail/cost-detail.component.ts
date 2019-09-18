@@ -26,7 +26,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     getOtherByMonthSuscrip: Subscription;
     deleteProfileSubscrip: Subscription;
     deleteOthersByMonthSubscrip: Subscription;
-
+    getCurrenciesSubscrip: Subscription;
 
     //Propiedades
     serviceId: string;
@@ -72,6 +72,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     intAux: number = 0
+    categorySelected: any = { id: 0, name: '' }
+    currencies: any[] = new Array()
+    subtypes: any[] = new Array()
+    subtypeSelected: any = { id: 0, name: '' }
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
@@ -119,6 +123,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
         this.getUsers()
         this.getProfiles()
+        this.getCurrencies();
 
         this.editItemModal.size = 'modal-sm'
 
@@ -139,6 +144,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (this.getOtherByMonthSuscrip) this.getOtherByMonthSuscrip.unsubscribe();
         if (this.deleteProfileSubscrip) this.getOtherByMonthSuscrip.unsubscribe();
         if (this.deleteOthersByMonthSubscrip) this.getOtherByMonthSuscrip.unsubscribe();
+    }
+
+    getCurrencies() {
+        this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
+            this.currencies = d;
+        });
     }
 
     setFromDate(date: Date) {
@@ -169,7 +180,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.calculateTotalCosts();
             this.sendDataToDetailView();
         },
-        () => this.messageService.closeLoading());
+            () => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item) {
@@ -220,21 +231,35 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     break;
 
                 default:
+                    this.subtypes = []
                     this.modalOther = true
                     this.messageService.showLoading();
-                    this.editItemModal.size = 'modal-md'
+                    this.editItemModal.size = 'modal-lg'
+                    this.categorySelected.id = item.typeId
+                    this.categorySelected.name = item.typeName
                     this.getOtherByMonthSuscrip = this.managementReportService.GetOtherByMonth(item.typeId, month.costDetailId).subscribe(response => {
-                        this.othersByMonth = response.data;
+                        this.othersByMonth = response.data.costMonthOther;
+                        this.subtypes = response.data.subtypes
 
-                        if (this.othersByMonth.length == 0) {
-                            this.addOtherByMonth()
+                        if (this.subtypes.length > 0) {
+                            this.subtypeSelected = this.subtypes[0]
                         }
+                        // if (this.othersByMonth.length == 0) {
+                        //     this.addOtherByMonth()
+                        // }
                         this.editItemModal.show();
                         this.messageService.closeLoading();
+                        setTimeout(() => {
+                            $('.input-billing-modal.ng-select .ng-select-container').css('min-height', '26px');
+                            $('.input-billing-modal.ng-select .ng-select-container').css('height', '26px');
+                        }, 200);
                     },
                         error => {
                             this.messageService.closeLoading();
                         });
+
+                    
+
                     break;
             }
         }
@@ -804,13 +829,19 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var resource = {
             id: 0,
             CostDetailId: this.monthSelected.costDetailId,
-            typeId: this.itemSelected.typeId,
-            typeName: this.itemSelected.typeName,
+            subtypeId: this.subtypeSelected.id,
+            subtypeName: this.subtypeSelected.name,
             value: 0,
-            description: ""
+            description: "",
+            currencyId: this.currencies[0].id
         }
 
         this.othersByMonth.push(resource)
+
+        setTimeout(() => {
+            $('.input-billing-modal.ng-select .ng-select-container').css('min-height', '26px');
+            $('.input-billing-modal.ng-select .ng-select-container').css('height', '26px');
+        }, 200);
     }
 
     // openEditResourceQuantity(month) {
@@ -943,7 +974,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             let aux = 0
             employee.monthsCost.forEach((month, index) => {
 
-                if (month.hasAlocation) {                    
+                if (month.hasAlocation) {
                     if (index > 0) {
                         if (month.budget.value != employee.monthsCost[index - 1].budget.value) {
                             if (aux >= arrayClass.length - 1) {
@@ -956,7 +987,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     }
                     month.class = arrayClass[aux]
                 }
-                else{
+                else {
                     month.class = 'label-danger'
                 }
 

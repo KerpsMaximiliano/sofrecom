@@ -50,7 +50,8 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<CostDetailOther>().HasKey(x => x.Id);
             builder.Entity<CostDetailOther>().Property(x => x.Description).HasMaxLength(500);
             builder.Entity<CostDetailOther>().HasOne(x => x.CostDetail).WithMany(x => x.CostDetailOthers).HasForeignKey(x => x.CostDetailId);
-            builder.Entity<CostDetailOther>().HasOne(x => x.CostDetailType).WithMany(x => x.CostDetailOthers).HasForeignKey(x => x.CostDetailTypeId);
+            //builder.Entity<CostDetailOther>().HasOne(x => x).WithMany(x => x.CostDetailOthers).HasForeignKey(x => x.CostDetailSubtypeId);
+            //builder.Entity<CostDetailOther>().HasOne(x => x.CostDetailType).WithMany(x => x.CostDetailOthers).HasForeignKey(x => x.CostDetailTypeId);
 
             // Billing
             builder.Entity<ManagementReportBilling>().HasKey(x => x.Id);

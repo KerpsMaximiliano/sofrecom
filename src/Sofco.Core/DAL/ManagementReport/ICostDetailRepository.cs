@@ -9,6 +9,8 @@ namespace Sofco.Core.DAL.ManagementReport
     {
         IList<CostDetail> GetByManagementReport(int managementReportId);
         List<CostDetailType> GetResourceTypes();
+        List<CostDetailSubtype> GetSubtypes(int idType);
+
         IList<CostDetail> GetByManagementReportAndDates(int managementReportId, DateTime startDate, DateTime endDate);
         CostDetail GetByManagementReportAndMonthYear(int managementReportId, DateTime monthYear);
 

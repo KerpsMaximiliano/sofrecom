@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190918140716_currency-cost-detail-other-3")]
+    partial class currencycostdetailother3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2212,11 +2214,6 @@ namespace Sofco.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Benefits")
-                        .HasMaxLength(3000);
-
-                    b.Property<string>("ClientContact");
-
                     b.Property<int>("ClientId");
 
                     b.Property<DateTime?>("CloseDate");
@@ -2229,31 +2226,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Email");
-
-                    b.Property<bool>("ExtraHoursPaid");
-
-                    b.Property<bool>("GuardsPaid");
-
-                    b.Property<bool>("HasExtraHours");
-
-                    b.Property<bool>("HasGuards");
-
-                    b.Property<string>("JobTime")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("JobType");
-
-                    b.Property<string>("Language")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Location")
-                        .HasMaxLength(200);
-
                     b.Property<decimal>("MaximunSalary");
-
-                    b.Property<string>("Observations")
-                        .HasMaxLength(3000);
 
                     b.Property<int>("Quantity");
 
@@ -2266,25 +2239,14 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime?>("ReopenDate");
 
-                    b.Property<int>("ResourceAssignment");
-
                     b.Property<int>("Status");
-
-                    b.Property<string>("Study")
-                        .HasMaxLength(100);
 
                     b.Property<DateTime?>("SuspendedDate");
 
-                    b.Property<string>("TasksToDo")
-                        .HasMaxLength(3000);
-
-                    b.Property<string>("Telephone");
-
-                    b.Property<int>("TimeHiringId");
+                    b.Property<string>("TimeHiring")
+                        .HasMaxLength(100);
 
                     b.Property<int>("UserId");
-
-                    b.Property<int>("YearsExperience");
 
                     b.HasKey("Id");
 
@@ -2293,8 +2255,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("ReasonCauseId");
 
                     b.HasIndex("RecruiterId");
-
-                    b.HasIndex("TimeHiringId");
 
                     b.HasIndex("UserId");
 
@@ -2365,22 +2325,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Skills");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.TimeHiring", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(75);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TimeHirings");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Rrhh.CloseDate", b =>
@@ -2944,20 +2888,7 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("JobSearchSeniorities");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSkillNotRequired", b =>
-                {
-                    b.Property<int>("JobSearchId");
-
-                    b.Property<int>("SkillId");
-
-                    b.HasKey("JobSearchId", "SkillId");
-
-                    b.HasIndex("SkillId");
-
-                    b.ToTable("JobSearchSkillNotRequired");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSkillRequired", b =>
+            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSkill", b =>
                 {
                     b.Property<int>("JobSearchId");
 
@@ -3953,11 +3884,6 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("RecruiterId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Sofco.Domain.Models.Recruitment.TimeHiring", "TimeHiring")
-                        .WithMany("JobSearchs")
-                        .HasForeignKey("TimeHiringId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Sofco.Domain.Models.Admin.User", "User")
                         .WithMany("JobSearchs")
                         .HasForeignKey("UserId")
@@ -4226,28 +4152,15 @@ namespace Sofco.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSkillNotRequired", b =>
+            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSkill", b =>
                 {
                     b.HasOne("Sofco.Domain.Models.Recruitment.JobSearch", "JobSearch")
-                        .WithMany("JobSearchSkillsNotRequired")
+                        .WithMany("JobSearchSkills")
                         .HasForeignKey("JobSearchId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Sofco.Domain.Models.Recruitment.Skill", "Skill")
-                        .WithMany("JobSearchSkillsNotRequired")
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Relationships.JobSearchSkillRequired", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.Recruitment.JobSearch", "JobSearch")
-                        .WithMany("JobSearchSkillsRequired")
-                        .HasForeignKey("JobSearchId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Skill", "Skill")
-                        .WithMany("JobSearchSkillsRequired")
+                        .WithMany("JobSearchSkills")
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
