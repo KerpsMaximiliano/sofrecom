@@ -21,7 +21,7 @@ namespace Sofco.DAL.Repositories.Recruitment
                 .Include(x => x.User)
                 .Include(x => x.Client)
                 .Include(x => x.ReasonCause)
-                .Include(x => x.JobSearchSkills)
+                .Include(x => x.JobSearchSkillsRequired)
                     .ThenInclude(x => x.Skill)
                 .Include(x => x.JobSearchProfiles)
                     .ThenInclude(x => x.Profile)
@@ -54,7 +54,7 @@ namespace Sofco.DAL.Repositories.Recruitment
                     query = query.Where(x => x.JobSearchSeniorities.Any(s => parameter.Seniorities.Contains(s.SeniorityId)));
 
                 if (parameter.Skills != null && parameter.Skills.Any())
-                    query = query.Where(x => x.JobSearchSkills.Any(s => parameter.Skills.Contains(s.SkillId)));
+                    query = query.Where(x => x.JobSearchSkillsRequired.Any(s => parameter.Skills.Contains(s.SkillId)));
             }
 
             return query.ToList();
@@ -65,8 +65,10 @@ namespace Sofco.DAL.Repositories.Recruitment
             return context.JobSearchs
                 .Include(x => x.JobSearchProfiles)
                 .Include(x => x.JobSearchSeniorities)
-                .Include(x => x.JobSearchSkills)
+                .Include(x => x.JobSearchSkillsRequired)
+                .Include(x => x.JobSearchSkillsNotRequired)
                 .Include(x => x.Client)
+                .Include(x => x.TimeHiring)
                 .SingleOrDefault(x => x.Id == id);
         }
     }

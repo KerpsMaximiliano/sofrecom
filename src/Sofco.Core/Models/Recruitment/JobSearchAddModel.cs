@@ -20,17 +20,55 @@ namespace Sofco.Core.Models.Recruitment
 
         public IList<int> Profiles { get; set; }
 
-        public IList<int> Skills { get; set; }
+        public IList<int> SkillsRequired { get; set; }
+
+        public IList<int> SkillsNotRequired { get; set; }
 
         public IList<int> Seniorities { get; set; }
 
         public int? Quantity { get; set; }
 
-        public string TimeHiring { get; set; }
+        public int? TimeHiringId { get; set; }
 
         public decimal? MaximunSalary { get; set; }
 
         public string Comments { get; set; }
+
+        public string Email { get; set; }
+
+        public string Telephone { get; set; }
+
+        public string ClientContact { get; set; }
+
+        public string Language { get; set; }
+
+        public string Study { get; set; }
+
+        public string JobTime { get; set; }
+
+        public string Location { get; set; }
+
+        public string Benefits { get; set; }
+
+        public string Observations { get; set; }
+
+        public string TasksToDo { get; set; }
+
+        public string Area { get; set; }
+
+        public bool HasExtraHours { get; set; }
+
+        public bool ExtraHoursPaid { get; set; }
+
+        public bool HasGuards { get; set; }
+
+        public bool GuardsPaid { get; set; }
+
+        public int JobType { get; set; }
+
+        public int ResourceAssignment { get; set; }
+
+        public int YearsExperience { get; set; }
 
         public JobSearch CreateDomain()
         {
@@ -57,9 +95,14 @@ namespace Sofco.Core.Models.Recruitment
                 domain.JobSearchSeniorities = new List<JobSearchSeniority>();
             }
 
-            if (Skills == null || !Skills.Any())
+            if (SkillsRequired == null || !SkillsRequired.Any())
             {
-                domain.JobSearchSkills = new List<JobSearchSkill>();
+                domain.JobSearchSkillsRequired = new List<JobSearchSkillRequired>();
+            }
+
+            if (SkillsNotRequired == null || !SkillsNotRequired.Any())
+            {
+                domain.JobSearchSkillsNotRequired = new List<JobSearchSkillNotRequired>();
             }
         }
 
@@ -71,8 +114,26 @@ namespace Sofco.Core.Models.Recruitment
             domain.Comments = Comments;
             domain.MaximunSalary = MaximunSalary.GetValueOrDefault();
             domain.Quantity = Quantity.GetValueOrDefault();
-            domain.TimeHiring = TimeHiring;
+            domain.TimeHiringId = TimeHiringId.GetValueOrDefault();
             domain.RecruiterId = RecruiterId.GetValueOrDefault();
+            domain.YearsExperience = YearsExperience;
+            domain.Email = Email;
+            domain.Telephone = Telephone;
+            domain.ClientContact = ClientContact;
+            domain.JobType = JobType;
+            domain.ResourceAssignment = ResourceAssignment;
+            domain.Language = Language;
+            domain.Study = Study;
+            domain.JobTime = JobTime;
+            domain.Location = Location;
+            domain.Benefits = Benefits;
+            domain.Observations = Observations;
+            domain.TasksToDo = TasksToDo;
+            domain.HasExtraHours = HasExtraHours;
+            domain.ExtraHoursPaid = ExtraHoursPaid;
+            domain.HasGuards = HasGuards;
+            domain.GuardsPaid = GuardsPaid;
+            domain.Area = Area;
 
             if (Profiles != null && Profiles.Any())
             {
@@ -84,9 +145,14 @@ namespace Sofco.Core.Models.Recruitment
                 domain.JobSearchSeniorities = Seniorities.Select(x => new JobSearchSeniority { SeniorityId = x }).ToList();
             }
 
-            if (Skills != null && Skills.Any())
+            if (SkillsRequired != null && SkillsRequired.Any())
             {
-                domain.JobSearchSkills = Skills.Select(x => new JobSearchSkill { SkillId = x }).ToList();
+                domain.JobSearchSkillsRequired = SkillsRequired.Select(x => new JobSearchSkillRequired { SkillId = x }).ToList();
+            }
+
+            if (SkillsNotRequired != null && SkillsNotRequired.Any())
+            {
+                domain.JobSearchSkillsNotRequired = SkillsNotRequired.Select(x => new JobSearchSkillNotRequired { SkillId = x }).ToList();
             }
         }
     }

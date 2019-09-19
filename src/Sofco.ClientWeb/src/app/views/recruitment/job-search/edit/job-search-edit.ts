@@ -9,6 +9,7 @@ import { MessageService } from "app/services/common/message.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { JobSearchStatus } from "app/models/enums/jobSearchStatus";
+import { GenericOptions } from "app/models/enums/genericOptions";
 
 @Component({
     selector: 'job-search',
@@ -18,23 +19,43 @@ import { JobSearchStatus } from "app/models/enums/jobSearchStatus";
 export class JobSearchEditComponent implements OnInit, OnDestroy {
 
     form: FormGroup = new FormGroup({
-        comments: new FormControl('', [Validators.maxLength(3000)]),
-        timeHiring: new FormControl('', [Validators.maxLength(100)]),
+        comments: new FormControl(null, [Validators.maxLength(3000)]),
+        timeHiringId: new FormControl(null, [Validators.required]),
         userId: new FormControl(null, [Validators.required]),
         reasonCauseId: new FormControl(null, [Validators.required]),
         clientId: new FormControl(null, [Validators.required]),
-        quantity: new FormControl(null, [Validators.required, Validators.min(1)]),
+        quantity: new FormControl(null, [Validators.required, Validators.min(0)]),
+        yearsExperience: new FormControl(null, [Validators.max(99), Validators.min(0)]),
         maximunSalary: new FormControl(null, [Validators.required]),
         recruiterId: new FormControl(null, [Validators.required]),
         profiles: new FormControl(null),
-        skills: new FormControl(null),
+        skillsNotRequired: new FormControl(null),
+        skillsRequired: new FormControl(null),
         seniorities: new FormControl(null),
+        email: new FormControl(null),
+        area: new FormControl(null, [Validators.maxLength(100)]),
+        telephone: new FormControl(null),
+        clientContact: new FormControl(null),
+        jobType: new FormControl(null),
+        resourceAssignment: new FormControl(null),
+        language: new FormControl(null, [Validators.maxLength(100)]),
+        study: new FormControl(null, [Validators.maxLength(100)]),
+        jobTime: new FormControl(null, [Validators.maxLength(100)]),
+        location: new FormControl(null, [Validators.maxLength(200)]),
+        benefits: new FormControl(null, [Validators.maxLength(3000)]),
+        observations: new FormControl(null, [Validators.maxLength(3000)]),
+        tasksToDo: new FormControl(null, [Validators.maxLength(3000)]),
     });
 
     dateModalForm: FormGroup = new FormGroup({
         date: new FormControl(null, [Validators.required]),
         comments: new FormControl(null, [Validators.maxLength(1000)]),
     });
+
+    hasExtraHours: boolean;
+    extraHoursPaid: boolean;
+    hasGuards: boolean;
+    guardsPaid: boolean;
 
     profileOptions: any[] = new Array();
     skillOptions: any[] = new Array();
@@ -43,6 +64,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     customerOptions: any[] = new Array();
     applicantOptions: any[] = new Array();
     recruitersOptions: any[] = new Array();
+    timeHiringOptions: any[] = new Array();
 
     addSubscrip: Subscription;
     getUsersSubscrip: Subscription;
@@ -54,6 +76,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     getRecruiterSubscrip: Subscription;
     getSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
+    getTimeHiringSubscrip: Subscription;
 
     entityId: number;
     status: number;
@@ -86,6 +109,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.getCustomers();
         this.getRecruiters();
         this.getApplicants();
+        this.getTimeHirings();
 
         this.activateRoute.params.subscribe(routeParams => {
             this.entityId = routeParams.id;
@@ -104,6 +128,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         if (this.getRecruiterSubscrip) this.getRecruiterSubscrip.unsubscribe();
         if (this.getSubscrip) this.getSubscrip.unsubscribe();
         if (this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
+        if (this.getTimeHiringSubscrip) this.getTimeHiringSubscrip.unsubscribe();
     }
 
     getStatusDesc(){
@@ -129,16 +154,44 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.form.controls.reasonCauseId.setValue(response.data.reasonCauseId);
             this.form.controls.clientId.setValue(response.data.clientCrmId);
             this.form.controls.profiles.setValue(response.data.profiles);
-            this.form.controls.skills.setValue(response.data.skills);
+            this.form.controls.skillsRequired.setValue(response.data.skillsRequired);
+            this.form.controls.skillsNotRequired.setValue(response.data.skillsNotRequired);
             this.form.controls.seniorities.setValue(response.data.seniorities);
             this.form.controls.quantity.setValue(response.data.quantity);
-            this.form.controls.timeHiring.setValue(response.data.timeHiring);
+            this.form.controls.timeHiringId.setValue(response.data.timeHiringId);
             this.form.controls.maximunSalary.setValue(response.data.maximunSalary);
             this.form.controls.comments.setValue(response.data.comments);
+            this.form.controls.yearsExperience.setValue(response.data.yearsExperience);
+            this.form.controls.email.setValue(response.data.email);
+            this.form.controls.area.setValue(response.data.area);
+            this.form.controls.telephone.setValue(response.data.telephone);
+            this.form.controls.clientContact.setValue(response.data.clientContact);
+            this.form.controls.jobType.setValue(response.data.jobType.toString());
+            this.form.controls.resourceAssignment.setValue(response.data.resourceAssignment.toString());
+            this.form.controls.language.setValue(response.data.language);
+            this.form.controls.study.setValue(response.data.study);
+            this.form.controls.jobTime.setValue(response.data.jobTime);
+            this.form.controls.location.setValue(response.data.location);
+            this.form.controls.benefits.setValue(response.data.benefits);
+            this.form.controls.observations.setValue(response.data.observations);
+            this.form.controls.tasksToDo.setValue(response.data.tasksToDo);
+
+            this.hasExtraHours = response.data.hasExtraHours;
+            this.extraHoursPaid = response.data.extraHoursPaid;
+            this.hasGuards = response.data.hasGuards;
+            this.guardsPaid = response.data.guardsPaid;
 
             this.status = response.data.status;
         }, 
         error => this.messageService.closeLoading());
+    }
+
+    getTimeHirings(){
+        this.genericOptionsService.controller = GenericOptions.TimeHiring;
+        this.getTimeHiringSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+            this.timeHiringOptions = response.data;
+        },
+        () => {});
     }
 
     getApplicants(){
@@ -203,12 +256,31 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             reasonCauseId: this.form.controls.reasonCauseId.value,
             clientCrmId: this.form.controls.clientId.value,
             profiles: this.form.controls.profiles.value,
-            skills: this.form.controls.skills.value,
+            skillsNotRequired: this.form.controls.skillsNotRequired.value,
+            skillsRequired: this.form.controls.skillsRequired.value,
             seniorities: this.form.controls.seniorities.value,
             quantity: this.form.controls.quantity.value,
-            timeHiring: this.form.controls.timeHiring.value,
+            timeHiringId: this.form.controls.timeHiringId.value,
             maximunSalary: this.form.controls.maximunSalary.value,
             comments: this.form.controls.comments.value,
+            yearsExperience: this.form.controls.yearsExperience.value,
+            email: this.form.controls.email.value,
+            area: this.form.controls.area.value,
+            telephone: this.form.controls.telephone.value,
+            clientContact: this.form.controls.clientContact.value,
+            jobType: this.form.controls.jobType.value,
+            resourceAssignment: this.form.controls.resourceAssignment.value,
+            language: this.form.controls.language.value,
+            study: this.form.controls.study.value,
+            jobTime: this.form.controls.jobTime.value,
+            location: this.form.controls.location.value,
+            benefits: this.form.controls.benefits.value,
+            observations: this.form.controls.observations.value,
+            tasksToDo: this.form.controls.observations.value,
+            hasExtraHours: this.hasExtraHours,
+            extraHoursPaid: this.extraHoursPaid,
+            hasGuards: this.hasGuards,
+            guardsPaid: this.guardsPaid,
             clientId: 0
         }
 
@@ -274,5 +346,13 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
 
     back(){
         this.router.navigate(['recruitment/jobSearch/']);
+    }
+
+    hasExtraHoursChanged(){
+        this.extraHoursPaid = false;
+    }
+
+    hasGuardsChanged(){
+        this.guardsPaid = false;
     }
 }

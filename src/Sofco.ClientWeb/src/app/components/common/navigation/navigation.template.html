@@ -209,6 +209,9 @@
           <li [ngClass]="{active: activeRoute('skills')}" *ngIf="menuService.hasFunctionality('RECRU', 'SKILL')"><a
             [routerLink]="['/recruitment/skills']">Conocimientos</a>
           </li>
+          <li [ngClass]="{active: activeRoute('timeHiring')}" *ngIf="menuService.hasFunctionality('RECRU', 'TIMEHIRING')"><a
+            [routerLink]="['/recruitment/timeHiring']">Tiempo contratación</a>
+          </li>
           <li [ngClass]="{active: activeRoute('reasonCause')}" *ngIf="menuService.hasFunctionality('RECRU', 'REASONCAUSE')"><a
             [routerLink]="['/recruitment/reasonCauses']">Motivos/Causas</a>
           </li>

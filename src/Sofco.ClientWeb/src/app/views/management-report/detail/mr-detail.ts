@@ -297,8 +297,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     updateMarginTracking(){
+        this.messageService.showLoading();
         this.billing.init(this.serviceId);
-        this.detailCost.getCost()
+        this.detailCost.getCost();
     }
 
     getCostsData(costsModel){

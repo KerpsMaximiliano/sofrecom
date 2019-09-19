@@ -125,6 +125,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
                 this.ManagementReportId = params['id'];
     
+                this.budgetView.isCdg || 
                 this.getDetail();
             });
         }
@@ -161,6 +162,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             this.setStartDate(this.model.manamementReportStartDate, this.model.manamementReportEndDate)
             this.readOnly = !this.canEdit();
             this.budgetView.readOnly = !this.canEdit();
+            this.budgetView.isCdg = this.userIsCdg();
 
             this.budgetView.monthExchanges = this.months;
         },
@@ -394,6 +396,14 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     }
 
     canEditDetailMonth(){
+        if(!this.model || !this.model.status) return false;
+
+        if(this.model.status == ManagementReportStatus.CdgPending && this.isCdg) return true;
+
+        return false;
+    }
+
+    userIsCdg(){
         if(!this.model || !this.model.status) return false;
 
         if(this.model.status == ManagementReportStatus.CdgPending && this.isCdg) return true;

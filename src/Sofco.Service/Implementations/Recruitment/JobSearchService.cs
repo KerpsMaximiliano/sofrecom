@@ -285,7 +285,7 @@ namespace Sofco.Service.Implementations.Recruitment
 
         private void ValidateTimeHiring(JobSearchAddModel model, Response response)
         {
-            if (string.IsNullOrWhiteSpace(model.TimeHiring))
+            if (!model.TimeHiringId.HasValue)
             {
                 response.AddError(Resources.Recruitment.JobSearch.TimeHiringRequired);
             }

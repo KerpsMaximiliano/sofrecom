@@ -194,7 +194,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.calculateTotalCosts();
             this.sendDataToDetailView();
         },
-            () => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item) {
