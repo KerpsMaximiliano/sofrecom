@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Core.Models.Common;
 using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.ManagementReport

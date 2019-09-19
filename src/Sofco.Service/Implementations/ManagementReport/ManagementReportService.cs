@@ -354,6 +354,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var managementReport = unitOfWork.ManagementReportRepository.GetById(analytic.ManagementReport.Id);
                 var costDetails = managementReport.CostDetails;
                 var billings = unitOfWork.ManagementReportBillingRepository.GetByManagementReportAndDates(analytic.ManagementReport.Id, dates.Item1.Date, dates.Item2.Date);
+                var currencyExchanges = unitOfWork.CurrencyExchangeRepository.Get(dates.Item1.Date, dates.Item2.Date);
 
                 for (DateTime date = new DateTime(dates.Item1.Year, dates.Item1.Month, 1).Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
                 {
@@ -362,6 +363,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                     monthHeader.MonthYear = date;
                     monthHeader.Month = date.Month;
                     monthHeader.Year = date.Year;
+
+                    var currencyExchange = currencyExchanges.Where(x => x.Date.Month == date.Month && x.Date.Year == date.Year);
+                    monthHeader.CurrencyMonth = currencyExchange.Select(x => new CurrencyExchangeItemModel { CurrencyDesc = x.Currency.Text, Exchange = x.Exchange, CurrencyId = x.CurrencyId }).ToList();
 
                     var costDetailMonth = costDetails.SingleOrDefault(x => x.MonthYear.Date == date.Date);
                     if (costDetailMonth != null)
@@ -1323,8 +1327,22 @@ namespace Sofco.Service.Implementations.ManagementReport
                         var monthValue = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailSubtype.CostDetailType.Id == type.Id && o.IsReal == false).ToList();
                         if (monthValue.Count > 0)
                         {
-                            monthDetail.Budget.Value = monthValue.Sum(x => x.Value);
+                            decimal valuePesos = 0;
+                            foreach (var item in monthValue)
+                            {
+                                var currencyValue = mounth.CurrencyMonth.Where(x => x.CurrencyId == item.CurrencyId).FirstOrDefault();
+                                if (currencyValue != null)
+                                {
+                                    valuePesos += item.Value * currencyValue.Exchange;
+                                }
+                                else
+                                {
+                                    valuePesos += item.Value;
+                                }
+                            }
+                            // monthDetail.Budget.Value = monthValue.Sum(x => x.Value);
                             // monthDetail.CostDetailId = monthValue.FirstOrDefault().CostDetailId;
+                            monthDetail.Budget.Value = valuePesos;
                             monthDetail.Budget.Id = monthValue.FirstOrDefault().Id;
                             if (monthDetail.Budget.Value > 0)
                             {
@@ -1349,6 +1367,9 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
+                    monthDetail.Month = mounth.Month;
+                    monthDetail.Year = mounth.Year;
+
                     detailResource.MonthsCost.Add(monthDetail);
                 }
 

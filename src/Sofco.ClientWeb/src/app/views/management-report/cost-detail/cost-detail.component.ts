@@ -73,9 +73,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     intAux: number = 0
     categorySelected: any = { id: 0, name: '' }
-    currencies: any[] = new Array()
     subtypes: any[] = new Array()
     subtypeSelected: any = { id: 0, name: '' }
+    currencies: any[] = new Array()
+    totalCostsExchanges: any = {
+        exchanges: [],
+        currencies: [],
+        total: 0
+    };
 
     readonly generalAdjustment: string = "% Ajuste General";
     readonly typeEmployee: string = "Empleados"
@@ -105,6 +110,15 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    @ViewChild('totalCostsExchangesModal') totalCostsExchangesModal;
+    public totalCostsExchangesModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Detalle costos mensual",
+        "totalCostsExchangesModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
     //Constructor
     constructor(private managementReportService: ManagementReportService,
         private activatedRoute: ActivatedRoute,
@@ -258,7 +272,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                             this.messageService.closeLoading();
                         });
 
-                    
+
 
                     break;
             }
@@ -346,13 +360,19 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     Contracted: []
                 }
 
+                var month = this.months.find(x => x.month == this.monthSelected.month && x.year == this.monthSelected.year);
+
                 this.updateMonthSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, modelMonth).subscribe(response => {
                     this.messageService.closeLoading();
 
                     this.monthSelected.budget.value = 0
-                    this.othersByMonth.forEach(element => {
-                        this.monthSelected.budget.value += element.value
-                    });
+                    // this.othersByMonth.forEach(element => {
+                    //     this.monthSelected.budget.value += element.value
+                    // });
+
+                    this.othersByMonth.forEach(cost => {
+                        this.monthSelected.budget.value += this.setExchangeValue(month.currencyMonth, cost);
+                    })
 
                     this.calculateTotalCosts();
 
@@ -1002,5 +1022,136 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         });
     }
 
+    setExchangeValue(currencyMonth, cost) {
+        var total = 0;
+        cost.originalValue = cost.value;
+
+        if (currencyMonth) {
+            var currencyExchange = currencyMonth.find(x => x.currencyId == cost.currencyId);
+            if (currencyExchange) {
+                cost.value *= currencyExchange.exchange;
+                total += cost.value;
+            }
+            else {
+                total += cost.value
+            }
+        }
+        else {
+            total += cost.value
+        }
+
+        return total;
+    }
+
+    setAllCosts(month, total, type, index) {
+        
+        var exchanges = [];
+        var currencies = [];
+
+        this.currencies.forEach(currency => {
+            currencies.push({ value: 0, valuePesos: 0, currencyName: currency.text, id: currency.id });
+        });
+
+        var currencyMonth = month.currencyMonth
+        if (currencyMonth) {
+            currencyMonth.forEach(item => {
+                exchanges.push({ currencyName: item.currencyDesc, exchange: item.exchange });
+            });
+        }
+
+        var currPesos = currencies.find(x => x.currencyName.toUpperCase() == 'PESOS ($)');
+        var totalSalary = 0
+
+        //Sumo el totol de los sueldos (solo estan en pesos Ars)
+        this.employees.forEach(employee => {
+            totalSalary += employee.monthsCost[index][type].value;
+            if (employee.monthsCost[index][type].value) {
+                currPesos.value += employee.monthsCost[index][type].value;
+                currPesos.valuePesos += employee.monthsCost[index][type].value;
+            }
+        })
+
+        //Sumo los sueldos de los perfiles (solo estan en pesos ARs)
+        this.costProfiles.forEach(profile => {
+            totalSalary += profile.monthsCost[index][type].value;
+            if (profile.monthsCost[index][type].value) {
+                currPesos.value += profile.monthsCost[index][type].value;
+                currPesos.valuePesos += profile.monthsCost[index][type].value;
+            }
+        })
+
+        // Al total de pesos le sumo las cargas (51% del salario)
+        currPesos.value = currPesos.value + (totalSalary * 0.51)
+        currPesos.valuePesos = currPesos.valuePesos + (totalSalary * 0.51)
+
+        var otherResourceValues = new Array()
+
+         //Sumo los demas gastos excepto el % de Ajuste
+        this.fundedResources.forEach(resource => {
+            if (resource.typeName != this.generalAdjustment) {
+                if (resource.monthsCost[index][type].value > 0) {
+                    otherResourceValues.push(resource)
+                }
+            }
+        })
+
+         //Sumo los gastos de los empleados
+        this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
+            if (resourceEmpleyee.monthsCost[index][type].value) {
+                if (resourceEmpleyee.monthsCost[index][type].value > 0) {
+                    otherResourceValues.push(resourceEmpleyee)
+                }
+            }
+        })
+
+        otherResourceValues.forEach(resourceEmpleyee => {
+            this.getOtherByMonthSuscrip = this.managementReportService.GetOtherByMonth(resourceEmpleyee.typeId, month.costDetailId).subscribe(
+                response => {
+                    var subCategories = response.data.costMonthOther                            
+                    if (subCategories) {
+                        subCategories.forEach(subcategory => {
+                            var curr = currencies.find(x => x.id == subcategory.currencyId);
+                            var valueCurrency = currencyMonth.find(x => x.currencyId == subcategory.currencyId)
+                            if (curr) {
+                                curr.value += subcategory.value;
+                                if(valueCurrency){
+                                    curr.valuePesos += subcategory.value * valueCurrency.exchange;    
+                                }
+                                else{
+                                    curr.valuePesos += subcategory.value
+                                }
+                            }
+                        });
+                    }
+                    this.messageService.closeLoading();
+                },
+                error => {
+                    this.messageService.closeLoading();
+                });
+            })
+
+        this.totalCostsExchanges = {
+            exchanges: exchanges,
+            currencies: currencies,
+            total: total
+        };
+
+        this.totalCostsExchangesModal.show();
+    }
+
+    getSubcategoriesMonth(typeId, month) {
+        var subCategories = new Array()
+        this.getOtherByMonthSuscrip = this.managementReportService.GetOtherByMonth(typeId, month.costDetailId).subscribe(
+            response => {
+                subCategories = response.data.costMonthOther
+
+                this.messageService.closeLoading();
+            },
+            error => {
+                this.messageService.closeLoading();
+            });
+
+        return subCategories
+    }
 }
 
