@@ -1,4 +1,5 @@
-﻿using Sofco.Domain.Enums;
+﻿using Sofco.Core.Models.Common;
+using Sofco.Domain.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -57,6 +58,7 @@ namespace Sofco.Core.Models.ManagementReport
         public Cost Budget { get; set; } = new Cost();
         public Cost Real { get; set; } = new Cost();
         public string Class { get; set; }
+        public List<CurrencyExchangeItemModel> CurrencyMonth { get; set; }
 
     }
 
