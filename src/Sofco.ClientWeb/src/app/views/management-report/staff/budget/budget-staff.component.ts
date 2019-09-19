@@ -35,6 +35,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     managementReportId: string;
     months: any[] = new Array()
     readOnly: boolean = false
+    isCdg: boolean = false
     categorySelected: any = { id: 0, name: '' }
     monthSelected: any = { value: 0, display: '' };
 
@@ -289,7 +290,18 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 this.monthSelected.totalBudget = 0
                 this.monthSelected.subcategoriesBudget.forEach(cost => {
                     this.monthSelected.totalBudget += this.setExchangeValue(currencyMonth, cost);
-                })
+
+                    if(this.isCdg){
+                        if(this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura"){
+                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");   
+                        }
+    
+                        if(this.categorySelected.name == "Red" && cost.name == "Red"){
+                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");   
+                        }
+                    }
+                });
+       
                 break;
             case 'PROJECTED':
                 this.monthSelected.subcategoriesProjected = this.subCategoriesData
@@ -303,20 +315,50 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 this.monthSelected.totalPfa1 = 0
                 this.monthSelected.subcategoriesPfa1.forEach(cost => {
                     this.monthSelected.totalPfa1 += this.setExchangeValue(currencyMonth, cost);
-                })
+
+                    if(this.isCdg){
+                        if(this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura"){
+                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");   
+                        }
+    
+                        if(this.categorySelected.name == "Red" && cost.name == "Red"){
+                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");   
+                        }
+                    }
+                });
                 break;
             case 'PFA2':
                 this.monthSelected.subcategoriesPfa2 = this.subCategoriesData
                 this.monthSelected.totalPfa2 = 0
                 this.monthSelected.subcategoriesPfa2.forEach(cost => {
                     this.monthSelected.totalPfa2 += this.setExchangeValue(currencyMonth, cost);
-                })
+
+                    if(this.isCdg){
+                        if(this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura"){
+                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");   
+                        }
+    
+                        if(this.categorySelected.name == "Red" && cost.name == "Red"){
+                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");   
+                        }
+                    }
+                });
                 break;
             case 'REAL':
                 this.monthSelected.subcategoriesReal = this.subCategoriesData
                 this.monthSelected.totalReal = 0
                 this.monthSelected.subcategoriesReal.forEach(cost => {
                     this.monthSelected.totalReal += this.setExchangeValue(currencyMonth, cost);
+
+                    if(this.isCdg){
+                        if(this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura"){
+                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");   
+                        }
+    
+                        if(this.categorySelected.name == "Red" && cost.name == "Red"){
+                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");   
+                        }
+                    }
                 })
                 break;
         }
@@ -324,6 +366,33 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.calculateTotalCosts()
         this.sendDataToDetailView();
         this.editItemModal.hide()
+    }
+
+    setProjectedInfrastructureOrRed(cost, currencyMonth, type){
+        var infraProyected = this.monthSelected.subcategoriesProjected.find(x => name == type);
+
+        if(infraProyected){
+            this.monthSelected.totalProjected -= infraProyected.originalValue;
+            infraProyected.value = cost.value;
+            this.monthSelected.totalProjected += this.setExchangeValue(currencyMonth, infraProyected);
+        }
+        else{
+            var projType = this.budgetTypes.find(x => x.name.toUpperCase() == "PROJECTED");
+
+            var costToAdd = {
+                costDetailStaffId: cost.costDetailStaffId,
+                id: cost.id,
+                name: cost.name,
+                description: cost.description,
+                value: cost.originalValue,
+                budgetTypeId: projType.id,
+                deleted: false,
+                currencyId: cost.currencyId
+            };
+
+            this.monthSelected.totalProjected += this.setExchangeValue(currencyMonth, costToAdd);
+            this.monthSelected.subcategoriesProjected.push(costToAdd);
+        }
     }
 
     setExchangeValue(currencyMonth, cost){
