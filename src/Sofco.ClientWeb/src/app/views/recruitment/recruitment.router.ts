@@ -30,7 +30,7 @@ const RECRUITMENT_ROUTER: Routes = [
 
     { path: "reasonCauses", component: ReasonCauseComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "REASONCAUSE" } },
     
-    { path: "timeHirings", component: TimeHiringComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "REASONCAUSE" } },
+    { path: "timeHirings", component: TimeHiringComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "TIMEHIRING" } },
     
     {
         path: "jobSearch",
