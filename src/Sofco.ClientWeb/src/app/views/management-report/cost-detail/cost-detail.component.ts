@@ -176,6 +176,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             this.months = response.data.monthsHeader;
             this.employees = response.data.costEmployees;
+            console.log(this.employees)
             this.fundedResources = response.data.fundedResources;
             this.fundedResourcesEmployees = response.data.fundedResourcesEmployees
             this.otherResources = response.data.otherResources;
@@ -1064,6 +1065,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var totalSalary = 0
 
         //Sumo el totol de los sueldos (solo estan en pesos Ars)
+        console.log(this.employees)
         this.employees.forEach(employee => {
             var monthCost = employee.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
             if (monthCost) {
