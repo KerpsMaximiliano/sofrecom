@@ -198,6 +198,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditItemModal(month, item) {
+        
         if (this.readOnly) return;
 
         if (month.closed) return;
@@ -244,7 +245,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     this.editItemModal.show();
                     break;
 
-                default:
+                default:                    
                     this.subtypes = []
                     this.modalOther = true
                     this.messageService.showLoading();
@@ -1043,7 +1044,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         return total;
     }
 
-    setAllCosts(month, total, type, index) {
+    setAllCosts(pMonth, total, type) {
         
         var exchanges = [];
         var currencies = [];
@@ -1052,7 +1053,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             currencies.push({ value: 0, valuePesos: 0, currencyName: currency.text, id: currency.id });
         });
 
-        var currencyMonth = month.currencyMonth
+        var currencyMonth = pMonth.currencyMonth
         if (currencyMonth) {
             currencyMonth.forEach(item => {
                 exchanges.push({ currencyName: item.currencyDesc, exchange: item.exchange });
@@ -1064,19 +1065,21 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
         //Sumo el totol de los sueldos (solo estan en pesos Ars)
         this.employees.forEach(employee => {
-            totalSalary += employee.monthsCost[index][type].value;
-            if (employee.monthsCost[index][type].value) {
-                currPesos.value += employee.monthsCost[index][type].value;
-                currPesos.valuePesos += employee.monthsCost[index][type].value;
+            var monthCost = employee.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
+            totalSalary += monthCost[type].value;
+            if (monthCost[type].value) {
+                currPesos.value += monthCost[type].value;
+                currPesos.valuePesos += monthCost[type].value;
             }
         })
 
         //Sumo los sueldos de los perfiles (solo estan en pesos ARs)
         this.costProfiles.forEach(profile => {
-            totalSalary += profile.monthsCost[index][type].value;
-            if (profile.monthsCost[index][type].value) {
-                currPesos.value += profile.monthsCost[index][type].value;
-                currPesos.valuePesos += profile.monthsCost[index][type].value;
+            var monthCost = profile.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
+            totalSalary += monthCost[type].value;
+            if (monthCost[type].value) {
+                currPesos.value += monthCost[type].value;
+                currPesos.valuePesos += monthCost[type].value;
             }
         })
 
@@ -1089,23 +1092,27 @@ export class CostDetailComponent implements OnInit, OnDestroy {
          //Sumo los demas gastos excepto el % de Ajuste
         this.fundedResources.forEach(resource => {
             if (resource.typeName != this.generalAdjustment) {
-                if (resource.monthsCost[index][type].value > 0) {
+            var monthCost = resource.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
+            if (monthCost[type].value) {
+                if (monthCost[type].value > 0) {
                     otherResourceValues.push(resource)
                 }
+            }
             }
         })
 
          //Sumo los gastos de los empleados
         this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
-            if (resourceEmpleyee.monthsCost[index][type].value) {
-                if (resourceEmpleyee.monthsCost[index][type].value > 0) {
+            var monthCost = resourceEmpleyee.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
+            if (monthCost[type].value) {
+                if (monthCost[type].value > 0) {
                     otherResourceValues.push(resourceEmpleyee)
                 }
             }
         })
 
         otherResourceValues.forEach(resourceEmpleyee => {
-            this.getOtherByMonthSuscrip = this.managementReportService.GetOtherByMonth(resourceEmpleyee.typeId, month.costDetailId).subscribe(
+            this.getOtherByMonthSuscrip = this.managementReportService.GetOtherByMonth(resourceEmpleyee.typeId, pMonth.costDetailId).subscribe(
                 response => {
                     var subCategories = response.data.costMonthOther                            
                     if (subCategories) {
