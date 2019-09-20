@@ -129,6 +129,9 @@
   <data name="ExchangeRequired" xml:space="preserve">
     <value>managementReport/currencyExchange.exchangeRequired</value>
   </data>
+  <data name="MissingForMonth" xml:space="preserve">
+    <value>managementReport/currencyExchange.missingForMonth</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>managementReport/currencyExchange.notFound</value>
   </data>

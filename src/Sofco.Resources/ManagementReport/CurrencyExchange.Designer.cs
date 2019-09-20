@@ -97,6 +97,15 @@ namespace Sofco.Resources.ManagementReport {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a managementReport/currencyExchange.missingForMonth.
+        /// </summary>
+        public static string MissingForMonth {
+            get {
+                return ResourceManager.GetString("MissingForMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a managementReport/currencyExchange.notFound.
         /// </summary>
         public static string NotFound {

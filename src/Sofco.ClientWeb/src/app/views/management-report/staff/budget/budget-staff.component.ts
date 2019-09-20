@@ -148,6 +148,20 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             return;
         }
 
+        var today = new Date();
+
+        if(typeBudget == 'projected'){
+            if(month.year < today.getFullYear()) {
+                this.messageService.showError("onlyCdgCanModify");
+                return;
+            }
+
+            if(month.year == today.getFullYear() && month.month < today.getMonth()+1 && !this.isCdg){
+                this.messageService.showError("onlyCdgCanModify");
+                return;
+            }
+        }
+
         this.categorySelected = category
         this.monthSelected = month;
 
