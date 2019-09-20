@@ -528,8 +528,19 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     if (item.HoursMustLoad != 0)
                     {
-                        item.RealPercentage =
-                            (percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad)) / 100;
+                        var totalRealPercentage = response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId).Sum(x => x.RealPercentage);
+
+                        var realPercentage = (percentageWithoutRound * (item.HoursApproved * 100 / item.HoursMustLoad)) / 100;
+                        realPercentage = Convert.ToDecimal($"{realPercentage:0.00}");
+
+                        var diff = (totalRealPercentage + realPercentage) - 100;
+
+                        if (diff > 0)
+                        {
+                            realPercentage -= diff;
+                        }
+
+                        item.RealPercentage = realPercentage;
 
                         if (item.RealPercentage > 100) item.RealPercentage = 100;
                     }
