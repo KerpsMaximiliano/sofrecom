@@ -130,6 +130,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
+        console.log('Ingreso On Init')
+
         //  this.fromMonth = new Date(this.today.getFullYear(), this.today.getMonth() - 2, 1)
         if (this.menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL') && this.menuService.userIsDirector || this.menuService.userIsManager || this.menuService.isManagementReportDelegate) {
             this.canEdit = true
@@ -1046,6 +1048,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     setAllCosts(pMonth, total, type) {
         debugger
+        console.log('Ingreso set all cost')
         var exchanges = [];
         var currencies = [];
 
