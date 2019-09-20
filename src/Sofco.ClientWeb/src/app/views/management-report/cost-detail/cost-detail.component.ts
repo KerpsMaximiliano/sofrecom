@@ -114,7 +114,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     public totalCostsExchangesModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Detalle costos mensual",
         "totalCostsExchangesModal",
-        true,
+        false,
         true,
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
