@@ -1045,7 +1045,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     setAllCosts(pMonth, total, type) {
-        
+        debugger
         var exchanges = [];
         var currencies = [];
 
