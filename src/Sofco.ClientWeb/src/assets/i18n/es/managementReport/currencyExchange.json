@@ -4,5 +4,6 @@
     "exchangeRequired": "El valor ingresado no es correcto",
     "addSuccess": "Cotización creada exitosamente",
     "notFound": "Cotización no encontrada",
-    "updateSuccess": "Cotización modificada exitosamente"
+    "updateSuccess": "Cotización modificada exitosamente",
+    "missingForMonth": "No hay cotizaciones cargadas para el mes del hito creado. Consulte con el administrador"
 }

@@ -204,7 +204,7 @@ namespace Sofco.Service.Implementations.Billing
                     }
                     else
                     {
-                        response.AddError(Resources.ManagementReport.CurrencyExchange.NotFound);
+                        response.AddError(Resources.ManagementReport.CurrencyExchange.MissingForMonth);
                         return response;
                     }
                 }
