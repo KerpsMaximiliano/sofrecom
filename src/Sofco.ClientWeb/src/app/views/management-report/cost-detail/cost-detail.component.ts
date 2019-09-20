@@ -1069,6 +1069,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         //Sumo el totol de los sueldos (solo estan en pesos Ars)
         this.employees.forEach(employee => {
             var monthCost = employee.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
+            console.log(monthCost)
             totalSalary += monthCost[type].value;
             if (monthCost[type].value) {
                 currPesos.value += monthCost[type].value;
@@ -1079,6 +1080,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         //Sumo los sueldos de los perfiles (solo estan en pesos ARs)
         this.costProfiles.forEach(profile => {
             var monthCost = profile.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
+            console.log(monthCost)
             totalSalary += monthCost[type].value;
             if (monthCost[type].value) {
                 currPesos.value += monthCost[type].value;
@@ -1096,6 +1098,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.fundedResources.forEach(resource => {
             if (resource.typeName != this.generalAdjustment) {
             var monthCost = resource.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
+            console.log(monthCost)
             if (monthCost[type].value) {
                 if (monthCost[type].value > 0) {
                     otherResourceValues.push(resource)
@@ -1107,6 +1110,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
          //Sumo los gastos de los empleados
         this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
             var monthCost = resourceEmpleyee.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
+            console.log(monthCost)
             if (monthCost[type].value) {
                 if (monthCost[type].value > 0) {
                     otherResourceValues.push(resourceEmpleyee)
