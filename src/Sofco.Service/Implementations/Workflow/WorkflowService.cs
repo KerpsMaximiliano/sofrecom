@@ -353,7 +353,7 @@ namespace Sofco.Service.Implementations.Workflow
                     {
                         if(director.Id == currentUser.Id) hasAccess = true;
 
-                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.Id, refund.AnalyticId, UserApproverType.Refund);
+                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.UserName, refund.AnalyticId, UserApproverType.Refund);
 
                         if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                         {
@@ -383,7 +383,7 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 if (entity is Refund refund)
                 {
-                    var analytic = unitOfWork.AnalyticRepository.Get(refund.AnalyticId);
+                    var analytic = unitOfWork.AnalyticRepository.GetById(refund.AnalyticId);
 
                     if (analytic != null)
                     {
@@ -394,7 +394,7 @@ namespace Sofco.Service.Implementations.Workflow
                                 hasAccess = true;
                             }
 
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(analytic.ManagerId.Value, refund.AnalyticId, UserApproverType.Refund);
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(analytic.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
 
                             if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                             {
@@ -423,7 +423,7 @@ namespace Sofco.Service.Implementations.Workflow
 
                     if (entity is Refund refund)
                     {
-                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, refund.AnalyticId, UserApproverType.Refund);
+                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
 
                         if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                         {
