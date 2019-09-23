@@ -5,6 +5,7 @@ import { MessageService } from "app/services/common/message.service";
 import { GenericOptionService } from "app/services/admin/generic-option.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { FormControl, Validators } from "@angular/forms";
+import { GenericOptions } from "app/models/enums/genericOptions";
 
 declare var moment: any;
 
@@ -55,7 +56,7 @@ export class GenericOptionComponent implements OnDestroy {
         this.entity = controller;
         this.getAll();
 
-        if(this.entity == "ReasonCause"){
+        if(this.entity == GenericOptions.ReasonCause){
             this.isReasonCause = true;
         }
     }
