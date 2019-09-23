@@ -125,7 +125,6 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
                 this.ManagementReportId = params['id'];
     
-                this.budgetView.isCdg || 
                 this.getDetail();
             });
         }
