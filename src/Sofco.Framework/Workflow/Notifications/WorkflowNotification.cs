@@ -68,7 +68,7 @@ namespace Sofco.Framework.Workflow.Notifications
                         {
                             recipientsList.Add(director.Email);
 
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.Id, refund.AnalyticId, UserApproverType.Refund);
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.UserName, refund.AnalyticId, UserApproverType.Refund);
 
                             foreach (var userApprover in userApprovers)
                             {
@@ -111,7 +111,7 @@ namespace Sofco.Framework.Workflow.Notifications
 
                         if (entity is Refund refund)
                         {
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.ManagerId.Value, refund.AnalyticId, UserApproverType.Refund);
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
 
                             foreach (var userApprover in userApprovers)
                             {
@@ -141,7 +141,7 @@ namespace Sofco.Framework.Workflow.Notifications
                         {
                             recipientsList.Add(manager.Email);
 
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(manager.Id, refund.AnalyticId, UserApproverType.Refund);
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(manager.UserName, refund.AnalyticId, UserApproverType.Refund);
 
                             foreach (var userApprover in userApprovers)
                             {

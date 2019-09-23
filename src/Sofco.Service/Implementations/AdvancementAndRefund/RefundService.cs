@@ -488,7 +488,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 if (director.Id == currentUser.Id) hasAccess = true;
 
-                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.Id, entity.AnalyticId, UserApproverType.Refund);
+                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.UserName, entity.AnalyticId, UserApproverType.Refund);
 
                 if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                 {
@@ -517,7 +517,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     hasAccess = true;
                 }
 
-                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(entity.Analytic.ManagerId.Value, entity.AnalyticId, UserApproverType.Refund);
+                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(entity.Analytic.Manager.UserName, entity.AnalyticId, UserApproverType.Refund);
 
                 if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
                 {
