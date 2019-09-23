@@ -406,10 +406,14 @@ namespace Sofco.Service.Implementations.ManagementReport
                 }
 
                 //Obtengo los tipos de Recursos
-                List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
+                //List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
+
+                //Obtengo las categorias
+                List<CostDetailCategories> Allcategories = unitOfWork.CostDetailRepository.GetCategories();
+                var categories = Allcategories.Where(x => x.Name != EnumCostDetailType.InformeFinal.ToString()).ToList();
 
                 //Mapeo Los demas datos
-                var AllCostResources = FillFundedResoursesByMonth(response.Data.MonthsHeader, costDetails, Types);
+                var AllCostResources = FillFundedResoursesByMonth(response.Data.MonthsHeader, costDetails, categories);
                 //Mapeo Los empleados      
 
                 response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails);
@@ -485,18 +489,18 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<MonthOther> GetOtherTypeAndCostDetail(int idType, int idCostDetail)
+        public Response<MonthOther> GetOtherTypeAndCostDetail(int idCategory, int idCostDetail)
         {
             var response = new Response<MonthOther> { Data = new MonthOther() };
 
             try
             {
-                var listOther = unitOfWork.CostDetailOtherRepository.GetByTypeAndCostDetail(idType, idCostDetail);
+                var listOther = unitOfWork.CostDetailOtherRepository.GetByTypeAndCostDetail(idCategory, idCostDetail);
                 var listBudget = listOther.Where(x => x.IsReal == false).ToList();
-                var subtypes = unitOfWork.CostDetailRepository.GetSubtypes(idType);
+                var subcategories = unitOfWork.CostDetailRepository.GetSubcategories();
 
                 response.Data.CostMonthOther = this.Translate(listBudget);
-                response.Data.Subtypes = this.Translate(subtypes);
+                response.Data.Subcategories = this.Translate(subcategories.Where(x=> x.CostDetailCategoryId == idCategory).ToList());
             }
             catch (Exception ex)
             {
@@ -513,17 +517,17 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             try
             {
-                List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
+                //List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
 
-                response.Data = Types
-                                     .Where(t => t.Name != EnumCostDetailType.AjusteGeneral.ToString())
-                                     .Select(t => new CostDetailTypeModel
-                                     {
-                                         TypeId = t.Id,
-                                         TypeName = t.Name
-                                     })
-                                     .OrderBy(t => t.TypeName)
-                                     .ToList();
+                //response.Data = Types
+                //                     .Where(t => t.Name != EnumCostDetailType.AjusteGeneral.ToString())
+                //                     .Select(t => new CostDetailTypeModel
+                //                     {
+                //                         TypeId = t.Id,
+                //                         TypeName = t.Name
+                //                     })
+                //                     .OrderBy(t => t.TypeName)
+                //                     .ToList();
             }
             catch (Exception ex)
             {
@@ -1305,19 +1309,19 @@ namespace Sofco.Service.Implementations.ManagementReport
             return costEmployees.OrderBy(e => e.Display).ToList();
         }
 
-        private List<CostResource> FillFundedResoursesByMonth(IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails, List<CostDetailType> Types)
+        private List<CostResource> FillFundedResoursesByMonth(IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails, List<CostDetailCategories> categories)
         {
             List<CostResource> fundedResources = new List<CostResource>();
 
-            foreach (var type in Types)
+            foreach (var category in categories)
             {
                 var detailResource = new CostResource();
                 detailResource.MonthsCost = new List<MonthDetailCost>();
                 bool hasValue = false;
 
-                detailResource.Display = type.Name;
-                detailResource.TypeId = type.Id;
-                detailResource.TypeName = type.Name;
+                detailResource.Display = category.Name;
+                detailResource.TypeId = category.Id;
+                detailResource.TypeName = category.Name;
 
                 foreach (var mounth in Months)
                 {
@@ -1326,7 +1330,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     var costDetailMonth = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == mounth.MonthYear.Date).FirstOrDefault();
                     if (costDetailMonth != null)
                     {
-                        var monthValue = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailSubtype.CostDetailType.Id == type.Id && o.IsReal == false).ToList();
+                        var monthValue = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailSubcategory.CostDetailCategoryId == category.Id && o.IsReal == false).ToList();
                         if (monthValue.Count > 0)
                         {
                             decimal valuePesos = 0;
@@ -1356,7 +1360,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         monthDetail.CostDetailId = costDetailMonth.Id;
                     }
 
-                    var monthValueReal = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailSubtypeId == type.Id && o.IsReal == true).ToList();
+                    var monthValueReal = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailSubcategory.CostDetailCategoryId == category.Id && o.IsReal == true).ToList();
                     if (monthValueReal.Count > 0)
                     {
                         monthDetail.Real.Id = monthValueReal.FirstOrDefault().Id;
@@ -1377,17 +1381,17 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 //Separo los campos por defectos de los ocultos
                 //var typeWithoutValue = detailResource.MonthsCost.Where(m => m.Value == null || m.Value == 0).ToList();
-                if (type.Default == false)
+                if (category.Default == false)
                 {
                     detailResource.OtherResource = true;
                 }
 
-                if (type.BelongEmployee == true)
+                if (category.BelongEmployee == true)
                 {
                     detailResource.BelongEmployee = true;
                 }
 
-                if (type.Default == true || hasValue)
+                if (category.Default == true || hasValue)
                 {
                     detailResource.show = true;
                 }
@@ -1609,7 +1613,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                 entity.Value = aux.Value ?? 0;
                                 entity.Description = aux.Description;
-                                entity.CostDetailSubtypeId = resource.TypeId;
+                                entity.CostDetailSubcategoryId = resource.TypeId;
                                 entity.CurrencyId = resource.CurrencyId;
                                 entity.IsReal = isReal;
 
@@ -1713,14 +1717,14 @@ namespace Sofco.Service.Implementations.ManagementReport
         private List<CostMonthOther> Translate(List<CostDetailOther> costDetailOthers)
         {
             return costDetailOthers
-                    .Where(t => t.CostDetailSubtype.Name != EnumCostDetailType.AjusteGeneral.ToString())
+                    .Where(t => t.CostDetailSubcategory.Name != EnumCostDetailType.AjusteGeneral.ToString())
                     .Select(x => new CostMonthOther
                     {
                         Id = x.Id,
                         Description = x.Description,
                         CostDetailId = x.CostDetailId,
-                        SubtypeId = x.CostDetailSubtypeId,
-                        SubtypeName = x.CostDetailSubtype.Name,
+                        SubtypeId = x.CostDetailSubcategoryId,
+                        SubtypeName = x.CostDetailSubcategory.Name,
                         CurrencyId = x.CurrencyId,
                         Value = x.Value
                     })
@@ -1744,9 +1748,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                         .ToList();
         }
 
-        private List<CostSubtype> Translate(List<CostDetailSubtype> subtipes)
+        private List<CostSubcategoryMonth> Translate(List<CostDetailSubcategories> subcategories)
         {
-            return subtipes.Select(x => new CostSubtype()
+            return subcategories.Select(x => new CostSubcategoryMonth()
                         {
                             Id = x.Id,
                             Name = x.Name

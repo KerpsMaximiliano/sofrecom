@@ -53,14 +53,14 @@ namespace Sofco.Core.Models.ManagementReport
 
     public class MonthOther
     {
-        public List<CostSubtype> Subtypes { get; set; }
+        public List<CostSubcategoryMonth> Subcategories { get; set; }
         public List<CostMonthOther> CostMonthOther { get; set; }
     }
-    public class CostSubtype
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    //public class CostSubtype
+    //{
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //}
 
     public class CostMonthOther
     {

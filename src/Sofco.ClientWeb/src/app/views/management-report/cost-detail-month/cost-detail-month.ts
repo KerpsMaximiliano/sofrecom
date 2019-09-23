@@ -7,6 +7,9 @@ import { ManagementReportService } from "app/services/management-report/manageme
 import { ActivatedRoute } from "@angular/router";
 import { ManagementReportDetailComponent } from "../detail/mr-detail"
 import { EmployeeService } from "app/services/allocation-management/employee.service"
+import { category } from "app/models/management-report/category";
+import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
+import { debug } from "util";
 
 @Component({
     selector: 'cost-detail-month',
@@ -17,7 +20,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     updateCostSubscrip: Subscription;
     getContratedSuscrip: Subscription;
-    getOtherSuscrip: Subscription;
+    //getOtherSuscrip: Subscription;
     deleteContractedSuscrip: Subscription;
     deleteOtherSuscrip: Subscription;
     paramsSubscrip: Subscription;
@@ -43,14 +46,21 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     serviceId: string;
     AnalyticId: any;
     fundedResources: any[] = new Array();
-    otherResources: any[] = new Array();
-    otherSelected: any;
+    // otherResources: any[] = new Array();
+    // otherSelected: any;
     managementReportId: number;
     contracted: any[] = new Array();
     monthYear: Date;
     canSave: boolean = false;
     userSelected: any
     hasCostProfile: boolean = false
+
+    getCategoriesSuscrip: Subscription;
+    categories: category[] = new Array()
+    categorySelected: category;
+    subcategories: any[] = new Array();
+    subcategorySelected: any;
+    subCategoriesData: any[] = new Array()
 
     isReadOnly: boolean
     
@@ -69,6 +79,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         private managementReportService: ManagementReportService,
         private activatedRoute: ActivatedRoute,
         private managementReport: ManagementReportDetailComponent,
+        private managementReportStaffService: ManagementReportStaffService,
         private employeeService: EmployeeService
     ) { }
 
@@ -78,14 +89,15 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.serviceId = params['serviceId'];
         });
 
-        this.getOtherSuscrip = this.managementReportService.getOtherResources().subscribe(response => {
-            this.otherResources = response.data;
+        // this.getOtherSuscrip = this.managementReportService.getOtherResources().subscribe(response => {
+        //     this.otherResources = response.data;
 
-            if (this.otherResources.length > 0) {
-                this.otherSelected = this.otherResources[0];
-            }
-        });
+        //     if (this.otherResources.length > 0) {
+        //         this.otherSelected = this.otherResources[0];
+        //     }
+        // });
 
+        this.getCategories()
         this.getUsers()
     }
 
@@ -94,7 +106,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
         if (this.deleteContractedSuscrip) this.deleteContractedSuscrip.unsubscribe();
         if (this.getContratedSuscrip) this.getContratedSuscrip.unsubscribe();
-        if (this.getOtherSuscrip) this.getOtherSuscrip.unsubscribe();
+        if (this.getCategoriesSuscrip) this.getCategoriesSuscrip.unsubscribe()
         if (this.deleteOtherSuscrip) this.deleteOtherSuscrip.unsubscribe();
         if (this.getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe()
     }
@@ -115,8 +127,8 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
         var resource = {
             id: 0,
-            typeId: this.otherSelected.typeId,
-            typeName: this.otherSelected.typeName,
+            typeId: this.subcategorySelected.typeId,
+            typeName: this.subcategorySelected.typeName,
             value: 0,
             description: ""
         }
@@ -341,6 +353,29 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         }
         else {
             this.messageService.showError("managementReport.userRequired")
+        }
+    }
+
+    getCategories() {
+        this.getCategoriesSuscrip = this.managementReportStaffService.getCostDetailCategories().subscribe(
+            data => {                
+                this.categories = data.data;
+
+                if(this.categories.length > 0){
+                    this.categorySelected = this.categories[0]
+                    this.categoryChange()
+                }
+            },
+            () => { });
+    }
+
+    categoryChange() {        
+        this.subcategorySelected = {}
+        this.subcategories = new Array()
+        this.subcategories = this.categorySelected.subcategories
+
+        if(this.subcategories.length > 0){
+            this.subcategorySelected = this.subcategories[0]
         }
     }
 

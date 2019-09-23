@@ -6,6 +6,6 @@ namespace Sofco.Core.DAL.ManagementReport
 {
     public interface ICostDetailOtherRepository : IBaseRepository<CostDetailOther>
     {
-        List<CostDetailOther> GetByTypeAndCostDetail(int costTipeId, int costDetailId);
+        List<CostDetailOther> GetByTypeAndCostDetail(int costCategoryId, int costDetailId);
     }
 }

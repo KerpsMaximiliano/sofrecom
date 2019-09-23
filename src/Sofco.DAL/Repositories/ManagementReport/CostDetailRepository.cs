@@ -21,25 +21,25 @@ namespace Sofco.DAL.Repositories.ManagementReport
                     .ToList();
         }
 
-        public List<CostDetailType> GetResourceTypes()
-        {
-            return context.CostDetailTypes.OrderBy(t => t.Id).ToList();
-        }
+        //public List<CostDetailType> GetResourceTypes()
+        //{
+        //    return context.CostDetailTypes.OrderBy(t => t.Id).ToList();
+        //}
 
-        public List<CostDetailSubtype> GetSubtypes(int idType)
-        {
-            return context.CostDetailSubtype
-                .Where(s => s.CostDetailTypeId == idType)
-                .OrderBy(s => s.Name)
-                .ToList();
-        }
+        //public List<CostDetailSubtype> GetSubtypes(int idType)
+        //{
+        //    return context.CostDetailSubtype
+        //        .Where(s => s.CostDetailTypeId == idType)
+        //        .OrderBy(s => s.Name)
+        //        .ToList();
+        //}
 
         public CostDetail GetByManagementReportAndMonthYear(int managementReportId, DateTime monthYear)
         {
             return context.CostDetails
                 .Include(x => x.CostDetailProfiles)
                 .Include(x => x.CostDetailOthers)
-                    .ThenInclude(b => b.CostDetailSubtype)
+                    .ThenInclude(b => b.CostDetailSubcategory)
                 .Include(x => x.ContratedDetails)
                 .Include(x => x.CostDetailResources)
                 .Include(x => x.CostDetailStaff)
@@ -85,7 +85,9 @@ namespace Sofco.DAL.Repositories.ManagementReport
 
         public List<CostDetailCategories> GetCategories()
         {
-            return context.CostDetailCategories.OrderBy(t => t.Id).ToList();
+            return context.CostDetailCategories
+                .Include(x=> x.Subcategories)
+                .OrderBy(t => t.Id).ToList();
         }
 
         public List<CostDetailSubcategories> GetSubcategories()

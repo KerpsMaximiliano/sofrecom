@@ -13,13 +13,13 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
         }
 
-        public List<CostDetailOther> GetByTypeAndCostDetail(int costTipeId, int costDetailId)
+        public List<CostDetailOther> GetByTypeAndCostDetail(int costCategoryId, int costDetailId)
         {
             return context.CostDetailOthers
                         //.Include(x => x.CostDetailType)
-                        .Include(x => x.CostDetailSubtype)
-                            .ThenInclude(y => y.CostDetailType)
-                        .Where(x => x.CostDetailSubtype.CostDetailTypeId == costTipeId
+                        .Include(x => x.CostDetailSubcategory)
+                            .ThenInclude(y => y.CostDetailCategory)
+                        .Where(x => x.CostDetailSubcategory.CostDetailCategoryId == costCategoryId
                                 && x.CostDetailId == costDetailId)
                         .ToList();
         }

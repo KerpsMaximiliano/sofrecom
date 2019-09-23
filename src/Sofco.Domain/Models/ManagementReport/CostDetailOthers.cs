@@ -11,8 +11,11 @@ namespace Sofco.Domain.Models.ManagementReport
         //public int CostDetailTypeId { get; set; }
         //public CostDetailType CostDetailType { get; set; }
 
-        public int CostDetailSubtypeId { get; set; }
-        public CostDetailSubtype CostDetailSubtype { get; set; }
+        //public int CostDetailSubtypeId { get; set; }
+        //public CostDetailSubtype CostDetailSubtype { get; set; }
+
+        public int CostDetailSubcategoryId { get; set; }
+        public CostDetailSubcategories CostDetailSubcategory { get; set; }
 
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }

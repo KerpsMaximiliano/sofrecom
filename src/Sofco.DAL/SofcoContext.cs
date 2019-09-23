@@ -150,8 +150,8 @@ namespace Sofco.DAL
         public DbSet<ManagementReport> ManagementReports { get; set; }
         public DbSet<CostDetail> CostDetails { get; set; }
         public DbSet<ContratedDetail> ContractedDetails { get; set; }
-        public DbSet<CostDetailType> CostDetailTypes { get; set; }
-        public DbSet<CostDetailSubtype> CostDetailSubtype { get; set; }
+        //public DbSet<CostDetailType> CostDetailTypes { get; set; }
+        //public DbSet<CostDetailSubtype> CostDetailSubtype { get; set; }
         public DbSet<CostDetailResource> CostDetailResources { get; set; }
         public DbSet<CostDetailProfile> CostDetailProfiles { get; set; }
         public DbSet<CostDetailOther> CostDetailOthers { get; set; }

@@ -225,7 +225,7 @@
 
     <br *ngIf="expenses.length > 0">
 
-    <div class="row" *ngIf="otherResources.length > 0 && !isReadOnly">
+    <!-- <div class="row" *ngIf="otherResources.length > 0 && !isReadOnly">
         <div class="col-md-6">
             <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
                 (change)="otherResourceChange()">
@@ -235,6 +235,23 @@
             <button class="btn btn-success btn-md" type="button" (click)="addExpense()">
                 Agregar
                 <i class="fa fa-plus"></i></button>
+        </div>
+    </div> -->
+
+    <div class="row" *ngIf="categories.length > 0 && !isReadOnly">
+        <br>
+        <div class="col-md-5">
+            <ng-select [items]="categories" bindLabel="name" [(ngModel)]="categorySelected" (change)="categoryChange()">
+            </ng-select>
+        </div>
+        <div class="col-md-5">
+            <ng-select [items]="subcategories" bindLabel="name" [(ngModel)]="subcategorySelected"></ng-select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success btn-md" type="button" (click)="addSubcategoryData()">
+                Agregar
+                <i class="fa fa-plus"></i>
+            </button>
         </div>
     </div>
 

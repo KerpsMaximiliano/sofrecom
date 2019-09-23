@@ -73,8 +73,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     intAux: number = 0
     categorySelected: any = { id: 0, name: '' }
-    subtypes: any[] = new Array()
-    subtypeSelected: any = { id: 0, name: '' }
+    subcategories: any[] = new Array()
+    subcategorySelected: any = { id: 0, name: '' }
     currencies: any[] = new Array()
     totalCostsExchanges: any = {
         exchanges: [],
@@ -246,18 +246,20 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     break;
 
                 default:
-                    this.subtypes = []
+                    this.subcategories = new Array()
                     this.modalOther = true
                     this.messageService.showLoading();
                     this.editItemModal.size = 'modal-lg'
+                    
                     this.categorySelected.id = item.typeId
                     this.categorySelected.name = item.typeName
                     this.getOtherByMonthSuscrip = this.managementReportService.GetOtherByMonth(item.typeId, month.costDetailId).subscribe(response => {
+                        
                         this.othersByMonth = response.data.costMonthOther;
-                        this.subtypes = response.data.subtypes
+                        this.subcategories = response.data.subcategories
 
-                        if (this.subtypes.length > 0) {
-                            this.subtypeSelected = this.subtypes[0]
+                        if (this.subcategories.length > 0) {
+                            this.subcategorySelected = this.subcategories[0]
                         }
                         // if (this.othersByMonth.length == 0) {
                         //     this.addOtherByMonth()
@@ -850,8 +852,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var resource = {
             id: 0,
             CostDetailId: this.monthSelected.costDetailId,
-            subtypeId: this.subtypeSelected.id,
-            subtypeName: this.subtypeSelected.name,
+            subtypeId: this.subcategorySelected.id,
+            subtypeName: this.subcategorySelected.name,
             value: 0,
             description: "",
             currencyId: this.currencies[0].id

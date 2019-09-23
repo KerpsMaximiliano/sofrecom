@@ -136,6 +136,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Include(x => x.ManagementReport)
                 .ThenInclude(x => x.CostDetails)
                     .ThenInclude(x => x.CostDetailOthers)
+                        .ThenInclude(y => y.CostDetailSubcategory)
                 .Include(x => x.ManagementReport)
                     .ThenInclude(x => x.CostDetails)
                         .ThenInclude(x => x.CostDetailProfiles)

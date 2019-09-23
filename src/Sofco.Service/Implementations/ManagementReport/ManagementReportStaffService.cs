@@ -488,7 +488,10 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             try
             {
-                response.Data = unitOfWork.ManagementReportRepository.GetCategories();
+                var Allcategories = unitOfWork.CostDetailRepository.GetCategories();
+                var categories = Allcategories.Where(x => x.Name != EnumCostDetailType.InformeFinal.ToString() && x.Name != EnumCostDetailType.AjusteGeneral).ToList();
+
+                response.Data = categories;
             }
             catch (Exception ex)
             {
@@ -802,7 +805,8 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             List<CostCategory> costCategories = new List<CostCategory>();
 
-            var categories = unitOfWork.CostDetailRepository.GetCategories();
+            var Allcategories = unitOfWork.CostDetailRepository.GetCategories();
+            var categories = Allcategories.Where(x => x.Name != EnumCostDetailType.InformeFinal.ToString()).ToList();
 
             foreach (var category in categories)
             {

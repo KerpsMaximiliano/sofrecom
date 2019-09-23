@@ -11,6 +11,8 @@ namespace Sofco.Domain.Models.ManagementReport
         public int CostDetailCategoryId { get; set; }
         public CostDetailCategories CostDetailCategory { get; set; }
 
+        public string Codigo { get; set; }
+
         public ICollection<CostDetailStaff> CostDetailStaff { get; set; }
     }
 }
