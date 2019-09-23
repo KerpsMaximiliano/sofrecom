@@ -208,7 +208,7 @@ namespace Sofco.Service.Implementations.Workflow
 
                         if (!hasAccess)
                         {
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.Id, refund.AnalyticId, UserApproverType.Refund);
+                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.UserName, refund.AnalyticId, UserApproverType.Refund);
 
                             foreach (var userApprover in userApprovers)
                             {
@@ -248,7 +248,7 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 if (entity is Refund refund)
                 {
-                    var analytic = unitOfWork.AnalyticRepository.Get(refund.AnalyticId);
+                    var analytic = unitOfWork.AnalyticRepository.GetById(refund.AnalyticId);
 
                     if (analytic != null)
                     {
@@ -265,7 +265,7 @@ namespace Sofco.Service.Implementations.Workflow
 
                             if (!hasAccess)
                             {
-                                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(analytic.ManagerId.Value, refund.AnalyticId, UserApproverType.Refund);
+                                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(analytic.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
 
                                 foreach (var userApprover in userApprovers)
                                 {
