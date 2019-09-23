@@ -1277,6 +1277,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
+                    monthDetail.Month = mounth.Month;
+                    monthDetail.Year = mounth.Year;
 
                     //Verifico si este mes el recurso se encontro en la analitica
                     if (employee.Allocations != null)
@@ -1439,6 +1441,9 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     monthDetail.Display = mounth.Display;
                     monthDetail.MonthYear = mounth.MonthYear;
+                    monthDetail.Month = mounth.Month;
+                    monthDetail.Year = mounth.Year;
+
                     detailProfile.MonthsCost.Add(monthDetail);
                 }
 

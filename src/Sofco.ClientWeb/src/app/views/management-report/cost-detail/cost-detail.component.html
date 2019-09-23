@@ -40,7 +40,7 @@
                             </label>
                         </td>
                         <td [hidden]="!showColumn.real">
-                            <label class="label bg-info" (click)="setAllCosts(month, month.real.totalCost, 'real', i)">
+                            <label class="label bg-info" (click)="setAllCosts(month, month.real.totalCost, 'real')">
                                 {{ month.real.totalCost | amountFormat }}
                             </label>
                         </td>
