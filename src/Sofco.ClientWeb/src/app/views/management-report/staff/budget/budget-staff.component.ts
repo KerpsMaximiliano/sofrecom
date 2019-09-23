@@ -241,7 +241,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
             case 'PFA2':
                 if (isCdg && this.actualState == 'pfa2') { this.readOnly = false }
-                if (isCdg && this.actualState == 'pfa2' || this.actualState == 'real') {
+                if (isCdg && this.actualState == 'real') {
                     this.messageService.showWarning("managementReport.pfa2Closed")
                 }
                 if (this.actualState == 'budget' || this.actualState == 'pfa1') {
