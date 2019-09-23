@@ -205,7 +205,7 @@
 
     <div class="row m-t-xs" *ngFor="let expense of expenses; let i = index">
         <div class="col-sm-5">
-            {{ expense.typeName }}
+            {{ expense.subcategoryName }}
         </div>
         <div class="col-sm-4">
             <input type="text" class="form-control input-xs" [(ngModel)]="expense.description" [disabled]="isReadOnly"
@@ -248,7 +248,7 @@
             <ng-select [items]="subcategories" bindLabel="name" [(ngModel)]="subcategorySelected"></ng-select>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-success btn-md" type="button" (click)="addSubcategoryData()">
+            <button class="btn btn-success btn-md" type="button" (click)="addExpense()">
                 Agregar
                 <i class="fa fa-plus"></i>
             </button>

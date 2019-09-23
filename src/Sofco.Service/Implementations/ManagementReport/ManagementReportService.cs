@@ -511,32 +511,58 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<List<CostDetailTypeModel>> GetOtherResources()
-        {
-            var response = new Response<List<CostDetailTypeModel>> { Data = new List<CostDetailTypeModel>() };
+        //public Response<List<CostDetailTypeModel>> GetOtherResources()
+        //{
+        //    var response = new Response<List<CostDetailTypeModel>> { Data = new List<CostDetailTypeModel>() };
 
-            try
-            {
-                //List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
+        //    try
+        //    {
+        //        List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
 
-                //response.Data = Types
-                //                     .Where(t => t.Name != EnumCostDetailType.AjusteGeneral.ToString())
-                //                     .Select(t => new CostDetailTypeModel
-                //                     {
-                //                         TypeId = t.Id,
-                //                         TypeName = t.Name
-                //                     })
-                //                     .OrderBy(t => t.TypeName)
-                //                     .ToList();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex);
-                response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
-            }
+        //        response.Data = Types
+        //                             .Where(t => t.Name != EnumCostDetailType.AjusteGeneral.ToString())
+        //                             .Select(t => new CostDetailTypeModel
+        //                             {
+        //                                 TypeId = t.Id,
+        //                                 TypeName = t.Name
+        //                             })
+        //                             .OrderBy(t => t.TypeName)
+        //                             .ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logger.LogError(ex);
+        //        response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+        //    }
 
-            return response;
-        }
+        //    return response;
+        //}
+        //public Response<List<CostDetailTypeModel>> GetOtherResources()
+        //{
+        //    var response = new Response<List<CostDetailTypeModel>> { Data = new List<CostDetailTypeModel>() };
+
+        //    try
+        //    {
+        //        List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
+
+        //        response.Data = Types
+        //                             .Where(t => t.Name != EnumCostDetailType.AjusteGeneral.ToString())
+        //                             .Select(t => new CostDetailTypeModel
+        //                             {
+        //                                 TypeId = t.Id,
+        //                                 TypeName = t.Name
+        //                             })
+        //                             .OrderBy(t => t.TypeName)
+        //                             .ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logger.LogError(ex);
+        //        response.Messages.Add(new Message(Resources.Common.GeneralError, MessageType.Error));
+        //    }
+
+        //    return response;
+        //}
 
         public Response UpdateCostDetail(CostDetailModel pDetailCost)
         {
@@ -629,8 +655,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     cost.MonthsCost = new List<MonthDetailCost>();
                     MonthDetailCost month = new MonthDetailCost();
 
-                    cost.TypeId = otherRes.SubtypeId;
-                    cost.CurrencyId = otherRes.CurrencyId;
+                    cost.TypeId = otherRes.SubcategoryId;
+                    cost.CurrencyId = otherRes.CurrencyId == 0 ? appSetting.CurrencyPesos : otherRes.CurrencyId;
                     month.MonthYear = pMonthDetail.MonthYear;
 
                     if (pMonthDetail.IsReal)
@@ -1723,12 +1749,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                         Id = x.Id,
                         Description = x.Description,
                         CostDetailId = x.CostDetailId,
-                        SubtypeId = x.CostDetailSubcategoryId,
-                        SubtypeName = x.CostDetailSubcategory.Name,
+                        SubcategoryId = x.CostDetailSubcategoryId,
+                        SubcategoryName = x.CostDetailSubcategory.Name,
                         CurrencyId = x.CurrencyId,
                         Value = x.Value
                     })
-                    .OrderBy(x => x.SubtypeName)
+                    .OrderBy(x => x.SubcategoryName)
                     .ToList();
         }
 

@@ -10,7 +10,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response<ManagementReportDetail> GetDetail(string serviceId);
         Response<BillingDetail> GetBilling(string serviceId);
         Response<CostDetailModel> GetCostDetail(string serviceId);
-        Response<List<CostDetailTypeModel>> GetOtherResources();
+        //Response<List<CostDetailTypeModel>> GetOtherResources();
         Response<MonthOther> GetOtherTypeAndCostDetail(int idCategory, int idCostDetail);
         Response UpdateCostDetail(CostDetailModel CostDetail);
         Response UpdateCostDetailMonth(CostDetailMonthModel CostDetail);
