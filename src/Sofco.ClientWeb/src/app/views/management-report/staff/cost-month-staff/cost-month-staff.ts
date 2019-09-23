@@ -229,6 +229,11 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.getCategoriesSuscrip = this.managementReportStaffService.getCostDetailCategories().subscribe(
             data => {
                 this.categories = data.data;
+
+                if(this.categories.length > 0){
+                    this.categorySelected = this.categories[0]
+                    this.categoryChange()
+                }
             },
             () => { });
     }
@@ -237,6 +242,10 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.subcategorySelected = {}
         this.subcategories = new Array()
         this.subcategories = this.categorySelected.subcategories
+
+        if(this.subcategories.length > 0){
+            this.subcategorySelected = this.subcategories[0]
+        }
     }
 
     addSubcategoryData() {

@@ -52,9 +52,9 @@ export class ManagementReportService {
     return this.http.put<any>(`${this.baseUrl}/managementReportBillings/data`, json);
   }
 
-  getOtherResources(){
-    return this.http.get<any>(`${this.baseUrl}/managementReport/otherResources`)
-  }
+   //getOtherResources(){
+  //   return this.http.get<any>(`${this.baseUrl}/managementReport/otherResources`)
+   //}
 
   deleteOtherResources(id){
     return this.http.delete<any>(`${this.baseUrl}/managementReport/${id}/otherResources`)

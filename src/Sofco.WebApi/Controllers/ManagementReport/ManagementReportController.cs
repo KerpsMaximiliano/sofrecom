@@ -81,13 +81,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
-        [HttpGet("otherResources")]
-        public IActionResult GetOtherResources()
-        {
-            var response = managementReportService.GetOtherResources();
+        //[HttpGet("otherResources")]
+        //public IActionResult GetOtherResources()
+        //{
+        //    var response = managementReportService.GetOtherResources();
 
-            return Ok(response);
-        }
+        //    return Ok(response);
+        //}
 
         [HttpGet("{idType}/otherResources/{idCostDetail}")]
         public IActionResult GetOtherByMonth(int idType, int idCostDetail)
