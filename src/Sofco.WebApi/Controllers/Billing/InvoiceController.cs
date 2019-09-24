@@ -97,7 +97,35 @@ namespace Sofco.WebApi.Controllers.Billing
             {
                 var file = Request.Form.Files.First();
 
-                await invoiceService.AttachFile(invoiceId, response, file, sessionManager.GetUserName());
+                await invoiceService.AttachFile(invoiceId, response, file, sessionManager.GetUserName(), false);
+            }
+            else
+            {
+                response.AddError(Resources.Common.SaveFileError);
+            }
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("{invoiceId}/file/multiple")]
+        public async Task<IActionResult> MultipleFile(int invoiceId)
+        {
+            var response = new Response<File>();
+
+            if (Request.Form.Files.Any())
+            {
+                var file = Request.Form.Files.First();
+
+                if (fileService.HasFile(invoiceId))
+                {
+                    var cloned = invoiceService.Clone(invoiceId);
+
+                    await invoiceService.AttachFile(cloned.Data.Id, response, file, sessionManager.GetUserName(), true);
+                }
+                else
+                {
+                    await invoiceService.AttachFile(invoiceId, response, file, sessionManager.GetUserName(), true);
+                }
             }
             else
             {

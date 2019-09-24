@@ -8,5 +8,7 @@ namespace Sofco.Core.Services.Common
         Response<byte[]> ExportFile(int id, string path);
 
         Response<Tuple<byte[], string>> GetFile(int id, string path);
+
+        bool HasFile(int invoiceId);
     }
 }
