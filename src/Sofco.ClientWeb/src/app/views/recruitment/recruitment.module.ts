@@ -26,6 +26,7 @@ import { AmountFormatModule } from 'app/pipes/amount-format.module';
 import { JobSearchEditComponent } from './job-search/edit/job-search-edit';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { TimeHiringComponent } from '../admin/options/timeHiring';
+import { ApplicantService } from 'app/services/recruitment/applicant.service';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,7 @@ import { TimeHiringComponent } from '../admin/options/timeHiring';
     BsDatepickerModule
   ],
 
-  providers: [GenericOptionService, JobSearchService, FormsService, CustomerService],
+  providers: [GenericOptionService, JobSearchService, FormsService, CustomerService, ApplicantService],
   exports: []
 })
 

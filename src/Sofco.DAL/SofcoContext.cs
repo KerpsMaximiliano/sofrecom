@@ -173,6 +173,9 @@ namespace Sofco.DAL
         public DbSet<JobSearchSeniority> JobSearchSeniorities { get; set; }
         public DbSet<JobSearchSkillRequired> JobSearchSkills { get; set; }
         public DbSet<TimeHiring> TimeHirings { get; set; }
+        public DbSet<Applicant> Applicants { get; set; }
+        public DbSet<ApplicantProfile> ApplicantProfiles { get; set; }
+        public DbSet<ApplicantSkills> ApplicantSkillses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -242,6 +245,7 @@ namespace Sofco.DAL
             builder.MapDelegation();
             builder.MapRecruitmentOptions();
             builder.MapJobSearch();
+            builder.MapApplicant();
         }
     }
 }

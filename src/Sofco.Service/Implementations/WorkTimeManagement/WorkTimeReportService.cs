@@ -265,7 +265,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 SaveTigerTxt(response, tigerReport);
 
-                response.Data.IsCompleted = response.Data.Items.All(x => x.HoursLoadedSuccesfully) &&
+                response.Data.IsCompleted = (response.Data.EmployeesMissingHours == null || !response.Data.EmployeesMissingHours.Any()) &&
                                             response.Data.EmployeesAllocationResume.All(x =>
                                                 !x.MissAnyPercentageAllocation);
 

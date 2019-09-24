@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Sofco.Core.Models.Recruitment
 {
-    public class JobSearchAddModel
+    public class JobSearchAddModel 
     {
         public int? UserId { get; set; }
 
