@@ -88,6 +88,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         costDetailResource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString(CultureInfo.InvariantCulture));
                         costDetailResource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString(CultureInfo.InvariantCulture));
+                        costDetailResource.IsReal = true;
                         unitOfWork.CostDetailResourceRepository.Update(costDetailResource);
                     }
                 }
@@ -96,10 +97,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                 {
                     unitOfWork.CostDetailRepository.UpdateTotalProvisioned(costDetail);
                     var analytic = costDetail.ManagementReport.Analytic;
-                    if (analytic.ServiceId == null && analytic.AccountId == null)
-                    {
-                        managementStaffReportService.InsertTotalSalaryStaffReport(costDetail.ManagementReportId, costDetail.TotalProvisioned ?? 0, costDetail.MonthYear);
-                    }
+                    //if (analytic.ServiceId == null && analytic.AccountId == null)
+                    //{
+                    //    managementStaffReportService.InsertTotalSalaryStaffReport(costDetail.ManagementReportId, costDetail.TotalProvisioned ?? 0, costDetail.MonthYear);
+                    //}
                 }
 
                 unitOfWork.Save();
