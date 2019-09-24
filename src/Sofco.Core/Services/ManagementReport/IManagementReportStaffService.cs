@@ -12,7 +12,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response SaveCostDetailStaff(CostDetailStaffModel pDetailCost);
         Response GetCategories();
         Response Close(ManagementReportCloseModel model);
-        bool InsertTotalSalaryStaffReport(int managementReportId, decimal salary, System.DateTime monthYear);
+        //bool InsertTotalSalaryStaffReport(int managementReportId, decimal salary, System.DateTime monthYear);
         Response SaveCostDetailStaffMonth(CostDetailStaffMonthModel pMonthDetail);
         Response GeneratePFA(int ManagementReportId, string PFA);
     }

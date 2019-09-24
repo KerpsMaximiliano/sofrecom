@@ -83,6 +83,7 @@ namespace Sofco.Core.Models.ManagementReport
         public int IdCategory { get; set; }
         public string NameCategory { get; set; }
         public int BudgetTypeId { get; set; }
+        public int CurrencyId { get; set; }
         public bool Deleted { get; set; }
     }
 }

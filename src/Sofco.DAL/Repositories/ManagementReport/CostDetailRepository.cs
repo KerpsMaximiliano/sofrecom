@@ -42,9 +42,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
                     .ThenInclude(b => b.CostDetailSubcategory)
                 .Include(x => x.ContratedDetails)
                 .Include(x => x.CostDetailResources)
-                .Include(x => x.CostDetailStaff)
+                .Include(x => x.CostDetailStaff)                            
                         .ThenInclude(y => y.CostDetailSubcategory)
                             .ThenInclude(z => z.CostDetailCategory)
+                .Include(x => x.CostDetailStaff)
+                    .ThenInclude(y => y.BudgetType)
                 .FirstOrDefault(x => x.ManagementReportId == managementReportId
                                      && new DateTime(x.MonthYear.Year, x.MonthYear.Month, 1).Date == new DateTime(monthYear.Year, monthYear.Month, 1).Date);
         }
