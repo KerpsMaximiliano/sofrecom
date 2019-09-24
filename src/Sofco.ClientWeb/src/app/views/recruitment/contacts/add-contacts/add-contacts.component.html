@@ -88,7 +88,7 @@
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'countryCode1')">
                                         <p *ngIf="formsService.hasError(form, 'countryCode1', 'min')">El codigo no puede ser menor a 0</p>
-                                        <p *ngIf="formsService.hasError(form, 'countryCode1', 'max')">El codigo no puede ser mayor a 99</p>
+                                        <p *ngIf="formsService.hasError(form, 'countryCode1', 'max')">El codigo no puede contener mas de 2 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'areaCode1')">
                                         <p *ngIf="formsService.hasError(form, 'areaCode1', 'min')">El codigo no puede ser menor a 0</p>
-                                        <p *ngIf="formsService.hasError(form, 'areaCode1', 'max')">El codigo no puede ser mayor a 999</p>
+                                        <p *ngIf="formsService.hasError(form, 'areaCode1', 'max')">El codigo no puede contener mas de 3 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'telephone1')">
                                         <p *ngIf="formsService.hasError(form, 'telephone1', 'min')">El telefono no puede ser menor a 0</p>
-                                        <p *ngIf="formsService.hasError(form, 'telephone1', 'max')">El telefono no puede ser mayor a 9999999999</p>
+                                        <p *ngIf="formsService.hasError(form, 'telephone1', 'max')">El telefono no puede contener mas de 10 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +124,7 @@
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'countryCode2')">
                                         <p *ngIf="formsService.hasError(form, 'countryCode2', 'min')">El codigo no puede ser menor a 0</p>
-                                        <p *ngIf="formsService.hasError(form, 'countryCode2', 'max')">El codigo no puede ser mayor a 99</p>
+                                        <p *ngIf="formsService.hasError(form, 'countryCode2', 'max')">El codigo no puede contener mas de 2 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +135,7 @@
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'areaCode2')">
                                         <p *ngIf="formsService.hasError(form, 'areaCode2', 'min')">El codigo no puede ser menor a 0</p>
-                                        <p *ngIf="formsService.hasError(form, 'areaCode2', 'max')">El codigo no puede ser mayor a 999</p>
+                                        <p *ngIf="formsService.hasError(form, 'areaCode2', 'max')">El codigo no puede contener mas de 3 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -144,9 +144,9 @@
                                     <label class="control-label">Teléfono 2</label>
                                     <input type="number" class="form-control" formControlName="telephone2" min="0" max="9999999999">
 
-                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'countryCode2')">
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'telephone2')">
                                         <p *ngIf="formsService.hasError(form, 'telephone2', 'min')">El telefono no puede ser menor a 0</p>
-                                        <p *ngIf="formsService.hasError(form, 'telephone2', 'max')">El telefono no puede ser mayor a 9999999999</p>
+                                        <p *ngIf="formsService.hasError(form, 'telephone2', 'max')">El telefono no puede contener mas de 10 caracteres</p>
                                     </div>
                                 </div>
                             </div>
