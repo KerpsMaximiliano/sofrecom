@@ -5,6 +5,8 @@ using Sofco.Core.Models.Recruitment;
 using Sofco.Core.Services.Recruitment;
 using Sofco.Domain.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.Recruitment
 {
@@ -58,6 +60,84 @@ namespace Sofco.Service.Implementations.Recruitment
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
             }
+
+            return response;
+        }
+
+        public Response<IList<ApplicantResultModel>> Search(ApplicantSearchParameters parameter)
+        {
+            var response = new Response<IList<ApplicantResultModel>> { Data = new List<ApplicantResultModel>() };
+
+            var list = unitOfWork.ApplicantRepository.Search(parameter);
+
+            if (list.Any())
+            {
+                response.Data = list.Select(x => new ApplicantResultModel(x)).ToList();
+            }
+
+            return response;
+        }
+
+        public Response Update(int id, ApplicantAddModel model)
+        {
+            var response = new Response();
+
+            if (model == null)
+            {
+                response.AddError(Resources.Recruitment.Applicant.ModelNull);
+                return response;
+            }
+
+            var applicant = unitOfWork.ApplicantRepository.GetDetail(id);
+
+            if (applicant == null)
+            {
+                response.AddError(Resources.Recruitment.Applicant.NotFound);
+                return response;
+            }
+
+            ValidateFirstName(model, response);
+            ValidateLastName(model, response);
+            ValidateCommets(model, response);
+            ValidateEmail(model, response);
+            ValidateTelephone1(model, response);
+            ValidateTelephone2(model, response);
+            ValidateClient(model, response);
+            ValidateRecommendedUser(model, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                model.UpdateDomain(applicant);
+
+                unitOfWork.ApplicantRepository.Update(applicant);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Recruitment.Applicant.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public Response<ApplicantDetailModel> Get(int id)
+        {
+            var response = new Response<ApplicantDetailModel>();
+
+            var applicant = unitOfWork.ApplicantRepository.GetDetail(id);
+
+            if (applicant == null)
+            {
+                response.AddError(Resources.Recruitment.Applicant.NotFound);
+                return response;
+            }
+
+            response.Data = new ApplicantDetailModel(applicant);
 
             return response;
         }

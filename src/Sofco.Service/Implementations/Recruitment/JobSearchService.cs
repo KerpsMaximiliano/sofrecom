@@ -80,7 +80,7 @@ namespace Sofco.Service.Implementations.Recruitment
                 return response;
             }
 
-            var jobsearch = unitOfWork.JobSearchRepository.GetDetail(id);
+            var jobsearch = unitOfWork.JobSearchRepository.Get(id);
 
             if (jobsearch == null)
             {

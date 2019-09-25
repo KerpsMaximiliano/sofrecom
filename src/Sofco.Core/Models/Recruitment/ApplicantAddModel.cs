@@ -75,5 +75,20 @@ namespace Sofco.Core.Models.Recruitment
                 domain.ApplicantProfiles = Profiles.Select(x => new ApplicantProfile() { ProfileId = x }).ToList();
             }
         }
+
+        public void UpdateDomain(Applicant applicant)
+        {
+            SetData(applicant);
+
+            if (Skills == null || !Skills.Any())
+            {
+                applicant.ApplicantSkills = new List<ApplicantSkills>();
+            }
+
+            if (Profiles == null || !Profiles.Any())
+            {
+                applicant.ApplicantProfiles = new List<ApplicantProfile>();
+            }
+        }
     }
 }

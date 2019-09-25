@@ -3,6 +3,11 @@ import { Subscription } from 'rxjs';
 import { DataTableService } from 'app/services/common/datatable.service';
 import { GenericOptionService } from 'app/services/admin/generic-option.service';
 import { MessageService } from 'app/services/common/message.service';
+import { Router } from '@angular/router';
+import { GenericOptions } from 'app/models/enums/genericOptions';
+import { CustomerService } from 'app/services/billing/customer.service';
+import { ApplicantService } from 'app/services/recruitment/applicant.service';
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'app-list-contacts',
@@ -11,77 +16,107 @@ import { MessageService } from 'app/services/common/message.service';
 })
 export class ListContactsComponent implements OnInit, OnDestroy {
 
-  getSubscrip: Subscription;
-
-  public contact: any
-
   public searchModel = {
-    name: "",
-    seniority: "",
-    profile: "",
-    knowledge: ""
+    firstName: null,
+    lastName: null,
+    skills: null,
+    profiles: null,
+    clientCrmId: null
   };
-  public knowledges: any[] = new Array()
-  public profiles: any[] = new Array()
-  public seniorities: any[] = new Array()
+
+  public skillOptions: any[] = new Array()
+  public customerOptions: any[] = new Array()
+  public profileOptions: any[] = new Array()
 
   public list: any[] = new Array();
 
-  constructor(public dataTableService: DataTableService,
-    public genericOptionService: GenericOptionService,
-    public messageService: MessageService) { }
+  searchSubscrip: Subscription;
+  getClientsSubscrip: Subscription;
+  getProfilesSubscrip: Subscription;
+  getSkillsSubscrip: Subscription;
+
+  constructor(private dataTableService: DataTableService,
+    private genericOptionsService: GenericOptionService,
+    private customerService: CustomerService,
+    private menuService: MenuService,
+    private applicantService: ApplicantService,
+    private router: Router,
+    private messageService: MessageService) { }
 
   ngOnInit() {
-    this.getAll()
+    this.getCustomers();
+    this.getProfiles();
+    this.getSkills();
   }
 
   ngOnDestroy(): void {
-    if (this.getSubscrip) this.getSubscrip.unsubscribe();
+    if (this.searchSubscrip) this.searchSubscrip.unsubscribe();
+    if (this.getClientsSubscrip) this.getClientsSubscrip.unsubscribe();
+    if (this.getProfilesSubscrip) this.getProfilesSubscrip.unsubscribe();
+    if (this.getSkillsSubscrip) this.getSkillsSubscrip.unsubscribe();
 
   }
 
-  getAll() {
-    
-    this.knowledges = [
-      {id: 0, text: ".Net"},
-      {id: 0, text: "Scrum"},
-      {id: 0, text: "Agile"},
-      {id: 0, text: "Node.js"},
-      {id: 0, text: "Python"},
-      {id: 0, text: "Angular 7"},
-    ]
+  getCustomers() {
+    this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
+        this.customerOptions = d.data;
+    });
+  }
 
-    this.profiles = [
-      {id: 0, text: "Desarrollador"},
-      {id: 0, text: "Tester"},
-      {id: 0, text: "Analista"},
-      {id: 0, text: "Scrum Master"}
-    ]
+  getProfiles(){
+    this.genericOptionsService.controller = GenericOptions.Profile;
+    this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+        this.profileOptions = response.data;
+    });
+  }
 
-    this.seniorities = [
-      {id: 0, text: "Junior"},
-      {id: 0, text: "Semi Senior"},
-      {id: 0, text: "Senior"},
-      {id: 0, text: "Especialista Tecnologico"},
-      {id: 0, text: "QA Senior"}
-    ]
-    //this.messageService.showLoading();
+  getSkills(){
+      this.genericOptionsService.controller = GenericOptions.Skill;
+      this.getSkillsSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+          this.skillOptions = response.data;
+      });
+  }
 
+  search() {
+    var json = {
+      firstName: this.searchModel.firstName,
+      lastName: this.searchModel.lastName,
+      skills: this.searchModel.skills,
+      profiles: this.searchModel.profiles,
+      clientCrmId: this.searchModel.clientCrmId,
+    };
 
-    // this.getSubscrip = this.genericOptionService.getAll().subscribe(response => {
-    //   this.messageService.closeLoading();
-    //   this.list = response.data;
-    //   console.log(this.list)
-    //   this.initGrid();
-    // },
-     // () => this.messageService.closeLoading());
+    this.list = [];
+
+    this.messageService.showLoading();
+
+    this.searchSubscrip = this.applicantService.search(json).subscribe(response => {
+        this.messageService.closeLoading();
+
+        if(response && response.data && response.data.length > 0){
+            this.list = response.data;
+            this.initGrid();
+        }
+        else{
+            this.messageService.showWarning("searchEmpty");
+        }
+    }, 
+    error => this.messageService.closeLoading())
+  }
+
+  clean(){
+    this.searchModel.firstName = null;
+    this.searchModel.lastName = null;
+    this.searchModel.skills = null;
+    this.searchModel.profiles = null;
+    this.searchModel.clientCrmId = null;
   }
 
   initGrid() {
-    var columns = [0, 1];
+    var columns = [0, 1, 2, 3 ,4, 5];
 
     var params = {
-        selector: '#table',
+        selector: '#searchTable',
         columns: columns,
         title: 'Contactos',
         withExport: true,
@@ -111,4 +146,15 @@ export class ListContactsComponent implements OnInit, OnDestroy {
     }
   }
 
+  canAdd(){
+    return this.menuService.hasFunctionality('RECRU', 'ADD-CANDIDATE');
+  }
+
+  goToNew(){
+    this.router.navigate(['recruitment/contacts/add']);
+  }
+
+  goToDetail(id){
+    this.router.navigate(['recruitment/contacts/' + id]);
+  }
 }

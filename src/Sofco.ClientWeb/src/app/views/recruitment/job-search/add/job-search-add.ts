@@ -227,7 +227,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
 
         this.addSubscrip = this.jobSearchService.post(json).subscribe(response => {
             this.messageService.closeLoading();
-            this.router.navigate(['recruitment/jobSearch/']);
+            this.back();
         }, 
         error => {
             this.messageService.closeLoading();

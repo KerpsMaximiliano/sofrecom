@@ -169,6 +169,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.notFound.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/applicant.telephone1MaxLengthError.
         /// </summary>
         public static string Telephone1MaxLengthError {
@@ -183,6 +192,15 @@ namespace Sofco.Resources.Recruitment {
         public static string Telephone2MaxLengthError {
             get {
                 return ResourceManager.GetString("Telephone2MaxLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
     }

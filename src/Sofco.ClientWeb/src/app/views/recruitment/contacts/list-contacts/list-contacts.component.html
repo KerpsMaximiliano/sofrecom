@@ -1,11 +1,11 @@
 <div class="row wrapper border-bottom white-bg page-heading">
   <div class="col-lg-12">
-    <h2> {{'recruitment.contacts.title' | translate }} </h2>
+    <h2> Candidatos </h2>
 
     <ol class="breadcrumb">
       <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
       <li>{{'recruitment.title' | translate }}</li>
-      <li class="active"><strong> {{'recruitment.contacts.title' | translate }}</strong></li>
+      <li class="active"><strong> Candidatos </strong></li>
     </ol>
   </div>
 </div>
@@ -27,14 +27,20 @@
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
-                <label class="control-label">{{'allocationManagement.resources.grid.name' | translate }}</label>
-                <input (keydown)="onKeydown($event)" class="form-control" type="text" [(ngModel)]="searchModel.name">
+                <label class="control-label">Nombre</label>
+                <input class="form-control" type="text" [(ngModel)]="searchModel.firstName">
               </div>
             </div>
             <div class="col-sm-4">
+                <div class="form-group">
+                  <label class="control-label">Apellido</label>
+                  <input class="form-control" type="text" [(ngModel)]="searchModel.lastName">
+                </div>
+              </div>
+            <div class="col-sm-4">
               <div class="form-group">
-                <label class="control-label">{{'recruitment.knowledge' | translate }}</label>
-                <ng-select [items]="knowledges" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.applicantId" [multiple]="true">
+                <label class="control-label">Cliente</label>
+                <ng-select [items]="customerOptions" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.clientCrmId">
                 </ng-select>
               </div>
             </div>
@@ -43,58 +49,58 @@
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
-                <label class="control-label">{{ 'recruitment.profile' | translate }}</label>
-                <ng-select [items]="profiles" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.applicantId" [multiple]="true">
+                <label class="control-label">Perfiles</label>
+                <ng-select [items]="profileOptions" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.profiles" [multiple]="true">
                 </ng-select>
               </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group">
-                <label class="control-label">{{ 'recruitment.seniority' | translate }}</label>
-                <ng-select [items]="seniorities" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.employeeId" [multiple]="true">
+                <label class="control-label">Conocimientos</label>
+                <ng-select [items]="skillOptions" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.skills" [multiple]="true">
                 </ng-select>
               </div>
             </div>
           </div>
         </div>
         <div class="panel-footer">
+          <button class="btn btn-success pull-left" (click)="canAdd()" (click)="goToNew()"> Nuevo <i class="fa fa-plus"></i></button>
+
           <div class="text-right">
-            <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i
-                class="fa fa-refresh"></i></button>
-            <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i
-                class="fa fa-search"></i></button>
+            <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+            <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- <div class="ibox" *ngIf="gridIsVisible">
+  <div class="ibox" *ngIf="list.length > 0">
     <div class="ibox-content">
       <div class="table-responsive">
         <table class="table table-striped dataTable" role="grid" id="searchTable">
           <thead>
             <tr>
-              <th></th>
-              <th class="column-sm">{{'rrhh.endNotification.employeeNumber' | translate }}</th>
-              <th class="column-md">{{'rrhh.endNotification.employeeName' | translate }}</th>
-              <th class="column-md">{{'rrhh.endNotification.applicantName' | translate }}</th>
-              <th class="column-xs">{{'rrhh.endNotification.endDate' | translate }}</th>
-              <th class="column-xs">{{'rrhh.endNotification.createdDate' | translate }}</th>
+              <th>Apellido</th>
+              <th>Nombres</th>
+              <th>Mail</th>
+              <th>Cliente</th>
+              <th>Conocimientos</th>
+              <th>Perfiles</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of data">
-              <td>{{ item.id }}</td>
-              <td class="column-sm">{{ item.employeeNumber }}</td>
-              <td class="column-md">{{ item.employeeName }}</td>
-              <td class="column-md">{{ item.applicantName }}</td>
-              <td class="column-xs">{{ item.endDate | date:'dd/MM/yyyy' }}</td>
-              <td class="column-xs">{{ item.createdDate | date:'dd/MM/yyyy' }}</td>
+            <tr *ngFor="let item of list" (click)="goToDetail(item.id)" class="pointer">
+              <td class="column-lg text-ellipsis">{{ item.lastName }}</td>
+              <td class="column-lg text-ellipsis">{{ item.firstName }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.client }}</td>
+              <td>{{ item.skills }}</td>
+              <td>{{ item.profiles }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-  </div> -->
+  </div>
 </div>

@@ -539,6 +539,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         {
                             realPercentage -= diff;
                         }
+                        else
+                        {
+                            if (diff == (decimal)-0.01)
+                            {
+                                realPercentage += (decimal)0.01;
+                            }
+                        }
 
                         item.RealPercentage = realPercentage;
 

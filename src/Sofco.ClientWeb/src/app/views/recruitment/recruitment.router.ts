@@ -16,9 +16,9 @@ const RECRUITMENT_ROUTER: Routes = [
     {
         path: "contacts",
         children: [
-            { path: "add", component: AddContactsComponent, canActivate: [AuthGuard], data: {}},
-            { path: "", component: ListContactsComponent, canActivate: [AuthGuard], data: {}},
-            { path: ":id/detail", component: DetailContactsComponent, canActivate: [AuthGuard], data: {}}
+            { path: "add", component: AddContactsComponent, canActivate: [AuthGuard], data: {  module: "RECRU", functionality: "ADD-CANDIDATE" }},
+            { path: "", component: ListContactsComponent, canActivate: [AuthGuard], data: {  module: "RECRU", functionality: "SEARCH-CANDIDATE" }},
+            { path: ":id", component: DetailContactsComponent, canActivate: [AuthGuard], data: {  module: "RECRU", functionality: "EDIT-CANDIDATE" }}
         ]
     },
 

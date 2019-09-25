@@ -153,10 +153,16 @@
   <data name="ModelNull" xml:space="preserve">
     <value>recruitment/applicant.modelNull</value>
   </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>recruitment/applicant.notFound</value>
+  </data>
   <data name="Telephone1MaxLengthError" xml:space="preserve">
     <value>recruitment/applicant.telephone1MaxLengthError</value>
   </data>
   <data name="Telephone2MaxLengthError" xml:space="preserve">
     <value>recruitment/applicant.telephone2MaxLengthError</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>recruitment/applicant.updateSuccess</value>
   </data>
 </root>
