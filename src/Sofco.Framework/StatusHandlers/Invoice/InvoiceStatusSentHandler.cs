@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.StatusHandlers;
@@ -14,11 +17,15 @@ namespace Sofco.Framework.StatusHandlers.Invoice
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMailBuilder mailBuilder;
+        private readonly IInvoiceData invoiceData;
+        private readonly ISessionManager sessionManager;
 
-        public InvoiceStatusSentHandler(IUnitOfWork unitOfWork, IMailBuilder mailBuilder)
+        public InvoiceStatusSentHandler(IUnitOfWork unitOfWork, IMailBuilder mailBuilder, IInvoiceData invoiceData, ISessionManager sessionManager)
         {
             this.unitOfWork = unitOfWork;
             this.mailBuilder = mailBuilder;
+            this.invoiceData = invoiceData;
+            this.sessionManager = sessionManager;
         }
 
         private string mailBody = Resources.Mails.MailMessageResource.InvoiceStatusSentMessage;
@@ -75,8 +82,21 @@ namespace Sofco.Framework.StatusHandlers.Invoice
 
         public void SaveStatus(Domain.Models.Billing.Invoice invoice, InvoiceStatusParams parameters)
         {
-            var invoiceToModif = new Domain.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Sent };
-            unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
+            var list = invoiceData.GetAll(sessionManager.GetUserName());
+
+            if (list.Any())
+            {
+                foreach (var id in list)
+                {
+                    var invoiceToModif = new Domain.Models.Billing.Invoice { Id = id, InvoiceStatus = InvoiceStatus.Sent };
+                    unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
+                }
+            }
+            else
+            {
+                var invoiceToModif = new Domain.Models.Billing.Invoice { Id = invoice.Id, InvoiceStatus = InvoiceStatus.Sent };
+                unitOfWork.InvoiceRepository.UpdateStatus(invoiceToModif);
+            }
         }
 
         public void SendMail(IMailSender mailSender, Domain.Models.Billing.Invoice invoice, EmailConfig emailConfig)

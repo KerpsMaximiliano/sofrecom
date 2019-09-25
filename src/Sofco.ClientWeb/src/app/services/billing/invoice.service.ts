@@ -16,6 +16,10 @@ export class InvoiceService {
   getUrlForImportFile(id){
     return `${this.baseUrl}/invoices/${id}/file`;
   }
+
+  getUrlForImportMultipleFile(id){
+    return `${this.baseUrl}/invoices/${id}/file/multiple`;
+  }
   
   add(model) {
      return this.http.post<any>(`${this.baseUrl}/invoices`, model);

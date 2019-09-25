@@ -72,5 +72,10 @@ namespace Sofco.Service.Implementations.Common
 
             return response;
         }
+
+        public bool HasFile(int invoiceId)
+        {
+            return unitOfWork.InvoiceRepository.HasFile(invoiceId);
+        }
     }
 }

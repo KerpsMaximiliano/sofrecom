@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Billing;
@@ -40,6 +41,7 @@ namespace Sofco.Service.Implementations.Billing
         private readonly FileConfig fileConfig;
         private readonly IFileService fileService;
         private readonly IRoleManager roleManager;
+        private readonly IInvoiceData invoiceData;
 
         public InvoiceService(IUnitOfWork unitOfWork,
             IInvoiceStatusFactory invoiceStatusFactory,
@@ -47,6 +49,7 @@ namespace Sofco.Service.Implementations.Billing
             IMailBuilder mailBuilder,
             IRoleManager roleManager,
             IFileService fileService,
+            IInvoiceData invoiceData,
             ILogMailer<InvoiceService> logger,
             IMailSender mailSender, ISessionManager sessionManager, IOptions<FileConfig> fileOptions)
         {
@@ -60,6 +63,7 @@ namespace Sofco.Service.Implementations.Billing
             this.mailBuilder = mailBuilder;
             fileConfig = fileOptions.Value;
             this.fileService = fileService;
+            this.invoiceData = invoiceData;
         }
 
         public IList<Invoice> GetByProject(string projectId)
@@ -168,6 +172,8 @@ namespace Sofco.Service.Implementations.Billing
                 // Save
                 unitOfWork.Save();
                 response.Messages.Add(new Message(invoiceStatusHandler.GetSuccessMessage(), MessageType.Success));
+
+                invoiceData.ClearKeys();
             }
             catch (Exception e)
             {
@@ -298,7 +304,7 @@ namespace Sofco.Service.Implementations.Billing
                 var subject = MailSubjectResource.InvoiceRequestAnnulment;
                 var body = string.Format(MailMessageResource.InvoiceRequestAnnulment, string.Join("</br>", invoicesToListString), model.Comments);
 
-                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
+                var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.GafCode);
 
                 var data = new InvoiceRequestAnnulmentData
                 {
@@ -343,7 +349,8 @@ namespace Sofco.Service.Implementations.Billing
             return history;
         }
 
-        public async Task<Response<File>> AttachFile(int invoiceId, Response<File> response, IFormFile file, string userName)
+        public async Task<Response<File>> AttachFile(int invoiceId, Response<File> response, IFormFile file,
+            string userName, bool multiple)
         {
             var invoice = unitOfWork.InvoiceRepository.GetSingle(x => x.Id == invoiceId);
 
@@ -391,6 +398,11 @@ namespace Sofco.Service.Implementations.Billing
 
                 response.Data = fileToAdd;
                 response.AddSuccess(successMsg);
+
+                if (multiple)
+                {
+                    invoiceData.AddInvoice(sessionManager.GetUserName(), invoiceId);
+                }
             }
             catch (Exception e)
             {

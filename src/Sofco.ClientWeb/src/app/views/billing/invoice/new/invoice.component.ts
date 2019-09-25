@@ -32,6 +32,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     customer: any;
     public uploader: FileUploader;
     excelUploaded: boolean = false;
+    importMultile: boolean = false;
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -116,6 +117,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       this.router.navigate([`/billing/customers/${this.model.customerId}/services/${this.model.serviceId}/projects/${this.projectId}`]);
     }
 
+    importMultipleChanged(){
+        this.configUploader(this.model.id);
+    }
+
     exportToExcel(){
         this.messageService.showLoading();
 
@@ -133,9 +138,11 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     }
 
     private configUploader(id){
+        var url = this.importMultile ? this.service.getUrlForImportMultipleFile(id) : this.service.getUrlForImportFile(id);
+
         this.uploader = new FileUploader(
             {
-                url: this.service.getUrlForImportFile(id), 
+                url: url, 
                 authToken: 'Bearer ' + Cookie.get('access_token'), 
                 maxFileSize: 10*1024*1024,
                 allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],

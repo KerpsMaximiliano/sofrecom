@@ -104,6 +104,18 @@
             </div>
 
             <div class="row" *ngIf="canUploadExcel()">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <icheck [(checked)]="importMultile" (checkedChange)="importMultipleChanged($event)">
+                            <label style="padding-left:20px;">Importar multiples archivos</label> 
+                        </icheck>
+                    </div>
+                    <p>
+                        <i class="fa fa-info"></i>
+                        Al importar multiples archivos se creara un remito por aca archivo importado.
+                    </p>
+                </div>
+
                 <div class="col-lg-8">
                     <h3>{{'billing.invoice.excelImport' | translate }}</h3>
                     <input type="file" #selectedFile ng2FileSelect [uploader]="uploader" />
@@ -111,7 +123,7 @@
             </div>
 
             <div class="row" *ngIf="canUploadExcel()">
-                <div class="col-lg-6">
+                <div class="col-lg-6 col-lg-offset-4">
                     <div class="uploader-margin-top">
                         <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
                         <div class="progress" *ngIf="uploader.getNotUploadedItems().length">

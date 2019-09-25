@@ -24,7 +24,7 @@ namespace Sofco.Core.Services.Billing
         Response<Invoice> Clone(int id);
         ICollection<InvoiceHistory> GetHistories(int id);
         Response RequestAnnulment(InvoiceAnnulmentModel model);
-        Task<Response<File>> AttachFile(int invoiceId, Response<File> response, IFormFile file, string userName);
+        Task<Response<File>> AttachFile(int invoiceId, Response<File> response, IFormFile file, string userName, bool b);
         Response<Stream> GetZip(IList<int> ids);
     }
 }

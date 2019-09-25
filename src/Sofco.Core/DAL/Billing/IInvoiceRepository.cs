@@ -28,5 +28,6 @@ namespace Sofco.Core.DAL.Billing
         IList<Invoice> GetByIds(IList<int> invoiceIds);
         void UpdateExcelId(Invoice invoice);
         void UpdatePdfId(Invoice invoice);
+        bool HasFile(int invoiceId);
     }
 }

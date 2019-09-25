@@ -53,6 +53,11 @@ namespace Sofco.DAL.Repositories.Billing
             context.Entry(invoice).Property("PdfFileId").IsModified = true;
         }
 
+        public bool HasFile(int invoiceId)
+        {
+            return context.Invoices.Any(x => x.Id == invoiceId && x.ExcelFileId.HasValue);
+        }
+
         public void UpdateStatusAndApprove(Invoice invoice)
         {
             context.Entry(invoice).Property("InvoiceNumber").IsModified = true;
