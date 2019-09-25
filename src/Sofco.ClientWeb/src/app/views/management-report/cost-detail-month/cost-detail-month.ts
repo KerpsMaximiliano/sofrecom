@@ -129,6 +129,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             id: 0,
             subcategoryId: this.subcategorySelected.id,
             subcategoryName: this.subcategorySelected.name,
+            categoryName: this.categorySelected.name,
             value: 0,
             description: ""
         }

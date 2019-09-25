@@ -97,7 +97,7 @@
         <div class="col-sm-3">
             <h4>Categoria</h4>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <h4>SubCategoria</h4>
         </div>
         <div class="col-sm-3">
@@ -106,6 +106,7 @@
         <div class="col-sm-2">
             <h4>Monto</h4>
         </div>
+        <div class="col-sm-1"></div>
     </div>
 
     <div class="alert alert-gaps-info" *ngIf="subCategoriesData.length == 0">
@@ -115,7 +116,7 @@
 
     <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index">
         <div class="col-sm-3">
-            {{ cost.name }}
+            {{ cost.nameCategory }}
         </div>
         <div class="col-sm-3">
             {{ cost.name }}
