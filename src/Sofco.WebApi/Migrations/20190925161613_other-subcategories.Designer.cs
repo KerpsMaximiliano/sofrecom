@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20190925161613_other-subcategories")]
+    partial class othersubcategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2176,64 +2178,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("ResourceBillings");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.Applicant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AreaCode1")
-                        .HasMaxLength(5);
-
-                    b.Property<string>("AreaCode2")
-                        .HasMaxLength(5);
-
-                    b.Property<int?>("ClientId");
-
-                    b.Property<string>("Comments")
-                        .HasMaxLength(3000);
-
-                    b.Property<string>("CountryCode1")
-                        .HasMaxLength(5);
-
-                    b.Property<string>("CountryCode2")
-                        .HasMaxLength(5);
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(25);
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(75);
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(75);
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(75);
-
-                    b.Property<int?>("ReasonCauseId");
-
-                    b.Property<int?>("RecommendedByUserId");
-
-                    b.Property<string>("Telephone1")
-                        .HasMaxLength(15);
-
-                    b.Property<string>("Telephone2")
-                        .HasMaxLength(15);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.HasIndex("ReasonCauseId");
-
-                    b.HasIndex("RecommendedByUserId");
-
-                    b.ToTable("Applicants");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearch", b =>
                 {
                     b.Property<int>("Id")
@@ -2934,32 +2878,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WorkTimes");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Relationships.ApplicantProfile", b =>
-                {
-                    b.Property<int>("ApplicantId");
-
-                    b.Property<int>("ProfileId");
-
-                    b.HasKey("ApplicantId", "ProfileId");
-
-                    b.HasIndex("ProfileId");
-
-                    b.ToTable("ApplicantProfiles");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Relationships.ApplicantSkills", b =>
-                {
-                    b.Property<int>("ApplicantId");
-
-                    b.Property<int>("SkillId");
-
-                    b.HasKey("ApplicantId", "SkillId");
-
-                    b.HasIndex("SkillId");
-
-                    b.ToTable("ApplicantSkillses");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Relationships.EmployeeCategory", b =>
@@ -3985,22 +3903,6 @@ namespace Sofco.WebApi.Migrations
                         .HasForeignKey("SeniorityId");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.Applicant", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.Billing.Customer", "Client")
-                        .WithMany("Applicants")
-                        .HasForeignKey("ClientId");
-
-                    b.HasOne("Sofco.Domain.Models.Recruitment.ReasonCause", "ReasonCause")
-                        .WithMany("Applicants")
-                        .HasForeignKey("ReasonCauseId");
-
-                    b.HasOne("Sofco.Domain.Models.Admin.User", "RecommendedByUser")
-                        .WithMany("Applicants")
-                        .HasForeignKey("RecommendedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearch", b =>
                 {
                     b.HasOne("Sofco.Domain.Models.Billing.Customer", "Client")
@@ -4250,32 +4152,6 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("WorkTimes1")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Relationships.ApplicantProfile", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Applicant", "Applicant")
-                        .WithMany("ApplicantProfiles")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Profile", "Profile")
-                        .WithMany("ApplicantProfiles")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Relationships.ApplicantSkills", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Applicant", "Applicant")
-                        .WithMany("ApplicantSkills")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Skill", "Skill")
-                        .WithMany("ApplicantProfiles")
-                        .HasForeignKey("SkillId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Relationships.EmployeeCategory", b =>

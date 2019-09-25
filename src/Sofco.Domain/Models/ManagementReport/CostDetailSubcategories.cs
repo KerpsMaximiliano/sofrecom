@@ -14,5 +14,7 @@ namespace Sofco.Domain.Models.ManagementReport
         public string Codigo { get; set; }
 
         public ICollection<CostDetailStaff> CostDetailStaff { get; set; }
+        public ICollection<CostDetailOther> CostDetailOther { get; set; }
+
     }
 }

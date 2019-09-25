@@ -67,6 +67,7 @@ namespace Sofco.Core.Models.ManagementReport
         public int CostDetailId { get; set; }
         public int SubcategoryId { get; set; }
         public string SubcategoryName { get; set; }
+        public string CategoryName { get; set; }
         public int CurrencyId { get; set; }
         public int Id { get; set; }
         public decimal? Value { get; set; }

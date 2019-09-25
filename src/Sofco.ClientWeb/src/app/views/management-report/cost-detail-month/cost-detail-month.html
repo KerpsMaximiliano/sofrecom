@@ -73,8 +73,8 @@
             <h4>%Cargas</h4>
         </div>
         <div class="col-sm-1">
-               
-            </div>
+
+        </div>
     </div>
 
     <div class="row m-t-xs" *ngFor="let resource of resources; let i = index">
@@ -92,13 +92,16 @@
                 [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resource.total | amountFormat" disabled>
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resource.total | amountFormat"
+                disabled>
         </div>
         <div class="col-sm-1">
-            <input type="text" decimalFormat class="percentageLoads form-control input-xs" [ngModel]="resource.chargesPercentage | amountFormat" disabled>
+            <input type="text" decimalFormat class="percentageLoads form-control input-xs"
+                [ngModel]="resource.chargesPercentage | amountFormat" disabled>
         </div>
         <div class="col-sm-1">
-            <button class="btn btn-danger btn-xs" *ngIf="resource.new == true && !isReadOnly" (click)="deleteResource(i, resource)"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-danger btn-xs" *ngIf="resource.new == true && !isReadOnly"
+                (click)="deleteResource(i, resource)"><i class="fa fa-trash"></i></button>
         </div>
     </div>
 
@@ -142,7 +145,7 @@
         <i class="fa fa-info"></i>
         {{ i18nService.translateByKey('noInfoAvailable') }}
     </div>
-    
+
     <form name="form" #f="ngForm" novalidate (keydown.enter)="$event.preventDefault()">
 
         <div class="row m-t-xs" *ngFor="let hire of contracted; let i = index">
@@ -162,7 +165,7 @@
                 <!-- <input type="number" name="insurance{{i}}" [digitLimit]="8" decimalFormat class="form-control input-xs"
                     [(ngModel)]="hire.insurance" [disabled]="isReadOnly" (change)="contractedChange(hire)"
                     max="99999999" min="0" #insurance{{i}}="ngModel"> -->
-                    <math-input [(model)]="hire.insurance" (modelChange)="contractedChange(hire)"
+                <math-input [(model)]="hire.insurance" (modelChange)="contractedChange(hire)"
                     [(modelDisabled)]="isReadOnly"></math-input>
             </div>
             <div class="col-sm-2">
@@ -186,10 +189,13 @@
     <hr class="hr-line-dashed">
 
     <div class="row border-bottom m-b-sm">
-        <div class="col-sm-5">
-            <h4>Otros Gastos</h4>
+        <div class="col-sm-3">
+            <h4>Categoria</h4>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
+            <h4>SubCategoria</h4>
+        </div>
+        <div class="col-sm-3">
             <h4>Descripción</h4>
         </div>
         <div class="col-sm-2" *ngIf="expenses.length > 0">
@@ -204,18 +210,21 @@
     </div>
 
     <div class="row m-t-xs" *ngFor="let expense of expenses; let i = index">
-        <div class="col-sm-5">
+        <div class="col-sm-3">
+            {{ expense.categoryName }}
+        </div>
+        <div class="col-sm-3">
             {{ expense.subcategoryName }}
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <input type="text" class="form-control input-xs" [(ngModel)]="expense.description" [disabled]="isReadOnly"
                 maxlength="200">
         </div>
         <div class="col-sm-2">
             <!-- <input type="number" class="form-control input-xs" [digitLimit]="8" [(ngModel)]="expense.value"
                 (ngModelChange)="calculateTotalCosts()" [disabled]="isReadOnly" max="99999999" min="0"> -->
-                <math-input [(model)]="expense.value" (modelChange)="calculateTotalCosts()"
-                [(modelDisabled)]="isReadOnly"></math-input>
+            <math-input [(model)]="expense.value" (modelChange)="calculateTotalCosts()" [(modelDisabled)]="isReadOnly">
+            </math-input>
         </div>
         <div class="col-sm-1">
             <button class="btn btn-danger btn-xs" (click)="deleteExpense(i, expense)" *ngIf="!isReadOnly"><i
