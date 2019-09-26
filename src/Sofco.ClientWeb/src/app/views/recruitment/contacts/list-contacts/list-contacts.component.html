@@ -64,7 +64,7 @@
           </div>
         </div>
         <div class="panel-footer">
-          <button class="btn btn-success pull-left" (click)="canAdd()" (click)="goToNew()"> Nuevo <i class="fa fa-plus"></i></button>
+          <button class="btn btn-success pull-left" *ngIf="canAdd()" (click)="goToNew()"> Nuevo <i class="fa fa-plus"></i></button>
 
           <div class="text-right">
             <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
