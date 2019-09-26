@@ -280,7 +280,7 @@
         <div class="col-sm-12">
             <div class="form-group">
                 <fieldset>
-                    <div class="col-sm-4">
+                    <div [ngClass]="{ 'col-sm-12': modalPercentage || modalEmployee, 'col-sm-4': modalOther }">
                         <label class="control-label" for="readOnlyInput">Mes</label>
                         <input class="form-control" id="readOnlyInput" type="text"
                             placeholder="{{ monthSelected.display }}" readonly="">
@@ -347,7 +347,7 @@
 
                 <div class="row m-t-xs" *ngFor="let other of othersByMonth; let i = index">
                     <div class="col-sm-4">
-                        {{ other.subtypeName }}
+                        {{ other.subcategoryName }}
                     </div>
                     <div class="col-sm-3">
                         <input type="text" class="form-control input-xs" [(ngModel)]="other.description"

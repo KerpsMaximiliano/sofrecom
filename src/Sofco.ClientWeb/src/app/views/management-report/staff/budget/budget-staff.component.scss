@@ -67,6 +67,11 @@ table {
     background-color: #ffeeba;
     color: #5E5E5E;
   }
+
+  .label-load {
+    background-color: #b3ffd9;
+    color: #5E5E5E;
+  }
   
   .not-allowed{
     cursor: not-allowed;
@@ -106,4 +111,17 @@ table {
     .ng-select-container{
         padding: 2px 2px;
     }
+}
+
+.showHideColumn{
+  height: 37px;
+  cursor: pointer;
+  .fa{
+    color: #5E5E5E !important; 
+  }
+}
+
+fieldset .col-sm-12{
+  padding-left: 0px;
+  padding-right: 0px;
 }

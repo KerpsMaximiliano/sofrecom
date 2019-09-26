@@ -231,7 +231,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 response.Data.AnalyticId = managementReport.Analytic.Id;
 
-                response.Data.MonthsHeader = new List<MonthDetailCostStaff>();
+                response.Data.MonthsHeader = new List<MonthHeaderCost>();
                 response.Data.ManagementReportId = managementReport.Analytic.ManagementReport.Id;
 
                 //Obtengo los meses que tiene la analitica
@@ -241,7 +241,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 for (DateTime date = new DateTime(dates.Item1.Year, dates.Item1.Month, 1).Date; date.Date <= dates.Item2.Date; date = date.AddMonths(1))
                 {
-                    var monthHeader = new MonthDetailCostStaff();
+                    var monthHeader = new MonthHeaderCost();
                     monthHeader.Display = DatesHelper.GetDateShortDescription(date);
                     monthHeader.MonthYear = date;
                     monthHeader.Month = date.Month;
@@ -258,10 +258,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                     response.Data.MonthsHeader.Add(monthHeader);
                 }
 
+                var allCategoriesData = this.FillCategoriesByMonth(response.Data.MonthsHeader, costDetails);
 
                 response.Data.BudgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget().Select(x => new BudgetTypeItem(x)).ToList();
                 response.Data.AllSubcategories = this.FillAllSubcategories();
-                response.Data.CostCategories = this.FillCategoriesByMonth(response.Data.MonthsHeader, costDetails);
+                response.Data.CostCategories = allCategoriesData.Where(r=> r.BelongEmployee == false).OrderBy(r => r.Name).ToList();
+                response.Data.CostEmployees = managementReportService.FillCostEmployeesByMonth(managementReport.Analytic.Id, response.Data.MonthsHeader, costDetails);
+                response.Data.CostCategoriesEmployees = allCategoriesData.Where(r => r.BelongEmployee == true).OrderBy(r => r.Name).ToList();
                 response.Data.Status = managementReport.Status;
                 response.Data.State = managementReport.State == null ? EnumBudgetType.budget.ToLower() : managementReport.State.Name.ToLower();
 
@@ -581,6 +584,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 entity.Description = subcategory.Description;
                                 entity.CostDetailId = costDetailMonth.Id;
                                 entity.CostDetailSubcategoryId = subcategory.CostDetailSubcategoryId;
+                                entity.CurrencyId = subcategory.CurrencyId;
                                 entity.BudgetTypeId = idPFA;
 
                                 unitOfWork.CostDetailStaffRepository.Insert(entity);
@@ -814,7 +818,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return list;
         }
 
-        private List<CostCategory> FillCategoriesByMonth(IList<MonthDetailCostStaff> Months, ICollection<CostDetail> costDetails)
+        private List<CostCategory> FillCategoriesByMonth(IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails)
         {
             List<CostCategory> costCategories = new List<CostCategory>();
 
@@ -829,6 +833,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 detailCategory.Id = category.Id;
                 detailCategory.Name = category.Name;
+                detailCategory.BelongEmployee = category.BelongEmployee;
+                detailCategory.TypeName = category.Name;
 
                 foreach (var mounth in Months)
                 {

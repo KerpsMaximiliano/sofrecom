@@ -9,6 +9,9 @@ import { ManagementReportDetailStaffComponent } from "app/views/management-repor
 import { environment } from "environments/environment";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 import { UtilsService } from "app/services/common/utils.service";
+import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { FormControl, Validators } from "@angular/forms";
+import { evaluate } from 'mathjs/number'
 
 @Component({
     selector: 'budget-staff',
@@ -22,6 +25,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     updateCostSubscrip: Subscription;
     generatePFASuscrip: Subscription;
     getCurrenciesSubscrip: Subscription;
+    getEmployeeSubscrip: Subscription;
 
     showColumn = {
         budget: true,
@@ -38,6 +42,21 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     isCdg: boolean = false
     categorySelected: any = { id: 0, name: '' }
     monthSelected: any = { value: 0, display: '' };
+
+    employees: any[] = new Array();
+    categoriesEmployees: any[] = new Array();
+    employeesHide: boolean = false;
+
+    modalPercentage: boolean = false;
+    modalEmployee: boolean = false;
+    modalOther: boolean = false;
+    modalProfile: boolean = false;
+
+    itemSelected: any;
+    indexSelected: number = 0;
+
+    editItemMonto = new FormControl();
+    editItemAdjustment = new FormControl();
 
     categories: any[] = new Array()
     subCategories: any[] = new Array()
@@ -56,6 +75,11 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         currencies: [],
         total: 0
     };
+
+    readonly generalAdjustment: string = "% Ajuste General";
+    readonly typeEmployee: string = "Empleados"
+    readonly typeResource: string = "Recursos"
+    readonly typeProfile: string = "Perfiles"
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
@@ -85,7 +109,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private menuService: MenuService,
         private utilsService: UtilsService,
-        private detailStaffComponent: ManagementReportDetailStaffComponent
+        private detailStaffComponent: ManagementReportDetailStaffComponent,
+        private employeeService: EmployeeService
     ) { }
 
     ngOnInit(): void {
@@ -107,13 +132,14 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         if (this.updateCostSubscrip) this.updateCostSubscrip.unsubscribe();
         if (this.generatePFASuscrip) this.generatePFASuscrip.unsubscribe();
         if (this.getCurrenciesSubscrip) this.getCurrenciesSubscrip.unsubscribe();
+        if (this.getEmployeeSubscrip) this.getEmployeeSubscrip.unsubscribe();
     }
 
     getCurrencies() {
         this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
             this.currencies = d;
         });
-    } 
+    }
 
     getCost(managementReportId) {
         this.messageService.showLoading();
@@ -123,6 +149,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
             this.model = response.data
             this.months = response.data.monthsHeader;
+            this.employees = response.data.costEmployees;
+            this.categoriesEmployees = response.data.costCategoriesEmployees
             this.categories = response.data.costCategories;
             this.subCategories = response.data.allSubcategories;
             this.budgetTypes = response.data.budgetTypes;
@@ -137,64 +165,97 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             () => this.messageService.closeLoading());
     }
 
-    openEditItemModal(category, typeBudget, month, item) {
-
-        // if (this.readOnly) return;
-
+    openEditItemModal(item, typeBudget, month) {
         if (month.closed) return;
 
-        if (typeBudget == 'projected' && (environment.infrastructureCategoryId == category.id || environment.redCategoryId == category.id) && !this.menuService.userIsCdg) {
-            this.messageService.showError("onlyCdgCanModify");
-            return;
-        }
-
         var today = new Date();
-
-        if(typeBudget == 'projected'){
-            if(month.year < today.getFullYear()) {
+        if (typeBudget == 'projected') {
+            if (month.year < today.getFullYear()) {
                 this.messageService.showError("onlyCdgCanModify");
                 return;
             }
-
-            if(month.year == today.getFullYear() && month.month < today.getMonth()+1 && !this.isCdg){
+            if (month.year == today.getFullYear() && month.month < today.getMonth() + 1 && !this.isCdg) {
                 this.messageService.showError("onlyCdgCanModify");
                 return;
             }
         }
 
-        this.categorySelected = category
-        this.monthSelected = month;
+        this.itemSelected = item;
 
+        let indexMonth = 0
+        if (this.itemSelected.typeName == this.typeEmployee) {
+            indexMonth = item.monthsCost.findIndex(cost => cost === month);
+        } else {
+            indexMonth = item.monthsCategory.findIndex(cost => cost === month);
+        }
+
+        this.monthSelected = month;
+        this.indexSelected = indexMonth;
+        this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
+
+        this.modalPercentage = false;
+        this.modalOther = false
+        this.modalEmployee = false
+        this.modalProfile = false;
+        this.editItemModal.size = 'modal-sm'
         this.typeBudgetSelected = this.budgetTypes.find(x => x.name.toUpperCase() == typeBudget.toUpperCase())
 
-        this.subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
-        if (this.subCategoriesFiltered.length > 0) {
-            this.subCategorySelected = this.subCategoriesFiltered[0];
-        }
+        switch (this.itemSelected.typeName) {
+            case this.typeEmployee:
+                this.modalEmployee = true
+                this.editItemMonto.setValue(month.budget.originalValue)
+                this.editItemAdjustment.setValue(month.budget.adjustment)
+                this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
+                this.editItemModal.show();
+                break;
 
-        var subData = this.fillSubcategoriesData()
-        if (subData) {
-            this.subCategoriesData = new Array()
-            subData.forEach(subcat => {
+            case this.generalAdjustment:
+                this.modalPercentage = true
+                this.editItemMonto.setValue(month.budget.value)
+                this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
+                this.editItemModal.show();
+                break;
 
-                var cost = {
-                    costDetailStaffId: subcat.costDetailStaffId,
-                    id: subcat.id,
-                    name: subcat.name,
-                    description: subcat.description,
-                    value: subcat.originalValue,
-                    budgetTypeId: subcat.budgetTypeId,
-                    deleted: subcat.deleted,
-                    currencyId: subcat.currencyId
+            default:
+                this.editItemModal.size = 'modal-lg'
+                this.modalOther = true
+                this.categorySelected = item
+
+                if (typeBudget == 'projected' && (environment.infrastructureCategoryId == this.categorySelected.id || environment.redCategoryId == this.categorySelected.id) && !this.menuService.userIsCdg) {
+                    this.messageService.showError("onlyCdgCanModify");
+                    return;
                 }
 
-                this.subCategoriesData.push(cost)
-            });
+                this.subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
+                if (this.subCategoriesFiltered.length > 0) {
+                    this.subCategorySelected = this.subCategoriesFiltered[0];
+                }
 
-            setTimeout(() => {
-                $('.input-billing-modal.ng-select .ng-select-container').css('min-height', '28px');
-                $('.input-billing-modal.ng-select .ng-select-container').css('height', '28px');
-            }, 200);
+                var subData = this.fillSubcategoriesData()
+                if (subData) {
+                    this.subCategoriesData = new Array()
+                    subData.forEach(subcat => {
+
+                        var cost = {
+                            costDetailStaffId: subcat.costDetailStaffId,
+                            id: subcat.id,
+                            name: subcat.name,
+                            description: subcat.description,
+                            value: subcat.originalValue,
+                            budgetTypeId: subcat.budgetTypeId,
+                            deleted: subcat.deleted,
+                            currencyId: subcat.currencyId
+                        }
+
+                        this.subCategoriesData.push(cost)
+                    });
+
+                    setTimeout(() => {
+                        $('.input-billing-modal.ng-select .ng-select-container').css('min-height', '28px');
+                        $('.input-billing-modal.ng-select .ng-select-container').css('height', '28px');
+                    }, 200);
+                }
+                break;
         }
     }
 
@@ -284,113 +345,162 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     updateItem() {
         var hasError = false;
-        this.subCategoriesData.forEach(cost => {
-            if(!cost.currencyId || cost.currencyId == 0){
-                hasError = true;
-                this.messageService.showErrorByFolder('managementReport/currencyExchange', 'currencyRequired');
-            }
-        });
+        this.monthSelected.budget.value = this.editItemMonto.value
 
-        if(hasError) {
-            this.editItemModal.resetButtons();
-            return;
-        };
+        switch (this.itemSelected.typeName) {
 
-        var currencyMonth = this.monthExchanges.find(x => x.month == this.monthSelected.month && x.year == this.monthSelected.year);
+            case this.typeEmployee:
+                this.monthSelected.budget.originalValue = this.editItemMonto.value
+                if (this.editItemAdjustment.value > 0) {
+                    this.monthSelected.budget.adjustment = this.editItemAdjustment.value
+                    this.monthSelected.budget.value = this.monthSelected.budget.originalValue + this.monthSelected.budget.originalValue * this.monthSelected.budget.adjustment / 100
+                }
+                else {
+                    this.monthSelected.budget.adjustment = 0;
+                    this.monthSelected.budget.value = this.editItemMonto.value;
+                }
 
-        switch (this.typeBudgetSelected.name.toUpperCase()) {
-            case 'BUDGET':
-                this.monthSelected.subcategoriesBudget = this.subCategoriesData
-                this.monthSelected.totalBudget = 0
-                this.monthSelected.subcategoriesBudget.forEach(cost => {
-                    this.monthSelected.totalBudget += this.setExchangeValue(currencyMonth, cost);
+                for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
 
-                    if(this.isCdg){
-                        if(this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura"){
-                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");   
-                        }
-    
-                        if(this.categorySelected.name == "Red" && cost.name == "Red"){
-                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");   
-                        }
+                    if (this.itemSelected.monthsCost[index].hasAlocation) {
+                        this.itemSelected.monthsCost[index].budget.value = this.monthSelected.budget.value;
+                        this.itemSelected.monthsCost[index].budget.originalValue = this.monthSelected.budget.value;
                     }
-                });
-       
+                    else {
+                        this.itemSelected.monthsCost[index].budget.value = 0
+                        this.itemSelected.monthsCost[index].budget.originalValue = 0
+                        this.itemSelected.monthsCost[index].budget.adjustment = null
+                    }
+                }
+
+                //Actualiza el sueldo
+                this.salaryPlusIncrease(this.itemSelected, this.indexSelected, true);
+            
+                this.editItemModal.hide();
                 break;
-            case 'PROJECTED':
-                this.monthSelected.subcategoriesProjected = this.subCategoriesData
-                this.monthSelected.totalProjected = 0
-                this.monthSelected.subcategoriesProjected.forEach(cost => {
-                    this.monthSelected.totalProjected += this.setExchangeValue(currencyMonth, cost);
+
+            case this.generalAdjustment:
+                this.modalPercentage = true;
+                this.employees.forEach(employee => {
+                    this.salaryPlusIncrease(employee, this.indexSelected, false);
                 })
-                break;
-            case 'PFA1':
-                this.monthSelected.subcategoriesPfa1 = this.subCategoriesData
-                this.monthSelected.totalPfa1 = 0
-                this.monthSelected.subcategoriesPfa1.forEach(cost => {
-                    this.monthSelected.totalPfa1 += this.setExchangeValue(currencyMonth, cost);
 
-                    if(this.isCdg){
-                        if(this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura"){
-                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");   
-                        }
-    
-                        if(this.categorySelected.name == "Red" && cost.name == "Red"){
-                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");   
-                        }
+                // var listAux = [];
+                // listAux.push(this.itemSelected);
+
+                // this.save(this.employees, [], listAux)
+                this.editItemModal.hide();
+                break
+
+            default:
+
+                this.subCategoriesData.forEach(cost => {
+                    if (!cost.currencyId || cost.currencyId == 0) {
+                        hasError = true;
+                        this.messageService.showErrorByFolder('managementReport/currencyExchange', 'currencyRequired');
                     }
                 });
-                break;
-            case 'PFA2':
-                this.monthSelected.subcategoriesPfa2 = this.subCategoriesData
-                this.monthSelected.totalPfa2 = 0
-                this.monthSelected.subcategoriesPfa2.forEach(cost => {
-                    this.monthSelected.totalPfa2 += this.setExchangeValue(currencyMonth, cost);
 
-                    if(this.isCdg){
-                        if(this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura"){
-                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");   
-                        }
-    
-                        if(this.categorySelected.name == "Red" && cost.name == "Red"){
-                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");   
-                        }
-                    }
-                });
-                break;
-            case 'REAL':
-                this.monthSelected.subcategoriesReal = this.subCategoriesData
-                this.monthSelected.totalReal = 0
-                this.monthSelected.subcategoriesReal.forEach(cost => {
-                    this.monthSelected.totalReal += this.setExchangeValue(currencyMonth, cost);
+                if (hasError) {
+                    this.editItemModal.resetButtons();
+                    return;
+                };
 
-                    if(this.isCdg){
-                        if(this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura"){
-                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");   
-                        }
-    
-                        if(this.categorySelected.name == "Red" && cost.name == "Red"){
-                            this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");   
-                        }
-                    }
-                })
-                break;
+                var currencyMonth = this.monthExchanges.find(x => x.month == this.monthSelected.month && x.year == this.monthSelected.year);
+
+                switch (this.typeBudgetSelected.name.toUpperCase()) {
+                    case 'BUDGET':
+                        this.monthSelected.subcategoriesBudget = this.subCategoriesData
+                        this.monthSelected.budget.totalCost = 0
+                        this.monthSelected.subcategoriesBudget.forEach(cost => {
+                            this.monthSelected.budget.totalCost += this.setExchangeValue(currencyMonth, cost);
+
+                            if (this.isCdg) {
+                                if (this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura") {
+                                    this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");
+                                }
+
+                                if (this.categorySelected.name == "Red" && cost.name == "Red") {
+                                    this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");
+                                }
+                            }
+                        });
+
+                        break;
+                    case 'PROJECTED':
+                        this.monthSelected.subcategoriesProjected = this.subCategoriesData
+                        this.monthSelected.projected.totalCost = 0
+                        this.monthSelected.subcategoriesProjected.forEach(cost => {
+                            this.monthSelected.projected.totalCost += this.setExchangeValue(currencyMonth, cost);
+                        })
+                        break;
+                    case 'PFA1':
+                        this.monthSelected.subcategoriesPfa1 = this.subCategoriesData
+                        this.monthSelected.pfa1.totalCost = 0
+                        this.monthSelected.subcategoriesPfa1.forEach(cost => {
+                            this.monthSelected.pfa1.totalCost += this.setExchangeValue(currencyMonth, cost);
+
+                            if (this.isCdg) {
+                                if (this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura") {
+                                    this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");
+                                }
+
+                                if (this.categorySelected.name == "Red" && cost.name == "Red") {
+                                    this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");
+                                }
+                            }
+                        });
+                        break;
+                    case 'PFA2':
+                        this.monthSelected.subcategoriesPfa2 = this.subCategoriesData
+                        this.monthSelected.pfa2.totalCost = 0
+                        this.monthSelected.subcategoriesPfa2.forEach(cost => {
+                            this.monthSelected.pfa2.totalCost += this.setExchangeValue(currencyMonth, cost);
+
+                            if (this.isCdg) {
+                                if (this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura") {
+                                    this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");
+                                }
+
+                                if (this.categorySelected.name == "Red" && cost.name == "Red") {
+                                    this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");
+                                }
+                            }
+                        });
+                        break;
+                    case 'REAL':
+                        this.monthSelected.subcategoriesReal = this.subCategoriesData
+                        this.monthSelected.real.totalCost = 0
+                        this.monthSelected.subcategoriesReal.forEach(cost => {
+                            this.monthSelected.real.totalCost += this.setExchangeValue(currencyMonth, cost);
+
+                            if (this.isCdg) {
+                                if (this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura") {
+                                    this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Infraestructura");
+                                }
+
+                                if (this.categorySelected.name == "Red" && cost.name == "Red") {
+                                    this.setProjectedInfrastructureOrRed(cost, currencyMonth, "Red");
+                                }
+                            }
+                        })
+                        break;
+                }
         }
-
         this.calculateTotalCosts()
         this.sendDataToDetailView();
         this.editItemModal.hide()
     }
 
-    setProjectedInfrastructureOrRed(cost, currencyMonth, type){
+    setProjectedInfrastructureOrRed(cost, currencyMonth, type) {
         var infraProyected = this.monthSelected.subcategoriesProjected.find(x => name == type);
 
-        if(infraProyected){
+        if (infraProyected) {
             this.monthSelected.totalProjected -= infraProyected.originalValue;
             infraProyected.value = cost.value;
             this.monthSelected.totalProjected += this.setExchangeValue(currencyMonth, infraProyected);
         }
-        else{
+        else {
             var projType = this.budgetTypes.find(x => x.name.toUpperCase() == "PROJECTED");
 
             var costToAdd = {
@@ -409,23 +519,23 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
     }
 
-    setExchangeValue(currencyMonth, cost){
+    setExchangeValue(currencyMonth, cost) {
         var total = 0;
 
         cost.originalValue = cost.value;
 
-        if(currencyMonth){
+        if (currencyMonth) {
             var currencyExchange = currencyMonth.items.find(x => x.currencyId == cost.currencyId);
 
-            if(currencyExchange){
+            if (currencyExchange) {
                 cost.value *= currencyExchange.exchange;
                 total += cost.value;
             }
-            else{
+            else {
                 total += cost.value
             }
         }
-        else{
+        else {
             total += cost.value
         }
 
@@ -437,11 +547,18 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.months.forEach(month => {
             let index = this.months.findIndex(cost => cost.monthYear === month.monthYear);
             let monthTotal = this.months.find(m => m.monthYear === month.monthYear)
+
             var totalCostBugdet = 0;
             var totalCostProjected = 0
             var totalCostPfa1 = 0;
             var totalCostPfa2 = 0;
             var totalCostReal = 0;
+
+            var totalSalaryBudget = 0
+            var totalSalaryProjected = 0
+            var totalSalaryPfa1 = 0;
+            var totalSalaryPfa2 = 0;
+            var totalSalaryReal = 0;
 
             this.categories.forEach(category => {
                 if (category.monthsCategory[index].totalBudget) {
@@ -461,11 +578,78 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 }
             });
 
-            monthTotal.totalBudget = totalCostBugdet
-            monthTotal.totalProjected = totalCostProjected
-            monthTotal.totalPfa1 = totalCostPfa1
-            monthTotal.totalPfa2 = totalCostPfa2
-            monthTotal.totalReal = totalCostReal
+
+            //Sumo el totol de los sueldos
+            this.employees.forEach(employee => {
+                if (employee.monthsCost[index].budget.value) {
+                    totalCostBugdet += employee.monthsCost[index].budget.value;
+                    totalSalaryBudget += employee.monthsCost[index].budget.value;
+                }
+
+                if (employee.monthsCost[index].projected.value) {
+                    totalCostProjected += employee.monthsCost[index].projected.value;
+                    totalSalaryProjected += employee.monthsCost[index].projected.value;
+                }
+
+                if (employee.monthsCost[index].pfa2.value) {
+                    totalCostPfa1 += employee.monthsCost[index].pfa2.value;
+                    totalSalaryPfa1 += employee.monthsCost[index].pfa2.value;
+                }
+
+                if (employee.monthsCost[index].pfa2.value) {
+                    totalCostPfa2 += employee.monthsCost[index].pfa2.value;
+                    totalSalaryPfa2 += employee.monthsCost[index].pfa2.value;
+                }
+
+                if (employee.monthsCost[index].real.value) {
+                    totalCostReal += employee.monthsCost[index].real.value;
+                    totalSalaryReal += employee.monthsCost[index].real.value;
+                }
+
+                //asignacion += employee.monthsCost[index].allocationPercentage
+            })
+
+            //Sumo los gastos de los empleados
+            this.categoriesEmployees.forEach(category => {
+                if (category.monthsCategory[index].totalBudget) {
+                    totalCostBugdet += category.monthsCategory[index].totalBudget;
+                    totalSalaryProjected += category.monthsCategory[index].totalBudget;
+                }
+                if (category.monthsCategory[index].totalProjected) {
+                    totalCostProjected += category.monthsCategory[index].totalProjected;
+                    totalSalaryProjected += category.monthsCategory[index].totalProjected;
+                }
+                if (category.monthsCategory[index].totalPfa1) {
+                    totalCostPfa1 += category.monthsCategory[index].totalPfa1;
+                    totalSalaryPfa1 += category.monthsCategory[index].totalPfa1;
+                }
+                if (category.monthsCategory[index].totalPfa2) {
+                    totalCostPfa2 += category.monthsCategory[index].totalPfa2;
+                    totalSalaryPfa2 += category.monthsCategory[index].totalPfa2;
+                }
+                if (category.monthsCategory[index].totalReal) {
+                    totalCostReal += category.monthsCategory[index].totalReal;
+                    totalSalaryReal += category.monthsCategory[index].totalReal;
+                }
+            })
+
+            monthTotal.budget.totalCost = totalCostBugdet + (totalSalaryBudget * 0.51);
+            monthTotal.projected.totalCost = totalCostProjected + (totalSalaryProjected * 0.51);
+            monthTotal.pfa1.totalCost = totalCostPfa1 + (totalSalaryPfa1 * 0.51);
+            monthTotal.pfa2.totalCost = totalCostPfa2 + (totalSalaryPfa2 * 0.51);
+            monthTotal.real.totalCost = totalCostReal + (totalSalaryReal * 0.51);
+
+            month.budget.totalSalary = totalSalaryBudget
+            month.projected.totalSalary = totalSalaryProjected
+            month.pfa1.totalSalary = totalSalaryPfa1
+            month.pfa2.totalSalary = totalSalaryPfa2
+            month.real.totalSalary = totalSalaryReal
+
+            month.budget.totalLoads = (totalSalaryBudget * 0.51)
+            month.projected.totalLoads = (totalSalaryProjected * 0.51)
+            month.pfa1.totalLoads = (totalSalaryPfa1 * 0.51)
+            month.pfa2.totalLoads = (totalSalaryPfa2 * 0.51)
+            month.real.totalLoads = (totalSalaryReal * 0.51)
         })
     }
 
@@ -507,6 +691,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     save(endState = false) {
+        debugger
         this.messageService.showLoading();
 
         this.model.closeState = endState
@@ -516,7 +701,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
             this.detailStaffComponent.getDetail()
             this.getCost(this.managementReportId);
-            
+
             setTimeout(() => {
                 this.sendDataToDetailView();
             }, 1500);
@@ -625,17 +810,17 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         )
     }
 
-    setAllCosts(month, total, type){
+    setAllCosts(month, total, type) {
         var exchanges = [];
         var currencies = [];
 
         this.currencies.forEach(currency => {
-            currencies.push({value: 0, valuePesos: 0, currencyName: currency.text, id: currency.id });        
+            currencies.push({ value: 0, valuePesos: 0, currencyName: currency.text, id: currency.id });
         });
 
         var currencyMonth = this.monthExchanges.find(x => x.month == month.month && x.year == month.year);
 
-        if(currencyMonth){
+        if (currencyMonth) {
             currencyMonth.items.forEach(item => {
                 exchanges.push({ currencyName: item.currencyDesc, exchange: item.exchange });
             });
@@ -644,13 +829,13 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.categories.forEach(category => {
             var monthCategory = category.monthsCategory.find(x => x.month == month.month && x.year == month.year);
 
-            if(monthCategory){
+            if (monthCategory) {
                 var subCategories = this.getSubcategories(monthCategory, type);
 
                 subCategories.forEach(subcategory => {
                     var curr = currencies.find(x => x.id == subcategory.currencyId);
 
-                    if(curr){
+                    if (curr) {
                         curr.value += subcategory.originalValue;
                         curr.valuePesos += subcategory.value;
                     }
@@ -667,8 +852,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.totalCostsExchangesModal.show();
     }
 
-    getSubcategories(monthCategory, type){
-        switch(type){
+    getSubcategories(monthCategory, type) {
+        switch (type) {
             case 'budget': return monthCategory.subcategoriesBudget;
             case 'projected': return monthCategory.subcategoriesProjected;
             case 'pfa1': return monthCategory.subcategoriesPfa1;
@@ -677,43 +862,73 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
     }
 
-    // selectDefaultColumn(date: Date) {
 
-    //     this.dateSelected = date
-    //     var month = this.months.find(x => x.month == (this.dateSelected.getMonth() + 1) && x.year == this.dateSelected.getFullYear());
+    salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {
+        //Verifico que exista la fila de ajustes
+        var AjusteMensual = this.categories.find(r => r.display == this.generalAdjustment);
+        if (AjusteMensual) {
+            //Si existe, Recorro todos los meses
+            let newSalary = 0;
+            //El nuevo salario lo seteo como el primer salario
+            if (isSalaryEmployee == true) {
+                newSalary = employee.monthsCost[pIndex].budget.value
+                pIndex += 1
+            }
 
-    //     if (month) {
-    //         this.showColumn.projected = true
-    //         if (month.totalReal > 0) {
-    //             this.showColumn.budget = false
-    //             this.showColumn.pfa1 = false
-    //             this.showColumn.pfa2 = false
-    //             this.showColumn.real = true
-    //         }
-    //         else {
-    //             if (month.totalPfa2 > 0) {
-    //                 this.showColumn.budget = false
-    //                 this.showColumn.pfa1 = false
-    //                 this.showColumn.pfa2 = true
-    //                 this.showColumn.real = false
-    //             }
-    //             else {
-    //                 if (month.totalPfa1 > 0) {
-    //                     this.showColumn.budget = false
-    //                     this.showColumn.pfa1 = true
-    //                     this.showColumn.pfa2 = false
-    //                     this.showColumn.real = false
-    //                 }
-    //                 else {
-    //                     this.showColumn.budget = true
-    //                     this.showColumn.pfa1 = false
-    //                     this.showColumn.pfa2 = false
-    //                     this.showColumn.real = false
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+            for (let index = pIndex; index < employee.monthsCost.length; index++) {
+
+                //Verifico si tiene aumento en alguno
+                if (AjusteMensual.monthsCost[index].budget.value > 0) {
+                    newSalary = employee.monthsCost[index].budget.originalValue + (employee.monthsCost[index].budget.originalValue * AjusteMensual.monthsCost[index].budget.value / 100);
+                }
+                else {
+                    //Si el aumento es cero el salario nuevo es igual al salario anterior
+                    if (AjusteMensual.monthsCost[index].value == 0) {
+                        newSalary = employee.monthsCost[index].originalValue
+                    }
+                }
+
+                if (employee.monthsCost[index].budget.value > 0) {
+                    employee.monthsCost[index].budget.value = newSalary;
+                    employee.monthsCost[index].budget.adjustment = AjusteMensual.monthsCost[index].budget.value
+
+                    for (let newindex = index + 1; newindex < employee.monthsCost.length; newindex++) {
+
+                        if (employee.monthsCost[newindex].budget.value > 0) {
+                            employee.monthsCost[newindex].budget.value = newSalary;
+                            employee.monthsCost[newindex].budget.originalValue = newSalary;
+                        }
+                        else {
+                            employee.monthsCost[newindex].value = 0
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    onEnter(mathBox, value: string) {
+        var result;
+
+        try {
+            if (value == null || value == "") {
+                result = 0
+            }
+            else {
+                result = evaluate(value)
+            }
+        }
+        catch (error) {
+            result = 0
+
+            mathBox.value = result
+        }
+
+        this.editItemMonto.setValue(result)
+    }
+
+
+
 
 
 }

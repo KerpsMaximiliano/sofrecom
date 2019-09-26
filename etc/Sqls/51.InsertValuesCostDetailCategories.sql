@@ -6,7 +6,7 @@ INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) V
 INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Edificio', 0, 0)
 INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Gastos Reclutamiento Personal', 0, 0)
 INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Gastos Vehiculos', 0, 0)
-INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Gratificaciones', 0, 1)
+INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Gratificaciones', 1, 0)
 INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Hardware y Software', 0, 0)
 INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Honorarios', 0, 0)
 INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Horas Extras/Guardias Pasivas', 1, 0)

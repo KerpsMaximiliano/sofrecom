@@ -56,6 +56,9 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal ChargesPercentage { get; set; }
 
         public Cost Budget { get; set; } = new Cost();
+        public Cost Projected { get; set; } = new Cost();
+        public Cost Pfa1 { get; set; } = new Cost();
+        public Cost Pfa2 { get; set; } = new Cost();
         public Cost Real { get; set; } = new Cost();
         public string Class { get; set; }
         public List<CurrencyExchangeItemModel> CurrencyMonth { get; set; }
@@ -119,8 +122,10 @@ namespace Sofco.Core.Models.ManagementReport
         public int AnalyticId { get; set; }
         public ManagementReportStatus Status { get; set; }
         public string State { get; set; }
-        public IList<MonthDetailCostStaff> MonthsHeader { get; set; }
+        public IList<MonthHeaderCost> MonthsHeader { get; set; }
         public List<CostCategory> CostCategories { get; set; }
+        public List<CostResourceEmployee> CostEmployees { get; set; }
+        public List<CostCategory> CostCategoriesEmployees { get; set; }
         public List<CostSubcategory> AllSubcategories { get; set; }
         public List<BudgetTypeItem> BudgetTypes { get; set; }
         public bool CloseState { get; set; }
@@ -130,6 +135,9 @@ namespace Sofco.Core.Models.ManagementReport
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool BelongEmployee { get; set; }
+        public string TypeName { get; set; }
+
         public List<MonthDetailCostStaff> MonthsCategory { get; set; }
     }
 
