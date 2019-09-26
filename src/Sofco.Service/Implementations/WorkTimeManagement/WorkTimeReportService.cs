@@ -255,30 +255,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 FillUnassigned(response, startDate, endDate, parameters.EmployeeId.GetValueOrDefault());
             }
 
-            if (!response.Data.Items.Any())
-            {
-                response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
-            }
-            else
-            {
-                var tigerReport = new List<TigerReportItem>();
-
-                SaveTigerTxt(response, tigerReport);
-
-                response.Data.IsCompleted = (response.Data.EmployeesMissingHours == null || !response.Data.EmployeesMissingHours.Any()) &&
-                                            response.Data.EmployeesAllocationResume.All(x =>
-                                                !x.MissAnyPercentageAllocation);
-
-                worktimeData.ClearTigerReportKey();
-                worktimeData.SaveTigerReport(tigerReport.OrderBy(x => x.EmployeeNumber).ToList());
-            }
-
-            //Se filtran las analiticas seleccionadas
-            //if (parameters.AnalyticId.Any())
-            //{
-            //    response.Data.Items = response.Data.Items.Where(e => parameters.AnalyticId.Contains(e.AnalyticId)).ToList();
-            //}
-
             response.Data.EmployeesAllocationResume = response.Data.EmployeesAllocationResume.OrderBy(x => x.Employee).ToList();
 
             if (parameters.AnalyticId.Any() || parameters.ManagerId.Any())
@@ -304,6 +280,24 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             if (parameters.EmployeeId.HasValue && parameters.EmployeeId.Value > 0 && response.Data.Items.All(x => x.HasEndDate))
             {
                 response.Data.CanExportSingleTigerFile = true;
+            }
+
+            if (!response.Data.Items.Any())
+            {
+                response.AddWarning(Resources.WorkTimeManagement.WorkTime.SearchNotFound);
+            }
+            else
+            {
+                var tigerReport = new List<TigerReportItem>();
+
+                SaveTigerTxt(response, tigerReport);
+
+                response.Data.IsCompleted = (response.Data.EmployeesMissingHours == null || !response.Data.EmployeesMissingHours.Any()) &&
+                                            response.Data.EmployeesAllocationResume.All(x =>
+                                                !x.MissAnyPercentageAllocation);
+
+                worktimeData.ClearTigerReportKey();
+                worktimeData.SaveTigerReport(tigerReport.OrderBy(x => x.EmployeeNumber).ToList());
             }
 
             return response;
