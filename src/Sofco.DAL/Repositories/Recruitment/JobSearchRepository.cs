@@ -13,7 +13,7 @@ namespace Sofco.DAL.Repositories.Recruitment
         public JobSearchRepository(SofcoContext context) : base(context)
         {
         }
-
+         
         public IList<JobSearch> Search(JobSearchParameter parameter)
         {
             var query = context.JobSearchs

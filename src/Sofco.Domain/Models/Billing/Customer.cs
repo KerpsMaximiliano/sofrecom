@@ -40,5 +40,6 @@ namespace Sofco.Domain.Models.Billing
         public bool Active { get; set; }
 
         public IList<JobSearch> JobSearchs { get; set; }
+        public IList<Applicant> Applicants { get; set; }
     }
 }

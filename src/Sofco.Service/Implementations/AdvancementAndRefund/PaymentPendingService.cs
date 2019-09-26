@@ -82,21 +82,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         item.UserApplicantDesc = employeeNameManagerDicc[refund.UserApplicant?.Email];
                     }
 
-                    //var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
+                    var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
 
-                    //if (tuple.Item1.Any())
-                    //    item.Ammount = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
-                    //else
-                    //    item.Ammount = refund.TotalAmmount;
-
-                    if (refund.CurrencyExchange > 0)
-                    {
-                        item.Ammount += refund.TotalAmmount * refund.CurrencyExchange;
-                    }
+                    if (tuple.Item1.Any())
+                        item.Ammount = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
                     else
-                    {
-                        item.Ammount += refund.TotalAmmount;
-                    }
+                        item.Ammount = refund.TotalAmmount;
+
+                    if (refund.CurrencyExchange > 0) item.Ammount *= refund.CurrencyExchange;
 
                     response.Data.Add(item);
                 }
@@ -110,21 +103,22 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         NextWorkflowStateId = settings.WorkflowStatusFinalizedId
                     });
 
-                    //var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
-                    //decimal ammount = 0;
+                    var tuple = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(refund.Id);
+                    decimal ammount = 0;
 
-                    //if (tuple.Item1.Any())
-                    //    ammount = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
-                    //else
-                    //    ammount = refund.TotalAmmount;
+                    if (tuple.Item1.Any())
+                        ammount = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
+                    else
+                        ammount = refund.TotalAmmount;
 
                     if (refund.CurrencyExchange > 0)
                     {
-                        itemAlreadyInList.Ammount += refund.TotalAmmount * refund.CurrencyExchange;
+                        var ammountInPesos = ammount * refund.CurrencyExchange;
+                        itemAlreadyInList.Ammount += ammountInPesos;
                     }
                     else
                     {
-                        itemAlreadyInList.Ammount += refund.TotalAmmount;
+                        itemAlreadyInList.Ammount += ammount;
                     }
                 }
             }
@@ -133,55 +127,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private void FillAdvancements(Dictionary<string, string> employeeDicc, Dictionary<string, string> employeeManagerDicc, Dictionary<string, string> employeeNameManagerDicc, Response<IList<PaymentPendingModel>> response)
         {
             var advancementsAccounted = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStateAccounted);
-            var advancementsPaid = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkflowStatusApproveId);
-
-            foreach (var advancement in advancementsPaid)
-            {
-                var itemAlreadyInList = response.Data.SingleOrDefault(x => x.UserApplicantId == advancement.UserApplicantId && x.CurrencyId == advancement.CurrencyId);
-
-                if (itemAlreadyInList == null)
-                {
-                    var item = new PaymentPendingModel
-                    {
-                        Id = response.Data.Count + 1,
-                        UserApplicantId = advancement.UserApplicantId,
-                        UserApplicantDesc = advancement.UserApplicant?.Name,
-                        CurrencyId = advancement.CurrencyId,
-                        CurrencyDesc = advancement.Currency?.Text,
-                        Ammount = advancement.Ammount * -1,
-                        Entities = new List<EntityToPay> { new EntityToPay
-                        {
-                            Id = advancement.Id,
-                            Type = "advancement",
-                            WorkflowId = advancement.WorkflowId,
-                            NextWorkflowStateId = settings.WorkflowStatusFinalizedId
-                        } }
-                    };
-
-                    SetBankAndManager(advancement.UserApplicant?.Email, employeeDicc, employeeManagerDicc, employeeNameManagerDicc);
-
-                    if (advancement.UserApplicant != null)
-                    {
-                        item.Bank = employeeDicc[advancement.UserApplicant.Email];
-                        item.Manager = employeeManagerDicc[advancement.UserApplicant?.Email];
-                        item.UserApplicantDesc = employeeNameManagerDicc[advancement.UserApplicant?.Email];
-                    }
-
-                    response.Data.Add(item);
-                }
-                else
-                {
-                    itemAlreadyInList.Entities.Add(new EntityToPay
-                    {
-                        Id = advancement.Id,
-                        Type = "advancement",
-                        WorkflowId = advancement.WorkflowId,
-                        NextWorkflowStateId = settings.WorkflowStatusFinalizedId
-                    });
-
-                    itemAlreadyInList.Ammount -= advancement.Ammount;
-                }
-            }
 
             foreach (var advancement in advancementsAccounted)
             {
@@ -202,6 +147,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                             Id = advancement.Id,
                             Type = "advancement",
                             WorkflowId = advancement.WorkflowId,
+                            Ammount = advancement.Ammount,
                             NextWorkflowStateId = settings.WorkflowStatusApproveId
                         } }
                     };
@@ -224,6 +170,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         Id = advancement.Id,
                         Type = "advancement",
                         WorkflowId = advancement.WorkflowId,
+                        Ammount = advancement.Ammount,
                         NextWorkflowStateId = settings.WorkflowStatusApproveId
                     });
 

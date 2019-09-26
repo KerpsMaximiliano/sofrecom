@@ -8,6 +8,7 @@ import { CustomerService } from 'app/services/billing/customer.service';
 import { GenericOptions } from 'app/models/enums/genericOptions';
 import { UserService } from 'app/services/admin/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ApplicantService } from 'app/services/recruitment/applicant.service';
 
 @Component({
   selector: 'app-add-contacts',
@@ -24,7 +25,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     profiles: new FormControl(null),
     skills: new FormControl(null),
     clientId: new FormControl(null),
-    userId: new FormControl(null),
+    recommendedByUserId: new FormControl(null),
     reasonCauseId: new FormControl(null),
     countryCode1: new FormControl(null, [Validators.min(0), Validators.max(99)]),
     areaCode1: new FormControl(null, [Validators.min(0), Validators.max(999)]),
@@ -51,6 +52,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     public formsService: FormsService,
     private userService: UserService,
+    private applicantService: ApplicantService,
     private router: Router,
     private customerService: CustomerService){
   }
@@ -134,6 +136,35 @@ export class AddContactsComponent implements OnInit, OnDestroy {
   }
 
   add(){
+    if(!this.form.valid) return;
 
+    var json = {
+        lastName: this.form.controls.lastName.value,
+        firstName: this.form.controls.firstName.value,
+        email: this.form.controls.email.value,
+        comments: this.form.controls.comments.value,
+        clientCrmId: this.form.controls.clientId.value,
+        reasonCauseId: this.form.controls.reasonCauseId.value,
+        recommendedByUserId: this.form.controls.recommendedByUserId.value,
+        countryCode1: this.form.controls.countryCode1.value,
+        countryCode2: this.form.controls.countryCode2.value,
+        areaCode1: this.form.controls.areaCode1.value,
+        areaCode2: this.form.controls.areaCode2.value,
+        telephone1: this.form.controls.telephone1.value,
+        telephone2: this.form.controls.telephone2.value,
+        skills: this.form.controls.skills.value,
+        profiles: this.form.controls.profiles.value,
+        clientId: 0
+    }
+
+    this.messageService.showLoading();
+
+    this.addSubscrip = this.applicantService.post(json).subscribe(response => {
+        this.messageService.closeLoading();
+        this.back();
+    }, 
+    error => {
+        this.messageService.closeLoading();
+    });
   }
 }

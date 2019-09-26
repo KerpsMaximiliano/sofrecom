@@ -8,5 +8,6 @@ namespace Sofco.Domain.Models.Recruitment
     {
         public IList<JobSearchSkillRequired> JobSearchSkillsRequired { get; set; }
         public IList<JobSearchSkillNotRequired> JobSearchSkillsNotRequired { get; set; }
+        public IList<ApplicantSkills> ApplicantProfiles { get; set; }
     }
 }

@@ -8,5 +8,6 @@ namespace Sofco.Domain.Models.Recruitment
     {
         public ReasonCauseType Type { get; set; }
         public IList<JobSearch> JobSearchs { get; set; }
+        public IList<Applicant> Applicants { get; set; }
     }
 }

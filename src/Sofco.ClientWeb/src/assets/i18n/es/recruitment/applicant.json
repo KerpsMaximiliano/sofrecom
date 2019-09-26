@@ -1,0 +1,18 @@
+{
+    "addSuccess": "El contacto fue dado de alta correctamente",
+    "areaCode1MaxLengthError": "El codigo de area 1 no puede superar los 3 caracteres",
+    "areaCode2MaxLengthError": "El codigo de area 2 no puede superar los 3 caracteres",
+    "commentsMaxLengthError": "Los comentarios no pueden superar los 3000 caracteres",
+    "countryCode1MaxLengthError": "El codigo de pais 1 no puede superar los 2 caracteres",
+    "countryCode2MaxLengthError": "El codigo de pais 2 no puede superar los 2 caracteres",
+    "emailMaxLengthError": "El mail no puede superar los 75 caracteres",
+    "firstNameMaxLengthError": "Los nombres no puede superar los 75 caracteres",
+    "firstNameRequired": "Los nombres son requeridos",
+    "lastNameMaxLengthError": "El apellido no puede superar los 75 caracteres",
+    "lastNameRequired": "El apellido es requerido",
+    "modelNull": "Datos incorrectos",
+    "notFound": "Candidato no encontrado",
+    "updateSuccess": "El candidato fue actualizado correctamente",
+    "telephone1MaxLengthError": "El telefono 1 no puede superar los 10 caracteres",
+    "telephone2MaxLengthError": "El telefono 2 no puede superar los 10 caracteres"
+}

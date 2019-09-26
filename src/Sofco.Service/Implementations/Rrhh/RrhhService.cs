@@ -34,7 +34,7 @@ namespace Sofco.Service.Implementations.Rrhh
         {
             var response = new Response<byte[]>();
 
-            var items = worktimeData.GetAllTigerReport();
+            var items = worktimeData.GetAllTigerReport().OrderBy(x => x.EmployeeNumber);
 
             if (!items.Any())
             {

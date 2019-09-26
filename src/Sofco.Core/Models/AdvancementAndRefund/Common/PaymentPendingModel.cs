@@ -38,5 +38,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Common
         public int WorkflowId { get; set; }
 
         public int NextWorkflowStateId { get; set; }
+
+        public decimal Ammount { get; set; }
     }
 }

@@ -126,6 +126,7 @@ namespace Sofco.Core.DAL
         #region Recruitment
 
         IJobSearchRepository JobSearchRepository { get; }
+        IApplicantRepository ApplicantRepository { get; }
 
         #endregion
 
