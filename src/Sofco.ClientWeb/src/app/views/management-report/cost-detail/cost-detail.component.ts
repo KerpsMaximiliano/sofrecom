@@ -854,6 +854,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             CostDetailId: this.monthSelected.costDetailId,
             subcategoryId: this.subcategorySelected.id,
             subcategoryName: this.subcategorySelected.name,
+            categoryName: this.categorySelected.name,
             value: 0,
             description: "",
             currencyId: this.currencies[0].id

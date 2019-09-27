@@ -351,27 +351,27 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         switch (this.itemSelected.typeName) {
             
             case this.typeEmployee:
-                this.monthSelected.budget.value = this.editItemMonto.value
-                this.monthSelected.budget.originalValue = this.editItemMonto.value
+                this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].value = this.editItemMonto.value
+                this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].originalValue = this.editItemMonto.value
                 if (this.editItemAdjustment.value > 0) {
-                    this.monthSelected.budget.adjustment = this.editItemAdjustment.value
-                    this.monthSelected.budget.value = this.monthSelected.budget.originalValue + this.monthSelected.budget.originalValue * this.monthSelected.budget.adjustment / 100
+                    this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].adjustment = this.editItemAdjustment.value
+                    this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].value = this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].originalValue + this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].originalValue * this.monthSelected.budget.adjustment / 100
                 }
                 else {
-                    this.monthSelected.budget.adjustment = 0;
-                    this.monthSelected.budget.value = this.editItemMonto.value;
+                    this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].adjustment = 0;
+                    this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].value = this.editItemMonto.value;
                 }
 
                 for (let index = this.indexSelected + 1; index < this.itemSelected.monthsCost.length; index++) {
 
                     if (this.itemSelected.monthsCost[index].hasAlocation) {
-                        this.itemSelected.monthsCost[index].budget.value = this.monthSelected.budget.value;
-                        this.itemSelected.monthsCost[index].budget.originalValue = this.monthSelected.budget.value;
+                        this.itemSelected.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].value = this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].value;
+                        this.itemSelected.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].originalValue = this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].value;
                     }
                     else {
-                        this.itemSelected.monthsCost[index].budget.value = 0
-                        this.itemSelected.monthsCost[index].budget.originalValue = 0
-                        this.itemSelected.monthsCost[index].budget.adjustment = null
+                        this.itemSelected.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].value = 0
+                        this.itemSelected.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].originalValue = 0
+                        this.itemSelected.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].adjustment = null
                     }
                 }
 
@@ -868,7 +868,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             let newSalary = 0;
             //El nuevo salario lo seteo como el primer salario
             if (isSalaryEmployee == true) {
-                newSalary = employee.monthsCost[pIndex].budget.value
+                newSalary = employee.monthsCost[pIndex][this.typeBudgetSelected.name.toLowerCase()].value
                 pIndex += 1
             }
 
@@ -876,24 +876,24 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
                 //Verifico si tiene aumento en alguno
                 if (AjusteMensual.monthsCategory[index].totalBudget > 0) {
-                    newSalary = employee.monthsCost[index].budget.originalValue + (employee.monthsCost[index].budget.originalValue * AjusteMensual.monthsCategory[index].totalBudget / 100);
+                    newSalary = employee.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].originalValue + (employee.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].originalValue * AjusteMensual.monthsCategory[index].totalBudget / 100);
                 }
                 else {
                     //Si el aumento es cero el salario nuevo es igual al salario anterior
                     if (AjusteMensual.monthsCategory[index].totalBudget == 0) {
-                        newSalary = employee.monthsCost[index].originalValue
+                        newSalary = employee.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].originalValue
                     }
                 }
 
-                if (employee.monthsCost[index].budget.value > 0) {
-                    employee.monthsCost[index].budget.value = newSalary;
-                    employee.monthsCost[index].budget.adjustment = AjusteMensual.monthsCategory[index].totalBudget
+                if (employee.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].value > 0) {
+                    employee.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].value = newSalary;
+                    employee.monthsCost[index][this.typeBudgetSelected.name.toLowerCase()].adjustment = AjusteMensual.monthsCategory[index].totalBudget
 
                     for (let newindex = index + 1; newindex < employee.monthsCost.length; newindex++) {
 
-                        if (employee.monthsCost[newindex].budget.value > 0) {
-                            employee.monthsCost[newindex].budget.value = newSalary;
-                            employee.monthsCost[newindex].budget.originalValue = newSalary;
+                        if (employee.monthsCost[newindex][this.typeBudgetSelected.name.toLowerCase()].value > 0) {
+                            employee.monthsCost[newindex][this.typeBudgetSelected.name.toLowerCase()].value = newSalary;
+                            employee.monthsCost[newindex][this.typeBudgetSelected.name.toLowerCase()].originalValue = newSalary;
                         }
                         else {
                             employee.monthsCost[newindex].value = 0
