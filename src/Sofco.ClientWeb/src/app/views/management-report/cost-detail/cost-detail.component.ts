@@ -665,7 +665,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     addOtherCost() {
-
+        
         switch (this.otherSelected.typeName) {
             case this.typeResource:
                 this.addEmployee()
@@ -852,8 +852,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var resource = {
             id: 0,
             CostDetailId: this.monthSelected.costDetailId,
-            subtypeId: this.subcategorySelected.id,
-            subtypeName: this.subcategorySelected.name,
+            subcategoryId: this.subcategorySelected.id,
+            subcategoryName: this.subcategorySelected.name,
+            categoryName: this.categorySelected.name,
             value: 0,
             description: "",
             currencyId: this.currencies[0].id

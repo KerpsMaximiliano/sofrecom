@@ -224,7 +224,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         
         percentageExpectedTotal = evalpropTotalTracing / cantMonths
 
-        this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, percentageExpectedTotal);
+        this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, budgetAcumulatedToDate, percentageExpectedTotal);
 
         this.setMarginTracking(selectedMonth, selectedYear);
 
@@ -279,14 +279,15 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         // });
     }
 
-    private setRemainingAndTotal(totalAcumulatedToEnd: number, totalCostsAcumulatedToEnd: number, percentageExpectedTotal: number) {
+    private setRemainingAndTotal(totalAcumulatedToEnd: number, totalCostsAcumulatedToEnd: number, totalCostsProyectedToEnd: number,percentageExpectedTotal: number) {
+        debugger
         if (!this.allMarginTrackings || this.allMarginTrackings.length == 0) return;
 
         this.allMarginTrackings.forEach(element => {
             // Restante a la fecha (proyectado, ventas)
-            //element.SalesRemainigToDate = totalAcumulatedToEnd - element.SalesAccumulatedToDate;
+            element.SalesRemainigToDate = totalAcumulatedToEnd - element.SalesRemainigToDate;
             // Restante a la fecha (proyectado, costos)
-           //element.TotalExpensesRemainigToDate = totalCostsAcumulatedToEnd - element.TotalExpensesAccumulatedToDate;
+           element.TotalExpensesRemainigToDate = totalCostsProyectedToEnd - element.TotalExpensesRemainigToDate;
 
             // Total a terminacion
             //element.TotalSalesToEnd += totalAcumulatedToEnd;

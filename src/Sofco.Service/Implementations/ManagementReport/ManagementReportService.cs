@@ -658,6 +658,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     cost.TypeId = otherRes.SubcategoryId;
                     cost.CurrencyId = otherRes.CurrencyId == 0 ? appSetting.CurrencyPesos : otherRes.CurrencyId;
                     month.MonthYear = pMonthDetail.MonthYear;
+                    cost.TypeName = otherRes.CategoryName;
 
                     if (pMonthDetail.IsReal)
                     {
@@ -1161,7 +1162,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return false;
         }
 
-        private List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails)
+        public List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails)
         {
             List<CostResourceEmployee> costEmployees = new List<CostResourceEmployee>();
 
@@ -1600,11 +1601,18 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 foreach (var resource in pOtherResources)
                 {
+                   if(resource.TypeName.ToUpper() == EnumCostDetailType.AjusteGeneral.ToUpper())
+                    {
+                        resource.CurrencyId = appSetting.CurrencyPesos;
+                    }
+
                     foreach (var month in resource.MonthsCost)
                     {
                         var entity = new CostDetailOther();
 
                         var aux = new Cost();
+                   
+
                         if (isReal)
                         {
                             aux.Id = month.Real.Id;
@@ -1751,6 +1759,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         CostDetailId = x.CostDetailId,
                         SubcategoryId = x.CostDetailSubcategoryId,
                         SubcategoryName = x.CostDetailSubcategory.Name,
+                        CategoryName = x.CostDetailSubcategory.CostDetailCategory.Name,
                         CurrencyId = x.CurrencyId,
                         Value = x.Value
                     })
