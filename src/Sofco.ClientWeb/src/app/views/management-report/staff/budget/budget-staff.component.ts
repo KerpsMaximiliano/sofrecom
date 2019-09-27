@@ -168,6 +168,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     openEditItemModal(item, typeBudget, month) {
         if (month.closed) return;
 
+        const totalType = `total${typeBudget}`;
+
         var today = new Date();
         if (typeBudget == 'projected') {
             if (month.year < today.getFullYear()) {
@@ -199,21 +201,21 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.modalProfile = false;
         this.editItemModal.size = 'modal-sm'
         this.typeBudgetSelected = this.budgetTypes.find(x => x.name.toUpperCase() == typeBudget.toUpperCase())
-
+        
         switch (this.itemSelected.typeName) {
             case this.typeEmployee:
                 this.modalEmployee = true
-                this.editItemMonto.setValue(month.budget.originalValue)
-                this.editItemAdjustment.setValue(month.budget.adjustment)
+                this.editItemMonto.setValue(month[typeBudget.toLowerCase()].originalValue)
+                this.editItemAdjustment.setValue(month[typeBudget.toLowerCase()].adjustment)
                 this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
                 this.editItemModal.show();
                 break;
 
             case this.generalAdjustment:
                 this.modalPercentage = true
-                this.editItemMonto.setValue(month.budget.value)
+                this.editItemMonto.setValue(month[totalType])
                 this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
-                this.editItemModal.show();
+                this.editItemModal.show();             
                 break;
 
             default:
@@ -345,11 +347,11 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     updateItem() {
         var hasError = false;
-        this.monthSelected.budget.value = this.editItemMonto.value
-
+        
         switch (this.itemSelected.typeName) {
-
+            
             case this.typeEmployee:
+                this.monthSelected.budget.value = this.editItemMonto.value
                 this.monthSelected.budget.originalValue = this.editItemMonto.value
                 if (this.editItemAdjustment.value > 0) {
                     this.monthSelected.budget.adjustment = this.editItemAdjustment.value
@@ -375,21 +377,17 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
                 //Actualiza el sueldo
                 this.salaryPlusIncrease(this.itemSelected, this.indexSelected, true);
-            
-                this.editItemModal.hide();
                 break;
 
             case this.generalAdjustment:
+                this.monthSelected.subcategoriesBudget[0].value = this.editItemMonto.value
+                this.monthSelected.subcategoriesBudget[0].originalValue = this.editItemMonto.value
+                this.monthSelected.totalBudget = this.editItemMonto.value
+
                 this.modalPercentage = true;
                 this.employees.forEach(employee => {
                     this.salaryPlusIncrease(employee, this.indexSelected, false);
                 })
-
-                // var listAux = [];
-                // listAux.push(this.itemSelected);
-
-                // this.save(this.employees, [], listAux)
-                this.editItemModal.hide();
                 break
 
             default:
@@ -411,9 +409,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 switch (this.typeBudgetSelected.name.toUpperCase()) {
                     case 'BUDGET':
                         this.monthSelected.subcategoriesBudget = this.subCategoriesData
-                        this.monthSelected.budget.totalCost = 0
+                        this.monthSelected.totalBudget = 0
                         this.monthSelected.subcategoriesBudget.forEach(cost => {
-                            this.monthSelected.budget.totalCost += this.setExchangeValue(currencyMonth, cost);
+                            this.monthSelected.totalBudget += this.setExchangeValue(currencyMonth, cost);
 
                             if (this.isCdg) {
                                 if (this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura") {
@@ -429,16 +427,16 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                         break;
                     case 'PROJECTED':
                         this.monthSelected.subcategoriesProjected = this.subCategoriesData
-                        this.monthSelected.projected.totalCost = 0
+                        this.monthSelected.totalProjected = 0
                         this.monthSelected.subcategoriesProjected.forEach(cost => {
-                            this.monthSelected.projected.totalCost += this.setExchangeValue(currencyMonth, cost);
+                            this.monthSelected.totalProjected += this.setExchangeValue(currencyMonth, cost);
                         })
                         break;
                     case 'PFA1':
                         this.monthSelected.subcategoriesPfa1 = this.subCategoriesData
-                        this.monthSelected.pfa1.totalCost = 0
+                        this.monthSelected.totalPfa1 = 0
                         this.monthSelected.subcategoriesPfa1.forEach(cost => {
-                            this.monthSelected.pfa1.totalCost += this.setExchangeValue(currencyMonth, cost);
+                            this.monthSelected.totalPfa1 += this.setExchangeValue(currencyMonth, cost);
 
                             if (this.isCdg) {
                                 if (this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura") {
@@ -453,9 +451,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                         break;
                     case 'PFA2':
                         this.monthSelected.subcategoriesPfa2 = this.subCategoriesData
-                        this.monthSelected.pfa2.totalCost = 0
+                        this.monthSelected.totalPfa2 = 0
                         this.monthSelected.subcategoriesPfa2.forEach(cost => {
-                            this.monthSelected.pfa2.totalCost += this.setExchangeValue(currencyMonth, cost);
+                            this.monthSelected.totalPfa2 += this.setExchangeValue(currencyMonth, cost);
 
                             if (this.isCdg) {
                                 if (this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura") {
@@ -470,9 +468,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                         break;
                     case 'REAL':
                         this.monthSelected.subcategoriesReal = this.subCategoriesData
-                        this.monthSelected.real.totalCost = 0
+                        this.monthSelected.totalReal = 0
                         this.monthSelected.subcategoriesReal.forEach(cost => {
-                            this.monthSelected.real.totalCost += this.setExchangeValue(currencyMonth, cost);
+                            this.monthSelected.totalReal += this.setExchangeValue(currencyMonth, cost);
 
                             if (this.isCdg) {
                                 if (this.categorySelected.name == "Infraestructura" && cost.name == "Infraestructura") {
@@ -691,7 +689,6 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     save(endState = false) {
-        debugger
         this.messageService.showLoading();
 
         this.model.closeState = endState
@@ -865,7 +862,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     salaryPlusIncrease(employee, pIndex, isSalaryEmployee) {
         //Verifico que exista la fila de ajustes
-        var AjusteMensual = this.categories.find(r => r.display == this.generalAdjustment);
+        var AjusteMensual = this.categories.find(r => r.name == this.generalAdjustment);
         if (AjusteMensual) {
             //Si existe, Recorro todos los meses
             let newSalary = 0;
@@ -878,19 +875,19 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             for (let index = pIndex; index < employee.monthsCost.length; index++) {
 
                 //Verifico si tiene aumento en alguno
-                if (AjusteMensual.monthsCost[index].budget.value > 0) {
-                    newSalary = employee.monthsCost[index].budget.originalValue + (employee.monthsCost[index].budget.originalValue * AjusteMensual.monthsCost[index].budget.value / 100);
+                if (AjusteMensual.monthsCategory[index].totalBudget > 0) {
+                    newSalary = employee.monthsCost[index].budget.originalValue + (employee.monthsCost[index].budget.originalValue * AjusteMensual.monthsCategory[index].totalBudget / 100);
                 }
                 else {
                     //Si el aumento es cero el salario nuevo es igual al salario anterior
-                    if (AjusteMensual.monthsCost[index].value == 0) {
+                    if (AjusteMensual.monthsCategory[index].totalBudget == 0) {
                         newSalary = employee.monthsCost[index].originalValue
                     }
                 }
 
                 if (employee.monthsCost[index].budget.value > 0) {
                     employee.monthsCost[index].budget.value = newSalary;
-                    employee.monthsCost[index].budget.adjustment = AjusteMensual.monthsCost[index].budget.value
+                    employee.monthsCost[index].budget.adjustment = AjusteMensual.monthsCategory[index].totalBudget
 
                     for (let newindex = index + 1; newindex < employee.monthsCost.length; newindex++) {
 

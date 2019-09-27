@@ -293,7 +293,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                 // var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(pDetailCost.ManagementReportId);
                 var costDetails = managementReport.CostDetails.ToList();
 
-                this.InsertUpdateCostDetailStaff(pDetailCost.CostCategories, costDetails);
+                var allCostCategories = pDetailCost.CostCategories.Union(pDetailCost.CostCategoriesEmployees).ToList();
+
+                this.InsertUpdateCostDetailStaff(allCostCategories, costDetails);
                 this.InsertTotalBudgets(pDetailCost.CostCategories, pDetailCost.ManagementReportId);
 
                 //Cambiar estado de budget
