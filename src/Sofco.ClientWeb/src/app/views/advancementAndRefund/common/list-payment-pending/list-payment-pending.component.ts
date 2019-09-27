@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { WorkflowService } from "app/services/workflow/workflow.service";
@@ -8,6 +8,7 @@ import { MessageService } from "app/services/common/message.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { PaymentPendingService } from "app/services/advancement-and-refund/paymentPending.service";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 @Component({
     selector: 'list-payment-pending',
@@ -29,6 +30,21 @@ export class ListPaymentPendingComponent  {
     public userId: number;
 
     public totalAmount: number;
+    public totalRowSelectedAmount: number = 0;
+
+    currencyWarning: boolean = false;
+
+    rowSelected: any;
+
+    @ViewChild('detailModal') detailModal;
+    public detailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Detalle de adelantos y reintegros",
+        "detailModal",
+        true,
+        true,
+        "Pay",
+        "ACTIONS.cancel"
+    );
 
     constructor(private paymentPendingService: PaymentPendingService,
                 public menuService: MenuService,
@@ -153,8 +169,8 @@ export class ListPaymentPendingComponent  {
                         workflowId: e.workflowId,
                         entityId: e.id,
                         nextStateId: e.nextWorkflowStateId,
-                        entityController: e.type,
-                        type: e.type,
+                        entityController: e.type == 'advancement-accounted' ? 'advancement' : e.type,
+                        type: e.type == 'advancement-accounted' ? 'advancement' : e.type,
                         userApplicantName: x.userApplicantDesc,
                         id: x.id
                     };
@@ -225,6 +241,143 @@ export class ListPaymentPendingComponent  {
         }
 
         this.initGrid();
-        this.calculateTotals();
+    }
+
+    openDetail(item){
+        this.rowSelected = item;
+        this.totalRowSelectedAmount = 0;
+        this.detailModal.show();
+    }
+
+    calculateTotalRowSelected(item){
+        this.currencyWarning = false;
+        
+        if(item.type == 'refund' && item.entitiesRelatedIds){
+            item.entitiesRelatedIds.forEach(advancementId => {
+
+                var advancementRow = this.rowSelected.entities.find(x => x.id == advancementId && x.type == 'advancement');
+
+                if(advancementRow) {
+                    advancementRow.selected = item.selected;
+
+                    if(advancementRow.entitiesRelatedIds){
+                        advancementRow.entitiesRelatedIds.forEach(refundId => {
+                            var refundRow = this.rowSelected.entities.find(x => x.id == refundId && x.type == 'refund');
+
+                            if(refundRow) refundRow.selected = item.selected;
+                        });
+                    }
+                }
+            });
+        }
+
+        if(item.type == 'advancement' && item.entitiesRelatedIds){
+            item.entitiesRelatedIds.forEach(refundId => {
+
+                var refundRow = this.rowSelected.entities.find(x => x.id == refundId && x.type == 'refund');
+
+                if(refundRow) {
+                    refundRow.selected = item.selected;
+
+                    if(refundRow.entitiesRelatedIds){
+                        refundRow.entitiesRelatedIds.forEach(advancementId => {
+                            var advancementRow = this.rowSelected.entities.find(x => x.id == advancementId && x.type == 'advancement');
+
+                            if(advancementRow) advancementRow.selected = item.selected;
+                        });
+                    }
+                }
+            });
+        }
+
+        var currencies = [];
+        this.totalRowSelectedAmount = 0;
+
+        this.rowSelected.entities.forEach(item => {
+            if(item.selected){
+                if(!currencies.includes(item.currencyName)){
+                    currencies.push(item.currencyName);
+                }
+
+                if(item.type == 'refund' || item.type == 'advancement-accounted'){
+                    this.totalRowSelectedAmount += item.ammount;
+                }
+
+                if(item.type == 'advancement'){
+                    this.totalRowSelectedAmount -= item.ammount;
+                }
+            }
+        });
+
+        if(currencies.length > 1){
+            this.totalRowSelectedAmount = 0;
+            this.currencyWarning = true;
+        }
+    }
+
+    payRefunds(){
+        var list = [];
+            
+        this.rowSelected.entities.filter(x => x.selected).forEach(e => {
+
+            var item = {
+                workflowId: e.workflowId,
+                entityId: e.id,
+                nextStateId: e.nextWorkflowStateId,
+                entityController: e.type == 'advancement-accounted' ? 'advancement' : e.type,
+                type: e.type == 'advancement-accounted' ? 'advancement' : e.type,
+                userApplicantName: this.rowSelected.userApplicantDesc,
+                typeToDelete: e.type
+            };
+
+            list.push(item);
+        });
+
+        if(list.length > 0){
+            this.postSubscrip = this.workflowService.doMassiveTransitions(list).subscribe(response => {
+                list.forEach(item => {
+                    var itemToDelete = this.rowSelected.entities.find(x => x.id == item.entityId && x.type == item.typeToDelete);
+
+                    if(itemToDelete){
+                        var index = this.rowSelected.entities.indexOf(itemToDelete);
+                        this.rowSelected.entities.splice(index, 1);
+                    }
+                });
+
+                if(this.rowSelected.entities.length == 0){
+                    var itemToDelete = this.model.find(x => x.id == this.rowSelected.id);
+
+                    if(itemToDelete){
+                        var index = this.model.indexOf(itemToDelete);
+                        this.model.splice(index, 1);
+                    }
+
+                    this.search();
+                }
+                else{
+                    this.rowSelected.ammount = 0;
+
+                    this.rowSelected.entities.forEach(x => {
+                        if(x.type == 'refund' || x.type == 'advancement-accounted'){
+                            this.rowSelected.ammount += x.ammount;
+                        }
+        
+                        if(x.type == 'advancement'){
+                            this.rowSelected.ammount -= x.ammount;
+                        }
+                    });
+                }
+
+                this.detailModal.hide();
+                this.rowSelected = null;
+            },
+            error => {
+                this.detailModal.resetButtons();
+            });
+        }
+    }
+
+    saveEnabled(){
+        return this.totalRowSelectedAmount > 0;
     }
 }

@@ -79,7 +79,7 @@ namespace Sofco.WebApi.Controllers.Workflows
 
                 if (parameter.Type == "refund")
                 {
-                    workflowService.DoTransition<Refund, RefundHistory>(parameter, response);
+                    workflowService.DoTransitionWithoutFlow<Refund, RefundHistory>(parameter, response);
 
                     if (response.HasErrors())
                     {
@@ -89,7 +89,7 @@ namespace Sofco.WebApi.Controllers.Workflows
                 }
                 else if (parameter.Type == "advancement")
                 {
-                    workflowService.DoTransition<Advancement, AdvancementHistory>(parameter, response);
+                    workflowService.DoTransitionWithoutFlow<Advancement, AdvancementHistory>(parameter, response);
 
                     if (response.HasErrors())
                     {

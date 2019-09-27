@@ -111,6 +111,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Currency)
                 .Include(x => x.UserApplicant)
                 .Include(x => x.MonthsReturn)
+                .Include(x => x.AdvancementRefunds)
+                    .ThenInclude(x => x.Refund)
                 .Include(x => x.Status).ThenInclude(x => x.ActualTransitions)
                 .Where(x => x.StatusId == workFlowStatePaymentPending);
 

@@ -7,7 +7,8 @@ namespace Sofco.Core.Services.Workflow
 {
     public interface IWorkflowService
     {
-        void DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters, Response<TransitionSuccessModel> response) where TEntity : WorkflowEntity where THistory : WorkflowHistory;
+        void DoTransition<TEntity, THistory>(WorkflowChangeStatusParameters parameters, Response<TransitionSuccessModel> response) 
+            where TEntity : WorkflowEntity where THistory : WorkflowHistory;
 
         Response<IList<TransitionItemModel>> GetPossibleTransitions<T>(TransitionParameters parameters) where T : WorkflowEntity;
 
@@ -22,5 +23,8 @@ namespace Sofco.Core.Services.Workflow
         Response<IList<Option>> GetStates();
 
         Response Put(int id, WorkflowAddModel model);
+
+        void DoTransitionWithoutFlow<TEntity, THistory>(WorkflowChangeStatusMasiveParameters parameter, Response<TransitionSuccessModel> response)
+            where TEntity : WorkflowEntity where THistory : WorkflowHistory;
     }
 }

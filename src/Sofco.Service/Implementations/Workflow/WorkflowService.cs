@@ -143,42 +143,7 @@ namespace Sofco.Service.Implementations.Workflow
             }
 
             // Save change status
-            try
-            {
-                entity.StatusId = parameters.NextStateId;
-
-                if (string.IsNullOrWhiteSpace(entity.UsersAlreadyApproved))
-                {
-                    entity.UsersAlreadyApproved = currentUser.Id.ToString();
-                }
-                else
-                {
-                    var userSplitted = entity.UsersAlreadyApproved.Split(';');
-
-                    if (!userSplitted.Contains(currentUser.Id.ToString()))
-                    {
-                        entity.UsersAlreadyApproved = string.Concat(entity.UsersAlreadyApproved, $";{currentUser.Id.ToString()}");
-                    }
-                }
-
-                workflowRepository.UpdateStatus(entity);
-                workflowRepository.UpdateUsersAlreadyApproved(entity);
-                workflowRepository.Save();
-
-                if (response.Messages.All(x => x.Text != Resources.Workflow.Workflow.TransitionSuccess))
-                {
-                    response.AddSuccess(Resources.Workflow.Workflow.TransitionSuccess);
-                }
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e);
-
-                if (response.Data.OnError != null)
-                    response.Data.OnError.Invoke();
-                else
-                    response.AddError(Resources.Common.ErrorSave);
-            }
+            SaveEntity<TEntity, THistory>(parameters, response, entity, currentUser);
 
             // Custom Success Process
             if (!string.IsNullOrWhiteSpace(transition.OnSuccessCode))
@@ -209,6 +174,48 @@ namespace Sofco.Service.Implementations.Workflow
             {
                 // Send Notification
                 SendNotification(entity, response, transition, parameters);
+            }
+        }
+
+        private void SaveEntity<TEntity, THistory>(WorkflowChangeStatusParameters parameters, Response<TransitionSuccessModel> response, TEntity entity,
+            UserLiteModel currentUser) where TEntity : WorkflowEntity where THistory : WorkflowHistory
+        {
+            try
+            {
+                entity.StatusId = parameters.NextStateId;
+
+                if (string.IsNullOrWhiteSpace(entity.UsersAlreadyApproved))
+                {
+                    entity.UsersAlreadyApproved = currentUser.Id.ToString();
+                }
+                else
+                {
+                    var userSplitted = entity.UsersAlreadyApproved.Split(';');
+
+                    if (!userSplitted.Contains(currentUser.Id.ToString()))
+                    {
+                        entity.UsersAlreadyApproved =
+                            string.Concat(entity.UsersAlreadyApproved, $";{currentUser.Id.ToString()}");
+                    }
+                }
+
+                workflowRepository.UpdateStatus(entity);
+                workflowRepository.UpdateUsersAlreadyApproved(entity);
+                workflowRepository.Save();
+
+                if (response.Messages.All(x => x.Text != Resources.Workflow.Workflow.TransitionSuccess))
+                {
+                    response.AddSuccess(Resources.Workflow.Workflow.TransitionSuccess);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+
+                if (response.Data.OnError != null)
+                    response.Data.OnError.Invoke();
+                else
+                    response.AddError(Resources.Common.ErrorSave);
             }
         }
 
@@ -719,6 +726,41 @@ namespace Sofco.Service.Implementations.Workflow
             }
 
             return response;
+        }
+
+        public void DoTransitionWithoutFlow<TEntity, THistory>(WorkflowChangeStatusMasiveParameters parameter,
+            Response<TransitionSuccessModel> response) where TEntity : WorkflowEntity where THistory : WorkflowHistory
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            // Validate Parameters
+            ValidateParameters(parameter, response);
+
+            if (response.HasErrors()) return;
+
+            var entity = workflowRepository.GetEntity<TEntity>(parameter.EntityId);
+
+            // Validate if entity exist
+            if (entity == null)
+            {
+                response.AddError(Resources.Workflow.Workflow.EntityNull);
+                return;
+            }
+
+            var transition = workflowRepository.GetTransition(entity.StatusId, parameter.NextStateId, parameter.WorkflowId);
+
+            // Validate if transition exist
+            if (transition == null)
+            {
+                response.AddError(Resources.Workflow.Workflow.CannotDoTransition);
+                return;
+            }
+
+            // Save change status
+            SaveEntity<TEntity, THistory>(parameter, response, entity, currentUser);
+
+            // Create history
+            CreateHistory<TEntity, THistory>(entity, transition, currentUser, parameter);
         }
 
         private void AddTransition(Response<IList<TransitionItemModel>> response, WorkflowStateTransition transition)
