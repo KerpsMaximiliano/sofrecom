@@ -64,6 +64,7 @@
                         <th>{{ 'advancement.userApplicant' | translate }}</th>
                         <th>{{ 'advancement.currency' | translate }}</th>
                         <th>{{ 'advancement.ammount' | translate }}</th>
+                        <th>Monto Pesos</th>
                         <th>Detalle</th>
                     </tr>
                 </thead>
@@ -76,6 +77,7 @@
                         <td>{{ item.userApplicantDesc }}</td>
                         <td>{{ item.currencyDesc }}</td>
                         <td>{{ item.ammount | amountFormat }}</td>
+                        <td>{{ item.ammountPesos | amountFormat }}</td>
                         <td><button class="btn btn-primary btn-sm" type="button" (click)="openDetail(item)"><i class="fa fa-eye"></i></button></td>
                     </tr>
                 </tbody>

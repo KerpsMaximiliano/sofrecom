@@ -63,7 +63,7 @@ export class ListPaymentPendingComponent  {
     }
 
     initGrid(){
-        var columns = [1, 2, 3, 4];
+        var columns = [1, 2, 3, 4, 5];
         var title = `Adelantos y reitegros pendientes deposito`;
 
         var params = {
@@ -71,7 +71,7 @@ export class ListPaymentPendingComponent  {
           columns: columns,
           title: title,
           withExport: true,
-          currencyColumns: [4]
+          currencyColumns: [4, 5]
         }
   
         this.datatableService.destroy(params.selector);
@@ -130,7 +130,9 @@ export class ListPaymentPendingComponent  {
 
     selectAll(){
         this.modelFiltered.forEach((item, index) => {
-            item.selected = true;
+            if(item.canPayAll && item.ammount > 0){
+                item.selected = true;
+            }
         });
 
         this.calculateTotals();
@@ -152,7 +154,7 @@ export class ListPaymentPendingComponent  {
         this.totalAmount = 0;
         this.modelFiltered.forEach(item => {
             if(item.selected){
-                this.totalAmount += item.ammount;
+                this.totalAmount += item.ammountPesos;
             }
         });
     }
@@ -251,7 +253,7 @@ export class ListPaymentPendingComponent  {
 
     calculateTotalRowSelected(item){
         this.currencyWarning = false;
-        
+
         if(item.type == 'refund' && item.entitiesRelatedIds){
             item.entitiesRelatedIds.forEach(advancementId => {
 
@@ -335,41 +337,8 @@ export class ListPaymentPendingComponent  {
 
         if(list.length > 0){
             this.postSubscrip = this.workflowService.doMassiveTransitions(list).subscribe(response => {
-                list.forEach(item => {
-                    var itemToDelete = this.rowSelected.entities.find(x => x.id == item.entityId && x.type == item.typeToDelete);
-
-                    if(itemToDelete){
-                        var index = this.rowSelected.entities.indexOf(itemToDelete);
-                        this.rowSelected.entities.splice(index, 1);
-                    }
-                });
-
-                if(this.rowSelected.entities.length == 0){
-                    var itemToDelete = this.model.find(x => x.id == this.rowSelected.id);
-
-                    if(itemToDelete){
-                        var index = this.model.indexOf(itemToDelete);
-                        this.model.splice(index, 1);
-                    }
-
-                    this.search();
-                }
-                else{
-                    this.rowSelected.ammount = 0;
-
-                    this.rowSelected.entities.forEach(x => {
-                        if(x.type == 'refund' || x.type == 'advancement-accounted'){
-                            this.rowSelected.ammount += x.ammount;
-                        }
-        
-                        if(x.type == 'advancement'){
-                            this.rowSelected.ammount -= x.ammount;
-                        }
-                    });
-                }
-
+                this.getAll();
                 this.detailModal.hide();
-                this.rowSelected = null;
             },
             error => {
                 this.detailModal.resetButtons();
