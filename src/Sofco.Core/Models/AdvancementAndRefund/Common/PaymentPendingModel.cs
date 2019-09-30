@@ -29,6 +29,27 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Common
         public IList<EntityToPay> Entities { get; set; }
 
         public bool CanPayAll { get; set; }
+
+        public decimal AmmountPesos
+        {
+            get
+            {
+                if (IsCurrencyPesos) return Ammount;
+
+                if (CurrencyExchange.HasValue)
+                {
+                    return this.Ammount * this.CurrencyExchange.Value;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public decimal? CurrencyExchange { get; set; }
+
+        public bool IsCurrencyPesos { get; set; }
     }
 
     public class EntityToPay

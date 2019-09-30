@@ -17,6 +17,9 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
+    <button (click)="back()" class="btn btn-success" type="button"> <i class="fa fa-times"></i> Cancelar </button>
+    <button [disabled]="!form.valid" (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+
     <div class="row m-t-md">
         <div class="col-md-10 col-md-offset-1">
             <div class="ibox">
@@ -173,10 +176,6 @@
                             <textarea rows="6" class="form-control" formControlName="comments" maxlength="3000"></textarea>
                         </div>
                     </form>
-                </div>
-                <div class="ibox-footer text-center">
-                    <button (click)="back()" class="btn btn-success" type="button"> <i class="fa fa-times"></i> Cancelar </button>
-                    <button [disabled]="!form.valid" (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
                 </div>
             </div>
         </div>

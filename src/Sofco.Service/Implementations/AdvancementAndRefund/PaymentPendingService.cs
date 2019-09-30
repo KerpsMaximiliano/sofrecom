@@ -66,7 +66,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             foreach (var refund in refunds)
             {
-                var itemAlreadyInList = response.Data.SingleOrDefault(x => x.UserApplicantId == refund.UserApplicantId);
+                var itemAlreadyInList = response.Data.SingleOrDefault(x => x.UserApplicantId == refund.UserApplicantId && x.CurrencyId == refund.CurrencyId);
 
                 if (itemAlreadyInList == null)
                 {
@@ -77,12 +77,15 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         UserApplicantDesc = refund.UserApplicant?.Name,
                         CurrencyId = refund.CurrencyId,
                         CurrencyDesc = refund.Currency?.Text,
+                        IsCurrencyPesos = currencyPesos.Id == refund.CurrencyId,
+                        CurrencyExchange = refund.CurrencyExchange > 0 ? refund.CurrencyExchange : (decimal?) null,
+                        Ammount = refund.TotalAmmount,
                         Entities = new List<EntityToPay> { new EntityToPay
                         {
                             Id = refund.Id,
                             Type = "refund",
                             WorkflowId = refund.WorkflowId,
-                            CurrencyName = refund.Currency?.Text,
+                            CurrencyName = refund.CurrencyExchange > 0 ? currencyPesos.Text : refund.Currency?.Text,
                             EntitiesRelatedDesc = string.Join(" - ", refund.AdvancementRefunds.Select(a => $"#{a.AdvancementId}")),
                             EntitiesRelatedIds = refund.AdvancementRefunds.Select(a => a.AdvancementId),
                             Ammount = refund.CurrencyExchange > 0 ? refund.TotalAmmount * refund.CurrencyExchange : refund.TotalAmmount,
@@ -99,16 +102,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         item.UserApplicantDesc = employeeNameManagerDicc[refund.UserApplicant?.Email];
                     }
 
-                    if (refund.CurrencyExchange > 0)
-                    {
-                        item.Ammount += refund.TotalAmmount * refund.CurrencyExchange;
-                        item.CurrencyDesc = currencyPesos.Text;
-                    }
-                    else
-                    {
-                        item.Ammount += refund.TotalAmmount;
-                    }
-
                     response.Data.Add(item);
                 }
                 else
@@ -122,16 +115,21 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         EntitiesRelatedDesc = string.Join(" - ", refund.AdvancementRefunds.Select(a => $"#{a.AdvancementId}")),
                         EntitiesRelatedIds = refund.AdvancementRefunds.Select(a => a.AdvancementId),
                         Ammount = refund.CurrencyExchange > 0 ? refund.TotalAmmount * refund.CurrencyExchange : refund.TotalAmmount,
-                        NextWorkflowStateId = settings.WorkflowStatusFinalizedId
+                        NextWorkflowStateId = settings.WorkflowStatusFinalizedId,
                     });
+
+                    itemAlreadyInList.Ammount += refund.TotalAmmount;
 
                     if (refund.CurrencyExchange > 0)
                     {
-                        itemAlreadyInList.Ammount += refund.TotalAmmount * refund.CurrencyExchange;
-                    }
-                    else
-                    {
-                        itemAlreadyInList.Ammount += refund.TotalAmmount;
+                        if (!itemAlreadyInList.CurrencyExchange.HasValue)
+                        {
+                            itemAlreadyInList.CurrencyExchange = refund.CurrencyExchange;
+                        }
+                        else if(itemAlreadyInList.CurrencyExchange < refund.CurrencyExchange)
+                        {
+                            itemAlreadyInList.CurrencyExchange = refund.CurrencyExchange;
+                        }
                     }
                 }
             }
@@ -151,21 +149,22 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
                 if(advancement.AdvancementRefunds.Any(x => x.Refund.InWorkflowProcess)) continue;
 
-                var itemAlreadyInList = response.Data.SingleOrDefault(x => x.UserApplicantId == advancement.UserApplicantId);
+                var itemAlreadyInList = response.Data.SingleOrDefault(x => x.UserApplicantId == advancement.UserApplicantId && x.CurrencyId == advancement.CurrencyId);
 
                 if (itemAlreadyInList == null)
                 {
                     var ammount = advancement.Ammount;
-                    var currencyName = currencyPesos?.Text;
+                    var currencyName = advancement.Currency?.Text;
 
                     if (advancement.CurrencyId != settings.CurrencyPesos)
                     {
                         var maxExchange = advancement.AdvancementRefunds.Max(x => x.Refund.CurrencyExchange);
 
                         if (maxExchange > 0)
+                        {
                             ammount *= maxExchange;
-                        else
-                            currencyName = advancement.Currency?.Text;
+                            currencyName = currencyPesos?.Text;
+                        }
                     }
 
                     var item = new PaymentPendingModel
@@ -175,7 +174,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         UserApplicantDesc = advancement.UserApplicant?.Name,
                         CurrencyId = advancement.CurrencyId,
                         CurrencyDesc = advancement.Currency?.Text,
-                        Ammount = ammount * -1,
+                        Ammount = advancement.Ammount * -1,
+                        IsCurrencyPesos = currencyPesos?.Id == advancement.CurrencyId,
                         Entities = new List<EntityToPay> { new EntityToPay
                         {
                             Id = advancement.Id,
@@ -208,7 +208,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         Id = advancement.Id,
                         Type = "advancement",
                         WorkflowId = advancement.WorkflowId,
-                        CurrencyName = currencyPesos?.Text,
+                        CurrencyName = advancement.Currency.Text,
                         Ammount = advancement.Ammount,
                         EntityType = advancement.Type.ToString(),
                         EntitiesRelatedDesc = string.Join(" - ", advancement.AdvancementRefunds.Select(a => $"#{a.RefundId}")),
@@ -221,14 +221,15 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         var maxExchange = advancement.AdvancementRefunds.Max(x => x.Refund.CurrencyExchange);
 
                         if (maxExchange > 0)
+                        {
                             entityToAdd.Ammount *= maxExchange;
-                        else
-                            entityToAdd.CurrencyName = advancement.Currency.Text;
+                            entityToAdd.CurrencyName = currencyPesos?.Text;
+                        }
                     }
 
                     itemAlreadyInList.Entities.Add(entityToAdd);
 
-                    itemAlreadyInList.Ammount -= entityToAdd.Ammount;
+                    itemAlreadyInList.Ammount -= advancement.Ammount;
                 }
             }
 
@@ -246,6 +247,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         CurrencyId = advancement.CurrencyId,
                         CurrencyDesc = advancement.Currency?.Text,
                         Ammount = advancement.Ammount,
+                        IsCurrencyPesos = currencyPesos?.Id == advancement.CurrencyId,
                         Entities = new List<EntityToPay> { new EntityToPay
                         {
                             Id = advancement.Id,

@@ -22,7 +22,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         userId: new FormControl(null, [Validators.required]),
         reasonCauseId: new FormControl(null, [Validators.required]),
         clientId: new FormControl(null, [Validators.required]),
-        quantity: new FormControl(null, [Validators.required, Validators.min(0)]),
+        quantity: new FormControl(null, [Validators.required, Validators.min(1)]),
         yearsExperience: new FormControl(null, [Validators.max(99), Validators.min(0)]),
         maximunSalary: new FormControl(null, [Validators.required]),
         recruiterId: new FormControl(null, [Validators.required]),

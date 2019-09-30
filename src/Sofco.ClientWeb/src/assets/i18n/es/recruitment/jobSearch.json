@@ -10,8 +10,8 @@
     "notFound": "Busqueda no encontrada",
     "updateSuccess": "La busqueda fue actualizada correctamente",
     "cannotChangeStatus": "No se puede cambiar el estado",
-    "suspendedDateGreaterThanReopenDate": "La fecha de suspensión no puede ser mayor a la seleccionada",
-    "createdDateGreaterThanSuspendedDate": "La fecha de creacion no puede ser mayor a la seleccionada",
+    "suspendedDateGreaterThanReopenDate": "La fecha de reapertura no puede ser menor a la de suspensión",
+    "createdDateGreaterThanSuspendedDate": "La fecha de suspensión no puede ser menor a la de apertura",
     "dateRequired": "La fecha es requerida",
     "statusRequired": "El estado es requerido",
     "userRequired": "El solicitante es requerido"
