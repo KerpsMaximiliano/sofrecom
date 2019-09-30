@@ -169,6 +169,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         if (month.closed) return;
 
         const totalType = `total${typeBudget}`;
+        this.subCategoriesData = new Array()
 
         var today = new Date();
         if (typeBudget == 'projected') {
@@ -201,7 +202,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.modalProfile = false;
         this.editItemModal.size = 'modal-sm'
         this.typeBudgetSelected = this.budgetTypes.find(x => x.name.toUpperCase() == typeBudget.toUpperCase())
-        
+
         switch (this.itemSelected.typeName) {
             case this.typeEmployee:
                 this.modalEmployee = true
@@ -212,10 +213,44 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 break;
 
             case this.generalAdjustment:
+                this.categorySelected = item
+                this.subCategoriesFiltered = this.subCategories.filter(x => x.idCategory == this.categorySelected.id)
+                if (this.subCategoriesFiltered.length > 0) {
+                    this.subCategorySelected = this.subCategoriesFiltered[0];
+                }
+
+                switch (this.typeBudgetSelected.name.toUpperCase()) {
+                    case 'BUDGET':
+                        if (!this.monthSelected.subcategoriesBudget[0]) {
+                            this.addCostByMonth()
+                        }
+                        break;
+                    case 'PROJECTED':
+                        if (!this.monthSelected.subcategoriesProjected[0]) {
+                            this.addCostByMonth()
+                        }
+                        break;
+                    case 'PFA1':
+                        if (!this.monthSelected.subcategoriesPfa1[0]) {
+                            this.addCostByMonth()
+                        }
+                        break;
+                    case 'PFA2':
+                        if (!this.monthSelected.subcategoriesPfa1[0]) {
+                            this.addCostByMonth()
+                        }
+                        break;
+                    case 'REAL':
+                        if (!this.monthSelected.subcategoriesReal[0]) {
+                            this.addCostByMonth()
+                        }
+                        break;
+                }
+
                 this.modalPercentage = true
                 this.editItemMonto.setValue(month[totalType])
                 this.editItemMonto.setValidators([Validators.min(0), Validators.max(999)]);
-                this.editItemModal.show();             
+                this.editItemModal.show();
                 break;
 
             default:
@@ -325,7 +360,6 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     addCostByMonth() {
-
         var cost = {
             costDetailStaffId: 0,
             id: this.subCategorySelected.id,
@@ -346,10 +380,11 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     updateItem() {
+
         var hasError = false;
-        
+
         switch (this.itemSelected.typeName) {
-            
+
             case this.typeEmployee:
                 this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].value = this.editItemMonto.value
                 this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].originalValue = this.editItemMonto.value
@@ -380,9 +415,36 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 break;
 
             case this.generalAdjustment:
-                this.monthSelected.subcategoriesBudget[0].value = this.editItemMonto.value
-                this.monthSelected.subcategoriesBudget[0].originalValue = this.editItemMonto.value
-                this.monthSelected.totalBudget = this.editItemMonto.value
+
+                this.subCategoriesData[0].value = this.editItemMonto.value
+                this.subCategoriesData[0].originalValue = this.editItemMonto.value
+
+                switch (this.typeBudgetSelected.name.toUpperCase()) {
+                    case 'BUDGET':
+                        this.monthSelected.subcategoriesBudget = this.subCategoriesData
+                        this.monthSelected.totalBudget = this.editItemMonto.value
+                        break;
+                    case 'PROJECTED':
+                        this.monthSelected.subcategoriesProjected = this.subCategoriesData
+                        this.monthSelected.totalProjected = this.editItemMonto.value
+                        break;
+                    case 'PFA1':
+                        this.monthSelected.subcategoriesPfa1 = this.subCategoriesData
+                        this.monthSelected.totalPfa1 = this.editItemMonto.value
+                        break;
+                    case 'PFA2':
+                        this.monthSelected.subcategoriesPfa2 = this.subCategoriesData
+                        this.monthSelected.totalPfa2 = this.editItemMonto.value
+                        break;
+                    case 'REAL':
+                        this.monthSelected.subcategoriesReal = this.subCategoriesData
+                        this.monthSelected.totalReal = this.editItemMonto.value
+                        break;
+                }
+                // this.monthSelected.subcategoriesBudget[0].value = this.editItemMonto.value
+                // this.monthSelected.subcategoriesBudget[0].originalValue = this.editItemMonto.value
+                // this.monthSelected.totalBudget = this.editItemMonto.value
+
 
                 this.modalPercentage = true;
                 this.employees.forEach(employee => {
