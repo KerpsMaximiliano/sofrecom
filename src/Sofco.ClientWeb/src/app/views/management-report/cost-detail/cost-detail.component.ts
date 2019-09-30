@@ -600,6 +600,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     calculateTotalReal() {
+        debugger
         this.months.forEach((month, index) => {
             var totalCost = 0;
             var totalSalary = 0;
@@ -631,7 +632,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
             })
 
-            month.real.totalCost = totalCost + (totalSalary * 0.51)
+            month.real.totalCost = totalCost + totalCharges
             month.real.totalSalary = totalSalary
             month.real.totalLoads = totalCharges
         })

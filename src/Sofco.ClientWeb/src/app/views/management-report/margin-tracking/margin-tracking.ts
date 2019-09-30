@@ -205,7 +205,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
            //marginTracking.SalesRemainigToDate = billingAcumulateProyected;
             
            // Acumulado a la fecha $$ (ventas)
-            //marginTracking.SalesAccumulatedToDate = billingRealAcumulatedToDate
+            marginTracking.SalesAccumulatedToDate = billingRealAcumulatedToDate
             
             //Acumulado a la fecha de proyectado + Real $$ (Ventas - hitos no facturados + Real Facturacion)
             marginTracking.TotalSalesToEnd = billingAcumulateProyected + billingRealAcumulatedToDate
