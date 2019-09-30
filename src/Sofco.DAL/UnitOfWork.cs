@@ -115,6 +115,7 @@ namespace Sofco.DAL
 
         private IJobSearchRepository jobSearchRepository;
         private IApplicantRepository applicantRepository;
+        private IJobSearchApplicantRepository jobSearchApplicantRepository;
 
         #endregion
 
@@ -278,6 +279,7 @@ namespace Sofco.DAL
 
         public IJobSearchRepository JobSearchRepository => jobSearchRepository ?? (jobSearchRepository = new JobSearchRepository(context));
         public IApplicantRepository ApplicantRepository => applicantRepository ?? (applicantRepository = new ApplicantRepository(context));
+        public IJobSearchApplicantRepository JobSearchApplicantRepository => jobSearchApplicantRepository ?? (jobSearchApplicantRepository = new JobSearchApplicantRepository(context));
 
         #endregion
 

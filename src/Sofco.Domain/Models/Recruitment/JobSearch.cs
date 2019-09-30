@@ -87,5 +87,7 @@ namespace Sofco.Domain.Models.Recruitment
         public bool GuardsPaid { get; set; }
 
         public string Area { get; set; }
+
+        public IList<JobSearchApplicant> JobSearchApplicants { get; set; }
     }
 }

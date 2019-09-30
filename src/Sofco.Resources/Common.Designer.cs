@@ -178,6 +178,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a common.parametersNull.
+        /// </summary>
+        public static string ParametersNull {
+            get {
+                return ResourceManager.GetString("ParametersNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a common.saveFileError.
         /// </summary>
         public static string SaveFileError {

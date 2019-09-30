@@ -176,6 +176,7 @@ namespace Sofco.DAL
         public DbSet<Applicant> Applicants { get; set; }
         public DbSet<ApplicantProfile> ApplicantProfiles { get; set; }
         public DbSet<ApplicantSkills> ApplicantSkillses { get; set; }
+        public DbSet<JobSearchApplicant> JobSearchApplicants { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -246,6 +247,7 @@ namespace Sofco.DAL
             builder.MapRecruitmentOptions();
             builder.MapJobSearch();
             builder.MapApplicant();
+            builder.MapJobSearchApplicant();
         }
     }
 }
