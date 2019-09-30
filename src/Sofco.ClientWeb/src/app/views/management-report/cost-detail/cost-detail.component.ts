@@ -631,7 +631,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
             })
 
-            month.real.totalCost = totalCost + (totalSalary * 0.51)
+            month.real.totalCost = totalCost + totalCharges
             month.real.totalSalary = totalSalary
             month.real.totalLoads = totalCharges
         })
@@ -681,6 +681,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                 var pos = this.otherResources.findIndex(r => r.typeId == this.otherSelected.typeId);
                 this.otherResources.splice(pos, 1)
+
+                var auxCategories = this.otherResources;
+                this.otherResources = []
+        
+                auxCategories.forEach(category => {
+                    this.otherResources.push(category)
+                });
 
                 if (this.otherResources.length > 0) {
                     this.otherSelected = this.otherResources[0];

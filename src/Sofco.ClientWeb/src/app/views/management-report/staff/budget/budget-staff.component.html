@@ -295,7 +295,14 @@
                 </tr>
 
                 <tr *ngFor="let category of categories">
-                    <th class="static first-column" scope="col">{{category.name}}</th>
+                    <!-- <th class="static first-column" scope="col">{{category.name}}</th> -->
+                    <th class="static first-column" scope="col">
+                        <p>
+                            {{ category.name }}
+                        </p>
+                        <i class="fa fa-2x fa-trash pointer" (click)="deleteCategory(category, i)"
+                            *ngIf="canDeleteCategory(category)"></i>
+                    </th>
                     <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label  cursor-pointer"
@@ -337,11 +344,22 @@
         </table>
     </div>
 
-    <!-- <div class="detail-actions m-t-sm text-center">
-        <button (click)="save()" class="btn btn-success btn-sm">
-            {{ 'ACTIONS.save' | translate }} <i class="fa fa-save"></i>
-        </button>
-    </div> -->
+    <br>
+    <div class="row" *ngIf="otherCategories.length > 0 && !readOnly">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <ng-select [items]="otherCategories" bindLabel="name" [(ngModel)]="otherSelected"
+                    [clearable]="false">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-md-2" *ngIf="menuService.hasFunctionality('MANRE', 'EDIT-COST-DETAIL')">
+            <button class="btn btn-success btn-md" type="button" (click)="addOtherCost()">
+                Agregar
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
 
 </div>
 

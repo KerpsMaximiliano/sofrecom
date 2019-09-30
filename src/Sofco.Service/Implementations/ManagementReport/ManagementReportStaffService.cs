@@ -262,7 +262,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 response.Data.BudgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget().Select(x => new BudgetTypeItem(x)).ToList();
                 response.Data.AllSubcategories = this.FillAllSubcategories();
-                response.Data.CostCategories = allCategoriesData.Where(r=> r.BelongEmployee == false).OrderBy(r => r.Name).ToList();
+                response.Data.CostCategories = allCategoriesData.Where(r=> r.Show == true && r.BelongEmployee == false).OrderBy(r => r.Name).ToList();
+                response.Data.OtherCategories = allCategoriesData.Where(r=> r.Show == false && r.BelongEmployee == false).OrderBy(r => r.Name).ToList();
                 response.Data.CostEmployees = managementReportService.FillCostEmployeesByMonth(managementReport.Analytic.Id, response.Data.MonthsHeader, costDetails);
                 response.Data.CostCategoriesEmployees = allCategoriesData.Where(r => r.BelongEmployee == true).OrderBy(r => r.Name).ToList();
                 response.Data.Status = managementReport.Status;
@@ -849,8 +850,8 @@ namespace Sofco.Service.Implementations.ManagementReport
             foreach (var category in categories)
             {
                 var detailCategory = new CostCategory();
-
                 detailCategory.MonthsCategory = new List<MonthDetailCostStaff>();
+                bool hasValue = false;
 
                 detailCategory.Id = category.Id;
                 detailCategory.Name = category.Name;
@@ -893,6 +894,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 detailSubcategory.CurrencyId = subcategory.CurrencyId;
                                 detailSubcategory.BudgetTypeId = subcategory.BudgetTypeId;
 
+                                if (detailSubcategory.Value > 0)
+                                {
+                                    hasValue = true;
+                                }
+
                                 switch (subcategory.BudgetType.Name.ToUpper())
                                 {
                                     case EnumBudgetType.budget:
@@ -919,6 +925,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthDetail.TotalReal = monthDetail.SubcategoriesReal.Sum(x => x.Value) ?? 0;
                             monthDetail.TotalProjected = monthDetail.SubcategoriesProjected.Sum(x => x.Value) ?? 0;
                         }
+                    }
+
+                    if (category.Default == true || hasValue)
+                    {
+                        detailCategory.Show = true;
                     }
 
                     detailCategory.MonthsCategory.Add(monthDetail);
