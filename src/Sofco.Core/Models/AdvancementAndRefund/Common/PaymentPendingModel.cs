@@ -27,6 +27,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Common
         public string Manager { get; set; }
 
         public IList<EntityToPay> Entities { get; set; }
+
+        public bool CanPayAll { get; set; }
     }
 
     public class EntityToPay
@@ -40,5 +42,13 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Common
         public int NextWorkflowStateId { get; set; }
 
         public decimal Ammount { get; set; }
+
+        public string EntitiesRelatedDesc { get; set; }
+
+        public IEnumerable<int> EntitiesRelatedIds { get; set; }
+
+        public string EntityType { get; set; }
+
+        public string CurrencyName { get; set; }
     }
 }

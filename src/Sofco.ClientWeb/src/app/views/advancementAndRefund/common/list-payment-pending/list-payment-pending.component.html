@@ -64,17 +64,19 @@
                         <th>{{ 'advancement.userApplicant' | translate }}</th>
                         <th>{{ 'advancement.currency' | translate }}</th>
                         <th>{{ 'advancement.ammount' | translate }}</th>
+                        <th>Detalle</th>
                     </tr>
                 </thead>
                 <tbody> 
                     <tr *ngFor="let item of modelFiltered" class="pointer">
                         <td class="column-xs text-center">
-                            <icheck [(checked)]="item.selected" (checkedChange)="calculateTotals()"></icheck>
+                            <icheck [(checked)]="item.selected" (checkedChange)="calculateTotals()" *ngIf="item.canPayAll && item.ammount > 0"></icheck>
                         </td>
                         <td>{{ item.bank }}</td>
                         <td>{{ item.userApplicantDesc }}</td>
                         <td>{{ item.currencyDesc }}</td>
                         <td>{{ item.ammount | amountFormat }}</td>
+                        <td><button class="btn btn-primary btn-sm" type="button" (click)="openDetail(item)"><i class="fa fa-eye"></i></button></td>
                     </tr>
                 </tbody>
             </table>   
@@ -82,4 +84,46 @@
             <h3>Total Seleccionado: $ {{ totalAmount | amountFormat }}</h3>
         </div>
     </div>
-</div>
+</div> 
+
+<ng2-modal [config]="detailModalConfig" #detailModal (accept)="payRefunds()" [size]="'modal-lg'" [isSaveEnabled]="saveEnabled()">
+    <table class="table table-striped dataTable m-b-sm" role="grid">
+        <thead>
+            <tr>
+                <th></th>
+                <th># </th>
+                <th>Tipo</th>
+                <th>Moneda</th>
+                <th>Monto</th>
+                <th>Relacionado con</th>
+            </tr>
+        </thead>
+        <tbody> 
+            <tr *ngFor="let item of rowSelected?.entities">
+                <td class="column-xs text-center">
+                    <icheck [(checked)]="item.selected" (checkedChange)="calculateTotalRowSelected(item)"></icheck>
+                </td>
+                <td>{{ item.id }}</td>
+                <td>
+                    <span *ngIf="item.type == 'refund'">Reintegro</span>
+                    <span *ngIf="item.type != 'refund'">Adelanto - 
+                        <span *ngIf="item.entityType == 'Salary'">Sueldo</span>
+                        <span *ngIf="item.entityType == 'Viaticum'">Viatico</span>
+                    </span>
+                </td>
+                <td>{{ item.currencyName }}</td>
+                <td>{{ item.ammount | amountFormat }} </td>
+                <td>{{ item.entitiesRelatedDesc }} </td>
+            </tr>
+        </tbody>
+    </table>   
+
+    <br/>
+
+    <div class="alert alert-gaps-warning" style="margin-bottom: 10px" *ngIf="currencyWarning">
+        <i class="fa fa-warning"></i>
+        Se han seleccionado items con distintas monedas
+    </div>
+
+    <h3 >Total Seleccionado: $ {{ totalRowSelectedAmount | amountFormat }}</h3>
+</ng2-modal> 
