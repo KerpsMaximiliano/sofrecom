@@ -6,6 +6,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.ManagementReport;
 using Sofco.Domain.DTO;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
@@ -50,6 +51,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var costDetailResources = unitOfWork.CostDetailResourceRepository.GetByDate(date);
                 var allocations = unitOfWork.AllocationRepository.GetAllocationsByDate(date);
 
+                var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
+                int budgetRealId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
+
                 var costDetailList = new List<CostDetail>();
 
                 foreach (var costDetailResource in costDetailResources)
@@ -88,7 +92,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         costDetailResource.Value = CryptographyHelper.Encrypt(newValueSalary.ToString(CultureInfo.InvariantCulture));
                         costDetailResource.Charges = CryptographyHelper.Encrypt(newValueCharges.ToString(CultureInfo.InvariantCulture));
-                        costDetailResource.IsReal = true;
+                        costDetailResource.BudgetTypeId = budgetRealId;
                         unitOfWork.CostDetailResourceRepository.Update(costDetailResource);
                     }
                 }

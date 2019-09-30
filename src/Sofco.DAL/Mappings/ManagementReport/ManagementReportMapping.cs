@@ -39,6 +39,7 @@ namespace Sofco.DAL.Mappings.ManagementReport
             builder.Entity<CostDetailResource>().HasOne(x => x.CostDetail).WithMany(x => x.CostDetailResources).HasForeignKey(x => x.CostDetailId);
             builder.Entity<CostDetailResource>().HasOne(x => x.Employee).WithMany(x => x.CostDetailResources).HasForeignKey(x => x.CostDetailId);
             builder.Entity<CostDetailResource>().HasOne(x => x.User).WithMany(x => x.CostDetailResources).HasForeignKey(x => x.CostDetailId);
+            builder.Entity<CostDetailResource>().HasOne(x => x.BudgetType).WithMany(x => x.CostDetailResource).HasForeignKey(x => x.BudgetTypeId);
 
             // Cost Detail Profile
             builder.Entity<CostDetailProfile>().HasKey(x => x.Id);

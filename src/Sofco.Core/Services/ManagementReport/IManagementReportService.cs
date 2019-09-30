@@ -1,6 +1,7 @@
 ﻿using Sofco.Core.Models.ManagementReport;
 using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace Sofco.Core.Services.ManagementReport
@@ -26,5 +27,6 @@ namespace Sofco.Core.Services.ManagementReport
         Response DeleteProfile(string guid);
         void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails, bool isReal = false);
         List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails);
+        IList<CostResourceEmployee> AddAnalyticMonthsToEmployees(IList<CostResourceEmployee> pCostEmployees, int managementReportId, DateTime startDateAnalytic, DateTime endDateAnalytic);
     }
 }

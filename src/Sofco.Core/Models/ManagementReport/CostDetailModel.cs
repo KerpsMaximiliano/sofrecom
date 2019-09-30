@@ -68,6 +68,7 @@ namespace Sofco.Core.Models.ManagementReport
     public class Cost
     {
         public int Id { get; set; }
+        public int BudgetTypeId { get; set; }
         public decimal? Value { get; set; }
         public decimal? OriginalValue { get; set; }
         public decimal? Adjustment { get; set; }

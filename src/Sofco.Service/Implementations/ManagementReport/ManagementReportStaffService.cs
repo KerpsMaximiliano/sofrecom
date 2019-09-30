@@ -190,7 +190,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 var costDetailStaff = costDetail.CostDetailStaff.Where(x => x.BudgetType.Name == typeBudget).ToList();
                 subcategories = this.Translate(costDetailStaff);
-                resources = this.Translate(costDetail.CostDetailResources.Where(x => x.IsReal == getReal).ToList(), monthYear, allocations, managementReport.AnalyticId);
+                resources = this.Translate(costDetail.CostDetailResources.Where(x => x.BudgetType.Name == typeBudget).ToList(), monthYear, allocations, managementReport.AnalyticId);
 
                 if (!getReal)
                 {
@@ -296,6 +296,24 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var allCostCategories = pDetailCost.CostCategories.Union(pDetailCost.CostCategoriesEmployees).ToList();
 
                 this.InsertUpdateCostDetailStaff(allCostCategories, costDetails);
+
+                if (pDetailCost.CostEmployees.Count > 0)
+                {
+                    IList<CostResourceEmployee> EmployeesWithAllMonths;
+
+                    //Verifico si la fecha final del proyecto es la misma que la de final de la analitica
+                    if (new DateTime(managementReport.EndDate.Year, managementReport.EndDate.Month, 1).Date == new DateTime(analytic.EndDateContract.Year, analytic.EndDateContract.Month, 1).Date)
+                    {
+                        EmployeesWithAllMonths = pDetailCost.CostEmployees;
+                    }
+                    else
+                    {
+                        EmployeesWithAllMonths = managementReportService.AddAnalyticMonthsToEmployees(pDetailCost.CostEmployees, managementReport.Id, analytic.StartDateContract, analytic.EndDateContract);
+                    }
+
+                    managementReportService.InsertUpdateCostDetailResources(EmployeesWithAllMonths, managementReport.CostDetails.ToList());
+                }
+
                 this.InsertTotalBudgets(pDetailCost.CostCategories, pDetailCost.ManagementReportId);
 
                 //Cambiar estado de budget
@@ -377,6 +395,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         month.Real.Id = employee.Id;
                         month.Real.Value = employee.Salary;
                         month.Real.Charges = employee.Charges;
+                        month.Real.BudgetTypeId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
 
                         totalSalary += employee.Salary ?? 0;
                         totalSalary += employee.Charges ?? 0;

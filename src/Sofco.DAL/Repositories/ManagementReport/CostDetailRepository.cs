@@ -43,6 +43,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
                         .ThenInclude(z => z.CostDetailCategory)
                 .Include(x => x.ContratedDetails)
                 .Include(x => x.CostDetailResources)
+                    .ThenInclude(y => y.BudgetType)
                 .Include(x => x.CostDetailStaff)                            
                         .ThenInclude(y => y.CostDetailSubcategory)
                             .ThenInclude(z => z.CostDetailCategory)
@@ -66,8 +67,11 @@ namespace Sofco.DAL.Repositories.ManagementReport
 
         public CostDetail GetWithResourceDetails(int managementReportId, DateTime date)
         {
-            return context.CostDetails.Include(x => x.CostDetailResources).SingleOrDefault(x =>
-                x.MonthYear.Date == date.Date && x.ManagementReportId == managementReportId);
+            return context.CostDetails
+                    .Include(x => x.CostDetailResources)
+                        .ThenInclude(y => y.BudgetType)
+                    .SingleOrDefault(x =>
+                        x.MonthYear.Date == date.Date && x.ManagementReportId == managementReportId);
         }
 
         public void Close(CostDetail detailCost)
@@ -79,6 +83,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             return context.CostDetails
                .Include(x => x.CostDetailResources)
+                    .ThenInclude(y => y.BudgetType)
                .Include(x => x.CostDetailProfiles)
                .Include(x => x.CostDetailOthers)
                .Include(x => x.ContratedDetails)
