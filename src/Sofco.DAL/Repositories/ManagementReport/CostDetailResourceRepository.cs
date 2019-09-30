@@ -18,6 +18,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             return context.CostDetailResources
                 .Include(x => x.CostDetail)
+                .Include(x => x.BudgetType)
                 .Where(x => x.CostDetail.ManagementReportId == managementReportId && x.CostDetail.MonthYear.Date >= firstMonthDate && x.CostDetail.MonthYear.Date <= lastMonthDate)
                 .ToList();
         }
@@ -26,6 +27,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             return context.CostDetailResources
                 .Include(x => x.CostDetail)
+                .Include(x => x.BudgetType)
                 .ThenInclude(x => x.ManagementReport)
                 .Where(x => x.CostDetail.MonthYear.Date == date.Date).ToList();
         }

@@ -80,6 +80,8 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         var evalpropTotalTracing = 0;
         var cantMonths = 0;
         var billingAcumulateProyected = 0
+        var budgetRemaint = 0;
+        var billingRemaint = 0;
 
         for (var initDate = startDate; initDate <= endDate; initDate.setMonth(initDate.getMonth() + 1)) {
             var marginTracking = new MarginTracking();
@@ -161,6 +163,10 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
                 // Real al mes $$ (costos)
                 marginTracking.TotalExpensesOnMonth = costDetailMonth.real.totalCost;
                 costsAcumulatedToDate += costDetailMonth.real.totalCost;
+
+                if(costDetailMonth.real.totalCost == null || costDetailMonth.real.totalCost == 0){
+                    budgetRemaint += costDetailMonth.budget.totalCost;
+                }
                 
                 // Real del mes $$ (ventas)
                 if(costDetailMonth.totalBilling && costDetailMonth.totalBilling != null){
@@ -170,6 +176,10 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
                 else{
                     marginTracking.SalesOnMonth = billingRealMonth
                     billingRealAcumulatedToDate += billingRealMonth
+                }
+
+                if( marginTracking.SalesOnMonth == null ||  marginTracking.SalesOnMonth == 0){
+                    billingRemaint +=  marginTracking.SalesOnMonth;
                 }
 
                 totalCostsAcumulatedToEnd += costDetailMonth.real.totalCost;
@@ -192,10 +202,10 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             //}
 
             //Acumulado a la fecha de proyectado $$ (Vemtas -> hitos no facturados)
-           marginTracking.SalesRemainigToDate = billingAcumulateProyected;
+           //marginTracking.SalesRemainigToDate = billingAcumulateProyected;
             
            // Acumulado a la fecha $$ (ventas)
-            marginTracking.SalesAccumulatedToDate = billingRealAcumulatedToDate
+            //marginTracking.SalesAccumulatedToDate = billingRealAcumulatedToDate
             
             //Acumulado a la fecha de proyectado + Real $$ (Ventas - hitos no facturados + Real Facturacion)
             marginTracking.TotalSalesToEnd = billingAcumulateProyected + billingRealAcumulatedToDate
@@ -204,7 +214,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             marginTracking.TotalExpensesAccumulatedToDate = costsAcumulatedToDate;
             
             //Acumulado a la fecha de previsto $$ (costos)
-            marginTracking.TotalExpensesRemainigToDate = budgetAcumulatedToDate
+            //marginTracking.TotalExpensesRemainigToDate = budgetAcumulatedToDate
  
             //Acumulado a la fecha de proyectado + Real $$ (costos previstos + costos real)
             marginTracking.TotalExpensesToEnd = costsAcumulatedToDate + budgetAcumulatedToDate
@@ -224,7 +234,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         
         percentageExpectedTotal = evalpropTotalTracing / cantMonths
 
-        this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, budgetAcumulatedToDate, percentageExpectedTotal);
+        this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, billingRealAcumulatedToDate, budgetRemaint, billingAcumulateProyected, percentageExpectedTotal);
 
         this.setMarginTracking(selectedMonth, selectedYear);
 
@@ -279,19 +289,19 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         // });
     }
 
-    private setRemainingAndTotal(totalAcumulatedToEnd: number, totalCostsAcumulatedToEnd: number, totalCostsProyectedToEnd: number,percentageExpectedTotal: number) {
-        debugger
+    private setRemainingAndTotal(totalAcumulatedToEnd: number, totalCostsAcumulatedToEnd: number, billingRealAcumulated: number, budgetRemaint: number, billingAcumulateProyected: number, percentageExpectedTotal: number) {
+        
         if (!this.allMarginTrackings || this.allMarginTrackings.length == 0) return;
 
         this.allMarginTrackings.forEach(element => {
             // Restante a la fecha (proyectado, ventas)
-            element.SalesRemainigToDate = totalAcumulatedToEnd - element.SalesRemainigToDate;
+            element.SalesRemainigToDate = billingAcumulateProyected
             // Restante a la fecha (proyectado, costos)
-           element.TotalExpensesRemainigToDate = totalCostsProyectedToEnd - element.TotalExpensesRemainigToDate;
+           element.TotalExpensesRemainigToDate = budgetRemaint;
 
             // Total a terminacion
-            //element.TotalSalesToEnd += totalAcumulatedToEnd;
-            //element.TotalExpensesToEnd += totalCostsAcumulatedToEnd;
+            element.TotalSalesToEnd = billingRealAcumulated + billingAcumulateProyected;
+            element.TotalExpensesToEnd = totalCostsAcumulatedToEnd + budgetRemaint;
             element.PercentageExpectedTotal = percentageExpectedTotal;
 
             element.PercentageToEnd = ((totalAcumulatedToEnd - totalCostsAcumulatedToEnd) / totalAcumulatedToEnd) * 100;

@@ -10,5 +10,6 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public ICollection<CostDetailStaff> CostDetailStaff { get; set; }
         public ICollection<ManagementReport> ManagementReport { get; set; }
+        public ICollection<CostDetailResource> CostDetailResource { get; set; }
     }
 }

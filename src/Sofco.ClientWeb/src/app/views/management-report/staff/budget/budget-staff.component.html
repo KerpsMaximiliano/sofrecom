@@ -145,7 +145,7 @@
                         let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label" (click)="openEditItemModal(employee, 'Budget', monthCost)"
-                                *ngIf="monthCost.canViewSensibleData" 
+                                *ngIf="monthCost.canViewSensibleData"
                                 [ngClass]="monthCost.real.value <= monthCost.budget.value ? 'label-success' : 'label-danger'">
                                 {{ monthCost.budget.value | amountFormat }}
                             </label>
@@ -154,18 +154,33 @@
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" [hidden]="!showColumn.projected">
-                            <label>
-
+                            <label class="label" (click)="openEditItemModal(employee, 'Projected', monthCost)"
+                                *ngIf="monthCost.canViewSensibleData"
+                                [ngClass]="monthCost.real.value <= monthCost.projected.value ? 'label-success' : 'label-danger'">
+                                {{ monthCost.projected.value | amountFormat }}
+                            </label>
+                            <label class="label" *ngIf="!monthCost.canViewSensibleData" [ngClass]="monthCost.class">
+                                <i class="fa fa-lock text-danger" aria-hidden="true"></i>
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" [hidden]="!showColumn.pfa1">
-                            <label>
-
+                            <label class="label" (click)="openEditItemModal(employee, 'Pfa1', monthCost)"
+                                *ngIf="monthCost.canViewSensibleData"
+                                [ngClass]="monthCost.real.value <= monthCost.pfa1.value ? 'label-success' : 'label-danger'">
+                                {{ monthCost.pfa1.value | amountFormat }}
+                            </label>
+                            <label class="label" *ngIf="!monthCost.canViewSensibleData" [ngClass]="monthCost.class">
+                                <i class="fa fa-lock text-danger" aria-hidden="true"></i>
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" [hidden]="!showColumn.pfa2">
-                            <label>
-
+                            <label class="label" (click)="openEditItemModal(employee, 'Pfa2', monthCost)"
+                                *ngIf="monthCost.canViewSensibleData"
+                                [ngClass]="monthCost.real.value <= monthCost.pfa2.value ? 'label-success' : 'label-danger'">
+                                {{ monthCost.pfa2.value | amountFormat }}
+                            </label>
+                            <label class="label" *ngIf="!monthCost.canViewSensibleData" [ngClass]="monthCost.class">
+                                <i class="fa fa-lock text-danger" aria-hidden="true"></i>
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('real', i)}" [hidden]="!showColumn.real">
@@ -238,7 +253,7 @@
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" [hidden]="!showColumn.pfa2">
                             <label class="label label-salary">
-                                 {{ month.pfa2.totalSalary | amountFormat }}
+                                {{ month.pfa2.totalSalary | amountFormat }}
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('real', i)}" [hidden]="!showColumn.real">
@@ -251,7 +266,7 @@
                 <tr>
                     <th class="static first-column" scope="col">Cargas (0.51 del sueldo)</th>
                     <ng-template ngFor let-month [ngForOf]="months" let-i="index">
-                        <td  [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
+                        <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label label-load">
                                 {{ month.budget.totalLoads | amountFormat }}
                             </label>
