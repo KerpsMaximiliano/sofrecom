@@ -175,6 +175,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         CurrencyId = advancement.CurrencyId,
                         CurrencyDesc = advancement.Currency?.Text,
                         Ammount = advancement.Ammount * -1,
+                        IsCurrencyPesos = currencyPesos?.Id == advancement.CurrencyId,
                         Entities = new List<EntityToPay> { new EntityToPay
                         {
                             Id = advancement.Id,
@@ -246,6 +247,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         CurrencyId = advancement.CurrencyId,
                         CurrencyDesc = advancement.Currency?.Text,
                         Ammount = advancement.Ammount,
+                        IsCurrencyPesos = currencyPesos?.Id == advancement.CurrencyId,
                         Entities = new List<EntityToPay> { new EntityToPay
                         {
                             Id = advancement.Id,
