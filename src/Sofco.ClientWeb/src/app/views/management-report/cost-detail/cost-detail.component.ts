@@ -600,7 +600,6 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     calculateTotalReal() {
-        debugger
         this.months.forEach((month, index) => {
             var totalCost = 0;
             var totalSalary = 0;
@@ -682,6 +681,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                 var pos = this.otherResources.findIndex(r => r.typeId == this.otherSelected.typeId);
                 this.otherResources.splice(pos, 1)
+
+                var auxCategories = this.otherResources;
+                this.otherResources = []
+        
+                auxCategories.forEach(category => {
+                    this.otherResources.push(category)
+                });
 
                 if (this.otherResources.length > 0) {
                     this.otherSelected = this.otherResources[0];

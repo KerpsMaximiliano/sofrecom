@@ -406,9 +406,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     updateItem() {
 
         var hasError = false;
-
+        
         switch (this.itemSelected.typeName) {
-
+            
             case this.typeEmployee:
                 this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].value = this.editItemMonto.value
                 this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].originalValue = this.editItemMonto.value
@@ -1021,6 +1021,13 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         var pos = this.otherCategories.findIndex(r => r.id == this.otherSelected.id);
         this.otherCategories.splice(pos, 1)
 
+        var auxCategories = this.otherCategories;
+        this.otherCategories = []
+
+        auxCategories.forEach(category => {
+            this.otherCategories.push(category)
+        });
+        
         if (this.otherCategories.length > 0) {
             this.otherSelected = this.otherCategories[0];
         }
@@ -1028,24 +1035,20 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     }
 
-    canDeleteResources(item) {
-
-        var canEdit = false;
-        // if (item.otherResource) {
-        //     canEdit = true;
-        // }
-        item.monthsCost.forEach(month => {
-            if (month.budget.value > 0 || month.real.value > 0
-                || month.projected.value > 0 || month.pfa1.value > 0 || month.pfa2.value > 0) {
-                canEdit = false
-                return canEdit
+    canDeleteCategory(item) {
+        var canDelete = true;
+        item.monthsCategory.forEach(month => {
+            if (month.totalBudget > 0 || month.totalProjected > 0
+                || month.totalPfa1 > 0 || month.totalPfa2 > 0 || month.totalReal > 0) {
+                    canDelete = false
+                return canDelete
             }
         });
 
-        return canEdit
+        return canDelete
     }
 
-    deleteResources(item, index) {
+    deleteCategory(item, index) {
 
         this.categories.splice(index, 1)
         this.otherCategories.push(item)

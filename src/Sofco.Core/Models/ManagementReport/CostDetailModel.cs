@@ -125,6 +125,7 @@ namespace Sofco.Core.Models.ManagementReport
         public string State { get; set; }
         public IList<MonthHeaderCost> MonthsHeader { get; set; }
         public List<CostCategory> CostCategories { get; set; }
+        public List<CostCategory> OtherCategories { get; set; }
         public List<CostResourceEmployee> CostEmployees { get; set; }
         public List<CostCategory> CostCategoriesEmployees { get; set; }
         public List<CostSubcategory> AllSubcategories { get; set; }
@@ -138,6 +139,7 @@ namespace Sofco.Core.Models.ManagementReport
         public string Name { get; set; }
         public bool BelongEmployee { get; set; }
         public string TypeName { get; set; }
+        public bool Show { get; set; }
 
         public List<MonthDetailCostStaff> MonthsCategory { get; set; }
     }

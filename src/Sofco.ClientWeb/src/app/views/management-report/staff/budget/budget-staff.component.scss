@@ -16,6 +16,16 @@ table {
   
   .first-column {
     width: 170px;
+
+    p{
+      width: 150px;
+      float: left;
+  }
+
+  i{
+      float: right;
+      color: #BD3446;
+  }
   }
   
   .label {
