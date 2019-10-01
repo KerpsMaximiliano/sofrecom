@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Sofco.Domain.Models.Recruitment;
 
 namespace Sofco.Core.Models.Recruitment
@@ -8,6 +9,18 @@ namespace Sofco.Core.Models.Recruitment
         public JobSearchApplicantModel(Applicant applicant)
         {
             Applicant = $"{applicant.FirstName} {applicant.LastName}";
+
+            if (applicant.ApplicantProfiles != null && applicant.ApplicantProfiles.Any())
+                Profiles = string.Join(";", applicant.ApplicantProfiles.Select(x => x.Profile.Text));
+
+            if (applicant.ApplicantSkills != null && applicant.ApplicantSkills.Any())
+                Skills = string.Join(";", applicant.ApplicantSkills.Select(x => x.Skill.Text));
+
+            if (applicant.JobSearchApplicants != null && applicant.JobSearchApplicants.Any())
+            {
+                var contact = applicant.JobSearchApplicants.FirstOrDefault();
+                Date = contact?.CreatedDate;
+            }
         }
 
         public string Applicant { get; set; }
@@ -16,6 +29,6 @@ namespace Sofco.Core.Models.Recruitment
 
         public string Profiles { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

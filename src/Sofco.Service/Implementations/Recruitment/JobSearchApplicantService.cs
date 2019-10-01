@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -34,12 +35,19 @@ namespace Sofco.Service.Implementations.Recruitment
                 return response;
             }
 
-            var skills = jobSearch.JobSearchSkillsRequired.Select(x => x.SkillId).ToList();
-            var profiles = jobSearch.JobSearchProfiles.Select(x => x.ProfileId).ToList();
+            try
+            {
+                var skills = jobSearch.JobSearchSkillsRequired.Select(x => x.SkillId).ToList();
+                var profiles = jobSearch.JobSearchProfiles.Select(x => x.ProfileId).ToList();
 
-            var applicants = unitOfWork.JobSearchApplicantRepository.Get(skills, profiles);
+                var applicants = unitOfWork.JobSearchApplicantRepository.Get(skills, profiles);
 
-            response.Data = applicants.Select(x => new JobSearchApplicantModel(x)).ToList();
+                response.Data = applicants.Select(x => new JobSearchApplicantModel(x)).ToList();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
 
             return response;
         }
