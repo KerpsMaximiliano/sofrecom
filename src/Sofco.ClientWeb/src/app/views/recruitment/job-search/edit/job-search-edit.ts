@@ -82,6 +82,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     status: number;
     statusSelected: JobSearchStatus;
 
+    @ViewChild('applicantsRelated') applicantsRelated;
+    
     @ViewChild('dateModal') dateModal;
     public dateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
@@ -114,7 +116,13 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.activateRoute.params.subscribe(routeParams => {
             this.entityId = routeParams.id;
             this.getData(routeParams.id);
+            this.applicantsRelated.init(this.entityId);
         });
+
+        setTimeout(() => {
+            $('#tab-1 .ng-select .ng-select-container').css('min-height', '30px');
+            $('#tab-1 .ng-select .ng-select-container').css('height', '30px');
+        }, 200);
     }
 
     ngOnDestroy(): void {
@@ -236,6 +244,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.genericOptionsService.controller = "reasonCause";
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             this.reasonOptions = response.data;
+            this.applicantsRelated.setReasonOptions(this.reasonOptions);
         },
         () => {});
     }

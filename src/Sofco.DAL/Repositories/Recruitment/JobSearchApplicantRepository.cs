@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Models.Recruitment;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.Recruitment
 {
@@ -33,14 +34,31 @@ namespace Sofco.DAL.Repositories.Recruitment
                     query = query.Where(x => x.ApplicantProfiles.Any(s => skills.Contains(s.ProfileId)));
             }
 
-            return query.Select(x => new Applicant
-            {
-                ApplicantProfiles = x.ApplicantProfiles,
-                ApplicantSkills = x.ApplicantSkills,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                JobSearchApplicants = x.JobSearchApplicants.OrderByDescending(s => s.CreatedDate).Take(1).ToList(),
-            }).ToList();
+            return query
+                .Include(x => x.ApplicantProfiles)
+                    .ThenInclude(x => x.Profile)
+                .Include(x => x.ApplicantSkills)
+                    .ThenInclude(x => x.Skill)
+                .Select(x => new Applicant
+                {
+                    Id = x.Id,
+                    ApplicantProfiles = x.ApplicantProfiles.Select(s => new ApplicantProfile
+                    {
+                        Applicant = s.Applicant,
+                        Profile = s.Profile
+                    })
+                    .ToList(),
+                    ApplicantSkills = x.ApplicantSkills.Select(s => new ApplicantSkills
+                    {
+                        Applicant = s.Applicant,
+                        Skill = s.Skill,
+                    })
+                    .ToList(),
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    JobSearchApplicants = x.JobSearchApplicants.OrderByDescending(s => s.CreatedDate).Take(1).ToList(),
+                })
+            .ToList();
         }
     }
 }

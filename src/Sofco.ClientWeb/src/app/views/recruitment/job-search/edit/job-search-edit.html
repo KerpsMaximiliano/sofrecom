@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight wrapper-font">
 
     <button type="button" class="btn btn-md btn-success" (click)="back()"> <i class="fa fa-arrow-left"></i> Volver </button>
     <button type="button" class="btn btn-md btn-success" (click)="close()" *ngIf="canClose()"> Cerrar </button>
@@ -24,7 +24,7 @@
 
     <button [disabled]="!form.valid" *ngIf="canSave()" (click)="add()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
 
-    <form class="m-t-md" [formGroup]="form">
+    <form class="m-t-md m-b-md" [formGroup]="form">
         <div class="tabs-container">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="active"><a class="nav-link" data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> Datos Generales </a></li>
@@ -95,7 +95,7 @@
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'maximunSalary')">
                                     <label class="control-label">Sueldo Ofrecido</label>
-                                    <input type="text" decimalFormat="9" class="form-control" formControlName="maximunSalary">
+                                    <input type="text" decimalFormat="9" class="form-control input-sm" formControlName="maximunSalary">
                         
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'maximunSalary')">
                                         <p *ngIf="formsService.hasError(form, 'maximunSalary', 'required')">El campo es requerido</p>
@@ -106,7 +106,7 @@
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'jobTime')">
                                     <label class="control-label">Horario de trabajo</label>
-                                    <input type="text" class="form-control" formControlName="jobTime" maxlength="100">
+                                    <input type="text" class="form-control input-sm" formControlName="jobTime" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'jobTime')">
                                         <p *ngIf="formsService.hasError(form, 'jobTime', 'maxLength')">Los horario no puede superar los 100 caracteres</p>
@@ -119,7 +119,7 @@
                             <div class="col-md-2">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'quantity')">
                                     <label class="control-label">Cantidad personas</label>
-                                    <input type="number" [digitLimit]="3" class="form-control" formControlName="quantity">
+                                    <input type="number" [digitLimit]="3" class="form-control input-sm" formControlName="quantity">
                         
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'quantity')">
                                         <p *ngIf="formsService.hasError(form, 'quantity', 'required')">EL campo es requerido</p>
@@ -155,7 +155,7 @@
                             <div class="col-md-6">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'area')">
                                     <label class="control-label">Area del puesto</label>
-                                    <input type="text" class="form-control" formControlName="area" maxlength="100">
+                                    <input type="text" class="form-control input-sm" formControlName="area" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'area')">
                                         <p *ngIf="formsService.hasError(form, 'area', 'maxLength')">El area no puede superar los 100 caracteres</p>
@@ -165,7 +165,7 @@
                             <div class="col-md-6">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'location')">
                                     <label class="control-label">Ubicación geográfica / Medios de acceso</label>
-                                    <input type="text" class="form-control" formControlName="location">
+                                    <input type="text" class="form-control input-sm" formControlName="location">
                                     
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'location')">
                                         <p *ngIf="formsService.hasError(form, 'location', 'maxLength')">Los comentarios no pueden superar los 200 caracteres</p>
@@ -292,7 +292,7 @@
                             <div class="col-md-2">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'yearsExperience')">
                                     <label class="control-label">Años de experiencia</label>
-                                    <input type="number" class="form-control" formControlName="yearsExperience" min="0" max="99">
+                                    <input type="number" class="form-control input-sm" formControlName="yearsExperience" min="0" max="99">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'yearsExperience')">
                                         <p *ngIf="formsService.hasError(form, 'yearsExperience', 'min')">El campo no puede ser menor a 0</p>
@@ -303,7 +303,7 @@
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'language')">
                                     <label class="control-label">Idioma y nivel</label>
-                                    <input type="text" class="form-control" formControlName="language" maxlength="100">
+                                    <input type="text" class="form-control input-sm" formControlName="language" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'language')">
                                         <p *ngIf="formsService.hasError(form, 'language', 'maxLength')">El idioma no pueden superar los 100 caracteres</p>
@@ -314,7 +314,7 @@
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'study')">
                                     <label class="control-label">Nivel estudios</label>
-                                    <input type="text" class="form-control" formControlName="study" maxlength="100">
+                                    <input type="text" class="form-control input-sm" formControlName="study" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'study')">
                                         <p *ngIf="formsService.hasError(form, 'study', 'maxLength')">El idioma no pueden superar los 100 caracteres</p>
@@ -344,19 +344,19 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Contacto del cliente</label>
-                                    <input type="text" class="form-control" formControlName="clientContact">
+                                    <input type="text" class="form-control input-sm" formControlName="clientContact">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Teléfono</label>
-                                    <input type="text" class="form-control" formControlName="telephone">
+                                    <input type="text" class="form-control input-sm" formControlName="telephone">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">E-Mail</label>
-                                    <input type="text" class="form-control" formControlName="email">
+                                    <input type="text" class="form-control input-sm" formControlName="email">
                                 </div>
                             </div>
                         </div>
@@ -365,6 +365,8 @@
             </div>
         </div>
     </form>
+
+    <job-search-applicants-related #applicantsRelated></job-search-applicants-related>
 </div>
 
 <ng2-modal [config]="dateModalConfig" #dateModal (accept)="changeStatus()" [isSaveEnabled]="dateModalForm.valid">

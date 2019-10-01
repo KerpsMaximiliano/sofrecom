@@ -7,5 +7,6 @@ namespace Sofco.Core.Services.Recruitment
     public interface IJobSearchApplicantService
     {
         Response<IList<JobSearchApplicantModel>> GetByJobSearch(int jobSearchId);
+        Response Add(JobSearchApplicantAddModel model);
     }
 }

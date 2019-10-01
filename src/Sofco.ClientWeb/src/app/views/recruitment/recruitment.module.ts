@@ -27,6 +27,7 @@ import { JobSearchEditComponent } from './job-search/edit/job-search-edit';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { TimeHiringComponent } from '../admin/options/timeHiring';
 import { ApplicantService } from 'app/services/recruitment/applicant.service';
+import { ApplicantsRelatedComponent } from './job-search/applicants-related/applicants-related';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ApplicantService } from 'app/services/recruitment/applicant.service';
     ReasonCauseComponent,
     JobSearchComponent,
     JobSearchListComponent,
-    JobSearchEditComponent
+    JobSearchEditComponent,
+    ApplicantsRelatedComponent
   ],
 
   imports: [

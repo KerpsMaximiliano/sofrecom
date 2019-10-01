@@ -14,5 +14,6 @@
     "createdDateGreaterThanSuspendedDate": "La fecha de suspensión no puede ser menor a la de apertura",
     "dateRequired": "La fecha es requerida",
     "statusRequired": "El estado es requerido",
+    "commentsRequired": "Los comentarios son requeridos",
     "userRequired": "El solicitante es requerido"
 }

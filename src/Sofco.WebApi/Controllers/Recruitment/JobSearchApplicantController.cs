@@ -17,13 +17,13 @@ namespace Sofco.WebApi.Controllers.Recruitment
             this.jobSearchApplicantService = jobSearchApplicantService;
         }
 
-        //[HttpPost]
-        //public IActionResult Post([FromBody] ApplicantAddModel model)
-        //{
-        //    var response = jobSearchApplicantService.Add(model);
+        [HttpPost]
+        public IActionResult Post([FromBody] JobSearchApplicantAddModel model)
+        {
+            var response = jobSearchApplicantService.Add(model);
 
-        //    return this.CreateResponse(response);
-        //}
+            return this.CreateResponse(response);
+        }
 
         [HttpGet]
         public IActionResult Get([FromUri] JobSearchApplicantParameters parameters)

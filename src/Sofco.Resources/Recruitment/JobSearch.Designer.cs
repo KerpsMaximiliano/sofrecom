@@ -88,6 +88,24 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.commentsRequired.
+        /// </summary>
+        public static string CommentsRequired {
+            get {
+                return ResourceManager.GetString("CommentsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.contactAdded.
+        /// </summary>
+        public static string ContactAdded {
+            get {
+                return ResourceManager.GetString("ContactAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearch.createdDateGreaterThanSuspendedDate.
         /// </summary>
         public static string CreatedDateGreaterThanSuspendedDate {

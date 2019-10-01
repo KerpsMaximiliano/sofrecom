@@ -8,6 +8,7 @@ namespace Sofco.Core.Models.Recruitment
     {
         public JobSearchApplicantModel(Applicant applicant)
         {
+            Id = applicant.Id;
             Applicant = $"{applicant.FirstName} {applicant.LastName}";
 
             if (applicant.ApplicantProfiles != null && applicant.ApplicantProfiles.Any())
@@ -22,6 +23,8 @@ namespace Sofco.Core.Models.Recruitment
                 Date = contact?.CreatedDate;
             }
         }
+
+        public int Id { get; set; }
 
         public string Applicant { get; set; }
 

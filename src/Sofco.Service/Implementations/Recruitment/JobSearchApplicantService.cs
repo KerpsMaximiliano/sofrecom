@@ -6,6 +6,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Recruitment;
 using Sofco.Core.Services.Recruitment;
+using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.Recruitment
@@ -47,6 +48,49 @@ namespace Sofco.Service.Implementations.Recruitment
             catch (Exception e)
             {
                 logger.LogError(e);
+            }
+
+            return response;
+        }
+
+        public Response Add(JobSearchApplicantAddModel model)
+        {
+            var response = new Response();
+
+            if (!model.ReasonId.HasValue)
+                response.AddError(Resources.Recruitment.JobSearch.ReasonCauseRequired);
+
+            if(string.IsNullOrWhiteSpace(model.Comments))
+                response.AddError(Resources.Recruitment.JobSearch.CommentsRequired);
+
+            if (response.HasErrors()) return response;
+
+            var currentUser = userData.GetCurrentUser();
+
+            try
+            {
+                foreach (var applicantId in model.Applicants)
+                {
+                    var itemToAdd = new JobSearchApplicant
+                    {
+                        ApplicantId = applicantId,
+                        Comments = model.Comments,
+                        JobSearchId = model.JobSearchId,
+                        ReasonId = model.ReasonId.GetValueOrDefault(),
+                        CreatedDate = DateTime.UtcNow,
+                        CreatedBy = currentUser.UserName
+                    };
+
+                    unitOfWork.JobSearchApplicantRepository.Insert(itemToAdd);
+                }
+
+                unitOfWork.Save();
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
             }
 
             return response;
