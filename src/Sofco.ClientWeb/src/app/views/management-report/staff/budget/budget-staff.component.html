@@ -377,8 +377,8 @@
                         <p>
                             {{ category.name }}
                         </p>
-                        <!-- <i class="fa fa-2x fa-trash pointer" (click)="deleteCategory(category, i)"
-                            *ngIf="canDeleteCategory(category)"></i> -->
+                        <i class="fa fa-2x fa-trash pointer" (click)="deleteCategory(category, i)"
+                            *ngIf="canDeleteCategory(category)"></i>
                     </th>
                     <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">

@@ -141,6 +141,7 @@ namespace Sofco.Core.Models.ManagementReport
         public bool BelongEmployee { get; set; }
         public string TypeName { get; set; }
         public bool Show { get; set; }
+        public bool Default { get; set; }
 
         public List<MonthDetailCostStaff> MonthsCategory { get; set; }
     }

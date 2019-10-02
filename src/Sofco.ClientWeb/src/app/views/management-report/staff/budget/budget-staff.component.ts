@@ -1082,7 +1082,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     canDeleteCategory(item) {
         var canDelete = true;
-        if (item.name == this.generalAdjustment) {
+        if (item.default == true) {
             canDelete = false
             return canDelete
         }

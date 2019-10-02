@@ -871,6 +871,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 detailCategory.Id = category.Id;
                 detailCategory.Name = category.Name;
                 detailCategory.BelongEmployee = category.BelongEmployee;
+                detailCategory.Default = category.Default;
                 detailCategory.TypeName = category.Name;
 
                 foreach (var mounth in Months)
