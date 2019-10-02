@@ -1,9 +1,13 @@
 <div class="row">
     <div class="col-md-8">
-        <div class="ibox">
+        <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <button class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
-                <button class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+                <h4 class="pull-left">Posibles recursos</h4>
+
+                <div class="ibox-tools">
+                    <button class="btn btn-success btn-sm" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                    <button class="btn btn-warning btn-sm" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+                </div>
             </div>
             <div class="ibox-content">      
                 <div class="table-responsive">
@@ -35,6 +39,9 @@
     </div>
     <div class="col-md-4 reason-box-font">
         <div class="ibox">
+            <div class="ibox-title">
+                <h4>Realizar contacto</h4>
+            </div>
             <div class="ibox-content">    
                 <form [formGroup]="form">
                     <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonCauseId')">
