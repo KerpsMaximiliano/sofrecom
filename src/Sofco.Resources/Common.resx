@@ -156,6 +156,9 @@
   <data name="OptionNotFound" xml:space="preserve">
     <value>common.optionNotFound</value>
   </data>
+  <data name="ParametersNull" xml:space="preserve">
+    <value>common.parametersNull</value>
+  </data>
   <data name="SaveFileError" xml:space="preserve">
     <value>common.saveFileError</value>
   </data>

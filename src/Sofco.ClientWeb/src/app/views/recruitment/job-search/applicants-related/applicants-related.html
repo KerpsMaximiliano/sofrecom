@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-md-8">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h4 class="pull-left">Posibles recursos</h4>
+
+                <div class="ibox-tools">
+                    <button class="btn btn-success btn-sm" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                    <button class="btn btn-warning btn-sm" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <div class="ibox-content">      
+                <div class="table-responsive">
+                    <table class="table table-striped dataTable table-font" role="grid" id="applicantsTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Apellido y Nombre</th>
+                                <th>Perfiles</th>
+                                <th>Conocimientos</th>
+                                <th>Ultimo Contacto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of data" class="pointer">
+                                <td class="column-xs text-center">
+                                    <icheck [(checked)]="item.selected"></icheck>
+                                </td>
+                                <td class="column-lg text-ellipsis">{{ item.applicant }}</td>
+                                <td class="column-lg text-word-break">{{ item.profiles }}</td>
+                                <td class="column-lg text-word-break">{{ item.skills }}</td>
+                                <td class="column-sm text-word-break">{{ item.date | date:'dd/MM/yyyy' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>       
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 reason-box-font">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h4>Realizar contacto</h4>
+            </div>
+            <div class="ibox-content">    
+                <form [formGroup]="form">
+                    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonCauseId')">
+                        <label class="control-label"> Motivo </label>
+                        <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonCauseId"></ng-select>
+
+                        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonCauseId')">
+                            <p *ngIf="formsService.hasError(form, 'reasonCauseId', 'required')">El campo es requerido</p>
+                        </div>
+                    </div>
+                        
+                    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'comments')">
+                        <label class="control-label">Comentarios</label>
+                        <textarea rows="6" class="form-control" formControlName="comments" maxlength="3000"></textarea>
+                
+                        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'comments')">
+                            <p *ngIf="formsService.hasError(form, 'comments', 'maxLength')">Los comentarios no pueden superar los 3000 caracteres</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="ibox-footer text-center">
+                <button class="btn btn-primary btn-sm" [disabled]="!form.valid" (click)="save()"> Guardar </button>
+            </div>
+        </div>
+    </div>
+</div>

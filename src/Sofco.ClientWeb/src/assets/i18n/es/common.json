@@ -26,5 +26,6 @@
     "optionNotFound": "Dato no encontrado",
     "deleteSuccess": "Datos eliminados exitosamente",
     "textRequired": "La descripción es requerida",
+    "parametersNull": "No se ha especificado ningun parametro de busqueda",
     "saveSuccess": "Datos actualizados exitosamente"
 }

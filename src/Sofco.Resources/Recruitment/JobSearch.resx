@@ -126,6 +126,12 @@
   <data name="ClientRequired" xml:space="preserve">
     <value>recruitment/jobSearch.clientRequired</value>
   </data>
+  <data name="CommentsRequired" xml:space="preserve">
+    <value>recruitment/jobSearch.commentsRequired</value>
+  </data>
+  <data name="ContactAdded" xml:space="preserve">
+    <value>recruitment/jobSearch.contactAdded</value>
+  </data>
   <data name="CreatedDateGreaterThanSuspendedDate" xml:space="preserve">
     <value>recruitment/jobSearch.createdDateGreaterThanSuspendedDate</value>
   </data>
