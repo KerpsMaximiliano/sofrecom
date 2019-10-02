@@ -123,7 +123,7 @@
                         </td>
                     </ng-template>
                 </tr>
-                <tr class="animated fadeIn" *ngFor="let profile of costProfiles" [hidden]="employeesHide">
+                <tr class="animated fadeIn" *ngFor="let profile of costProfiles; let i = index" [hidden]="employeesHide">
                     <th class="static first-column active" scope="col">
                         <p>{{ profile.display }}</p>
                         <i class="fa fa-2x fa-trash pointer" (click)="deleteProfile(profile, i)"></i>

@@ -595,17 +595,22 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                     //Elimino todos los registros del PFA ya guardados para ese mes
                     unitOfWork.CostDetailStaffRepository.Delete(costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == idPFA).ToList());
+                    unitOfWork.CostDetailResourceRepository.Delete(costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == idPFA).ToList());
 
                     if (costDetailMonth != null)
                     {
                         List<CostDetailStaff> subcategories;
+                        List<CostDetailResource> employees;
+
                         if (mounth.MonthYear.Date < DateTime.Now.Date.AddMonths(-1))
                         {
                             subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Real).FirstOrDefault().Id).ToList();
+                            employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Real).FirstOrDefault().Id).ToList();
                         }
                         else
                         {
                             subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Projected).FirstOrDefault().Id).ToList();
+                            employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Projected).FirstOrDefault().Id).ToList();
                         }
                         if (subcategories != null)
                         {
@@ -621,6 +626,24 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 entity.BudgetTypeId = idPFA;
 
                                 unitOfWork.CostDetailStaffRepository.Insert(entity);
+                            }
+                        }
+
+                        if (employees != null)
+                        {
+                            foreach (var employee in employees)
+                            {
+                                var entity = new CostDetailResource();
+
+                                entity.CostDetailId = costDetailMonth.Id;
+                                entity.Value = employee.Value.ToString();
+                                entity.Adjustment = employee.Adjustment ?? 0;
+                                entity.Charges = employee.Charges.ToString();
+                                entity.EmployeeId = employee.EmployeeId;
+                                entity.UserId = employee?.UserId;
+                                entity.BudgetTypeId = idPFA;
+
+                                unitOfWork.CostDetailResourceRepository.Insert(entity);
                             }
                         }
                     }
