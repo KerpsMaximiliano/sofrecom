@@ -527,7 +527,12 @@ namespace Sofco.Service.Implementations.ManagementReport
             try
             {
                 var Allcategories = unitOfWork.CostDetailRepository.GetCategories();
-                var categories = Allcategories.Where(x => x.Name != EnumCostDetailType.InformeFinal.ToString() && x.Name != EnumCostDetailType.AjusteGeneral).ToList();
+                var categories = Allcategories.Where(x => 
+                                                        x.Name != EnumCostDetailType.InformeFinal.ToString() && 
+                                                        x.Name != EnumCostDetailType.AjusteGeneral.ToString() &&
+                                                        x.Name != EnumCostDetailType.Profile.ToString() &&
+                                                        x.Name != EnumCostDetailType.Recursos.ToString()
+                                                    ).ToList();
 
                 response.Data = categories;
             }
@@ -845,7 +850,11 @@ namespace Sofco.Service.Implementations.ManagementReport
             List<CostCategory> costCategories = new List<CostCategory>();
 
             var Allcategories = unitOfWork.CostDetailRepository.GetCategories();
-            var categories = Allcategories.Where(x => x.Name != EnumCostDetailType.InformeFinal.ToString()).ToList();
+            var categories = Allcategories.Where(x => 
+                                                    x.Name != EnumCostDetailType.InformeFinal.ToString() &&
+                                                    x.Name != EnumCostDetailType.Profile.ToString() &&
+                                                    x.Name != EnumCostDetailType.Recursos.ToString() 
+                                                ).ToList();
 
             foreach (var category in categories)
             {

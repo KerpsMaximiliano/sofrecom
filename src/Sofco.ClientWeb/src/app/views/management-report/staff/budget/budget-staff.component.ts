@@ -1037,6 +1037,11 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     canDeleteCategory(item) {
         var canDelete = true;
+        if (item.name == this.generalAdjustment) {
+            canDelete = false
+            return canDelete
+        }
+
         item.monthsCategory.forEach(month => {
             if (month.totalBudget > 0 || month.totalProjected > 0
                 || month.totalPfa1 > 0 || month.totalPfa2 > 0 || month.totalReal > 0) {

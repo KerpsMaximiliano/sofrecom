@@ -24,3 +24,5 @@ INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) V
 INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Seguros', 0, 0)
 INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Servicios', 0, 0)
 INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Viáticos', 0, 0)
+INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Recursos', 0, 0)
+INSERT INTO [app].[CostDetailCategories] ([Name], [BelongEmployee], [Default]) VALUES ('Perfiles', 0, 0)

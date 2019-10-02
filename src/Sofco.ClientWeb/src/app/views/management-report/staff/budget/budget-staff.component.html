@@ -6,7 +6,7 @@
 
 <div *ngIf="months.length > 0">
 
-    <div class="row col-xs-offset-0 col-sm-offset-0 col-md-offset-5 col-lg-offset-6">
+    <div class="row col-xs-offset-0 col-sm-offset-0 col-md-offset-4 col-lg-offset-6">
         <div class="btn-group btn-group-justified">
             <a (click)="toggleColumn('budget')" class="btn btn-xs btn-default"
                 [ngClass]="{'active': showColumn.budget}">BUDGET</a>
@@ -91,28 +91,28 @@
                     <th class="static first-column" scope="col">Total de Gastos</th>
                     <ng-template ngFor let-month [ngForOf]="months" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
-                            <label class="label label-total" (click)="setAllCosts(month, month.totalBudget, 'budget')">
+                            <label class="label label-total" (click)="setAllCosts(month, month.budget.totalCost, 'budget')">
                                 {{ month.budget.totalCost | amountFormat }}
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" [hidden]="!showColumn.projected">
                             <label class="label label-total"
-                                (click)="setAllCosts(month, month.totalProjected, 'projected')">
+                                (click)="setAllCosts(month, month.projected.totalCost, 'projected')">
                                 {{ month.projected.totalCost | amountFormat }}
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" [hidden]="!showColumn.pfa1">
-                            <label class="label label-total" (click)="setAllCosts(month, month.totalPfa1, 'pfa1')">
+                            <label class="label label-total" (click)="setAllCosts(month, month.pfa1.totalCost, 'pfa1')">
                                 {{ month.pfa1.totalCost | amountFormat }}
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" [hidden]="!showColumn.pfa2">
-                            <label class="label label-total" (click)="setAllCosts(month, month.totalPfa2, 'pfa2')">
+                            <label class="label label-total" (click)="setAllCosts(month, month.pfa2.totalCost, 'pfa2')">
                                 {{ month.pfa2.totalCost | amountFormat }}
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('real', i)}" [hidden]="!showColumn.real">
-                            <label class="label label-total" (click)="setAllCosts(month, month.totalReal, 'real')">
+                            <label class="label label-total" (click)="setAllCosts(month, month.real.totalCost, 'real')">
                                 {{ month.real.totalCost | amountFormat }}
                             </label>
                         </td>
@@ -345,7 +345,7 @@
     </div>
 
     <br>
-    <div class="row" *ngIf="otherCategories.length > 0 && !readOnly">
+    <div class="row" *ngIf="otherCategories.length > 0">
         <div class="col-sm-5">
             <div class="form-group">
                 <ng-select [items]="otherCategories" bindLabel="name" [(ngModel)]="otherSelected"

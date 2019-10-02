@@ -24,6 +24,8 @@ DECLARE @IdRiesgos INT = (select Id from [app].[CostDetailCategories] where Name
 DECLARE @IdSeguros INT = (select Id from [app].[CostDetailCategories] where Name = 'Seguros')
 DECLARE @IdServicios INT = (select Id from [app].[CostDetailCategories] where Name = 'Servicios')
 DECLARE @IdViaticos INT = (select Id from [app].[CostDetailCategories] where Name = 'Viáticos')
+DECLARE @IdRecursos INT = (select Id from [app].[CostDetailCategories] where Name = 'Recursos')
+DECLARE @IdPerfiles INT = (select Id from [app].[CostDetailCategories] where Name = 'Perfiles')
 
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId], [Codigo]) VALUES ('% Ajuste General',@IdAjuste,'')
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId], [Codigo]) VALUES ('Capacitacion/Formacion',@IdCapacitacion,'633000')
@@ -91,3 +93,5 @@ INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId], [Co
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId], [Codigo]) VALUES ('Taxi, Peaje Y Estacionamiento',@IdViaticos ,'625510')
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId], [Codigo]) VALUES ('Viajes Y Traslados',@IdViaticos ,'625100')
 INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId], [Codigo]) VALUES ('Otros Gastos Ligados Misiones',@IdViaticos ,'625600')
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId], [Codigo]) VALUES ('Recursos',@IdRecursos ,'')
+INSERT INTO [app].[CostDetailSubcategories] ([Name], [CostDetailCategoryId], [Codigo]) VALUES ('Perfiles',@IdPerfiles ,'')

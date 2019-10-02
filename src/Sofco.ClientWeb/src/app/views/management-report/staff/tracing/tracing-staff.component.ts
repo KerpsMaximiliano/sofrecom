@@ -20,67 +20,7 @@ export class TracingStaffComponent implements OnInit, OnDestroy {
     accumulatedMonths: any[] = new Array()
 
     ngOnInit(): void {
-       
-        this.months = [
-            {
-                display: "May. 2019",
-                monthYear: "2019-05-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Jun. 2019",
-                monthYear: "2019-06-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Jul. 2019",
-                monthYear: "2019-07-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Ago. 2019",
-                monthYear: "2019-08-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Sep. 2019",
-                monthYear: "2019-09-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Oct. 2019",
-                monthYear: "2019-10-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-            {
-                display: "Nov. 2019",
-                monthYear: "2019-11-01",
-                totalBudget: 0,
-                totalPfa1: 0,
-                totalPfa2: 0,
-                totalReal: 0
-            },
-        ]
-
-        this.calculateAccumulated(this.months)
+      
     }
 
     ngOnDestroy(): void {
@@ -88,10 +28,10 @@ export class TracingStaffComponent implements OnInit, OnDestroy {
    
 
     calculateAccumulated(months){
+        this.months = months
         this.accumulatedMonths = new Array()
 
         months.forEach((month, index) => {
-
             let acomulatedBudget = 0
             let acomulatedPfa1 = 0
             let acomulatedPfa2 = 0
@@ -99,19 +39,19 @@ export class TracingStaffComponent implements OnInit, OnDestroy {
 
             for (let i = 0; i <= index; i++) {
 
-                acomulatedBudget += months[i].totalBudget;
-                acomulatedPfa1 += months[i].totalPfa1;
-                acomulatedPfa2 += months[i].totalPfa2;
-                acomulatedReal += months[i].totalReal;
+                acomulatedBudget += months[i].budget.totalCost
+                acomulatedPfa1 += months[i].pfa1.totalCost
+                acomulatedPfa2 += months[i].pfa2.totalCost
+                acomulatedReal += months[i].real.totalCost
             }
 
             var acomulatedMont = {
                 display: month.display,
                 monthYear: month.monthYear,
-                totalBudget: month.totalBudget,
-                totalPfa1: month.totalPfa1,
-                totalPfa2: month.totalPfa2,
-                totalReal: month.totalReal,
+                totalBudget: month.budget.totalCost,
+                totalPfa1: month.pfa1.totalCost,
+                totalPfa2: month.pfa2.totalCost,
+                totalReal: month.real.totalCost,
                 acomulatedBudget: acomulatedBudget,
                 acomulatedPfa1: acomulatedPfa1,
                 acomulatedPfa2: acomulatedPfa2,
