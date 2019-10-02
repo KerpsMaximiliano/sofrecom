@@ -125,6 +125,7 @@ namespace Sofco.Core.Models.ManagementReport
         public string State { get; set; }
         public IList<MonthHeaderCost> MonthsHeader { get; set; }
         public List<CostCategory> CostCategories { get; set; }
+        public List<CostCategory> CostCategoriesRedInfra { get; set; }
         public List<CostCategory> OtherCategories { get; set; }
         public List<CostResourceEmployee> CostEmployees { get; set; }
         public List<CostCategory> CostCategoriesEmployees { get; set; }

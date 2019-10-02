@@ -340,6 +340,83 @@
                     </ng-template>
                 </tr>
 
+                <tr>
+                    <th class="static first-column" scope="col">Sub-total Gastos</th>
+                    <ng-template ngFor let-month [ngForOf]="months" let-i="index">
+                        <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
+                            <label class="label label-subtotal">
+                                {{ month.budget.subTotalCost | amountFormat }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" [hidden]="!showColumn.projected">
+                            <label class="label label-subtotal">
+                                {{ month.projected.subTotalCost | amountFormat }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" [hidden]="!showColumn.pfa1">
+                            <label class="label label-subtotal">
+                                {{ month.pfa1.subTotalCost | amountFormat }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" [hidden]="!showColumn.pfa2">
+                            <label class="label label-subtotal">
+                                {{ month.pfa2.subTotalCost | amountFormat }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('real', i)}" [hidden]="!showColumn.real">
+                            <label class="label label-total" (click)="setAllCosts(month, month.real.totalCost, 'real')">
+                                {{ month.real.subTotalCost | amountFormat }}
+                            </label>
+                        </td>
+                    </ng-template>
+                </tr>
+
+                <tr *ngFor="let category of categoriesRedInfra">
+                    <!-- <th class="static first-column" scope="col">{{category.name}}</th> -->
+                    <th class="static first-column" scope="col">
+                        <p>
+                            {{ category.name }}
+                        </p>
+                        <!-- <i class="fa fa-2x fa-trash pointer" (click)="deleteCategory(category, i)"
+                            *ngIf="canDeleteCategory(category)"></i> -->
+                    </th>
+                    <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
+                        <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
+                            <label class="label  cursor-pointer"
+                                [ngClass]="month.totalReal <= month.totalBudget ? 'label-success' : 'label-danger'"
+                                (click)="openEditItemModal(category, 'Budget', month, i)">
+                                {{ month.totalBudget | amountFormat  }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" [hidden]="!showColumn.projected">
+                            <label class="label  cursor-pointer"
+                                [ngClass]="month.totalReal <=  month.totalProjected ? 'label-success' : 'label-danger'"
+                                (click)="openEditItemModal(category, 'Projected', month, i)">
+                                {{ month.totalProjected | amountFormat  }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa1', i)}" [hidden]="!showColumn.pfa1">
+                            <label class="label cursor-pointer"
+                                [ngClass]="month.totalReal <=  month.totalPfa1 ? 'label-success' : 'label-danger'"
+                                (click)="openEditItemModal(category,'Pfa1', month, i)">
+                                {{ month.totalPfa1 | amountFormat }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('pfa2', i)}" [hidden]="!showColumn.pfa2">
+                            <label class="label cursor-pointer"
+                                [ngClass]="month.totalReal <=  month.totalPfa2 ? 'label-success' : 'label-danger'"
+                                (click)="openEditItemModal(category, 'Pfa2', month, i)">
+                                {{ month.totalPfa2 | amountFormat }}
+                            </label>
+                        </td>
+                        <td [ngClass]="{'first-col': isFirstColumn('real', i)}" [hidden]="!showColumn.real">
+                            <label class="label label-real" (click)="openEditItemModal(category, 'Real', month)">
+                                {{ month.totalReal | amountFormat }}
+                            </label>
+                        </td>
+                    </ng-template>
+                </tr>
+
             </tbody>
         </table>
     </div>

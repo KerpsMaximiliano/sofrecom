@@ -11,5 +11,7 @@ namespace Sofco.Domain.Enums
         public const string Profile = "Perfiles";
         public const string Recursos = "Recursos";
         public const string InformeFinal = "Informe Final";
+        public const string Red = "Red";
+        public const string Infraestructura = "Infraestructura";
     }
 }

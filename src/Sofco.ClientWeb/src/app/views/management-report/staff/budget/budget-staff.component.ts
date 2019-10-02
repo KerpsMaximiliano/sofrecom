@@ -62,6 +62,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     editItemAdjustment = new FormControl();
 
     categories: any[] = new Array()
+    categoriesRedInfra: any[] = new Array()
     subCategories: any[] = new Array()
     subCategoriesData: any[] = new Array()
     subCategoriesFiltered: any[] = new Array()
@@ -156,10 +157,12 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.categoriesEmployees = response.data.costCategoriesEmployees
             this.otherCategories = response.data.otherCategories;
             this.categories = response.data.costCategories;
+            this.categoriesRedInfra = response.data.costCategoriesRedInfra;
             this.subCategories = response.data.allSubcategories;
             this.budgetTypes = response.data.budgetTypes;
             this.actualState = response.data.state
 
+           
             this.otherCategories = response.data.otherCategories;
             if (this.otherCategories.length > 0) {
                 this.otherSelected = this.otherCategories[0];
@@ -638,6 +641,12 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             var totalCostPfa2 = 0;
             var totalCostReal = 0;
 
+            var totalInfraRedBugdet = 0;
+            var totalInfraRedProjected = 0
+            var totalInfraRedPfa1 = 0;
+            var totalInfraRedPfa2 = 0;
+            var totalInfraRedReal = 0;
+
             var totalSalaryBudget = 0
             var totalSalaryProjected = 0
             var totalSalaryPfa1 = 0;
@@ -719,6 +728,32 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 }
             })
 
+            //sumo el total de Infraestructura y Red
+            this.categoriesRedInfra.forEach(category => {
+                if (category.name != this.generalAdjustment) {
+                    if (category.monthsCategory[index].totalBudget) {
+                        totalCostBugdet += category.monthsCategory[index].totalBudget;
+                        totalInfraRedBugdet += category.monthsCategory[index].totalBudget;
+                    }
+                    if (category.monthsCategory[index].totalProjected) {
+                        totalCostProjected += category.monthsCategory[index].totalProjected;
+                        totalInfraRedProjected += category.monthsCategory[index].totalProjected;
+                    }
+                    if (category.monthsCategory[index].totalPfa1) {
+                        totalCostPfa1 += category.monthsCategory[index].totalPfa1;
+                        totalInfraRedPfa1 += category.monthsCategory[index].totalPfa1;
+                    }
+                    if (category.monthsCategory[index].totalPfa2) {
+                        totalCostPfa2 += category.monthsCategory[index].totalPfa2;
+                        totalInfraRedPfa2 += category.monthsCategory[index].totalPfa2;
+                    }
+                    if (category.monthsCategory[index].totalReal) {
+                        totalCostReal += category.monthsCategory[index].totalReal;
+                        totalInfraRedReal += category.monthsCategory[index].totalReal;
+                    }
+                }
+            });
+
             monthTotal.budget.totalCost = totalCostBugdet + (totalSalaryBudget * 0.51);
             monthTotal.projected.totalCost = totalCostProjected + (totalSalaryProjected * 0.51);
             monthTotal.pfa1.totalCost = totalCostPfa1 + (totalSalaryPfa1 * 0.51);
@@ -736,6 +771,12 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             month.pfa1.totalLoads = (totalSalaryPfa1 * 0.51)
             month.pfa2.totalLoads = (totalSalaryPfa2 * 0.51)
             month.real.totalLoads = (totalSalaryReal * 0.51)
+
+            monthTotal.budget.subTotalCost = totalCostBugdet - totalInfraRedBugdet;
+            monthTotal.projected.subTotalCost = totalCostProjected - totalInfraRedProjected;
+            monthTotal.pfa1.subTotalCost = totalCostPfa1 - totalInfraRedPfa1;
+            monthTotal.pfa2.subTotalCost = totalCostPfa2 - totalInfraRedPfa2;
+            monthTotal.real.subTotalCost = totalCostReal - totalInfraRedReal;
         })
     }
 
@@ -1013,11 +1054,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     addOtherCost() {
-        
-        var category = this.otherCategories.find(r => r.id == this.otherSelected.id)
-        this.categories.push(category)
-
-        console.log(this.otherCategories)
+        debugger
+        var category = this.otherCategories.find(r => r.id == this.otherSelected.id)       
+      
         var pos = this.otherCategories.findIndex(r => r.id == this.otherSelected.id);
         this.otherCategories.splice(pos, 1)
 
@@ -1031,7 +1070,13 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         if (this.otherCategories.length > 0) {
             this.otherSelected = this.otherCategories[0];
         }
-        console.log(this.otherCategories)
+        
+        if (category.name == "Infraestructura" || category.name == "Red") {
+            this.categoriesRedInfra.push(category)
+        }
+        else{
+            this.categories.push(category)
+        }
 
     }
 
@@ -1055,7 +1100,13 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     deleteCategory(item, index) {
 
-        this.categories.splice(index, 1)
+        if (item.name == "Infraestructura" || item.name == "Red") {
+            this.categoriesRedInfra.splice(index, 1)
+        }
+        else{
+            this.categories.splice(index, 1)
+        }
+
         this.otherCategories.push(item)
 
         this.save()

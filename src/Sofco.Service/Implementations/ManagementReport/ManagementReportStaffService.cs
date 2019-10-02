@@ -260,9 +260,12 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 var allCategoriesData = this.FillCategoriesByMonth(response.Data.MonthsHeader, costDetails);
 
+                List<string> infraRed = new List<string>(new string[] { EnumCostDetailType.Red, EnumCostDetailType.Infraestructura });
+
                 response.Data.BudgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget().Select(x => new BudgetTypeItem(x)).ToList();
                 response.Data.AllSubcategories = this.FillAllSubcategories();
-                response.Data.CostCategories = allCategoriesData.Where(r=> r.Show == true && r.BelongEmployee == false).OrderBy(r => r.Name).ToList();
+                response.Data.CostCategories = allCategoriesData.Where(r=> r.Show == true && r.BelongEmployee == false && !infraRed.Any(y => r.Name == y)).OrderBy(r => r.Name).ToList();
+                response.Data.CostCategoriesRedInfra = allCategoriesData.Where(x => x.Show == true && infraRed.Any(y => x.Name == y)).ToList();
                 response.Data.OtherCategories = allCategoriesData.Where(r=> r.Show == false && r.BelongEmployee == false).OrderBy(r => r.Name).ToList();
                 response.Data.CostEmployees = managementReportService.FillCostEmployeesByMonth(managementReport.Analytic.Id, response.Data.MonthsHeader, costDetails);
                 response.Data.CostCategoriesEmployees = allCategoriesData.Where(r => r.BelongEmployee == true).OrderBy(r => r.Name).ToList();
@@ -294,7 +297,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                 // var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(pDetailCost.ManagementReportId);
                 var costDetails = managementReport.CostDetails.ToList();
 
-                var allCostCategories = pDetailCost.CostCategories.Union(pDetailCost.CostCategoriesEmployees).ToList();
+                var allCostCategories = pDetailCost.CostCategories
+                                                        .Union(pDetailCost.CostCategoriesEmployees)
+                                                        .Union(pDetailCost.CostCategoriesRedInfra)
+                                                        .ToList();
 
                 this.InsertUpdateCostDetailStaff(allCostCategories, costDetails);
 
