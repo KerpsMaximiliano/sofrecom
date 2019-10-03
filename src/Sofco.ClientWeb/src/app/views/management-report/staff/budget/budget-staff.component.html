@@ -26,7 +26,7 @@
             <thead>
                 <tr>
                     <th class="static first-column" scope="col">Meses</th>
-                    <ng-template ngFor let-item [ngForOf]="months" let-i="index">
+                    <ng-template ngFor let-item [ngForOf]="months | fromDateFilter: sinceMonth" let-i="index">
                         <th [ngClass]="{'first-col': isFirstColumn('budget', i)}" class="text-center headcol"
                             [hidden]="!showColumn.budget">
                             <span>
@@ -64,7 +64,7 @@
             <tbody>
                 <tr>
                     <th class="static first-column" scope="col"></th>
-                    <ng-template ngFor let-item [ngForOf]="months" let-i="index">
+                    <ng-template ngFor let-item [ngForOf]="months | fromDateFilter: sinceMonth" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" class="text-center"
                             [hidden]="!showColumn.budget">
                             <strong>BUDGET</strong>
@@ -89,7 +89,7 @@
                 </tr>
                 <tr>
                     <th class="static first-column" scope="col">Total de Gastos</th>
-                    <ng-template ngFor let-month [ngForOf]="months" let-i="index">
+                    <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: sinceMonth" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label label-total" (click)="setAllCosts(month, month.budget.totalCost, 'budget')">
                                 {{ month.budget.totalCost | amountFormat }}
@@ -126,7 +126,7 @@
                         <i class="fa fa-plus fa-2x pull-right" *ngIf="employeesHide"></i>
                         <i class="fa fa-minus fa-2x pull-right" *ngIf="!employeesHide"></i>
                     </th>
-                    <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: fromMonth" let-i="index">
+                    <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: sinceMonth" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget"></td>
                         <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" [hidden]="!showColumn.projected">
                         </td>
@@ -141,7 +141,7 @@
                             {{ employee.display }}
                         </p>
                     </th>
-                    <ng-template ngFor let-monthCost [ngForOf]="employee.monthsCost | fromDateFilter: fromMonth"
+                    <ng-template ngFor let-monthCost [ngForOf]="employee.monthsCost | fromDateFilter: sinceMonth"
                         let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label" (click)="openEditItemModal(employee, 'Budget', monthCost)"
@@ -196,7 +196,7 @@
 
                 <tr *ngFor="let category of categoriesEmployees" [hidden]="employeesHide">
                     <th class="static first-column active" scope="col">{{category.name}}</th>
-                    <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
+                    <ng-template ngFor let-month [ngForOf]="category.monthsCategory | fromDateFilter: sinceMonth" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label  cursor-pointer"
                                 [ngClass]="month.totalReal <= month.totalBudget ? 'label-success' : 'label-danger'"
@@ -235,7 +235,7 @@
 
                 <tr>
                     <th class="static first-column" scope="col">Total Sueldo</th>
-                    <ng-template ngFor let-month [ngForOf]="months" let-i="index">
+                    <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: sinceMonth" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label label-salary">
                                 {{ month.budget.totalSalary | amountFormat }}
@@ -265,7 +265,7 @@
                 </tr>
                 <tr>
                     <th class="static first-column" scope="col">Cargas (0.51 del sueldo)</th>
-                    <ng-template ngFor let-month [ngForOf]="months" let-i="index">
+                    <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: sinceMonth" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label label-load">
                                 {{ month.budget.totalLoads | amountFormat }}
@@ -303,7 +303,7 @@
                         <i class="fa fa-2x fa-trash pointer" (click)="deleteCategory(category, i)"
                             *ngIf="canDeleteCategory(category)"></i>
                     </th>
-                    <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
+                    <ng-template ngFor let-month [ngForOf]="category.monthsCategory | fromDateFilter: sinceMonth" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label  cursor-pointer"
                                 [ngClass]="month.totalReal <= month.totalBudget ? 'label-success' : 'label-danger'"
@@ -342,7 +342,7 @@
 
                 <tr>
                     <th class="static first-column" scope="col">Sub-total Gastos</th>
-                    <ng-template ngFor let-month [ngForOf]="months" let-i="index">
+                    <ng-template ngFor let-month [ngForOf]="months | fromDateFilter: sinceMonth" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label label-subtotal">
                                 {{ month.budget.subTotalCost | amountFormat }}
@@ -380,7 +380,7 @@
                         <i class="fa fa-2x fa-trash pointer" (click)="deleteCategory(category, i)"
                             *ngIf="canDeleteCategory(category)"></i>
                     </th>
-                    <ng-template ngFor let-month [ngForOf]="category.monthsCategory" let-i="index">
+                    <ng-template ngFor let-month [ngForOf]="category.monthsCategory | fromDateFilter: sinceMonth" let-i="index">
                         <td [ngClass]="{'first-col': isFirstColumn('budget', i)}" [hidden]="!showColumn.budget">
                             <label class="label  cursor-pointer"
                                 [ngClass]="month.totalReal <= month.totalBudget ? 'label-success' : 'label-danger'"
@@ -389,9 +389,7 @@
                             </label>
                         </td>
                         <td [ngClass]="{'first-col': isFirstColumn('projected', i)}" [hidden]="!showColumn.projected">
-                            <label class="label  cursor-pointer"
-                                [ngClass]="month.totalReal <=  month.totalProjected ? 'label-success' : 'label-danger'"
-                                (click)="openEditItemModal(category, 'Projected', month, i)">
+                            <label class="label cursor-default"(click)="openEditItemModal(category, 'Projected', month, i)">
                                 {{ month.totalProjected | amountFormat  }}
                             </label>
                         </td>

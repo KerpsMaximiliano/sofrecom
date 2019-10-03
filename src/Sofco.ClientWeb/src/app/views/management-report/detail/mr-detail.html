@@ -103,7 +103,7 @@
                                 </ul>
                             </dd>
 
-                            <dt class="m-b-xs" *ngIf="selectedExchanges && selectedExchanges.length > 0"><i class="fa fa-money"></i> Cotizaciones </dt>
+                            <dt class="m-b-xs"><i class="fa fa-money"></i> Cotizaciones </dt>
                             <dd  *ngIf="selectedExchanges && selectedExchanges.length > 0">
                                 <table class="table table-striped">
                                     <thead>
@@ -120,6 +120,12 @@
                                     </tbody>
                                 </table>
                             </dd>
+                            <dd *ngIf="!selectedExchanges || selectedExchanges.length == 0">                              
+                                    <div class="alert alert-dismissible alert-warning">
+                                         <h4 class="alert-heading">Sin Cotización!</h4>
+                                        <p class="mb-0">Mes sin cotización ingresada, por favor notificar a Control de Gestión.</p>
+                                    </div>
+                                </dd>
 
                             <!-- <dt class="m-b-xs"><i class="fa fa-calculator"></i> Total ordenes de compra por divisa </dt>
                             <dd>

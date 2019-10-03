@@ -73,6 +73,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     currencies: any[] = new Array()
     actualState: string
     monthExchanges: any[] = new Array();
+    sinceMonth: Date = new Date()
 
     totalCostsExchanges: any = {
         exchanges: [],
@@ -284,9 +285,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 this.editItemModal.size = 'modal-lg'
                 this.modalOther = true
                 this.categorySelected = item
-
-                if (typeBudget == 'projected' && (environment.infrastructureCategoryId == this.categorySelected.id || environment.redCategoryId == this.categorySelected.id) && !this.menuService.userIsCdg) {
-                    this.messageService.showError("onlyCdgCanModify");
+                if (typeBudget.toUpperCase() == 'PROJECTED' && (environment.infrastructureCategoryId == this.categorySelected.id || environment.redCategoryId == this.categorySelected.id)) {
+                    this.messageService.showWarning("autocompletedData");
                     return;
                 }
 
@@ -1054,7 +1054,6 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     addOtherCost() {
-        debugger
         var category = this.otherCategories.find(r => r.id == this.otherSelected.id)       
       
         var pos = this.otherCategories.findIndex(r => r.id == this.otherSelected.id);
@@ -1120,6 +1119,10 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             }
             return 0;
         });
+    }
+
+    setSinceDate(date: Date) {
+        this.sinceMonth = new Date(date.getFullYear(), date.getMonth() - 2, 1)
     }
 
 
