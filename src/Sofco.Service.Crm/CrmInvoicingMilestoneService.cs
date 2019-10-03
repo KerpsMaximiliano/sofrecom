@@ -208,11 +208,25 @@ namespace Sofco.Service.Crm
 
         public void UpdateAmmountAndName(HitoAmmountParameter hito, Response response)
         {
+            var date = string.Empty;
+
+#if DEBUG
+            date = $"{hito.Date.Year}-{hito.Date.Month}-{hito.Date.Day}";
+#else
+                if(data.hito.Date.Day > 12){
+                    date = $"{hito.Date.Year}-{hito.Date.Month}-{hito.Date.Day}";
+                }
+                else{
+                    date = $"{hito.Date.Year}-{hito.Date.Day}-{hito.Date.Month}";
+                }
+#endif
+
             var content = new JObject
             {
                 ["as_name"] = hito.Name,
                 ["as_month"] = hito.Month,
-                ["as_amount"] = hito.Ammount
+                ["as_amount"] = hito.Ammount,
+                ["as_date"] = date
             };
 
             Update(content, hito.Id, response);

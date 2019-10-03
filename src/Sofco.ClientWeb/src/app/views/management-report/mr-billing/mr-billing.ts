@@ -14,6 +14,7 @@ import { ManagementReportStatus } from "app/models/enums/managementReportStatus"
 import { ResourceBillingItem } from "app/models/management-report/resourceBillingItem";
 import { GenericOptionService } from "app/services/admin/generic-option.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+declare var moment: any;
 
 @Component({
     selector: 'management-report-billing',
@@ -43,6 +44,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     hitoMonth: number;
     total: number;
     profile: string;
+    serviceId: string;
     isLoading: boolean = false;
     //endregion 
 
@@ -76,6 +78,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     monthSelectedCurrency: string = "";
     editItemMonto = new FormControl('', [Validators.required, Validators.min(1), Validators.max(999999999)]);
     editItemName = new FormControl('', [Validators.required, Validators.maxLength(250)]);
+    editItemStartDate = new FormControl(null, [Validators.required]);
 
     fromMonth: Date = new Date()
     readOnly: boolean = false;
@@ -186,6 +189,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
     } 
 
     init(serviceId) {
+        this.serviceId = serviceId;
         this.hitos = new Array();
 
         this.getBillingSubscrip = this.managementReportService.getBilling(serviceId).subscribe(response => {
@@ -372,6 +376,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         hitoMonth.value = this.editItemMonto.value;
 
         this.hitoSelected.description = this.editItemName.value;
+        this.hitoSelected.date = this.editItemStartDate.value;
         this.hitoSelected.month = this.hitoMonth;
       
         if (!this.isEnabled(hitoMonth)) return;
@@ -395,6 +400,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             name: hito.description,
             projectId: hito.projectId,
             month: hito.month,
+            date: hito.date,
             resources: this.items,
             billingMonthId: this.billingMonthId
         }
@@ -410,21 +416,27 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
             this.editItemValueModal.hide();
 
-            this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
-                hitoMonth.value = json.ammount;
-                hitoMonth.valuePesos = response.data.baseAmount;
-                hitoMonth.originalValue = response.data.amountOriginal;
-                hitoMonth.originalValuePesos = response.data.baseAmountOriginal;
-
-                var month = this.months.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
-
-                if(month != null){
-                    month.totalBilling -= oldValuePesos;
-                    month.totalBilling += hitoMonth.valuePesos;
-                }
-
-                this.sendDataToDetailView();
-            });
+            if(hito.date.getFullYear() != hitoMonth.year || (hito.date.getMonth()+1) != hitoMonth.month){
+                this.messageService.showLoading();
+                this.init(this.serviceId);
+            }
+            else{
+                this.getHitoSubscrip = this.projectService.getHito(hito.id).subscribe(response => {
+                    hitoMonth.value = json.ammount;
+                    hitoMonth.valuePesos = response.data.baseAmount;
+                    hitoMonth.originalValue = response.data.amountOriginal;
+                    hitoMonth.originalValuePesos = response.data.baseAmountOriginal;
+    
+                    var month = this.months.find(x => x.month == hitoMonth.month && x.year == hitoMonth.year);
+    
+                    if(month != null){
+                        month.totalBilling -= oldValuePesos;
+                        month.totalBilling += hitoMonth.valuePesos;
+                    }
+    
+                    this.sendDataToDetailView();
+                });
+            }
         },
         error => {
             if (monthValue) {
@@ -553,6 +565,7 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
         this.editItemValueModal.show();
         this.editItemMonto.setValue(value.value)
         this.editItemName.setValue(hito.description)
+        this.editItemStartDate.setValue(moment(hito.date).toDate())
         this.hitoSelected = hito;
         this.monthSelectedDisplay = monthValue.display;
         this.monthSelectedOpportunity = hito.opportunityNumber;

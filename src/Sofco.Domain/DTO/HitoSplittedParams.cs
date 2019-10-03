@@ -24,13 +24,15 @@ namespace Sofco.Domain.DTO
         {
         }
 
-        public HitoAmmountParameter(string id, string projectId, decimal amount, string name, int month)
+        public HitoAmmountParameter(string id, string projectId, decimal amount, string name, int month,
+            DateTime? date)
         {
             Id = id;
             ProjectId = projectId;
             Ammount = amount;
             Name = name;
             Month = month;
+            Date = date.GetValueOrDefault();
         }
 
         public string Id { get; set; }
@@ -42,5 +44,7 @@ namespace Sofco.Domain.DTO
         public string Name { get; set; }
 
         public int Month { get; set; }
+
+        public DateTime Date { get; set; }
     }
 }

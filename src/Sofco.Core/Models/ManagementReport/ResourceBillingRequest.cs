@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sofco.Core.Models.ManagementReport
 {
@@ -34,6 +35,8 @@ namespace Sofco.Core.Models.ManagementReport
         public string Name { get; set; }
 
         public int Month { get; set; }
+
+        public DateTime? Date { get; set; }
 
         public int BillingMonthId { get; set; }
 

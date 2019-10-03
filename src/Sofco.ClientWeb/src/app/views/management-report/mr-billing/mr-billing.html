@@ -125,7 +125,7 @@
 
 </ng2-modal>
 
-<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateHito()" [size]="'modal-xlg'" [isSaveEnabled]="editItemMonto.valid && editItemName.valid">
+<ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateHito()" [size]="'modal-xlg'" [isSaveEnabled]="editItemMonto.valid && editItemName.valid && editItemStartDate.valid">
     <div class="row">
         <div class="col-md-7">
             <div class="form-group">
@@ -136,6 +136,12 @@
                     <span class="input-group-addon">{{ monthSelectedCurrency }}</span>
                 </div> 
             </div> 
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <label class="control-label">{{'billing.project.detail.milestone.startDate' | translate }}</label>
+                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [formControl]="editItemStartDate">
+            </div>
         </div>
     </div>
 

@@ -126,6 +126,9 @@ namespace Sofco.Service.Implementations.Billing
             if(string.IsNullOrWhiteSpace(data.Name))
                 response.AddError(Resources.Billing.Project.NameRequired);
 
+            if (!data.Date.HasValue) 
+                response.AddError(Resources.Billing.Project.DateRequired);
+
             if (response.HasErrors()) return response;
 
             var responseResources = managementReportBillingService.ValidateAddResources(data.BillingMonthId, data.Resources);
@@ -143,7 +146,7 @@ namespace Sofco.Service.Implementations.Billing
                 if (response.HasErrors()) return response;
             }
 
-            crmInvoicingMilestoneService.UpdateAmmountAndName(new HitoAmmountParameter(data.Id, data.ProjectId, data.Ammount.GetValueOrDefault(), data.Name, data.Month), response);
+            crmInvoicingMilestoneService.UpdateAmmountAndName(new HitoAmmountParameter(data.Id, data.ProjectId, data.Ammount.GetValueOrDefault(), data.Name, data.Month, data.Date), response);
 
             if (!response.HasErrors())
             {
