@@ -155,6 +155,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             var managementReport = unitOfWork.ManagementReportRepository.GetById(id);
             var listMonths = this.VerifyAnalyticMonths(managementReport, managementReport.StartDate, managementReport.EndDate);
+            var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
 
             if (managementReport == null)
             {
@@ -166,7 +167,10 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(id, monthYear);
 
-            var lastType = costDetail.CostDetailStaff.OrderByDescending(x => x.BudgetTypeId).FirstOrDefault();
+            var lastType = costDetail.CostDetailStaff
+                                        .Where(x=> x.BudgetType.Name != EnumBudgetType.Projected)
+                                        .OrderByDescending(x => x.BudgetTypeId)
+                                        .FirstOrDefault();
 
             bool getReal = false;
             string typeBudget = EnumBudgetType.budget;
@@ -211,8 +215,8 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             response.Data.ManagementReportId = id;
             response.Data.MonthYear = monthYear;
-            response.Data.Employees = resources;
-            response.Data.Subcategories = subcategories;
+            response.Data.Employees = resources.OrderBy(x=> x.Name).ToList();
+            response.Data.Subcategories = subcategories.Where(x=> x.Name != EnumCostDetailType.AjusteGeneral).OrderBy(x=> x.NameCategory).OrderBy(x=> x.Name).ToList();
 
             return response;
         }

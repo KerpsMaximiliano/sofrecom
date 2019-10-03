@@ -941,6 +941,7 @@
     "cannotUpdatePfa1": "No puede modificar el PFA1 si ya cargo el PFA2",
     "realHasValue": "Debe quitar valor en el campo Real",
     "onlyCdgCanModify": "Solo Control de Gestión puede modificar este dato",
+    "autocompletedData": "Dato autocompletado al ingresarse el valor en presupuesto",
     "report":{
         "title": "Reporte",
         "solfacs": {

@@ -289,6 +289,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.selectedMonth = dateSetting.month;
         this.selectedYear = dateSetting.year;
 
+        this.budgetView.setSinceDate(this.selectedDate)
         this.isClosed = this.budgetView.isClosed(this.selectedDate);
 
         var month = this.months.find(x => x.year == this.selectedYear && x.month == this.selectedMonth);
