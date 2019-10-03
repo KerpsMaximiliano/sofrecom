@@ -7,7 +7,7 @@ namespace Sofco.DAL.Mappings.Recruitment
     {
         public static void MapJobSearchApplicant(this ModelBuilder builder)
         {
-            builder.Entity<JobSearchApplicant>().HasKey(t => new { t.JobSearchId, t.ApplicantId });
+            builder.Entity<JobSearchApplicant>().HasKey(t => new { t.JobSearchId, t.ApplicantId, t.CreatedDate });
 
             builder.Entity<JobSearchApplicant>()
                 .HasOne(pt => pt.JobSearch)
