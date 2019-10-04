@@ -42,6 +42,6 @@ END
 
 
 INSERT INTO app.managementreportbillings
-	SELECT ManagementReportId, MonthYear, 0, 0 FROM @MesesAnalitica
+	SELECT ManagementReportId, MonthYear, 0, 0, 0, null, 0, 0,0  FROM @MesesAnalitica
 
 

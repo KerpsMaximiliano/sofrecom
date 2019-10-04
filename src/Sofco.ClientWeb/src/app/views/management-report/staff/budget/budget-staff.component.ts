@@ -121,6 +121,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
 
         this.editItemModal.size = 'modal-lg'
+        this.isCdg = this.menuService.userIsCdg
 
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.managementReportId = params['id'];
@@ -163,7 +164,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.budgetTypes = response.data.budgetTypes;
             this.actualState = response.data.state
 
-           
+
             this.otherCategories = response.data.otherCategories;
             if (this.otherCategories.length > 0) {
                 this.otherSelected = this.otherCategories[0];
@@ -407,11 +408,11 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     updateItem() {
-
+        this.isCdg = this.menuService.userIsCdg
         var hasError = false;
-        
+
         switch (this.itemSelected.typeName) {
-            
+
             case this.typeEmployee:
                 this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].value = this.editItemMonto.value
                 this.monthSelected[this.typeBudgetSelected.name.toLowerCase()].originalValue = this.editItemMonto.value
@@ -442,7 +443,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 break;
 
             case this.generalAdjustment:
-                
+
                 this.subCategoriesData[0].value = this.editItemMonto.value
                 this.subCategoriesData[0].originalValue = this.editItemMonto.value
 
@@ -512,7 +513,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                                 }
                             }
                         });
-
+                        if (this.monthSelected.totalBudget == 0 && (this.categorySelected.name == "Infraestructura" || this.categorySelected.name == "Red")) {
+                            this.deleteRedInfra()
+                         }
                         break;
                     case 'PROJECTED':
                         this.monthSelected.subcategoriesProjected = this.subCategoriesData
@@ -537,6 +540,10 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                                 }
                             }
                         });
+                        
+                        if (this.monthSelected.totalPfa1 == 0 && (this.categorySelected.name == "Infraestructura" || this.categorySelected.name == "Red")) {
+                           this.deleteRedInfra()
+                        }
                         break;
                     case 'PFA2':
                         this.monthSelected.subcategoriesPfa2 = this.subCategoriesData
@@ -554,6 +561,9 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                                 }
                             }
                         });
+                        if (this.monthSelected.totalPfa2 == 0 && (this.categorySelected.name == "Infraestructura" || this.categorySelected.name == "Red")) {
+                            this.deleteRedInfra()
+                         }
                         break;
                     case 'REAL':
                         this.monthSelected.subcategoriesReal = this.subCategoriesData
@@ -580,7 +590,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     setProjectedInfrastructureOrRed(cost, currencyMonth, type) {
-        var infraProyected = this.monthSelected.subcategoriesProjected.find(x => name == type);
+        var infraProyected = this.monthSelected.subcategoriesProjected.find(x => x.name == type);
 
         if (infraProyected) {
             this.monthSelected.totalProjected -= infraProyected.originalValue;
@@ -838,7 +848,6 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     deleteSubcategory(index) {
-
         if (this.subCategoriesData[index].costDetailStaffId == 0) {
             this.subCategoriesData.splice(index, 1)
         }
@@ -1054,8 +1063,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
     }
 
     addOtherCost() {
-        var category = this.otherCategories.find(r => r.id == this.otherSelected.id)       
-      
+        var category = this.otherCategories.find(r => r.id == this.otherSelected.id)
+
         var pos = this.otherCategories.findIndex(r => r.id == this.otherSelected.id);
         this.otherCategories.splice(pos, 1)
 
@@ -1065,15 +1074,15 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         auxCategories.forEach(category => {
             this.otherCategories.push(category)
         });
-        
+
         if (this.otherCategories.length > 0) {
             this.otherSelected = this.otherCategories[0];
         }
-        
+
         if (category.name == "Infraestructura" || category.name == "Red") {
             this.categoriesRedInfra.push(category)
         }
-        else{
+        else {
             this.categories.push(category)
         }
 
@@ -1089,7 +1098,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         item.monthsCategory.forEach(month => {
             if (month.totalBudget > 0 || month.totalProjected > 0
                 || month.totalPfa1 > 0 || month.totalPfa2 > 0 || month.totalReal > 0) {
-                    canDelete = false
+                canDelete = false
                 return canDelete
             }
         });
@@ -1102,7 +1111,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         if (item.name == "Infraestructura" || item.name == "Red") {
             this.categoriesRedInfra.splice(index, 1)
         }
-        else{
+        else {
             this.categories.splice(index, 1)
         }
 
@@ -1125,5 +1134,15 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.sinceMonth = new Date(date.getFullYear(), date.getMonth() - 2, 1)
     }
 
+    deleteRedInfra(){
+        this.monthSelected.totalProjected = 0
+        this.monthSelected.subcategoriesProjected.forEach(projected => {
+            projected.value = 0
+            projected.originalValue = 0
+            if (projected.costDetailStaffId == 0) {
+                projected.deleted = true
+            }
+        })
+    }
 
 }

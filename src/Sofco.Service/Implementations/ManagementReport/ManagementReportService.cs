@@ -410,11 +410,13 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 //Obtengo las categorias
                 List<CostDetailCategories> Allcategories = unitOfWork.CostDetailRepository.GetCategories();
-                var categories = Allcategories.Where(x => x.Name != EnumCostDetailType.InformeFinal.ToString()).ToList();
+
+                //Categorias exceptuadas
+                List<string> catExcep = new List<string>(new string[] { EnumCostDetailType.Red, EnumCostDetailType.Infraestructura, EnumCostDetailType.InformeFinal });
+                var categories = Allcategories.Where(x => !catExcep.Any(y => x.Name == y)).ToList();
 
                 //Mapeo Los demas datos
                 var AllCostResources = FillFundedResoursesByMonth(response.Data.MonthsHeader, costDetails, categories);
-                //Mapeo Los empleados      
 
                 response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails);
                 response.Data.FundedResourcesEmployees = AllCostResources.Where(r => r.BelongEmployee == true).ToList();
@@ -1186,6 +1188,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             foreach (var employee in allEmployees)
             {
+                var employeeHasAllocation = false;
                 var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
 
                 var detailEmployee = new CostResourceEmployee();
@@ -1252,7 +1255,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                                             {
                                                 if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
                                                 if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
-                                     
+
                                                 auxTypeCost.Value = salary;
                                                 auxTypeCost.OriginalValue = salary;
                                                 auxTypeCost.Charges = charges;
@@ -1337,12 +1340,17 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             monthDetail.HasAlocation = false;
                         }
+
+                        employeeHasAllocation = true;
                     }
 
                     detailEmployee.MonthsCost.Add(monthDetail);
                 }
 
-                costEmployees.Add(detailEmployee);
+                if (employeeHasAllocation)
+                {
+                    costEmployees.Add(detailEmployee);
+                }
             }
 
             return costEmployees.OrderBy(e => e.Display).ToList();
@@ -1556,7 +1564,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         foreach (var aux in allBudgets)
                         {
-                            var entity = new CostDetailResource();                        
+                            var entity = new CostDetailResource();
 
                             if (aux.Id > 0)
                             {
