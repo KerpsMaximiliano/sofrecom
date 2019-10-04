@@ -213,7 +213,7 @@ namespace Sofco.Service.Crm
 #if DEBUG
             date = $"{hito.Date.Year}-{hito.Date.Month}-{hito.Date.Day}";
 #else
-                if(data.hito.Date.Day > 12){
+                if(hito.Date.Day > 12){
                     date = $"{hito.Date.Year}-{hito.Date.Month}-{hito.Date.Day}";
                 }
                 else{
