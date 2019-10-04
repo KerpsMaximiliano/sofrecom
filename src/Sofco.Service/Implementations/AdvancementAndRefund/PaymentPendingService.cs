@@ -147,7 +147,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 if(advancement.AdvancementRefunds == null || !advancement.AdvancementRefunds.Any()) continue;
 
-                if(advancement.AdvancementRefunds.Any(x => x.Refund.InWorkflowProcess)) continue;
+                if(advancement.AdvancementRefunds.All(x => x.Refund.InWorkflowProcess)) continue;
 
                 var itemAlreadyInList = response.Data.SingleOrDefault(x => x.UserApplicantId == advancement.UserApplicantId && x.CurrencyId == advancement.CurrencyId);
 
@@ -183,6 +183,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                             EntityType = advancement.Type.ToString(),
                             WorkflowId = advancement.WorkflowId,
                             Ammount = ammount,
+                            HasRefundsInProcess = advancement.AdvancementRefunds.Any(x => x.Refund.InWorkflowProcess),
                             CurrencyName = currencyName,
                             EntitiesRelatedDesc = string.Join(" - ", advancement.AdvancementRefunds.Select(a => $"#{a.RefundId}")),
                             EntitiesRelatedIds = advancement.AdvancementRefunds.Select(a => a.RefundId),
@@ -210,6 +211,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                         WorkflowId = advancement.WorkflowId,
                         CurrencyName = advancement.Currency.Text,
                         Ammount = advancement.Ammount,
+                        HasRefundsInProcess = advancement.AdvancementRefunds.Any(x => x.Refund.InWorkflowProcess),
                         EntityType = advancement.Type.ToString(),
                         EntitiesRelatedDesc = string.Join(" - ", advancement.AdvancementRefunds.Select(a => $"#{a.RefundId}")),
                         EntitiesRelatedIds = advancement.AdvancementRefunds.Select(a => a.RefundId),

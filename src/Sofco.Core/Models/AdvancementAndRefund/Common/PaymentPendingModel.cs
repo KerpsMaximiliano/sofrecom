@@ -71,5 +71,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Common
         public string EntityType { get; set; }
 
         public string CurrencyName { get; set; }
+
+        public bool HasRefundsInProcess { get; set; }
     }
 }
