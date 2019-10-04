@@ -1,11 +1,9 @@
 import { Component, ViewChild } from "@angular/core";
-import { AdvancementService } from "app/services/advancement-and-refund/advancement.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { WorkflowService } from "app/services/workflow/workflow.service";
 import { Subscription } from "rxjs";
 import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
-import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { PaymentPendingService } from "app/services/advancement-and-refund/paymentPending.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
@@ -33,6 +31,7 @@ export class ListPaymentPendingComponent  {
     public totalRowSelectedAmount: number = 0;
 
     currencyWarning: boolean = false;
+    refundsInProcessWarning: boolean = false;
 
     rowSelected: any;
 
@@ -253,6 +252,7 @@ export class ListPaymentPendingComponent  {
 
     calculateTotalRowSelected(item){
         this.currencyWarning = false;
+        this.refundsInProcessWarning = false;
 
         if(item.type == 'refund' && item.entitiesRelatedIds){
             item.entitiesRelatedIds.forEach(advancementId => {
@@ -297,6 +297,10 @@ export class ListPaymentPendingComponent  {
 
         this.rowSelected.entities.forEach(item => {
             if(item.selected){
+                if(item.hasRefundsInProcess){
+                    this.refundsInProcessWarning = true;
+                }
+
                 if(!currencies.includes(item.currencyName)){
                     currencies.push(item.currencyName);
                 }
@@ -347,6 +351,6 @@ export class ListPaymentPendingComponent  {
     }
 
     saveEnabled(){
-        return this.totalRowSelectedAmount > 0;
+        return this.totalRowSelectedAmount > 0 && this.refundsInProcessWarning == false;
     }
 }

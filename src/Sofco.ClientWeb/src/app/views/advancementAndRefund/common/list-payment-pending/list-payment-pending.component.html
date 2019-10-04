@@ -122,6 +122,11 @@
 
     <br/>
 
+    <div class="alert alert-gaps-warning" style="margin-bottom: 10px" *ngIf="refundsInProcessWarning">
+        <i class="fa fa-warning"></i>
+        Se han seleccionado adelantos con reintengros en proceso de aprobación
+    </div>
+
     <div class="alert alert-gaps-warning" style="margin-bottom: 10px" *ngIf="currencyWarning">
         <i class="fa fa-warning"></i>
         Se han seleccionado items con distintas monedas

@@ -388,25 +388,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                             monthHeader.Closed = costDetailMonth.Closed;
                             monthHeader.CostDetailId = costDetailMonth.Id;
                         }
-
-                        //if (billingMonth.BilledResources > 0)
-                        //{
-                        //    monthHeader.ResourceQuantity = billingMonth.BilledResources;
-                        //}
-                        //else
-                        //{
-                        //    if (costDetailMonth != null)
-                        //    {
-                        //        monthHeader.ResourceQuantity = costDetailMonth.CostDetailProfiles.Count + costDetailMonth.CostDetailResources.Count;
-                        //    }
-                        //}
                     }
 
                     response.Data.MonthsHeader.Add(monthHeader);
                 }
-
-                //Obtengo los tipos de Recursos
-                //List<CostDetailType> Types = unitOfWork.CostDetailRepository.GetResourceTypes();
 
                 //Obtengo las categorias
                 List<CostDetailCategories> Allcategories = unitOfWork.CostDetailRepository.GetCategories();
@@ -1250,17 +1235,22 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                                             if (socialCharge != null)
                                             {
-                                                if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
-                                                if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
-                                     
-                                                auxTypeCost.Value = salary;
-                                                auxTypeCost.OriginalValue = salary;
-                                                auxTypeCost.Charges = charges;
-                                                auxTypeCost.Adjustment = monthValue.Adjustment ?? 0;
+                                                var allocation = employee.Allocations.FirstOrDefault(x => x.AnalyticId == IdAnalytic && x.StartDate.Date == mounth.MonthYear.Date);
 
-                                                if (salary > 0)
+                                                if (allocation != null)
                                                 {
-                                                    monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                                    if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
+                                                    if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
+
+                                                    auxTypeCost.Value = (allocation.Percentage / 100) * salary;
+                                                    auxTypeCost.OriginalValue = (allocation.Percentage / 100) * salary;
+                                                    auxTypeCost.Charges = (allocation.Percentage / 100) * charges;
+                                                    auxTypeCost.Adjustment = monthValue.Adjustment ?? 0;
+
+                                                    if (salary > 0)
+                                                    {
+                                                        monthDetail.ChargesPercentage = (decimal)((auxTypeCost.Charges / auxTypeCost.Value) * 100);
+                                                    }
                                                 }
                                             }
                                         }
@@ -1279,16 +1269,21 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                                         if (socialCharge != null)
                                         {
-                                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
-                                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
+                                            var allocation = employee.Allocations.FirstOrDefault(x => x.AnalyticId == IdAnalytic && x.StartDate.Date == mounth.MonthYear.Date);
 
-                                            auxTypeCost.Value = salary;
-                                            auxTypeCost.OriginalValue = salary;
-                                            auxTypeCost.Charges = charges;
-
-                                            if (salary > 0)
+                                            if (allocation != null)
                                             {
-                                                monthDetail.ChargesPercentage = (charges / salary) * 100;
+                                                if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
+                                                if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
+
+                                                auxTypeCost.Value = (allocation.Percentage / 100) * salary;
+                                                auxTypeCost.OriginalValue = (allocation.Percentage / 100) * salary;
+                                                auxTypeCost.Charges = (allocation.Percentage / 100) * charges;
+
+                                                if (salary > 0)
+                                                {
+                                                    monthDetail.ChargesPercentage = (decimal) ((auxTypeCost.Charges / auxTypeCost.Value) * 100);
+                                                }
                                             }
                                         }
                                     }
