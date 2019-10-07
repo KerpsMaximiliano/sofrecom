@@ -203,18 +203,14 @@ namespace Sofco.Service.Implementations.Billing
                     {
                         hito.BaseAmount = hito.Ammount * currencyExchange.Exchange;
                         hito.BaseAmountOriginal = hito.AmountOriginal * currencyExchange.Exchange;
-                        response.Data = hito;
                     }
                     else
                     {
-                        response.AddError(Resources.ManagementReport.CurrencyExchange.MissingForMonth);
-                        return response;
+                        response.AddWarning(Resources.ManagementReport.CurrencyExchange.MissingForMonth);
                     }
                 }
-                else
-                {
-                    response.Data = hito;
-                }
+
+                response.Data = hito;
             }
 
             return response;
