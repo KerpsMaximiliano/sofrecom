@@ -66,7 +66,11 @@ namespace Sofco.Domain.Models.Recruitment
 
         public string Language { get; set; }
 
+        public bool LanguageRequired { get; set; }
+
         public string Study { get; set; }
+
+        public bool StudyRequired { get; set; }
 
         public string JobTime { get; set; }
 

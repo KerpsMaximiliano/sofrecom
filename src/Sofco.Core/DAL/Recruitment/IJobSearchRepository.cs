@@ -10,5 +10,6 @@ namespace Sofco.Core.DAL.Recruitment
         IList<JobSearch> Search(JobSearchParameter parameter);
         JobSearch GetDetail(int id);
         JobSearch GetWithProfilesAndSkills(int jobSearchId);
+        JobSearch GetWithProfilesAndSkillsAndSenorities(int id);
     }
 }

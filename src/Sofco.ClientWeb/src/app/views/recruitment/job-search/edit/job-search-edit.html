@@ -292,32 +292,52 @@
                             <div class="col-md-2">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'yearsExperience')">
                                     <label class="control-label">Años de experiencia</label>
-                                    <input type="number" class="form-control input-sm" formControlName="yearsExperience" min="0" max="99">
-
+                                    <input type="number" class="form-control" formControlName="yearsExperience" min="0" max="99">
+        
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'yearsExperience')">
                                         <p *ngIf="formsService.hasError(form, 'yearsExperience', 'min')">El campo no puede ser menor a 0</p>
                                         <p *ngIf="formsService.hasError(form, 'yearsExperience', 'max')">El campo no puede ser mayor a 99</p>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                 
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group m-t-md">
+                                    <icheck [(checked)]="languageRequired" (checkedChange)="languageRequiredChanged($event)">
+                                        <label style="padding-left:20px;"> Excluyente </label> 
+                                    </icheck>
+                                </div> 
+                            </div>
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'language')">
                                     <label class="control-label">Idioma y nivel</label>
-                                    <input type="text" class="form-control input-sm" formControlName="language" maxlength="100">
+                                    <input type="text" class="form-control" formControlName="language" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'language')">
-                                        <p *ngIf="formsService.hasError(form, 'language', 'maxLength')">El idioma no pueden superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'language', 'maxLength')">El campo no pueden superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'language', 'required')">El campo es requerido</p>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group  m-t-md">
+                                    <icheck [(checked)]="studyRequired" (checkedChange)="studyRequiredChanged($event)">
+                                        <label style="padding-left:20px;"> Excluyente </label> 
+                                    </icheck>
+                                </div> 
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'study')">
                                     <label class="control-label">Nivel estudios</label>
-                                    <input type="text" class="form-control input-sm" formControlName="study" maxlength="100">
+                                    <input type="text" class="form-control" formControlName="study" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'study')">
-                                        <p *ngIf="formsService.hasError(form, 'study', 'maxLength')">El idioma no pueden superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'study', 'maxLength')">El campo no pueden superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'study', 'required')">El campo es requerido</p>
                                     </div>
                                 </div>
                             </div>

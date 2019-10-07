@@ -47,6 +47,8 @@ namespace Sofco.Service.Implementations.Recruitment
             ValidateUser(model, response);
             ValidateSelector(model, response);
             ValidateTimeHiring(model, response);
+            ValidateLanguage(model, response);
+            ValidateStudy(model, response);
 
             if (response.HasErrors()) return response;
 
@@ -80,7 +82,7 @@ namespace Sofco.Service.Implementations.Recruitment
                 return response;
             }
 
-            var jobsearch = unitOfWork.JobSearchRepository.Get(id);
+            var jobsearch = unitOfWork.JobSearchRepository.GetWithProfilesAndSkillsAndSenorities(id);
 
             if (jobsearch == null)
             {
@@ -95,6 +97,8 @@ namespace Sofco.Service.Implementations.Recruitment
             ValidateUser(model, response);
             ValidateSelector(model, response);
             ValidateTimeHiring(model, response);
+            ValidateLanguage(model, response);
+            ValidateStudy(model, response);
 
             if (response.HasErrors()) return response;
 
@@ -114,6 +118,18 @@ namespace Sofco.Service.Implementations.Recruitment
             }
 
             return response;
+        }
+
+        private void ValidateStudy(JobSearchAddModel model, Response response)
+        {
+            if (model.StudyRequired && string.IsNullOrWhiteSpace(model.Study))
+                response.AddError(Resources.Recruitment.JobSearch.StudyRequired);
+        }
+
+        private void ValidateLanguage(JobSearchAddModel model, Response response)
+        {
+            if (model.LanguageRequired && string.IsNullOrWhiteSpace(model.Language))
+                response.AddError(Resources.Recruitment.JobSearch.LanguageRequired);
         }
 
         public Response ChangeStatus(int id, JobSearchChangeStatusModel parameter)

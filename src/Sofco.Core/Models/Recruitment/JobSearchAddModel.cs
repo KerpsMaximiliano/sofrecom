@@ -70,11 +70,35 @@ namespace Sofco.Core.Models.Recruitment
 
         public int YearsExperience { get; set; }
 
+        public bool StudyRequired { get; set; }
+
+        public bool LanguageRequired { get; set; }
+
         public JobSearch CreateDomain()
         {
             var domain = new JobSearch();
 
             SetData(domain);
+
+            if (Profiles != null && Profiles.Any())
+            {
+                domain.JobSearchProfiles = Profiles.Select(x => new JobSearchProfile { ProfileId = x }).ToList();
+            }
+
+            if (Seniorities != null && Seniorities.Any())
+            {
+                domain.JobSearchSeniorities = Seniorities.Select(x => new JobSearchSeniority { SeniorityId = x }).ToList();
+            }
+
+            if (SkillsRequired != null && SkillsRequired.Any())
+            {
+                domain.JobSearchSkillsRequired = SkillsRequired.Select(x => new JobSearchSkillRequired { SkillId = x }).ToList();
+            }
+
+            if (SkillsNotRequired != null && SkillsNotRequired.Any())
+            {
+                domain.JobSearchSkillsNotRequired = SkillsNotRequired.Select(x => new JobSearchSkillNotRequired { SkillId = x }).ToList();
+            }
 
             domain.Status = JobSearchStatus.Open;
 
@@ -89,20 +113,36 @@ namespace Sofco.Core.Models.Recruitment
             {
                 domain.JobSearchProfiles = new List<JobSearchProfile>();
             }
+            else
+            {
+                domain.JobSearchProfiles = Profiles.Select(x => new JobSearchProfile { ProfileId = x, JobSearchId = domain.Id }).ToList();
+            }
 
             if (Seniorities == null || !Seniorities.Any())
             {
                 domain.JobSearchSeniorities = new List<JobSearchSeniority>();
+            }
+            else
+            {
+                domain.JobSearchSeniorities = Seniorities.Select(x => new JobSearchSeniority { SeniorityId = x, JobSearchId = domain.Id }).ToList();
             }
 
             if (SkillsRequired == null || !SkillsRequired.Any())
             {
                 domain.JobSearchSkillsRequired = new List<JobSearchSkillRequired>();
             }
+            else
+            {
+                domain.JobSearchSkillsRequired = SkillsRequired.Select(x => new JobSearchSkillRequired { SkillId = x, JobSearchId = domain.Id }).ToList();
+            }
 
             if (SkillsNotRequired == null || !SkillsNotRequired.Any())
             {
                 domain.JobSearchSkillsNotRequired = new List<JobSearchSkillNotRequired>();
+            }
+            else
+            {
+                domain.JobSearchSkillsNotRequired = SkillsNotRequired.Select(x => new JobSearchSkillNotRequired { SkillId = x, JobSearchId = domain.Id }).ToList();
             }
         }
 
@@ -134,26 +174,8 @@ namespace Sofco.Core.Models.Recruitment
             domain.HasGuards = HasGuards;
             domain.GuardsPaid = GuardsPaid;
             domain.Area = Area;
-
-            if (Profiles != null && Profiles.Any())
-            {
-                domain.JobSearchProfiles = Profiles.Select(x => new JobSearchProfile { ProfileId = x }).ToList();
-            }
-
-            if (Seniorities != null && Seniorities.Any())
-            {
-                domain.JobSearchSeniorities = Seniorities.Select(x => new JobSearchSeniority { SeniorityId = x }).ToList();
-            }
-
-            if (SkillsRequired != null && SkillsRequired.Any())
-            {
-                domain.JobSearchSkillsRequired = SkillsRequired.Select(x => new JobSearchSkillRequired { SkillId = x }).ToList();
-            }
-
-            if (SkillsNotRequired != null && SkillsNotRequired.Any())
-            {
-                domain.JobSearchSkillsNotRequired = SkillsNotRequired.Select(x => new JobSearchSkillNotRequired { SkillId = x }).ToList();
-            }
+            domain.LanguageRequired = LanguageRequired;
+            domain.StudyRequired = StudyRequired;
         }
     }
 }

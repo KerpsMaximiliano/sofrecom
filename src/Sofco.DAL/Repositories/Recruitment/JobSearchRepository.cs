@@ -81,5 +81,15 @@ namespace Sofco.DAL.Repositories.Recruitment
                     .ThenInclude(x => x.Skill)
                 .SingleOrDefault(x => x.Id == jobSearchId);
         }
+
+        public JobSearch GetWithProfilesAndSkillsAndSenorities(int id)
+        {
+            return context.JobSearchs
+                .Include(x => x.JobSearchProfiles)
+                .Include(x => x.JobSearchSeniorities)
+                .Include(x => x.JobSearchSkillsRequired)
+                .Include(x => x.JobSearchSkillsNotRequired)
+                .SingleOrDefault(x => x.Id == id);
+        }
     }
 }

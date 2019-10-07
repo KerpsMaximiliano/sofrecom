@@ -124,6 +124,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.languageRequired.
+        /// </summary>
+        public static string LanguageRequired {
+            get {
+                return ResourceManager.GetString("LanguageRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearch.maximunSalaryIsRequired.
         /// </summary>
         public static string MaximunSalaryIsRequired {
@@ -183,6 +192,15 @@ namespace Sofco.Resources.Recruitment {
         public static string StatusRequired {
             get {
                 return ResourceManager.GetString("StatusRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.studyRequired.
+        /// </summary>
+        public static string StudyRequired {
+            get {
+                return ResourceManager.GetString("StudyRequired", resourceCulture);
             }
         }
         

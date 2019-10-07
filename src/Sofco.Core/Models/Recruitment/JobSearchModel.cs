@@ -34,6 +34,8 @@ namespace Sofco.Core.Models.Recruitment
             JobType = jobsearch.JobType;
             ResourceAssignment = jobsearch.ResourceAssignment;
             YearsExperience = jobsearch.YearsExperience;
+            LanguageRequired = jobsearch.LanguageRequired;
+            StudyRequired = jobsearch.StudyRequired;
 
             if (jobsearch.Client != null) ClientCrmId = jobsearch.Client.CrmId;
 
@@ -51,6 +53,10 @@ namespace Sofco.Core.Models.Recruitment
 
             if (jobsearch.TimeHiring != null) TimeHiringId = jobsearch.TimeHiringId;
         }
+
+        public bool StudyRequired { get; set; }
+
+        public bool LanguageRequired { get; set; }
 
         public JobSearchStatus Status { get; set; }
 

@@ -95,7 +95,7 @@
                                     <input type="text" class="form-control" formControlName="jobTime" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'jobTime')">
-                                        <p *ngIf="formsService.hasError(form, 'jobTime', 'maxLength')">Los horario no puede superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'jobTime', 'maxLength')">El campo no puede superar los 100 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
                         
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'quantity')">
                                         <p *ngIf="formsService.hasError(form, 'quantity', 'required')">EL campo es requerido</p>
-                                        <p *ngIf="formsService.hasError(form, 'quantity', 'min')">La cantidad no puede ser menor a 1</p>
+                                        <p *ngIf="formsService.hasError(form, 'quantity', 'min')">El campo no puede ser menor a 1</p>
                                     </div>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                             <textarea rows="6" class="form-control" formControlName="observations" maxlength="3000"></textarea>
                     
                             <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'observations')">
-                                <p *ngIf="formsService.hasError(form, 'observations', 'maxLength')">Las observaciones no pueden superar los 3000 caracteres</p>
+                                <p *ngIf="formsService.hasError(form, 'observations', 'maxLength')">El campo no puede superar los 3000 caracteres</p>
                             </div>
                         </div>
 
@@ -129,7 +129,7 @@
                             <textarea rows="6" class="form-control" formControlName="comments" maxlength="3000"></textarea>
                     
                             <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'comments')">
-                                <p *ngIf="formsService.hasError(form, 'comments', 'maxLength')">Los comentarios no pueden superar los 3000 caracteres</p>
+                                <p *ngIf="formsService.hasError(form, 'comments', 'maxLength')">El campo no puede superar los 3000 caracteres</p>
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                                     <input type="text" class="form-control" formControlName="area" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'area')">
-                                        <p *ngIf="formsService.hasError(form, 'area', 'maxLength')">El area no puede superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'area', 'maxLength')">El campo no puede superar los 100 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +154,7 @@
                                     <input type="text" class="form-control" formControlName="location">
                                     
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'location')">
-                                        <p *ngIf="formsService.hasError(form, 'location', 'maxLength')">Los comentarios no pueden superar los 200 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'location', 'maxLength')">El campo no puede superar los 200 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -230,7 +230,7 @@
                             <textarea rows="6" class="form-control" formControlName="benefits" maxlength="3000"></textarea>
                     
                             <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'benefits')">
-                                <p *ngIf="formsService.hasError(form, 'benefits', 'maxLength')">Los beneficios no pueden superar los 3000 caracteres</p>
+                                <p *ngIf="formsService.hasError(form, 'benefits', 'maxLength')">El campo no puede superar los 3000 caracteres</p>
                             </div>
                         </div>
                     </div>
@@ -270,7 +270,7 @@
                             <textarea rows="6" class="form-control" formControlName="tasksToDo" maxlength="3000"></textarea>
                     
                             <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'tasksToDo')">
-                                <p *ngIf="formsService.hasError(form, 'tasksToDo', 'maxLength')">El tipo de tareas no pueden superar los 4000 caracteres</p>
+                                <p *ngIf="formsService.hasError(form, 'tasksToDo', 'maxLength')">El campo no pueden superar los 4000 caracteres</p>
                             </div>
                         </div>
 
@@ -279,12 +279,22 @@
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'yearsExperience')">
                                     <label class="control-label">Años de experiencia</label>
                                     <input type="number" class="form-control" formControlName="yearsExperience" min="0" max="99">
-
+        
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'yearsExperience')">
                                         <p *ngIf="formsService.hasError(form, 'yearsExperience', 'min')">El campo no puede ser menor a 0</p>
                                         <p *ngIf="formsService.hasError(form, 'yearsExperience', 'max')">El campo no puede ser mayor a 99</p>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                 
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group m-t-md">
+                                    <icheck [(checked)]="languageRequired" (checkedChange)="languageRequiredChanged($event)">
+                                        <label style="padding-left:20px;"> Excluyente </label> 
+                                    </icheck>
+                                </div> 
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'language')">
@@ -292,9 +302,18 @@
                                     <input type="text" class="form-control" formControlName="language" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'language')">
-                                        <p *ngIf="formsService.hasError(form, 'language', 'maxLength')">El idioma no pueden superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'language', 'maxLength')">El campo no pueden superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'language', 'required')">El campo es requerido</p>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group  m-t-md">
+                                    <icheck [(checked)]="studyRequired" (checkedChange)="studyRequiredChanged($event)">
+                                        <label style="padding-left:20px;"> Excluyente </label> 
+                                    </icheck>
+                                </div> 
                             </div>
 
                             <div class="col-md-4">
@@ -303,7 +322,8 @@
                                     <input type="text" class="form-control" formControlName="study" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'study')">
-                                        <p *ngIf="formsService.hasError(form, 'study', 'maxLength')">El idioma no pueden superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'study', 'maxLength')">El campo no pueden superar los 100 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'study', 'required')">El campo es requerido</p>
                                     </div>
                                 </div>
                             </div>
@@ -320,7 +340,7 @@
                                     <ng-select [items]="customerOptions" bindValue="id" bindLabel="text" formControlName="clientId"></ng-select>
                     
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'clientId')">
-                                        <p *ngIf="formsService.hasError(form, 'clientId', 'required')">El cliente es requerido</p>
+                                        <p *ngIf="formsService.hasError(form, 'clientId', 'required')">El campo es requerido</p>
                                     </div>
                                 </div>
                             </div>

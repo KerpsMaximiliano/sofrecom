@@ -56,6 +56,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     extraHoursPaid: boolean;
     hasGuards: boolean;
     guardsPaid: boolean;
+    languageRequired: boolean;
+    studyRequired: boolean;
 
     profileOptions: any[] = new Array();
     skillOptions: any[] = new Array();
@@ -188,6 +190,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.extraHoursPaid = response.data.extraHoursPaid;
             this.hasGuards = response.data.hasGuards;
             this.guardsPaid = response.data.guardsPaid;
+            this.languageRequired = response.data.languageRequired;
+            this.studyRequired = response.data.studyRequired;
 
             this.status = response.data.status;
         }, 
@@ -289,6 +293,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             hasExtraHours: this.hasExtraHours,
             extraHoursPaid: this.extraHoursPaid,
             hasGuards: this.hasGuards,
+            languageRequired: this.languageRequired,
+            studyRequired: this.studyRequired,
             guardsPaid: this.guardsPaid,
             clientId: 0
         }
@@ -363,5 +369,27 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
 
     hasGuardsChanged(){
         this.guardsPaid = false;
+    }
+
+    studyRequiredChanged(value){
+        if(value == true){
+            this.form.controls.study.setValidators([Validators.required, Validators.maxLength(100)]);
+            this.form.controls.study.updateValueAndValidity();
+        }
+        else {
+            this.form.controls.study.setValidators([Validators.maxLength(100)]);
+            this.form.controls.study.updateValueAndValidity();
+        }
+    }
+
+    languageRequiredChanged(value){
+        if(value == true){
+            this.form.controls.language.setValidators([Validators.required, Validators.maxLength(100)]);
+            this.form.controls.language.updateValueAndValidity();
+        }
+        else {
+            this.form.controls.language.setValidators([Validators.maxLength(100)]);
+            this.form.controls.language.updateValueAndValidity();
+        }
     }
 }
