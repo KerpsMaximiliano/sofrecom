@@ -73,14 +73,6 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        private void ValidateMarketStudy(JobSearchAddModel model, Response response)
-        {
-            if (model.IsMarketStudy && string.IsNullOrWhiteSpace(model.MarketStudy))
-            {
-                response.AddError(Resources.Recruitment.JobSearch.MarketStudyRequired);
-            }
-        }
-
         public Response Update(int id, JobSearchAddModel model)
         {
             var response = new Response();
@@ -326,6 +318,14 @@ namespace Sofco.Service.Implementations.Recruitment
             else if (!unitOfWork.UserRepository.ExistById(model.UserId.Value))
             {
                 response.AddError(Resources.Admin.User.NotFound);
+            }
+        }
+
+        private void ValidateMarketStudy(JobSearchAddModel model, Response response)
+        {
+            if (model.IsMarketStudy && string.IsNullOrWhiteSpace(model.MarketStudy))
+            {
+                response.AddError(Resources.Recruitment.JobSearch.MarketStudyRequired);
             }
         }
 

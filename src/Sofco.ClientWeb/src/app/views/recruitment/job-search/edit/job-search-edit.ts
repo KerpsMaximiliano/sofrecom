@@ -45,6 +45,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         benefits: new FormControl(null, [Validators.maxLength(3000)]),
         observations: new FormControl(null, [Validators.maxLength(3000)]),
         tasksToDo: new FormControl(null, [Validators.maxLength(3000)]),
+        marketStudy: new FormControl(null),
     });
 
     dateModalForm: FormGroup = new FormGroup({
@@ -58,6 +59,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     guardsPaid: boolean;
     languageRequired: boolean;
     studyRequired: boolean;
+    isMarketStudy: boolean;
 
     profileOptions: any[] = new Array();
     skillOptions: any[] = new Array();
@@ -185,6 +187,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.form.controls.benefits.setValue(response.data.benefits);
             this.form.controls.observations.setValue(response.data.observations);
             this.form.controls.tasksToDo.setValue(response.data.tasksToDo);
+            this.form.controls.marketStudy.setValue(response.data.marketStudy);
 
             this.hasExtraHours = response.data.hasExtraHours;
             this.extraHoursPaid = response.data.extraHoursPaid;
@@ -192,6 +195,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.guardsPaid = response.data.guardsPaid;
             this.languageRequired = response.data.languageRequired;
             this.studyRequired = response.data.studyRequired;
+            this.isMarketStudy = response.data.isMarketStudy;
 
             this.status = response.data.status;
         }, 
@@ -296,6 +300,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             languageRequired: this.languageRequired,
             studyRequired: this.studyRequired,
             guardsPaid: this.guardsPaid,
+            marketStudy: this.form.controls.marketStudy.value,
+            isMarketStudy: this.isMarketStudy,
             clientId: 0
         }
 
@@ -390,6 +396,24 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         else {
             this.form.controls.language.setValidators([Validators.maxLength(100)]);
             this.form.controls.language.updateValueAndValidity();
+        }
+    }
+
+    marketStudyChanged(value){
+        if(value == true){
+            this.form.controls.marketStudy.setValidators([Validators.required, Validators.maxLength(150)]);
+            this.form.controls.marketStudy.updateValueAndValidity();
+
+            this.form.controls.clientId.clearValidators();
+            this.form.controls.clientId.disable();
+            this.form.controls.clientId.setValue(null);
+        }
+        else{
+            this.form.controls.marketStudy.clearValidators();
+            this.form.controls.marketStudy.updateValueAndValidity();
+
+            this.form.controls.clientId.setValidators([Validators.required]);
+            this.form.controls.clientId.enable();
         }
     }
 }
