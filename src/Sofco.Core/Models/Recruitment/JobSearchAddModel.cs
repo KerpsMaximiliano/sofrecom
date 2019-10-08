@@ -68,7 +68,7 @@ namespace Sofco.Core.Models.Recruitment
 
         public int ResourceAssignment { get; set; }
 
-        public int YearsExperience { get; set; }
+        public int? YearsExperience { get; set; }
 
         public bool StudyRequired { get; set; }
 
@@ -159,7 +159,7 @@ namespace Sofco.Core.Models.Recruitment
             domain.MaximunSalary = MaximunSalary.GetValueOrDefault();
             domain.Quantity = Quantity.GetValueOrDefault();
             domain.TimeHiringId = TimeHiringId.GetValueOrDefault();
-            domain.RecruiterId = RecruiterId.GetValueOrDefault();
+            domain.RecruiterId = RecruiterId;
             domain.YearsExperience = YearsExperience;
             domain.Email = Email;
             domain.Telephone = Telephone;

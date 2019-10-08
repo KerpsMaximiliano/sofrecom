@@ -27,7 +27,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         quantity: new FormControl(null, [Validators.required, Validators.min(1)]),
         yearsExperience: new FormControl(null, [Validators.max(99), Validators.min(0)]),
         maximunSalary: new FormControl(null, [Validators.required]),
-        recruiterId: new FormControl(null, [Validators.required]),
+        recruiterId: new FormControl(null),
         profiles: new FormControl(null),
         skillsNotRequired: new FormControl(null),
         skillsRequired: new FormControl(null),
@@ -120,7 +120,6 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.activateRoute.params.subscribe(routeParams => {
             this.entityId = routeParams.id;
             this.getData(routeParams.id);
-            this.applicantsRelated.init(this.entityId);
         });
 
         setTimeout(() => {
@@ -198,6 +197,14 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.isMarketStudy = response.data.isMarketStudy;
 
             this.status = response.data.status;
+
+            if(this.status == JobSearchStatus.Close){
+                this.form.disable();
+                $("div[name='checked']").addClass('disabled');
+            }
+            else{
+                this.applicantsRelated.init(this.entityId);
+            }
         }, 
         error => this.messageService.closeLoading());
     }
@@ -315,6 +322,10 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         });
     }
 
+    isClose(){
+        return this.status == JobSearchStatus.Close;
+    }
+
     canSave(){
         return this.status != JobSearchStatus.Close;
     }
@@ -359,6 +370,11 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
 
             this.dateModalForm.controls.date.setValue(null);
             this.dateModalForm.controls.comments.setValue(null);
+
+            if(this.isClose()){
+                this.form.disable();
+                $("div[name='checked']").addClass('disabled');
+            }
         }, 
         error => {
             this.dateModal.resetButtons();

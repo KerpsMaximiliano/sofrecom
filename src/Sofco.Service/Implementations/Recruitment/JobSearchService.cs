@@ -331,11 +331,7 @@ namespace Sofco.Service.Implementations.Recruitment
 
         private void ValidateSelector(JobSearchAddModel model, Response response)
         {
-            if (!model.UserId.HasValue)
-            {
-                response.AddError(Resources.Recruitment.JobSearch.SelectorRequired);
-            }
-            else if (!unitOfWork.UserRepository.ExistById(model.UserId.Value))
+            if (model.RecruiterId.HasValue && !unitOfWork.UserRepository.ExistById(model.RecruiterId.Value))
             {
                 response.AddError(Resources.Admin.User.NotFound);
             }

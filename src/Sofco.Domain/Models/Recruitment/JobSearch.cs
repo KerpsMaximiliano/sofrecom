@@ -12,7 +12,7 @@ namespace Sofco.Domain.Models.Recruitment
         public int UserId { get; set; }
         public User User { get; set; }
 
-        public int RecruiterId { get; set; }
+        public int? RecruiterId { get; set; }
         public User Recruiter { get; set; }
 
         public int ReasonCauseId { get; set; }
@@ -52,7 +52,7 @@ namespace Sofco.Domain.Models.Recruitment
         public int TimeHiringId { get; set; }
         public TimeHiring TimeHiring { get; set; }
 
-        public int YearsExperience { get; set; }
+        public int? YearsExperience { get; set; }
 
         public string Email { get; set; }
 

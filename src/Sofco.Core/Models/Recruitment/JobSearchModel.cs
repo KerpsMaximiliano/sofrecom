@@ -70,7 +70,7 @@ namespace Sofco.Core.Models.Recruitment
 
         public int UserId { get; set; }
 
-        public int RecruiterId { get; set; }
+        public int? RecruiterId { get; set; }
 
         public int ReasonCauseId { get; set; }
 
@@ -124,6 +124,6 @@ namespace Sofco.Core.Models.Recruitment
 
         public int ResourceAssignment { get; set; }
 
-        public int YearsExperience { get; set; }
+        public int? YearsExperience { get; set; }
     }
 }

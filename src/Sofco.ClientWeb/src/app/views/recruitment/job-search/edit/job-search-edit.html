@@ -58,13 +58,9 @@
                             </div>
 
                             <div class="col-md-4">
-                                <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'recruiterId')">
+                                <div class="form-group">
                                     <label class="control-label"> Selector </label>
                                     <ng-select [items]="recruitersOptions" bindValue="id" bindLabel="text" formControlName="recruiterId"></ng-select>
-                    
-                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'recruiterId')">
-                                        <p *ngIf="formsService.hasError(form, 'recruiterId', 'required')">El campo es requerido</p>
-                                    </div>
                                 </div>
                             </div>
             
@@ -403,7 +399,7 @@
         </div>
     </form>
 
-    <job-search-applicants-related #applicantsRelated></job-search-applicants-related>
+    <job-search-applicants-related *ngIf="!isClose()" #applicantsRelated></job-search-applicants-related>
 </div>
 
 <ng2-modal [config]="dateModalConfig" #dateModal (accept)="changeStatus()" [isSaveEnabled]="dateModalForm.valid">
