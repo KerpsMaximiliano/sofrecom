@@ -79,6 +79,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.clientMustBeNull.
+        /// </summary>
+        public static string ClientMustBeNull {
+            get {
+                return ResourceManager.GetString("ClientMustBeNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearch.clientRequired.
         /// </summary>
         public static string ClientRequired {
@@ -129,6 +138,15 @@ namespace Sofco.Resources.Recruitment {
         public static string LanguageRequired {
             get {
                 return ResourceManager.GetString("LanguageRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.marketStudyRequired.
+        /// </summary>
+        public static string MarketStudyRequired {
+            get {
+                return ResourceManager.GetString("MarketStudyRequired", resourceCulture);
             }
         }
         

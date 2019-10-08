@@ -43,6 +43,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         benefits: new FormControl(null, [Validators.maxLength(3000)]),
         observations: new FormControl(null, [Validators.maxLength(3000)]),
         tasksToDo: new FormControl(null, [Validators.maxLength(3000)]),
+        marketStudy: new FormControl(null),
     });
 
     hasExtraHours: boolean;
@@ -51,6 +52,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     guardsPaid: boolean;
     languageRequired: boolean;
     studyRequired: boolean;
+    isMarketStudy: boolean;
 
     profileOptions: any[] = new Array();
     skillOptions: any[] = new Array();
@@ -224,6 +226,8 @@ export class JobSearchComponent implements OnInit, OnDestroy {
             guardsPaid: this.guardsPaid,
             languageRequired: this.languageRequired,
             studyRequired: this.studyRequired,
+            marketStudy: this.form.controls.marketStudy.value,
+            isMarketStudy: this.isMarketStudy,
             clientId: 0
         }
 
@@ -269,6 +273,24 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         else {
             this.form.controls.language.setValidators([Validators.maxLength(100)]);
             this.form.controls.language.updateValueAndValidity();
+        }
+    }
+
+    marketStudyChanged(value){
+        if(value == true){
+            this.form.controls.marketStudy.setValidators([Validators.required, Validators.maxLength(150)]);
+            this.form.controls.marketStudy.updateValueAndValidity();
+
+            this.form.controls.clientId.clearValidators();
+            this.form.controls.clientId.disable();
+            this.form.controls.clientId.setValue(null);
+        }
+        else{
+            this.form.controls.marketStudy.clearValidators();
+            this.form.controls.marketStudy.updateValueAndValidity();
+
+            this.form.controls.clientId.setValidators([Validators.required]);
+            this.form.controls.clientId.enable();
         }
     }
 }

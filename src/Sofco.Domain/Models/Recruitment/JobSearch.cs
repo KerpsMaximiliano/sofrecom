@@ -18,7 +18,7 @@ namespace Sofco.Domain.Models.Recruitment
         public int ReasonCauseId { get; set; }
         public ReasonCause ReasonCause { get; set; }
 
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
         public Customer Client { get; set; }
 
         public IList<JobSearchProfile> JobSearchProfiles { get; set; }
@@ -91,6 +91,10 @@ namespace Sofco.Domain.Models.Recruitment
         public bool GuardsPaid { get; set; }
 
         public string Area { get; set; }
+
+        public string MarketStudy { get; set; }
+
+        public bool IsMarketStudy { get; set; }
 
         public IList<JobSearchApplicant> JobSearchApplicants { get; set; }
     }

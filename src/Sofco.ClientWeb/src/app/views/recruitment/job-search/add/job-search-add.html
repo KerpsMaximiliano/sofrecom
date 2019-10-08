@@ -344,6 +344,23 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-8">
+                                <div class="form-group m-t-md">
+                                    <icheck [(checked)]="isMarketStudy" (checkedChange)="marketStudyChanged($event)">
+                                        <label style="padding-left:20px;"> ¿ Es estudio de mercado ? </label> 
+                                    </icheck>
+                                </div> 
+                            </div>
+                        </div>
+
+                        <div class="form-group" *ngIf="isMarketStudy" [ngClass]="formsService.getClassProperty(form, 'marketStudy')">
+                            <label class="control-label">Estudio de Mercado</label>
+                            <input type="text" class="form-control" maxlength="150" formControlName="marketStudy">
+
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'marketStudy')">
+                                <p *ngIf="formsService.hasError(form, 'marketStudy', 'required')">El campo es requerido</p>
+                                <p *ngIf="formsService.hasError(form, 'marketStudy', 'maxLength')">El campo no puede superar los 150 caracteres</p>
+                            </div>
                         </div>
 
                         <div class="row">

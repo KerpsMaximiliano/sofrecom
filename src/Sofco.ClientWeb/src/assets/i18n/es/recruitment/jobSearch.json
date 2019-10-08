@@ -15,5 +15,9 @@
     "dateRequired": "La fecha es requerida",
     "statusRequired": "El estado es requerido",
     "commentsRequired": "Los comentarios son requeridos",
+    "clientMustBeNull": "El cliente debe estar vacion si es un estudio de mercado",
+    "marketStudyRequired": "El estudio de mercado es requerido",
+    "studyRequired": "El nivel de estudios es requerido",
+    "languageRequired": "El idioma/nivel es requerido",
     "userRequired": "El solicitante es requerido"
 }

@@ -123,6 +123,9 @@
   <data name="CannotChangeStatus" xml:space="preserve">
     <value>recruitment/jobSearch.cannotChangeStatus</value>
   </data>
+  <data name="ClientMustBeNull" xml:space="preserve">
+    <value>recruitment/jobSearch.clientMustBeNull</value>
+  </data>
   <data name="ClientRequired" xml:space="preserve">
     <value>recruitment/jobSearch.clientRequired</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="LanguageRequired" xml:space="preserve">
     <value>recruitment/jobSearch.languageRequired</value>
+  </data>
+  <data name="MarketStudyRequired" xml:space="preserve">
+    <value>recruitment/jobSearch.marketStudyRequired</value>
   </data>
   <data name="MaximunSalaryIsRequired" xml:space="preserve">
     <value>recruitment/jobSearch.maximunSalaryIsRequired</value>

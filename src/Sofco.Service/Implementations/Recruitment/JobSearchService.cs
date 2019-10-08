@@ -49,6 +49,7 @@ namespace Sofco.Service.Implementations.Recruitment
             ValidateTimeHiring(model, response);
             ValidateLanguage(model, response);
             ValidateStudy(model, response);
+            ValidateMarketStudy(model, response);
 
             if (response.HasErrors()) return response;
 
@@ -70,6 +71,14 @@ namespace Sofco.Service.Implementations.Recruitment
             }
 
             return response;
+        }
+
+        private void ValidateMarketStudy(JobSearchAddModel model, Response response)
+        {
+            if (model.IsMarketStudy && string.IsNullOrWhiteSpace(model.MarketStudy))
+            {
+                response.AddError(Resources.Recruitment.JobSearch.MarketStudyRequired);
+            }
         }
 
         public Response Update(int id, JobSearchAddModel model)
@@ -99,6 +108,7 @@ namespace Sofco.Service.Implementations.Recruitment
             ValidateTimeHiring(model, response);
             ValidateLanguage(model, response);
             ValidateStudy(model, response);
+            ValidateMarketStudy(model, response);
 
             if (response.HasErrors()) return response;
 
@@ -357,22 +367,34 @@ namespace Sofco.Service.Implementations.Recruitment
 
         private void ValidateClient(JobSearchAddModel model, Response response)
         {
-            if (string.IsNullOrWhiteSpace(model.ClientCrmId))
+            if (!model.IsMarketStudy)
             {
-                response.AddError(Resources.Recruitment.JobSearch.ClientRequired);
-            }
-            else
-            {
-                var customer = unitOfWork.CustomerRepository.GetByIdCrm(model.ClientCrmId);
-
-                if (customer == null)
+                if (string.IsNullOrWhiteSpace(model.ClientCrmId))
                 {
-                    response.AddError(Resources.Billing.Customer.NotFound);
+                    response.AddError(Resources.Recruitment.JobSearch.ClientRequired);
                 }
                 else
                 {
-                    model.ClientId = customer.Id;
+                    var customer = unitOfWork.CustomerRepository.GetByIdCrm(model.ClientCrmId);
+
+                    if (customer == null)
+                    {
+                        response.AddError(Resources.Billing.Customer.NotFound);
+                    }
+                    else
+                    {
+                        model.ClientId = customer.Id;
+                    }
                 }
+            }
+            else
+            {
+                model.ClientId = null;
+
+                if (!string.IsNullOrWhiteSpace(model.ClientCrmId))
+                {
+                    response.AddError(Resources.Recruitment.JobSearch.ClientMustBeNull);
+                }       
             }
         }
     }

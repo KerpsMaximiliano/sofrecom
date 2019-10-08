@@ -16,7 +16,7 @@ namespace Sofco.Core.Models.Recruitment
 
         public string ClientCrmId { get; set; }
 
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
 
         public IList<int> Profiles { get; set; }
 
@@ -73,6 +73,10 @@ namespace Sofco.Core.Models.Recruitment
         public bool StudyRequired { get; set; }
 
         public bool LanguageRequired { get; set; }
+
+        public bool IsMarketStudy { get; set; }
+
+        public string MarketStudy { get; set; }
 
         public JobSearch CreateDomain()
         {
@@ -176,6 +180,8 @@ namespace Sofco.Core.Models.Recruitment
             domain.Area = Area;
             domain.LanguageRequired = LanguageRequired;
             domain.StudyRequired = StudyRequired;
+            domain.MarketStudy = MarketStudy;
+            domain.IsMarketStudy = IsMarketStudy;
         }
     }
 }
