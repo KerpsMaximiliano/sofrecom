@@ -271,7 +271,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.CostCategories = allCategoriesData.Where(r=> r.Show == true && r.BelongEmployee == false && !infraRed.Any(y => r.Name == y)).OrderBy(r => r.Name).ToList();
                 response.Data.CostCategoriesRedInfra = allCategoriesData.Where(x => x.Show == true && infraRed.Any(y => x.Name == y)).ToList();
                 response.Data.OtherCategories = allCategoriesData.Where(r=> r.Show == false && r.BelongEmployee == false).OrderBy(r => r.Name).ToList();
-                response.Data.CostEmployees = managementReportService.FillCostEmployeesByMonth(managementReport.Analytic.Id, response.Data.MonthsHeader, costDetails);
+                response.Data.CostEmployees = managementReportService.FillCostEmployeesByMonth(managementReport.Analytic.Id, response.Data.MonthsHeader, costDetails, dates.Item1, dates.Item2);
                 response.Data.CostCategoriesEmployees = allCategoriesData.Where(r => r.BelongEmployee == true).OrderBy(r => r.Name).ToList();
                 response.Data.Status = managementReport.Status;
                 response.Data.State = managementReport.State == null ? EnumBudgetType.budget.ToLower() : managementReport.State.Name.ToLower();

@@ -26,7 +26,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response<IList<ManagementReportCommentModel>> GetComments(int id);
         Response DeleteProfile(string guid);
         void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails, bool isReal = false);
-        List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails);
+        List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails, DateTime startDate, DateTime endDate);
         IList<CostResourceEmployee> AddAnalyticMonthsToEmployees(IList<CostResourceEmployee> pCostEmployees, int managementReportId, DateTime startDateAnalytic, DateTime endDateAnalytic);
     }
 }

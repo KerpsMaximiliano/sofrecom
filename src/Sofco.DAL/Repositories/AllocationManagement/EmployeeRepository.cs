@@ -366,9 +366,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees.Include(x => x.SalaryDiscounts).SingleOrDefault(x => x.Email == email);
         }
 
-        public IList<Employee> GetByAnalyticWithSocialCharges(int idAnalytic)
+        public IList<Employee> GetByAnalyticWithSocialCharges(int idAnalytic, DateTime startDate, DateTime endDate)
         {
-            var ids = context.Allocations.Where(x => x.AnalyticId == idAnalytic && x.Percentage > 0)
+            var ids = context.Allocations.Where(x => x.AnalyticId == idAnalytic && x.Percentage > 0 && x.StartDate.Date >= startDate.Date && x.StartDate.Date <= endDate.Date)
                 .Select(x => x.Employee.Id)
                 .Distinct()
                 .ToList();

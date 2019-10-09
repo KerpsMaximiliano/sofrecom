@@ -403,7 +403,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 //Mapeo Los demas datos
                 var AllCostResources = FillFundedResoursesByMonth(response.Data.MonthsHeader, costDetails, categories);
 
-                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails);
+                response.Data.CostEmployees = FillCostEmployeesByMonth(analytic.Id, response.Data.MonthsHeader, costDetails, dates.Item1, dates.Item2);
                 response.Data.FundedResourcesEmployees = AllCostResources.Where(r => r.BelongEmployee == true).ToList();
                 response.Data.FundedResources = AllCostResources.Where(r => r.show == true && r.BelongEmployee == false).ToList();
                 response.Data.OtherResources = AllCostResources.Where(r => r.show == false && r.BelongEmployee == false).OrderBy(r => r.Display).ToList();
@@ -1152,16 +1152,17 @@ namespace Sofco.Service.Implementations.ManagementReport
             return false;
         }
 
-        public List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails)
+        public List<CostResourceEmployee> FillCostEmployeesByMonth(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails, DateTime startDate, DateTime endDate)
         {
             List<CostResourceEmployee> costEmployees = new List<CostResourceEmployee>();
             var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
 
             //Obtengo los empleados de la analitica
-            var EmployeesAnalytic = unitOfWork.EmployeeRepository.GetByAnalyticWithSocialCharges(IdAnalytic);
+            var EmployeesAnalytic = unitOfWork.EmployeeRepository.GetByAnalyticWithSocialCharges(IdAnalytic, startDate, endDate);
 
             // Obtengo los empleados del reporte que no estan en la analitica.
             var IdEmployeesWithOutAnalytic = costDetails
+                                                .Where(x => x.MonthYear.Date >= startDate.Date && x.MonthYear.Date <= endDate.Date)
                                                 .SelectMany(x => x.CostDetailResources.Select(d => d.EmployeeId))
                                                 .Distinct()
                                                 .Except(EmployeesAnalytic.Select(x => x.Id))
