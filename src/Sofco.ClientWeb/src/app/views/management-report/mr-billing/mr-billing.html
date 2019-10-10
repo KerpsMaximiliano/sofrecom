@@ -78,9 +78,19 @@
 
 <ng2-modal [config]="newHitoModalConfig" #newHitoModal (accept)="createHito()">
 
-    <div class="form-group">
-        <label class="control-label">Proyectos</label>
-        <ng-select [items]="projects" bindLabel="text" bindValue="id" [(ngModel)]="hito.projectId"></ng-select>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label class="control-label">Proyectos</label>
+                <ng-select [items]="projects" bindLabel="text" bindValue="id" [(ngModel)]="hito.projectId"></ng-select>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label class="control-label">{{'billing.project.detail.milestone.startDate' | translate }}</label>
+                <date-picker [(date)]="hito.startDate"></date-picker>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -102,15 +112,6 @@
         <div class="col-sm-6">
             <label class="control-label">{{ 'billing.project.detail.milestone.amount' | translate }}</label>
             <input type="number" decimalFormat class="form-control" [(ngModel)]="hito.ammount">
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label class="control-label">{{'billing.project.detail.milestone.startDate' | translate }}</label>
-                <date-picker [(date)]="hito.startDate"></date-picker>
-            </div>
         </div>
     </div>
 

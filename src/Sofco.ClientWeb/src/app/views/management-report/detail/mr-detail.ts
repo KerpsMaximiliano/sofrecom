@@ -520,9 +520,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.billing.createWorksheet(workbook);
         this.tracing.createWorksheet(workbook);
 
+        var title = `Informe Gestion ${this.model.analytic} - ${this.model.manamementReportStartDate} - ${this.model.manamementReportEndDate}.xlsx`
+
         workbook.xlsx.writeBuffer().then((data) => {
             let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            fs.saveAs(blob, 'test.xlsx');
+            fs.saveAs(blob, title);
         });
     }
 }

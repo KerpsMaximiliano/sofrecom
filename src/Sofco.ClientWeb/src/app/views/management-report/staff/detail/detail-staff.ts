@@ -502,7 +502,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         this.budgetView.createWorksheet(workbook);
         this.tracingView.createWorksheet(workbook);
      
-        var title = `Informe Gestion ${this.model.analytic}. ${this.model.manamementReportStartDate} - ${this.model.manamementReportEndDate}.xlsx`
+        var title = `Informe Gestion ${this.model.analytic} - ${this.model.manamementReportStartDate} - ${this.model.manamementReportEndDate}.xlsx`
 
         workbook.xlsx.writeBuffer().then((data) => {
             let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
