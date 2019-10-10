@@ -5,6 +5,7 @@ import { MessageService } from "app/services/common/message.service";
 import { Subscription } from "rxjs";
 import * as FileSaver from "file-saver";
 import { MenuService } from "app/services/admin/menu.service";
+import { Worksheet } from "exceljs";
 
 @Component({
     selector: 'management-report-tracing',
@@ -66,16 +67,36 @@ export class TracingComponent implements OnInit, OnDestroy {
         return this.menuService.userIsCdg;
     }
 
-    // openEditEvalProp(month) {
+    createWorksheet(workbook){
+        let worksheet: Worksheet = workbook.addWorksheet('Seguimiento');
 
-    //     if (month.closed) return;
+        var columns = [];
+        var monthItem = { header: "Meses", width: 50 };
+        columns.push(monthItem);
 
-    //     if (this.openEvalPropModal.observers.length > 0) {
-    //         month.type = 3;
-    //         month.icon = "%";
-    //         this.openEvalPropModal.emit(month);
-    //     }
-    // }
+        var percentageExpectedTotal = ["Margen a la Fecha (%)"];
+        var percentageToEnd = ["Margen a Terminacion (%)"];
+        var evalprop = ["EVALPROP (%)"];
 
+        this.AllMarginTracking.forEach(month => {
+            columns.push({ header: month.display, width: 15, style: { numFmt: '#,##0.00' }, alignment: { horizontal:'center'} });
 
+            if(month.hasReal){
+                percentageExpectedTotal.push(month.PercentageExpectedTotal || 0);
+                percentageToEnd.push(month.PercentageToEnd || 0);
+            }
+            else{
+                percentageExpectedTotal.push("");
+                percentageToEnd.push("");
+            }
+
+            evalprop.push(month.valueEvalProp || 0);
+        });
+
+        worksheet.columns = columns;
+
+        worksheet.addRow(percentageExpectedTotal);
+        worksheet.addRow(percentageToEnd);
+        worksheet.addRow(evalprop);
+    }
 }

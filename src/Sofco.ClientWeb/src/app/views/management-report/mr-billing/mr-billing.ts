@@ -14,6 +14,7 @@ import { ManagementReportStatus } from "app/models/enums/managementReportStatus"
 import { ResourceBillingItem } from "app/models/management-report/resourceBillingItem";
 import { GenericOptionService } from "app/services/admin/generic-option.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { Worksheet } from "exceljs";
 declare var moment: any;
 
 @Component({
@@ -761,5 +762,54 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
         this.resourceQuantity = this.items.filter(x => !x.deleted).length;
         this.calculateTotal();
+    }
+
+    createWorksheet(workbook){
+        let worksheet: Worksheet = workbook.addWorksheet('Facturación');
+
+        this.buildHeader(worksheet);
+        this.buildHitos(worksheet);
+    }
+
+    private buildHitos(worksheet: Worksheet) {
+        worksheet.addRow(["Hitos"]);
+        this.hitos.forEach(hito => {
+            var row = [`${hito.opportunityNumber} - ${hito.description} - ${hito.currencyName}`];
+            hito.values.forEach(value => {
+                if (value.value) {
+                    row.push(value.value);
+                }
+                else {
+                    row.push("");
+                }
+            });
+            worksheet.addRow(row);
+        });
+    }
+
+    private buildHeader(worksheet: Worksheet) {
+        var columns = [];
+        var monthItem = { header: "Meses", width: 50 };
+        columns.push(monthItem);
+
+        var totalBilling = ["Total Facturacion en Pesos"];
+        var resourceQuantity = ["Cantidad Recursos facturados"];
+        var evalprop = ["EVALPROP"];
+        var billingDiff = ["Diferencias de Facturación"];
+
+        this.months.forEach(month => {
+            columns.push({ header: month.display, width: 15, style: { numFmt: '#,##0.00' }, alignment: { horizontal:'center'} });
+
+            totalBilling.push(month.totalBilling || 0);
+            resourceQuantity.push(month.resourceQuantity || 0);
+            evalprop.push(month.valueEvalProp || 0);
+            billingDiff.push(month.evalPropDifference || 0);
+        });
+
+        worksheet.columns = columns;
+        worksheet.addRow(totalBilling);
+        worksheet.addRow(resourceQuantity);
+        worksheet.addRow(evalprop);
+        worksheet.addRow(billingDiff);
     }
 }

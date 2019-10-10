@@ -9,6 +9,7 @@ import { UtilsService } from "app/services/common/utils.service"
 import { FormControl, Validators } from "@angular/forms";
 import { EmployeeService } from "app/services/allocation-management/employee.service"
 import { evaluate } from 'mathjs/number'
+import { Worksheet } from "exceljs";
 
 @Component({
     selector: 'cost-detail',
@@ -194,7 +195,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.calculateTotalCosts();
             this.sendDataToDetailView();
         },
-            () => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     openEditItemModal(month, item) {
@@ -1177,6 +1178,137 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             });
 
         return subCategories
+    }
+
+    createWorksheet(workbook){
+        let worksheet: Worksheet = workbook.addWorksheet('Detalle Costos');
+
+        this.buildHeader(worksheet);
+        this.buildResources(worksheet);
+        this.buildCostProfile(worksheet);
+        this.buildSalaryAndCharges(worksheet);
+        this.buildFundedResources(worksheet);
+    }
+
+    private buildCostProfile(worksheet: Worksheet) {
+        this.costProfiles.forEach(costProfile => {
+            var item = [costProfile.display];
+            costProfile.monthsCost.forEach(monthCost => {
+                item.push(monthCost.budget.value || 0);
+                item.push(monthCost.real.value || 0);
+            });
+            worksheet.addRow(item);
+        });
+    }
+
+    private buildFundedResources(worksheet: Worksheet) {
+        this.fundedResources.forEach(fundedResource => {
+            var item = [fundedResource.display];
+            fundedResource.monthsCost.forEach(monthCost => {
+                item.push(monthCost.budget.value || 0);
+                item.push(monthCost.real.value || 0);
+            });
+            worksheet.addRow(item);
+        });
+    }
+
+    private buildSalaryAndCharges(worksheet: Worksheet) {
+        var totalSalary = ["Total Sueldo"];
+        var totalLoads = ["Cargas (0.51 del sueldo)"];
+        var totalContracted = ["Costos contratados + subcontratados"];
+
+        this.months.forEach(month => {
+            totalSalary.push(month.budget.totalSalary);
+            totalSalary.push(month.real.totalSalary);
+            totalLoads.push(month.budget.totalLoads);
+            totalLoads.push(month.real.totalLoads);
+            totalContracted.push("");
+            totalContracted.push(month.totalContracted);
+        });
+        worksheet.addRow(totalSalary);
+        worksheet.addRow(totalLoads);
+        worksheet.addRow(totalContracted);
+    }
+
+    private buildResources(worksheet: Worksheet) {
+        worksheet.addRow(["Recursos"]);
+
+        this.employees.forEach(employee => {
+            var resource = [employee.display];
+
+            employee.monthsCost.forEach(monthCost => {
+                resource.push(monthCost.budget.value || 0);
+                resource.push(monthCost.real.value || 0);
+            });
+
+            worksheet.addRow(resource);
+        });
+
+        this.fundedResourcesEmployees.forEach(fundedResource => {
+            var item = [fundedResource.display];
+
+            fundedResource.monthsCost.forEach(monthCost => {
+                item.push(monthCost.budget.value || 0);
+                item.push(monthCost.real.value || 0);
+            });
+
+            worksheet.addRow(item);
+        });
+    }
+
+    private buildHeader(worksheet: Worksheet) {
+        var columns = [];
+        var monthItem = { header: "Meses", width: 50 };
+        columns.push(monthItem);
+
+        var subHeader = ["Tipo"];
+        var totalCosts = ["Total Costos"];
+        var resourceQuantity = ["Cantidad Recursos costeados"];
+        var evalprop = ["EVALPROP"];
+
+        this.months.forEach(month => {
+            columns.push({ header: month.display, width: 15, style: { numFmt: '#,##0.00' }, alignment: { horizontal:'center'} });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' }, alignment: { horizontal:'center'} });
+
+            subHeader.push("PROYECTADO");
+            subHeader.push("REAL");
+
+            totalCosts.push(month.budget.totalCost || 0);
+            totalCosts.push(month.real.totalCost || 0);
+
+            resourceQuantity.push(month.resourceQuantity || 0);
+            resourceQuantity.push("");
+
+            evalprop.push(month.valueEvalProp || 0);
+            evalprop.push("");
+        });
+
+        worksheet.columns = columns;
+        worksheet.addRow(subHeader);
+        worksheet.addRow(totalCosts);
+        worksheet.addRow(resourceQuantity);
+        worksheet.addRow(evalprop);
+
+        var columnLetter = 'B';
+
+        var i = 1;
+        columns.forEach(column => {
+            if (i % 2 == 0) {
+                var nextLetter = String.fromCharCode(columnLetter.charCodeAt(0) + 1);
+                worksheet.mergeCells(`${columnLetter}1:${nextLetter}1`);
+
+                // Center header
+                worksheet.getCell(`${columnLetter}1`).alignment = { horizontal:'center'} ;
+
+                // Center subheader
+                worksheet.getCell(`${columnLetter}2`).alignment = { horizontal:'center'};
+                worksheet.getCell(`${nextLetter}2`).alignment = { horizontal:'center'};
+
+                columnLetter = String.fromCharCode(nextLetter.charCodeAt(0) + 1);
+            }
+            i++;
+        });
+
     }
 }
 

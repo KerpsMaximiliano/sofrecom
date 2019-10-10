@@ -126,24 +126,6 @@
                                         <p class="mb-0">Mes sin cotización ingresada, por favor notificar a Control de Gestión.</p>
                                     </div>
                                 </dd>
-
-                            <!-- <dt class="m-b-xs"><i class="fa fa-calculator"></i> Total ordenes de compra por divisa </dt>
-                            <dd>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Moneda</th>
-                                            <th>Monto</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let item of model?.ammounts">
-                                            <td>{{ item.currency }}</td>
-                                            <td>{{ item.value | amountFormat }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </dd> -->
                         </div>
                     </div>
                 </div>
@@ -178,7 +160,8 @@
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="canSendCdg()" (click)="sendCdg()">Enviar <i class="fa fa-paper-plane"></i></button>
 
                     <button class="btn btn-primary btn-sm" type="button" (click)="seeCostDetailMonth()" *ngIf="isManager || isCdgOrDirector">Detalle Mensual <i class="fa fa-edit"></i></button>
-                    <button class="btn btn-primary btn-sm" type="button" (click)="updateMarginTracking()" *ngIf="isManager || isCdgOrDirector">Actualizar Margen <i class="fa fa-refresh"></i></button>
+                    <button class="btn btn-success btn-sm" type="button" (click)="generateExcel()" *ngIf="isManager || isCdgOrDirector">Exportar <i class="fa fa-download"></i></button>
+                    <!-- <button class="btn btn-primary btn-sm" type="button" (click)="updateMarginTracking()" *ngIf="isManager || isCdgOrDirector">Actualizar Margen <i class="fa fa-refresh"></i></button> -->
                 </div>
             </div>
 

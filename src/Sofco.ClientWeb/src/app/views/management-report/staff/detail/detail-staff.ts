@@ -9,11 +9,11 @@ import { DatesService } from "app/services/common/month.service";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 import { I18nService } from "app/services/common/i18n.service";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
-import { FormControl, Validators } from "@angular/forms";
-import * as moment from 'moment';
 import { UserInfoService } from "app/services/common/user-info.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
+import { Workbook } from 'exceljs';
+import * as fs from 'file-saver';
 
 @Component({
     selector: 'management-report-detail-staff',
@@ -458,7 +458,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     saveBudget(){
         this.budgetView.save()
     }
-
+ 
     closeState(){
         this.budgetView.save(true)
     }
@@ -494,5 +494,19 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             this.allComments = response.data;
         },
         error => {});
+    }
+
+    generateExcel(){
+        let workbook = new Workbook();
+
+        this.budgetView.createWorksheet(workbook);
+        this.tracingView.createWorksheet(workbook);
+     
+        var title = `Informe Gestion ${this.model.analytic}. ${this.model.manamementReportStartDate} - ${this.model.manamementReportEndDate}.xlsx`
+
+        workbook.xlsx.writeBuffer().then((data) => {
+            let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            fs.saveAs(blob, title);
+        });
     }
 }

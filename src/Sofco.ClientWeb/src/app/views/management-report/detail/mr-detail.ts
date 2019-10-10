@@ -5,13 +5,14 @@ import { ManagementReportService } from "app/services/management-report/manageme
 import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
 import { DatesService } from "app/services/common/month.service";
-import { AnalyticStatus } from "app/models/enums/analyticStatus";
 import { ManagementReportStatus } from "app/models/enums/managementReportStatus";
 import { I18nService } from "app/services/common/i18n.service";
 import { UserInfoService } from "app/services/common/user-info.service";
 declare var moment: any;
+import { Workbook } from 'exceljs';
+import * as fs from 'file-saver';
 
 @Component({
     selector: 'management-report-detail',
@@ -87,7 +88,6 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     );
 
     private today: Date = new Date();
-    private startNewPeriod: Date = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
 
     constructor(private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
@@ -249,7 +249,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
                 StartDate: new Date(this.ReportStartDate),
                 EndDate: new Date(this.ReportEndDate)
             }
-            this.updateDatesSubscrip = this.managementReportService.updateDates(this.ManagementReportId, model).subscribe(response => {
+            this.updateDatesSubscrip = this.managementReportService.updateDates(this.ManagementReportId, model).subscribe(() => {
 
                 this.messageService.closeLoading();
                 this.model.manamementReportStartDate = this.ReportStartDate
@@ -262,7 +262,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
 
                 this.editDateModal.hide();
             },
-                error => {
+                () => {
                     this.messageService.closeLoading()
                     this.editDateModal.resetButtons()
                 }
@@ -422,13 +422,13 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.messageService.showConfirm(() => {
             this.messageService.showLoading();
 
-            this.updateDatesSubscrip = this.managementReportService.send(json).subscribe(response => {
+            this.updateDatesSubscrip = this.managementReportService.send(json).subscribe(() => {
                 this.model.status = status;
                 this.billing.readOnly = !this.canEdit();
                 this.detailCost.readOnly = !this.canEdit();
                 this.messageService.closeLoading();
             },
-            error => this.messageService.closeLoading());
+            () => this.messageService.closeLoading());
         });
     }
 
@@ -478,11 +478,11 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         this.messageService.showConfirm(() => {
             this.messageService.showLoading();
 
-            this.closeSubscrip = this.managementReportService.close(json).subscribe(response => {
+            this.closeSubscrip = this.managementReportService.close(json).subscribe(() => {
 
                 this.messageService.closeLoading();
             },
-            error => this.messageService.closeLoading());
+            () => this.messageService.closeLoading());
         });
     }
 
@@ -502,13 +502,27 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
             this.allComments.unshift(response.data);
             this.comments = "";
         },
-        error => this.addCommentModal.hide());
+        () => this.addCommentModal.hide());
     }
 
     getComment(){
         this.getDetailSubscrip = this.managementReportService.getComments(this.ManagementReportId).subscribe(response => {
             this.allComments = response.data;
         },
-        error => {});
+        () => {});
+    }
+
+    generateExcel(){
+        let workbook = new Workbook();
+
+        this.marginTracking.createWorksheet(workbook);
+        this.detailCost.createWorksheet(workbook);
+        this.billing.createWorksheet(workbook);
+        this.tracing.createWorksheet(workbook);
+
+        workbook.xlsx.writeBuffer().then((data) => {
+            let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            fs.saveAs(blob, 'test.xlsx');
+        });
     }
 }

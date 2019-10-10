@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { MarginTracking } from "app/models/management-report/marginTracking";
 import { HitoStatus } from "app/models/enums/hitoStatus";
 import { AnalyticStatus } from "app/models/enums/analyticStatus";
+import { Worksheet } from "exceljs";
 
 @Component({
     selector: 'margin-tracking',
@@ -251,42 +252,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         else {
             costDetailMonth.valueEvalProp = data.value;
         }
-
-        // startDate = moment(startDate).toDate();
-        // endDate = moment(endDate).toDate();
-
-        // startDate.setDate(1);
-        // endDate.setDate(1);
-
-        // var evalpropTotalBilling = 0;
-        // var evalpropTotalCosts = 0;
-        // var evalpropTotalTracing = 0;
-
-        // for (var initDate = startDate; initDate <= endDate; initDate.setMonth(initDate.getMonth() + 1)) {
-        //     var month = initDate.getMonth() + 1;
-        //     var year = initDate.getFullYear();
-
-        //     billingMonth = this.billingModel.months.find(x => x.month == month && x.year == year);
-        //     costDetailMonth = this.costsModel.months.find(x => x.month == month && x.year == year);
-        //     var marginTracking = this.allMarginTrackings.find(x => x.Month == month && x.Year == year);
-
-        //     if (billingMonth) evalpropTotalBilling += billingMonth.valueEvalProp;
-        //     if (costDetailMonth) {
-        //         evalpropTotalCosts += costDetailMonth.valueEvalProp;
-        //         evalpropTotalTracing += costDetailMonth.valueMarginEvalProp
-        //     }
-
-        //     this.calculatePercentageExpected(billingMonth, costDetailMonth, marginTracking);
-        // }
-
-        // var percentageExpectedTotal = 0;
-        // if (evalpropTotalBilling > 0) {
-        //     percentageExpectedTotal = ((evalpropTotalBilling - evalpropTotalCosts) / evalpropTotalBilling) * 100
-        // }
-
-        // this.allMarginTrackings.forEach(element => {
-        //     element.PercentageExpectedTotal = percentageExpectedTotal;
-        // });
     }
 
     private setRemainingAndTotal(totalAcumulatedToEnd: number, totalCostsAcumulatedToEnd: number, billingRealAcumulated: number, budgetRemaint: number, billingAcumulateProyected: number, percentageExpectedTotal: number) {
@@ -308,28 +273,113 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         });
     }
 
-    // private calculatePercentageExpected(billingMonth: any, costDetailMonth: any, marginTracking: MarginTracking) {
-
-    //     if (!billingMonth) return;
-
-    //     var evalpropBillingValue = billingMonth.valueEvalProp;
-
-    //     var evalpropCostValue = 0;
-
-    //     if (costDetailMonth) {
-    //         evalpropCostValue = costDetailMonth.valueEvalProp;
-    //     }
-
-    //     // Previsto % (ventas)
-    //     if (evalpropBillingValue > 0) {
-    //         marginTracking.PercentageExpected = ((evalpropBillingValue - evalpropCostValue) / evalpropBillingValue) * 100;
-    //     }
-    // }
-
     sendDataToDetailView(allMarginTrackings) {
-
         if (this.getData.observers.length > 0) {
             this.getData.emit(allMarginTrackings);
         }
+    }
+
+    createWorksheet(workbook){
+        let worksheet: Worksheet = workbook.addWorksheet('Margen');
+
+        var row1 = ["Margen a Terminación", "", "", "", "Ventas", "Costos Totales"];
+
+        var row2 = ["Previsto EvalProp a terminación", 
+                    this.marginTrackingSelected.PercentageExpectedTotal || 0, 
+                    "", 
+                    "Previsto", 
+                    this.marginTrackingSelected.ExpectedSales, 
+                    this.marginTrackingSelected.TotalExpensesExpected];
+        
+        var row3 = ["Real A terminación", 
+                    this.marginTrackingSelected.PercentageToEnd || 0, 
+                    "", 
+                    "Previsto", 
+                    this.marginTrackingSelected.SalesOnMonth, 
+                    this.marginTrackingSelected.TotalExpensesOnMonth];
+                      
+        var row4 = ["", 
+                    "", 
+                    "", 
+                    "Acumulado a la fecha", 
+                    this.marginTrackingSelected.SalesAccumulatedToDate, 
+                    this.marginTrackingSelected.TotalExpensesAccumulatedToDate];
+
+        var row5 = ["Margen Mensual", 
+                    "", 
+                    "", 
+                    "Restante a la fecha (proyectado)", 
+                    this.marginTrackingSelected.SalesRemainigToDate, 
+                    this.marginTrackingSelected.TotalExpensesRemainigToDate];
+
+        var row6 = ["Previsto EvalProp mensual", 
+                    this.marginTrackingSelected.PercentageExpected, 
+                    "", 
+                    "Total a la terminación (real + proyectado)", 
+                    this.marginTrackingSelected.TotalSalesToEnd, 
+                    this.marginTrackingSelected.TotalExpensesToEnd];
+
+        var row7 = ["Real a la fecha", 
+                    this.marginTrackingSelected.PercentageRealToDate];
+
+        worksheet.addRows([row1, row2, row3, row4, row5, row6, row7]);
+
+        worksheet.mergeCells("A1:B1");
+        worksheet.mergeCells("A5:B5");
+        worksheet.getCell("A1").alignment = { horizontal:'center'};
+        worksheet.getCell("A5").alignment = { horizontal:'center'};
+
+        worksheet.getCell("B2").numFmt = '#,##0.00 "%"';
+        worksheet.getCell("B3").numFmt = '#,##0.00 "%"';
+        worksheet.getCell("B6").numFmt = '#,##0.00 "%"';
+        worksheet.getCell("B7").numFmt = '#,##0.00 "%"';
+        worksheet.getCell("E2").numFmt = '"$" #,##0.00';
+        worksheet.getCell("E3").numFmt = '"$" #,##0.00';
+        worksheet.getCell("E4").numFmt = '"$" #,##0.00';
+        worksheet.getCell("E5").numFmt = '"$" #,##0.00';
+        worksheet.getCell("E6").numFmt = '"$" #,##0.00';
+        worksheet.getCell("F2").numFmt = '"$" #,##0.00';
+        worksheet.getCell("F3").numFmt = '"$" #,##0.00';
+        worksheet.getCell("F4").numFmt = '"$" #,##0.00';
+        worksheet.getCell("F5").numFmt = '"$" #,##0.00';
+        worksheet.getCell("F6").numFmt = '"$" #,##0.00';
+
+        worksheet.getColumn(1).width = 35;
+        worksheet.getColumn(2).width = 12;
+        worksheet.getColumn(3).width = 10;
+        worksheet.getColumn(4).width = 35;
+        worksheet.getColumn(5).width = 15;
+        worksheet.getColumn(6).width = 15;
+
+        worksheet.getCell("A1").border = { bottom: { style:'thin', color: {argb:'FF000000'} }};
+        worksheet.getCell("B1").border = { 
+            right: { style:'thin', color: {argb:'FF000000'} },
+            bottom: { style:'thin', color: {argb:'FF000000'} }
+        };
+
+        worksheet.getCell("A3").border = { bottom: { style:'thin', color: {argb:'FF000000'} }};
+        worksheet.getCell("A7").border = { bottom: { style:'thin', color: {argb:'FF000000'} }};
+
+        worksheet.getCell("A6").border = { top: { style:'thin', color: {argb:'FF000000'} }};
+
+        worksheet.getCell("A4").border = { bottom: { style:'thin', color: {argb:'FF000000'} }};
+        worksheet.getCell("B4").border = { bottom: { style:'thin', color: {argb:'FF000000'} }};
+     
+        worksheet.getCell("B2").border = { right: { style:'thin', color: {argb:'FF000000'} }};
+        worksheet.getCell("B3").border = {
+             right: { style:'thin', color: {argb:'FF000000'} },
+             bottom: { style:'thin', color: {argb:'FF000000'} }
+        };
+        worksheet.getCell("B5").border = { right: { style:'thin', color: {argb:'FF000000'} }};
+
+        worksheet.getCell("B6").border = { 
+            right: { style:'thin', color: {argb:'FF000000'} },
+            top: { style:'thin', color: {argb:'FF000000'} }
+        };
+
+        worksheet.getCell("B7").border = { 
+            right: { style:'thin', color: {argb:'FF000000'} },
+            bottom: { style:'thin', color: {argb:'FF000000'} }
+        };
     }
 }

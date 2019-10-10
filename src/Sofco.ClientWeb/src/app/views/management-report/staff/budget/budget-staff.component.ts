@@ -12,6 +12,7 @@ import { UtilsService } from "app/services/common/utils.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { FormControl, Validators } from "@angular/forms";
 import { evaluate } from 'mathjs/number'
+import { Worksheet } from "exceljs";
 
 @Component({
     selector: 'budget-staff',
@@ -1145,4 +1146,151 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         })
     }
 
+    createWorksheet(workbook){
+        let worksheet: Worksheet = workbook.addWorksheet('Presupuesto');
+
+        this.buildHeader(worksheet);
+        this.buildResources(worksheet);
+        this.buildSalaryAndCharges(worksheet);
+        this.buildCategories(worksheet);
+    }
+
+    private buildResources(worksheet: Worksheet) {
+        worksheet.addRow(["Recursos"]);
+
+        this.employees.forEach(employee => {
+            var resource = [employee.display];
+
+            employee.monthsCost.forEach(monthCost => {
+                resource.push(monthCost.budget.value || 0);
+                resource.push(monthCost.projected.value || 0);
+                resource.push(monthCost.pfa1.value || 0);
+                resource.push(monthCost.pfa2.value || 0);
+                resource.push(monthCost.real.value || 0);
+            });
+
+            worksheet.addRow(resource);
+        });
+
+        this.categoriesEmployees.forEach(fundedResource => {
+            var item = [fundedResource.name];
+
+            fundedResource.monthsCategory.forEach(monthCost => {
+                item.push(monthCost.totalBudget || 0);
+                item.push(monthCost.totalProjected || 0);
+                item.push(monthCost.totalPfa1 || 0);
+                item.push(monthCost.totalPfa2 || 0);
+                item.push(monthCost.totalReal || 0);
+            });
+
+            worksheet.addRow(item);
+        });
+    }
+
+    private buildCategories(worksheet: Worksheet) {
+        this.categories.forEach(category => {
+            var item = [category.name];
+            category.monthsCategory.forEach(monthCost => {
+                item.push(monthCost.totalBudget || 0);
+                item.push(monthCost.totalProjected || 0);
+                item.push(monthCost.totalPfa1 || 0);
+                item.push(monthCost.totalPfa2 || 0);
+                item.push(monthCost.totalReal || 0);
+            });
+            worksheet.addRow(item);
+        });
+
+        var totalSalary = ["Sub-total Gastos"];
+
+        this.months.forEach(month => {
+            totalSalary.push(month.budget.subTotalCost);
+            totalSalary.push(month.projected.subTotalCost);
+            totalSalary.push(month.pfa1.subTotalCost);
+            totalSalary.push(month.pfa2.subTotalCost);
+            totalSalary.push(month.real.subTotalCost);
+        });
+
+        worksheet.addRow(totalSalary);
+
+        this.categoriesRedInfra.forEach(category => {
+            var item = [category.name];
+            category.monthsCategory.forEach(monthCost => {
+                item.push(monthCost.totalBudget || 0);
+                item.push(monthCost.totalProjected || 0);
+                item.push(monthCost.totalPfa1 || 0);
+                item.push(monthCost.totalPfa2 || 0);
+                item.push(monthCost.totalReal || 0);
+            });
+            worksheet.addRow(item);
+        });
+    }
+
+    private buildSalaryAndCharges(worksheet: Worksheet) {
+        var totalSalary = ["Total Sueldo"];
+        var totalLoads = ["Cargas (0.51 del sueldo)"];
+
+        this.months.forEach(month => {
+            totalSalary.push(month.budget.totalSalary);
+            totalSalary.push(month.projected.totalSalary);
+            totalSalary.push(month.pfa1.totalSalary);
+            totalSalary.push(month.pfa2.totalSalary);
+            totalSalary.push(month.real.totalSalary);
+
+            totalLoads.push(month.budget.totalLoads);
+            totalLoads.push(month.projected.totalLoads);
+            totalLoads.push(month.pfa1.totalLoads);
+            totalLoads.push(month.pfa2.totalLoads);
+            totalLoads.push(month.real.totalLoads);
+        });
+        worksheet.addRow(totalSalary);
+        worksheet.addRow(totalLoads);
+    }
+
+    private buildHeader(worksheet: Worksheet) {
+        var columns = [];
+        var monthItem = { header: "Meses", width: 50 };
+        columns.push(monthItem);
+
+        var subHeader = ["Tipo"];
+        var totalCosts = ["Total Gastos"];
+
+        this.months.forEach(month => {
+            columns.push({ header: month.display, width: 15, style: { numFmt: '#,##0.00' } });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+
+            subHeader.push("BUDGET");
+            subHeader.push("PROYECTADO");
+            subHeader.push("PFA1");
+            subHeader.push("PFA2");
+            subHeader.push("REAL");
+
+            totalCosts.push(month.budget.totalCost || 0);
+            totalCosts.push(month.projected.totalCost || 0);
+            totalCosts.push(month.pfa1.totalCost || 0);
+            totalCosts.push(month.pfa2.totalCost || 0);
+            totalCosts.push(month.real.totalCost || 0);
+        });
+        worksheet.columns = columns;
+        worksheet.addRow(subHeader);
+        worksheet.addRow(totalCosts);
+
+        var count = columns.length - 1;
+        for (var i = 2; i < count; i += 5) {
+            var row = worksheet.getRow(1);
+            var firstCell = row.getCell(i);
+            var lastCell = row.getCell(i + 4);
+
+            worksheet.mergeCells(`${firstCell.address}:${lastCell.address}`);
+            firstCell.alignment = { horizontal: 'center' };
+
+            for (var j = i; j <= (i + 4); j++) {
+                var row2 = worksheet.getRow(2);
+                var cell = row2.getCell(j);
+                cell.alignment = { horizontal: 'center' };
+            }
+        }
+    }
 }
