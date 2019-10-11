@@ -198,6 +198,12 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
 
             this.status = response.data.status;
 
+            setTimeout(() => {
+                this.studyRequiredChanged(this.studyRequired);
+                this.languageRequiredChanged(this.languageRequired);
+                this.marketStudyChanged(this.isMarketStudy);
+            }, 500);
+
             if(this.status == JobSearchStatus.Close){
                 this.form.disable();
                 $("div[name='checked']").addClass('disabled');
