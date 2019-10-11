@@ -1188,6 +1188,28 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.buildCostProfile(worksheet);
         this.buildSalaryAndCharges(worksheet);
         this.buildFundedResources(worksheet);
+
+        const borderBlack = "FF000000";
+        var columnCount = worksheet.columnCount;
+        var columnIndex = 1;
+
+        while(columnIndex <= columnCount){
+            var column = worksheet.getColumn(columnIndex);
+            column.eachCell(cell => {
+                if(cell.border && cell.border.right){
+                    cell.border.right.style = 'thin';
+                    cell.border.right.color.argb = borderBlack;
+                }
+                else{
+                    cell.border = { right: { style:'thin', color: { argb: borderBlack} }};
+                }
+            });
+
+            columnIndex+=2;
+        }
+
+        var lastRow = worksheet.getRow(worksheet.rowCount);
+        this.drawBorders(lastRow);
     }
 
     private buildCostProfile(worksheet: Worksheet) {
@@ -1199,6 +1221,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             });
             worksheet.addRow(item);
         });
+
+        if(this.costProfiles.length > 0){
+            var lastRow = worksheet.getRow(worksheet.rowCount);
+            this.drawBorders(lastRow);
+        }
     }
 
     private buildFundedResources(worksheet: Worksheet) {
@@ -1210,6 +1237,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             });
             worksheet.addRow(item);
         });
+
+        if(this.fundedResources.length > 0){
+            var lastRow = worksheet.getRow(worksheet.rowCount);
+            this.drawBorders(lastRow);
+        }
     }
 
     private buildSalaryAndCharges(worksheet: Worksheet) {
@@ -1228,6 +1260,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         worksheet.addRow(totalSalary);
         worksheet.addRow(totalLoads);
         worksheet.addRow(totalContracted);
+ 
+        var lastRow = worksheet.getRow(worksheet.rowCount);
+        this.drawBorders(lastRow);
     }
 
     private buildResources(worksheet: Worksheet) {
@@ -1244,6 +1279,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             worksheet.addRow(resource);
         });
 
+        if(this.employees.length > 0){
+            var lastRow = worksheet.getRow(worksheet.rowCount);
+            this.drawBorders(lastRow);
+        }
+
         this.fundedResourcesEmployees.forEach(fundedResource => {
             var item = [fundedResource.display];
 
@@ -1254,6 +1294,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             worksheet.addRow(item);
         });
+    
+        if(this.fundedResourcesEmployees.length > 0){
+            var lastRow = worksheet.getRow(worksheet.rowCount);
+            this.drawBorders(lastRow);
+        }
     }
 
     private buildHeader(worksheet: Worksheet) {
@@ -1267,8 +1312,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         var evalprop = ["EVALPROP"];
 
         this.months.forEach(month => {
-            columns.push({ header: month.display, width: 15, style: { numFmt: '#,##0.00' }, alignment: { horizontal:'center'} });
-            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' }, alignment: { horizontal:'center'} });
+            columns.push({ header: month.display, width: 15, style: { numFmt: '#,##0.00' } });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
 
             subHeader.push("PROYECTADO");
             subHeader.push("REAL");
@@ -1289,26 +1334,56 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         worksheet.addRow(resourceQuantity);
         worksheet.addRow(evalprop);
 
-        var columnLetter = 'B';
+        const borderBlack = "FF000000";
 
-        var i = 1;
-        columns.forEach(column => {
-            if (i % 2 == 0) {
-                var nextLetter = String.fromCharCode(columnLetter.charCodeAt(0) + 1);
-                worksheet.mergeCells(`${columnLetter}1:${nextLetter}1`);
+        var count = columns.length - 1;
+        for (var i = 2; i <= count; i += 2) {
+            var row = worksheet.getRow(1);
+            var firstCell = row.getCell(i);
+            var lastCell = row.getCell(i + 1);
 
-                // Center header
-                worksheet.getCell(`${columnLetter}1`).alignment = { horizontal:'center'} ;
+            worksheet.mergeCells(`${firstCell.address}:${lastCell.address}`);
+        }
+     
+        var row1 = worksheet.getRow(1);
 
-                // Center subheader
-                worksheet.getCell(`${columnLetter}2`).alignment = { horizontal:'center'};
-                worksheet.getCell(`${nextLetter}2`).alignment = { horizontal:'center'};
-
-                columnLetter = String.fromCharCode(nextLetter.charCodeAt(0) + 1);
-            }
-            i++;
+        row1.eachCell(cell => {
+            cell.style = { font: { bold: true } };
+            cell.alignment = { horizontal: 'center' };
+            cell.border = { right: { style:'thin', color: { argb: borderBlack} }};
         });
 
+        var row2 = worksheet.getRow(2);
+
+        row2.eachCell(cell => {
+            cell.style = { font: { bold: true } };
+            cell.alignment = { horizontal: 'center' };
+        });
+
+        var row3 = worksheet.getRow(3);
+        var row4 = worksheet.getRow(4);
+        var row5 = worksheet.getRow(5);
+
+        this.drawBorders(row2);
+        this.drawBorders(row3);
+        this.drawBorders(row4);
+        this.drawBorders(row5);
+    }
+
+    private drawBorders(row) {
+        const borderBlack = "FF000000";
+
+        row.eachCell((cell, colNumber) => {
+            if (colNumber % 2 == 0) {
+                cell.border = { bottom: { style: 'thin', color: { argb: borderBlack } } };
+            }
+            else {
+                cell.border = {
+                    bottom: { style: 'thin', color: { argb: borderBlack } },
+                    right: { style: 'thin', color: { argb: borderBlack } }
+                };
+            }
+        });
     }
 }
 

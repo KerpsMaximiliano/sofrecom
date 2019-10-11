@@ -769,6 +769,49 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
         this.buildHeader(worksheet);
         this.buildHitos(worksheet);
+
+        const borderBlack = "FF000000";
+
+        var column = worksheet.getColumn(1);
+        column.eachCell(cell => {
+            cell.border = { right: { style:'thin', color: { argb: borderBlack} }};
+        });
+
+        var lastColumn = worksheet.getColumn(worksheet.columnCount);
+        lastColumn.eachCell(cell => {
+            cell.border = { right: { style:'thin', color: { argb: borderBlack} }};
+        });
+
+        var row1 = worksheet.getRow(1);
+        var row5 = worksheet.getRow(5);
+
+        row1.eachCell(cell => {
+            cell.style = { font: { bold: true } };
+            cell.alignment = { horizontal: 'center' };
+            cell.border = { 
+                right: { style:'thin', color: { argb: borderBlack} },
+                bottom: { style:'thin', color: { argb: borderBlack} }
+            };
+        });
+
+        row5.eachCell(cell => {
+            if(cell.border && cell.border.right){
+                cell.border.bottom = { style:'thin', color: { argb: borderBlack} };
+            }            
+            else{
+                cell.border = { bottom: { style:'thin', color: { argb: borderBlack} }};
+            }
+        });
+
+        var lastRow = worksheet.getRow(worksheet.rowCount);
+        lastRow.eachCell(cell => {
+            if(cell.border && cell.border.right){
+                cell.border.bottom = { style:'thin', color: { argb: borderBlack} };
+            }            
+            else{
+                cell.border = { bottom: { style:'thin', color: { argb: borderBlack} }};
+            }
+        });
     }
 
     private buildHitos(worksheet: Worksheet) {
