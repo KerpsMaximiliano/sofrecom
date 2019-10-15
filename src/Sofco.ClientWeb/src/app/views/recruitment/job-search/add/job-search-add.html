@@ -52,7 +52,7 @@
             
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonCauseId')">
-                                    <label class="control-label"> Motivo </label>
+                                    <label class="control-label"> Tipo/Razon </label>
                                     <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonCauseId"></ng-select>
                     
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonCauseId')">

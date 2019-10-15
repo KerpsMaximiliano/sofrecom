@@ -22,7 +22,7 @@ export class ReasonCauseComponent extends GenericOptionComponent implements OnIn
 
     ngOnInit(): void {
         this.setEntity(GenericOptions.ReasonCause);
-        this.title = "Motivos / Causas";
+        this.title = "Tipos / Razones";
         this.columns = [0, 1, 2, 3];
     }
 
