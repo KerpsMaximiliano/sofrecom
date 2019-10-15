@@ -1153,6 +1153,59 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         this.buildResources(worksheet);
         this.buildSalaryAndCharges(worksheet);
         this.buildCategories(worksheet);
+
+        var columnCount = worksheet.columnCount;
+        var columnIndex = 1;
+
+        while(columnIndex <= columnCount){
+            var column = worksheet.getColumn(columnIndex);
+            column.eachCell(cell => {
+                this.drawBorder(cell, 'right');
+            });
+
+            columnIndex+=5;
+        }
+
+        var row1 = worksheet.getRow(1);
+        var row2 = worksheet.getRow(2);
+        var row3 = worksheet.getRow(2);
+
+        row1.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
+
+        row2.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
+
+        row3.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
+        
+        var lastRow = worksheet.getRow(worksheet.rowCount);
+
+        lastRow.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
+    }
+
+    private drawBorder(cell, position) {
+        const borderBlack = "FF000000";
+
+        if (cell.border) {
+            if (cell.border[position]) {
+                cell.border[position].style = 'thin';
+                cell.border[position].color.argb = borderBlack;
+            }
+            else {
+                cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
+            }
+        }
+        else {
+            cell.border = {};
+            cell.border[`${position}`] = {};
+            cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
+        }
     }
 
     private buildResources(worksheet: Worksheet) {
@@ -1172,6 +1225,14 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             worksheet.addRow(resource);
         });
 
+        if(this.employees.length > 0){
+            var lastRow = worksheet.getRow(worksheet.rowCount);
+
+            lastRow.eachCell(cell => {
+                this.drawBorder(cell, 'bottom');
+            });
+        }
+
         this.categoriesEmployees.forEach(fundedResource => {
             var item = [fundedResource.name];
 
@@ -1185,6 +1246,14 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
             worksheet.addRow(item);
         });
+
+        if(this.categoriesEmployees.length > 0){
+            var lastRow = worksheet.getRow(worksheet.rowCount);
+
+            lastRow.eachCell(cell => {
+                this.drawBorder(cell, 'bottom');
+            });
+        }
     }
 
     private buildCategories(worksheet: Worksheet) {
@@ -1244,6 +1313,12 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         });
         worksheet.addRow(totalSalary);
         worksheet.addRow(totalLoads);
+
+        var lastRow = worksheet.getRow(worksheet.rowCount);
+
+        lastRow.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
     }
 
     private buildHeader(worksheet: Worksheet) {
@@ -1273,6 +1348,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             totalCosts.push(month.pfa2.totalCost || 0);
             totalCosts.push(month.real.totalCost || 0);
         });
+
         worksheet.columns = columns;
         worksheet.addRow(subHeader);
         worksheet.addRow(totalCosts);

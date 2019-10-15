@@ -406,3 +406,4 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         error => this.messageService.closeLoading());
     }
 }
+ 

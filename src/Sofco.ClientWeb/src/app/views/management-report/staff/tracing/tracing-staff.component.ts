@@ -1,12 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
-import { MenuService } from "app/services/admin/menu.service";
-import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
-import { MessageService } from "app/services/common/message.service";
-import { FormControl, Validators } from "@angular/forms";
-import { months } from "moment";
-import { DebugContext } from "@angular/core/src/view";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Worksheet } from "exceljs";
 
 @Component({
@@ -66,7 +58,7 @@ export class TracingStaffComponent implements OnInit, OnDestroy {
     createWorksheet(workbook){
         let worksheet: Worksheet = workbook.addWorksheet('Seguimiento');
 
-        var row1 = ["", "Meses", "", "", "", "", "", "", "Acumulado", "", "", "", "", "", ""];
+        var row1 = ["", "Mensual", "", "", "", "", "", "", "Acumulado", "", "", "", "", "", ""];
         var row2 = ["", "BUDGET", "PFA1", "PFA2", "REAL", "Desvio PRES", "Desvio PFA1", "Desvio PFA2", "BUDGET", "PFA1", "PFA2", "REAL", "Desvio PRES", "Desvio PFA1", "Desvio PFA2"];
 
         worksheet.addRows([row1, row2]);
@@ -112,6 +104,68 @@ export class TracingStaffComponent implements OnInit, OnDestroy {
 
         for(var i = 1; i < 16; i++){
             worksheet.getColumn(i).width = 15;
+        }
+
+        var firstRow = worksheet.getRow(1);
+        var secondRow = worksheet.getRow(2);
+
+        firstRow.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+            this.drawBorder(cell, 'right');
+        });
+        
+        secondRow.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
+
+        var column1 = worksheet.getColumn(1);
+        column1.eachCell(cell => {
+            this.drawBorder(cell, 'right');
+        });
+
+        var column5 = worksheet.getColumn(5);
+        column5.eachCell(cell => {
+            this.drawBorder(cell, 'right');
+        });
+
+        var column8 = worksheet.getColumn(8);
+        column8.eachCell(cell => {
+            this.drawBorder(cell, 'right');
+        });
+
+        var column12 = worksheet.getColumn(12);
+        column12.eachCell(cell => {
+            this.drawBorder(cell, 'right');
+        });
+
+        var column15 = worksheet.getColumn(15);
+        column15.eachCell(cell => {
+            this.drawBorder(cell, 'right');
+        });
+
+        var lastRow = worksheet.getRow(worksheet.rowCount);
+
+        lastRow.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
+    }
+
+    private drawBorder(cell, position) {
+        const borderBlack = "FF000000";
+
+        if (cell.border) {
+            if (cell.border[position]) {
+                cell.border[position].style = 'thin';
+                cell.border[position].color.argb = borderBlack;
+            }
+            else {
+                cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
+            }
+        }
+        else {
+            cell.border = {};
+            cell.border[`${position}`] = {};
+            cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
         }
     }
 }

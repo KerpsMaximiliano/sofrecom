@@ -142,7 +142,7 @@
         <div class="ibox-content">
 
             <div class="row no-gutters">
-                <div class="col-md-3">
+                <div class="col-md-5">
                     <div class="month-header">
                         <div class="btn-group">
                             <button type="button" class="btn btn-white" (click)="substractMonth()"><i
@@ -155,7 +155,7 @@
                         <label *ngIf="isClosed" class="label label-black">Cerrado</label>
                     </div>
                 </div>
-                <div class="col-md-9 action-buttons pull-right">
+                <div class="col-md-7 action-buttons pull-right">
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdg"
                         (click)="openComments()"> Comentarios <i class="fa fa-edit"></i></button>
 
@@ -193,7 +193,7 @@
                         (click)="saveBudget()">Guardar <i class="fa fa-save"></i></button>
 
                     <button class="btn btn-success btn-sm" type="button" *ngIf="isManager || isCdgOrDirector"
-                        (click)="generateExcel()">Descargar <i class="fa fa-download"></i></button>
+                        (click)="generateExcel()">Exportar <i class="fa fa-download"></i></button>
                 </div>
             </div>
 

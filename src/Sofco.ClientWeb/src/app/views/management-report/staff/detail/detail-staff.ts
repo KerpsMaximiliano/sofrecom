@@ -509,4 +509,4 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             fs.saveAs(blob, title);
         });
     }
-}
+} 
