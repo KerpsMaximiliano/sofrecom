@@ -14,15 +14,20 @@
         </ol>
     </div>
 </div>
-
+ 
 <div class="wrapper wrapper-content animated fadeInRight">
     <button type="button" class="btn btn-md btn-success" (click)="back()"> <i class="fa fa-arrow-left"></i> Volver </button>
     <button [disabled]="!form.valid" (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
 
-    <div class="row m-t-md">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="ibox">
-                <div class="ibox-content">
+    <div class="tabs-container m-t-md">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a class="nav-link" data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> Datos Generales </a></li>
+            <li><a class="nav-link" data-toggle="tab" href="#tab-2"> <i class="fa fa-info-circle"></i> Historial contactos </a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="panel-body">
                     <form [formGroup]="form">
                         <div class="row">
                             <div class="col-md-6">
@@ -175,6 +180,39 @@
                             <textarea rows="6" class="form-control" formControlName="comments" maxlength="3000"></textarea>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped dataTable table-font" role="grid" id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th class="column-sm">Fecha</th>
+                                    <th class="column-md">Razon</th>
+                                    <th class="column-lg">Comentarios</th>
+                                    <th class="column-lg">Conocimientos</th>
+                                    <th class="column-lg">Perfiles</th>
+                                    <th class="column-sm">Contactado por</th>
+                                    <th class="column-sm">Cliente</th>
+                                    <th class="column-sm">Busqueda</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of history" class="pointer">
+                                    <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>
+                                    <td class="column-md text-ellipsis">{{ item.reason }}</td>
+                                    <td class="column-lg text-word-break">{{ item.comments }}</td>
+                                    <td class="column-lg text-word-break">{{ item.skills }}</td>
+                                    <td class="column-lg text-word-break">{{ item.profiles }}</td>
+                                    <td class="column-sm">{{ item.createdBy }}</td>
+                                    <td class="column-sm">{{ item.client }}</td>
+                                    <td class="column-sm">#{{ item.jobSearchId }}</td>
+                                </tr>
+                            </tbody>
+                        </table>       
+                    </div>
                 </div>
             </div>
         </div>

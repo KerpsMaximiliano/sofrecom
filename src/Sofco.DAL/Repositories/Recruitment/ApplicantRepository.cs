@@ -49,5 +49,22 @@ namespace Sofco.DAL.Repositories.Recruitment
                 .Include(x => x.Client)
                 .SingleOrDefault(x => x.Id == id);
         }
+
+        public IList<JobSearchApplicant> GetHistory(int applicantId)
+        {
+            return context.JobSearchApplicants
+                .Include(x => x.Applicant)
+                .Include(x => x.Reason)
+                .Include(x => x.JobSearch)
+                    .ThenInclude(x => x.Client)
+                .Include(x => x.JobSearch)
+                    .ThenInclude(x => x.JobSearchProfiles)
+                        .ThenInclude(x => x.Profile)
+                .Include(x => x.JobSearch)
+                    .ThenInclude(x => x.JobSearchSkillsRequired)
+                        .ThenInclude(x => x.Skill)
+                .Where(x => x.ApplicantId == applicantId)
+                .ToList();
+        }
     }
 }

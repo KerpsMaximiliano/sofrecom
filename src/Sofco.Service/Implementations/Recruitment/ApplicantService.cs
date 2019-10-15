@@ -222,5 +222,16 @@ namespace Sofco.Service.Implementations.Recruitment
                 response.AddError(Resources.Recruitment.Applicant.FirstNameMaxLengthError);
             }
         }
+
+        public Response<IList<ApplicantCallHistory>> GetApplicantHistory(int applicantId)
+        {
+            var response = new Response<IList<ApplicantCallHistory>>() { Data = new List<ApplicantCallHistory>() };
+
+            var list = unitOfWork.ApplicantRepository.GetHistory(applicantId);
+
+            response.Data = list.Select(x => new ApplicantCallHistory(x)).ToList();
+
+            return response;
+        }
     }
 }

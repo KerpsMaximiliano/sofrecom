@@ -46,5 +46,13 @@ namespace Sofco.WebApi.Controllers.Recruitment
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{id}/history")]
+        public IActionResult GetHistory(int id)
+        {
+            var response = applicantService.GetApplicantHistory(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }

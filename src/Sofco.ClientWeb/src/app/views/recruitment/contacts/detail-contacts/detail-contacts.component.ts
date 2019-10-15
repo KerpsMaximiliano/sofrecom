@@ -9,6 +9,7 @@ import { ApplicantService } from 'app/services/recruitment/applicant.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'app/services/billing/customer.service';
 import { GenericOptions } from 'app/models/enums/genericOptions';
+import { DataTableService } from 'app/services/common/datatable.service';
 
 @Component({
   selector: 'app-detail-contacts',
@@ -40,6 +41,7 @@ export class DetailContactsComponent implements OnInit {
   reasonOptions: any[] = new Array();
   customerOptions: any[] = new Array();
   userOptions: any[] = new Array();
+  history: any[] = new Array();
 
   entityId: number;
 
@@ -50,6 +52,7 @@ export class DetailContactsComponent implements OnInit {
   getProfilesSubscrip: Subscription;
   getSkilsSubscrip: Subscription;
   getSubscrip: Subscription;
+  getHistorySubscrip: Subscription;
 
   constructor(private genericOptionsService: GenericOptionService,
     private messageService: MessageService,
@@ -57,6 +60,7 @@ export class DetailContactsComponent implements OnInit {
     private activateRoute: ActivatedRoute,
     private userService: UserService,
     private applicantService: ApplicantService,
+    private dataTableService: DataTableService,
     private router: Router,
     private customerService: CustomerService){
   }
@@ -82,6 +86,7 @@ export class DetailContactsComponent implements OnInit {
     if (this.getProfilesSubscrip) this.getProfilesSubscrip.unsubscribe();
     if (this.getSkilsSubscrip) this.getSkilsSubscrip.unsubscribe();
     if (this.getSubscrip) this.getSubscrip.unsubscribe();
+    if (this.getHistorySubscrip) this.getHistorySubscrip.unsubscribe();
   }
 
   getProfiles(){
@@ -128,6 +133,8 @@ export class DetailContactsComponent implements OnInit {
         this.messageService.closeLoading();
 
         this.entityId = id;
+
+        this.getHistory();
 
         this.form.controls.lastName.setValue(response.data.lastName);
         this.form.controls.firstName.setValue(response.data.firstName);
@@ -179,5 +186,27 @@ export class DetailContactsComponent implements OnInit {
     error => {
         this.messageService.closeLoading();
     });
+  }
+
+  getHistory(){
+    this.addSubscrip = this.applicantService.getHistory(this.entityId).subscribe(response => {
+      this.history = response.data;
+
+      this.initGrid();
+    });
+  }
+
+  initGrid() {
+    var columns = [0, 1, 2, 3, 4, 5, 6, 7];
+
+    var options = {
+        selector: "#historyTable",
+        columns: columns,
+        order: [[ 0, "desc" ]],
+        columnDefs: [ { "aTargets": [0], "sType": "date-uk" }],
+    };
+
+    this.dataTableService.destroy(options.selector);
+    this.dataTableService.initialize(options);
   }
 }

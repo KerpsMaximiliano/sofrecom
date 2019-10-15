@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class ApplicantService {
+
     private baseUrl: string;
 
     constructor(private http: HttpClient, private service: Service) {
@@ -28,5 +29,9 @@ export class ApplicantService {
 
     search(json){
         return this.http.post<any>(`${this.baseUrl}/applicant/search`, json);
+    }
+
+    getHistory(entityId: number) {
+        return this.http.get<any>(`${this.baseUrl}/applicant/${entityId}/history`);
     }
 }

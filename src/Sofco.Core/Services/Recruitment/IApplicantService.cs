@@ -10,5 +10,6 @@ namespace Sofco.Core.Services.Recruitment
         Response<IList<ApplicantResultModel>> Search(ApplicantSearchParameters parameter);
         Response Update(int id, ApplicantAddModel model);
         Response<ApplicantDetailModel> Get(int id);
+        Response<IList<ApplicantCallHistory>> GetApplicantHistory(int applicantId);
     }
 }
