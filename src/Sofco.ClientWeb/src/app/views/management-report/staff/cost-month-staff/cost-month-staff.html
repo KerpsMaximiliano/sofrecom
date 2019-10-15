@@ -22,7 +22,7 @@
                 <div class="col-sm-6">
                     <label class="label label-gray">{{ totalCosts | amountFormat }}</label>
                 </div>
-            </div>
+            </div> 
         </div>
         <div class="col-md-6">
             <div class="form-group row">
@@ -50,6 +50,11 @@
         <div class="col-sm-2">
             <h4>% Cargas</h4>
         </div>
+    </div>
+
+    <div class="alert alert-gaps-info" *ngIf="resources.length == 0">
+        <i class="fa fa-info"></i>
+        {{ i18nService.translateByKey('noInfoAvailable') }}
     </div>
 
     <div class="row m-t-xs" *ngFor="let resource of resources; let i = index">
