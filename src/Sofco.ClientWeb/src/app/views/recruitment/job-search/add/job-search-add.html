@@ -179,18 +179,13 @@
                                     </div>
                                 </div>
                             </div>
-
+ 
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label class="control-label">Asignación de recurso</label>
-                                    <div class="radio radio-success">
-                                        <input value="1" type="radio" formControlName="resourceAssignment">
-                                        <label> Proyecto </label>
-                                    </div>
-                                
-                                    <div class="radio radio-success">
-                                        <input value="2" type="radio" formControlName="resourceAssignment">
-                                        <label> SDG </label>
+                                    <div class="radio radio-success" *ngFor="let item of resourceAssignmentOptions">
+                                        <input [value]="item.id" type="radio" formControlName="resourceAssignment">
+                                        <label> {{ item.text }} </label>
                                     </div>
                                 </div>
                             </div>

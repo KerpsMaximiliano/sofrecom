@@ -165,7 +165,7 @@ namespace Sofco.Core.Models.Recruitment
             domain.Telephone = Telephone;
             domain.ClientContact = ClientContact;
             domain.JobType = JobType;
-            domain.ResourceAssignment = ResourceAssignment;
+            domain.ResourceAssignmentId = ResourceAssignment;
             domain.Language = Language;
             domain.Study = Study;
             domain.JobTime = JobTime;

@@ -30,5 +30,7 @@ namespace Sofco.Core.Managers
         bool CanViewSensibleData();
 
         bool IsManagementReportDelegate();
+
+        bool IsRecruiter(string recruitersCode);
     }
 }

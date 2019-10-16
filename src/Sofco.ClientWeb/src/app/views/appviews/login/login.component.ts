@@ -79,6 +79,7 @@ export class LoginComponent implements OnInit {
                 this.menuService.userIsDaf = menu.isDaf;
                 this.menuService.userIsCdg = menu.isCdg;
                 this.menuService.userIsRrhh = menu.isRrhh;
+                this.menuService.userIsRecruiter = menu.isRecruiter;
                 this.menuService.userIsCompliance = menu.isCompliance;
                 this.menuService.userIsGaf = menu.isGaf;
 

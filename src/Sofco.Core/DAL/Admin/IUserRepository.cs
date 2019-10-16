@@ -64,5 +64,6 @@ namespace Sofco.Core.DAL.Admin
         IList<User> GetByIdsWithGroups(IEnumerable<int> ids);
         bool HasSensibleDataGroup(string currentUserEmail);
         bool HasManagementReportDelegateGroup(string currentUserEmail);
+        bool IsRecruiter(string currentUserEmail, string recruitersCode);
     }
 }

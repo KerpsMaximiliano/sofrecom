@@ -3,5 +3,6 @@ export enum GenericOptions {
     Profile = "profile",
     Skill = "skill",
     TimeHiring = "timeHiring",
-    ReasonCause = "reasonCause"
+    ReasonCause = "reasonCause",
+    ResourceAssignment = "resourceAssignment"
 } 

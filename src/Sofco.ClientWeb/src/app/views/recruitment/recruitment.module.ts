@@ -28,6 +28,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 import { TimeHiringComponent } from '../admin/options/timeHiring';
 import { ApplicantService } from 'app/services/recruitment/applicant.service';
 import { ApplicantsRelatedComponent } from './job-search/applicants-related/applicants-related';
+import { ResourceAssignmentComponent } from '../admin/options/resourceAssignment';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ApplicantsRelatedComponent } from './job-search/applicants-related/appl
     JobSearchComponent,
     JobSearchListComponent,
     JobSearchEditComponent,
-    ApplicantsRelatedComponent
+    ApplicantsRelatedComponent,
+    ResourceAssignmentComponent
   ],
 
   imports: [

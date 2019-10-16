@@ -171,6 +171,11 @@ namespace Sofco.Framework.Managers
             return unitOfWork.UserRepository.HasManagementReportDelegateGroup(CurrentUser.Email);
         }
 
+        public bool IsRecruiter(string recruitersCode)
+        {
+            return unitOfWork.UserRepository.IsRecruiter(CurrentUser.Email, recruitersCode);
+        }
+
         public bool IsManager()
         {
             var isManager = unitOfWork.UserRepository.HasManagerGroup(CurrentUser.UserName);

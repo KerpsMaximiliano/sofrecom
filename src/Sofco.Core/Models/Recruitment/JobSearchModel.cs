@@ -32,7 +32,7 @@ namespace Sofco.Core.Models.Recruitment
             GuardsPaid = jobsearch.GuardsPaid;
             Email = jobsearch.Email;
             JobType = jobsearch.JobType;
-            ResourceAssignment = jobsearch.ResourceAssignment;
+            ResourceAssignment = jobsearch.ResourceAssignmentId;
             YearsExperience = jobsearch.YearsExperience;
             LanguageRequired = jobsearch.LanguageRequired;
             StudyRequired = jobsearch.StudyRequired;

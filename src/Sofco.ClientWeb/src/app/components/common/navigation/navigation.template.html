@@ -197,26 +197,36 @@
         <a href="#"><i class="fa fa-user-plus"></i> <span class="nav-label">{{'recruitment.title' | translate }}</span> <span
             class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('recruitment')}">
+          <li [ngClass]="{active: activeRoute('jobSearch')}" *ngIf="menuService.hasFunctionality('RECRU', 'SEARCH-JOBSEARCH')"><a
+            [routerLink]="['/recruitment/jobSearch']">Busquedas</a>
+          </li>
+
           <li [ngClass]="{active: activeRoute('contacts')}"><a
               [routerLink]="['/recruitment/contacts']">{{'recruitment.contacts.title' | translate }}</a>
           </li>
+
           <li [ngClass]="{active: activeRoute('perfiles')}" *ngIf="menuService.hasFunctionality('RECRU', 'PROFILE')"><a
             [routerLink]="['/recruitment/perfiles']">Perfiles</a>
           </li>
+
           <li [ngClass]="{active: activeRoute('seniorities')}" *ngIf="menuService.hasFunctionality('RECRU', 'SENIORITY')"><a
             [routerLink]="['/recruitment/seniorities']">Seniorities</a>
           </li>
+
           <li [ngClass]="{active: activeRoute('skills')}" *ngIf="menuService.hasFunctionality('RECRU', 'SKILL')"><a
             [routerLink]="['/recruitment/skills']">Conocimientos</a>
           </li>
+
           <li [ngClass]="{active: activeRoute('timeHiring')}" *ngIf="menuService.hasFunctionality('RECRU', 'TIMEHIRING')"><a
             [routerLink]="['/recruitment/timeHiring']">Tiempo contratación</a>
           </li>
+
           <li [ngClass]="{active: activeRoute('reasonCause')}" *ngIf="menuService.hasFunctionality('RECRU', 'REASONCAUSE')"><a
             [routerLink]="['/recruitment/reasonCauses']">Tipo/Razon</a>
           </li>
-          <li [ngClass]="{active: activeRoute('jobSearch')}" *ngIf="menuService.hasFunctionality('RECRU', 'SEARCH-JOBSEARCH')"><a
-            [routerLink]="['/recruitment/jobSearch']">Busquedas</a>
+      
+          <li [ngClass]="{active: activeRoute('resourceAssignments')}" *ngIf="menuService.hasFunctionality('RECRU', 'RESOURCEASSIGNMENT')"><a
+            [routerLink]="['/recruitment/resourceAssignments']">Asig. Recursos</a>
           </li>
         </ul>
       </li>

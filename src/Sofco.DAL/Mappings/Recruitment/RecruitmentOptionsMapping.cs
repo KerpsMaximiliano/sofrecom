@@ -26,6 +26,10 @@ namespace Sofco.DAL.Mappings.Recruitment
             // Primary Key
             builder.Entity<TimeHiring>().HasKey(_ => _.Id);
             builder.Entity<TimeHiring>().Property(_ => _.Text).HasMaxLength(75);
+
+            // Primary Key
+            builder.Entity<ResourceAssignment>().HasKey(_ => _.Id);
+            builder.Entity<ResourceAssignment>().Property(_ => _.Text).HasMaxLength(75);
         }
     }
 }

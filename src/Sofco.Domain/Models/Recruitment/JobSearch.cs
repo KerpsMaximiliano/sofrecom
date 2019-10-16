@@ -62,8 +62,6 @@ namespace Sofco.Domain.Models.Recruitment
 
         public int JobType { get; set; }
 
-        public int ResourceAssignment { get; set; }
-
         public string Language { get; set; }
 
         public bool LanguageRequired { get; set; }
@@ -95,6 +93,10 @@ namespace Sofco.Domain.Models.Recruitment
         public string MarketStudy { get; set; }
 
         public bool IsMarketStudy { get; set; }
+
+        public int ResourceAssignmentId { get; set; }
+
+        public ResourceAssignment ResourceAssignment { get; set; }
 
         public IList<JobSearchApplicant> JobSearchApplicants { get; set; }
     }

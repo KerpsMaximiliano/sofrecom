@@ -11,6 +11,7 @@ import { JobSearchComponent } from "./job-search/add/job-search-add";
 import { JobSearchListComponent } from "./job-search/list/job-search-list";
 import { JobSearchEditComponent } from "./job-search/edit/job-search-edit";
 import { TimeHiringComponent } from "../admin/options/timeHiring";
+import { ResourceAssignmentComponent } from "../admin/options/resourceAssignment";
 
 const RECRUITMENT_ROUTER: Routes = [
     {
@@ -31,6 +32,8 @@ const RECRUITMENT_ROUTER: Routes = [
     { path: "reasonCauses", component: ReasonCauseComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "REASONCAUSE" } },
     
     { path: "timeHirings", component: TimeHiringComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "TIMEHIRING" } },
+    
+    { path: "resourceAssignments", component: ResourceAssignmentComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "RESOURCEASSIGNMENT" } },
     
     {
         path: "jobSearch",

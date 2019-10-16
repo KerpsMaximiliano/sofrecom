@@ -340,5 +340,13 @@ namespace Sofco.DAL.Repositories.Admin
                 .ThenInclude(x => x.Group)
                 .Any(x => x.Email.Equals(currentUserEmail) && x.UserGroups.Any(s => s.Group.Code == appSetting.ManagementReportDelegateRole));
         }
+
+        public bool IsRecruiter(string currentUserEmail, string recruitersCode)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(currentUserEmail) && x.UserGroups.Any(s => s.Group.Code == recruitersCode));
+        }
     }
 }

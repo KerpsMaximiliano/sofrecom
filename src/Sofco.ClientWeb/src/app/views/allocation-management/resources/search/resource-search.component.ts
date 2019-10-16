@@ -324,6 +324,12 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         return true;
     }
 
+    canAssing() {
+        if (!this.menuService.hasFunctionality('ALLOC', 'ADRES')) return false;
+
+        return true;
+    }
+
     areAllSelected() {
         return this.resources.every(item => {
             return item.selected == true;
@@ -406,4 +412,3 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         error => this.messageService.closeLoading());
     }
 }
- 

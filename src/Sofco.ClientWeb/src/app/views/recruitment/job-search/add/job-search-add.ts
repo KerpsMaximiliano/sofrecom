@@ -8,6 +8,8 @@ import { FormsService } from "app/services/forms/forms.service";
 import { MessageService } from "app/services/common/message.service";
 import { Router } from "@angular/router";
 import { GenericOptions } from "app/models/enums/genericOptions";
+import { UserInfoService } from "app/services/common/user-info.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
     selector: 'job-search',
@@ -35,7 +37,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         telephone: new FormControl(null),
         clientContact: new FormControl(null),
         jobType: new FormControl('1'),
-        resourceAssignment: new FormControl('1'),
+        resourceAssignment: new FormControl(null),
         language: new FormControl(null, [Validators.maxLength(100)]),
         study: new FormControl(null, [Validators.maxLength(100)]),
         jobTime: new FormControl(null, [Validators.maxLength(100)]),
@@ -62,6 +64,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     applicantOptions: any[] = new Array();
     recruitersOptions: any[] = new Array();
     timeHiringOptions: any[] = new Array();
+    resourceAssignmentOptions: any[] = new Array();
 
     addSubscrip: Subscription;
     getUsersSubscrip: Subscription;
@@ -72,10 +75,12 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     getSenioritySubscrip: Subscription;
     getRecruiterSubscrip: Subscription;
     getTimeHiringSubscrip: Subscription;
+    getResourceAssignmenSubscrip: Subscription;
 
     constructor(private genericOptionsService: GenericOptionService,
                 private jobSearchService: JobSearchService,
                 private messageService: MessageService,
+                private menuService: MenuService,
                 public formsService: FormsService,
                 private router: Router,
                 private customerService: CustomerService){
@@ -94,6 +99,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         var promise6 = new Promise((resolve, reject) => this.getRecruiters(resolve));
         var promise7 = new Promise((resolve, reject) => this.getApplicants(resolve));
         var promise8 = new Promise((resolve, reject) => this.getTimeHirings(resolve));
+        var promise9 = new Promise((resolve, reject) => this.getResourceAssignment(resolve));
 
         promises.push(promise1);
         promises.push(promise2);
@@ -103,9 +109,22 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         promises.push(promise6);
         promises.push(promise7);
         promises.push(promise8);
+        promises.push(promise9);
 
         Promise.all(promises).then(data => { 
             this.messageService.closeLoading();
+
+            const userInfo = UserInfoService.getUserInfo();
+            
+            var userExist = this.applicantOptions.find(x => x.id == userInfo.id);
+
+            if(userExist){
+                this.form.controls.userId.setValue(userInfo.id);
+            }
+
+            if(!this.menuService.userIsRecruiter){
+                this.form.controls.userId.disable();
+            }
         });
     }
 
@@ -119,6 +138,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         if (this.getSenioritySubscrip) this.getSenioritySubscrip.unsubscribe();
         if (this.getRecruiterSubscrip) this.getRecruiterSubscrip.unsubscribe();
         if (this.getTimeHiringSubscrip) this.getTimeHiringSubscrip.unsubscribe();
+        if (this.getResourceAssignmenSubscrip) this.getResourceAssignmenSubscrip.unsubscribe();
     }
 
     getApplicants(resolve){
@@ -137,6 +157,20 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         () => resolve());
     }
 
+    getResourceAssignment(resolve){
+        this.genericOptionsService.controller = GenericOptions.ResourceAssignment;
+        this.getTimeHiringSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+            resolve();
+            this.resourceAssignmentOptions = response.data;
+
+            if(this.resourceAssignmentOptions.length > 0){
+                var first = this.resourceAssignmentOptions[0];
+                this.form.controls.resourceAssignment.setValue(first.id);
+            }
+        },
+        () => resolve());
+    }
+ 
     getTimeHirings(resolve){
         this.genericOptionsService.controller = GenericOptions.TimeHiring;
         this.getTimeHiringSubscrip = this.genericOptionsService.getOptions().subscribe(response => {

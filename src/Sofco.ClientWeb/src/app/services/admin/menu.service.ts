@@ -15,6 +15,7 @@ export class MenuService {
     public userIsDaf: boolean;
     public userIsGaf: boolean;
     public userIsCdg: boolean;
+    public userIsRecruiter: boolean;
     public userIsRrhh: boolean;
     public isManagementReportDelegate: boolean;
     public userIsCompliance: boolean;
@@ -44,6 +45,7 @@ export class MenuService {
                 this.userIsGaf = menu.isGaf;
                 this.userIsCdg = menu.isCdg;
                 this.userIsRrhh = menu.isRrhh;
+                this.userIsRecruiter = menu.isRecruiter;
                 this.userIsCompliance = menu.isCompliance;
 
                 this.dafMail = menu.dafMail;

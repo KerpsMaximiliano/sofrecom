@@ -69,6 +69,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     applicantOptions: any[] = new Array();
     recruitersOptions: any[] = new Array();
     timeHiringOptions: any[] = new Array();
+    resourceAssignmentOptions: any[] = new Array();
 
     addSubscrip: Subscription;
     getUsersSubscrip: Subscription;
@@ -81,6 +82,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     getSubscrip: Subscription;
     changeStatusSubscrip: Subscription;
     getTimeHiringSubscrip: Subscription;
+    getResourceAssignmenSubscrip: Subscription;
 
     entityId: number;
     status: number;
@@ -116,6 +118,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.getRecruiters();
         this.getApplicants();
         this.getTimeHirings();
+        this.getResourceAssignment();
 
         this.activateRoute.params.subscribe(routeParams => {
             this.entityId = routeParams.id;
@@ -140,6 +143,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         if (this.getSubscrip) this.getSubscrip.unsubscribe();
         if (this.changeStatusSubscrip) this.changeStatusSubscrip.unsubscribe();
         if (this.getTimeHiringSubscrip) this.getTimeHiringSubscrip.unsubscribe();
+        if (this.getResourceAssignmenSubscrip) this.getResourceAssignmenSubscrip.unsubscribe();
     }
 
     getStatusDesc(){
@@ -178,7 +182,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.form.controls.telephone.setValue(response.data.telephone);
             this.form.controls.clientContact.setValue(response.data.clientContact);
             this.form.controls.jobType.setValue(response.data.jobType.toString());
-            this.form.controls.resourceAssignment.setValue(response.data.resourceAssignment.toString());
+            this.form.controls.resourceAssignment.setValue(response.data.resourceAssignment);
             this.form.controls.language.setValue(response.data.language);
             this.form.controls.study.setValue(response.data.study);
             this.form.controls.jobTime.setValue(response.data.jobTime);
@@ -219,6 +223,14 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.genericOptionsService.controller = GenericOptions.TimeHiring;
         this.getTimeHiringSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             this.timeHiringOptions = response.data;
+        },
+        () => {});
+    }
+
+    getResourceAssignment(){
+        this.genericOptionsService.controller = GenericOptions.ResourceAssignment;
+        this.getTimeHiringSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+            this.resourceAssignmentOptions = response.data;
         },
         () => {});
     }

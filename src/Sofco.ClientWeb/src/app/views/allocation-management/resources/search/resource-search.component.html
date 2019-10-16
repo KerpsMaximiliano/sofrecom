@@ -126,7 +126,7 @@
                 <button *ngIf="!areAllSelected()" class="btn btn-success btn-sm pull-left" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
                 <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
 
-                <button class="btn btn-primary btn-sm" (click)="allocationsModal.show()" [disabled]="noneResourseSelected()"> Asignar Seleccionados <i class="fa fa-plus"></i></button>
+                <button *ngIf="canAssing()" class="btn btn-primary btn-sm" (click)="allocationsModal.show()" [disabled]="noneResourseSelected()"> Asignar Seleccionados <i class="fa fa-plus"></i></button>
                 <button *ngIf="canAddCategories()" class="btn btn-primary btn-sm" (click)="openCategoriesModal()" [disabled]="noneResourseSelected()"> {{'ADMIN.category.add' | translate }} <i class="fa fa-plus"></i></button>
             </div>
         </div>
