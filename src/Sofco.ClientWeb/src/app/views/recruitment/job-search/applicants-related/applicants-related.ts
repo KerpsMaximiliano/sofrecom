@@ -5,6 +5,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { FormsService } from "app/services/forms/forms.service";
 import { MessageService } from "app/services/common/message.service";
+import { ReasonCauseType } from "app/models/enums/reasonCauseType";
 
 @Component({
     selector: 'job-search-applicants-related',
@@ -53,7 +54,7 @@ export class ApplicantsRelatedComponent implements OnDestroy {
     }
 
     setReasonOptions(options){
-        this.reasonOptions = options;
+        this.reasonOptions = options.filter(x => x.type == ReasonCauseType.ApplicantInProgress || x.type == ReasonCauseType.ApplicantOpen || x.type == ReasonCauseType.ApplicantUnavailable);
     }
 
     initGrid() {

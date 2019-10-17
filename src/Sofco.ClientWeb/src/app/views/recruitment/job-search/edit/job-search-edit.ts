@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { JobSearchStatus } from "app/models/enums/jobSearchStatus";
 import { GenericOptions } from "app/models/enums/genericOptions";
+import { ReasonCauseType } from "app/models/enums/reasonCauseType";
 
 @Component({
     selector: 'job-search',
@@ -50,6 +51,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
 
     dateModalForm: FormGroup = new FormGroup({
         date: new FormControl(null, [Validators.required]),
+        reasonCauseModalId: new FormControl(null, [Validators.required]),
         comments: new FormControl(null, [Validators.maxLength(1000)]),
     });
 
@@ -65,11 +67,13 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     skillOptions: any[] = new Array();
     seniorityOptions: any[] = new Array();
     reasonOptions: any[] = new Array();
+    allReasonOptions: any[] = new Array();
     customerOptions: any[] = new Array();
     applicantOptions: any[] = new Array();
     recruitersOptions: any[] = new Array();
     timeHiringOptions: any[] = new Array();
     resourceAssignmentOptions: any[] = new Array();
+    reasonOptionsModal: any[] = new Array();
 
     addSubscrip: Subscription;
     getUsersSubscrip: Subscription;
@@ -276,7 +280,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     getReasons(){
         this.genericOptionsService.controller = "reasonCause";
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
-            this.reasonOptions = response.data;
+            this.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.JobSearchClose || x.type == ReasonCauseType.JobSearchOpen || x.type == ReasonCauseType.JobSearchSuspended);
+            this.allReasonOptions = response.data;
             this.applicantsRelated.setReasonOptions(this.reasonOptions);
         },
         () => {});
@@ -362,16 +367,19 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
 
     close(){
         this.statusSelected = JobSearchStatus.Close;
+        this.reasonOptionsModal = this.reasonOptions.filter(x => x.type == ReasonCauseType.JobSearchClose);
         this.dateModal.show();
     }
 
     reopen(){
         this.statusSelected = JobSearchStatus.Reopen;
+        this.reasonOptionsModal = this.reasonOptions.filter(x => x.type == ReasonCauseType.JobSearchOpen);
         this.dateModal.show();
     }
 
     suspend(){
         this.statusSelected = JobSearchStatus.Suspended;
+        this.reasonOptionsModal = this.reasonOptions.filter(x => x.type == ReasonCauseType.JobSearchSuspended);
         this.dateModal.show();
     }
 
@@ -379,6 +387,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         var json = {
             status: this.statusSelected,
             date: this.dateModalForm.controls.date.value,
+            reasonCauseId: this.dateModalForm.controls.reasonCauseModalId.value,
             reason: this.dateModalForm.controls.comments.value
         }
 
@@ -388,6 +397,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
 
             this.dateModalForm.controls.date.setValue(null);
             this.dateModalForm.controls.comments.setValue(null);
+            this.dateModalForm.controls.reasonCauseModalId.setValue(null);
 
             if(this.isClose()){
                 this.form.disable();

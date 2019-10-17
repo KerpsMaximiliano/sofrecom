@@ -99,5 +99,7 @@ namespace Sofco.Domain.Models.Recruitment
         public ResourceAssignment ResourceAssignment { get; set; }
 
         public IList<JobSearchApplicant> JobSearchApplicants { get; set; }
+
+        public IList<JobSearchHistory> Histories { get; set; }
     }
 }

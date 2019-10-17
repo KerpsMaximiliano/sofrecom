@@ -28,6 +28,7 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<JobSearch>().HasOne(x => x.Recruiter).WithMany(x => x.JobSearchs2).HasForeignKey(x => x.RecruiterId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<JobSearch>().HasOne(x => x.TimeHiring).WithMany(x => x.JobSearchs).HasForeignKey(x => x.TimeHiringId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<JobSearch>().HasOne(x => x.ResourceAssignment).WithMany(x => x.JobSearchs).HasForeignKey(x => x.ResourceAssignmentId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<JobSearch>().HasMany(x => x.Histories).WithOne(x => x.JobSearch).HasForeignKey(x => x.JobSearchId).OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<JobSearchProfile>().HasKey(t => new { t.JobSearchId, t.ProfileId });
 
@@ -76,6 +77,11 @@ namespace Sofco.DAL.Mappings.Recruitment
                 .HasOne(pt => pt.Skill)
                 .WithMany(p => p.JobSearchSkillsNotRequired)
                 .HasForeignKey(pt => pt.SkillId);
+
+            builder.Entity<JobSearchHistory>().HasKey(x => x.Id);
+            builder.Entity<JobSearchHistory>().Property(x => x.Comment).HasMaxLength(1000);
+            builder.Entity<JobSearchHistory>().Property(x => x.UserName).HasMaxLength(50);
+            builder.Entity<JobSearchHistory>().HasOne(x => x.ReasonCause).WithMany(x => x.JobSearchHistories).HasForeignKey(x => x.ReasonCauseId);
         }
     }
 }

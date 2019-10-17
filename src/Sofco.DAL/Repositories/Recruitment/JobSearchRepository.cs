@@ -91,5 +91,10 @@ namespace Sofco.DAL.Repositories.Recruitment
                 .Include(x => x.JobSearchSkillsNotRequired)
                 .SingleOrDefault(x => x.Id == id);
         }
+
+        public void AddHistory(JobSearchHistory history)
+        {
+            context.JobSearchHistories.Add(history);
+        }
     }
 }

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.Common;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Recruitment;
+using Sofco.Core.Services.Common;
 using Sofco.Core.Services.Recruitment;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Utils;
 
@@ -16,12 +19,14 @@ namespace Sofco.Service.Implementations.Recruitment
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<JobSearchApplicantService> logger;
         private readonly IUserData userData;
+        private readonly IOptionRepository<ReasonCause> optionRepository;
 
-        public JobSearchApplicantService(IUnitOfWork unitOfWork, ILogMailer<JobSearchApplicantService> logger, IUserData userData)
+        public JobSearchApplicantService(IUnitOfWork unitOfWork, ILogMailer<JobSearchApplicantService> logger, IUserData userData, IOptionRepository<ReasonCause> optionRepository)
         {
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
+            this.optionRepository = optionRepository;
         }
 
         public Response<IList<JobSearchApplicantModel>> GetByJobSearch(int jobSearchId)
@@ -63,10 +68,15 @@ namespace Sofco.Service.Implementations.Recruitment
             if(string.IsNullOrWhiteSpace(model.Comments))
                 response.AddError(Resources.Recruitment.JobSearch.CommentsRequired);
 
+            var reason = optionRepository.Get(model.ReasonId.GetValueOrDefault());
+
+            if (model.Applicants.Count == 1 && string.IsNullOrWhiteSpace(model.DocumentNumber))
+                response.AddError(Resources.Recruitment.JobSearch.DocumentNumberRequired);
+
             if (response.HasErrors()) return response;
 
             var currentUser = userData.GetCurrentUser();
-
+             
             try
             {
                 foreach (var applicantId in model.Applicants)
@@ -82,6 +92,16 @@ namespace Sofco.Service.Implementations.Recruitment
                     };
 
                     unitOfWork.JobSearchApplicantRepository.Insert(itemToAdd);
+                }
+
+                if (model.Applicants.Count == 1 && !string.IsNullOrWhiteSpace(model.DocumentNumber))
+                {
+                    if (reason.Type == ReasonCauseType.ApplicantInProgress)
+                    {
+                        var applicant = unitOfWork.ApplicantRepository.Get(model.Applicants[0]);
+                        applicant.DocumentNumber = model.DocumentNumber;
+                        unitOfWork.ApplicantRepository.Update(applicant);
+                    }
                 }
 
                 unitOfWork.Save();

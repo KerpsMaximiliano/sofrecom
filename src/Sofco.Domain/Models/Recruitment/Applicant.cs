@@ -39,6 +39,8 @@ namespace Sofco.Domain.Models.Recruitment
 
         public string AreaCode2 { get; set; }
 
+        public string DocumentNumber { get; set; }
+
         public string Telephone2 { get; set; }
 
         public DateTime CreatedDate { get; set; }

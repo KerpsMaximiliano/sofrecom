@@ -20,6 +20,7 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<Applicant>().Property(x => x.AreaCode2).HasMaxLength(5);
             builder.Entity<Applicant>().Property(x => x.Telephone2).HasMaxLength(15);
             builder.Entity<Applicant>().Property(x => x.CreatedBy).HasMaxLength(25);
+            builder.Entity<Applicant>().Property(x => x.DocumentNumber).HasMaxLength(10);
 
             builder.Entity<Applicant>().HasOne(x => x.Client).WithMany(x => x.Applicants).HasForeignKey(x => x.ClientId);
             builder.Entity<Applicant>().HasOne(x => x.ReasonCause).WithMany(x => x.Applicants).HasForeignKey(x => x.ReasonCauseId);

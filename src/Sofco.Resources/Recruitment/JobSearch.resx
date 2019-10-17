@@ -141,6 +141,9 @@
   <data name="DateRequired" xml:space="preserve">
     <value>recruitment/jobSearch.dateRequired</value>
   </data>
+  <data name="DocumentNumberRequired" xml:space="preserve">
+    <value>recruitment/jobSearch.documentNumberRequired</value>
+  </data>
   <data name="LanguageRequired" xml:space="preserve">
     <value>recruitment/jobSearch.languageRequired</value>
   </data>

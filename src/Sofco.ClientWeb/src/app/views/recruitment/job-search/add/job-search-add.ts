@@ -10,6 +10,7 @@ import { Router } from "@angular/router";
 import { GenericOptions } from "app/models/enums/genericOptions";
 import { UserInfoService } from "app/services/common/user-info.service";
 import { MenuService } from "app/services/admin/menu.service";
+import { ReasonCauseType } from "app/models/enums/reasonCauseType";
 
 @Component({
     selector: 'job-search',
@@ -211,7 +212,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         this.genericOptionsService.controller =  GenericOptions.ReasonCause;
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             resolve();
-            this.reasonOptions = response.data;
+            this.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.JobSearchOpen);
         },
         () => resolve());
     }

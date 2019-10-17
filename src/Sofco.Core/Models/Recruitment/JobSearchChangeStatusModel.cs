@@ -10,5 +10,7 @@ namespace Sofco.Core.Models.Recruitment
         public JobSearchStatus? Status { get; set; }
 
         public string Reason { get; set; }
+
+        public int? ReasonCauseId { get; set; }
     }
 }

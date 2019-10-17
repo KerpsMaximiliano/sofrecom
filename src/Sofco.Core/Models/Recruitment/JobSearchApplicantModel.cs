@@ -10,6 +10,7 @@ namespace Sofco.Core.Models.Recruitment
         {
             Id = applicant.Id;
             Applicant = $"{applicant.FirstName} {applicant.LastName}";
+            DocumentNumber = applicant.DocumentNumber;
 
             if (applicant.ApplicantProfiles != null && applicant.ApplicantProfiles.Any())
                 Profiles = string.Join(";", applicant.ApplicantProfiles.Select(x => x.Profile.Text));
@@ -27,6 +28,8 @@ namespace Sofco.Core.Models.Recruitment
         public int Id { get; set; }
 
         public string Applicant { get; set; }
+
+        public string DocumentNumber { get; set; }
 
         public string Skills { get; set; }
 

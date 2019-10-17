@@ -133,6 +133,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.documentNumberRequired.
+        /// </summary>
+        public static string DocumentNumberRequired {
+            get {
+                return ResourceManager.GetString("DocumentNumberRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearch.languageRequired.
         /// </summary>
         public static string LanguageRequired {

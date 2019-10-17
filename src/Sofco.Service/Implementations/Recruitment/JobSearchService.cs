@@ -142,6 +142,8 @@ namespace Sofco.Service.Implementations.Recruitment
 
             if(!parameter.Status.HasValue) response.AddError(Resources.Recruitment.JobSearch.StatusRequired);
 
+            if(!parameter.ReasonCauseId.HasValue) response.AddError(Resources.Recruitment.JobSearch.ReasonCauseRequired);
+
             if (response.HasErrors()) return response;
 
             var jobsearch = unitOfWork.JobSearchRepository.Get(id);
@@ -223,8 +225,22 @@ namespace Sofco.Service.Implementations.Recruitment
 
             try
             {
+                var history = new JobSearchHistory
+                {
+                    Comment = parameter.Reason,
+                    CreatedDate = DateTime.UtcNow,
+                    JobSearchId = jobsearch.Id,
+                    ReasonCauseId = parameter.ReasonCauseId.GetValueOrDefault(),
+                    StatusFromId = jobsearch.Status,
+                    StatusToId = parameter.Status.GetValueOrDefault(),
+                    UserName = userData.GetCurrentUser().UserName
+                };
+
+                jobsearch.ReasonCauseId = parameter.ReasonCauseId.GetValueOrDefault();
                 jobsearch.Status = parameter.Status.GetValueOrDefault();
                 unitOfWork.JobSearchRepository.Update(jobsearch);
+                unitOfWork.JobSearchRepository.AddHistory(history);
+
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.Recruitment.JobSearch.UpdateSuccess);

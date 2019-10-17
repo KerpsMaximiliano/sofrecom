@@ -10,5 +10,6 @@ namespace Sofco.Domain.Models.Recruitment
         public IList<JobSearch> JobSearchs { get; set; }
         public IList<Applicant> Applicants { get; set; }
         public IList<JobSearchApplicant> JobSearchApplicants { get; set; }
+        public IList<JobSearchHistory> JobSearchHistories { get; set; }
     }
 }

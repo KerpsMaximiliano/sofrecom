@@ -1,5 +1,4 @@
-﻿using System;
-using Sofco.Domain.Interfaces;
+﻿using Sofco.Domain.Interfaces;
 
 namespace Sofco.Domain.Models.AdvancementAndRefund
 {

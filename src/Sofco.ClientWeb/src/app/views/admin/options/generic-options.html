@@ -45,8 +45,12 @@
                         <td class="text-center">{{ item.id }}</td>
                         <td>{{ item.text }}</td>
                         <td *ngIf="isReasonCause">
-                            <span *ngIf="item.type == 1">Busqueda</span>
-                            <span *ngIf="item.type == 2">Contacto</span>
+                            <span *ngIf="item.type == 1">Busqueda Vigente</span>
+                            <span *ngIf="item.type == 2">Busqueda Suspendida</span>
+                            <span *ngIf="item.type == 3">Busqueda Cerrada</span>
+                            <span *ngIf="item.type == 4">Contacto Vigente</span>
+                            <span *ngIf="item.type == 5">Contacto En Curso</span>
+                            <span *ngIf="item.type == 6">Contacto Deshabilitado</span>
                         </td>
                         <td class="text-center">
                             <label *ngIf="item.active" class="label label-primary">Si</label>
@@ -76,12 +80,32 @@
         <label class="control-label">Tipo</label>
         <div class="radio radio-success">
             <input value="1" type="radio" [formControl]="type">
-            <label> Busqueda </label>
+            <label> Busqueda Vigente </label>
         </div>
     
         <div class="radio radio-success">
             <input value="2" type="radio" [formControl]="type">
-            <label> Contacto </label>
+            <label> Busqueda Suspendida </label>
+        </div>
+
+        <div class="radio radio-success">
+            <input value="3" type="radio" [formControl]="type">
+            <label> Busqueda Cerrada </label>
+        </div>
+
+        <div class="radio radio-success">
+            <input value="4" type="radio" [formControl]="type">
+            <label> Contacto Vigente </label>
+        </div>
+
+        <div class="radio radio-success">
+            <input value="5" type="radio" [formControl]="type">
+            <label> Contacto En Curso </label>
+        </div>
+
+        <div class="radio radio-success">
+            <input value="6" type="radio" [formControl]="type">
+            <label> Contacto Deshabilitado </label>
         </div>
     </div>
 </ng2-modal> 
