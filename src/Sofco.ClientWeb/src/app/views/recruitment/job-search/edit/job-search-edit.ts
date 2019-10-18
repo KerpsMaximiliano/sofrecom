@@ -282,7 +282,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             this.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.JobSearchClose || x.type == ReasonCauseType.JobSearchOpen || x.type == ReasonCauseType.JobSearchSuspended);
             this.allReasonOptions = response.data;
-            this.applicantsRelated.setReasonOptions(this.reasonOptions);
+            this.applicantsRelated.setReasonOptions(response.data);
         },
         () => {});
     }

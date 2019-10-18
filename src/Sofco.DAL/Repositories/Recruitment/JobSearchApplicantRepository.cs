@@ -55,6 +55,7 @@ namespace Sofco.DAL.Repositories.Recruitment
                     })
                     .ToList(),
                     FirstName = x.FirstName,
+                    DocumentNumber = x.DocumentNumber,
                     LastName = x.LastName,
                     JobSearchApplicants = x.JobSearchApplicants.OrderByDescending(s => s.CreatedDate).Take(1).ToList(),
                 })

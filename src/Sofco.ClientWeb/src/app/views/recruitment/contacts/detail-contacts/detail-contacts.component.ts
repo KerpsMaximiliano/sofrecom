@@ -36,12 +36,31 @@ export class DetailContactsComponent implements OnInit {
     telephone2: new FormControl(null, [Validators.min(0), Validators.max(9999999999)]),
   });
 
+  newResourceForm: FormGroup = new FormGroup({
+    nationality: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
+    civilStatus: new FormControl(null, [Validators.required, Validators.maxLength(50)]),
+    birthDate: new FormControl(null, [Validators.required]),
+    startDate: new FormControl(null, [Validators.required]),
+    address: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    cuil: new FormControl(null, [Validators.required, Validators.maxLength(12)]),
+    prepaid: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    profile: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    office: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    agreements: new FormControl(null, [Validators.required, Validators.maxLength(3000)]),
+    salary: new FormControl(null, [Validators.required]),
+    managerId: new FormControl(null, [Validators.required]),
+    analyticId: new FormControl(null, [Validators.required]),
+    projectId: new FormControl(null, [Validators.required]),
+  });
+
   profileOptions: any[] = new Array();
   skillOptions: any[] = new Array();
   reasonOptions: any[] = new Array();
   customerOptions: any[] = new Array();
   userOptions: any[] = new Array();
   history: any[] = new Array();
+  analytics: any[] = new Array();
+  projects: any[] = new Array();
 
   entityId: number;
 

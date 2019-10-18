@@ -11,8 +11,8 @@ import { ManagementReportStatus } from "app/models/enums/managementReportStatus"
 import { I18nService } from "app/services/common/i18n.service";
 import { UserInfoService } from "app/services/common/user-info.service";
 declare var moment: any;
-import { Workbook } from 'exceljs';
-import * as fs from 'file-saver';
+// import { Workbook } from 'exceljs';
+// import * as fs from 'file-saver';
 
 @Component({
     selector: 'management-report-detail',
@@ -512,19 +512,19 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         () => {});
     }
 
-    generateExcel(){
-        let workbook = new Workbook();
+    // generateExcel(){
+    //     let workbook = new Workbook();
 
-        this.marginTracking.createWorksheet(workbook);
-        this.detailCost.createWorksheet(workbook);
-        this.billing.createWorksheet(workbook);
-        this.tracing.createWorksheet(workbook);
+    //     this.marginTracking.createWorksheet(workbook);
+    //     this.detailCost.createWorksheet(workbook);
+    //     this.billing.createWorksheet(workbook);
+    //     this.tracing.createWorksheet(workbook);
 
-        var title = `Informe Gestion ${this.model.analytic} - ${this.model.manamementReportStartDate} - ${this.model.manamementReportEndDate}.xlsx`
+    //     var title = `Informe Gestion ${this.model.analytic} - ${this.model.manamementReportStartDate} - ${this.model.manamementReportEndDate}.xlsx`
 
-        workbook.xlsx.writeBuffer().then((data) => {
-            let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            fs.saveAs(blob, title);
-        });
-    }
+    //     workbook.xlsx.writeBuffer().then((data) => {
+    //         let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    //         fs.saveAs(blob, title);
+    //     });
+    // }
 }

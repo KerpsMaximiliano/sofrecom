@@ -17,11 +17,14 @@ export class ApplicantsRelatedComponent implements OnDestroy {
     form: FormGroup = new FormGroup({
         comments: new FormControl(null, [Validators.required, Validators.maxLength(3000)]),
         reasonCauseId: new FormControl(null, [Validators.required]),
+        documentNumber: new FormControl(null),
     });
 
     data: any[] = new Array();
     reasonOptions: any[] = new Array();
     jobSearchId: number;
+
+    documentNumberVisible: boolean = false;
 
     getSubscrip: Subscription;
     addSubscrip: Subscription;
@@ -96,6 +99,7 @@ export class ApplicantsRelatedComponent implements OnDestroy {
             applicants: ids,
             reasonId: this.form.controls.reasonCauseId.value,
             comments: this.form.controls.comments.value,
+            documentNumber: this.form.controls.documentNumber.value,
             jobSearchId: this.jobSearchId
         };
 
@@ -105,5 +109,26 @@ export class ApplicantsRelatedComponent implements OnDestroy {
             this.messageService.closeLoading();
         }, 
         error => this.messageService.closeLoading());
+    }
+
+    reasonCauseChanged(){
+        this.documentNumberVisible = false;
+        this.form.controls.documentNumber.clearValidators();
+        this.form.controls.documentNumber.setValue(null);
+
+        var applicants = this.data.filter(x => x.selected);
+
+        if(applicants.length == 1){
+            var reasonCause = this.reasonOptions.find(x => x.id == this.form.controls.reasonCauseId.value);
+
+            if(reasonCause && reasonCause.type == ReasonCauseType.ApplicantInProgress){
+                this.form.controls.documentNumber.setValue(applicants[0].documentNumber);
+
+                this.form.controls.documentNumber.setValidators([Validators.required, Validators.maxLength(10)]);
+                this.form.controls.documentNumber.updateValueAndValidity();
+
+                this.documentNumberVisible = true;
+            }
+        }
     }
 }

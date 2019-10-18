@@ -783,11 +783,11 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             month.pfa2.totalLoads = (totalSalaryPfa2 * 0.51)
             month.real.totalLoads = (totalSalaryReal * 0.51)
 
-            monthTotal.budget.subTotalCost = totalCostBugdet - totalInfraRedBugdet;
-            monthTotal.projected.subTotalCost = totalCostProjected - totalInfraRedProjected;
-            monthTotal.pfa1.subTotalCost = totalCostPfa1 - totalInfraRedPfa1;
-            monthTotal.pfa2.subTotalCost = totalCostPfa2 - totalInfraRedPfa2;
-            monthTotal.real.subTotalCost = totalCostReal - totalInfraRedReal;
+            monthTotal.budget.subTotalCost = monthTotal.budget.totalCost - totalInfraRedBugdet;
+            monthTotal.projected.subTotalCost = monthTotal.projected.totalCost - totalInfraRedProjected;
+            monthTotal.pfa1.subTotalCost = monthTotal.pfa1.totalCost - totalInfraRedPfa1;
+            monthTotal.pfa2.subTotalCost = monthTotal.pfa2.totalCost - totalInfraRedPfa2;
+            monthTotal.real.subTotalCost = monthTotal.real.totalCost - totalInfraRedReal;
         })
     }
 

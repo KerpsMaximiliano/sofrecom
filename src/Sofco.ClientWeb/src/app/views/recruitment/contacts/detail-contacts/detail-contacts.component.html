@@ -22,6 +22,7 @@
     <div class="tabs-container m-t-md">
         <ul class="nav nav-tabs" role="tablist">
             <li class="active"><a class="nav-link" data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> Datos Generales </a></li>
+            <li><a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-info-circle"></i> Datos para ingreso </a></li>
             <li><a class="nav-link" data-toggle="tab" href="#tab-2"> <i class="fa fa-info-circle"></i> Historial contactos </a></li>
         </ul>
 
@@ -178,6 +179,163 @@
                         <div class="form-group">
                             <label class="control-label">Comentarios</label>
                             <textarea rows="6" class="form-control" formControlName="comments" maxlength="3000"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="tab-3" class="tab-pane">
+                <div class="panel-body">
+                    <form [formGroup]="newResourceForm">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'nationality')">
+                                    <label class="control-label">Nacionalidad</label>
+                                    <input type="text" class="form-control" formControlName="nationality" maxlength="50">
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'nationality')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'nationality', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'civilStatus')">
+                                    <label class="control-label">Estado Civil</label>
+                                    <input type="text" class="form-control" formControlName="civilStatus" maxlength="50">
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'civilStatus')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'civilStatus', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'birthDate')">
+                                    <label class="control-label">Fecha Nacimiento</label> 
+                                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="birthDate">
+                            
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'birthDate')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'birthDate', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'startDate')">
+                                    <label class="control-label">Fecha Ingreso</label> 
+                                    <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="startDate">
+                            
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'startDate')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'startDate', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'address')">
+                                    <label class="control-label">Domicilio</label>
+                                    <input type="text" class="form-control" formControlName="address" maxlength="100">
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'address')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'address', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'cuil')">
+                                    <label class="control-label">Cuil</label>
+                                    <input type="text" class="form-control" formControlName="cuil" maxlength="12">
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'cuil')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'cuil', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'prepaid')">
+                                    <label class="control-label">Prepaga</label>
+                                    <input type="text" class="form-control" formControlName="prepaid" maxlength="100">
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'prepaid')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'prepaid', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'managerId')">
+                                    <label class="control-label"> Superior/Gerente de proyecto </label>
+                                    <ng-select [items]="userOptions" bindValue="id" bindLabel="text" formControlName="managerId"></ng-select>
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'managerId')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'managerId', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'analyticId')">
+                                    <label class="control-label"> Analitica </label>
+                                    <ng-select [items]="analytics" bindValue="id" bindLabel="text" formControlName="analyticId"></ng-select>
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'analyticId')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'analyticId', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'profile')">
+                                    <label class="control-label"> Analitica </label>
+                                    <ng-select [items]="projects" bindValue="id" bindLabel="text" formControlName="projectId"></ng-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'profile')">
+                                    <label class="control-label">Perfil</label>
+                                    <input type="text" class="form-control" formControlName="profile" maxlength="100">
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'profile')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'profile', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'office')">
+                                    <label class="control-label">Oficina</label>
+                                    <input type="text" class="form-control" formControlName="office" maxlength="100">
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'office')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'office', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'salary')">
+                                    <label class="control-label">Sueldo Bruto</label>
+                                    <input type="number" class="form-control" formControlName="salary">
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'salary')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'salary', 'required')">El campo es requerido</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'agreements')">
+                            <label class="control-label">Acuerdos</label>
+                            <textarea rows="6" class="form-control" formControlName="agreements" maxlength="3000"></textarea>
+
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'agreements')">
+                                <p *ngIf="formsService.hasError(newResourceForm, 'agreements', 'maxlength')">El campo no puede superar los 3000 comentarios</p>
+                            </div>
                         </div>
                     </form>
                 </div>
