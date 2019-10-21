@@ -117,14 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddressRequired" xml:space="preserve">
+    <value>recruitment/applicant.addressRequired</value>
+  </data>
   <data name="AddSuccess" xml:space="preserve">
     <value>recruitment/applicant.addSuccess</value>
+  </data>
+  <data name="AggreementsRequired" xml:space="preserve">
+    <value>recruitment/applicant.aggreementsRequired</value>
+  </data>
+  <data name="AnalyticRequired" xml:space="preserve">
+    <value>recruitment/applicant.analyticRequired</value>
   </data>
   <data name="AreaCode1MaxLengthError" xml:space="preserve">
     <value>recruitment/applicant.areaCode1MaxLengthError</value>
   </data>
   <data name="AreaCode2MaxLengthError" xml:space="preserve">
     <value>recruitment/applicant.areaCode2MaxLengthError</value>
+  </data>
+  <data name="BirthDateRequired" xml:space="preserve">
+    <value>recruitment/applicant.birthDateRequired</value>
+  </data>
+  <data name="CivilStatusRequired" xml:space="preserve">
+    <value>recruitment/applicant.civilStatusRequired</value>
   </data>
   <data name="CommentsMaxLengthError" xml:space="preserve">
     <value>recruitment/applicant.commentsMaxLengthError</value>
@@ -134,6 +149,9 @@
   </data>
   <data name="CountryCode2MaxLengthError" xml:space="preserve">
     <value>recruitment/applicant.countryCode2MaxLengthError</value>
+  </data>
+  <data name="CuilRequired" xml:space="preserve">
+    <value>recruitment/applicant.cuilRequired</value>
   </data>
   <data name="EmailMaxLengthError" xml:space="preserve">
     <value>recruitment/applicant.emailMaxLengthError</value>
@@ -150,11 +168,32 @@
   <data name="LastNameRequired" xml:space="preserve">
     <value>recruitment/applicant.lastNameRequired</value>
   </data>
+  <data name="ManagerRequired" xml:space="preserve">
+    <value>recruitment/applicant.managerRequired</value>
+  </data>
   <data name="ModelNull" xml:space="preserve">
     <value>recruitment/applicant.modelNull</value>
   </data>
+  <data name="NationalityRequired" xml:space="preserve">
+    <value>recruitment/applicant.nationalityRequired</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>recruitment/applicant.notFound</value>
+  </data>
+  <data name="OfficeRequired" xml:space="preserve">
+    <value>recruitment/applicant.officeRequired</value>
+  </data>
+  <data name="PrepaidRequired" xml:space="preserve">
+    <value>recruitment/applicant.prepaidRequired</value>
+  </data>
+  <data name="ProfileRequired" xml:space="preserve">
+    <value>recruitment/applicant.profileRequired</value>
+  </data>
+  <data name="SalaryRequired" xml:space="preserve">
+    <value>recruitment/applicant.salaryRequired</value>
+  </data>
+  <data name="StartDateRequired" xml:space="preserve">
+    <value>recruitment/applicant.startDateRequired</value>
   </data>
   <data name="Telephone1MaxLengthError" xml:space="preserve">
     <value>recruitment/applicant.telephone1MaxLengthError</value>

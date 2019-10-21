@@ -17,18 +17,28 @@
  
 <div class="wrapper wrapper-content animated fadeInRight">
     <button type="button" class="btn btn-md btn-success" (click)="back()"> <i class="fa fa-arrow-left"></i> Volver </button>
-    <button [disabled]="!form.valid" (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+    <button *ngIf="registerVisible && canMakeRegister()" type="button" class="btn btn-md btn-success" (click)="cancelRegister()"> <i class="fa fa-times"></i> Cancelar </button>
+    <button *ngIf="canMakeRegister()" (click)="makeRegister()" class="btn btn-primary" type="button"> Habilitar ingreso <i class="fa fa-plus"></i> </button>
+    <button *ngIf="registerVisible && canMakeRegister()" [disabled]="!form.valid || !newResourceForm.valid" (click)="register()" class="btn btn-primary" type="button"> Generar ingreso <i class="fa fa-save"></i> </button>
+    <button *ngIf="!registerVisible" [disabled]="!form.valid" (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+    <button *ngIf="canClose()" (click)="openCloseModal()" class="btn btn-danger" type="button">Deshabilitar <i class="fa fa-times"></i> </button>
 
     <div class="tabs-container m-t-md">
         <ul class="nav nav-tabs" role="tablist">
             <li class="active"><a class="nav-link" data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> Datos Generales </a></li>
-            <li><a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-info-circle"></i> Datos para ingreso </a></li>
+            <li *ngIf="registerVisible"><a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-info-circle"></i> Datos para ingreso </a></li>
             <li><a class="nav-link" data-toggle="tab" href="#tab-2"> <i class="fa fa-info-circle"></i> Historial contactos </a></li>
         </ul>
 
         <div class="tab-content">
             <div id="tab-1" class="tab-pane active">
                 <div class="panel-body">
+                    <div class="row m-b-md">
+                        <div class="col-md-6">
+                            <label style="font-size: 16px" class="label label-success">Estado: {{ getStatusDesc() }}</label>
+                        </div>
+                    </div>
+
                     <form [formGroup]="form">
                         <div class="row">
                             <div class="col-md-6">
@@ -184,7 +194,7 @@
                 </div>
             </div>
 
-            <div id="tab-3" class="tab-pane">
+            <div id="tab-3" class="tab-pane" *ngIf="registerVisible">
                 <div class="panel-body">
                     <form [formGroup]="newResourceForm">
                         <div class="row">
@@ -280,7 +290,7 @@
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'analyticId')">
                                     <label class="control-label"> Analitica </label>
-                                    <ng-select [items]="analytics" bindValue="id" bindLabel="text" formControlName="analyticId"></ng-select>
+                                    <ng-select [items]="analytics" bindValue="id" bindLabel="text" formControlName="analyticId" (change)="analyticChange()"></ng-select>
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'analyticId')">
                                         <p *ngIf="formsService.hasError(newResourceForm, 'analyticId', 'required')">El campo es requerido</p>
@@ -289,9 +299,9 @@
                             </div>
 
                             <div class="col-md-4">
-                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'profile')">
-                                    <label class="control-label"> Analitica </label>
-                                    <ng-select [items]="projects" bindValue="id" bindLabel="text" formControlName="projectId"></ng-select>
+                                <div class="form-group">
+                                    <label class="control-label"> Proyecto </label>
+                                    <ng-select [items]="projects" bindValue="projectId" bindLabel="text" formControlName="projectId"></ng-select>
                                 </div>
                             </div>
                         </div>
@@ -376,3 +386,28 @@
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="dateModalConfig" #dateModal (accept)="closeApplicant()" [isSaveEnabled]="dateModalForm.valid">
+
+    <form [formGroup]="dateModalForm" *ngIf="dateModalForm">   
+        <div class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'reasonCauseModalId')">
+            <label class="control-label"> Tipo/Razon </label>
+            <ng-select [items]="applicantCloseReasons" bindValue="id" bindLabel="text" formControlName="reasonCauseModalId"></ng-select>
+
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(dateModalForm, 'reasonCauseModalId')">
+                <p *ngIf="formsService.hasError(dateModalForm, 'reasonCauseModalId', 'required')">El campo es requerido</p>
+            </div>
+        </div>
+
+        <div class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'comments')">
+            <label class="control-label">Motivo de cierre</label>
+            <textarea rows="6" class="form-control" formControlName="comments" maxlength="1000"></textarea>
+    
+            <div class="form-control-feedback" *ngIf="formsService.hasErrors(dateModalForm, 'comments')">
+                <p *ngIf="formsService.hasError(dateModalForm, 'comments', 'maxLength')">Los comentarios no pueden superar los 1000 caracteres</p>
+            </div>
+        </div>
+        
+    </form>
+
+</ng2-modal> 

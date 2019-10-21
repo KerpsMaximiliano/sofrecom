@@ -41,7 +41,7 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response UpdateDaf(Analytic analytic);
 
-        Response<IList<SelectListModel>> GetOpportunities(int id);
+        Response<IList<OpportunityOption>> GetOpportunities(int id);
 
         Response<List<Option>> GetByCurrentManager();
         Response<Analytic> GetByTitle(string title);

@@ -222,9 +222,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
-        public Response<IList<SelectListModel>> GetOpportunities(int id)
+        public Response<IList<OpportunityOption>> GetOpportunities(int id)
         {
-            var response = new Response<IList<SelectListModel>> { Data = new List<SelectListModel>() };
+            var response = new Response<IList<OpportunityOption>> { Data = new List<OpportunityOption>() };
 
             var analytic = unitOfWork.AnalyticRepository.Get(id);
 
@@ -232,9 +232,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var projects = unitOfWork.ProjectRepository.GetAllActives(analytic.ServiceId);
 
-                response.Data = projects.Select(x => new SelectListModel
+                response.Data = projects.Select(x => new OpportunityOption
                 {
                     Id = $"{x.OpportunityNumber}",
+                    ProjectId = x.Id.ToString(),
                     Text = $"{x.OpportunityNumber} - {x.OpportunityName}"
                 })
                 .ToList();

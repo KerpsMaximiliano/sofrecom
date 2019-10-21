@@ -179,6 +179,7 @@ namespace Sofco.DAL
         public DbSet<JobSearchApplicant> JobSearchApplicants { get; set; }
         public DbSet<ResourceAssignment> ResourceAssignments { get; set; }
         public DbSet<JobSearchHistory> JobSearchHistories { get; set; }
+        public DbSet<ApplicantHistory> ApplicantHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

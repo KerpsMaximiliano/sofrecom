@@ -4,6 +4,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.ManagementReport;
+using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
@@ -81,5 +82,6 @@ namespace Sofco.Domain.Models.AllocationManagement
         public ICollection<Refund> Refunds { get; set; }
 
         public ManagementReport.ManagementReport ManagementReport { get; set; }
+        public ICollection<Applicant> Applicants { get; set; }
     }
 }

@@ -61,11 +61,38 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.addressRequired.
+        /// </summary>
+        public static string AddressRequired {
+            get {
+                return ResourceManager.GetString("AddressRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/applicant.addSuccess.
         /// </summary>
         public static string AddSuccess {
             get {
                 return ResourceManager.GetString("AddSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.aggreementsRequired.
+        /// </summary>
+        public static string AggreementsRequired {
+            get {
+                return ResourceManager.GetString("AggreementsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.analyticRequired.
+        /// </summary>
+        public static string AnalyticRequired {
+            get {
+                return ResourceManager.GetString("AnalyticRequired", resourceCulture);
             }
         }
         
@@ -84,6 +111,24 @@ namespace Sofco.Resources.Recruitment {
         public static string AreaCode2MaxLengthError {
             get {
                 return ResourceManager.GetString("AreaCode2MaxLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.birthDateRequired.
+        /// </summary>
+        public static string BirthDateRequired {
+            get {
+                return ResourceManager.GetString("BirthDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.civilStatusRequired.
+        /// </summary>
+        public static string CivilStatusRequired {
+            get {
+                return ResourceManager.GetString("CivilStatusRequired", resourceCulture);
             }
         }
         
@@ -111,6 +156,15 @@ namespace Sofco.Resources.Recruitment {
         public static string CountryCode2MaxLengthError {
             get {
                 return ResourceManager.GetString("CountryCode2MaxLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.cuilRequired.
+        /// </summary>
+        public static string CuilRequired {
+            get {
+                return ResourceManager.GetString("CuilRequired", resourceCulture);
             }
         }
         
@@ -160,6 +214,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.managerRequired.
+        /// </summary>
+        public static string ManagerRequired {
+            get {
+                return ResourceManager.GetString("ManagerRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/applicant.modelNull.
         /// </summary>
         public static string ModelNull {
@@ -169,11 +232,65 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.nationalityRequired.
+        /// </summary>
+        public static string NationalityRequired {
+            get {
+                return ResourceManager.GetString("NationalityRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/applicant.notFound.
         /// </summary>
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.officeRequired.
+        /// </summary>
+        public static string OfficeRequired {
+            get {
+                return ResourceManager.GetString("OfficeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.prepaidRequired.
+        /// </summary>
+        public static string PrepaidRequired {
+            get {
+                return ResourceManager.GetString("PrepaidRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.profileRequired.
+        /// </summary>
+        public static string ProfileRequired {
+            get {
+                return ResourceManager.GetString("ProfileRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.salaryRequired.
+        /// </summary>
+        public static string SalaryRequired {
+            get {
+                return ResourceManager.GetString("SalaryRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.startDateRequired.
+        /// </summary>
+        public static string StartDateRequired {
+            get {
+                return ResourceManager.GetString("StartDateRequired", resourceCulture);
             }
         }
         

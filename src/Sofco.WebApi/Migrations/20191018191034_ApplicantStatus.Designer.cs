@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20191018191034_ApplicantStatus")]
+    partial class ApplicantStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2283,37 +2285,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Applicants");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.ApplicantHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ApplicantId");
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(1000);
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<int>("ReasonCauseId");
-
-                    b.Property<int>("StatusFromId");
-
-                    b.Property<int>("StatusToId");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId");
-
-                    b.HasIndex("ReasonCauseId");
-
-                    b.ToTable("ApplicantHistories");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearch", b =>
                 {
                     b.Property<int>("Id")
@@ -4182,19 +4153,6 @@ namespace Sofco.WebApi.Migrations
                         .WithMany("Applicants")
                         .HasForeignKey("RecommendedByUserId")
                         .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.ApplicantHistory", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Applicant", "Applicant")
-                        .WithMany()
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Recruitment.ReasonCause", "ReasonCause")
-                        .WithMany("ApplicantHistories")
-                        .HasForeignKey("ReasonCauseId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearch", b =>

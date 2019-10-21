@@ -100,6 +100,7 @@ namespace Sofco.Service.Implementations.Recruitment
                     {
                         var applicant = unitOfWork.ApplicantRepository.Get(model.Applicants[0]);
                         applicant.DocumentNumber = model.DocumentNumber;
+                        applicant.Status = ApplicantStatus.InProgress;
                         unitOfWork.ApplicantRepository.Update(applicant);
                     }
                 }

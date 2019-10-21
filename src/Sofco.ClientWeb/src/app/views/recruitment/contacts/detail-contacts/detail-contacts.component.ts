@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { GenericOptionService } from 'app/services/admin/generic-option.service';
@@ -10,6 +10,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'app/services/billing/customer.service';
 import { GenericOptions } from 'app/models/enums/genericOptions';
 import { DataTableService } from 'app/services/common/datatable.service';
+import { AnalyticService } from 'app/services/allocation-management/analytic.service';
+import { ApplicantStatus } from 'app/models/enums/applicantStatus';
+import * as moment from 'moment';
+import { ReasonCauseType } from 'app/models/enums/reasonCauseType';
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 
 @Component({
   selector: 'app-detail-contacts',
@@ -46,16 +51,32 @@ export class DetailContactsComponent implements OnInit {
     prepaid: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     profile: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     office: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-    agreements: new FormControl(null, [Validators.required, Validators.maxLength(3000)]),
+    agreements: new FormControl(null, [Validators.maxLength(3000)]),
     salary: new FormControl(null, [Validators.required]),
     managerId: new FormControl(null, [Validators.required]),
     analyticId: new FormControl(null, [Validators.required]),
     projectId: new FormControl(null, [Validators.required]),
   });
 
+  dateModalForm: FormGroup = new FormGroup({
+    reasonCauseModalId: new FormControl(null, [Validators.required]),
+    comments: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),
+  });
+
+  @ViewChild('dateModal') dateModal;
+  public dateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+      "ACTIONS.confirmTitle",
+      "dateModal",
+      true,
+      true,
+      "ACTIONS.ACCEPT",
+      "ACTIONS.cancel"
+  );
+
   profileOptions: any[] = new Array();
   skillOptions: any[] = new Array();
   reasonOptions: any[] = new Array();
+  applicantCloseReasons: any[] = new Array();
   customerOptions: any[] = new Array();
   userOptions: any[] = new Array();
   history: any[] = new Array();
@@ -63,6 +84,9 @@ export class DetailContactsComponent implements OnInit {
   projects: any[] = new Array();
 
   entityId: number;
+  status: number;
+  
+  registerVisible: boolean = false;
 
   addSubscrip: Subscription;
   getUsersSubscrip: Subscription;
@@ -72,12 +96,16 @@ export class DetailContactsComponent implements OnInit {
   getSkilsSubscrip: Subscription;
   getSubscrip: Subscription;
   getHistorySubscrip: Subscription;
+  getAnalyticSubscrip: Subscription;
+  getProjectsSubscrip: Subscription;
+  changeStatusSubscrip: Subscription;
 
   constructor(private genericOptionsService: GenericOptionService,
     private messageService: MessageService,
     public formsService: FormsService,
     private activateRoute: ActivatedRoute,
     private userService: UserService,
+    private analyticService: AnalyticService,
     private applicantService: ApplicantService,
     private dataTableService: DataTableService,
     private router: Router,
@@ -90,6 +118,7 @@ export class DetailContactsComponent implements OnInit {
     this.getReasons();
     this.getCustomers();
     this.getUsers();
+    this.getAnalytics();
 
     this.activateRoute.params.subscribe(routeParams => {
         this.entityId = routeParams.id;
@@ -126,7 +155,20 @@ export class DetailContactsComponent implements OnInit {
       this.genericOptionsService.controller =  GenericOptions.ReasonCause;
       this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
           this.reasonOptions = response.data;
+          this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantUnavailable);
       });
+  }
+
+  getAnalytics() {
+    this.getAnalyticSubscrip = this.analyticService.getOptionsActives().subscribe(d => {
+        this.analytics = d;
+    });
+  }
+
+  analyticChange(){
+    this.getProjectsSubscrip = this.analyticService.getOpportunities(this.newResourceForm.controls.analyticId.value).subscribe(response => {
+      this.projects = response.data;
+    });
   }
 
   getUsers() {
@@ -170,31 +212,47 @@ export class DetailContactsComponent implements OnInit {
         this.form.controls.countryCode2.setValue(response.data.countryCode2);
         this.form.controls.areaCode2.setValue(response.data.areaCode2);
         this.form.controls.telephone2.setValue(response.data.telephone2);
+
+        this.newResourceForm.controls.nationality.setValue(response.data.nationality);
+        this.newResourceForm.controls.civilStatus.setValue(response.data.civilStatus);
+        if(response.data.birthDate) this.newResourceForm.controls.birthDate.setValue(moment(response.data.birthDate).toDate());
+        if(response.data.startDate) this.newResourceForm.controls.startDate.setValue(moment(response.data.startDate).toDate());
+        this.newResourceForm.controls.address.setValue(response.data.address);
+        this.newResourceForm.controls.cuil.setValue(response.data.cuil);
+        this.newResourceForm.controls.prepaid.setValue(response.data.prepaid);
+        this.newResourceForm.controls.profile.setValue(response.data.profile);
+        this.newResourceForm.controls.office.setValue(response.data.office);
+        this.newResourceForm.controls.agreements.setValue(response.data.agreements);
+        this.newResourceForm.controls.salary.setValue(response.data.salary);
+        if(response.data.managerId) this.newResourceForm.controls.managerId.setValue(response.data.managerId.toString());
+        this.newResourceForm.controls.analyticId.setValue(response.data.analyticId);
+        if(response.data.projectId) this.newResourceForm.controls.projectId.setValue(response.data.projectId.toString());
+
+        if(response.data.analyticId && response.data.projectId){
+          this.analyticChange();
+        }
+
+        this.status = response.data.status;
+
+        if(this.status == ApplicantStatus.Close){
+          this.registerVisible = true;
+          this.form.disable();
+          this.newResourceForm.disable();
+        }
     },
     error => this.messageService.closeLoading());
+  }
+
+  canMakeRegister(){
+    if(this.status == ApplicantStatus.InProgress) return true;
+
+    return false;
   }
 
   save(){
     if(!this.form.valid) return;
 
-    var json = {
-        lastName: this.form.controls.lastName.value,
-        firstName: this.form.controls.firstName.value,
-        email: this.form.controls.email.value,
-        comments: this.form.controls.comments.value,
-        clientCrmId: this.form.controls.clientId.value,
-        reasonCauseId: this.form.controls.reasonCauseId.value,
-        recommendedByUserId: this.form.controls.recommendedByUserId.value,
-        countryCode1: this.form.controls.countryCode1.value,
-        countryCode2: this.form.controls.countryCode2.value,
-        areaCode1: this.form.controls.areaCode1.value,
-        areaCode2: this.form.controls.areaCode2.value,
-        telephone1: this.form.controls.telephone1.value,
-        telephone2: this.form.controls.telephone2.value,
-        skills: this.form.controls.skills.value,
-        profiles: this.form.controls.profiles.value,
-        clientId: 0
-    }
+    var json = this.getGeneralData()
 
     this.messageService.showLoading();
 
@@ -205,6 +263,66 @@ export class DetailContactsComponent implements OnInit {
     error => {
         this.messageService.closeLoading();
     });
+  }
+
+  private getGeneralData() {
+    return {
+      lastName: this.form.controls.lastName.value,
+      firstName: this.form.controls.firstName.value,
+      email: this.form.controls.email.value,
+      comments: this.form.controls.comments.value,
+      clientCrmId: this.form.controls.clientId.value,
+      reasonCauseId: this.form.controls.reasonCauseId.value,
+      recommendedByUserId: this.form.controls.recommendedByUserId.value,
+      countryCode1: this.form.controls.countryCode1.value,
+      countryCode2: this.form.controls.countryCode2.value,
+      areaCode1: this.form.controls.areaCode1.value,
+      areaCode2: this.form.controls.areaCode2.value,
+      telephone1: this.form.controls.telephone1.value,
+      telephone2: this.form.controls.telephone2.value,
+      skills: this.form.controls.skills.value,
+      profiles: this.form.controls.profiles.value,
+      clientId: 0
+    };
+  }
+
+  register(){
+    if(!this.form.valid || !this.newResourceForm.valid) return;
+
+    var generalData = this.getGeneralData();
+
+    var registerData = this.getRegisterData();
+
+    var json = { generalData, registerData };
+
+    this.messageService.showLoading();
+
+    this.addSubscrip = this.applicantService.register(this.entityId, json).subscribe(response => {
+        this.messageService.closeLoading();
+        this.back();
+    }, 
+    error => {
+        this.messageService.closeLoading();
+    });
+  }
+
+  private getRegisterData() {
+    return {
+      nationality: this.newResourceForm.controls.nationality.value,
+      civilStatus: this.newResourceForm.controls.civilStatus.value,
+      birthDate: this.newResourceForm.controls.birthDate.value,
+      startDate: this.newResourceForm.controls.startDate.value,
+      address: this.newResourceForm.controls.address.value,
+      cuil: this.newResourceForm.controls.cuil.value,
+      prepaid: this.newResourceForm.controls.prepaid.value,
+      profile: this.newResourceForm.controls.profile.value,
+      office: this.newResourceForm.controls.office.value,
+      aggreements: this.newResourceForm.controls.agreements.value,
+      salary: this.newResourceForm.controls.salary.value,
+      managerId: this.newResourceForm.controls.managerId.value,
+      analyticId: this.newResourceForm.controls.analyticId.value,
+      projectId: this.newResourceForm.controls.projectId.value
+    };
   }
 
   getHistory(){
@@ -227,5 +345,51 @@ export class DetailContactsComponent implements OnInit {
 
     this.dataTableService.destroy(options.selector);
     this.dataTableService.initialize(options);
+  }
+
+  makeRegister(){
+    this.registerVisible = true;
+  }
+
+  cancelRegister() {
+    this.registerVisible = false;
+  }
+
+  getStatusDesc(){
+    switch(this.status){
+        case ApplicantStatus.Valid: return "Vigente";
+        case ApplicantStatus.InProgress: return "En Curso";
+        case ApplicantStatus.Close: return "Deshabilitado";
+        default: return "";
+    }
+  }
+
+  closeApplicant(){
+    var json = {
+      status: ApplicantStatus.Close,
+      reasonCauseId: this.dateModalForm.controls.reasonCauseModalId.value,
+      comments: this.dateModalForm.controls.comments.value
+    }
+
+    this.changeStatusSubscrip = this.applicantService.changeStatus(this.entityId, json).subscribe(response => {
+        this.dateModal.hide();
+        this.status = ApplicantStatus.Close;
+
+        this.dateModalForm.controls.comments.setValue(null);
+        this.dateModalForm.controls.reasonCauseModalId.setValue(null);
+    }, 
+    error => {
+        this.dateModal.resetButtons();
+    });
+  }
+
+  canClose(){
+    if(this.status != ApplicantStatus.Close) return true;
+
+    return false;
+  }
+
+  openCloseModal(){
+    this.dateModal.show();
   }
 }
