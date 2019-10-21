@@ -509,6 +509,11 @@
                     </div>
                 </div>
 
+                <div class="alert alert-gaps-info" *ngIf="subCategoriesData.length == 0">
+                    <i class="fa fa-info"></i>
+                    Sin información disponible
+                </div>
+
                 <div class="row m-t-xs" *ngFor="let cost of subCategoriesData; let i = index" [hidden]="cost.deleted">
                     <div class="col-sm-4">
                         {{ cost.name }}
