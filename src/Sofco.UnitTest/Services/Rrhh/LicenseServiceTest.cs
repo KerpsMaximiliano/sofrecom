@@ -69,6 +69,7 @@ namespace Sofco.UnitTest.Services.Rrhh
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
             unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
             unitOfWork.Setup(x => x.GroupRepository).Returns(groupRepositoryMock.Object);
+            unitOfWork.Setup(x => x.HolidayRepository).Returns(holidayRepositoryMock.Object);
 
             emailConfigMock.Setup(x => x.Value).Returns(new EmailConfig { SiteUrl = "SiteUrl", RrhhCode = "RRHH" });
             groupRepositoryMock.Setup(x => x.GetEmail(It.IsAny<string>())).Returns("rrhh@mail.com");

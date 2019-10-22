@@ -93,11 +93,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).Date;
 
             return context.Allocations
-                .Include(x => x.Analytic)
-                    .ThenInclude(x => x.Sector)
-                        .ThenInclude(x => x.ResponsableUser)
                 .Where(x => x.EmployeeId == employeeId && x.StartDate.Date == today)
                 .Select(x => x.Analytic.Sector)
+                .Include(x => x.ResponsableUser)
                 .ToList();
         }
 
