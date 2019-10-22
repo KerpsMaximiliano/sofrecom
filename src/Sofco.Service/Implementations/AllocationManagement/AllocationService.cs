@@ -13,6 +13,8 @@ using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.Services.ManagementReport;
 
 namespace Sofco.Service.Implementations.AllocationManagement
@@ -23,19 +25,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly ILogMailer<AllocationService> logger;
         private readonly IAllocationFileManager allocationFileManager;
         private readonly ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService;
-        private readonly IManagementReportCalculateCostsService managementReportCalculateCostsService;
+        private readonly AppSetting appSetting;
 
         public AllocationService(IUnitOfWork unitOfWork,
             ILogMailer<AllocationService> logger,
             ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService,
-            IManagementReportCalculateCostsService managementReportCalculateCostsService,
+            IOptions<AppSetting> appSettingOptions,
             IAllocationFileManager allocationFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+            this.appSetting = appSettingOptions.Value;
             this.allocationFileManager = allocationFileManager;
             this.licenseGenerateWorkTimeService = licenseGenerateWorkTimeService;
-            this.managementReportCalculateCostsService = managementReportCalculateCostsService;
         }
 
         public Response<Allocation> Add(AllocationDto allocation)
@@ -416,7 +418,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (parameters.Unassigned)
             {
-                employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(parameters.StartDate.Value, parameters.EndDate.Value);
+                employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(parameters.StartDate.Value, parameters.EndDate.Value, appSetting.AnalyticBank);
             }
             else
             {
@@ -424,7 +426,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     (parameters.IncludeAnalyticId == 1 || parameters.IncludeAnalyticId == 2) &&
                     !parameters.EmployeeId.HasValue || (parameters.EmployeeId.HasValue && parameters.EmployeeId.Value == 0))
                 {
-                    employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(parameters.StartDate.Value, parameters.EndDate.Value);
+                    employeesUnassigned = unitOfWork.EmployeeRepository.GetUnassignedBetweenDays(parameters.StartDate.Value, parameters.EndDate.Value, appSetting.AnalyticBank);
                 }
             }
 
@@ -452,8 +454,49 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 response.AddWarning(Resources.AllocationManagement.Employee.EmployeesNotFound);
             }
+            else
+            {
+                if (parameters.Unassigned && parameters.GenerateReportPowerBi)
+                {
+                    var report = response.Data.Rows.Select(AddReportPowerBiRow).ToList();
+
+                    unitOfWork.AllocationRepository.CleanReportPowerBi();
+                    unitOfWork.AllocationRepository.AddReportPowerBi(report);
+                    unitOfWork.Save();
+                }
+            }
 
             return response;
+        }
+
+        private ReportPowerBi AddReportPowerBiRow(AllocationReportRow allocationReportRow)
+        {
+            var row = new ReportPowerBi
+            {
+                Manager = allocationReportRow.Manager,
+                Profile = allocationReportRow.Profile,
+                Resource = allocationReportRow.ResourceName,
+                Seniority = allocationReportRow.Seniority,
+                Technology = allocationReportRow.Technology
+            };
+
+            var months = allocationReportRow.Months.Take(4);
+            var index = 1;
+            var count = months.Count();
+
+            foreach (var month in months)
+            {
+                if (index == 1) row.Month1 = month.Percentage;
+                if (index == 2) row.Month2 = month.Percentage;
+                if (index == 3) row.Month3 = month.Percentage;
+                if (index == 4) row.Month4 = month.Percentage;
+
+                index++;
+
+                if (index > count) index = 1;
+            }
+
+            return row;
         }
 
         private void AddUnassginRow(IList<AllocationReportRow> list, Employee employee, IList<AllocationDateReport> months, decimal percentageDiff, DateTime startDate)

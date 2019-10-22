@@ -70,7 +70,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPost("report")]
         public IActionResult Report([FromBody] AllocationReportParams parameters)
         {
-            var response = allocationService.CreateReport(parameters); 
+            var response = allocationService.CreateReport(parameters);
 
             return this.CreateResponse(response);
         }

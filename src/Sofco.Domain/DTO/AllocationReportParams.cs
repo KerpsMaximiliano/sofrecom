@@ -18,5 +18,7 @@ namespace Sofco.Domain.DTO
         public bool Unassigned { get; set; }
 
         public int IncludeAnalyticId { get; set; }
+
+        public bool GenerateReportPowerBi { get; set; }
     }
 }

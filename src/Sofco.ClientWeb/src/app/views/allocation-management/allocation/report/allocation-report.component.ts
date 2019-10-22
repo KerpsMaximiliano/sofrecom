@@ -29,6 +29,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
     public dateTo: Date = new Date();
     public includeStaff: boolean = false;
     public unassigned: boolean = false;
+    public generateReportPowerBi: boolean = false;
     public includeAnalyticId = "1";
 
     private lastQuery: any;
@@ -93,6 +94,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             startDate: this.dateSince,
             endDate: this.dateTo,
             includeStaff: this.includeStaff,
+            generateReportPowerBi: this.generateReportPowerBi,
             unassigned: this.unassigned,
             includeAnalyticId: this.includeAnalyticId,
             analyticIds: $('#analyticId').val(),
@@ -155,6 +157,7 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
 
     unassignedChanged(){
         if(this.unassigned){
+            this.generateReportPowerBi = false;
             $('#analyticId').val(null).trigger('change');
             $('#employeeId').val(0).trigger('change');
             this.includeAnalyticId = "1";

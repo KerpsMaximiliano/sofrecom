@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.FileManager;
@@ -29,7 +31,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
         private Mock<ILogMailer<AllocationService>> loggerMock;
         private Mock<IAllocationFileManager> fileManagerMock;
         private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeServiceMock;
-        private Mock<IManagementReportCalculateCostsService> managementReportCalculateCostsServiceMock;
+        private Mock<IOptions<AppSetting>> appSettingMock;
 
         private Mock<IUnitOfWork> unitOfWork;
 
@@ -50,7 +52,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
 
             licenseGenerateWorkTimeServiceMock = new Mock<ILicenseGenerateWorkTimeService>();
 
-            managementReportCalculateCostsServiceMock = new Mock<IManagementReportCalculateCostsService>();
+            appSettingMock = new Mock<IOptions<AppSetting>>();
 
             unitOfWork = new Mock<IUnitOfWork>();
 
@@ -60,11 +62,12 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             unitOfWork.Setup(x => x.AnalyticRepository).Returns(analyticRepositoryMock.Object);
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
             unitOfWork.Setup(x => x.LicenseRepository).Returns(licenseRepositoryMock.Object);
+            appSettingMock.Setup(x => x.Value).Returns(new AppSetting());
 
             licenseRepositoryMock.Setup(x => x.GetByEmployeeAndDates(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new List<License>());
             employeeRepositoryMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Employee { StartDate = new DateTime(2017, 1,1)});
 
-            sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, managementReportCalculateCostsServiceMock.Object, fileManagerMock.Object);
+            sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, appSettingMock.Object, fileManagerMock.Object);
         }
 
         [TestCase]

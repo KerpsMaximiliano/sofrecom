@@ -83,6 +83,7 @@ namespace Sofco.DAL
         public DbSet<HealthInsurance> HealthInsurances { get; set; }
         public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
         public DbSet<EmployeeEndNotification> EmployeeEndNotifications { get; set; }
+        public DbSet<ReportPowerBi> ReportsPowerBi { get; set; }
 
         // Work Time Management
         public DbSet<WorkTime> WorkTimes { get; set; }
