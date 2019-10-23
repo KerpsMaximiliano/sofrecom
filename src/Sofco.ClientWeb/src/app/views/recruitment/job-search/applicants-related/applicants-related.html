@@ -24,7 +24,7 @@
                         <tbody>
                             <tr *ngFor="let item of data" class="pointer">
                                 <td class="column-xs text-center">
-                                    <icheck [(checked)]="item.selected"></icheck>
+                                    <icheck [(checked)]="item.selected" (checkedChange)="reasonCauseChanged(item)"></icheck>
                                 </td>
                                 <td class="column-lg text-ellipsis">{{ item.applicant }}</td>
                                 <td class="column-lg text-word-break">{{ item.profiles }}</td>
@@ -46,10 +46,20 @@
                 <form [formGroup]="form">
                     <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonCauseId')">
                         <label class="control-label"> Tipo/Razon </label>
-                        <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonCauseId"></ng-select>
+                        <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonCauseId" (change)="reasonCauseChanged()"></ng-select>
 
                         <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonCauseId')">
                             <p *ngIf="formsService.hasError(form, 'reasonCauseId', 'required')">El campo es requerido</p>
+                        </div>
+                    </div> 
+
+                    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'documentNumber')" *ngIf="documentNumberVisible">
+                        <label class="control-label">Documento</label>
+                        <input type="text" class="form-control" formControlName="documentNumber" maxlength="10">
+
+                        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'documentNumber')">
+                            <p *ngIf="formsService.hasError(form, 'documentNumber', 'maxLength')">El campo no pueden superar los 10 caracteres</p>
+                            <p *ngIf="formsService.hasError(form, 'documentNumber', 'required')">El campo es requerido</p>
                         </div>
                     </div>
                         
@@ -59,12 +69,13 @@
                 
                         <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'comments')">
                             <p *ngIf="formsService.hasError(form, 'comments', 'maxLength')">Los comentarios no pueden superar los 3000 caracteres</p>
+                            <p *ngIf="formsService.hasError(form, 'comments', 'required')">El campo es requerido</p>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="ibox-footer text-center">
-                <button class="btn btn-primary btn-sm" [disabled]="!form.valid" (click)="save()"> Guardar </button>
+                <button class="btn btn-primary btn-sm" [disabled]="!form.valid || !anySelected()" (click)="save()"> Guardar </button>
             </div>
         </div>
     </div>

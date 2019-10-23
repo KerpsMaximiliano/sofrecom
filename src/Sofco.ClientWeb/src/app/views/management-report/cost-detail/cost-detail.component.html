@@ -244,7 +244,7 @@
                 <ng-select [items]="otherResources" bindLabel="typeName" [(ngModel)]="otherSelected"
                     (change)="otherResourceChange()" [clearable]="false">
                 </ng-select>
-            </div>
+            </div> 
         </div>
         <div class="col-sm-5" *ngIf="showUsers">
             <div class="form-group">
@@ -343,6 +343,11 @@
                     <div class="col-sm-2">
                         <h4>Monto</h4>
                     </div>
+                </div>
+
+                <div class="alert alert-gaps-info" *ngIf="othersByMonth.length == 0">
+                    <i class="fa fa-info"></i>
+                    Sin información disponible
                 </div>
 
                 <div class="row m-t-xs" *ngFor="let other of othersByMonth; let i = index">

@@ -83,6 +83,7 @@ namespace Sofco.DAL
         public DbSet<HealthInsurance> HealthInsurances { get; set; }
         public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
         public DbSet<EmployeeEndNotification> EmployeeEndNotifications { get; set; }
+        public DbSet<ReportPowerBi> ReportsPowerBi { get; set; }
 
         // Work Time Management
         public DbSet<WorkTime> WorkTimes { get; set; }
@@ -179,6 +180,7 @@ namespace Sofco.DAL
         public DbSet<JobSearchApplicant> JobSearchApplicants { get; set; }
         public DbSet<ResourceAssignment> ResourceAssignments { get; set; }
         public DbSet<JobSearchHistory> JobSearchHistories { get; set; }
+        public DbSet<ApplicantHistory> ApplicantHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

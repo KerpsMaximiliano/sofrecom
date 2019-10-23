@@ -66,5 +66,10 @@ namespace Sofco.DAL.Repositories.Recruitment
                 .Where(x => x.ApplicantId == applicantId)
                 .ToList();
         }
+
+        public void AddHistory(ApplicantHistory history)
+        {
+            context.ApplicantHistories.Add(history);
+        }
     }
 }

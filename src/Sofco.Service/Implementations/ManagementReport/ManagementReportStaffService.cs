@@ -323,10 +323,10 @@ namespace Sofco.Service.Implementations.ManagementReport
                         EmployeesWithAllMonths = managementReportService.AddAnalyticMonthsToEmployees(pDetailCost.CostEmployees, managementReport.Id, analytic.StartDateContract, analytic.EndDateContract);
                     }
 
-                    managementReportService.InsertUpdateCostDetailResources(EmployeesWithAllMonths, managementReport.CostDetails.ToList());
+                    managementReportService.InsertUpdateCostDetailResources(EmployeesWithAllMonths, managementReport.CostDetails.ToList(), managementReport.Id);
                 }
 
-                this.InsertTotalBudgets(pDetailCost.CostCategories, pDetailCost.ManagementReportId);
+                this.InsertTotalBudgets(pDetailCost, pDetailCost.ManagementReportId);
 
                 //Cambiar estado de budget
                 if (pDetailCost.CloseState)
@@ -389,7 +389,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
             var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(pMonthDetail.ManagementReportId);
-
+           
             try
             {
                 if (pMonthDetail.Employees != null)
@@ -415,7 +415,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         cost.MonthsCost.Add(month);
                         _detailModel.CostEmployees.Add(cost);
                     }
-                    managementReportService.InsertUpdateCostDetailResources(_detailModel.CostEmployees, costDetails, true);
+                    managementReportService.InsertUpdateCostDetailResources(_detailModel.CostEmployees, costDetails, pMonthDetail.ManagementReportId, true);
                 }
 
                 if (pMonthDetail.Subcategories != null)
@@ -707,18 +707,15 @@ namespace Sofco.Service.Implementations.ManagementReport
                             }
                             else
                             {
-                                if (subCatBudget.Value > 0 || !string.IsNullOrEmpty(subCatBudget.Description))
-                                {
-                                    entity.Value = subCatBudget.Value ?? 0;
-                                    entity.OriginalValue = subCatBudget.OriginalValue ?? 0;
-                                    entity.Description = subCatBudget.Description;
-                                    entity.CurrencyId = subCatBudget.CurrencyId.GetValueOrDefault();
-                                    entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
-                                    entity.CostDetailSubcategoryId = subCatBudget.Id;
-                                    entity.BudgetTypeId = subCatBudget.BudgetTypeId;
+                                entity.Value = subCatBudget.Value ?? 0;
+                                entity.OriginalValue = subCatBudget.OriginalValue ?? 0;
+                                entity.Description = subCatBudget.Description;
+                                entity.CurrencyId = subCatBudget.CurrencyId.GetValueOrDefault();
+                                entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
+                                entity.CostDetailSubcategoryId = subCatBudget.Id;
+                                entity.BudgetTypeId = subCatBudget.BudgetTypeId;
 
-                                    unitOfWork.CostDetailStaffRepository.Insert(entity);
-                                }
+                                unitOfWork.CostDetailStaffRepository.Insert(entity);
                             }
 
                         }
@@ -729,29 +726,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             {
                 logger.LogError(ex);
                 throw ex;
-            }
-        }
-
-        private void ValidateBudget(BudgetItem model, Response<BudgetItem> response)
-        {
-            if (model == null)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.BudgetModelNull);
-            }
-
-            if (model.Value <= 0)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.BudgetValueRequired);
-            }
-
-            if (string.IsNullOrWhiteSpace(model.Description))
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.BudgetDescriptionRequired);
-            }
-
-            if (model.StartDate == DateTime.MinValue)
-            {
-                response.AddError(Resources.ManagementReport.ManagementReport.BudgetStartDateRequired);
             }
         }
 
@@ -1080,7 +1054,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        private void InsertTotalBudgets(List<CostCategory> costCategories, int managementReportId)
+        private void InsertTotalBudgets(CostDetailStaffModel costDetail, int managementReportId)
         {
             decimal totalBudget = 0;
             decimal totalPFA1 = 0;
@@ -1089,15 +1063,12 @@ namespace Sofco.Service.Implementations.ManagementReport
 
             try
             {
-                foreach (var category in costCategories)
+                foreach (var monthHeader in costDetail.MonthsHeader)
                 {
-                    foreach (var month in category.MonthsCategory)
-                    {
-                        totalBudget += month.SubcategoriesBudget.Sum(x => x.Value) ?? 0;
-                        totalPFA1 += month.SubcategoriesPfa1.Sum(x => x.Value) ?? 0;
-                        totalPFA2 += month.SubcategoriesPfa2.Sum(x => x.Value) ?? 0;
-                        totalProyected += month.SubcategoriesProjected.Sum(x => x.Value) ?? 0;
-                    }
+                    totalBudget += monthHeader.Budget.TotalCost ?? 0;
+                    totalPFA1 += monthHeader.Pfa1.TotalCost ?? 0;
+                    totalPFA2 += monthHeader.Pfa2.TotalCost ?? 0;
+                    totalProyected += monthHeader.Projected.TotalCost ?? 0;
                 }
 
                 var currentUser = userData.GetCurrentUser();

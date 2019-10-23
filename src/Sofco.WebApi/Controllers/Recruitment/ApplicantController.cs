@@ -39,6 +39,14 @@ namespace Sofco.WebApi.Controllers.Recruitment
             return this.CreateResponse(response);
         }
 
+        [HttpPost("{id}/register")]
+        public IActionResult Register(int id, [FromBody] RegisterModel model)
+        {
+            var response = applicantService.Register(id, model);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -51,6 +59,14 @@ namespace Sofco.WebApi.Controllers.Recruitment
         public IActionResult GetHistory(int id)
         {
             var response = applicantService.GetApplicantHistory(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPut("{id}/status")]
+        public IActionResult ChangeStatus(int id, [FromBody] ApplicantChangeStatusModel parameter)
+        {
+            var response = applicantService.ChangeStatus(id, parameter);
 
             return this.CreateResponse(response);
         }

@@ -23,6 +23,10 @@ export class ApplicantService {
         return this.http.put<any>(`${this.baseUrl}/applicant/${id}`, json);
     }
 
+    register(id, json){
+        return this.http.post<any>(`${this.baseUrl}/applicant/${id}/register`, json);
+    }
+
     changeStatus(id, json){
         return this.http.put<any>(`${this.baseUrl}/applicant/${id}/status`, json);
     }

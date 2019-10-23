@@ -128,7 +128,7 @@
 
 <ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="updateHito()" [size]="'modal-xlg'" [isSaveEnabled]="editItemMonto.valid && editItemName.valid && editItemStartDate.valid">
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-6">
             <div class="form-group">
                 <label class="control-label">Oportunidad - {{ 'billing.project.detail.milestone.name' | translate }} - Moneda</label>
                 <div class="input-group">
@@ -138,7 +138,7 @@
                 </div> 
             </div> 
         </div>
-        <div class="col-md-5">
+        <div class="col-md-3">
             <div class="form-group">
                 <label class="control-label">{{'billing.project.detail.milestone.startDate' | translate }}</label>
                 <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [formControl]="editItemStartDate">
@@ -157,7 +157,7 @@
             </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-1">
             <div class="form-group">
                 <label class="control-label">Mes</label>
                 <input class="form-control" type="text" [(ngModel)]="hitoMonth">

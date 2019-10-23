@@ -42,6 +42,7 @@ namespace Sofco.UnitTest.Services.Rrhh
         private Mock<IEmployeeRepository> employeeRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
         private Mock<IGroupRepository> groupRepositoryMock;
+        private Mock<IHolidayRepository> holidayRepositoryMock;
 
         private LicenseService sut;
 
@@ -61,12 +62,14 @@ namespace Sofco.UnitTest.Services.Rrhh
             employeeRepositoryMock = new Mock<IEmployeeRepository>();
             userRepositoryMock = new Mock<IUserRepository>();
             groupRepositoryMock = new Mock<IGroupRepository>();
+            holidayRepositoryMock = new Mock<IHolidayRepository>();
 
             unitOfWork.Setup(x => x.LicenseRepository).Returns(licenseRepositoryMock.Object);
             unitOfWork.Setup(x => x.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
             unitOfWork.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
             unitOfWork.Setup(x => x.GroupRepository).Returns(groupRepositoryMock.Object);
+            unitOfWork.Setup(x => x.HolidayRepository).Returns(holidayRepositoryMock.Object);
 
             emailConfigMock.Setup(x => x.Value).Returns(new EmailConfig { SiteUrl = "SiteUrl", RrhhCode = "RRHH" });
             groupRepositoryMock.Setup(x => x.GetEmail(It.IsAny<string>())).Returns("rrhh@mail.com");
@@ -101,6 +104,8 @@ namespace Sofco.UnitTest.Services.Rrhh
                 Type = new LicenseType(),
                 Manager = new User()
             });
+
+            holidayRepositoryMock.Setup(x => x.Get(It.IsAny<int>(), It.IsAny<int>())).Returns(new List<Holiday>());
 
             licenseGenerateWorkTimeService.Setup(x => x.GenerateWorkTimes(It.IsAny<License>()));
             licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.AuthPending)).Returns(new LicenseStatusAuthPendingHandler(emailConfigMock.Object.Value, licenseApproverManager.Object));

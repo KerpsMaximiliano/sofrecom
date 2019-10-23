@@ -53,7 +53,7 @@ namespace Sofco.Core.DAL.AllocationManagement
 
         Employee GetUserInfo(string email);
 
-        IList<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate);
+        IList<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate, string appSettingAnalyticBank);
 
         IList<Employee> GetByAnalyticIds(List<int> analyticIds);
 

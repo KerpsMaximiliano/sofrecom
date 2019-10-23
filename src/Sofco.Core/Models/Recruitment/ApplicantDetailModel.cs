@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 
 namespace Sofco.Core.Models.Recruitment
@@ -19,6 +21,21 @@ namespace Sofco.Core.Models.Recruitment
             CountryCode2 = applicant.CountryCode2;
             AreaCode2 = applicant.AreaCode2;
             Telephone2 = applicant.Telephone2;
+            Nationality = applicant.Nationality;
+            CivilStatus = applicant.CivilStatus;
+            BirthDate = applicant.BirthDate;
+            StartDate = applicant.StartDate;
+            Address = applicant.Address;
+            Cuil = applicant.Cuil;
+            Prepaid = applicant.Prepaid;
+            Profile = applicant.Profile;
+            Office = applicant.Office;
+            Agreements = applicant.Aggreements;
+            Salary = applicant.Salary;
+            ManagerId = applicant.ManagerId;
+            AnalyticId = applicant.AnalyticId;
+            ProjectId = applicant.ProjectId;
+            Status = applicant.Status;
 
             if (applicant.RecommendedByUserId.HasValue) RecommendedByUserId = applicant.RecommendedByUserId.Value.ToString();
 
@@ -30,6 +47,36 @@ namespace Sofco.Core.Models.Recruitment
             if (applicant.ApplicantSkills != null && applicant.ApplicantSkills.Any())
                 Skills = applicant.ApplicantSkills.Select(x => x.SkillId).ToList();
         }
+
+        public string Prepaid { get; set; }
+
+        public string Profile { get; set; }
+
+        public int? ProjectId { get; set; }
+
+        public string Address { get; set; }
+
+        public ApplicantStatus Status { get; set; }
+
+        public int? AnalyticId { get; set; }
+
+        public int? ManagerId { get; set; }
+
+        public decimal? Salary { get; set; }
+
+        public string Agreements { get; set; }
+
+        public string Office { get; set; }
+
+        public string Cuil { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? BirthDate { get; set; }
+
+        public string CivilStatus { get; set; }
+
+        public string Nationality { get; set; }
 
         public string LastName { get; set; }
 

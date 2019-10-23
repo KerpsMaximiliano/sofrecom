@@ -29,6 +29,7 @@ import { TimeHiringComponent } from '../admin/options/timeHiring';
 import { ApplicantService } from 'app/services/recruitment/applicant.service';
 import { ApplicantsRelatedComponent } from './job-search/applicants-related/applicants-related';
 import { ResourceAssignmentComponent } from '../admin/options/resourceAssignment';
+import { AnalyticService } from 'app/services/allocation-management/analytic.service';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,7 @@ import { ResourceAssignmentComponent } from '../admin/options/resourceAssignment
     BsDatepickerModule
   ],
 
-  providers: [GenericOptionService, JobSearchService, FormsService, CustomerService, ApplicantService],
+  providers: [GenericOptionService, JobSearchService, FormsService, CustomerService, ApplicantService, AnalyticService],
   exports: []
 })
 

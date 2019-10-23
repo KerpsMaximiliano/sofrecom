@@ -38,6 +38,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
+        public void AddReportPowerBi(List<ReportPowerBi> report)
+        {
+            context.ReportsPowerBi.AddRange(report);
+        }
+
+        public void CleanReportPowerBi()
+        {
+            context.Database.ExecuteSqlCommand("delete from app.reportsPowerBi");
+        }
+
         public IList<Allocation> GetAllocationsByDate(DateTime date)
         {
             return context.Allocations

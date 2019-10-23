@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20191021152434_ApplicantHistory")]
+    partial class ApplicantHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -930,40 +932,6 @@ namespace Sofco.WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PrepaidHealths");
-                });
-
-            modelBuilder.Entity("Sofco.Domain.Models.AllocationManagement.ReportPowerBi", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Manager")
-                        .HasMaxLength(200);
-
-                    b.Property<decimal>("Month1");
-
-                    b.Property<decimal>("Month2");
-
-                    b.Property<decimal>("Month3");
-
-                    b.Property<decimal>("Month4");
-
-                    b.Property<string>("Profile")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("Resource")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("Seniority")
-                        .HasMaxLength(200);
-
-                    b.Property<string>("Technology")
-                        .HasMaxLength(200);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ReportsPowerBi");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Billing.Certificate", b =>

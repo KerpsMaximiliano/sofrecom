@@ -14,7 +14,7 @@ namespace Sofco.Framework.StatusHandlers.License
 
             //Item 1 = Working Days
             //Item 2 = Total Days 
-            var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate);
+            var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate, unitOfWork);
 
             if (string.IsNullOrWhiteSpace(domain.ExamDescription))
             {

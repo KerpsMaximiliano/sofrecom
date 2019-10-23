@@ -16,7 +16,7 @@ namespace Sofco.Framework.StatusHandlers.License
             {
                 var licenseType = unitOfWork.LicenseTypeRepository.GetSingle(x => x.Id == domain.TypeId);
 
-                var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate);
+                var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate, unitOfWork);
 
                 if (licenseType.Days > 0 && tupla.Item2 > licenseType.Days)
                 {

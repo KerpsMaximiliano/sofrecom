@@ -14,5 +14,17 @@
     "notFound": "Candidato no encontrado",
     "updateSuccess": "El candidato fue actualizado correctamente",
     "telephone1MaxLengthError": "El telefono 1 no puede superar los 10 caracteres",
-    "telephone2MaxLengthError": "El telefono 2 no puede superar los 10 caracteres"
+    "telephone2MaxLengthError": "El telefono 2 no puede superar los 10 caracteres",
+    "nationalityRequired": "La nacionalidad es requerida",
+    "civilStatusRequired": "El estado civil es requerido",
+    "nirthDateRequired": "La fecha de nacimiento es requerida",
+    "startDateRequired": "La fecha de ingreso es requerida",
+    "addressRequired": "El domicilio es requerido",
+    "cuilRequired": "El cuil es requerido",
+    "prepaidRequired": "La prepaga es requerida",
+    "profileRequired": "El perfil es requerido",
+    "officeRequired": "La oficina es requerida",
+    "salaryRequired": "El sueldo bruto es requerido",
+    "managerRequired": "El superior/gerente de proyecto es requerido",
+    "analyticRequired": "La analitica es requerida"
 }

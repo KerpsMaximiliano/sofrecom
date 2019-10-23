@@ -18,6 +18,13 @@ namespace Sofco.DAL.Mappings.AllocationManagement
                  .HasOne(pt => pt.Employee)
                  .WithMany(p => p.Allocations)
                  .HasForeignKey(pt => pt.EmployeeId);
+
+            builder.Entity<ReportPowerBi>().HasKey(x => x.Id);
+            builder.Entity<ReportPowerBi>().Property(x => x.Resource).HasMaxLength(200);
+            builder.Entity<ReportPowerBi>().Property(x => x.Manager).HasMaxLength(200);
+            builder.Entity<ReportPowerBi>().Property(x => x.Profile).HasMaxLength(200);
+            builder.Entity<ReportPowerBi>().Property(x => x.Seniority).HasMaxLength(200);
+            builder.Entity<ReportPowerBi>().Property(x => x.Technology).HasMaxLength(200);
         }
     }
 }

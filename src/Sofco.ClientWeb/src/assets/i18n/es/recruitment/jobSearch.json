@@ -19,5 +19,7 @@
     "marketStudyRequired": "El estudio de mercado es requerido",
     "studyRequired": "El nivel de estudios es requerido",
     "languageRequired": "El idioma/nivel es requerido",
-    "userRequired": "El solicitante es requerido"
-}
+    "userRequired": "El solicitante es requerido",
+    "contactAdded": "El contacto fue registrado exitosamente",
+    "documentNumberRequired": "El número de documento es requerido"
+} 

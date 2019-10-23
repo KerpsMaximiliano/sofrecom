@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Sofco.Domain.Models.Recruitment;
 
 namespace Sofco.Domain.Models.Billing
 {
@@ -45,5 +47,6 @@ namespace Sofco.Domain.Models.Billing
         public string PrincipalContactName { get; set; }
 
         public string PrincipalContactEmail { get; set; }
+        public IList<Applicant> Applicants { get; set; }
     }
 }

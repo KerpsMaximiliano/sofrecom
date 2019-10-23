@@ -160,7 +160,7 @@ export class GenericOptionComponent implements OnDestroy {
                     this.list.push({ id: response.data, text: json.text, active: true });
                 }
 
-                this.initGrid();
+                this.filterActives(this.actives);
 
                 this.text.setValue("");
             },

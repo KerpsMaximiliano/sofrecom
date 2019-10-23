@@ -575,7 +575,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         EmployeesWithAllMonths = this.AddAnalyticMonthsToEmployees(pDetailCost.CostEmployees, managementReport.Id, analytic.StartDateContract, analytic.EndDateContract);
                     }
 
-                    this.InsertUpdateCostDetailResources(EmployeesWithAllMonths, managementReport.CostDetails.ToList());
+                    this.InsertUpdateCostDetailResources(EmployeesWithAllMonths, managementReport.CostDetails.ToList(), managementReport.Id);
                 }
                 if (pDetailCost.FundedResources.Count > 0)
                     this.InsertUpdateCostDetailOther(pDetailCost.FundedResources, managementReport.CostDetails.ToList());
@@ -669,7 +669,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 var costDetails = unitOfWork.CostDetailRepository.GetByManagementReport(pMonthDetail.ManagementReportId);
 
-                this.InsertUpdateCostDetailResources(_detailModel.CostEmployees, costDetails, pMonthDetail.IsReal);
+                this.InsertUpdateCostDetailResources(_detailModel.CostEmployees, costDetails, pMonthDetail.ManagementReportId, pMonthDetail.IsReal);
                 this.InsertUpdateCostDetailOther(_detailModel.FundedResources, costDetails, pMonthDetail.IsReal);
                 this.UpdateContracted(pMonthDetail.Contracted, costDetails, pMonthDetail.MonthYear);
 
@@ -1543,13 +1543,17 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
         }
 
-        public void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails, bool isReal = false)
+        public void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails, int managementReportId, bool isReal = false)
         {
+            var managementReport = unitOfWork.ManagementReportRepository.Get(managementReportId);
+
             try
             {
                 foreach (var resource in pCostEmployees)
                 {
-                    foreach (var month in resource.MonthsCost)
+                    var months = resource.MonthsCost.Where(x => x.MonthYear.Date >= managementReport.StartDate.Date && x.MonthYear.Date <= managementReport.EndDate.Date);
+
+                    foreach (var month in months)
                     {
                         List<Cost> allBudgets = new List<Cost>();
                         allBudgets.Add(month.Budget);

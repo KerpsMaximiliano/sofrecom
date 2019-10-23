@@ -85,6 +85,13 @@
                         </icheck>
                     </div>
                 </div>
+                <div class="col-sm-3" *ngIf="unassigned">
+                    <div class="form-group checkbox-center">
+                        <icheck [(checked)]="generateReportPowerBi">
+                            <label class="control-label">PowerBi</label> 
+                        </icheck>
+                    </div>
+                </div>
             </div>
         </div> 
         <div class="ibox-footer">
