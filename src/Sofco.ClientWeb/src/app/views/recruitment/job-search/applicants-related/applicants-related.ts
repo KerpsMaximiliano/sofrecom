@@ -79,6 +79,10 @@ export class ApplicantsRelatedComponent implements OnDestroy {
         });
     }
 
+    anySelected(){
+        return this.data.filter(x => x.selected).length > 0;
+    }
+
     unselectAll(){
         this.data.forEach((item, index) => {
             item.selected = false;
@@ -107,6 +111,13 @@ export class ApplicantsRelatedComponent implements OnDestroy {
 
         this.addSubscrip = this.jobSearchService.addContacts(json).subscribe(response => {
             this.messageService.closeLoading();
+
+            this.unselectAll();
+            this.form.controls.reasonCauseId.setValue(null);
+            this.form.controls.comments.setValue(null);
+            this.form.controls.documentNumber.setValue(null);
+            this.documentNumberVisible = false;
+            this.form.reset();
         }, 
         error => this.messageService.closeLoading());
     }

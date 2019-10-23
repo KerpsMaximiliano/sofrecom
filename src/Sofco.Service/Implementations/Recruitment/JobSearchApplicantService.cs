@@ -70,7 +70,7 @@ namespace Sofco.Service.Implementations.Recruitment
 
             var reason = optionRepository.Get(model.ReasonId.GetValueOrDefault());
 
-            if (model.Applicants.Count == 1 && string.IsNullOrWhiteSpace(model.DocumentNumber))
+            if (model.Applicants.Count == 1 && string.IsNullOrWhiteSpace(model.DocumentNumber) && reason.Type == ReasonCauseType.ApplicantInProgress)
                 response.AddError(Resources.Recruitment.JobSearch.DocumentNumberRequired);
 
             if (response.HasErrors()) return response;
@@ -106,7 +106,7 @@ namespace Sofco.Service.Implementations.Recruitment
                 }
 
                 unitOfWork.Save();
-                response.AddSuccess(Resources.Common.SaveSuccess);
+                response.AddSuccess(Resources.Recruitment.JobSearch.ContactAdded);
             }
             catch (Exception e)
             {

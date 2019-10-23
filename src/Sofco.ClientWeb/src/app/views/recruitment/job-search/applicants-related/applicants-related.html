@@ -75,7 +75,7 @@
                 </form>
             </div>
             <div class="ibox-footer text-center">
-                <button class="btn btn-primary btn-sm" [disabled]="!form.valid" (click)="save()"> Guardar </button>
+                <button class="btn btn-primary btn-sm" [disabled]="!form.valid || !anySelected()" (click)="save()"> Guardar </button>
             </div>
         </div>
     </div>
