@@ -465,7 +465,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.ManagementReportId = analytic.ManagementReport.Id;
                 response.Data.MonthYear = costDetail.MonthYear;
                 response.Data.Contracted = listContracted;
-                response.Data.OtherResources = listOther;
+                response.Data.OtherResources = listOther.OrderBy(x => x.CategoryName).ThenBy(x => x.SubcategoryName).ToList();
             }
             catch (Exception ex)
             {

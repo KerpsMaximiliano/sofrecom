@@ -172,15 +172,16 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         .OrderByDescending(x => x.BudgetTypeId)
                                         .FirstOrDefault();
 
-            bool getReal = false;
-            string typeBudget = EnumBudgetType.budget;
-            if (costDetail.HasReal)
-            {
-                getReal = true;
-                //typeBudget = EnumBudgetType.Real;
-            }
+            //bool getReal = false;
+            //if (costDetail.HasReal)
+            //{
+            //    getReal = true;
+            //    //typeBudget = EnumBudgetType.Real;
+            //}
 
-            if(lastType != null)
+            string typeBudget = EnumBudgetType.budget;
+
+            if (lastType != null)
             {
                 typeBudget = lastType.BudgetType.Name.ToUpper();
             }
@@ -196,18 +197,18 @@ namespace Sofco.Service.Implementations.ManagementReport
                 subcategories = this.Translate(costDetailStaff);
                 resources = this.Translate(costDetail.CostDetailResources.Where(x => x.BudgetType.Name == typeBudget).ToList(), monthYear, allocations, managementReport.AnalyticId);
 
-                if (!getReal)
-                {
-                    foreach (var sub in subcategories)
-                    {
-                        sub.CostDetailStaffId = 0;
-                    }
+                //if (!getReal)
+                //{
+                //    foreach (var sub in subcategories)
+                //    {
+                //        sub.CostDetailStaffId = 0;
+                //    }
 
-                    foreach (var employee in resources)
-                    {
-                        employee.Id = 0;
-                    }
-                }
+                //    foreach (var employee in resources)
+                //    {
+                //        employee.Id = 0;
+                //    }
+                //}
 
                 response.Data.Id = costDetail.Id;
                 response.Data.TotalProvisioned = costDetail.TotalProvisioned;
@@ -216,7 +217,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             response.Data.ManagementReportId = id;
             response.Data.MonthYear = monthYear;
             response.Data.Employees = resources.OrderBy(x=> x.Name).ToList();
-            response.Data.Subcategories = subcategories.Where(x=> x.Name != EnumCostDetailType.AjusteGeneral).OrderBy(x=> x.NameCategory).OrderBy(x=> x.Name).ToList();
+            response.Data.Subcategories = subcategories.Where(x=> x.Name != EnumCostDetailType.AjusteGeneral).OrderBy(x=> x.NameCategory).ThenBy(x=> x.Name).ToList();
 
             return response;
         }

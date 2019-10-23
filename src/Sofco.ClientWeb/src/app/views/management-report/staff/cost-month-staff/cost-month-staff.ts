@@ -176,6 +176,10 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
             this.totalCosts += element.total;
         });
 
+        this.subCategoriesData.forEach(element => {
+            this.totalCosts += element.value;
+        });
+ 
         var totalCharges = 0;
         var totalSalary= 0;
 
@@ -183,7 +187,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
             totalCharges += element.charges;
             totalSalary += element.salary;
         });
-
+        
         if(totalSalary > 0){
             this.totalChargesPercentage = (totalCharges/totalSalary)*100;
         }

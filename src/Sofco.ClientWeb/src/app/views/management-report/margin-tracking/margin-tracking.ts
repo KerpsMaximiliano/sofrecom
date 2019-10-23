@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { MarginTracking } from "app/models/management-report/marginTracking";
 import { HitoStatus } from "app/models/enums/hitoStatus";
 import { AnalyticStatus } from "app/models/enums/analyticStatus";
-import { Worksheet } from "exceljs";
+// import { Worksheet } from "exceljs";
 
 @Component({
     selector: 'margin-tracking',
@@ -279,164 +279,162 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         }
     }
 
-    createWorksheet(workbook){
-        let worksheet: Worksheet = workbook.addWorksheet('Margen');
+    // createWorksheet(workbook){
+    //     let worksheet: Worksheet = workbook.addWorksheet('Margen');
 
-        var row1 = ["Margen a Terminación", "", "", "", "Ventas", "Costos Totales"];
+    //     var row1 = ["Margen a Terminación", "", "", "", "Ventas", "Costos Totales"];
 
-        var row2 = ["Previsto EvalProp a terminación", 
-                    this.marginTrackingSelected.PercentageExpectedTotal || 0, 
-                    "", 
-                    "Previsto", 
-                    this.marginTrackingSelected.ExpectedSales, 
-                    this.marginTrackingSelected.TotalExpensesExpected];
+    //     var row2 = ["Previsto EvalProp a terminación", 
+    //                 this.marginTrackingSelected.PercentageExpectedTotal || 0, 
+    //                 "", 
+    //                 "Previsto", 
+    //                 this.marginTrackingSelected.ExpectedSales, 
+    //                 this.marginTrackingSelected.TotalExpensesExpected];
         
-        var row3 = ["Real A terminación", 
-                    this.marginTrackingSelected.PercentageToEnd || 0, 
-                    "", 
-                    "Previsto", 
-                    this.marginTrackingSelected.SalesOnMonth, 
-                    this.marginTrackingSelected.TotalExpensesOnMonth];
+    //     var row3 = ["Real A terminación", 
+    //                 this.marginTrackingSelected.PercentageToEnd || 0, 
+    //                 "", 
+    //                 "Previsto", 
+    //                 this.marginTrackingSelected.SalesOnMonth, 
+    //                 this.marginTrackingSelected.TotalExpensesOnMonth];
                       
-        var row4 = ["", 
-                    "", 
-                    "", 
-                    "Acumulado a la fecha", 
-                    this.marginTrackingSelected.SalesAccumulatedToDate, 
-                    this.marginTrackingSelected.TotalExpensesAccumulatedToDate];
+    //     var row4 = ["", 
+    //                 "", 
+    //                 "", 
+    //                 "Acumulado a la fecha", 
+    //                 this.marginTrackingSelected.SalesAccumulatedToDate, 
+    //                 this.marginTrackingSelected.TotalExpensesAccumulatedToDate];
 
-        var row5 = ["Margen Mensual", 
-                    "", 
-                    "", 
-                    "Restante a la fecha (proyectado)", 
-                    this.marginTrackingSelected.SalesRemainigToDate, 
-                    this.marginTrackingSelected.TotalExpensesRemainigToDate];
+    //     var row5 = ["Margen Mensual", 
+    //                 "", 
+    //                 "", 
+    //                 "Restante a la fecha (proyectado)", 
+    //                 this.marginTrackingSelected.SalesRemainigToDate, 
+    //                 this.marginTrackingSelected.TotalExpensesRemainigToDate];
 
-        var row6 = ["Previsto EvalProp mensual", 
-                    this.marginTrackingSelected.PercentageExpected, 
-                    "", 
-                    "Total a la terminación (real + proyectado)", 
-                    this.marginTrackingSelected.TotalSalesToEnd, 
-                    this.marginTrackingSelected.TotalExpensesToEnd];
+    //     var row6 = ["Previsto EvalProp mensual", 
+    //                 this.marginTrackingSelected.PercentageExpected, 
+    //                 "", 
+    //                 "Total a la terminación (real + proyectado)", 
+    //                 this.marginTrackingSelected.TotalSalesToEnd, 
+    //                 this.marginTrackingSelected.TotalExpensesToEnd];
 
-        var row7 = ["Real a la fecha", 
-                    this.marginTrackingSelected.PercentageRealToDate];
+    //     var row7 = ["Real a la fecha", 
+    //                 this.marginTrackingSelected.PercentageRealToDate];
 
-        worksheet.addRows([row1, row2, row3, row4, row5, row6, row7]);
+    //     worksheet.addRows([row1, row2, row3, row4, row5, row6, row7]);
 
-        worksheet.mergeCells("A1:B1");
-        worksheet.mergeCells("A5:B5");
+    //     worksheet.mergeCells("A1:B1");
+    //     worksheet.mergeCells("A5:B5");
        
-        worksheet.getCell("B2").numFmt = '#,##0.00 "%"';
-        worksheet.getCell("B3").numFmt = '#,##0.00 "%"';
-        worksheet.getCell("B6").numFmt = '#,##0.00 "%"';
-        worksheet.getCell("B7").numFmt = '#,##0.00 "%"';
-        worksheet.getCell("E2").numFmt = '"$" #,##0.00';
-        worksheet.getCell("E3").numFmt = '"$" #,##0.00';
-        worksheet.getCell("E4").numFmt = '"$" #,##0.00';
-        worksheet.getCell("E5").numFmt = '"$" #,##0.00';
-        worksheet.getCell("E6").numFmt = '"$" #,##0.00';
-        worksheet.getCell("F2").numFmt = '"$" #,##0.00';
-        worksheet.getCell("F3").numFmt = '"$" #,##0.00';
-        worksheet.getCell("F4").numFmt = '"$" #,##0.00';
-        worksheet.getCell("F5").numFmt = '"$" #,##0.00';
-        worksheet.getCell("F6").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("B2").numFmt = '#,##0.00 "%"';
+    //     worksheet.getCell("B3").numFmt = '#,##0.00 "%"';
+    //     worksheet.getCell("B6").numFmt = '#,##0.00 "%"';
+    //     worksheet.getCell("B7").numFmt = '#,##0.00 "%"';
+    //     worksheet.getCell("E2").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("E3").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("E4").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("E5").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("E6").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("F2").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("F3").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("F4").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("F5").numFmt = '"$" #,##0.00';
+    //     worksheet.getCell("F6").numFmt = '"$" #,##0.00';
 
-        worksheet.getColumn(1).width = 35;
-        worksheet.getColumn(2).width = 12;
-        worksheet.getColumn(3).width = 10;
-        worksheet.getColumn(4).width = 37;
-        worksheet.getColumn(5).width = 16;
-        worksheet.getColumn(6).width = 16;
+    //     worksheet.getColumn(1).width = 35;
+    //     worksheet.getColumn(2).width = 12;
+    //     worksheet.getColumn(3).width = 10;
+    //     worksheet.getColumn(4).width = 37;
+    //     worksheet.getColumn(5).width = 16;
+    //     worksheet.getColumn(6).width = 16;
 
-        worksheet.getCell("A1").style = { font: { bold: true } };
-        worksheet.getCell("A5").style = { font: { bold: true } };
-        worksheet.getCell("E1").style = { font: { bold: true } };
-        worksheet.getCell("F1").style = { font: { bold: true } };
+    //     worksheet.getCell("A1").style = { font: { bold: true } };
+    //     worksheet.getCell("A5").style = { font: { bold: true } };
+    //     worksheet.getCell("E1").style = { font: { bold: true } };
+    //     worksheet.getCell("F1").style = { font: { bold: true } };
 
-        worksheet.getCell("A1").alignment = { horizontal:'center'};
-        worksheet.getCell("A5").alignment = { horizontal:'center'};
-        worksheet.getCell("E1").alignment = { horizontal:'center'};
-        worksheet.getCell("F1").alignment = { horizontal:'center'};
+    //     worksheet.getCell("A1").alignment = { horizontal:'center'};
+    //     worksheet.getCell("A5").alignment = { horizontal:'center'};
+    //     worksheet.getCell("E1").alignment = { horizontal:'center'};
+    //     worksheet.getCell("F1").alignment = { horizontal:'center'};
 
-        const borderBlack = "FF000000";
+    //     const borderBlack = "FF000000";
 
-        worksheet.getCell("A1").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
-        worksheet.getCell("B1").border = { 
-            right: { style:'thin', color: {argb: borderBlack} },
-            bottom: { style:'thin', color: {argb: borderBlack} }
-        };
+    //     worksheet.getCell("A1").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("B1").border = { 
+    //         right: { style:'thin', color: {argb: borderBlack} },
+    //         bottom: { style:'thin', color: {argb: borderBlack} }
+    //     };
 
-        worksheet.getCell("A3").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
-        worksheet.getCell("A7").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("A3").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("A7").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
 
-        worksheet.getCell("A6").border = { top: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("A6").border = { top: { style:'thin', color: {argb: borderBlack} }};
 
-        worksheet.getCell("A4").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
-        worksheet.getCell("B4").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("A4").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("B4").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
      
-        worksheet.getCell("B2").border = { right: { style:'thin', color: {argb: borderBlack} }};
-        worksheet.getCell("B3").border = {
-             right: { style:'thin', color: {argb: borderBlack} },
-             bottom: { style:'thin', color: {argb: borderBlack} }
-        };
-        worksheet.getCell("B5").border = { right: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("B2").border = { right: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("B3").border = {
+    //          right: { style:'thin', color: {argb: borderBlack} },
+    //          bottom: { style:'thin', color: {argb: borderBlack} }
+    //     };
+    //     worksheet.getCell("B5").border = { right: { style:'thin', color: {argb: borderBlack} }};
 
-        worksheet.getCell("B6").border = { 
-            right: { style:'thin', color: {argb: borderBlack} },
-            top: { style:'thin', color: {argb: borderBlack} }
-        };
+    //     worksheet.getCell("B6").border = { 
+    //         right: { style:'thin', color: {argb: borderBlack} },
+    //         top: { style:'thin', color: {argb: borderBlack} }
+    //     };
 
-        worksheet.getCell("B7").border = { 
-            right: { style:'thin', color: {argb: borderBlack} },
-            bottom: { style:'thin', color: {argb: borderBlack} }
-        };
+    //     worksheet.getCell("B7").border = { 
+    //         right: { style:'thin', color: {argb: borderBlack} },
+    //         bottom: { style:'thin', color: {argb: borderBlack} }
+    //     };
 
-        worksheet.getCell("F1").border = { 
-            right: { style:'thin', color: {argb: borderBlack} },
-            bottom: { style:'thin', color: {argb: borderBlack} }
-        };
+    //     worksheet.getCell("F1").border = { 
+    //         right: { style:'thin', color: {argb: borderBlack} },
+    //         bottom: { style:'thin', color: {argb: borderBlack} }
+    //     };
 
-        worksheet.getCell("E1").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
-        worksheet.getCell("E6").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("E1").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("E6").border = { bottom: { style:'thin', color: {argb: borderBlack} }};
 
-        worksheet.getCell("D1").border = { 
-            left: { style:'thin', color: {argb: borderBlack} },
-            bottom: { style:'thin', color: {argb: borderBlack} }
-        };
+    //     worksheet.getCell("D1").border = { 
+    //         left: { style:'thin', color: {argb: borderBlack} },
+    //         bottom: { style:'thin', color: {argb: borderBlack} }
+    //     };
 
-        worksheet.getCell("D2").border = { 
-            left: { style:'thin', color: {argb: borderBlack} },
-            right: { style:'thin', color: {argb: borderBlack} }
-        };
-        worksheet.getCell("D3").border = { 
-            left: { style:'thin', color: {argb: borderBlack} },
-            right: { style:'thin', color: {argb: borderBlack} }
-        };
-        worksheet.getCell("D4").border = { 
-            left: { style:'thin', color: {argb: borderBlack} },
-            right: { style:'thin', color: {argb: borderBlack} }
-        };
-        worksheet.getCell("D5").border = { 
-            left: { style:'thin', color: {argb: borderBlack} },
-            right: { style:'thin', color: {argb: borderBlack} }
-        };
-        worksheet.getCell("D6").border = { 
-            left: { style:'thin', color: {argb: borderBlack} },
-            bottom: { style:'thin', color: {argb: borderBlack} },
-            right: { style:'thin', color: {argb: borderBlack} }
-        };
+    //     worksheet.getCell("D2").border = { 
+    //         left: { style:'thin', color: {argb: borderBlack} },
+    //         right: { style:'thin', color: {argb: borderBlack} }
+    //     };
+    //     worksheet.getCell("D3").border = { 
+    //         left: { style:'thin', color: {argb: borderBlack} },
+    //         right: { style:'thin', color: {argb: borderBlack} }
+    //     };
+    //     worksheet.getCell("D4").border = { 
+    //         left: { style:'thin', color: {argb: borderBlack} },
+    //         right: { style:'thin', color: {argb: borderBlack} }
+    //     };
+    //     worksheet.getCell("D5").border = { 
+    //         left: { style:'thin', color: {argb: borderBlack} },
+    //         right: { style:'thin', color: {argb: borderBlack} }
+    //     };
+    //     worksheet.getCell("D6").border = { 
+    //         left: { style:'thin', color: {argb: borderBlack} },
+    //         bottom: { style:'thin', color: {argb: borderBlack} },
+    //         right: { style:'thin', color: {argb: borderBlack} }
+    //     };
 
-        worksheet.getCell("F2").border = { right: { style:'thin', color: {argb: borderBlack} }};
-        worksheet.getCell("F3").border = { right: { style:'thin', color: {argb: borderBlack} }};
-        worksheet.getCell("F4").border = { right: { style:'thin', color: {argb: borderBlack} }};
-        worksheet.getCell("F5").border = { right: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("F2").border = { right: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("F3").border = { right: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("F4").border = { right: { style:'thin', color: {argb: borderBlack} }};
+    //     worksheet.getCell("F5").border = { right: { style:'thin', color: {argb: borderBlack} }};
 
-        worksheet.getCell("F6").border = { 
-            right: { style:'thin', color: {argb: borderBlack} },
-            bottom: { style:'thin', color: {argb: borderBlack} }
-        };
-
-
-    }
+    //     worksheet.getCell("F6").border = { 
+    //         right: { style:'thin', color: {argb: borderBlack} },
+    //         bottom: { style:'thin', color: {argb: borderBlack} }
+    //     };
+    // }
 }

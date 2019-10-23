@@ -12,8 +12,8 @@ import { ManagementReportStaffService } from "app/services/management-report/man
 import { UserInfoService } from "app/services/common/user-info.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
-import { Workbook } from 'exceljs';
-import * as fs from 'file-saver';
+// import { Workbook } from 'exceljs';
+// import * as fs from 'file-saver';
 
 @Component({
     selector: 'management-report-detail-staff',
@@ -497,16 +497,16 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     }
 
     generateExcel(){
-        let workbook = new Workbook();
+        // let workbook = new Workbook();
 
-        this.budgetView.createWorksheet(workbook);
-        this.tracingView.createWorksheet(workbook);
+        // this.budgetView.createWorksheet(workbook);
+        // this.tracingView.createWorksheet(workbook);
      
-        var title = `Informe Gestion ${this.model.analytic} - ${this.model.manamementReportStartDate} - ${this.model.manamementReportEndDate}.xlsx`
+        // var title = `Informe Gestion ${this.model.analytic} - ${this.model.manamementReportStartDate} - ${this.model.manamementReportEndDate}.xlsx`
 
-        workbook.xlsx.writeBuffer().then((data) => {
-            let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            fs.saveAs(blob, title);
-        });
+        // workbook.xlsx.writeBuffer().then((data) => {
+        //     let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        //     fs.saveAs(blob, title);
+        // });
     }
 } 

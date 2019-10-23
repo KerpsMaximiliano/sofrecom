@@ -130,11 +130,10 @@
             <input type="text" class="form-control input-xs" [(ngModel)]="cost.description" maxlength="200" [disabled]=isReadOnly>
         </div>
         <div class="col-sm-2">
-            <math-input [(model)]="cost.value" [(modelDisabled)]="isReadOnly"></math-input>
+            <math-input [(model)]="cost.value" [(modelDisabled)]="isReadOnly" (modelChange)="calculateTotalCosts()"></math-input>
         </div>
         <div class="col-sm-1 delete" [hidden]="isReadOnly">
-            <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)"><i
-                    class="fa fa-trash"></i></button>
+            <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)"><i class="fa fa-trash"></i></button>
         </div>
     </div>
     <br>
