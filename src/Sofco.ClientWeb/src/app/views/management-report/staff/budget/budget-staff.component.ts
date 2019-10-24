@@ -768,10 +768,10 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 }
             });
 
-            monthTotal.budget.totalCost = totalCostBugdet + (totalSalaryBudget * 0.51);
-            monthTotal.projected.totalCost = totalCostProjected + (totalSalaryProjected * 0.51);
-            monthTotal.pfa1.totalCost = totalCostPfa1 + (totalSalaryPfa1 * 0.51);
-            monthTotal.pfa2.totalCost = totalCostPfa2 + (totalSalaryPfa2 * 0.51);
+            monthTotal.budget.totalCost = totalCostBugdet + (totalSalaryBudget * 0.85);
+            monthTotal.projected.totalCost = totalCostProjected + (totalSalaryProjected * 0.85);
+            monthTotal.pfa1.totalCost = totalCostPfa1 + (totalSalaryPfa1 * 0.85);
+            monthTotal.pfa2.totalCost = totalCostPfa2 + (totalSalaryPfa2 * 0.85);
             monthTotal.real.totalCost = totalCostReal + charges;
 
             month.budget.totalSalary = totalSalaryBudget
@@ -780,10 +780,10 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             month.pfa2.totalSalary = totalSalaryPfa2
             month.real.totalSalary = totalSalaryReal
 
-            month.budget.totalLoads = (totalSalaryBudget * 0.51)
-            month.projected.totalLoads = (totalSalaryProjected * 0.51)
-            month.pfa1.totalLoads = (totalSalaryPfa1 * 0.51)
-            month.pfa2.totalLoads = (totalSalaryPfa2 * 0.51)
+            month.budget.totalLoads = (totalSalaryBudget * 0.85)
+            month.projected.totalLoads = (totalSalaryProjected * 0.85)
+            month.pfa1.totalLoads = (totalSalaryPfa1 * 0.85)
+            month.pfa2.totalLoads = (totalSalaryPfa2 * 0.85)
             month.real.totalLoads = charges
 
             monthTotal.budget.subTotalCost = monthTotal.budget.totalCost - totalInfraRedBugdet;
@@ -1149,227 +1149,227 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         })
     }
 
-    // createWorksheet(workbook){
-    //     let worksheet: Worksheet = workbook.addWorksheet('Presupuesto');
+    createWorksheet(workbook){
+        let worksheet = workbook.addWorksheet('Presupuesto');
 
-    //     this.buildHeader(worksheet);
-    //     this.buildResources(worksheet);
-    //     this.buildSalaryAndCharges(worksheet);
-    //     this.buildCategories(worksheet);
+        this.buildHeader(worksheet);
+        this.buildResources(worksheet);
+        this.buildSalaryAndCharges(worksheet);
+        this.buildCategories(worksheet);
 
-    //     var columnCount = worksheet.columnCount;
-    //     var columnIndex = 1;
+        var columnCount = worksheet.columnCount;
+        var columnIndex = 1;
 
-    //     while(columnIndex <= columnCount){
-    //         var column = worksheet.getColumn(columnIndex);
-    //         column.eachCell(cell => {
-    //             this.drawBorder(cell, 'right');
-    //         });
+        while(columnIndex <= columnCount){
+            var column = worksheet.getColumn(columnIndex);
+            column.eachCell(cell => {
+                this.drawBorder(cell, 'right');
+            });
 
-    //         columnIndex+=5;
-    //     }
+            columnIndex+=5;
+        }
 
-    //     var row1 = worksheet.getRow(1);
-    //     var row2 = worksheet.getRow(2);
-    //     var row3 = worksheet.getRow(2);
+        var row1 = worksheet.getRow(1);
+        var row2 = worksheet.getRow(2);
+        var row3 = worksheet.getRow(2);
 
-    //     row1.eachCell(cell => {
-    //         this.drawBorder(cell, 'bottom');
-    //     });
+        row1.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
 
-    //     row2.eachCell(cell => {
-    //         this.drawBorder(cell, 'bottom');
-    //     });
+        row2.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
 
-    //     row3.eachCell(cell => {
-    //         this.drawBorder(cell, 'bottom');
-    //     });
+        row3.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
         
-    //     var lastRow = worksheet.getRow(worksheet.rowCount);
+        var lastRow = worksheet.getRow(worksheet.rowCount);
 
-    //     lastRow.eachCell(cell => {
-    //         this.drawBorder(cell, 'bottom');
-    //     });
-    // }
+        lastRow.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
+    }
 
-    // private drawBorder(cell, position) {
-    //     const borderBlack = "FF000000";
+    private drawBorder(cell, position) {
+        const borderBlack = "FF000000";
 
-    //     if (cell.border) {
-    //         if (cell.border[position]) {
-    //             cell.border[position].style = 'thin';
-    //             cell.border[position].color.argb = borderBlack;
-    //         }
-    //         else {
-    //             cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
-    //         }
-    //     }
-    //     else {
-    //         cell.border = {};
-    //         cell.border[`${position}`] = {};
-    //         cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
-    //     }
-    // }
+        if (cell.border) {
+            if (cell.border[position]) {
+                cell.border[position].style = 'thin';
+                cell.border[position].color.argb = borderBlack;
+            }
+            else {
+                cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
+            }
+        }
+        else {
+            cell.border = {};
+            cell.border[`${position}`] = {};
+            cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
+        }
+    }
 
-    // private buildResources(worksheet: Worksheet) {
-    //     worksheet.addRow(["Recursos"]);
+    private buildResources(worksheet) {
+        worksheet.addRow(["Recursos"]);
 
-    //     this.employees.forEach(employee => {
-    //         var resource = [employee.display];
+        this.employees.forEach(employee => {
+            var resource = [employee.display];
 
-    //         employee.monthsCost.forEach(monthCost => {
-    //             resource.push(monthCost.budget.value || 0);
-    //             resource.push(monthCost.projected.value || 0);
-    //             resource.push(monthCost.pfa1.value || 0);
-    //             resource.push(monthCost.pfa2.value || 0);
-    //             resource.push(monthCost.real.value || 0);
-    //         });
+            employee.monthsCost.forEach(monthCost => {
+                resource.push(monthCost.budget.value || 0);
+                resource.push(monthCost.projected.value || 0);
+                resource.push(monthCost.pfa1.value || 0);
+                resource.push(monthCost.pfa2.value || 0);
+                resource.push(monthCost.real.value || 0);
+            });
 
-    //         worksheet.addRow(resource);
-    //     });
+            worksheet.addRow(resource);
+        });
 
-    //     if(this.employees.length > 0){
-    //         var lastRow = worksheet.getRow(worksheet.rowCount);
+        if(this.employees.length > 0){
+            var lastRow = worksheet.getRow(worksheet.rowCount);
 
-    //         lastRow.eachCell(cell => {
-    //             this.drawBorder(cell, 'bottom');
-    //         });
-    //     }
+            lastRow.eachCell(cell => {
+                this.drawBorder(cell, 'bottom');
+            });
+        }
 
-    //     this.categoriesEmployees.forEach(fundedResource => {
-    //         var item = [fundedResource.name];
+        this.categoriesEmployees.forEach(fundedResource => {
+            var item = [fundedResource.name];
 
-    //         fundedResource.monthsCategory.forEach(monthCost => {
-    //             item.push(monthCost.totalBudget || 0);
-    //             item.push(monthCost.totalProjected || 0);
-    //             item.push(monthCost.totalPfa1 || 0);
-    //             item.push(monthCost.totalPfa2 || 0);
-    //             item.push(monthCost.totalReal || 0);
-    //         });
+            fundedResource.monthsCategory.forEach(monthCost => {
+                item.push(monthCost.totalBudget || 0);
+                item.push(monthCost.totalProjected || 0);
+                item.push(monthCost.totalPfa1 || 0);
+                item.push(monthCost.totalPfa2 || 0);
+                item.push(monthCost.totalReal || 0);
+            });
 
-    //         worksheet.addRow(item);
-    //     });
+            worksheet.addRow(item);
+        });
 
-    //     if(this.categoriesEmployees.length > 0){
-    //         var lastRow = worksheet.getRow(worksheet.rowCount);
+        if(this.categoriesEmployees.length > 0){
+            var lastRow = worksheet.getRow(worksheet.rowCount);
 
-    //         lastRow.eachCell(cell => {
-    //             this.drawBorder(cell, 'bottom');
-    //         });
-    //     }
-    // }
+            lastRow.eachCell(cell => {
+                this.drawBorder(cell, 'bottom');
+            });
+        }
+    }
 
-    // private buildCategories(worksheet: Worksheet) {
-    //     this.categories.forEach(category => {
-    //         var item = [category.name];
-    //         category.monthsCategory.forEach(monthCost => {
-    //             item.push(monthCost.totalBudget || 0);
-    //             item.push(monthCost.totalProjected || 0);
-    //             item.push(monthCost.totalPfa1 || 0);
-    //             item.push(monthCost.totalPfa2 || 0);
-    //             item.push(monthCost.totalReal || 0);
-    //         });
-    //         worksheet.addRow(item);
-    //     });
+    private buildCategories(worksheet) {
+        this.categories.forEach(category => {
+            var item = [category.name];
+            category.monthsCategory.forEach(monthCost => {
+                item.push(monthCost.totalBudget || 0);
+                item.push(monthCost.totalProjected || 0);
+                item.push(monthCost.totalPfa1 || 0);
+                item.push(monthCost.totalPfa2 || 0);
+                item.push(monthCost.totalReal || 0);
+            });
+            worksheet.addRow(item);
+        });
 
-    //     var totalSalary = ["Sub-total Gastos"];
+        var totalSalary = ["Sub-total Gastos"];
 
-    //     this.months.forEach(month => {
-    //         totalSalary.push(month.budget.subTotalCost);
-    //         totalSalary.push(month.projected.subTotalCost);
-    //         totalSalary.push(month.pfa1.subTotalCost);
-    //         totalSalary.push(month.pfa2.subTotalCost);
-    //         totalSalary.push(month.real.subTotalCost);
-    //     });
+        this.months.forEach(month => {
+            totalSalary.push(month.budget.subTotalCost);
+            totalSalary.push(month.projected.subTotalCost);
+            totalSalary.push(month.pfa1.subTotalCost);
+            totalSalary.push(month.pfa2.subTotalCost);
+            totalSalary.push(month.real.subTotalCost);
+        });
 
-    //     worksheet.addRow(totalSalary);
+        worksheet.addRow(totalSalary);
 
-    //     this.categoriesRedInfra.forEach(category => {
-    //         var item = [category.name];
-    //         category.monthsCategory.forEach(monthCost => {
-    //             item.push(monthCost.totalBudget || 0);
-    //             item.push(monthCost.totalProjected || 0);
-    //             item.push(monthCost.totalPfa1 || 0);
-    //             item.push(monthCost.totalPfa2 || 0);
-    //             item.push(monthCost.totalReal || 0);
-    //         });
-    //         worksheet.addRow(item);
-    //     });
-    // }
+        this.categoriesRedInfra.forEach(category => {
+            var item = [category.name];
+            category.monthsCategory.forEach(monthCost => {
+                item.push(monthCost.totalBudget || 0);
+                item.push(monthCost.totalProjected || 0);
+                item.push(monthCost.totalPfa1 || 0);
+                item.push(monthCost.totalPfa2 || 0);
+                item.push(monthCost.totalReal || 0);
+            });
+            worksheet.addRow(item);
+        });
+    }
 
-    // private buildSalaryAndCharges(worksheet: Worksheet) {
-    //     var totalSalary = ["Total Sueldo"];
-    //     var totalLoads = ["Cargas (0.51 del sueldo)"];
+    private buildSalaryAndCharges(worksheet) {
+        var totalSalary = ["Total Sueldo"];
+        var totalLoads = ["Cargas (0.85 del sueldo)"];
 
-    //     this.months.forEach(month => {
-    //         totalSalary.push(month.budget.totalSalary);
-    //         totalSalary.push(month.projected.totalSalary);
-    //         totalSalary.push(month.pfa1.totalSalary);
-    //         totalSalary.push(month.pfa2.totalSalary);
-    //         totalSalary.push(month.real.totalSalary);
+        this.months.forEach(month => {
+            totalSalary.push(month.budget.totalSalary);
+            totalSalary.push(month.projected.totalSalary);
+            totalSalary.push(month.pfa1.totalSalary);
+            totalSalary.push(month.pfa2.totalSalary);
+            totalSalary.push(month.real.totalSalary);
 
-    //         totalLoads.push(month.budget.totalLoads);
-    //         totalLoads.push(month.projected.totalLoads);
-    //         totalLoads.push(month.pfa1.totalLoads);
-    //         totalLoads.push(month.pfa2.totalLoads);
-    //         totalLoads.push(month.real.totalLoads);
-    //     });
-    //     worksheet.addRow(totalSalary);
-    //     worksheet.addRow(totalLoads);
+            totalLoads.push(month.budget.totalLoads);
+            totalLoads.push(month.projected.totalLoads);
+            totalLoads.push(month.pfa1.totalLoads);
+            totalLoads.push(month.pfa2.totalLoads);
+            totalLoads.push(month.real.totalLoads);
+        });
+        worksheet.addRow(totalSalary);
+        worksheet.addRow(totalLoads);
 
-    //     var lastRow = worksheet.getRow(worksheet.rowCount);
+        var lastRow = worksheet.getRow(worksheet.rowCount);
 
-    //     lastRow.eachCell(cell => {
-    //         this.drawBorder(cell, 'bottom');
-    //     });
-    // }
+        lastRow.eachCell(cell => {
+            this.drawBorder(cell, 'bottom');
+        });
+    }
 
-    // private buildHeader(worksheet: Worksheet) {
-    //     var columns = [];
-    //     var monthItem = { header: "Meses", width: 50 };
-    //     columns.push(monthItem);
+    private buildHeader(worksheet) {
+        var columns = [];
+        var monthItem = { header: "Meses", width: 50 };
+        columns.push(monthItem);
 
-    //     var subHeader = ["Tipo"];
-    //     var totalCosts = ["Total Gastos"];
+        var subHeader = ["Tipo"];
+        var totalCosts = ["Total Gastos"];
 
-    //     this.months.forEach(month => {
-    //         columns.push({ header: month.display, width: 15, style: { numFmt: '#,##0.00' } });
-    //         columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
-    //         columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
-    //         columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
-    //         columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+        this.months.forEach(month => {
+            columns.push({ header: month.display, width: 15, style: { numFmt: '#,##0.00' } });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
 
-    //         subHeader.push("BUDGET");
-    //         subHeader.push("PROYECTADO");
-    //         subHeader.push("PFA1");
-    //         subHeader.push("PFA2");
-    //         subHeader.push("REAL");
+            subHeader.push("BUDGET");
+            subHeader.push("PROYECTADO");
+            subHeader.push("PFA1");
+            subHeader.push("PFA2");
+            subHeader.push("REAL");
 
-    //         totalCosts.push(month.budget.totalCost || 0);
-    //         totalCosts.push(month.projected.totalCost || 0);
-    //         totalCosts.push(month.pfa1.totalCost || 0);
-    //         totalCosts.push(month.pfa2.totalCost || 0);
-    //         totalCosts.push(month.real.totalCost || 0);
-    //     });
+            totalCosts.push(month.budget.totalCost || 0);
+            totalCosts.push(month.projected.totalCost || 0);
+            totalCosts.push(month.pfa1.totalCost || 0);
+            totalCosts.push(month.pfa2.totalCost || 0);
+            totalCosts.push(month.real.totalCost || 0);
+        });
 
-    //     worksheet.columns = columns;
-    //     worksheet.addRow(subHeader);
-    //     worksheet.addRow(totalCosts);
+        worksheet.columns = columns;
+        worksheet.addRow(subHeader);
+        worksheet.addRow(totalCosts);
 
-    //     var count = columns.length - 1;
-    //     for (var i = 2; i < count; i += 5) {
-    //         var row = worksheet.getRow(1);
-    //         var firstCell = row.getCell(i);
-    //         var lastCell = row.getCell(i + 4);
+        var count = columns.length - 1;
+        for (var i = 2; i < count; i += 5) {
+            var row = worksheet.getRow(1);
+            var firstCell = row.getCell(i);
+            var lastCell = row.getCell(i + 4);
 
-    //         worksheet.mergeCells(`${firstCell.address}:${lastCell.address}`);
-    //         firstCell.alignment = { horizontal: 'center' };
+            worksheet.mergeCells(`${firstCell.address}:${lastCell.address}`);
+            firstCell.alignment = { horizontal: 'center' };
 
-    //         for (var j = i; j <= (i + 4); j++) {
-    //             var row2 = worksheet.getRow(2);
-    //             var cell = row2.getCell(j);
-    //             cell.alignment = { horizontal: 'center' };
-    //         }
-    //     }
-    // }
+            for (var j = i; j <= (i + 4); j++) {
+                var row2 = worksheet.getRow(2);
+                var cell = row2.getCell(j);
+                cell.alignment = { horizontal: 'center' };
+            }
+        }
+    }
 }

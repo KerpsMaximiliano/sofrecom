@@ -12,7 +12,7 @@ import { ManagementReportStaffService } from "app/services/management-report/man
 import { UserInfoService } from "app/services/common/user-info.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
-// import { Workbook } from 'exceljs';
+// import * as excel from 'exceljs';
 // import * as fs from 'file-saver';
 
 @Component({
@@ -496,8 +496,8 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         error => {});
     }
 
-    // generateExcel(){
-        // let workbook = new Workbook();
+    generateExcel(){
+        // let workbook = new excel.Workbook();
 
         // this.budgetView.createWorksheet(workbook);
         // this.tracingView.createWorksheet(workbook);
@@ -508,5 +508,5 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         //     let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         //     fs.saveAs(blob, title);
         // });
-    // }
+    }
 } 
