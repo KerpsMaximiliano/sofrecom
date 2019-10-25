@@ -38,6 +38,7 @@ import { MathModule } from "app/components/math-input/math-input.module";
 import { ServiceService } from "app/services/billing/service.service";
 import { GenericOptionService } from "app/services/admin/generic-option.service";
 import { LaddaModule } from "angular2-ladda";
+import { ICheckModule } from "app/components/icheck/icheck.module";
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { LaddaModule } from "angular2-ladda";
       AmountFormatModule,
       fromDateModule,
       PCheckModule,
+      ICheckModule,
       NgSelectModule,
       DigitModule,
       ReactiveFormsModule,

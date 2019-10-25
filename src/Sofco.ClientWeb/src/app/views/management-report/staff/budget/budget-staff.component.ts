@@ -58,23 +58,26 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
     itemSelected: any;
     indexSelected: number = 0;
+    replicateCosts: boolean = false;
 
     editItemMonto = new FormControl();
     editItemAdjustment = new FormControl();
 
-    categories: any[] = new Array()
-    categoriesRedInfra: any[] = new Array()
-    subCategories: any[] = new Array()
-    subCategoriesData: any[] = new Array()
-    subCategoriesFiltered: any[] = new Array()
+    monthsToReplicateSelected: any[] = new Array();
+    monthsToReplicate: any[] = new Array();
+    categories: any[] = new Array();
+    categoriesRedInfra: any[] = new Array();
+    subCategories: any[] = new Array();
+    subCategoriesData: any[] = new Array();
+    subCategoriesFiltered: any[] = new Array();
     subCategorySelected: any = { id: 0, name: '' }
     typeBudgetSelected: any = { id: 0, name: '' }
-    budgetTypes: any[] = new Array()
-    costByMonth: any[] = new Array()
-    currencies: any[] = new Array()
+    budgetTypes: any[] = new Array();
+    costByMonth: any[] = new Array();
+    currencies: any[] = new Array();
     actualState: string
     monthExchanges: any[] = new Array();
-    sinceMonth: Date = new Date()
+    sinceMonth: Date = new Date();
 
     totalCostsExchanges: any = {
         exchanges: [],
@@ -155,7 +158,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
 
             this.model = response.data
-            this.months = response.data.monthsHeader;
+            this.months = response.data.monthsHeader; 
             this.employees = response.data.costEmployees;
             this.categoriesEmployees = response.data.costCategoriesEmployees
             this.otherCategories = response.data.otherCategories;
@@ -165,11 +168,19 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.budgetTypes = response.data.budgetTypes;
             this.actualState = response.data.state
 
-
             this.otherCategories = response.data.otherCategories;
             if (this.otherCategories.length > 0) {
                 this.otherSelected = this.otherCategories[0];
             }
+
+            this.months.forEach((month, index) => {
+                this.monthsToReplicate.push({
+                    id: index,
+                    month: month.month,
+                    year: month.year,
+                    display: month.display,
+                });
+            });
 
             this.subCategoriesFiltered = this.subCategories
 
@@ -514,6 +525,29 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                                 }
                             }
                         });
+
+                        if(this.replicateCosts && this.monthsToReplicateSelected){
+                            this.monthsToReplicateSelected.forEach(monthReplicateId => {
+                                var monthReplicateSelected = this.monthsToReplicate.find(x => x.id == monthReplicateId);
+
+                                if(monthReplicateSelected){
+                                    var monthCategory = this.itemSelected.monthsCategory.find(x => x.month == monthReplicateSelected.month && x.year == monthReplicateSelected.year);
+
+                                    if(monthCategory.display != this.monthSelected.display){
+                                        if(monthCategory.subcategoriesBudget.length > 0){
+                                            monthCategory.subcategoriesBudget.forEach(x => x.deleted = false);
+                                        }
+
+                                        monthCategory.subcategoriesBudget = this.subCategoriesData.map(x => {
+                                            x.costDetailStaffId = 0;
+                                            x.idCategory = 0;
+                                            return x;
+                                        })
+                                    }
+                                }
+                            });
+                        }
+
                         if (this.monthSelected.totalBudget == 0 && (this.categorySelected.name == "Infraestructura" || this.categorySelected.name == "Red")) {
                             this.deleteRedInfra()
                          }

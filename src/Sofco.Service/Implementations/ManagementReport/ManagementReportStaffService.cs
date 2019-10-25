@@ -861,7 +861,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             var Allcategories = unitOfWork.CostDetailRepository.GetCategories();
             var categories = Allcategories.Where(x => 
                                                     x.Name != EnumCostDetailType.InformeFinal.ToString() &&
-                                                    x.Name != EnumCostDetailType.Profile.ToString() &&
                                                     x.Name != EnumCostDetailType.Recursos.ToString() 
                                                 ).ToList();
 
