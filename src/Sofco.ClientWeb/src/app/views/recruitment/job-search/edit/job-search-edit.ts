@@ -216,7 +216,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
                 this.form.disable();
                 $("div[name='checked']").addClass('disabled');
             }
-            else{
+     
+            if(this.status == JobSearchStatus.Open || this.status == JobSearchStatus.Reopen){
                 this.applicantsRelated.init(this.entityId);
             }
         }, 
@@ -402,6 +403,10 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             if(this.isClose()){
                 this.form.disable();
                 $("div[name='checked']").addClass('disabled');
+            }
+
+            if(this.status == JobSearchStatus.Open || this.status == JobSearchStatus.Reopen){
+                this.applicantsRelated.init(this.entityId);
             }
         }, 
         error => {
