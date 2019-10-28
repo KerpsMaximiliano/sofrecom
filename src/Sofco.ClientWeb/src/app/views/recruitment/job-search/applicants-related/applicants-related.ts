@@ -135,7 +135,7 @@ export class ApplicantsRelatedComponent implements OnDestroy {
             if(reasonCause && reasonCause.type == ReasonCauseType.ApplicantInProgress){
                 this.form.controls.documentNumber.setValue(applicants[0].documentNumber);
 
-                this.form.controls.documentNumber.setValidators([Validators.required, Validators.maxLength(10)]);
+                this.form.controls.documentNumber.setValidators([Validators.required, Validators.max(99999999)]);
                 this.form.controls.documentNumber.updateValueAndValidity();
 
                 this.documentNumberVisible = true;
