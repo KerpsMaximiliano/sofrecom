@@ -31,5 +31,7 @@
         public const string OpportunityUpdate = "OpportunityUpdate";
 
         public const string SocialCharges = "SocialCharges";
+
+        public const string PowerBi = "PowerBi";
     }
 }
