@@ -30,7 +30,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> GetResources(int id)
         {
-            return context.Allocations.Where(x => x.AnalyticId == id && x.Percentage > 0 && !x.Employee.EndDate.HasValue)
+            var now = DateTime.UtcNow.AddMonths(-3);
+
+            return context.Allocations.Where(x => x.AnalyticId == id && x.Percentage > 0 && (x.Employee.EndDate == null || x.Employee.EndDate.Value.Date >= now.Date))
                 .Include(x => x.Employee)
                 .Select(x => x.Employee)
                 .Distinct()
