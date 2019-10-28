@@ -164,6 +164,25 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Analytics.Include(x => x.Sector).Where(x => (x.ManagerId == managerId || x.Sector.ResponsableUserId == managerId) && x.Status == AnalyticStatus.Open).ToList();
         }
 
+        public List<Employee> GetResources(int id, Tuple<DateTime, DateTime> periodExcludeDays, Tuple<DateTime, DateTime> period)
+        {
+            var startDate = periodExcludeDays.Item1.Date;
+            var endDate = periodExcludeDays.Item2.Date;
+
+            var startDateWithDay = period.Item1.Date;
+            var endDateWithDay = period.Item2.Date;
+
+            var query = (from emp in context.Employees
+                    join allocation in context.Allocations on emp.Id equals allocation.EmployeeId
+                    where allocation.Percentage > 0 && allocation.AnalyticId == id &&
+                          (!emp.EndDate.HasValue || (emp.EndDate.HasValue && emp.EndDate > startDateWithDay.Date || emp.EndDate < endDateWithDay.Date)) &&
+                          (allocation.StartDate.Date == startDate || allocation.StartDate.Date == endDate)
+                    select emp)
+                .Include(x => x.Allocations);
+
+            return query.Distinct().ToList();
+        }
+
         public Analytic GetByServiceForManagementReport(string serviceId)
         {
             return context.Analytics

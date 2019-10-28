@@ -65,7 +65,7 @@ namespace Sofco.Framework.FileManager.WorkTime
             {
                 FillHolidays(period);
 
-                var employees = unitOfWork.AnalyticRepository.GetResources(analyticId, periodExcludeDays.Item1.Date, periodExcludeDays.Item2.Date);
+                var employees = unitOfWork.AnalyticRepository.GetResources(analyticId, periodExcludeDays, period);
 
                 var manager = unitOfWork.AnalyticRepository.GetManager(analyticId);
                 var director = unitOfWork.AnalyticRepository.GetDirector(analyticId);
@@ -103,7 +103,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                             {
                                 if (employee.EndDate.HasValue)
                                 {
-                                    if (startDate.Date <= employee.EndDate.Value.Date)
+                                    if (startDate.Date < employee.EndDate.Value.Date)
                                     {
                                         sheet1.Cells[$"A{index}"].Value = employee.EmployeeNumber;
                                         sheet1.Cells[$"B{index}"].Value = employee.Name;
