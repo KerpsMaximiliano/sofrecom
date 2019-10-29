@@ -47,15 +47,15 @@ export class DetailContactsComponent implements OnInit {
     birthDate: new FormControl(null, [Validators.required]),
     startDate: new FormControl(null, [Validators.required]),
     address: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-    cuil: new FormControl(null, [Validators.required, Validators.maxLength(12)]),
+    cuil: new FormControl(null, [Validators.required, Validators.max(99999999999)]),
     prepaid: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
-    profile: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+    profileId: new FormControl(null, [Validators.required]),
     office: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
     agreements: new FormControl(null, [Validators.maxLength(3000)]),
     salary: new FormControl(null, [Validators.required]),
     managerId: new FormControl(null, [Validators.required]),
     analyticId: new FormControl(null, [Validators.required]),
-    projectId: new FormControl(null, [Validators.required]),
+    projectId: new FormControl(null),
   });
 
   dateModalForm: FormGroup = new FormGroup({
@@ -220,7 +220,7 @@ export class DetailContactsComponent implements OnInit {
         this.newResourceForm.controls.address.setValue(response.data.address);
         this.newResourceForm.controls.cuil.setValue(response.data.cuil);
         this.newResourceForm.controls.prepaid.setValue(response.data.prepaid);
-        this.newResourceForm.controls.profile.setValue(response.data.profile);
+        this.newResourceForm.controls.profileId.setValue(response.data.profileId);
         this.newResourceForm.controls.office.setValue(response.data.office);
         this.newResourceForm.controls.agreements.setValue(response.data.agreements);
         this.newResourceForm.controls.salary.setValue(response.data.salary);
@@ -315,7 +315,7 @@ export class DetailContactsComponent implements OnInit {
       address: this.newResourceForm.controls.address.value,
       cuil: this.newResourceForm.controls.cuil.value,
       prepaid: this.newResourceForm.controls.prepaid.value,
-      profile: this.newResourceForm.controls.profile.value,
+      profileId: this.newResourceForm.controls.profileId.value,
       office: this.newResourceForm.controls.office.value,
       aggreements: this.newResourceForm.controls.agreements.value,
       salary: this.newResourceForm.controls.salary.value,

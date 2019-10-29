@@ -26,7 +26,6 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<Applicant>().Property(x => x.Address).HasMaxLength(100);
             builder.Entity<Applicant>().Property(x => x.Cuil).HasMaxLength(12);
             builder.Entity<Applicant>().Property(x => x.Prepaid).HasMaxLength(100);
-            builder.Entity<Applicant>().Property(x => x.Profile).HasMaxLength(100);
             builder.Entity<Applicant>().Property(x => x.Office).HasMaxLength(100);
             builder.Entity<Applicant>().Property(x => x.Aggreements).HasMaxLength(3000);
 
@@ -36,6 +35,7 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<Applicant>().HasOne(x => x.Manager).WithMany(x => x.Applicants2).HasForeignKey(x => x.ManagerId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Applicant>().HasOne(x => x.Analytic).WithMany(x => x.Applicants).HasForeignKey(x => x.AnalyticId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Applicant>().HasOne(x => x.Project).WithMany(x => x.Applicants).HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Applicant>().HasOne(x => x.Profile).WithMany(x => x.Applicants).HasForeignKey(x => x.ProfileId).OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ApplicantProfile>().HasKey(t => new { t.ApplicantId, t.ProfileId });
 

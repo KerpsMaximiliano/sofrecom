@@ -63,7 +63,8 @@ namespace Sofco.Domain.Models.Recruitment
 
         public string Prepaid { get; set; }
 
-        public string Profile { get; set; }
+        public int? ProfileId { get; set; }
+        public Profile Profile { get; set; }
 
         public string Office { get; set; }
 

@@ -115,6 +115,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/applicant.birthDateGreaterThanStartDate.
+        /// </summary>
+        public static string BirthDateGreaterThanStartDate {
+            get {
+                return ResourceManager.GetString("BirthDateGreaterThanStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/applicant.birthDateRequired.
         /// </summary>
         public static string BirthDateRequired {

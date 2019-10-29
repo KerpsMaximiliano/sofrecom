@@ -352,7 +352,7 @@ namespace Sofco.Service.Implementations.Recruitment
             if (string.IsNullOrWhiteSpace(model.Prepaid))
                 response.AddError(Resources.Recruitment.Applicant.PrepaidRequired);
 
-            if (string.IsNullOrWhiteSpace(model.Profile))
+            if (!model.ProfileId.HasValue)
                 response.AddError(Resources.Recruitment.Applicant.ProfileRequired);
 
             if (string.IsNullOrWhiteSpace(model.Office))
@@ -366,6 +366,14 @@ namespace Sofco.Service.Implementations.Recruitment
 
             if (!model.AnalyticId.HasValue)
                 response.AddError(Resources.Recruitment.Applicant.AnalyticRequired);
+
+            if (model.BirthDate.HasValue && model.StartDate.HasValue)
+            {
+                if (model.BirthDate.Value.Date >= model.StartDate.Value.Date)
+                {
+                    response.AddError(Resources.Recruitment.Applicant.BirthDateGreaterThanStartDate);
+                }
+            }
         }
     }
 }

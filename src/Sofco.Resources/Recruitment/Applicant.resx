@@ -204,4 +204,7 @@
   <data name="UpdateSuccess" xml:space="preserve">
     <value>recruitment/applicant.updateSuccess</value>
   </data>
+  <data name="BirthDateGreaterThanStartDate" xml:space="preserve">
+    <value>recruitment/applicant.birthDateGreaterThanStartDate</value>
+  </data>
 </root>

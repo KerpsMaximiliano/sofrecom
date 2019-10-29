@@ -19,7 +19,7 @@ namespace Sofco.Core.Models.Recruitment
 
         public string Prepaid { get; set; }
 
-        public string Profile { get; set; }
+        public int? ProfileId { get; set; }
 
         public string Office { get; set; }
 
@@ -41,7 +41,7 @@ namespace Sofco.Core.Models.Recruitment
             applicant.Address = Address;
             applicant.Cuil = Cuil;
             applicant.Prepaid = Prepaid;
-            applicant.Profile = Profile;
+            applicant.ProfileId = ProfileId;
             applicant.Office = Office;
             applicant.Salary = Salary;
             applicant.ManagerId = ManagerId;

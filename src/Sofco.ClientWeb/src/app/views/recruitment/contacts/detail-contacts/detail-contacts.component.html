@@ -256,10 +256,11 @@
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'cuil')">
                                     <label class="control-label">Cuil</label>
-                                    <input type="text" class="form-control" formControlName="cuil" maxlength="12">
+                                    <input type="number" class="form-control" formControlName="cuil">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'cuil')">
                                         <p *ngIf="formsService.hasError(newResourceForm, 'cuil', 'required')">El campo es requerido</p>
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'cuil', 'max')">El campo no pueden superar los 11 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -308,12 +309,12 @@
 
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'profile')">
-                                    <label class="control-label">Perfil</label>
-                                    <input type="text" class="form-control" formControlName="profile" maxlength="100">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'profileId')"> 
+                                    <label class="control-label"> Perfil </label>
+                                    <ng-select [items]="profileOptions" bindValue="id" bindLabel="text" formControlName="profileId"></ng-select>
 
-                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'profile')">
-                                        <p *ngIf="formsService.hasError(newResourceForm, 'profile', 'required')">El campo es requerido</p>
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'profileId')">
+                                        <p *ngIf="formsService.hasError(newResourceForm, 'profileId', 'required')">El campo es requerido</p>
                                     </div>
                                 </div>
                             </div>
