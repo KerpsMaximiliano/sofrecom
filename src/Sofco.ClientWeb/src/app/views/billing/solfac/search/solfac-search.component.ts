@@ -11,6 +11,7 @@ import { MessageService } from "../../../../services/common/message.service";
 import { SolfacStatus } from '../../../../models/enums/solfacStatus';
 import { MenuService } from '../../../../services/admin/menu.service';
 import { EmployeeService } from '../../../../services/allocation-management/employee.service';
+import { PurchaseOrderService } from 'app/services/billing/purchaseOrder.service';
 
 declare var moment: any;
 
@@ -20,6 +21,7 @@ declare var moment: any;
 })
 export class SolfacSearchComponent implements OnInit, OnDestroy {
     getAllSubscrip: Subscription;
+    getAnalyticsSuscription: Subscription;
     data;
 
     public customers: Option[] = new Array<Option>();
@@ -27,12 +29,13 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     public projects: Option[] = new Array<Option>();
     public userApplicants: any[] = new Array();
     public statuses: Option[] = new Array<Option>();
+    public analytics: Option[] = new Array<Option>();
 
     customerId: string = null;
     serviceId: string = null;
     projectId: string = null;
     userApplicantId: string = null;
-    analytic: string;
+    analytic: number = null;
     status: string = null;
     dateSince: Date = new Date();
     dateTo: Date = new Date();
@@ -47,6 +50,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         private customerService: CustomerService,
         private employeeService: EmployeeService,
         private messageService: MessageService,
+        private purchaseOrderService: PurchaseOrderService,
         private serviceService: ServiceService,
         private projectService: ProjectService,
         private menuService: MenuService,
@@ -56,6 +60,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.getCustomers();
         this.getUserOptions();
         this.getStatuses();
+        this.getAnalytics();
 
         const data = JSON.parse(sessionStorage.getItem('lastSolfacQuery'));
         if (data) {
@@ -81,6 +86,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
       if (this.getAllSubscrip) this.getAllSubscrip.unsubscribe();
+      if (this.getAnalyticsSuscription) this.getAnalyticsSuscription.unsubscribe();
     }
 
     setCurrencySymbol(currencyId){
@@ -141,6 +147,12 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     getUserOptions() {
         this.employeeService.getManagers().subscribe(d => {
           this.userApplicants = d;
+        });
+    }
+
+    getAnalytics() {
+        this.getAnalyticsSuscription = this.purchaseOrderService.getAnalyticsByCurrentUser().subscribe(res => {
+            this.analytics = res.data;
         });
     }
 
@@ -258,7 +270,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         this.serviceId = null;
         this.projectId = null;
         this.userApplicantId = null;
-        this.analytic = "";
+        this.analytic = null;
         this.status = null;
         this.dateSince= new Date();
         this.dateTo = new Date();

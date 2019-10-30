@@ -145,7 +145,7 @@ namespace Sofco.DAL.Repositories.Billing
             return query.ToList();
         }
 
-        private static IQueryable<Solfac> ApplyFilters(SolfacParams parameters, IQueryable<Solfac> query)
+        private IQueryable<Solfac> ApplyFilters(SolfacParams parameters, IQueryable<Solfac> query)
         {
             if(parameters.DateSince.HasValue && parameters.DateTo.HasValue)
                 query = query.Where(x => x.StartDate.Date >= parameters.DateSince.GetValueOrDefault().Date && x.StartDate.Date <= parameters.DateTo.GetValueOrDefault().Date);
@@ -159,8 +159,15 @@ namespace Sofco.DAL.Repositories.Billing
             if (!string.IsNullOrWhiteSpace(parameters.ProjectId) && !parameters.ProjectId.Equals("0"))
                 query = query.Where(x => x.ProjectId.Contains(parameters.ProjectId));
 
-            if (!string.IsNullOrWhiteSpace(parameters.Analytic))
-                query = query.Where(x => x.Analytic.ToLowerInvariant().Equals(parameters.Analytic.ToLowerInvariant()));
+            if (parameters.Analytic.HasValue)
+            {
+                var analytic = context.Analytics.SingleOrDefault(x => x.Id == parameters.Analytic.Value);
+
+                if (analytic != null)
+                {
+                    query = query.Where(x => x.Analytic.ToLowerInvariant().Equals(analytic.Title.ToLowerInvariant()));
+                }
+            }
 
             if (!string.IsNullOrWhiteSpace(parameters.ManagerId))
                 query = query.Where(x => x.ManagerId == parameters.ManagerId);

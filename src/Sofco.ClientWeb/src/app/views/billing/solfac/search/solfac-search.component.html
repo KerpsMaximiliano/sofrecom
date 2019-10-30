@@ -61,11 +61,11 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row"> 
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label" for="analytic">{{ 'billing.solfac.analytic' | translate }}</label>
-                        <input class="form-control" name="analytic" placeholder="Analítica" type="text" [(ngModel)]="analytic">
+                        <label class="control-label">{{ 'billing.solfac.analytic' | translate }}</label>
+                        <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analytic"></ng-select>
                     </div>
                 </div>
                 <div class="col-sm-4" *ngIf="showUserApplicantFilter()">

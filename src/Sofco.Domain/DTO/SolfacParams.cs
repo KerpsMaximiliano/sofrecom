@@ -8,7 +8,7 @@ namespace Sofco.Domain.DTO
         public string CustomerId { get; set; }
         public string ServiceId { get; set; }
         public string ProjectId { get; set; }
-        public string Analytic { get; set; }
+        public int? Analytic { get; set; }
         public SolfacStatus Status { get; set; }
         public string ManagerId { get; set; }
         public DateTime? DateSince { get; set; }
