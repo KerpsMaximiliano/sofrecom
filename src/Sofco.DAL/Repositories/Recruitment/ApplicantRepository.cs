@@ -24,10 +24,10 @@ namespace Sofco.DAL.Repositories.Recruitment
                     .ThenInclude(x => x.Profile);
 
             if (!string.IsNullOrWhiteSpace(parameter.FirstName))
-                query = query.Where(x => x.FirstName.ToLowerInvariant().Equals(parameter.FirstName.ToLowerInvariant()));
+                query = query.Where(x => x.FirstName.ToLowerInvariant().Contains(parameter.FirstName.ToLowerInvariant()));
 
             if (!string.IsNullOrWhiteSpace(parameter.LastName))
-                query = query.Where(x => x.LastName.ToLowerInvariant().Equals(parameter.LastName.ToLowerInvariant()));
+                query = query.Where(x => x.LastName.ToLowerInvariant().Contains(parameter.LastName.ToLowerInvariant()));
 
             if (!string.IsNullOrWhiteSpace(parameter.ClientCrmId))
                 query = query.Where(x => x.Client.CrmId.Equals(parameter.ClientCrmId));
