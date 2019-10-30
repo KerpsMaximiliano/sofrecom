@@ -162,7 +162,7 @@ export class WorkTimeReportComponent implements OnInit, OnDestroy {
         this.dataTableService.initialize(options);
         this.gridIsVisible = true;
 
-        var columnsMissingHours = [0, 1, 2, 3];
+        var columnsMissingHours = [0, 1, 2, 3, 4, 5];
         var titleMissingHours = "Recursos con horas faltantes";
 
         var options2 = { 

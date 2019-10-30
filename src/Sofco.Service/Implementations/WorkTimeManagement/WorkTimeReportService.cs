@@ -11,6 +11,7 @@ using Sofco.Framework.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Service.Implementations.WorkTimeManagement
 {
@@ -153,6 +154,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             response.Data.Items.Add(model);
                         }
 
+                        var worktimes = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId,
+                            startDate, endDate, allocation.AnalyticId);
+
                         model = new WorkTimeReportModelItem
                         {
                             Client = allocation.Analytic.AccountName,
@@ -167,11 +171,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             CostCenter = allocation.Analytic.CostCenter?.Code,
                             Activity = allocation.Analytic.Activity?.Text,
                             Facturability = allocation.Employee.BillingPercentage,
-                            HoursLoaded = unitOfWork.WorkTimeRepository.GetTotalHoursBetweenDays(allocation.EmployeeId,
-                                startDate, endDate, allocation.AnalyticId),
-                            HoursApproved =
-                                unitOfWork.WorkTimeRepository.GetTotalHoursApprovedBetweenDays(allocation.EmployeeId,
-                                    startDate, endDate, allocation.AnalyticId),
+                            HoursLoaded = worktimes.Sum(s => s.Hours),
+                            DraftHours = worktimes.Where(s => s.Status == WorkTimeStatus.Draft).Sum(s => s.Hours),
+                            SentHours = worktimes.Where(s => s.Status == WorkTimeStatus.Sent).Sum(s => s.Hours),
+                            HoursApproved = worktimes.Where(s => s.Status == WorkTimeStatus.Approved || s.Status == WorkTimeStatus.License).Sum(s => s.Hours)
                         };
 
                         if (parameters.EmployeeId.HasValue && parameters.EmployeeId.Value > 0 &&
@@ -216,7 +219,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         if (employeesMissingHours.Any(x => x.EmployeeNumber == allocation.Employee.EmployeeNumber))
                         {
                             var employeeMissingHour = employeesMissingHours.FirstOrDefault(x => x.EmployeeNumber == allocation.Employee.EmployeeNumber);
-                            if (employeeMissingHour != null) employeeMissingHour.Hours += model.HoursApproved;
+                            if (employeeMissingHour != null) employeeMissingHour.HoursApproved += model.HoursApproved;
                         }
                         else
                         {
@@ -225,7 +228,9 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                                 Name = allocation.Employee.Name,
                                 Manager = allocation.Employee?.Manager?.Name,
                                 EmployeeNumber = allocation.Employee.EmployeeNumber,
-                                Hours = model.HoursApproved,
+                                HoursApproved = model.HoursApproved,
+                                DraftHours = model.DraftHours,
+                                SentHours = model.SentHours,
                                 HoursMustLoad = tuple.Item2,
                                 Facturability = allocation.Employee.BillingPercentage,
                                 WorkTimeReportByHours = workTimeReportByHours

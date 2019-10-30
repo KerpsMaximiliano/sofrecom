@@ -48,6 +48,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public bool HasEndDate { get; set; }
 
         public int ManagerId { get; set; }
+        public decimal DraftHours { get; set; }
+        public decimal SentHours { get; set; }
     }
 
     public class WorkTimeReportModel
@@ -123,7 +125,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
 
         public string Manager { get; set; }
 
-        public decimal Hours { get; set; }
+        public decimal HoursApproved { get; set; }
 
         public decimal HoursMustLoad { get; set; }
 
@@ -135,7 +137,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
                 {
                     if (WorkTimeReportByHours)
                     {
-                        return HoursMustLoad - Hours;
+                        return HoursMustLoad - HoursApproved;
                     }
                     else
                     {
@@ -152,5 +154,8 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public decimal Facturability { get; set; }
 
         public bool WorkTimeReportByHours { get; set; }
+        public decimal HoursLoaded { get; set; }
+        public decimal DraftHours { get; set; }
+        public decimal SentHours { get; set; }
     }
 }

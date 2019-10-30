@@ -200,13 +200,12 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             Delete(worktimes);
         }
 
-        public decimal GetTotalHoursBetweenDays(int employeeId, DateTime startdate, DateTime endDate, int analyticId)
+        public IList<WorkTime> GetTotalHoursBetweenDays(int employeeId, DateTime startdate, DateTime endDate, int analyticId)
         {
             return context.WorkTimes
-                .Where(x => x.Date.Date >= startdate.Date && x.Date.Date <= endDate.Date && 
+                .Where(x => x.Date.Date >= startdate.Date && x.Date.Date <= endDate.Date &&
                             x.AnalyticId == analyticId && x.EmployeeId == employeeId)
-                .Select(s => s.Hours)
-                .Sum();
+                .ToList();
         }
 
         public decimal GetTotalHoursApprovedBetweenDays(int employeeId, DateTime startdate, DateTime endDate, int analyticId)
