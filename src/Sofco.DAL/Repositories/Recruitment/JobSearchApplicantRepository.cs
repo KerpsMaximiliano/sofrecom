@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Relationships;
 
@@ -16,10 +17,11 @@ namespace Sofco.DAL.Repositories.Recruitment
 
         public IList<Applicant> Get(IList<int> skills, IList<int> profiles)
         {
-            IQueryable<Applicant> query = context.Applicants
+            var query = context.Applicants
                 .Include(x => x.JobSearchApplicants)
                 .Include(x => x.ApplicantProfiles)
-                .Include(x => x.ApplicantSkills);
+                .Include(x => x.ApplicantSkills)
+                .Where(x => x.Status == ApplicantStatus.Valid);
 
             if (skills.Any() && profiles.Any())
             {
