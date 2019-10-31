@@ -4,6 +4,10 @@
         <div class="col-xs-6" *ngIf="id > 0">
             <label class="advancement-name">{{'advancement.advancementName' | translate }} #{{id}}</label>
         </div>
+
+        <div class="col-xs-6">
+            <label style="font-size: 15px" class="label pull-right" [ngClass]="getStatusClass()">{{ status }}</label>
+        </div>
     </div>
 
     <div class="row">
@@ -18,7 +22,15 @@
             </div>
         </div>
         <div class="col-md-6">
-            <label style="font-size: 15px" class="label pull-right" [ngClass]="getStatusClass()">{{ status }}</label>
+            <div class="form-group pull-right">
+                <label style="font-size: 14px"> <i class="fa fa-building"></i> Oficina: </label>
+                <span style="font-size: 13px"> {{ userOffice }}</span>
+            </div>
+
+            <div class="form-group pull-right">
+                <label style="font-size: 14px"> <i class="fa fa-building"></i> Banco: </label>
+                <span style="font-size: 13px"> {{ userBank }}</span>
+            </div>
         </div>
     </div>
 

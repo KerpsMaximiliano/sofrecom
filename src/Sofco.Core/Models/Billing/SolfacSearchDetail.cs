@@ -26,6 +26,7 @@ namespace Sofco.Core.Models.Billing
 
             InvoiceDate = domain.InvoiceDate;
             InvoiceCode = domain.InvoiceCode;
+            Analytic = domain.Analytic;
 
             CustomerId = domain.AccountId;
             ServiceId = domain.ServiceId;
@@ -44,6 +45,8 @@ namespace Sofco.Core.Models.Billing
                 ProjectQuantity = 1;
             }
         }
+
+        public string Analytic { get; set; }
 
         public string ProjectId { get; set; }
 

@@ -67,5 +67,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
         public string MonthsReturnDesc { get; set; }
 
         public decimal Ammount { get; set; }
+        public string Office { get; set; }
+        public string Bank { get; set; }
     }
 }

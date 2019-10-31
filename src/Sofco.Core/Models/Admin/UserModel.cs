@@ -39,6 +39,8 @@ namespace Sofco.Core.Models.Admin
         public string AuthorizerDesc { get; set; }
 
         public bool HasCreditCard { get; set; }
+        public string Bank { get; set; }
+        public string Office { get; set; }
 
         public User CreateDomain()
         {

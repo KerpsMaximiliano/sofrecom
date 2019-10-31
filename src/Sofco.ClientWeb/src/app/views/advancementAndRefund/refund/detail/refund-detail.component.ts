@@ -63,6 +63,8 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
             this.actualStateId = response.data.statusId;
             this.entityId = response.data.id;
             this.userApplicantId = response.data.userApplicantId;
+            this.form.userOffice = response.data.office;
+            this.form.userBank = response.data.bank;
 
             this.form.setModel(response.data, this.canUpdate());
 

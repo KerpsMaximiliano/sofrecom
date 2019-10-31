@@ -340,6 +340,8 @@ namespace Sofco.Service.Implementations.Admin
             if (employee != null)
             {
                 model.HasCreditCard = employee.HasCreditCard;
+                model.Office = employee.OfficeAddress;
+                model.Bank = employee.Bank;
             }
 
             if (employee?.Manager != null)

@@ -101,5 +101,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public IList<RefundEditDetailModel> Details { get; set; }
 
         public IList<Option> Files { get; set; }
+        public string Office { get; set; }
+        public string Bank { get; set; }
     }
 }

@@ -20,8 +20,10 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
     public currenciesFiltered: any[] = new Array();
     public monthsReturns: any[] = new Array();
 
-    public userApplicantIdLogged: number;
-    public userApplicantName: string;
+    userApplicantIdLogged: number;
+    userApplicantName: string;
+    userBank: string;
+    userOffice: string;
 
     @Input() mode: string;
 
@@ -152,6 +154,8 @@ export class AdvancementFormComponent implements OnInit, OnDestroy {
 
             this.form.controls.userApplicantId.setValue(userInfo.id);
             this.userApplicantName = userInfo.name;
+            this.userBank = userInfo.bank;
+            this.userOffice = userInfo.office;
         }
     }
 

@@ -132,6 +132,14 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             response.Data = new AdvancementEditModel(advancement);
 
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(advancement.UserApplicant.Email);
+
+            if (employee != null)
+            {
+                response.Data.Office = employee.OfficeAddress;
+                response.Data.Bank = employee.Bank;
+            }
+
             return response;
         }
 

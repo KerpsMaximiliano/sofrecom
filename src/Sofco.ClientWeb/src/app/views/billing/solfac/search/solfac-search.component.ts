@@ -248,17 +248,17 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
     }
 
     initGrid() {
-        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         var title = `SOLFACs-${moment(new Date()).format("YYYYMMDD")}`;
 
         var params = {
             selector: '#solfacsTable',
-            columnDefs: [ {"aTargets": [4], "sType": "date-uk"} ],
+            columnDefs: [ {"aTargets": [5], "sType": "date-uk"} ],
             columns: columns,
-            order: [[ 4, "desc" ]],
+            order: [[ 5, "desc" ]],
             title: title,
             withExport: true,
-            currencyColumns: [6]
+            currencyColumns: [7]
           }
 
         this.datatableService.destroy('#solfacsTable');

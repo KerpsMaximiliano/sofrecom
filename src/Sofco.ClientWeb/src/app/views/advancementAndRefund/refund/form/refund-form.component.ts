@@ -29,6 +29,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public userApplicantIdLogged: number;
     public userApplicantName: string;
     public status: string;
+    public userOffice: string;
+    public userBank: string;
 
     public advancementSum = 0;
     public itemTotal = 0;
@@ -233,6 +235,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
 
             this.form.controls.userApplicantId.setValue(userInfo.id);
             this.userApplicantName = userInfo.name;
+            this.userBank = userInfo.bank;
+            this.userOffice = userInfo.office;
         }
     }
 

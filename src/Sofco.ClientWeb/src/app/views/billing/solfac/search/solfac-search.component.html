@@ -105,6 +105,7 @@
                             <tr>
                                 <th>{{'billing.solfac.businessName' | translate }}</th>
                                 <th class="column-md">{{'billing.solfac.project' | translate }}</th>
+                                <th>Analitica</th>
                                 <th>{{'billing.project.grid.manager' | translate }}</th>
                                 <th>{{'billing.solfac.documentType' | translate }}</th>
                                 <th>{{'billing.solfac.date' | translate }}</th>
@@ -118,6 +119,7 @@
                             <tr *ngFor="let solfac of data" (click)="goToDetail(solfac)" (dblclick)="goToDetailInNewTab(solfac)" class="pointer">
                                 <td>{{ solfac.businessName}}</td>
                                 <td class="column-md text-ellipsis" title="{{ solfac.project}}"> <span *ngIf="solfac.projectQuantity > 1" class="badge badge-primary"> <i class="fa fa-plus"></i> </span> {{ solfac.project}}</td>
+                                <td>{{ solfac.analytic}}</td>
                                 <td>{{ solfac.manager}}</td>
                                 <td>{{ solfac.documentTypeName}}</td>
                                 <td>{{ solfac.startDate | date:'dd/MM/yyyy'}}</td>
