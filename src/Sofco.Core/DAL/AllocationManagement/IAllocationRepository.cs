@@ -31,5 +31,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Allocation> GetAllocationsBetweenDaysWithCharges(int employeeId, DateTime startDate, DateTime endDate);
         void AddReportPowerBi(List<ReportPowerBi> report);
         void CleanReportPowerBi();
+        void UpdateModifiedUser(Allocation allocation);
     }
 }

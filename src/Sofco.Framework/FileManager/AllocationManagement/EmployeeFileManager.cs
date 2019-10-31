@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,8 +35,8 @@ namespace Sofco.Framework.FileManager.AllocationManagement
             var i = 2;
 
             foreach (var employeeView in list)
-            {
-                sheet.Cells[$"A{i}"].Value = employeeView.EmployeeNumber;
+            { 
+                sheet.Cells[$"A{i}"].Value = Convert.ToInt32(employeeView.EmployeeNumber);
                 sheet.Cells[$"B{i}"].Value = employeeView.Name;
                 sheet.Cells[$"C{i}"].Value = employeeView.Profile;
                 sheet.Cells[$"D{i}"].Value = employeeView.Seniority;

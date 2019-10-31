@@ -48,6 +48,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Database.ExecuteSqlCommand("delete from app.reportsPowerBi");
         }
 
+        public void UpdateModifiedUser(Allocation allocation)
+        {
+            context.Entry(allocation).Property("ModifiedBy").IsModified = true;
+            context.Entry(allocation).Property("ModifiedAt").IsModified = true;
+        }
+
         public IList<Allocation> GetAllocationsByDate(DateTime date)
         {
             return context.Allocations

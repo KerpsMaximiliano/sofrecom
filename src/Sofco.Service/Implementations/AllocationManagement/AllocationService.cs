@@ -15,7 +15,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.Services.ManagementReport;
+using Sofco.Data.Admin;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -26,16 +28,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IAllocationFileManager allocationFileManager;
         private readonly ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService;
         private readonly AppSetting appSetting;
+        private readonly IUserData userData;
 
         public AllocationService(IUnitOfWork unitOfWork,
             ILogMailer<AllocationService> logger,
             ILicenseGenerateWorkTimeService licenseGenerateWorkTimeService,
             IOptions<AppSetting> appSettingOptions,
+            IUserData userData,
             IAllocationFileManager allocationFileManager)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.appSetting = appSettingOptions.Value;
+            this.userData = userData;
             this.allocationFileManager = allocationFileManager;
             this.licenseGenerateWorkTimeService = licenseGenerateWorkTimeService;
         }
@@ -584,6 +589,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private void SaveAllocation(AllocationDto allocationDto, Response response, ICollection<Allocation> allocationsBetweenDays)
         {
+            var currentUser = userData.GetCurrentUser();
+
             try
             {
                 foreach (var month in allocationDto.Months)
@@ -602,6 +609,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                             allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
                             unitOfWork.AllocationRepository.UpdateReleaseDate(allocation);
+
+                            allocation.ModifiedBy = currentUser?.UserName;
+                            allocation.ModifiedAt = DateTime.UtcNow;
+
+                            unitOfWork.AllocationRepository.UpdateModifiedUser(allocation);
                         }
                         else
                         {
@@ -624,6 +636,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                             unitOfWork.AllocationRepository.UpdatePercentage(allocation);
                             allocation.ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date;
                             unitOfWork.AllocationRepository.UpdateReleaseDate(allocation);
+
+                            allocation.ModifiedBy = currentUser?.UserName;
+                            allocation.ModifiedAt = DateTime.UtcNow;
+
+                            unitOfWork.AllocationRepository.UpdateModifiedUser(allocation);
                         }
                     }
                 }
@@ -650,7 +667,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 StartDate = month.Date.Date,
                 Percentage = month.Percentage.GetValueOrDefault(),
                 EmployeeId = allocationDto.EmployeeId,
-                ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date
+                ReleaseDate = allocationDto.ReleaseDate.GetValueOrDefault().Date,
+                ModifiedBy = userData.GetCurrentUser()?.UserName,
+                ModifiedAt = DateTime.UtcNow,
             };
 
             unitOfWork.AllocationRepository.Insert(allocation);

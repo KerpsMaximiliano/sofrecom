@@ -1,23 +1,23 @@
-﻿using Moq;
+﻿using Microsoft.Extensions.Options;
+using Moq;
 using NUnit.Framework;
+using Sofco.Common.Settings;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL.Rrhh;
+using Sofco.Core.Data.Admin;
+using Sofco.Core.FileManager;
+using Sofco.Core.Logger;
+using Sofco.Core.Models.Admin;
+using Sofco.Core.Services.Rrhh;
 using Sofco.Domain.DTO;
+using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Rrhh;
 using Sofco.Service.Implementations.AllocationManagement;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.Extensions.Options;
-using Sofco.Common.Settings;
-using Sofco.Core.DAL;
-using Sofco.Core.DAL.Rrhh;
-using Sofco.Core.FileManager;
-using Sofco.Core.Logger;
-using Sofco.Core.Services.ManagementReport;
-using Sofco.Core.Services.Rrhh;
-using Sofco.DAL;
-using Sofco.Domain.Models.AllocationManagement;
-using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.UnitTest.Services.AllocationManagement
 {
@@ -31,6 +31,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
         private Mock<ILogMailer<AllocationService>> loggerMock;
         private Mock<IAllocationFileManager> fileManagerMock;
         private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeServiceMock;
+        private Mock<IUserData> userDataMock;
         private Mock<IOptions<AppSetting>> appSettingMock;
 
         private Mock<IUnitOfWork> unitOfWork;
@@ -49,6 +50,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             fileManagerMock = new Mock<IAllocationFileManager>();
 
             licenseRepositoryMock = new Mock<ILicenseRepository>();
+            userDataMock = new Mock<IUserData>();
 
             licenseGenerateWorkTimeServiceMock = new Mock<ILicenseGenerateWorkTimeService>();
 
@@ -65,19 +67,25 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             appSettingMock.Setup(x => x.Value).Returns(new AppSetting());
 
             licenseRepositoryMock.Setup(x => x.GetByEmployeeAndDates(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new List<License>());
-            employeeRepositoryMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Employee { StartDate = new DateTime(2017, 1,1)});
+            employeeRepositoryMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Employee { StartDate = new DateTime(2017, 1, 1) });
+            userDataMock.Setup(x => x.GetCurrentUser()).Returns(new UserLiteModel { UserName = "username" });
 
-            sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, appSettingMock.Object, fileManagerMock.Object);
+            sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, appSettingMock.Object, userDataMock.Object, fileManagerMock.Object);
         }
 
         [TestCase]
         public void ValidatePercentageCheckError()
         {
-            var parameters = new AllocationDto { AnalyticId = 1, EmployeeId = 1, Months = new List<AllocationMonthDto>
+            var parameters = new AllocationDto
+            {
+                AnalyticId = 1,
+                EmployeeId = 1,
+                Months = new List<AllocationMonthDto>
             {
                 new AllocationMonthDto { AllocationId = 0, Percentage = 100, Date = new DateTime(2018, 1, 1)},
                 new AllocationMonthDto { AllocationId = 0, Percentage = 150, Date = new DateTime(2018, 1, 1)},
-            } };
+            }
+            };
 
             analyticRepositoryMock.Setup(x => x.Exist(It.IsAny<int>())).Returns(true);
             employeeRepositoryMock.Setup(x => x.Exist(It.IsAny<int>())).Returns(true);

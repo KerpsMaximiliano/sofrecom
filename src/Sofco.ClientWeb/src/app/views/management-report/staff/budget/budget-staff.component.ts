@@ -12,7 +12,6 @@ import { UtilsService } from "app/services/common/utils.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { FormControl, Validators } from "@angular/forms";
 import { evaluate } from 'mathjs/number'
-// import { Worksheet } from "exceljs";
 
 @Component({
     selector: 'budget-staff',
@@ -179,7 +178,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.calculateTotalCosts()
             this.sendDataToDetailView();
         },
-            () => this.messageService.closeLoading());
+        () => this.messageService.closeLoading());
     }
 
     openEditItemModal(item, typeBudget, month) {
@@ -770,8 +769,25 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                         totalCostReal += category.monthsCategory[index].totalReal;
                     }
                 }
-            });
 
+                if(category.typeName == this.typeProfile){
+                    if (category.monthsCategory[index].totalBudget) {
+                        totalSalaryBudget += category.monthsCategory[index].totalBudget;
+                    }
+                    if (category.monthsCategory[index].totalProjected) {
+                        totalSalaryProjected += category.monthsCategory[index].totalProjected;
+                    }
+                    if (category.monthsCategory[index].totalPfa1) {
+                        totalSalaryPfa1 += category.monthsCategory[index].totalPfa1;
+                    }
+                    if (category.monthsCategory[index].totalPfa2) {
+                        totalSalaryPfa2 += category.monthsCategory[index].totalPfa2;
+                    }
+                    if (category.monthsCategory[index].totalReal) {
+                        totalSalaryReal += category.monthsCategory[index].totalReal;
+                    }
+                }
+            });
 
             //Sumo el totol de los sueldos
             this.employees.forEach(employee => {

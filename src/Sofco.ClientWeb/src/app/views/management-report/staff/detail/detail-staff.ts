@@ -508,5 +508,9 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         //     let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         //     fs.saveAs(blob, title);
         // });
+
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 500);
     }
 } 

@@ -512,7 +512,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         () => {});
     }
 
-    // generateExcel(){
+    generateExcel(){
         // let workbook = new Workbook();
 
         // this.marginTracking.createWorksheet(workbook);
@@ -526,5 +526,9 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         //     let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         //     fs.saveAs(blob, title);
         // });
-    // }
+
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 500);
+    }
 }

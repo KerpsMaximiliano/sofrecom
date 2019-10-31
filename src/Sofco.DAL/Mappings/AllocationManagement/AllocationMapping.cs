@@ -8,6 +8,7 @@ namespace Sofco.DAL.Mappings.AllocationManagement
         public static void MapAllocation(this ModelBuilder builder)
         {
             builder.Entity<Allocation>().HasKey(t => t.Id);
+            builder.Entity<Allocation>().Property(x => x.ModifiedBy).HasMaxLength(50);
 
             builder.Entity<Allocation>()
                  .HasOne(pt => pt.Analytic)
