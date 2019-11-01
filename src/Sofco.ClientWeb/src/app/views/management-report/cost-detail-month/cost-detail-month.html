@@ -105,6 +105,15 @@
         </div>
     </div>
 
+    <div class="row no-gutters">
+        <div class="col-sm-2 col-sm-offset-6">
+            <strong>Sub Total</strong>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesSubTotal | amountFormat" disabled>
+        </div>
+    </div>
+
     <br>
 
     <small class="text-danger m-r-sm"><strong>* Ajuste</strong></small>
@@ -125,7 +134,7 @@
 
     <hr class="hr-line-dashed">
 
-    <div class="row border-bottom">
+    <div class="row no-gutters border-bottom">
         <div class="col-sm-5">
             <h4>Costos contratados + subcontratados</h4>
         </div>
@@ -148,7 +157,7 @@
 
     <form name="form" #f="ngForm" novalidate (keydown.enter)="$event.preventDefault()">
 
-        <div class="row m-t-xs" *ngFor="let hire of contracted; let i = index">
+        <div class="row m-t-xs no-gutters" *ngFor="let hire of contracted; let i = index">
             <div class="col-sm-5">
                 <!-- <input type="text" class="form-control input-xs" [(ngModel)]="hire.name" [disabled]="isReadOnly" maxlength="200" required> -->
                 <input name="name{{i}}" class="form-control input-xs" [disabled]="isReadOnly" maxlength="200" required
@@ -180,11 +189,19 @@
 
     </form>
 
+    <div class="row no-gutters m-t-xs" *ngIf="contracted.length > 0">
+        <div class="col-sm-2 col-sm-offset-7">
+            <strong>Sub Total</strong>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="contractedsSubTotal | amountFormat" disabled>
+        </div>
+    </div>
+
     <button class="btn btn-success btn-md" (click)="addContracted()" *ngIf="!isReadOnly" type="button">
         Agregar
         <i class="fa fa-plus"></i>
     </button>
-
 
     <hr class="hr-line-dashed">
 
@@ -209,7 +226,7 @@
         {{ i18nService.translateByKey('noInfoAvailable') }}
     </div>
 
-    <div class="row m-t-xs" *ngFor="let expense of expenses; let i = index">
+    <div class="row m-t-xs no-gutters" *ngFor="let expense of expenses; let i = index">
         <div class="col-sm-3">
             {{ expense.categoryName }}
         </div>
@@ -229,6 +246,15 @@
         <div class="col-sm-1">
             <button class="btn btn-danger btn-xs" (click)="deleteExpense(i, expense)" *ngIf="!isReadOnly"><i
                     class="fa fa-trash"></i></button>
+        </div>
+    </div>
+
+    <div class="row no-gutters m-t-xs" *ngIf="expenses.length > 0">
+        <div class="col-sm-3 col-sm-offset-6">
+            <strong>Sub Total</strong>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="categoriesSubTotal | amountFormat" disabled>
         </div>
     </div>
 

@@ -78,6 +78,15 @@
         </div>
     </div>
 
+    <div class="row m-t-xs" *ngIf="resources.length > 0">
+        <div class="col-sm-2 col-sm-offset-6">
+            <strong>Sub Total</strong>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesSubTotal | amountFormat" disabled>
+        </div>
+    </div>
+
     <br>
 
     <small class="text-danger m-r-sm"><strong>* Ajuste</strong></small>
@@ -136,7 +145,18 @@
             <button class="btn btn-danger btn-xs" (click)="deleteSubcategory(i)"><i class="fa fa-trash"></i></button>
         </div>
     </div>
+
+    <div class="row m-t-xs" *ngIf="resources.length > 0">
+        <div class="col-sm-3 col-sm-offset-6">
+            <strong>Sub Total</strong>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="categoriesSubTotal | amountFormat" disabled>
+        </div>
+    </div>
+
     <br>
+
     <div class="row" *ngIf="!isReadOnly">
         <br>
         <div class="col-md-5">

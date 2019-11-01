@@ -9,7 +9,6 @@ import { ManagementReportDetailComponent } from "../detail/mr-detail"
 import { EmployeeService } from "app/services/allocation-management/employee.service"
 import { category } from "app/models/management-report/category";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
-import { debug } from "util";
 
 @Component({
     selector: 'cost-detail-month',
@@ -34,6 +33,9 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     provision: number = 0;
     provisionAux: number;
     totalChargesPercentage: number = 0;
+    categoriesSubTotal: number = 0;
+    resourcesSubTotal: number = 0;
+    contractedsSubTotal: number = 0;
 
     totalProvisionedEditabled: boolean = false;
     totalBillingEditabled: boolean = false;
@@ -295,17 +297,23 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     calculateTotalCosts() {
         this.totalCosts = 0;
+        this.categoriesSubTotal = 0;
+        this.resourcesSubTotal = 0;
+        this.contractedsSubTotal = 0;
 
         this.expenses.forEach(element => {
             this.totalCosts += element.value;
+            this.categoriesSubTotal += element.value;
         });
 
         this.resources.forEach(element => {
             this.totalCosts += element.total;
+            this.resourcesSubTotal += element.total;
         });
 
         this.contracted.forEach(element => {
             this.totalCosts += element.total;
+            this.contractedsSubTotal += element.total;
         });
 
         var totalCharges = 0;
