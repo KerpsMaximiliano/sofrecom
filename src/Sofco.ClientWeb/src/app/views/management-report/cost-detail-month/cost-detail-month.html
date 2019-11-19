@@ -105,9 +105,15 @@
         </div>
     </div>
 
-    <div class="row no-gutters">
-        <div class="col-sm-2 col-sm-offset-6">
+    <div class="row m-t-xs no-gutters">
+        <div class="col-sm-4">
             <strong>Sub Total</strong>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesSalarySubTotal | amountFormat" disabled>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesChargesSubTotal | amountFormat" disabled>
         </div>
         <div class="col-sm-2">
             <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesSubTotal | amountFormat" disabled>
@@ -190,8 +196,14 @@
     </form>
 
     <div class="row no-gutters m-t-xs" *ngIf="contracted.length > 0">
-        <div class="col-sm-2 col-sm-offset-7">
+        <div class="col-sm-5">
             <strong>Sub Total</strong>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="contractedsHonorarySubTotal | amountFormat" disabled>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="contractedsInsuranceSubTotal | amountFormat" disabled>
         </div>
         <div class="col-sm-2">
             <input type="text" decimalFormat class="form-control input-xs" [ngModel]="contractedsSubTotal | amountFormat" disabled>

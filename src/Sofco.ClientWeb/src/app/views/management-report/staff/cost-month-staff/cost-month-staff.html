@@ -71,16 +71,22 @@
             <math-input [(model)]="resource.charges" (modelChange)="resourceChange(resource)" [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
-            <input type="text" class="form-control input-xs text-right" [ngModel]="resource.total | amountFormat" disabled>
+            <input type="text" class="form-control input-xs" [ngModel]="resource.total | amountFormat" disabled>
         </div>
         <div class="col-sm-2">
             <input type="text" class="form-control input-xs" [ngModel]="resource.chargesPercentage | amountFormat" disabled>
         </div>
     </div>
-
+ 
     <div class="row m-t-xs" *ngIf="resources.length > 0">
-        <div class="col-sm-2 col-sm-offset-6">
+        <div class="col-sm-4">
             <strong>Sub Total</strong>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesSalarySubTotal | amountFormat" disabled>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesChargesSubTotal | amountFormat" disabled>
         </div>
         <div class="col-sm-2">
             <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesSubTotal | amountFormat" disabled>

@@ -35,6 +35,8 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     totalChargesPercentage: number = 0;
     resourcesSubTotal: number = 0;
     categoriesSubTotal: number = 0;
+    resourcesSalarySubTotal: number = 0;
+    resourcesChargesSubTotal: number = 0;
 
     totalProvisionedEditabled: boolean = false;
 
@@ -175,23 +177,23 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.totalCosts = 0;
         this.categoriesSubTotal = 0;
         this.resourcesSubTotal = 0;
+        this.resourcesSalarySubTotal = 0;
+        this.resourcesChargesSubTotal = 0;
+        var totalCharges = 0;
+        var totalSalary= 0;
 
         this.resources.forEach(element => {
             this.totalCosts += element.total;
             this.resourcesSubTotal += element.total;
+            this.resourcesSalarySubTotal += element.salary;
+            this.resourcesChargesSubTotal += element.charges;
+            totalCharges += element.charges;
+            totalSalary += element.salary;
         });
 
         this.subCategoriesData.forEach(element => {
             this.totalCosts += element.value;
             this.categoriesSubTotal += element.value;
-        });
- 
-        var totalCharges = 0;
-        var totalSalary= 0;
-
-        this.resources.forEach(element => {
-            totalCharges += element.charges;
-            totalSalary += element.salary;
         });
         
         if(totalSalary > 0){

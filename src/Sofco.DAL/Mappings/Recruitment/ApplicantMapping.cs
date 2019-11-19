@@ -15,10 +15,10 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<Applicant>().Property(x => x.FirstName).HasMaxLength(75);
             builder.Entity<Applicant>().Property(x => x.CountryCode1).HasMaxLength(5);
             builder.Entity<Applicant>().Property(x => x.AreaCode1).HasMaxLength(5);
-            builder.Entity<Applicant>().Property(x => x.Telephone1).HasMaxLength(15);
+            builder.Entity<Applicant>().Property(x => x.Telephone1).HasMaxLength(100);
             builder.Entity<Applicant>().Property(x => x.CountryCode2).HasMaxLength(5);
             builder.Entity<Applicant>().Property(x => x.AreaCode2).HasMaxLength(5);
-            builder.Entity<Applicant>().Property(x => x.Telephone2).HasMaxLength(15);
+            builder.Entity<Applicant>().Property(x => x.Telephone2).HasMaxLength(100);
             builder.Entity<Applicant>().Property(x => x.CreatedBy).HasMaxLength(25);
             builder.Entity<Applicant>().Property(x => x.DocumentNumber).HasMaxLength(10);
             builder.Entity<Applicant>().Property(x => x.Nationality).HasMaxLength(50);

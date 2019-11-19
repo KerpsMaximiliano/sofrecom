@@ -35,7 +35,11 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     totalChargesPercentage: number = 0;
     categoriesSubTotal: number = 0;
     resourcesSubTotal: number = 0;
+    resourcesSalarySubTotal: number = 0;
+    resourcesChargesSubTotal: number = 0;
     contractedsSubTotal: number = 0;
+    contractedsHonorarySubTotal: number = 0;
+    contractedsInsuranceSubTotal: number = 0;
 
     totalProvisionedEditabled: boolean = false;
     totalBillingEditabled: boolean = false;
@@ -300,6 +304,12 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.categoriesSubTotal = 0;
         this.resourcesSubTotal = 0;
         this.contractedsSubTotal = 0;
+        this.contractedsHonorarySubTotal = 0;
+        this.contractedsInsuranceSubTotal = 0;
+        this.resourcesSalarySubTotal = 0;
+        this.resourcesChargesSubTotal = 0;
+        var totalCharges = 0;
+        var totalSalary= 0;
 
         this.expenses.forEach(element => {
             this.totalCosts += element.value;
@@ -309,21 +319,19 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.resources.forEach(element => {
             this.totalCosts += element.total;
             this.resourcesSubTotal += element.total;
+            this.resourcesSalarySubTotal += element.salary;
+            this.resourcesChargesSubTotal += element.charges;
+            totalCharges += element.charges;
+            totalSalary += element.salary;
         });
 
         this.contracted.forEach(element => {
             this.totalCosts += element.total;
             this.contractedsSubTotal += element.total;
+            this.contractedsHonorarySubTotal += element.honorary;
+            this.contractedsInsuranceSubTotal += element.insurance;
         });
-
-        var totalCharges = 0;
-        var totalSalary= 0;
-
-        this.resources.forEach(element => {
-            totalCharges += element.charges;
-            totalSalary += element.salary;
-        });
-
+     
         if(totalSalary > 0){
             this.totalChargesPercentage = (totalCharges/totalSalary)*100;
         }
