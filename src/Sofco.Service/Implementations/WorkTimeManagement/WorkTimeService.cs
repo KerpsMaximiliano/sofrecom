@@ -191,7 +191,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var userIsManager = unitOfWork.UserRepository.HasManagerGroup(currentUser.UserName);
 
             var list = unitOfWork.WorkTimeRepository
-                .SearchPending(model, userIsManager || userIsDirector, currentUser.Id, appSetting.AnalyticBank)
+                .SearchPending(model, userIsManager || userIsDirector, currentUser.Id, appSetting.Analytic999)
                 .ToList();
 
             list.AddRange(AddDelegatedData(model.AnalyticId, model.EmployeeId, WorkTimeStatus.Sent, list));

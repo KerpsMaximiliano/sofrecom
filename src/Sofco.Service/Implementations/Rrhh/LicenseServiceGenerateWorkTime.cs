@@ -37,7 +37,7 @@ namespace Sofco.Service.Implementations.Rrhh
 
             var user = unitOfWork.UserRepository.GetByEmail(license.Employee.Email);
 
-            var analyticBank = unitOfWork.AnalyticRepository.GetByTitle(appSetting.AnalyticBank);
+            var analyticBank = unitOfWork.AnalyticRepository.GetByTitle(appSetting.Analytic999);
 
             while (startDate.Date <= endDate.Date)
             {

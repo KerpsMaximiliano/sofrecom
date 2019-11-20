@@ -617,6 +617,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Projected).FirstOrDefault().Id).ToList();
                             employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Projected).FirstOrDefault().Id).ToList();
                         }
+
                         if (subcategories != null)
                         {
                             foreach (var subcategory in subcategories)

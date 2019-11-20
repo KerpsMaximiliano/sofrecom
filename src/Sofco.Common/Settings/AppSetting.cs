@@ -30,6 +30,7 @@
 
         public string LicenseViewCode { get; set; }
 
+        public string Analytic999 { get; set; }
         public string AnalyticBank { get; set; }
 
         public int WorkflowStatusDraft { get; set; }

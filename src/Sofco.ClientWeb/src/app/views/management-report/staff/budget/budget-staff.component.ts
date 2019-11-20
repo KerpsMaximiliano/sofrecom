@@ -750,6 +750,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             var totalSalaryReal = 0;
 
             var charges = 0;
+            var chargesPfa1 = 0;
+            var chargesPfa2 = 0;
 
             this.categories.forEach(category => {
                 if (category.name != this.generalAdjustment) {
@@ -801,14 +803,16 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                     totalSalaryProjected += employee.monthsCost[index].projected.value;
                 }
 
-                if (employee.monthsCost[index].pfa2.value) {
-                    totalCostPfa1 += employee.monthsCost[index].pfa2.value;
-                    totalSalaryPfa1 += employee.monthsCost[index].pfa2.value;
+                if (employee.monthsCost[index].pfa1.value) {
+                    totalCostPfa1 += employee.monthsCost[index].pfa1.value;
+                    totalSalaryPfa1 += employee.monthsCost[index].pfa1.value;
+                    chargesPfa1 += employee.monthsCost[index].pfa1.charges;
                 }
 
                 if (employee.monthsCost[index].pfa2.value) {
                     totalCostPfa2 += employee.monthsCost[index].pfa2.value;
                     totalSalaryPfa2 += employee.monthsCost[index].pfa2.value;
+                    chargesPfa2 += employee.monthsCost[index].pfa2.charges;
                 }
 
                 if (employee.monthsCost[index].real.value) {
@@ -870,10 +874,41 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 }
             });
 
+            var date = new Date();
+            var actualMonth = date.getMonth()+1;
+            var actualYear = date.getFullYear();
+
+            if(month.year > actualYear){
+                monthTotal.pfa1.totalCost = totalCostPfa1 + (totalSalaryPfa1 * 0.85);
+                monthTotal.pfa2.totalCost = totalCostPfa2 + (totalSalaryPfa2 * 0.85);
+                month.pfa1.totalLoads = (totalSalaryPfa1 * 0.85);
+                month.pfa2.totalLoads = (totalSalaryPfa2 * 0.85);
+            }
+            else{
+                if(month.year == actualYear){
+                    if(month.month > actualMonth){
+                        monthTotal.pfa1.totalCost = totalCostPfa1 + (totalSalaryPfa1 * 0.85);
+                        monthTotal.pfa2.totalCost = totalCostPfa2 + (totalSalaryPfa2 * 0.85);
+                        month.pfa1.totalLoads = (totalSalaryPfa1 * 0.85);
+                        month.pfa2.totalLoads = (totalSalaryPfa2 * 0.85);
+                    }
+                    else{
+                        monthTotal.pfa1.totalCost = totalCostPfa1 + chargesPfa1;
+                        monthTotal.pfa2.totalCost = totalCostPfa2 + chargesPfa2;
+                        month.pfa1.totalLoads = chargesPfa1;
+                        month.pfa2.totalLoads = chargesPfa2;
+                    }
+                }
+                else{
+                    monthTotal.pfa1.totalCost = totalCostPfa1 + chargesPfa1;
+                    monthTotal.pfa2.totalCost = totalCostPfa2 + chargesPfa2;
+                    month.pfa1.totalLoads = chargesPfa1;
+                    month.pfa2.totalLoads = chargesPfa2;
+                }
+            }
+
             monthTotal.budget.totalCost = totalCostBugdet + (totalSalaryBudget * 0.85);
             monthTotal.projected.totalCost = totalCostProjected + (totalSalaryProjected * 0.85);
-            monthTotal.pfa1.totalCost = totalCostPfa1 + (totalSalaryPfa1 * 0.85);
-            monthTotal.pfa2.totalCost = totalCostPfa2 + (totalSalaryPfa2 * 0.85);
             monthTotal.real.totalCost = totalCostReal + charges;
 
             month.budget.totalSalary = totalSalaryBudget
@@ -884,8 +919,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
 
             month.budget.totalLoads = (totalSalaryBudget * 0.85)
             month.projected.totalLoads = (totalSalaryProjected * 0.85)
-            month.pfa1.totalLoads = (totalSalaryPfa1 * 0.85)
-            month.pfa2.totalLoads = (totalSalaryPfa2 * 0.85)
+         
             month.real.totalLoads = charges
 
             monthTotal.budget.subTotalCost = monthTotal.budget.totalCost - totalInfraRedBugdet;
