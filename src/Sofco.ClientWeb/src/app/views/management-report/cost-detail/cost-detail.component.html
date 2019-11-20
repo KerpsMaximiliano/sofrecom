@@ -410,42 +410,42 @@
 </ng2-modal>
 
 <ng2-modal [config]="totalCostsExchangesModalConfig" #totalCostsExchangesModal [size]="'modal-lg'">
-        <div class="row">
-            <div class="col-md-7">
-                <table class="table table-striped dataTable table-bordered" role="grid">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Moneda</th>
-                            <th class="text-center">Monto</th>
-                            <th class="text-center">Monto Pesos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of totalCostsExchanges.currencies">
-                            <td class="text-center">{{ item.currencyName }}</td>
-                            <td class="text-center">{{ item.value | amountFormat }}</td>
-                            <td class="text-center">{{ item.valuePesos | amountFormat }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-5">
-                <table class="table table-striped dataTable table-bordered" role="grid">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Moneda</th>
-                            <th class="text-center">Cotización</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of totalCostsExchanges.exchanges">
-                            <td class="text-center">{{ item.currencyName }}</td>
-                            <td class="text-center">{{ item.exchange | amountFormat }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="row">
+        <div class="col-md-7">
+            <table class="table table-striped dataTable table-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th class="text-center">Moneda</th>
+                        <th class="text-center">Monto</th>
+                        <th class="text-center">Monto Pesos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of totalCostsExchanges.currencies">
+                        <td class="text-center">{{ item.currencyName }}</td>
+                        <td class="text-center">{{ item.value | amountFormat }}</td>
+                        <td class="text-center">{{ item.valuePesos | amountFormat }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    
-        <label class="m-t-md label label-primary totalBillingMonth">Total de Costos: ${{ totalCostsExchanges.total | amountFormat }}</label>
-    </ng2-modal>
+        <div class="col-md-5">
+            <table class="table table-striped dataTable table-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th class="text-center">Moneda</th>
+                        <th class="text-center">Cotización</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of totalCostsExchanges.exchanges">
+                        <td class="text-center">{{ item.currencyName }}</td>
+                        <td class="text-center">{{ item.exchange | amountFormat }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <label class="m-t-md label label-primary totalBillingMonth">Total de Costos: ${{ totalCostsExchanges.total | amountFormat }}</label>
+</ng2-modal>

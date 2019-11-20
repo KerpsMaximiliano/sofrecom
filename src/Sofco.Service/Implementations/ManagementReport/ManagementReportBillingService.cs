@@ -30,7 +30,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             var response = new Response<int>();
 
             var billing = GetBilling(model.ManagementReportId, model.MonthYear, model.Id);
-
+          
             try
             {
                 switch (model.Type)
@@ -46,11 +46,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                     //    break;
                 }
 
-                //if (model.Type == EvalPropType.Billing)
-                //    billing.EvalPropBillingValue = model.Value;
-                //else
-                //    billing.EvalPropExpenseValue = model.Value;
-
                 if (billing.Id > 0)
                 {
                     unitOfWork.ManagementReportBillingRepository.Update(billing);
@@ -58,6 +53,40 @@ namespace Sofco.Service.Implementations.ManagementReport
                 else
                 {
                     unitOfWork.ManagementReportBillingRepository.Insert(billing);
+                }
+
+                if (model.Replicate)
+                {
+                    var managementReport = unitOfWork.ManagementReportRepository.Get(model.ManagementReportId);
+
+                    for (DateTime date = model.MonthYear.AddMonths(1); date <= managementReport.EndDate.Date; date = date.AddMonths(1))
+                    {
+                        var billingToReplicate = unitOfWork.ManagementReportBillingRepository.GetByManagementReportIdAndDate(model.ManagementReportId, date);
+
+                        if (billingToReplicate == null)
+                        {
+                            billingToReplicate = new ManagementReportBilling
+                            {
+                                ManagementReportId = model.ManagementReportId,
+                                MonthYear = date.Date
+                            };
+                        }
+
+                        switch (model.Type)
+                        {
+                            case EvalPropType.Billing: billingToReplicate.EvalPropBillingValue = model.Value; break;
+                            case EvalPropType.Expense: billingToReplicate.EvalPropExpenseValue = model.Value; break;
+                        }
+
+                        if (billingToReplicate.Id > 0)
+                        {
+                            unitOfWork.ManagementReportBillingRepository.Update(billingToReplicate);
+                        }
+                        else
+                        {
+                            unitOfWork.ManagementReportBillingRepository.Insert(billingToReplicate);
+                        }
+                    }
                 }
 
                 unitOfWork.Save();

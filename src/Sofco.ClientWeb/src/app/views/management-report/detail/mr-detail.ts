@@ -270,8 +270,8 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    openEvalPropModal(month){
-        this.modalEvalProp.openEditEvalProp(month);
+    openEvalPropModal(data){
+        this.modalEvalProp.openEditEvalProp(data.month, data.months);
     }
 
     getBillingData(billingModel){

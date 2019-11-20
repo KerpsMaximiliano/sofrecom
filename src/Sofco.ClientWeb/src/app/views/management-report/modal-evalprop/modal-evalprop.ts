@@ -4,6 +4,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { ManagementReportService } from "app/services/management-report/management-report.service";
 import { MenuService } from "app/services/admin/menu.service";
+import * as moment from 'moment';
 
 @Component({
     selector: 'modal-evalprop',
@@ -18,6 +19,8 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
     monthSelected: any;
     managementReportId: number;
     icon: string = "$";
+    replicate: boolean = false;
+    months: any;
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
@@ -42,7 +45,7 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
         if (this.updateEvalpropValueSubscrip) this.updateEvalpropValueSubscrip.unsubscribe();
     }
 
-    openEditEvalProp(month){
+    openEditEvalProp(month, months){
         if(!this.menuService.userIsCdg) return;
 
         if(month.icon){
@@ -58,6 +61,7 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
         this.editEvalPropValue.setValue(month.valueEvalProp);
         this.monthSelectedDisplay = month.display;
         this.monthSelected = month;
+        this.months = months;
     }
 
     updateEvalPropValue(){
@@ -66,7 +70,8 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
             value: this.editEvalPropValue.value,
             type: this.monthSelected.type,
             managementReportId: this.managementReportId,
-            monthYear: this.monthSelected.monthYear
+            monthYear: this.monthSelected.monthYear,
+            replicate: this.replicate
         }
 
         this.updateEvalpropValueSubscrip = this.managementReportService.updateBilling(json).subscribe(response => {
@@ -76,6 +81,13 @@ export class ModalEvalPropComponent implements OnInit, OnDestroy {
 
             this.monthSelected.valueEvalProp = this.editEvalPropValue.value;
             this.monthSelected.billingMonthId = response.data;
+
+            this.months.forEach(month => {
+                if(new Date(month.year, month.month, 1) > moment(this.monthSelected.monthYear).toDate()){
+                    month.valueEvalProp = this.editEvalPropValue.value
+                }
+            });
+
             this.monthSelectedDisplay = null;
             this.monthSelected = null;
             this.editEvalPropValue.setValue(null);

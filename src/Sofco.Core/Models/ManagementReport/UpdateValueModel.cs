@@ -14,6 +14,8 @@ namespace Sofco.Core.Models.ManagementReport
         public int ManagementReportId { get; set; }
 
         public DateTime MonthYear { get; set; }
+
+        public bool Replicate { get; set; }
     }
 
     public class UpdateBillingDataModel
