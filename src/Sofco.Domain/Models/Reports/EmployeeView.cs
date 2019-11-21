@@ -93,5 +93,7 @@ namespace Sofco.Domain.Models.Reports
         public string ManagerName { get; set; }
 
         public int Id { get; set; }
+
+        public string AccountName { get; set; }
     }
 }
