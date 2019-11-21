@@ -113,7 +113,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let item of model?.budgets">
+                                        <tr *ngFor="let item of budgetsFiltered">
                                             <td>{{ item.description }}</td>
                                             <td>{{ item.value | amountFormat }}</td>
                                             <td>{{ item.startDate | date: 'dd/MM/yyyy' }}</td>

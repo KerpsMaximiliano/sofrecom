@@ -43,7 +43,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     comments: string;
     allComments: any[] = new Array();
     months: any[] = new Array();
-   
+    budgetsFiltered: any[] = new Array();
 
     public addCommentModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "Agregar comentario",
@@ -164,6 +164,8 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             this.budgetView.isCdg = this.userIsCdg();
 
             this.budgetView.monthExchanges = this.months;
+
+            this.budgetsFiltered = this.model.budgets.filter(x => x.value > 0);
         },
         responseError => {
             this.messageService.closeLoading();
