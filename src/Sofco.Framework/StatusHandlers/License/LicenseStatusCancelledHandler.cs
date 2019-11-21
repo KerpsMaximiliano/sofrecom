@@ -33,7 +33,7 @@ namespace Sofco.Framework.StatusHandlers.License
                 response.AddError(Resources.Rrhh.License.CannotChangeStatus);
             }
         }
-
+         
         public void SaveStatus(Domain.Models.Rrhh.License license, LicenseStatusChangeModel model, IUnitOfWork unitOfWork)
         {
             var licenseToModif = new Domain.Models.Rrhh.License { Id = license.Id, Status = model.Status };

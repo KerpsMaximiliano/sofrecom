@@ -105,9 +105,9 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
                 // Real del mes $$ (ventas)
                 //marginTracking.SalesOnMonth += billingMonth.totalBilling;
 
-                billingAcumulatedToDate += billingMonth.totalBilling;
+                // billingAcumulatedToDate += billingMonth.totalBilling;
             
-                totalAcumulatedToEnd += billingMonth.totalBilling;
+                //totalAcumulatedToEnd += billingMonth.totalBilling;
             }
             if (costDetailMonth) {
                 evalpropTotalCosts += costDetailMonth.valueEvalProp;
@@ -129,11 +129,12 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
                     element.values.forEach(valueMonth => {
                         if (valueMonth.month == month && valueMonth.year == year && valueMonth.valuePesos > 0) {
                             if (valueMonth.status == HitoStatus.Billed || valueMonth.status == HitoStatus.Cashed) {
-                              //  billingAcumulatedToDate += valueMonth.valuePesos;
+                                billingAcumulatedToDate += valueMonth.valuePesos;
 
                                 // // Real del mes $$ (ventas)
                                 // marginTracking.SalesOnMonth += valueMonth.valuePesos;
-                                billingRealMonth +=valueMonth.valuePesos
+                                billingRealMonth += valueMonth.valuePesos
+                                totalAcumulatedToEnd += valueMonth.valuePesos;
                             }
                             else{
                                 billingAcumulateProyected += valueMonth.valuePesos;
@@ -141,7 +142,6 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
                             // Previsto $$ (ventas)
                             marginTracking.ExpectedSales += valueMonth.valuePesos;
-                           // totalAcumulatedToEnd += valueMonth.valuePesos;
                         }
                     });
                 });
@@ -227,12 +227,12 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             this.allMarginTrackings.push(marginTracking);
         }
 
-         var percentageExpectedTotal = 0;
-        // if (evalpropTotalBilling > 0) {
-        //     percentageExpectedTotal = ((evalpropTotalBilling - evalpropTotalCosts) / evalpropTotalBilling) * 100
-        // }
+        var percentageExpectedTotal = 0;
+        if (evalpropTotalBilling > 0) {
+            percentageExpectedTotal = ((evalpropTotalBilling - evalpropTotalCosts) / evalpropTotalBilling) * 100
+        }
         
-        percentageExpectedTotal = evalpropTotalTracing / cantMonths
+        // percentageExpectedTotal = evalpropTotalTracing / cantMonths
 
         this.setRemainingAndTotal(totalAcumulatedToEnd, totalCostsAcumulatedToEnd, billingRealAcumulatedToDate, budgetRemaint, billingAcumulateProyected, percentageExpectedTotal);
 
