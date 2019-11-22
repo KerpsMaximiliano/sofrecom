@@ -71,6 +71,8 @@ namespace Sofco.Service.Implementations.Common
 
             ValidateDescription(description, response, domain);
 
+            if (response.HasErrors()) return response;
+
             try
             {
                 domain.Text = description;
