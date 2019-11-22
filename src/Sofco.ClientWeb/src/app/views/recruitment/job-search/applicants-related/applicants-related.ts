@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { FormsService } from "app/services/forms/forms.service";
 import { MessageService } from "app/services/common/message.service";
 import { ReasonCauseType } from "app/models/enums/reasonCauseType";
+import * as moment from "moment";
 
 @Component({
     selector: 'job-search-applicants-related',
@@ -118,6 +119,17 @@ export class ApplicantsRelatedComponent implements OnDestroy {
 
         this.addSubscrip = this.jobSearchService.addContacts(json).subscribe(response => {
             this.messageService.closeLoading();
+
+            this.dataFiltered.forEach(x => {
+                if(x.selected){
+                    x.date = moment().toDate();
+
+                    var itemData = this.data.find(s => s.id == s.id == x.id);
+                    if(itemData){
+                        itemData.date = moment().toDate();
+                    }
+                }
+            });
 
             this.unselectAll();
             this.form.controls.reasonCauseId.setValue(null);
