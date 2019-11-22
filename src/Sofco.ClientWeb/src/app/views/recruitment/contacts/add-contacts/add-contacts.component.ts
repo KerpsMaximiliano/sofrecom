@@ -9,6 +9,7 @@ import { GenericOptions } from 'app/models/enums/genericOptions';
 import { UserService } from 'app/services/admin/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApplicantService } from 'app/services/recruitment/applicant.service';
+import { ReasonCauseType } from 'app/models/enums/reasonCauseType';
 
 @Component({
   selector: 'app-add-contacts',
@@ -109,8 +110,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
   getReasons(resolve){
       this.genericOptionsService.controller =  GenericOptions.ReasonCause;
       this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
-          resolve();
-          this.reasonOptions = response.data;
+          resolve(); 
+          this.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.ApplicantOpen);
       },
       () => resolve());
   }

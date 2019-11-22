@@ -155,7 +155,9 @@ export class DetailContactsComponent implements OnInit {
       this.genericOptionsService.controller =  GenericOptions.ReasonCause;
       this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
           this.reasonOptions = response.data;
-          this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantUnavailable);
+          this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantUnavailable || 
+                                                            x.type == ReasonCauseType.ApplicantInProgress ||
+                                                            x.type == ReasonCauseType.ApplicantOpen);
       });
   }
 
