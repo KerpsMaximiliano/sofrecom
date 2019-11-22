@@ -263,6 +263,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.genericOptionsService.controller = "profile";
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             this.profileOptions = response.data;
+            this.applicantsRelated.profiles = response.data;
         },
         () => {});
     }
@@ -279,6 +280,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.genericOptionsService.controller = "skill";
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             this.skillOptions = response.data;
+            this.applicantsRelated.skills = response.data;
         },
         () => {});
     }

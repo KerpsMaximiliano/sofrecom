@@ -21,8 +21,13 @@ export class ApplicantsRelatedComponent implements OnDestroy {
     });
 
     data: any[] = new Array();
+    dataFiltered: any[] = new Array();
     reasonOptions: any[] = new Array();
+    skills: any[] = new Array();
+    profiles: any[] = new Array();
     jobSearchId: number;
+    skillSelected: number;
+    profileSelected: number;
 
     documentNumberVisible: boolean = false;
 
@@ -44,6 +49,8 @@ export class ApplicantsRelatedComponent implements OnDestroy {
                     item.selected = false;
                     return item;
                 });
+
+                this.dataFiltered = this.data;
             }
 
             this.initGrid();
@@ -141,5 +148,47 @@ export class ApplicantsRelatedComponent implements OnDestroy {
                 this.documentNumberVisible = true;
             }
         }
+    }
+
+    cancel(){
+        this.documentNumberVisible = false;
+        this.form.controls.documentNumber.setValue(null);
+        this.form.controls.reasonCauseId.setValue(null);
+        this.form.controls.comments.setValue(null);
+        this.form.reset();
+    }
+
+    goToDetail(applicant){
+        window.open("/#/recruitment/contacts/" + applicant.id, "blank");
+    }
+
+    filtersChange(){
+        this.dataFiltered = [];
+
+        this.data.forEach(item => {
+            var mustAdd = true;
+
+            if(this.skillSelected > 0){
+                var skillSelected = this.skills.find(x => x.id == this.skillSelected);
+
+                if(!skillSelected || !item.skills.includes(skillSelected.text)){
+                    mustAdd = false;
+                }
+            }
+
+            if(this.profileSelected > 0){
+                var profileSelected = this.profiles.find(x => x.id == this.profileSelected);
+
+                if(!profileSelected || !item.profiles.includes(profileSelected.text)){
+                    mustAdd = false;
+                }
+            }
+
+            if(mustAdd){
+                this.dataFiltered.push(item);
+            }
+        });
+
+        this.initGrid();
     }
 }

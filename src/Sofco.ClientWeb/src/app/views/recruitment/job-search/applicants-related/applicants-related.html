@@ -10,6 +10,21 @@
                 </div>
             </div>
             <div class="ibox-content">      
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"> Perfiles </label>
+                            <ng-select [items]="profiles" bindValue="id" bindLabel="text" [(ngModel)]="profileSelected" (ngModelChange)="filtersChange()"></ng-select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"> Conocimientos </label>
+                            <ng-select [items]="skills" bindValue="id" bindLabel="text" [(ngModel)]="skillSelected" (ngModelChange)="filtersChange()"></ng-select>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-striped dataTable table-font" role="grid" id="applicantsTable">
                         <thead>
@@ -22,11 +37,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of data" class="pointer">
+                            <tr *ngFor="let item of dataFiltered">
                                 <td class="column-xs text-center">
                                     <icheck [(checked)]="item.selected" (checkedChange)="reasonCauseChanged(item)"></icheck>
                                 </td>
-                                <td class="column-lg text-ellipsis">{{ item.applicant }}</td>
+                                <td class="column-lg text-ellipsis text-success applicant-name pointer" (click)="goToDetail(item)">{{ item.applicant }}</td>
                                 <td class="column-lg text-word-break">{{ item.profiles }}</td>
                                 <td class="column-lg text-word-break">{{ item.skills }}</td>
                                 <td class="column-sm text-word-break">{{ item.date | date:'dd/MM/yyyy' }}</td>
@@ -75,6 +90,7 @@
                 </form>
             </div>
             <div class="ibox-footer text-center">
+                <button class="btn btn-danger btn-sm" (click)="cancel()"> Cancelar </button>
                 <button class="btn btn-primary btn-sm" [disabled]="!form.valid || !anySelected()" (click)="save()"> Guardar </button>
             </div>
         </div>
