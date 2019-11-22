@@ -153,6 +153,9 @@
   <data name="MailSent" xml:space="preserve">
     <value>common.mailSent</value>
   </data>
+  <data name="OptionAlreadyExist" xml:space="preserve">
+    <value>common.optionAlreadyExist</value>
+  </data>
   <data name="OptionNotFound" xml:space="preserve">
     <value>common.optionNotFound</value>
   </data>

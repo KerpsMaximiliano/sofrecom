@@ -238,7 +238,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
             selector: "#jobSearchTable",
             columns: columns,
             title: title,
-            columnDefs: [ { "aTargets": [1, 12, 13, 14], "sType": "date-uk" }],
+            columnDefs: [ { "aTargets": [1, 12, 13, 14], "sType": "customdatesort" }],
             withExport: true,
         };
 
@@ -251,7 +251,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
             $("#jobSearchTable_length").css("margin-right","10px");
             $("#jobSearchTable_info").css("padding-top","4px");
         }, 500);
-
+ 
         this.dataTableService.destroy(options.selector);
         this.dataTableService.initialize(options);
     }

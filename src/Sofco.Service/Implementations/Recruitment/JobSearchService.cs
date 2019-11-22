@@ -50,6 +50,7 @@ namespace Sofco.Service.Implementations.Recruitment
             ValidateLanguage(model, response);
             ValidateStudy(model, response);
             ValidateMarketStudy(model, response);
+            ValidateIsStaff(model, response);
 
             if (response.HasErrors()) return response;
 
@@ -101,6 +102,7 @@ namespace Sofco.Service.Implementations.Recruitment
             ValidateLanguage(model, response);
             ValidateStudy(model, response);
             ValidateMarketStudy(model, response);
+            ValidateIsStaff(model, response);
 
             if (response.HasErrors()) return response;
 
@@ -345,6 +347,14 @@ namespace Sofco.Service.Implementations.Recruitment
             }
         }
 
+        private void ValidateIsStaff(JobSearchAddModel model, Response response)
+        {
+            if (model.IsStaff && string.IsNullOrWhiteSpace(model.IsStaffDesc))
+            {
+                response.AddError(Resources.Recruitment.JobSearch.IsStaffRequired);
+            }
+        }
+
         private void ValidateSelector(JobSearchAddModel model, Response response)
         {
             if (model.RecruiterId.HasValue && !unitOfWork.UserRepository.ExistById(model.RecruiterId.Value))
@@ -379,7 +389,7 @@ namespace Sofco.Service.Implementations.Recruitment
 
         private void ValidateClient(JobSearchAddModel model, Response response)
         {
-            if (!model.IsMarketStudy)
+            if (!model.IsMarketStudy && !model.IsStaff)
             {
                 if (string.IsNullOrWhiteSpace(model.ClientCrmId))
                 {

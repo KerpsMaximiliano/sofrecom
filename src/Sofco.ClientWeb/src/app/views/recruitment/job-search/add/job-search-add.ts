@@ -47,6 +47,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         observations: new FormControl(null, [Validators.maxLength(3000)]),
         tasksToDo: new FormControl(null, [Validators.maxLength(3000)]),
         marketStudy: new FormControl(null),
+        isStaffDesc: new FormControl(null),
     });
 
     hasExtraHours: boolean;
@@ -56,6 +57,7 @@ export class JobSearchComponent implements OnInit, OnDestroy {
     languageRequired: boolean;
     studyRequired: boolean;
     isMarketStudy: boolean;
+    isStaff: boolean;
 
     profileOptions: any[] = new Array();
     skillOptions: any[] = new Array();
@@ -262,7 +264,9 @@ export class JobSearchComponent implements OnInit, OnDestroy {
             languageRequired: this.languageRequired,
             studyRequired: this.studyRequired,
             marketStudy: this.form.controls.marketStudy.value,
+            isStaffDesc: this.form.controls.isStaffDesc.value,
             isMarketStudy: this.isMarketStudy,
+            isStaff: this.isStaff,
             clientId: 0
         }
 
@@ -324,8 +328,30 @@ export class JobSearchComponent implements OnInit, OnDestroy {
             this.form.controls.marketStudy.clearValidators();
             this.form.controls.marketStudy.updateValueAndValidity();
 
-            this.form.controls.clientId.setValidators([Validators.required]);
-            this.form.controls.clientId.enable();
+            if(!this.isStaff){
+                this.form.controls.clientId.setValidators([Validators.required]);
+                this.form.controls.clientId.enable();
+            }
+        }
+    }
+
+    isStaffChanged(value){
+        if(value == true){
+            this.form.controls.isStaffDesc.setValidators([Validators.required, Validators.maxLength(150)]);
+            this.form.controls.isStaffDesc.updateValueAndValidity();
+
+            this.form.controls.clientId.clearValidators();
+            this.form.controls.clientId.disable();
+            this.form.controls.clientId.setValue(null);
+        }
+        else{
+            this.form.controls.isStaffDesc.clearValidators();
+            this.form.controls.isStaffDesc.updateValueAndValidity();
+
+            if(!this.isMarketStudy){
+                this.form.controls.clientId.setValidators([Validators.required]);
+                this.form.controls.clientId.enable();
+            }
         }
     }
 }

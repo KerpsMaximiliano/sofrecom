@@ -166,5 +166,9 @@ export class GenericOptionComponent implements OnDestroy {
             },
             () => this.confirmModal.hide());
         }
+
+        setTimeout(() => {
+            this.initGrid();
+        }, 500);
     }
 }

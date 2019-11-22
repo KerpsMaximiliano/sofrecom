@@ -26,7 +26,7 @@ namespace Sofco.Service.Implementations.Common
         {
             var response = new Response<string>();
 
-            ValidateDescription(description, response);
+            ValidateDescription(description, response, null);
             if (response.HasErrors()) return response;
 
             try
@@ -55,13 +55,12 @@ namespace Sofco.Service.Implementations.Common
             return response;
         }
 
+
+
         public Response Update(int id, string description, Dictionary<string, string> parameters)
         {
             var response = new Response();
-
-            ValidateDescription(description, response);
-            if (response.HasErrors()) return response;
-
+        
             var domain = repository.Get(id);
 
             if (domain == null)
@@ -69,6 +68,8 @@ namespace Sofco.Service.Implementations.Common
                 response.AddError(Resources.Common.OptionNotFound);
                 return response;
             }
+
+            ValidateDescription(description, response, domain);
 
             try
             {
@@ -89,6 +90,27 @@ namespace Sofco.Service.Implementations.Common
             }
 
             return response;
+        }
+
+        private void ValidateDescription(string description, Response response, TEntity domain)
+        {
+            ValidateDescription(description, response);
+
+            if (response.HasErrors()) return;
+
+            var entity = repository.GetByDescription(description);
+
+            if (entity != null)
+            {
+                if (domain == null)
+                {
+                    response.AddError(Resources.Common.OptionAlreadyExist);
+                }
+                else if(entity.Id != domain.Id)
+                {
+                    response.AddError(Resources.Common.OptionAlreadyExist);
+                }
+            }
         }
 
         public Response Active(int id, bool active)

@@ -21,6 +21,7 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<JobSearch>().Property(x => x.Observations).HasMaxLength(3000);
             builder.Entity<JobSearch>().Property(x => x.TasksToDo).HasMaxLength(3000);
             builder.Entity<JobSearch>().Property(x => x.MarketStudy).HasMaxLength(150);
+            builder.Entity<JobSearch>().Property(x => x.IsStaffDesc).HasMaxLength(150);
 
             builder.Entity<JobSearch>().HasOne(x => x.Client).WithMany(x => x.JobSearchs).HasForeignKey(x => x.ClientId);
             builder.Entity<JobSearch>().HasOne(x => x.ReasonCause).WithMany(x => x.JobSearchs).HasForeignKey(x => x.ReasonCauseId);

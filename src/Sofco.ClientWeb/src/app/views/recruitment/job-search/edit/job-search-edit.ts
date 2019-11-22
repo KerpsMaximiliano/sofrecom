@@ -47,6 +47,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         observations: new FormControl(null, [Validators.maxLength(3000)]),
         tasksToDo: new FormControl(null, [Validators.maxLength(3000)]),
         marketStudy: new FormControl(null),
+        isStaffDesc: new FormControl(null),
     });
 
     dateModalForm: FormGroup = new FormGroup({
@@ -62,6 +63,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     languageRequired: boolean;
     studyRequired: boolean;
     isMarketStudy: boolean;
+    isStaff: boolean;
 
     profileOptions: any[] = new Array();
     skillOptions: any[] = new Array();
@@ -195,6 +197,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.form.controls.observations.setValue(response.data.observations);
             this.form.controls.tasksToDo.setValue(response.data.tasksToDo);
             this.form.controls.marketStudy.setValue(response.data.marketStudy);
+            this.form.controls.isStaffDesc.setValue(response.data.isStaffDesc);
 
             this.hasExtraHours = response.data.hasExtraHours;
             this.extraHoursPaid = response.data.extraHoursPaid;
@@ -203,6 +206,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.languageRequired = response.data.languageRequired;
             this.studyRequired = response.data.studyRequired;
             this.isMarketStudy = response.data.isMarketStudy;
+            this.isStaff = response.data.isStaff;
 
             this.status = response.data.status;
 
@@ -210,6 +214,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
                 this.studyRequiredChanged(this.studyRequired);
                 this.languageRequiredChanged(this.languageRequired);
                 this.marketStudyChanged(this.isMarketStudy);
+                this.isStaffChanged(this.isStaff);
             }, 500);
 
             if(this.status == JobSearchStatus.Close){
@@ -332,7 +337,9 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             studyRequired: this.studyRequired,
             guardsPaid: this.guardsPaid,
             marketStudy: this.form.controls.marketStudy.value,
+            isStaffDesc: this.form.controls.isStaffDesc.value,
             isMarketStudy: this.isMarketStudy,
+            isStaff: this.isStaff,
             clientId: 0
         }
 
@@ -461,8 +468,30 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.form.controls.marketStudy.clearValidators();
             this.form.controls.marketStudy.updateValueAndValidity();
 
-            this.form.controls.clientId.setValidators([Validators.required]);
-            this.form.controls.clientId.enable();
+            if(!this.isStaff){
+                this.form.controls.clientId.setValidators([Validators.required]);
+                this.form.controls.clientId.enable();
+            }
+        }
+    }
+
+    isStaffChanged(value){
+        if(value == true){
+            this.form.controls.isStaffDesc.setValidators([Validators.required, Validators.maxLength(150)]);
+            this.form.controls.isStaffDesc.updateValueAndValidity();
+
+            this.form.controls.clientId.clearValidators();
+            this.form.controls.clientId.disable();
+            this.form.controls.clientId.setValue(null);
+        }
+        else{
+            this.form.controls.isStaffDesc.clearValidators();
+            this.form.controls.isStaffDesc.updateValueAndValidity();
+
+            if(!this.isMarketStudy){
+                this.form.controls.clientId.setValidators([Validators.required]);
+                this.form.controls.clientId.enable();
+            }
         }
     }
 }

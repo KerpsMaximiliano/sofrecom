@@ -76,7 +76,11 @@ namespace Sofco.Core.Models.Recruitment
 
         public bool IsMarketStudy { get; set; }
 
+        public bool IsStaff { get; set; }
+
         public string MarketStudy { get; set; }
+
+        public string IsStaffDesc { get; set; }
 
         public JobSearch CreateDomain()
         {
@@ -182,6 +186,8 @@ namespace Sofco.Core.Models.Recruitment
             domain.StudyRequired = StudyRequired;
             domain.MarketStudy = MarketStudy;
             domain.IsMarketStudy = IsMarketStudy;
+            domain.IsStaff = IsStaff;
+            domain.IsStaffDesc = IsStaffDesc;
         }
     }
 }

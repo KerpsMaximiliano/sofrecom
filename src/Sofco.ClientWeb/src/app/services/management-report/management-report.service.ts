@@ -2,6 +2,8 @@ import {map} from 'rxjs/operators';
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Service } from "app/services/common/service";
+import * as excel from 'exceljs';
+import * as fs from 'file-saver';
 
 @Injectable()
 export class ManagementReportService {

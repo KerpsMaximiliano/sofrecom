@@ -10,5 +10,6 @@ namespace Sofco.Core.DAL.Common
         void Insert(TEntity entity);
         void Update(TEntity entity);
         void Save();
+        TEntity GetByDescription(string description);
     }
 }

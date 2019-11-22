@@ -47,5 +47,10 @@ namespace Sofco.DAL.Repositories.Common
         {
             context.SaveChanges();
         }
+
+        public TEntity GetByDescription(string description)
+        {
+            return context.Set<TEntity>().SingleOrDefault(x => x.Text.ToLowerInvariant().Equals(description.ToLowerInvariant()));
+        }
     }
 }

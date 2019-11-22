@@ -38,6 +38,8 @@ namespace Sofco.Core.Models.Recruitment
             StudyRequired = jobsearch.StudyRequired;
             IsMarketStudy = jobsearch.IsMarketStudy;
             MarketStudy = jobsearch.MarketStudy;
+            IsStaffDesc = jobsearch.IsStaffDesc;
+            IsStaff = jobsearch.IsStaff;
 
             if (jobsearch.Client != null) ClientCrmId = jobsearch.Client.CrmId;
 
@@ -55,6 +57,10 @@ namespace Sofco.Core.Models.Recruitment
 
             if (jobsearch.TimeHiring != null) TimeHiringId = jobsearch.TimeHiringId;
         }
+
+        public string IsStaffDesc { get; set; }
+
+        public bool IsStaff { get; set; }
 
         public string MarketStudy { get; set; }
 

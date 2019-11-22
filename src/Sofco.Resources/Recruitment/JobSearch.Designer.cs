@@ -142,6 +142,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearch.isStaffRequired.
+        /// </summary>
+        public static string IsStaffRequired {
+            get {
+                return ResourceManager.GetString("IsStaffRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearch.languageRequired.
         /// </summary>
         public static string LanguageRequired {

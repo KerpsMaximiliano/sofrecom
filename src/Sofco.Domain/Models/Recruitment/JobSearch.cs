@@ -9,6 +9,8 @@ namespace Sofco.Domain.Models.Recruitment
 {
     public class JobSearch : BaseEntity
     {
+        public string IsStaffDesc { get; set; }
+
         public int UserId { get; set; }
         public User User { get; set; }
 
@@ -101,5 +103,7 @@ namespace Sofco.Domain.Models.Recruitment
         public IList<JobSearchApplicant> JobSearchApplicants { get; set; }
 
         public IList<JobSearchHistory> Histories { get; set; }
+
+        public bool IsStaff { get; set; }
     }
 }

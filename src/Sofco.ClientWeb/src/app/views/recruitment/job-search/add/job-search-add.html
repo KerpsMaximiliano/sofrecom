@@ -338,10 +338,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-4">
                                 <div class="form-group m-t-md">
                                     <icheck [(checked)]="isMarketStudy" (checkedChange)="marketStudyChanged($event)">
                                         <label style="padding-left:20px;"> ¿ Es estudio de mercado ? </label> 
+                                    </icheck>
+                                </div> 
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group m-t-md">
+                                    <icheck [(checked)]="isStaff" (checkedChange)="isStaffChanged($event)">
+                                        <label style="padding-left:20px;"> Fijo / Staff </label> 
                                     </icheck>
                                 </div> 
                             </div>
@@ -354,6 +361,16 @@
                             <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'marketStudy')">
                                 <p *ngIf="formsService.hasError(form, 'marketStudy', 'required')">El campo es requerido</p>
                                 <p *ngIf="formsService.hasError(form, 'marketStudy', 'maxLength')">El campo no puede superar los 150 caracteres</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" *ngIf="isStaff" [ngClass]="formsService.getClassProperty(form, 'isStaffDesc')">
+                            <label class="control-label">Fijo / Staff</label>
+                            <input type="text" class="form-control" maxlength="150" formControlName="isStaffDesc">
+
+                            <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'isStaffDesc')">
+                                <p *ngIf="formsService.hasError(form, 'isStaffDesc', 'required')">El campo es requerido</p>
+                                <p *ngIf="formsService.hasError(form, 'isStaffDesc', 'maxLength')">El campo no puede superar los 150 caracteres</p>
                             </div>
                         </div>
 

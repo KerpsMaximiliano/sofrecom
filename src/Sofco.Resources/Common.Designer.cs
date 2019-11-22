@@ -169,6 +169,15 @@ namespace Sofco.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a common.optionAlreadyExist.
+        /// </summary>
+        public static string OptionAlreadyExist {
+            get {
+                return ResourceManager.GetString("OptionAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a common.optionNotFound.
         /// </summary>
         public static string OptionNotFound {
