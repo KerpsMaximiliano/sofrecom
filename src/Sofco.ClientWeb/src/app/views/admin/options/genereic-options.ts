@@ -121,6 +121,7 @@ export class GenericOptionComponent implements OnDestroy {
     }
 
     add(){
+        this.text.setValue(null);
         this.confirmModal.show();
     }
 

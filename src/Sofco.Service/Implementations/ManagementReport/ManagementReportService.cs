@@ -1339,14 +1339,20 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         employeeHasAllocation = true;
                     }
+                    else
+                    {
+                        monthDetail.HasAlocation = false;
+                    }
 
                     detailEmployee.MonthsCost.Add(monthDetail);
                 }
 
-                if (employeeHasAllocation)
-                {
-                    costEmployees.Add(detailEmployee);
-                }
+                costEmployees.Add(detailEmployee);
+
+                //if (employeeHasAllocation)
+                //{
+                //    costEmployees.Add(detailEmployee);
+                //}
             }
 
             return costEmployees.OrderBy(e => e.Display).ToList();

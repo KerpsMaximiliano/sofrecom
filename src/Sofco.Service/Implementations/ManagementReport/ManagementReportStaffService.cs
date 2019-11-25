@@ -172,18 +172,16 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         .OrderByDescending(x => x.BudgetTypeId)
                                         .FirstOrDefault();
 
-            //bool getReal = false;
-            //if (costDetail.HasReal)
-            //{
-            //    getReal = true;
-            //    //typeBudget = EnumBudgetType.Real;
-            //}
-
             string typeBudget = EnumBudgetType.budget;
 
             if (lastType != null)
             {
                 typeBudget = lastType.BudgetType.Name.ToUpper();
+            }
+
+            if (costDetail.HasReal)
+            {
+                typeBudget = EnumBudgetType.Real;
             }
 
             var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDay(monthYear);
