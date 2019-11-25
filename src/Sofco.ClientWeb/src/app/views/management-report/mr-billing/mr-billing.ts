@@ -540,15 +540,14 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
                 if (value.status == this.billedHitoStatus || value.status == this.cashedHitoStatus) {
 
                     totals.totalBilling += value.valuePesos;
+                    totals.totalProvisioned += value.valuePesos;
                 }
 
                 if (value.originalValuePesos) {
-                    totals.totalProvisioned += value.valuePesos;
+                    totals.provision += value.valuePesos;
                 }
             }
         });
-
-        totals.provision = totals.totalProvisioned - totals.totalBilling;
 
         return totals;
     }

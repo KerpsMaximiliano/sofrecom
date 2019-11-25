@@ -203,7 +203,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.expenses = [];
        
         this.costDetailMonthModal.otherTitle = `${data.monthDesc} ${data.year}`
-
+ 
         this.isReadOnly = readOnly;
         this.AnalyticId = data.AnalyticId;
         

@@ -247,16 +247,17 @@ namespace Sofco.Service.Crm
 
             if (data.StartDate.HasValue)
             {
-#if DEBUG
                 date = $"{data.StartDate.Value.Year}-{data.StartDate.Value.Month}-{data.StartDate.Value.Day}";
-#else
-                if(data.StartDate.Value.Day > 12){
-                    date = $"{data.StartDate.Value.Year}-{data.StartDate.Value.Month}-{data.StartDate.Value.Day}";
-                }
-                else{
-                    date = $"{data.StartDate.Value.Year}-{data.StartDate.Value.Day}-{data.StartDate.Value.Month}";
-                }
-#endif
+                //#if DEBUG
+                //                date = $"{data.StartDate.Value.Year}-{data.StartDate.Value.Month}-{data.StartDate.Value.Day}";
+                //#else
+                //                if(data.StartDate.Value.Day > 12){
+                //                    date = $"{data.StartDate.Value.Year}-{data.StartDate.Value.Month}-{data.StartDate.Value.Day}";
+                //                }
+                //                else{
+                //                    date = $"{data.StartDate.Value.Year}-{data.StartDate.Value.Day}-{data.StartDate.Value.Month}";
+                //                }
+                //#endif
             }
             else
             {
