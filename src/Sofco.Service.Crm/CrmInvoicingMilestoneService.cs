@@ -262,11 +262,12 @@ namespace Sofco.Service.Crm
             else
             {
                 var now = DateTime.UtcNow;
-#if DEBUG
                 date = $"{now.Year}-{now.Month}-{now.Day}";
-#else
-                date = $"{now.Year}-{now.Day}-{now.Month}";
-#endif
+                //#if DEBUG
+                //                date = $"{now.Year}-{now.Month}-{now.Day}";
+                //#else
+                //                date = $"{now.Year}-{now.Day}-{now.Month}";
+                //#endif
             }
 
             var content = new JObject
