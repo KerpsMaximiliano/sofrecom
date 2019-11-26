@@ -174,7 +174,7 @@ namespace Sofco.Service.Implementations.Recruitment
                 response.AddError(Resources.Recruitment.Applicant.CountryCode2MaxLengthError);
             if (!string.IsNullOrWhiteSpace(model.AreaCode2) && model.AreaCode2.Length > 3)
                 response.AddError(Resources.Recruitment.Applicant.AreaCode2MaxLengthError);
-            if (!string.IsNullOrWhiteSpace(model.Telephone2) && model.Telephone2.Length > 10)
+            if (!string.IsNullOrWhiteSpace(model.Telephone2) && model.Telephone2.Length > 100)
                 response.AddError(Resources.Recruitment.Applicant.Telephone2MaxLengthError);
         }
 
@@ -184,7 +184,7 @@ namespace Sofco.Service.Implementations.Recruitment
                 response.AddError(Resources.Recruitment.Applicant.CountryCode1MaxLengthError);
             if (!string.IsNullOrWhiteSpace(model.AreaCode1) && model.AreaCode1.Length > 3)
                 response.AddError(Resources.Recruitment.Applicant.AreaCode1MaxLengthError);
-            if (!string.IsNullOrWhiteSpace(model.Telephone1) && model.Telephone1.Length > 10)
+            if (!string.IsNullOrWhiteSpace(model.Telephone1) && model.Telephone1.Length > 100)
                 response.AddError(Resources.Recruitment.Applicant.Telephone1MaxLengthError);
         }
 

@@ -8,6 +8,7 @@ import { CustomerService } from "app/services/billing/customer.service";
 import { GenericOptionService } from "app/services/admin/generic-option.service";
 import { Subscription } from "rxjs";
 import { JobSearchStatus } from "app/models/enums/jobSearchStatus";
+import { ReasonCauseType } from "app/models/enums/reasonCauseType";
 
 declare var moment: any;
 
@@ -156,7 +157,9 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
         this.genericOptionsService.controller = "reasonCause";
         this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
             resolve();
-            this.reasonOptions = response.data;
+            this.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.JobSearchClose || 
+                                                           x.type == ReasonCauseType.JobSearchOpen ||
+                                                           x.type == ReasonCauseType.JobSearchSuspended);
         },
         () => resolve());
     }

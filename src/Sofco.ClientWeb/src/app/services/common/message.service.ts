@@ -17,6 +17,8 @@ export class MessageService {
 
 
     showMessages(messages: Message[]) {
+        this.removeMessages();
+        
         messages.forEach((value, index) => {
             if(value.translate && value.translate == true){
                 this.showMessage(this.i18nService.translate(value.folder, value.code), value.type);

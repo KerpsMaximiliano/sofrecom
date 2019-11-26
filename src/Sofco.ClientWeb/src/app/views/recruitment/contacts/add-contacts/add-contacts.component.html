@@ -109,11 +109,10 @@
                             <div class="col-md-6">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'telephone1')">
                                     <label class="control-label">Teléfono 1</label>
-                                    <input type="number" class="form-control" formControlName="telephone1" min="0" max="9999999999">
+                                    <input type="text" class="form-control" formControlName="telephone1" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'telephone1')">
-                                        <p *ngIf="formsService.hasError(form, 'telephone1', 'min')">El telefono no puede ser menor a 0</p>
-                                        <p *ngIf="formsService.hasError(form, 'telephone1', 'max')">El telefono no puede contener mas de 10 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'telephone1', 'maxlength')">El telefono no puede superar los 100 caracteres</p>
                                     </div>
                                 </div>
                             </div>
@@ -145,11 +144,10 @@
                             <div class="col-md-6">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'telephone2')">
                                     <label class="control-label">Teléfono 2</label>
-                                    <input type="number" class="form-control" formControlName="telephone2" min="0" max="9999999999">
+                                    <input type="text" class="form-control" formControlName="telephone2" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'telephone2')">
-                                        <p *ngIf="formsService.hasError(form, 'telephone2', 'min')">El telefono no puede ser menor a 0</p>
-                                        <p *ngIf="formsService.hasError(form, 'telephone2', 'max')">El telefono no puede contener mas de 10 caracteres</p>
+                                        <p *ngIf="formsService.hasError(form, 'telephone2', 'maxlength')">El telefono no puede superar los 100 caracteres</p>
                                     </div>
                                 </div>
                             </div>

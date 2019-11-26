@@ -349,6 +349,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
 
         this.addSubscrip = this.jobSearchService.put(this.entityId, json).subscribe(response => {
             this.messageService.closeLoading();
+            this.applicantsRelated.init(this.entityId);
         }, 
         error => {
             this.messageService.closeLoading();

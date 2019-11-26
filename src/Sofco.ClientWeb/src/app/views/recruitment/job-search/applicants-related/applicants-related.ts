@@ -43,6 +43,8 @@ export class ApplicantsRelatedComponent implements OnDestroy {
 
     init(jobSearchId) {
         this.jobSearchId = jobSearchId;
+        this.data = [];
+        this.dataFiltered = [];
 
         this.getSubscrip = this.jobSearchService.getApplicantsRelated(jobSearchId, 0).subscribe(response => {
             if(response && response.data && response.data.length > 0){

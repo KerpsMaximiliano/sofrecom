@@ -30,10 +30,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     reasonCauseId: new FormControl(null),
     countryCode1: new FormControl(null, [Validators.min(0), Validators.max(99)]),
     areaCode1: new FormControl(null, [Validators.min(0), Validators.max(999)]),
-    telephone1: new FormControl(null, [Validators.min(0), Validators.max(9999999999)]),
+    telephone1: new FormControl(null, [Validators.maxLength(100)]),
     countryCode2: new FormControl(null, [Validators.min(0), Validators.max(99)]),
     areaCode2: new FormControl(null, [Validators.min(0), Validators.max(999)]),
-    telephone2: new FormControl(null, [Validators.min(0), Validators.max(9999999999)]),
+    telephone2: new FormControl(null, [Validators.maxLength(100)]),
   });
 
   profileOptions: any[] = new Array();

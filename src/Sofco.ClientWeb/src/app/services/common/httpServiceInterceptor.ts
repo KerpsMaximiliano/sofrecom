@@ -12,8 +12,6 @@ export class HttpServiceInterceptor implements HttpInterceptor {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        this.messageService.removeMessages();
-
         return next.handle(req).do(
             response => {
                 if (response instanceof HttpResponse) {

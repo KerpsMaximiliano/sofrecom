@@ -55,8 +55,6 @@ namespace Sofco.Service.Implementations.Common
             return response;
         }
 
-
-
         public Response Update(int id, string description, Dictionary<string, string> parameters)
         {
             var response = new Response();
@@ -168,7 +166,7 @@ namespace Sofco.Service.Implementations.Common
 
             if (list.Any())
             {
-                response.Data = list.Where(x => x.Active).ToList();
+                response.Data = list.Where(x => x.Active).OrderBy(x => x.Text).ToList();
             }
 
             return response;

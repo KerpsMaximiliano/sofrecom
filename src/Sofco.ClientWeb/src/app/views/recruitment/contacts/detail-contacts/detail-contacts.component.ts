@@ -35,10 +35,10 @@ export class DetailContactsComponent implements OnInit {
     reasonCauseId: new FormControl(null),
     countryCode1: new FormControl(null, [Validators.min(0), Validators.max(99)]),
     areaCode1: new FormControl(null, [Validators.min(0), Validators.max(999)]),
-    telephone1: new FormControl(null, [Validators.min(0), Validators.max(9999999999)]),
+    telephone1: new FormControl(null, [Validators.maxLength(100)]),
     countryCode2: new FormControl(null, [Validators.min(0), Validators.max(99)]),
     areaCode2: new FormControl(null, [Validators.min(0), Validators.max(999)]),
-    telephone2: new FormControl(null, [Validators.min(0), Validators.max(9999999999)]),
+    telephone2: new FormControl(null, [Validators.maxLength(100)]),
   });
 
   newResourceForm: FormGroup = new FormGroup({
@@ -154,10 +154,13 @@ export class DetailContactsComponent implements OnInit {
   getReasons(){
       this.genericOptionsService.controller =  GenericOptions.ReasonCause;
       this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
-          this.reasonOptions = response.data;
-          this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantUnavailable || 
-                                                            x.type == ReasonCauseType.ApplicantInProgress ||
-                                                            x.type == ReasonCauseType.ApplicantOpen);
+          this.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.ApplicantUnavailable || 
+                                                        x.type == ReasonCauseType.ApplicantInProgress ||
+                                                        x.type == ReasonCauseType.ApplicantInCompany ||
+                                                        x.type == ReasonCauseType.ApplicantOpen);
+
+          this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantInCompany ||
+                                                                x.type == ReasonCauseType.ApplicantOpen);
       });
   }
 
@@ -246,7 +249,11 @@ export class DetailContactsComponent implements OnInit {
   }
 
   canMakeRegister(){
-    if(this.status == ApplicantStatus.InProgress) return true;
+    var reason = this.reasonOptions.find(x => x.id == this.form.controls.reasonCauseId.value)
+
+    if(reason){
+      if(reason.type == ReasonCauseType.ApplicantInCompany) return true;
+    }
 
     return false;
   }
