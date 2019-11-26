@@ -39,6 +39,8 @@ namespace Sofco.Core.Models.ManagementReport
         public int DelegateId { get; set; }
 
         public IList<CurrencyExchangeModel> Months { get; set; }
+
+        public bool StateGenerated { get; set; }
     }
 
     public class BudgetItem

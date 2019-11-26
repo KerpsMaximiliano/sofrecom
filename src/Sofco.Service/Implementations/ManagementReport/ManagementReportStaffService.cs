@@ -75,6 +75,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.ManamementReportEndDate = managementReport.EndDate;
                 response.Data.Sector = managementReport.Analytic.Sector.Text;
                 response.Data.Status = managementReport.Status;
+                response.Data.StateGenerated = managementReport.StateGenerated;
 
                 response.Data.Months = new List<CurrencyExchangeModel>();
 
@@ -347,7 +348,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                     }
 
                     managementReport.State = nextState;
+                    managementReport.StateGenerated = false;
                     unitOfWork.ManagementReportRepository.UpdateState(managementReport);
+                    unitOfWork.ManagementReportRepository.UpdateStateGenerated(managementReport);
                 }
                 else
                 {
@@ -652,6 +655,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                         }
                     }
                 }
+
+                managementReport.StateGenerated = true;
+                unitOfWork.ManagementReportRepository.UpdateStateGenerated(managementReport);
 
                 unitOfWork.Save();
 

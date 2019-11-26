@@ -158,5 +158,10 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .Where(x => x.ManagementReportId == managementReportId && x.MonthYear.Date >= monthYear.Date)
                 .ToList();
         }
+
+        public void UpdateStateGenerated(Domain.Models.ManagementReport.ManagementReport managementReport)
+        {
+            context.Entry(managementReport).Property("StateGenerated").IsModified = true;
+        }
     }
 }

@@ -1066,7 +1066,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         }
     }
 
-    generatePfa(typePfa) {
+    generatePfa(typePfa, callback) {
         this.messageService.showLoading()
 
         var model = {
@@ -1078,6 +1078,8 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             () => {
                 this.messageService.closeLoading()
                 this.getCost(this.managementReportId);
+
+                if(callback) callback();
             },
             () => {
                 this.messageService.closeLoading()

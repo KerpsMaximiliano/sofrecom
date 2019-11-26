@@ -175,18 +175,18 @@
                         (click)="closeState()">Finalizar Budget <i class="fa fa-power-off"
                             aria-hidden="true"></i></button>
 
-                    <button class="btn btn-dark btn-sm" type="button" *ngIf="isCdg && actualState == 'pfa1'"
+                    <button class="btn btn-dark btn-sm" type="button" *ngIf="isCdg && actualState == 'pfa1' && model.stateGenerated"
                         (click)="closeState()">Finalizar PFA1 <i class="fa fa-power-off"
                             aria-hidden="true"></i></button>
 
-                    <button class="btn btn-dark btn-sm" type="button" *ngIf="isCdg && actualState == 'pfa2'"
+                    <button class="btn btn-dark btn-sm" type="button" *ngIf="isCdg && actualState == 'pfa2' && model.stateGenerated"
                         (click)="closeState()">Finalizar PFA2 <i class="fa fa-power-off"
                             aria-hidden="true"></i></button>
 
-                    <button class="btn btn-white btn-sm" type="button" *ngIf="isCdg && actualState == 'pfa1'"
+                    <button class="btn btn-white btn-sm" type="button" *ngIf="isCdg && actualState == 'pfa1' && !model.stateGenerated"
                         (click)="generatePFA1()">Generar PFA1 <i class="fa fa-database"></i></button>
 
-                    <button class="btn btn-white btn-sm" type="button" *ngIf="isCdg && actualState == 'pfa2'"
+                    <button class="btn btn-white btn-sm" type="button" *ngIf="isCdg && actualState == 'pfa2' && !model.stateGenerated"
                         (click)="generatePFA2()">Generar PFA2 <i class="fa fa-database"></i></button>
 
                     <button class="btn btn-success btn-sm" type="button" *ngIf="isManager || isCdgOrDirector"
