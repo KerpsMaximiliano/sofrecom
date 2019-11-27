@@ -587,7 +587,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
                 if (resourceEmpleyee.monthsCost[index].budget.value) {
                     totalCost += resourceEmpleyee.monthsCost[index].budget.value
-                    totalSalary += resourceEmpleyee.monthsCost[index].budget.value;
+                    // totalSalary += resourceEmpleyee.monthsCost[index].budget.value;
                 }
             })
 
@@ -626,7 +626,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
                 if (resourceEmpleyee.monthsCost[index].real.value) {
                     totalCost += resourceEmpleyee.monthsCost[index].real.value
-                    totalSalary += resourceEmpleyee.monthsCost[index].real.value
+                    // totalSalary += resourceEmpleyee.monthsCost[index].real.value
                 }
             })
 
