@@ -828,23 +828,23 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.categoriesEmployees.forEach(category => {
                 if (category.monthsCategory[index].totalBudget) {
                     totalCostBugdet += category.monthsCategory[index].totalBudget;
-                    totalSalaryProjected += category.monthsCategory[index].totalBudget;
+                    // totalSalaryBugdet += category.monthsCategory[index].totalBudget;
                 }
                 if (category.monthsCategory[index].totalProjected) {
                     totalCostProjected += category.monthsCategory[index].totalProjected;
-                    totalSalaryProjected += category.monthsCategory[index].totalProjected;
+                    // totalSalaryProjected += category.monthsCategory[index].totalProjected;
                 }
                 if (category.monthsCategory[index].totalPfa1) {
                     totalCostPfa1 += category.monthsCategory[index].totalPfa1;
-                    totalSalaryPfa1 += category.monthsCategory[index].totalPfa1;
+                    // totalSalaryPfa1 += category.monthsCategory[index].totalPfa1;
                 }
                 if (category.monthsCategory[index].totalPfa2) {
                     totalCostPfa2 += category.monthsCategory[index].totalPfa2;
-                    totalSalaryPfa2 += category.monthsCategory[index].totalPfa2;
+                    // totalSalaryPfa2 += category.monthsCategory[index].totalPfa2;
                 }
                 if (category.monthsCategory[index].totalReal) {
                     totalCostReal += category.monthsCategory[index].totalReal;
-                    totalSalaryReal += category.monthsCategory[index].totalReal;
+                    // totalSalaryReal += category.monthsCategory[index].totalReal;
                 }
             })
 

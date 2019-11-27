@@ -11,6 +11,7 @@ using Sofco.Core.Services.Recruitment;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Helpers;
 
 namespace Sofco.Service.Implementations.Recruitment
 {
@@ -70,9 +71,6 @@ namespace Sofco.Service.Implementations.Recruitment
 
             var reason = optionRepository.Get(model.ReasonId.GetValueOrDefault());
 
-            if (model.Applicants.Count == 1 && string.IsNullOrWhiteSpace(model.DocumentNumber) && reason.Type == ReasonCauseType.ApplicantInProgress)
-                response.AddError(Resources.Recruitment.JobSearch.DocumentNumberRequired);
-
             if (response.HasErrors()) return response;
 
             var currentUser = userData.GetCurrentUser();
@@ -93,13 +91,12 @@ namespace Sofco.Service.Implementations.Recruitment
 
                     unitOfWork.JobSearchApplicantRepository.Insert(itemToAdd);
                 }
-
-                if (model.Applicants.Count == 1 && !string.IsNullOrWhiteSpace(model.DocumentNumber))
+               
+                if (reason.Type == ReasonCauseType.ApplicantInProgress)
                 {
-                    if (reason.Type == ReasonCauseType.ApplicantInProgress)
+                    foreach (var applicantId in model.Applicants)
                     {
-                        var applicant = unitOfWork.ApplicantRepository.Get(model.Applicants[0]);
-                        applicant.DocumentNumber = model.DocumentNumber;
+                        var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
                         applicant.Status = ApplicantStatus.InProgress;
                         unitOfWork.ApplicantRepository.Update(applicant);
                     }

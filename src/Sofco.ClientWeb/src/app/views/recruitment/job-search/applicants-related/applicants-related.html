@@ -33,17 +33,19 @@
                                 <th>Nombre y Apellido</th>
                                 <th>Perfiles</th>
                                 <th>Conocimientos</th>
+                                <th>En Curso</th>
                                 <th>Ultimo Contacto</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let item of dataFiltered">
                                 <td class="column-xs text-center">
-                                    <icheck [(checked)]="item.selected" (checkedChange)="reasonCauseChanged(item)"></icheck>
+                                    <icheck [(checked)]="item.selected"></icheck>
                                 </td>
                                 <td class="column-lg text-ellipsis text-success applicant-name pointer" (click)="goToDetail(item)">{{ item.applicant }}</td>
                                 <td class="column-lg text-word-break">{{ item.profiles }}</td>
                                 <td class="column-lg text-word-break">{{ item.skills }}</td>
+                                <td class="text-center"><span class="fa" [ngClass]="item.applicantInProgress ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
                                 <td class="column-sm text-word-break">{{ item.date | date:'dd/MM/yyyy' }}</td>
                             </tr>
                         </tbody>
@@ -67,16 +69,6 @@
                             <p *ngIf="formsService.hasError(form, 'reasonCauseId', 'required')">El campo es requerido</p>
                         </div>
                     </div> 
-
-                    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'documentNumber')" *ngIf="documentNumberVisible">
-                        <label class="control-label">Documento</label>
-                        <input type="number" class="form-control" formControlName="documentNumber">
-
-                        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'documentNumber')">
-                            <p *ngIf="formsService.hasError(form, 'documentNumber', 'max')">El campo no pueden superar los 8 caracteres</p>
-                            <p *ngIf="formsService.hasError(form, 'documentNumber', 'required')">El campo es requerido</p>
-                        </div>
-                    </div>
                         
                     <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'comments')">
                         <label class="control-label">Comentarios</label>
