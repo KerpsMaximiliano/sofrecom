@@ -571,14 +571,17 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 var typesBudgets = unitOfWork.ManagementReportRepository.GetTypesBudget().Select(x => new BudgetTypeItem(x)).ToList();
                 int idPFA;
+                DateTime dateToCompare;
 
                 if (PFA == EnumBudgetType.pfa1)
                 {
                     idPFA = typesBudgets.Where(x => x.Name == EnumBudgetType.pfa1).FirstOrDefault().Id;
+                    dateToCompare = new DateTime(2019, 4, 1);
                 }
                 else
                 {
                     idPFA = typesBudgets.Where(x => x.Name == EnumBudgetType.pfa2).FirstOrDefault().Id;
+                    dateToCompare = new DateTime(2019, 8, 1);
                 }
 
                 var costDetails = managementReport.CostDetails;
@@ -608,15 +611,15 @@ namespace Sofco.Service.Implementations.ManagementReport
                         List<CostDetailStaff> subcategories;
                         List<CostDetailResource> employees;
 
-                        if (mounth.MonthYear.Date < DateTime.Now.Date.AddMonths(-1))
+                        if (mounth.MonthYear.Date < dateToCompare.Date)
                         {
-                            subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Real).FirstOrDefault().Id).ToList();
-                            employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Real).FirstOrDefault().Id).ToList();
+                            subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.Real).Id).ToList();
+                            employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.Real).Id).ToList();
                         }
                         else
                         {
-                            subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Projected).FirstOrDefault().Id).ToList();
-                            employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.Where(t => t.Name == EnumBudgetType.Projected).FirstOrDefault().Id).ToList();
+                            subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.budget).Id).ToList();
+                            employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.budget).Id).ToList();
                         }
 
                         if (subcategories != null)
@@ -643,9 +646,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 var entity = new CostDetailResource();
 
                                 entity.CostDetailId = costDetailMonth.Id;
-                                entity.Value = employee.Value.ToString();
+                                entity.Value = employee.Value;
                                 entity.Adjustment = employee.Adjustment ?? 0;
-                                entity.Charges = employee.Charges.ToString();
+                                entity.Charges = employee.Charges;
                                 entity.EmployeeId = employee.EmployeeId;
                                 entity.UserId = employee?.UserId;
                                 entity.BudgetTypeId = idPFA;

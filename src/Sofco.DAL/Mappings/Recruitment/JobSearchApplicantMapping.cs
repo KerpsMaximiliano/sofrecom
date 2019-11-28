@@ -8,6 +8,24 @@ namespace Sofco.DAL.Mappings.Recruitment
         public static void MapJobSearchApplicant(this ModelBuilder builder)
         {
             builder.Entity<JobSearchApplicant>().HasKey(t => new { t.JobSearchId, t.ApplicantId, t.CreatedDate });
+            builder.Entity<JobSearchApplicant>().Property(x => x.RrhhInterviewPlace).HasMaxLength(100);
+            builder.Entity<JobSearchApplicant>().Property(x => x.TechnicalInterviewPlace).HasMaxLength(100);
+            builder.Entity<JobSearchApplicant>().Property(x => x.ClientInterviewPlace).HasMaxLength(100);
+
+            builder.Entity<JobSearchApplicant>()
+                .HasOne(pt => pt.RrhhInterviewer)
+                .WithMany(p => p.JobSearchApplicants1)
+                .HasForeignKey(pt => pt.RrhhInterviewerId);
+
+            builder.Entity<JobSearchApplicant>()
+                .HasOne(pt => pt.TechnicalInterviewer)
+                .WithMany(p => p.JobSearchApplicants2)
+                .HasForeignKey(pt => pt.TechnicalInterviewerId);
+
+            builder.Entity<JobSearchApplicant>()
+                .HasOne(pt => pt.ClientInterviewer)
+                .WithMany(p => p.JobSearchApplicants3)
+                .HasForeignKey(pt => pt.ClientInterviewerId);
 
             builder.Entity<JobSearchApplicant>()
                 .HasOne(pt => pt.JobSearch)

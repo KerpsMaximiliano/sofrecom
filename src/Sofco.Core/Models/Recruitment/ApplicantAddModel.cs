@@ -62,7 +62,6 @@ namespace Sofco.Core.Models.Recruitment
             domain.Telephone2 = Telephone2;
 
             if (ClientId.HasValue && ClientId > 0) domain.ClientId = ClientId.Value;
-            if (ReasonCauseId.HasValue && ReasonCauseId > 0) domain.ReasonCauseId = ReasonCauseId.Value;
             if (RecommendedByUserId.HasValue && RecommendedByUserId > 0) domain.RecommendedByUserId = RecommendedByUserId.Value;
 
             if (Skills != null && Skills.Any())

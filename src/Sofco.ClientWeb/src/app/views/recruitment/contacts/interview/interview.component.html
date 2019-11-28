@@ -1,0 +1,91 @@
+<form [formGroup]="interviewForm">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group m-t-md">
+                <icheck [(checked)]="hasRrhhInterview" (checkedChange)="hasRrhhInterviewChanged($event)">
+                    <label style="padding-left:20px;"> Entrev. RRHH </label> 
+                </icheck>
+            </div> 
+        </div>
+
+        <div class="col-md-3" [hidden]="!hasRrhhInterview">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'rrhhInterviewDate')">
+                <label class="control-label">Fecha</label>
+                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="rrhhInterviewDate">
+
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'rrhhInterviewDate')">
+                    <p *ngIf="formsService.hasError(form, 'rrhhInterviewDate', 'required')">La fecha es requerida</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3" [hidden]="!hasRrhhInterview">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'rrhhInterviewPlace')">
+                <label class="control-label">Lugar </label>
+                <input type="text" class="form-control" formControlName="rrhhInterviewPlace" maxlength="100">
+    
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'rrhhInterviewPlace')">
+                    <p *ngIf="formsService.hasError(form, 'rrhhInterviewPlace', 'required')">El lugar es requerido</p>
+                    <p *ngIf="formsService.hasError(form, 'rrhhInterviewPlace', 'maxlength')">Los lugar no puede superar los 100 caracteres</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3" [hidden]="!hasRrhhInterview">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'rrhhInterviewerId')">
+                <label class="control-label"> Evaluador </label>
+                <ng-select [items]="userOptions" bindValue="id" bindLabel="text" formControlName="rrhhInterviewerId"></ng-select>
+
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'rrhhInterviewerId')">
+                    <p *ngIf="formsService.hasError(form, 'rrhhInterviewerId', 'required')">El campo es requerido</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group m-t-md">
+                <icheck [(checked)]="hasTechnicalInterview" (checkedChange)="hasTechnicalInterviewChanged($event)">
+                    <label style="padding-left:20px;"> Entrev. RRHH </label> 
+                </icheck>
+            </div> 
+        </div>
+
+        <div class="col-md-3" [hidden]="!hasTechnicalInterview">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'technicalInterviewDate')">
+                <label class="control-label">Fecha</label>
+                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="technicalInterviewDate">
+
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'technicalInterviewDate')">
+                    <p *ngIf="formsService.hasError(form, 'technicalInterviewDate', 'required')">La fecha es requerida</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3" [hidden]="!hasTechnicalInterview">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'technicalInterviewPlace')">
+                <label class="control-label">Lugar </label>
+                <input type="text" class="form-control" formControlName="technicalInterviewPlace" maxlength="100">
+    
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'technicalInterviewPlace')">
+                    <p *ngIf="formsService.hasError(form, 'technicalInterviewPlace', 'required')">El lugar es requerido</p>
+                    <p *ngIf="formsService.hasError(form, 'technicalInterviewPlace', 'maxlength')">Los lugar no puede superar los 100 caracteres</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3" [hidden]="!hasTechnicalInterview">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'technicalInterviewerId')">
+                <label class="control-label"> Evaluador </label>
+                <ng-select [items]="userOptions" bindValue="id" bindLabel="text" formControlName="technicalInterviewerId"></ng-select>
+
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'technicalInterviewerId')">
+                    <p *ngIf="formsService.hasError(form, 'technicalInterviewerId', 'required')">El campo es requerido</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</form>

@@ -25,9 +25,6 @@ namespace Sofco.Domain.Models.Recruitment
         public int? ClientId { get; set; }
         public Customer Client { get; set; }
 
-        public int? ReasonCauseId { get; set; }
-        public ReasonCause ReasonCause { get; set; }
-
         public int? RecommendedByUserId { get; set; }
         public User RecommendedByUser { get; set; }
 

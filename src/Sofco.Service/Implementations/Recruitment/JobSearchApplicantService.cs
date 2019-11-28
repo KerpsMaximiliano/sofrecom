@@ -113,5 +113,72 @@ namespace Sofco.Service.Implementations.Recruitment
 
             return response;
         }
+
+        public Response AddInterview(int id, InterviewAddModel model)
+        {
+            var response = new Response();
+
+            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.Get(id);
+
+            if (jobSearchApplicant == null)
+            {
+                response.AddError(Resources.Recruitment.JobSearchApplicant.NotFound);
+                return response;
+            }
+
+            if(model.HasRrhhInterview) ValidateRrhh(model.RrhhInterviewDate, model.RrhhInterviewPlace, model.RrhhInterviewerId, response);
+            if(model.HasTechnicalInterview) ValidateRrhh(model.TechnicalInterviewDate, model.TechnicalInterviewPlace, model.TechnicalInterviewerId, response);
+            if(model.HasClientInterview) ValidateRrhh(model.ClientInterviewDate, model.ClientInterviewPlace, model.ClientInterviewerId, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                if (model.HasRrhhInterview)
+                {
+                    jobSearchApplicant.RrhhInterviewDate = model.RrhhInterviewDate;
+                    jobSearchApplicant.RrhhInterviewPlace = model.RrhhInterviewPlace;
+                    jobSearchApplicant.RrhhInterviewerId = model.RrhhInterviewerId;
+                }
+
+                if (model.HasTechnicalInterview)
+                {
+                    jobSearchApplicant.TechnicalInterviewDate = model.TechnicalInterviewDate;
+                    jobSearchApplicant.TechnicalInterviewPlace = model.TechnicalInterviewPlace;
+                    jobSearchApplicant.TechnicalInterviewerId = model.TechnicalInterviewerId;
+                }
+
+                if (model.HasClientInterview)
+                {
+                    jobSearchApplicant.ClientInterviewDate = model.ClientInterviewDate;
+                    jobSearchApplicant.ClientInterviewPlace = model.ClientInterviewPlace;
+                    jobSearchApplicant.ClientInterviewerId = model.ClientInterviewerId;
+                }
+
+                jobSearchApplicant.ReasonId = model.ReasonId;
+
+                unitOfWork.JobSearchApplicantRepository.Update(jobSearchApplicant);
+                unitOfWork.Save();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        private void ValidateRrhh(DateTime? date, string place, int? interviewer, Response response)
+        {
+            if (!date.HasValue)
+                response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewDateRequired);
+
+            if (string.IsNullOrWhiteSpace(place))
+                response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewPlaceRequired);
+
+            if (!interviewer.HasValue || !unitOfWork.UserRepository.ExistById(interviewer.Value))
+                response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewerRequired);
+        }
     }
 }

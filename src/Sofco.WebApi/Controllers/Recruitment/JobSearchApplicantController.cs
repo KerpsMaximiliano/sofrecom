@@ -25,6 +25,14 @@ namespace Sofco.WebApi.Controllers.Recruitment
             return this.CreateResponse(response);
         }
 
+        [HttpPost("{id}/interview")]
+        public IActionResult Interview(int id, [FromBody] InterviewAddModel model)
+        {
+            var response = jobSearchApplicantService.AddInterview(id, model);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet]
         public IActionResult Get([FromUri] JobSearchApplicantParameters parameters)
         {

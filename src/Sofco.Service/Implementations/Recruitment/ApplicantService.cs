@@ -311,7 +311,6 @@ namespace Sofco.Service.Implementations.Recruitment
                     UserName = userData.GetCurrentUser().UserName
                 };
 
-                applicant.ReasonCauseId = parameter.ReasonCauseId.GetValueOrDefault();
                 applicant.Status = parameter.Status.GetValueOrDefault();
                 unitOfWork.ApplicantRepository.Update(applicant);
                 unitOfWork.ApplicantRepository.AddHistory(history);
