@@ -581,7 +581,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                 else
                 {
                     idPFA = typesBudgets.Where(x => x.Name == EnumBudgetType.pfa2).FirstOrDefault().Id;
-                    dateToCompare = new DateTime(2019, 8, 1);
+                    dateToCompare = new DateTime(2019, 9, 1);
                 }
 
                 var costDetails = managementReport.CostDetails;
