@@ -1286,7 +1286,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                                                 if (salary > 0)
                                                 {
-                                                    monthDetail.ChargesPercentage = (decimal) ((auxTypeCost.Charges / auxTypeCost.Value) * 100);
+                                                    monthDetail.ChargesPercentage = (decimal)((auxTypeCost.Charges / auxTypeCost.Value) * 100);
                                                 }
                                             }
                                         }
@@ -1551,7 +1551,9 @@ namespace Sofco.Service.Implementations.ManagementReport
 
         public void InsertUpdateCostDetailResources(IList<CostResourceEmployee> pCostEmployees, IList<CostDetail> costDetails, int managementReportId, bool isReal = false)
         {
-            var managementReport = unitOfWork.ManagementReportRepository.Get(managementReportId);
+            var managementReport = unitOfWork.ManagementReportRepository.GetWithAnalytic(managementReportId);
+
+            managementReport.StartDate = managementReport.StartDate.AddDays(-1 * (managementReport.StartDate.Day - 1));
 
             try
             {
@@ -1562,11 +1564,16 @@ namespace Sofco.Service.Implementations.ManagementReport
                     foreach (var month in months)
                     {
                         List<Cost> allBudgets = new List<Cost>();
+
                         allBudgets.Add(month.Budget);
-                        allBudgets.Add(month.Pfa1);
-                        allBudgets.Add(month.Pfa2);
-                        allBudgets.Add(month.Projected);
                         allBudgets.Add(month.Real);
+
+                        if (string.IsNullOrWhiteSpace(managementReport.Analytic.ServiceId))
+                        {
+                            allBudgets.Add(month.Pfa1);
+                            allBudgets.Add(month.Pfa2);
+                            allBudgets.Add(month.Projected);
+                        }
 
                         foreach (var aux in allBudgets)
                         {
@@ -1902,4 +1909,3 @@ namespace Sofco.Service.Implementations.ManagementReport
         }
     }
 }
-
