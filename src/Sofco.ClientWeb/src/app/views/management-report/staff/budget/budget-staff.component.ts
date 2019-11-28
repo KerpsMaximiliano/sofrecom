@@ -874,37 +874,23 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 }
             });
 
-            var date = new Date();
-            var actualMonth = date.getMonth()+1;
-            var actualYear = date.getFullYear();
 
-            if(month.year > actualYear){
+            if(chargesPfa1 == 0){
                 monthTotal.pfa1.totalCost = totalCostPfa1 + (totalSalaryPfa1 * 0.85);
-                monthTotal.pfa2.totalCost = totalCostPfa2 + (totalSalaryPfa2 * 0.85);
                 month.pfa1.totalLoads = (totalSalaryPfa1 * 0.85);
+            }
+            else{
+                monthTotal.pfa1.totalCost = totalCostPfa1 + chargesPfa1;
+                month.pfa1.totalLoads = chargesPfa1;
+            }
+            
+            if(chargesPfa2 == 0){
+                monthTotal.pfa2.totalCost = totalCostPfa2 + (totalSalaryPfa2 * 0.85);
                 month.pfa2.totalLoads = (totalSalaryPfa2 * 0.85);
             }
             else{
-                if(month.year == actualYear){
-                    if(month.month > actualMonth){
-                        monthTotal.pfa1.totalCost = totalCostPfa1 + (totalSalaryPfa1 * 0.85);
-                        monthTotal.pfa2.totalCost = totalCostPfa2 + (totalSalaryPfa2 * 0.85);
-                        month.pfa1.totalLoads = (totalSalaryPfa1 * 0.85);
-                        month.pfa2.totalLoads = (totalSalaryPfa2 * 0.85);
-                    }
-                    else{
-                        monthTotal.pfa1.totalCost = totalCostPfa1 + chargesPfa1;
-                        monthTotal.pfa2.totalCost = totalCostPfa2 + chargesPfa2;
-                        month.pfa1.totalLoads = chargesPfa1;
-                        month.pfa2.totalLoads = chargesPfa2;
-                    }
-                }
-                else{
-                    monthTotal.pfa1.totalCost = totalCostPfa1 + chargesPfa1;
-                    monthTotal.pfa2.totalCost = totalCostPfa2 + chargesPfa2;
-                    month.pfa1.totalLoads = chargesPfa1;
-                    month.pfa2.totalLoads = chargesPfa2;
-                }
+                monthTotal.pfa2.totalCost = totalCostPfa2 + chargesPfa2;
+                month.pfa2.totalLoads = chargesPfa2;
             }
 
             monthTotal.budget.totalCost = totalCostBugdet + (totalSalaryBudget * 0.85);
