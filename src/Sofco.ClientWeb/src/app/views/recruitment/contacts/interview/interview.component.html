@@ -1,5 +1,14 @@
 <form [formGroup]="interviewForm">
 
+    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonId')">
+        <label class="control-label"> Tipo/Razon </label>
+        <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonId"></ng-select>
+
+        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonId')">
+            <p *ngIf="formsService.hasError(form, 'reasonId', 'required')">El campo es requerido</p>
+        </div>
+    </div>
+
     <div class="form-group">
         <icheck [(checked)]="hasRrhhInterview" (checkedChange)="hasRrhhInterviewChanged($event)">
             <label style="padding-left:20px;"> Entrev. RRHH </label> 

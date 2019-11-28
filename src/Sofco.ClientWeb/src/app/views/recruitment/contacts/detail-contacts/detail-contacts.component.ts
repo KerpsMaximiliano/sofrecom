@@ -163,6 +163,8 @@ export class DetailContactsComponent implements OnInit {
 
           this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantInCompany ||
                                                                 x.type == ReasonCauseType.ApplicantOpen);
+
+          this.interview.reasonOptions = this.reasonOptions;                              
       });
   }
 

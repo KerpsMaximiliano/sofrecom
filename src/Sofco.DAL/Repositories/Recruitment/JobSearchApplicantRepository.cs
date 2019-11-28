@@ -74,5 +74,10 @@ namespace Sofco.DAL.Repositories.Recruitment
                 })
             .ToList();
         }
+
+        public JobSearchApplicant GetById(int applicantId, int jobSearchId)
+        {
+            return context.JobSearchApplicants.SingleOrDefault(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId);
+        }
     }
 }

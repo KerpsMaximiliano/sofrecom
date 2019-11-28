@@ -8,6 +8,6 @@ namespace Sofco.Core.Services.Recruitment
     {
         Response<IList<JobSearchApplicantModel>> GetByJobSearch(int jobSearchId);
         Response Add(JobSearchApplicantAddModel model);
-        Response AddInterview(int id, InterviewAddModel model);
+        Response AddInterview(int applicantId, int jobSearchId, InterviewAddModel model);
     }
 }

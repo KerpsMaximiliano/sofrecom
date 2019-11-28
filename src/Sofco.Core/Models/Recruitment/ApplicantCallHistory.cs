@@ -13,11 +13,13 @@ namespace Sofco.Core.Models.Recruitment
             CreatedBy = domain.CreatedBy;
             Comments = domain.Comments;
             JobSearchId = domain.JobSearchId;
+            ApplicantId = domain.ApplicantId;
 
             if (domain.Reason != null)
             {
                 Reason = domain.Reason.Text;
                 ReasonType = domain.Reason.Type;
+                ReasonId = domain.ReasonId;
             }
 
             if (domain.JobSearch.Client != null) Client = domain.JobSearch.Client.Name;
@@ -43,6 +45,10 @@ namespace Sofco.Core.Models.Recruitment
             ClientInterviewPlace = domain.ClientInterviewPlace;
             ClientInterviewerId = domain.ClientInterviewerId;
         }
+
+        public int ReasonId { get; set; }
+
+        public int ApplicantId { get; set; }
 
         public ReasonCauseType ReasonType { get; set; }
 

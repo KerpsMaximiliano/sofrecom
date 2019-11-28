@@ -1,6 +1,9 @@
 import { OnDestroy, Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { FormsService } from "app/services/forms/forms.service";
+import { Subscription } from "rxjs";
+import { JobSearchService } from "app/services/recruitment/jobsearch.service";
+import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'interview',
@@ -9,11 +12,15 @@ import { FormsService } from "app/services/forms/forms.service";
 export class InterviewComponent implements OnDestroy {
 
     userOptions: any[] = new Array();
+    reasonOptions: any[] = new Array();
 
     isVisible: boolean = false;
     hasRrhhInterview: boolean = false;
     hasTechnicalInterview: boolean = false;
     hasClientInterview: boolean = false;
+
+    jobSearchId: number;
+    applicantId: number;
 
     form: FormGroup = new FormGroup({
         rrhhInterviewDate: new FormControl(null),
@@ -27,19 +34,64 @@ export class InterviewComponent implements OnDestroy {
         clientInterviewDate: new FormControl(null),
         clientInterviewPlace: new FormControl(null,),
         clientInterviewerId: new FormControl(null),
+
+        reasonId: new FormControl(null, [Validators.required]),
     });
 
-    constructor(public formsService: FormsService){
+    addSubscrip: Subscription;
+
+    constructor(public formsService: FormsService, 
+                private messageService: MessageService,
+                private jobSearchService: JobSearchService){
     }
 
-    ngOnDestroy(): void {
+    ngOnDestroy(): void { 
+        if (this.addSubscrip) this.addSubscrip.unsubscribe();
+    }
+
+    canSave(){
+        if(this.hasRrhhInterview || this.hasTechnicalInterview || this.hasClientInterview){
+            return this.form.valid;
+        }
+
+        return false;
+    }
+
+    save(){
+        var json = {
+            reasonId: this.form.controls.reasonId.value,
+            hasClientInterview: this.hasClientInterview,
+            hasRrhhInterview: this.hasRrhhInterview,
+            hasTechnicalInterview: this.hasTechnicalInterview,
+            rrhhInterviewDate: this.form.controls.rrhhInterviewDate.value,
+            rrhhInterviewPlace: this.form.controls.rrhhInterviewPlace.value,
+            rrhhInterviewerId: this.form.controls.rrhhInterviewerId.value,
+            technicalInterviewDate: this.form.controls.technicalInterviewDate.value,
+            technicalInterviewPlace: this.form.controls.technicalInterviewPlace.value,
+            technicalInterviewerId: this.form.controls.technicalInterviewerId.value,
+            clientInterviewDate: this.form.controls.clientInterviewDate.value,
+            clientInterviewPlace: this.form.controls.clientInterviewPlace.value,
+            clientInterviewerId: this.form.controls.clientInterviewerId.value,
+        };
+
+        this.messageService.showLoading();
+
+        this.addSubscrip = this.jobSearchService.addInterview(json, this.applicantId, this.jobSearchId).subscribe(response => {
+            this.messageService.closeLoading();
+        }, 
+        error => {
+            this.messageService.closeLoading();
+        });
     }
 
     setData(history){
+        this.applicantId = history.applicantId;
+        this.jobSearchId = history.jobSearchId;
         this.isVisible = true;
         this.hasClientInterview = history.hasClientInterview;
         this.hasRrhhInterview = history.hasRrhhInterview;
         this.hasTechnicalInterview = history.hasTechnicalInterview;
+        this.form.controls.reasonId.setValue(history.reasonId);
         this.form.controls.rrhhInterviewDate.setValue(history.rrhhInterviewDate);
         this.form.controls.rrhhInterviewPlace.setValue(history.rrhhInterviewPlace);
         this.form.controls.rrhhInterviewerId.setValue(history.rrhhInterviewerId);
@@ -52,6 +104,8 @@ export class InterviewComponent implements OnDestroy {
     }
 
     clean(){
+        this.applicantId = null;
+        this.jobSearchId = null;
         this.isVisible = false;
         this.hasClientInterview = false;
         this.hasRrhhInterview = false;

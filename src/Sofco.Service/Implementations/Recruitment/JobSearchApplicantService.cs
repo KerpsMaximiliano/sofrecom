@@ -114,11 +114,11 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        public Response AddInterview(int id, InterviewAddModel model)
+        public Response AddInterview(int applicantId, int jobSearchId, InterviewAddModel model)
         {
             var response = new Response();
 
-            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.Get(id);
+            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId);
 
             if (jobSearchApplicant == null)
             {
