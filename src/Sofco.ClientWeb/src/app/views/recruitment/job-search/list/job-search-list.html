@@ -118,6 +118,7 @@
                     <thead>
                         <tr>
                             <th>Número</th>
+                            <th>Estado</th>
                             <th>Fecha Creación</th>
                             <th>Cliente</th>
                             <th>Tipo/Razon</th>
@@ -132,12 +133,12 @@
                             <th>Fecha Suspensión</th>
                             <th>Fecha Cierre</th>
                             <th>Comentarios</th>
-                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of data" class="pointer" (click)="goToDetail(item.id)">
                             <td># {{ item.id }}</td>
+                            <td>{{ getStatusDesc(item.status) }}</td>
                             <td>{{ item.creationDate | date:'dd/MM/yyyy' }}</td>
                             <td>{{ item.client }}</td>
                             <td class="column-lg text-ellipsis">{{ item.reason }}</td>
@@ -160,7 +161,6 @@
                             </td>
 
                             <td class="column-lg text-ellipsis">{{ item.comments }}</td>
-                            <td>{{ getStatusDesc(item.status) }}</td>
                         </tr>
                     </tbody>
                 </table>       

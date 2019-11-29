@@ -16,18 +16,31 @@ namespace Sofco.Core.Models.Recruitment
 
         public bool HasTechnicalInterview { get; set; }
 
+        public bool IsTechnicalExternal { get; set; }
+
         public DateTime? TechnicalInterviewDate { get; set; }
 
         public string TechnicalInterviewPlace { get; set; }
 
+        public string TechnicalExternalInterviewer { get; set; }
+
+        public string TechnicalInterviewComments { get; set; }
+
         public int? TechnicalInterviewerId { get; set; }
 
         public bool HasClientInterview { get; set; }
+
+        public bool IsClientExternal { get; set; }
 
         public DateTime? ClientInterviewDate { get; set; }
 
         public string ClientInterviewPlace { get; set; }
 
         public int? ClientInterviewerId { get; set; }
+
+        public string ClientInterviewComments { get; set; }
+
+        public string ClientExternalInterviewer { get; set; }
+        public string RrhhInterviewComments { get; set; }
     }
 }

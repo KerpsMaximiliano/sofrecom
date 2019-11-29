@@ -1,22 +1,33 @@
-<form [formGroup]="interviewForm">
+<form [formGroup]="form" [hidden]="!isVisible">
 
-    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonId')">
-        <label class="control-label"> Tipo/Razon </label>
-        <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonId"></ng-select>
-
-        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonId')">
-            <p *ngIf="formsService.hasError(form, 'reasonId', 'required')">El campo es requerido</p>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonId')">
+                <label class="control-label"> Tipo/Razon </label>
+                <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonId"></ng-select>
+        
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonId')">
+                    <p *ngIf="formsService.hasError(form, 'reasonId', 'required')">El campo es requerido</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-md btn-success m-t-md" (click)="save()" [disabled]="!form.valid"> <i class="fa fa-save"></i> Actualizar entrevista </button>
         </div>
     </div>
 
-    <div class="form-group">
-        <icheck [(checked)]="hasRrhhInterview" (checkedChange)="hasRrhhInterviewChanged($event)">
-            <label style="padding-left:20px;"> Entrev. RRHH </label> 
-        </icheck>
-    </div> 
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <icheck [(checked)]="hasRrhhInterview" (checkedChange)="hasRrhhInterviewChanged($event)">
+                    <label style="padding-left:20px;"> Entrev. RRHH </label> 
+                </icheck>
+            </div> 
+        </div>
+    </div>
 
     <div class="row" [hidden]="!hasRrhhInterview">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'rrhhInterviewDate')">
                 <label class="control-label">Fecha</label>
                 <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="rrhhInterviewDate">
@@ -51,14 +62,29 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <icheck [(checked)]="hasTechnicalInterview" (checkedChange)="hasTechnicalInterviewChanged($event)">
-            <label style="padding-left:20px;"> Entrev. Técnica </label> 
-        </icheck>
-    </div> 
+    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'rrhhInterviewComments')" [hidden]="!hasRrhhInterview">
+        <label class="control-label">Comentarios de RRHH</label>
+        <textarea rows="4" class="form-control" formControlName="rrhhInterviewComments" maxlength="1000"></textarea>
+
+        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'rrhhInterviewComments')">
+            <p *ngIf="formsService.hasError(form, 'rrhhInterviewComments', 'maxLength')">Los comentarios no pueden superar los 1000 caracteres</p>
+        </div>
+    </div>
+
+    <hr class="hr-line-dashed">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <icheck [(checked)]="hasTechnicalInterview" (checkedChange)="hasTechnicalInterviewChanged($event)">
+                    <label style="padding-left:20px;"> Entrev. Técnica </label> 
+                </icheck>
+            </div> 
+        </div>
+    </div>
 
     <div class="row" [hidden]="!hasTechnicalInterview">
-        <div class="col-md-3" >
+        <div class="col-md-2" >
             <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'technicalInterviewDate')">
                 <label class="control-label">Fecha</label>
                 <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="technicalInterviewDate">
@@ -81,7 +107,27 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
+            <div class="form-group m-t-md">
+                <icheck [(checked)]="isTechnicalExternal" (checkedChange)="isTechnicalExternalChanged($event)">
+                    <label style="padding-left:20px;"> Externo </label> 
+                </icheck>
+            </div> 
+        </div>
+
+        <div class="col-md-4" [hidden]="!isTechnicalExternal">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'technicalExternalInterviewer')">
+                <label class="control-label">Evaluador </label>
+                <input type="text" class="form-control" formControlName="technicalExternalInterviewer" maxlength="100">
+    
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'technicalExternalInterviewer')">
+                    <p *ngIf="formsService.hasError(form, 'technicalExternalInterviewer', 'required')">El evaluador es requerido</p>
+                    <p *ngIf="formsService.hasError(form, 'technicalExternalInterviewer', 'maxlength')">Los lugar no puede superar los 100 caracteres</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4" [hidden]="isTechnicalExternal">
             <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'technicalInterviewerId')">
                 <label class="control-label"> Evaluador </label>
                 <ng-select [items]="userOptions" bindValue="id" bindLabel="text" formControlName="technicalInterviewerId"></ng-select>
@@ -92,15 +138,30 @@
             </div>
         </div>
     </div>
+
+    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'technicalInterviewComments')" [hidden]="!hasTechnicalInterview">
+        <label class="control-label">Comentarios tecnicos</label>
+        <textarea rows="4" class="form-control" formControlName="technicalInterviewComments" maxlength="1000"></textarea>
+
+        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'technicalInterviewComments')">
+            <p *ngIf="formsService.hasError(form, 'technicalInterviewComments', 'maxLength')">Los comentarios no pueden superar los 1000 caracteres</p>
+        </div>
+    </div>
     
-    <div class="form-group">
-        <icheck [(checked)]="hasClientInterview" (checkedChange)="hasClientInterviewChanged($event)">
-            <label style="padding-left:20px;"> Entrev. Cliente </label> 
-        </icheck>
-    </div> 
+    <hr class="hr-line-dashed">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <icheck [(checked)]="hasClientInterview" (checkedChange)="hasClientInterviewChanged($event)">
+                    <label style="padding-left:20px;"> Entrev. Cliente </label> 
+                </icheck>
+            </div> 
+        </div>
+    </div>
 
     <div class="row" [hidden]="!hasClientInterview">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'clientInterviewDate')">
                 <label class="control-label">Fecha</label>
                 <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="clientInterviewDate">
@@ -112,26 +173,55 @@
         </div>
 
         <div class="col-md-4">
-            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'rrhhInterviewPlace')">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'clientInterviewPlace')">
                 <label class="control-label">Lugar </label>
-                <input type="text" class="form-control" formControlName="rrhhInterviewPlace" maxlength="100">
+                <input type="text" class="form-control" formControlName="clientInterviewPlace" maxlength="100">
     
-                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'rrhhInterviewPlace')">
-                    <p *ngIf="formsService.hasError(form, 'rrhhInterviewPlace', 'required')">El lugar es requerido</p>
-                    <p *ngIf="formsService.hasError(form, 'rrhhInterviewPlace', 'maxlength')">Los lugar no puede superar los 100 caracteres</p>
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'clientInterviewPlace')">
+                    <p *ngIf="formsService.hasError(form, 'clientInterviewPlace', 'required')">El lugar es requerido</p>
+                    <p *ngIf="formsService.hasError(form, 'clientInterviewPlace', 'maxlength')">Los lugar no puede superar los 100 caracteres</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'rrhhInterviewerId')">
-                <label class="control-label"> Evaluador </label>
-                <ng-select [items]="userOptions" bindValue="id" bindLabel="text" formControlName="rrhhInterviewerId"></ng-select>
+        <div class="col-md-2">
+            <div class="form-group m-t-md">
+                <icheck [(checked)]="isClientExternal" (checkedChange)="isClientExternalChanged($event)">
+                    <label style="padding-left:20px;"> Externo </label> 
+                </icheck>
+            </div> 
+        </div>
 
-                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'rrhhInterviewerId')">
-                    <p *ngIf="formsService.hasError(form, 'rrhhInterviewerId', 'required')">El campo es requerido</p>
+        <div class="col-md-4" [hidden]="!isClientExternal">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'clientExternalInterviewer')">
+                <label class="control-label">Evaluador </label>
+                <input type="text" class="form-control" formControlName="clientExternalInterviewer" maxlength="100">
+    
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'clientExternalInterviewer')">
+                    <p *ngIf="formsService.hasError(form, 'clientExternalInterviewer', 'required')">El evaluador es requerido</p>
+                    <p *ngIf="formsService.hasError(form, 'clientExternalInterviewer', 'maxlength')">Los lugar no puede superar los 100 caracteres</p>
                 </div>
             </div>
+        </div>
+
+        <div class="col-md-4" [hidden]="isClientExternal">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'clientInterviewerId')">
+                <label class="control-label"> Evaluador </label>
+                <ng-select [items]="userOptions" bindValue="id" bindLabel="text" formControlName="clientInterviewerId"></ng-select>
+
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'clientInterviewerId')">
+                    <p *ngIf="formsService.hasError(form, 'clientInterviewerId', 'required')">El campo es requerido</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'clientInterviewComments')" [hidden]="!hasClientInterview">
+        <label class="control-label">Comentarios del cliente</label>
+        <textarea rows="4" class="form-control" formControlName="clientInterviewComments" maxlength="1000"></textarea>
+
+        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'clientInterviewComments')">
+            <p *ngIf="formsService.hasError(form, 'clientInterviewComments', 'maxLength')">Los comentarios no pueden superar los 1000 caracteres</p>
         </div>
     </div>
 </form>

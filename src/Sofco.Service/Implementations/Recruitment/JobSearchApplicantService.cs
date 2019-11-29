@@ -126,9 +126,9 @@ namespace Sofco.Service.Implementations.Recruitment
                 return response;
             }
 
-            if(model.HasRrhhInterview) ValidateRrhh(model.RrhhInterviewDate, model.RrhhInterviewPlace, model.RrhhInterviewerId, response);
-            if(model.HasTechnicalInterview) ValidateRrhh(model.TechnicalInterviewDate, model.TechnicalInterviewPlace, model.TechnicalInterviewerId, response);
-            if(model.HasClientInterview) ValidateRrhh(model.ClientInterviewDate, model.ClientInterviewPlace, model.ClientInterviewerId, response);
+            if(model.HasRrhhInterview) Validate(model.RrhhInterviewDate, model.RrhhInterviewPlace, model.RrhhInterviewerId, response, false);
+            if(model.HasTechnicalInterview) Validate(model.TechnicalInterviewDate, model.TechnicalInterviewPlace, model.TechnicalInterviewerId, response, model.IsTechnicalExternal);
+            if(model.HasClientInterview) Validate(model.ClientInterviewDate, model.ClientInterviewPlace, model.ClientInterviewerId, response, model.IsClientExternal);
 
             if (response.HasErrors()) return response;
 
@@ -136,29 +136,61 @@ namespace Sofco.Service.Implementations.Recruitment
             {
                 if (model.HasRrhhInterview)
                 {
+                    jobSearchApplicant.HasRrhhInterview = model.HasRrhhInterview;
                     jobSearchApplicant.RrhhInterviewDate = model.RrhhInterviewDate;
                     jobSearchApplicant.RrhhInterviewPlace = model.RrhhInterviewPlace;
                     jobSearchApplicant.RrhhInterviewerId = model.RrhhInterviewerId;
+                    jobSearchApplicant.RrhhInterviewComments = model.RrhhInterviewComments;
                 }
 
                 if (model.HasTechnicalInterview)
                 {
+                    jobSearchApplicant.HasTechnicalInterview = model.HasTechnicalInterview;
                     jobSearchApplicant.TechnicalInterviewDate = model.TechnicalInterviewDate;
                     jobSearchApplicant.TechnicalInterviewPlace = model.TechnicalInterviewPlace;
-                    jobSearchApplicant.TechnicalInterviewerId = model.TechnicalInterviewerId;
+                    jobSearchApplicant.TechnicalInterviewComments = model.TechnicalInterviewComments;
+
+                    if (model.IsTechnicalExternal)
+                    {
+                        jobSearchApplicant.TechnicalExternalInterviewer = model.TechnicalExternalInterviewer;
+                        jobSearchApplicant.IsTechnicalExternal = model.IsTechnicalExternal;
+                        jobSearchApplicant.TechnicalInterviewerId = null;
+                    }
+                    else
+                    {
+                        jobSearchApplicant.TechnicalInterviewerId = model.TechnicalInterviewerId;
+                        jobSearchApplicant.IsTechnicalExternal = false;
+                        jobSearchApplicant.TechnicalExternalInterviewer = string.Empty;
+                    }
                 }
 
                 if (model.HasClientInterview)
                 {
+                    jobSearchApplicant.HasClientInterview = model.HasClientInterview;
                     jobSearchApplicant.ClientInterviewDate = model.ClientInterviewDate;
                     jobSearchApplicant.ClientInterviewPlace = model.ClientInterviewPlace;
-                    jobSearchApplicant.ClientInterviewerId = model.ClientInterviewerId;
+                    jobSearchApplicant.ClientInterviewComments = model.ClientInterviewComments;
+
+                    if (model.IsClientExternal)
+                    {
+                        jobSearchApplicant.ClientExternalInterviewer = model.ClientExternalInterviewer;
+                        jobSearchApplicant.IsClientExternal = model.IsClientExternal;
+                        jobSearchApplicant.ClientInterviewerId = null;
+                    }
+                    else
+                    {
+                        jobSearchApplicant.ClientInterviewerId = model.ClientInterviewerId;
+                        jobSearchApplicant.IsClientExternal = false;
+                        jobSearchApplicant.ClientExternalInterviewer = string.Empty;
+                    }
                 }
 
                 jobSearchApplicant.ReasonId = model.ReasonId;
 
                 unitOfWork.JobSearchApplicantRepository.Update(jobSearchApplicant);
                 unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
             }
             catch (Exception e)
             {
@@ -169,7 +201,8 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        private void ValidateRrhh(DateTime? date, string place, int? interviewer, Response response)
+        private void Validate(DateTime? date, string place, int? interviewer, Response response,
+            bool isExternal)
         {
             if (!date.HasValue)
                 response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewDateRequired);
@@ -177,7 +210,7 @@ namespace Sofco.Service.Implementations.Recruitment
             if (string.IsNullOrWhiteSpace(place))
                 response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewPlaceRequired);
 
-            if (!interviewer.HasValue || !unitOfWork.UserRepository.ExistById(interviewer.Value))
+            if (!isExternal && (!interviewer.HasValue || !unitOfWork.UserRepository.ExistById(interviewer.Value)))
                 response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewerRequired);
         }
     }

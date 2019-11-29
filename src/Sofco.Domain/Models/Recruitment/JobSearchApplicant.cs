@@ -52,5 +52,12 @@ namespace Sofco.Domain.Models.Recruitment
         public int? ClientInterviewerId { get; set; }
 
         public User ClientInterviewer { get; set; }
+        public string TechnicalInterviewComments { get; set; }
+        public string TechnicalExternalInterviewer { get; set; }
+        public bool IsTechnicalExternal { get; set; }
+        public string ClientInterviewComments { get; set; }
+        public bool IsClientExternal { get; set; }
+        public string ClientExternalInterviewer { get; set; }
+        public string RrhhInterviewComments { get; set; }
     }
 }

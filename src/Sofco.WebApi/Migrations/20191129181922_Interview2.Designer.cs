@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20191129181922_Interview2")]
+    partial class Interview2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2480,8 +2482,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("ClientExternalInterviewer");
 
-                    b.Property<string>("ClientInterviewComments")
-                        .HasMaxLength(100);
+                    b.Property<string>("ClientInterviewComments");
 
                     b.Property<DateTime?>("ClientInterviewDate");
 
@@ -2508,9 +2509,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("ReasonId");
 
-                    b.Property<string>("RrhhInterviewComments")
-                        .HasMaxLength(100);
-
                     b.Property<DateTime?>("RrhhInterviewDate");
 
                     b.Property<string>("RrhhInterviewPlace")
@@ -2520,8 +2518,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<string>("TechnicalExternalInterviewer");
 
-                    b.Property<string>("TechnicalInterviewComments")
-                        .HasMaxLength(100);
+                    b.Property<string>("TechnicalInterviewComments");
 
                     b.Property<DateTime?>("TechnicalInterviewDate");
 

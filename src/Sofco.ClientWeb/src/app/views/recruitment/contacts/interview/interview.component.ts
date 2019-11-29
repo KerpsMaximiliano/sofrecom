@@ -4,6 +4,7 @@ import { FormsService } from "app/services/forms/forms.service";
 import { Subscription } from "rxjs";
 import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { MessageService } from "app/services/common/message.service";
+import * as moment from 'moment';
 
 @Component({
     selector: 'interview',
@@ -19,21 +20,31 @@ export class InterviewComponent implements OnDestroy {
     hasTechnicalInterview: boolean = false;
     hasClientInterview: boolean = false;
 
+    isTechnicalExternal: boolean = false;
+    isClientExternal: boolean = false;
+
     jobSearchId: number;
     applicantId: number;
 
+    history: any;
+
     form: FormGroup = new FormGroup({
         rrhhInterviewDate: new FormControl(null),
-        rrhhInterviewPlace: new FormControl(null,),
+        rrhhInterviewPlace: new FormControl(null),
         rrhhInterviewerId: new FormControl(null),
+        rrhhInterviewComments: new FormControl(null, [Validators.maxLength(1000)]),
 
         technicalInterviewDate: new FormControl(null),
-        technicalInterviewPlace: new FormControl(null,),
+        technicalInterviewPlace: new FormControl(null),
         technicalInterviewerId: new FormControl(null),
+        technicalExternalInterviewer: new FormControl(null),
+        technicalInterviewComments: new FormControl(null, [Validators.maxLength(1000)]),
  
         clientInterviewDate: new FormControl(null),
-        clientInterviewPlace: new FormControl(null,),
+        clientInterviewPlace: new FormControl(null),
         clientInterviewerId: new FormControl(null),
+        clientExternalInterviewer: new FormControl(null),
+        clientInterviewComments: new FormControl(null, [Validators.maxLength(1000)]),
 
         reasonId: new FormControl(null, [Validators.required]),
     });
@@ -49,35 +60,44 @@ export class InterviewComponent implements OnDestroy {
         if (this.addSubscrip) this.addSubscrip.unsubscribe();
     }
 
-    canSave(){
-        if(this.hasRrhhInterview || this.hasTechnicalInterview || this.hasClientInterview){
-            return this.form.valid;
-        }
-
-        return false;
-    }
-
     save(){
         var json = {
             reasonId: this.form.controls.reasonId.value,
             hasClientInterview: this.hasClientInterview,
             hasRrhhInterview: this.hasRrhhInterview,
             hasTechnicalInterview: this.hasTechnicalInterview,
+            isTechnicalExternal: this.isTechnicalExternal,
+            isClientExternal: this.isClientExternal,
+
             rrhhInterviewDate: this.form.controls.rrhhInterviewDate.value,
             rrhhInterviewPlace: this.form.controls.rrhhInterviewPlace.value,
             rrhhInterviewerId: this.form.controls.rrhhInterviewerId.value,
+            rrhhInterviewComments: this.form.controls.rrhhInterviewComments.value,
+
             technicalInterviewDate: this.form.controls.technicalInterviewDate.value,
             technicalInterviewPlace: this.form.controls.technicalInterviewPlace.value,
             technicalInterviewerId: this.form.controls.technicalInterviewerId.value,
+            technicalExternalInterviewer: this.form.controls.technicalExternalInterviewer.value,
+            technicalInterviewComments: this.form.controls.technicalInterviewComments.value,
+
             clientInterviewDate: this.form.controls.clientInterviewDate.value,
             clientInterviewPlace: this.form.controls.clientInterviewPlace.value,
             clientInterviewerId: this.form.controls.clientInterviewerId.value,
+            clientExternalInterviewer: this.form.controls.clientExternalInterviewer.value,
+            clientInterviewComments: this.form.controls.clientInterviewComments.value,
         };
 
         this.messageService.showLoading();
 
         this.addSubscrip = this.jobSearchService.addInterview(json, this.applicantId, this.jobSearchId).subscribe(response => {
             this.messageService.closeLoading();
+
+            this.history.reasonId = this.form.controls.reasonId.value;
+            var reason = this.reasonOptions.find(x => x.id == this.form.controls.reasonId.value);
+
+            if(reason){
+                this.history.reason = reason.text;
+            }
         }, 
         error => {
             this.messageService.closeLoading();
@@ -85,22 +105,43 @@ export class InterviewComponent implements OnDestroy {
     }
 
     setData(history){
+        this.history = history;
+
         this.applicantId = history.applicantId;
         this.jobSearchId = history.jobSearchId;
         this.isVisible = true;
         this.hasClientInterview = history.hasClientInterview;
         this.hasRrhhInterview = history.hasRrhhInterview;
         this.hasTechnicalInterview = history.hasTechnicalInterview;
+        this.isTechnicalExternal = history.isTechnicalExternal;
+        this.isClientExternal = history.isClientExternal;
+
         this.form.controls.reasonId.setValue(history.reasonId);
-        this.form.controls.rrhhInterviewDate.setValue(history.rrhhInterviewDate);
+
+        this.form.controls.rrhhInterviewDate.setValue(moment(history.rrhhInterviewDate).toDate());
         this.form.controls.rrhhInterviewPlace.setValue(history.rrhhInterviewPlace);
-        this.form.controls.rrhhInterviewerId.setValue(history.rrhhInterviewerId);
-        this.form.controls.technicalInterviewDate.setValue(history.technicalInterviewDate);
+        this.form.controls.rrhhInterviewerId.setValue(history.rrhhInterviewerId.toString());
+        this.form.controls.rrhhInterviewComments.setValue(history.rrhhInterviewComments);
+
+        this.form.controls.technicalInterviewDate.setValue(moment(history.technicalInterviewDate).toDate());
         this.form.controls.technicalInterviewPlace.setValue(history.technicalInterviewPlace);
-        this.form.controls.technicalInterviewerId.setValue(history.technicalInterviewerId);
-        this.form.controls.clientInterviewDate.setValue(history.clientInterviewDate);
+
+        if(history.technicalInterviewerId){
+            this.form.controls.technicalInterviewerId.setValue(history.technicalInterviewerId.toString());
+        }
+       
+        this.form.controls.technicalInterviewComments.setValue(history.technicalInterviewComments);
+        this.form.controls.technicalExternalInterviewer.setValue(history.technicalExternalInterviewer);
+
+        this.form.controls.clientInterviewDate.setValue(moment(history.clientInterviewDate).toDate());
         this.form.controls.clientInterviewPlace.setValue(history.clientInterviewPlace);
-        this.form.controls.clientInterviewerId.setValue(history.clientInterviewerId);
+
+        if(history.clientInterviewerId){
+            this.form.controls.clientInterviewerId.setValue(history.clientInterviewerId.toString());
+        }
+
+        this.form.controls.clientInterviewComments.setValue(history.clientInterviewComments);
+        this.form.controls.clientExternalInterviewer.setValue(history.clientExternalInterviewer);
     }
 
     clean(){
@@ -110,15 +151,25 @@ export class InterviewComponent implements OnDestroy {
         this.hasClientInterview = false;
         this.hasRrhhInterview = false;
         this.hasTechnicalInterview = false;
+        this.isTechnicalExternal = false;
+        this.isClientExternal = false;
+
         this.form.controls.rrhhInterviewDate.setValue(null);
         this.form.controls.rrhhInterviewPlace.setValue(null);
         this.form.controls.rrhhInterviewerId.setValue(null);
+        this.form.controls.rrhhInterviewComments.setValue(null);
+
         this.form.controls.technicalInterviewDate.setValue(null);
         this.form.controls.technicalInterviewPlace.setValue(null);
         this.form.controls.technicalInterviewerId.setValue(null);
+        this.form.controls.technicalInterviewComments.setValue(null);
+        this.form.controls.technicalExternalInterviewer.setValue(null);
+
         this.form.controls.clientInterviewDate.setValue(null);
         this.form.controls.clientInterviewPlace.setValue(null);
         this.form.controls.clientInterviewerId.setValue(null);
+        this.form.controls.clientInterviewComments.setValue(null);
+        this.form.controls.clientExternalInterviewer.setValue(null);
     }
 
     hasRrhhInterviewChanged(value){
@@ -141,6 +192,8 @@ export class InterviewComponent implements OnDestroy {
 
             this.form.controls.rrhhInterviewerId.clearValidators();
             this.form.controls.rrhhInterviewerId.setValue(null);
+
+            this.form.controls.rrhhInterviewComments.setValue(null);
         }
     }
 
@@ -164,6 +217,13 @@ export class InterviewComponent implements OnDestroy {
 
             this.form.controls.technicalInterviewerId.clearValidators();
             this.form.controls.technicalInterviewerId.setValue(null);
+
+            this.form.controls.technicalInterviewComments.setValue(null);
+
+            this.form.controls.technicalExternalInterviewer.clearValidators();
+            this.form.controls.technicalExternalInterviewer.setValue(null);
+
+            this.isTechnicalExternal = false;
         }
     }
 
@@ -187,6 +247,47 @@ export class InterviewComponent implements OnDestroy {
 
             this.form.controls.clientInterviewerId.clearValidators();
             this.form.controls.clientInterviewerId.setValue(null);
+
+            this.form.controls.clientInterviewComments.setValue(null);
+
+            this.form.controls.clientExternalInterviewer.clearValidators();
+            this.form.controls.clientExternalInterviewer.setValue(null);
+
+            this.isClientExternal = false;
+        }
+    }
+
+    isTechnicalExternalChanged(value){
+        if(value){
+            this.form.controls.technicalExternalInterviewer.setValidators([Validators.required, Validators.maxLength(100)]);
+            this.form.controls.technicalExternalInterviewer.updateValueAndValidity();
+
+            this.form.controls.technicalInterviewerId.clearValidators();
+            this.form.controls.technicalInterviewerId.setValue(null);
+        }
+        else{
+            this.form.controls.technicalExternalInterviewer.clearValidators();
+            this.form.controls.technicalExternalInterviewer.setValue(null);
+
+            this.form.controls.technicalInterviewerId.setValidators([Validators.required]);
+            this.form.controls.technicalInterviewerId.updateValueAndValidity();
+        }
+    }
+
+    isClientExternalChanged(value){
+        if(value){
+            this.form.controls.clientExternalInterviewer.setValidators([Validators.required, Validators.maxLength(100)]);
+            this.form.controls.clientExternalInterviewer.updateValueAndValidity();
+
+            this.form.controls.clientInterviewerId.clearValidators();
+            this.form.controls.clientInterviewerId.setValue(null);
+        }
+        else{
+            this.form.controls.clientExternalInterviewer.clearValidators();
+            this.form.controls.clientExternalInterviewer.setValue(null);
+
+            this.form.controls.clientInterviewerId.setValidators([Validators.required]);
+            this.form.controls.clientInterviewerId.updateValueAndValidity();
         }
     }
 }

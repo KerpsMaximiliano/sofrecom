@@ -34,17 +34,38 @@ namespace Sofco.Core.Models.Recruitment
             RrhhInterviewDate = domain.RrhhInterviewDate;
             RrhhInterviewPlace = domain.RrhhInterviewPlace;
             RrhhInterviewerId = domain.RrhhInterviewerId;
+            RrhhInterviewComments = domain.RrhhInterviewComments;
 
             HasTechnicalInterview = domain.HasTechnicalInterview;
             TechnicalInterviewDate = domain.TechnicalInterviewDate;
             TechnicalInterviewPlace = domain.TechnicalInterviewPlace;
             TechnicalInterviewerId = domain.TechnicalInterviewerId;
+            TechnicalExternalInterviewer = domain.TechnicalExternalInterviewer;
+            TechnicalInterviewComments = domain.TechnicalInterviewComments;
+            IsTechnicalExternal = domain.IsTechnicalExternal;
 
             HasClientInterview = domain.HasClientInterview;
             ClientInterviewDate = domain.ClientInterviewDate;
             ClientInterviewPlace = domain.ClientInterviewPlace;
             ClientInterviewerId = domain.ClientInterviewerId;
+            ClientExternalInterviewer = domain.ClientExternalInterviewer;
+            ClientInterviewComments = domain.ClientInterviewComments;
+            IsClientExternal = domain.IsClientExternal;
         }
+
+        public bool IsClientExternal { get; set; }
+
+        public string ClientInterviewComments { get; set; }
+
+        public string ClientExternalInterviewer { get; set; }
+
+        public string RrhhInterviewComments { get; set; }
+
+        public bool IsTechnicalExternal { get; set; }
+
+        public string TechnicalInterviewComments { get; set; }
+
+        public string TechnicalExternalInterviewer { get; set; }
 
         public int ReasonId { get; set; }
 
