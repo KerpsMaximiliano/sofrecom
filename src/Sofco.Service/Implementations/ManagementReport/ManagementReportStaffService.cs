@@ -618,8 +618,16 @@ namespace Sofco.Service.Implementations.ManagementReport
                         }
                         else
                         {
-                            subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.budget).Id).ToList();
-                            employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.budget).Id).ToList();
+                            if (PFA == EnumBudgetType.pfa1)
+                            {
+                                subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.budget).Id).ToList();
+                                employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.budget).Id).ToList();
+                            }
+                            else
+                            {
+                                subcategories = costDetailMonth.CostDetailStaff.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.pfa1).Id).ToList();
+                                employees = costDetailMonth.CostDetailResources.Where(x => x.BudgetTypeId == typesBudgets.FirstOrDefault(t => t.Name == EnumBudgetType.pfa1).Id).ToList();
+                            }
                         }
 
                         if (subcategories != null)
