@@ -18,6 +18,7 @@ namespace Sofco.Core.Services.ManagementReport
         Response<CostDetailMonthModel> GetCostDetailMonth(string pServiceId, int pMonth, int pYear);
         Response DeleteContracted(int ContractedId);
         Response DeleteOtherResource(int id);
+        Response<CostResourceEmployee> GetCostDetailByEmployee(string serviceId, int employeeId);
         Response UpdateDates(int id, ManagementReportUpdateDates model);
         Response<byte[]> CreateTracingReport(TracingModel tracing);
         Response Send(ManagementReportSendModel model);

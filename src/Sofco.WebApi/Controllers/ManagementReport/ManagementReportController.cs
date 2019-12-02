@@ -41,6 +41,14 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
+        [HttpGet("{serviceId}/costDetail/{employeeId}")]
+        public IActionResult GetDetailCost(string serviceId, int employeeId)
+        {
+            var response = managementReportService.GetCostDetailByEmployee(serviceId, employeeId);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("costDetail")]
         public IActionResult PostDetailCost([FromBody] CostDetailModel model)
         {

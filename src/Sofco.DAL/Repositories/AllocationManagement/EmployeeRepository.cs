@@ -134,7 +134,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public Employee GetWithSocialCharges(int employeeId)
         {
-            return context.Employees.Include(x => x.SocialCharges).SingleOrDefault(x => x.Id == employeeId);
+            return context.Employees.Include(x => x.Allocations).Include(x => x.SocialCharges).SingleOrDefault(x => x.Id == employeeId);
         }
 
         public ICollection<Employee> Search(EmployeeSearchParams parameters, DateTime startDate, DateTime endDate)
@@ -191,16 +191,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public void ResetAllExamDays()
         {
             context.Database.ExecuteSqlCommand("UPDATE app.Employees SET ExamDaysTaken = 0");
-        }
-
-        public void UpdateHolidaysPending(Employee employeeToModif)
-        {
-            context.Entry(employeeToModif).Property("HolidaysPending").IsModified = true;
-        }
-
-        public void UpdateExamDaysTaken(Employee employeeToModif)
-        {
-            context.Entry(employeeToModif).Property("ExamDaysTaken").IsModified = true;
         }
 
         public IList<EmployeeCategory> GetEmployeeCategories(int employeeId)

@@ -317,7 +317,23 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 var listAux = [];
                 listAux.push(this.itemSelected);
 
-                this.save(listAux, [], [])
+                this.save(listAux, [], [], () => {
+
+                    this.updateCostSubscrip = this.managementReportService.getCostDetailByEmployee(this.serviceId, this.itemSelected.employeeId).subscribe(response => {
+
+                        var employeeSelectedIndex = this.employees.findIndex(x => x.employeeId == this.itemSelected.employeeId);
+
+                        if(employeeSelectedIndex > -1){
+                            this.employees[employeeSelectedIndex] = response.data;
+                        }
+                        
+
+                        this.calculateTotalCosts();
+                        this.addClassEmployee();
+                    });
+                    
+                });
+
                 this.editItemModal.hide();
                 break;
 
@@ -330,7 +346,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 var listAux = [];
                 listAux.push(this.itemSelected);
 
-                this.save(this.employees, [], listAux)
+                this.save(this.employees, [], listAux, null)
                 this.editItemModal.hide();
                 break
 
@@ -346,7 +362,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                 this.modalPercentage = false;
                 if (this.itemSelected.typeName == this.typeProfile) {
-                    this.save([], listAux, [])
+                    this.save([], listAux, [], null)
                 }
                 this.editItemModal.hide();
                 break
@@ -392,7 +408,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     }
 
-    save(pEmployees, pProfiles, pFunded) {
+    save(pEmployees, pProfiles, pFunded, callback) {
         this.messageService.showLoading();
 
         var model = {
@@ -409,6 +425,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             this.calculateTotalCosts();
             this.addClassEmployee();
+
+            if(callback) callback();
 
             setTimeout(() => {
                 this.sendDataToDetailView();
@@ -735,7 +753,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.fundedResources.splice(index, 1)
         this.otherResources.push(item)
 
-        this.save([], [], this.fundedResources)
+        this.save([], [], this.fundedResources, null)
 
         this.otherResources.sort(function (a, b) {
             if (a.display > b.display) {
