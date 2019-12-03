@@ -94,7 +94,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
         }
 
-        public static void ValidateInvoiceCode(SolfacStatusParams parameters, ISolfacRepository solfacRepository, Response response, string invoiceCode)
+        public static void ValidateInvoiceCode(SolfacStatusParams parameters, ISolfacRepository solfacRepository, Response response, Solfac solfac)
         {
             if (string.IsNullOrWhiteSpace(parameters.InvoiceCode))
             {
@@ -102,7 +102,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
             }
             else
             {
-                if (parameters.InvoiceCode != invoiceCode && solfacRepository.InvoiceCodeExist(parameters.InvoiceCode))
+                if (solfacRepository.InvoiceCodeExist(parameters.InvoiceCode, solfac))
                 {
                     response.Messages.Add(new Message(Resources.Billing.Solfac.InvoiceCodeAlreadyExist, MessageType.Error));
                 }

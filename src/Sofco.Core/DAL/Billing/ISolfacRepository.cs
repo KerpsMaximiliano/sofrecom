@@ -28,7 +28,7 @@ namespace Sofco.Core.DAL.Billing
         IList<Solfac> SearchByParamsAndUser(SolfacParams parameter, UserLiteModel userMail);
         void UpdateInvoice(Solfac solfacToModif);
         void UpdateCash(Solfac solfacToModif);
-        bool InvoiceCodeExist(string invoiceCode);
+        bool InvoiceCodeExist(string invoiceCode, Solfac solfac);
         IList<Hito> GetHitosByExternalIds(List<Guid> externalIds);
         HitoDetail GetDetail(int id);
         void DeleteDetail(HitoDetail detail);

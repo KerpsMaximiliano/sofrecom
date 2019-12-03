@@ -533,7 +533,7 @@ namespace Sofco.Service.Implementations.Billing
 
             if (response.HasErrors()) return response;
 
-            SolfacValidationHelper.ValidateInvoiceCode(parameters, unitOfWork.SolfacRepository, response, solfac.InvoiceCode);
+            SolfacValidationHelper.ValidateInvoiceCode(parameters, unitOfWork.SolfacRepository, response, solfac);
             SolfacValidationHelper.ValidateInvoiceDate(parameters, response, solfac);
 
             if (solfac.CurrencyId != appSetting.CurrencyPesos)

@@ -44,6 +44,7 @@ import { DatepickerModule, BsDatepickerModule, BsDatepickerConfig } from 'ngx-bo
 import { esLocale } from 'ngx-bootstrap/locale';
 import { defineLocale, TooltipModule } from 'ngx-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ManagementReportOnLeave } from './guards/managementReportOnLeave.guard';
 
 defineLocale('es', esLocale);
 
@@ -96,6 +97,7 @@ registerLocaleData(localeEs, 'es');
     ErrorHandlerService,
     MessageService,
     AuthGuard,
+    ManagementReportOnLeave,
     AuthenticationService,
     SettingsService,
     AppSetting,

@@ -199,9 +199,9 @@ namespace Sofco.DAL.Repositories.Billing
             context.Entry(solfac).Property("CashedDate").IsModified = true;
         }
 
-        public bool InvoiceCodeExist(string invoiceCode)
+        public bool InvoiceCodeExist(string invoiceCode, Solfac solfac)
         {
-            return context.Solfacs.Any(x => x.InvoiceCode == invoiceCode);
+            return context.Solfacs.Any(x => x.InvoiceCode == invoiceCode && x.DocumentTypeId == solfac.DocumentTypeId && x.Id != solfac.Id);
         }
 
         public IList<Hito> GetHitosByExternalIds(List<Guid> externalIds)
