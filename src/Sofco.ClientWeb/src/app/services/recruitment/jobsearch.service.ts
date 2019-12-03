@@ -45,4 +45,8 @@ export class JobSearchService {
     addContacts(json) {
         return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant`, json);
     }
+
+    addInterview(json, applicantId, jobSearchId){
+        return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/interview`, json);
+    }
 }

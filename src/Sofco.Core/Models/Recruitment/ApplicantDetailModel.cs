@@ -14,7 +14,6 @@ namespace Sofco.Core.Models.Recruitment
             FirstName = applicant.FirstName;
             Email = applicant.Email;
             Comments = applicant.Comments;
-            ReasonCauseId = applicant.ReasonCauseId;
             CountryCode1 = applicant.CountryCode1;
             AreaCode1 = applicant.AreaCode1;
             Telephone1 = applicant.Telephone1;

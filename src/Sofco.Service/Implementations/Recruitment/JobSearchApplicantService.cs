@@ -11,6 +11,7 @@ using Sofco.Core.Services.Recruitment;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Helpers;
 
 namespace Sofco.Service.Implementations.Recruitment
 {
@@ -70,9 +71,6 @@ namespace Sofco.Service.Implementations.Recruitment
 
             var reason = optionRepository.Get(model.ReasonId.GetValueOrDefault());
 
-            if (model.Applicants.Count == 1 && string.IsNullOrWhiteSpace(model.DocumentNumber) && reason.Type == ReasonCauseType.ApplicantInProgress)
-                response.AddError(Resources.Recruitment.JobSearch.DocumentNumberRequired);
-
             if (response.HasErrors()) return response;
 
             var currentUser = userData.GetCurrentUser();
@@ -93,13 +91,12 @@ namespace Sofco.Service.Implementations.Recruitment
 
                     unitOfWork.JobSearchApplicantRepository.Insert(itemToAdd);
                 }
-
-                if (model.Applicants.Count == 1 && !string.IsNullOrWhiteSpace(model.DocumentNumber))
+               
+                if (reason.Type == ReasonCauseType.ApplicantInProgress)
                 {
-                    if (reason.Type == ReasonCauseType.ApplicantInProgress)
+                    foreach (var applicantId in model.Applicants)
                     {
-                        var applicant = unitOfWork.ApplicantRepository.Get(model.Applicants[0]);
-                        applicant.DocumentNumber = model.DocumentNumber;
+                        var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
                         applicant.Status = ApplicantStatus.InProgress;
                         unitOfWork.ApplicantRepository.Update(applicant);
                     }
@@ -115,6 +112,106 @@ namespace Sofco.Service.Implementations.Recruitment
             }
 
             return response;
+        }
+
+        public Response AddInterview(int applicantId, int jobSearchId, InterviewAddModel model)
+        {
+            var response = new Response();
+
+            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId);
+
+            if (jobSearchApplicant == null)
+            {
+                response.AddError(Resources.Recruitment.JobSearchApplicant.NotFound);
+                return response;
+            }
+
+            if(model.HasRrhhInterview) Validate(model.RrhhInterviewDate, model.RrhhInterviewPlace, model.RrhhInterviewerId, response, false);
+            if(model.HasTechnicalInterview) Validate(model.TechnicalInterviewDate, model.TechnicalInterviewPlace, model.TechnicalInterviewerId, response, model.IsTechnicalExternal);
+            if(model.HasClientInterview) Validate(model.ClientInterviewDate, model.ClientInterviewPlace, model.ClientInterviewerId, response, model.IsClientExternal);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                if (model.HasRrhhInterview)
+                {
+                    jobSearchApplicant.HasRrhhInterview = model.HasRrhhInterview;
+                    jobSearchApplicant.RrhhInterviewDate = model.RrhhInterviewDate;
+                    jobSearchApplicant.RrhhInterviewPlace = model.RrhhInterviewPlace;
+                    jobSearchApplicant.RrhhInterviewerId = model.RrhhInterviewerId;
+                    jobSearchApplicant.RrhhInterviewComments = model.RrhhInterviewComments;
+                }
+
+                if (model.HasTechnicalInterview)
+                {
+                    jobSearchApplicant.HasTechnicalInterview = model.HasTechnicalInterview;
+                    jobSearchApplicant.TechnicalInterviewDate = model.TechnicalInterviewDate;
+                    jobSearchApplicant.TechnicalInterviewPlace = model.TechnicalInterviewPlace;
+                    jobSearchApplicant.TechnicalInterviewComments = model.TechnicalInterviewComments;
+
+                    if (model.IsTechnicalExternal)
+                    {
+                        jobSearchApplicant.TechnicalExternalInterviewer = model.TechnicalExternalInterviewer;
+                        jobSearchApplicant.IsTechnicalExternal = model.IsTechnicalExternal;
+                        jobSearchApplicant.TechnicalInterviewerId = null;
+                    }
+                    else
+                    {
+                        jobSearchApplicant.TechnicalInterviewerId = model.TechnicalInterviewerId;
+                        jobSearchApplicant.IsTechnicalExternal = false;
+                        jobSearchApplicant.TechnicalExternalInterviewer = string.Empty;
+                    }
+                }
+
+                if (model.HasClientInterview)
+                {
+                    jobSearchApplicant.HasClientInterview = model.HasClientInterview;
+                    jobSearchApplicant.ClientInterviewDate = model.ClientInterviewDate;
+                    jobSearchApplicant.ClientInterviewPlace = model.ClientInterviewPlace;
+                    jobSearchApplicant.ClientInterviewComments = model.ClientInterviewComments;
+
+                    if (model.IsClientExternal)
+                    {
+                        jobSearchApplicant.ClientExternalInterviewer = model.ClientExternalInterviewer;
+                        jobSearchApplicant.IsClientExternal = model.IsClientExternal;
+                        jobSearchApplicant.ClientInterviewerId = null;
+                    }
+                    else
+                    {
+                        jobSearchApplicant.ClientInterviewerId = model.ClientInterviewerId;
+                        jobSearchApplicant.IsClientExternal = false;
+                        jobSearchApplicant.ClientExternalInterviewer = string.Empty;
+                    }
+                }
+
+                jobSearchApplicant.ReasonId = model.ReasonId;
+
+                unitOfWork.JobSearchApplicantRepository.Update(jobSearchApplicant);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        private void Validate(DateTime? date, string place, int? interviewer, Response response,
+            bool isExternal)
+        {
+            if (!date.HasValue)
+                response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewDateRequired);
+
+            if (string.IsNullOrWhiteSpace(place))
+                response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewPlaceRequired);
+
+            if (!isExternal && (!interviewer.HasValue || !unitOfWork.UserRepository.ExistById(interviewer.Value)))
+                response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewerRequired);
         }
     }
 }

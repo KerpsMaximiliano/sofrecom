@@ -19,6 +19,7 @@ namespace Sofco.DAL.Repositories.Recruitment
         {
             var query = context.Applicants
                 .Include(x => x.JobSearchApplicants)
+                    .ThenInclude(x => x.Reason)
                 .Include(x => x.ApplicantProfiles)
                 .Include(x => x.ApplicantSkills)
                 .Where(x => x.Status == ApplicantStatus.Valid);
@@ -56,12 +57,27 @@ namespace Sofco.DAL.Repositories.Recruitment
                         Skill = s.Skill,
                     })
                     .ToList(),
+                    JobSearchApplicants = x.JobSearchApplicants.Select(s => new JobSearchApplicant
+                    {
+                        JobSearchId = s.JobSearchId,
+                        Reason = new ReasonCause
+                        {
+                            Id = s.ReasonId,
+                            Type = s.Reason.Type
+                        },
+                        CreatedDate = s.CreatedDate
+                    })
+                    .OrderByDescending(s => s.CreatedDate).ToList(),
                     FirstName = x.FirstName,
                     DocumentNumber = x.DocumentNumber,
                     LastName = x.LastName,
-                    JobSearchApplicants = x.JobSearchApplicants.OrderByDescending(s => s.CreatedDate).Take(1).ToList(),
                 })
             .ToList();
+        }
+
+        public JobSearchApplicant GetById(int applicantId, int jobSearchId)
+        {
+            return context.JobSearchApplicants.SingleOrDefault(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId);
         }
     }
 }

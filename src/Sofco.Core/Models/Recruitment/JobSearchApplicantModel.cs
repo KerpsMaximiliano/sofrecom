@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 
 namespace Sofco.Core.Models.Recruitment
@@ -10,7 +11,6 @@ namespace Sofco.Core.Models.Recruitment
         {
             Id = applicant.Id;
             Applicant = $"{applicant.FirstName} {applicant.LastName}";
-            DocumentNumber = applicant.DocumentNumber;
 
             if (applicant.ApplicantProfiles != null && applicant.ApplicantProfiles.Any())
                 Profiles = string.Join(";", applicant.ApplicantProfiles.Select(x => x.Profile.Text));
@@ -22,14 +22,16 @@ namespace Sofco.Core.Models.Recruitment
             {
                 var contact = applicant.JobSearchApplicants.FirstOrDefault();
                 Date = contact?.CreatedDate;
+
+                ApplicantInProgress = applicant.JobSearchApplicants.Any(x => x.Reason.Type == ReasonCauseType.ApplicantInProgress);
             }
         }
+
+        public bool ApplicantInProgress { get; set; }
 
         public int Id { get; set; }
 
         public string Applicant { get; set; }
-
-        public string DocumentNumber { get; set; }
 
         public string Skills { get; set; }
 

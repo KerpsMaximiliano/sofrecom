@@ -18,6 +18,7 @@
       "dom"
     ],
     "paths": {
+      "exceljs": ["node_modules/exceljs/dist/exceljs.min"],
       "@angular/*": [
         "../node_modules/@angular/*"
       ]

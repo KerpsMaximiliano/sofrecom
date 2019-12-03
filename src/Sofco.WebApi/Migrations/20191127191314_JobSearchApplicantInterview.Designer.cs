@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20191127191314_JobSearchApplicantInterview")]
+    partial class JobSearchApplicantInterview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2478,11 +2480,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("ClientExternalInterviewer");
-
-                    b.Property<string>("ClientInterviewComments")
-                        .HasMaxLength(100);
-
                     b.Property<DateTime?>("ClientInterviewDate");
 
                     b.Property<string>("ClientInterviewPlace")
@@ -2502,14 +2499,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<bool>("HasTechnicalInterview");
 
-                    b.Property<bool>("IsClientExternal");
-
-                    b.Property<bool>("IsTechnicalExternal");
-
                     b.Property<int>("ReasonId");
-
-                    b.Property<string>("RrhhInterviewComments")
-                        .HasMaxLength(100);
 
                     b.Property<DateTime?>("RrhhInterviewDate");
 
@@ -2517,11 +2507,6 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(100);
 
                     b.Property<int?>("RrhhInterviewerId");
-
-                    b.Property<string>("TechnicalExternalInterviewer");
-
-                    b.Property<string>("TechnicalInterviewComments")
-                        .HasMaxLength(100);
 
                     b.Property<DateTime?>("TechnicalInterviewDate");
 

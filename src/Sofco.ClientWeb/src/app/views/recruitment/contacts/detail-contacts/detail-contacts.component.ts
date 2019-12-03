@@ -63,6 +63,8 @@ export class DetailContactsComponent implements OnInit {
     comments: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),
   });
 
+  @ViewChild('interview') interview;
+
   @ViewChild('dateModal') dateModal;
   public dateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       "ACTIONS.confirmTitle",
@@ -161,6 +163,8 @@ export class DetailContactsComponent implements OnInit {
 
           this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantInCompany ||
                                                                 x.type == ReasonCauseType.ApplicantOpen);
+
+          this.interview.reasonOptions = this.reasonOptions;                              
       });
   }
 
@@ -179,6 +183,7 @@ export class DetailContactsComponent implements OnInit {
   getUsers() {
     this.getClientsSubscrip = this.userService.getOptions().subscribe(d => {
         this.userOptions = d;
+        this.interview.userOptions = d;
     });
   }
 
@@ -400,5 +405,19 @@ export class DetailContactsComponent implements OnInit {
 
   openCloseModal(){
     this.dateModal.show();
+  }
+
+  onHistoryClick(history){
+    if(history.hasRrhhInterview || history.hasTechnicalInterview || history.hasClientInterview){
+      this.interview.setData(history);
+    }
+    else{
+      if(history.reasonType == ReasonCauseType.ApplicantInProgress){
+        this.interview.setData(history);
+      }
+      else{
+        this.interview.clean();
+      }
+    }
   }
 }

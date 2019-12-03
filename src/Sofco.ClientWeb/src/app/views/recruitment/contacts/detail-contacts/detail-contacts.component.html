@@ -367,7 +367,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of history" class="pointer">
+                                <tr *ngFor="let item of history" class="pointer" (click)="onHistoryClick(item)">
                                     <td class="column-sm">{{ item.date | date:'dd/MM/yyyy' }}</td>
                                     <td class="column-md text-ellipsis">{{ item.reason }}</td>
                                     <td class="column-lg text-word-break">{{ item.comments }}</td>
@@ -380,6 +380,10 @@
                             </tbody>
                         </table>       
                     </div>
+
+                    <hr class="hr-line-dashed">
+
+                    <interview #interview></interview>   
                 </div>
             </div>
         </div>

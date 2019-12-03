@@ -12,7 +12,5 @@ namespace Sofco.Core.Models.Recruitment
         public string Comments { get; set; }
 
         public int JobSearchId { get; set; }
-
-        public string DocumentNumber { get; set; }
     }
 }
