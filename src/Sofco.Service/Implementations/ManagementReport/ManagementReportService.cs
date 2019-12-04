@@ -1585,7 +1585,7 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             var managementReport = unitOfWork.ManagementReportRepository.GetWithAnalytic(managementReportId);
 
-            managementReport.StartDate = managementReport.StartDate.AddDays(-1*(managementReport.StartDate.Day-1));
+            managementReport.StartDate = managementReport.StartDate.AddDays(-1 * (managementReport.StartDate.Day - 1));
 
             try
             {
@@ -1941,4 +1941,3 @@ namespace Sofco.Service.Implementations.ManagementReport
         }
     }
 }
-
