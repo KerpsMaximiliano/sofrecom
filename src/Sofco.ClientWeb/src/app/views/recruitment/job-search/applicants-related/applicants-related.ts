@@ -40,8 +40,9 @@ export class ApplicantsRelatedComponent implements OnDestroy {
 
     init(jobSearchId) {
         this.jobSearchId = jobSearchId;
-        this.data = [];
-        this.dataFiltered = [];
+        this.data = new Array();
+        this.dataFiltered = new Array();
+        this.dataTableService.destroy("#applicantsTable");
 
         this.getSubscrip = this.jobSearchService.getApplicantsRelated(jobSearchId, 0).subscribe(response => {
             if(response && response.data && response.data.length > 0){
@@ -68,11 +69,8 @@ export class ApplicantsRelatedComponent implements OnDestroy {
     }
 
     initGrid() {
-        var columns = [0, 1, 2, 3];
-
         var options = {
             selector: "#applicantsTable",
-            columns: columns,
             columnDefs: [ { "aTargets": [3], "sType": "date-uk" }],
         };
 
