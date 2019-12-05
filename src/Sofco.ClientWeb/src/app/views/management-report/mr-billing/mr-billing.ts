@@ -507,14 +507,20 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
 
     resolveHitoLabel(hito) {
         var cssClass;
-        if (hito.status == this.pendingHitoStatus && hito.solfacId && hito.solfacId > 0) {
-            cssClass = 'input-pending-related';
+
+        if(hito.billedInDifferentMonth){
+            cssClass = 'input-blue-light';
         }
-        else {
-            cssClass = `input-${hito.status}`
+        else{
+            if (hito.status == this.pendingHitoStatus && hito.solfacId && hito.solfacId > 0) {
+                cssClass = 'input-pending-related';
+            }
+            else {
+                cssClass = `input-${hito.status}`
+            }
         }
 
-        if (this.isEnabled(hito)) {
+        if (!hito.billedInDifferentMonth && this.isEnabled(hito)) {
             cssClass += ' cursor-pointer'
         }
         else {

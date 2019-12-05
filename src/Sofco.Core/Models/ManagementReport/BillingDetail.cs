@@ -106,5 +106,7 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal OriginalValue { get; set; }
 
         public decimal OriginalValuePesos { get; set; }
+
+        public bool BilledInDifferentMonth { get; set; }
     }
 }

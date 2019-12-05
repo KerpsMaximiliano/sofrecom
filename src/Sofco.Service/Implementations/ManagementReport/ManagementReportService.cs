@@ -23,6 +23,7 @@ using Sofco.Resources.Mails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -293,6 +294,28 @@ namespace Sofco.Service.Implementations.ManagementReport
                             rowItem.Status = HitoStatus.ToBeBilled.ToString();
 
                         billingRowItem.MonthValues.Add(rowItem);
+
+                        if (rowItem.Status.Equals("Facturado"))
+                        {
+                            if (hito.StartDate.Month != existHito?.Solfac.InvoiceDate.GetValueOrDefault().Month)
+                            {
+                                var date = new DateTime(existHito.Solfac.InvoiceDate.GetValueOrDefault().Year, existHito.Solfac.InvoiceDate.GetValueOrDefault().Month, 1);
+
+                                var rowItemBilled = new MonthBiilingRowItem
+                                {
+                                    Month = date.Month,
+                                    Year = date.Year,
+                                    MonthYear = date,
+                                    Value = hito.Ammount,
+                                    OriginalValue = hito.AmountOriginal,
+                                    OriginalValuePesos = montoOriginalPesos,
+                                    Status = hito.Status,
+                                    BilledInDifferentMonth = true,
+                                };
+
+                                billingRowItem.MonthValues.Add(rowItemBilled);
+                            }
+                        }
 
                         FillTotalBilling(response, hito, dates);
 
