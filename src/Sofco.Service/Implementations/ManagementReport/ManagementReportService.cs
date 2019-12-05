@@ -639,13 +639,15 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 foreach (var otherRes in pMonthDetail.OtherResources)
                 {
+                    MonthDetailCost month = new MonthDetailCost();
+                    month.MonthYear = pMonthDetail.MonthYear;
+
                     CostResource cost = new CostResource();
                     cost.MonthsCost = new List<MonthDetailCost>();
-                    MonthDetailCost month = new MonthDetailCost();
 
                     cost.TypeId = otherRes.SubcategoryId;
                     cost.CurrencyId = otherRes.CurrencyId == 0 ? appSetting.CurrencyPesos : otherRes.CurrencyId;
-                    month.MonthYear = pMonthDetail.MonthYear;
+
                     cost.TypeName = otherRes.CategoryName;
 
                     if (pMonthDetail.IsReal)
@@ -662,6 +664,32 @@ namespace Sofco.Service.Implementations.ManagementReport
                     }
 
                     cost.MonthsCost.Add(month);
+
+                    if (pMonthDetail.MonthsToReplicate != null)
+                    {
+                        foreach (var date in pMonthDetail.MonthsToReplicate)
+                        {
+                            if (date.Date != pMonthDetail.MonthYear.Date)
+                            {
+                                month = new MonthDetailCost();
+                                month.MonthYear = date;
+
+                                if (pMonthDetail.IsReal)
+                                {
+                                    month.Real.Value = otherRes.Value;
+                                    month.Real.Description = otherRes.Description;
+                                }
+                                else
+                                {
+                                    month.Budget.Value = otherRes.Value;
+                                    month.Budget.Description = otherRes.Description;
+                                }
+                            }
+
+                            cost.MonthsCost.Add(month);
+                        }
+                    }
+
                     _detailModel.FundedResources.Add(cost);
                 }
 
@@ -1702,14 +1730,33 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             if (aux.Value > 0)
                             {
-                                entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
-                                entity.Value = aux.Value ?? 0;
-                                entity.Description = aux.Description;
-                                entity.CostDetailSubcategoryId = resource.TypeId;
-                                entity.CurrencyId = resource.CurrencyId;
-                                entity.IsReal = isReal;
+                                var costDetail = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault();
 
-                                unitOfWork.CostDetailOtherRepository.Insert(entity);
+                                var costDetailSubcategoryExist = costDetail.CostDetailOthers.SingleOrDefault(x => x.CostDetailSubcategoryId == resource.TypeId &&
+                                                                                                                  x.CurrencyId == resource.CurrencyId && 
+                                                                                                                  x.Description.ToLowerInvariant().Equals(aux.Description.ToLowerInvariant()));
+
+                                if (costDetailSubcategoryExist != null)
+                                {
+                                    if (aux.Value != costDetailSubcategoryExist.Value)
+                                    {
+                                        costDetailSubcategoryExist.Value = aux.Value ?? 0;
+                                        costDetailSubcategoryExist.IsReal = isReal;
+
+                                        unitOfWork.CostDetailOtherRepository.Update(costDetailSubcategoryExist);
+                                    }
+                                }
+                                else
+                                {
+                                    entity.CostDetailId = costDetail.Id;
+                                    entity.Value = aux.Value ?? 0;
+                                    entity.Description = aux.Description;
+                                    entity.CostDetailSubcategoryId = resource.TypeId;
+                                    entity.CurrencyId = resource.CurrencyId;
+                                    entity.IsReal = isReal;
+
+                                    unitOfWork.CostDetailOtherRepository.Insert(entity);
+                                }
                             }
                         }
                     }

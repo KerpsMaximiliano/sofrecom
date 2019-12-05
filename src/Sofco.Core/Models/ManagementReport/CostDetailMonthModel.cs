@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Sofco.Core.Models.ManagementReport
 {
@@ -18,6 +17,7 @@ namespace Sofco.Core.Models.ManagementReport
         public bool IsReal { get; set; }
         public bool HasCostProfile { get; set; }
         public int Id { get; set; }
+        public IList<DateTime> MonthsToReplicate { get; set; }
     }
 
     public class CostDetailStaffMonthModel

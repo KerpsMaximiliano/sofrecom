@@ -18,6 +18,7 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             return context.CostDetails
                     .Where(x => x.ManagementReportId == managementReportId)
+                    .Include(x => x.CostDetailOthers)
                     .ToList();
         }
 

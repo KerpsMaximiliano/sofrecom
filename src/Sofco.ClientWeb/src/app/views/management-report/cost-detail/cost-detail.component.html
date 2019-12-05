@@ -389,8 +389,27 @@
                     </div>
                 </div>
 
-            </div>
+                <hr class="hr-line-dashed">
 
+                <div class="row" [hidden]="readOnly">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <icheck  [(checked)]="replicateCosts">
+                                <label class="control-label m-l-sm">Replicar costos en</label> 
+                            </icheck>
+                        </div>
+                    </div>
+                    <div class="col-md-9" *ngIf="replicateCosts">
+                        <div class="form-group">
+                            <label class="control-label">Periodos</label> 
+                            <ng-select [items]="monthsToReplicate" bindLabel="display" bindValue="id"
+                                       [(ngModel)]="monthsToReplicateSelected" [multiple]="true" [clearable]="false" [closeOnSelect]="false">
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 

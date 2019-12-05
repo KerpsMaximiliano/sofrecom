@@ -47,6 +47,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     modalEmployee: boolean = false;
     modalOther: boolean = false;
     modalProfile: boolean = false;
+    replicateCosts: boolean = false;
+
+    monthsToReplicateSelected: any[] = new Array();
+    monthsToReplicate: any[] = new Array();
 
     editItemMonto = new FormControl();
     editItemAdjustment = new FormControl();
@@ -205,6 +209,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (month.closed) return;
 
         if (this.canEdit) {
+            this.monthsToReplicateSelected = null;
+            this.replicateCosts = false;
             // if (item.typeName == 'Empleados' && !month.hasAlocation) {
             //     return false
             // }
@@ -218,10 +224,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.editItemMonto.setValidators([Validators.min(0), Validators.max(999999)]);
 
             this.modalPercentage = false;
-            this.modalOther = false
+            this.modalOther = false;
             this.modalEmployee = false
             this.modalProfile = false;
-            this.editItemModal.size = 'modal-sm'
+            this.editItemModal.size = 'modal-sm';
 
             switch (this.itemSelected.typeName) {
                 case this.typeEmployee:
@@ -278,6 +284,19 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                     break;
             }
+
+            this.monthsToReplicate = [];
+            this.months.forEach((month2, index) => {
+                if((month2.year == this.monthSelected.year && month2.month > this.monthSelected.month) || 
+                   (month2.year > this.monthSelected.year)){
+                    this.monthsToReplicate.push({
+                        id: index,
+                        month: month2.month,
+                        year: month2.year,
+                        display: month2.display,
+                    });
+                }
+            });
         }
 
     }
@@ -375,10 +394,19 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     IsReal: false,
                     Employees: [],
                     OtherResources: this.othersByMonth,
-                    Contracted: []
+                    Contracted: [],
+                    MonthsToReplicate: []
                 }
 
                 var month = this.months.find(x => x.month == this.monthSelected.month && x.year == this.monthSelected.year);
+
+                if(this.replicateCosts){
+                    modelMonth.MonthsToReplicate = this.monthsToReplicateSelected.map(x => {
+                        var date = this.monthsToReplicate.find(s => s.id == x);
+
+                        return new Date(date.year, date.month-1, 1);
+                    });
+                }
 
                 this.updateMonthSubscrip = this.managementReportService.PostCostDetailMonth(this.serviceId, modelMonth).subscribe(response => {
                     this.messageService.closeLoading();
@@ -390,7 +418,30 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                     this.othersByMonth.forEach(cost => {
                         this.monthSelected.budget.value += this.setExchangeValue(month.currencyMonth, cost);
-                    })
+                    });
+
+                    var type = this.fundedResources.find(x => x.typeId == this.itemSelected.typeId);
+                    if(type){
+
+                        if(this.monthsToReplicateSelected && this.monthsToReplicateSelected.length > 0){
+
+                            this.monthsToReplicateSelected.forEach(monthSelectedId => {
+                                var date = this.monthsToReplicate.find(s => s.id == monthSelectedId);
+    
+                                var monthCost = type.monthsCost.find(mc => mc.display == date.display);
+    
+                                if(monthCost){
+                                    monthCost.budget.value = 0;
+    
+                                    month = this.months.find(x => x.display == date.display);
+    
+                                    this.othersByMonth.forEach(cost => {
+                                        monthCost.budget.value += this.setExchangeValue(month.currencyMonth, cost);
+                                    });
+                                }
+                            });
+                        }
+                    }
 
                     this.calculateTotalCosts();
 
@@ -679,6 +730,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     EditItemOnClose() {
+
     }
 
     addOtherCost() {
@@ -884,7 +936,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             currencyId: this.currencies[0].id
         }
 
-        this.othersByMonth.push(resource)
+        this.othersByMonth.push(resource);
 
         setTimeout(() => {
             $('.input-billing-modal.ng-select .ng-select-container').css('min-height', '26px');
@@ -1028,8 +1080,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         if (currencyMonth) {
             var currencyExchange = currencyMonth.find(x => x.currencyId == cost.currencyId);
             if (currencyExchange) {
-                cost.value *= currencyExchange.exchange;
-                total += cost.value;
+                // cost.value *= currencyExchange.exchange;
+                total += cost.value * currencyExchange.exchange;
             }
             else {
                 total += cost.value

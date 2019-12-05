@@ -566,7 +566,7 @@
                     <div class="col-md-9" *ngIf="replicateCosts">
                         <div class="form-group">
                             <label class="control-label">Periodos</label> 
-                            <ng-select [items]="monthsToReplicate" bindLabel="display" bindValue="id"
+                            <ng-select [items]="monthsToReplicate" bindLabel="display" bindValue="id" [closeOnSelect]="false"
                                        [(ngModel)]="monthsToReplicateSelected" [multiple]="true" [clearable]="false">
                             </ng-select>
                         </div>
