@@ -79,17 +79,17 @@ export class ApplicantsRelatedComponent implements OnDestroy {
     }
 
     selectAll(){
-        this.data.forEach((item, index) => {
+        this.dataFiltered.forEach((item, index) => {
             item.selected = true;
         });
     }
 
     anySelected(){
-        return this.data.filter(x => x.selected).length > 0;
+        return this.dataFiltered.filter(x => x.selected).length > 0;
     }
 
     unselectAll(){
-        this.data.forEach((item, index) => {
+        this.dataFiltered.forEach((item, index) => {
             item.selected = false;
         });
     }
@@ -143,6 +143,18 @@ export class ApplicantsRelatedComponent implements OnDestroy {
 
     goToDetail(applicant){
         window.open("/#/recruitment/contacts/" + applicant.id, "blank");
+    }
+
+    isInCompanyReason(){
+        var reason = this.reasonOptions.find(x => x.id == this.form.controls.reasonCauseId.value);
+
+        if(reason){
+            if(reason.type == ReasonCauseType.ApplicantInProgress && this.dataFiltered.filter(x => x.selected).length > 1){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     filtersChange(){

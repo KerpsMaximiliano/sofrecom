@@ -34,7 +34,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         skillsRequired: new FormControl(null),
         seniorities: new FormControl(null),
         email: new FormControl(null),
-        area: new FormControl(null, [Validators.maxLength(100)]),
+        area: new FormControl(null, [Validators.maxLength(3000)]),
         telephone: new FormControl(null),
         clientContact: new FormControl(null),
         jobType: new FormControl(null),

@@ -63,7 +63,7 @@
                 <form [formGroup]="form">
                     <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonCauseId')">
                         <label class="control-label"> Tipo/Razon </label>
-                        <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonCauseId" (change)="reasonCauseChanged()"></ng-select>
+                        <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonCauseId"></ng-select>
 
                         <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonCauseId')">
                             <p *ngIf="formsService.hasError(form, 'reasonCauseId', 'required')">El campo es requerido</p>
@@ -83,7 +83,7 @@
             </div>
             <div class="ibox-footer text-center">
                 <button class="btn btn-danger btn-sm" (click)="cancel()"> Cancelar </button>
-                <button class="btn btn-primary btn-sm" [disabled]="!form.valid || !anySelected()" (click)="save()"> Guardar </button>
+                <button class="btn btn-primary btn-sm" [disabled]="!form.valid || !anySelected() || isInCompanyReason()" (click)="save()"> Guardar </button>
             </div>
         </div>
     </div>

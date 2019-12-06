@@ -27,7 +27,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     skills: new FormControl(null),
     clientId: new FormControl(null),
     recommendedByUserId: new FormControl(null),
-    reasonCauseId: new FormControl(null),
     countryCode1: new FormControl(null, [Validators.min(0), Validators.max(99)]),
     areaCode1: new FormControl(null, [Validators.min(0), Validators.max(999)]),
     telephone1: new FormControl(null, [Validators.maxLength(100)]),
@@ -38,13 +37,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
   profileOptions: any[] = new Array();
   skillOptions: any[] = new Array();
-  reasonOptions: any[] = new Array();
   customerOptions: any[] = new Array();
   userOptions: any[] = new Array();
 
   addSubscrip: Subscription;
   getUsersSubscrip: Subscription;
-  getReasonsSubscrip: Subscription;
   getClientsSubscrip: Subscription;
   getProfilesSubscrip: Subscription;
   getSkilsSubscrip: Subscription;
@@ -65,13 +62,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     var promise1 = new Promise((resolve, reject) => this.getProfiles(resolve));
     var promise2 = new Promise((resolve, reject) => this.getSkills(resolve));
-    var promise3 = new Promise((resolve, reject) => this.getReasons(resolve));
     var promise4 = new Promise((resolve, reject) => this.getCustomers(resolve));
     var promise5 = new Promise((resolve, reject) => this.getUsers(resolve));
 
     promises.push(promise1);
     promises.push(promise2);
-    promises.push(promise3);
     promises.push(promise4);
     promises.push(promise5);
 
@@ -83,7 +78,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.addSubscrip) this.addSubscrip.unsubscribe();
     if (this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe();
-    if (this.getReasonsSubscrip) this.getReasonsSubscrip.unsubscribe();
     if (this.getClientsSubscrip) this.getClientsSubscrip.unsubscribe();
     if (this.getProfilesSubscrip) this.getProfilesSubscrip.unsubscribe();
     if (this.getSkilsSubscrip) this.getSkilsSubscrip.unsubscribe();
@@ -103,15 +97,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
       this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
           resolve();
           this.skillOptions = response.data;
-      },
-      () => resolve());
-  }
-
-  getReasons(resolve){
-      this.genericOptionsService.controller =  GenericOptions.ReasonCause;
-      this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
-          resolve(); 
-          this.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.ApplicantOpen);
       },
       () => resolve());
   }
@@ -145,7 +130,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         email: this.form.controls.email.value,
         comments: this.form.controls.comments.value,
         clientCrmId: this.form.controls.clientId.value,
-        reasonCauseId: this.form.controls.reasonCauseId.value,
         recommendedByUserId: this.form.controls.recommendedByUserId.value,
         countryCode1: this.form.controls.countryCode1.value,
         countryCode2: this.form.controls.countryCode2.value,
