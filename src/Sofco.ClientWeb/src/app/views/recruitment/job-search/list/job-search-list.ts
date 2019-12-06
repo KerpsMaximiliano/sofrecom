@@ -234,14 +234,14 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
     }
 
     initGrid() {
-        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
         var title = `Busquedas-${moment(new Date()).format("YYYYMMDD")}`;
 
         var options = {
             selector: "#jobSearchTable",
             columns: columns,
             title: title,
-            columnDefs: [ { "aTargets": [1, 12, 13, 14], "sType": "customdatesort" }],
+            columnDefs: [ { "aTargets": [2, 12, 13, 14], "sType": "date-uk" }],
             withExport: true,
         };
 

@@ -219,7 +219,12 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         if (employeesMissingHours.Any(x => x.EmployeeNumber == allocation.Employee.EmployeeNumber))
                         {
                             var employeeMissingHour = employeesMissingHours.FirstOrDefault(x => x.EmployeeNumber == allocation.Employee.EmployeeNumber);
-                            if (employeeMissingHour != null) employeeMissingHour.HoursApproved += model.HoursApproved;
+                            if (employeeMissingHour != null)
+                            {
+                                employeeMissingHour.HoursApproved += model.HoursApproved;
+                                employeeMissingHour.DraftHours += model.DraftHours;
+                                employeeMissingHour.SentHours += model.SentHours;
+                            }
                         }
                         else
                         {
