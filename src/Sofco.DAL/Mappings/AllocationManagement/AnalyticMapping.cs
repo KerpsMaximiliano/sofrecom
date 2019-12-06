@@ -16,6 +16,7 @@ namespace Sofco.DAL.Mappings.AllocationManagement
             builder.Entity<Analytic>().Property(_ => _.ServiceName).HasMaxLength(200);
             builder.Entity<Analytic>().Property(_ => _.Title).HasMaxLength(150);
             builder.Entity<Analytic>().Property(_ => _.UsersQv).HasMaxLength(500);
+            builder.Entity<Analytic>().Property(_ => _.ClosedBy).HasMaxLength(25);
 
             builder.Entity<Analytic>().HasOne(x => x.Sector).WithMany(x => x.Analytics).HasForeignKey(x => x.SectorId);
             builder.Entity<Analytic>().HasOne(x => x.Manager).WithMany(x => x.Analytics2).HasForeignKey(x => x.ManagerId);

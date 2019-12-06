@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
@@ -27,7 +28,9 @@ namespace Sofco.Framework.Managers
 
         private readonly IMailBuilder mailBuilder;
 
-        public AnalyticCloseManager(IUnitOfWork unitOfWork, ICrmServiceService crmServiceService, 
+        private readonly IUserData userData;
+
+        public AnalyticCloseManager(IUnitOfWork unitOfWork, ICrmServiceService crmServiceService, IUserData userData,
             ILogMailer<AnalyticCloseManager> logger, IOptions<EmailConfig> emailOptions, IMailSender mailSender, IMailBuilder mailBuilder)
         {
             this.unitOfWork = unitOfWork;
@@ -36,6 +39,7 @@ namespace Sofco.Framework.Managers
             this.mailSender = mailSender;
             this.mailBuilder = mailBuilder;
             emailConfig = emailOptions.Value;
+            this.userData = userData;
         }
 
         public Response Close(int analyticId, AnalyticStatus status)
@@ -69,7 +73,7 @@ namespace Sofco.Framework.Managers
                     }
                 }
 
-                AnalyticStatusClose.Save(analytic, unitOfWork, response, status);
+                AnalyticStatusClose.Save(analytic, unitOfWork, response, status, userData.GetCurrentUser().UserName);
             }
             catch (Exception ex)
             {

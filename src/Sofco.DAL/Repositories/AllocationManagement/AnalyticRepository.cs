@@ -108,6 +108,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         public void Close(Analytic analytic)
         {
             context.Entry(analytic).Property("Status").IsModified = true;
+            context.Entry(analytic).Property("ClosedBy").IsModified = true;
+            context.Entry(analytic).Property("ClosedAt").IsModified = true;
         }
 
         public ICollection<Analytic> GetAllOpenReadOnly()

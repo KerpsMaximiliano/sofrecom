@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
@@ -14,11 +13,14 @@ namespace Sofco.Framework.StatusHandlers.Analytic
 {
     public static class AnalyticStatusClose
     {
-        public static void Save(Domain.Models.AllocationManagement.Analytic analytic, IUnitOfWork unitOfWork, Response response, AnalyticStatus status)
+        public static void Save(Domain.Models.AllocationManagement.Analytic analytic, IUnitOfWork unitOfWork, Response response, AnalyticStatus status,
+            string userName)
         {
             unitOfWork.AllocationRepository.RemoveAllocationByAnalytic(analytic.Id, new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1));
 
             analytic.Status = status;
+            analytic.ClosedBy = userName;
+            analytic.ClosedAt = DateTime.UtcNow;
             unitOfWork.AnalyticRepository.Close(analytic);
 
             unitOfWork.Save();

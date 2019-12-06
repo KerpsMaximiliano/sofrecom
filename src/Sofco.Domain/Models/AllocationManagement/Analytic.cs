@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AdvancementAndRefund;
-using Sofco.Domain.Models.ManagementReport;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Domain.Relationships;
@@ -72,6 +71,10 @@ namespace Sofco.Domain.Models.AllocationManagement
         public int? SoftwareLawId { get; set; }
         
         public SoftwareLaw SoftwareLaw { get; set; }
+
+        public string ClosedBy { get; set; }
+
+        public DateTime? ClosedAt { get; set; }
 
         public ICollection<Allocation> Allocations { get; set; }
 
