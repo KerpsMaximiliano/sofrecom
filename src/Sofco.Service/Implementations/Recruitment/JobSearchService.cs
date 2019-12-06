@@ -183,6 +183,11 @@ namespace Sofco.Service.Implementations.Recruitment
                 }
                 else
                 {
+                    if (string.IsNullOrWhiteSpace(parameter.Reason))
+                    {
+                        response.AddError(Resources.Recruitment.JobSearch.ReasonCauseRequired);
+                    }
+
                     if (jobsearch.CreatedDate.Date > parameter.Date.GetValueOrDefault())
                     {
                         response.AddError(Resources.Recruitment.JobSearch.CreatedDateGreaterThanSuspendedDate);

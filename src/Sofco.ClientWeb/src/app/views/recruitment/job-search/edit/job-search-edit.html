@@ -439,7 +439,7 @@
             </div>
         </div>
 
-        <div *ngIf="statusSelected == 3" class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'comments')">
+        <div *ngIf="statusSelected == 3 || statusSelected == 2" class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'comments')">
             <label class="control-label">Motivo de cierre</label>
             <textarea rows="6" class="form-control" formControlName="comments" maxlength="1000"></textarea>
     
@@ -447,7 +447,7 @@
                 <p *ngIf="formsService.hasError(dateModalForm, 'comments', 'maxLength')">Los comentarios no pueden superar los 1000 caracteres</p>
             </div>
         </div>
-        
+         
     </form>
 
 </ng2-modal> 

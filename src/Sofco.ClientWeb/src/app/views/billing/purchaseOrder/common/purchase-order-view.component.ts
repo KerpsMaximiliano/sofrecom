@@ -193,7 +193,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             const statusText = dataBodyItem[statusTextPos];
             //dataBodyItem[receptionDatePos] = this.getReceptionDate(statusText, item);
             dataBodyItem[ammountNumberPos] = this.getAmmount(statusText, item);
-            dataBodyItem[balanceNumberPos] = item.balance;
+            // dataBodyItem[balanceNumberPos] = item.balance;
             result.push(dataBodyItem);
             const details = item.details;
             if(details.length == 0) continue;
