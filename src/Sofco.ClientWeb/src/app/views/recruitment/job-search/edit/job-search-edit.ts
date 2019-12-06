@@ -95,6 +95,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     statusSelected: JobSearchStatus;
 
     @ViewChild('applicantsRelated') applicantsRelated;
+    @ViewChild('history') history;
     
     @ViewChild('dateModal') dateModal;
     public dateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -129,6 +130,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.activateRoute.params.subscribe(routeParams => {
             this.entityId = routeParams.id;
             this.getData(routeParams.id);
+            this.history.getHistories(this.entityId);
         });
 
         setTimeout(() => {
@@ -418,6 +420,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             if(this.status == JobSearchStatus.Open || this.status == JobSearchStatus.Reopen){
                 this.applicantsRelated.init(this.entityId);
             }
+
+            this.history.getHistories(this.entityId);
         }, 
         error => {
             this.dateModal.resetButtons();

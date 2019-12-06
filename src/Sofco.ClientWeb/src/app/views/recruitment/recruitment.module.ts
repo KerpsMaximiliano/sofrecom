@@ -31,6 +31,7 @@ import { ApplicantsRelatedComponent } from './job-search/applicants-related/appl
 import { ResourceAssignmentComponent } from '../admin/options/resourceAssignment';
 import { AnalyticService } from 'app/services/allocation-management/analytic.service';
 import { InterviewComponent } from './contacts/interview/interview.component';
+import { JobSearchHistoryComponent } from './job-search/history/job-search-history';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { InterviewComponent } from './contacts/interview/interview.component';
     JobSearchEditComponent,
     ApplicantsRelatedComponent,
     ResourceAssignmentComponent,
-    InterviewComponent
+    InterviewComponent,
+    JobSearchHistoryComponent
   ],
 
   imports: [

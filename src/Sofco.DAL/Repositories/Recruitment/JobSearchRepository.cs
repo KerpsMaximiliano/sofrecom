@@ -96,5 +96,10 @@ namespace Sofco.DAL.Repositories.Recruitment
         {
             context.JobSearchHistories.Add(history);
         }
+
+        public IList<JobSearchHistory> GetHistory(int id)
+        {
+            return context.JobSearchHistories.Include(x => x.ReasonCause).Where(x => x.JobSearchId == id).ToList();
+        }
     }
 }

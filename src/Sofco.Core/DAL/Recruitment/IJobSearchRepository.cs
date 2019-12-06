@@ -12,5 +12,6 @@ namespace Sofco.Core.DAL.Recruitment
         JobSearch GetWithProfilesAndSkills(int jobSearchId);
         JobSearch GetWithProfilesAndSkillsAndSenorities(int id);
         void AddHistory(JobSearchHistory history);
+        IList<JobSearchHistory> GetHistory(int id);
     }
 }

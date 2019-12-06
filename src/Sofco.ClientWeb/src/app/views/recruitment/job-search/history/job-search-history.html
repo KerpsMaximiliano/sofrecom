@@ -1,0 +1,24 @@
+<div class="table-responsive">
+    <table class="table table-striped dataTable table-font" role="grid" id="historyTable">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo/Razon</th>
+                <th>Estado anterior</th>
+                <th>Estado actual</th>
+                <th>Usuario</th>
+                <th class="column-lg">Comentarios</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of histories" class="pointer">
+                <td>{{ item.createdDate | date:'dd/MM/yyyy' }}</td>
+                <td>{{ item.reasonCause }}</td>
+                <td>{{ getStatusDesc(item.statusFromId) }}</td>
+                <td>{{ getStatusDesc(item.statusToId) }}</td>
+                <td>{{ item.userName }}</td>
+                <td class="column-lg text-word-break">{{ item.comment }}</td>
+            </tr>
+        </tbody>
+    </table>       
+</div>

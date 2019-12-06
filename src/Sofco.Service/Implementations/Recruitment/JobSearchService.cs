@@ -261,6 +261,17 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
+        public Response<IList<JobSearchHistoryModel>> GetHistory(int id)
+        {
+            var response = new Response<IList<JobSearchHistoryModel>>() { Data = new List<JobSearchHistoryModel>() };
+
+            var list = unitOfWork.JobSearchRepository.GetHistory(id);
+
+            response.Data = list.Select(x => new JobSearchHistoryModel(x)).ToList();
+
+            return response;
+        }
+
         public Response<IList<OptionModel>> GetApplicants()
         {
             var response = new Response<IList<OptionModel>> { Data = new List<OptionModel>() };

@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class JobSearchService {
+   
     private baseUrl: string;
 
     constructor(private http: HttpClient, private service: Service) {
@@ -48,5 +49,9 @@ export class JobSearchService {
 
     addInterview(json, applicantId, jobSearchId){
         return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/interview`, json);
+    }
+
+    getHistories(id) {
+        return this.http.get<any>(`${this.baseUrl}/jobSearch/${id}/history`);
     }
 }

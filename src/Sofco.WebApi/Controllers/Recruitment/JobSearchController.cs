@@ -62,11 +62,19 @@ namespace Sofco.WebApi.Controllers.Recruitment
 
             return this.CreateResponse(response);
         }
-
+         
         [HttpPut("{id}/status")]
         public IActionResult ChangeStatus(int id, [FromBody] JobSearchChangeStatusModel parameter)
         {
             var response = jobSearchService.ChangeStatus(id, parameter);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/history")]
+        public IActionResult GetHistory(int id)
+        {
+            var response = jobSearchService.GetHistory(id);
 
             return this.CreateResponse(response);
         }
