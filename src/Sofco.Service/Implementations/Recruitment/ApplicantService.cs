@@ -262,7 +262,7 @@ namespace Sofco.Service.Implementations.Recruitment
             {
                 model.GeneralData.UpdateDomain(applicant);
                 model.RegisterData.UpdateDomain(applicant);
-                applicant.Status = ApplicantStatus.Close;
+                applicant.Status = ApplicantStatus.InCompany;
 
                 unitOfWork.ApplicantRepository.Update(applicant);
                 unitOfWork.Save();

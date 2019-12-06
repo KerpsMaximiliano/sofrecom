@@ -32,7 +32,6 @@ export class DetailContactsComponent implements OnInit {
     skills: new FormControl(null),
     clientId: new FormControl(null),
     recommendedByUserId: new FormControl(null),
-    reasonCauseId: new FormControl(null),
     countryCode1: new FormControl(null, [Validators.min(0), Validators.max(99)]),
     areaCode1: new FormControl(null, [Validators.min(0), Validators.max(999)]),
     telephone1: new FormControl(null, [Validators.maxLength(100)]),
@@ -215,7 +214,6 @@ export class DetailContactsComponent implements OnInit {
         this.form.controls.skills.setValue(response.data.skills);
         this.form.controls.clientId.setValue(response.data.clientId);
         this.form.controls.recommendedByUserId.setValue(response.data.recommendedByUserId);
-        this.form.controls.reasonCauseId.setValue(response.data.reasonCauseId);
         this.form.controls.countryCode1.setValue(response.data.countryCode1);
         this.form.controls.areaCode1.setValue(response.data.areaCode1);
         this.form.controls.telephone1.setValue(response.data.telephone1);
@@ -244,21 +242,17 @@ export class DetailContactsComponent implements OnInit {
 
         this.status = response.data.status;
 
-        if(this.status == ApplicantStatus.Close){
-          this.registerVisible = true;
+        if(this.status == ApplicantStatus.Close || this.status == ApplicantStatus.InCompany){
           this.form.disable();
           this.newResourceForm.disable();
+          this.registerVisible = true;
         }
     },
     error => this.messageService.closeLoading());
   }
 
   canMakeRegister(){
-    var reason = this.reasonOptions.find(x => x.id == this.form.controls.reasonCauseId.value)
-
-    if(reason){
-      if(reason.type == ReasonCauseType.ApplicantInCompany) return true;
-    }
+    if(this.status == ApplicantStatus.Valid || this.status == ApplicantStatus.InProgress) return true;
 
     return false;
   }
@@ -286,7 +280,6 @@ export class DetailContactsComponent implements OnInit {
       email: this.form.controls.email.value,
       comments: this.form.controls.comments.value,
       clientCrmId: this.form.controls.clientId.value,
-      reasonCauseId: this.form.controls.reasonCauseId.value,
       recommendedByUserId: this.form.controls.recommendedByUserId.value,
       countryCode1: this.form.controls.countryCode1.value,
       countryCode2: this.form.controls.countryCode2.value,
@@ -374,6 +367,7 @@ export class DetailContactsComponent implements OnInit {
         case ApplicantStatus.Valid: return "Vigente";
         case ApplicantStatus.InProgress: return "En Curso";
         case ApplicantStatus.Close: return "Deshabilitado";
+        case ApplicantStatus.InCompany: return "Ingresado";
         default: return "";
     }
   }

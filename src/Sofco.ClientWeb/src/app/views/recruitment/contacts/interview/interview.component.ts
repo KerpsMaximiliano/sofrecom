@@ -120,9 +120,12 @@ export class InterviewComponent implements OnDestroy {
 
         this.form.controls.rrhhInterviewDate.setValue(moment(history.rrhhInterviewDate).toDate());
         this.form.controls.rrhhInterviewPlace.setValue(history.rrhhInterviewPlace);
-        this.form.controls.rrhhInterviewerId.setValue(history.rrhhInterviewerId.toString());
-        this.form.controls.rrhhInterviewComments.setValue(history.rrhhInterviewComments);
 
+        if(history.rrhhInterviewerId){
+            this.form.controls.rrhhInterviewerId.setValue(history.rrhhInterviewerId.toString());
+        }
+   
+        this.form.controls.rrhhInterviewComments.setValue(history.rrhhInterviewComments);
         this.form.controls.technicalInterviewDate.setValue(moment(history.technicalInterviewDate).toDate());
         this.form.controls.technicalInterviewPlace.setValue(history.technicalInterviewPlace);
 

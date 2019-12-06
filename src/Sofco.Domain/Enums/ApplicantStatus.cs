@@ -4,6 +4,7 @@
     {
         Valid,
         InProgress,
-        Close
+        Close,
+        InCompany
     }
 }
