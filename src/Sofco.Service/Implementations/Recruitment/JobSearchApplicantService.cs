@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Common;
@@ -12,6 +16,8 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
+using File = Sofco.Domain.Models.Common.File;
+using Sofco.Core.Config;
 
 namespace Sofco.Service.Implementations.Recruitment
 {
@@ -21,13 +27,15 @@ namespace Sofco.Service.Implementations.Recruitment
         private readonly ILogMailer<JobSearchApplicantService> logger;
         private readonly IUserData userData;
         private readonly IOptionRepository<ReasonCause> optionRepository;
+        private readonly FileConfig fileConfig;
 
-        public JobSearchApplicantService(IUnitOfWork unitOfWork, ILogMailer<JobSearchApplicantService> logger, IUserData userData, IOptionRepository<ReasonCause> optionRepository)
+        public JobSearchApplicantService(IUnitOfWork unitOfWork, ILogMailer<JobSearchApplicantService> logger, IUserData userData, IOptionRepository<ReasonCause> optionRepository, IOptions<FileConfig> fileOptions)
         {
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.optionRepository = optionRepository;
+            this.fileConfig = fileOptions.Value;
         }
 
         public Response<IList<JobSearchApplicantModel>> GetByJobSearch(int jobSearchId)
@@ -196,6 +204,59 @@ namespace Sofco.Service.Implementations.Recruitment
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
+        public async Task<Response<File>> AttachFile(int jobSearchApplicantId, Response<File> response, IFormFile file)
+        {
+            var jobsearchApplicant = unitOfWork.JobSearchApplicantRepository.Get(jobSearchApplicantId);
+
+            if (jobsearchApplicant == null)
+            {
+                response.AddError(Resources.Recruitment.JobSearchApplicant.NotFound);
+                return response;
+            }
+
+            var user = userData.GetCurrentUser();
+
+            var fileToAdd = new File();
+            var lastDotIndex = file.FileName.LastIndexOf('.');
+
+            fileToAdd.FileName = file.FileName;
+            fileToAdd.FileType = file.FileName.Substring(lastDotIndex);
+            fileToAdd.InternalFileName = Guid.NewGuid();
+            fileToAdd.CreationDate = DateTime.UtcNow;
+            fileToAdd.CreatedUser = user.UserName;
+
+            var jobsearchApplicantFile = new JobSearchApplicantFile
+            {
+                File = fileToAdd,
+                JobSearchId = jobsearchApplicant.JobSearchId,
+                ApplicantId = jobsearchApplicant.ApplicantId,
+                Date = jobsearchApplicant.CreatedDate
+            };
+
+            try
+            {
+                var fileName = $"{fileToAdd.InternalFileName.ToString()}{fileToAdd.FileType}";
+
+                using (var fileStream = new FileStream(Path.Combine(fileConfig.RecruitmentPath, fileName), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                unitOfWork.JobSearchApplicantRepository.InsertFile(jobsearchApplicantFile);
+                unitOfWork.Save();
+
+                response.Data = jobsearchApplicantFile.File;
+                response.AddSuccess(Resources.Recruitment.JobSearchApplicant.FileAdded);
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.SaveFileError);
+                logger.LogError(e);
             }
 
             return response;

@@ -61,6 +61,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearchApplicant.FileAdded.
+        /// </summary>
+        public static string FileAdded {
+            get {
+                return ResourceManager.GetString("FileAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearchApplicant.InterviewDateRequired.
         /// </summary>
         public static string InterviewDateRequired {

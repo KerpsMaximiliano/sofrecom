@@ -129,4 +129,7 @@
   <data name="NotFound" xml:space="preserve">
     <value>recruitment/jobSearchApplicant.NotFound</value>
   </data>
+  <data name="FileAdded" xml:space="preserve">
+    <value>recruitment/jobSearchApplicant.FileAdded</value>
+  </data>
 </root>

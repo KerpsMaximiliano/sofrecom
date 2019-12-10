@@ -79,5 +79,10 @@ namespace Sofco.DAL.Repositories.Recruitment
         {
             return context.JobSearchApplicants.SingleOrDefault(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId);
         }
+
+        public void InsertFile(JobSearchApplicantFile jobsearchApplicantFile)
+        {
+            context.JobSearchApplicantFiles.Add(jobsearchApplicantFile);
+        }
     }
 }

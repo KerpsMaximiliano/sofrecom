@@ -55,6 +55,8 @@ namespace Sofco.DAL.Repositories.Recruitment
             return context.JobSearchApplicants
                 .Include(x => x.Applicant)
                 .Include(x => x.Reason)
+                .Include(x => x.Files)
+                    .ThenInclude(x => x.File)
                 .Include(x => x.JobSearch)
                     .ThenInclude(x => x.Client)
                 .Include(x => x.JobSearch)
