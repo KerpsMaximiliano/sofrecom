@@ -59,8 +59,8 @@ namespace Sofco.WebApi.Controllers.Recruitment
             return this.CreateResponse(responseError);
         }
 
-        [HttpPost("{jobSearchApplicantId}/file")]
-        public async Task<IActionResult> File(int jobSearchApplicantId)
+        [HttpPost("{applicantId}/{jobSearchId}/file")]
+        public async Task<IActionResult> File(int applicantId, int jobSearchId)
         {
             var response = new Response<File>();
 
@@ -68,7 +68,7 @@ namespace Sofco.WebApi.Controllers.Recruitment
             {
                 var file = Request.Form.Files.First();
 
-                await jobSearchApplicantService.AttachFile(jobSearchApplicantId, response, file);
+                await jobSearchApplicantService.AttachFile(applicantId, jobSearchId, response, file);
             }
             else
             {

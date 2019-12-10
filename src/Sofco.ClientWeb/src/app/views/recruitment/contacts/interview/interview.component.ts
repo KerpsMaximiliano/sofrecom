@@ -1,10 +1,13 @@
-import { OnDestroy, Component } from "@angular/core";
+import { OnDestroy, Component, ViewChild, Output, EventEmitter } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { FormsService } from "app/services/forms/forms.service";
 import { Subscription } from "rxjs";
 import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { MessageService } from "app/services/common/message.service";
 import * as moment from 'moment';
+import { AuthService } from "app/services/common/auth.service";
+import { FileUploader } from "ng2-file-upload";
+import { Cookie } from "ng2-cookies/ng2-cookies";
 
 @Component({
     selector: 'interview',
@@ -12,6 +15,10 @@ import * as moment from 'moment';
 })
 export class InterviewComponent implements OnDestroy {
 
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({url:""});
+    @Output() getFiles: EventEmitter<any> = new EventEmitter();
+    
     userOptions: any[] = new Array();
     reasonOptions: any[] = new Array();
 
@@ -52,6 +59,7 @@ export class InterviewComponent implements OnDestroy {
     addSubscrip: Subscription;
 
     constructor(public formsService: FormsService, 
+                private authService: AuthService,
                 private messageService: MessageService,
                 private jobSearchService: JobSearchService){
     }
@@ -110,6 +118,9 @@ export class InterviewComponent implements OnDestroy {
         this.applicantId = history.applicantId;
         this.jobSearchId = history.jobSearchId;
         this.isVisible = true;
+
+        this.uploaderConfig();
+
         this.hasClientInterview = history.hasClientInterview;
         this.hasRrhhInterview = history.hasRrhhInterview;
         this.hasTechnicalInterview = history.hasTechnicalInterview;
@@ -292,5 +303,52 @@ export class InterviewComponent implements OnDestroy {
             this.form.controls.clientInterviewerId.setValidators([Validators.required]);
             this.form.controls.clientInterviewerId.updateValueAndValidity();
         }
+    }
+
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.jobSearchService.getUrlForImportExcel(this.applicantId, this.jobSearchId),
+                                          authToken: 'Bearer ' + Cookie.get('access_token') ,
+                                          maxFileSize: 50*1024*1024
+                                        });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            this.messageService.closeLoading();
+
+            var dataJson = JSON.parse(response);
+            
+            if(dataJson){
+                if(dataJson.messages) this.messageService.showMessages(dataJson.messages);
+                
+                if (this.getFiles.observers.length > 0) {
+                    this.getFiles.emit();
+                }
+            }
+
+            this.clearSelectedFile();
+        };
+
+        this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
     }
 }

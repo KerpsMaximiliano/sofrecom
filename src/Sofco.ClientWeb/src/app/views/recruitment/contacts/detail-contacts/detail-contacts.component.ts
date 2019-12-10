@@ -63,6 +63,7 @@ export class DetailContactsComponent implements OnInit {
   });
 
   @ViewChild('interview') interview;
+  @ViewChild('contactFiles') contactFiles;
 
   @ViewChild('dateModal') dateModal;
   public dateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -124,6 +125,7 @@ export class DetailContactsComponent implements OnInit {
     this.activateRoute.params.subscribe(routeParams => {
         this.entityId = routeParams.id;
         this.getData(routeParams.id);
+        this.contactFiles.getFiles(this.entityId);
     });
   }
 
@@ -252,7 +254,7 @@ export class DetailContactsComponent implements OnInit {
   }
 
   canMakeRegister(){
-    if(this.status == ApplicantStatus.Valid || this.status == ApplicantStatus.InProgress) return true;
+    if(this.status == ApplicantStatus.InCompany || this.status == ApplicantStatus.InProgress) return true;
 
     return false;
   }
@@ -413,5 +415,9 @@ export class DetailContactsComponent implements OnInit {
         this.interview.clean();
       }
     }
+  }
+
+  refreshFiles(){
+    this.contactFiles.getFiles(this.entityId);
   }
 }

@@ -209,9 +209,10 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        public async Task<Response<File>> AttachFile(int jobSearchApplicantId, Response<File> response, IFormFile file)
+        public async Task<Response<File>> AttachFile(int applicantId, int jobSearchId, Response<File> response,
+            IFormFile file)
         {
-            var jobsearchApplicant = unitOfWork.JobSearchApplicantRepository.Get(jobSearchApplicantId);
+            var jobsearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId);
 
             if (jobsearchApplicant == null)
             {

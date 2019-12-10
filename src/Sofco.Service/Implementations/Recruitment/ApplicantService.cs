@@ -328,6 +328,17 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
+        public Response<IList<ApplicantFileModel>> GetFiles(int id)
+        {
+            var response = new Response<IList<ApplicantFileModel>>() { Data = new List<ApplicantFileModel>() };
+
+            var jobSearchFiles = unitOfWork.ApplicantRepository.GetFiles(id);
+
+            response.Data = jobSearchFiles.Select(x => new ApplicantFileModel(x)).ToList();
+
+            return response;
+        }
+
         private void ValidateRegisterData(RegisterAddModel model, Response response)
         {
             if (string.IsNullOrWhiteSpace(model.Nationality))

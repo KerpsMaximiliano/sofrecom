@@ -13,5 +13,6 @@ namespace Sofco.Core.Services.Recruitment
         Response<IList<ApplicantCallHistory>> GetApplicantHistory(int applicantId);
         Response Register(int id, RegisterModel model);
         Response ChangeStatus(int id, ApplicantChangeStatusModel parameter);
+        Response<IList<ApplicantFileModel>> GetFiles(int id);
     }
 }

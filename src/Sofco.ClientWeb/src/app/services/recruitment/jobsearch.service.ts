@@ -4,11 +4,14 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class JobSearchService {
-   
     private baseUrl: string;
 
     constructor(private http: HttpClient, private service: Service) {
         this.baseUrl = this.service.UrlApi;
+    }
+
+    getUrlForImportExcel(applicantId, jobSearchId){
+        return `${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/file`;
     }
 
     get(id){

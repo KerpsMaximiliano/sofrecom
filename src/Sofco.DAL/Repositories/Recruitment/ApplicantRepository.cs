@@ -73,5 +73,13 @@ namespace Sofco.DAL.Repositories.Recruitment
         {
             context.ApplicantHistories.Add(history);
         }
+
+        public IList<JobSearchApplicantFile> GetFiles(int id)
+        {
+            return context.JobSearchApplicantFiles
+                .Include(x => x.File)
+                .Where(x => x.ApplicantId == id)
+                .ToList();
+        }
     }
 }

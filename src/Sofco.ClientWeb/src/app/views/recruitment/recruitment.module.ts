@@ -32,6 +32,8 @@ import { ResourceAssignmentComponent } from '../admin/options/resourceAssignment
 import { AnalyticService } from 'app/services/allocation-management/analytic.service';
 import { InterviewComponent } from './contacts/interview/interview.component';
 import { JobSearchHistoryComponent } from './job-search/history/job-search-history';
+import { ContactFileComponent } from './contacts/files/contact-files';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import { JobSearchHistoryComponent } from './job-search/history/job-search-histo
     ApplicantsRelatedComponent,
     ResourceAssignmentComponent,
     InterviewComponent,
-    JobSearchHistoryComponent
+    JobSearchHistoryComponent,
+    ContactFileComponent
   ],
 
   imports: [
@@ -59,13 +62,14 @@ import { JobSearchHistoryComponent } from './job-search/history/job-search-histo
     FormsModule, 
     AmountFormatModule,
     ICheckModule, 
+    FileUploadModule,
     Ng2ModalModule, 
     TranslateModule, 
     DigitModule,
     NgSelectModule,  
     DecimalFormatModule,
     ReactiveFormsModule,
-    BsDatepickerModule
+    BsDatepickerModule 
   ],
 
   providers: [GenericOptionService, JobSearchService, FormsService, CustomerService, ApplicantService, AnalyticService],

@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Service } from "../common/service";
 import { HttpClient } from "@angular/common/http";
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class ApplicantService {
-
     private baseUrl: string;
 
     constructor(private http: HttpClient, private service: Service) {
@@ -38,4 +38,17 @@ export class ApplicantService {
     getHistory(entityId: number) {
         return this.http.get<any>(`${this.baseUrl}/applicant/${entityId}/history`);
     }
+
+    getFiles(applicantId: any) {
+        return this.http.get<any>(`${this.baseUrl}/applicant/${applicantId}/files`);
+    }
+
+    getFile(fileId){
+        return this.http.get(`${this.baseUrl}/applicant/file/${fileId}`, {
+            responseType: 'arraybuffer',
+            observe: 'response'
+        }).pipe(map((res: any) => {
+            return new Blob([res.body], { type: 'application/octet-stream' });
+        }));
+    } 
 }
