@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-md-12">
+        <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple/>
+
+        <div class="uploader-margin-top">
+            <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+            <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+            </div>
+
+            <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+            </button>
+
+            <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+            </button>
+        </div>
+    </div>
+</div>
