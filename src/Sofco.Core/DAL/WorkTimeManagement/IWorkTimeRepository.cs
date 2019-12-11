@@ -16,7 +16,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         IList<WorkTime> GetByEmployeeIds(DateTime startDate, DateTime endDate, List<int> employeeIds);
 
-        IList<WorkTime> GetByEmployeeIds(List<int> employeeIds);
+        IList<WorkTime> GetByEmployeeIds(List<int> employeeIds, List<int> analyticIds);
 
         IList<WorkTime> GetByAnalyticIds(DateTime startDate, DateTime endDate, List<int> analyticIds);
 

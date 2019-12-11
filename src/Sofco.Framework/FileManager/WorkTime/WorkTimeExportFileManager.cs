@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Sofco.Domain.Enums;
 
 namespace Sofco.Framework.FileManager.WorkTime
 {
@@ -93,7 +94,7 @@ namespace Sofco.Framework.FileManager.WorkTime
                     while (startDate.Date <= endDate.Date)
                     {
                         var firstDayOffMonth = new DateTime(startDate.Year, startDate.Month, 1);
-                        bool hasLicence = licenses.Any(x => startDate.Date >= x.StartDate.Date && startDate.Date <= x.EndDate.Date);
+                        bool hasLicence = licenses.Any(x => startDate.Date >= x.StartDate.Date && startDate.Date <= x.EndDate.Date && x.Status != LicenseStatus.Cancelled && x.Status != LicenseStatus.Rejected);
 
                         if (startDate.DayOfWeek != DayOfWeek.Saturday && startDate.DayOfWeek != DayOfWeek.Sunday &&
                         Holidays.All(x => x.Date.Date != startDate.Date) && !hasLicence)

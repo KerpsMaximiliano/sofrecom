@@ -549,13 +549,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var employeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
 
+            var analyticIds = userApprovers.Select(x => x.AnalyticId).ToList();
+
             var alreadyLoadedEmployeeIds = workTimes.Select(s => s.EmployeeId).Distinct();
 
             employeeIds.RemoveAll(s => alreadyLoadedEmployeeIds.Contains(s));
 
             result = unitOfWork
                 .WorkTimeRepository
-                .GetByEmployeeIds(employeeIds)
+                .GetByEmployeeIds(employeeIds, analyticIds)
                 .ToList();
 
             if (status != WorkTimeStatus.Approved)

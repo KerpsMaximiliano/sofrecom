@@ -54,10 +54,10 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .ToList();
         }
 
-        public IList<WorkTime> GetByEmployeeIds(List<int> employeeIds)
+        public IList<WorkTime> GetByEmployeeIds(List<int> employeeIds, List<int> analyticIds)
         {
             return context.WorkTimes
-                .Where(x => employeeIds.Contains(x.EmployeeId))
+                .Where(x => employeeIds.Contains(x.EmployeeId) && analyticIds.Contains(x.AnalyticId))
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                 .Include(x => x.Task)

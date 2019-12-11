@@ -129,8 +129,7 @@ namespace Sofco.Service.Implementations.Billing
             if(string.IsNullOrWhiteSpace(data.Name))
                 response.AddError(Resources.Billing.Project.NameRequired);
 
-            if (!data.Date.HasValue) 
-                response.AddError(Resources.Billing.Project.DateRequired);
+            HitoValidatorHelper.ValidateDate(new HitoParameters { StartDate = data.Date, ProjectId = data.ProjectId }, response, unitOfWork);
 
             if (response.HasErrors()) return response;
 
