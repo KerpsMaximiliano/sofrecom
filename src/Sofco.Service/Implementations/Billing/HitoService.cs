@@ -68,6 +68,9 @@ namespace Sofco.Service.Implementations.Billing
         public Response<string> SplitHito(HitoParameters hito)
         {
             var response = Create(hito);
+
+            if (response.HasErrors()) return response;
+
             UpdateFirstHito(response, hito);
 
             if (response.HasErrors())
