@@ -25,9 +25,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public new ICollection<Employee> GetAll()
         {
-            var now = DateTime.UtcNow.AddMonths(-4);
-
-            return context.Employees.Include(x => x.Manager).Where(x => (x.EndDate == null || x.EndDate.Value.Date >= now.Date) && !x.IsExternal).ToList();
+            return context.Employees.Include(x => x.Manager).Where(x => x.EndDate == null && !x.IsExternal).ToList();
         }
 
         public ICollection<Employee> GetAllForWorkTimeReport()
