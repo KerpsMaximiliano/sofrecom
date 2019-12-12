@@ -623,7 +623,6 @@ namespace Sofco.Service.Implementations.ManagementReport
             _detailModel.ManagementReportId = pMonthDetail.ManagementReportId;
             _detailModel.CostEmployees = new List<CostResourceEmployee>();
             _detailModel.FundedResources = new List<CostResource>();
-            decimal totalSalary = 0;
 
             var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
 
@@ -652,9 +651,6 @@ namespace Sofco.Service.Implementations.ManagementReport
                         month.Budget.Value = employee.Salary;
                         month.Budget.Charges = employee.Charges;
                     }
-
-                    totalSalary += employee.Salary ?? 0;
-                    totalSalary += employee.Charges ?? 0;
 
                     cost.MonthsCost.Add(month);
                     _detailModel.CostEmployees.Add(cost);
@@ -1680,7 +1676,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             }
                             else
                             {
-                                if (aux.Value > 0 || aux.Charges > 0)
+                                if (aux.Value != null && aux.Charges != null)
                                 {
                                     entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                     entity.Value = CryptographyHelper.Encrypt(aux.Value.ToString());

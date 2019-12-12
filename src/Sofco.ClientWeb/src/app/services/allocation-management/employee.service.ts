@@ -26,6 +26,10 @@ export class EmployeeService {
     return this.http.get<any>(`${this.baseUrl}/employees/options`);
   }
 
+  getOptionsFull() {
+    return this.http.get<any>(`${this.baseUrl}/employees/options/full`);
+  }
+
   getAllForWorkTimeReport() {
     return this.http.get<any>(`${this.baseUrl}/employees/worktimeReport`);
   }

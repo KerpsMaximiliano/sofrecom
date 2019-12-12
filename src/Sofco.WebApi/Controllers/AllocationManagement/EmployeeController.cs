@@ -60,6 +60,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(options);
         }
 
+        [HttpGet("options/full")]
+        public IActionResult GetOptionsFull()
+        {
+            var options = new List<Option>();
+
+            options.AddRange(employeeService.GetAllForWorkTimeReport().OrderBy(x => x.Name).Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber} - {x.Name}" }));
+
+            return Ok(options);
+        }
+
         [HttpGet("listItems")]
         public IActionResult GetListItems()
         {
