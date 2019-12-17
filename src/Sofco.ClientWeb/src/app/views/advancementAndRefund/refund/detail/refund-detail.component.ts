@@ -22,7 +22,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     @ViewChild('workflow') workflow;
     @ViewChild('history') history;
     @ViewChild('refundRelated') refundRelated;
-
+ 
     public entityId: number;
     public actualStateId: number;
     public userApplicantId: number;

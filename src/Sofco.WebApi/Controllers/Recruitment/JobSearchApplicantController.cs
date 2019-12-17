@@ -1,7 +1,10 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.Recruitment;
 using Sofco.Core.Services.Recruitment;
+using Sofco.Domain.Models.Common;
 using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
@@ -54,6 +57,25 @@ namespace Sofco.WebApi.Controllers.Recruitment
             responseError.AddError(Resources.Common.ParametersNull);
 
             return this.CreateResponse(responseError);
+        }
+
+        [HttpPost("{applicantId}/{jobSearchId}/file")]
+        public async Task<IActionResult> File(int applicantId, int jobSearchId)
+        {
+            var response = new Response<File>();
+
+            if (Request.Form.Files.Any())
+            {
+                var file = Request.Form.Files.First();
+
+                await jobSearchApplicantService.AttachFile(applicantId, jobSearchId, response, file);
+            }
+            else
+            {
+                response.AddError(Resources.Common.SaveFileError);
+            }
+
+            return this.CreateResponse(response);
         }
     }
 }

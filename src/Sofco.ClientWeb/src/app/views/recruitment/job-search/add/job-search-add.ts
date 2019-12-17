@@ -18,7 +18,7 @@ import { ReasonCauseType } from "app/models/enums/reasonCauseType";
     styleUrls: ['job-search-add.scss']
 })
 export class JobSearchComponent implements OnInit, OnDestroy {
-
+ 
     form: FormGroup = new FormGroup({
         comments: new FormControl(null, [Validators.maxLength(3000)]),
         timeHiringId: new FormControl(null, [Validators.required]),
@@ -26,26 +26,26 @@ export class JobSearchComponent implements OnInit, OnDestroy {
         reasonCauseId: new FormControl(null, [Validators.required]),
         clientId: new FormControl(null, [Validators.required]),
         quantity: new FormControl(null, [Validators.required, Validators.min(1)]),
-        yearsExperience: new FormControl(null, [Validators.max(99), Validators.min(0)]),
+        yearsExperience: new FormControl(null, [Validators.required, Validators.max(99), Validators.min(0)]),
         maximunSalary: new FormControl(null, [Validators.required]),
         recruiterId: new FormControl(null),
-        profiles: new FormControl(null),
-        skillsNotRequired: new FormControl(null),
-        skillsRequired: new FormControl(null),
-        seniorities: new FormControl(null),
+        profiles: new FormControl(null, [Validators.required]),
+        skillsNotRequired: new FormControl(null, [Validators.required]),
+        skillsRequired: new FormControl(null, [Validators.required]),
+        seniorities: new FormControl(null, [Validators.required]),
         email: new FormControl(null),
         area: new FormControl(null, [Validators.maxLength(3000)]),
         telephone: new FormControl(null),
         clientContact: new FormControl(null),
-        jobType: new FormControl('1'),
-        resourceAssignment: new FormControl(null),
+        jobType: new FormControl('1', [Validators.required]),
+        resourceAssignment: new FormControl(null, [Validators.required]),
         language: new FormControl(null, [Validators.maxLength(100)]),
         study: new FormControl(null, [Validators.maxLength(100)]),
-        jobTime: new FormControl(null, [Validators.maxLength(100)]),
-        location: new FormControl(null, [Validators.maxLength(200)]),
+        jobTime: new FormControl(null, [Validators.required, Validators.maxLength(100)]),
+        location: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
         benefits: new FormControl(null, [Validators.maxLength(3000)]),
         observations: new FormControl(null, [Validators.maxLength(3000)]),
-        tasksToDo: new FormControl(null, [Validators.maxLength(3000)]),
+        tasksToDo: new FormControl(null, [Validators.required, Validators.maxLength(3000)]),
         marketStudy: new FormControl(null),
         isStaffDesc: new FormControl(null),
     });

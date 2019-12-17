@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Domain.Models.Recruitment
@@ -59,5 +60,7 @@ namespace Sofco.Domain.Models.Recruitment
         public bool IsClientExternal { get; set; }
         public string ClientExternalInterviewer { get; set; }
         public string RrhhInterviewComments { get; set; }
+
+        public IList<JobSearchApplicantFile> Files { get; set; }
     }
 }

@@ -451,6 +451,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     Analytic = "Sin Asignación",
                     EmployeeId = employee.Id,
                     AnalyticId = 0,
+                    AssignComments = employee.AssignComments,
                     Months = months.Select(x => new AllocationDateReport { Year = x.Year, Month = x.Month, Percentage = 100 }).ToList()
                 };
 
@@ -484,12 +485,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 Profile = allocationReportRow.Profile,
                 Resource = allocationReportRow.ResourceName,
                 Seniority = allocationReportRow.Seniority,
-                Technology = allocationReportRow.Technology
+                Technology = allocationReportRow.Technology,
+                Comment = allocationReportRow.AssignComments
             };
 
-            var months = allocationReportRow.Months.Take(4);
+            var months = allocationReportRow.Months.Take(4).ToList();
             var index = 1;
             var count = months.Count();
+            row.FirstMonth = DatesHelper.GetDateDescription(new DateTime(months[index].Year, months[index].Month, 1));
 
             foreach (var month in months)
             {

@@ -28,6 +28,7 @@
             <li class="active"><a class="nav-link" data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> Datos Generales </a></li>
             <li *ngIf="registerVisible"><a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-info-circle"></i> Datos para ingreso </a></li>
             <li><a class="nav-link" data-toggle="tab" href="#tab-2"> <i class="fa fa-info-circle"></i> Historial contactos </a></li>
+            <li><a class="nav-link" data-toggle="tab" href="#tab-4"> <i class="fa fa-file"></i> Archivos </a></li>
         </ul>
 
         <div class="tab-content">
@@ -376,7 +377,13 @@
 
                     <hr class="hr-line-dashed">
 
-                    <interview #interview></interview>   
+                    <interview (getFiles)="refreshFiles()" #interview></interview>   
+                </div>
+            </div>
+
+            <div id="tab-4" class="tab-pane">
+                <div class="panel-body">
+                    <contact-files #contactFiles></contact-files>
                 </div>
             </div>
         </div>

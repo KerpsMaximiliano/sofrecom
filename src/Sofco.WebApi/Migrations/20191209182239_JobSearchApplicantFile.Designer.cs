@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20191209182239_JobSearchApplicantFile")]
+    partial class JobSearchApplicantFile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1566,8 +1568,7 @@ namespace Sofco.WebApi.Migrations
                     b.Property<string>("ContactEmail")
                         .HasMaxLength(100);
 
-                    b.Property<decimal?>("CurrencyExchange")
-                        .HasColumnType("decimal(18, 4)");
+                    b.Property<decimal?>("CurrencyExchange");
 
                     b.Property<int>("CurrencyId");
 
@@ -2049,8 +2050,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasIndex("BudgetTypeId");
 
-                    b.HasIndex("CostDetailId", "EmployeeId", "BudgetTypeId")
-                        .IsUnique();
+                    b.HasIndex("CostDetailId");
 
                     b.ToTable("CostDetailResources");
                 });

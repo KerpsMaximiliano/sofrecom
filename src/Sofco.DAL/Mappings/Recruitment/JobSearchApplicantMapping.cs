@@ -46,6 +46,18 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<JobSearchApplicant>().HasOne(x => x.Reason)
                 .WithMany(x => x.JobSearchApplicants)
                 .HasForeignKey(x => x.ReasonId).OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<JobSearchApplicantFile>().HasKey(t => new { t.JobSearchId, t.ApplicantId, t.Date, t.FileId });
+
+            builder.Entity<JobSearchApplicantFile>()
+                .HasOne(pt => pt.JobSearchApplicant)
+                .WithMany(p => p.Files)
+                .HasForeignKey(pt => new { pt.JobSearchId, pt.ApplicantId, pt.Date });
+
+            builder.Entity<JobSearchApplicantFile>()
+                .HasOne(pt => pt.File)
+                .WithMany()
+                .HasForeignKey(pt => pt.FileId);
         }
     }
 }

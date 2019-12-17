@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Core.Models.Recruitment;
+using Sofco.Core.Services.Common;
 using Sofco.Core.Services.Recruitment;
 using Sofco.WebApi.Extensions;
 
@@ -9,10 +12,14 @@ namespace Sofco.WebApi.Controllers.Recruitment
     public class ApplicantController : Controller
     {
         private readonly IApplicantService applicantService;
+        private readonly IFileService fileService;
+        private readonly FileConfig fileConfig;
 
-        public ApplicantController(IApplicantService applicantService)
+        public ApplicantController(IApplicantService applicantService, IFileService fileService, IOptions<FileConfig> fileOptions)
         {
             this.applicantService = applicantService;
+            this.fileService = fileService;
+            this.fileConfig = fileOptions.Value;
         }
 
         [HttpPost]
@@ -61,6 +68,25 @@ namespace Sofco.WebApi.Controllers.Recruitment
             var response = applicantService.GetApplicantHistory(id);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpGet("{id}/files")]
+        public IActionResult GetFiles(int id)
+        {
+            var response = applicantService.GetFiles(id);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("file/{id}")]
+        public IActionResult GetFile(int id)
+        {
+            var response = fileService.ExportFile(id, fileConfig.RecruitmentPath);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
         }
 
         [HttpPut("{id}/status")]

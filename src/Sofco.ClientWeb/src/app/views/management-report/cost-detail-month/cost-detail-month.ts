@@ -274,9 +274,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.costDetailMonthModal.hide();
             this.managementReport.updateDetailCost()
         },
-            () => {
-                this.messageService.closeLoading();
-            });
+        () => {
+            this.messageService.closeLoading();
+            this.costDetailMonthModal.resetButtons();
+        });
     }
 
     subResourceChange(subResource) {

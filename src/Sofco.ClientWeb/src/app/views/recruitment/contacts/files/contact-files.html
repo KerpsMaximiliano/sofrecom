@@ -1,0 +1,25 @@
+<div class="table-responsive" *ngIf="files.length > 0">
+    <table class="table table-striped dataTable table-font" role="grid" id="filesTable">
+        <thead>
+            <tr>
+                <th>Busqueda</th>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of files" class="pointer" (click)="export(item)">
+                <td>{{ item.jobSearch }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ item.userName }}</td>
+            </tr>
+        </tbody>
+    </table>       
+</div>
+
+<div class="alert alert-gaps-info" *ngIf="files.length == 0">
+    <i class="fa fa-warning"></i>
+    Sin información disponible
+</div>

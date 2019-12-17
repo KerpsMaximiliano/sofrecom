@@ -55,6 +55,8 @@ namespace Sofco.DAL.Repositories.Recruitment
             return context.JobSearchApplicants
                 .Include(x => x.Applicant)
                 .Include(x => x.Reason)
+                .Include(x => x.Files)
+                    .ThenInclude(x => x.File)
                 .Include(x => x.JobSearch)
                     .ThenInclude(x => x.Client)
                 .Include(x => x.JobSearch)
@@ -70,6 +72,14 @@ namespace Sofco.DAL.Repositories.Recruitment
         public void AddHistory(ApplicantHistory history)
         {
             context.ApplicantHistories.Add(history);
+        }
+
+        public IList<JobSearchApplicantFile> GetFiles(int id)
+        {
+            return context.JobSearchApplicantFiles
+                .Include(x => x.File)
+                .Where(x => x.ApplicantId == id)
+                .ToList();
         }
     }
 }

@@ -64,7 +64,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         }
 
         if(this.canSeeManagers()){
-            this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(res => {
+            this.getResourcesSubscrip = this.employeeService.getOptionsFull().subscribe(res => {
                 this.resources = res;
             });
         }

@@ -9,7 +9,6 @@ import { GenericOptions } from 'app/models/enums/genericOptions';
 import { UserService } from 'app/services/admin/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ApplicantService } from 'app/services/recruitment/applicant.service';
-import { ReasonCauseType } from 'app/models/enums/reasonCauseType';
 
 @Component({
   selector: 'app-add-contacts',

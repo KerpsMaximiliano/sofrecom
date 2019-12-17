@@ -1,4 +1,6 @@
-﻿namespace Sofco.Domain.Models.AllocationManagement
+﻿using System;
+
+namespace Sofco.Domain.Models.AllocationManagement
 {
     public class ReportPowerBi : BaseEntity
     {
@@ -19,5 +21,9 @@
         public decimal Month3 { get; set; }
 
         public decimal Month4 { get; set; }
+
+        public string FirstMonth { get; set; }
+
+        public string Comment { get; set; }
     }
 }

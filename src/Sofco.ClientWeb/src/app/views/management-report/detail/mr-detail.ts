@@ -214,7 +214,7 @@ export class ManagementReportDetailComponent implements OnInit, OnDestroy {
     }
 
     updateDetailCost() {
-        this.detailCost.getCost();
+        this.detailCost.getCost(true);
     }
 
     openEditDateModal() {

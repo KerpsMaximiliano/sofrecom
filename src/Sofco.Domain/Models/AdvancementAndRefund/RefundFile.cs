@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Sofco.Domain.Models.Common;
+﻿using Sofco.Domain.Models.Common;
 
 namespace Sofco.Domain.Models.AdvancementAndRefund
 {

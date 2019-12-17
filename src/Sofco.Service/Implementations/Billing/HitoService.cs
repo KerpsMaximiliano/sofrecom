@@ -68,6 +68,9 @@ namespace Sofco.Service.Implementations.Billing
         public Response<string> SplitHito(HitoParameters hito)
         {
             var response = Create(hito);
+
+            if (response.HasErrors()) return response;
+
             UpdateFirstHito(response, hito);
 
             if (response.HasErrors())
@@ -126,8 +129,7 @@ namespace Sofco.Service.Implementations.Billing
             if(string.IsNullOrWhiteSpace(data.Name))
                 response.AddError(Resources.Billing.Project.NameRequired);
 
-            if (!data.Date.HasValue) 
-                response.AddError(Resources.Billing.Project.DateRequired);
+            HitoValidatorHelper.ValidateDate(new HitoParameters { StartDate = data.Date, ProjectId = data.ProjectId }, response, unitOfWork);
 
             if (response.HasErrors()) return response;
 
