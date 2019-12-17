@@ -149,7 +149,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
 
-            this.getCost();
+            this.getCost(false);
         });
     }
 
@@ -175,7 +175,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.fromMonth = new Date(date.getFullYear(), date.getMonth() - 2, 1)
     }
 
-    getCost() {
+    getCost(showLoading) {
+        if(showLoading){
+            this.messageService.showLoading();
+        }
+
         this.getCostSubscrip = this.managementReportService.getCostDetail(this.serviceId).subscribe(response => {
             this.model = response.data;
 
@@ -198,6 +202,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.calculateTotalReal();
             this.calculateTotalCosts();
             this.sendDataToDetailView();
+
+            if(showLoading){
+                this.messageService.closeLoading();
+
+            }
         },
         () => this.messageService.closeLoading());
     }
@@ -338,6 +347,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                 this.save(listAux, [], [], () => {
 
+                    this.messageService.showLoading();
+
                     this.updateCostSubscrip = this.managementReportService.getCostDetailByEmployee(this.serviceId, this.itemSelected.employeeId).subscribe(response => {
 
                         var employeeSelectedIndex = this.employees.findIndex(x => x.employeeId == this.itemSelected.employeeId);
@@ -349,6 +360,8 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
                         this.calculateTotalCosts();
                         this.addClassEmployee();
+
+                        this.messageService.closeLoading();
                     });
                     
                 });

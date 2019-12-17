@@ -10,12 +10,15 @@ export class DecimalFormatDirective implements OnInit {
     private specialKeys: Array<string> = [ 'Tab', 'End', 'Home', '-' ];
 
     @Input("decimalFormat") digits: number;
+    @Input("decimals") decimals: number;
 
     constructor(private el: ElementRef) {}
 
     ngOnInit(): void {
+        var decimals  = this.decimals && this.decimals > 0 ? this.decimals : 2;
+
         if(this.digits && this.digits > 0){
-            var expression = '^[0-9]{1,' + this.digits + '}([.][0-9]{0,2})?$';
+            var expression = '^[0-9]{1,' + this.digits + '}([.][0-9]{0,' + decimals + '})?$';
 
             this.regex = new RegExp(expression, 'g');
         }

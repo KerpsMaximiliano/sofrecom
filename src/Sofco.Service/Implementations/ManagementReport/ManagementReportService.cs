@@ -1676,7 +1676,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                             }
                             else
                             {
-                                if (aux.Value != null && aux.Charges != null)
+
+
+                                if (aux.Value != null)
                                 {
                                     entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
                                     entity.Value = CryptographyHelper.Encrypt(aux.Value.ToString());
@@ -1747,7 +1749,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         }
                         else
                         {
-                            if (aux.Value > 0)
+                            if (aux.Value != null)
                             {
                                 var costDetail = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault();
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20191212155858_CurrencyExchangeSolfac")]
+    partial class CurrencyExchangeSolfac
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2049,8 +2051,7 @@ namespace Sofco.WebApi.Migrations
 
                     b.HasIndex("BudgetTypeId");
 
-                    b.HasIndex("CostDetailId", "EmployeeId", "BudgetTypeId")
-                        .IsUnique();
+                    b.HasIndex("CostDetailId");
 
                     b.ToTable("CostDetailResources");
                 });
