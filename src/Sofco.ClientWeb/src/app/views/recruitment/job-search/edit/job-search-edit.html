@@ -83,7 +83,7 @@
                                     <label class="control-label">Tiempo contratación</label>
                                     <ng-select [items]="timeHiringOptions" bindValue="id" bindLabel="text" formControlName="timeHiringId"></ng-select>
                                     
-                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'timeHiring')">
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'timeHiringId')">
                                         <p *ngIf="formsService.hasError(form, 'timeHiringId', 'required')">El campo es requerido</p>
                                     </div>
                                 </div>
@@ -106,6 +106,7 @@
                                     <input type="text" class="form-control input-sm" formControlName="jobTime" maxlength="100">
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'jobTime')">
+                                        <p *ngIf="formsService.hasError(form, 'jobTime', 'required')">El campo es requerido</p>
                                         <p *ngIf="formsService.hasError(form, 'jobTime', 'maxLength')">Los horario no puede superar los 100 caracteres</p>
                                     </div>
                                 </div>
@@ -156,13 +157,14 @@
                             <input type="text" class="form-control input-sm" formControlName="location">
                             
                             <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'location')">
+                                <p *ngIf="formsService.hasError(form, 'location', 'required')">El campo es requerido</p>
                                 <p *ngIf="formsService.hasError(form, 'location', 'maxLength')">Los comentarios no pueden superar los 200 caracteres</p>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'jobType')">
                                     <label class="control-label">Tipo de Trabajo</label>
                                     <div class="radio radio-success">
                                         <input value="1" type="radio" formControlName="jobType">
@@ -179,14 +181,22 @@
                                         <label> Otro </label>
                                     </div>
                                 </div>
+
+                                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'jobType')">
+                                    <p *ngIf="formsService.hasError(form, 'jobType', 'required')">El campo es requerido</p>
+                                </div>
                             </div>
 
                             <div class="col-md-2">
-                                <div class="form-group">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'resourceAssignment')">
                                     <label class="control-label">Asignación de recurso</label>
                                     <div class="radio radio-success" *ngFor="let item of resourceAssignmentOptions">
                                         <input [value]="item.id" type="radio" formControlName="resourceAssignment">
                                         <label> {{ item.text }} </label>
+                                    </div>
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'resourceAssignment')">
+                                        <p *ngIf="formsService.hasError(form, 'resourceAssignment', 'required')">El campo es requerido</p>
                                     </div>
                                 </div>
                             </div>
@@ -244,27 +254,45 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'skillsRequired')">
                                     <label class="control-label"> Conocimientos excluyentes </label>
                                     <ng-select [multiple]="true" [closeOnSelect]="false" [items]="skillOptions" bindValue="id" bindLabel="text" formControlName="skillsRequired"></ng-select>
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'skillsRequired')">
+                                        <p *ngIf="formsService.hasError(form, 'skillsRequired', 'required')">El campo es requerido</p>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'skillsNotRequired')">
                                     <label class="control-label"> Conocimientos no excluyentes </label>
                                     <ng-select [multiple]="true" [closeOnSelect]="false" [items]="skillOptions" bindValue="id" bindLabel="text" formControlName="skillsNotRequired"></ng-select>
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'skillsNotRequired')">
+                                        <p *ngIf="formsService.hasError(form, 'skillsNotRequired', 'required')">El campo es requerido</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+
+                            <div class="col-md-3" [ngClass]="formsService.getClassProperty(form, 'profiles')">
                                 <div class="form-group">
                                     <label class="control-label"> Perfiles </label>
                                     <ng-select [multiple]="true" [closeOnSelect]="false" [items]="profileOptions" bindValue="id" bindLabel="text" formControlName="profiles"></ng-select>
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'profiles')">
+                                        <p *ngIf="formsService.hasError(form, 'profiles', 'required')">El campo es requerido</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'seniorities')">
                                     <label class="control-label"> Seniority </label>
                                     <ng-select [multiple]="true" [closeOnSelect]="false" [items]="seniorityOptions" bindValue="id" bindLabel="text" formControlName="seniorities"></ng-select>
+
+                                    <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'seniorities')">
+                                        <p *ngIf="formsService.hasError(form, 'seniorities', 'required')">El campo es requerido</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -274,6 +302,7 @@
                             <textarea rows="6" class="form-control" formControlName="tasksToDo" maxlength="3000"></textarea>
                     
                             <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'tasksToDo')">
+                                <p *ngIf="formsService.hasError(form, 'tasksToDo', 'required')">El campo es requerido</p>
                                 <p *ngIf="formsService.hasError(form, 'tasksToDo', 'maxLength')">El tipo de tareas no pueden superar los 4000 caracteres</p>
                             </div>
                         </div>
@@ -285,6 +314,7 @@
                                     <input type="number" class="form-control" formControlName="yearsExperience" min="0" max="99">
         
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'yearsExperience')">
+                                        <p *ngIf="formsService.hasError(form, 'yearsExperience', 'required')">El campo es requerido</p>
                                         <p *ngIf="formsService.hasError(form, 'yearsExperience', 'min')">El campo no puede ser menor a 0</p>
                                         <p *ngIf="formsService.hasError(form, 'yearsExperience', 'max')">El campo no puede ser mayor a 99</p>
                                     </div>
