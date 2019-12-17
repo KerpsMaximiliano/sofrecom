@@ -155,8 +155,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             var response = new Response<CostDetailStaffMonthModel> { Data = new CostDetailStaffMonthModel() };
 
             var managementReport = unitOfWork.ManagementReportRepository.GetById(id);
-            var listMonths = this.VerifyAnalyticMonths(managementReport, managementReport.StartDate, managementReport.EndDate);
-            var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
+            this.VerifyAnalyticMonths(managementReport, managementReport.StartDate, managementReport.EndDate);
 
             if (managementReport == null)
             {
@@ -173,17 +172,17 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         .OrderByDescending(x => x.BudgetTypeId)
                                         .FirstOrDefault();
 
-            string typeBudget = EnumBudgetType.budget;
+            string typeBudget = EnumBudgetType.Real;
 
-            if (lastType != null)
-            {
-                typeBudget = lastType.BudgetType.Name.ToUpper();
-            }
+            //if (lastType != null)
+            //{
+            //    typeBudget = lastType.BudgetType.Name.ToUpper();
+            //}
 
-            if (costDetail.HasReal)
-            {
-                typeBudget = EnumBudgetType.Real;
-            }
+            //if (costDetail.HasReal)
+            //{
+            //    typeBudget = EnumBudgetType.Real;
+            //}
 
             var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDay(monthYear);
 
