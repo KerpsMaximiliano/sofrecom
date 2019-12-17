@@ -129,31 +129,35 @@ export class InterviewComponent implements OnDestroy {
 
         this.form.controls.reasonId.setValue(history.reasonId);
 
-        this.form.controls.rrhhInterviewDate.setValue(moment(history.rrhhInterviewDate).toDate());
-        this.form.controls.rrhhInterviewPlace.setValue(history.rrhhInterviewPlace);
-
+        // RRHH
+        if(history.rrhhInterviewDate){
+            this.form.controls.rrhhInterviewDate.setValue(moment(history.rrhhInterviewDate).toDate());
+        }
         if(history.rrhhInterviewerId){
             this.form.controls.rrhhInterviewerId.setValue(history.rrhhInterviewerId.toString());
         }
-   
+        this.form.controls.rrhhInterviewPlace.setValue(history.rrhhInterviewPlace);
         this.form.controls.rrhhInterviewComments.setValue(history.rrhhInterviewComments);
-        this.form.controls.technicalInterviewDate.setValue(moment(history.technicalInterviewDate).toDate());
-        this.form.controls.technicalInterviewPlace.setValue(history.technicalInterviewPlace);
 
+        // Technical
+        if(history.technicalInterviewDate){
+            this.form.controls.technicalInterviewDate.setValue(moment(history.technicalInterviewDate).toDate());
+        }
         if(history.technicalInterviewerId){
             this.form.controls.technicalInterviewerId.setValue(history.technicalInterviewerId.toString());
         }
-       
+        this.form.controls.technicalInterviewPlace.setValue(history.technicalInterviewPlace);
         this.form.controls.technicalInterviewComments.setValue(history.technicalInterviewComments);
         this.form.controls.technicalExternalInterviewer.setValue(history.technicalExternalInterviewer);
 
-        this.form.controls.clientInterviewDate.setValue(moment(history.clientInterviewDate).toDate());
-        this.form.controls.clientInterviewPlace.setValue(history.clientInterviewPlace);
-
+        // Client
         if(history.clientInterviewerId){
             this.form.controls.clientInterviewerId.setValue(history.clientInterviewerId.toString());
         }
-
+        if(history.clientInterviewDate){
+            this.form.controls.clientInterviewDate.setValue(moment(history.clientInterviewDate).toDate());
+        }
+        this.form.controls.clientInterviewPlace.setValue(history.clientInterviewPlace);
         this.form.controls.clientInterviewComments.setValue(history.clientInterviewComments);
         this.form.controls.clientExternalInterviewer.setValue(history.clientExternalInterviewer);
     }
