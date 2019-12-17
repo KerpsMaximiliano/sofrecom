@@ -1487,7 +1487,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                             // monthDetail.CostDetailId = monthValue.FirstOrDefault().CostDetailId;
                             monthDetail.Budget.Value = valuePesos;
                             monthDetail.Budget.Id = monthValue.FirstOrDefault().Id;
-                            if (monthDetail.Budget.Value > 0)
+                            if (monthDetail.Budget.Value != 0)
                             {
                                 hasValue = true;
                             }
@@ -1502,7 +1502,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         monthDetail.Real.Id = monthValueReal.FirstOrDefault().Id;
                         monthDetail.Real.Value = monthValueReal.Sum(x => x.Value);
-                        if (monthDetail.Real.Value > 0)
+                        if (monthDetail.Real.Value != 0)
                         {
                             hasValue = true;
                         }

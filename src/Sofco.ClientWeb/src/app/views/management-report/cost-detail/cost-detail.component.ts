@@ -669,7 +669,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
                 if (resourceEmpleyee.monthsCost[index].budget.value) {
                     totalCost += resourceEmpleyee.monthsCost[index].budget.value
-                    // totalSalary += resourceEmpleyee.monthsCost[index].budget.value;
+                    totalSalary += resourceEmpleyee.monthsCost[index].budget.value;
                 }
             })
 
@@ -1142,12 +1142,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.costProfiles.forEach(profile => {
             var monthCost = profile.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
             if (monthCost) {
-            totalSalary += monthCost[type].value;
-            if (monthCost[type].value) {
-                currPesos.value += monthCost[type].value;
-                currPesos.valuePesos += monthCost[type].value;
+                totalSalary += monthCost[type].value;
+                if (monthCost[type].value) {
+                    currPesos.value += monthCost[type].value;
+                    currPesos.valuePesos += monthCost[type].value;
+                }
             }
-        }
         })
 
         // Al total de pesos le sumo las cargas (51% del salario)
@@ -1161,12 +1161,12 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             if (resource.typeName != this.generalAdjustment) {
                 var monthCost = resource.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
                 if (monthCost) {
-                if (monthCost[type].value) {
-                    if (monthCost[type].value > 0) {
-                        otherResourceValues.push(resource)
+                    if (monthCost[type].value) {
+                        if (monthCost[type].value > 0) {
+                             otherResourceValues.push(resource)
+                        }
                     }
                 }
-            }
             }
         })
 
@@ -1174,11 +1174,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.fundedResourcesEmployees.forEach(resourceEmpleyee => {
             var monthCost = resourceEmpleyee.monthsCost.find(x => x.month == pMonth.month && x.year == pMonth.year);
             if (monthCost) {
-            if (monthCost[type].value) {
-                if (monthCost[type].value > 0) {
-                    otherResourceValues.push(resourceEmpleyee)
+                if (monthCost[type].value) {
+                    if (monthCost[type].value > 0) {
+                        otherResourceValues.push(resourceEmpleyee)
+                    }
                 }
-            }
             }
         })
 
