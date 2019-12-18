@@ -116,7 +116,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             if (licenses.Any())
             {
-                allocationResponse.Licenses = licenses.Select(x => new LicenseItemDto(x)).ToList();
+                allocationResponse.Licenses = licenses.Where(x => x.Status != LicenseStatus.Rejected && x.Status != LicenseStatus.Cancelled).Select(x => new LicenseItemDto(x)).ToList();
             }
 
             var analyticsIds = allocations.Select(x => x.AnalyticId).Distinct();
