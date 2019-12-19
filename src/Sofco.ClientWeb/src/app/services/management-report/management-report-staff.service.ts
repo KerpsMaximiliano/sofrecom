@@ -62,4 +62,8 @@ export class ManagementReportStaffService {
   PostGeneratePfa(model){
     return this.http.post<any>(`${this.baseUrl}/managementReportStaff/generatePFA`, model);
   }
+
+  resetState(id){
+    return this.http.put<any>(`${this.baseUrl}/managementReportStaff/${id}/reset`, {});
+  }
 }

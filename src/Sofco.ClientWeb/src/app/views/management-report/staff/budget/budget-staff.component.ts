@@ -165,7 +165,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             this.categoriesRedInfra = response.data.costCategoriesRedInfra;
             this.subCategories = response.data.allSubcategories;
             this.budgetTypes = response.data.budgetTypes;
-            this.actualState = response.data.state
+            this.actualState = response.data.state;
 
             this.otherCategories = response.data.otherCategories;
             if (this.otherCategories.length > 0) {

@@ -87,5 +87,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("{id}/reset")]
+        public IActionResult Reset(int id)
+        {
+            var response = managementReportStaffService.Reset(id);
+
+            return this.CreateResponse(response);
+        }
     }
 }

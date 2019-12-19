@@ -682,6 +682,38 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
+        public Response Reset(int id)
+        {
+            var response = new Response();
+
+            var managementReport = unitOfWork.ManagementReportRepository.Get(id);
+
+            if (managementReport == null)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
+                return response;
+            }
+
+            try
+            {
+                var typesBudgets = unitOfWork.ManagementReportRepository.GetTypesBudget().Select(x => new BudgetTypeItem(x)).ToList();
+                managementReport.StateId = typesBudgets.FirstOrDefault(x => x.Name == EnumBudgetType.budget)?.Id;
+                managementReport.StateGenerated = false;
+                unitOfWork.ManagementReportRepository.UpdateState(managementReport);
+                unitOfWork.ManagementReportRepository.UpdateStateGenerated(managementReport);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private void InsertUpdateCostDetailStaff(List<CostCategory> costCategories, IList<CostDetail> costDetails)
         {
             try

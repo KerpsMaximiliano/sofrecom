@@ -2,6 +2,7 @@
 using Sofco.Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Core.Models.ManagementReport
 {
