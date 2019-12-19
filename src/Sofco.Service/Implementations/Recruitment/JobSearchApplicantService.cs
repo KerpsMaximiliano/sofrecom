@@ -263,6 +263,35 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
+        public Response<IList<ApplicantJobSearchModel>> GetByApplicant(int applicantId)
+        {
+            var response = new Response<IList<ApplicantJobSearchModel>> { Data = new List<ApplicantJobSearchModel>() };
+
+            var applicant = unitOfWork.ApplicantRepository.GetWithProfilesAndSkills(applicantId);
+
+            if (applicant == null)
+            {
+                response.AddError(Resources.Recruitment.JobSearch.NotFound);
+                return response;
+            }
+
+            try
+            {
+                var skills = applicant.ApplicantSkills.Select(x => x.SkillId).ToList();
+                var profiles = applicant.ApplicantProfiles.Select(x => x.ProfileId).ToList();
+
+                var jobSearchs = unitOfWork.JobSearchRepository.Get(skills, profiles);
+
+                response.Data = jobSearchs.Select(x => new ApplicantJobSearchModel(x)).ToList();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
+
+            return response;
+        }
+
         private void Validate(DateTime? date, string place, int? interviewer, Response response,
             bool isExternal)
         {

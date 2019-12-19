@@ -1,0 +1,90 @@
+<div class="row no-gutters">
+    <div class="col-md-8">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h4 class="pull-left">Posibles busquedas</h4>
+
+                <div class="ibox-tools">
+                    <button class="btn btn-success btn-sm" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                    <button class="btn btn-warning btn-sm" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <div class="ibox-content">      
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"> Perfiles </label>
+                            <ng-select [items]="profiles" bindValue="id" bindLabel="text" [(ngModel)]="profileSelected" (ngModelChange)="filtersChange()"></ng-select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"> Conocimientos </label>
+                            <ng-select [items]="skills" bindValue="id" bindLabel="text" [(ngModel)]="skillSelected" (ngModelChange)="filtersChange()"></ng-select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped dataTable table-font" role="grid" id="jobSearchsTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Cliente</th>
+                                <th>Perfiles</th>
+                                <th>Conocimientos</th>
+                                <th>Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of dataFiltered">
+                                <td class="column-xs text-center">
+                                    <icheck [(checked)]="item.selected"></icheck>
+                                </td>
+                                <td (click)="goToDetail(item)">{{ item.id }}</td>
+                                <td class="column-lg text-ellipsis text-success applicant-name pointer">{{ item.client }}</td>
+                                <td class="column-lg text-word-break">{{ item.profiles }}</td>
+                                <td class="column-lg text-word-break">{{ item.skills }}</td>
+                                <td class="column-lg">{{ item.reason }}</td>
+                            </tr>
+                        </tbody>
+                    </table>       
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 reason-box-font">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h4>Realizar contacto</h4>
+            </div>
+            <div class="ibox-content">    
+                <form [formGroup]="form">
+                    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'reasonCauseId')">
+                        <label class="control-label"> Tipo/Razon </label>
+                        <ng-select [items]="reasonOptions" bindValue="id" bindLabel="text" formControlName="reasonCauseId"></ng-select>
+
+                        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'reasonCauseId')">
+                            <p *ngIf="formsService.hasError(form, 'reasonCauseId', 'required')">El campo es requerido</p>
+                        </div>
+                    </div> 
+                        
+                    <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'comments')">
+                        <label class="control-label">Comentarios</label>
+                        <textarea rows="6" class="form-control" formControlName="comments" maxlength="3000"></textarea>
+                
+                        <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'comments')">
+                            <p *ngIf="formsService.hasError(form, 'comments', 'maxLength')">Los comentarios no pueden superar los 3000 caracteres</p>
+                            <p *ngIf="formsService.hasError(form, 'comments', 'required')">El campo es requerido</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="ibox-footer text-center">
+                <button class="btn btn-danger btn-sm" (click)="cancel()"> Cancelar </button>
+                <button class="btn btn-primary btn-sm" [disabled]="!form.valid || !anySelected() || isInCompanyReason()" (click)="save()"> Guardar </button>
+            </div>
+        </div>
+    </div>
+</div>

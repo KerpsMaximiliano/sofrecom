@@ -12,7 +12,7 @@ namespace Sofco.Core.Services.Recruitment
         Response<IList<JobSearchApplicantModel>> GetByJobSearch(int jobSearchId);
         Response Add(JobSearchApplicantAddModel model);
         Response AddInterview(int applicantId, int jobSearchId, InterviewAddModel model);
-        Task<Response<File>> AttachFile(int applicantId, int jobSearchId, Response<File> response,
-            IFormFile file);
+        Task<Response<File>> AttachFile(int applicantId, int jobSearchId, Response<File> response, IFormFile file);
+        Response<IList<ApplicantJobSearchModel>> GetByApplicant(int applicantId);
     }
 }

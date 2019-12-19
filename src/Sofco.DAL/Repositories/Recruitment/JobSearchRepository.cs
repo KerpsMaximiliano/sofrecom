@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.Models.Recruitment;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
+using Sofco.Domain.Relationships;
 
 namespace Sofco.DAL.Repositories.Recruitment
 {
@@ -100,6 +102,55 @@ namespace Sofco.DAL.Repositories.Recruitment
         public IList<JobSearchHistory> GetHistory(int id)
         {
             return context.JobSearchHistories.Include(x => x.ReasonCause).Where(x => x.JobSearchId == id).ToList();
+        }
+
+        public IList<JobSearch> Get(List<int> skills, List<int> profiles)
+        {
+            var query = context.JobSearchs
+                .Include(x => x.Client)
+                .Include(x => x.JobSearchApplicants)
+                    .ThenInclude(x => x.Reason)
+                .Include(x => x.JobSearchProfiles)
+                .Include(x => x.JobSearchSkillsRequired)
+                .Where(x => x.Status == JobSearchStatus.Open || x.Status == JobSearchStatus.Reopen);
+
+            if (skills.Any() && profiles.Any())
+            {
+                query = query.Where(x => x.JobSearchSkillsRequired.Any(s => skills.Contains(s.SkillId)) || x.JobSearchProfiles.Any(s => profiles.Contains(s.ProfileId)));
+            }
+            else
+            {
+                if (skills.Any())
+                    query = query.Where(x => x.JobSearchSkillsRequired.Any(s => skills.Contains(s.SkillId)));
+
+                if (profiles.Any())
+                    query = query.Where(x => x.JobSearchProfiles.Any(s => skills.Contains(s.ProfileId)));
+            }
+
+            return query
+                .Include(x => x.JobSearchProfiles)
+                    .ThenInclude(x => x.Profile)
+                .Include(x => x.JobSearchSkillsRequired)
+                    .ThenInclude(x => x.Skill)
+                .Select(x => new JobSearch
+                {
+                    Id = x.Id,
+                    JobSearchProfiles = x.JobSearchProfiles.Select(s => new JobSearchProfile
+                    {
+                        JobSearch = s.JobSearch,
+                        Profile = s.Profile
+                    })
+                    .ToList(),
+                    JobSearchSkillsRequired = x.JobSearchSkillsRequired.Select(s => new JobSearchSkillRequired
+                    {
+                        JobSearch = s.JobSearch,
+                        Skill = s.Skill,
+                    })
+                    .ToList(),
+                    Client = x.Client,
+                    ReasonCause = x.ReasonCause
+                })
+            .ToList();
         }
     }
 }

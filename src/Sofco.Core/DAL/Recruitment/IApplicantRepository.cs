@@ -12,5 +12,6 @@ namespace Sofco.Core.DAL.Recruitment
         IList<JobSearchApplicant> GetHistory(int applicantId);
         void AddHistory(ApplicantHistory history);
         IList<JobSearchApplicantFile> GetFiles(int id);
+        Applicant GetWithProfilesAndSkills(int applicantId);
     }
 }

@@ -46,12 +46,12 @@ namespace Sofco.WebApi.Controllers.Recruitment
                 return this.CreateResponse(response);
             }
 
-            //if (parameters.JobSearchId.HasValue)
-            //{
-            //    var response = jobSearchApplicantService.GetByJobSearch(parameters);
+            if (parameters.ApplicantId.HasValue)
+            {
+                var response = jobSearchApplicantService.GetByApplicant(parameters.ApplicantId.Value);
 
-            //    return this.CreateResponse(response);
-            //}
+                return this.CreateResponse(response);
+            }
 
             var responseError = new Response();
             responseError.AddError(Resources.Common.ParametersNull);

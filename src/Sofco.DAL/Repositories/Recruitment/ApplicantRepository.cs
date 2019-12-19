@@ -81,5 +81,13 @@ namespace Sofco.DAL.Repositories.Recruitment
                 .Where(x => x.ApplicantId == id)
                 .ToList();
         }
+
+        public Applicant GetWithProfilesAndSkills(int applicantId)
+        {
+            return context.Applicants
+                .Include(x => x.ApplicantSkills)
+                .Include(x => x.ApplicantProfiles)
+                .SingleOrDefault(x => x.Id == applicantId);
+        }
     }
 }
