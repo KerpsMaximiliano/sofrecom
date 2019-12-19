@@ -7,6 +7,7 @@ using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Rrhh;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Rh.Tiger;
 using Sofco.Domain.Utils;
@@ -161,6 +162,37 @@ namespace Sofco.Service.Implementations.Rrhh
             else
             {
                 response.AddWarning(Resources.Common.SearchEmpty);
+            }
+
+            return response;
+        }
+
+        public Response UpdateManagers()
+        {
+            var response = new Response();
+
+            var firstDayMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+
+            try
+            {
+                var employees = unitOfWork.RrhhRepository.GetEmployeesWithBestAllocation(firstDayMonth);
+
+                foreach (var employee in employees)
+                {
+                    var firstAllocation = employee.Allocations.FirstOrDefault();
+
+                    if (firstAllocation != null && firstAllocation.Analytic.ManagerId.HasValue && employee.ManagerId != firstAllocation.Analytic.ManagerId)
+                    {
+                        unitOfWork.EmployeeRepository.UpdateManager(employee.Id, firstAllocation.Analytic.ManagerId.Value);
+                    }
+                }
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.GeneralError);
             }
 
             return response;

@@ -27,4 +27,8 @@ export class RrhhService {
   syncPrepaids() {
     return this.http.put<any>(`${this.baseUrl}/rrhh/prepaid`, {});
   }
+
+  updateManagers() {
+    return this.http.put<any>(`${this.baseUrl}/rrhh/managers`, {});
+  }
 }

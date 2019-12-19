@@ -6,5 +6,6 @@ namespace Sofco.Core.Services.Rrhh
     {
         Response<byte[]> GenerateTigerTxt(bool allUsers);
         Response UpdateSocialCharges(int year, int month);
+        Response UpdateManagers();
     }
 }

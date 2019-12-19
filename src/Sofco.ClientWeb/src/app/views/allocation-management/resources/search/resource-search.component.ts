@@ -11,6 +11,7 @@ import { CategoryService } from "../../../../services/admin/category.service";
 import { AllocationService } from "../../../../services/allocation-management/allocation.service";
 import * as FileSaver from "file-saver";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { RrhhService } from "app/services/human-resources/rrhh.service";
 
 declare var moment: any;
 declare var $: any;
@@ -100,11 +101,13 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     addCategoriesSubscrip: Subscription;
     subscrip: Subscription;
     allocationsSubscrip: Subscription;
+    updateManagersSubscrip: Subscription;
 
     constructor(private router: Router,
         public menuService: MenuService,
         private messageService: MessageService,
         private employeeService: EmployeeService,
+        private rrhhService: RrhhService,
         private analyticService: AnalyticService,
         private allocationService: AllocationService,
         private usersService: UserService,
@@ -134,6 +137,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         if (this.addCategoriesSubscrip) this.addCategoriesSubscrip.unsubscribe();
         if (this.allocationsSubscrip) this.allocationsSubscrip.unsubscribe();
         if (this.getAllEmployeesSubscrip) this.getAllEmployeesSubscrip.unsubscribe();
+        if (this.updateManagersSubscrip) this.updateManagersSubscrip.unsubscribe();
     }
 
     goToAssignAnalytics(resource) {
@@ -247,6 +251,15 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
 
             this.collapse();
+        },
+        () => this.messageService.closeLoading());
+    }
+
+    updateManagers(){
+        this.messageService.showLoading();
+
+        this.updateManagersSubscrip = this.rrhhService.updateManagers().subscribe(data => {
+            this.messageService.closeLoading();
         },
         () => this.messageService.closeLoading());
     }

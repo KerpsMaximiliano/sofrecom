@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Rrhh;
+using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.DAL.Repositories.Rrhh
@@ -38,6 +40,35 @@ namespace Sofco.DAL.Repositories.Rrhh
         public bool ExistData(int yearId, int monthId)
         {
             return context.SocialCharges.Any(x => x.Year == yearId && x.Month == monthId);
+        }
+
+        public IList<Employee> GetEmployeesWithBestAllocation(DateTime today)
+        {
+            return context.Allocations.Include(x => x.Employee)
+                .Include(x => x.Analytic)
+                .Where(x => x.StartDate.Date == today.Date)
+                .OrderByDescending(x => x.Percentage)
+                .Select(x => new Employee
+                {
+                    Id = x.EmployeeId,
+                    ManagerId = x.Employee.ManagerId,
+                    Allocations = new List<Allocation>()
+                    {
+                        new Allocation
+                        {
+                            Id =  x.Id,
+                            AnalyticId = x.AnalyticId,
+                            EmployeeId = x.EmployeeId,
+                            Percentage = x.Percentage,
+                            Analytic = new Analytic
+                            {
+                                Id = x.AnalyticId,
+                                ManagerId = x.Analytic.ManagerId
+                            }
+                        }
+                    }
+                })
+                .ToList();
         }
     }
 }

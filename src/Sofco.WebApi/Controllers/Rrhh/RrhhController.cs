@@ -45,5 +45,13 @@ namespace Sofco.WebApi.Controllers.Rrhh
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("managers")]
+        public IActionResult UpdateManagers()
+        {
+            var response = rrhhService.UpdateManagers();
+
+            return this.CreateResponse(response);
+        }
     }
 }

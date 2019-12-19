@@ -32,6 +32,7 @@ import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directi
 import { ApproversModule } from '../common/approvers/approvers.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap';
+import { RrhhService } from 'app/services/human-resources/rrhh.service';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
     ApproversModule,
     NgSelectModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService, RrhhService ],
 
   exports: [],
 })

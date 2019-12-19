@@ -43,6 +43,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 x.AnalyticId == analyticId && x.Percentage > 0 && x.StartDate.Date == date.Date).Select(x => x.Employee).ToList();
         }
 
+        public void UpdateManager(int id, int managerId)
+        {
+            context.Database.ExecuteSqlCommand($"UPDATE app.Employees SET ManagerId = {managerId} where id = {id}");
+        }
+
         public List<Employee> GetByEmployeeNumber(string[] employeeNumbers)
         {
             return context.Employees

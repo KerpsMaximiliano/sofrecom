@@ -72,5 +72,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate, int employeeId);
         ICollection<Employee> GetAllForWorkTimeReport();
         IList<Employee> GetByAnalyticIdInCurrentDate(int analyticId);
+        void UpdateManager(int id, int managerId);
     }
 }
