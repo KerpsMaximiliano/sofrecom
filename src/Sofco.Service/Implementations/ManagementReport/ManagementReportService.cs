@@ -1497,14 +1497,17 @@ namespace Sofco.Service.Implementations.ManagementReport
                         monthDetail.CostDetailId = costDetailMonth.Id;
                     }
 
-                    var monthValueReal = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailSubcategory.CostDetailCategoryId == category.Id && o.IsReal == true).ToList();
-                    if (monthValueReal.Count > 0)
+                    if (costDetailMonth != null)
                     {
-                        monthDetail.Real.Id = monthValueReal.FirstOrDefault().Id;
-                        monthDetail.Real.Value = monthValueReal.Sum(x => x.Value);
-                        if (monthDetail.Real.Value != 0)
+                        var monthValueReal = costDetailMonth.CostDetailOthers.Where(o => o.CostDetailSubcategory.CostDetailCategoryId == category.Id && o.IsReal == true).ToList();
+                        if (monthValueReal.Count > 0)
                         {
-                            hasValue = true;
+                            monthDetail.Real.Id = monthValueReal.FirstOrDefault().Id;
+                            monthDetail.Real.Value = monthValueReal.Sum(x => x.Value);
+                            if (monthDetail.Real.Value != 0)
+                            {
+                                hasValue = true;
+                            }
                         }
                     }
 

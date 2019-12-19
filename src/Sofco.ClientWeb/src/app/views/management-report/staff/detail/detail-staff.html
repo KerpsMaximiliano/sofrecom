@@ -159,6 +159,10 @@
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdg"
                         (click)="openComments()"> Comentarios <i class="fa fa-edit"></i></button>
 
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg"
+                        (click)="resetState()"> Restaurar estados <i class="fa fa-plus"></i>
+                    </button>
+
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg && !readOnly && !isClosed"
                         (click)="close()">Cerrar <i class="fa fa-close"></i></button>
 

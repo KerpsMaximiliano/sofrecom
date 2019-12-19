@@ -27,6 +27,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
     updateDatesSubscrip: Subscription;
     sendSubscrip: Subscription;
     closeSubscrip: Subscription;
+    resertStateSubscrip: Subscription;
 
     public model: any;
 
@@ -136,6 +137,7 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         if (this.updateDatesSubscrip) this.updateDatesSubscrip.unsubscribe();
         if (this.sendSubscrip) this.sendSubscrip.unsubscribe();
         if (this.closeSubscrip) this.closeSubscrip.unsubscribe();
+        if (this.resertStateSubscrip) this.resertStateSubscrip.unsubscribe();
     }
  
     getDetail() {
@@ -262,11 +264,10 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
 
                 this.editDateModal.hide();
             },
-                () => {
-                    this.messageService.closeLoading()
-                    this.editDateModal.resetButtons()
-                }
-            );
+            () => {
+                this.messageService.closeLoading()
+                this.editDateModal.resetButtons()
+            });
         }
     }
 
@@ -514,5 +515,17 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
             let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             fs.saveAs(blob, title);
         });
+    }
+
+
+    resetState(){
+        this.messageService.showLoading();
+
+        this.resertStateSubscrip = this.managementReportService.resetState(this.ManagementReportId).subscribe(response => {
+            this.model.stateGenerated = false; 
+            this.budgetView.actualState = 'budget';
+            this.messageService.closeLoading();
+        },
+        error => this.messageService.closeLoading());
     }
 } 

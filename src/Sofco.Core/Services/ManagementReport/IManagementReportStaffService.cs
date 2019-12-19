@@ -15,5 +15,6 @@ namespace Sofco.Core.Services.ManagementReport
         //bool InsertTotalSalaryStaffReport(int managementReportId, decimal salary, System.DateTime monthYear);
         Response SaveCostDetailStaffMonth(CostDetailStaffMonthModel pMonthDetail);
         Response GeneratePFA(int ManagementReportId, string PFA);
+        Response Reset(int id);
     }
 }
