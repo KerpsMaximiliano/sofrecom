@@ -1767,6 +1767,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                                 var costDetailSubcategoryExist = costDetail.CostDetailOthers.SingleOrDefault(x => x.CostDetailSubcategoryId == resource.TypeId &&
                                                                                                                   x.CurrencyId == resource.CurrencyId && 
+                                                                                                                  x.IsReal == isReal &&
                                                                                                                   x.Description.ToLowerInvariant().Equals(aux.Description.ToLowerInvariant()));
 
                                 if (costDetailSubcategoryExist != null)
