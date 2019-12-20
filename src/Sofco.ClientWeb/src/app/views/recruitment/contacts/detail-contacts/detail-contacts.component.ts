@@ -64,6 +64,7 @@ export class DetailContactsComponent implements OnInit {
 
   @ViewChild('interview') interview;
   @ViewChild('contactFiles') contactFiles;
+  @ViewChild('jobSearchRelated') jobSearchRelated;
 
   @ViewChild('dateModal') dateModal;
   public dateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -144,6 +145,7 @@ export class DetailContactsComponent implements OnInit {
     this.genericOptionsService.controller = GenericOptions.Profile;
     this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
         this.profileOptions = response.data;
+        this.jobSearchRelated.profiles = response.data;
     });
   }
 
@@ -151,6 +153,7 @@ export class DetailContactsComponent implements OnInit {
       this.genericOptionsService.controller = GenericOptions.Skill;
       this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
           this.skillOptions = response.data;
+          this.jobSearchRelated.skills = response.data;
       });
   }
 
@@ -165,7 +168,9 @@ export class DetailContactsComponent implements OnInit {
           this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantInCompany ||
                                                                 x.type == ReasonCauseType.ApplicantOpen);
 
-          this.interview.reasonOptions = this.reasonOptions;                              
+          this.interview.reasonOptions = this.reasonOptions;    
+          
+          this.jobSearchRelated.setReasonOptions(response.data);
       });
   }
 
@@ -249,8 +254,20 @@ export class DetailContactsComponent implements OnInit {
           this.newResourceForm.disable();
           this.registerVisible = true;
         }
+
+        if(this.status == ApplicantStatus.Valid || this.status == ApplicantStatus.InProgress){
+          this.jobSearchRelated.init(this.entityId);
+        }
     },
     error => this.messageService.closeLoading());
+  }
+
+  jobSearchVisible(){
+    if(this.status == ApplicantStatus.Valid || this.status == ApplicantStatus.InProgress){
+      return true;
+    }
+
+    return false;
   }
 
   canMakeRegister(){

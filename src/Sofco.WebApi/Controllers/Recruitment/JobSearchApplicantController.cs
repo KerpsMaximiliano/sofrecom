@@ -39,14 +39,14 @@ namespace Sofco.WebApi.Controllers.Recruitment
         [HttpGet]
         public IActionResult Get([FromUri] JobSearchApplicantParameters parameters)
         {
-            if (parameters.JobSearchId.HasValue)
+            if (parameters.JobSearchId.HasValue && parameters.JobSearchId.Value > 0)
             {
                 var response = jobSearchApplicantService.GetByJobSearch(parameters.JobSearchId.Value);
 
                 return this.CreateResponse(response);
             }
 
-            if (parameters.ApplicantId.HasValue)
+            if (parameters.ApplicantId.HasValue && parameters.ApplicantId.Value > 0)
             {
                 var response = jobSearchApplicantService.GetByApplicant(parameters.ApplicantId.Value);
 

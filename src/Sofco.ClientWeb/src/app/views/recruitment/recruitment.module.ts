@@ -34,6 +34,7 @@ import { InterviewComponent } from './contacts/interview/interview.component';
 import { JobSearchHistoryComponent } from './job-search/history/job-search-history';
 import { ContactFileComponent } from './contacts/files/contact-files';
 import { FileUploadModule } from 'ng2-file-upload';
+import { JobSearchRelatedComponent } from './contacts/jobSearch-related/jobSearch-related';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     ResourceAssignmentComponent,
     InterviewComponent,
     JobSearchHistoryComponent,
-    ContactFileComponent
+    ContactFileComponent,
+    JobSearchRelatedComponent
   ],
 
   imports: [

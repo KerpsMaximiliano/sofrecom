@@ -128,6 +128,7 @@ namespace Sofco.DAL.Repositories.Recruitment
             }
 
             return query
+                .Include(x => x.JobSearchApplicants)
                 .Include(x => x.JobSearchProfiles)
                     .ThenInclude(x => x.Profile)
                 .Include(x => x.JobSearchSkillsRequired)
@@ -148,7 +149,8 @@ namespace Sofco.DAL.Repositories.Recruitment
                     })
                     .ToList(),
                     Client = x.Client,
-                    ReasonCause = x.ReasonCause
+                    ReasonCause = x.ReasonCause,
+                    JobSearchApplicants = x.JobSearchApplicants
                 })
             .ToList();
         }

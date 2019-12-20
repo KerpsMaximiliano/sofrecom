@@ -108,7 +108,7 @@ export class ApplicantsRelatedComponent implements OnDestroy {
             applicants: ids,
             reasonId: this.form.controls.reasonCauseId.value,
             comments: this.form.controls.comments.value,
-            jobSearchId: this.jobSearchId
+            jobSearchs: [this.jobSearchId]
         };
 
         this.messageService.showLoading();

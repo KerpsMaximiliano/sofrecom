@@ -517,7 +517,6 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         });
     }
 
-
     resetState(){
         this.messageService.showLoading();
 

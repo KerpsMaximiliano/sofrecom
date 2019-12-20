@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { DataTableService } from "app/services/common/datatable.service";
@@ -9,11 +9,11 @@ import { ReasonCauseType } from "app/models/enums/reasonCauseType";
 import * as moment from "moment";
 
 @Component({
-    selector: 'job-search-applicants-related',
-    templateUrl: './applicants-related.html',
-    styleUrls: ['applicants-related.scss']
+    selector: 'applicants-job-search-related',
+    templateUrl: './jobSearch-related.html',
+    styleUrls: ['jobSearch-related.scss']
 })
-export class ApplicantsRelatedComponent implements OnDestroy {
+export class JobSearchRelatedComponent implements OnDestroy {
 
     form: FormGroup = new FormGroup({
         comments: new FormControl(null, [Validators.required, Validators.maxLength(3000)]),
@@ -107,7 +107,7 @@ export class ApplicantsRelatedComponent implements OnDestroy {
             applicants: [this.applicantId],
             reasonId: this.form.controls.reasonCauseId.value,
             comments: this.form.controls.comments.value,
-            jobSearchId: ids
+            jobSearchs: ids
         };
 
         this.messageService.showLoading();

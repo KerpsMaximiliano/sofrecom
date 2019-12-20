@@ -35,6 +35,7 @@
                                 <th>Perfiles</th>
                                 <th>Conocimientos</th>
                                 <th>Motivo</th>
+                                <th>¿Contactado?</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,11 +43,12 @@
                                 <td class="column-xs text-center">
                                     <icheck [(checked)]="item.selected"></icheck>
                                 </td>
-                                <td (click)="goToDetail(item)">{{ item.id }}</td>
-                                <td class="column-lg text-ellipsis text-success applicant-name pointer">{{ item.client }}</td>
+                                <td class="text-success applicant-name pointer" (click)="goToDetail(item)">{{ item.id }}</td>
+                                <td class="column-lg text-ellipsis">{{ item.client }}</td>
                                 <td class="column-lg text-word-break">{{ item.profiles }}</td>
                                 <td class="column-lg text-word-break">{{ item.skills }}</td>
                                 <td class="column-lg">{{ item.reason }}</td>
+                                <td class="text-center"><span class="fa" [ngClass]="item.contactedBefore ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
                             </tr>
                         </tbody>
                     </table>       

@@ -11,12 +11,17 @@ namespace Sofco.Core.Models.Recruitment
             Client = jobSearch.Client?.Name;
             Reason = jobSearch.ReasonCause?.Text;
 
+            if (jobSearch.JobSearchApplicants != null)
+                ContactedBefore = jobSearch.JobSearchApplicants.Any();
+           
             if (jobSearch.JobSearchProfiles != null && jobSearch.JobSearchProfiles.Any())
                 Profiles = string.Join(";", jobSearch.JobSearchProfiles.Select(x => x.Profile.Text));
 
             if (jobSearch.JobSearchSkillsRequired != null && jobSearch.JobSearchSkillsRequired.Any())
                 Skills = string.Join(";", jobSearch.JobSearchSkillsRequired.Select(x => x.Skill.Text));
         }
+
+        public bool ContactedBefore { get; set; }
 
         public int Id { get; set; }
 

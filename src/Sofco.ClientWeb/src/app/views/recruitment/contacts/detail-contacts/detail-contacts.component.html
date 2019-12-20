@@ -23,7 +23,7 @@
     <button *ngIf="!registerVisible" [disabled]="!form.valid" (click)="save()" class="btn btn-primary" type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
     <button *ngIf="canClose()" (click)="openCloseModal()" class="btn btn-danger" type="button">Deshabilitar <i class="fa fa-times"></i> </button>
 
-    <div class="tabs-container m-t-md">
+    <div class="tabs-container m-t-md m-b-lg">
         <ul class="nav nav-tabs" role="tablist">
             <li class="active"><a class="nav-link" data-toggle="tab" href="#tab-1"> <i class="fa fa-info-circle"></i> Datos Generales </a></li>
             <li *ngIf="registerVisible"><a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-info-circle"></i> Datos para ingreso </a></li>
@@ -388,6 +388,8 @@
             </div>
         </div>
     </div>
+
+    <applicants-job-search-related [hidden]="!jobSearchVisible()" #jobSearchRelated></applicants-job-search-related>
 </div>
 
 <ng2-modal [config]="dateModalConfig" #dateModal (accept)="closeApplicant()" [isSaveEnabled]="dateModalForm.valid">

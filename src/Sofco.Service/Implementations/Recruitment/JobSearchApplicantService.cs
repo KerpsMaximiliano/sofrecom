@@ -85,19 +85,22 @@ namespace Sofco.Service.Implementations.Recruitment
              
             try
             {
-                foreach (var applicantId in model.Applicants)
+                foreach (var jobSearchId in model.JobSearchs)
                 {
-                    var itemToAdd = new JobSearchApplicant
+                    foreach (var applicantId in model.Applicants)
                     {
-                        ApplicantId = applicantId,
-                        Comments = model.Comments,
-                        JobSearchId = model.JobSearchId,
-                        ReasonId = model.ReasonId.GetValueOrDefault(),
-                        CreatedDate = DateTime.UtcNow,
-                        CreatedBy = currentUser.UserName
-                    };
+                        var itemToAdd = new JobSearchApplicant
+                        {
+                            ApplicantId = applicantId,
+                            Comments = model.Comments,
+                            JobSearchId = jobSearchId,
+                            ReasonId = model.ReasonId.GetValueOrDefault(),
+                            CreatedDate = DateTime.UtcNow,
+                            CreatedBy = currentUser.UserName
+                        };
 
-                    unitOfWork.JobSearchApplicantRepository.Insert(itemToAdd);
+                        unitOfWork.JobSearchApplicantRepository.Insert(itemToAdd);
+                    }
                 }
                
                 if (reason.Type == ReasonCauseType.ApplicantInProgress)
@@ -282,7 +285,7 @@ namespace Sofco.Service.Implementations.Recruitment
 
                 var jobSearchs = unitOfWork.JobSearchRepository.Get(skills, profiles);
 
-                response.Data = jobSearchs.Select(x => new ApplicantJobSearchModel(x)).ToList();
+                response.Data = jobSearchs.Select(x => new ApplicantJobSearchModel(x)).OrderBy(x => x.ContactedBefore).ToList();
             }
             catch (Exception e)
             {
