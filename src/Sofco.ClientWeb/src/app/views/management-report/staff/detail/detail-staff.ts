@@ -517,6 +517,16 @@ export class ManagementReportDetailStaffComponent implements OnInit, OnDestroy {
         });
     }
 
+    canResetStates(){
+        var today = new Date();
+
+        if(today.getMonth() == 0 || today.getMonth() == 11){
+            return true;
+        }
+
+        return false;
+    }
+
     resetState(){
         this.messageService.showLoading();
 

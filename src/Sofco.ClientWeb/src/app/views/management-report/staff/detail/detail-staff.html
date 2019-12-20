@@ -159,7 +159,7 @@
                     <button class="btn btn-primary btn-sm" type="button" *ngIf="isManager || isCdg"
                         (click)="openComments()"> Comentarios <i class="fa fa-edit"></i></button>
 
-                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg"
+                    <button class="btn btn-primary btn-sm" type="button" *ngIf="isCdg && canResetStates()"
                         (click)="resetState()"> Restaurar estados <i class="fa fa-plus"></i>
                     </button>
 
