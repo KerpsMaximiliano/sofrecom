@@ -508,27 +508,27 @@ namespace Sofco.Service.Implementations.ManagementReport
                 var monthYear = new DateTime(pYear, pMonth, 1);
 
                 CostDetail costDetail = unitOfWork.CostDetailRepository.GetByManagementReportAndMonthYear(analytic.ManagementReport.Id, monthYear);
-                bool getReal = false;
-                if (costDetail.HasReal)
-                {
-                    getReal = true;
-                }
+                //bool getReal = false;
+                //if (costDetail.HasReal)
+                //{
+                //    getReal = true;
+                //}
 
                 List<ContractedModel> listContracted = this.Translate(costDetail.ContratedDetails.ToList());
-                List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.Where(x => x.IsReal == getReal).ToList());
+                List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.Where(x => x.IsReal).ToList());
 
                 if (costDetail.CostDetailProfiles.Sum(x => x.Value) > 0)
                 {
                     response.Data.HasCostProfile = true;
                 }
 
-                if (!getReal)
-                {
-                    foreach (var other in listOther)
-                    {
-                        other.Id = 0;
-                    }
-                }
+                //if (!getReal)
+                //{
+                //    foreach (var other in listOther)
+                //    {
+                //        other.Id = 0;
+                //    }
+                //}
 
                 response.Data.Id = costDetail.Id;
 
