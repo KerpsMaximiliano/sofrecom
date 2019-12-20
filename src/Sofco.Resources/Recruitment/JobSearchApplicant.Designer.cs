@@ -70,6 +70,15 @@ namespace Sofco.Resources.Recruitment {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearchApplicant.InterviewDateLessThanToday.
+        /// </summary>
+        public static string InterviewDateLessThanToday {
+            get {
+                return ResourceManager.GetString("InterviewDateLessThanToday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a recruitment/jobSearchApplicant.InterviewDateRequired.
         /// </summary>
         public static string InterviewDateRequired {

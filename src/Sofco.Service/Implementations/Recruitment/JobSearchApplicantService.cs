@@ -300,6 +300,13 @@ namespace Sofco.Service.Implementations.Recruitment
         {
             if (!date.HasValue)
                 response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewDateRequired);
+            else
+            {
+                if (date.Value.Date < DateTime.UtcNow.Date)
+                {
+                    response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewDateLessThanToday);
+                }
+            }
 
             if (string.IsNullOrWhiteSpace(place))
                 response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewPlaceRequired);

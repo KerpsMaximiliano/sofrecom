@@ -94,7 +94,7 @@ export class InterviewComponent implements OnDestroy {
             clientExternalInterviewer: this.form.controls.clientExternalInterviewer.value,
             clientInterviewComments: this.form.controls.clientInterviewComments.value,
         };
-
+ 
         this.messageService.showLoading();
 
         this.addSubscrip = this.jobSearchService.addInterview(json, this.applicantId, this.jobSearchId).subscribe(response => {

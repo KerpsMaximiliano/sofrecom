@@ -132,4 +132,7 @@
   <data name="FileAdded" xml:space="preserve">
     <value>recruitment/jobSearchApplicant.FileAdded</value>
   </data>
+  <data name="InterviewDateLessThanToday" xml:space="preserve">
+    <value>recruitment/jobSearchApplicant.InterviewDateLessThanToday</value>
+  </data>
 </root>

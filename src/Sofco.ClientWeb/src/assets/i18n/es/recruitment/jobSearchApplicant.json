@@ -3,5 +3,6 @@
     "InterviewerRequired": "El evaludador es requerido",    
     "InterviewPlaceRequired": "El lugar es requerido",    
     "FileAdded": "Archivo agregado exitosamente",    
+    "InterviewDateLessThanToday": "La fecha no puede ser menor a hoy",    
     "NotFound": "Contacto no encontrado"    
 }
