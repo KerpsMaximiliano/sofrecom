@@ -407,6 +407,7 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
         this.changeStatusSubscrip = this.jobSearchService.changeStatus(this.entityId, json).subscribe(response => {
             this.dateModal.hide();
             this.status = this.statusSelected;
+            this.form.controls.reasonCauseId.setValue(this.dateModalForm.controls.reasonCauseModalId.value);
 
             this.dateModalForm.controls.date.setValue(null);
             this.dateModalForm.controls.comments.setValue(null);

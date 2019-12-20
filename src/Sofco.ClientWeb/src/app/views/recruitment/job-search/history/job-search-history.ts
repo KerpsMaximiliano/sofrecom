@@ -21,13 +21,15 @@ export class JobSearchHistoryComponent implements OnDestroy {
     getHistories(id){
         this.histories = [];
 
+        var options = {
+            selector: "#historyTable",
+            columnDefs: [ { "aTargets": [0], "sType": "date-uk" }],
+        };
+
+        this.datatableService.destroy(options.selector);
+
         this.getHistoriesSubscrip = this.jobSearchService.getHistories(id).subscribe(response => {
             this.histories = response.data;
-
-            var options = {
-                selector: "#historyTable",
-                columnDefs: [ { "aTargets": [0], "sType": "date-uk" }],
-            };
 
             this.datatableService.destroy(options.selector);
             this.datatableService.initialize(options);
