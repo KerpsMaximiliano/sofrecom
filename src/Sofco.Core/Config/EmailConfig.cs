@@ -67,5 +67,7 @@
         public string GafCode { get; set; }
 
         public string ReadOnlyCode { get; set; }
+
+        public int DafDirectorId { get; set; }
     }
 }

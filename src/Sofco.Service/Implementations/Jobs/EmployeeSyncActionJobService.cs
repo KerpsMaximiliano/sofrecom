@@ -176,16 +176,17 @@ namespace Sofco.Service.Implementations.Jobs
             try
             {
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
+                var dafDirector = unitOfWork.UserRepository.Get(emailConfig.DafDirectorId);
 
                 var infoText = GetInfoText(employees, status);
 
                 var message = new StringBuilder();
                 message.AppendFormat(MailMessageResource.EmployeeNews, $"{emailConfig.SiteUrl}allocationManagement/employees/news");
                 message.AppendLine(infoText);
-
+                 
                 var mailData = new EmployeeNewsData
                 {
-                    Recipient = mailRrhh,
+                    Recipient = mailRrhh + ";" + dafDirector.Email,
                     Message = message.ToString()
                 };
 
