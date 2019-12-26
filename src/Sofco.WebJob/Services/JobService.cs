@@ -74,7 +74,7 @@ namespace Sofco.WebJob.Services
 
             RecurringJob.AddOrUpdate<ISocialChargesJob>(JobNames.SocialCharges, j => j.Execute(), Cron.Monthly(DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month), 8), localTimeZone);
 
-            RecurringJob.AddOrUpdate<IPowerBiJob>(JobNames.PowerBi, j => j.Execute(), Cron.Hourly(1), localTimeZone);
+            RecurringJob.AddOrUpdate<IPowerBiJob>(JobNames.PowerBi, j => j.Execute(), Cron.Hourly(5), localTimeZone);
         }
 
         private void ClearJobs()

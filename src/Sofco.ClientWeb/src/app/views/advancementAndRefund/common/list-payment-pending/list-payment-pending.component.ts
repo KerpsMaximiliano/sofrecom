@@ -1,8 +1,6 @@
 import { Component, ViewChild } from "@angular/core";
-import { DataTableService } from "app/services/common/datatable.service";
 import { WorkflowService } from "app/services/workflow/workflow.service";
 import { Subscription } from "rxjs";
-import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { PaymentPendingService } from "app/services/advancement-and-refund/paymentPending.service";
@@ -27,13 +25,11 @@ export class ListPaymentPendingComponent  {
     public bankId: number;
     public userId: number;
 
-    public totalAmount: number;
-    public totalRowSelectedAmount: number = 0;
+    public totalAmount: number = 0;
+    currencyName: string = "";
 
     currencyWarning: boolean = false;
     refundsInProcessWarning: boolean = false;
-
-    rowSelected: any;
 
     @ViewChild('detailModal') detailModal;
     public detailModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -47,9 +43,7 @@ export class ListPaymentPendingComponent  {
 
     constructor(private paymentPendingService: PaymentPendingService,
                 public menuService: MenuService,
-                private datatableService: DataTableService,
                 private workflowService: WorkflowService,
-                private router: Router,
                 private messageService: MessageService){}
 
     ngOnInit(): void {
@@ -61,22 +55,6 @@ export class ListPaymentPendingComponent  {
         if(this.postSubscrip) this.postSubscrip.unsubscribe();
     }
 
-    initGrid(){
-        var columns = [1, 2, 3, 4, 5];
-        var title = `Adelantos y reitegros pendientes deposito`;
-
-        var params = {
-          selector: '#payment-pending',
-          columns: columns,
-          title: title,
-          withExport: true,
-          currencyColumns: [4, 5]
-        }
-  
-        this.datatableService.destroy(params.selector);
-        this.datatableService.initialize(params);
-    }
-
     getAll(){
         this.messageService.showLoading();
 
@@ -84,19 +62,32 @@ export class ListPaymentPendingComponent  {
             this.messageService.closeLoading();
 
             this.model = [];
+            this.totalAmount = 0;
+            this.currencyName = "";
+            this.modelFiltered = [];
 
             this.model = response.data.map(item => {
                 item.selected = false;
                 return item;
             });
 
-            this.modelFiltered = this.model;
-
-            this.calculateTotals();
+            this.model.forEach(x => {
+                this.fillData(x);
+            });
+       
             this.fillFilters();
-            this.initGrid();
         },
         error => this.messageService.closeLoading());
+    }
+
+    private fillData(x) {
+        this.modelFiltered.push({ type: "item", data: x, id: x.id, show: false });
+        if (x.entities && x.entities.length > 0) {
+            x.entities.forEach(detail => {
+                detail.selected = false;
+            });
+            this.modelFiltered.push({ type: "detail", data: x.entities, id: x.id, show: false });
+        }
     }
 
     fillFilters(){
@@ -129,8 +120,12 @@ export class ListPaymentPendingComponent  {
 
     selectAll(){
         this.modelFiltered.forEach((item, index) => {
-            if(item.canPayAll && item.ammount > 0){
-                item.selected = true;
+
+            if(item.type == 'item'){
+                if(item.data.canPayAll && item.data.ammount > 0){
+                    item.data.selected = true;
+                    this.onRowPrincipalChange(item);
+                }
             }
         });
 
@@ -139,44 +134,94 @@ export class ListPaymentPendingComponent  {
 
     unselectAll(){
         this.modelFiltered.forEach((item, index) => {
-            item.selected = false;
+
+            if(item.type == 'item'){
+                item.data.selected = false;
+                this.onRowPrincipalChange(item);
+            }
         });
 
         this.calculateTotals();
     }
 
-    noneResourseSelected(){
-        return this.modelFiltered.filter(x => x.selected == true).length == 0;
+    canApprove(){
+        var rows = this.modelFiltered.filter(x => x.type == 'detail');
+        var allUnselected = true;
+
+        if(rows){
+            rows.forEach(detail => {
+                detail.data.forEach(entity => {
+                    if(entity.selected){
+                        allUnselected = false;
+                    }
+                })
+            });
+        }
+
+        return allUnselected || this.currencyWarning || this.refundsInProcessWarning || this.totalAmount <= 0;
     }
 
     calculateTotals(){
         this.totalAmount = 0;
+        var currencies = [];
+
         this.modelFiltered.forEach(item => {
-            if(item.selected){
-                this.totalAmount += item.ammountPesos;
+            if(item.type == 'detail'){
+                item.data.forEach(x => {
+                    if(x.selected) {
+                        if(x.hasRefundsInProcess){
+                            this.refundsInProcessWarning = true;
+                        }
+        
+                        if(!currencies.includes(x.currencyName)){
+                            currencies.push(x.currencyName);
+                        }
+        
+                        if(x.type == 'refund' || x.type == 'advancement-accounted'){
+                            this.totalAmount += x.ammount;
+                        }
+        
+                        if(x.type == 'advancement'){
+                            this.totalAmount -= x.ammount;
+                        }
+                    }
+                });
             }
         });
+
+        if(currencies.length > 1){
+            this.currencyWarning = true;
+            this.totalAmount = 0;
+            this.currencyName = "";
+        }
+        else{
+            if(currencies.length == 1){
+                this.currencyName = currencies[0];
+            }
+        }
     }
 
     approveAll(){
         this.messageService.showConfirm(x => {
             var list = [];
             
-            this.model.filter(x => x.selected).forEach(x => {
+            this.model.forEach(x => {
 
                 x.entities.forEach(e => {
 
-                    var item = {
-                        workflowId: e.workflowId,
-                        entityId: e.id,
-                        nextStateId: e.nextWorkflowStateId,
-                        entityController: e.type == 'advancement-accounted' ? 'advancement' : e.type,
-                        type: e.type == 'advancement-accounted' ? 'advancement' : e.type,
-                        userApplicantName: x.userApplicantDesc,
-                        id: x.id
-                    };
-
-                    list.push(item);
+                    if(e.selected) {
+                        var item = {
+                            workflowId: e.workflowId,
+                            entityId: e.id,
+                            nextStateId: e.nextWorkflowStateId,
+                            entityController: e.type == 'advancement-accounted' ? 'advancement' : e.type,
+                            type: e.type == 'advancement-accounted' ? 'advancement' : e.type,
+                            userApplicantName: x.userApplicantDesc,
+                            id: x.id
+                        };
+    
+                        list.push(item);
+                    }
                 });
             });
 
@@ -185,17 +230,8 @@ export class ListPaymentPendingComponent  {
 
                 this.postSubscrip = this.workflowService.doMassiveTransitions(list).subscribe(response => {
                     this.messageService.closeLoading();
-
-                    list.forEach(item => {
-                        var itemToDelete = this.model.find(x => x.id == item.id);
-
-                        if(itemToDelete){
-                            var index = this.model.indexOf(itemToDelete);
-                            this.model.splice(index, 1);
-                        }
-                    });
-
-                    this.search();
+            
+                    this.getAll();
                 },
                 error => {
                     this.messageService.closeLoading();
@@ -213,6 +249,9 @@ export class ListPaymentPendingComponent  {
     }
 
     search(){
+        this.currencyWarning = false;
+        this.refundsInProcessWarning = false;
+
         this.model.forEach(x => {
             x.selected = false;
         });
@@ -220,7 +259,9 @@ export class ListPaymentPendingComponent  {
         this.modelFiltered = [];
 
         if(!this.userId && !this.bankId){
-            this.modelFiltered = this.model;
+            this.model.forEach(x => {
+                this.fillData(x);
+            });
         }
         else{
             for(var i = 0; i < this.model.length; i++){
@@ -236,121 +277,78 @@ export class ListPaymentPendingComponent  {
                 }
 
                 if(addItem){
-                    this.modelFiltered.push(item);
+                    this.fillData(item);
                 }
             }
         }
-
-        this.initGrid();
     }
 
-    openDetail(item){
-        this.rowSelected = item;
-        this.totalRowSelectedAmount = 0;
-        this.detailModal.show();
-    }
-
-    calculateTotalRowSelected(item){
+    onRowPrincipalChange(item){
         this.currencyWarning = false;
         this.refundsInProcessWarning = false;
+        item.data.entities.forEach(detail => {
+            detail.selected = item.data.selected;
+        });
 
-        if(item.type == 'refund' && item.entitiesRelatedIds){
-            item.entitiesRelatedIds.forEach(advancementId => {
+        this.calculateTotals();
+    }
 
-                var advancementRow = this.rowSelected.entities.find(x => x.id == advancementId && x.type == 'advancement');
+    onRowDetailChange(entity, item){
+        this.currencyWarning = false;
+        this.refundsInProcessWarning = false;
+        var entities = item.data;
+
+        if(entity.type == 'refund' && entity.entitiesRelatedIds){
+            entity.entitiesRelatedIds.forEach(advancementId => {
+
+                var advancementRow = entities.find(x => x.id == advancementId && x.type == 'advancement');
 
                 if(advancementRow) {
-                    advancementRow.selected = item.selected;
+                    advancementRow.selected = entity.selected;
 
                     if(advancementRow.entitiesRelatedIds){
                         advancementRow.entitiesRelatedIds.forEach(refundId => {
-                            var refundRow = this.rowSelected.entities.find(x => x.id == refundId && x.type == 'refund');
+                            var refundRow = entities.find(x => x.id == refundId && x.type == 'refund');
 
-                            if(refundRow) refundRow.selected = item.selected;
+                            if(refundRow) refundRow.selected = entity.selected;
                         });
                     }
                 }
             });
         }
 
-        if(item.type == 'advancement' && item.entitiesRelatedIds){
-            item.entitiesRelatedIds.forEach(refundId => {
+        if(entity.type == 'advancement' && entity.entitiesRelatedIds){
+            entity.entitiesRelatedIds.forEach(refundId => {
 
-                var refundRow = this.rowSelected.entities.find(x => x.id == refundId && x.type == 'refund');
+                var refundRow = entities.find(x => x.id == refundId && x.type == 'refund');
 
                 if(refundRow) {
-                    refundRow.selected = item.selected;
+                    refundRow.selected = entity.selected;
 
                     if(refundRow.entitiesRelatedIds){
                         refundRow.entitiesRelatedIds.forEach(advancementId => {
-                            var advancementRow = this.rowSelected.entities.find(x => x.id == advancementId && x.type == 'advancement');
+                            var advancementRow = entities.find(x => x.id == advancementId && x.type == 'advancement');
 
-                            if(advancementRow) advancementRow.selected = item.selected;
+                            if(advancementRow) advancementRow.selected = entity.selected;
                         });
                     }
                 }
             });
         }
 
-        var currencies = [];
-        this.totalRowSelectedAmount = 0;
+        this.calculateTotals();
 
-        this.rowSelected.entities.forEach(item => {
-            if(item.selected){
-                if(item.hasRefundsInProcess){
-                    this.refundsInProcessWarning = true;
-                }
+        var areAllDetailsSelected = entities.every(x => x.selected);
+        var row = this.modelFiltered.find(x => x.id == item.id && x.type == 'item');
 
-                if(!currencies.includes(item.currencyName)){
-                    currencies.push(item.currencyName);
-                }
-
-                if(item.type == 'refund' || item.type == 'advancement-accounted'){
-                    this.totalRowSelectedAmount += item.ammount;
-                }
-
-                if(item.type == 'advancement'){
-                    this.totalRowSelectedAmount -= item.ammount;
-                }
-            }
-        });
-
-        if(currencies.length > 1){
-            this.totalRowSelectedAmount = 0;
-            this.currencyWarning = true;
-        }
+        if(row) row.data.selected = areAllDetailsSelected;
     }
 
-    payRefunds(){
-        var list = [];
-            
-        this.rowSelected.entities.filter(x => x.selected).forEach(e => {
-
-            var item = {
-                workflowId: e.workflowId,
-                entityId: e.id,
-                nextStateId: e.nextWorkflowStateId,
-                entityController: e.type == 'advancement-accounted' ? 'advancement' : e.type,
-                type: e.type == 'advancement-accounted' ? 'advancement' : e.type,
-                userApplicantName: this.rowSelected.userApplicantDesc,
-                typeToDelete: e.type
-            };
-
-            list.push(item);
-        });
-
-        if(list.length > 0){
-            this.postSubscrip = this.workflowService.doMassiveTransitions(list).subscribe(response => {
-                this.getAll();
-                this.detailModal.hide();
-            },
-            error => {
-                this.detailModal.resetButtons();
-            });
+    expand(item){
+        var row = this.modelFiltered.find(x => x.id == item.id && x.type == 'detail');
+        if(row){
+            row.show = !row.show;
+            item.show = row.show;
         }
-    }
-
-    saveEnabled(){
-        return this.totalRowSelectedAmount > 0 && this.refundsInProcessWarning == false;
     }
 }

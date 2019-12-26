@@ -6,7 +6,6 @@ using Sofco.Core.DAL;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Services.AdvancementAndRefund;
-using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
