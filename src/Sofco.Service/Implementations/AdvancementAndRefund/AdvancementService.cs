@@ -440,6 +440,13 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 return true;
             }
 
+            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.Advancement);
+
+            if (delegations.Any(x => employee.ManagerId != null && (x.UserId == employee.ManagerId.Value && (x.UserSourceId == null || x.UserSourceId == entity.UserApplicantId))))
+            {
+                return true;
+            }
+
             return false;
         }
 

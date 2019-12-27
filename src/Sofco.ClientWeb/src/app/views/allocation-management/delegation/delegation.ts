@@ -6,7 +6,7 @@ import { I18nService } from "app/services/common/i18n.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { DelegationType } from "app/models/enums/delegationType";
 import { DelegationService } from "app/services/admin/delegation.service";
-import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { MenuService } from "app/services/admin/menu.service";
 
 @Component({
     selector: 'delegation',
@@ -14,29 +14,33 @@ import { AnalyticService } from "app/services/allocation-management/analytic.ser
 })
 export class DelegationComponent implements OnInit, OnDestroy {
 
-    public typeId: number;
-    public grantedUserId: number;
-    public analyticSourceId: number;
-    public userSourceId: number;
-    public sourceType = "2";
+    typeId: number;
+    grantedUserId: number;
+    analyticSourceId: number;
+    userSourceId: number;
+    sourceType = "2";
 
-    public types: any[] = new Array();
-    public users: any[] = new Array();
-    public resources: any[] = new Array();
-    public analytics: any[] = new Array();
-    public data: any[] = new Array();
+    sourceTypeDisabled: boolean;
+    analyticDisabled: boolean;
+    userSourceDisabled: boolean;
 
-    public addSubscript: Subscription;
-    public usersSubscript: Subscription;
-    public analyticsSubscript: Subscription;
-    public deleteSubscript: Subscription;
-    public getSubscript: Subscription;
+    types: any[] = new Array();
+    users: any[] = new Array();
+    resources: any[] = new Array();
+    analytics: any[] = new Array();
+    data: any[] = new Array();
+
+    addSubscript: Subscription;
+    usersSubscript: Subscription;
+    analyticsSubscript: Subscription;
+    deleteSubscript: Subscription;
+    getSubscript: Subscription;
  
     constructor(private messageService: MessageService,
                 private i18nService: I18nService,
+                private menuService: MenuService,
                 private datatableService: DataTableService,
                 private userDelegateService: DelegationService,
-                private analyticService: AnalyticService,
                 private userService: UserService) { }
 
     ngOnInit(): void {
@@ -48,7 +52,13 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.analytics = response.data;
         });
 
-        this.types.push({ id: DelegationType.ManagementReport, text: this.i18nService.translateByKey(DelegationType[DelegationType.ManagementReport]) });
+        if(this.menuService.hasFunctionality("ALLOC", "MAN-REPORT-DELEGATE")){
+            this.types.push({ id: DelegationType.ManagementReport, text: this.i18nService.translateByKey(DelegationType[DelegationType.ManagementReport]) });
+        }
+
+        if(this.menuService.hasFunctionality("ALLOC", "ADVANCEMENT-DELEGATE")){
+            this.types.push({ id: DelegationType.Advancement, text: "Adelantos" });
+        }
 
         this.get();
     }
@@ -102,14 +112,14 @@ export class DelegationComponent implements OnInit, OnDestroy {
     }
 
     saveEnabled(){
-        if(!this.grantedUserId || this.grantedUserId <= 0 || 
-           !this.typeId || this.typeId <= 0 || 
-           !this.analyticSourceId || this.analyticSourceId <= 0){
-               return false;
-           }
-
-        if(this.sourceType == "3" && (!this.userSourceId || this.userSourceId <= 0)){
+        if(!this.grantedUserId || this.grantedUserId <= 0 ||  !this.typeId || this.typeId <= 0){
             return false;
+        }
+
+        if(this.typeId == DelegationType.ManagementReport){
+            if(!this.analyticSourceId || this.analyticSourceId <= 0) return false;
+
+            if(this.sourceType == "3" && (!this.userSourceId || this.userSourceId <= 0))return false;
         }
 
         return true;
@@ -117,10 +127,6 @@ export class DelegationComponent implements OnInit, OnDestroy {
 
     save(){
         if(!this.saveEnabled()) return;
-
-        // if(this.sourceType == "1"){
-        //     this.sourceId = null;
-        // }
 
         if(this.sourceType == "2"){
             this.userSourceId = null;
@@ -156,5 +162,30 @@ export class DelegationComponent implements OnInit, OnDestroy {
             },
             error => this.messageService.closeLoading());
         });
+    }
+
+    typeChanged(){
+        if(this.typeId == DelegationType.ManagementReport){
+            this.sourceTypeDisabled = false;
+            this.analyticDisabled = false;
+            this.sourceType = "2";
+        }
+
+        if(this.typeId == DelegationType.Advancement){
+            this.sourceTypeDisabled = true;
+            this.analyticDisabled = true;
+            this.userSourceDisabled = false;
+            this.sourceType = "3";
+            this.analyticSourceId = null;
+
+            this.resources = [];
+            this.analytics.forEach(x => {
+                x.resources.forEach(user => {
+                    if(this.resources.indexOf(u => u.id == user.userId) == -1){
+                        this.resources.push({ id: user.userId, text: user.text });
+                    }
+                });
+            })
+        }
     }
 }

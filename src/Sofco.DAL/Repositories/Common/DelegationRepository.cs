@@ -38,13 +38,16 @@ namespace Sofco.DAL.Repositories.Common
             }
             else
             {
-                return context.Delegations.Any(x => x.UserId == userId && x.GrantedUserId == model.GrantedUserId && x.Type == model.Type);
+                return context.Delegations.Any(x => x.UserId == userId && x.GrantedUserId == model.GrantedUserId && x.Type == model.Type && x.UserSourceId == model.UserSourceId);
             }
         }
 
         public IList<Delegation> GetByUserId(int userId)
         {
-            return context.Delegations.Include(x => x.User).Include(x => x.GrantedUser).Where(x => x.UserId == userId).ToList();
+            return context.Delegations
+                .Include(x => x.User)
+                .Include(x => x.GrantedUser)
+                .Where(x => x.UserId == userId).ToList();
         }
 
         public IList<Delegation> GetByGrantedUserIdAndType(int currentUserId, DelegationType type)

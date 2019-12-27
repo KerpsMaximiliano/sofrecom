@@ -19,7 +19,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Permiso</label>
-                        <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId"></ng-select>
+                        <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId" (change)="typeChanged()"></ng-select>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -40,12 +40,12 @@
                         </div>  -->
                     
                         <div class="radio radio-success radio-inline">
-                            <input value="2" type="radio" [(ngModel)]="sourceType">
+                            <input value="2" type="radio" [(ngModel)]="sourceType" [disabled]="sourceTypeDisabled">
                             <label> Contratos </label>
                         </div>
             
                         <div class="radio radio-success radio-inline">
-                            <input value="3" type="radio" [(ngModel)]="sourceType">
+                            <input value="3" type="radio" [(ngModel)]="sourceType" [disabled]="sourceTypeDisabled">
                             <label> Recursos </label>
                         </div>
                     </div> 
@@ -53,13 +53,13 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Contrato</label>
-                        <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analyticSourceId" (change)="setEmployees()"></ng-select>
+                        <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analyticSourceId" (change)="setEmployees()" [disabled]="analyticDisabled"></ng-select>
                     </div>
                 </div>
                 <div class="col-sm-4" *ngIf="sourceType == 3">
                     <div class="form-group">
                         <label class="control-label">Recurso</label>
-                        <ng-select [items]="resources" bindLabel="text" bindValue="id" [disabled]="!analyticSourceId" [(ngModel)]="userSourceId"></ng-select>
+                        <ng-select [items]="resources" bindLabel="text" bindValue="id" [disabled]="userSourceDisabled" [(ngModel)]="userSourceId"></ng-select>
                     </div>
                 </div>
             </div>

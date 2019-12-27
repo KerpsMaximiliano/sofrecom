@@ -33,6 +33,8 @@ import { ApproversModule } from '../common/approvers/approvers.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { RrhhService } from 'app/services/human-resources/rrhh.service';
+import { DelegationComponent } from './delegation/delegation';
+import { DelegationService } from 'app/services/admin/delegation.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { RrhhService } from 'app/services/human-resources/rrhh.service';
     ResourceSearchComponent, 
     AllocationReportComponent,
     WorkTimeApproverComponent,
-    ExternalUserComponent
+    ExternalUserComponent,
+    DelegationComponent
   ],
   imports: [
     CommonModule,
@@ -65,7 +68,7 @@ import { RrhhService } from 'app/services/human-resources/rrhh.service';
     ApproversModule,
     NgSelectModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService, RrhhService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService, RrhhService, DelegationService ],
 
   exports: [],
 })

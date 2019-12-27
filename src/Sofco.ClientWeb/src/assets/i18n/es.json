@@ -934,6 +934,7 @@
     "and": "y",
     "date_to": "al",
     "ManagementReport": "Informe de gestión",
+    "Advancement": "Adelantos",
     "budgetRequired": "Antes de cargar el PFA1 se debe cargar el budget",
     "budgetForRealRequired": "Antes de cargar el REAL se debe cargar el budget",
     "pfa1Required": "Antes de cargar el PFA2 se debe cargar el budget y el PFA1",

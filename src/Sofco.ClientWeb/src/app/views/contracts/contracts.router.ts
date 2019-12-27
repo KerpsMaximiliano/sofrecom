@@ -3,7 +3,6 @@ import { AnalyticSearchComponent } from "./analytics/search/analytic-search.comp
 import { NewAnalyticComponent } from "./analytics/new/new-analytic.component";
 import { EditAnalyticComponent } from "./analytics/edit/edit-analytic.component";
 import { AddAllocationComponent } from "../allocation-management/allocation/add-by-analytic/add-by-analytic.component";
-import { ResourceByAnalyticComponent } from "../allocation-management/resources/by-analytic/resource-by-analytic.component";
 import { ViewAnalyticComponent } from "./analytics/view/view-analytic.component";
 import { ListCostCenterComponent } from "./cost-center/list/list-cost-center.component";
 import { AddCostCenterComponent } from "./cost-center/add/add-cost-center.component";
@@ -12,7 +11,6 @@ import { AuthGuard } from "../../guards/auth.guard";
 import { AddCloseDateComponent } from "app/views/contracts/closeDates/add/closeDate-add.component";
 import { CurrencyExchangeComponent } from "./currency-exchange/currency-exchange";
 import { ResourceByServiceComponent } from "../allocation-management/resources/by-service/resource-by-service.component";
-import { DelegationComponent } from "./delegation/delegation";
 
 const CONTRACTS_ROUTER: Routes = [
     { path: "analytics",
@@ -33,8 +31,6 @@ const CONTRACTS_ROUTER: Routes = [
         { path: ":id/edit", component: EditCostCenterComponent, canActivate: [AuthGuard], data: { module: "COSTC", functionality: "UPDAT" } }
       ]
     },
-
-    { path: "delegation", component: DelegationComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "DELEGATES" } },
 
     { path: "closeDate",  component: AddCloseDateComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "CDADD" } },
 

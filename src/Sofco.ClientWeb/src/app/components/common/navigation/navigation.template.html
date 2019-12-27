@@ -87,9 +87,6 @@
           <li [ngClass]="{active: activeRoute('currencyExchange')}"
             *ngIf="menuService.hasFunctionality('CONTR', 'CURRENCY-EXCHANGE')"><a
               [routerLink]="['/contracts/currencyExchange']">Cotizaciones</a></li>
-          <li [ngClass]="{active: activeRoute('delegation')}"
-            *ngIf="menuService.hasFunctionality('CONTR', 'DELEGATES')"><a
-              [routerLink]="['/contracts/delegation']">Delegaciones</a></li>
         </ul>
       </li>
 
@@ -153,6 +150,8 @@
             *ngIf="menuService.hasFunctionality('ALLOC', 'TAPDE')"><a
               [routerLink]="['/allocationManagement/workTimeApproval/delegate']">{{'allocationManagement.workTimeApproval.delegate.title' | translate }}</a>
           </li>
+          <li [ngClass]="{active: activeRoute('delegation')}" *ngIf="menuService.hasFunctionality('ALLOC', 'DELEGATES')"><a [routerLink]="['/allocationManagement/delegation']">Delegaciones</a></li>
+
           <li [ngClass]="{active: activeRoute('endNotification')}"
             *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE_END_NOTIF')"><a
               [routerLink]="['/rrhh/endNotification']">{{'rrhh.endNotification.title' | translate }}</a></li>

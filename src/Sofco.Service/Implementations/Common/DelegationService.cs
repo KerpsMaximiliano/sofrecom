@@ -281,6 +281,23 @@ namespace Sofco.Service.Implementations.Common
                     model.UserSourceName = "Todos";
                 }
             }
+
+            if (userDelegate.Type == DelegationType.Advancement)
+            {
+                if (userDelegate.UserSourceId.HasValue && userDelegate.UserSourceId.Value > 0)
+                {
+                    var user = unitOfWork.UserRepository.Get(userDelegate.UserSourceId.GetValueOrDefault());
+
+                    if (user != null)
+                    {
+                        model.UserSourceName = user.Name;
+                    }
+                }
+                else
+                {
+                    model.UserSourceName = "Todos";
+                }
+            }
         }
 
         private void Validate(DelegationAddModel model, Response response, int currentUserId)

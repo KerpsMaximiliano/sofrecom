@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
@@ -433,6 +434,16 @@ namespace Sofco.Service.Implementations.Workflow
                         var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
 
                         if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                        {
+                            hasAccess = true;
+                        }
+                    }
+
+                    if (entity is Advancement advancement)
+                    {
+                        var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.Advancement);
+
+                        if (delegations.Any(x => x.UserId == employee.ManagerId.Value && (x.UserSourceId == null || x.UserSourceId == advancement.UserApplicantId)))
                         {
                             hasAccess = true;
                         }

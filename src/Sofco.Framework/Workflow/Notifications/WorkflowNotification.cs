@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sofco.Common.Settings;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Models.Workflow;
@@ -109,7 +110,7 @@ namespace Sofco.Framework.Workflow.Notifications
                     {
                         recipientsList.Add(employee.Manager.Email);
 
-                        if (entity is Refund refund)
+                        if (entity is Refund refund) 
                         {
                             var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
 
@@ -120,7 +121,18 @@ namespace Sofco.Framework.Workflow.Notifications
                                 if (userToSend != null) recipientsList.Add(userToSend.Email);
                             }
                         }
-                      
+
+                        if (entity is Advancement advancement)
+                        {
+                            var delegations = unitOfWork.DelegationRepository.GetByUserId(employee.ManagerId.Value);
+
+                            var userDelegations = delegations.Where(x => x.Type == DelegationType.Advancement && (x.UserSourceId == null || x.UserSourceId == advancement.UserApplicantId));
+
+                            foreach (var userDelegation in userDelegations)
+                            {
+                                recipientsList.Add(userDelegation.GrantedUser.Email);
+                            }
+                        }
                     }
                         
                 }
