@@ -15,6 +15,7 @@ using Sofco.Core.Models.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Common;
 using Sofco.Domain.Models.WorkTimeManagement;
 using Sofco.Framework.Managers;
 
@@ -49,6 +50,8 @@ namespace Sofco.UnitTest.Framework.Managers
 
         private Mock<IWorkTimeRepository> workTimeRepositoryMock;
 
+        private Mock<IDelegationRepository> delegationRepositoryMock;
+
         private IWorkTimeSendMailManager sut;
 
         [SetUp]
@@ -71,6 +74,8 @@ namespace Sofco.UnitTest.Framework.Managers
 
             closeDateRepositoryMock = new Mock<ICloseDateRepository>();
 
+            delegationRepositoryMock = new Mock<IDelegationRepository>();
+
             unitOfWorkMock.SetupGet(s => s.CloseDateRepository).Returns(closeDateRepositoryMock.Object);
 
             closeDateRepositoryMock.Setup(s => s.GetBeforeCurrentAndNext())
@@ -79,6 +84,7 @@ namespace Sofco.UnitTest.Framework.Managers
             analyticRepositoryMock = new Mock<IAnalyticRepository>();
 
             unitOfWorkMock.SetupGet(s => s.AnalyticRepository).Returns(analyticRepositoryMock.Object);
+            unitOfWorkMock.SetupGet(s => s.DelegationRepository).Returns(delegationRepositoryMock.Object);
 
             analyticRepositoryMock.Setup(s =>
                     s.GetByAllocations(ValidEmployeeId, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
@@ -93,6 +99,8 @@ namespace Sofco.UnitTest.Framework.Managers
                 Id = ValidEmployeeId,
                 Name = "One"
             });
+
+            delegationRepositoryMock.Setup(x => x.GetByEmployeeSourceId(It.IsAny<int>(), It.IsAny<int>(), DelegationType.WorkTime)).Returns(new List<Delegation>());
         }
 
         private List<Analytic> GetAnalyticList()
