@@ -32,16 +32,18 @@ import { AdvacementFormModule } from '../advancementAndRefund/advancement/form/a
 import { RefundFormModule } from '../advancementAndRefund/refund/form/refund-form.module';
 import { RefundAddComponent } from '../advancementAndRefund/refund/add/refund-add.component';
 import { RefundService } from 'app/services/advancement-and-refund/refund.service';
+import { DelegationComponent } from './delegation/delegation';
+import { DelegationService } from 'app/services/admin/delegation.service';
 
 @NgModule({
-  declarations: [ WorkTimeComponent, AdvancementAddComponent, RefundAddComponent ],
+  declarations: [ WorkTimeComponent, AdvancementAddComponent, RefundAddComponent, DelegationComponent ],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, ProfileRouter, 
                  AdvacementFormModule, IboxtoolsModule, ResourceDetailModule, AddLicenseModule, ButtonsModule, NgSelectModule, 
                  ReactiveFormsModule, BsDatepickerModule, RefundFormModule],
 
-  providers   : [LicenseService, EmployeeService, AnalyticService, TaskService, WorktimeService, AdvancementService, UtilsService, RefundService],
+  providers   : [LicenseService, EmployeeService, AnalyticService, TaskService, WorktimeService, AdvancementService, UtilsService, RefundService, DelegationService],
   
   exports     : []
 })

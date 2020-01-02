@@ -54,27 +54,27 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.analytics = response.data;
         });
 
-        if(this.menuService.hasFunctionality("ALLOC", "MAN-REPORT-DELEGATE")){
+        if(this.menuService.hasFunctionality("DELEG", "MAN-REPORT-DELEGATE")){
             this.types.push({ id: DelegationType.ManagementReport, text: this.i18nService.translateByKey(DelegationType[DelegationType.ManagementReport]) });
         }
 
-        if(this.menuService.hasFunctionality("ALLOC", "ADVANCEMENT-DELEGATE")){
+        if(this.menuService.hasFunctionality("DELEG", "ADVANCEMENT-DELEGATE")){
             this.types.push({ id: DelegationType.Advancement, text: "Aprobación Adelantos" });
         }
 
-        if(this.menuService.hasFunctionality("ALLOC", "REFUND-DELEGATE")){
+        if(this.menuService.hasFunctionality("DELEG", "REFUND-DELEGATE")){
             this.types.push({ id: DelegationType.RefundApprovall, text: "Aprobación Reintegros" });
         }
 
-        if(this.menuService.hasFunctionality("ALLOC", "ADD-REFUND-DELEGATE")){
+        if(this.menuService.hasFunctionality("DELEG", "ADD-REFUND-DELEGATE")){
             this.types.push({ id: DelegationType.RefundAdd, text: "Generación Reintegros" });
         }
 
-        if(this.menuService.hasFunctionality("ALLOC", "LICENSE-DELEGATE")){
+        if(this.menuService.hasFunctionality("DELEG", "LICENSE-DELEGATE")){
             this.types.push({ id: DelegationType.LicenseAuthorizer, text: "Aprobación Licencias" });
         }
 
-        if(this.menuService.hasFunctionality("ALLOC", "WORKTIME-DELEGATE")){
+        if(this.menuService.hasFunctionality("DELEG", "WORKTIME-DELEGATE")){
             this.types.push({ id: DelegationType.WorkTime, text: "Aprobación Horas" });
         }
 

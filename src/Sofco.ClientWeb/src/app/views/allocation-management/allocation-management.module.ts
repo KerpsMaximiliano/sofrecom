@@ -30,8 +30,6 @@ import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directi
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { RrhhService } from 'app/services/human-resources/rrhh.service';
-import { DelegationComponent } from './delegation/delegation';
-import { DelegationService } from 'app/services/admin/delegation.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +37,6 @@ import { DelegationService } from 'app/services/admin/delegation.service';
     ResourceSearchComponent, 
     AllocationReportComponent,
     ExternalUserComponent,
-    DelegationComponent
   ],
   imports: [
     CommonModule,
@@ -63,7 +60,7 @@ import { DelegationService } from 'app/services/admin/delegation.service';
     AllocationRouter,
     NgSelectModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService, RrhhService, DelegationService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService, RrhhService ],
 
   exports: [],
 })

@@ -4,7 +4,6 @@ import { AuthGuard } from "../../guards/auth.guard";
 import { ResourceSearchComponent } from "./resources/search/resource-search.component";
 import { ResourceDetailComponent } from "./resources/detail/resource-detail.component";
 import { AddAllocationByResourceComponent } from "./allocation/add-by-resource/add-by-resource.component";
-import { DelegationComponent } from "./delegation/delegation";
 
 const ALLOCATION_ROUTER: Routes = [
     { path: "allocationsReport", component: AllocationReportComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PMORP" } },
@@ -16,8 +15,6 @@ const ALLOCATION_ROUTER: Routes = [
         { path: ":id/allocations", component: AddAllocationByResourceComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "ADRES" } },
       ]
     },
-
-    { path: "delegation", component: DelegationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "DELEGATES" } },
 ];
 
 export const AllocationRouter = RouterModule.forChild(ALLOCATION_ROUTER);
