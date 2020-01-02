@@ -4,7 +4,6 @@ import { AuthGuard } from "../../guards/auth.guard";
 import { ResourceSearchComponent } from "./resources/search/resource-search.component";
 import { ResourceDetailComponent } from "./resources/detail/resource-detail.component";
 import { AddAllocationByResourceComponent } from "./allocation/add-by-resource/add-by-resource.component";
-import { WorkTimeApproverComponent } from "./worktime/worktime-approval-delegate/worktime-approver.component";
 import { DelegationComponent } from "./delegation/delegation";
 
 const ALLOCATION_ROUTER: Routes = [
@@ -19,13 +18,6 @@ const ALLOCATION_ROUTER: Routes = [
     },
 
     { path: "delegation", component: DelegationComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "DELEGATES" } },
-
-    {
-      path: 'workTimeApproval',
-      children: [
-        { path: "delegate", component: WorkTimeApproverComponent, canActivate: [AuthGuard], data: { fromProfile: false, module: "ALLOC", functionality: "TAPDE" } }
-      ]
-    },
 ];
 
 export const AllocationRouter = RouterModule.forChild(ALLOCATION_ROUTER);

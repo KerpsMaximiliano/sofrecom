@@ -119,12 +119,12 @@ namespace Sofco.Framework.Managers
         {
             var mails = new List<string> { analytic.Manager.Email };
 
-            var delegates = unitOfWork.UserApproverRepository.GetApproverByEmployeeIdAndAnalyticId(
+            var delegates = unitOfWork.DelegationRepository.GetByEmployeeSourceId(
                 currentEmployee.Id,
                 analytic.Id,
-                UserApproverType.WorkTime);
+                DelegationType.WorkTime);
 
-            mails.AddRange(delegates.Select(x => x.Email));
+            mails.AddRange(delegates.Select(x => x.GrantedUser.Email));
 
             return mails;
         }

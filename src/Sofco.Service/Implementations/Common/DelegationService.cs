@@ -37,6 +37,11 @@ namespace Sofco.Service.Implementations.Common
 
             var response = new Response();
 
+            if (model.Type == DelegationType.RefundAdd)
+            {
+                model.UserSourceId = currentUser.Id;
+            }
+
             Validate(model, response, currentUser.Id);
 
             if (response.HasErrors()) return response;
@@ -53,6 +58,15 @@ namespace Sofco.Service.Implementations.Common
                     SourceType = model.SourceType,
                     Created = DateTime.UtcNow
                 };
+
+                if (model.UserSourceId.HasValue && model.UserSourceId.Value > 0)
+                {
+                    var user = userData.GetById(model.UserSourceId.Value);
+
+                    var employee = unitOfWork.EmployeeRepository.GetByEmail(user.Email);
+
+                    if (employee != null) userDelegate.EmployeeSourceId = employee.Id;
+                }
 
                 unitOfWork.DelegationRepository.Insert(userDelegate);
 
@@ -256,6 +270,21 @@ namespace Sofco.Service.Implementations.Common
             return response;
         }
 
+        public Response<IList<Option>> GetResources()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var response = new Response<IList<Option>>();
+
+            var employees = unitOfWork.EmployeeRepository.GetByManagerId(currentUser.Id);
+
+            var users = unitOfWork.UserRepository.GetByEmail(employees.Where(x => !string.IsNullOrWhiteSpace(x.Email)).Select(x => x.Email).ToList());
+
+            response.Data = users.Select(x => new Option {Id = x.Id, Text = x.Name}).ToList();
+
+            return response;
+        }
+
         private void HandleGetDelegate(Delegation userDelegate, DelegationModel model)
         {
             if (userDelegate.Type == DelegationType.ManagementReport)
@@ -282,7 +311,7 @@ namespace Sofco.Service.Implementations.Common
                 }
             }
 
-            if (userDelegate.Type == DelegationType.Advancement)
+            if (userDelegate.Type == DelegationType.Advancement || userDelegate.Type == DelegationType.LicenseAuthorizer)
             {
                 if (userDelegate.UserSourceId.HasValue && userDelegate.UserSourceId.Value > 0)
                 {
@@ -296,6 +325,35 @@ namespace Sofco.Service.Implementations.Common
                 else
                 {
                     model.UserSourceName = "Todos";
+                }
+            }
+
+            if (userDelegate.Type == DelegationType.RefundApprovall)
+            {
+                var analytic = unitOfWork.AnalyticRepository.Get(userDelegate.AnalyticSourceId.GetValueOrDefault());
+
+                if (analytic != null)
+                {
+                    model.AnalyticSourceName = $"{analytic.Title} - {analytic.Name}";
+                }
+
+                model.UserSourceName = "Todos";
+            }
+
+            if (userDelegate.Type == DelegationType.RefundAdd || userDelegate.Type == DelegationType.WorkTime)
+            {
+                var analytic = unitOfWork.AnalyticRepository.Get(userDelegate.AnalyticSourceId.GetValueOrDefault());
+
+                if (analytic != null)
+                {
+                    model.AnalyticSourceName = $"{analytic.Title} - {analytic.Name}";
+                }
+
+                var user = unitOfWork.UserRepository.Get(userDelegate.UserSourceId.GetValueOrDefault());
+
+                if (user != null)
+                {
+                    model.UserSourceName = user.Name;
                 }
             }
         }

@@ -10,5 +10,6 @@ namespace Sofco.Core.Services.Common
         Response Delete(int id);
         Response<IList<DelegationModel>> GetByUserId();
         Response<IList<AnalyticsWithEmployees>> GetAnalytics();
+        Response<IList<Option>> GetResources();
     }
 }

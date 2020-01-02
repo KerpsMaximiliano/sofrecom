@@ -69,13 +69,13 @@ namespace Sofco.Framework.Workflow.Notifications
                         {
                             recipientsList.Add(director.Email);
 
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.UserName, refund.AnalyticId, UserApproverType.Refund);
+                            var delegations = unitOfWork.DelegationRepository.GetByUserId(director.Id);
 
-                            foreach (var userApprover in userApprovers)
+                            var userDelegations = delegations.Where(x => x.Type == DelegationType.RefundApprovall && x.AnalyticSourceId == refund.AnalyticId);
+
+                            foreach (var userDelegation in userDelegations)
                             {
-                                var userToSend = unitOfWork.UserRepository.Get(userApprover.ApproverUserId);
-
-                                if (userToSend != null) recipientsList.Add(userToSend.Email);
+                                recipientsList.Add(userDelegation.GrantedUser.Email);
                             }
                         }
                     }
@@ -112,13 +112,13 @@ namespace Sofco.Framework.Workflow.Notifications
 
                         if (entity is Refund refund) 
                         {
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
+                            var delegations = unitOfWork.DelegationRepository.GetByUserId(employee.Manager.Id);
 
-                            foreach (var userApprover in userApprovers)
+                            var userDelegations = delegations.Where(x => x.Type == DelegationType.RefundApprovall && x.AnalyticSourceId == refund.AnalyticId);
+
+                            foreach (var userDelegation in userDelegations)
                             {
-                                var userToSend = unitOfWork.UserRepository.Get(userApprover.ApproverUserId);
-
-                                if (userToSend != null) recipientsList.Add(userToSend.Email);
+                                recipientsList.Add(userDelegation.GrantedUser.Email);
                             }
                         }
 
@@ -153,13 +153,13 @@ namespace Sofco.Framework.Workflow.Notifications
                         {
                             recipientsList.Add(manager.Email);
 
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(manager.UserName, refund.AnalyticId, UserApproverType.Refund);
+                            var delegations = unitOfWork.DelegationRepository.GetByUserId(manager.Id);
 
-                            foreach (var userApprover in userApprovers)
+                            var userDelegations = delegations.Where(x => x.Type == DelegationType.RefundApprovall && x.AnalyticSourceId == refund.AnalyticId);
+
+                            foreach (var userDelegation in userDelegations)
                             {
-                                var userToSend = unitOfWork.UserRepository.Get(userApprover.ApproverUserId);
-
-                                if (userToSend != null) recipientsList.Add(userToSend.Email);
+                                recipientsList.Add(userDelegation.GrantedUser.Email);
                             }
                         }
                     }

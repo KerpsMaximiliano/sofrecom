@@ -208,15 +208,17 @@ namespace Sofco.Service.Implementations.Workflow
 
                         if (!hasAccess)
                         {
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.UserName, refund.AnalyticId, UserApproverType.Refund);
+                            var delegations = unitOfWork.DelegationRepository.GetByUserId(director.Id);
 
-                            foreach (var userApprover in userApprovers)
+                            var delegation = delegations.SingleOrDefault(x => x.Type == DelegationType.RefundApprovall && x.AnalyticSourceId == refund.AnalyticId);
+
+                            if (delegation != null && usersAlreadyApprovedSplitted.Contains(delegation.GrantedUserId.ToString()))
                             {
-                                if (usersAlreadyApprovedSplitted.Contains(userApprover.ApproverUserId.ToString()))
-                                {
-                                    SetUser(user, userApprover.ApproverUserId, unitOfWork);
-                                    hasAccess = true;
-                                }
+                                user.Id = delegation.GrantedUser.Id;
+                                user.Name = delegation.GrantedUser.Name;
+                                user.UserName = delegation.GrantedUser.UserName;
+
+                                hasAccess = true;
                             }
                         }
                     }
@@ -265,15 +267,17 @@ namespace Sofco.Service.Implementations.Workflow
 
                             if (!hasAccess)
                             {
-                                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(analytic.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
+                                var delegations = unitOfWork.DelegationRepository.GetByUserId(analytic.ManagerId.Value);
 
-                                foreach (var userApprover in userApprovers)
+                                var delegation = delegations.SingleOrDefault(x => x.Type == DelegationType.RefundApprovall && x.AnalyticSourceId == refund.AnalyticId);
+
+                                if (delegation != null && usersAlreadyApprovedSplitted.Contains(delegation.GrantedUserId.ToString()))
                                 {
-                                    if (usersAlreadyApprovedSplitted.Contains(userApprover.ApproverUserId.ToString()))
-                                    {
-                                        SetUser(user, userApprover.ApproverUserId, unitOfWork);
-                                        hasAccess = true;
-                                    }
+                                    user.Id = delegation.GrantedUser.Id;
+                                    user.Name = delegation.GrantedUser.Name;
+                                    user.UserName = delegation.GrantedUser.UserName;
+
+                                    hasAccess = true;
                                 }
                             }
                         }

@@ -7,7 +7,6 @@ import { RefundDetailComponent } from "./refund/detail/refund-detail.component";
 import { ListPaymentPendingComponent } from "./common/list-payment-pending/list-payment-pending.component";
 import { AdvancementRefundSettingComponent } from "./common/settings/setting.component";
 import { CurrentAccountComponent } from "./common/current-account/current-account";
-import { RefundDelegateComponent } from "./refund/delegate/refund-delegate";
 import { SalaryAdvancementComponent } from "./common/salary-advancement/salary-advancement";
 
 const ADVANCEMENT_AND_REFUND_ROUTER: Routes = [
@@ -27,9 +26,6 @@ const ADVANCEMENT_AND_REFUND_ROUTER: Routes = [
     },
     {
         path: "setting", component: AdvancementRefundSettingComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "SETTING" }
-    },
-    {
-        path: "delegate", component: RefundDelegateComponent, canActivate: [AuthGuard]
     },
     {
         path: "currentAccount", component: CurrentAccountComponent, canActivate: [AuthGuard], data: { module: "ADVAN", functionality: "CURRENT-ACCOUNT" }

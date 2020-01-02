@@ -45,14 +45,7 @@ namespace Sofco.UnitTest.Framework.Managers
 
             workTimeRepositoryMock = new Mock<IWorkTimeRepository>();
 
-            var userApproverRepositoryMock = new Mock<IUserApproverRepository>();
-
-            userApproverRepositoryMock.Setup(s => s.GetApproverByEmployeeIdAndAnalyticId(
-                    It.IsAny<int>(), It.IsAny<int>(), UserApproverType.WorkTime))
-                .Returns(new List<User>());
-
             unitOfWork.SetupGet(s => s.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
-            unitOfWork.SetupGet(s => s.UserApproverRepository).Returns(userApproverRepositoryMock.Object);
 
             userDataMock = new Mock<IUserData>();
 

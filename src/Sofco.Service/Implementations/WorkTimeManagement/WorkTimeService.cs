@@ -254,7 +254,8 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 var currentUser = userData.GetCurrentUser();
                 var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
                 var analyticsByDirectors = unitOfWork.AnalyticRepository.GetByDirectorId(currentUser.Id);
-                var analyticsByDelegates = unitOfWork.UserApproverRepository.GetByAnalyticApprover(currentUser.Id, UserApproverType.WorkTime);
+
+                var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.WorkTime);
 
                 var list = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 
@@ -266,11 +267,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     }
                 }
 
-                foreach (var analyticsByDelegate in analyticsByDelegates)
+                foreach (var delegation in delegations)
                 {
-                    if (list.All(x => x.Id != analyticsByDelegate.Id))
+                    if (list.All(x => x.Id != delegation.AnalyticSourceId))
                     {
-                        list.Add(new Option { Id = analyticsByDelegate.Id, Text = $"{analyticsByDelegate.Title} - {analyticsByDelegate.Name}" });
+                        var analytic = unitOfWork.AnalyticRepository.Get(delegation.AnalyticSourceId.GetValueOrDefault());
+
+                        list.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
                     }
                 }
 
@@ -344,17 +347,17 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var currentUser = userData.GetCurrentUser();
 
-            var userApprovers = unitOfWork.UserApproverRepository.GetByTypeAndApproverUser(currentUser.Id, UserApproverType.WorkTime);
+            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.WorkTime);
 
             foreach (var worktime in worktimes)
             {
                 var model = new WorkTimeSearchItemResult();
 
-                var userApproverByAnalytic = userApprovers.Where(x => x.AnalyticId == worktime.AnalyticId).ToList();
+                var delegationsByAnalytic = delegations.Where(x => x.AnalyticSourceId == worktime.AnalyticId).ToList();
 
-                if (userApproverByAnalytic.Any())
+                if (delegationsByAnalytic.Any())
                 {
-                    if (userApproverByAnalytic.All(x => x.EmployeeId != worktime.EmployeeId))
+                    if (delegationsByAnalytic.Where(x => x.EmployeeSourceId.HasValue).All(x => x.EmployeeSourceId != worktime.EmployeeId))
                         continue;
                 }
 
@@ -527,29 +530,27 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var currentUser = userData.GetCurrentUser();
 
-            var userApprovers =
-                unitOfWork.UserApproverRepository
-                    .GetByApproverUserId(currentUser.Id, UserApproverType.WorkTime);
+            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.WorkTime);
 
             if (analyticId.HasValue && analyticId.Value > 0)
             {
-                userApprovers = userApprovers
-                    .Where(s => s.AnalyticId == analyticId.Value)
+                delegations = delegations
+                    .Where(s => s.AnalyticSourceId == analyticId.Value)
                     .ToList();
             }
 
             if (employeeId.HasValue && employeeId.Value > 0)
             {
-                userApprovers = userApprovers
-                    .Where(s => s.EmployeeId == employeeId.Value)
+                delegations = delegations
+                    .Where(s => s.EmployeeSourceId == employeeId.Value)
                     .ToList();
             }
 
-            if (!userApprovers.Any()) return result;
+            if (!delegations.Any()) return result;
 
-            var employeeIds = userApprovers.Select(s => s.EmployeeId).ToList();
+            var employeeIds = delegations.Select(s => s.EmployeeSourceId.GetValueOrDefault()).ToList();
 
-            var analyticIds = userApprovers.Select(x => x.AnalyticId).ToList();
+            var analyticIds = delegations.Select(x => x.AnalyticSourceId.GetValueOrDefault()).ToList();
 
             var alreadyLoadedEmployeeIds = workTimes.Select(s => s.EmployeeId).Distinct();
 

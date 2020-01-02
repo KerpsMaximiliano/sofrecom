@@ -26,9 +26,7 @@ namespace Sofco.Framework.Managers
 
         public List<Role> GetDelegatedRoles()
         {
-            var isValid = unitOfWork.UserApproverRepository.HasUserAuthorizer(
-                userData.GetCurrentUser().Id, 
-                UserApproverType.WorkTime);
+            var isValid = unitOfWork.DelegationRepository.ExistByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.WorkTime);
 
             return isValid
                 ? new List<Role> { unitOfWork.RoleRepository.GetByCode(appSetting.WorkTimeApprovalCode),

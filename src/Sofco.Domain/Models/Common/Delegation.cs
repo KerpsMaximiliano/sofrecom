@@ -19,6 +19,7 @@ namespace Sofco.Domain.Models.Common
         public int? AnalyticSourceId { get; set; }
 
         public int? UserSourceId { get; set; }
+        public int? EmployeeSourceId { get; set; }
 
         public DelegationSourceType SourceType { get; set; }
 

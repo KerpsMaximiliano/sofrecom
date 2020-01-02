@@ -27,10 +27,8 @@ import { EmployeeService } from '../../services/allocation-management/employee.s
 import { EmployeeNewsService } from '../../services/allocation-management/employee-news.service';
 import { NewsComponent } from './news/news.component';
 import { AddLicenseModule } from './licenses/add/add-license.module';
-import { LicenseDelegateComponent } from './licenses/license-delegate/license-delegate.component';
 import { ServiceService } from '../../services/billing/service.service';
 import { CustomerService } from '../../services/billing/customer.service';
-import { ApproversModule } from '../common/approvers/approvers.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EndNotificationComponent } from './end-notification/end-notification.component';
 import { PrepaidImportComponent } from './prepaid-import/prepaid-import';
@@ -43,11 +41,11 @@ import { RrhhService } from 'app/services/human-resources/rrhh.service';
 @NgModule({
   declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
                 LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent, LicenseCancelComponent, UnemployeesSearchComponent,
-                NewsComponent, LicenseDelegateComponent, EndNotificationComponent, PrepaidImportComponent, PrepaidVerificationComponent],
+                NewsComponent, EndNotificationComponent, PrepaidImportComponent, PrepaidVerificationComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, AddLicenseModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter,
-                ApproversModule, NgSelectModule, AmountFormatModule],
+                 NgSelectModule, AmountFormatModule],
 
   providers   : [LicenseService, EmployeeService, EmployeeNewsService, ServiceService, CustomerService, UtilsService, PrepaidService, RrhhService],
 

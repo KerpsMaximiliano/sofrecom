@@ -48,5 +48,13 @@ namespace Sofco.WebApi.Controllers.Admin
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("resources")]
+        public IActionResult GetResources()
+        {
+            var response = userDelegateService.GetResources();
+
+            return this.CreateResponse(response);
+        }
     }
 }

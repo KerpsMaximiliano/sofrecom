@@ -41,7 +41,7 @@
                     
                         <div class="radio radio-success radio-inline">
                             <input value="2" type="radio" [(ngModel)]="sourceType" [disabled]="sourceTypeDisabled">
-                            <label> Contratos </label>
+                            <label> Analiticas </label>
                         </div>
             
                         <div class="radio radio-success radio-inline">
@@ -52,7 +52,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label">Contrato</label>
+                        <label class="control-label">Analitica</label>
                         <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analyticSourceId" (change)="setEmployees()" [disabled]="analyticDisabled"></ng-select>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                     <tr>
                         <th>Permiso otorgado a</th>
                         <th>Tipo de permiso</th>
-                        <th>Permiso sobre contrato</th>
+                        <th>Permiso sobre analitica</th>
                         <th>Permiso sobre recurso</th>
                         <th>Fecha creación</th>
                         <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>

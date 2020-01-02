@@ -26,5 +26,9 @@ export class DelegationService {
 
     getAnalytics() {
         return this.http.get<any>(`${this.baseUrl}/delegation/analytics`);
-     }
+    }
+
+    getResources() {
+        return this.http.get<any>(`${this.baseUrl}/delegation/resources`);
+    }
 }

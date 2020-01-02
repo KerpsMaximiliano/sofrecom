@@ -49,8 +49,6 @@ namespace Sofco.UnitTest.Framework.Managers
 
         private Mock<IWorkTimeRepository> workTimeRepositoryMock;
 
-        private Mock<IUserApproverRepository> userApproverRepositoryMock;
-
         private IWorkTimeSendMailManager sut;
 
         [SetUp]
@@ -95,28 +93,6 @@ namespace Sofco.UnitTest.Framework.Managers
                 Id = ValidEmployeeId,
                 Name = "One"
             });
-
-            userApproverRepositoryMock = new Mock<IUserApproverRepository>();
-
-            userApproverRepositoryMock.Setup(s =>
-                    s.GetApproverByEmployeeIdAndAnalyticId(ValidEmployeeId, ValidAnalyticId, UserApproverType.WorkTime))
-                .Returns(new List<User>
-                {
-                    new User {Id = 1, Email = ValidUserApproverEmail}
-                });
-            userApproverRepositoryMock.Setup(s =>
-                    s.GetApproverByEmployeeIdAndAnalyticId(ValidEmployeeId, ValidAnalyticId, UserApproverType.WorkTime))
-                .Returns(new List<User>
-                {
-                    new User {Id = 1, Email = ValidUserApproverEmail}
-                });
-
-            userApproverRepositoryMock.Setup(s =>
-                    s.GetApproverByEmployeeIdAndAnalyticId(ValidEmployeeId, ValidAnalyticId2, UserApproverType.WorkTime))
-                .Returns(new List<User>());
-
-
-            unitOfWorkMock.SetupGet(s => s.UserApproverRepository).Returns(userApproverRepositoryMock.Object);
         }
 
         private List<Analytic> GetAnalyticList()

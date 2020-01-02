@@ -2,10 +2,6 @@
 {
     public enum UserApproverType
     {
-        WorkTime,
-
-        LicenseAuthorizer,
-
-        Refund
+        WorkTime
     }
 }

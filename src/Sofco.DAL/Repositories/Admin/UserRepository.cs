@@ -348,5 +348,10 @@ namespace Sofco.DAL.Repositories.Admin
                 .ThenInclude(x => x.Group)
                 .Any(x => x.Email.Equals(currentUserEmail) && x.UserGroups.Any(s => s.Group.Code == recruitersCode));
         }
+
+        public IList<User> GetByEmail(List<string> mails)
+        {
+            return context.Users.Where(x => mails.Contains(x.Email)).ToList();
+        }
     }
 }

@@ -50,9 +50,40 @@ namespace Sofco.DAL.Repositories.Common
                 .Where(x => x.UserId == userId).ToList();
         }
 
-        public IList<Delegation> GetByGrantedUserIdAndType(int currentUserId, DelegationType type)
+        public IList<Delegation> GetByUserId(int userId, DelegationType type)
         {
-            return context.Delegations.Where(x => x.GrantedUserId == currentUserId && x.Type == type).ToList();
+            return context.Delegations
+                .Include(x => x.User)
+                .Include(x => x.GrantedUser)
+                .Where(x => x.UserId == userId && x.Type == type)
+                .ToList();
+        }
+
+        public IList<Delegation> GetByGrantedUserIdAndType(int userId, DelegationType type)
+        {
+            return context.Delegations.Include(x => x.User).Include(x => x.GrantedUser).Where(x => x.GrantedUserId == userId && x.Type == type).ToList();
+        }
+
+        public bool ExistByGrantedUserIdAndType(int userId, DelegationType type)
+        {
+            return context.Delegations.Include(x => x.User).Include(x => x.GrantedUser).Any(x => x.GrantedUserId == userId && x.Type == type);
+        }
+
+        public IList<Delegation> GetByEmployeeSourceId(int employeeId, DelegationType type)
+        {
+            return context.Delegations.Include(x => x.GrantedUser).Where(x => x.EmployeeSourceId == employeeId && x.Type == type).ToList();
+        }
+
+        public IList<Delegation> GetByEmployeeSourceId(List<int> employeeIds, DelegationType type)
+        {
+            return context.Delegations.Include(x => x.GrantedUser).Where(x => employeeIds.Contains(x.EmployeeSourceId.GetValueOrDefault()) && x.Type == type).ToList();
+        }
+
+        public IList<Delegation> GetByEmployeeSourceId(int employeeId, int analyticId, DelegationType type)
+        {
+            return context.Delegations.Include(x => x.GrantedUser)
+                .Where(x => x.AnalyticSourceId == analyticId && x.EmployeeSourceId == employeeId && x.Type == type)
+                .ToList();
         }
     }
 }

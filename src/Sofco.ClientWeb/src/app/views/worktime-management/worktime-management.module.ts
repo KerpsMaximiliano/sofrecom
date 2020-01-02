@@ -23,7 +23,6 @@ import { EmployeeService } from '../../services/allocation-management/employee.s
 import { AnalyticService } from '../../services/allocation-management/analytic.service';
 import { CustomerService } from '../../services/billing/customer.service';
 import { ServiceService } from '../../services/billing/service.service';
-import { I18nService } from '../../services/common/i18n.service';
 
 import { WorkTimeApprovalComponent } from './approval/worktime-approval.component';
 import { WorkTimeStatusApproveComponent } from './status-approve/status-approve.component';

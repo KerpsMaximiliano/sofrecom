@@ -38,7 +38,6 @@ import { AdvancementRefundSettingService } from "app/services/advancement-and-re
 import { RefundsRelatedComponent } from "./advancement/refunds-related/refunds-related";
 import { CurrentAccountService } from "app/services/advancement-and-refund/current-account.sevice";
 import { CurrentAccountComponent } from "./common/current-account/current-account";
-import { RefundDelegateComponent } from "./refund/delegate/refund-delegate";
 import { UserApproverService } from "app/services/allocation-management/user-approver.service";
 import { PCheckModule } from "app/components/pcheck/pcheck.module";
 import { PaymentPendingService } from "app/services/advancement-and-refund/paymentPending.service";
@@ -47,7 +46,7 @@ import { SalaryAdvancementComponent } from "./common/salary-advancement/salary-a
 
 @NgModule({
     declarations: [ AdvancementDetailComponent, AdvancementHistoryComponent, SalaryAdvancementComponent,
-                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent, RefundDelegateComponent,
+                    AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent,
                     RefundListComponent, RefundListFilterComponent, RefundListGridComponent, RefundHistoryComponent,
                     ListPaymentPendingComponent, AdvancementRefundSettingComponent, RefundsRelatedComponent, CurrentAccountComponent
                   ],

@@ -361,9 +361,9 @@ namespace Sofco.Service.Implementations.Workflow
                     {
                         if(director.Id == currentUser.Id) hasAccess = true;
 
-                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.UserName, refund.AnalyticId, UserApproverType.Refund);
+                        var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundApprovall);
 
-                        if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                        if (delegations.Any(x => x.UserId == director.Id))
                         {
                             hasAccess = true;
                         }
@@ -402,9 +402,9 @@ namespace Sofco.Service.Implementations.Workflow
                                 hasAccess = true;
                             }
 
-                            var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(analytic.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
+                            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundApprovall);
 
-                            if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                            if (delegations.Any(x => x.UserId == analytic.ManagerId.Value))
                             {
                                 hasAccess = true;
                             }
@@ -431,9 +431,9 @@ namespace Sofco.Service.Implementations.Workflow
 
                     if (entity is Refund refund)
                     {
-                        var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(employee.Manager.UserName, refund.AnalyticId, UserApproverType.Refund);
+                        var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundApprovall);
 
-                        if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                        if (delegations.Any(x => x.UserId == employee.ManagerId.Value))
                         {
                             hasAccess = true;
                         }
@@ -463,9 +463,9 @@ namespace Sofco.Service.Implementations.Workflow
                     hasAccess = true;
                 }
 
-                var userDelegates = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.RefundAdd, currentUser.Id).ToList();
+                var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundAdd);
 
-                if (userDelegates.Any(x => x.UserId == entity.UserApplicantId))
+                if (delegations.Any(x => x.UserId == entity.UserApplicantId))
                 {
                     hasAccess = true;
                 }

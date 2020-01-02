@@ -496,9 +496,9 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             {
                 if (director.Id == currentUser.Id) hasAccess = true;
 
-                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(director.UserName, entity.AnalyticId, UserApproverType.Refund);
+                var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundApprovall);
 
-                if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                if (delegations.Any(x => x.UserId == director.Id))
                 {
                     hasAccess = true;
                 }
@@ -525,9 +525,9 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     hasAccess = true;
                 }
 
-                var userApprovers = unitOfWork.UserApproverRepository.GetByAnalyticAndUserId(entity.Analytic.Manager.UserName, entity.AnalyticId, UserApproverType.Refund);
+                var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundApprovall);
 
-                if (userApprovers.Select(x => x.ApproverUserId).Contains(currentUser.Id))
+                if (delegations.Any(x => x.UserId == entity.Analytic.ManagerId.Value))
                 {
                     hasAccess = true;
                 }

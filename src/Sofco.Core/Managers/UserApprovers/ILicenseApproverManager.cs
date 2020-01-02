@@ -13,8 +13,6 @@ namespace Sofco.Core.Managers.UserApprovers
 
         List<LicenseListModel> ResolveApprovers(List<LicenseListModel> models);
 
-        List<string> GetEmailApproversByUserId(int userId);
-
         List<string> GetEmailApproversByEmployeeId(int employeeId);
 
         bool HasUserAuthorizer();

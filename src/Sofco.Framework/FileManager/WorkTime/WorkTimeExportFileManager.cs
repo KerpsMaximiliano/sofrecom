@@ -75,9 +75,9 @@ namespace Sofco.Framework.FileManager.WorkTime
                 if (manager.Id != userData.GetCurrentUser().Id && director.Id != userData.GetCurrentUser().Id)
                 {
                     //Busca los empleados que tiene para aprobar
-                    var users = unitOfWork.UserApproverRepository.GetByAnalyticAndApproverUserId(userData.GetCurrentUser().Id, analyticId, Domain.Enums.UserApproverType.WorkTime);
+                    var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.WorkTime).Where(x => x.AnalyticSourceId == analyticId);
 
-                    employees = employees.Where(d => users.Select(u => u.EmployeeId).Contains(d.Id)).ToList();
+                    employees = employees.Where(d => delegations.Select(u => u.EmployeeSourceId.GetValueOrDefault()).Contains(d.Id)).ToList();
                 }
 
                 var index = 2;

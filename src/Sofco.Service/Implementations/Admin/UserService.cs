@@ -349,13 +349,19 @@ namespace Sofco.Service.Implementations.Admin
                 model.ManagerId = employee.ManagerId.GetValueOrDefault();
                 model.ManagerDesc = employee.Manager.Name;
 
-                var authorizer = unitOfWork.UserApproverRepository.GetAuthorizerForLicenses(employee.Manager.UserName, employee.Id);
+                var delegations = unitOfWork.DelegationRepository.GetByUserId(employee.ManagerId.GetValueOrDefault(), DelegationType.LicenseAuthorizer);
 
-                if (authorizer != null)
+                if (delegations.Any())
                 {
-                    model.AuthorizerId = authorizer.Id;
-                    model.AuthorizerDesc = authorizer.Name;
+                    var first = delegations.First();
+
+                    if (first.GrantedUser != null)
+                    {
+                        model.AuthorizerId = first.GrantedUser.Id;
+                        model.AuthorizerDesc = first.GrantedUser.Name;
+                    }
                 }
+              
             }
 
             var today = DateTime.UtcNow.Date;

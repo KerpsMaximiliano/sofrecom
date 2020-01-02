@@ -35,8 +35,6 @@ namespace Sofco.UnitTest.Framework.Managers
 
         private Mock<ITaskRepository> taskRepositoryMock;
 
-        private Mock<IUserApproverRepository> userApproverRepositoryMock;
-
         private WorkTime validWorkTime;
 
         private IWorkTimeRejectMailManager sut;
@@ -61,16 +59,9 @@ namespace Sofco.UnitTest.Framework.Managers
 
             taskRepositoryMock.Setup(s => s.GetById(It.IsAny<int>())).Returns(new Task());
 
-            userApproverRepositoryMock = new Mock<IUserApproverRepository>();
-
-            userApproverRepositoryMock.Setup(s => s.GetApproverByEmployeeIdAndAnalyticId(
-                    It.IsAny<int>(), It.IsAny<int>(), UserApproverType.WorkTime))
-                .Returns(new List<User>());
-
             unitOfWork.SetupGet(s => s.EmployeeRepository).Returns(employeeRepositoryMock.Object);
             unitOfWork.SetupGet(s => s.AnalyticRepository).Returns(analyticRepositoryMock.Object);
             unitOfWork.SetupGet(s => s.TaskRepository).Returns(taskRepositoryMock.Object);
-            unitOfWork.SetupGet(s => s.UserApproverRepository).Returns(userApproverRepositoryMock.Object);
 
             loggerMock = new Mock<ILogMailer<WorkTimeRejectMailManager>>();
 
@@ -98,8 +89,6 @@ namespace Sofco.UnitTest.Framework.Managers
             employeeRepositoryMock.Verify(s => s.GetById(It.IsAny<int>()), Times.Once);
             analyticRepositoryMock.Verify(s => s.GetById(It.IsAny<int>()), Times.Once);
             taskRepositoryMock.Verify(s => s.GetById(It.IsAny<int>()), Times.Once);
-            userApproverRepositoryMock.Verify(s => s
-                .GetApproverByEmployeeIdAndAnalyticId(It.IsAny<int>(), It.IsAny<int>(), UserApproverType.WorkTime), Times.Once);
         }
     }
 }

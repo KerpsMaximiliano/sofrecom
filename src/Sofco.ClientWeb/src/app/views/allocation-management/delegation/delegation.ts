@@ -29,12 +29,14 @@ export class DelegationComponent implements OnInit, OnDestroy {
     resources: any[] = new Array();
     analytics: any[] = new Array();
     data: any[] = new Array();
+    resourcesByManager: any[] = new Array();
 
     addSubscript: Subscription;
     usersSubscript: Subscription;
     analyticsSubscript: Subscription;
     deleteSubscript: Subscription;
     getSubscript: Subscription;
+    getResourcesSubscript: Subscription;
  
     constructor(private messageService: MessageService,
                 private i18nService: I18nService,
@@ -57,10 +59,27 @@ export class DelegationComponent implements OnInit, OnDestroy {
         }
 
         if(this.menuService.hasFunctionality("ALLOC", "ADVANCEMENT-DELEGATE")){
-            this.types.push({ id: DelegationType.Advancement, text: "Adelantos" });
+            this.types.push({ id: DelegationType.Advancement, text: "Aprobación Adelantos" });
+        }
+
+        if(this.menuService.hasFunctionality("ALLOC", "REFUND-DELEGATE")){
+            this.types.push({ id: DelegationType.RefundApprovall, text: "Aprobación Reintegros" });
+        }
+
+        if(this.menuService.hasFunctionality("ALLOC", "ADD-REFUND-DELEGATE")){
+            this.types.push({ id: DelegationType.RefundAdd, text: "Generación Reintegros" });
+        }
+
+        if(this.menuService.hasFunctionality("ALLOC", "LICENSE-DELEGATE")){
+            this.types.push({ id: DelegationType.LicenseAuthorizer, text: "Aprobación Licencias" });
+        }
+
+        if(this.menuService.hasFunctionality("ALLOC", "WORKTIME-DELEGATE")){
+            this.types.push({ id: DelegationType.WorkTime, text: "Aprobación Horas" });
         }
 
         this.get();
+        this.getResourcesByManager();
     }
 
     ngOnDestroy(): void {
@@ -69,6 +88,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
         if(this.analyticsSubscript) this.analyticsSubscript.unsubscribe();          
         if(this.deleteSubscript) this.deleteSubscript.unsubscribe();          
         if(this.getSubscript) this.getSubscript.unsubscribe();          
+        if(this.getResourcesSubscript) this.getResourcesSubscript.unsubscribe();          
     }
 
     get(){
@@ -79,6 +99,13 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.data = response.data;
         },
         error => this.messageService.closeLoading());
+    }
+
+    
+    getResourcesByManager(){
+        this.getSubscript = this.userDelegateService.getResources().subscribe(response => {
+            this.resourcesByManager = response.data;
+        });
     }
 
     setEmployees() {
@@ -120,6 +147,16 @@ export class DelegationComponent implements OnInit, OnDestroy {
             if(!this.analyticSourceId || this.analyticSourceId <= 0) return false;
 
             if(this.sourceType == "3" && (!this.userSourceId || this.userSourceId <= 0))return false;
+        }
+
+        if(this.typeId == DelegationType.WorkTime){
+            if(!this.analyticSourceId || this.analyticSourceId <= 0) return false;
+
+            if(!this.userSourceId || this.userSourceId <= 0) return false;
+        }
+
+        if(this.typeId == DelegationType.LicenseAuthorizer){
+            if(!this.userSourceId || this.userSourceId <= 0) return false;
         }
 
         return true;
@@ -165,6 +202,10 @@ export class DelegationComponent implements OnInit, OnDestroy {
     }
 
     typeChanged(){
+        this.analyticSourceId = null;
+        this.userSourceId = null;
+        this.resources = [];
+
         if(this.typeId == DelegationType.ManagementReport){
             this.sourceTypeDisabled = false;
             this.analyticDisabled = false;
@@ -176,7 +217,6 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.analyticDisabled = true;
             this.userSourceDisabled = false;
             this.sourceType = "3";
-            this.analyticSourceId = null;
 
             this.resources = [];
             this.analytics.forEach(x => {
@@ -186,6 +226,36 @@ export class DelegationComponent implements OnInit, OnDestroy {
                     }
                 });
             })
+        }
+
+        if(this.typeId == DelegationType.WorkTime){
+            this.sourceTypeDisabled = true;
+            this.analyticDisabled = false;
+            this.userSourceDisabled = false;
+            this.sourceType = "3";
+        }
+
+        if(this.typeId == DelegationType.LicenseAuthorizer){
+            this.sourceTypeDisabled = true;
+            this.analyticDisabled = true;
+            this.userSourceDisabled = false;
+            this.sourceType = "3";
+
+            this.resources = this.resourcesByManager;
+        }
+
+        if(this.typeId == DelegationType.RefundApprovall){
+            this.sourceTypeDisabled = true;
+            this.analyticDisabled = false;
+            this.userSourceDisabled = false;
+            this.sourceType = "2";
+        }
+
+        if(this.typeId == DelegationType.RefundAdd){
+            this.sourceTypeDisabled = true;
+            this.analyticDisabled = true;
+            this.userSourceDisabled = true;
+            this.sourceType = "3";
         }
     }
 }

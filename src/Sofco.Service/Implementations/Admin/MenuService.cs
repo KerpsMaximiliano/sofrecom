@@ -79,17 +79,15 @@ namespace Sofco.Service.Implementations.Admin
             model.SellerMail = GetGroupMail(emailConfig.SellerCode);
             model.AreaIds = areaData.GetIdByCurrent();
             model.SectorIds = sectorData.GetIdByCurrent();
+             
+            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.RefundAdd);
 
-            var userDelegates = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.RefundAdd, userData.GetCurrentUser().Id);
-
-            foreach (var userDelegate in userDelegates)
+            foreach (var userDelegate in delegations)
             {
-                var user = userData.GetById(userDelegate.UserId);
-
                 model.RefundDelegates.Add(new Option
                 {
                     Id = userDelegate.UserId,
-                    Text = user.Name
+                    Text = userDelegate.User.Name
                 });
             }
 

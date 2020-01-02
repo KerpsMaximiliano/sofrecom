@@ -25,36 +25,27 @@ namespace Sofco.Framework.Managers.UserApprovers
         {
             var approverUserId = userData.GetCurrentUser().Id;
 
-            var employeeIds = unitOfWork.UserApproverRepository
-                .GetByApproverUserId(approverUserId, UserApproverType.LicenseAuthorizer)
-                .Select(s => s.EmployeeId).ToList();
+            var employeeIds = unitOfWork.DelegationRepository
+                .GetByGrantedUserIdAndType(approverUserId, DelegationType.LicenseAuthorizer)
+                .Select(x => x.EmployeeSourceId.GetValueOrDefault()).ToList();
 
             var result = unitOfWork.LicenseRepository.GetByEmployee(employeeIds);
 
             return result.ToList();
         }
 
-        public List<string> GetEmailApproversByUserId(int userId)
-        {
-            return unitOfWork.UserApproverRepository
-                .GetApproverByUserId(userId, UserApproverType.LicenseAuthorizer)
-                .Select(s => s.Email).ToList();
-        }
-
         public List<string> GetEmailApproversByEmployeeId(int employeeId)
         {
-            return unitOfWork.UserApproverRepository
-                .GetApproverByEmployeeId(employeeId, UserApproverType.LicenseAuthorizer)
-                .Select(s => s.Email).ToList();
+            var delegations = unitOfWork.DelegationRepository.GetByEmployeeSourceId(employeeId, DelegationType.LicenseAuthorizer);
+
+            return delegations.Select(x => x.GrantedUser.Email).ToList();
         }
 
         public List<License> GetByCurrentByStatus(LicenseStatus statusId)
         {
             int approverUserId = userData.GetCurrentUser().Id;
 
-            var employeeIds = unitOfWork.UserApproverRepository
-                .GetByApproverUserId(approverUserId, UserApproverType.LicenseAuthorizer)
-                .Select(s => s.EmployeeId).ToList();
+            var employeeIds = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(approverUserId,DelegationType.LicenseAuthorizer).Select(x => x.EmployeeSourceId.GetValueOrDefault()).ToList();
 
             var result = unitOfWork.LicenseRepository.GetByEmployeeAndStatus(employeeIds, statusId);
 
@@ -65,13 +56,13 @@ namespace Sofco.Framework.Managers.UserApprovers
         {
             var employeeIds = models.Select(s => s.EmployeeId).Distinct().ToList();
 
-            var userApprovers = unitOfWork.UserApproverRepository.GetByEmployeeIds(employeeIds, UserApproverType.LicenseAuthorizer);
+            var delegations = unitOfWork.DelegationRepository.GetByEmployeeSourceId(employeeIds, DelegationType.LicenseAuthorizer);
 
             foreach (var item in models)
             {
-                var userApprover = userApprovers.FirstOrDefault(s => s.EmployeeId == item.EmployeeId);
+                var delegation = delegations.FirstOrDefault(s => s.EmployeeSourceId == item.EmployeeId);
 
-                item.AuthorizerName = userApprover?.ApproverUser.Name;
+                item.AuthorizerName = delegation?.GrantedUser.Name;
             }
 
             return models;
@@ -81,7 +72,7 @@ namespace Sofco.Framework.Managers.UserApprovers
         {
             var userId = userData.GetCurrentUser().Id;
 
-            return unitOfWork.UserApproverRepository.HasUserAuthorizer(userId, UserApproverType.LicenseAuthorizer);
+            return unitOfWork.DelegationRepository.ExistByGrantedUserIdAndType(userId, DelegationType.LicenseAuthorizer);
         }
     }
 }

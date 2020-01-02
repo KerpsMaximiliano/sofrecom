@@ -55,7 +55,7 @@ namespace Sofco.Framework.Managers
 
         private List<Role> GetViewRoles()
         {
-            var isValid = unitOfWork.UserApproverRepository.HasUserAuthorizer(userData.GetCurrentUser().Id, UserApproverType.LicenseAuthorizer);
+            var isValid = unitOfWork.DelegationRepository.ExistByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.LicenseAuthorizer);
 
             return !isValid
                 ? new List<Role>()

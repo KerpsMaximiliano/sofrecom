@@ -71,13 +71,12 @@ namespace Sofco.Framework.Managers
                     workTime.Analytic.Manager.Email
                 };
 
-                var approverDelegates =
-                    unitOfWork.UserApproverRepository.GetApproverByEmployeeIdAndAnalyticId(
-                        workTime.EmployeeId,
-                        workTime.AnalyticId,
-                        UserApproverType.WorkTime);
+                var delegates = unitOfWork.DelegationRepository.GetByEmployeeSourceId(
+                    workTime.EmployeeId,
+                    workTime.AnalyticId,
+                    DelegationType.WorkTime);
 
-                recipients.AddRange(approverDelegates.Select(s => s.Email));
+                recipients.AddRange(delegates.Select(s => s.GrantedUser.Email));
 
                 var maildata = new MailDefaultData
                 {
@@ -116,13 +115,12 @@ namespace Sofco.Framework.Managers
                 workTime.Analytic.Manager.Email
             };
 
-            var approverDelegates =
-                unitOfWork.UserApproverRepository.GetApproverByEmployeeIdAndAnalyticId(
-                    workTime.EmployeeId,
-                    workTime.AnalyticId,
-                    UserApproverType.WorkTime);
+            var delegates = unitOfWork.DelegationRepository.GetByEmployeeSourceId(
+                workTime.EmployeeId,
+                workTime.AnalyticId,
+                DelegationType.WorkTime);
 
-            recipients.AddRange(approverDelegates.Select(s => s.Email));
+            recipients.AddRange(delegates.Select(s => s.GrantedUser.Email));
 
             return new MailDefaultData
             {
