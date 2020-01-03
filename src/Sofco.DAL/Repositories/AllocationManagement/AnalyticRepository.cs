@@ -185,6 +185,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return query.Distinct().ToList();
         }
 
+        public IList<Analytic> GetActiveByIds(IList<int> ids)
+        {
+            return context.Analytics.Where(x => x.Status == AnalyticStatus.Close && ids.Contains(x.Id)).ToList();
+        }
+
         public Analytic GetByServiceForManagementReport(string serviceId)
         {
             return context.Analytics

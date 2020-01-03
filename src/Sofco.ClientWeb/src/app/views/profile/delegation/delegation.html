@@ -50,13 +50,29 @@
                         </div>
                     </div> 
                 </div>
-                <div class="col-sm-4">
+
+                <div class="col-sm-4" *ngIf="isAreaType()">
+                    <div class="form-group">
+                        <label class="control-label">Areas</label>
+                        <ng-select [items]="areas" bindLabel="text" bindValue="id" [(ngModel)]="areaSourceId"></ng-select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4" *ngIf="isSectorType()">
+                    <div class="form-group">
+                        <label class="control-label">Sectores</label>
+                        <ng-select [items]="sectors" bindLabel="text" bindValue="id" [(ngModel)]="sectorSourceId"></ng-select>
+                    </div>
+                </div>
+
+                <div class="col-sm-4" *ngIf="!isPurchaseOrder()">
                     <div class="form-group">
                         <label class="control-label">Analitica</label>
                         <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analyticSourceId" (change)="setEmployees()" [disabled]="analyticDisabled"></ng-select>
                     </div>
                 </div>
-                <div class="col-sm-4" *ngIf="sourceType == 3">
+
+                <div class="col-sm-4" *ngIf="!isPurchaseOrder() && sourceType == 3">
                     <div class="form-group">
                         <label class="control-label">Recurso</label>
                         <ng-select [items]="resources" bindLabel="text" bindValue="id" [disabled]="userSourceDisabled" [(ngModel)]="userSourceId"></ng-select>
@@ -76,7 +92,7 @@
                     <tr>
                         <th>Permiso otorgado a</th>
                         <th>Tipo de permiso</th>
-                        <th>Permiso sobre analitica</th>
+                        <th>Permiso sobre</th>
                         <th>Permiso sobre recurso</th>
                         <th>Fecha creación</th>
                         <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>

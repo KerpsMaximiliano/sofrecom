@@ -19,11 +19,11 @@ namespace Sofco.Service.Implementations.Common
     public class DelegationService : IDelegationService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly ILogMailer<UserDelegateService> logger;
+        private readonly ILogMailer<DelegationService> logger;
         private readonly IUserData userData;
         private readonly AppSetting appSetting;
 
-        public DelegationService(IUnitOfWork unitOfWork, ILogMailer<UserDelegateService> logger, IUserData userData, IOptions<AppSetting> appSettingOptions)
+        public DelegationService(IUnitOfWork unitOfWork, ILogMailer<DelegationService> logger, IUserData userData, IOptions<AppSetting> appSettingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -328,6 +328,37 @@ namespace Sofco.Service.Implementations.Common
                 }
             }
 
+            if (userDelegate.Type == DelegationType.Solfac || userDelegate.Type == DelegationType.PurchaseOrderActive)
+            {
+                var analytic = unitOfWork.AnalyticRepository.Get(userDelegate.AnalyticSourceId.GetValueOrDefault());
+
+                if (analytic != null)
+                {
+                    model.AnalyticSourceName = $"{analytic.Title} - {analytic.Name}";
+                }
+            }
+
+
+            if (userDelegate.Type == DelegationType.PurchaseOrderApprovalCommercial)
+            {
+                var area = unitOfWork.AreaRepository.Get(userDelegate.AnalyticSourceId.GetValueOrDefault());
+
+                if (area != null)
+                {
+                    model.AnalyticSourceName = area.Text;
+                }
+            }
+
+            if (userDelegate.Type == DelegationType.PurchaseOrderApprovalOperation)
+            {
+                var sector = unitOfWork.SectorRepository.Get(userDelegate.AnalyticSourceId.GetValueOrDefault());
+
+                if (sector != null)
+                {
+                    model.AnalyticSourceName = sector.Text;
+                }
+            }
+
             if (userDelegate.Type == DelegationType.RefundApprovall)
             {
                 var analytic = unitOfWork.AnalyticRepository.Get(userDelegate.AnalyticSourceId.GetValueOrDefault());
@@ -372,7 +403,7 @@ namespace Sofco.Service.Implementations.Common
             if (!model.Type.HasValue)
                 response.AddError(Resources.Admin.Delegation.TypeRequired);
 
-            if (model.Type.HasValue && model.Type.Value == DelegationType.ManagementReport)
+            if (model.Type.HasValue && (model.Type.Value == DelegationType.ManagementReport || model.Type.Value == DelegationType.Solfac))
             {
                 if (!model.AnalyticSourceId.HasValue || model.AnalyticSourceId == 0)
                     response.AddError(Resources.Admin.Delegation.AnalyticRequired);

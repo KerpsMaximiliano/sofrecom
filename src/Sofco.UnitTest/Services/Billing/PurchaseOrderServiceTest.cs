@@ -32,7 +32,6 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<IMapper> mapperMock;
         private Mock<IPurchaseOrderRepository> purchaseOrderRepositoryMock;
         private Mock<IUserRepository> userRepositoryMock;
-        private Mock<IUserDelegateRepository> userDelegateRepositoryMock;
 
         private const string ExistNumber = "A0001";
         private const string NotExistNumber = "A0002";
@@ -46,11 +45,9 @@ namespace Sofco.UnitTest.Services.Billing
             mapperMock = new Mock<IMapper>();
             purchaseOrderRepositoryMock = new Mock<IPurchaseOrderRepository>();
             userRepositoryMock = new Mock<IUserRepository>();
-            userDelegateRepositoryMock = new Mock<IUserDelegateRepository>();
 
             unitOfWorkMock.Setup(x => x.PurchaseOrderRepository).Returns(purchaseOrderRepositoryMock.Object);
             unitOfWorkMock.Setup(x => x.UserRepository).Returns(userRepositoryMock.Object);
-            unitOfWorkMock.Setup(x => x.UserDelegateRepository).Returns(userDelegateRepositoryMock.Object);
 
             purchaseOrderRepositoryMock.Setup(x => x.ExistNumber(ExistNumber, It.IsAny<int>())).Returns(true);
             purchaseOrderRepositoryMock.Setup(x => x.ExistNumber(NotExistNumber, It.IsAny<int>())).Returns(false);

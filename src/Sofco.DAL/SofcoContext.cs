@@ -110,7 +110,6 @@ namespace Sofco.DAL
 
         // Common
         public DbSet<File> Files { get; set; }
-        public DbSet<UserApprover> UserApprovers { get; set; }
         public DbSet<CurrencyExchange> CurrencyExchanges { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Delegation> Delegations { get; set; }

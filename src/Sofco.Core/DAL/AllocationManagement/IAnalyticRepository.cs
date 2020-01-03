@@ -75,5 +75,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         bool IsClosed(int analyticId);
         ICollection<Analytic> GetByManagerIdAndDirectorId(int currentUserId);
         List<Employee> GetResources(int analyticId, Tuple<DateTime, DateTime> periodExcludeDays, Tuple<DateTime, DateTime> period);
+        IList<Analytic> GetActiveByIds(IList<int> ids);
     }
 }

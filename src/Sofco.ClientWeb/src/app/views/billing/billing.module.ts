@@ -62,13 +62,11 @@ import { PurchaseOrderService } from '../../services/billing/purchaseOrder.servi
 import { EditPurchaseOrderComponent } from './purchaseOrder/edit/edit-purchaseOrder.component';
 import { PurchaseOrderSearchComponent } from './purchaseOrder/search/search-purchaseOrder.component';
 import { PurchaseOrdersByServiceComponent } from './projects/purchaseOrders/purchaseOrders-service.component';
-import { SolfacDelegateComponent } from './solfac/solfac-delegate/solfac-delegate.component'
 import { CertificateSearchComponent } from './certificates/search/search-certificate.component';
 import { CertificateFormComponent } from './certificates/form/certificate-form.component';
 import { EditCertificateComponent } from './certificates/edit/edit-certificate.component';
 import { NewCertificateComponent } from './certificates/add/add-certificate.component';
 import { CertificatesService } from '../../services/billing/certificates.service';
-import { SolfacDelegateEditComponent } from './solfac/solfac-delegate/edit/solfac-delegate-edit.component'
 import { PdfViewerModule } from '../../components/pdf-viewer/pdf-viewer.module';
 import { DatePickerModule } from '../../components/date-picker/date-picker.module';
 import { ProjectPurchaseOrdersComponent } from './projects/project-detail/purchase-order-detail/purchase-order-detail.component';
@@ -79,7 +77,6 @@ import { UtilsService } from '../../services/common/utils.service';
 import { AllocationService } from '../../services/allocation-management/allocation.service';
 import { CategoryService } from '../../services/admin/category.service';
 import { PurchaseOrderAdjustmentComponent } from './purchaseOrder/adjustment/oc-adjustment.component';
-import { PurchaseOrderApprovalDelegateComponent } from './purchaseOrder/approval-delegate/purchase-order-approval-delegate.component';
 import { OcStatusDraftComponent } from './purchaseOrder/workflow/draft/oc-draft.componet';
 import { OcStatusComplianceComponent } from './purchaseOrder/workflow/compliance/oc-compliance.component';
 import { OcStatusComercialComponent } from './purchaseOrder/workflow/comercial/oc-comercial.component';
@@ -87,12 +84,9 @@ import { OcStatusOperativeComponent } from './purchaseOrder/workflow/operative/o
 import { OcStatusRejectComponent } from './purchaseOrder/workflow/reject/oc-reject.component';
 import { OcStatusDafComponent } from './purchaseOrder/workflow/daf/oc-daf.component';
 import { PurchaseOrderHistoryComponent } from './purchaseOrder/history/oc-history.component';
-import { PurchaseOrderApprovalDelegateEditComponent } from './purchaseOrder/approval-delegate/edit/purchase-order-approval-delegate-edit.component';
 import { OcStatusCloseComponent } from './purchaseOrder/workflow/close/oc-close.component';
 import { PurchaseOrderPendingsComponent } from './purchaseOrder/pendings/oc-pendings.component';
 import { OcStatusDeleteComponent } from './purchaseOrder/workflow/delete/oc-delete.component';
-import { PurchaseOrderActiveDelegateComponent } from './purchaseOrder/active-view/active-delegate/purchase-order-active-delegate.component';
-import { PurchaseOrderActiveDelegateEditComponent } from './purchaseOrder/active-view/active-delegate/edit/purchase-order-active-delegate-edit.component';
 import { PurchaseOrderViewComponent } from './purchaseOrder/common/purchase-order-view.component';
 import { PurchaseOrderViewFilterComponent } from './purchaseOrder/common/purchase-order-view-filter.component';
 import { ButtonsModule } from '../../components/buttons/buttons.module';
@@ -111,12 +105,12 @@ import { OcStatusReopenComponent } from './purchaseOrder/workflow/reopen/oc-reop
                  InvoiceStatusSendToDafComponent, InvoiceStatusRejectComponent, InvoiceStatusAnnulmentComponent, UpdateSolfacBillComponent,
                  UpdateSolfacCashComponent, SolfacPdfViewerComponent, StatusRejectDafComponent,
                  BillMultipleProjectsComponent, HitosByProjectComponent, SolfacAccountControlComponent, NewPurchaseOrderComponent, PurchaseOrderFormComponent, 
-                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent, SolfacDelegateComponent,
-                 CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent, SolfacDelegateEditComponent,
+                 EditPurchaseOrderComponent, PurchaseOrderSearchComponent, PurchaseOrdersByServiceComponent,
+                 CertificateSearchComponent, CertificateFormComponent, EditCertificateComponent, NewCertificateComponent,
                  ProjectPurchaseOrdersComponent, PurchaseOrderAdjustmentComponent,
                  OcStatusDraftComponent, OcStatusComplianceComponent, OcStatusComercialComponent, OcStatusOperativeComponent, OcStatusRejectComponent,
-                 OcStatusDafComponent, PurchaseOrderHistoryComponent, PurchaseOrderApprovalDelegateComponent, PurchaseOrderApprovalDelegateEditComponent,
-                 OcStatusCloseComponent, PurchaseOrderPendingsComponent, OcStatusDeleteComponent, PurchaseOrderActiveDelegateComponent, PurchaseOrderActiveDelegateEditComponent,
+                 OcStatusDafComponent, PurchaseOrderHistoryComponent, OcStatusCloseComponent, PurchaseOrderPendingsComponent, 
+                 OcStatusDeleteComponent,
                  PurchaseOrderViewComponent, PurchaseOrderViewFilterComponent, OcStatusReopenComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, HitoModule,

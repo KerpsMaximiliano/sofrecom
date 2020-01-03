@@ -80,8 +80,6 @@ namespace Sofco.Core.DAL
 
         IFileRepository FileRepository { get; }
 
-        IUserDelegateRepository UserDelegateRepository { get; }
-
         ICurrencyExchangeRepository CurrencyExchangeRepository { get; }
 
         ILogRepository LogRepository { get; }

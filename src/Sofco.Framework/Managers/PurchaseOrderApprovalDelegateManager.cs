@@ -6,7 +6,6 @@ using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Data.Billing;
 using Sofco.Core.DAL;
-using Sofco.Core.DAL.Common;
 using Sofco.Core.Managers;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
@@ -15,8 +14,6 @@ namespace Sofco.Framework.Managers
 {
     public class PurchaseOrderApprovalDelegateManager : IPurchaseOrderApprovalDelegateManager
     {
-        private readonly IUserDelegateRepository userDelegateRepository;
-
         private readonly IUnitOfWork unitOfWork;
 
         private readonly IAreaData areaData;
@@ -29,13 +26,12 @@ namespace Sofco.Framework.Managers
 
         private readonly AppSetting appSetting;
 
-        private List<UserDelegateType> types;
+        private List<DelegationType> types;
 
-        public PurchaseOrderApprovalDelegateManager(IOptions<AppSetting> appSetting, ISessionManager sessionManager, IUnitOfWork unitOfWork, IUserDelegateRepository userDelegateRepository, IAreaData areaData, ISectorData sectorData, IUserData userData)
+        public PurchaseOrderApprovalDelegateManager(IOptions<AppSetting> appSetting, ISessionManager sessionManager, IUnitOfWork unitOfWork, IAreaData areaData, ISectorData sectorData, IUserData userData)
         {
             this.sessionManager = sessionManager;
             this.unitOfWork = unitOfWork;
-            this.userDelegateRepository = userDelegateRepository;
             this.areaData = areaData;
             this.sectorData = sectorData;
             this.userData = userData;
@@ -67,12 +63,12 @@ namespace Sofco.Framework.Managers
 
         private void SetTypes()
         {
-            types = new List<UserDelegateType>
+            types = new List<DelegationType>
             {
-                UserDelegateType.PurchaseOrderApprovalCommercial,
-                UserDelegateType.PurchaseOrderApprovalCompliance,
-                UserDelegateType.PurchaseOrderApprovalDaf,
-                UserDelegateType.PurchaseOrderApprovalOperation
+                DelegationType.PurchaseOrderApprovalCommercial,
+                DelegationType.PurchaseOrderApprovalCompliance,
+                DelegationType.PurchaseOrderApprovalDaf,
+                DelegationType.PurchaseOrderApprovalOperation
             };
         }
 
@@ -120,23 +116,23 @@ namespace Sofco.Framework.Managers
 
             var currentUser = userData.GetCurrentUser();
 
-            var delegates = userDelegateRepository.GetByUserId(currentUser.Id, types);
+            var delegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, types);
             foreach (var userDelegate in delegates)
             {
                 var roleCode = string.Empty;
 
                 switch (userDelegate.Type)
                 {
-                    case UserDelegateType.PurchaseOrderApprovalCompliance:
+                    case DelegationType.PurchaseOrderApprovalCompliance:
                         roleCode = appSetting.PurchaseOrderComplianceApprovalCode;
                         break;
-                    case UserDelegateType.PurchaseOrderApprovalCommercial:
+                    case DelegationType.PurchaseOrderApprovalCommercial:
                         roleCode = appSetting.PurchaseOrderCommercialApprovalCode;
                         break;
-                    case UserDelegateType.PurchaseOrderApprovalOperation:
+                    case DelegationType.PurchaseOrderApprovalOperation:
                         roleCode = appSetting.PurchaseOrderOperationApprovalCode;
                         break;
-                    case UserDelegateType.PurchaseOrderApprovalDaf:
+                    case DelegationType.PurchaseOrderApprovalDaf:
                         roleCode = appSetting.PurchaseOrderDafApprovalCode;
                         break;
                 }

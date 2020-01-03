@@ -142,8 +142,7 @@ namespace Sofco.Framework.Managers
 
             var mails = new List<string> { responsableUser.Email };
 
-            var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalCommercial,
-                    responsableUser.Id)
+            var userIds = unitOfWork.DelegationRepository.GetByUserId(responsableUser.Id, DelegationType.PurchaseOrderApprovalCommercial)
                 .Select(s => s.UserId);
 
             mails.AddRange(userIds.Select(userId => userData.GetById(userId))
@@ -175,12 +174,9 @@ namespace Sofco.Framework.Managers
 
             foreach (var user in users)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalOperation,
-                        user.Id)
-                    .Select(s => s.UserId);
+                var delegates = unitOfWork.DelegationRepository.GetByUserId(user.Id, DelegationType.PurchaseOrderApprovalOperation);
 
-                mails.AddRange(userIds.Select(userId => userData.GetById(userId))
-                    .Select(delegated => delegated.Email));
+                mails.AddRange(delegates.Select(x => x.GrantedUser.Email));
             }
 
             return mails;
@@ -196,12 +192,9 @@ namespace Sofco.Framework.Managers
 
             foreach (var user in users)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalDaf,
-                        user.Id)
-                    .Select(s => s.UserId);
+                var delegates = unitOfWork.DelegationRepository.GetByUserId(user.Id, DelegationType.PurchaseOrderApprovalDaf);
 
-                mails.AddRange(userIds.Select(userId => userData.GetById(userId))
-                    .Select(delegated => delegated.Email));
+                mails.AddRange(delegates.Select(x => x.GrantedUser.Email));
             }
 
             return mails;
@@ -217,12 +210,9 @@ namespace Sofco.Framework.Managers
 
             foreach (var user in users)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalDaf,
-                        user.Id)
-                    .Select(s => s.UserId);
+                var delegates = unitOfWork.DelegationRepository.GetByUserId(user.Id, DelegationType.PurchaseOrderApprovalDaf);
 
-                mails.AddRange(userIds.Select(userId => userData.GetById(userId))
-                    .Select(delegated => delegated.Email));
+                mails.AddRange(delegates.Select(x => x.GrantedUser.Email));
             }
 
             return mails;
@@ -238,11 +228,9 @@ namespace Sofco.Framework.Managers
 
             foreach (var user in users)
             {
-                var userIds = unitOfWork.UserDelegateRepository.GetByTypeAndSourceId(UserDelegateType.PurchaseOrderApprovalCompliance,
-                        user.Id)
-                    .Select(s => s.UserId);
+                var delegates = unitOfWork.DelegationRepository.GetByUserId(user.Id, DelegationType.PurchaseOrderApprovalCompliance);
 
-                mails.AddRange(userIds.Select(userId => userData.GetById(userId))
+                mails.AddRange(delegates.Select(delegat => userData.GetById(delegat.GrantedUserId))
                     .Select(delegated => delegated.Email));
             }
 

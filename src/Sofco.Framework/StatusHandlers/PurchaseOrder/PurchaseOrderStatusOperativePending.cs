@@ -49,13 +49,17 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
              
             var analytics = unitOfWork.AnalyticRepository.GetByPurchaseOrder(purchaseOrder.Id);
 
+            var currentUser = userData.GetCurrentUser();
+
+            var delegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.PurchaseOrderApprovalOperation);
+
             if (analytics.Any())
             {
                 var sectorIds = analytics.Select(x => x.SectorId).ToList();
                 var sectors = unitOfWork.SectorRepository.Get(sectorIds);
-                var responsables = sectors.Select(x => x.ResponsableUserId);
+                var responsables = sectors.Select(x => x.ResponsableUserId).ToList();
 
-                if (!responsables.Contains(userData.GetCurrentUser().Id))
+                if (!responsables.Contains(currentUser.Id) && !delegates.Any(x => responsables.Contains(x.UserId) && sectorIds.Contains(x.AnalyticSourceId.GetValueOrDefault())))
                 {
                     response.AddError(Resources.Billing.PurchaseOrder.UserSectorWrong);
                 }

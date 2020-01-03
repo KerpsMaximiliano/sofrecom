@@ -33,8 +33,6 @@ namespace Sofco.Service.Implementations.Reports
 
         private readonly IUserData userData;
 
-        private readonly IUserDelegateRepository userDelegateRepository;
-
         private readonly IMapper mapper;
 
         private readonly ILogMailer<PurchaseOrderReportService> logger;
@@ -49,15 +47,13 @@ namespace Sofco.Service.Implementations.Reports
             IUnitOfWork unitOfWork,
             IUserData userData,
             IRoleManager roleManager,
-            IOptions<EmailConfig> emailOptions,
-            IUserDelegateRepository userDelegateRepository)
+            IOptions<EmailConfig> emailOptions)
         {
             this.purchaseOrderRepository = purchaseOrderRepository;
             this.mapper = mapper;
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
-            this.userDelegateRepository = userDelegateRepository;
             this.emailConfig = emailOptions.Value;
             this.roleManager = roleManager;
         }
@@ -113,14 +109,16 @@ namespace Sofco.Service.Implementations.Reports
 
             var currentUserId = userData.GetCurrentUser().Id;
 
-            var serviceIds = userDelegateRepository.GetByUserId(currentUserId, UserDelegateType.PurchaseOrderActive)
-                .Where(s => s.ServiceId.HasValue)
-                .Select(s => s.ServiceId.ToString())
-                .ToList();
+            var delegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUserId, DelegationType.PurchaseOrderActive);
 
-            var analytics = unitOfWork.AnalyticRepository.GetByServiceIds(serviceIds);
+            var analytics = unitOfWork.AnalyticRepository.GetActiveByIds(delegates.Select(x => x.AnalyticSourceId.GetValueOrDefault()).ToList());
 
-            analytics.AddRange(unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUserId));
+            var analyticsByManager = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUserId);
+
+            foreach (var analytic in analyticsByManager)
+            {
+                analytics.Add(analytic);
+            }
 
             return data.Where(s =>
             {

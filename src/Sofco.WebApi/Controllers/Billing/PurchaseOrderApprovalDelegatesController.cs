@@ -23,30 +23,6 @@ namespace Sofco.WebApi.Controllers.Billing
             this.utilsService = utilsService;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var response = purchaseOrderApprovalDelegateService.GetAll();
-
-            return this.CreateResponse(response);
-        }
-
-        [HttpPost]
-        public IActionResult Post([FromBody]PurchaseOrderApprovalDelegateModel userApprovalDelegate)
-        {
-            var response = purchaseOrderApprovalDelegateService.Save(userApprovalDelegate);
-
-            return this.CreateResponse(response);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var response = purchaseOrderApprovalDelegateService.Delete(id);
-
-            return this.CreateResponse(response);
-        }
-
         [HttpGet("areas")]
         public IActionResult GetAreas()
         {

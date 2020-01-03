@@ -52,19 +52,9 @@
             <a [routerLink]="['/billing/solfac/search']">{{'billing.solfac.searchTitle' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('searchInvoice')}" *ngIf="menuService.hasFunctionality('REM', 'QUERY')"><a
               [routerLink]="['/billing/invoice/search']">{{'billing.invoice.searchTitle' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('solfac/delegate')}"
-            *ngIf="menuService.hasFunctionality('SOLFA', 'SOLDE')"><a
-              [routerLink]="['/billing/solfac/delegate']">{{'billing.solfac.delegate.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('certificates')}" *ngIf="menuService.hasFunctionality('CERT', 'QUERY')"><a
               [routerLink]="['/billing/certificates']">{{'billing.certificate.title' | translate }}</a></li>
-          <li [ngClass]="{active: activeRoute('approval/delegate')}"
-            *ngIf="menuService.hasFunctionality('PUROR', 'PODE')"><a
-              [routerLink]="['/billing/purchaseOrders/approval/delegate']">{{'billing.purchaseOrder.delegate.approvalTitle' | translate }}</a>
-          </li>
-          <li [ngClass]="{active: activeRoute('active/delegate')}"
-            *ngIf="menuService.hasFunctionality('PUROR', 'POACTIVEDELEGATE')"><a
-              [routerLink]="['/billing/purchaseOrders/active/delegate']">{{'billing.purchaseOrder.delegate.activeTitle' | translate }}</a>
-          </li>
+
           <li [ngClass]="{active: activeRoute('query')}" *ngIf="menuService.hasFunctionality('PUROR', 'QUERY')"><a
               [routerLink]="['/billing/purchaseOrders/query']">{{'billing.purchaseOrder.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('pendings')}" *ngIf="menuService.hasFunctionality('PUROR', 'PEND')"><a
@@ -224,6 +214,7 @@
         <a href="#"><i class="fa fa-user"></i> <span class="nav-label"> {{ 'myActions' | translate }} </span> <span
             class="fa arrow"></span> </a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('profile')}">
+          
           <li [ngClass]="{active: activeRoute('delegation')}" *ngIf="menuService.hasFunctionality('DELEG', 'DELEGATES')"><a [routerLink]="['/profile/delegation']">Delegaciones</a></li>
 
           <li [ngClass]="{active: activeRoute('licenses')}"

@@ -1,4 +1,5 @@
-﻿using Sofco.Core.Config;
+﻿using System.Linq;
+using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
@@ -46,11 +47,15 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
                 response.AddError(Resources.Billing.PurchaseOrder.CommentsRequired);
             }
 
+            var currentUser = userData.GetCurrentUser();
+
             var area = unitOfWork.AreaRepository.Get(purchaseOrder.AreaId.GetValueOrDefault());
+
+            var delegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.PurchaseOrderApprovalCommercial);
 
             if (area == null) return;
 
-            if (area.ResponsableUserId != userData.GetCurrentUser().Id)
+            if (area.ResponsableUserId != currentUser.Id && !delegates.Any(x => x.UserId == currentUser.Id && x.AnalyticSourceId.GetValueOrDefault() == area.Id))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.UserAreaWrong);
             }

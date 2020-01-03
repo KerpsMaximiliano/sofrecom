@@ -44,7 +44,9 @@ namespace Sofco.Framework.Managers
 
         private List<Role> GetActiveViewRoles()
         {
-            var isValid = unitOfWork.UserDelegateRepository.HasUserDelegate(sessionManager.GetUserName(), UserDelegateType.PurchaseOrderActive);
+            var currentUser = userData.GetCurrentUser();
+
+            var isValid = unitOfWork.DelegationRepository.ExistByGrantedUserIdAndType(currentUser.Id, DelegationType.PurchaseOrderActive);
 
             var userMail = sessionManager.GetUserEmail();
             if (!isValid)

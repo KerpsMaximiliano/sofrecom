@@ -49,21 +49,19 @@ namespace Sofco.Data.Billing
 
             var currentUser = userData.GetCurrentUser();
 
-            var delegates = unitOfWork.UserDelegateRepository.GetByUserIdAndType(currentUser.Id, UserDelegateType.PurchaseOrderApprovalOperation);
+            var delegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.PurchaseOrderApprovalOperation);
+
+            ids.AddRange(GetAll().Where(s => s.ResponsableUserId == currentUser.Id)
+                .Select(s => s.Id)
+                .ToList());
 
             if (delegates.Any())
             {
                 foreach (var userDelegate in delegates)
                 {
-                    ids.AddRange(GetAll().Where(s => s.ResponsableUserId == userDelegate.SourceId.GetValueOrDefault())
-                        .Select(s => s.Id)
-                        .ToList()); 
+                    ids.Add(userDelegate.AnalyticSourceId.GetValueOrDefault());
                 }
             }
-
-            ids.AddRange(GetAll().Where(s => s.ResponsableUserId == currentUser.Id)
-                .Select(s => s.Id)
-                .ToList());
 
             return ids.Distinct().ToList();
         }

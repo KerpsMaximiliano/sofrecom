@@ -47,7 +47,15 @@ namespace Sofco.Service.Implementations.Billing
             {
                 try
                 {
-                    response.Data.AddRange(customerData.GetCustomers(item));
+                    var customers = customerData.GetCustomers(item);
+
+                    foreach (var customer in customers)
+                    {
+                        if (response.Data.All(x => x.Id != customer.Id))
+                        {
+                            response.Data.Add(customer);
+                        }
+                    }
                 }
                 catch (Exception e)
                 {

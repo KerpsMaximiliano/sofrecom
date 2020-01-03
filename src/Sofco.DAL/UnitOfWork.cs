@@ -104,7 +104,6 @@ namespace Sofco.DAL
 
         private IUtilsRepository utilsRepository;
         private IFileRepository fileRepository;
-        private IUserDelegateRepository userDelegateRepository;
         private ICurrencyExchangeRepository currencyExchangeRepository;
         private ILogRepository logRepository;
         private IDelegationRepository delegationRepository;
@@ -233,7 +232,6 @@ namespace Sofco.DAL
 
         public IUtilsRepository UtilsRepository => utilsRepository ?? (utilsRepository = new UtilsRepository(context));
         public IFileRepository FileRepository => fileRepository ?? (fileRepository = new FileRepository(context));
-        public IUserDelegateRepository UserDelegateRepository => userDelegateRepository ?? (userDelegateRepository = new UserDelegateRepository(context));
         public ICurrencyExchangeRepository CurrencyExchangeRepository => currencyExchangeRepository ?? (currencyExchangeRepository = new CurrencyExchangeRepository(context));
         public ILogRepository LogRepository => logRepository ?? (logRepository = new LogRepository(context));
         public IDelegationRepository DelegationRepository => delegationRepository ?? (delegationRepository = new DelegationRepository(context));

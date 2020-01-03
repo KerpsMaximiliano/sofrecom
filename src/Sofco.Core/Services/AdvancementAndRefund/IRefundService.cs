@@ -31,11 +31,5 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response Delete(int id);
 
         Response<IList<Option>> GetAnalitycs();
-
-        Response<int> Delegate(int userId);
-
-        Response DeleteDelegate(List<int> ids);
-
-        Response<IList<Option>> GetDelegates();
     }
 }

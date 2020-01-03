@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
 using Sofco.Common.Settings;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
 using Sofco.Domain.Enums;
@@ -13,14 +14,14 @@ namespace Sofco.Framework.Managers
     {
         private readonly IUnitOfWork unitOfWork;
 
-        private readonly ISessionManager sessionManager;
+        private readonly IUserData userData;
 
         private readonly AppSetting appSetting;
 
-        public SolfacDelegateManager(IUnitOfWork unitOfWork, ISessionManager sessionManager, IOptions<AppSetting> appSettingOptions)
+        public SolfacDelegateManager(IUnitOfWork unitOfWork, IUserData userData, IOptions<AppSetting> appSettingOptions)
         {
             this.unitOfWork = unitOfWork;
-            this.sessionManager = sessionManager;
+            this.userData = userData;
             appSetting = appSettingOptions.Value;
         }
 
@@ -28,8 +29,9 @@ namespace Sofco.Framework.Managers
         {
             var roles = new List<Role>();
 
-            if (!unitOfWork.UserDelegateRepository.HasUserDelegate(sessionManager.GetUserName(),
-                UserDelegateType.Solfac)) return roles;
+            var currentUser = userData.GetCurrentUser();
+
+            if (!unitOfWork.DelegationRepository.ExistByGrantedUserIdAndType(currentUser.Id, DelegationType.Solfac)) return roles;
 
             roles.Add(unitOfWork.RoleRepository.GetByCode(appSetting.SolfacGeneratorCode));
 

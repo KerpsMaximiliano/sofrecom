@@ -7,6 +7,7 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { DelegationType } from "app/models/enums/delegationType";
 import { DelegationService } from "app/services/admin/delegation.service";
 import { MenuService } from "app/services/admin/menu.service";
+import { PurchaseOrderApprovalDelegateService } from "app/services/billing/purchase-order-approval-delegate.service";
 
 @Component({
     selector: 'delegation',
@@ -18,6 +19,8 @@ export class DelegationComponent implements OnInit, OnDestroy {
     grantedUserId: number;
     analyticSourceId: number;
     userSourceId: number;
+    areaSourceId: number;
+    sectorSourceId: number;
     sourceType = "2";
 
     sourceTypeDisabled: boolean;
@@ -28,6 +31,8 @@ export class DelegationComponent implements OnInit, OnDestroy {
     users: any[] = new Array();
     resources: any[] = new Array();
     analytics: any[] = new Array();
+    areas: any[] = new Array<any>(); 
+    sectors: any[] = new Array<any>();
     data: any[] = new Array();
     resourcesByManager: any[] = new Array();
 
@@ -37,11 +42,14 @@ export class DelegationComponent implements OnInit, OnDestroy {
     deleteSubscript: Subscription;
     getSubscript: Subscription;
     getResourcesSubscript: Subscription;
+    getAreasSubscription: Subscription;
+    getSectorsSubscription: Subscription;
  
     constructor(private messageService: MessageService,
                 private i18nService: I18nService,
                 private menuService: MenuService,
                 private datatableService: DataTableService,
+                private purchaseOrderDelegateService: PurchaseOrderApprovalDelegateService,
                 private userDelegateService: DelegationService,
                 private userService: UserService) { }
 
@@ -77,9 +85,35 @@ export class DelegationComponent implements OnInit, OnDestroy {
         if(this.menuService.hasFunctionality("DELEG", "WORKTIME-DELEGATE")){
             this.types.push({ id: DelegationType.WorkTime, text: "Aprobación Horas" });
         }
+ 
+        if(this.menuService.hasFunctionality("DELEG", "SOLFAC-DELEGATE")){
+            this.types.push({ id: DelegationType.Solfac, text: "Generación Solfac" }); 
+        }
+
+        if(this.menuService.hasFunctionality("DELEG", "OC-COMPLI-DELEGATE")){
+            this.types.push({ id: DelegationType.PurchaseOrderApprovalCompliance, text: "Aprobación OC Compliance" }); 
+        }
+
+        if(this.menuService.hasFunctionality("DELEG", "OC-COMERC-DELEGATE")){
+            this.types.push({ id: DelegationType.PurchaseOrderApprovalCommercial, text: "Aprobación OC Comercial" }); 
+        }
+
+        if(this.menuService.hasFunctionality("DELEG", "OC-DAF-DELEGATE")){
+            this.types.push({ id: DelegationType.PurchaseOrderApprovalDaf, text: "Aprobación OC DAF" }); 
+        }
+
+        if(this.menuService.hasFunctionality("DELEG", "OC-OPERA-DELEGATE")){
+            this.types.push({ id: DelegationType.PurchaseOrderApprovalOperation, text: "Aprobación OC Operativo" }); 
+        }
+        
+        if(this.menuService.hasFunctionality("DELEG", "OC-VIEW-DELEGATE")){
+            this.types.push({ id: DelegationType.PurchaseOrderActive, text: "Vista Ordenes de Compra" }); 
+        }
 
         this.get();
         this.getResourcesByManager();
+        this.getAreas();
+        this.getSectors();
     }
 
     ngOnDestroy(): void {
@@ -101,7 +135,33 @@ export class DelegationComponent implements OnInit, OnDestroy {
         error => this.messageService.closeLoading());
     }
 
+    getAreas() {
+        this.getAreasSubscription = this.purchaseOrderDelegateService.getAreas().subscribe(res => {
+            this.areas = res.data;
+        });
+    }
+
+    getSectors() {
+        this.getSectorsSubscription = this.purchaseOrderDelegateService.getSectors().subscribe(res => {
+            this.sectors = res.data;
+        });
+    }
     
+    isAreaType(){
+        return this.typeId == DelegationType.PurchaseOrderApprovalCommercial;
+    }
+
+    isSectorType(){
+        return this.typeId == DelegationType.PurchaseOrderApprovalOperation;
+    }
+
+    isPurchaseOrder(){
+        return this.typeId == DelegationType.PurchaseOrderApprovalOperation ||
+               this.typeId == DelegationType.PurchaseOrderApprovalCommercial ||
+               this.typeId == DelegationType.PurchaseOrderApprovalDaf ||
+               this.typeId == DelegationType.PurchaseOrderApprovalCompliance;
+    }
+
     getResourcesByManager(){
         this.getSubscript = this.userDelegateService.getResources().subscribe(response => {
             this.resourcesByManager = response.data;
@@ -143,7 +203,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
             return false;
         }
 
-        if(this.typeId == DelegationType.ManagementReport){
+        if(this.typeId == DelegationType.ManagementReport || this.typeId == DelegationType.Solfac || this.typeId == DelegationType.PurchaseOrderActive){
             if(!this.analyticSourceId || this.analyticSourceId <= 0) return false;
 
             if(this.sourceType == "3" && (!this.userSourceId || this.userSourceId <= 0))return false;
@@ -157,6 +217,14 @@ export class DelegationComponent implements OnInit, OnDestroy {
 
         if(this.typeId == DelegationType.LicenseAuthorizer){
             if(!this.userSourceId || this.userSourceId <= 0) return false;
+        }
+
+        if(this.typeId == DelegationType.PurchaseOrderApprovalCommercial){
+            if(!this.areaSourceId || this.areaSourceId <= 0) return false;
+        }
+
+        if(this.typeId == DelegationType.PurchaseOrderApprovalOperation){
+            if(!this.sectorSourceId || this.sectorSourceId <= 0) return false;
         }
 
         return true;
@@ -174,7 +242,15 @@ export class DelegationComponent implements OnInit, OnDestroy {
             type: this.typeId,
             sourceType: this.sourceType,
             analyticSourceId: this.analyticSourceId,
-            userSourceId: this.userSourceId,
+            userSourceId: this.userSourceId
+        }
+
+        if(this.typeId == DelegationType.PurchaseOrderApprovalCommercial){
+            model.analyticSourceId = this.areaSourceId;
+        }
+
+        if(this.typeId == DelegationType.PurchaseOrderApprovalOperation){
+            model.analyticSourceId = this.sectorSourceId;
         }
 
         this.messageService.showLoading();
@@ -204,6 +280,8 @@ export class DelegationComponent implements OnInit, OnDestroy {
     typeChanged(){
         this.analyticSourceId = null;
         this.userSourceId = null;
+        this.areaSourceId = null;
+        this.sectorSourceId = null;
         this.resources = [];
 
         if(this.typeId == DelegationType.ManagementReport){
@@ -244,7 +322,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.resources = this.resourcesByManager;
         }
 
-        if(this.typeId == DelegationType.RefundApprovall){
+        if(this.typeId == DelegationType.RefundApprovall || this.typeId == DelegationType.Solfac){
             this.sourceTypeDisabled = true;
             this.analyticDisabled = false;
             this.userSourceDisabled = false;
@@ -256,6 +334,17 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.analyticDisabled = true;
             this.userSourceDisabled = true;
             this.sourceType = "3";
+        }
+
+        if(this.isPurchaseOrder()){
+            this.sourceTypeDisabled = true;
+            this.sourceType = "2";
+        }
+
+        if(this.typeId == DelegationType.PurchaseOrderActive){
+            this.sourceTypeDisabled = true;
+            this.sourceType = "2";
+            this.analyticDisabled = false;
         }
     }
 }

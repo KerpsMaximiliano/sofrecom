@@ -85,5 +85,14 @@ namespace Sofco.DAL.Repositories.Common
                 .Where(x => x.AnalyticSourceId == analyticId && x.EmployeeSourceId == employeeId && x.Type == type)
                 .ToList();
         }
+
+        public IList<Delegation> GetByGrantedUserIdAndType(int grantedUserId, List<DelegationType> types)
+        {
+            return context.Delegations
+                .Include(x => x.User)
+                .Include(x => x.GrantedUser)
+                .Where(x => x.GrantedUserId == grantedUserId && types.Contains(x.Type))
+                .ToList();
+        }
     }
 }

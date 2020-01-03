@@ -294,9 +294,7 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 
             if (!isCompliance)
             {
-                isCompliance =
-                    unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
-                        UserDelegateType.PurchaseOrderApprovalCompliance).Any();
+                isCompliance = unitOfWork.DelegationRepository.ExistByGrantedUserIdAndType(currentUser.Id, DelegationType.PurchaseOrderApprovalCompliance);
             }
 
             return isCompliance;
@@ -308,9 +306,7 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
 
             if (!isDaf)
             {
-                isDaf =
-                    unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
-                        UserDelegateType.PurchaseOrderApprovalDaf).Any();
+                isDaf = unitOfWork.DelegationRepository.ExistByGrantedUserIdAndType(currentUser.Id, DelegationType.PurchaseOrderApprovalDaf);
             }
 
             return isDaf;
@@ -320,12 +316,9 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
         {
             var result = new List<int> {currentUser.Id};
 
-            var userDelegates = unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
-                UserDelegateType.PurchaseOrderApprovalCommercial);
-            if (userDelegates.Any(s => s.SourceId != null))
-            {
-                result.AddRange(userDelegates.Select(s => s.SourceId.Value));
-            }
+            var userDelegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.PurchaseOrderApprovalCommercial);
+
+            result.AddRange(userDelegates.Select(s => s.UserId));
 
             return result;
         }
@@ -334,12 +327,9 @@ namespace Sofco.Service.Implementations.Billing.PurchaseOrder
         {
             var result = new List<int> {currentUser.Id};
 
-            var userDelegates = unitOfWork.UserDelegateRepository.GetByUserId(currentUser.Id,
-                UserDelegateType.PurchaseOrderApprovalOperation);
-            if (userDelegates.Any(s => s.SourceId != null))
-            {
-                result.AddRange(userDelegates.Select(s => s.SourceId.Value));
-            }
+            var userDelegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.PurchaseOrderApprovalOperation);
+
+            result.AddRange(userDelegates.Select(s => s.UserId));
 
             return result;
         }

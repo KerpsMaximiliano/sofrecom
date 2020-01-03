@@ -173,29 +173,5 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 
             return this.CreateResponse(response);
         }
-
-        [HttpPost("delegate/{userId}")]
-        public IActionResult Delegate(int userId)
-        {
-            var response = refundService.Delegate(userId);
-
-            return this.CreateResponse(response);
-        }
-
-        [HttpPost("delegate")]
-        public IActionResult DeleteDelegate([FromBody] List<int> ids)
-        {
-            var response = refundService.DeleteDelegate(ids);
-
-            return this.CreateResponse(response);
-        }
-
-        [HttpGet("delegates")]
-        public IActionResult GetDelegates()
-        {
-            var response = refundService.GetDelegates();
-
-            return this.CreateResponse(response);
-        }
     }
 }

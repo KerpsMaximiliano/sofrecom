@@ -34,6 +34,7 @@ import { RefundAddComponent } from '../advancementAndRefund/refund/add/refund-ad
 import { RefundService } from 'app/services/advancement-and-refund/refund.service';
 import { DelegationComponent } from './delegation/delegation';
 import { DelegationService } from 'app/services/admin/delegation.service';
+import { PurchaseOrderApprovalDelegateService } from 'app/services/billing/purchase-order-approval-delegate.service';
 
 @NgModule({
   declarations: [ WorkTimeComponent, AdvancementAddComponent, RefundAddComponent, DelegationComponent ],
@@ -43,7 +44,8 @@ import { DelegationService } from 'app/services/admin/delegation.service';
                  AdvacementFormModule, IboxtoolsModule, ResourceDetailModule, AddLicenseModule, ButtonsModule, NgSelectModule, 
                  ReactiveFormsModule, BsDatepickerModule, RefundFormModule],
 
-  providers   : [LicenseService, EmployeeService, AnalyticService, TaskService, WorktimeService, AdvancementService, UtilsService, RefundService, DelegationService],
+  providers   : [LicenseService, EmployeeService, AnalyticService, TaskService, WorktimeService, PurchaseOrderApprovalDelegateService,
+                 AdvancementService, UtilsService, RefundService, DelegationService],
   
   exports     : []
 })
