@@ -23,6 +23,8 @@ using Sofco.Service.Implementations.Billing.PurchaseOrder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sofco.Core.DAL.Common;
+using Sofco.Domain.Models.Common;
 
 namespace Sofco.UnitTest.Services.Billing
 {
@@ -43,6 +45,7 @@ namespace Sofco.UnitTest.Services.Billing
         private Mock<ISectorRepository> sectorRepositoryMock;
         private Mock<IAreaRepository> areaRepositoryMock;
         private Mock<IAnalyticRepository> analyticRepositoryMock;
+        private Mock<IDelegationRepository> delegationRepositoryMock;
 
         private const string ExistNumber = "A0001";
 
@@ -59,6 +62,7 @@ namespace Sofco.UnitTest.Services.Billing
             sectorRepositoryMock = new Mock<ISectorRepository>();
             areaRepositoryMock = new Mock<IAreaRepository>();
             analyticRepositoryMock = new Mock<IAnalyticRepository>();
+            delegationRepositoryMock = new Mock<IDelegationRepository>();
 
             var emailOptions = new Mock<IOptions<EmailConfig>>();
             emailOptions.SetupGet(x => x.Value).Returns(emailConfig.Object);
@@ -70,6 +74,7 @@ namespace Sofco.UnitTest.Services.Billing
             unitOfWorkMock.Setup(x => x.AreaRepository).Returns(areaRepositoryMock.Object);
             unitOfWorkMock.Setup(x => x.SectorRepository).Returns(sectorRepositoryMock.Object);
             unitOfWorkMock.Setup(x => x.AnalyticRepository).Returns(analyticRepositoryMock.Object);
+            unitOfWorkMock.Setup(x => x.DelegationRepository).Returns(delegationRepositoryMock.Object);
 
             factoryMock.Setup(x => x.GetInstance(PurchaseOrderStatus.Draft)).Returns(
                 new PurchaseOrderStatusDraft(unitOfWorkMock.Object, mailBuilderMock.Object, mailSenderMock.Object,
@@ -120,6 +125,8 @@ namespace Sofco.UnitTest.Services.Billing
             {
                 new Sector { Id = 1, ResponsableUserId = 2 }
             });
+
+            delegationRepositoryMock.Setup(s => s.GetByGrantedUserIdAndType(It.IsAny<int>(), It.IsAny<DelegationType>())).Returns(new List<Delegation>());
 
             sut = new PurchaseOrderStatusService(unitOfWorkMock.Object,
                 loggerMock.Object,
