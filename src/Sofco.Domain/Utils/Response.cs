@@ -35,6 +35,12 @@ namespace Sofco.Domain.Utils
                 Messages.Add(new Message(msg, MessageType.Error, false));
         }
 
+        public void AddWarningAndNoTraslate(string msg)
+        {
+            if (!Messages.Any(x => x.Text.Equals(msg)))
+                Messages.Add(new Message(msg, MessageType.Warning, false));
+        }
+
         public void AddWarning(string msg)
         {
             Messages.Add(new Message(msg, MessageType.Warning));

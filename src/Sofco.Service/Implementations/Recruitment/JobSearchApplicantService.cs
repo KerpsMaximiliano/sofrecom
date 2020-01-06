@@ -85,25 +85,37 @@ namespace Sofco.Service.Implementations.Recruitment
              
             try
             {
+                var date = DateTime.UtcNow.Date;
+                var anySuccess = false;
+
                 foreach (var jobSearchId in model.JobSearchs)
                 {
                     foreach (var applicantId in model.Applicants)
                     {
-                        var itemToAdd = new JobSearchApplicant
+                        if (!unitOfWork.JobSearchApplicantRepository.Exist(applicantId, jobSearchId, date))
                         {
-                            ApplicantId = applicantId,
-                            Comments = model.Comments,
-                            JobSearchId = jobSearchId,
-                            ReasonId = model.ReasonId.GetValueOrDefault(),
-                            CreatedDate = DateTime.UtcNow.Date,
-                            CreatedBy = currentUser.UserName
-                        };
+                            var itemToAdd = new JobSearchApplicant
+                            {
+                                ApplicantId = applicantId,
+                                Comments = model.Comments,
+                                JobSearchId = jobSearchId,
+                                ReasonId = model.ReasonId.GetValueOrDefault(),
+                                CreatedDate = date,
+                                CreatedBy = currentUser.UserName
+                            };
 
-                        unitOfWork.JobSearchApplicantRepository.Insert(itemToAdd);
+                            unitOfWork.JobSearchApplicantRepository.Insert(itemToAdd);
+                            anySuccess = true;
+                        }
+                        else
+                        {
+                            var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
+                            response.AddWarningAndNoTraslate($"Ya existe un contacto para el postulante {applicant.FirstName} {applicant.LastName} para la busqueda #{jobSearchId} con fecha de hoy");   
+                        }
                     }
                 }
                
-                if (reason.Type == ReasonCauseType.ApplicantInProgress)
+                if (anySuccess && reason.Type == ReasonCauseType.ApplicantInProgress)
                 {
                     foreach (var applicantId in model.Applicants)
                     {
@@ -113,8 +125,11 @@ namespace Sofco.Service.Implementations.Recruitment
                     }
                 }
 
-                unitOfWork.Save();
-                response.AddSuccess(Resources.Recruitment.JobSearch.ContactAdded);
+                if (anySuccess)
+                {
+                    unitOfWork.Save();
+                    response.AddSuccess(Resources.Recruitment.JobSearch.ContactAdded);
+                }
             }
             catch (Exception e)
             {
