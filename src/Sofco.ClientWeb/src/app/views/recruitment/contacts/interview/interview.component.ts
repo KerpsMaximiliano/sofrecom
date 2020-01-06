@@ -1,4 +1,4 @@
-import { OnDestroy, Component, ViewChild, Output, EventEmitter } from "@angular/core";
+import { OnDestroy, Component, ViewChild, Output, EventEmitter, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { FormsService } from "app/services/forms/forms.service";
 import { Subscription } from "rxjs";
@@ -13,7 +13,7 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
     selector: 'interview',
     templateUrl: './interview.component.html',
 })
-export class InterviewComponent implements OnDestroy {
+export class InterviewComponent implements OnInit, OnDestroy {
 
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({url:""});
@@ -21,6 +21,7 @@ export class InterviewComponent implements OnDestroy {
     
     userOptions: any[] = new Array();
     reasonOptions: any[] = new Array();
+    recruitersOptions: any[] = new Array();
 
     isVisible: boolean = false;
     hasRrhhInterview: boolean = false;
@@ -58,6 +59,7 @@ export class InterviewComponent implements OnDestroy {
     });
 
     addSubscrip: Subscription;
+    getRecruiterSubscrip: Subscription;
 
     constructor(public formsService: FormsService, 
                 private authService: AuthService,
@@ -65,8 +67,19 @@ export class InterviewComponent implements OnDestroy {
                 private jobSearchService: JobSearchService){
     }
 
+    ngOnInit(): void {
+        this.getRecruiters();
+    }
+
     ngOnDestroy(): void { 
         if (this.addSubscrip) this.addSubscrip.unsubscribe();
+        if (this.getRecruiterSubscrip) this.getRecruiterSubscrip.unsubscribe();
+    }
+
+    getRecruiters(){
+        this.getRecruiterSubscrip = this.jobSearchService.getRecruiters().subscribe(response => {
+            this.recruitersOptions = response.data;
+        });
     }
 
     save(){
