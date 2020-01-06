@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sofco.Domain.Enums;
 
 namespace Sofco.Core.Models.Recruitment
@@ -22,5 +23,8 @@ namespace Sofco.Core.Models.Recruitment
         public int? ReasonId { get; set; }
 
         public int? RecruiterId { get; set; }
+
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

@@ -47,6 +47,10 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
     profiles: any;
     seniorities: any;
 
+    filterByDates: boolean;
+    startDate: Date;
+    endDate: Date;
+
     constructor(private router: Router,
         private messageService: MessageService,
         private jobSearchService: JobSearchService,
@@ -196,9 +200,22 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
         this.reasonCauseId = null;
         this.recruiterId = null;
         this.seniorities = null;
+        this.startDate = null;
+        this.endDate = null;
     }
 
     search(){
+        if(!this.filterByDates){
+            this.startDate = null;
+            this.endDate = null;
+        }
+        else{
+            if(this.startDate != null && this.endDate != null && this.endDate < this.startDate){
+                this.messageService.showError("dateToLessThanSince");
+                return;
+            }
+        }
+
         var json = {
             id: this.id,
             clientId: this.clientId,
@@ -208,7 +225,9 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
             userId: this.userId,
             status: this.statusId,
             reasonId: this.reasonCauseId,
-            recruiterId: this.recruiterId
+            recruiterId: this.recruiterId,
+            startDate: this.startDate,
+            endDate: this.endDate
         };
 
         this.data = [];

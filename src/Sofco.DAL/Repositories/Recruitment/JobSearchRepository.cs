@@ -57,6 +57,12 @@ namespace Sofco.DAL.Repositories.Recruitment
 
                 if (parameter.Skills != null && parameter.Skills.Any())
                     query = query.Where(x => x.JobSearchSkillsRequired.Any(s => parameter.Skills.Contains(s.SkillId)));
+
+                if (parameter.StartDate.HasValue)
+                    query = query.Where(x => x.CreatedDate.Date >= parameter.StartDate.Value.Date);
+
+                if (parameter.EndDate.HasValue)
+                    query = query.Where(x => x.CreatedDate.Date <= parameter.EndDate.Value.Date);
             }
 
             return query.ToList();
