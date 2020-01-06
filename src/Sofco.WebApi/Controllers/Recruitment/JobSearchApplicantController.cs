@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,10 +29,10 @@ namespace Sofco.WebApi.Controllers.Recruitment
             return this.CreateResponse(response);
         }
 
-        [HttpPost("{applicantId}/{jobSearchId}/interview")]
-        public IActionResult Interview(int applicantId, int jobSearchId, [FromBody] InterviewAddModel model)
+        [HttpPost("{applicantId}/{jobSearchId}/{date}/interview")]
+        public IActionResult Interview(int applicantId, int jobSearchId, DateTime date, [FromBody] InterviewAddModel model)
         {
-            var response = jobSearchApplicantService.AddInterview(applicantId, jobSearchId, model);
+            var response = jobSearchApplicantService.AddInterview(applicantId, jobSearchId, date, model);
 
             return this.CreateResponse(response);
         }
@@ -59,8 +60,8 @@ namespace Sofco.WebApi.Controllers.Recruitment
             return this.CreateResponse(responseError);
         }
 
-        [HttpPost("{applicantId}/{jobSearchId}/file")]
-        public async Task<IActionResult> File(int applicantId, int jobSearchId)
+        [HttpPost("{applicantId}/{jobSearchId}/{date}/file")]
+        public async Task<IActionResult> File(int applicantId, int jobSearchId, DateTime date)
         {
             var response = new Response<File>();
 
@@ -68,7 +69,7 @@ namespace Sofco.WebApi.Controllers.Recruitment
             {
                 var file = Request.Form.Files.First();
 
-                await jobSearchApplicantService.AttachFile(applicantId, jobSearchId, response, file);
+                await jobSearchApplicantService.AttachFile(applicantId, jobSearchId, date, response, file);
             }
             else
             {

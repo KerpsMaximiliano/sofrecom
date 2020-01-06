@@ -10,8 +10,8 @@ export class JobSearchService {
         this.baseUrl = this.service.UrlApi;
     }
 
-    getUrlForImportExcel(applicantId, jobSearchId){
-        return `${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/file`;
+    getUrlForImportExcel(applicantId, jobSearchId, date){
+        return `${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/${date}/file`;
     }
 
     get(id){
@@ -50,8 +50,8 @@ export class JobSearchService {
         return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant`, json);
     }
 
-    addInterview(json, applicantId, jobSearchId){
-        return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/interview`, json);
+    addInterview(json, applicantId, jobSearchId, date){
+        return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/${date}/interview`, json);
     }
 
     getHistories(id) {

@@ -95,7 +95,7 @@ namespace Sofco.Service.Implementations.Recruitment
                             Comments = model.Comments,
                             JobSearchId = jobSearchId,
                             ReasonId = model.ReasonId.GetValueOrDefault(),
-                            CreatedDate = DateTime.UtcNow,
+                            CreatedDate = DateTime.UtcNow.Date,
                             CreatedBy = currentUser.UserName
                         };
 
@@ -125,11 +125,11 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        public Response AddInterview(int applicantId, int jobSearchId, InterviewAddModel model)
+        public Response AddInterview(int applicantId, int jobSearchId, DateTime date, InterviewAddModel model)
         {
             var response = new Response();
 
-            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId);
+            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId, date);
 
             if (jobSearchApplicant == null)
             {
@@ -212,10 +212,11 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        public async Task<Response<File>> AttachFile(int applicantId, int jobSearchId, Response<File> response,
+        public async Task<Response<File>> AttachFile(int applicantId, int jobSearchId, DateTime date,
+            Response<File> response,
             IFormFile file)
         {
-            var jobsearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId);
+            var jobsearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId, date);
 
             if (jobsearchApplicant == null)
             {

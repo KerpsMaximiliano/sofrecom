@@ -32,6 +32,7 @@ export class InterviewComponent implements OnDestroy {
 
     jobSearchId: number;
     applicantId: number;
+    date: Date;
 
     history: any;
 
@@ -97,7 +98,7 @@ export class InterviewComponent implements OnDestroy {
  
         this.messageService.showLoading();
 
-        this.addSubscrip = this.jobSearchService.addInterview(json, this.applicantId, this.jobSearchId).subscribe(response => {
+        this.addSubscrip = this.jobSearchService.addInterview(json, this.applicantId, this.jobSearchId, this.date).subscribe(response => {
             this.messageService.closeLoading();
 
             this.history.reasonId = this.form.controls.reasonId.value;
@@ -117,6 +118,7 @@ export class InterviewComponent implements OnDestroy {
 
         this.applicantId = history.applicantId;
         this.jobSearchId = history.jobSearchId;
+        this.date = history.date;
         this.isVisible = true;
 
         this.uploaderConfig();
@@ -310,7 +312,7 @@ export class InterviewComponent implements OnDestroy {
     }
 
     uploaderConfig(){
-        this.uploader = new FileUploader({url: this.jobSearchService.getUrlForImportExcel(this.applicantId, this.jobSearchId),
+        this.uploader = new FileUploader({url: this.jobSearchService.getUrlForImportExcel(this.applicantId, this.jobSearchId, this.date),
                                           authToken: 'Bearer ' + Cookie.get('access_token') ,
                                           maxFileSize: 50*1024*1024
                                         });

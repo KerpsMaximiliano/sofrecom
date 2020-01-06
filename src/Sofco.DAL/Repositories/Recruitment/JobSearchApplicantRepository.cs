@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Recruitment;
@@ -75,9 +76,9 @@ namespace Sofco.DAL.Repositories.Recruitment
             .ToList();
         }
 
-        public JobSearchApplicant GetById(int applicantId, int jobSearchId)
+        public JobSearchApplicant GetById(int applicantId, int jobSearchId, DateTime date)
         {
-            return context.JobSearchApplicants.SingleOrDefault(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId);
+            return context.JobSearchApplicants.SingleOrDefault(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId && x.CreatedDate.Date == date.Date);
         }
 
         public void InsertFile(JobSearchApplicantFile jobsearchApplicantFile)
