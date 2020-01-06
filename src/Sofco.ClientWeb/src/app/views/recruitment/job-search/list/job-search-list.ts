@@ -90,6 +90,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
     ngAfterViewInit(): void {
         this.statusId = [JobSearchStatus.Open, JobSearchStatus.Reopen];
         this.search();
+        this.collapse();
     }
     
     ngOnDestroy(): void {
