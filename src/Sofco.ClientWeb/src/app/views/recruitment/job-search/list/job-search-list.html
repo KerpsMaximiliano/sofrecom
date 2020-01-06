@@ -41,7 +41,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label class="control-label"> Estado </label>
-                                <ng-select [items]="statusOptions" bindValue="id" bindLabel="text" [(ngModel)]="statusId"></ng-select>
+                                <ng-select [multiple]="true" [closeOnSelect]="false" [items]="statusOptions" bindValue="id" bindLabel="text" [(ngModel)]="statusId"></ng-select>
                             </div>
                         </div>
 

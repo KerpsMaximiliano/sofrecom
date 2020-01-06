@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, AfterViewInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { MenuService } from "app/services/admin/menu.service";
 import { MessageService } from "app/services/common/message.service";
@@ -16,8 +16,7 @@ declare var moment: any;
     selector: 'job-search-list',
     templateUrl: './job-search-list.html'
 })
-export class JobSearchListComponent implements OnInit, OnDestroy {
-
+export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit {
     searchSubscrip: Subscription;
     getUsersSubscrip: Subscription;
     getReasonsSubscrip: Subscription;
@@ -42,7 +41,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
     userId: number;
     reasonCauseId: number;
     recruiterId: number;
-    statusId: number;
+    statusId: any;
     clientId: string;
     skills: any;
     profiles: any;
@@ -87,6 +86,11 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
         this.statusOptions.push({ id: JobSearchStatus.Suspended, text: "Suspendida"});
         this.statusOptions.push({ id: JobSearchStatus.Close, text: "Cerrada"});
     }    
+
+    ngAfterViewInit(): void {
+        this.statusId = [JobSearchStatus.Open, JobSearchStatus.Reopen];
+        this.search();
+    }
     
     ngOnDestroy(): void {
         if (this.searchSubscrip) this.searchSubscrip.unsubscribe();
@@ -194,15 +198,6 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
     }
 
     search(){
-        var status;
-
-        if(this.statusId >= 0){
-            status = [this.statusId];
-        }
-        else{
-            status = [];
-        }
-
         var json = {
             id: this.id,
             clientId: this.clientId,
@@ -210,7 +205,7 @@ export class JobSearchListComponent implements OnInit, OnDestroy {
             seniorities: this.seniorities,
             profiles: this.profiles,
             userId: this.userId,
-            status: status,
+            status: this.statusId,
             reasonId: this.reasonCauseId,
             recruiterId: this.recruiterId
         };
