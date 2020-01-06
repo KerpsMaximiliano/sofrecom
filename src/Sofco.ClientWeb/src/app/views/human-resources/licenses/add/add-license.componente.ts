@@ -267,6 +267,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             this.initUserInfo();            
         } else {
             this.model.employeeId = '0';
+            this.model.typeId = 0;
         }
     }
 
