@@ -5,16 +5,14 @@ namespace Sofco.Core.Models.Recruitment
 {
     public class ApplicantFileModel
     {
-        public ApplicantFileModel(JobSearchApplicantFile jobSearchApplicantFile)
+        public ApplicantFileModel(ApplicantFile applicantFile)
         {
-            JobSearch = jobSearchApplicantFile.JobSearchId;
-
-            if (jobSearchApplicantFile.File != null)
+            if (applicantFile.File != null)
             {
-                Name = jobSearchApplicantFile.File.FileName;
-                Date = jobSearchApplicantFile.File.CreationDate;
-                UserName = jobSearchApplicantFile.File.CreatedUser;
-                Id = jobSearchApplicantFile.FileId;
+                Name = applicantFile.File.FileName;
+                Date = applicantFile.File.CreationDate;
+                UserName = applicantFile.File.CreatedUser;
+                Id = applicantFile.FileId;
             }
         }
 
@@ -25,7 +23,5 @@ namespace Sofco.Core.Models.Recruitment
         public string UserName { get; set; }
 
         public int Id { get; set; }
-
-        public int JobSearch { get; set; }
     }
 }

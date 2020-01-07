@@ -4,5 +4,6 @@
     "InterviewPlaceRequired": "El lugar es requerido",    
     "FileAdded": "Archivo agregado exitosamente",    
     "InterviewDateLessThanToday": "La fecha no puede ser menor a hoy",    
+    "SalaryRequired": "La remuneracion bruta solicitada es requerida",    
     "NotFound": "Contacto no encontrado"    
 }

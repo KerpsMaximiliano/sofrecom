@@ -79,9 +79,18 @@
 
     <div class="ibox" *ngIf="gridIsVisible"> 
         <div class="ibox-content">
+            <div class="row m-b-md">
+                <div class="col-md-3">
+                    <h3>Total de horas: {{totalHours }}</h3>
+                </div>
+                <div class="col-md-3">
+                    <h3>Total de horas de licencia: {{totalLicenseHours }}</h3>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-striped dataTable" role="grid" id="searchTable">
-                    <thead>
+                    <thead> 
                         <tr>
                             <th class="column-lg">{{'workTimeManagement.report.client' | translate }}</th>
                             <th class="column-sm">Título analítica</th>

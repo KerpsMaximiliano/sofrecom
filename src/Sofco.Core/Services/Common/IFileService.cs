@@ -10,5 +10,6 @@ namespace Sofco.Core.Services.Common
         Response<Tuple<byte[], string>> GetFile(int id, string path);
 
         bool HasFile(int invoiceId);
+        Response Delete(int id);
     }
 }

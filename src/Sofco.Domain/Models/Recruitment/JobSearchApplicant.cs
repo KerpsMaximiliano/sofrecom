@@ -40,27 +40,24 @@ namespace Sofco.Domain.Models.Recruitment
 
         public string TechnicalInterviewPlace { get; set; }
 
-        public int? TechnicalInterviewerId { get; set; }
-
-        public User TechnicalInterviewer { get; set; }
-
         public bool HasClientInterview { get; set; }
 
         public DateTime? ClientInterviewDate { get; set; }
 
         public string ClientInterviewPlace { get; set; }
 
-        public int? ClientInterviewerId { get; set; }
-
-        public User ClientInterviewer { get; set; }
         public string TechnicalInterviewComments { get; set; }
+
         public string TechnicalExternalInterviewer { get; set; }
-        public bool IsTechnicalExternal { get; set; }
+
         public string ClientInterviewComments { get; set; }
-        public bool IsClientExternal { get; set; }
+
         public string ClientExternalInterviewer { get; set; }
+
         public string RrhhInterviewComments { get; set; }
 
-        public IList<JobSearchApplicantFile> Files { get; set; }
+        public bool RemoteWork { get; set; }
+
+        public decimal? Salary { get; set; }
     }
 }

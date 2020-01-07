@@ -10,10 +10,6 @@ export class JobSearchService {
         this.baseUrl = this.service.UrlApi;
     }
 
-    getUrlForImportExcel(applicantId, jobSearchId, date){
-        return `${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/${date}/file`;
-    }
-
     get(id){
         return this.http.get<any>(`${this.baseUrl}/jobSearch/${id}`);
     }

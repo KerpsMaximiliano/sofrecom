@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20200107123606_RefactorInterview")]
+    partial class RefactorInterview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2305,19 +2307,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("Applicants");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.ApplicantFile", b =>
-                {
-                    b.Property<int>("ApplicantId");
-
-                    b.Property<int>("FileId");
-
-                    b.HasKey("ApplicantId", "FileId");
-
-                    b.HasIndex("FileId");
-
-                    b.ToTable("ApplicantFiles");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.ApplicantHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -2495,8 +2484,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("ReasonId");
 
-                    b.Property<bool>("RemoteWork");
-
                     b.Property<string>("RrhhInterviewComments")
                         .HasMaxLength(100);
 
@@ -2506,8 +2493,6 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(100);
 
                     b.Property<int?>("RrhhInterviewerId");
-
-                    b.Property<decimal?>("Salary");
 
                     b.Property<string>("TechnicalExternalInterviewer");
 
@@ -2528,6 +2513,23 @@ namespace Sofco.WebApi.Migrations
                     b.HasIndex("RrhhInterviewerId");
 
                     b.ToTable("JobSearchApplicants");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearchApplicantFile", b =>
+                {
+                    b.Property<int>("JobSearchId");
+
+                    b.Property<int>("ApplicantId");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("FileId");
+
+                    b.HasKey("JobSearchId", "ApplicantId", "Date", "FileId");
+
+                    b.HasIndex("FileId");
+
+                    b.ToTable("JobSearchApplicantFiles");
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearchHistory", b =>
@@ -4258,19 +4260,6 @@ namespace Sofco.WebApi.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.ApplicantFile", b =>
-                {
-                    b.HasOne("Sofco.Domain.Models.Recruitment.Applicant", "Applicant")
-                        .WithMany("Files")
-                        .HasForeignKey("ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Sofco.Domain.Models.Common.File", "File")
-                        .WithMany()
-                        .HasForeignKey("FileId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.ApplicantHistory", b =>
                 {
                     b.HasOne("Sofco.Domain.Models.Recruitment.Applicant", "Applicant")
@@ -4336,6 +4325,19 @@ namespace Sofco.WebApi.Migrations
                     b.HasOne("Sofco.Domain.Models.Admin.User", "RrhhInterviewer")
                         .WithMany("JobSearchApplicants1")
                         .HasForeignKey("RrhhInterviewerId");
+                });
+
+            modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearchApplicantFile", b =>
+                {
+                    b.HasOne("Sofco.Domain.Models.Common.File", "File")
+                        .WithMany()
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Sofco.Domain.Models.Recruitment.JobSearchApplicant", "JobSearchApplicant")
+                        .WithMany("Files")
+                        .HasForeignKey("JobSearchId", "ApplicantId", "Date")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Sofco.Domain.Models.Recruitment.JobSearchHistory", b =>

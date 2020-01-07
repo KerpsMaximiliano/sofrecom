@@ -27,15 +27,14 @@ namespace Sofco.Service.Implementations.Recruitment
         private readonly ILogMailer<JobSearchApplicantService> logger;
         private readonly IUserData userData;
         private readonly IOptionRepository<ReasonCause> optionRepository;
-        private readonly FileConfig fileConfig;
+        
 
-        public JobSearchApplicantService(IUnitOfWork unitOfWork, ILogMailer<JobSearchApplicantService> logger, IUserData userData, IOptionRepository<ReasonCause> optionRepository, IOptions<FileConfig> fileOptions)
+        public JobSearchApplicantService(IUnitOfWork unitOfWork, ILogMailer<JobSearchApplicantService> logger, IUserData userData, IOptionRepository<ReasonCause> optionRepository)
         {
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.optionRepository = optionRepository;
-            this.fileConfig = fileOptions.Value;
         }
 
         public Response<IList<JobSearchApplicantModel>> GetByJobSearch(int jobSearchId)
@@ -152,9 +151,14 @@ namespace Sofco.Service.Implementations.Recruitment
                 return response;
             }
 
-            if(model.HasRrhhInterview) Validate(model.RrhhInterviewDate, model.RrhhInterviewPlace, model.RrhhInterviewerId, response, false);
-            if(model.HasTechnicalInterview) Validate(model.TechnicalInterviewDate, model.TechnicalInterviewPlace, model.TechnicalInterviewerId, response, model.IsTechnicalExternal);
-            if(model.HasClientInterview) Validate(model.ClientInterviewDate, model.ClientInterviewPlace, model.ClientInterviewerId, response, model.IsClientExternal);
+            if(model.HasRrhhInterview) Validate(model.RrhhInterviewDate, model.RrhhInterviewPlace, model.RrhhInterviewerId.ToString(), response);
+            if(model.HasTechnicalInterview) Validate(model.TechnicalInterviewDate, model.TechnicalInterviewPlace, model.TechnicalExternalInterviewer, response);
+            if(model.HasClientInterview) Validate(model.ClientInterviewDate, model.ClientInterviewPlace, model.ClientExternalInterviewer, response);
+
+            if (model.HasRrhhInterview && (!model.Salary.HasValue || model.Salary <= 0))
+            {
+                response.AddError(Resources.Recruitment.JobSearchApplicant.SalaryRequired);
+            }
 
             if (response.HasErrors()) return response;
 
@@ -175,19 +179,7 @@ namespace Sofco.Service.Implementations.Recruitment
                     jobSearchApplicant.TechnicalInterviewDate = model.TechnicalInterviewDate;
                     jobSearchApplicant.TechnicalInterviewPlace = model.TechnicalInterviewPlace;
                     jobSearchApplicant.TechnicalInterviewComments = model.TechnicalInterviewComments;
-
-                    if (model.IsTechnicalExternal)
-                    {
-                        jobSearchApplicant.TechnicalExternalInterviewer = model.TechnicalExternalInterviewer;
-                        jobSearchApplicant.IsTechnicalExternal = model.IsTechnicalExternal;
-                        jobSearchApplicant.TechnicalInterviewerId = null;
-                    }
-                    else
-                    {
-                        jobSearchApplicant.TechnicalInterviewerId = model.TechnicalInterviewerId;
-                        jobSearchApplicant.IsTechnicalExternal = false;
-                        jobSearchApplicant.TechnicalExternalInterviewer = string.Empty;
-                    }
+                    jobSearchApplicant.TechnicalExternalInterviewer = model.TechnicalExternalInterviewer;
                 }
 
                 if (model.HasClientInterview)
@@ -196,22 +188,12 @@ namespace Sofco.Service.Implementations.Recruitment
                     jobSearchApplicant.ClientInterviewDate = model.ClientInterviewDate;
                     jobSearchApplicant.ClientInterviewPlace = model.ClientInterviewPlace;
                     jobSearchApplicant.ClientInterviewComments = model.ClientInterviewComments;
-
-                    if (model.IsClientExternal)
-                    {
-                        jobSearchApplicant.ClientExternalInterviewer = model.ClientExternalInterviewer;
-                        jobSearchApplicant.IsClientExternal = model.IsClientExternal;
-                        jobSearchApplicant.ClientInterviewerId = null;
-                    }
-                    else
-                    {
-                        jobSearchApplicant.ClientInterviewerId = model.ClientInterviewerId;
-                        jobSearchApplicant.IsClientExternal = false;
-                        jobSearchApplicant.ClientExternalInterviewer = string.Empty;
-                    }
+                    jobSearchApplicant.ClientExternalInterviewer = model.ClientExternalInterviewer;
                 }
 
                 jobSearchApplicant.ReasonId = model.ReasonId;
+                jobSearchApplicant.RemoteWork = model.RemoteWork;
+                jobSearchApplicant.Salary = model.Salary;
 
                 unitOfWork.JobSearchApplicantRepository.Update(jobSearchApplicant);
                 unitOfWork.Save();
@@ -222,61 +204,6 @@ namespace Sofco.Service.Implementations.Recruitment
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
-            }
-
-            return response;
-        }
-
-        public async Task<Response<File>> AttachFile(int applicantId, int jobSearchId, DateTime date,
-            Response<File> response,
-            IFormFile file)
-        {
-            var jobsearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId, date);
-
-            if (jobsearchApplicant == null)
-            {
-                response.AddError(Resources.Recruitment.JobSearchApplicant.NotFound);
-                return response;
-            }
-
-            var user = userData.GetCurrentUser();
-
-            var fileToAdd = new File();
-            var lastDotIndex = file.FileName.LastIndexOf('.');
-
-            fileToAdd.FileName = file.FileName;
-            fileToAdd.FileType = file.FileName.Substring(lastDotIndex);
-            fileToAdd.InternalFileName = Guid.NewGuid();
-            fileToAdd.CreationDate = DateTime.UtcNow;
-            fileToAdd.CreatedUser = user.UserName;
-
-            var jobsearchApplicantFile = new JobSearchApplicantFile
-            {
-                File = fileToAdd,
-                JobSearchId = jobsearchApplicant.JobSearchId,
-                ApplicantId = jobsearchApplicant.ApplicantId,
-                Date = jobsearchApplicant.CreatedDate
-            };
-
-            try
-            {
-                var fileName = $"{fileToAdd.InternalFileName.ToString()}{fileToAdd.FileType}";
-
-                using (var fileStream = new FileStream(Path.Combine(fileConfig.RecruitmentPath, fileName), FileMode.Create))
-                {
-                    await file.CopyToAsync(fileStream);
-                }
-
-                unitOfWork.JobSearchApplicantRepository.InsertFile(jobsearchApplicantFile);
-                unitOfWork.Save();
-
-                response.Data = jobsearchApplicantFile.File;
-                response.AddSuccess(Resources.Recruitment.JobSearchApplicant.FileAdded);
-            }
-            catch (Exception e)
-            {
-                response.AddError(Resources.Common.SaveFileError);
-                logger.LogError(e);
             }
 
             return response;
@@ -311,8 +238,7 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        private void Validate(DateTime? date, string place, int? interviewer, Response response,
-            bool isExternal)
+        private void Validate(DateTime? date, string place, string interviewer, Response response)
         {
             if (!date.HasValue)
                 response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewDateRequired);
@@ -327,7 +253,7 @@ namespace Sofco.Service.Implementations.Recruitment
             if (string.IsNullOrWhiteSpace(place))
                 response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewPlaceRequired);
 
-            if (!isExternal && (!interviewer.HasValue || !unitOfWork.UserRepository.ExistById(interviewer.Value)))
+            if (string.IsNullOrWhiteSpace(interviewer))
                 response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewerRequired);
         }
     }

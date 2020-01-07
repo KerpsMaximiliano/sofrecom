@@ -44,31 +44,43 @@ namespace Sofco.DAL.Repositories.Rrhh
 
         public IList<Employee> GetEmployeesWithBestAllocation(DateTime today)
         {
-            return context.Allocations.Include(x => x.Employee)
-                .Include(x => x.Analytic)
-                .Where(x => x.StartDate.Date == today.Date)
-                .OrderByDescending(x => x.Percentage)
-                .Select(x => new Employee
+            var employees = context.Employees
+                .Include(x => x.Allocations)
+                    .ThenInclude(x => x.Analytic)
+                .Where(x => x.Allocations.Any(s => s.StartDate.Date == today.Date))
+                .ToList();
+
+            var result = new List<Employee>();
+
+            foreach (var employee in employees)
+            {
+                var bestAllocation = employee.Allocations.OrderByDescending(x => x.Percentage).FirstOrDefault();
+
+                if(bestAllocation == null) continue;
+
+                result.Add(new Employee
                 {
-                    Id = x.EmployeeId,
-                    ManagerId = x.Employee.ManagerId,
+                    Id = employee.Id,
+                    ManagerId = employee.ManagerId,
                     Allocations = new List<Allocation>()
                     {
                         new Allocation
                         {
-                            Id =  x.Id,
-                            AnalyticId = x.AnalyticId,
-                            EmployeeId = x.EmployeeId,
-                            Percentage = x.Percentage,
+                            Id =  bestAllocation.Id,
+                            AnalyticId = bestAllocation.AnalyticId,
+                            EmployeeId = bestAllocation.EmployeeId,
+                            Percentage = bestAllocation.Percentage,
                             Analytic = new Analytic
                             {
-                                Id = x.AnalyticId,
-                                ManagerId = x.Analytic.ManagerId
+                                Id = bestAllocation.AnalyticId,
+                                ManagerId = bestAllocation.Analytic.ManagerId
                             }
                         }
                     }
-                })
-                .ToList();
+                });
+            }
+
+            return result;
         }
     }
 }

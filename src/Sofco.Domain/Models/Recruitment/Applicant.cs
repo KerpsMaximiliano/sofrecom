@@ -81,5 +81,7 @@ namespace Sofco.Domain.Models.Recruitment
         public DateTime? StartDate { get; set; }
 
         public string Aggreements { get; set; }
+
+        public IList<ApplicantFile> Files { get; set; }
     }
 }

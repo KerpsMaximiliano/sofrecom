@@ -6,9 +6,15 @@ using Sofco.Core.Services.Recruitment;
 using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.Recruitment
 {
@@ -17,12 +23,14 @@ namespace Sofco.Service.Implementations.Recruitment
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<ApplicantService> logger;
         private readonly IUserData userData;
+        private readonly FileConfig fileConfig;
 
-        public ApplicantService(IUnitOfWork unitOfWork, ILogMailer<ApplicantService> logger, IUserData userData)
+        public ApplicantService(IUnitOfWork unitOfWork, ILogMailer<ApplicantService> logger, IUserData userData, IOptions<FileConfig> fileOptions)
         {
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
+            this.fileConfig = fileOptions.Value;
         }
 
         public Response Add(ApplicantAddModel model)
@@ -335,6 +343,57 @@ namespace Sofco.Service.Implementations.Recruitment
             var jobSearchFiles = unitOfWork.ApplicantRepository.GetFiles(id);
 
             response.Data = jobSearchFiles.Select(x => new ApplicantFileModel(x)).ToList();
+
+            return response;
+        }
+
+        public async Task<Response<File>> AttachFile(int applicantId, Response<File> response, IFormFile file)
+        {
+            var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
+
+            if (applicant == null)
+            {
+                response.AddError(Resources.Recruitment.Applicant.NotFound);
+                return response;
+            }
+
+            var user = userData.GetCurrentUser();
+
+            var fileToAdd = new File();
+            var lastDotIndex = file.FileName.LastIndexOf('.');
+
+            fileToAdd.FileName = file.FileName;
+            fileToAdd.FileType = file.FileName.Substring(lastDotIndex);
+            fileToAdd.InternalFileName = Guid.NewGuid();
+            fileToAdd.CreationDate = DateTime.UtcNow;
+            fileToAdd.CreatedUser = user.UserName;
+
+            var jobsearchApplicantFile = new ApplicantFile
+            {
+                File = fileToAdd,
+                ApplicantId = applicant.Id,
+            };
+
+            try
+            {
+                var fileName = $"{fileToAdd.InternalFileName.ToString()}{fileToAdd.FileType}";
+
+                using (var fileStream = new FileStream(Path.Combine(fileConfig.RecruitmentPath, fileName), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                unitOfWork.JobSearchApplicantRepository.InsertFile(jobsearchApplicantFile);
+                unitOfWork.Save();
+
+                response.Data = jobsearchApplicantFile.File;
+                response.AddSuccess(Resources.Recruitment.JobSearchApplicant.FileAdded);
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.SaveFileError);
+                logger.LogError(e);
+            }
 
             return response;
         }

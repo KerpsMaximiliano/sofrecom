@@ -81,9 +81,9 @@ namespace Sofco.DAL.Repositories.Recruitment
             return context.JobSearchApplicants.SingleOrDefault(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId && x.CreatedDate.Date == date.Date);
         }
 
-        public void InsertFile(JobSearchApplicantFile jobsearchApplicantFile)
+        public void InsertFile(ApplicantFile jobsearchApplicantFile)
         {
-            context.JobSearchApplicantFiles.Add(jobsearchApplicantFile);
+            context.ApplicantFiles.Add(jobsearchApplicantFile);
         }
 
         public bool Exist(int applicantId, int jobSearchId, DateTime date)

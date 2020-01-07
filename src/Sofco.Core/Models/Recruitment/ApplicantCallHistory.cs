@@ -15,6 +15,9 @@ namespace Sofco.Core.Models.Recruitment
             JobSearchId = domain.JobSearchId;
             ApplicantId = domain.ApplicantId;
 
+            Salary = domain.Salary;
+            RemoteWork = domain.RemoteWork;
+
             if (domain.Reason != null)
             {
                 Reason = domain.Reason.Text;
@@ -39,29 +42,25 @@ namespace Sofco.Core.Models.Recruitment
             HasTechnicalInterview = domain.HasTechnicalInterview;
             TechnicalInterviewDate = domain.TechnicalInterviewDate;
             TechnicalInterviewPlace = domain.TechnicalInterviewPlace;
-            TechnicalInterviewerId = domain.TechnicalInterviewerId;
             TechnicalExternalInterviewer = domain.TechnicalExternalInterviewer;
             TechnicalInterviewComments = domain.TechnicalInterviewComments;
-            IsTechnicalExternal = domain.IsTechnicalExternal;
 
             HasClientInterview = domain.HasClientInterview;
             ClientInterviewDate = domain.ClientInterviewDate;
             ClientInterviewPlace = domain.ClientInterviewPlace;
-            ClientInterviewerId = domain.ClientInterviewerId;
             ClientExternalInterviewer = domain.ClientExternalInterviewer;
             ClientInterviewComments = domain.ClientInterviewComments;
-            IsClientExternal = domain.IsClientExternal;
         }
 
-        public bool IsClientExternal { get; set; }
+        public bool RemoteWork { get; set; }
+
+        public decimal? Salary { get; set; }
 
         public string ClientInterviewComments { get; set; }
 
         public string ClientExternalInterviewer { get; set; }
 
         public string RrhhInterviewComments { get; set; }
-
-        public bool IsTechnicalExternal { get; set; }
 
         public string TechnicalInterviewComments { get; set; }
 
@@ -73,15 +72,11 @@ namespace Sofco.Core.Models.Recruitment
 
         public ReasonCauseType ReasonType { get; set; }
 
-        public int? ClientInterviewerId { get; set; }
-
         public string ClientInterviewPlace { get; set; }
 
         public DateTime? ClientInterviewDate { get; set; }
 
         public bool HasClientInterview { get; set; }
-
-        public int? TechnicalInterviewerId { get; set; }
 
         public string TechnicalInterviewPlace { get; set; }
 

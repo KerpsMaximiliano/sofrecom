@@ -135,4 +135,7 @@
   <data name="InterviewDateLessThanToday" xml:space="preserve">
     <value>recruitment/jobSearchApplicant.InterviewDateLessThanToday</value>
   </data>
+  <data name="SalaryRequired" xml:space="preserve">
+    <value>recruitment/jobSearchApplicant.SalaryRequired</value>
+  </data>
 </root>

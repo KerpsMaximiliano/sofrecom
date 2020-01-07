@@ -11,29 +11,28 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <button type="button" class="btn btn-md btn-success m-t-md" (click)="save()" [disabled]="!form.valid"> <i class="fa fa-save"></i> Actualizar entrevista </button>
-        </div>
 
-        <div class="col-md-5">
-            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple/>
-    
-            <div class="uploader-margin-top">
-                <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
-                <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
-                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+        <div class="col-md-3">
+            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'salary')">
+                <label class="control-label">Remuneracion bruta solicitada</label>
+                <input type="number" class="form-control" decimalFormat="9" formControlName="salary">
+
+                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'salary')">
+                    <p *ngIf="formsService.hasError(form, 'salary', 'required')">El campo es requerido</p>
                 </div>
-    
-                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                    <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
-                </button>
-    
-                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
-                    <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
-                </button>
             </div>
         </div>
+
+        <div class="col-md-3">
+            <div class="form-group m-t-md">
+                <icheck [(checked)]="remoteWork">
+                    <label style="padding-left:20px;"> Solicita full trabajo remoto </label> 
+                </icheck>
+            </div> 
+        </div>
     </div>
+
+    <button type="button" class="btn btn-md btn-success" (click)="save()" [disabled]="!form.valid"> <i class="fa fa-save"></i> Actualizar entrevista </button>
 
     <hr class="hr-line-dashed">
 
@@ -128,15 +127,8 @@
             </div>
         </div>
 
-        <div class="col-md-2">
-            <div class="form-group m-t-md">
-                <icheck [(checked)]="isTechnicalExternal" (checkedChange)="isTechnicalExternalChanged($event)">
-                    <label style="padding-left:20px;"> Externo </label> 
-                </icheck>
-            </div> 
-        </div>
 
-        <div class="col-md-4" [hidden]="!isTechnicalExternal">
+        <div class="col-md-4">
             <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'technicalExternalInterviewer')">
                 <label class="control-label">Evaluador </label>
                 <input type="text" class="form-control" formControlName="technicalExternalInterviewer" maxlength="100">
@@ -144,17 +136,6 @@
                 <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'technicalExternalInterviewer')">
                     <p *ngIf="formsService.hasError(form, 'technicalExternalInterviewer', 'required')">El evaluador es requerido</p>
                     <p *ngIf="formsService.hasError(form, 'technicalExternalInterviewer', 'maxlength')">Los lugar no puede superar los 100 caracteres</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4" [hidden]="isTechnicalExternal">
-            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'technicalInterviewerId')">
-                <label class="control-label"> Evaluador </label>
-                <ng-select [items]="userOptions" bindValue="id" bindLabel="text" formControlName="technicalInterviewerId"></ng-select>
-
-                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'technicalInterviewerId')">
-                    <p *ngIf="formsService.hasError(form, 'technicalInterviewerId', 'required')">El campo es requerido</p>
                 </div>
             </div>
         </div>
@@ -205,15 +186,8 @@
             </div>
         </div>
 
-        <div class="col-md-2">
-            <div class="form-group m-t-md">
-                <icheck [(checked)]="isClientExternal" (checkedChange)="isClientExternalChanged($event)">
-                    <label style="padding-left:20px;"> Externo </label> 
-                </icheck>
-            </div> 
-        </div>
 
-        <div class="col-md-4" [hidden]="!isClientExternal">
+        <div class="col-md-4">
             <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'clientExternalInterviewer')">
                 <label class="control-label">Evaluador </label>
                 <input type="text" class="form-control" formControlName="clientExternalInterviewer" maxlength="100">
@@ -221,17 +195,6 @@
                 <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'clientExternalInterviewer')">
                     <p *ngIf="formsService.hasError(form, 'clientExternalInterviewer', 'required')">El evaluador es requerido</p>
                     <p *ngIf="formsService.hasError(form, 'clientExternalInterviewer', 'maxlength')">Los lugar no puede superar los 100 caracteres</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4" [hidden]="isClientExternal">
-            <div class="form-group" [ngClass]="formsService.getClassProperty(form, 'clientInterviewerId')">
-                <label class="control-label"> Evaluador </label>
-                <ng-select [items]="userOptions" bindValue="id" bindLabel="text" formControlName="clientInterviewerId"></ng-select>
-
-                <div class="form-control-feedback" *ngIf="formsService.hasErrors(form, 'clientInterviewerId')">
-                    <p *ngIf="formsService.hasError(form, 'clientInterviewerId', 'required')">El campo es requerido</p>
                 </div>
             </div>
         </div>

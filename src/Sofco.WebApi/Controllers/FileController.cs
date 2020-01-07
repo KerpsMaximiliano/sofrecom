@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Services.Common;
+using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers
 {
@@ -17,6 +18,14 @@ namespace Sofco.WebApi.Controllers
         {
             this.fileService = fileService;
             this.fileConfig = fileOptions.Value;
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = fileService.Delete(id);
+
+            return this.CreateResponse(response);
         }
 
         [HttpGet("{id}/{type}")]

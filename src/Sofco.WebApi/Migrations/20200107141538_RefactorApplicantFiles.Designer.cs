@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20200107141538_RefactorApplicantFiles")]
+    partial class RefactorApplicantFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2495,8 +2497,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<int>("ReasonId");
 
-                    b.Property<bool>("RemoteWork");
-
                     b.Property<string>("RrhhInterviewComments")
                         .HasMaxLength(100);
 
@@ -2506,8 +2506,6 @@ namespace Sofco.WebApi.Migrations
                         .HasMaxLength(100);
 
                     b.Property<int?>("RrhhInterviewerId");
-
-                    b.Property<decimal?>("Salary");
 
                     b.Property<string>("TechnicalExternalInterviewer");
 

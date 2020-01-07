@@ -212,6 +212,7 @@ export class DetailContactsComponent implements OnInit {
         this.entityId = id;
 
         this.getHistory();
+        this.contactFiles.init(this.entityId);
 
         this.form.controls.lastName.setValue(response.data.lastName);
         this.form.controls.firstName.setValue(response.data.firstName);

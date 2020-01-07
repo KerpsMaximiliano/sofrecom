@@ -51,4 +51,8 @@ export class ApplicantService {
             return new Blob([res.body], { type: 'application/octet-stream' });
         }));
     } 
+
+    getUrlForImportExcel(applicantId){
+        return `${this.baseUrl}/applicant/${applicantId}/file`;
+    }
 }

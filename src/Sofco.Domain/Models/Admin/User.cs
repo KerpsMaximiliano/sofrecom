@@ -88,7 +88,5 @@ namespace Sofco.Domain.Models.Admin
         public IList<Applicant> Applicants2 { get; set; }
 
         public IList<JobSearchApplicant> JobSearchApplicants1 { get; set; }
-        public IList<JobSearchApplicant> JobSearchApplicants2 { get; set; }
-        public IList<JobSearchApplicant> JobSearchApplicants3 { get; set; }
     }
 }

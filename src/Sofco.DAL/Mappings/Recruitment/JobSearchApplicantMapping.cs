@@ -21,16 +21,6 @@ namespace Sofco.DAL.Mappings.Recruitment
                 .HasForeignKey(pt => pt.RrhhInterviewerId);
 
             builder.Entity<JobSearchApplicant>()
-                .HasOne(pt => pt.TechnicalInterviewer)
-                .WithMany(p => p.JobSearchApplicants2)
-                .HasForeignKey(pt => pt.TechnicalInterviewerId);
-
-            builder.Entity<JobSearchApplicant>()
-                .HasOne(pt => pt.ClientInterviewer)
-                .WithMany(p => p.JobSearchApplicants3)
-                .HasForeignKey(pt => pt.ClientInterviewerId);
-
-            builder.Entity<JobSearchApplicant>()
                 .HasOne(pt => pt.JobSearch)
                 .WithMany(p => p.JobSearchApplicants)
                 .HasForeignKey(pt => pt.JobSearchId);
@@ -47,14 +37,14 @@ namespace Sofco.DAL.Mappings.Recruitment
                 .WithMany(x => x.JobSearchApplicants)
                 .HasForeignKey(x => x.ReasonId).OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<JobSearchApplicantFile>().HasKey(t => new { t.JobSearchId, t.ApplicantId, t.Date, t.FileId });
+            builder.Entity<ApplicantFile>().HasKey(t => new { t.ApplicantId, t.FileId });
 
-            builder.Entity<JobSearchApplicantFile>()
-                .HasOne(pt => pt.JobSearchApplicant)
+            builder.Entity<ApplicantFile>()
+                .HasOne(pt => pt.Applicant)
                 .WithMany(p => p.Files)
-                .HasForeignKey(pt => new { pt.JobSearchId, pt.ApplicantId, pt.Date });
+                .HasForeignKey(pt => new { pt.ApplicantId });
 
-            builder.Entity<JobSearchApplicantFile>()
+            builder.Entity<ApplicantFile>()
                 .HasOne(pt => pt.File)
                 .WithMany()
                 .HasForeignKey(pt => pt.FileId);

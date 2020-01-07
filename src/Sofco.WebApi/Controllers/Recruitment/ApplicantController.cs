@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Sofco.Core.Config;
 using Sofco.Core.Models.Recruitment;
 using Sofco.Core.Services.Common;
 using Sofco.Core.Services.Recruitment;
+using Sofco.Domain.Models.Common;
+using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.Recruitment
@@ -93,6 +98,25 @@ namespace Sofco.WebApi.Controllers.Recruitment
         public IActionResult ChangeStatus(int id, [FromBody] ApplicantChangeStatusModel parameter)
         {
             var response = applicantService.ChangeStatus(id, parameter);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("{applicantId}/file")]
+        public async Task<IActionResult> File(int applicantId)
+        {
+            var response = new Response<File>();
+
+            if (Request.Form.Files.Any())
+            {
+                var file = Request.Form.Files.First();
+
+                await applicantService.AttachFile(applicantId, response, file);
+            }
+            else
+            {
+                response.AddError(Resources.Common.SaveFileError);
+            }
 
             return this.CreateResponse(response);
         }

@@ -3,7 +3,6 @@ using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.Common;
 using Sofco.Domain.Utils;
-using Sofco.Service.Implementations.Billing;
 using Sofco.Service.Implementations.Billing.PurchaseOrder;
 
 namespace Sofco.Service.Implementations.Common
@@ -17,6 +16,33 @@ namespace Sofco.Service.Implementations.Common
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
+        }
+
+        public Response Delete(int id)
+        {
+            var response = new Response();
+
+            var file = unitOfWork.FileRepository.Get(id);
+
+            if (file == null)
+            {
+                response.AddError(Resources.Common.FileNotFound);
+                return response;
+            }
+
+            try
+            {
+                unitOfWork.FileRepository.Delete(file);
+                unitOfWork.Save();
+                response.AddSuccess(Resources.Common.FileDeleted);
+            }
+            catch (Exception ex)
+            {
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(ex);
+            }
+
+            return response;
         }
 
         public Response<byte[]> ExportFile(int id, string path)

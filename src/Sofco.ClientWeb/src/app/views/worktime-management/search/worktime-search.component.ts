@@ -6,6 +6,7 @@ import { WorktimeService } from "../../../services/worktime-management/worktime.
 import { EmployeeService } from "../../../services/allocation-management/employee.service";
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { MenuService } from "app/services/admin/menu.service";
+import { WorkTimeStatus } from "app/models/enums/worktimestatus";
 
 declare var $: any;
 
@@ -26,6 +27,8 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     public statuses: any[] = new Array<any>();
 
     public gridIsVisible: boolean = false;
+    totalHours: number;
+    totalLicenseHours: number;
 
     searchSubscrip: Subscription;
     getResourcesSubscrip: Subscription;
@@ -135,10 +138,26 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
             this.collapse();
 
             sessionStorage.setItem('lastWorktimeSearchQuery', JSON.stringify(this.searchModel));
+
+            this.calculateTotalHours();
         },
         () => {
                 this.messageService.closeLoading();
             });
+    }
+
+    calculateTotalHours(){
+        this.totalHours = 0;
+        this.totalLicenseHours = 0;
+
+        this.data.forEach(x => {
+            if(x.status == "License"){
+                this.totalLicenseHours += x.hours;
+            }
+            else{
+                this.totalHours += x.hours;
+            }
+        });
     }
 
     initGrid(){

@@ -59,24 +59,5 @@ namespace Sofco.WebApi.Controllers.Recruitment
 
             return this.CreateResponse(responseError);
         }
-
-        [HttpPost("{applicantId}/{jobSearchId}/{date}/file")]
-        public async Task<IActionResult> File(int applicantId, int jobSearchId, DateTime date)
-        {
-            var response = new Response<File>();
-
-            if (Request.Form.Files.Any())
-            {
-                var file = Request.Form.Files.First();
-
-                await jobSearchApplicantService.AttachFile(applicantId, jobSearchId, date, response, file);
-            }
-            else
-            {
-                response.AddError(Resources.Common.SaveFileError);
-            }
-
-            return this.CreateResponse(response);
-        }
     }
 }

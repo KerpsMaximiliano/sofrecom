@@ -113,5 +113,14 @@ namespace Sofco.Resources.Recruitment {
                 return ResourceManager.GetString("NotFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a recruitment/jobSearchApplicant.SalaryRequired.
+        /// </summary>
+        public static string SalaryRequired {
+            get {
+                return ResourceManager.GetString("SalaryRequired", resourceCulture);
+            }
+        }
     }
 }
