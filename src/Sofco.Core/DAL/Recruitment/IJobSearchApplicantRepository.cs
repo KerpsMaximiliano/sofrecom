@@ -11,5 +11,6 @@ namespace Sofco.Core.DAL.Recruitment
         JobSearchApplicant GetById(int applicantId, int jobSearchId, DateTime date);
         void InsertFile(ApplicantFile jobsearchApplicantFile);
         bool Exist(int applicantId, int jobSearchId, DateTime date);
+        IList<JobSearchApplicant> GetByApplicant(int applicantId);
     }
 }

@@ -1,6 +1,7 @@
 export enum ApplicantStatus {
-    Valid,
-    InProgress,
-    Close,
-    InCompany
+  Valid,
+  InProgress,
+  Close,
+  InCompany,
+  Contacted
 }

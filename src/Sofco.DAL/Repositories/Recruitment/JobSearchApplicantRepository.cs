@@ -90,5 +90,10 @@ namespace Sofco.DAL.Repositories.Recruitment
         {
             return context.JobSearchApplicants.Any(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId && x.CreatedDate.Date == date.Date);
         }
+
+        public IList<JobSearchApplicant> GetByApplicant(int applicantId)
+        {
+            return context.JobSearchApplicants.Include(x => x.Reason).Where(x => x.ApplicantId == applicantId).ToList();
+        }
     }
 }

@@ -165,10 +165,9 @@ export class DetailContactsComponent implements OnInit {
                                                         x.type == ReasonCauseType.ApplicantInCompany ||
                                                         x.type == ReasonCauseType.ApplicantOpen);
 
-          this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantInCompany ||
-                                                                x.type == ReasonCauseType.ApplicantOpen);
+          this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantUnavailable);
 
-          this.interview.reasonOptions = this.reasonOptions;    
+          this.interview.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.ApplicantContacted || x.type == ReasonCauseType.ApplicantInProgress || x.type == ReasonCauseType.ApplicantOpen);    
           
           this.jobSearchRelated.setReasonOptions(response.data);
       });
@@ -388,6 +387,7 @@ export class DetailContactsComponent implements OnInit {
         case ApplicantStatus.InProgress: return "En Curso";
         case ApplicantStatus.Close: return "Deshabilitado";
         case ApplicantStatus.InCompany: return "Ingresado";
+        case ApplicantStatus.Contacted: return "Vigente/Contactado";
         default: return "";
     }
   }
@@ -435,7 +435,7 @@ export class DetailContactsComponent implements OnInit {
     }
   }
 
-  refreshFiles(){
-    this.contactFiles.getFiles(this.entityId);
-  }
+  setStatusFromInterview(status){{
+    this.status = status;
+  }}
 }

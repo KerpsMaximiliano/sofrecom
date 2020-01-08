@@ -27,7 +27,6 @@ namespace Sofco.Service.Implementations.Recruitment
         private readonly ILogMailer<JobSearchApplicantService> logger;
         private readonly IUserData userData;
         private readonly IOptionRepository<ReasonCause> optionRepository;
-        
 
         public JobSearchApplicantService(IUnitOfWork unitOfWork, ILogMailer<JobSearchApplicantService> logger, IUserData userData, IOptionRepository<ReasonCause> optionRepository)
         {
@@ -114,13 +113,17 @@ namespace Sofco.Service.Implementations.Recruitment
                     }
                 }
                
-                if (anySuccess && reason.Type == ReasonCauseType.ApplicantInProgress)
+                if (anySuccess)
                 {
-                    foreach (var applicantId in model.Applicants)
+                    if (reason.Type == ReasonCauseType.ApplicantInProgress ||
+                        reason.Type == ReasonCauseType.ApplicantContacted)
                     {
-                        var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
-                        applicant.Status = ApplicantStatus.InProgress;
-                        unitOfWork.ApplicantRepository.Update(applicant);
+                        foreach (var applicantId in model.Applicants)
+                        {
+                            var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
+                            applicant.Status = reason.Type == ReasonCauseType.ApplicantInProgress ? ApplicantStatus.InProgress : ApplicantStatus.Contacted;
+                            unitOfWork.ApplicantRepository.Update(applicant);
+                        }
                     }
                 }
 
@@ -139,9 +142,9 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        public Response AddInterview(int applicantId, int jobSearchId, DateTime date, InterviewAddModel model)
+        public Response<int> AddInterview(int applicantId, int jobSearchId, DateTime date, InterviewAddModel model)
         {
-            var response = new Response();
+            var response = new Response<int>();
 
             var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId, date);
 
@@ -199,6 +202,31 @@ namespace Sofco.Service.Implementations.Recruitment
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.Common.SaveSuccess);
+
+                response.Data = -1;
+
+                var reason = optionRepository.Get(model.ReasonId);
+
+                if (reason.Type == ReasonCauseType.ApplicantContacted || reason.Type == ReasonCauseType.ApplicantOpen)
+                {
+                    var jobsearchs = unitOfWork.JobSearchApplicantRepository.GetByApplicant(applicantId);
+
+                    if (jobsearchs.All(x => x.Reason.Type != ReasonCauseType.ApplicantInProgress))
+                    {
+                        var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
+
+                        if (reason.Type == ReasonCauseType.ApplicantContacted)
+                            applicant.Status = ApplicantStatus.Contacted;
+
+                        if (reason.Type == ReasonCauseType.ApplicantOpen)
+                            applicant.Status = ApplicantStatus.Valid;
+
+                        unitOfWork.ApplicantRepository.Update(applicant);
+                        unitOfWork.Save();
+
+                        response.Data = Convert.ToInt32(applicant.Status);
+                    }
+                }
             }
             catch (Exception e)
             {

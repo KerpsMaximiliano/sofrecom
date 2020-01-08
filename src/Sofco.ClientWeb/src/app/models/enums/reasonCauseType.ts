@@ -5,5 +5,6 @@ export enum ReasonCauseType {
     ApplicantOpen = 4,
     ApplicantInProgress = 5,
     ApplicantUnavailable = 6,
-    ApplicantInCompany = 7
+    ApplicantInCompany = 7,
+    ApplicantContacted = 8
 }

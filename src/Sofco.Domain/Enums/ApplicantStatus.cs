@@ -5,6 +5,7 @@
         Valid,
         InProgress,
         Close,
-        InCompany
+        InCompany,
+        Contacted
     }
 }

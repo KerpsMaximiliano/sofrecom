@@ -52,6 +52,7 @@
                             <span *ngIf="item.type == 5">Contacto En Curso</span>
                             <span *ngIf="item.type == 6">Contacto Deshabilitado</span>
                             <span *ngIf="item.type == 7">Contacto Ingresado</span>
+                            <span *ngIf="item.type == 8">Contacto Vigente/Entrevistado</span>
                         </td>
                         <td class="text-center">
                             <label *ngIf="item.active" class="label label-primary">Si</label>
@@ -112,6 +113,11 @@
         <div class="radio radio-success">
             <input value="7" type="radio" [formControl]="type">
             <label> Contacto Ingresado </label>
+        </div>
+
+        <div class="radio radio-success">
+            <input value="8" type="radio" [formControl]="type">
+            <label> Contacto Vigente/Entrevistado </label>
         </div>
     </div>
 </ng2-modal> 

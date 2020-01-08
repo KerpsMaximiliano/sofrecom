@@ -11,7 +11,7 @@ import * as moment from 'moment';
     templateUrl: './interview.component.html',
 })
 export class InterviewComponent implements OnInit, OnDestroy {
-    @Output() getFiles: EventEmitter<any> = new EventEmitter();
+    @Output() setStatus: EventEmitter<any> = new EventEmitter();
     
     userOptions: any[] = new Array();
     reasonOptions: any[] = new Array();
@@ -109,6 +109,10 @@ export class InterviewComponent implements OnInit, OnDestroy {
 
             if(reason){
                 this.history.reason = reason.text;
+            }
+
+            if(response.data > -1 && this.setStatus.observers.length > 0){
+                this.setStatus.emit(response.data);
             }
         }, 
         error => {

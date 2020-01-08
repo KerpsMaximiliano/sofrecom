@@ -65,7 +65,7 @@ export class JobSearchRelatedComponent implements OnDestroy {
     }
 
     setReasonOptions(options){
-        this.reasonOptions = options.filter(x => x.type == ReasonCauseType.ApplicantInProgress || x.type == ReasonCauseType.ApplicantOpen || x.type == ReasonCauseType.ApplicantUnavailable);
+        this.reasonOptions = options.filter(x => x.type == ReasonCauseType.ApplicantInProgress || x.type == ReasonCauseType.ApplicantOpen || x.type == ReasonCauseType.ApplicantContacted);
     }
 
     initGrid() {
@@ -148,7 +148,7 @@ export class JobSearchRelatedComponent implements OnDestroy {
         var reason = this.reasonOptions.find(x => x.id == this.form.controls.reasonCauseId.value);
 
         if(reason){
-            if(reason.type == ReasonCauseType.ApplicantInProgress && this.dataFiltered.filter(x => x.selected).length > 1){
+            if(reason.type == ReasonCauseType.ApplicantInProgress){
                 return true;
             }
         }
