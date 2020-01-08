@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.Models.Recruitment;
@@ -24,10 +25,62 @@ namespace Sofco.DAL.Repositories.Recruitment
                     .ThenInclude(x => x.Profile);
 
             if (!string.IsNullOrWhiteSpace(parameter.FirstName))
-                query = query.Where(x => x.FirstName.ToLowerInvariant().Contains(parameter.FirstName.ToLowerInvariant()));
+            {
+                parameter.FirstName = parameter.FirstName.ToLowerInvariant();
+                var filtered = false;
+
+                if (parameter.FirstName.Contains("-") && parameter.FirstName.Length == 3)
+                {
+                    query = query.Where(x => Regex.IsMatch(x.FirstName.ToLowerInvariant(), $"^[{parameter.FirstName}]"));
+                    filtered = true;
+                }
+
+                if (parameter.FirstName.Contains(","))
+                {
+                    var split = parameter.FirstName.Split(',');
+
+                    if (split.All(x => x.Length == 1))
+                    {
+                        parameter.FirstName = parameter.FirstName.Replace(",", "");
+                        query = query.Where(x => Regex.IsMatch(x.FirstName.ToLowerInvariant(), $"^[{parameter.FirstName}]"));
+                        filtered = true;
+                    }
+                }
+
+                if (!filtered)
+                {
+                    query = query.Where(x => x.FirstName.ToLowerInvariant().StartsWith(parameter.FirstName));
+                }
+            }
 
             if (!string.IsNullOrWhiteSpace(parameter.LastName))
-                query = query.Where(x => x.LastName.ToLowerInvariant().Contains(parameter.LastName.ToLowerInvariant()));
+            {
+                parameter.LastName = parameter.LastName.ToLowerInvariant();
+                var filtered = false;
+
+                if (parameter.LastName.Contains("-") && parameter.LastName.Length == 3)
+                {
+                    query = query.Where(x => Regex.IsMatch(x.LastName.ToLowerInvariant(), $"^[{parameter.LastName}]"));
+                    filtered = true;
+                }
+
+                if (parameter.LastName.Contains(","))
+                {
+                    var split = parameter.LastName.Split(',');
+
+                    if (split.All(x => x.Length == 1))
+                    {
+                        parameter.LastName = parameter.LastName.Replace(",", "");
+                        query = query.Where(x => Regex.IsMatch(x.LastName.ToLowerInvariant(), $"^[{parameter.LastName}]"));
+                        filtered = true;
+                    }
+                }
+
+                if (!filtered)
+                {
+                    query = query.Where(x => x.LastName.ToLowerInvariant().StartsWith(parameter.LastName));
+                }
+            }
 
             if (!string.IsNullOrWhiteSpace(parameter.ClientCrmId))
                 query = query.Where(x => x.Client.CrmId.Equals(parameter.ClientCrmId));

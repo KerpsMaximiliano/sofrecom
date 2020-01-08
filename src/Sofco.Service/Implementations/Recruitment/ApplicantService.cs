@@ -72,11 +72,19 @@ namespace Sofco.Service.Implementations.Recruitment
         {
             var response = new Response<IList<ApplicantResultModel>> { Data = new List<ApplicantResultModel>() };
 
-            var list = unitOfWork.ApplicantRepository.Search(parameter);
-
-            if (list.Any())
+            try
             {
-                response.Data = list.Select(x => new ApplicantResultModel(x)).ToList();
+                var list = unitOfWork.ApplicantRepository.Search(parameter);
+
+                if (list.Any())
+                {
+                    response.Data = list.Select(x => new ApplicantResultModel(x)).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.GeneralError);
             }
 
             return response;
