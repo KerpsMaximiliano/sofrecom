@@ -5,6 +5,7 @@ export class Role {
     constructor(
         public id: number,
         public description: string = "",
+        public code: string = "",
         public active: boolean = true,
         public groups: Group[] = null,
         public startDate: Date = new Date(),

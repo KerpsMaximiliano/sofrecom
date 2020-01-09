@@ -44,7 +44,7 @@
                         <td class="column-sm">
                             <button class="btn btn-danger btn-xs" (click)="openEndEmployeeModal(resource)" *ngIf="canSendUnsubscribeNotification()" title="{{'ACTIONS.notifyUnsubscribe' | translate }}"><i class="fa fa-user-times"></i></button>
                             <button class="btn btn-success btn-xs" (click)="goToProfile(resource)" *ngIf="canViewProfile()" title="{{'allocationManagement.resources.profile' | translate }}"><i class="fa fa-eye"></i></button>
-                            <button class="btn btn-warning btn-xs" (click)="openCategoryModal(resource)" title="{{'ADMIN.category.add' | translate }}"><i class="fa fa-tasks"></i></button>
+                            <button class="btn btn-warning btn-xs" *ngIf="canAssingCategories()" (click)="openCategoryModal(resource)" title="{{'ADMIN.category.add' | translate }}"><i class="fa fa-tasks"></i></button>
                         </td>
                     </tr>
                 </tbody>

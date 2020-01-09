@@ -125,6 +125,10 @@ export class ResourceByServiceComponent implements OnInit, OnDestroy {
         return this.menuService.hasFunctionality('ALLOC', 'NUNEM');
     }
 
+    canAssingCategories(){
+        return this.menuService.hasFunctionality('ALLOC', 'EMP-CAT');
+    }
+
     openModal(data) {
         this.pendingWorkingHours = data.pendingHours > 0;
         this.confirmModal.show();

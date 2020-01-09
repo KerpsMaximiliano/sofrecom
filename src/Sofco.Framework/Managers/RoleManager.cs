@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using Sofco.Common.Security.Interfaces;
+using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
 
 namespace Sofco.Framework.Managers
@@ -27,13 +30,16 @@ namespace Sofco.Framework.Managers
 
         private readonly IUserData userData;
 
+        private readonly AppSetting appSetting;
+
         public UserLiteModel CurrentUser { get; set; }
 
         public RoleManager(IPurchaseOrderApprovalDelegateManager purchaseOrderApprovalDelegateManager, 
             IPurchaseOrderActiveDelegateManager purchaseOrderActiveDelegateManager, 
             ILicenseViewDelegateManager licenseViewDelegateManager, 
             ISolfacDelegateManager solfacDelegateManager, 
-            IUnitOfWork unitOfWork, 
+            IUnitOfWork unitOfWork,
+            IOptions<AppSetting> appSettingOptions,
             ISessionManager sessionManager,
             IUserData userData,
             IWorkTimeApproverDelegateManager workTimeApproverDelegateManager)
@@ -46,6 +52,7 @@ namespace Sofco.Framework.Managers
             this.sessionManager = sessionManager;
             this.workTimeApproverDelegateManager = workTimeApproverDelegateManager;
             this.userData = userData;
+            this.appSetting = appSettingOptions.Value;
 
             CurrentUser = userData.GetCurrentUser();
         }
@@ -66,7 +73,18 @@ namespace Sofco.Framework.Managers
 
             roles.AddRange(workTimeApproverDelegateManager.GetDelegatedRoles());
 
+            roles.AddRange(GetAdvancementDelegatedRoles());
+
             return roles;
+        }
+
+        public List<Role> GetAdvancementDelegatedRoles()
+        {
+            var isValid = unitOfWork.DelegationRepository.ExistByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.Advancement);
+
+            return isValid
+                ? new List<Role> { unitOfWork.RoleRepository.GetByCode(appSetting.AdvancementDelegate) }
+                : new List<Role>();
         }
 
         public bool HasFullAccess()

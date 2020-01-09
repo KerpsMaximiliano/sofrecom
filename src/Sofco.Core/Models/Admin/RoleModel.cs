@@ -20,6 +20,7 @@ namespace Sofco.Core.Models.Admin
             Active = rol.Active;
             StartDate = rol.StartDate;
             EndDate = rol.EndDate;
+            Code = rol.Code;
 
             Groups = new List<GroupModel>();
             Modules = new List<ModuleModel>();
@@ -35,6 +36,8 @@ namespace Sofco.Core.Models.Admin
 
         public DateTime? EndDate { get; set; }
 
+        public string Code { get; set; }
+
         public IList<GroupModel> Groups { get; set; }
 
         public IList<ModuleModel> Modules { get; set; }
@@ -44,6 +47,7 @@ namespace Sofco.Core.Models.Admin
             rol.Id = Id;
             rol.Description = Description;
             rol.Active = Active;
+            rol.Code = Code;
         }
 
         public bool Equals(RoleModel other)

@@ -22,8 +22,7 @@ export class RolAddComponent implements OnInit {
 
     ngOnInit() { }
 
-    onSubmit(form){
-      if(!form.invalid){
+    onSubmit(){
         this.messageService.showLoading();
 
         this.rol.active = true;
@@ -33,6 +32,5 @@ export class RolAddComponent implements OnInit {
 
             this.router.navigate(["/admin/roles"]);
           });
-      }
     }
 }

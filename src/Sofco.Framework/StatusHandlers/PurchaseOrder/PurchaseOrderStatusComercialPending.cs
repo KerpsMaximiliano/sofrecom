@@ -55,7 +55,7 @@ namespace Sofco.Framework.StatusHandlers.PurchaseOrder
 
             if (area == null) return;
 
-            if (area.ResponsableUserId != currentUser.Id && !delegates.Any(x => x.UserId == currentUser.Id && x.AnalyticSourceId.GetValueOrDefault() == area.Id))
+            if (area.ResponsableUserId != currentUser.Id && !delegates.Any(x => x.UserId == area.ResponsableUserId && x.AnalyticSourceId.GetValueOrDefault() == area.Id))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.UserAreaWrong);
             }

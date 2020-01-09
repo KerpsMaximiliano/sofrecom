@@ -123,5 +123,6 @@
 
         public string ManagementReportDelegateRole { get; set; }
         public string PurchaseOrderActiveViewGroupCode { get; set; }
+        public string AdvancementDelegate { get; set; }
     }
 }

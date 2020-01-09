@@ -31,27 +31,24 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" #formRef="ngForm" (ngSubmit)="onSubmit(formRef)">
-
-                        <!--Description-->
-                        <div class="form-group"><label class="col-lg-2 control-label">{{ 'ADMIN.ROLES.GRID.description' | translate }}</label>
-                            <div class="col-lg-10">
-                              <input type="text"  
-                                  name="description"
-                                  class="form-control" 
-                                  [(ngModel)]="rol.description"
-                                  #descripRef="ngModel"
-                                  required> 
-                              <div class="help-block m-b-none text-danger" [style.visibility]="(!formRef._submitted || !descripRef?.errors?.required) ? 'hidden' : 'visible' ">{{ 'ADMIN.ROLES.descriptionRequired' | translate }}</div>
-
+                       <!--Description-->
+                    <div class="form-group">
+                        <label class="control-label">{{ 'ADMIN.ROLES.GRID.description' | translate }}</label>
+                        <input type="text" name="description" class="form-control" [(ngModel)]="rol.description" required> 
+                    </div>
+              
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Codigo</label>
+                                <input type="text" class="form-control" [(ngModel)]="rol.code" maxlength="100" required> 
                             </div>
                         </div>
-                        
-                        <div class="col-lg-offset-2">
-                            <button class="btn btn-primary" type="submit" >{{ 'ACTIONS.ACCEPT' | translate }}</button>
-                            <a [routerLink]="['/admin/roles']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
-                        </div>
-                    </form>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <button class="btn btn-primary" type="button" (click)="onSubmit()">{{ 'ACTIONS.ACCEPT' | translate }}</button>
+                    <a [routerLink]="['/admin/roles']" class="btn btn-success btn-link text-white"><i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </a>
                 </div>
             </div>
         </div>

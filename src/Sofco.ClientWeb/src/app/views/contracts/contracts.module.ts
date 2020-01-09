@@ -27,7 +27,6 @@ import { NewAnalyticComponent } from './analytics/new/new-analytic.component';
 import { AnalyticFormComponent } from './analytics/analytic-form/analytic-form.component';
 import { ContractsRouter } from './contracts.router';
 import { AddAllocationComponent } from '../allocation-management/allocation/add-by-analytic/add-by-analytic.component';
-import { ResourceByAnalyticComponent } from '../allocation-management/resources/by-analytic/resource-by-analytic.component';
 import { ResourceTimelineComponent } from '../allocation-management/allocation/resource-timeline/resource-timeline.component';
 import { CommonModule } from '@angular/common';
 import { CustomerService } from '../../services/billing/customer.service';
@@ -46,7 +45,7 @@ import { DelegationService } from 'app/services/admin/delegation.service';
 @NgModule({
   declarations: [
     AnalyticSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent,
-    EditAnalyticComponent, ViewAnalyticComponent, EditCostCenterComponent, AddAllocationComponent, ResourceByAnalyticComponent,
+    EditAnalyticComponent, ViewAnalyticComponent, EditCostCenterComponent, AddAllocationComponent,
     ResourceTimelineComponent, AddCloseDateComponent, CurrencyExchangeComponent, ResourceByServiceComponent
   ],
   imports: [

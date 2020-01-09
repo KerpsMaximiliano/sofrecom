@@ -112,7 +112,8 @@ export class RolEditComponent implements OnInit, OnDestroy {
         var model = {
             id: this.role.id,
             description: this.role.description,
-            active: this.role.active
+            active: this.role.active,
+            code: this.role.code
         }
 
         this.editSubscrip = this.service.edit(model).subscribe(
