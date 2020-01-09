@@ -389,7 +389,7 @@
         </div>
     </div>
 
-    <applicants-job-search-related [hidden]="!jobSearchVisible()" #jobSearchRelated></applicants-job-search-related>
+    <applicants-job-search-related [hidden]="!jobSearchVisible()" #jobSearchRelated (refreshHistory)="getHistory()"></applicants-job-search-related>
 </div>
 
 <ng2-modal [config]="dateModalConfig" #dateModal (accept)="closeApplicant()" [isSaveEnabled]="dateModalForm.valid">

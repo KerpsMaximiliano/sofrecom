@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from "@angular/core";
+import { Component, OnDestroy, ViewChild, Output, EventEmitter } from "@angular/core";
 import { Subscription } from "rxjs";
 import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { DataTableService } from "app/services/common/datatable.service";
@@ -14,6 +14,8 @@ import * as moment from "moment";
     styleUrls: ['jobSearch-related.scss']
 })
 export class JobSearchRelatedComponent implements OnDestroy {
+
+    @Output() refreshHistory: EventEmitter<any> = new EventEmitter();
 
     form: FormGroup = new FormGroup({
         comments: new FormControl(null, [Validators.required, Validators.maxLength(3000)]),
@@ -125,6 +127,10 @@ export class JobSearchRelatedComponent implements OnDestroy {
                     }
                 }
             });
+
+            if(this.refreshHistory.observers.length > 0){
+                this.refreshHistory.emit();
+            }
 
             this.unselectAll();
             this.form.controls.reasonCauseId.setValue(null);
