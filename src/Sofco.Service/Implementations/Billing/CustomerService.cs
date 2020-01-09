@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Sofco.Common.Security.Interfaces;
-using Sofco.Core.Data.Billing;
+﻿using Sofco.Common.Security.Interfaces;
 using Sofco.Core.DAL;
+using Sofco.Core.Data.Billing;
 using Sofco.Core.Logger;
 using Sofco.Core.Models;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Jobs;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Billing;
 using Sofco.Domain.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.Billing
 {
@@ -22,7 +23,7 @@ namespace Sofco.Service.Implementations.Billing
         private readonly IUnitOfWork unitOfWork;
         private readonly ICustomerUpdateJobService customerUpdateJobService;
 
-        public CustomerService(ICustomerData customerData, 
+        public CustomerService(ICustomerData customerData,
             ISessionManager sessionManager,
             ILogMailer<CustomerService> logger,
             IUnitOfWork unitOfWork,
@@ -41,27 +42,36 @@ namespace Sofco.Service.Implementations.Billing
         {
             var response = new Response<List<Customer>> { Data = new List<Customer>() };
 
-            var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
+            var username = sessionManager.GetUserName();
 
-            foreach (var item in userNames)
+            try
             {
-                try
-                {
-                    var customers = customerData.GetCustomers(item);
+                var user = unitOfWork.UserRepository.GetSingle(x => x.UserName.Equals(username));
 
-                    foreach (var customer in customers)
+                var delegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(user.Id, DelegationType.Solfac);
+
+                response.Data.AddRange(customerData.GetCustomers(username));
+
+                foreach (var item in delegates)
+                {
+                    var analytic = unitOfWork.AnalyticRepository.Get(item.AnalyticSourceId.GetValueOrDefault());
+
+                    if (analytic != null)
                     {
-                        if (response.Data.All(x => x.Id != customer.Id))
+                        var customersDelegate = unitOfWork.CustomerRepository.GetByIdCrm(analytic.AccountId);
+
+                        if (response.Data.All(x => x.Id != customersDelegate.Id))
                         {
-                            response.Data.Add(customer);
+                            response.Data.Add(customersDelegate);
                         }
                     }
                 }
-                catch (Exception e)
-                {
-                    logger.LogError(e);
-                    response.AddWarning(Resources.Common.CrmGeneralError);
-                }
+
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.Common.CrmGeneralError);
             }
 
             return response;
@@ -74,7 +84,7 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response<List<SelectListModel>>
             {
                 Data = result.Data
-                    .Select(x => new SelectListModel {Id = x.CrmId, Text = x.Name})
+                    .Select(x => new SelectListModel { Id = x.CrmId, Text = x.Name })
                     .OrderBy(x => x.Text)
                     .ToList()
             };

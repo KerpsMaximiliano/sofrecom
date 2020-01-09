@@ -27,7 +27,7 @@ namespace Sofco.Framework.Managers
 
         public List<Role> GetDelegatedRoles()
         {
-            var roles = new List<Role>();
+          var roles = new List<Role>();
 
             var currentUser = userData.GetCurrentUser();
 

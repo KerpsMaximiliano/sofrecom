@@ -131,6 +131,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
         this.getSubscript = this.userDelegateService.get().subscribe(response => {
             this.messageService.closeLoading();
             this.data = response.data;
+            this.initGrid();
         },
         error => this.messageService.closeLoading());
     }
@@ -183,7 +184,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var columns = [0, 1, 2, 3];
+        var columns = [0, 1, 2, 3, 4];
         var title = `usuarios delegados`;
 
         var params = {
@@ -191,7 +192,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
             columns: columns,
             title: title,
             withExport: true,
-            columnDefs: [ {'aTargets': [3], "sType": "date-uk"} ]
+            columnDefs: [ {'aTargets': [4], "sType": "date-uk"} ]
           }
 
           this.datatableService.destroy(params.selector);

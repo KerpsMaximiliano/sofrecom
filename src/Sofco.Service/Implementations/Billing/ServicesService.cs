@@ -9,6 +9,7 @@ using Sofco.Core.Models;
 using Sofco.Core.Models.Billing;
 using Sofco.Core.Services.Billing;
 using Sofco.Core.Services.Jobs;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
 
@@ -44,11 +45,27 @@ namespace Sofco.Service.Implementations.Billing
 
             if (string.IsNullOrWhiteSpace(customerId)) return new Response<List<Domain.Models.Billing.Service>> { Data = result };
 
-            var userNames = solfacDelegateData.GetUserDelegateByUserName(sessionManager.GetUserName());
+            var userName = sessionManager.GetUserName();
 
-            foreach (var item in userNames)
+            var user = unitOfWork.UserRepository.GetSingle(x => x.UserName.Equals(userName));
+
+            result.AddRange(serviceData.GetServices(customerId, userName));
+
+            var delegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(user.Id, DelegationType.Solfac);
+
+            foreach (var delegation in delegates)
             {
-                result.AddRange(serviceData.GetServices(customerId, item));
+                var analytic = unitOfWork.AnalyticRepository.Get(delegation.AnalyticSourceId.GetValueOrDefault());
+
+                if (analytic != null)
+                {
+                    var serviceDelegated = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
+
+                    if (result.All(x => x.Id != serviceDelegated.Id))
+                    {
+                        result.Add(serviceDelegated);
+                    }
+                }
             }
 
             return new Response<List<Domain.Models.Billing.Service>> { Data = result };

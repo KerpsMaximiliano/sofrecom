@@ -102,6 +102,22 @@ namespace Sofco.Service.Implementations.Common
                     unitOfWork.UserGroupRepository.Insert(userRole);
                 }
             }
+
+            //if (userDelegate.Type == DelegationType.PurchaseOrderActive)
+            //{
+            //    var group = unitOfWork.GroupRepository.GetByCode(appSetting.PurchaseOrderActiveViewGroupCode);
+
+            //    if (!unitOfWork.UserGroupRepository.ExistById(userDelegate.GrantedUserId, group.Id))
+            //    {
+            //        var userRole = new UserGroup
+            //        {
+            //            GroupId = group.Id,
+            //            UserId = userDelegate.GrantedUserId
+            //        };
+
+            //        unitOfWork.UserGroupRepository.Insert(userRole);
+            //    }
+            //}
         }
 
         public Response Delete(int id)
@@ -152,6 +168,22 @@ namespace Sofco.Service.Implementations.Common
                     unitOfWork.UserGroupRepository.Delete(userRole);
                 }
             }
+
+            //if (userDelegate.Type == DelegationType.PurchaseOrderActive)
+            //{
+            //    var group = unitOfWork.GroupRepository.GetByCode(appSetting.PurchaseOrderActiveViewGroupCode);
+
+            //    if (unitOfWork.UserGroupRepository.ExistById(userDelegate.GrantedUserId, group.Id))
+            //    {
+            //        var userRole = new UserGroup
+            //        {
+            //            GroupId = group.Id,
+            //            UserId = userDelegate.GrantedUserId
+            //        };
+
+            //        unitOfWork.UserGroupRepository.Delete(userRole);
+            //    }
+            //}
         }
 
         public Response<IList<DelegationModel>> GetByUserId()
