@@ -147,7 +147,7 @@ export class InterviewComponent implements OnInit, OnDestroy {
             this.form.controls.rrhhInterviewDate.setValue(moment(history.rrhhInterviewDate).toDate());
         }
         if(history.rrhhInterviewerId){
-            this.form.controls.rrhhInterviewerId.setValue(history.rrhhInterviewerId.toString());
+            this.form.controls.rrhhInterviewerId.setValue(history.rrhhInterviewerId);
         }
         this.form.controls.rrhhInterviewPlace.setValue(history.rrhhInterviewPlace);
         this.form.controls.rrhhInterviewComments.setValue(history.rrhhInterviewComments);

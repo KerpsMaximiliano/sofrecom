@@ -47,14 +47,13 @@ namespace Sofco.DAL.Repositories.Rrhh
             var employees = context.Employees
                 .Include(x => x.Allocations)
                     .ThenInclude(x => x.Analytic)
-                .Where(x => x.Allocations.Any(s => s.StartDate.Date == today.Date))
                 .ToList();
 
             var result = new List<Employee>();
 
             foreach (var employee in employees)
             {
-                var bestAllocation = employee.Allocations.OrderByDescending(x => x.Percentage).FirstOrDefault();
+                var bestAllocation = employee.Allocations.Where(x => x.StartDate.Date == today.Date).OrderByDescending(x => x.Percentage).FirstOrDefault();
 
                 if(bestAllocation == null) continue;
 
