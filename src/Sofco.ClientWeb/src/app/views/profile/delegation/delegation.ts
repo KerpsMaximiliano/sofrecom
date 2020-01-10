@@ -18,7 +18,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
     typeId: number;
     grantedUserId: number;
     analyticSourceId: number;
-    userSourceId: number;
+    userSourceId: number[];
     areaSourceId: number;
     sectorSourceId: number;
     sourceType = "2";
@@ -175,8 +175,10 @@ export class DelegationComponent implements OnInit, OnDestroy {
 
         if(analytic != null){
             this.resources = analytic.resources.map(user => {
-                return { id: user.userId, text: user.text };
+                return { id: user.userId, text: user.text, selected: false };
             });
+
+            this.initResourceGrid();
         }
         else{
             this.resources = [];
@@ -207,17 +209,17 @@ export class DelegationComponent implements OnInit, OnDestroy {
         if(this.typeId == DelegationType.ManagementReport || this.typeId == DelegationType.Solfac || this.typeId == DelegationType.PurchaseOrderActive){
             if(!this.analyticSourceId || this.analyticSourceId <= 0) return false;
 
-            if(this.sourceType == "3" && (!this.userSourceId || this.userSourceId <= 0))return false;
+            if(this.sourceType == "3" && !this.anySelected()) return false;
         }
 
         if(this.typeId == DelegationType.WorkTime){
             if(!this.analyticSourceId || this.analyticSourceId <= 0) return false;
 
-            if(!this.userSourceId || this.userSourceId <= 0) return false;
+            if(!this.anySelected()) return false;
         }
 
         if(this.typeId == DelegationType.LicenseAuthorizer){
-            if(!this.userSourceId || this.userSourceId <= 0) return false;
+            if(!this.anySelected()) return false;
         }
 
         if(this.typeId == DelegationType.PurchaseOrderApprovalCommercial){
@@ -238,12 +240,16 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.userSourceId = null;
         }
 
+        if(!this.isPurchaseOrder() && this.sourceType == '3' && !this.userSourceDisabled){
+            this.userSourceId = this.resources.filter(x => x.selected).map(x => x.id);
+        }
+
         var model = {
             grantedUserId: this.grantedUserId,
             type: this.typeId,
             sourceType: this.sourceType,
             analyticSourceId: this.analyticSourceId,
-            userSourceId: this.userSourceId
+            userSourceIds: this.userSourceId
         }
 
         if(this.typeId == DelegationType.PurchaseOrderApprovalCommercial){
@@ -271,8 +277,10 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.deleteSubscript = this.userDelegateService.delete(userDelegate.id).subscribe(response => {
                 this.messageService.closeLoading();
 
-                var index = this.data.indexOf(x => x.id == userDelegate.id);
+                var index = this.data.findIndex(x => x.id == userDelegate.id);
                 this.data.splice(index, 1);
+
+                this.initGrid();
             },
             error => this.messageService.closeLoading());
         });
@@ -301,10 +309,12 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.analytics.forEach(x => {
                 x.resources.forEach(user => {
                     if(this.resources.indexOf(u => u.id == user.userId) == -1){
-                        this.resources.push({ id: user.userId, text: user.text });
+                        this.resources.push({ id: user.userId, text: user.text, selected: false });
                     }
                 });
-            })
+            });
+
+            this.initResourceGrid();
         }
 
         if(this.typeId == DelegationType.WorkTime){
@@ -320,7 +330,12 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.userSourceDisabled = false;
             this.sourceType = "3";
 
-            this.resources = this.resourcesByManager;
+            this.resources = this.resourcesByManager.map(s => {
+                s.selected = false;
+                return s;
+            });
+
+            this.initResourceGrid();
         }
 
         if(this.typeId == DelegationType.RefundApprovall || this.typeId == DelegationType.Solfac){
@@ -347,5 +362,30 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.sourceType = "2";
             this.analyticDisabled = false;
         }
+    }
+
+    selectAll(){
+        this.resources.forEach((item, index) => {
+            item.selected = true;
+        });
+    }
+
+    unselectAll(){
+        this.resources.forEach((item, index) => {
+            item.selected = false;
+        });
+    }
+
+    initResourceGrid() {
+        var options = {
+            selector: "#resourcesTable",
+        };
+
+        this.datatableService.destroy(options.selector);
+        this.datatableService.initialize(options);
+    }
+
+    anySelected(){
+        return this.resources.filter(x => x.selected).length > 0;
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Common;
 
 namespace Sofco.Core.Models.Common
 {
-    public class DelegationModel : DelegationAddModel
+    public class DelegationModel
     {
         public DelegationModel(Delegation userDelegate)
         {
@@ -29,6 +30,14 @@ namespace Sofco.Core.Models.Common
         public string AnalyticSourceName { get; set; }
 
         public string UserSourceName { get; set; }
+
+        public DelegationType? Type { get; set; }
+
+        public int? AnalyticSourceId { get; set; }
+
+        public int? UserSourceId { get; set; }
+
+        public int GrantedUserId { get; set; }
     }
 
     public class DelegationAddModel
@@ -41,6 +50,6 @@ namespace Sofco.Core.Models.Common
 
         public int? AnalyticSourceId { get; set; }
 
-        public int? UserSourceId { get; set; }
+        public IList<int> UserSourceIds { get; set; }
     }
 }

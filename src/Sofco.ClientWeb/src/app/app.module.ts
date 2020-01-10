@@ -85,7 +85,7 @@ registerLocaleData(localeEs, 'es');
         deps: [HttpClient]
       }
     }),
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

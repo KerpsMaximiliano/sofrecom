@@ -34,11 +34,6 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <h4 class="control-label">Permisos sobre</h4>
-                        <!-- <div class="radio radio-success radio-inline">
-                            <input value="1" type="radio" [(ngModel)]="sourceType">
-                            <label> Todo </label>
-                        </div>  -->
-                    
                         <div class="radio radio-success radio-inline">
                             <input value="2" type="radio" [(ngModel)]="sourceType" [disabled]="sourceTypeDisabled">
                             <label> Analiticas </label>
@@ -71,11 +66,47 @@
                         <ng-select [items]="analytics" bindLabel="text" bindValue="id" [(ngModel)]="analyticSourceId" (change)="setEmployees()" [disabled]="analyticDisabled"></ng-select>
                     </div>
                 </div>
-
-                <div class="col-sm-4" *ngIf="!isPurchaseOrder() && sourceType == 3">
+ 
+                <!-- <div class="col-sm-4" *ngIf="!isPurchaseOrder() && sourceType == 3">
                     <div class="form-group">
                         <label class="control-label">Recurso</label>
                         <ng-select [items]="resources" bindLabel="text" bindValue="id" [disabled]="userSourceDisabled" [(ngModel)]="userSourceId"></ng-select>
+                    </div>
+                </div> -->
+            </div>
+
+            <div class="row" *ngIf="!isPurchaseOrder() && sourceType == 3 && !userSourceDisabled && resources.length > 0">
+                <div class="col-md-12">
+
+                    <div class="m-t-sm m-b-sm">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <h3>Recursos</h3>
+                            </div>
+                            <div class="col-md-11">
+                                <button class="btn btn-success btn-sm" (click)="selectAll()"> {{ 'ACTIONS.selectAll' | translate }}  <i class="fa fa-check"></i></button>
+                                <button class="btn btn-warning btn-sm" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped dataTable table-font" role="grid" id="resourcesTable">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Nombre y Apellido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of resources">
+                                    <td class="column-xs text-center">
+                                        <icheck [(checked)]="item.selected"></icheck>
+                                    </td>
+                                    <td>{{ item.text }}</td>
+                                </tr>
+                            </tbody>
+                        </table>       
                     </div>
                 </div>
             </div>

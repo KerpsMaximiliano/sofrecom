@@ -39,7 +39,7 @@ namespace Sofco.Service.Implementations.Common
 
             if (model.Type == DelegationType.RefundAdd)
             {
-                model.UserSourceId = currentUser.Id;
+                model.UserSourceIds = new List<int>(currentUser.Id);
             }
 
             Validate(model, response, currentUser.Id);
@@ -48,29 +48,48 @@ namespace Sofco.Service.Implementations.Common
 
             try
             {
-                var userDelegate = new Delegation
+                if (model.UserSourceIds.Any())
                 {
-                    GrantedUserId = model.GrantedUserId,
-                    UserId = currentUser.Id,
-                    Type = model.Type.GetValueOrDefault(),
-                    AnalyticSourceId = model.AnalyticSourceId,
-                    UserSourceId = model.UserSourceId,
-                    SourceType = model.SourceType,
-                    Created = DateTime.UtcNow
-                };
+                    foreach (var userSourceId in model.UserSourceIds)
+                    {
+                        var userDelegate = new Delegation
+                        {
+                            GrantedUserId = model.GrantedUserId,
+                            UserId = currentUser.Id,
+                            Type = model.Type.GetValueOrDefault(),
+                            AnalyticSourceId = model.AnalyticSourceId,
+                            SourceType = model.SourceType,
+                            UserSourceId = userSourceId,
+                            Created = DateTime.UtcNow.Date
+                        };
 
-                if (model.UserSourceId.HasValue && model.UserSourceId.Value > 0)
-                {
-                    var user = userData.GetById(model.UserSourceId.Value);
+                        var user = userData.GetById(userSourceId);
 
-                    var employee = unitOfWork.EmployeeRepository.GetByEmail(user.Email);
+                        var employee = unitOfWork.EmployeeRepository.GetByEmail(user.Email);
 
-                    if (employee != null) userDelegate.EmployeeSourceId = employee.Id;
+                        if (employee != null) userDelegate.EmployeeSourceId = employee.Id;
+
+                        unitOfWork.DelegationRepository.Insert(userDelegate);
+
+                        HandleAddDelegate(userDelegate);
+                    }
                 }
+                else
+                {
+                    var userDelegate = new Delegation
+                    {
+                        GrantedUserId = model.GrantedUserId,
+                        UserId = currentUser.Id,
+                        Type = model.Type.GetValueOrDefault(),
+                        AnalyticSourceId = model.AnalyticSourceId,
+                        SourceType = model.SourceType,
+                        Created = DateTime.UtcNow.Date
+                    };
 
-                unitOfWork.DelegationRepository.Insert(userDelegate);
+                    unitOfWork.DelegationRepository.Insert(userDelegate);
 
-                HandleAddDelegate(userDelegate);
+                    HandleAddDelegate(userDelegate);
+                }
 
                 unitOfWork.Save();
 
@@ -102,22 +121,6 @@ namespace Sofco.Service.Implementations.Common
                     unitOfWork.UserGroupRepository.Insert(userRole);
                 }
             }
-
-            //if (userDelegate.Type == DelegationType.PurchaseOrderActive)
-            //{
-            //    var group = unitOfWork.GroupRepository.GetByCode(appSetting.PurchaseOrderActiveViewGroupCode);
-
-            //    if (!unitOfWork.UserGroupRepository.ExistById(userDelegate.GrantedUserId, group.Id))
-            //    {
-            //        var userRole = new UserGroup
-            //        {
-            //            GroupId = group.Id,
-            //            UserId = userDelegate.GrantedUserId
-            //        };
-
-            //        unitOfWork.UserGroupRepository.Insert(userRole);
-            //    }
-            //}
         }
 
         public Response Delete(int id)
@@ -168,22 +171,6 @@ namespace Sofco.Service.Implementations.Common
                     unitOfWork.UserGroupRepository.Delete(userRole);
                 }
             }
-
-            //if (userDelegate.Type == DelegationType.PurchaseOrderActive)
-            //{
-            //    var group = unitOfWork.GroupRepository.GetByCode(appSetting.PurchaseOrderActiveViewGroupCode);
-
-            //    if (unitOfWork.UserGroupRepository.ExistById(userDelegate.GrantedUserId, group.Id))
-            //    {
-            //        var userRole = new UserGroup
-            //        {
-            //            GroupId = group.Id,
-            //            UserId = userDelegate.GrantedUserId
-            //        };
-
-            //        unitOfWork.UserGroupRepository.Delete(userRole);
-            //    }
-            //}
         }
 
         public Response<IList<DelegationModel>> GetByUserId()
@@ -443,13 +430,21 @@ namespace Sofco.Service.Implementations.Common
 
             if (response.HasErrors()) return;
 
-            if (unitOfWork.DelegationRepository.Exist(model, currentUserId))
-                response.AddError(Resources.Admin.Delegation.AlreadyExist);
-
+            if (model.UserSourceIds != null)
+            {
+                foreach (var userSourceId in model.UserSourceIds)
+                {
+                    if (unitOfWork.DelegationRepository.Exist(model, currentUserId, userSourceId))
+                    {
+                        response.AddError(Resources.Admin.Delegation.AlreadyExist);
+                    }
+                }
+            }
+    
             if (currentUserId == model.GrantedUserId)
                 response.AddError(Resources.Admin.Delegation.UserEqualsGrantedUser);
 
-            if (model.SourceType == DelegationSourceType.User && model.GrantedUserId == model.UserSourceId)
+            if (model.SourceType == DelegationSourceType.User && model.UserSourceIds.Contains(model.GrantedUserId))
                 response.AddError(Resources.Admin.Delegation.UserSourceEqualsGrantedUser);
         }
     }

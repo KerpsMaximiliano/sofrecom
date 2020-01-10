@@ -14,17 +14,17 @@ namespace Sofco.DAL.Repositories.Common
         {
         }
 
-        public bool Exist(DelegationAddModel model, int userId)
+        public bool Exist(DelegationAddModel model, int userId, int? userSourceId)
         {
             if (model.AnalyticSourceId.HasValue && model.AnalyticSourceId.Value > 0)
             {
-                if (model.UserSourceId.HasValue && model.UserSourceId.Value > 0)
+                if (userSourceId.HasValue && userSourceId.Value > 0)
                 {
                     return context.Delegations.Any(x => x.UserId == userId &&
                                                           x.GrantedUserId == model.GrantedUserId &&
                                                           x.Type == model.Type &&
                                                           x.AnalyticSourceId.Value == model.AnalyticSourceId.Value &&
-                                                          x.UserSourceId.Value == model.UserSourceId.Value &&
+                                                          x.UserSourceId.Value == userSourceId.Value &&
                                                           x.SourceType == model.SourceType);
                 }
                 else
@@ -38,7 +38,7 @@ namespace Sofco.DAL.Repositories.Common
             }
             else
             {
-                return context.Delegations.Any(x => x.UserId == userId && x.GrantedUserId == model.GrantedUserId && x.Type == model.Type && x.UserSourceId == model.UserSourceId);
+                return context.Delegations.Any(x => x.UserId == userId && x.GrantedUserId == model.GrantedUserId && x.Type == model.Type && x.UserSourceId == userSourceId);
             }
         }
 

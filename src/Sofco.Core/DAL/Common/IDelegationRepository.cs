@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Sofco.Core.Models.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Common;
@@ -8,7 +7,7 @@ namespace Sofco.Core.DAL.Common
 {
     public interface IDelegationRepository : IBaseRepository<Delegation>
     {
-        bool Exist(DelegationAddModel model, int userId);
+        bool Exist(DelegationAddModel model, int userId, int? userSourceId);
         IList<Delegation> GetByUserId(int userId);
         IList<Delegation> GetByUserId(int userId, DelegationType type);
         IList<Delegation> GetByGrantedUserIdAndType(int currentUserId, DelegationType type);
