@@ -154,9 +154,9 @@ namespace Sofco.Service.Implementations.Recruitment
                 return response;
             }
 
-            if(model.HasRrhhInterview) Validate(model.RrhhInterviewDate, model.RrhhInterviewPlace, model.RrhhInterviewerId.ToString(), response);
-            if(model.HasTechnicalInterview) Validate(model.TechnicalInterviewDate, model.TechnicalInterviewPlace, model.TechnicalExternalInterviewer, response);
-            if(model.HasClientInterview) Validate(model.ClientInterviewDate, model.ClientInterviewPlace, model.ClientExternalInterviewer, response);
+            if(model.HasRrhhInterview) Validate(model.RrhhInterviewDate, model.RrhhInterviewPlace, model.RrhhInterviewerId.ToString(), response, jobSearchApplicant.RrhhInterviewDate);
+            if(model.HasTechnicalInterview) Validate(model.TechnicalInterviewDate, model.TechnicalInterviewPlace, model.TechnicalExternalInterviewer, response, jobSearchApplicant.TechnicalInterviewDate);
+            if(model.HasClientInterview) Validate(model.ClientInterviewDate, model.ClientInterviewPlace, model.ClientExternalInterviewer, response, jobSearchApplicant.ClientInterviewDate);
 
             if (model.HasRrhhInterview && (!model.Salary.HasValue || model.Salary <= 0))
             {
@@ -266,15 +266,19 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        private void Validate(DateTime? date, string place, string interviewer, Response response)
+        private void Validate(DateTime? date, string place, string interviewer, Response response,
+            DateTime? dateToCompare)
         {
             if (!date.HasValue)
                 response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewDateRequired);
             else
             {
-                if (date.Value.Date < DateTime.UtcNow.Date)
+                if (dateToCompare.HasValue && dateToCompare.Value.Date != date.Value.Date)
                 {
-                    response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewDateLessThanToday);
+                    if (date.Value.Date < DateTime.UtcNow.Date)
+                    {
+                        response.AddError(Resources.Recruitment.JobSearchApplicant.InterviewDateLessThanToday);
+                    }
                 }
             }
 

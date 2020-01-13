@@ -72,6 +72,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     Promise.all(promises).then(data => { 
         this.messageService.closeLoading();
     });
+
+    Object.keys(this.form.controls).forEach(key => {
+      this.form.get(key).markAsDirty();
+    });
   }
 
   ngOnDestroy(): void {

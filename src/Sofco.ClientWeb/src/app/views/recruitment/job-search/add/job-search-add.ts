@@ -129,6 +129,10 @@ export class JobSearchComponent implements OnInit, OnDestroy {
                 this.form.controls.userId.disable();
             }
         });
+
+        Object.keys(this.form.controls).forEach(key => {
+            this.form.get(key).markAsDirty();
+        });
     }
 
     ngOnDestroy(): void {
