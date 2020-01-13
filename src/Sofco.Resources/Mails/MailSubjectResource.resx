@@ -216,4 +216,7 @@
   <data name="SensibleData" xml:space="preserve">
     <value>Accesos a datos sensibles del informe de Gestión</value>
   </data>
+  <data name="ScheduledInterviews" xml:space="preserve">
+    <value>Entrevista RRHH/Técnica/Cliente pautada</value>
+  </data>
 </root>

@@ -33,5 +33,7 @@
         public const string SocialCharges = "SocialCharges";
 
         public const string PowerBi = "PowerBi";
+
+        public const string ApplicantInterviewNotificationBefore = "ApplicantInterviewNotificationBefore";
     }
 }

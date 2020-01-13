@@ -413,4 +413,21 @@ Recurso: {1}
   <data name="SensibleData" xml:space="preserve">
     <value>Se le ha otorgado permiso de visualización de datos a: {0}</value>
   </data>
+  <data name="ScheduledInterviews" xml:space="preserve">
+    <value>&lt;br/&gt;
+
+&lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th class=td-lg&gt;Tipo Entrevista&lt;/th&gt;
+              &lt;th class=td-md&gt;Fecha&lt;/th&gt;
+              &lt;th class=td-lg&gt;Postulante&lt;/th&gt;
+              &lt;th class=td-lg&gt;Entrevistador&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+              {0}
+          &lt;/tbody&gt;
+        &lt;/table&gt;</value>
+  </data>
 </root>

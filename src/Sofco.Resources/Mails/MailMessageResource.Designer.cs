@@ -422,6 +422,29 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a &lt;br/&gt;
+        ///
+        ///&lt;table&gt;
+        ///          &lt;thead&gt;
+        ///            &lt;tr&gt;
+        ///              &lt;th class=td-lg&gt;Tipo Entrevista&lt;/th&gt;
+        ///              &lt;th class=td-md&gt;Fecha&lt;/th&gt;
+        ///              &lt;th class=td-lg&gt;Postulante&lt;/th&gt;
+        ///              &lt;th class=td-lg&gt;Entrevistador&lt;/th&gt;
+        ///            &lt;/tr&gt;
+        ///          &lt;/thead&gt;
+        ///          &lt;tbody&gt;
+        ///              {0}
+        ///          &lt;/tbody&gt;
+        ///        &lt;/table&gt;.
+        /// </summary>
+        public static string ScheduledInterviews {
+            get {
+                return ResourceManager.GetString("ScheduledInterviews", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Se le ha otorgado permiso de visualización de datos a: {0}.
         /// </summary>
         public static string SensibleData {

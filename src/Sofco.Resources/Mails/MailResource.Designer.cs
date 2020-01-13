@@ -10,7 +10,6 @@
 
 namespace Sofco.Resources.Mails {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Sofco.Resources.Mails {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Mails.MailResource", typeof(MailResource).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sofco.Resources.Mails.MailResource", typeof(MailResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

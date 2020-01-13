@@ -149,6 +149,23 @@
 	.contentResult { margin-left:10px; margin-bottom:10px }
 	.footer { margin-top:10px;height:40px;color:#818080;font-size:9pt;text-align:center }
 	ul li { margin: 0px 0px 8px 0px; }
+                   .td-sm {
+                        width: 50px;
+                        text-align: center;
+                   }
+                   .td-md {
+                        width: 125px;
+                        text-align: center;
+                        padding: 5px;
+                   }
+                   .td-lg {
+                        width: 225px;
+                        text-align: center;
+                        padding: 5px;
+                   }
+                   td {
+                        border-bottom: 1px solid #ddd;
+                   }
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
