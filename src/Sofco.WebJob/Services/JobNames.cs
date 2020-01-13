@@ -35,5 +35,7 @@
         public const string PowerBi = "PowerBi";
 
         public const string ApplicantInterviewNotificationBefore = "ApplicantInterviewNotificationBefore";
+
+        public const string ApplicantInterviewNotificationAfter = "ApplicantInterviewNotificationAfter";
     }
 }

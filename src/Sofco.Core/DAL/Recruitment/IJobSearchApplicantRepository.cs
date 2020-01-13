@@ -13,5 +13,6 @@ namespace Sofco.Core.DAL.Recruitment
         bool Exist(int applicantId, int jobSearchId, DateTime date);
         IList<JobSearchApplicant> GetByApplicant(int applicantId);
         IList<JobSearchApplicant> GetWithInterviewAfterToday();
+        IList<JobSearchApplicant> GetWithInterviewABeforeToday();
     }
 }

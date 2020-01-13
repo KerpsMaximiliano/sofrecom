@@ -219,4 +219,7 @@
   <data name="ScheduledInterviews" xml:space="preserve">
     <value>Entrevista RRHH/Técnica/Cliente pautada</value>
   </data>
+  <data name="ScheduledInterviewsAfter" xml:space="preserve">
+    <value>Entrevista RRHH/Técnica/Cliente vencida</value>
+  </data>
 </root>

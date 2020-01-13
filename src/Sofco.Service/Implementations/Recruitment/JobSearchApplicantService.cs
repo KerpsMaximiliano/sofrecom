@@ -99,6 +99,7 @@ namespace Sofco.Service.Implementations.Recruitment
                                 JobSearchId = jobSearchId,
                                 ReasonId = model.ReasonId.GetValueOrDefault(),
                                 CreatedDate = date,
+                                ModifiedAt = date,
                                 CreatedBy = currentUser.UserName
                             };
 
@@ -197,6 +198,7 @@ namespace Sofco.Service.Implementations.Recruitment
                 jobSearchApplicant.ReasonId = model.ReasonId;
                 jobSearchApplicant.RemoteWork = model.RemoteWork;
                 jobSearchApplicant.Salary = model.Salary;
+                jobSearchApplicant.ModifiedAt = DateTime.UtcNow.Date;
 
                 unitOfWork.JobSearchApplicantRepository.Update(jobSearchApplicant);
                 unitOfWork.Save();

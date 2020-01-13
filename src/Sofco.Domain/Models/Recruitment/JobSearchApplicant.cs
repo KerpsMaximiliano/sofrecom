@@ -59,5 +59,7 @@ namespace Sofco.Domain.Models.Recruitment
         public bool RemoteWork { get; set; }
 
         public decimal? Salary { get; set; }
+
+        public DateTime ModifiedAt { get; set; }
     }
 }

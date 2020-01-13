@@ -10,22 +10,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Sofco.Domain.Enums;
 using Sofco.Framework.MailData;
 
 namespace Sofco.Service.Implementations.Jobs
 {
-    public class ApplicantInterviewNotificationBeforeService : IApplicantInterviewNotificationBeforeService
+    public class ApplicantInterviewNotificationAfterService : IApplicantInterviewNotificationAfterService
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly ILogMailer<ApplicantInterviewNotificationBeforeService> logger;
+        private readonly ILogMailer<ApplicantInterviewNotificationAfterService> logger;
         private readonly IMailSender mailSender;
         private readonly EmailConfig emailConfig;
 
-        public ApplicantInterviewNotificationBeforeService(IUnitOfWork unitOfWork,
+        public ApplicantInterviewNotificationAfterService(IUnitOfWork unitOfWork,
             IMailSender mailSender,
             IOptions<EmailConfig> emailConfigOptions,
-            ILogMailer<ApplicantInterviewNotificationBeforeService> logger)
+            ILogMailer<ApplicantInterviewNotificationAfterService> logger)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -35,7 +34,7 @@ namespace Sofco.Service.Implementations.Jobs
 
         public void Execute()
         {
-            var jobSearchApplicants = unitOfWork.JobSearchApplicantRepository.GetWithInterviewAfterToday();
+            var jobSearchApplicants = unitOfWork.JobSearchApplicantRepository.GetWithInterviewABeforeToday();
 
             if (jobSearchApplicants.Any())
             {
@@ -43,7 +42,7 @@ namespace Sofco.Service.Implementations.Jobs
                 {
                     var recruitersGroup = unitOfWork.GroupRepository.GetByCode(emailConfig.RecruitersCode);
 
-                    var subject = MailSubjectResource.ScheduledInterviews;
+                    var subject = MailSubjectResource.ScheduledInterviewsAfter;
 
                     var body = string.Format(MailMessageResource.ScheduledInterviews, BuildMailBody(jobSearchApplicants));
 
@@ -68,38 +67,34 @@ namespace Sofco.Service.Implementations.Jobs
         private string BuildMailBody(IList<JobSearchApplicant> jobSearchApplicants)
         {
             var text = new StringBuilder();
-            var today = DateTime.UtcNow.Date;
 
             foreach (var jobSearchApplicant in jobSearchApplicants)
             {
-                if (jobSearchApplicant.RrhhInterviewDate.HasValue &&
-                    jobSearchApplicant.RrhhInterviewDate.Value.Date.AddDays(-1) == today.Date)
+                if (jobSearchApplicant.RrhhInterviewDate.HasValue && jobSearchApplicant.ModifiedAt < jobSearchApplicant.RrhhInterviewDate.Value.Date)
                 {
                     text.Append($"<tr>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.Reason?.Text}</td>" +
-                                    $"<td class='td-md'>{today.AddDays(1).Date:d}</td>" +
+                                    $"<td class='td-md'>{jobSearchApplicant.RrhhInterviewDate.Value.Date:d}</td>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.Applicant?.LastName} {jobSearchApplicant.Applicant?.FirstName}</td>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.RrhhInterviewer?.Name}</td>" +
                                 $"</tr>");
                 }
 
-                if (jobSearchApplicant.TechnicalInterviewDate.HasValue &&
-                    jobSearchApplicant.TechnicalInterviewDate.Value.Date.AddDays(-1) == today.Date)
+                if (jobSearchApplicant.TechnicalInterviewDate.HasValue && jobSearchApplicant.ModifiedAt.Date < jobSearchApplicant.TechnicalInterviewDate.Value.Date)
                 {
                     text.Append($"<tr>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.Reason?.Text}</td>" +
-                                    $"<td class='td-md'>{today.AddDays(1).Date:d}</td>" +
+                                    $"<td class='td-md'>{jobSearchApplicant.TechnicalInterviewDate.Value.Date:d}</td>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.Applicant?.LastName} {jobSearchApplicant.Applicant?.FirstName}</td>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.TechnicalExternalInterviewer}</td>" +
                                 $"</tr>");
                 }
 
-                if (jobSearchApplicant.ClientInterviewDate.HasValue &&
-                    jobSearchApplicant.ClientInterviewDate.Value.Date.AddDays(-1) == today.Date)
+                if (jobSearchApplicant.ClientInterviewDate.HasValue && jobSearchApplicant.ModifiedAt.Date < jobSearchApplicant.ClientInterviewDate.Value.Date)
                 {
                     text.Append($"<tr>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.Reason?.Text}</td>" +
-                                    $"<td class='td-md'>{today.AddDays(1).Date:d}</td>" +
+                                    $"<td class='td-md'>{jobSearchApplicant.ClientInterviewDate.Value.Date:d}</td>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.Applicant?.LastName} {jobSearchApplicant.Applicant?.FirstName}</td>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.ClientExternalInterviewer}</td>" +
                                 $"</tr>");

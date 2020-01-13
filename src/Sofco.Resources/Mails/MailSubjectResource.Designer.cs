@@ -250,6 +250,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Entrevista RRHH/Técnica/Cliente vencida.
+        /// </summary>
+        public static string ScheduledInterviewsAfter {
+            get {
+                return ResourceManager.GetString("ScheduledInterviewsAfter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Accesos a datos sensibles del informe de Gestión.
         /// </summary>
         public static string SensibleData {
