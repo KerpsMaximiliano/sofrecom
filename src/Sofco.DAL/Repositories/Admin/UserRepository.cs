@@ -52,7 +52,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Code == emailConfig.DirectorsCode && x.User.Active)
+                .Where(x => x.User.Active && x.Group.Code == emailConfig.DirectorsCode && x.User.Active)
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList();
@@ -63,7 +63,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Code == emailConfig.ManagersCode || x.Group.Code == emailConfig.DirectorsCode && x.User.Active)
+                .Where(x => x.User.Active && x.Group.Code == emailConfig.ManagersCode || x.Group.Code == emailConfig.DirectorsCode && x.User.Active)
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList().DistinctBy(s => s.Name);
@@ -87,7 +87,7 @@ namespace Sofco.DAL.Repositories.Admin
             var userGroups = context.UserGroup
                 .Include(x => x.Group)
                 .Include(x => x.User)
-                .Where(x => x.Group.Code.Equals(sellerCode))
+                .Where(x => x.User.Active && x.Group.Code.Equals(sellerCode))
                 .ToList();
 
             return userGroups.Select(x => x.User).ToList();

@@ -32,8 +32,8 @@
         </div>
     </div>
 
-    <button type="button" class="btn btn-md btn-success" (click)="save()" [disabled]="!form.valid"> <i class="fa fa-save"></i> Actualizar entrevista </button>
-
+    <button type="button" class="btn btn-md btn-success" (click)="save()" [disabled]="!canSave()"> <i class="fa fa-save"></i> Actualizar entrevista </button>
+ 
     <hr class="hr-line-dashed">
 
     <div class="row">

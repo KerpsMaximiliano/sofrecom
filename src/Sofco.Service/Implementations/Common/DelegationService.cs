@@ -48,7 +48,7 @@ namespace Sofco.Service.Implementations.Common
 
             try
             {
-                if (model.UserSourceIds.Any())
+                if (model.UserSourceIds != null && model.UserSourceIds.Any())
                 {
                     foreach (var userSourceId in model.UserSourceIds)
                     {

@@ -22,7 +22,7 @@
                         <ng-select [items]="types" bindLabel="text" bindValue="id" [(ngModel)]="typeId" (change)="typeChanged()"></ng-select>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4" *ngIf="typeId > 0">
                     <div class="form-group">
                         <label class="control-label">Usuario a delegar</label>
                         <ng-select [items]="users" bindLabel="text" bindValue="id" [(ngModel)]="grantedUserId"></ng-select>
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" *ngIf="typeId > 0">
                 <div class="col-sm-4">
                     <div class="form-group">
                         <h4 class="control-label">Permisos sobre</h4>
@@ -75,7 +75,7 @@
                 </div> -->
             </div>
 
-            <div class="row" *ngIf="!isPurchaseOrder() && sourceType == 3 && !userSourceDisabled && resources.length > 0">
+            <div class="row" *ngIf="typeId > 0 && !isPurchaseOrder() && sourceType == 3 && !userSourceDisabled && resources.length > 0">
                 <div class="col-md-12">
 
                     <div class="m-t-sm m-b-sm">
@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div> 
-        <div class="ibox-footer text-right">
+        <div class="ibox-footer text-right" *ngIf="typeId > 0">
             <button [disabled]="!saveEnabled()" class="btn btn-primary" (click)="save()"> Guardar <i class="fa fa-save"></i></button>
         </div>
     </div>

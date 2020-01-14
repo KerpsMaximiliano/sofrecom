@@ -275,4 +275,10 @@ export class InterviewComponent implements OnInit, OnDestroy {
             this.form.controls.clientExternalInterviewer.setValue(null);
         }
     }
+
+    canSave(){
+        if(this.form.valid && (this.hasRrhhInterview || this.hasTechnicalInterview || this.hasClientInterview)) return true;
+
+        return false;
+    }
 }
