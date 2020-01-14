@@ -41,6 +41,12 @@ namespace Sofco.Core.Models.ManagementReport
         public AnalyticStatus AnalyticStatus { get; set; }
 
         public ManagementReportStatus Status { get; set; }
+
+        public decimal? AcumulatedCosts { get; set; }
+
+        public decimal? AcumulatedSales { get; set; }
+
+        public string AcumulatedPeriod { get; set; }
     }
 
     public class AmmountItem

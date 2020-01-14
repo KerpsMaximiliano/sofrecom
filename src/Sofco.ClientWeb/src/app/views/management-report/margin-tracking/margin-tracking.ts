@@ -6,6 +6,9 @@ import { MarginTracking } from "app/models/management-report/marginTracking";
 import { HitoStatus } from "app/models/enums/hitoStatus";
 import { AnalyticStatus } from "app/models/enums/analyticStatus";
 import { Worksheet } from "exceljs";
+import { ManagementReportService } from "app/services/management-report/management-report.service";
+import { Subscription } from "rxjs";
+import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'margin-tracking',
@@ -20,6 +23,13 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     billingDataLoaded: boolean = false;
     costDataLoaded: boolean = false;
 
+    acumulatedCostsEditabled: boolean = false;
+    acumulatedSalesEditabled: boolean = false;
+
+    acumulatedSales: string;
+    acumulatedCosts: string;
+    period: string;
+
     private billingModel: any;
     private costsModel: any;
 
@@ -30,7 +40,11 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
 
+    updateAcumulatedSuscrip: Subscription;
+
     constructor(private menuService: MenuService,
+        private messageService: MessageService,
+        private managementReportService: ManagementReportService,
         private managementReportDetail: ManagementReportDetailComponent
     ) { }
 
@@ -40,10 +54,26 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        if(this.updateAcumulatedSuscrip) this.updateAcumulatedSuscrip.unsubscribe();
     }
 
     isReadOnly() {
         this.model.analyticStatus == AnalyticStatus.Close;
+    }
+
+    updateAcumulated(){
+        var json = {
+            costs: this.acumulatedCosts,
+            sales: this.acumulatedSales,
+            period: this.period
+        }
+
+        this.messageService.showLoading();
+
+        this.updateAcumulatedSuscrip = this.managementReportService.updateAcumulated(this.model.managementReportId, json).subscribe(() => {
+            this.messageService.closeLoading();    
+        },
+        () => this.messageService.closeLoading());
     }
 
     setMarginTracking(month, year) {
@@ -70,11 +100,11 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         endDate.setDate(1);
 
         var billingAcumulatedToDate = 0;
-        var costsAcumulatedToDate = 0;
+        var costsAcumulatedToDate = parseFloat(this.acumulatedCosts);
         var budgetAcumulatedToDate = 0;
-        var billingRealAcumulatedToDate = 0;        
-        var totalAcumulatedToEnd = 0;
-        var totalCostsAcumulatedToEnd = 0;
+        var billingRealAcumulatedToDate = parseFloat(this.acumulatedSales);        
+        var totalAcumulatedToEnd = parseFloat(this.acumulatedSales);
+        var totalCostsAcumulatedToEnd = parseFloat(this.acumulatedCosts);
         var evalpropTotalBilling = 0;
         var evalpropTotalCosts = 0;
         var evalpropTotalTracing = 0;

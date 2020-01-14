@@ -163,5 +163,13 @@ namespace Sofco.WebApi.Controllers.ManagementReport
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("{id}/acumulated")]
+        public IActionResult UpdateAcumulated(int id, [FromBody] AcumulatedRequest request)
+        {
+            var response = managementReportService.UpdateAcumulated(id, request);
+
+            return this.CreateResponse(response);
+        }
     }
 }

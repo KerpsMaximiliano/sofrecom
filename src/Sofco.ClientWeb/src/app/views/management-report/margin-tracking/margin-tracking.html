@@ -1,4 +1,30 @@
 <div class="row">
+    <div class="col-md-3" (dblclick)="acumulatedSalesEditabled = !acumulatedSalesEditabled">
+        <div class="form-group">
+            <label class="control-label">Acumulado ventas</label>
+            <p *ngIf="acumulatedSalesEditabled == false" class="label label-gray acumulated">{{ acumulatedSales | amountFormat }}</p>
+            <input *ngIf="acumulatedSalesEditabled == true" class="form-control" decimalFormat="12" decimals="2" type="text" [(ngModel)]="acumulatedSales">
+        </div>
+    </div>
+    <div class="col-md-3" (dblclick)="acumulatedCostsEditabled = !acumulatedCostsEditabled">
+        <div class="form-group">
+            <label class="control-label">Acumulado costos</label>
+            <p *ngIf="acumulatedCostsEditabled == false" class="label label-gray acumulated">{{ acumulatedCosts | amountFormat }}</p>
+            <input *ngIf="acumulatedCostsEditabled == true" class="form-control" decimalFormat="12" decimals="2" type="text" [(ngModel)]="acumulatedCosts">
+        </div>
+    </div>
+    <div class="col-md-3" >
+        <div class="form-group">
+            <label class="control-label">Periodo</label>
+            <input class="form-control" maxlength="100" type="text" [(ngModel)]="period">
+        </div>
+    </div>
+    <div class="col-md-3">
+        <button type="button" class="btn btn-md btn-success m-t-md" (click)="updateAcumulated()">Actualizar</button>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-md-4">
         <table class="table table-striped">
             <thead>

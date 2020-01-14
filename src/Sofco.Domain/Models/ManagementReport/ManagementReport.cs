@@ -28,6 +28,12 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public IList<Budget> Budgets { get; set; } 
 
-        public IList<ManagementReportComment> Comments { get; set; } 
+        public IList<ManagementReportComment> Comments { get; set; }
+
+        public decimal? AcumulatedCosts { get; set; }
+
+        public decimal? AcumulatedSales { get; set; }
+
+        public string AcumulatedPeriod { get; set; }
     }
 }

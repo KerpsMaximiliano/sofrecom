@@ -89,6 +89,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.ManamementReportEndDate = analytic.ManagementReport.EndDate;
                 response.Data.AnalyticStatus = analytic.Status;
                 response.Data.Status = analytic.ManagementReport.Status;
+                response.Data.AcumulatedCosts = analytic.ManagementReport.AcumulatedCosts;
+                response.Data.AcumulatedSales = analytic.ManagementReport.AcumulatedSales;
+                response.Data.AcumulatedPeriod = analytic.ManagementReport.AcumulatedPeriod;
             }
             else
             {
@@ -1885,6 +1888,38 @@ namespace Sofco.Service.Implementations.ManagementReport
             }
 
             return pCostEmployees;
+        }
+
+        public Response UpdateAcumulated(int id, AcumulatedRequest request)
+        {
+            var response = new Response();
+
+            var report = unitOfWork.ManagementReportRepository.Get(id);
+
+            if (report == null)
+            {
+                response.AddError(Resources.ManagementReport.ManagementReport.NotFound);
+                return response;
+            }
+
+            try
+            {
+                report.AcumulatedCosts = request.Costs;
+                report.AcumulatedSales = request.Sales;
+                report.AcumulatedPeriod = request.Period;
+
+                unitOfWork.ManagementReportRepository.UpdateAcumulatedValues(report);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
         }
 
         private List<CostMonthOther> Translate(List<CostDetailOther> costDetailOthers)

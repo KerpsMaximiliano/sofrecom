@@ -110,4 +110,8 @@ export class ManagementReportService {
   getResources(id, hitoId) {
     return this.http.get<any>(`${this.baseUrl}/managementReportBillings/${id}/${hitoId}/resources`);
   }
+
+  updateAcumulated(id, json){
+    return this.http.put<any>(`${this.baseUrl}/managementReport/${id}/acumulated`, json);
+  }
 }

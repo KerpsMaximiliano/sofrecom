@@ -163,5 +163,12 @@ namespace Sofco.DAL.Repositories.ManagementReport
         {
             context.Entry(managementReport).Property("StateGenerated").IsModified = true;
         }
+
+        public void UpdateAcumulatedValues(Domain.Models.ManagementReport.ManagementReport report)
+        {
+            context.Entry(report).Property("AcumulatedCosts").IsModified = true;
+            context.Entry(report).Property("AcumulatedSales").IsModified = true;
+            context.Entry(report).Property("AcumulatedPeriod").IsModified = true;
+        }
     }
 }

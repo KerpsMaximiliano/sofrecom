@@ -28,5 +28,6 @@ namespace Sofco.Core.DAL.ManagementReport
         Domain.Models.ManagementReport.ManagementReport GetWithCostDetailsAndBillings(int id);
         IList<ManagementReportBilling> GetBillingsByMonthYear(DateTime monthYear, int managementReportId);
         void UpdateStateGenerated(Domain.Models.ManagementReport.ManagementReport managementReport);
+        void UpdateAcumulatedValues(Domain.Models.ManagementReport.ManagementReport report);
     }
 }

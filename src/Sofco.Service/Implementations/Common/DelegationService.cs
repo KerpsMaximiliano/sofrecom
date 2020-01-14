@@ -444,7 +444,7 @@ namespace Sofco.Service.Implementations.Common
             if (currentUserId == model.GrantedUserId)
                 response.AddError(Resources.Admin.Delegation.UserEqualsGrantedUser);
 
-            if (model.SourceType == DelegationSourceType.User && model.UserSourceIds.Contains(model.GrantedUserId))
+            if (model.SourceType == DelegationSourceType.User && model.UserSourceIds != null && model.UserSourceIds.Contains(model.GrantedUserId))
                 response.AddError(Resources.Admin.Delegation.UserSourceEqualsGrantedUser);
         }
     }
