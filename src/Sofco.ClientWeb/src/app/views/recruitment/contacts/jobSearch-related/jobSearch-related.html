@@ -85,7 +85,7 @@
             </div>
             <div class="ibox-footer text-center">
                 <button class="btn btn-danger btn-sm" (click)="cancel()"> Cancelar </button>
-                <button class="btn btn-primary btn-sm" [disabled]="!form.valid || !anySelected() || !isInCompanyReason()" (click)="save()"> Guardar </button>
+                <button class="btn btn-primary btn-sm" [disabled]="!form.valid || !anySelected()" (click)="save()"> Guardar </button>
             </div>
         </div>
     </div>
