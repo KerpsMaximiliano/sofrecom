@@ -183,6 +183,10 @@
               [routerLink]="['/recruitment/contacts']">Postulantes</a>
           </li>
 
+          <li [ngClass]="{active: activeRoute('report')}"><a
+            [routerLink]="['/recruitment/report']">Reportes</a>
+        </li>
+
           <li [ngClass]="{active: activeRoute('perfiles')}" *ngIf="menuService.hasFunctionality('RECRU', 'PROFILE')"><a
             [routerLink]="['/recruitment/perfiles']">Perfiles</a>
           </li>

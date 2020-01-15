@@ -40,7 +40,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             var date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
 
             return context.Allocations.Include(x => x.Employee).Where(x =>
-                x.AnalyticId == analyticId && x.Percentage > 0 && x.StartDate.Date == date.Date).Select(x => x.Employee).ToList();
+                x.AnalyticId == analyticId && x.Percentage > 0 && x.StartDate.Date >= date.Date).Select(x => x.Employee).ToList();
         }
 
         public void UpdateManager(int id, int managerId)

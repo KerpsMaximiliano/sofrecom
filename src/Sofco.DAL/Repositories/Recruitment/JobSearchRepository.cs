@@ -160,5 +160,44 @@ namespace Sofco.DAL.Repositories.Recruitment
                 })
             .ToList();
         }
+
+        public IList<JobSearch> SearchForReport(RecruitmentReportParameters parameter)
+        {
+            IQueryable<JobSearch> query = context.JobSearchs
+                .Include(x => x.Client)
+                .Include(x => x.User)
+                .Include(x => x.ReasonCause)
+                .Include(x => x.JobSearchApplicants)
+                    .ThenInclude(x => x.Reason)
+                .Include(x => x.JobSearchApplicants)
+                    .ThenInclude(x => x.Applicant)
+                .Include(x => x.JobSearchApplicants)
+                    .ThenInclude(x => x.RrhhInterviewer)
+                .Include(x => x.JobSearchApplicants)
+                    .ThenInclude(x => x.CreatedByUser)
+                .Include(x => x.JobSearchProfiles)
+                    .ThenInclude(x => x.Profile)
+                .Include(x => x.JobSearchSeniorities)
+                    .ThenInclude(x => x.Seniority)
+                .Include(x => x.JobSearchSkillsRequired)
+                    .ThenInclude(x => x.Skill);
+
+            if (!string.IsNullOrWhiteSpace(parameter.ClientId))
+                query = query.Where(x => x.Client.CrmId.Equals(parameter.ClientId));
+
+            if (parameter.Skills != null && parameter.Skills.Any())
+                query = query.Where(x => x.JobSearchSkillsRequired.Any(s => parameter.Skills.Contains(s.SkillId)));
+
+            if (parameter.Status != null && parameter.Status.Any())
+                query = query.Where(x => parameter.Status.Contains(x.Status));
+
+            if (parameter.StartDate.HasValue)
+                query = query.Where(x => x.CreatedDate.Date >= parameter.StartDate.Value.Date);
+
+            if (parameter.EndDate.HasValue)
+                query = query.Where(x => x.CreatedDate.Date <= parameter.EndDate.Value.Date);
+
+            return query.ToList();
+        }
     }
 }

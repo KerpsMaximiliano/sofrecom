@@ -35,6 +35,8 @@ import { JobSearchHistoryComponent } from './job-search/history/job-search-histo
 import { ContactFileComponent } from './contacts/files/contact-files';
 import { FileUploadModule } from 'ng2-file-upload';
 import { JobSearchRelatedComponent } from './contacts/jobSearch-related/jobSearch-related';
+import { RecruitmentReportComponent } from './reports/recruitment-report';
+import { ChartjsModule } from '@ctrl/ngx-chartjs';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { JobSearchRelatedComponent } from './contacts/jobSearch-related/jobSearc
     InterviewComponent,
     JobSearchHistoryComponent,
     ContactFileComponent,
-    JobSearchRelatedComponent
+    JobSearchRelatedComponent,
+    RecruitmentReportComponent
   ],
 
   imports: [
@@ -71,7 +74,8 @@ import { JobSearchRelatedComponent } from './contacts/jobSearch-related/jobSearc
     NgSelectModule,  
     DecimalFormatModule,
     ReactiveFormsModule,
-    BsDatepickerModule 
+    BsDatepickerModule ,
+    ChartjsModule
   ],
 
   providers: [GenericOptionService, JobSearchService, FormsService, CustomerService, ApplicantService, AnalyticService],

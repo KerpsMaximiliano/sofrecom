@@ -37,6 +37,10 @@ export class JobSearchService {
     search(json){
         return this.http.post<any>(`${this.baseUrl}/jobSearch/search`, json);
     }
+
+    searchReport(json){
+        return this.http.post<any>(`${this.baseUrl}/recruitment/report/search`, json);
+    }
     
     getApplicantsRelated(jobSearchId, applicantId){
         return this.http.get<any>(`${this.baseUrl}/jobSearchApplicant?jobSearchId=${jobSearchId}&applicantId=${applicantId}`);

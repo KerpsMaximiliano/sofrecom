@@ -1,0 +1,8 @@
+﻿ 2019-12-19 13:14:08,273 ERROR Sofco.Service.Implementations.ManagementReport.ManagementReportService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.ManagementReport.ManagementReportService.FillFundedResoursesByMonth(IList`1 Months, ICollection`1 costDetails, List`1 categories) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\ManagementReport\ManagementReportService.cs:line 1500
+   at Sofco.Service.Implementations.ManagementReport.ManagementReportService.GetCostDetail(String serviceId) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\ManagementReport\ManagementReportService.cs:line 478
+ 2019-12-19 13:15:34,748 ERROR Sofco.Service.Implementations.ManagementReport.ManagementReportService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at Sofco.Service.Implementations.ManagementReport.ManagementReportService.FillFundedResoursesByMonth(IList`1 Months, ICollection`1 costDetails, List`1 categories) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\ManagementReport\ManagementReportService.cs:line 1500
+   at Sofco.Service.Implementations.ManagementReport.ManagementReportService.GetCostDetail(String serviceId) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\ManagementReport\ManagementReportService.cs:line 478

@@ -100,7 +100,7 @@ namespace Sofco.Service.Implementations.Recruitment
                                 ReasonId = model.ReasonId.GetValueOrDefault(),
                                 CreatedDate = date,
                                 ModifiedAt = date,
-                                CreatedBy = currentUser.UserName
+                                CreatedByUserId = currentUser.Id
                             };
 
                             unitOfWork.JobSearchApplicantRepository.Insert(itemToAdd);

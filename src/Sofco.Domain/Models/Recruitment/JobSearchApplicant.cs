@@ -23,6 +23,8 @@ namespace Sofco.Domain.Models.Recruitment
         public string Comments { get; set; }
 
         public string CreatedBy { get; set; }
+        public int? CreatedByUserId { get; set; }
+        public User CreatedByUser { get; set; }
 
         public bool HasRrhhInterview { get; set; }
 

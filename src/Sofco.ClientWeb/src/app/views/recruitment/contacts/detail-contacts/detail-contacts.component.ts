@@ -353,6 +353,8 @@ export class DetailContactsComponent implements OnInit {
 
   getHistory(){
     this.history = [];
+    this.dataTableService.destroy("#historyTable");
+
     this.addSubscrip = this.applicantService.getHistory(this.entityId).subscribe(response => {
       this.history = response.data;
 

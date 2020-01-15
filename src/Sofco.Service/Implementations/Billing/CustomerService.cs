@@ -84,6 +84,7 @@ namespace Sofco.Service.Implementations.Billing
             var response = new Response<List<SelectListModel>>
             {
                 Data = result.Data
+                    .Where(x => x != null)
                     .Select(x => new SelectListModel { Id = x.CrmId, Text = x.Name })
                     .OrderBy(x => x.Text)
                     .ToList()

@@ -1,0 +1,239 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+      <h2> Reclutamiento - Reportes </h2>
+  
+      <ol class="breadcrumb">
+        <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
+        <li>Reclutamiento</li>
+        <li class="active"><strong> Reportes </strong></li>
+      </ol>
+    </div>
+</div>
+  
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()"
+                        style="display: block">
+                        <span>{{'ACTIONS.search' | translate }}</span>
+                        <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+                    </a>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group m-t-md">
+                                <icheck  [(checked)]="filterByDates">
+                                    <label class="control-label">{{'filterByDates' | translate }}</label> 
+                                </icheck>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group" *ngIf="filterByDates">
+                                <label class="control-label">Fecha Desde</label>
+                                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [(ngModel)]="startDate">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="form-group" *ngIf="filterByDates">
+                                <label class="control-label">Fecha Hasta</label>
+                                <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker [(ngModel)]="endDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Cliente</label>
+                                <ng-select [items]="customerOptions" bindLabel="text" bindValue="id" [(ngModel)]="clientCrmId"></ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Conocimientos</label>
+                                <ng-select [items]="skillOptions" bindLabel="text" bindValue="id" [(ngModel)]="skillId" [multiple]="true" [closeOnSelect]="false"></ng-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label"> Estado </label>
+                                <ng-select [multiple]="true" [closeOnSelect]="false" [items]="statusOptions" bindValue="id" bindLabel="text" [(ngModel)]="statusId"></ng-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="text-right">
+                        <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                        <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox" *ngIf="list.length > 0">
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped dataTable" role="grid" id="searchTable">
+                    <thead>
+                        <tr>
+                            <th class="column-xs"></th>
+                            <th class="column-xs">Número</th>
+                            <th class="column-sm">Estado</th>
+                            <th class="column-sm">Fecha Creación</th>
+                            <th class="column-lg">Cliente</th>
+                            <th class="column-md">Tipo/Razon</th>
+                            <th class="column-lg">Solicitante</th>
+                            <th class="column-lg">Selector</th>
+                            <th class="column-lg">Conocimientos</th>
+                            <th class="column-lg">Perfiles</th>
+                            <th class="column-lg">Seniority</th>
+                            <th class="column-xs">Cantidad</th>
+                            <th class="column-sm">Sueldo maximo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of list">
+                            <td class="column-xs text-center">
+                                <icheck [(checked)]="item.selected"></icheck>
+                            </td>
+                            <td class="column-xs"># {{ item.code }}</td>
+                            <td class="column-sm">{{ getStatusDesc(item.status) }}</td>
+                            <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                            <td class="column-lg">{{ item.client }}</td>
+                            <td class="column-md text-ellipsis">{{ item.reasonText }}</td>
+                            <td class="column-lg text-ellipsis">{{ item.userText }}</td>
+                            <td class="column-lg text-ellipsis">{{ item.recruiterText }}</td>
+                            <td class="column-lg text-word-break">{{ item.skills }}</td>
+                            <td class="column-lg text-word-break">{{ item.profiles }}</td>
+                            <td class="column-lg text-word-break">{{ item.seniorities }}</td>
+                            <td class="column-xs">{{ item.quantity }}</td>
+                            <td class="column-sm">{{ item.maximumSalary | amountFormat }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-right m-t-md" *ngIf="anyJobsearchSelected()">
+                <button class="btn btn-success" (click)="filterContacts()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox" *ngIf="contacts.length > 0">
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped dataTable" role="grid" id="contactTable" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="column-sm">Busqueda</th>
+                            <th class="column-sm">Fecha</th>
+                            <th class="column-lg">Postulante</th>
+                            <th class="column-lg">Tipo/Razon</th>
+                            <th class="column-sm">$ Pretendido</th>
+                            <th class="column-xs">Remoto</th>
+                            <th class="column-lg">RRHH Entrevistador</th>
+                            <th class="column-lg">Evaluador</th>
+                            <th class="column-xs">Comentarios</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of contacts">
+                            <td class="column-sm"># {{ item.jobsearchId }}</td>
+                            <td class="column-sm">{{ item.date | date: 'dd/MM/yyyy' }}</td>
+                            <td class="column-lg">{{ item.applicant }}</td>
+                            <td class="column-lg">{{ item.reasonText }}</td>
+                            <td class="column-sm">{{ item.salary | amountFormat }}</td>
+                            <td class="column-xs">
+                                <label class="label label-success" *ngIf="!item.remoteWork">No</label>
+                                <label class="label label-warning" *ngIf="item.remoteWork">Si</label>
+                            </td>
+                            <td class="column-lg">{{ item.rrhhInterviewer }}</td>
+                            <td class="column-lg">{{ item.technicalInterviewer }}</td>
+                            <td class="column-xs text-center">
+                                <button (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="ibox" *ngIf="contacts.length > 0">
+                <div class="ibox-title">
+                    <h4>Resultados por remuneración</h4>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped dataTable" role="grid" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Busqueda</th>
+                                    <th>Remuneracion</th>
+                                    <th>($) Pretendido </th>
+                                    <th>(%) Pretendido </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of salaryAverage">
+                                    <td># {{ item.jobsearchId }}</td>
+                                    <td>$ {{ item.salary | number: '1.2-2'  }}</td>
+                                    <td>$ {{ item.salaryValueAvg | number: '1.2-2' }}</td>
+                                    <td>{{ item.salaryPercentageAvg | number: '1.2-2' }} %</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="ibox" *ngIf="contacts.length > 0">
+                <div class="ibox-title">
+                    <h4>Resultados por selector</h4>
+                </div>
+                <div class="ibox-content">
+                    <ngx-chartjs [data]="data" type="bar" [options]="options"></ngx-chartjs>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng2-modal [config]="commentsModalConfig" #commentsModal>
+    <div class="form-group" *ngIf="comments">
+        <label class="control-label">Comentarios</label>
+        <textarea rows="6" class="form-control" value="{{comments}}" maxlength="3000" disabled></textarea>
+    </div>
+
+    <div class="form-group" *ngIf="rrhhComments">
+        <label class="control-label">Informe de RRHH</label>
+        <textarea rows="6" class="form-control" value="{{rrhhComments}}" maxlength="3000" disabled></textarea>
+    </div>
+
+    <div class="form-group" *ngIf="technicalComments">
+        <label class="control-label">Comentarios entrevista técnica</label>
+        <textarea rows="6" class="form-control" value="{{technicalComments}}" maxlength="3000" disabled></textarea>
+    </div>
+
+    <div class="form-group" *ngIf="clientCommets">
+        <label class="control-label">Comentarios entrevista cliente</label>
+        <textarea rows="6" class="form-control" value="{{clientCommets}}" maxlength="3000" disabled></textarea>
+    </div>
+</ng2-modal>
