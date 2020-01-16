@@ -303,7 +303,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
         }
 
         if(this.typeId == DelegationType.ManagementReport){
-            this.sourceTypeDisabled = false;
+            this.sourceTypeDisabled = true;
             this.analyticDisabled = false;
             this.sourceType = "2";
         }
