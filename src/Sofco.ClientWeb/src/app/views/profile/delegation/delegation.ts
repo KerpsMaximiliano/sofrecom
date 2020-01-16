@@ -31,6 +31,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
     users: any[] = new Array();
     resources: any[] = new Array();
     analytics: any[] = new Array();
+    allAnalytics: any[] = new Array();
     areas: any[] = new Array<any>(); 
     sectors: any[] = new Array<any>();
     data: any[] = new Array();
@@ -60,6 +61,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
 
         this.analyticsSubscript = this.userDelegateService.getAnalytics().subscribe(response => {
             this.analytics = response.data;
+            this.allAnalytics = response.data;
         });
 
         if(this.menuService.hasFunctionality("DELEG", "MAN-REPORT-DELEGATE")){
@@ -292,6 +294,13 @@ export class DelegationComponent implements OnInit, OnDestroy {
         this.areaSourceId = null;
         this.sectorSourceId = null;
         this.resources = [];
+
+        if(this.typeId == DelegationType.Solfac){
+            this.analytics = this.allAnalytics.filter(x => x.accountId != null);
+        }
+        else{
+            this.analytics = this.allAnalytics;
+        }
 
         if(this.typeId == DelegationType.ManagementReport){
             this.sourceTypeDisabled = false;
