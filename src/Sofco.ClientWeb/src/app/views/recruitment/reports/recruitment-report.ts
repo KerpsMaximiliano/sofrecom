@@ -5,7 +5,6 @@ import { GenericOptionService } from 'app/services/admin/generic-option.service'
 import { MessageService } from 'app/services/common/message.service';
 import { GenericOptions } from 'app/models/enums/genericOptions';
 import { CustomerService } from 'app/services/billing/customer.service';
-import { ApplicantService } from 'app/services/recruitment/applicant.service';
 import { JobSearchStatus } from 'app/models/enums/jobSearchStatus';
 import { JobSearchService } from 'app/services/recruitment/jobsearch.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
@@ -46,6 +45,8 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     getSkillsSubscrip: Subscription;
 
     data: any;
+    applicantsInterviewedData: any;
+    applicantsReportPieData: any;
     options: any;
 
     @ViewChild('commentsModal') commentsModal;
@@ -251,8 +252,9 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
 
             this.buildFirstReport();
             this.buildSecondReport();
+            this.buildThirdReport();
         }
-    }
+    } 
 
     chartClick(event){
         if(event.element && event.element.length > 0){
@@ -269,9 +271,43 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         }
     }
 
-    buildSecondReport(){
-        const bg = 'rgb(75, 192, 192)';
+    buildThirdReport(){
+        let interviewedCount = 0;
+        let notInterviewedCount = 0;
+        let interviewedPercentage = 0;
+        let notInterviewedPercentage = 0;
+        this.applicantsReportPieData = [];
 
+        this.contacts.forEach(contact => {
+            if(contact.hasRrhhInterview || contact.hasTechnicalInterview || contact.hasClientInterview){
+                interviewedCount += 1;
+            }
+            else{
+                notInterviewedCount += 1;
+            }
+        });
+
+        let total = interviewedCount + notInterviewedCount;
+        interviewedPercentage =  (interviewedCount / total) * 100;
+        notInterviewedPercentage =  (notInterviewedCount / total) * 100;
+
+        this.applicantsReportPieData.push({ name: "Entrevistados", count: interviewedCount, percentage: interviewedPercentage });
+        this.applicantsReportPieData.push({ name: "Sin Entrevistar", count: notInterviewedCount, percentage: notInterviewedPercentage });
+
+        this.applicantsInterviewedData = {
+            labels: ["Entrevistados", "Sin Entrevistar"],
+            datasets: [
+              {
+                data: [interviewedCount, notInterviewedCount],
+                backgroundColor: this.getBackgroudColors(2),
+                fill: false,
+                borderWidth: 1,
+              },
+            ],
+        };
+    }
+
+    buildSecondReport(){
         this.selectors = [];
 
         this.contacts.forEach(contact => {
@@ -313,9 +349,6 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         let labels = this.selectors.map(x => x.name);
         let values = this.selectors.map(x => x.count);
 
-        let bgs = [];
-        this.selectors.forEach(x => bgs.push(bg));
-
         this.data = {
             labels: labels,
             datasets: [
@@ -323,7 +356,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 label: "Selectores",
                 data: values,
                 fill: false,
-                backgroundColor: bgs,
+                backgroundColor: this.getBackgroudColors(this.selectors.length),
                 borderWidth: 1,
               },
             ],
@@ -387,5 +420,26 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         this.clientCommets = item.clientInterviewComments;
 
         this.commentsModal.show();
+    }
+
+    getBackgroudColors(count){
+        var graphColors = [];
+
+        var  i = 0;
+        while (i <= count) {
+            var randomR = Math.floor((Math.random() * 130) + 100);
+            var randomG = Math.floor((Math.random() * 130) + 100);
+            var randomB = Math.floor((Math.random() * 130) + 100);
+        
+            var graphBackground = "rgb(" 
+                    + randomR + ", " 
+                    + randomG + ", " 
+                    + randomB + ")";
+            graphColors.push(graphBackground);
+            
+            i++;
+        }
+
+        return graphColors;
     }
 }

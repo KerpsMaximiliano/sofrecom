@@ -126,7 +126,7 @@ export class PurchaseOrderFormComponent implements OnInit, OnDestroy {
        this.opportunities = [];
        this.opportunitiesAux = [];
        
-        if(this.model.analyticIds.length > 0) {
+        if(this.model.analyticIds != null && this.model.analyticIds.length > 0) {
 
             this.messageService.showLoading();
 
