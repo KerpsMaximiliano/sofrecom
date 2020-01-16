@@ -21,7 +21,7 @@ namespace Sofco.WebJob.Jobs
             parameters.Unassigned = true;
             parameters.GenerateReportPowerBi = true;
             parameters.StartDate = DateTime.UtcNow;
-            parameters.EndDate = DateTime.UtcNow.AddMonths(4);
+            parameters.EndDate = DateTime.UtcNow.AddMonths(3);
 
             this.service.CreateReport(parameters);
         }
