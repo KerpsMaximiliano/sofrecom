@@ -31,12 +31,15 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
 
     list: any[] = new Array();
     contacts: any[] = new Array();
+    selectors: any[] = new Array();
     salaryAverage: any[] = new Array();
+    jobSearchsBySelectors: any[] = new Array();
 
     comments: string;
     rrhhComments: string;
     technicalComments: string;
     clientCommets: string;
+    selectorName: string;
 
     searchSubscrip: Subscription;
     getClientsSubscrip: Subscription;
@@ -251,36 +254,67 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         }
     }
 
+    chartClick(event){
+        if(event.element && event.element.length > 0){
+            var index = event.element[0]._index;
+            let selector = this.selectors[index];
+
+            this.jobSearchsBySelectors = [];
+            this.selectorName = null;
+
+            if(selector && selector.jobSearchs && selector.jobSearchs.length > 0){
+                this.jobSearchsBySelectors = selector.jobSearchs;
+                this.selectorName = selector.name;
+            }
+        }
+    }
+
     buildSecondReport(){
         const bg = 'rgb(75, 192, 192)';
 
-        let selectors = [];
+        this.selectors = [];
 
         this.contacts.forEach(contact => {
 
             if(!contact.recruiterId || contact.recruiterId <= 0) return;
             
-            let selector = selectors.find(x => x.id == contact.recruiterId);
+            let selector = this.selectors.find(x => x.id == contact.recruiterId);
 
             if(selector != null){
                 selector.count += 1;
+
+                let jobsearch = selector.jobSearchs.find(x => x.id == contact.jobsearchId);
+
+                if(jobsearch != null){
+                    jobsearch.count += 1;
+                }
+                else{
+                    selector.jobSearchs.push({
+                        id: contact.jobsearchId,
+                        count: 1
+                    });
+                }
             }
             else{
                 let selectorToAdd = {
                     id: contact.recruiterId,
                     name: contact.recruiterText,
+                    jobSearchs: [{
+                        id: contact.jobsearchId,
+                        count: 1
+                    }],
                     count: 1
                 };
 
-                selectors.push(selectorToAdd);
+                this.selectors.push(selectorToAdd);
             }
         });
 
-        let labels = selectors.map(x => x.name);
-        let values = selectors.map(x => x.count);
+        let labels = this.selectors.map(x => x.name);
+        let values = this.selectors.map(x => x.count);
 
         let bgs = [];
-        selectors.forEach(x => bgs.push(bg));
+        this.selectors.forEach(x => bgs.push(bg));
 
         this.data = {
             labels: labels,

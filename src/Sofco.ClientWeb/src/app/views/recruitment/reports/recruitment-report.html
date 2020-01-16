@@ -171,7 +171,7 @@
     </div>
     
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="ibox" *ngIf="contacts.length > 0">
                 <div class="ibox-title">
                     <h4>Resultados por remuneración</h4>
@@ -183,8 +183,8 @@
                                 <tr>
                                     <th>Busqueda</th>
                                     <th>Remuneracion</th>
-                                    <th>($) Pretendido </th>
-                                    <th>(%) Pretendido </th>
+                                    <th>($) Pretendido Promedio</th>
+                                    <th>(%) Pretendido Promedio</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -202,14 +202,34 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="ibox" *ngIf="contacts.length > 0">
-                <div class="ibox-title">
-                    <h4>Resultados por selector</h4>
+  
+    <div class="ibox" *ngIf="contacts.length > 0">
+        <div class="ibox-title">
+            <h4>Resultados por selector</h4>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-md-8">
+                    <ngx-chartjs (chartClick)="chartClick($event)" [data]="data" type="bar" [options]="options"></ngx-chartjs>
                 </div>
-                <div class="ibox-content">
-                    <ngx-chartjs [data]="data" type="bar" [options]="options"></ngx-chartjs>
+                <div class="col-md-4" *ngIf="jobSearchsBySelectors.length > 0">
+                    <h4><i class="fa fa-user"></i> {{ selectorName }}</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped dataTable" role="grid" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Busqueda</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of jobSearchsBySelectors">
+                                    <td># {{ item.id }}</td>
+                                    <td>{{ item.count }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
