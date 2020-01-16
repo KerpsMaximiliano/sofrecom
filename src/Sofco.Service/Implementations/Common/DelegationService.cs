@@ -207,6 +207,7 @@ namespace Sofco.Service.Implementations.Common
                 {
                     Id = analytic.Id,
                     Text = $"{analytic.Title} - {analytic.Name}",
+                    AccountId = analytic.AccountId,
                     Resources = new List<ResourceOption>()
                 };
 

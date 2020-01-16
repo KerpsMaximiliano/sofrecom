@@ -94,6 +94,18 @@ namespace Sofco.Service.Implementations.Reports
                 var currentUser = userData.GetCurrentUser();
 
                 analytics = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id).ToList();
+
+                var delegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.Solfac);
+
+                foreach (var delegation in delegates)
+                {
+                    var analytic = unitOfWork.AnalyticRepository.Get(delegation.AnalyticSourceId.GetValueOrDefault());
+
+                    if (analytic != null && analytics.All(x => x.Id != analytic.Id))
+                    {
+                        analytics.Add(analytic);
+                    }
+                }
             }
 
             var result = analytics.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();

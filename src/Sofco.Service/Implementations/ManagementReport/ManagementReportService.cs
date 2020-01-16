@@ -1312,41 +1312,41 @@ namespace Sofco.Service.Implementations.ManagementReport
                                 {
                                     monthDetail.CanViewSensibleData = true;
 
-                                    auxTypeCost.Value = 0;
-                                    auxTypeCost.OriginalValue = 0;
-                                    auxTypeCost.Charges = 0;
-                                    auxTypeCost.Adjustment = monthValue.Adjustment ?? 0;
+                                    //auxTypeCost.Value = 0;
+                                    //auxTypeCost.OriginalValue = 0;
+                                    //auxTypeCost.Charges = 0;
+                                    //auxTypeCost.Adjustment = monthValue.Adjustment ?? 0;
 
-                                    //if (employee.SocialCharges != null && employee.SocialCharges.Any())
-                                    //{
-                                    //    var socialCharge = employee?.SocialCharges.FirstOrDefault(x =>
-                                    //        x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
+                                    if (employee.SocialCharges != null && employee.SocialCharges.Any())
+                                    {
+                                        var socialCharge = employee?.SocialCharges.FirstOrDefault(x =>
+                                            x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
 
-                                    //    if (socialCharge != null)
-                                    //    {
-                                    //        var allocation = employee.Allocations.FirstOrDefault(x =>
-                                    //            x.AnalyticId == IdAnalytic && x.StartDate.Date == mounth.MonthYear.Date);
+                                        if (socialCharge != null)
+                                        {
+                                            var allocation = employee.Allocations.FirstOrDefault(x =>
+                                                x.AnalyticId == IdAnalytic && x.StartDate.Date == mounth.MonthYear.Date);
 
-                                    //        if (allocation != null)
-                                    //        {
-                                    //            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal),
-                                    //                out var salary)) salary = 0;
-                                    //            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal),
-                                    //                out var charges)) charges = 0;
+                                            if (allocation != null)
+                                            {
+                                                if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal),
+                                                    out var salary)) salary = 0;
+                                                if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal),
+                                                    out var charges)) charges = 0;
 
-                                    //            auxTypeCost.Value = (allocation.Percentage / 100) * salary;
-                                    //            auxTypeCost.OriginalValue = (allocation.Percentage / 100) * salary;
-                                    //            auxTypeCost.Charges = (allocation.Percentage / 100) * charges;
-                                    //            auxTypeCost.Adjustment = monthValue.Adjustment ?? 0;
+                                                auxTypeCost.Value = (allocation.Percentage / 100) * salary;
+                                                auxTypeCost.OriginalValue = (allocation.Percentage / 100) * salary;
+                                                auxTypeCost.Charges = (allocation.Percentage / 100) * charges;
+                                                auxTypeCost.Adjustment = monthValue.Adjustment ?? 0;
 
-                                    //            if (salary > 0)
-                                    //            {
-                                    //                monthDetail.ChargesPercentage =
-                                    //                    (decimal) ((auxTypeCost.Charges / auxTypeCost.Value) * 100);
-                                    //            }
-                                    //        }
-                                    //    }
-                                    //}
+                                                if (salary > 0)
+                                                {
+                                                    monthDetail.ChargesPercentage =
+                                                        (decimal)((auxTypeCost.Charges / auxTypeCost.Value) * 100);
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1356,39 +1356,39 @@ namespace Sofco.Service.Implementations.ManagementReport
                             {
                                 monthDetail.CanViewSensibleData = true;
 
-                                auxTypeCost.Value = 0;
-                                auxTypeCost.OriginalValue = 0;
-                                auxTypeCost.Charges = 0;
+                                //auxTypeCost.Value = 0;
+                                //auxTypeCost.OriginalValue = 0;
+                                //auxTypeCost.Charges = 0;
 
-                                //if (employee.SocialCharges != null && employee.SocialCharges.Any())
-                                //{
-                                //    var socialCharge = employee?.SocialCharges.FirstOrDefault(x =>
-                                //        x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
+                                if (employee.SocialCharges != null && employee.SocialCharges.Any())
+                                {
+                                    var socialCharge = employee?.SocialCharges.FirstOrDefault(x =>
+                                        x.Year == mounth.MonthYear.Year && x.Month == mounth.MonthYear.Month);
 
-                                //    if (socialCharge != null)
-                                //    {
-                                //        var allocation = employee.Allocations.FirstOrDefault(x =>
-                                //            x.AnalyticId == IdAnalytic && x.StartDate.Date == mounth.MonthYear.Date);
+                                    if (socialCharge != null)
+                                    {
+                                        var allocation = employee.Allocations.FirstOrDefault(x =>
+                                            x.AnalyticId == IdAnalytic && x.StartDate.Date == mounth.MonthYear.Date);
 
-                                //        if (allocation != null)
-                                //        {
-                                //            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal),
-                                //                out var salary)) salary = 0;
-                                //            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal),
-                                //                out var charges)) charges = 0;
+                                        if (allocation != null)
+                                        {
+                                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal),
+                                                out var salary)) salary = 0;
+                                            if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal),
+                                                out var charges)) charges = 0;
 
-                                //            auxTypeCost.Value = (allocation.Percentage / 100) * salary;
-                                //            auxTypeCost.OriginalValue = (allocation.Percentage / 100) * salary;
-                                //            auxTypeCost.Charges = (allocation.Percentage / 100) * charges;
+                                            auxTypeCost.Value = (allocation.Percentage / 100) * salary;
+                                            auxTypeCost.OriginalValue = (allocation.Percentage / 100) * salary;
+                                            auxTypeCost.Charges = (allocation.Percentage / 100) * charges;
 
-                                //            if (salary > 0)
-                                //            {
-                                //                monthDetail.ChargesPercentage =
-                                //                    (decimal) ((auxTypeCost.Charges / auxTypeCost.Value) * 100);
-                                //            }
-                                //        }
-                                //    }
-                                //}
+                                            if (salary > 0)
+                                            {
+                                                monthDetail.ChargesPercentage =
+                                                    (decimal)((auxTypeCost.Charges / auxTypeCost.Value) * 100);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
 

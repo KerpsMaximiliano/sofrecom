@@ -9,6 +9,8 @@ namespace Sofco.Core.Models.Common
         public string Text { get; set; }
 
         public IList<ResourceOption> Resources { get; set; }
+
+        public string AccountId { get; set; }
     }
 
     public class ResourceOption
