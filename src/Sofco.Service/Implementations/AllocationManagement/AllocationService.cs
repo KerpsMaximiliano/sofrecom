@@ -352,7 +352,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 response.AddError(Resources.AllocationManagement.Allocation.DateToLessThanDateSince);
                 return response;
             }
-
+             
             parameters.StartDate = new DateTime(parameters.StartDate.GetValueOrDefault().Year, parameters.StartDate.GetValueOrDefault().Month, 1);
 
             parameters.EndDate = new DateTime(parameters.EndDate.GetValueOrDefault().Year, parameters.EndDate.GetValueOrDefault().Month,
