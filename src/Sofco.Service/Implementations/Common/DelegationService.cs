@@ -215,11 +215,14 @@ namespace Sofco.Service.Implementations.Common
 
                 foreach (var resource in resources)
                 {
-                    var user = unitOfWork.UserRepository.GetByEmail(resource.Email);
-
-                    if (user != null)
+                    if (itemToAdd.Resources.All(x => x.Id != resource.Id))
                     {
-                        itemToAdd.Resources.Add(new ResourceOption { Id = resource.Id, Text = resource.Name, UserId = user.Id });
+                        var user = unitOfWork.UserRepository.GetByEmail(resource.Email);
+
+                        if (user != null)
+                        {
+                            itemToAdd.Resources.Add(new ResourceOption { Id = resource.Id, Text = resource.Name, UserId = user.Id });
+                        }
                     }
                 }
 
@@ -245,11 +248,14 @@ namespace Sofco.Service.Implementations.Common
 
                         foreach (var resource in resources)
                         {
-                            var user = unitOfWork.UserRepository.GetByEmail(resource.Email);
-
-                            if (user != null)
+                            if (itemToAdd.Resources.All(x => x.Id != resource.Id))
                             {
-                                itemToAdd.Resources.Add(new ResourceOption { Id = resource.Id, Text = resource.Name, UserId = user.Id });
+                                var user = unitOfWork.UserRepository.GetByEmail(resource.Email);
+
+                                if (user != null)
+                                {
+                                    itemToAdd.Resources.Add(new ResourceOption { Id = resource.Id, Text = resource.Name, UserId = user.Id });
+                                }
                             }
                         }
 
