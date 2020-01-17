@@ -209,6 +209,16 @@ namespace Sofco.Service.Implementations.Recruitment
 
                 var reason = optionRepository.Get(model.ReasonId);
 
+                if (reason.Type == ReasonCauseType.ApplicantInProgress)
+                {
+                    var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
+                    applicant.Status = ApplicantStatus.InProgress;
+                    unitOfWork.ApplicantRepository.Update(applicant);
+                    unitOfWork.Save();
+
+                    response.Data = Convert.ToInt32(applicant.Status);
+                }
+
                 if (reason.Type == ReasonCauseType.ApplicantContacted || reason.Type == ReasonCauseType.ApplicantOpen)
                 {
                     var jobsearchs = unitOfWork.JobSearchApplicantRepository.GetByApplicant(applicantId);

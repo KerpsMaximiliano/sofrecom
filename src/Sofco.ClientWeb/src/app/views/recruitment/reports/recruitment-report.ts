@@ -8,6 +8,7 @@ import { CustomerService } from 'app/services/billing/customer.service';
 import { JobSearchStatus } from 'app/models/enums/jobSearchStatus';
 import { JobSearchService } from 'app/services/recruitment/jobsearch.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { ReasonCauseType } from 'app/models/enums/reasonCauseType';
 
 @Component({
   selector: 'app-recruitment-report',
@@ -47,7 +48,9 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     data: any;
     applicantsInterviewedData: any;
     applicantsReportPieData: any;
+    groupByStates: any;
     options: any;
+    groupByStatesItems: any[] = new Array(); 
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -271,40 +274,97 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         }
     }
 
+    buildFourthReport(interviewdData){
+        this.groupByStatesItems = [];
+
+        if(interviewdData){
+            this.groupByStates = {
+                labels: ["Ingresados", "En Proceso", "Rechazados"],
+                datasets: [
+                  {
+                    data: [interviewdData.groupByStates.inCompany, interviewdData.groupByStates.inProcess, interviewdData.groupByStates.rejected],
+                    backgroundColor: this.getBackgroudColors(2),
+                    fill: false,
+                    borderWidth: 1,
+                  },
+                ],
+            };
+
+            let total = interviewdData.groupByStates.inCompany + interviewdData.groupByStates.inProcess + interviewdData.groupByStates.rejected;
+            let inCompanyPercentage =  (interviewdData.groupByStates.inCompany / total) * 100;
+            let inProcessPercentage =  (interviewdData.groupByStates.inProcess / total) * 100;
+            let rejectedPercentage =  (interviewdData.groupByStates.rejected / total) * 100;
+
+            this.groupByStatesItems.push({ name: "Ingresados", count: interviewdData.groupByStates.inCompany, percentage: inCompanyPercentage });
+            this.groupByStatesItems.push({ name: "En Proceso", count: interviewdData.groupByStates.inProcess, percentage: inProcessPercentage });
+            this.groupByStatesItems.push({ name: "Rechazados", count: interviewdData.groupByStates.rejected, percentage: rejectedPercentage });
+        }
+    }
+
     buildThirdReport(){
-        let interviewedCount = 0;
-        let notInterviewedCount = 0;
-        let interviewedPercentage = 0;
-        let notInterviewedPercentage = 0;
+        let intervieweds = {
+            name: "Entrevistados",
+            count: 0,
+            percentage: 0,
+            groupByStates: {
+                inCompany: 0,
+                inProcess: 0,
+                rejected: 0
+            }
+        }
+
+        let notIntervieweds = {
+            name: "Sin Entrevistar",
+            count: 0,
+            percentage: 0,
+            groupByStates: {
+                inCompany: 0,
+                inProcess: 0,
+                rejected: 0
+            }
+        }
+
         this.applicantsReportPieData = [];
 
         this.contacts.forEach(contact => {
             if(contact.hasRrhhInterview || contact.hasTechnicalInterview || contact.hasClientInterview){
-                interviewedCount += 1;
+                intervieweds.count += 1;
+
+                if(contact.reasonCauseType == ReasonCauseType.ApplicantInCompany) intervieweds.groupByStates.inCompany += 1;
+                if(contact.reasonCauseType == ReasonCauseType.ApplicantInProgress) intervieweds.groupByStates.inProcess += 1;
+                if(contact.reasonCauseType == ReasonCauseType.ApplicantOpen || 
+                   contact.reasonCauseType == ReasonCauseType.ApplicantContacted) intervieweds.groupByStates.rejected += 1;
             }
             else{
-                notInterviewedCount += 1;
+                notIntervieweds.count += 1;
+
+                if(contact.reasonCauseType == ReasonCauseType.ApplicantInCompany) notIntervieweds.groupByStates.inCompany += 1;
+                if(contact.reasonCauseType == ReasonCauseType.ApplicantInProgress) notIntervieweds.groupByStates.inProcess += 1;
+                if(contact.reasonCauseType == ReasonCauseType.ApplicantOpen || 
+                   contact.reasonCauseType == ReasonCauseType.ApplicantContacted) notIntervieweds.groupByStates.rejected += 1;
             }
         });
 
-        let total = interviewedCount + notInterviewedCount;
-        interviewedPercentage =  (interviewedCount / total) * 100;
-        notInterviewedPercentage =  (notInterviewedCount / total) * 100;
+        let total = intervieweds.count + notIntervieweds.count;
+        intervieweds.percentage =  (intervieweds.count / total) * 100;
+        notIntervieweds.percentage =  (notIntervieweds.count / total) * 100;
 
-        this.applicantsReportPieData.push({ name: "Entrevistados", count: interviewedCount, percentage: interviewedPercentage });
-        this.applicantsReportPieData.push({ name: "Sin Entrevistar", count: notInterviewedCount, percentage: notInterviewedPercentage });
+        this.applicantsReportPieData.push(intervieweds);
+        this.applicantsReportPieData.push(notIntervieweds);
 
         this.applicantsInterviewedData = {
             labels: ["Entrevistados", "Sin Entrevistar"],
             datasets: [
               {
-                data: [interviewedCount, notInterviewedCount],
+                data: [intervieweds.count, notIntervieweds.count],
                 backgroundColor: this.getBackgroudColors(2),
                 fill: false,
                 borderWidth: 1,
               },
             ],
         };
+
+        this.buildFourthReport(intervieweds);
     }
 
     buildSecondReport(){
@@ -362,15 +422,15 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
             ],
         };
 
-        this.options = {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
+        // this.options = {
+        //     scales: {
+        //         yAxes: [{
+        //             ticks: {
+        //                 beginAtZero: true
+        //             }
+        //         }]
+        //     }
+        // }
     }
 
     buildFirstReport(){

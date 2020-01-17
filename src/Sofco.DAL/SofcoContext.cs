@@ -214,7 +214,6 @@ namespace Sofco.DAL
             builder.MapHealthInsurance();
             builder.MapPrepaidHealth();
             builder.MapCertificate();
-            builder.MapUserDelegate();
             builder.MapSolfacCertificates();
             builder.MapLicense();
             builder.MapLicenseFiles();

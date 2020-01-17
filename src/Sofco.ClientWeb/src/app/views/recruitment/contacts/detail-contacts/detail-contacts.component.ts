@@ -167,7 +167,7 @@ export class DetailContactsComponent implements OnInit {
 
           this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantUnavailable);
 
-          this.interview.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.ApplicantContacted || x.type == ReasonCauseType.ApplicantInProgress || x.type == ReasonCauseType.ApplicantOpen);    
+          this.interview.reasonOptions = response.data.filter(x => x.type != ReasonCauseType.ApplicantUnavailable);    
           
           this.jobSearchRelated.setReasonOptions(response.data);
       });
