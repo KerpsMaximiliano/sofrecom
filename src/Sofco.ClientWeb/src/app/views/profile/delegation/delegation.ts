@@ -317,7 +317,7 @@ export class DelegationComponent implements OnInit, OnDestroy {
             this.resources = [];
             this.analytics.forEach(x => {
                 x.resources.forEach(user => {
-                    if(this.resources.indexOf(u => u.id == user.userId) == -1){
+                    if(this.resources.findIndex(u => u.id == user.userId) < 0){
                         this.resources.push({ id: user.userId, text: user.text, selected: false });
                     }
                 });
