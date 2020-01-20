@@ -100,11 +100,11 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
         endDate.setDate(1);
 
         var billingAcumulatedToDate = 0;
-        var costsAcumulatedToDate = parseFloat(this.acumulatedCosts);
+        var costsAcumulatedToDate = parseFloat(this.acumulatedCosts) || 0;
         var budgetAcumulatedToDate = 0;
-        var billingRealAcumulatedToDate = parseFloat(this.acumulatedSales);        
-        var totalAcumulatedToEnd = parseFloat(this.acumulatedSales);
-        var totalCostsAcumulatedToEnd = parseFloat(this.acumulatedCosts);
+        var billingRealAcumulatedToDate = parseFloat(this.acumulatedSales) || 0;        
+        var totalAcumulatedToEnd = parseFloat(this.acumulatedSales) || 0;
+        var totalCostsAcumulatedToEnd = parseFloat(this.acumulatedCosts) || 0;
         var evalpropTotalBilling = 0;
         var evalpropTotalCosts = 0;
         var evalpropTotalTracing = 0;

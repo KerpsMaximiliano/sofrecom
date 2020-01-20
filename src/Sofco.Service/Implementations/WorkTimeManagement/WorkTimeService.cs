@@ -249,7 +249,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             return response;
         }
-         
+
         public IEnumerable<Option> GetAnalytics()
         {
             if (roleManager.IsPmo() || roleManager.IsRrhh())
