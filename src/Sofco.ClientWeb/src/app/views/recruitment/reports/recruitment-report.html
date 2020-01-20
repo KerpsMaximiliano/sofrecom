@@ -15,8 +15,7 @@
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h5 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()"
-                        style="display: block">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon('search-icon')" style="display: block">
                         <span>{{'ACTIONS.search' | translate }}</span>
                         <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
                     </a>
@@ -81,54 +80,72 @@
         </div>
     </div>
 
-    <div class="ibox" *ngIf="list.length > 0">
-        <div class="ibox-content">
-            <div class="table-responsive">
-                <table class="table table-striped dataTable" role="grid" id="searchTable">
-                    <thead>
-                        <tr>
-                            <th class="column-xs"></th>
-                            <th class="column-xs">Número</th>
-                            <th class="column-sm">Estado</th>
-                            <th class="column-sm">Fecha Creación</th>
-                            <th class="column-lg">Cliente</th>
-                            <th class="column-md">Tipo/Razon</th>
-                            <th class="column-lg">Solicitante</th>
-                            <th class="column-lg">Selector</th>
-                            <th class="column-lg">Conocimientos</th>
-                            <th class="column-lg">Perfiles</th>
-                            <th class="column-lg">Seniority</th>
-                            <th class="column-xs">Cantidad</th>
-                            <th class="column-sm">Sueldo maximo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of list">
-                            <td class="column-xs text-center">
-                                <icheck [(checked)]="item.selected"></icheck>
-                            </td>
-                            <td class="column-xs"># {{ item.code }}</td>
-                            <td class="column-sm">{{ getStatusDesc(item.status) }}</td>
-                            <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
-                            <td class="column-lg">{{ item.client }}</td>
-                            <td class="column-md text-ellipsis">{{ item.reasonText }}</td>
-                            <td class="column-lg text-ellipsis">{{ item.userText }}</td>
-                            <td class="column-lg text-ellipsis">{{ item.recruiterText }}</td>
-                            <td class="column-lg text-word-break">{{ item.skills }}</td>
-                            <td class="column-lg text-word-break">{{ item.profiles }}</td>
-                            <td class="column-lg text-word-break">{{ item.seniorities }}</td>
-                            <td class="column-xs">{{ item.quantity }}</td>
-                            <td class="column-sm">{{ item.maximumSalary | amountFormat }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="panel-group" id="accordion2" *ngIf="list.length > 0">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" (click)="changeIcon('search-icon2')" style="display: block">
+                        Contactos realizados
+                        <i id="search-icon2" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+                    </a>
+                </h5>
             </div>
-
-            <div class="text-right m-t-md" *ngIf="anyJobsearchSelected()">
-                <button class="btn btn-success" (click)="filterContacts()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+            <div id="collapseOne2" class="panel-collapse in collapse">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped dataTable" role="grid" id="searchTable">
+                            <thead>
+                                <tr>
+                                    <th class="column-xs"></th>
+                                    <th class="column-xs">Número</th>
+                                    <th class="column-sm">Estado</th>
+                                    <th class="column-sm">Fecha Creación</th>
+                                    <th class="column-lg">Cliente</th>
+                                    <th class="column-md">Tipo/Razon</th>
+                                    <th class="column-lg">Solicitante</th>
+                                    <th class="column-lg">Selector</th>
+                                    <th class="column-lg">Conocimientos</th>
+                                    <th class="column-lg">Perfiles</th>
+                                    <th class="column-lg">Seniority</th>
+                                    <th class="column-xs">Cantidad</th>
+                                    <th class="column-sm">Sueldo maximo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of list">
+                                    <td class="column-xs text-center">
+                                        <icheck [(checked)]="item.selected"></icheck>
+                                    </td>
+                                    <td class="column-xs"># {{ item.code }}</td>
+                                    <td class="column-sm">{{ getStatusDesc(item.status) }}</td>
+                                    <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
+                                    <td class="column-lg">{{ item.client }}</td>
+                                    <td class="column-md text-ellipsis">{{ item.reasonText }}</td>
+                                    <td class="column-lg text-ellipsis">{{ item.userText }}</td>
+                                    <td class="column-lg text-ellipsis">{{ item.recruiterText }}</td>
+                                    <td class="column-lg text-word-break">{{ item.skills }}</td>
+                                    <td class="column-lg text-word-break">{{ item.profiles }}</td>
+                                    <td class="column-lg text-word-break">{{ item.seniorities }}</td>
+                                    <td class="column-xs">{{ item.quantity }}</td>
+                                    <td class="column-sm">{{ item.maximumSalary | amountFormat }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+        
+                    <div class="text-right m-t-md" *ngIf="anyJobsearchSelected()">
+                        <button class="btn btn-success" (click)="filterContacts()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+<!-- 
+    <div class="ibox" >
+        <div class="ibox-content">
+            
+        </div>
+    </div> -->
 
     <div class="ibox" *ngIf="contacts.length > 0">
         <div class="ibox-content">
@@ -209,7 +226,7 @@
         <div class="ibox-content">
             <div class="row">
                 <div class="col-md-8">
-                    <ngx-chartjs (chartClick)="chartClick($event)" [data]="data" type="pie"></ngx-chartjs>
+                    <ngx-chartjs (chartClick)="chartClick($event)" [data]="data" type="pie" [options]="options"></ngx-chartjs>
                 </div>
                 <div class="col-md-4" *ngIf="jobSearchsBySelectors.length > 0">
                     <h4><i class="fa fa-user"></i> {{ selectorName }}</h4>
@@ -234,96 +251,51 @@
         </div>
     </div>
 
+    <div class="row" *ngIf="contacts.length > 0">
+        <div class="col-md-6">
+            <div class="ibox" >
+                <div class="ibox-title">
+                    <h4>Agrupado por postulantes</h4>
+                </div>
+                <div class="ibox-content">
+                    <ngx-chartjs [data]="applicantsInterviewedData" type="pie" [options]="options"></ngx-chartjs>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h4> Entrevistados agrupados por estado</h4>
+                </div>
+                <div class="ibox-content">
+                    <ngx-chartjs [data]="groupByStates" type="pie" [options]="options"></ngx-chartjs>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="ibox" *ngIf="contacts.length > 0">
-        <div class="ibox-title">
-            <h4>Agrupado por postulantes</h4>
-        </div>
-        <div class="ibox-content">
-            <div class="row">
-                <div class="col-md-8">
-                    <ngx-chartjs [data]="applicantsInterviewedData" type="pie"></ngx-chartjs>
-                </div>
-                <div class="col-md-4">
-                    <div class="table-responsive">
-                        <table class="table table-striped dataTable" role="grid" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Postulantes</th>
-                                    <th>Cantidad</th>
-                                    <th>Porcentaje</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of applicantsReportPieData">
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.count }}</td>
-                                    <td>{{ item.percentage | number: '1.2-2' }} %</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="ibox" *ngIf="groupByStatesItems.length > 0">
-        <div class="ibox-title">
-            <h4> Entrevistados agrupados por estado</h4>
-        </div>
-        <div class="ibox-content">
-            <div class="row">
-                <div class="col-md-8">
-                    <ngx-chartjs [data]="groupByStates" type="pie"></ngx-chartjs>
-                </div>
-                <div class="col-md-4">
-                    <div class="table-responsive">
-                        <table class="table table-striped dataTable" role="grid" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Estado</th>
-                                    <th>Cantidad</th>
-                                    <th>Porcentaje</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of groupByStatesItems">
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.count }}</td>
-                                    <td>{{ item.percentage | number: '1.2-2' }} %</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="ibox" *ngIf="groupByRejectedItems.length > 0">
         <div class="ibox-title">
             <h4> Agrupados por rechazados</h4>
         </div>
         <div class="ibox-content">
             <div class="row">
-                <div class="col-md-8">
-                    <ngx-chartjs [data]="groupByRejected" type="pie"></ngx-chartjs>
+                <div class="col-md-7">
+                    <ngx-chartjs [data]="groupByRejected" type="pie" [options]="options"></ngx-chartjs>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-5" *ngIf="contactsByState.length > 0">
                     <div class="table-responsive">
                         <table class="table table-striped dataTable" role="grid" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Rechazado</th>
+                                    <th>Motivo</th>
                                     <th>Cantidad</th>
-                                    <th>Porcentaje</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of groupByRejectedItems">
-                                    <td>{{ item.name }}</td>
+                                <tr *ngFor="let item of contactsByState">
+                                    <td>{{ item.text }}</td>
                                     <td>{{ item.count }}</td>
-                                    <td>{{ item.percentage | number: '1.2-2' }} %</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -34,6 +34,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     selectors: any[] = new Array();
     salaryAverage: any[] = new Array();
     jobSearchsBySelectors: any[] = new Array();
+    contactsByState: any[] = new Array();
 
     comments: string;
     rrhhComments: string;
@@ -48,11 +49,8 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     data: any;
     applicantsInterviewedData: any;
     groupByRejected: any;
-    applicantsReportPieData: any;
     groupByStates: any;
     options: any;
-    groupByStatesItems: any[] = new Array(); 
-    groupByRejectedItems: any[] = new Array(); 
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -133,7 +131,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                     return x;
                 });
 
-                this.collapse();
+                this.collapse("collapseOne", "search-icon");
                 this.initGrid();
             }
             else{
@@ -202,23 +200,23 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         this.dataTableService.initialize(params);
     }
 
-    collapse() {
-        if ($("#collapseOne").hasClass('in')) {
-            $("#collapseOne").removeClass('in');
+    collapse(id, icon) {
+        if ($("#" + id).hasClass('in')) {
+            $("#" + id).removeClass('in');
         }
         else {
-            $("#collapseOne").addClass('in');
+            $("#" + id).addClass('in');
         }
 
-        this.changeIcon();
+        this.changeIcon(icon);
     }
 
-    changeIcon() {
-        if ($("#collapseOne").hasClass('in')) {
-            $("#search-icon").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
+    changeIcon(id) {
+        if ($("#" + id).hasClass('in')) {
+            $("#" + id).toggleClass('fa-caret-down').toggleClass('fa-caret-up');
         }
         else {
-            $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+            $("#" + id).toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         }
     }
 
@@ -262,23 +260,38 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     } 
 
     chartClick(event){
-        if(event.element && event.element.length > 0){
+        this.jobSearchsBySelectors = [];
+        this.selectorName = null;
+
+        if(event && event.element && event.element.length > 0){
             var index = event.element[0]._index;
             let selector = this.selectors[index];
-
-            this.jobSearchsBySelectors = [];
-            this.selectorName = null;
 
             if(selector && selector.jobSearchs && selector.jobSearchs.length > 0){
                 this.jobSearchsBySelectors = selector.jobSearchs;
                 this.selectorName = selector.name;
             }
         }
+        else{
+            this.selectors.forEach(selector => {
+                selector.jobSearchs.forEach(x => {
+
+                    var exist = this.jobSearchsBySelectors.find(s => s.id == x.id);
+
+                    if(exist == null){
+                        this.jobSearchsBySelectors.push(Object.assign({}, x));
+                    }
+                    else{
+                        exist.count += x.count;
+                    }
+                });
+            });
+
+            this.selectorName = "Selectores"
+        }
     }
 
     buildFourthReport(interviewdData){
-        this.groupByStatesItems = [];
-
         if(interviewdData){
             this.groupByStates = {
                 labels: ["Ingresados", "En Proceso", "Rechazados"],
@@ -291,46 +304,26 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                   },
                 ],
             };
-
-            let total = interviewdData.groupByStates.inCompany + interviewdData.groupByStates.inProcess + interviewdData.groupByStates.rejected;
-            let inCompanyPercentage =  (interviewdData.groupByStates.inCompany / total) * 100;
-            let inProcessPercentage =  (interviewdData.groupByStates.inProcess / total) * 100;
-            let rejectedPercentage =  (interviewdData.groupByStates.rejected / total) * 100;
-
-            this.groupByStatesItems.push({ name: "Ingresados", count: interviewdData.groupByStates.inCompany, percentage: inCompanyPercentage });
-            this.groupByStatesItems.push({ name: "En Proceso", count: interviewdData.groupByStates.inProcess, percentage: inProcessPercentage });
-            this.groupByStatesItems.push({ name: "Rechazados", count: interviewdData.groupByStates.rejected, percentage: rejectedPercentage });
         }
     }
 
-    buildFifthReport(interviewedsRejected, notInterviewedsRejected){
-        this.groupByRejectedItems = [];
-
+    buildFifthReport(intervieweds, notIntervieweds){
         this.groupByRejected = {
             labels: ["Luego de Entrevista", "Antes de Entrevista"],
             datasets: [
                 {
-                data: [interviewedsRejected, notInterviewedsRejected],
-                backgroundColor: this.getBackgroudColors(2),
-                fill: false,
-                borderWidth: 1,
+                    data: [intervieweds.groupByStates.rejected, notIntervieweds.groupByStates.rejected],
+                    backgroundColor: this.getBackgroudColors(2),
+                    fill: false,
+                    borderWidth: 1,
                 },
             ],
         };
-
-        let total = interviewedsRejected + notInterviewedsRejected;
-        let interviewedsRejectedPercentage =  (interviewedsRejected / total) * 100;
-        let notInterviewedsRejectedPercentage =  (notInterviewedsRejected / total) * 100;
-
-        this.groupByRejectedItems.push({ name: "Luego de Entrevista", count: interviewedsRejected, percentage: interviewedsRejectedPercentage });
-        this.groupByRejectedItems.push({ name: "Antes de Entrevista", count: notInterviewedsRejected, percentage: notInterviewedsRejectedPercentage });
     }
 
     buildThirdReport(){
         let intervieweds = {
-            name: "Entrevistados",
             count: 0,
-            percentage: 0,
             groupByStates: {
                 inCompany: 0,
                 inProcess: 0,
@@ -339,9 +332,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         }
 
         let notIntervieweds = {
-            name: "Sin Entrevistar",
             count: 0,
-            percentage: 0,
             groupByStates: {
                 inCompany: 0,
                 inProcess: 0,
@@ -349,9 +340,25 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
             }
         }
 
-        this.applicantsReportPieData = [];
-
         this.contacts.forEach(contact => {
+            if(contact.reasonCauseType == ReasonCauseType.ApplicantOpen || contact.reasonCauseType == ReasonCauseType.ApplicantContacted) {
+                
+                let exist = this.contactsByState.find(x => x.id == contact.reasonId);
+
+                if(exist == null){
+                    var itemToAdd = {
+                        id: contact.reasonId,
+                        text: contact.reasonText,
+                        count: 1
+                    }
+    
+                    this.contactsByState.push(itemToAdd);
+                }
+                else{
+                    exist += 1;
+                }
+            }
+
             if(contact.hasRrhhInterview || contact.hasTechnicalInterview || contact.hasClientInterview){
                 intervieweds.count += 1;
 
@@ -370,14 +377,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
             } 
         });
 
-        this.buildFifthReport(intervieweds.groupByStates.rejected, notIntervieweds.groupByStates.rejected);
-
-        let total = intervieweds.count + notIntervieweds.count;
-        intervieweds.percentage =  (intervieweds.count / total) * 100;
-        notIntervieweds.percentage =  (notIntervieweds.count / total) * 100;
-
-        this.applicantsReportPieData.push(intervieweds);
-        this.applicantsReportPieData.push(notIntervieweds);
+        this.buildFifthReport(intervieweds, notIntervieweds);
 
         this.applicantsInterviewedData = {
             labels: ["Entrevistados", "Sin Entrevistar"],
@@ -458,9 +458,34 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         //         }]
         //     }
         // }
+
+        this.chartClick(null);
     }
 
     buildFirstReport(){
+        this.options = {
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var info = data.datasets[tooltipItem.datasetIndex].data || null;
+                        var label = data.labels[tooltipItem.index] || "";
+
+                        if (info) {
+                            const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+                            var total = info.reduce(reducer);
+                            var value = info[tooltipItem.index];
+                            var percentage = (value / total) * 100;
+
+                            return `${label} - Cantitdad: ${value} - Porcentaje: ${Math.round(percentage)}%`
+                        }
+
+                        return "";
+                    }
+                }
+            }
+        }
+
         this.salaryAverage = [];
 
         this.contacts.forEach(contact => {

@@ -93,6 +93,7 @@ namespace Sofco.Core.Models.Recruitment
 
             if (jobSearchApplicant.Reason != null)
             {
+                ReasonId = jobSearchApplicant.Reason.Id;
                 ReasonText = jobSearchApplicant.Reason.Text;
                 ReasonCauseType = jobSearchApplicant.Reason.Type;
             }
@@ -122,6 +123,8 @@ namespace Sofco.Core.Models.Recruitment
             TechnicalInterviewComments = jobSearchApplicant.TechnicalInterviewComments;
             ClientInterviewComments = jobSearchApplicant.ClientInterviewComments;
         }
+
+        public int ReasonId { get; set; }
 
         public string RecruiterText { get; set; }
 
