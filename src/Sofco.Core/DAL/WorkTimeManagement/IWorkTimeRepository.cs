@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.Models.WorkTimeManagement;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.WorkTimeManagement;
 
@@ -16,7 +17,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
 
         IList<WorkTime> GetByEmployeeIds(DateTime startDate, DateTime endDate, List<int> employeeIds);
 
-        IList<WorkTime> GetByEmployeeIds(List<int> employeeIds, List<int> analyticIds);
+        IList<WorkTime> GetByEmployeeIds(List<int> employeeIds, List<int> analyticIds, WorkTimeStatus status);
 
         IList<WorkTime> GetByAnalyticIds(DateTime startDate, DateTime endDate, List<int> analyticIds);
 
