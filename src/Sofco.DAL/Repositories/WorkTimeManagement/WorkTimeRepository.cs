@@ -33,8 +33,8 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public IList<WorkTime> GetByEmployeeId(DateTime startDate, DateTime endDate, int employeeId)
         {
             return context.WorkTimes
-                .Where(x => x.EmployeeId == employeeId 
-                            && x.Date.Date >= startDate.Date 
+                .Where(x => x.EmployeeId == employeeId
+                            && x.Date.Date >= startDate.Date
                             && x.Date.Date <= endDate.Date)
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
@@ -54,10 +54,10 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .ToList();
         }
 
-        public IList<WorkTime> GetByEmployeeIds(List<int> employeeIds, List<int> analyticIds)
+        public IList<WorkTime> GetByEmployeeIds(List<int> employeeIds, List<int> analyticIds, WorkTimeStatus status)
         {
             return context.WorkTimes
-                .Where(x => employeeIds.Contains(x.EmployeeId) && analyticIds.Contains(x.AnalyticId))
+                .Where(x => employeeIds.Contains(x.EmployeeId) && analyticIds.Contains(x.AnalyticId) && x.Status == status)
                 .Include(x => x.Employee)
                 .Include(x => x.Analytic)
                 .Include(x => x.Task)
@@ -124,11 +124,11 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
 
             IQueryable<WorkTime> query2 = from worktime in context.WorkTimes
                                           from delegation in context.Delegations
-                                          where 
+                                          where
                                             worktime.EmployeeId == delegation.EmployeeSourceId
                                             && worktime.Status == WorkTimeStatus.Sent
                                             && delegation.GrantedUserId == currentUserId
-                                            && delegation.AnalyticSourceId == worktime.AnalyticId 
+                                            && delegation.AnalyticSourceId == worktime.AnalyticId
                                             && delegation.Type == DelegationType.WorkTime
                                           select worktime;
 
@@ -141,7 +141,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 query1 = query1.Where(x => x.EmployeeId == parameters.EmployeeId);
                 query2 = query2.Where(x => x.EmployeeId == parameters.EmployeeId);
             }
-                
+
 
             if (parameters.AnalyticId > 0)
             {
@@ -153,14 +153,14 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             {
                 var list1 = query1.ToList();
                 var list2 = query2.ToList();
-                
+
                 list1.AddRange(list2);
 
                 return list1.DistinctBy(x => x.Id.ToString());
             }
             else
             {
-                return query2.ToList();
+                return query2.ToList().DistinctBy(x => x.Id.ToString());
             }
         }
 
@@ -238,7 +238,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .Where(x => x.Date.Date >= parameters.StartDate.GetValueOrDefault().Date && x.Date.Date <= parameters.EndDate.GetValueOrDefault().Date);
 
             if (parameters.Status > 0)
-                query = query.Where(x => x.Status == (WorkTimeStatus) parameters.Status);
+                query = query.Where(x => x.Status == (WorkTimeStatus)parameters.Status);
 
             if (parameters.AnalyticId.Any())
                 query = query.Where(x => parameters.AnalyticId.Contains(x.AnalyticId));
@@ -292,9 +292,9 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public decimal GetTotalHoursByDateExceptCurrentId(DateTime date, int currentUserId, int id)
         {
             return context.WorkTimes
-                .Where(x => x.UserId == currentUserId 
-                        && x.Date.Year == date.Year 
-                        && x.Date.Month == date.Month 
+                .Where(x => x.UserId == currentUserId
+                        && x.Date.Year == date.Year
+                        && x.Date.Month == date.Month
                         && x.Date.Day == date.Day
                         && x.Id != id)
                 .Select(s => s.Hours)
@@ -308,11 +308,11 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             if (stored == null) throw new Exception("Item Not Found");
 
             stored.AnalyticId = workTime.AnalyticId;
-            stored.TaskId  = workTime.TaskId;
-            stored.Date  = workTime.Date;
-            stored.Hours  = workTime.Hours;
-            stored.UserComment  = workTime.UserComment;
-            stored.Status  = workTime.Status;
+            stored.TaskId = workTime.TaskId;
+            stored.Date = workTime.Date;
+            stored.Hours = workTime.Hours;
+            stored.UserComment = workTime.UserComment;
+            stored.Status = workTime.Status;
             stored.Reference = workTime.Reference;
         }
 

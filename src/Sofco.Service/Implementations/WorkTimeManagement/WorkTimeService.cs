@@ -187,6 +187,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var response = new Response<IList<HoursApprovedModel>>();
 
             var currentUser = userData.GetCurrentUser();
+
             var userIsDirector = unitOfWork.UserRepository.HasDirectorGroup(currentUser.Email);
             var userIsManager = unitOfWork.UserRepository.HasManagerGroup(currentUser.UserName);
 
@@ -194,7 +195,15 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 .SearchPending(model, userIsManager || userIsDirector, currentUser.Id, appSetting.Analytic999)
                 .ToList();
 
-            list.AddRange(AddDelegatedData(model.AnalyticId, model.EmployeeId, WorkTimeStatus.Sent, list));
+            var delegatedData = AddDelegatedData(model.AnalyticId, model.EmployeeId, WorkTimeStatus.Sent, list);
+
+            foreach (var workTime in delegatedData)
+            {
+                if (list.All(x => x.Id != workTime.Id))
+                {
+                    list.Add(workTime);
+                }
+            }
 
             if (!list.Any())
             {
@@ -240,7 +249,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             return response;
         }
-         
+
         public IEnumerable<Option> GetAnalytics()
         {
             if (roleManager.IsPmo() || roleManager.IsRrhh())
@@ -558,7 +567,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             result = unitOfWork
                 .WorkTimeRepository
-                .GetByEmployeeIds(employeeIds, analyticIds)
+                .GetByEmployeeIds(employeeIds, analyticIds, status)
                 .ToList();
 
             if (status != WorkTimeStatus.Approved)
