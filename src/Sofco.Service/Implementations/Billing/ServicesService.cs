@@ -59,11 +59,14 @@ namespace Sofco.Service.Implementations.Billing
 
                 if (analytic != null)
                 {
-                    var serviceDelegated = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
-
-                    if (result.All(x => x.Id != serviceDelegated.Id))
+                    if (analytic.AccountId.Equals(customerId))
                     {
-                        result.Add(serviceDelegated);
+                        var serviceDelegated = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
+
+                        if (result.All(x => x.Id != serviceDelegated.Id))
+                        {
+                            result.Add(serviceDelegated);
+                        }
                     }
                 }
             }
