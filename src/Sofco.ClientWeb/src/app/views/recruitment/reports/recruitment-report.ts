@@ -47,10 +47,12 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
 
     data: any;
     applicantsInterviewedData: any;
+    groupByRejected: any;
     applicantsReportPieData: any;
     groupByStates: any;
     options: any;
     groupByStatesItems: any[] = new Array(); 
+    groupByRejectedItems: any[] = new Array(); 
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -283,7 +285,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 datasets: [
                   {
                     data: [interviewdData.groupByStates.inCompany, interviewdData.groupByStates.inProcess, interviewdData.groupByStates.rejected],
-                    backgroundColor: this.getBackgroudColors(2),
+                    backgroundColor: this.getBackgroudColors(3),
                     fill: false,
                     borderWidth: 1,
                   },
@@ -299,6 +301,29 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
             this.groupByStatesItems.push({ name: "En Proceso", count: interviewdData.groupByStates.inProcess, percentage: inProcessPercentage });
             this.groupByStatesItems.push({ name: "Rechazados", count: interviewdData.groupByStates.rejected, percentage: rejectedPercentage });
         }
+    }
+
+    buildFifthReport(interviewedsRejected, notInterviewedsRejected){
+        this.groupByRejectedItems = [];
+
+        this.groupByRejected = {
+            labels: ["Luego de Entrevista", "Antes de Entrevista"],
+            datasets: [
+                {
+                data: [interviewedsRejected, notInterviewedsRejected],
+                backgroundColor: this.getBackgroudColors(2),
+                fill: false,
+                borderWidth: 1,
+                },
+            ],
+        };
+
+        let total = interviewedsRejected + notInterviewedsRejected;
+        let interviewedsRejectedPercentage =  (interviewedsRejected / total) * 100;
+        let notInterviewedsRejectedPercentage =  (notInterviewedsRejected / total) * 100;
+
+        this.groupByRejectedItems.push({ name: "Luego de Entrevista", count: interviewedsRejected, percentage: interviewedsRejectedPercentage });
+        this.groupByRejectedItems.push({ name: "Antes de Entrevista", count: notInterviewedsRejected, percentage: notInterviewedsRejectedPercentage });
     }
 
     buildThirdReport(){
@@ -342,8 +367,10 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 if(contact.reasonCauseType == ReasonCauseType.ApplicantInProgress) notIntervieweds.groupByStates.inProcess += 1;
                 if(contact.reasonCauseType == ReasonCauseType.ApplicantOpen || 
                    contact.reasonCauseType == ReasonCauseType.ApplicantContacted) notIntervieweds.groupByStates.rejected += 1;
-            }
+            } 
         });
+
+        this.buildFifthReport(intervieweds.groupByStates.rejected, notIntervieweds.groupByStates.rejected);
 
         let total = intervieweds.count + notIntervieweds.count;
         intervieweds.percentage =  (intervieweds.count / total) * 100;
