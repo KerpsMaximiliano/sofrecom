@@ -166,6 +166,13 @@ namespace Sofco.Service.Implementations.Recruitment
 
             if (response.HasErrors()) return response;
 
+            if (reasonId != model.ReasonId && unitOfWork.JobSearchApplicantRepository.Exist(applicantId, jobSearchId, date, model.ReasonId))
+            {
+                var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
+                response.AddWarningAndNoTraslate($"Ya existe un contacto para el postulante {applicant.FirstName} {applicant.LastName} con el mismo tipo/razon para la busqueda #{jobSearchId} con fecha de hoy");
+                return response;
+            }
+
             try
             {
                 if (model.HasRrhhInterview)
