@@ -21,6 +21,8 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     skillId: number;
     statusId: number;
 
+    groupByRejectedVisible: boolean;
+    groupByStatesVisible: boolean;
     filterByDates: boolean;
     startDate: Date;
     endDate: Date;
@@ -41,6 +43,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     technicalComments: string;
     clientCommets: string;
     selectorName: string;
+    selectorId: number;
 
     searchSubscrip: Subscription;
     getClientsSubscrip: Subscription;
@@ -119,6 +122,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         };
 
         this.list = [];
+        this.contacts = [];
 
         this.messageService.showLoading();
 
@@ -233,6 +237,14 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         return this.list.filter(x => x.selected).length > 0;
     }
 
+    selectAll(){
+        this.list.forEach(x => x.selected = true);
+    }
+
+    unselectAll(){
+        this.list.forEach(x => x.selected = false);
+    }
+
     filterContacts(){
         this.contacts = [];
 
@@ -251,17 +263,22 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 }
             });
 
-            this.initContactGrid();
+            if(this.contacts.length > 0){
+                this.initContactGrid();
 
-            this.buildFirstReport();
-            this.buildSecondReport();
-            this.buildThirdReport();
+                this.buildFirstReport();
+                this.buildSecondReport();
+            }
+            else{
+                this.messageService.showWarningByFolder('common', 'searchEmpty');
+            }
         }
     } 
 
     chartClick(event){
         this.jobSearchsBySelectors = [];
         this.selectorName = null;
+        this.selectorId = null;
 
         if(event && event.element && event.element.length > 0){
             var index = event.element[0]._index;
@@ -270,6 +287,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
             if(selector && selector.jobSearchs && selector.jobSearchs.length > 0){
                 this.jobSearchsBySelectors = selector.jobSearchs;
                 this.selectorName = selector.name;
+                this.selectorId = selector.id;
             }
         }
         else{
@@ -289,36 +307,55 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
 
             this.selectorName = "Selectores"
         }
+
+        this.buildThirdReport();
     }
 
     buildFourthReport(interviewdData){
         if(interviewdData){
-            this.groupByStates = {
-                labels: ["Ingresados", "En Proceso", "Rechazados"],
-                datasets: [
-                  {
-                    data: [interviewdData.groupByStates.inCompany, interviewdData.groupByStates.inProcess, interviewdData.groupByStates.rejected],
-                    backgroundColor: this.getBackgroudColors(3),
-                    fill: false,
-                    borderWidth: 1,
-                  },
-                ],
-            };
+            if(interviewdData.groupByStates.inCompany == 0 && interviewdData.groupByStates.inProcess == 0 && interviewdData.groupByStates.rejected == 0){
+                this.groupByStatesVisible = false;
+            }
+            else{
+                this.groupByStatesVisible = true;
+
+                this.groupByStates = {
+                    labels: ["Ingresados", "En Proceso", "Rechazados"],
+                    datasets: [
+                      {
+                        data: [interviewdData.groupByStates.inCompany, interviewdData.groupByStates.inProcess, interviewdData.groupByStates.rejected],
+                        backgroundColor: this.getBackgroudColors(3),
+                        fill: false,
+                        borderWidth: 1,
+                      },
+                    ],
+                };
+            }
+        }
+        else{
+            this.groupByStatesVisible = false;
         }
     }
 
     buildFifthReport(intervieweds, notIntervieweds){
-        this.groupByRejected = {
-            labels: ["Luego de Entrevista", "Antes de Entrevista"],
-            datasets: [
-                {
-                    data: [intervieweds.groupByStates.rejected, notIntervieweds.groupByStates.rejected],
-                    backgroundColor: this.getBackgroudColors(2),
-                    fill: false,
-                    borderWidth: 1,
-                },
-            ],
-        };
+        if(intervieweds.groupByStates.rejected == 0 && notIntervieweds.groupByStates.rejected == 0){
+            this.groupByRejectedVisible = false;
+        }
+        else{
+            this.groupByRejectedVisible = true;
+
+            this.groupByRejected = {
+                labels: ["Luego de Entrevista", "Antes de Entrevista"],
+                datasets: [
+                    {
+                        data: [intervieweds.groupByStates.rejected, notIntervieweds.groupByStates.rejected],
+                        backgroundColor: this.getBackgroudColors(2),
+                        fill: false,
+                        borderWidth: 1,
+                    },
+                ],
+            };
+        }
     }
 
     buildThirdReport(){
@@ -341,6 +378,8 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         }
 
         this.contacts.forEach(contact => {
+            if(this.selectorId && this.selectorId != contact.recruiterId) return;
+
             if(contact.reasonCauseType == ReasonCauseType.ApplicantOpen || contact.reasonCauseType == ReasonCauseType.ApplicantContacted) {
                 
                 let exist = this.contactsByState.find(x => x.id == contact.reasonId);

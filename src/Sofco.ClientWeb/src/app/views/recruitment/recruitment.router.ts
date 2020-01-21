@@ -36,7 +36,7 @@ const RECRUITMENT_ROUTER: Routes = [
     
     { path: "resourceAssignments", component: ResourceAssignmentComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "RESOURCEASSIGNMENT" } },
 
-    { path: "report", component: RecruitmentReportComponent, canActivate: [AuthGuard] },
+    { path: "report", component: RecruitmentReportComponent, canActivate: [AuthGuard], data: { module: "RECRU", functionality: "REPORT" }},
     
     {
         path: "jobSearch",

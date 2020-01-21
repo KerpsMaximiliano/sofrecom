@@ -85,7 +85,7 @@
             <div class="panel-heading">
                 <h5 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2" (click)="changeIcon('search-icon2')" style="display: block">
-                        Contactos realizados
+                        Busquedas encontradas
                         <i id="search-icon2" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
                     </a>
                 </h5>
@@ -133,6 +133,11 @@
                         </table>
                     </div>
         
+                    <div class="pull-left m-t-md">
+                        <button class="btn btn-success" (click)="selectAll()"> Seleccionar todos </button>
+                        <button class="btn btn-warning" (click)="unselectAll()"> Quitar todos </button>
+                    </div>
+
                     <div class="text-right m-t-md" *ngIf="anyJobsearchSelected()">
                         <button class="btn btn-success" (click)="filterContacts()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
                     </div>
@@ -140,53 +145,59 @@
             </div>
         </div>
     </div>
-<!-- 
-    <div class="ibox" >
-        <div class="ibox-content">
-            
-        </div>
-    </div> -->
 
-    <div class="ibox" *ngIf="contacts.length > 0">
-        <div class="ibox-content">
-            <div class="table-responsive">
-                <table class="table table-striped dataTable" role="grid" id="contactTable" width="100%">
-                    <thead>
-                        <tr>
-                            <th class="column-sm">Busqueda</th>
-                            <th class="column-sm">Fecha</th>
-                            <th class="column-lg">Postulante</th>
-                            <th class="column-lg">Tipo/Razon</th>
-                            <th class="column-sm">$ Pretendido</th>
-                            <th class="column-xs">Remoto</th>
-                            <th class="column-lg">RRHH Entrevistador</th>
-                            <th class="column-lg">Evaluador</th>
-                            <th class="column-xs">Comentarios</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of contacts">
-                            <td class="column-sm"># {{ item.jobsearchId }}</td>
-                            <td class="column-sm">{{ item.date | date: 'dd/MM/yyyy' }}</td>
-                            <td class="column-lg">{{ item.applicant }}</td>
-                            <td class="column-lg">{{ item.reasonText }}</td>
-                            <td class="column-sm">{{ item.salary | amountFormat }}</td>
-                            <td class="column-xs">
-                                <label class="label label-success" *ngIf="!item.remoteWork">No</label>
-                                <label class="label label-warning" *ngIf="item.remoteWork">Si</label>
-                            </td>
-                            <td class="column-lg">{{ item.rrhhInterviewer }}</td>
-                            <td class="column-lg">{{ item.technicalInterviewer }}</td>
-                            <td class="column-xs text-center">
-                                <button (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+    <div class="panel-group" id="accordion3" *ngIf="contacts.length > 0">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion3" href="#collapseOne3" (click)="changeIcon('search-icon3')" style="display: block">
+                        Contactos realizados
+                        <i id="search-icon3" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+                    </a>
+                </h5>
             </div>
-        </div> 
+            <div id="collapseOne3" class="panel-collapse in collapse">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped dataTable" role="grid" id="contactTable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th class="column-sm">Busqueda</th>
+                                    <th class="column-sm">Fecha</th>
+                                    <th class="column-lg">Postulante</th>
+                                    <th class="column-lg">Tipo/Razon</th>
+                                    <th class="column-sm">$ Pretendido</th>
+                                    <th class="column-xs">Remoto</th>
+                                    <th class="column-lg">RRHH Entrevistador</th>
+                                    <th class="column-lg">Evaluador</th>
+                                    <th class="column-xs">Comentarios</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of contacts">
+                                    <td class="column-sm"># {{ item.jobsearchId }}</td>
+                                    <td class="column-sm">{{ item.date | date: 'dd/MM/yyyy' }}</td>
+                                    <td class="column-lg">{{ item.applicant }}</td>
+                                    <td class="column-lg">{{ item.reasonText }}</td>
+                                    <td class="column-sm">{{ item.salary | amountFormat }}</td>
+                                    <td class="column-xs">
+                                        <label class="label label-success" *ngIf="!item.remoteWork">No</label>
+                                        <label class="label label-warning" *ngIf="item.remoteWork">Si</label>
+                                    </td>
+                                    <td class="column-lg">{{ item.rrhhInterviewer }}</td>
+                                    <td class="column-lg">{{ item.technicalInterviewer }}</td>
+                                    <td class="column-xs text-center">
+                                        <button (click)="showComments(item)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    
+
     <div class="row">
         <div class="col-md-9">
             <div class="ibox" *ngIf="contacts.length > 0">
@@ -267,8 +278,13 @@
                 <div class="ibox-title">
                     <h4> Entrevistados agrupados por estado</h4>
                 </div>
-                <div class="ibox-content">
-                    <ngx-chartjs [data]="groupByStates" type="pie" [options]="options"></ngx-chartjs>
+                <div class="ibox-content text-center">
+                    <div class="alert alert-gaps-info" *ngIf="!groupByStatesVisible">
+                        <i class="fa fa-info"></i>
+                        {{ 'noInfoAvailable' | translate }}
+                    </div>
+
+                    <ngx-chartjs *ngIf="groupByStatesVisible" [data]="groupByStates" type="pie" [options]="options"></ngx-chartjs>
                 </div>
             </div>
         </div>
@@ -278,8 +294,13 @@
         <div class="ibox-title">
             <h4> Agrupados por rechazados</h4>
         </div>
-        <div class="ibox-content">
-            <div class="row">
+        <div class="ibox-content text-center">
+            <div class="alert alert-gaps-info" *ngIf="!groupByRejectedVisible">
+                <i class="fa fa-info"></i>
+                {{ 'noInfoAvailable' | translate }}
+            </div>
+
+            <div class="row" *ngIf="groupByRejectedVisible">
                 <div class="col-md-7">
                     <ngx-chartjs [data]="groupByRejected" type="pie" [options]="options"></ngx-chartjs>
                 </div>
