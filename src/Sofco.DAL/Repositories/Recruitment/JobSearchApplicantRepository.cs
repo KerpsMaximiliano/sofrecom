@@ -76,9 +76,9 @@ namespace Sofco.DAL.Repositories.Recruitment
             .ToList();
         }
 
-        public JobSearchApplicant GetById(int applicantId, int jobSearchId, DateTime date)
+        public JobSearchApplicant GetById(int applicantId, int jobSearchId, DateTime date, int reasonId)
         {
-            return context.JobSearchApplicants.SingleOrDefault(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId && x.CreatedDate.Date == date.Date);
+            return context.JobSearchApplicants.SingleOrDefault(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId && x.CreatedDate.Date == date.Date && x.ReasonId == reasonId);
         }
 
         public void InsertFile(ApplicantFile jobsearchApplicantFile)
@@ -86,9 +86,9 @@ namespace Sofco.DAL.Repositories.Recruitment
             context.ApplicantFiles.Add(jobsearchApplicantFile);
         }
 
-        public bool Exist(int applicantId, int jobSearchId, DateTime date)
+        public bool Exist(int applicantId, int jobSearchId, DateTime date, int reasonId)
         {
-            return context.JobSearchApplicants.Any(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId && x.CreatedDate.Date == date.Date);
+            return context.JobSearchApplicants.Any(x => x.JobSearchId == jobSearchId && x.ApplicantId == applicantId && x.CreatedDate.Date == date.Date && x.ReasonId == reasonId);
         }
 
         public IList<JobSearchApplicant> GetByApplicant(int applicantId)

@@ -1197,6 +1197,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                 return true;
             }
 
+            var delegation = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.ManagementReport);
+
+            if (delegation.Any(x => x.AnalyticSourceId == analytic.Id && x.UserId == analytic.ManagerId))
+            {
+                return true;
+            }
+
             return false;
         }
 

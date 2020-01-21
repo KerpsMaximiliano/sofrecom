@@ -90,7 +90,7 @@ namespace Sofco.Service.Implementations.Recruitment
                 {
                     foreach (var applicantId in model.Applicants)
                     {
-                        if (!unitOfWork.JobSearchApplicantRepository.Exist(applicantId, jobSearchId, date))
+                        if (!unitOfWork.JobSearchApplicantRepository.Exist(applicantId, jobSearchId, date, reason.Id))
                         {
                             var itemToAdd = new JobSearchApplicant
                             {
@@ -109,7 +109,7 @@ namespace Sofco.Service.Implementations.Recruitment
                         else
                         {
                             var applicant = unitOfWork.ApplicantRepository.Get(applicantId);
-                            response.AddWarningAndNoTraslate($"Ya existe un contacto para el postulante {applicant.FirstName} {applicant.LastName} para la busqueda #{jobSearchId} con fecha de hoy");   
+                            response.AddWarningAndNoTraslate($"Ya existe un contacto para el postulante {applicant.FirstName} {applicant.LastName} con el mismo tipo/razon para la busqueda #{jobSearchId} con fecha de hoy");   
                         }
                     }
                 }
@@ -147,7 +147,7 @@ namespace Sofco.Service.Implementations.Recruitment
         {
             var response = new Response<int>();
 
-            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId, date);
+            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId, date, model.ReasonId);
 
             if (jobSearchApplicant == null)
             {
