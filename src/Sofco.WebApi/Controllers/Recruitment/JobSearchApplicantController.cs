@@ -29,10 +29,10 @@ namespace Sofco.WebApi.Controllers.Recruitment
             return this.CreateResponse(response);
         }
 
-        [HttpPost("{applicantId}/{jobSearchId}/{date}/interview")]
-        public IActionResult Interview(int applicantId, int jobSearchId, DateTime date, [FromBody] InterviewAddModel model)
+        [HttpPost("{applicantId}/{jobSearchId}/{date}/{reasonId}/interview")]
+        public IActionResult Interview(int applicantId, int jobSearchId,  DateTime date, int reasonId, [FromBody] InterviewAddModel model)
         {
-            var response = jobSearchApplicantService.AddInterview(applicantId, jobSearchId, date, model);
+            var response = jobSearchApplicantService.AddInterview(applicantId, jobSearchId, date, reasonId, model);
 
             return this.CreateResponse(response);
         }

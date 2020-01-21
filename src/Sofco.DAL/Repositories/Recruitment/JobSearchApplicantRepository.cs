@@ -23,7 +23,7 @@ namespace Sofco.DAL.Repositories.Recruitment
                     .ThenInclude(x => x.Reason)
                 .Include(x => x.ApplicantProfiles)
                 .Include(x => x.ApplicantSkills)
-                .Where(x => x.Status == ApplicantStatus.Valid || x.Status == ApplicantStatus.InProgress);
+                .Where(x => x.Status == ApplicantStatus.Valid || x.Status == ApplicantStatus.InProgress || x.Status == ApplicantStatus.Contacted);
 
             if (skills.Any() && profiles.Any())
             {

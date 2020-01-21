@@ -50,8 +50,8 @@ export class JobSearchService {
         return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant`, json);
     }
 
-    addInterview(json, applicantId, jobSearchId, date){
-        return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/${date}/interview`, json);
+    addInterview(json, applicantId, jobSearchId, date, reasonId){
+        return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant/${applicantId}/${jobSearchId}/${date}/${reasonId}/interview`, json);
     }
 
     getHistories(id) {

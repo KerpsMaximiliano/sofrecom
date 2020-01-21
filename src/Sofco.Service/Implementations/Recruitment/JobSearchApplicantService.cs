@@ -143,11 +143,11 @@ namespace Sofco.Service.Implementations.Recruitment
             return response;
         }
 
-        public Response<int> AddInterview(int applicantId, int jobSearchId, DateTime date, InterviewAddModel model)
+        public Response<int> AddInterview(int applicantId, int jobSearchId, DateTime date, int reasonId, InterviewAddModel model)
         {
             var response = new Response<int>();
 
-            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId, date, model.ReasonId);
+            var jobSearchApplicant = unitOfWork.JobSearchApplicantRepository.GetById(applicantId, jobSearchId, date, reasonId);
 
             if (jobSearchApplicant == null)
             {
@@ -194,13 +194,25 @@ namespace Sofco.Service.Implementations.Recruitment
                     jobSearchApplicant.ClientInterviewComments = model.ClientInterviewComments;
                     jobSearchApplicant.ClientExternalInterviewer = model.ClientExternalInterviewer;
                 }
-
-                jobSearchApplicant.ReasonId = model.ReasonId;
+              
                 jobSearchApplicant.RemoteWork = model.RemoteWork;
                 jobSearchApplicant.Salary = model.Salary;
                 jobSearchApplicant.ModifiedAt = DateTime.UtcNow.Date;
 
-                unitOfWork.JobSearchApplicantRepository.Update(jobSearchApplicant);
+                if (model.ReasonId != reasonId)
+                {
+                    unitOfWork.JobSearchApplicantRepository.Delete(jobSearchApplicant);
+                    unitOfWork.Save();
+
+                    jobSearchApplicant.ReasonId = model.ReasonId;
+
+                    unitOfWork.JobSearchApplicantRepository.Insert(jobSearchApplicant);
+                }
+                else
+                {
+                    unitOfWork.JobSearchApplicantRepository.Update(jobSearchApplicant);
+                }
+                
                 unitOfWork.Save();
 
                 response.AddSuccess(Resources.Common.SaveSuccess);

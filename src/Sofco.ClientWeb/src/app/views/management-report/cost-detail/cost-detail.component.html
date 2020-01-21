@@ -276,142 +276,166 @@
 <ng2-modal [config]="editItemModalConfig" #editItemModal (accept)="EditItem()" (close)="EditItemOnClose()"
     [isSaveEnabled]="editItemMonto.valid">
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="form-group">
-                <fieldset>
-                    <div [ngClass]="{ 'col-sm-12': modalPercentage || modalEmployee, 'col-sm-4': modalOther }">
-                        <label class="control-label" for="readOnlyInput">Mes</label>
-                        <input class="form-control" id="readOnlyInput" type="text"
-                            placeholder="{{ monthSelected.display }}" readonly="">
-                    </div>
-                    <div class="col-sm-8" *ngIf="modalOther">
-                        <label class="control-label" for="readOnlyInput">Categoria</label>
-                        <input class="form-control" id="readOnlyInput" type="text"
-                            placeholder="{{ categorySelected.name }}" [disabled]="true">
-                    </div>
-                </fieldset>
-            </div>
-
-            <div class="form-group" *ngIf="modalEmployee">
-                <label class="control-label" for="readOnlyInput">Asignación</label>
-                <div class="input-group">
+        <div class="form-group" *ngIf="modalOther || modalPercentage || modalEmployee">
+            <div class="row">
+                <div [ngClass]="{ 'col-sm-12': modalPercentage || modalEmployee, 'col-sm-4': modalOther }">
+                    <label class="control-label" for="readOnlyInput">Mes</label>
                     <input class="form-control" id="readOnlyInput" type="text"
-                        placeholder="{{ monthSelected.allocationPercentage }}" readonly="">
-                    <span class="input-group-addon">%</span>
+                        placeholder="{{ monthSelected.display }}" readonly="">
                 </div>
-            </div>
-
-            <div class="form-group" *ngIf="modalEmployee">
-                <label class="control-label">Monto final</label>
-                <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input class="form-control" id="readOnlyInput" type="number"
-                        placeholder="{{ (editItemMonto.value * editItemAdjustment.value / 100) + editItemMonto.value }}"
-                        readonly="">
+                <div class="col-sm-8" *ngIf="modalOther">
+                    <label class="control-label" for="readOnlyInput">Categoria</label>
+                    <input class="form-control" id="readOnlyInput" type="text"
+                        placeholder="{{ categorySelected.name }}" [disabled]="true">
                 </div>
-            </div>
-
-            <div class="form-group" *ngIf="modalPercentage || modalProfile || modalEmployee">
-                <label class="control-label">Monto</label>
-                <div class="input-group">
-                    <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
-                    <input type="text" class="form-control" [formControl]="editItemMonto" #mathBox
-                        (keyup.enter)="onEnter(mathBox, mathBox.value)" (blur)="onEnter(mathBox, mathBox.value)">
-                    <span class="input-group-addon" *ngIf="modalPercentage">%</span>
-                </div>
-            </div>
-            <div class="form-group" *ngIf="modalEmployee">
-                <label class="control-label">% Ajuste x Recurso</label>
-                <div class="input-group">
-                    <input type="number" decimalFormat class="form-control" [formControl]="editItemAdjustment">
-                    <span class="input-group-addon">%</span>
-                </div>
-            </div>
-
-            <div *ngIf="modalOther">
-                <div class="row border-bottom m-b-sm">
-                    <div class="col-sm-4">
-                        <h4>SubCategoria</h4>
-                    </div>
-                    <div class="col-sm-3">
-                        <h4>Descripción</h4>
-                    </div>
-                    <div class="col-sm-2">
-                        <h4>Moneda</h4>
-                    </div>
-                    <div class="col-sm-2">
-                        <h4>Monto</h4>
-                    </div>
-                </div>
-
-                <div class="alert alert-gaps-info" *ngIf="othersByMonth.length == 0">
-                    <i class="fa fa-info"></i>
-                    Sin información disponible
-                </div>
-
-                <div class="row m-t-xs" *ngFor="let other of othersByMonth; let i = index">
-                    <div class="col-sm-4">
-                        {{ other.subcategoryName }}
-                    </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control input-xs" [(ngModel)]="other.description"
-                            maxlength="200">
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            <ng-select class="input-billing-modal" [items]="currencies" bindLabel="text" bindValue="id"
-                                [(ngModel)]="other.currencyId" [clearable]="false">
-                            </ng-select>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <math-input [(model)]="other.value" [modelDisabled]="readOnly"></math-input>
-                    </div>
-                    <div class="col-sm-1">
-                        <button class="btn btn-danger btn-xs" (click)="deleteOthersByMonth(i, other)"
-                            *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
-                    </div>
-                </div>
-                <div class="row" [hidden]="readOnly">
-                    <div class="col-sm-9">
-                        <div class="form-group">
-                            <ng-select [items]="subcategories" bindLabel="name"
-                                [(ngModel)]="subcategorySelected" [clearable]="false">
-                            </ng-select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <button class="btn btn-success btn-sm m-t-xs" (click)="addOtherByMonth()" type="button">
-                            Agregar
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <hr class="hr-line-dashed">
-
-                <div class="row" [hidden]="readOnly">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <icheck  [(checked)]="replicateCosts">
-                                <label class="control-label m-l-sm">Replicar costos en</label> 
-                            </icheck>
-                        </div>
-                    </div>
-                    <div class="col-md-9" *ngIf="replicateCosts">
-                        <div class="form-group">
-                            <label class="control-label">Periodos</label> 
-                            <ng-select [items]="monthsToReplicate" bindLabel="display" bindValue="id"
-                                       [(ngModel)]="monthsToReplicateSelected" [multiple]="true" [clearable]="false" [closeOnSelect]="false">
-                            </ng-select>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
-    </div>
+
+        <div class="row" *ngIf="modalEmployee">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label" for="readOnlyInput">Asignación prevista</label>
+                    <div class="input-group">
+                        <input class="form-control" id="readOnlyInput" type="text"
+                            placeholder="{{ monthSelected.allocationPercentage }}" readonly="">
+                        <span class="input-group-addon">%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">Asignación modificada</label>
+                    <div class="input-group">
+                        <input class="form-control" type="number" [formControl]="editItemPercentageModified">
+                        <span class="input-group-addon">%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6" *ngIf="modalPercentage || modalProfile || modalEmployee">
+                <div class="form-group">
+                    <label class="control-label">Monto</label>
+                    <div class="input-group">
+                        <span class="input-group-addon" *ngIf="!modalPercentage">$</span>
+                        <input type="text" class="form-control" [formControl]="editItemMonto" #mathBox
+                            (keyup.enter)="onEnter(mathBox, mathBox.value)" (blur)="onEnter(mathBox, mathBox.value)">
+                        <span class="input-group-addon" *ngIf="modalPercentage">%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6" *ngIf="modalEmployee">
+                <div class="form-group" >
+                    <label class="control-label">Monto final</label>
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input class="form-control" id="readOnlyInput" type="number"
+                            placeholder="{{ (editItemMonto.value * editItemAdjustment.value / 100) + editItemMonto.value }}"
+                            readonly="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="modalEmployee">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label">% Ajuste x Recurso</label>
+                    <div class="input-group">
+                        <input type="number" decimalFormat class="form-control" [formControl]="editItemAdjustment">
+                        <span class="input-group-addon">%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" *ngIf="modalEmployee">
+            <label class="control-label">Comentarios</label>
+            <textarea class="form-control" rows="5" [formControl]="editItemComments"></textarea>
+        </div>
+
+        <div *ngIf="modalOther">
+            <div class="row border-bottom m-b-sm">
+                <div class="col-sm-4">
+                    <h4>SubCategoria</h4>
+                </div>
+                <div class="col-sm-3">
+                    <h4>Descripción</h4>
+                </div>
+                <div class="col-sm-2">
+                    <h4>Moneda</h4>
+                </div>
+                <div class="col-sm-2">
+                    <h4>Monto</h4>
+                </div>
+            </div>
+
+            <div class="alert alert-gaps-info" *ngIf="othersByMonth.length == 0">
+                <i class="fa fa-info"></i>
+                Sin información disponible
+            </div>
+
+            <div class="row m-t-xs" *ngFor="let other of othersByMonth; let i = index">
+                <div class="col-sm-4">
+                    {{ other.subcategoryName }}
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control input-xs" [(ngModel)]="other.description"
+                        maxlength="200">
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <ng-select class="input-billing-modal" [items]="currencies" bindLabel="text" bindValue="id"
+                            [(ngModel)]="other.currencyId" [clearable]="false">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <math-input [(model)]="other.value" [modelDisabled]="readOnly"></math-input>
+                </div>
+                <div class="col-sm-1">
+                    <button class="btn btn-danger btn-xs" (click)="deleteOthersByMonth(i, other)"
+                        *ngIf="!isReadOnly"><i class="fa fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="row" [hidden]="readOnly">
+                <div class="col-sm-9">
+                    <div class="form-group">
+                        <ng-select [items]="subcategories" bindLabel="name"
+                            [(ngModel)]="subcategorySelected" [clearable]="false">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-success btn-sm m-t-xs" (click)="addOtherByMonth()" type="button">
+                        Agregar
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <hr class="hr-line-dashed">
+
+            <div class="row" [hidden]="readOnly">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <icheck  [(checked)]="replicateCosts">
+                            <label class="control-label m-l-sm">Replicar costos en</label> 
+                        </icheck>
+                    </div>
+                </div>
+                <div class="col-md-9" *ngIf="replicateCosts">
+                    <div class="form-group">
+                        <label class="control-label">Periodos</label> 
+                        <ng-select [items]="monthsToReplicate" bindLabel="display" bindValue="id"
+                                    [(ngModel)]="monthsToReplicateSelected" [multiple]="true" [clearable]="false" [closeOnSelect]="false">
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
     <div class="alert alert-gaps-warning" *ngIf="modalPercentage">
         <i class="fa fa-warning"></i>

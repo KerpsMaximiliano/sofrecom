@@ -101,7 +101,7 @@ export class InterviewComponent implements OnInit, OnDestroy {
  
         this.messageService.showLoading();
 
-        this.addSubscrip = this.jobSearchService.addInterview(json, this.applicantId, this.jobSearchId, this.date).subscribe(response => {
+        this.addSubscrip = this.jobSearchService.addInterview(json, this.applicantId, this.jobSearchId, this.date, this.history.reasonId).subscribe(response => {
             this.messageService.closeLoading();
 
             this.history.reasonId = this.form.controls.reasonId.value;

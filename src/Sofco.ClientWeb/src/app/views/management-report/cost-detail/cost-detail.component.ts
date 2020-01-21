@@ -54,6 +54,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
     editItemMonto = new FormControl();
     editItemAdjustment = new FormControl();
+    editItemPercentageModified = new FormControl();
+    editItemComments = new FormControl();
+
     canEdit: boolean = false;
     profiles: any[] = new Array();
     profileId: number;
@@ -144,7 +147,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         this.getProfiles()
         this.getCurrencies();
 
-        this.editItemModal.size = 'modal-sm'
+        // this.editItemModal.size = 'modal-sm'
 
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.serviceId = params['serviceId'];
@@ -212,6 +215,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     openEditItemModal(month, item) {
+        this.editItemModal.size = null;
 
         if (this.readOnly) return;
 
@@ -236,7 +240,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.modalOther = false;
             this.modalEmployee = false
             this.modalProfile = false;
-            this.editItemModal.size = 'modal-sm';
+            // this.editItemModal.size = 'modal-sm';
 
             switch (this.itemSelected.typeName) {
                 case this.typeEmployee:
@@ -244,6 +248,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     this.editItemMonto.setValue(month.budget.originalValue)
                     this.editItemAdjustment.setValue(month.budget.adjustment)
                     this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
+
+                    this.editItemComments.setValue(month.budget.comments);
+                    this.editItemPercentageModified.setValue(month.budget.percentageModified)
+
                     this.editItemModal.show();
                     break;
 
