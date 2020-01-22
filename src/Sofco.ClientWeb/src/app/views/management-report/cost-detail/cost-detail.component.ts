@@ -249,8 +249,9 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     this.editItemAdjustment.setValue(month.budget.adjustment)
                     this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
 
-                    this.editItemComments.setValue(month.budget.comments);
-                    this.editItemPercentageModified.setValue(month.budget.percentageModified)
+                    this.editItemComments.setValue(month.comments);
+                    this.editItemPercentageModified.setValue(month.percentageModified);
+                    this.editItemPercentageModified.setValidators([Validators.min(0), Validators.max(100)]);
 
                     this.editItemModal.show();
                     break;
@@ -319,12 +320,23 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     EditItem() {
+        if(this.typeEmployee == this.itemSelected.typeName){
+            if(!this.editItemPercentageModified.valid){
+                this.messageService.showMessage("La asignacion modificada debe estar entre 0 y 100", 1);
+                this.editItemModal.resetButtons();
+                return;
+            }
+        }
 
         this.monthSelected.budget.value = this.editItemMonto.value
         switch (this.itemSelected.typeName) {
 
             case this.typeEmployee:
                 this.monthSelected.budget.originalValue = this.editItemMonto.value
+
+                this.itemSelected.monthsCost[this.indexSelected].percentageModified = this.editItemPercentageModified.value;
+                this.itemSelected.monthsCost[this.indexSelected].comments = this.editItemComments.value;
+
                 if (this.editItemAdjustment.value > 0) {
                     this.monthSelected.budget.adjustment = this.editItemAdjustment.value
                     this.monthSelected.budget.value = this.monthSelected.budget.originalValue + this.monthSelected.budget.originalValue * this.monthSelected.budget.adjustment / 100
@@ -655,7 +667,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     totalSalary += employee.monthsCost[index].budget.value;
                 }
 
-                asignacion += employee.monthsCost[index].allocationPercentage
+                asignacion += employee.monthsCost[index].percentageModified;
             })
 
             //Sumo los sueldos de los perfiles

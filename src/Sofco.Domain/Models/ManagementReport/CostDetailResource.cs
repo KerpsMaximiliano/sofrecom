@@ -21,5 +21,9 @@ namespace Sofco.Domain.Models.ManagementReport
 
         public int? UserId { get; set; }
         public User User { get; set; }
+
+        public string Comments { get; set; }
+
+        public decimal? PercentageModified { get; set; }
     }
 }

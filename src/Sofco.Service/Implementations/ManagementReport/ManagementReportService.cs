@@ -653,6 +653,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                         month.Budget.Id = employee.Id;
                         month.Budget.Value = employee.Salary;
                         month.Budget.Charges = employee.Charges;
+
+                        month.PercentageModified = employee.PercentageModified;
+                        month.Comments = employee.Comments;
                     }
 
                     cost.MonthsCost.Add(month);
@@ -1289,6 +1292,19 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                         if (monthValue != null)
                         {
+                            if (typeBudget.Name == EnumBudgetType.budget)
+                            {
+                                if (monthValue.PercentageModified.HasValue)
+                                {
+                                    monthDetail.PercentageModified = monthValue.PercentageModified;
+                                }
+
+                                if (!string.IsNullOrWhiteSpace(monthValue.Comments))
+                                {
+                                    monthDetail.Comments = monthValue.Comments;
+                                }
+                            }
+
                             if (!string.IsNullOrWhiteSpace(monthValue.Value))
                             {
                                 if (canViewSensibleData)
@@ -1437,6 +1453,11 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         monthDetail.HasAlocation = true;
                         monthDetail.AllocationPercentage = alocation.Percentage;
+
+                        if (!monthDetail.PercentageModified.HasValue)
+                        {
+                            monthDetail.PercentageModified = alocation.Percentage;
+                        }
                     }
                     else
                     {
@@ -1684,6 +1705,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                             {
                                 entity = unitOfWork.CostDetailResourceRepository.Get(aux.Id);
 
+                                if (month.PercentageModified != month.AllocationPercentage)
+                                {
+                                    entity.PercentageModified = month.PercentageModified;
+                                }
+
+                                entity.Comments = month.Comments;
+
                                 if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Value), out var salary)) salary = 0;
                                 if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Charges), out var charges)) charges = 0;
 
@@ -1693,13 +1721,12 @@ namespace Sofco.Service.Implementations.ManagementReport
                                     entity.Adjustment = aux.Adjustment ?? 0;
                                     entity.Charges = CryptographyHelper.Encrypt(aux.Charges.ToString());
 
+
                                     unitOfWork.CostDetailResourceRepository.Update(entity);
                                 }
                             }
                             else
                             {
-
-
                                 if (aux.Value != null)
                                 {
                                     entity.CostDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;
@@ -1709,6 +1736,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                                     entity.EmployeeId = resource.EmployeeId;
                                     entity.UserId = resource?.UserId;
                                     entity.BudgetTypeId = aux.BudgetTypeId;
+
+                                    if (month.PercentageModified != month.AllocationPercentage)
+                                    {
+                                        entity.PercentageModified = month.PercentageModified;
+                                    }
+
+                                    entity.Comments = month.Comments;
 
                                     unitOfWork.CostDetailResourceRepository.Insert(entity);
                                 }

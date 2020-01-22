@@ -63,7 +63,8 @@ namespace Sofco.Core.Models.ManagementReport
         public Cost Real { get; set; } = new Cost();
         public string Class { get; set; }
         public List<CurrencyExchangeItemModel> CurrencyMonth { get; set; }
-
+        public decimal? PercentageModified { get; set; }
+        public string Comments { get; set; }
     }
 
     public class Cost

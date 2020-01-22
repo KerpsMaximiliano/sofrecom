@@ -38,6 +38,8 @@ namespace Sofco.Core.Models.ManagementReport
         public int Id { get; set; }
         public decimal? Salary { get; set; }
         public decimal? Charges { get; set; }
+        public decimal? PercentageModified { get; set; }
+        public string Comments { get; set; }
     }
 
     public class CostMonthEmployeeStaff : CostMonthEmployee
