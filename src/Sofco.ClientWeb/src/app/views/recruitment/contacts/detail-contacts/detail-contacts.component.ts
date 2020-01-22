@@ -271,7 +271,7 @@ export class DetailContactsComponent implements OnInit {
   }
 
   canMakeRegister(){
-    if(this.status == ApplicantStatus.InCompany || this.status == ApplicantStatus.InProgress) return true;
+    if(this.status == ApplicantStatus.InProgress) return true;
 
     return false;
   }

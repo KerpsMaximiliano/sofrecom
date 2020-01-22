@@ -359,6 +359,8 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     }
 
     buildThirdReport(){
+        this.contactsByState = [];
+        
         let intervieweds = {
             count: 0,
             groupByStates: {
@@ -394,7 +396,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                     this.contactsByState.push(itemToAdd);
                 }
                 else{
-                    exist += 1;
+                    exist.count += 1;
                 }
             }
 

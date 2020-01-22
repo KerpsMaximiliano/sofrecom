@@ -65,7 +65,7 @@ export class ApplicantsRelatedComponent implements OnDestroy {
     }
 
     setReasonOptions(options){
-        this.reasonOptions = options.filter(x => x.type == ReasonCauseType.ApplicantInProgress || x.type == ReasonCauseType.ApplicantOpen || x.type == ReasonCauseType.ApplicantUnavailable);
+        this.reasonOptions = options.filter(x => x.type == ReasonCauseType.ApplicantInProgress || x.type == ReasonCauseType.ApplicantOpen || x.type == ReasonCauseType.ApplicantContacted);
     }
 
     initGrid() {
