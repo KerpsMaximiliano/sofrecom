@@ -325,6 +325,18 @@
             </div>
         </div>
     </div>
+
+    <div class="ibox" *ngIf="daysOpenedData.length > 0">
+        <div class="ibox-title">
+            <h4> Promedio de tiempo de Busquedas</h4>
+        </div>
+        <div class="ibox-content">
+            <div *ngFor="let item of daysOpenedData">
+                <p>{{ item.count }} busquedas para {{ item.name }}</p>
+                <p><ngb-progressbar type="info" [value]="item.percentage">{{ item.average }} Dias promedio</ngb-progressbar></p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <ng2-modal [config]="commentsModalConfig" #commentsModal>

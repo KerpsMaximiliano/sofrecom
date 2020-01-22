@@ -167,6 +167,7 @@ namespace Sofco.DAL.Repositories.Recruitment
                 .Include(x => x.Client)
                 .Include(x => x.User)
                 .Include(x => x.ReasonCause)
+                .Include(x => x.ResourceAssignment)
                 .Include(x => x.JobSearchApplicants)
                     .ThenInclude(x => x.Reason)
                 .Include(x => x.JobSearchApplicants)

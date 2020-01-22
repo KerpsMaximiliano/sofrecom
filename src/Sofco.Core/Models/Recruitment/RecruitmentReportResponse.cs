@@ -15,6 +15,12 @@ namespace Sofco.Core.Models.Recruitment
             Quantity = jobSearch.Quantity;
             MaximumSalary = jobSearch.MaximunSalary;
             CreationDate = jobSearch.CreatedDate;
+           
+            if (jobSearch.ResourceAssignment != null)
+            {
+                ResourceAssignmentId = jobSearch.ResourceAssignmentId;
+                ResourceAssignmentText = jobSearch.ResourceAssignment.Text;
+            }
 
             if (jobSearch.Client != null)
             {
@@ -49,7 +55,16 @@ namespace Sofco.Core.Models.Recruitment
             {
                 Contacts = jobSearch.JobSearchApplicants.Select(x => new RecruitmentContactReport(x)).ToList();
             }
+
+            if (jobSearch.CloseDate.HasValue)
+            {
+                DaysOpened = (jobSearch.CloseDate.Value - jobSearch.CreatedDate).TotalDays;
+            }
         }
+
+        public string ResourceAssignmentText { get; set; }
+
+        public double DaysOpened { get; set; }
 
         public string Client { get; set; }
 
@@ -60,6 +75,8 @@ namespace Sofco.Core.Models.Recruitment
         public DateTime CreationDate { get; set; }
 
         public int ReasonId { get; set; }
+
+        public int ResourceAssignmentId { get; set; }
 
         public string ReasonText { get; set; }
 

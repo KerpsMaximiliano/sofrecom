@@ -244,9 +244,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             switch (this.itemSelected.typeName) {
                 case this.typeEmployee:
-                    this.modalEmployee = true
-                    this.editItemMonto.setValue(month.budget.originalValue)
-                    this.editItemAdjustment.setValue(month.budget.adjustment)
+                    this.modalEmployee = true;
+                    this.editItemMonto.setValue(month.budget.originalValue);
+                    // this.editItemAdjustment.setValue(month.budget.adjustment);
+                    this.editItemAdjustment.setValue(null);
                     this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
 
                     this.editItemComments.setValue(month.comments);

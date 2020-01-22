@@ -37,6 +37,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { JobSearchRelatedComponent } from './contacts/jobSearch-related/jobSearch-related';
 import { RecruitmentReportComponent } from './reports/recruitment-report';
 import { ChartjsModule } from '@ctrl/ngx-chartjs';
+import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { ChartjsModule } from '@ctrl/ngx-chartjs';
     DecimalFormatModule,
     ReactiveFormsModule,
     BsDatepickerModule ,
-    ChartjsModule
+    ChartjsModule,
+    NgbProgressbarModule
   ],
 
   providers: [GenericOptionService, JobSearchService, FormsService, CustomerService, ApplicantService, AnalyticService],

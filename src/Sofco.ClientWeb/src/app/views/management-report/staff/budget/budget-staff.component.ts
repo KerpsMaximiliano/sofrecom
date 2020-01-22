@@ -239,7 +239,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 this.modalEmployee = true
                 this.editItemMonto.setValue(month[typeBudget.toLowerCase()].originalValue)
                 // this.editItemAdjustment.setValue(month[typeBudget.toLowerCase()].adjustment)
-                this.editItemAdjustment.setValue(null)
+                this.editItemAdjustment.setValue(null);
                 this.editItemAdjustment.setValidators([Validators.min(0), Validators.max(999)]);
                 this.editItemModal.show();
                 break;

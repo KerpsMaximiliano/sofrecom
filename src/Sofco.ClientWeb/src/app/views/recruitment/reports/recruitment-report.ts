@@ -37,6 +37,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     salaryAverage: any[] = new Array();
     jobSearchsBySelectors: any[] = new Array();
     contactsByState: any[] = new Array();
+    daysOpenedData: any[] = new Array();
 
     comments: string;
     rrhhComments: string;
@@ -123,6 +124,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
 
         this.list = [];
         this.contacts = [];
+        this.daysOpenedData = [];
 
         this.messageService.showLoading();
 
@@ -247,6 +249,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
 
     filterContacts(){
         this.contacts = [];
+        this.daysOpenedData = [];
 
         var jobsearchSelected = this.list.filter(x => x.selected);
 
@@ -263,13 +266,20 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 }
             });
 
+            let listClosed = this.list.filter(x => x.status == JobSearchStatus.Close);
+
+            if(listClosed.length > 0){
+                this.buildTimeAverageGraph(listClosed);
+            }
+
             if(this.contacts.length > 0){
                 this.initContactGrid();
 
                 this.buildFirstReport();
                 this.buildSecondReport();
             }
-            else{
+
+            if(listClosed.length == 0 && this.contacts.length == 0){
                 this.messageService.showWarningByFolder('common', 'searchEmpty');
             }
         }
@@ -573,6 +583,32 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         this.clientCommets = item.clientInterviewComments;
 
         this.commentsModal.show();
+    }
+
+    buildTimeAverageGraph(listClosed){
+        listClosed.forEach(x => {
+
+            let existData = this.daysOpenedData.find(s => s.type == x.resourceAssignmentId);
+
+            if(existData){
+                existData.days += Math.round(x.daysOpened);
+                existData.count += 1;
+                existData.average = Math.round(existData.days / existData.count);
+                existData.percentage = Math.round((existData.average / 365) * 100)
+            }
+            else{
+                let itemToAdd = {
+                    type: x.resourceAssignmentId,
+                    name: x.resourceAssignmentText,
+                    days: Math.round(x.daysOpened),
+                    count: 1,
+                    average: Math.round(x.daysOpened),
+                    percentage: Math.round((x.daysOpened / 365) * 100)
+                };
+    
+                this.daysOpenedData.push(itemToAdd);
+            }
+        });
     }
 
     getBackgroudColors(count){
