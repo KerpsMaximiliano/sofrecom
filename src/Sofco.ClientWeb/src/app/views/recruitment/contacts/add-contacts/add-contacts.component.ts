@@ -149,7 +149,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     this.addSubscrip = this.applicantService.post(json).subscribe(response => {
         this.messageService.closeLoading();
-        this.back();
+        this.router.navigate(['recruitment/contacts/' + response.data]);
     }, 
     error => {
         this.messageService.closeLoading();

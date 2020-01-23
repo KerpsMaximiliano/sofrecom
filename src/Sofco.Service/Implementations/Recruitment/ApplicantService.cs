@@ -33,9 +33,9 @@ namespace Sofco.Service.Implementations.Recruitment
             this.fileConfig = fileOptions.Value;
         }
 
-        public Response Add(ApplicantAddModel model)
+        public Response<int> Add(ApplicantAddModel model)
         {
-            var response = new Response();
+            var response = new Response<int>();
 
             if (model == null)
             {
@@ -56,6 +56,8 @@ namespace Sofco.Service.Implementations.Recruitment
 
                 unitOfWork.ApplicantRepository.Insert(domain);
                 unitOfWork.Save();
+
+                response.Data = domain.Id;
 
                 response.AddSuccess(Resources.Recruitment.Applicant.AddSuccess);
             }
