@@ -53,7 +53,17 @@ namespace Sofco.Core.Models.Recruitment
 
             if (jobSearch.JobSearchApplicants != null && jobSearch.JobSearchApplicants.Any())
             {
-                Contacts = jobSearch.JobSearchApplicants.Select(x => new RecruitmentContactReport(x)).ToList();
+                var list = jobSearch.JobSearchApplicants.OrderByDescending(x => x.CreatedDate);
+
+                foreach (var jobSearchApplicant in list)
+                {
+                    if (!Contacts.Any(x =>
+                        x.ApplicantId == jobSearchApplicant.ApplicantId &&
+                        x.JobSearchId == jobSearchApplicant.JobSearchId))
+                    {
+                        Contacts.Add(new RecruitmentContactReport(jobSearchApplicant));
+                    }
+                }
             }
 
             if (jobSearch.CloseDate.HasValue)
@@ -127,6 +137,9 @@ namespace Sofco.Core.Models.Recruitment
                 RecruiterText = jobSearchApplicant.CreatedByUser.Name;
             }
 
+            JobSearchId = jobSearchApplicant.JobSearchId;
+            ApplicantId = jobSearchApplicant.ApplicantId;
+
             Date = jobSearchApplicant.CreatedDate;
             Comments = jobSearchApplicant.Comments;
             Salary = jobSearchApplicant.Salary;
@@ -178,5 +191,9 @@ namespace Sofco.Core.Models.Recruitment
         public string RrhhInterviewer { get; set; }
 
         public string TechnicalInterviewer { get; set; }
+
+        public int ApplicantId { get; set; }
+
+        public int JobSearchId { get; set; }
     }
 }

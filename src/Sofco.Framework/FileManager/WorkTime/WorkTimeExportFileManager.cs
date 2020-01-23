@@ -71,11 +71,13 @@ namespace Sofco.Framework.FileManager.WorkTime
                 var manager = unitOfWork.AnalyticRepository.GetManager(analyticId);
                 var director = unitOfWork.AnalyticRepository.GetDirector(analyticId);
 
+                var currentUser = userData.GetCurrentUser();
+
                 //Si no es director ni gerente es aprobador
-                if (manager.Id != userData.GetCurrentUser().Id && director.Id != userData.GetCurrentUser().Id)
+                if (manager.Id != currentUser.Id && director.Id != currentUser.Id)
                 {
                     //Busca los empleados que tiene para aprobar
-                    var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.WorkTime).Where(x => x.AnalyticSourceId == analyticId);
+                    var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.WorkTime).Where(x => x.AnalyticSourceId == analyticId);
 
                     employees = employees.Where(d => delegations.Select(u => u.EmployeeSourceId.GetValueOrDefault()).Contains(d.Id)).ToList();
                 }
