@@ -32,5 +32,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         void AddReportPowerBi(List<ReportPowerBi> report);
         void CleanReportPowerBi();
         void UpdateModifiedUser(Allocation allocation);
+        void UpdateRealPercentage(Allocation allocation);
     }
 }

@@ -19,5 +19,6 @@ namespace Sofco.Domain.Models.AllocationManagement
         public DateTime ReleaseDate { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime ModifiedAt { get; set; }
+        public decimal RealPercentage { get; set; }
     }
 }

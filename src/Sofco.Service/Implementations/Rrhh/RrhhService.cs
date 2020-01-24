@@ -69,6 +69,23 @@ namespace Sofco.Service.Implementations.Rrhh
                 {
                     text.WriteLine(tigerReportItem.GetLine());
                     text.Flush();
+
+                    var allocation = new Allocation
+                    {
+                        Id = tigerReportItem.AllocationId,
+                        RealPercentage = Convert.ToDecimal(tigerReportItem.Percentage)
+                    };
+
+                    unitOfWork.AllocationRepository.UpdateRealPercentage(allocation);
+                }
+
+                try
+                {
+                    unitOfWork.Save();
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e);
                 }
 
                 response.Data = memoryStream.GetBuffer();

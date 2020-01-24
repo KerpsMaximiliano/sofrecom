@@ -85,7 +85,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 if (allocation.Percentage == 0)
                 {
-                    CalculateEmployeesAllocationResume(response, allocation);
+                    CalculateEmployeesAllocationResume(response, allocation, parameters, model);
                     continue;
                 }
 
@@ -95,7 +95,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     model.HoursMustLoad += tuple.Item1;
                     model.AllHoursMustLoad = tuple.Item2;
 
-                    CalculateEmployeesAllocationResume(response, allocation);
+                    CalculateEmployeesAllocationResume(response, allocation, parameters, model);
 
                     // Guardo analiticas de preventa
                     if (allocation.AnalyticId == 146 || allocation.AnalyticId == 166 || allocation.AnalyticId == 167)
@@ -126,7 +126,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                         modelAlreadyExist.Result = modelAlreadyExist.HoursApproved >= modelAlreadyExist.HoursMustLoad;
 
-                        CalculateEmployeesAllocationResume(response, allocation);
+                        CalculateEmployeesAllocationResume(response, allocation, parameters, modelAlreadyExist);
 
                         if (allocation.AnalyticId == 146 || allocation.AnalyticId == 166 ||
                             allocation.AnalyticId == 167)
@@ -190,7 +190,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                             model.AllocationPercentage = allocation.Percentage;
                         }
 
-                        CalculateEmployeesAllocationResume(response, allocation);
+                        CalculateEmployeesAllocationResume(response, allocation, parameters, model);
 
                         if (allocation.AnalyticId == 146 || allocation.AnalyticId == 166 ||
                             allocation.AnalyticId == 167)
@@ -461,8 +461,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        private void CalculateEmployeesAllocationResume(Response<WorkTimeReportModel> response, Allocation allocation)
+        private void CalculateEmployeesAllocationResume(Response<WorkTimeReportModel> response, Allocation allocation,
+            ReportParams parameters, WorkTimeReportModelItem model)
         {
+            if (allocation.StartDate.Year == parameters.EndYear && allocation.StartDate.Month == parameters.EndMonth)
+            {
+                model.AllocationId = allocation.Id;
+            }
+
             var employeeMissAllocation =
                 response.Data.EmployeesAllocationResume.SingleOrDefault(x => x.EmployeeId == allocation.EmployeeId);
 
@@ -599,9 +605,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 if (workTimeReportByHours)
                 {
                     if (item.RealPercentage <= 0) continue;
-
+                    
                     var tigerItem = new TigerReportItem(item.EmployeeNumber, item.RealPercentage, item.CostCenter,
-                        item.Activity, item.Title) {Id = i};
+                        item.Activity, item.Title)
+                    {
+                        Id = i,
+                        AllocationId = item.AllocationId
+                    };
                     i++;
 
                     tigerReport.Add(tigerItem);
@@ -611,7 +621,11 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     if (item.AllocationPercentage <= 0) continue;
 
                     var tigerItem = new TigerReportItem(item.EmployeeNumber, item.AllocationPercentage, item.CostCenter,
-                        item.Activity, item.Title) {Id = i};
+                        item.Activity, item.Title)
+                    {
+                        Id = i,
+                        AllocationId = item.AllocationId
+                    };
                     i++;
 
                     tigerReport.Add(tigerItem);

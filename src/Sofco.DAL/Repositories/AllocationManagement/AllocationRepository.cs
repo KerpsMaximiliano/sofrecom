@@ -54,6 +54,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(allocation).Property("ModifiedAt").IsModified = true;
         }
 
+        public void UpdateRealPercentage(Allocation allocation)
+        {
+            context.Entry(allocation).Property("RealPercentage").IsModified = true;
+        }
+
         public IList<Allocation> GetAllocationsByDate(DateTime date)
         {
             return context.Allocations
