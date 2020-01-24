@@ -266,6 +266,23 @@ namespace Sofco.Service.Implementations.Rrhh
                                     }
                                 }
                             }
+                            else
+                            {
+                                var employee = employees.FirstOrDefault(x => x.Item2 == data.EmployeeNumber);
+
+                                if (employee != null)
+                                {
+                                    employeeSocialCharge.Items.Add(new SocialChargeItem
+                                    {
+                                        Value = employee.Item3,
+                                        AccountName = contributionsName,
+                                        AccountNumber = contributionsNumber
+                                    });
+
+                                    listToUpdate.Add(employeeSocialCharge);
+                                    listEmployeeContributions.Add(data.EmployeeNumber);
+                                }
+                            }
                         }
                     }
                     else
