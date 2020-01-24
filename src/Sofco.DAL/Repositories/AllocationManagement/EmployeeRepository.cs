@@ -127,13 +127,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Employees.Where(x => !prepaidImportedDataIds.Contains(x.Id) && x.EndDate == null).ToList();
         }
 
-        public IList<Tuple<int, string>> GetIdAndEmployeeNumber(int year, int month)
+        public IList<Tuple<int, string, string>> GetIdAndEmployeeNumber(int year, int month)
         {
             var date = new DateTime(year, month, 1).AddMonths(-2);
 
             return context.Employees
                 .Where(x => x.EndDate == null || (x.EndDate.HasValue && x.EndDate.Value.Date >= date.Date))
-                .Select(x => new Tuple<int, string>(x.Id, x.EmployeeNumber))
+                .Select(x => new Tuple<int, string, string>(x.Id, x.EmployeeNumber, x.PrepaidAmount))
                 .ToList();
         }
 

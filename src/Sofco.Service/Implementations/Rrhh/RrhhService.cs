@@ -23,6 +23,9 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly ITigerEmployeeRepository tigerEmployeeRepository;
         private readonly IUnitOfWork unitOfWork;
 
+        private readonly string contributionsName = "Aportes y Contribuciones total";
+        private readonly int contributionsNumber = 648000;
+
         public RrhhService(IWorktimeData worktimeData, ILogMailer<RrhhService> logger, ITigerEmployeeRepository tigerEmployeeRepository, IUnitOfWork unitOfWork)
         {
             this.worktimeData = worktimeData;
@@ -112,7 +115,7 @@ namespace Sofco.Service.Implementations.Rrhh
                 response.AddError(Resources.Rrhh.Prepaid.YearError);
 
             if (response.HasErrors()) return response;
-
+            
             var socialChargesData = tigerEmployeeRepository.GetSocialCharges(year, month);
             var employees = unitOfWork.EmployeeRepository.GetIdAndEmployeeNumber(year, month);
 
@@ -215,14 +218,14 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        private void FillData(int year, int month, IList<EmployeeSocialCharges> socialChargesData, List<SocialCharge> listToUpdate, List<SocialCharge> listToAdd, IList<Tuple<int, string>> employees)
+        private void FillData(int year, int month, IList<EmployeeSocialCharges> socialChargesData, List<SocialCharge> listToUpdate, List<SocialCharge> listToAdd, IList<Tuple<int, string, string>> employees)
         {
             var gapsSocialCharge = unitOfWork.RrhhRepository.GetSocialCharges(year, month);
+            var listEmployeeContributions = new List<string>();
 
             foreach (var data in socialChargesData)
             {
-                var employeeSocialCharge =
-                    gapsSocialCharge.FirstOrDefault(x => x.Employee.EmployeeNumber == data.EmployeeNumber);
+                var employeeSocialCharge = gapsSocialCharge.FirstOrDefault(x => x.Employee.EmployeeNumber == data.EmployeeNumber);
 
                 if (employeeSocialCharge != null)
                 {
@@ -237,6 +240,33 @@ namespace Sofco.Service.Implementations.Rrhh
                             item.Value = CryptographyHelper.Encrypt(data.Value.ToString(CultureInfo.InvariantCulture));
                             listToUpdate.Add(employeeSocialCharge);
                         }
+
+                        if (!listEmployeeContributions.Contains(data.EmployeeNumber))
+                        {
+                            var contributionAccountToCompare = employeeSocialCharge.Items.FirstOrDefault(x => x.AccountNumber == contributionsNumber);
+
+                            if (contributionAccountToCompare != null)
+                            {
+                                var employee = employees.FirstOrDefault(x => x.Item2 == data.EmployeeNumber);
+
+                                if (employee != null)
+                                {
+                                    listEmployeeContributions.Add(data.EmployeeNumber);
+
+                                    var contributionValueToCompare = Convert.ToDecimal(CryptographyHelper.Decrypt(employee.Item3));
+
+                                    if (contributionValueToCompare != Convert.ToDecimal(CryptographyHelper.Decrypt(contributionAccountToCompare.Value)))
+                                    {
+                                        contributionAccountToCompare.Value = CryptographyHelper.Encrypt(employee.Item3.ToString(CultureInfo.InvariantCulture));
+
+                                        if (listToUpdate.All(x => x.Id != employeeSocialCharge.Id))
+                                        {
+                                            listToUpdate.Add(employeeSocialCharge);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -245,7 +275,7 @@ namespace Sofco.Service.Implementations.Rrhh
                         employeeSocialCharge.Items.Add(new SocialChargeItem
                         {
                             Value = CryptographyHelper.Encrypt(data.Value.ToString(CultureInfo.InvariantCulture)),
-                        AccountName = data.AccountName,
+                            AccountName = data.AccountName,
                             AccountNumber = data.AccountNumber
                         });
 
@@ -271,7 +301,7 @@ namespace Sofco.Service.Implementations.Rrhh
                     }
                     else
                     {
-                        listToAdd.Add(new SocialCharge
+                        var itemToAdd = new SocialCharge
                         {
                             Year = year,
                             Month = month,
@@ -285,7 +315,16 @@ namespace Sofco.Service.Implementations.Rrhh
                                     AccountNumber = data.AccountNumber
                                 }
                             }
+                        };
+
+                        itemToAdd.Items.Add(new SocialChargeItem
+                        {
+                            Value = employee.Item3,
+                            AccountName = contributionsName,
+                            AccountNumber = contributionsNumber
                         });
+
+                        listToAdd.Add(itemToAdd);
                     }
                 }
             }

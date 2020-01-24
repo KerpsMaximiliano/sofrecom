@@ -146,7 +146,7 @@ namespace Sofco.Repository.Rh.Repositories
 
             if (!reader.IsDBNull(reader.GetOrdinal("nroc")))
             {
-                employee.AccountNumber = Convert.ToInt32(reader.GetString(reader.GetOrdinal("nroc")));
+                employee.AccountNumber = reader.GetInt32(reader.GetOrdinal("nroc"));
             }
 
             if (!reader.IsDBNull(reader.GetOrdinal("cuenta")))
