@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
 
@@ -119,7 +120,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public Employee GetByDocumentNumber(int dni)
         {
-            return context.Employees.SingleOrDefault(x => x.DocumentNumber == dni);
+            return context.Employees.Include(x => x.SocialCharges).ThenInclude(x => x.Items).SingleOrDefault(x => x.DocumentNumber == dni);
         }
 
         public IList<Employee> GetMissingEmployess(IList<int> prepaidImportedDataIds)
@@ -137,9 +138,14 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
-        public Employee GetWithSocialCharges(int employeeId)
+        public Employee GetWithSocialChargesAndAllocations(int employeeId)
         {
             return context.Employees.Include(x => x.Allocations).Include(x => x.SocialCharges).SingleOrDefault(x => x.Id == employeeId);
+        }
+
+        public SocialCharge GetSocialCharges(int employeeId, DateTime date)
+        {
+            return context.SocialCharges.Include(x => x.Items).SingleOrDefault(x => x.EmployeeId == employeeId && x.Year == date.Year && x.Month == date.Month);
         }
 
         public ICollection<Employee> Search(EmployeeSearchParams parameters, DateTime startDate, DateTime endDate)

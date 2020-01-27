@@ -102,14 +102,13 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                             }
                             else
                             {
-                                if (!decimal.TryParse(CryptographyHelper.Decrypt(employee.PrepaidAmount), out var prepaidAmount)) prepaidAmount = 0;
-
                                 itemToAdd.EmployeeId = employee.Id;
                                 itemToAdd.EmployeeName = employee.Name;
                                 itemToAdd.TigerBeneficiaries = employee.BeneficiariesCount+1;
                                 itemToAdd.EmployeeNumber = employee.EmployeeNumber;
-                                itemToAdd.TigerCost = prepaidAmount;
                                 itemToAdd.TigerPlan = employee.PrepaidPlan;
+
+                                SetTigerCost(yearId, monthId, employee, itemToAdd);
                             }
                         }
                         else

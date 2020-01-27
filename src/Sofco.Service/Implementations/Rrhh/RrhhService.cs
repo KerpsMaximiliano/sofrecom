@@ -24,7 +24,7 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly IUnitOfWork unitOfWork;
 
         private readonly string contributionsName = "Aportes y Contribuciones total";
-        private readonly int contributionsNumber = 648000;
+        private readonly int contributionsNumber = 648001;
 
         public RrhhService(IWorktimeData worktimeData, ILogMailer<RrhhService> logger, ITigerEmployeeRepository tigerEmployeeRepository, IUnitOfWork unitOfWork)
         {
@@ -142,7 +142,7 @@ namespace Sofco.Service.Implementations.Rrhh
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     var chargesTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300)
+                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));
@@ -156,7 +156,7 @@ namespace Sofco.Service.Implementations.Rrhh
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     var chargesTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300)
+                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));

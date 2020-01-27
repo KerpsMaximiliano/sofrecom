@@ -820,7 +820,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                 item.EmployeeId = resource.EmployeeId;
 
-                var employee = unitOfWork.EmployeeRepository.GetWithSocialCharges(resource.EmployeeId);
+                var employee = unitOfWork.EmployeeRepository.GetWithSocialChargesAndAllocations(resource.EmployeeId);
                 item.Name = employee?.Name;
                 item.UserId = resource.UserId;
                 item.MonthYear = monthYear;

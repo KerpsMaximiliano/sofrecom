@@ -6,6 +6,7 @@ using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
 
@@ -64,7 +65,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> GetMissingEmployess(IList<int> prepaidImportedDataIds);
 
         IList<Tuple<int, string, string>> GetIdAndEmployeeNumber(int year, int month);
-        Employee GetWithSocialCharges(int employeeId);
+        Employee GetWithSocialChargesAndAllocations(int employeeId);
 
         Employee GetByEmailWithDiscounts(string modelEmail);
         IList<Employee> GetByAnalyticWithSocialCharges(int idAnalytic, DateTime startDate, DateTime endDate);
@@ -73,5 +74,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         ICollection<Employee> GetAllForWorkTimeReport();
         IList<Employee> GetByAnalyticIdInCurrentDate(int analyticId);
         void UpdateManager(int id, int managerId);
+        SocialCharge GetSocialCharges(int employeeId, DateTime date);
     }
 }

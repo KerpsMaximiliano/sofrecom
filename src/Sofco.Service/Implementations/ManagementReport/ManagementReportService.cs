@@ -1214,7 +1214,7 @@ namespace Sofco.Service.Implementations.ManagementReport
         {
             var budgetTypes = unitOfWork.ManagementReportRepository.GetTypesBudget();
 
-            var employee = unitOfWork.EmployeeRepository.GetWithSocialCharges(employeeId);
+            var employee = unitOfWork.EmployeeRepository.GetWithSocialChargesAndAllocations(employeeId);
 
             var costResourceEmployee = FillEmployee(IdAnalytic, Months, costDetails, employee, budgetTypes);
 

@@ -13,6 +13,7 @@ using Sofco.Framework.Helpers;
 using Sofco.Framework.MailData;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Sofco.Domain.Models.Rrhh;
 
@@ -26,6 +27,9 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly IMailSender mailSender;
         private readonly EmailConfig emailConfig;
         private readonly IManagementReportCalculateCostsService managementReportCalculateCostsService;
+
+        private readonly string contributionsName = "Aportes y Contribuciones";
+        private readonly int contributionsNumber = 648000;
 
         public PrepaidService(IUnitOfWork unitOfWork,
             ILogMailer<PrepaidService> logger,
@@ -153,6 +157,42 @@ namespace Sofco.Service.Implementations.Rrhh
 
                 foreach (var prepaidImportedData in data)
                 {
+                    var socialcharge = unitOfWork.EmployeeRepository.GetSocialCharges(prepaidImportedData.EmployeeId, prepaidImportedData.Date);
+
+                    if (socialcharge != null)
+                    {
+                        var item = socialcharge.Items.SingleOrDefault(x => x.AccountNumber == contributionsNumber);
+
+                        if (item != null)
+                        {
+                            var encryptedValue = CryptographyHelper.Encrypt(prepaidImportedData.CostDifference.ToString(CultureInfo.InvariantCulture));
+
+                            if (!encryptedValue.Equals(item.Value))
+                            {
+                                item.Value = encryptedValue;
+                            }
+                        }
+                        else
+                        {
+                            var newItem = new SocialChargeItem
+                            {
+                                AccountName = contributionsName,
+                                AccountNumber = contributionsNumber,
+                                Value = CryptographyHelper.Encrypt(prepaidImportedData.CostDifference.ToString(CultureInfo.InvariantCulture))
+                            };
+
+                            socialcharge.Items.Add(newItem);
+                        }
+
+                        var chargesTotal = socialcharge.Items
+                            .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
+                            .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
+
+                        socialcharge.ChargesTotal = CryptographyHelper.Encrypt(chargesTotal.ToString(CultureInfo.InvariantCulture));
+
+                        unitOfWork.RrhhRepository.Update(socialcharge);
+                    }
+
                     prepaidImportedData.Status = model.Status.GetValueOrDefault();
                     unitOfWork.PrepaidImportedDataRepository.UpdateStatus(prepaidImportedData);
                 }

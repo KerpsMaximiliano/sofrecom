@@ -81,5 +81,10 @@ namespace Sofco.DAL.Repositories.Rrhh
 
             return result;
         }
+
+        public void Update(SocialCharge toUpdate)
+        {
+            context.SocialCharges.Update(toUpdate);
+        }
     }
 }

@@ -263,7 +263,7 @@ export class DetailContactsComponent implements OnInit {
   }
 
   jobSearchVisible(){
-    if(this.status == ApplicantStatus.Valid || this.status == ApplicantStatus.InProgress){
+    if(this.status == ApplicantStatus.Valid || this.status == ApplicantStatus.InProgress || this.status == ApplicantStatus.Contacted){
       return true;
     }
 
