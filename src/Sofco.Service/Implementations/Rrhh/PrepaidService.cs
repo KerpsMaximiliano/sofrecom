@@ -28,7 +28,7 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly EmailConfig emailConfig;
         private readonly IManagementReportCalculateCostsService managementReportCalculateCostsService;
 
-        private readonly string contributionsName = "Aportes y Contribuciones";
+        private readonly string contributionsName = "Prepagas (por asiento)";
         private readonly int contributionsNumber = 648000;
 
         public PrepaidService(IUnitOfWork unitOfWork,
