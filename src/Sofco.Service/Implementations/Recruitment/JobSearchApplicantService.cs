@@ -83,14 +83,14 @@ namespace Sofco.Service.Implementations.Recruitment
              
             try
             {
-                var date = DateTime.UtcNow.Date;
+                var date = DateTime.UtcNow;
                 var anySuccess = false;
 
                 foreach (var jobSearchId in model.JobSearchs)
                 {
                     foreach (var applicantId in model.Applicants)
                     {
-                        if (!unitOfWork.JobSearchApplicantRepository.Exist(applicantId, jobSearchId, date, reason.Id))
+                        if (!unitOfWork.JobSearchApplicantRepository.Exist(applicantId, jobSearchId, date.Date, reason.Id))
                         {
                             var itemToAdd = new JobSearchApplicant
                             {
@@ -204,7 +204,7 @@ namespace Sofco.Service.Implementations.Recruitment
               
                 jobSearchApplicant.RemoteWork = model.RemoteWork;
                 jobSearchApplicant.Salary = model.Salary;
-                jobSearchApplicant.ModifiedAt = DateTime.UtcNow.Date;
+                jobSearchApplicant.ModifiedAt = DateTime.UtcNow;
 
                 if (model.ReasonId != reasonId)
                 {

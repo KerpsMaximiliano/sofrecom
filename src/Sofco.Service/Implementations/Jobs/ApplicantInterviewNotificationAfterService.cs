@@ -70,7 +70,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var jobSearchApplicant in jobSearchApplicants)
             {
-                if (jobSearchApplicant.RrhhInterviewDate.HasValue && jobSearchApplicant.ModifiedAt < jobSearchApplicant.RrhhInterviewDate.Value.Date)
+                if (jobSearchApplicant.RrhhInterviewDate.HasValue && jobSearchApplicant.ModifiedAt.Date < jobSearchApplicant.RrhhInterviewDate.Value.Date)
                 {
                     text.Append($"<tr>" +
                                     $"<td class='td-lg'>{jobSearchApplicant.Reason?.Text}</td>" +
