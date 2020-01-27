@@ -58,7 +58,11 @@
                             </label>
                         </td>
                         <td [hidden]="!showColumn.real">
-                            <label class="label bg-muted">
+                            <label class="label label-cant-resources" *ngIf="month.resourceQuantityReal > 0">
+                                {{ month.resourceQuantityReal | amountFormat }}
+                            </label>
+                            
+                            <label class="label bg-muted" *ngIf="month.resourceQuantityReal == 0">
                                 <!-- {{ calculateAssignedEmployees(month) }} -->
                                 <!-- {{ month.resourceQuantity | amountFormat }} -->
                                 <i class="fa fa-minus" aria-hidden="true"></i>

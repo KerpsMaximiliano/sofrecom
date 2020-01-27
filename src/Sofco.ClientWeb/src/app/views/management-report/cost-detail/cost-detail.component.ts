@@ -660,6 +660,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             var totalCost = 0;
             var totalSalary = 0;
             var asignacion = 0
+            var asignacionReal = 0
 
             //Sumo el totol de los sueldos
             this.employees.forEach(employee => {
@@ -669,6 +670,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
 
                 asignacion += employee.monthsCost[index].percentageModified;
+                asignacionReal += employee.monthsCost[index].realPercentage;
             })
 
             //Sumo los sueldos de los perfiles
@@ -692,12 +694,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                     totalCost += resourceEmpleyee.monthsCost[index].budget.value
                     totalSalary += resourceEmpleyee.monthsCost[index].budget.value;
                 }
-            })
+            }) 
 
             month.budget.totalCost = totalCost + (totalSalary * 0.51);
             month.budget.totalSalary = totalSalary
             month.budget.totalLoads = (totalSalary * 0.51)
             month.resourceQuantity = asignacion / 100
+            month.resourceQuantityReal = asignacionReal / 100
         })
     }
 

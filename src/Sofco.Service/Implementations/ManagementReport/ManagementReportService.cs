@@ -1453,6 +1453,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         monthDetail.HasAlocation = true;
                         monthDetail.AllocationPercentage = alocation.Percentage;
+                        monthDetail.RealPercentage = alocation.RealPercentage;
 
                         if (!monthDetail.PercentageModified.HasValue)
                         {
