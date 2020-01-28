@@ -28,7 +28,7 @@
             <div class="form-group row">
                 <label class="col-sm-6 col-form-label">% Cargas</label>
                 <div class="col-sm-6">
-                    <label class="label label-gray">{{ totalChargesPercentage | number: '1.1-2' }}</label>
+                    <label class="label label-gray ">{{ totalChargesPercentage | number: '1.1-2' }}</label>
                 </div>
             </div>
         </div>
@@ -92,11 +92,11 @@
                 [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resource.total | number: '1.1-2'"
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resource.total | number: '1.1-2'"
                 disabled>
         </div>
         <div class="col-sm-1">
-            <input type="text" decimalFormat class="percentageLoads form-control input-xs"
+            <input type="text" decimalFormat class="percentageLoads form-control input-xs text-right"
                 [ngModel]="resource.chargesPercentage | number: '1.1-2'" disabled>
         </div>
         <div class="col-sm-1">
@@ -110,13 +110,13 @@
             <strong>Sub Total</strong>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesSalarySubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesSalarySubTotal | number: '1.1-2'" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesChargesSubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesChargesSubTotal | number: '1.1-2'" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="resourcesSubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesSubTotal | number: '1.1-2'" disabled>
         </div>
     </div>
 
@@ -166,7 +166,7 @@
         <div class="row m-t-xs no-gutters" *ngFor="let hire of contracted; let i = index">
             <div class="col-sm-5">
                 <!-- <input type="text" class="form-control input-xs" [(ngModel)]="hire.name" [disabled]="isReadOnly" maxlength="200" required> -->
-                <input name="name{{i}}" class="form-control input-xs" [disabled]="isReadOnly" maxlength="200" required
+                <input name="name{{i}}" class="form-control input-xs text-right" [disabled]="isReadOnly" maxlength="200" required
                     [(ngModel)]="hire.name" #name{{i}}="ngModel">
             </div>
             <div class="col-sm-2">
@@ -184,7 +184,7 @@
                     [(modelDisabled)]="isReadOnly"></math-input>
             </div>
             <div class="col-sm-2">
-                <input type="text" name="total{{i}}" decimalFormat class="form-control input-xs"
+                <input type="text" name="total{{i}}" decimalFormat class="form-control input-xs text-right"
                     [ngModel]="hire.total | number: '1.1-2'" #total{{i}}="ngModel" disabled>
             </div>
             <div class="col-sm-1">
@@ -200,13 +200,13 @@
             <strong>Sub Total</strong>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="contractedsHonorarySubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="contractedsHonorarySubTotal | number: '1.1-2'" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="contractedsInsuranceSubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="contractedsInsuranceSubTotal | number: '1.1-2'" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="contractedsSubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="contractedsSubTotal | number: '1.1-2'" disabled>
         </div>
     </div>
 
@@ -266,7 +266,7 @@
             <strong>Sub Total</strong>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs" [ngModel]="categoriesSubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="categoriesSubTotal | number: '1.1-2'" disabled>
         </div>
     </div>
 

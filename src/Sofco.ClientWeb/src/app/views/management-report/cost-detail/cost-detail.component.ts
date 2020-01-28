@@ -547,12 +547,10 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             var _charges = 0
             var _total = 0
 
-            if (monthCost.real.value && monthCost.real.value > 0) {
-                _id = monthCost.real.id || 0
-                _salary = monthCost.real.value || 0
-                _charges = monthCost.real.charges || 0
-                _total = monthCost.real.value + monthCost.real.charges || 0
-            }
+            _id = monthCost.real.id || 0
+            _salary = monthCost.real.value || 0
+            _charges = monthCost.real.charges || 0
+            _total = monthCost.real.value + monthCost.real.charges || 0
 
             return {
                 employeeId: element.employeeId,
