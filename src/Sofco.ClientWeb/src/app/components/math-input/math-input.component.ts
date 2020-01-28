@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { evaluate, compile, parse } from 'mathjs/number'
 
 @Component({
@@ -12,6 +12,10 @@ export class MathComponent {
   @Input() modelDisabled: boolean = false
 
   @Output() modelChange = new EventEmitter<boolean>();
+
+  @ViewChild("mathBox") mathBox;
+
+  inputVisible: boolean = false;
 
   constructor() { }
 
@@ -38,5 +42,17 @@ export class MathComponent {
     }
 
     return result
+  }
+ 
+  focusOut(){
+    this.inputVisible = false;
+  }
+
+  focusIn(){
+    this.inputVisible = true;
+
+    setTimeout(() => {
+      this.mathBox.nativeElement.focus();
+    }, 100);
   }
 }

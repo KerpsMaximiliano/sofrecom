@@ -40,7 +40,6 @@ import { GenericOptionService } from "app/services/admin/generic-option.service"
 import { LaddaModule } from "angular2-ladda";
 import { ICheckModule } from "app/components/icheck/icheck.module";
 
-
 @NgModule({
     declarations: [
       ManagementReportDetailComponent, MarginTrackingComponent, ManagementReportBillingComponent, CostDetailComponent, 

@@ -1,3 +1,7 @@
-<input type="text" class="form-control input-xs" #mathBox [(ngModel)]="model" maxlength="10"
-    (keyup.enter)="model = onEnter(mathBox, mathBox.value)" (blur)="model = onEnter(mathBox, mathBox.value)"
-    (ngModelChange) = "modelChange"  [(disabled)] = "modelDisabled" >
+<div (click)="focusIn(mathBox)">
+    <input type="text" class="form-control input-xs" #mathBox [(ngModel)]="model" maxlength="10" *ngIf="inputVisible"
+        (keyup.enter)="model = onEnter(mathBox, mathBox.value)" (blur)="model = onEnter(mathBox, mathBox.value)"
+        (ngModelChange) = "modelChange"  [(disabled)] = "modelDisabled" (focusout)="focusOut()" >
+
+    <p *ngIf="!inputVisible" class="label-number">{{ model | number: '1.1-2' }}</p>
+</div>
