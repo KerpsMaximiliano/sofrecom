@@ -8,6 +8,7 @@ import { GenericOptions } from 'app/models/enums/genericOptions';
 import { CustomerService } from 'app/services/billing/customer.service';
 import { ApplicantService } from 'app/services/recruitment/applicant.service';
 import { MenuService } from 'app/services/admin/menu.service';
+import { ApplicantStatus } from 'app/models/enums/applicantStatus';
 
 @Component({
   selector: 'app-list-contacts',
@@ -156,5 +157,16 @@ export class ListContactsComponent implements OnInit, OnDestroy {
 
   goToDetail(id){
     this.router.navigate(['recruitment/contacts/' + id]);
+  }
+
+  getStatusDesc(status){
+    switch(status){
+        case ApplicantStatus.Valid: return "Vigente";
+        case ApplicantStatus.InProgress: return "En Curso";
+        case ApplicantStatus.Close: return "Deshabilitado";
+        case ApplicantStatus.InCompany: return "Ingresado";
+        case ApplicantStatus.Contacted: return "Vigente/Contactado";
+        default: return "";
+    }
   }
 }

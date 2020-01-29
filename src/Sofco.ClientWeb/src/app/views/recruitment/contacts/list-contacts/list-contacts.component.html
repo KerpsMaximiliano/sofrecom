@@ -87,6 +87,7 @@
               <th>Cliente</th>
               <th>Conocimientos</th>
               <th>Perfiles</th>
+              <th>Estado</th>
             </tr>
           </thead>
           <tbody>
@@ -97,6 +98,7 @@
               <td>{{ item.client }}</td>
               <td>{{ item.skills }}</td>
               <td>{{ item.profiles }}</td>
+              <td>{{ getStatusDesc(item.status) }}</td>
             </tr>
           </tbody>
         </table>

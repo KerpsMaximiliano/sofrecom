@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 
 namespace Sofco.Core.Models.Recruitment
@@ -11,6 +12,7 @@ namespace Sofco.Core.Models.Recruitment
             FirstName = domain.FirstName;
             LastName = domain.LastName;
             Email = domain.Email;
+            Status = domain.Status;
 
             if (domain.Client != null) Client = domain.Client.Name;
 
@@ -20,6 +22,8 @@ namespace Sofco.Core.Models.Recruitment
             if (domain.ApplicantSkills != null && domain.ApplicantSkills.Any())
                 Skills = string.Join(";", domain.ApplicantSkills.Select(x => x.Skill.Text));
         }
+
+        public ApplicantStatus Status { get; set; }
 
         public int Id { get; set; }
 
