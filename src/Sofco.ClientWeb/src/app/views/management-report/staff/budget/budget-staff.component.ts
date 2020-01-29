@@ -1291,7 +1291,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 this.drawBorder(cell, 'right');
             });
 
-            columnIndex+=5;
+            columnIndex+=4;
         }
 
         var row1 = worksheet.getRow(1);
@@ -1347,7 +1347,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 resource.push(monthCost.projected.value || 0);
                 resource.push(monthCost.pfa1.value || 0);
                 resource.push(monthCost.pfa2.value || 0);
-                resource.push(monthCost.real.value || 0);
+                // resource.push(monthCost.real.value || 0);
             });
 
             worksheet.addRow(resource);
@@ -1369,7 +1369,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 item.push(monthCost.totalProjected || 0);
                 item.push(monthCost.totalPfa1 || 0);
                 item.push(monthCost.totalPfa2 || 0);
-                item.push(monthCost.totalReal || 0);
+                // item.push(monthCost.totalReal || 0);
             });
 
             worksheet.addRow(item);
@@ -1392,7 +1392,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 item.push(monthCost.totalProjected || 0);
                 item.push(monthCost.totalPfa1 || 0);
                 item.push(monthCost.totalPfa2 || 0);
-                item.push(monthCost.totalReal || 0);
+                // item.push(monthCost.totalReal || 0);
             });
             worksheet.addRow(item);
         });
@@ -1404,7 +1404,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             totalSalary.push(month.projected.subTotalCost);
             totalSalary.push(month.pfa1.subTotalCost);
             totalSalary.push(month.pfa2.subTotalCost);
-            totalSalary.push(month.real.subTotalCost);
+            // totalSalary.push(month.real.subTotalCost);
         });
 
         worksheet.addRow(totalSalary);
@@ -1416,7 +1416,7 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
                 item.push(monthCost.totalProjected || 0);
                 item.push(monthCost.totalPfa1 || 0);
                 item.push(monthCost.totalPfa2 || 0);
-                item.push(monthCost.totalReal || 0);
+                // item.push(monthCost.totalReal || 0);
             });
             worksheet.addRow(item);
         });
@@ -1431,13 +1431,13 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             totalSalary.push(month.projected.totalSalary);
             totalSalary.push(month.pfa1.totalSalary);
             totalSalary.push(month.pfa2.totalSalary);
-            totalSalary.push(month.real.totalSalary);
+            // totalSalary.push(month.real.totalSalary);
 
             totalLoads.push(month.budget.totalLoads);
             totalLoads.push(month.projected.totalLoads);
             totalLoads.push(month.pfa1.totalLoads);
             totalLoads.push(month.pfa2.totalLoads);
-            totalLoads.push(month.real.totalLoads);
+            // totalLoads.push(month.real.totalLoads);
         });
         worksheet.addRow(totalSalary);
         worksheet.addRow(totalLoads);
@@ -1462,19 +1462,19 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
             columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
             columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
             columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
-            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+            // columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
 
             subHeader.push("BUDGET");
             subHeader.push("PROYECTADO");
             subHeader.push("PFA1");
             subHeader.push("PFA2");
-            subHeader.push("REAL");
+            // subHeader.push("REAL");
 
             totalCosts.push(month.budget.totalCost || 0);
             totalCosts.push(month.projected.totalCost || 0);
             totalCosts.push(month.pfa1.totalCost || 0);
             totalCosts.push(month.pfa2.totalCost || 0);
-            totalCosts.push(month.real.totalCost || 0);
+            // totalCosts.push(month.real.totalCost || 0);
         });
 
         worksheet.columns = columns;
@@ -1482,15 +1482,15 @@ export class BudgetStaffComponent implements OnInit, OnDestroy {
         worksheet.addRow(totalCosts);
 
         var count = columns.length - 1;
-        for (var i = 2; i < count; i += 5) {
+        for (var i = 2; i < count; i += 4) {
             var row = worksheet.getRow(1);
             var firstCell = row.getCell(i);
-            var lastCell = row.getCell(i + 4);
+            var lastCell = row.getCell(i + 3);
 
             worksheet.mergeCells(`${firstCell.address}:${lastCell.address}`);
             firstCell.alignment = { horizontal: 'center' };
 
-            for (var j = i; j <= (i + 4); j++) {
+            for (var j = i; j <= (i + 3); j++) {
                 var row2 = worksheet.getRow(2);
                 var cell = row2.getCell(j);
                 cell.alignment = { horizontal: 'center' };

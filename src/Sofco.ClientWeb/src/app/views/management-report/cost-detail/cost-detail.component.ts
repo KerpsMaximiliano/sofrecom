@@ -1279,7 +1279,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 }
             });
 
-            columnIndex+=2;
+            columnIndex+=1;
         }
 
         var lastRow = worksheet.getRow(worksheet.rowCount);
@@ -1291,7 +1291,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             var item = [costProfile.display];
             costProfile.monthsCost.forEach(monthCost => {
                 item.push(monthCost.budget.value || 0);
-                item.push(monthCost.real.value || 0);
+                // item.push(monthCost.real.value || 0);
             });
             worksheet.addRow(item);
         });
@@ -1307,7 +1307,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             var item = [fundedResource.display];
             fundedResource.monthsCost.forEach(monthCost => {
                 item.push(monthCost.budget.value || 0);
-                item.push(monthCost.real.value || 0);
+                // item.push(monthCost.real.value || 0);
             });
             worksheet.addRow(item);
         });
@@ -1325,11 +1325,11 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
         this.months.forEach(month => {
             totalSalary.push(month.budget.totalSalary);
-            totalSalary.push(month.real.totalSalary);
+            // totalSalary.push(month.real.totalSalary);
             totalLoads.push(month.budget.totalLoads);
-            totalLoads.push(month.real.totalLoads);
+            // totalLoads.push(month.real.totalLoads);
             totalContracted.push("");
-            totalContracted.push(month.totalContracted);
+            // totalContracted.push(month.totalContracted);
         });
         worksheet.addRow(totalSalary);
         worksheet.addRow(totalLoads);
@@ -1347,7 +1347,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             employee.monthsCost.forEach(monthCost => {
                 resource.push(monthCost.budget.value || 0);
-                resource.push(monthCost.real.value || 0);
+                // resource.push(monthCost.real.value || 0);
             });
 
             worksheet.addRow(resource);
@@ -1363,7 +1363,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
             fundedResource.monthsCost.forEach(monthCost => {
                 item.push(monthCost.budget.value || 0);
-                item.push(monthCost.real.value || 0);
+                // item.push(monthCost.real.value || 0);
             });
 
             worksheet.addRow(item);
@@ -1387,19 +1387,19 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
         this.months.forEach(month => {
             columns.push({ header: month.display, width: 15, style: { numFmt: '#,##0.00' } });
-            columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
+            // columns.push({ header: "", width: 15, style: { numFmt: '#,##0.00' } });
 
             subHeader.push("PROYECTADO");
-            subHeader.push("REAL");
+            // subHeader.push("REAL");
 
             totalCosts.push(month.budget.totalCost || 0);
-            totalCosts.push(month.real.totalCost || 0);
+            // totalCosts.push(month.real.totalCost || 0);
 
             resourceQuantity.push(month.resourceQuantity || 0);
-            resourceQuantity.push("");
+            // resourceQuantity.push("");
 
             evalprop.push(month.valueEvalProp || 0);
-            evalprop.push("");
+            // evalprop.push("");
         });
 
         worksheet.columns = columns;
@@ -1410,14 +1410,14 @@ export class CostDetailComponent implements OnInit, OnDestroy {
 
         const borderBlack = "FF000000";
 
-        var count = columns.length - 1;
-        for (var i = 2; i <= count; i += 2) {
-            var row = worksheet.getRow(1);
-            var firstCell = row.getCell(i);
-            var lastCell = row.getCell(i + 1);
+        // var count = columns.length - 1;
+        // for (var i = 2; i <= count; i += 2) {
+        //     var row = worksheet.getRow(1);
+        //     var firstCell = row.getCell(i);
+        //     var lastCell = row.getCell(i + 1);
 
-            worksheet.mergeCells(`${firstCell.address}:${lastCell.address}`);
-        }
+        //     worksheet.mergeCells(`${firstCell.address}:${lastCell.address}`);
+        // }
      
         var row1 = worksheet.getRow(1);
 
@@ -1448,15 +1448,20 @@ export class CostDetailComponent implements OnInit, OnDestroy {
         const borderBlack = "FF000000";
 
         row.eachCell((cell, colNumber) => {
-            if (colNumber % 2 == 0) {
-                cell.border = { bottom: { style: 'thin', color: { argb: borderBlack } } };
-            }
-            else {
-                cell.border = {
-                    bottom: { style: 'thin', color: { argb: borderBlack } },
-                    right: { style: 'thin', color: { argb: borderBlack } }
-                };
-            }
+            cell.border = {
+                bottom: { style: 'thin', color: { argb: borderBlack } },
+                right: { style: 'thin', color: { argb: borderBlack } }
+            };
+
+            // if (colNumber % 2 == 0) {
+            //     cell.border = { bottom: { style: 'thin', color: { argb: borderBlack } } };
+            // }
+            // else {
+            //     cell.border = {
+            //         bottom: { style: 'thin', color: { argb: borderBlack } },
+            //         right: { style: 'thin', color: { argb: borderBlack } }
+            //     };
+            // }
         });
     }
 }
