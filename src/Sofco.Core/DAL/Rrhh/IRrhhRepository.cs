@@ -13,5 +13,6 @@ namespace Sofco.Core.DAL.Rrhh
         bool ExistData(int yearId, int monthId);
         IList<Employee> GetEmployeesWithBestAllocation(DateTime today);
         void Update(SocialCharge toUpdate);
+        IList<SocialCharge> GetSocialCharges(int pYear, int pMonth, IList<int> employeesIds);
     }
 }

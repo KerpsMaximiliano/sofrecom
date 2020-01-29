@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.Core.Models.ManagementReport
 {
@@ -18,6 +19,7 @@ namespace Sofco.Core.Models.ManagementReport
         public bool HasCostProfile { get; set; }
         public int Id { get; set; }
         public IList<DateTime> MonthsToReplicate { get; set; }
+        public IList<SocialChargeModelItem> SocialCharges { get; set; }
     }
 
     public class CostDetailStaffMonthModel
@@ -88,5 +90,16 @@ namespace Sofco.Core.Models.ManagementReport
         public int BudgetTypeId { get; set; }
         public int CurrencyId { get; set; }
         public bool Deleted { get; set; }
+    }
+
+    public class SocialChargeModelItem
+    {
+        public string Employee { get; set; }
+        public string EmployeeNumber { get; set; }
+        public string AccountName { get; set; }
+        public int AccountNumber { get; set; }
+        public string Value { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
     }
 }

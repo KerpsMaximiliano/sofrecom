@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.Service.Implementations.ManagementReport
 {
@@ -543,6 +544,34 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.MonthYear = costDetail.MonthYear;
                 response.Data.Contracted = listContracted;
                 response.Data.OtherResources = listOther.OrderBy(x => x.CategoryName).ThenBy(x => x.SubcategoryName).ToList();
+
+                //if (costDetail.CostDetailResources != null)
+                //{
+                //    var employeesIds = costDetail.CostDetailResources.Select(x => x.EmployeeId);
+
+                //    var socialCharges = unitOfWork.RrhhRepository.GetSocialCharges(pYear, pMonth, employeesIds.ToList());
+
+                //    response.Data.SocialCharges = new List<SocialChargeModelItem>();
+
+                //    foreach (var socialCharge in socialCharges)
+                //    {
+                //        foreach (var socialChargeItem in socialCharge.Items)
+                //        {
+                //            var item = new SocialChargeModelItem();
+
+                //            item.Employee = socialCharge.Employee?.Name;
+                //            item.EmployeeNumber = socialCharge.Employee?.EmployeeNumber;
+                //            item.AccountName = socialChargeItem.AccountName;
+                //            item.AccountNumber = socialChargeItem.AccountNumber;
+                //            item.Value = CryptographyHelper.Decrypt(socialChargeItem.Value);
+                //            item.Year = pYear;
+                //            item.Month = pMonth;
+
+                //            response.Data.SocialCharges.Add(item);
+                //        }
+                //    }
+                //}
+
             }
             catch (Exception ex)
             {

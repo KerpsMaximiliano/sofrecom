@@ -86,5 +86,14 @@ namespace Sofco.DAL.Repositories.Rrhh
         {
             context.SocialCharges.Update(toUpdate);
         }
+
+        public IList<SocialCharge> GetSocialCharges(int pYear, int pMonth, IList<int> employeesIds)
+        {
+            return context.SocialCharges
+                .Include(x => x.Items)
+                .Include(x => x.Employee)
+                .Where(x => x.Month == pMonth && x.Year == pYear && employeesIds.Contains(x.EmployeeId))
+                .ToList();
+        }
     }
 }
