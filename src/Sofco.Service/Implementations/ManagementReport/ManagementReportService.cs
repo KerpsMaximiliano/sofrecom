@@ -496,7 +496,8 @@ namespace Sofco.Service.Implementations.ManagementReport
             return response;
         }
 
-        public Response<CostDetailMonthModel> GetCostDetailMonth(string pServiceId, int pMonth, int pYear)
+        public Response<CostDetailMonthModel> GetCostDetailMonth(string pServiceId, int pMonth, int pYear,
+            IList<int> employees)
         {
             var response = new Response<CostDetailMonthModel> { Data = new CostDetailMonthModel() };
             try
@@ -545,32 +546,30 @@ namespace Sofco.Service.Implementations.ManagementReport
                 response.Data.Contracted = listContracted;
                 response.Data.OtherResources = listOther.OrderBy(x => x.CategoryName).ThenBy(x => x.SubcategoryName).ToList();
 
-                //if (costDetail.CostDetailResources != null)
-                //{
-                //    var employeesIds = costDetail.CostDetailResources.Select(x => x.EmployeeId);
+                if (costDetail.CostDetailResources != null)
+                {
+                    var socialCharges = unitOfWork.RrhhRepository.GetSocialCharges(pYear, pMonth, employees);
 
-                //    var socialCharges = unitOfWork.RrhhRepository.GetSocialCharges(pYear, pMonth, employeesIds.ToList());
+                    response.Data.SocialCharges = new List<SocialChargeModelItem>();
 
-                //    response.Data.SocialCharges = new List<SocialChargeModelItem>();
+                    foreach (var socialCharge in socialCharges)
+                    {
+                        foreach (var socialChargeItem in socialCharge.Items)
+                        {
+                            var item = new SocialChargeModelItem();
 
-                //    foreach (var socialCharge in socialCharges)
-                //    {
-                //        foreach (var socialChargeItem in socialCharge.Items)
-                //        {
-                //            var item = new SocialChargeModelItem();
+                            item.Employee = socialCharge.Employee?.Name;
+                            item.EmployeeNumber = socialCharge.Employee?.EmployeeNumber;
+                            item.AccountName = socialChargeItem.AccountName;
+                            item.AccountNumber = socialChargeItem.AccountNumber;
+                            item.Value = CryptographyHelper.Decrypt(socialChargeItem.Value);
+                            item.Year = pYear;
+                            item.Month = pMonth;
 
-                //            item.Employee = socialCharge.Employee?.Name;
-                //            item.EmployeeNumber = socialCharge.Employee?.EmployeeNumber;
-                //            item.AccountName = socialChargeItem.AccountName;
-                //            item.AccountNumber = socialChargeItem.AccountNumber;
-                //            item.Value = CryptographyHelper.Decrypt(socialChargeItem.Value);
-                //            item.Year = pYear;
-                //            item.Month = pMonth;
-
-                //            response.Data.SocialCharges.Add(item);
-                //        }
-                //    }
-                //}
+                            response.Data.SocialCharges.Add(item);
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)

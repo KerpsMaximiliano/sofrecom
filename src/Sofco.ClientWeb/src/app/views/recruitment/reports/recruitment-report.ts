@@ -410,7 +410,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 }
             }
 
-            if(contact.hasRrhhInterview || contact.hasTechnicalInterview || contact.hasClientInterview){
+            if(contact.hadInterview){
                 intervieweds.count += 1;
 
                 if(contact.reasonCauseType == ReasonCauseType.ApplicantInCompany) intervieweds.groupByStates.inCompany += 1;

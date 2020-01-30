@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.ManagementReport;
 using Sofco.Core.Services.ManagementReport;
@@ -65,10 +66,10 @@ namespace Sofco.WebApi.Controllers.ManagementReport
             return this.CreateResponse(response);
         }
 
-        [HttpGet("{serviceId}/costDetailMonth/{month}/{year}")]
-        public IActionResult GetCostDetailMonth(string serviceId, int month, int year)
+        [HttpPost("{serviceId}/costDetailMonth/{month}/{year}")]
+        public IActionResult GetCostDetailMonth(string serviceId, int month, int year, [FromBody] IList<int> employees)
         {
-            var response = managementReportService.GetCostDetailMonth(serviceId, month, year);
+            var response = managementReportService.GetCostDetailMonth(serviceId, month, year, employees);
 
             return this.CreateResponse(response);
         }

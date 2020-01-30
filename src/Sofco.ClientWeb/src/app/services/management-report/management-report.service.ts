@@ -38,8 +38,8 @@ export class ManagementReportService {
     return this.http.post<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetailMonth`, model);
   }
 
-  getCostDetailMonth(serviceId, month, year){
-    return this.http.get<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetailMonth/${month}/${year}`);
+  getCostDetailMonth(serviceId, month, year, employeeIds){
+    return this.http.post<any>(`${this.baseUrl}/managementReport/${serviceId}/costDetailMonth/${month}/${year}`, employeeIds);
   }
 
   deleteContracted(contractedId){

@@ -57,11 +57,15 @@ namespace Sofco.Core.Models.Recruitment
 
                 foreach (var jobSearchApplicant in list)
                 {
-                    if (!Contacts.Any(x =>
-                        x.ApplicantId == jobSearchApplicant.ApplicantId &&
-                        x.JobSearchId == jobSearchApplicant.JobSearchId))
+                    var contact = Contacts.FirstOrDefault(x => x.ApplicantId == jobSearchApplicant.ApplicantId && x.JobSearchId == jobSearchApplicant.JobSearchId);
+
+                    if (contact == null)
                     {
                         Contacts.Add(new RecruitmentContactReport(jobSearchApplicant));
+                    }
+                    else
+                    {
+                        contact.HadInterview = contact.HadInterview || jobSearchApplicant.HasClientInterview || jobSearchApplicant.HasTechnicalInterview || jobSearchApplicant.HasRrhhInterview;
                     }
                 }
             }
@@ -145,14 +149,15 @@ namespace Sofco.Core.Models.Recruitment
             Salary = jobSearchApplicant.Salary;
             RemoteWork = jobSearchApplicant.RemoteWork;
             TechnicalInterviewer = jobSearchApplicant.TechnicalExternalInterviewer;
-            HasRrhhInterview = jobSearchApplicant.HasRrhhInterview;
-            HasTechnicalInterview = jobSearchApplicant.HasTechnicalInterview;
-            HasClientInterview = jobSearchApplicant.HasClientInterview;
+
+            HadInterview = jobSearchApplicant.HasClientInterview || jobSearchApplicant.HasTechnicalInterview || jobSearchApplicant.HasRrhhInterview;
 
             RrhhInterviewComments = jobSearchApplicant.RrhhInterviewComments;
             TechnicalInterviewComments = jobSearchApplicant.TechnicalInterviewComments;
             ClientInterviewComments = jobSearchApplicant.ClientInterviewComments;
         }
+
+        public bool HadInterview { get; set; }
 
         public int ReasonId { get; set; }
 
@@ -169,12 +174,6 @@ namespace Sofco.Core.Models.Recruitment
         public string RrhhInterviewComments { get; set; }
 
         public DateTime Date { get; set; }
-
-        public bool HasClientInterview { get; set; }
-
-        public bool HasTechnicalInterview { get; set; }
-
-        public bool HasRrhhInterview { get; set; }
 
         public string Applicant { get; set; }
 

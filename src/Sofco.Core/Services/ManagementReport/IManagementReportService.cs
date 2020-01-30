@@ -15,7 +15,8 @@ namespace Sofco.Core.Services.ManagementReport
         Response<MonthOther> GetOtherTypeAndCostDetail(int idCategory, int idCostDetail);
         Response UpdateCostDetail(CostDetailModel CostDetail);
         Response UpdateCostDetailMonth(CostDetailMonthModel CostDetail);
-        Response<CostDetailMonthModel> GetCostDetailMonth(string pServiceId, int pMonth, int pYear);
+        Response<CostDetailMonthModel> GetCostDetailMonth(string pServiceId, int pMonth, int pYear,
+            IList<int> employees);
         Response DeleteContracted(int ContractedId);
         Response DeleteOtherResource(int id);
         Response<CostResourceEmployee> GetCostDetailByEmployee(string serviceId, int employeeId);

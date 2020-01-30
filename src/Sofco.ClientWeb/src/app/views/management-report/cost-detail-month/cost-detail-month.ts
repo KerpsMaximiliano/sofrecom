@@ -212,7 +212,9 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.totalProvisioned = data.totals.totalProvisioned;
         this.provision = data.totals.provision;
 
-        this.getContratedSuscrip = this.managementReportService.getCostDetailMonth(this.serviceId, data.month, data.year).subscribe(response => {
+        var employeeIds = this.resources.map(x => x.employeeId);
+
+        this.getContratedSuscrip = this.managementReportService.getCostDetailMonth(this.serviceId, data.month, data.year, employeeIds).subscribe(response => {
 
             this.managementReportId = response.data.managementReportId;
             this.monthYear = response.data.monthYear
