@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Sofco.Core.DAL.Common;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.DAL.Admin
 {
@@ -25,5 +26,6 @@ namespace Sofco.Core.DAL.Admin
         Group GetByCode(string guestCode);
 
         IList<Group> GetByUsers(IEnumerable<int> userids);
+        bool IsManagerOrDirector(Employee employee);
     }
 }

@@ -556,6 +556,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         foreach (var socialChargeItem in socialCharge.Items)
                         {
+                            if(socialChargeItem.AccountNumber == 648001) continue;
+
                             var item = new SocialChargeModelItem();
 
                             item.Employee = socialCharge.Employee?.Name;

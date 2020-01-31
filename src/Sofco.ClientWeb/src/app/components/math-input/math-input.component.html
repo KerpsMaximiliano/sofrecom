@@ -3,5 +3,5 @@
         (keyup.enter)="model = onEnter(mathBox, mathBox.value)" (blur)="model = onEnter(mathBox, mathBox.value)"
         (ngModelChange) = "modelChange"  [(disabled)] = "modelDisabled" (focusout)="focusOut()" >
 
-    <p *ngIf="!inputVisible" class="label-number text-right">{{ model | number: '1.1-2' }}</p>
+    <p *ngIf="!inputVisible" class="label-number text-right">{{ model | number: '1.2' }}</p>
 </div>

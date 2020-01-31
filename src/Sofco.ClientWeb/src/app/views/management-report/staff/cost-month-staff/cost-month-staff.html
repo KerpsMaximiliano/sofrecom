@@ -13,6 +13,9 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-6 text-right">
+            <button class="btn btn-default btn-sm" type="button" (click)="createWorksheet()">Exportar</button>
+        </div>
     </div>
 
     <div class="row">
@@ -71,10 +74,10 @@
             <math-input [(model)]="resource.charges" (modelChange)="resourceChange(resource)" [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
-            <input type="text" class="form-control input-xs text-right" [ngModel]="resource.total | number: '1.1-2'" disabled>
+            <input type="text" class="form-control input-xs text-right" [ngModel]="resource.total | number: '1.2'" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="text" class="form-control input-xs text-right" [ngModel]="resource.chargesPercentage | number: '1.1-2'" disabled>
+            <input type="text" class="form-control input-xs text-right" [ngModel]="resource.chargesPercentage | number: '1.2'" disabled>
         </div>
     </div>
  
@@ -83,13 +86,16 @@
             <strong>Sub Total</strong>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesSalarySubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesSalarySubTotal | number: '1.2'" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesChargesSubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesChargesSubTotal | number: '1.2'" disabled>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesSubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesSubTotal | number: '1.2'" disabled>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesSubTotal | number: '1.2'" disabled>
         </div>
     </div>
 
@@ -157,7 +163,7 @@
             <strong>Sub Total</strong>
         </div>
         <div class="col-sm-2">
-            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="categoriesSubTotal | number: '1.1-2'" disabled>
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="categoriesSubTotal | number: '1.2'" disabled>
         </div>
     </div>
 

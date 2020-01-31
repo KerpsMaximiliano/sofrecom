@@ -199,6 +199,8 @@ namespace Sofco.Service.Implementations.Rrhh
 
                 foreach (var employee in employees)
                 {
+                    if(unitOfWork.GroupRepository.IsManagerOrDirector(employee)) continue;
+
                     var firstAllocation = employee.Allocations.FirstOrDefault();
 
                     if (firstAllocation != null && firstAllocation.Analytic.ManagerId.HasValue && employee.ManagerId != firstAllocation.Analytic.ManagerId)

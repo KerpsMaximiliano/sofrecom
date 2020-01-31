@@ -9,6 +9,8 @@ import { ManagementReportDetailComponent } from "../detail/mr-detail"
 import { EmployeeService } from "app/services/allocation-management/employee.service"
 import { category } from "app/models/management-report/category";
 import { ManagementReportStaffService } from "app/services/management-report/management-report-staff.service";
+import { Workbook, Worksheet } from "exceljs";
+import * as fs from 'file-saver';
 
 @Component({
     selector: 'cost-detail-month',
@@ -48,6 +50,8 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     resources: any[] = new Array();
     expenses: any[] = new Array();
     users: any[] = new Array()
+
+    socialCharges: any[] = new Array();
 
     serviceId: string;
     AnalyticId: any;
@@ -221,6 +225,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.contracted = response.data.contracted;
             this.expenses = response.data.otherResources;
             this.hasCostProfile = response.data.hasCostProfile
+            this.socialCharges = response.data.socialCharges;
 
             if (response.data.totalBilling && response.data.totalBilling != null) this.totalBilling = response.data.totalBilling;
             if (response.data.provision && response.data.provision != null) this.provision = response.data.provision;
@@ -399,4 +404,222 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         }
     }
 
+    private setTitleStyles(cell){
+        cell.style = { font: { bold: true } };
+        cell.alignment = { horizontal: 'center' };
+    }
+
+    private setCellNumber(cell){
+        cell.numFmt = '#,##0.00';
+    }
+
+    createWorksheet(){
+        let workbook = new Workbook();
+
+        this.buildFirstSheet(workbook);
+        this.buildSecodSheet(workbook);
+
+        var title = `Detalle mensual ${this.monthYear.toLocaleDateString()}.xlsx`
+
+        workbook.xlsx.writeBuffer().then((data) => {
+            let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            fs.saveAs(blob, title);
+        });
+    }
+
+    private buildFirstSheet(workbook: Workbook) {
+        let worksheet: Worksheet = workbook.addWorksheet('Detalle mensual');
+        let columns = [{ width: 50 },
+        { width: 25 },
+        { width: 25 },
+        { width: 20 },
+        { width: 15 }];
+        worksheet.columns = columns;
+        var row1 = ["REAL", this.totalProvisioned, "FACTURACIÓN", "", this.totalBilling];
+        var row1Added = worksheet.addRow(row1);
+        this.setTitleStyles(row1Added.getCell(1));
+        this.setTitleStyles(row1Added.getCell(3));
+        this.setCellNumber(row1Added.getCell(2));
+        this.setCellNumber(row1Added.getCell(5));
+        this.drawBorders(row1Added, 'bottom');
+        this.drawCellBorder(row1Added.getCell(2), 'right');
+        this.drawCellBorder(row1Added.getCell(4), 'right');
+        var row2 = ["TOTAL COSTOS", this.totalCosts, "PROVISION", "", this.provision];
+        var row2Added = worksheet.addRow(row2);
+        this.setTitleStyles(row2Added.getCell(1));
+        this.setTitleStyles(row2Added.getCell(3));
+        this.setCellNumber(row2Added.getCell(2));
+        this.setCellNumber(row2Added.getCell(5));
+        this.drawBorders(row2Added, 'bottom');
+        this.drawCellBorder(row2Added.getCell(2), 'right');
+        this.drawCellBorder(row2Added.getCell(4), 'right');
+        worksheet.mergeCells(`C1:D1`);
+        worksheet.mergeCells(`C2:D2`);
+        if (this.resources && this.resources.length > 0) {
+            worksheet.addRow([]);
+            var headerTable = ["Costos RD + P", "Bruto", "Cargas", "Total General", "% Cargas"];
+            var headerRow = worksheet.addRow(headerTable);
+            headerRow.eachCell(cell => {
+                this.setTitleStyles(cell);
+            });
+            this.drawBorders(headerRow, 'bottom');
+            this.drawBorders(headerRow, 'top');
+            this.resources.forEach(resource => {
+                var rowToAdd = [resource.name, resource.salary, resource.charges, resource.total, resource.chargesPercentage];
+                var rowAdded = worksheet.addRow(rowToAdd);
+                var first = true;
+                rowAdded.eachCell(cell => {
+                    if (!first) {
+                        this.setCellNumber(cell);
+                    }
+                    first = false;
+                });
+            });
+            var subtotal = ["Sub Total", this.resourcesSalarySubTotal, this.resourcesChargesSubTotal, this.resourcesSubTotal, this.totalChargesPercentage];
+            var subTotalAdded = worksheet.addRow(subtotal);
+            this.setTitleStyles(subTotalAdded.getCell(1));
+            this.drawBorders(subTotalAdded, 'bottom');
+            var first = true;
+            subTotalAdded.eachCell(cell => {
+                if (!first) {
+                    this.setCellNumber(cell);
+                }
+                first = false;
+            });
+        }
+        if (this.contracted && this.contracted.length > 0) {
+            worksheet.addRow([]);
+            var headerTable = ["Costos contratados + SubContratados", "Honorarios", "Seguro", "Total General"];
+            var headerRow = worksheet.addRow(headerTable);
+            headerRow.eachCell(cell => {
+                this.setTitleStyles(cell);
+            });
+            this.drawBorders(headerRow, 'bottom');
+            this.drawBorders(headerRow, 'top');
+            this.contracted.forEach(resource => {
+                var rowToAdd = [resource.name, resource.honorary, resource.insurance, resource.total];
+                var rowAdded = worksheet.addRow(rowToAdd);
+                var first = true;
+                rowAdded.eachCell(cell => {
+                    if (!first) {
+                        this.setCellNumber(cell);
+                    }
+                    first = false;
+                });
+            });
+            var subtotal = ["Sub Total", this.contractedsHonorarySubTotal, this.contractedsInsuranceSubTotal, this.contractedsSubTotal];
+            var subTotalAdded = worksheet.addRow(subtotal);
+            this.setTitleStyles(subTotalAdded.getCell(1));
+            this.drawBorders(subTotalAdded, 'bottom');
+            var first = true;
+            subTotalAdded.eachCell(cell => {
+                if (!first) {
+                    this.setCellNumber(cell);
+                }
+                first = false;
+            });
+        }
+        if (this.expenses && this.expenses.length > 0) {
+            worksheet.addRow([]);
+            var headerTable = ["Categoria", "SubCategoria", "Descripcion", "Total General"];
+            var headerRow = worksheet.addRow(headerTable);
+            headerRow.eachCell(cell => {
+                this.setTitleStyles(cell);
+            });
+            this.drawBorders(headerRow, 'bottom');
+            this.drawBorders(headerRow, 'top');
+            this.expenses.forEach(expense => {
+                var rowToAdd = [expense.categoryName, expense.subcategoryName, expense.description, expense.value];
+                var rowAdded = worksheet.addRow(rowToAdd);
+                this.setCellNumber(rowAdded.getCell(4));
+            });
+            var subtotal = ["", "", "Sub Total", this.categoriesSubTotal];
+            var subtotalAdded = worksheet.addRow(subtotal);
+            this.setCellNumber(subtotalAdded.getCell(4));
+            this.setTitleStyles(subtotalAdded.getCell(3));
+            this.drawCellBorder(subtotalAdded.getCell(3), 'bottom');
+            this.drawCellBorder(subtotalAdded.getCell(4), 'bottom');
+        }
+    }
+
+    private buildSecodSheet(workbook: Workbook) {
+        let worksheet: Worksheet = workbook.addWorksheet('Detalle de cargas');
+
+        let columns = [{ header: "Recurso", width: 50 },
+                        { header: "Legajo", width: 10 },
+                        { header: "Cuenta", width: 37 },
+                        { header: "Número", width: 10 },
+                        { header: "Monto", width: 20, style: { numFmt: '#,##0.00' } },
+                        { header: "Año", width: 7 },
+                        { header: "Mes", width: 7 }];
+
+        worksheet.columns = columns;
+
+        const borderBlack = "FF000000";
+        var row1 = worksheet.getRow(1);
+
+        row1.eachCell(cell => {
+            cell.style = { font: { bold: true } };
+            cell.alignment = { horizontal: 'center' };
+            cell.border = { bottom: { style: 'thin', color: { argb: borderBlack } } };
+        });
+
+        if (this.socialCharges && this.socialCharges.length > 0) {
+            let employeeNumber = "";
+
+            this.socialCharges.forEach(x => {
+                if (employeeNumber && employeeNumber != "" && employeeNumber != x.employeeNumber) {
+                    employeeNumber = x.employeeNumber;
+                    var lastRow = worksheet.getRow(worksheet.rowCount);
+                    this.drawBorders(lastRow, 'bottom')
+                }
+
+                var item = [];
+
+                item.push(x.employee);
+                item.push(parseInt(x.employeeNumber));
+                item.push(x.accountName);
+                item.push(x.accountNumber);
+                item.push(parseFloat(x.value));
+                item.push(x.year);
+                item.push(x.month);
+
+                worksheet.addRow(item);
+
+                employeeNumber = x.employeeNumber;
+            });
+        }
+        var lastRow = worksheet.getRow(worksheet.rowCount);
+
+        lastRow.eachCell(cell => {
+            cell.border = {
+                bottom: { style: 'thin', color: { argb: borderBlack } },
+            };
+        });
+    }
+
+    private drawBorders(row, position) {
+        row.eachCell((cell, colNumber) => {
+           this.drawCellBorder(cell, position);
+        });
+    }
+
+    private drawCellBorder(cell, position) {
+        const borderBlack = "FF000000";
+
+        if (cell.border) {
+            if (cell.border[position]) {
+                cell.border[position].style = 'thin';
+                cell.border[position].color.argb = borderBlack;
+            }
+            else {
+                cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
+            }
+        }
+        else {
+            cell.border = {};
+            cell.border[`${position}`] = {};
+            cell.border[position] = { style: 'thin', color: { argb: borderBlack } };
+        }
+    }
 }

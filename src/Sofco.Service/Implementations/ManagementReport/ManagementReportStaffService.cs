@@ -208,8 +208,37 @@ namespace Sofco.Service.Implementations.ManagementReport
                 //    }
                 //}
 
+                var employees = resources.Select(x => x.EmployeeId).ToList();
+
                 response.Data.Id = costDetail.Id;
                 response.Data.TotalProvisioned = costDetail.TotalProvisioned;
+
+                if (costDetail.CostDetailResources != null)
+                {
+                    var socialCharges = unitOfWork.RrhhRepository.GetSocialCharges(year, month, employees);
+
+                    response.Data.SocialCharges = new List<SocialChargeModelItem>();
+
+                    foreach (var socialCharge in socialCharges)
+                    {
+                        foreach (var socialChargeItem in socialCharge.Items)
+                        {
+                            if (socialChargeItem.AccountNumber == 648001) continue;
+
+                            var item = new SocialChargeModelItem();
+
+                            item.Employee = socialCharge.Employee?.Name;
+                            item.EmployeeNumber = socialCharge.Employee?.EmployeeNumber;
+                            item.AccountName = socialChargeItem.AccountName;
+                            item.AccountNumber = socialChargeItem.AccountNumber;
+                            item.Value = CryptographyHelper.Decrypt(socialChargeItem.Value);
+                            item.Year = year;
+                            item.Month = month;
+
+                            response.Data.SocialCharges.Add(item);
+                        }
+                    }
+                }
             }
 
             response.Data.ManagementReportId = id;

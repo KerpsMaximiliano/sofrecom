@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
+using Sofco.Core.Config;
 using Sofco.Core.DAL.Admin;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.DAL.Repositories.Admin
 {
     public class GroupRepository : BaseRepository<Group>, IGroupRepository
     {
-        public GroupRepository(SofcoContext context) : base(context)
+        private readonly EmailConfig appSetting;
+
+        public GroupRepository(SofcoContext context, IOptions<EmailConfig> appSettingOptions) : base(context)
         {
+            this.appSetting = appSettingOptions.Value;
         }
 
         public bool DescriptionExist(string description, int id)
@@ -93,6 +100,13 @@ namespace Sofco.DAL.Repositories.Admin
             }
 
             return groups;
+        }
+
+        public bool IsManagerOrDirector(Employee employee)
+        {
+            return context.UserGroup.Any(x =>
+                (x.Group.Code == appSetting.ManagersCode ||  x.Group.Code == appSetting.DirectorsCode)
+                && x.User.Email == employee.Email);
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Sofco.Core.Models.ManagementReport
         public List<CostSubcategoryMonth> Subcategories { get; set; }
         public decimal? TotalProvisioned { get; set; }
         public int Id { get; set; }
+        public IList<SocialChargeModelItem> SocialCharges { get; set; }
     }
 
     public class CostMonthEmployee

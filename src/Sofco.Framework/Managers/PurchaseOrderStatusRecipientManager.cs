@@ -112,9 +112,11 @@ namespace Sofco.Framework.Managers
 
             var humanResourceManager = unitOfWork.UserRepository.Get(emailConfig.HumanResourceMangerId);
             var humanResourceProjectLeader = unitOfWork.UserRepository.Get(emailConfig.HumanResourceProjectLeaderId);
+            var generalDirector = unitOfWork.UserRepository.Get(appSetting.GeneralDirectorUserId);
 
             if (humanResourceManager != null) mails.Add(humanResourceManager.Email);
             if (humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email);
+            if (generalDirector != null) mails.Add(generalDirector.Email);
 
             return mails;
         }

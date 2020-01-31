@@ -161,7 +161,7 @@ namespace Sofco.DAL
 
         public IUserRepository UserRepository => userRepository ?? (userRepository = new UserRepository(context, emailConfig, appSettingOptions));
         public IRoleRepository RoleRepository => roleRepository ?? (roleRepository = new RoleRepository(context));
-        public IGroupRepository GroupRepository => groupRepository ?? (groupRepository = new GroupRepository(context));
+        public IGroupRepository GroupRepository => groupRepository ?? (groupRepository = new GroupRepository(context, emailConfig));
         public IModuleRepository ModuleRepository => moduleRepository ?? (moduleRepository = new ModuleRepository(context));
         public IFunctionalityRepository FunctionalityRepository => functionalityRepository ?? (functionalityRepository = new FunctionalityRepository(context));
         public IUserGroupRepository UserGroupRepository => userGroupRepository ?? (userGroupRepository = new UserGroupRepository(context));

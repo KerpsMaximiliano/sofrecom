@@ -61,6 +61,7 @@ namespace Sofco.DAL.Repositories.Rrhh
                 {
                     Id = employee.Id,
                     ManagerId = employee.ManagerId,
+                    Email = employee.Email,
                     Allocations = new List<Allocation>()
                     {
                         new Allocation
