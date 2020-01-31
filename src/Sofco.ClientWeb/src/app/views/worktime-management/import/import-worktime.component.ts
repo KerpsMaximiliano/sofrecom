@@ -133,7 +133,11 @@ export class ImportWorkTimesComponent implements OnInit, OnDestroy {
 
         this.worktimeService.exportTemplate(this.analyticId, this.closeMonthId).subscribe(file => {
             this.messageService.closeLoading();
-            FileSaver.saveAs(file, "template carga de horas.xlsx");
+
+            var analytic = this.analytics.find(x => x.id == this.analyticId);
+            var period = this.months.find(x => x.id == this.closeMonthId);
+
+            FileSaver.saveAs(file, `${analytic.text} - ${period.text}.xlsx`);
         },
         () => this.messageService.closeLoading());
     }

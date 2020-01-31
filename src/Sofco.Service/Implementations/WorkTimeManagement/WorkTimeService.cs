@@ -255,8 +255,21 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             if (roleManager.IsPmo() || roleManager.IsRrhh())
             {
                 var analytics = unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite();
+                var list = new List<Option>();
 
-                return analytics.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" });
+                foreach (var analytic in analytics)
+                {
+                    var accountName = string.Empty;
+
+                    if (!string.IsNullOrWhiteSpace(analytic.AccountId))
+                    {
+                        accountName = analytic.AccountName + " - ";
+                    }
+
+                    list.Add(new Option { Id = analytic.Id, Text = $"{accountName}{analytic.Title} - {analytic.Name}" });
+                }
+
+                return list;
             }
             else
             {
@@ -266,13 +279,32 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
                 var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.WorkTime);
 
-                var list = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+                var list = new List<Option>();
+
+                foreach (var analytic in analyticsByManagers)
+                {
+                    var accountName = string.Empty;
+
+                    if (!string.IsNullOrWhiteSpace(analytic.AccountId))
+                    {
+                        accountName = analytic.AccountName + " - ";
+                    }
+
+                    list.Add(new Option { Id = analytic.Id, Text = $"{accountName}{analytic.Title} - {analytic.Name}" });
+                }
 
                 foreach (var analytic in analyticsByDirectors)
                 {
+                    var accountName = string.Empty;
+
+                    if (!string.IsNullOrWhiteSpace(analytic.AccountId))
+                    {
+                        accountName = analytic.AccountName + " - ";
+                    }
+
                     if (list.All(x => x.Id != analytic.Id))
                     {
-                        list.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+                        list.Add(new Option { Id = analytic.Id, Text = $"{accountName}{analytic.Title} - {analytic.Name}" });
                     }
                 }
 

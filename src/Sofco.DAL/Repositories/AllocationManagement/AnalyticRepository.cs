@@ -124,7 +124,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    Title = s.Title
+                    Title = s.Title,
+                    AccountId = s.AccountId,
+                    AccountName = s.AccountName
                 }).ToList();
         }
 
@@ -219,7 +221,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    Title = s.Title
+                    Title = s.Title,
+                    AccountName = s.AccountName,
+                    AccountId = s.AccountId
                 }).ToList();
         }
 
