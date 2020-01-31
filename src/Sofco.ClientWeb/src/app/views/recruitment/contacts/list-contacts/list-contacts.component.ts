@@ -114,7 +114,7 @@ export class ListContactsComponent implements OnInit, OnDestroy {
   }
 
   initGrid() {
-    var columns = [0, 1, 2, 3 ,4, 5];
+    var columns = [0, 1, 2, 3 ,4, 5, 6];
 
     var params = {
         selector: '#searchTable',
