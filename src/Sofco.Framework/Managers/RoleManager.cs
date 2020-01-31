@@ -73,9 +73,20 @@ namespace Sofco.Framework.Managers
 
             roles.AddRange(workTimeApproverDelegateManager.GetDelegatedRoles());
 
+            roles.AddRange(GetRefundDelegatedRoles());
+
             roles.AddRange(GetAdvancementDelegatedRoles());
 
             return roles;
+        }
+
+        public List<Role> GetRefundDelegatedRoles()
+        {
+            var isValid = unitOfWork.DelegationRepository.ExistByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.RefundApprovall);
+
+            return isValid
+                ? new List<Role> { unitOfWork.RoleRepository.GetByCode(appSetting.RefundDelegate) }
+                : new List<Role>();
         }
 
         public List<Role> GetAdvancementDelegatedRoles()

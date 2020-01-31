@@ -253,6 +253,9 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             if (billingAcumulatedToDate > 0) {
                 marginTracking.PercentageRealToDate = ((billingAcumulatedToDate - costsAcumulatedToDate) / billingAcumulatedToDate) * 100;
             }
+            else{
+                marginTracking.PercentageRealToDate = 0;
+            }
 
             this.allMarginTrackings.push(marginTracking);
         }
@@ -298,7 +301,12 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
             element.TotalExpensesToEnd = totalCostsAcumulatedToEnd + budgetRemaint;
             element.PercentageExpectedTotal = percentageExpectedTotal;
 
-            element.PercentageToEnd = ((totalAcumulatedToEnd - totalCostsAcumulatedToEnd) / totalAcumulatedToEnd) * 100;
+            if(totalAcumulatedToEnd > 0){
+                element.PercentageToEnd = ((totalAcumulatedToEnd - totalCostsAcumulatedToEnd) / totalAcumulatedToEnd) * 100;
+            }
+            else{
+                element.PercentageToEnd = 0;
+            }
         });
     }
 
@@ -317,39 +325,39 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
                     this.marginTrackingSelected.PercentageExpectedTotal || 0, 
                     "", 
                     "Previsto", 
-                    this.marginTrackingSelected.ExpectedSales, 
-                    this.marginTrackingSelected.TotalExpensesExpected];
+                    this.marginTrackingSelected.ExpectedSales || 0, 
+                    this.marginTrackingSelected.TotalExpensesExpected  || 0];
         
         var row3 = ["Real A terminación", 
                     this.marginTrackingSelected.PercentageToEnd || 0, 
                     "", 
                     "Previsto", 
-                    this.marginTrackingSelected.SalesOnMonth, 
-                    this.marginTrackingSelected.TotalExpensesOnMonth];
+                    this.marginTrackingSelected.SalesOnMonth || 0, 
+                    this.marginTrackingSelected.TotalExpensesOnMonth || 0];
                       
         var row4 = ["", 
                     "", 
                     "", 
                     "Acumulado a la fecha", 
-                    this.marginTrackingSelected.SalesAccumulatedToDate, 
-                    this.marginTrackingSelected.TotalExpensesAccumulatedToDate];
+                    this.marginTrackingSelected.SalesAccumulatedToDate || 0, 
+                    this.marginTrackingSelected.TotalExpensesAccumulatedToDate || 0];
 
         var row5 = ["Margen Mensual", 
                     "", 
                     "", 
                     "Restante a la fecha (proyectado)", 
-                    this.marginTrackingSelected.SalesRemainigToDate, 
-                    this.marginTrackingSelected.TotalExpensesRemainigToDate];
+                    this.marginTrackingSelected.SalesRemainigToDate || 0, 
+                    this.marginTrackingSelected.TotalExpensesRemainigToDate || 0];
 
         var row6 = ["Previsto EvalProp mensual", 
-                    this.marginTrackingSelected.PercentageExpected, 
+                    this.marginTrackingSelected.PercentageExpected || 0, 
                     "", 
                     "Total a la terminación (real + proyectado)", 
-                    this.marginTrackingSelected.TotalSalesToEnd, 
-                    this.marginTrackingSelected.TotalExpensesToEnd];
+                    this.marginTrackingSelected.TotalSalesToEnd || 0, 
+                    this.marginTrackingSelected.TotalExpensesToEnd || 0];
 
         var row7 = ["Real a la fecha", 
-                    this.marginTrackingSelected.PercentageRealToDate];
+                    this.marginTrackingSelected.PercentageRealToDate || 0];
 
         worksheet.addRows([row1, row2, row3, row4, row5, row6, row7]);
 

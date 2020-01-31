@@ -266,7 +266,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 }
             });
 
-            let listClosed = this.list.filter(x => x.status == JobSearchStatus.Close);
+            let listClosed = this.list.filter(x => x.selected && x.status == JobSearchStatus.Close);
 
             if(listClosed.length > 0){
                 this.buildTimeAverageGraph(listClosed);
