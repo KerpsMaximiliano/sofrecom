@@ -82,6 +82,8 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                 itemToAdd.PrepaidPlan = sheet.GetValue(index, PlanColumn)?.ToString();
                 itemToAdd.Period = GetPeriod(sheet.GetValue(index, PeriodColumn)?.ToString());
 
+                var mustAdd = true;
+
                 var employee = unitOfWork.EmployeeRepository.GetByDocumentNumber(dniToInt);
 
                 if (employee == null)
@@ -91,17 +93,34 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                 }
                 else
                 {
-                    itemToAdd.EmployeeId = employee.Id;
-                    itemToAdd.EmployeeName = employee.Name;
-                    itemToAdd.TigerBeneficiaries = employee.BeneficiariesCount+1;
-                    itemToAdd.EmployeeNumber = employee.EmployeeNumber;
-                    itemToAdd.TigerPlan = employee.PrepaidPlan;
-                    SetTigerCost(yearId, monthId, employee, itemToAdd);
+                    var itemToAddExist = listToAdd.SingleOrDefault(x => x.EmployeeId == employee.Id);
 
-                    CheckDifferencies(itemToAdd);
+                    if (itemToAddExist == null)
+                    {
+                        itemToAdd.EmployeeId = employee.Id;
+                        itemToAdd.EmployeeName = employee.Name;
+                        itemToAdd.TigerBeneficiaries = employee.BeneficiariesCount + 1;
+                        itemToAdd.EmployeeNumber = employee.EmployeeNumber;
+                        itemToAdd.TigerPlan = employee.PrepaidPlan;
+
+                        SetTigerCost(yearId, monthId, employee, itemToAdd);
+
+                        CheckDifferencies(itemToAdd);
+                    }
+                    else
+                    {
+                        mustAdd = false;
+
+                        itemToAddExist.PrepaidCost += itemToAdd.PrepaidCost;
+
+                        SetTigerCost(yearId, monthId, employee, itemToAddExist);
+
+                        CheckDifferencies(itemToAddExist);
+                    }
                 }
 
-                listToAdd.Add(itemToAdd);
+                if(mustAdd) listToAdd.Add(itemToAdd);
+
                 index++;
             }
 
