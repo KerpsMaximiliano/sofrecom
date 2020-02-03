@@ -67,6 +67,8 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                             continue;
                         }
 
+                        if(reader.IsDBNull(DocumentColumn)) continue;
+                        
                         var dni = reader.GetDouble(DocumentColumn);
 
                         var credential = reader.GetDouble(CredentialColumn).ToString();
