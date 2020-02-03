@@ -16,6 +16,9 @@ export class ReportUpdownComponent implements OnDestroy {
 
     public resources: any[] = new Array<any>();
 
+    upTotal: number;
+    downTotal: number;
+
     searchSubscrip: Subscription;
 
     public searchModel = {
@@ -37,6 +40,21 @@ export class ReportUpdownComponent implements OnDestroy {
 
         this.searchSubscrip = this.employeeService.searchReportUpDown(this.searchModel).subscribe(response => {
             this.resources = response.data;
+
+            this.upTotal = 0;
+            this.downTotal = 0;
+
+            if(this.resources.length > 0){
+                this.resources.forEach(x => {
+
+                    if(x.state == "ALTA"){
+                        this.upTotal += 1;
+                    }
+                    else{
+                        this.downTotal += 1;
+                    }
+                });
+            }
 
             this.initGrid();
             this.messageService.closeLoading();
