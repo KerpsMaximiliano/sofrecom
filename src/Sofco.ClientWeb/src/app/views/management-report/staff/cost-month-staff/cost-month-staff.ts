@@ -307,7 +307,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.buildFirstSheet(workbook);
         this.buildSecodSheet(workbook);
 
-        var title = `Detalle mensual ${this.monthYear.toLocaleDateString()} .xlsx`
+        var title = `Detalle mensual ${this.monthYear}.xlsx`
 
         workbook.xlsx.writeBuffer().then((data) => {
             let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
