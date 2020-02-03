@@ -148,6 +148,15 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.SocialCharges.Include(x => x.Items).SingleOrDefault(x => x.EmployeeId == employeeId && x.Year == date.Year && x.Month == date.Month);
         }
 
+        public IList<Employee> GetUpdownReport(ReportUpdownParameters parameters)
+        {
+            var up = context.Employees.Where(x => x.StartDate.Date >= parameters.StartDate.Value.Date && x.StartDate.Date <= parameters.EndDate.Value.Date).ToList();
+
+            var down = context.Employees.Where(x => x.EndDate.HasValue && x.EndDate.GetValueOrDefault().Date >= parameters.StartDate.Value.Date && x.EndDate.GetValueOrDefault().Date <= parameters.EndDate.Value.Date).ToList();
+
+            return up.Union(down).ToList();
+        }
+
         public ICollection<Employee> Search(EmployeeSearchParams parameters, DateTime startDate, DateTime endDate)
         {
             IQueryable<Employee> query = context.Employees.Include(x => x.Manager);

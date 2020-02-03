@@ -50,6 +50,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpPost("search/updown")]
+        public IActionResult GetUpdownReport([FromBody] ReportUpdownParameters parameters)
+        {
+            var response = employeeService.GetUpdownReport(parameters);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("options")]
         public IActionResult GetOptions()
         {

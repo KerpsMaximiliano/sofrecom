@@ -62,6 +62,10 @@ export class EmployeeService {
     return this.http.post<any>(`${this.baseUrl}/employees/search/unemployees`, model);
   }
 
+  searchReportUpDown(model) {
+    return this.http.post<any>(`${this.baseUrl}/employees/search/updown`, model);
+  }
+
   sendUnsubscribeNotification(model){
     return this.http.post<any>(`${this.baseUrl}/employees/sendUnsubscribeNotification/`, model);
   }

@@ -31,4 +31,32 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string EndReasonComments { get; set; }
     }
+
+    public class ReportUpdownItemModel
+    {
+        public ReportUpdownItemModel(Employee employee)
+        {
+            Name = employee.Name;
+            EmployeeNumber = employee.EmployeeNumber;
+            Profile = employee.Profile;
+            StartDate = employee.StartDate;
+            EndDate = employee.EndDate;
+            Reason = employee.EndReason;
+            State = EndDate.HasValue ? "BAJA" : "ALTA";
+        }
+
+        public string Name { get; set; }
+
+        public string EmployeeNumber { get; set; }
+
+        public string Profile { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        public string Reason { get; set; }
+
+        public string State { get; set; }
+    }
 }

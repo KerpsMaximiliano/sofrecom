@@ -75,5 +75,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> GetByAnalyticIdInCurrentDate(int analyticId);
         void UpdateManager(int id, int managerId);
         SocialCharge GetSocialCharges(int employeeId, DateTime date);
+        IList<Employee> GetUpdownReport(ReportUpdownParameters parameters);
     }
 }

@@ -37,9 +37,10 @@ import { PrepaidService } from 'app/services/human-resources/prepaid.service';
 import { PrepaidVerificationComponent } from './prepaid-verification/prepaid-verification';
 import { AmountFormatModule } from 'app/pipes/amount-format.module';
 import { RrhhService } from 'app/services/human-resources/rrhh.service';
+import { ReportUpdownComponent } from './report-up-down/report-up-down';
 
 @NgModule({
-  declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent,
+  declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent, ReportUpdownComponent,
                 LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent, LicenseCancelComponent, UnemployeesSearchComponent,
                 NewsComponent, EndNotificationComponent, PrepaidImportComponent, PrepaidVerificationComponent],
 

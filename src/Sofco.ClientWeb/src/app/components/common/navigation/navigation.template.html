@@ -124,6 +124,9 @@
             *ngIf="menuService.hasFunctionality('ALLOC', 'PMORP')"><a
               [routerLink]="['/allocationManagement/allocationsReport']">{{'allocationManagement.report.report' | translate }}</a>
           </li>
+          <li [ngClass]="{active: activeRoute('updown')}" *ngIf="menuService.hasFunctionality('ALLOC', 'VWUEM')"><a
+            [routerLink]="['/rrhh/updown']">Reporte Altas / Bajas</a>
+          </li>
           <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('CTRLI', 'QUERY')"><a
               [routerLink]="['/rrhh/licenses']">{{'rrhh.licenses' | translate }} (RRHH)</a></li>
           <li [ngClass]="{active: activeRoute('licenses/managers')}"

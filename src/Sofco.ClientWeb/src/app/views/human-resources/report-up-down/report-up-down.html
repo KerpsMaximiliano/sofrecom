@@ -1,0 +1,84 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Reporte Altas y Bajas </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'allocationManagement.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> Reporte Altas y Bajas </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+    
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()" style="display: block">
+                        <span>{{'allocationManagement.resources.search' | translate }}</span>
+                        <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+                    </a>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'allocationManagement.resources.dateFrom' | translate }}</label>
+                                <date-picker [(date)]="searchModel.startDate"></date-picker>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'allocationManagement.resources.dateTo' | translate }}</label>
+                                <date-picker [(date)]="searchModel.endDate"></date-picker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="text-right">
+                        <button class="btn btn-success" (click)="search()" > {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox" *ngIf="resources.length > 0"> 
+        <div class="ibox-content">
+            <table class="table table-striped dataTable" role="grid" id="resourcesTable">
+                <thead>
+                    <tr>
+                        <th>Legajo</th>
+                        <th>Recurso</th>
+                        <th>Perfil</th>
+                        <th>Fecha Alta</th>
+                        <th>Fecha Baja</th>
+                        <th>Estado</th>
+                        <th>Motivo</th>
+                    </tr>
+                </thead> 
+                <tbody>
+                    <tr *ngFor="let resource of resources">
+                        <td>{{ resource.employeeNumber }}</td>
+                        <td>{{ resource.name }}</td>
+                        <td>{{ resource.profile }}</td>
+                        <td>{{ resource.startDate | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ resource.endDate | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ resource.state }}</td>
+                        <td>{{ resource.reason }}</td>
+                    </tr> 
+                </tbody>
+            </table>       
+        </div>
+    </div>
+</div>

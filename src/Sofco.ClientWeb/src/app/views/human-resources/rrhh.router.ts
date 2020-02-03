@@ -9,11 +9,14 @@ import { NewsComponent } from "./news/news.component";
 import { EndNotificationComponent } from "./end-notification/end-notification.component";
 import { PrepaidImportComponent } from "./prepaid-import/prepaid-import";
 import { PrepaidVerificationComponent } from "./prepaid-verification/prepaid-verification";
+import { ReportUpdownComponent } from "./report-up-down/report-up-down";
 
 const RRHH_ROUTER: Routes = [
     { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
 
     { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
+    
+    { path: "updown", component: ReportUpdownComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
 
     {
         path: "licenses",

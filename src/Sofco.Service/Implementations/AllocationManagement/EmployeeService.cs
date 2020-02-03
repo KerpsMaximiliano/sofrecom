@@ -84,6 +84,32 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return unitOfWork.EmployeeRepository.GetAllForWorkTimeReport();
         }
 
+        public Response<IList<ReportUpdownItemModel>> GetUpdownReport(ReportUpdownParameters parameters)
+        {
+            var response = new Response<IList<ReportUpdownItemModel>>();
+
+            if(!parameters.StartDate.HasValue) response.AddError(Resources.AllocationManagement.Allocation.DateSinceRequired);
+            if(!parameters.EndDate.HasValue) response.AddError(Resources.AllocationManagement.Allocation.DateToRequired);
+
+            if (parameters.StartDate.HasValue && parameters.EndDate.HasValue)
+            {
+                if(parameters.EndDate.Value.Date < parameters.StartDate.Value.Date) response.AddError(Resources.AllocationManagement.Allocation.DateToLessThanDateSince);
+            }
+
+            if (response.HasErrors()) return response;
+
+            var list = unitOfWork.EmployeeRepository.GetUpdownReport(parameters);
+
+            response.Data = list.Select(x => new ReportUpdownItemModel(x)).ToList();
+
+            if (!response.Data.Any())
+            {
+                response.AddWarning(Resources.Common.SearchEmpty);
+            }
+
+            return response;
+        }
+
         public Response<EmployeeModel> GetById(int id)
         {
             var response = new Response<EmployeeModel>();
