@@ -522,27 +522,41 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view");
 
                 var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
-                var mailGaf = unitOfWork.GroupRepository.GetEmail(emailConfig.GafCode);
+                //var mailGaf = unitOfWork.GroupRepository.GetEmail(emailConfig.GafCode);
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
-                var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
+                //var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
                 var mailQuality = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);
-                var mailCdg = unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
+                //var mailCdg = unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
 
                 var recipientsList = new List<string>();
 
-                recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailGaf, mailCompliance, mailQuality, mailCdg });
+                //recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailGaf, mailCompliance, mailQuality, mailCdg });
+                recipientsList.AddRange(new[] {
+                    mailPmo,
+                    "jberraz@sofrecom.com.ar",
+                    "iaybar@sofrecom.com.ar",
+                    "gperugorria@sofrecom.com.ar",
+                    "mscovello@sofrecom.com.ar",
+                    "fgiani@sofrecom.com.ar",
+                    "NMiguez@sofrecom.com.ar",
+                    "CPoquet@sofrecom.com.ar",
+                    mailRrhh,
+                    mailQuality });
 
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);
+                var sector = unitOfWork.SectorRepository.Get(analytic.SectorId);
+                var director = unitOfWork.UserRepository.Get(sector.ResponsableUserId);
 
                 if (manager != null) recipientsList.Add(manager.Email);
                 if (seller != null) recipientsList.Add(seller.Email);
+                if (director != null) recipientsList.Add(director.Email);
 
                 var data = new AddAnalyticData
                 {
                     Title = subject,
                     Message = body,
-                    Recipients = recipientsList
+                    Recipients = recipientsList.Distinct().ToList()
                 };
 
                 var email = mailBuilder.GetEmail(data);
