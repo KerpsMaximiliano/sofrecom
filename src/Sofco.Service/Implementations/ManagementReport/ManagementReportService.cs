@@ -1732,6 +1732,17 @@ namespace Sofco.Service.Implementations.ManagementReport
                         {
                             var entity = new CostDetailResource();
 
+                            if (aux.Id == 0)
+                            {
+                                var costDetailId = costDetails.Where(c => new DateTime(c.MonthYear.Year, c.MonthYear.Month, 1).Date == month.MonthYear.Date).FirstOrDefault().Id;;
+                                var existId = unitOfWork.CostDetailResourceRepository.GetIdIfExist(costDetailId, resource.EmployeeId, aux.BudgetTypeId);
+
+                                if (existId > 0)
+                                {
+                                    aux.Id = existId;
+                                }
+                            }
+                            
                             if (aux.Id > 0)
                             {
                                 entity = unitOfWork.CostDetailResourceRepository.Get(aux.Id);

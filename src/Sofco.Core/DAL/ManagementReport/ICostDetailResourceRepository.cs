@@ -9,5 +9,6 @@ namespace Sofco.Core.DAL.ManagementReport
     {
         IList<CostDetailResource> GetByAnalyticAndDates(int managementId, DateTime firstMonthDate, DateTime lastMonthDate);
         IList<CostDetailResource> GetByDate(DateTime date);
+        int GetIdIfExist(int costDetailId, int resourceEmployeeId, int auxBudgetTypeId);
     }
 }

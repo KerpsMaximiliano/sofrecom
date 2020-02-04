@@ -31,5 +31,17 @@ namespace Sofco.DAL.Repositories.ManagementReport
                 .ThenInclude(x => x.ManagementReport)
                 .Where(x => x.CostDetail.MonthYear.Date == date.Date).ToList();
         }
+
+        public int GetIdIfExist(int costDetailId, int resourceEmployeeId, int auxBudgetTypeId)
+        {
+            var entity = context.CostDetailResources.SingleOrDefault(x => x.CostDetailId == costDetailId && x.EmployeeId == resourceEmployeeId && x.BudgetTypeId == auxBudgetTypeId);
+
+            if (entity != null)
+            {
+                return entity.Id;
+            }
+
+            return 0;
+        }
     }
 }
