@@ -24,8 +24,12 @@ namespace Sofco.Core.Models.Recruitment
                 Date = contact?.CreatedDate;
 
                 ApplicantInProgress = applicant.JobSearchApplicants.Any(x => x.Reason.Type == ReasonCauseType.ApplicantInProgress);
+
+                Reason = contact?.Reason?.Text;
             }
         }
+
+        public string Reason { get; set; }
 
         public bool ApplicantInProgress { get; set; }
 

@@ -74,6 +74,15 @@ export class ApplicantsRelatedComponent implements OnDestroy {
             columnDefs: [ { "aTargets": [3], "sType": "date-uk" }],
         };
 
+        setTimeout(() => {
+            $("#applicantsTable_wrapper").css("float","left");
+            $("#applicantsTable_wrapper").css("padding-bottom","50px");
+            $("#applicantsTable_filter label").addClass('search-filter');
+            $("#applicantsTable_paginate").addClass('table-pagination');
+            $("#applicantsTable_length").css("margin-right","10px");
+            $("#applicantsTable_info").css("padding-top","4px");
+        }, 500);
+
         this.dataTableService.destroy(options.selector);
         this.dataTableService.initialize(options);
     }

@@ -64,7 +64,8 @@ namespace Sofco.DAL.Repositories.Recruitment
                         Reason = new ReasonCause
                         {
                             Id = s.ReasonId,
-                            Type = s.Reason.Type
+                            Type = s.Reason.Type,
+                            Text = s.Reason.Text
                         },
                         CreatedDate = s.CreatedDate
                     })

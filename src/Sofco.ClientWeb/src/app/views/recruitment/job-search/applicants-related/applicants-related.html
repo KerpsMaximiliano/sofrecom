@@ -29,12 +29,13 @@
                     <table class="table table-striped dataTable table-font" role="grid" id="applicantsTable">
                         <thead>
                             <tr>
-                                <th></th>
-                                <th>Nombre y Apellido</th>
-                                <th>Perfiles</th>
-                                <th>Conocimientos</th>
-                                <th>En Curso</th>
-                                <th>Ultimo Contacto</th>
+                                <th class="column-xs"></th>
+                                <th class="column-md">Nombre y Apellido</th>
+                                <th class="column-md">Perfiles</th>
+                                <th class="column-md">Conocimientos</th>
+                                <th class="column-xs text-center">En Curso</th>
+                                <th class="column-xs">Ultimo Contacto</th>
+                                <th class="column-md">Ultimo Motivo</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,11 +43,12 @@
                                 <td class="column-xs text-center">
                                     <icheck [(checked)]="item.selected"></icheck>
                                 </td>
-                                <td class="column-lg text-ellipsis text-success applicant-name pointer" (click)="goToDetail(item)">{{ item.applicant }}</td>
-                                <td class="column-lg text-word-break">{{ item.profiles }}</td>
-                                <td class="column-lg text-word-break">{{ item.skills }}</td>
-                                <td class="text-center"><span class="fa" [ngClass]="item.applicantInProgress ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
-                                <td class="column-sm text-word-break">{{ item.date | date:'dd/MM/yyyy' }}</td>
+                                <td class="column-md text-ellipsis text-success applicant-name pointer" (click)="goToDetail(item)">{{ item.applicant }}</td>
+                                <td class="column-md text-word-break">{{ item.profiles }}</td>
+                                <td class="column-md text-word-break">{{ item.skills }}</td>
+                                <td class="column-xs text-center"><span class="fa" [ngClass]="item.applicantInProgress ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                                <td class="column-xs">{{ item.date | date:'dd/MM/yyyy' }}</td>
+                                <td class="column-md text-word-break">{{ item.reason }}</td>
                             </tr>
                         </tbody>
                     </table>       
