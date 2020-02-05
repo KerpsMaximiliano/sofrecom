@@ -633,13 +633,22 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var employeeAllocations = unitOfWork.AllocationRepository.GetByEmployee(employee.Id);
 
-            var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            DateTime date;
+
+            if (employee.EndDate.HasValue)
+            {
+                date = new DateTime(employee.EndDate.Value.Year, employee.EndDate.Value.Month, 1);
+            }
+            else
+            {
+                date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
 
             var analitycs = employeeAllocations.Where(x => x.Percentage > 0 && x.StartDate.Date == date).Select(x => x.Analytic).Distinct();
 
             foreach (var analityc in analitycs)
             {
-                var allocationThisMonth = analityc.Allocations.FirstOrDefault(x => x.StartDate == new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1));
+                var allocationThisMonth = analityc.Allocations.FirstOrDefault(x => x.StartDate == date.Date);
                 if (allocationThisMonth != null)
                 {
                     var item = new EmployeeAllocationModel

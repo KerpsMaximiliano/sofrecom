@@ -1,0 +1,36 @@
+﻿ 2020-02-03 09:57:49,971 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ExcelDataReader.ExcelDataReader`2.GetDouble(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 79
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 70
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
+ 2020-02-03 09:59:00,048 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ExcelDataReader.ExcelDataReader`2.GetDouble(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 79
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 70
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
+ 2020-02-03 10:07:45,184 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Unable to cast object of type 'System.Double' to type 'System.String'.
+System.InvalidCastException: Unable to cast object of type 'System.Double' to type 'System.String'.
+   at ExcelDataReader.ExcelDataReader`2.GetString(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 100
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 73
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
+ 2020-02-03 10:09:30,161 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Unable to cast object of type 'System.Double' to type 'System.String'.
+System.InvalidCastException: Unable to cast object of type 'System.Double' to type 'System.String'.
+   at ExcelDataReader.ExcelDataReader`2.GetString(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 100
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 70
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
+ 2020-02-03 10:12:33,306 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Unable to cast object of type 'System.Double' to type 'System.String'.
+System.InvalidCastException: Unable to cast object of type 'System.Double' to type 'System.String'.
+   at ExcelDataReader.ExcelDataReader`2.GetString(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 100
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 70
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
+ 2020-02-03 10:27:30,003 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ExcelDataReader.ExcelDataReader`2.GetDouble(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 79
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 70
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
