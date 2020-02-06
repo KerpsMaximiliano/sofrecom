@@ -38,11 +38,12 @@ import { PrepaidVerificationComponent } from './prepaid-verification/prepaid-ver
 import { AmountFormatModule } from 'app/pipes/amount-format.module';
 import { RrhhService } from 'app/services/human-resources/rrhh.service';
 import { ReportUpdownComponent } from './report-up-down/report-up-down';
+import { SalaryReportComponent } from './resources/salary-report/salary-report';
 
 @NgModule({
   declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent, ReportUpdownComponent,
                 LicensePendingComponent, LicenseRejectComponent, LicenseHistoryComponent, LicenseCancelComponent, UnemployeesSearchComponent,
-                NewsComponent, EndNotificationComponent, PrepaidImportComponent, PrepaidVerificationComponent],
+                NewsComponent, EndNotificationComponent, PrepaidImportComponent, PrepaidVerificationComponent, SalaryReportComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, AddLicenseModule,
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter,

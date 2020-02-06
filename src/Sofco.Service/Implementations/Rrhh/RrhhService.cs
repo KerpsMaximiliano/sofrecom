@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+﻿using Sofco.Core.DAL;
 using Sofco.Core.Data.WorktimeManagement;
-using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
@@ -14,6 +9,11 @@ using Sofco.Domain.Rh.Tiger;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Helpers;
 using Sofco.Repository.Rh.Repositories.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace Sofco.Service.Implementations.Rrhh
 {
@@ -116,7 +116,7 @@ namespace Sofco.Service.Implementations.Rrhh
                 response.AddError(Resources.Rrhh.Prepaid.YearError);
 
             if (response.HasErrors()) return response;
-            
+
             var socialChargesData = tigerEmployeeRepository.GetSocialCharges(year, month);
             var employees = unitOfWork.EmployeeRepository.GetIdAndEmployeeNumber(year, month);
 
@@ -200,7 +200,7 @@ namespace Sofco.Service.Implementations.Rrhh
 
                 foreach (var employee in employees)
                 {
-                    if(unitOfWork.GroupRepository.IsManagerOrDirector(employee)) continue;
+                    if (unitOfWork.GroupRepository.IsManagerOrDirector(employee)) continue;
 
                     var firstAllocation = employee.Allocations.FirstOrDefault();
 
@@ -221,11 +221,88 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        public Response<IList<SalaryReportItem>> GetSalaryReport(DateTime startDate, DateTime endDate)
+        public Response<SalaryReportResponse> GetSalaryReport(DateTime? startDate, DateTime? endDate)
         {
-            var reponse = new Response<IList<SalaryReportItem>>();
+            var response = new Response<SalaryReportResponse>
+            { Data = new SalaryReportResponse { Months = new List<string>(), Items = new List<SalaryReportItem>() } };
 
-            return reponse;
+            if (!startDate.HasValue) response.AddError(Resources.AllocationManagement.Allocation.DateSinceRequired);
+            if (!endDate.HasValue) response.AddError(Resources.AllocationManagement.Allocation.DateToRequired);
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                if (endDate.Value.Date < startDate.Value.Date) response.AddError(Resources.AllocationManagement.Allocation.DateToLessThanDateSince);
+            }
+
+            if (response.HasErrors()) return response;
+
+            var socialCharges = unitOfWork.RrhhRepository.GetSocialCharges(startDate.GetValueOrDefault(), endDate.GetValueOrDefault());
+
+            for (var date = startDate.Value.Date; date.Date <= endDate; date = date.AddMonths(1))
+            {
+                response.Data.Months.Add(DatesHelper.GetDateDescription(date));
+            }
+
+            foreach (var socialCharge in socialCharges)
+            {
+                var employeeItem = response.Data.Items.SingleOrDefault(x => x.EmployeeId == socialCharge.EmployeeId);
+
+                if (employeeItem == null)
+                {
+                    var itemToAdd = new SalaryReportItem
+                    {
+                        StartDate = socialCharge.Employee.StartDate,
+                        EmployeeId = socialCharge.EmployeeId,
+                        Profile = socialCharge.Employee?.Profile,
+                        Name = socialCharge.Employee?.Name,
+                        Manager = socialCharge.Employee?.Manager?.Name,
+                        EmployeeNumber = socialCharge.Employee?.EmployeeNumber,
+                        Antique = DateTime.UtcNow.Subtract(socialCharge.Employee.StartDate).TotalDays / 365,
+                        Office = socialCharge.Employee.OfficeAddress,
+                        Seniority = socialCharge.Employee.Seniority,
+                        Technology = socialCharge.Employee.Technology,
+                        Values = GetSalaryListValueItems(startDate.Value, endDate.Value)
+                    };
+
+                    var valueItem = itemToAdd.Values.SingleOrDefault(x => x.Month == socialCharge.Month && x.Year == socialCharge.Year);
+
+                    if (valueItem != null)
+                    {
+                        valueItem.Value = Convert.ToDecimal(CryptographyHelper.Decrypt(socialCharge.SalaryTotal));
+                    }
+
+                    response.Data.Items.Add(itemToAdd);
+                }
+                else
+                {
+                    var valueItem = employeeItem.Values.SingleOrDefault(x => x.Month == socialCharge.Month && x.Year == socialCharge.Year);
+
+                    if (valueItem != null)
+                    {
+                        valueItem.Value = Convert.ToDecimal(CryptographyHelper.Decrypt(socialCharge.SalaryTotal));
+                    }
+                }
+            }
+
+            return response;
+        }
+
+        private IList<SalaryValueItem> GetSalaryListValueItems(DateTime startDate, DateTime endDate)
+        {
+            var list = new List<SalaryValueItem>();
+
+            for (var date = startDate.Date; date.Date <= endDate.Date; date = date.AddMonths(1))
+            {
+                var item = new SalaryValueItem
+                {
+                    Month = date.Month,
+                    Year = date.Year
+                };
+
+                list.Add(item);
+            }
+
+            return list;
         }
 
         private void FillData(int year, int month, IList<EmployeeSocialCharges> socialChargesData, List<SocialCharge> listToUpdate, List<SocialCharge> listToAdd, IList<Tuple<int, string, string>> employees)

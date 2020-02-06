@@ -56,7 +56,7 @@ namespace Sofco.WebApi.Controllers.Rrhh
         }
 
         [HttpGet("salary/report/{startDate}/{endDate}")]
-        public IActionResult GetSalaryReport(DateTime startDate, DateTime endDate)
+        public IActionResult GetSalaryReport(DateTime? startDate, DateTime? endDate)
         {
             var response = rrhhService.GetSalaryReport(startDate, endDate);
 

@@ -1,0 +1,98 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Reporte salarios </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                {{'allocationManagement.title' | translate }}
+            </li>
+            <li class="active">
+                <strong> Reporte salarios </strong>
+            </li>
+        </ol>
+    </div>
+</div>
+    
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()" style="display: block">
+                        <span>{{'allocationManagement.resources.search' | translate }}</span>
+                        <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+                    </a>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'allocationManagement.resources.dateFrom' | translate }}</label>
+                                <date-picker [(date)]="searchModel.startDate"></date-picker>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{'allocationManagement.resources.dateTo' | translate }}</label>
+                                <date-picker [(date)]="searchModel.endDate"></date-picker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="text-right">
+                        <button class="btn btn-success" (click)="search()" > {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox" *ngIf="resources.length > 0"> 
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped dataTable" role="grid" id="resourcesTable">
+                    <thead>
+                        <tr>
+                            <th class="column-xs">Legajo</th>
+                            <th class="column-lg">Nombre</th>
+                            <th class="column-lg">Superior</th>
+                            <th class="column-md">Oficia</th>
+                            <th class="column-md">Perfil</th>
+                            <th class="column-md">Seniority</th>
+                            <th class="column-md">Tecnología</th>
+                            <th class="column-sm">Fecha de Ingreso</th>
+                            <th class="column-xs">Antigüedad</th>
+                            
+                            <th class="column-xs" *ngFor="let month of months">
+                                {{ month }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let resource of resources">
+                            <td class="column-xs">{{ resource.employeeNumber }}</td>
+                            <td class="column-lg">{{ resource.name }}</td>
+                            <td class="column-lg">{{ resource.manager }}</td>
+                            <td class="column-md">{{ resource.office }}</td>
+                            <td class="column-md">{{ resource.profile }}</td>
+                            <td class="column-md">{{ resource.seniority }}</td>
+                            <td class="column-sm">{{ resource.technology }}</td>
+                            <td class="column-sm">{{ resource.startDate | date: 'dd/MM/yyyy' }}</td>
+                            <td class="column-xs">{{ resource.antique | number : '1.2' }}</td>
+
+                            <td class="column-xs" *ngFor="let month of resource.values">
+                                {{ month.value | number: '1.2' }}
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>       
+            </div>
+        </div>
+    </div>
+</div>

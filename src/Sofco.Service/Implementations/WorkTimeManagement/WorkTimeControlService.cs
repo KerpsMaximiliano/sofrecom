@@ -346,7 +346,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         public IList<Option> GetAnalytics()
         {
-            if (roleManager.IsPmo() || roleManager.IsRrhh())
+            if (roleManager.IsPmo() || roleManager.IsRrhh() || roleManager.IsCdg())
             {
                 var analytics = unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite();
 

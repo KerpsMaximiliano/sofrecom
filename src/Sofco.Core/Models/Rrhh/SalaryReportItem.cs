@@ -3,9 +3,18 @@ using System.Collections.Generic;
 
 namespace Sofco.Core.Models.Rrhh
 {
+    public class SalaryReportResponse
+    {
+        public IList<SalaryReportItem> Items { get; set; }
+
+        public IList<string> Months { get; set; }
+    }
+
     public class SalaryReportItem
     {
-        public int EmployeeNumber { get; set; }
+        public int EmployeeId { get; set; }
+
+        public string EmployeeNumber { get; set; }
 
         public string Name { get; set; }
 
@@ -21,15 +30,17 @@ namespace Sofco.Core.Models.Rrhh
 
         public DateTime StartDate { get; set; }
 
-        public int Antique { get; set; }
+        public double Antique { get; set; }
 
-        public IList<MonthSalary> Months { get; set; }
+        public IList<SalaryValueItem> Values { get; set; }
     }
 
-    public class MonthSalary
+    public class SalaryValueItem
     {
-        public string Display { get; set; }
-
         public decimal Value { get; set; }
+
+        public int Month { get; set; }
+
+        public int Year { get; set; }
     }
 }

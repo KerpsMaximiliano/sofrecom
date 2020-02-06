@@ -10,6 +10,7 @@ import { EndNotificationComponent } from "./end-notification/end-notification.co
 import { PrepaidImportComponent } from "./prepaid-import/prepaid-import";
 import { PrepaidVerificationComponent } from "./prepaid-verification/prepaid-verification";
 import { ReportUpdownComponent } from "./report-up-down/report-up-down";
+import { SalaryReportComponent } from "./resources/salary-report/salary-report";
 
 const RRHH_ROUTER: Routes = [
     { path: "news", component: NewsComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "NEWSQ" } } ,
@@ -17,6 +18,8 @@ const RRHH_ROUTER: Routes = [
     { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
     
     { path: "updown", component: ReportUpdownComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
+    
+    { path: "salary-report", component: SalaryReportComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
 
     {
         path: "licenses",

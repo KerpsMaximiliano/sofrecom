@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
+using Sofco.Domain.Models.Rrhh;
 
 namespace Sofco.DAL.Repositories.ManagementReport
 {

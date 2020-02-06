@@ -96,5 +96,15 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Where(x => x.Month == pMonth && x.Year == pYear && employeesIds.Contains(x.EmployeeId))
                 .ToList();
         }
+
+        public IList<SocialCharge> GetSocialCharges(DateTime startDate, DateTime endDate)
+        {
+            return context.SocialCharges
+                .Include(x => x.Employee)
+                    .ThenInclude(x => x.Manager)
+                .Where(x => new DateTime(x.Year, x.Month, 1).Date >= startDate.Date && new DateTime(x.Year, x.Month, 1).Date <= endDate.Date)
+                .OrderBy(x => new DateTime(x.Year, x.Month, 1))
+                .ToList();
+        }
     }
 }

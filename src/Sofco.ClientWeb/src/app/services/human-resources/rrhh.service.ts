@@ -31,4 +31,8 @@ export class RrhhService {
   updateManagers() {
     return this.http.put<any>(`${this.baseUrl}/rrhh/managers`, {});
   }
+
+  getSalaryReport(startDate, endDate) {
+    return this.http.get<any>(`${this.baseUrl}/rrhh/salary/report/${startDate}/${endDate}`);
+  }
 }
