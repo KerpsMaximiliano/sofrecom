@@ -6,6 +6,7 @@ using System.Linq;
 using Sofco.Core.Data.WorktimeManagement;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
@@ -218,6 +219,13 @@ namespace Sofco.Service.Implementations.Rrhh
             }
 
             return response;
+        }
+
+        public Response<IList<SalaryReportItem>> GetSalaryReport(DateTime startDate, DateTime endDate)
+        {
+            var reponse = new Response<IList<SalaryReportItem>>();
+
+            return reponse;
         }
 
         private void FillData(int year, int month, IList<EmployeeSocialCharges> socialChargesData, List<SocialCharge> listToUpdate, List<SocialCharge> listToAdd, IList<Tuple<int, string, string>> employees)

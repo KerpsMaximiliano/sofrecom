@@ -30,7 +30,7 @@ namespace Sofco.WebApi.Controllers.Recruitment
         }
 
         [HttpPost("{applicantId}/{jobSearchId}/{date}/{reasonId}/interview")]
-        public IActionResult Interview(int applicantId, int jobSearchId,  DateTime date, int reasonId, [FromBody] InterviewAddModel model)
+        public IActionResult Interview(int applicantId, int jobSearchId, DateTime date, int reasonId, [FromBody] InterviewAddModel model)
         {
             var response = jobSearchApplicantService.AddInterview(applicantId, jobSearchId, date, reasonId, model);
 

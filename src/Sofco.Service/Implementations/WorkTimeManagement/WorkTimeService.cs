@@ -252,7 +252,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
         public IEnumerable<Option> GetAnalytics()
         {
-            if (roleManager.IsPmo() || roleManager.IsRrhh())
+            if (roleManager.IsPmo() || roleManager.IsRrhh() || roleManager.IsCdg())
             {
                 var analytics = unitOfWork.AnalyticRepository.GetAllOpenAnalyticLite();
                 var list = new List<Option>();

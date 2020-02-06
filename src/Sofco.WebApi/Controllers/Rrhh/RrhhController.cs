@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Core.Services.Rrhh;
@@ -50,6 +51,14 @@ namespace Sofco.WebApi.Controllers.Rrhh
         public IActionResult UpdateManagers()
         {
             var response = rrhhService.UpdateManagers();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("salary/report/{startDate}/{endDate}")]
+        public IActionResult GetSalaryReport(DateTime startDate, DateTime endDate)
+        {
+            var response = rrhhService.GetSalaryReport(startDate, endDate);
 
             return this.CreateResponse(response);
         }
