@@ -78,16 +78,18 @@
                         <td>{{ resource.reason }}</td>
                     </tr> 
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th style="font-size: 14px">Total Altas: {{ upTotal }}</th>
+                        <th style="font-size: 14px">Total Bajas: {{ downTotal }}</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>    
-            
-            <div class="row m-t-md">
-                <div class="col-md-3">
-                    <h3>Total Altas: {{ upTotal }}</h3>
-                </div>
-                <div class="col-md-3">
-                    <h3>Total Bajas: {{ downTotal }}</h3>
-                </div>
-            </div>
         </div>
     </div>
 </div>
