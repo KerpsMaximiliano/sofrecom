@@ -33,5 +33,6 @@ namespace Sofco.Core.DAL.AllocationManagement
         void CleanReportPowerBi();
         void UpdateModifiedUser(Allocation allocation);
         void UpdateRealPercentage(Allocation allocation);
+        bool ExistAllocationByEmployeeAndManagerId(int employeeId, int managerId, int? analyticId);
     }
 }

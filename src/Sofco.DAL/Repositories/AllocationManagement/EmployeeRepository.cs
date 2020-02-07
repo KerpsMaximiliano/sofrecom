@@ -243,16 +243,37 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> SearchUnemployees(UnemployeeSearchParameters parameters)
         {
-            IQueryable<Employee> query = context.Employees.Include(x => x.TypeEndReason).Where(x => x.EndDate.HasValue);
+            IQueryable<Employee> query = context.Employees
+                .Include(x => x.TypeEndReason)
+                .Include(x => x.Allocations)
+                .Where(x => x.EndDate.HasValue);
 
             if (!string.IsNullOrWhiteSpace(parameters.Name))
                 query = query.Where(x => x.Name != null && x.Name.ToLowerInvariant().Contains(parameters.Name.ToLowerInvariant()));
-
+             
             if (parameters.StartDate.HasValue)
                 query = query.Where(x => x.EndDate.HasValue && x.EndDate.Value.Date >= parameters.StartDate.Value.Date);
 
             if (parameters.EndDate.HasValue)
                 query = query.Where(x => x.EndDate.HasValue && x.EndDate.Value.Date <= parameters.EndDate.Value.Date);
+
+            if (!string.IsNullOrWhiteSpace(parameters.Profile))
+                query = query.Where(x => x.Profile != null && x.Profile.ToLowerInvariant().Contains(parameters.Profile.ToLowerInvariant()));
+
+            if (!string.IsNullOrWhiteSpace(parameters.Seniority))
+                query = query.Where(x => x.Seniority != null && x.Seniority.ToLowerInvariant().Contains(parameters.Seniority.ToLowerInvariant()));
+
+            if (!string.IsNullOrWhiteSpace(parameters.Technology))
+                query = query.Where(x => x.Technology != null && x.Technology.ToLowerInvariant().Contains(parameters.Technology.ToLowerInvariant()));
+
+            if (!string.IsNullOrWhiteSpace(parameters.EmployeeNumber))
+                query = query.Where(x => x.EmployeeNumber != null && x.EmployeeNumber.ToLowerInvariant().Contains(parameters.EmployeeNumber.ToLowerInvariant()));
+
+            if (parameters.SuperiorId.HasValue && parameters.SuperiorId.Value > 0)
+                query = query.Where(x => x.ManagerId.GetValueOrDefault() == parameters.SuperiorId);
+
+            if (parameters.AnalyticId.HasValue && parameters.AnalyticId > 0)
+                query = query.Where(x => x.Allocations.Any(s => s.AnalyticId == parameters.AnalyticId.Value));
 
             return query.ToList();
         }

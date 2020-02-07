@@ -429,8 +429,24 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public IList<UnemployeeListItemModel> GetUnemployees(UnemployeeSearchParameters parameters)
         {
             var employees = unitOfWork.EmployeeRepository.SearchUnemployees(parameters);
+            var list = new List<UnemployeeListItemModel>();
 
-            return employees.Select(x => new UnemployeeListItemModel(x)).ToList();
+            foreach (var employee in employees)
+            {
+                if (parameters.ManagerId.HasValue && parameters.ManagerId.Value > 0)
+                {
+                    if (unitOfWork.AllocationRepository.ExistAllocationByEmployeeAndManagerId(employee.Id, parameters.ManagerId.Value, parameters.AnalyticId))
+                    {
+                        list.Add(new UnemployeeListItemModel(employee));
+                    }
+                }
+                else
+                {
+                    list.Add(new UnemployeeListItemModel(employee));
+                }
+            }
+
+            return list;
         }
 
         public Response<EmployeeWorkingPendingHoursModel> GetPendingWorkingHours(int employeeId)

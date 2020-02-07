@@ -39,6 +39,8 @@ import { AmountFormatModule } from 'app/pipes/amount-format.module';
 import { RrhhService } from 'app/services/human-resources/rrhh.service';
 import { ReportUpdownComponent } from './report-up-down/report-up-down';
 import { SalaryReportComponent } from './resources/salary-report/salary-report';
+import { AnalyticService } from 'app/services/allocation-management/analytic.service';
+import { UserService } from 'app/services/admin/user.service';
 
 @NgModule({
   declarations: [LicenseListRrhh, LicenseListWidget, LicenseListManager, LicenseDetailComponent, LicenseAuthPendingComponent, ReportUpdownComponent,
@@ -49,7 +51,7 @@ import { SalaryReportComponent } from './resources/salary-report/salary-report';
                  TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, RrhhRouter,
                  NgSelectModule, AmountFormatModule],
 
-  providers   : [LicenseService, EmployeeService, EmployeeNewsService, ServiceService, CustomerService, UtilsService, PrepaidService, RrhhService],
+  providers   : [LicenseService, EmployeeService, EmployeeNewsService, ServiceService, CustomerService, UtilsService, PrepaidService, RrhhService, AnalyticService, UserService],
 
   exports     : []
 })

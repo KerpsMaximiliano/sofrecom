@@ -5,6 +5,8 @@ import { EmployeeService } from "../../../../services/allocation-management/empl
 import { DataTableService } from "../../../../services/common/datatable.service";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { Router } from "@angular/router";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { UserService } from "app/services/admin/user.service";
 
 declare var $: any;
 
@@ -18,10 +20,15 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
     @ViewChild('accordion') accordion;
 
     public resources: any[] = new Array<any>();
+    public users: any[] = new Array<any>();
+    public analytics: any[] = new Array<any>();
+
     public comments: string;
     public gridIsVisible: boolean = false;
 
     searchSubscrip: Subscription;
+    getAnalyticSubscrip: Subscription;
+    getUsersSubscrip: Subscription;
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -36,6 +43,13 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
 
     public searchModel = {
         name: "",
+        seniority: "",
+        profile: "",
+        technology: "",
+        analyticId: null,
+        superiorId: null,
+        managerId: null,
+        employeeNumber: "",
         startDate: null,
         endDate: null
     };
@@ -44,9 +58,14 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private employeeService: EmployeeService,
         private router: Router,
+        private analyticService: AnalyticService,
+        private usersService: UserService,
         private dataTableService: DataTableService){}
 
     ngOnInit(): void {
+        this.getAnalytics();
+        this.getUsers();
+
         var data = JSON.parse(sessionStorage.getItem('lastUnemployeeQuery'));
 
         if(data){
@@ -57,6 +76,21 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         if(this.searchSubscrip) this.searchSubscrip.unsubscribe();
+        if(this.getAnalyticSubscrip) this.getAnalyticSubscrip.unsubscribe();
+        if(this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe();
+    }
+
+    getAnalytics() {
+        this.getAnalyticSubscrip = this.analyticService.getOptions().subscribe(
+            data => {
+                this.analytics = data;
+            });
+    }
+
+    getUsers(){
+        this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
+            this.users = data;
+        });
     }
 
     search(){
@@ -98,8 +132,18 @@ export class UnemployeesSearchComponent implements OnInit, OnDestroy {
         this.searchModel.startDate = "";
         this.searchModel.endDate = "";
         $('.datepicker').val('');
+      
+        this.searchModel.profile = "";
+        this.searchModel.seniority = "";
+        this.searchModel.technology = "";
+        this.searchModel.employeeNumber = "";
+        this.searchModel.analyticId = null;
+        this.searchModel.superiorId = null;
+        this.searchModel.managerId = null;
+
         this.resources = [];
         sessionStorage.removeItem('lastUnemployeeQuery');
+
         this.initGrid();
     }
 
