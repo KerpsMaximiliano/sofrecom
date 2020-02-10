@@ -139,7 +139,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     var first = allocation.FirstOrDefault();
 
                     allocationDto.AnalyticId = analyticId;
-                    allocationDto.AnalyticTitle = first.Analytic.Title;
+                    allocationDto.AnalyticTitle = $"{first.Analytic.Title} - {first.Analytic.Name}";
                     allocationDto.Id = first.Id;
                 }
                 else

@@ -56,5 +56,16 @@ namespace Sofco.Core.Models.Billing
         public string PrincipalContactEmail { get; set; }
         public decimal HitosBilled { get; set; }
         public decimal HitosPending { get; set; }
+
+        public IList<ProjectBillingItem> Billings { get; set; }
+    }
+
+    public class ProjectBillingItem
+    {
+        public decimal Billed { get; set; }
+
+        public decimal BillingPending { get; set; }
+
+        public string Currency { get; set; }
     }
 }
