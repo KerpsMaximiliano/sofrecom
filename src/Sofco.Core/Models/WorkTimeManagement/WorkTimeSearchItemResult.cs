@@ -30,5 +30,6 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public string Comments { get; set; }
 
         public string AnalyticTitle { get; set; }
+        public int Id { get; set; }
     }
 }

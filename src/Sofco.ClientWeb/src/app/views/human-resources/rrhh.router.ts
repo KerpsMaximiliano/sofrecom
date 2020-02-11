@@ -17,9 +17,9 @@ const RRHH_ROUTER: Routes = [
 
     { path: "unemployees", component: UnemployeesSearchComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
     
-    { path: "updown", component: ReportUpdownComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
+    { path: "updown", component: ReportUpdownComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "UPDOWN" } },
     
-    { path: "salary-report", component: SalaryReportComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "VWUEM" } },
+    { path: "salary-report", component: SalaryReportComponent, canActivate: [AuthGuard], data: { fromRrhh: true, module: "ALLOC", functionality: "SALARY-REPORT" } },
 
     {
         path: "licenses",
