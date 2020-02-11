@@ -44,10 +44,10 @@ namespace Sofco.DAL.Repositories.Reports
             }
 
             if (parameters.StartDate.HasValue && parameters.StartDate != DateTime.MinValue)
-                query = query.Where(x => x.ReceptionDate >= parameters.StartDate);
+                query = query.Where(x => x.ReceptionDate >= parameters.StartDate || (x.AdjustmentDate.HasValue && x.AdjustmentDate >= parameters.StartDate));
 
             if (parameters.EndDate.HasValue && parameters.EndDate != DateTime.MinValue)
-                query = query.Where(x => x.ReceptionDate <= parameters.EndDate);
+                query = query.Where(x => x.ReceptionDate <= parameters.EndDate || (x.AdjustmentDate.HasValue && x.AdjustmentDate <= parameters.EndDate));
 
             var result = query.ToList();
 
