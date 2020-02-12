@@ -139,11 +139,11 @@ namespace Sofco.Service.Implementations.Rrhh
                 foreach (var socialCharge in listToAdd)
                 {
                     var salaryTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber == 641100)
+                        .Where(x => x.AccountNumber == 641100 || x.AccountNumber == 641101)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     var chargesTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
+                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001 && x.AccountNumber != 641101)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));
@@ -153,11 +153,11 @@ namespace Sofco.Service.Implementations.Rrhh
                 foreach (var socialCharge in listToUpdate)
                 {
                     var salaryTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber == 641100)
+                        .Where(x => x.AccountNumber == 641100 || x.AccountNumber == 641101)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     var chargesTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
+                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001 && x.AccountNumber != 641101)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));

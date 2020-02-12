@@ -185,7 +185,7 @@ namespace Sofco.Service.Implementations.Rrhh
                         }
 
                         var chargesTotal = socialcharge.Items
-                            .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
+                            .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641101 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
                             .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                         socialcharge.ChargesTotal = CryptographyHelper.Encrypt(chargesTotal.ToString(CultureInfo.InvariantCulture));
