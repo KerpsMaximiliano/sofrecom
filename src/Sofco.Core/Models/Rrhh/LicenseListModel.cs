@@ -32,9 +32,12 @@ namespace Sofco.Core.Models.Rrhh
 
             if (license.Type != null)
             {
+                LicenseTypeId = license.TypeId;
                 LicenseTypeName = license.Type.Description;
             }
         }
+
+        public int LicenseTypeId { get; set; }
 
         public int WorkDays { get; set; }
 
