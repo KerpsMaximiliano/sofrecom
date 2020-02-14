@@ -151,9 +151,12 @@ namespace Sofco.Service.Implementations.Reports
 
             foreach (var item in result)
             {
-                var split = item.ManagerNames.Split(';');
-                item.ManagerNames = string.Join(";", split.Distinct());
-
+                if (!string.IsNullOrWhiteSpace(item.ManagerNames))
+                {
+                    var split = item.ManagerNames.Split(';');
+                    item.ManagerNames = string.Join(";", split.Distinct());
+                }
+              
                 if(item.FileId.HasValue && item.FileId.Value > 0)
                     item.PdfUrl = $"{emailConfig.SiteUrl}pdf/{item.FileId}/{PdfPathId}";
 
