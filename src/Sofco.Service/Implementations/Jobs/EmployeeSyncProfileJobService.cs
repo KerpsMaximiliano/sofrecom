@@ -95,7 +95,10 @@ namespace Sofco.Service.Implementations.Jobs
                 nameof(Employee.Bank),
                 nameof(Employee.Salary),
                 nameof(Employee.PrepaidAmount),
-                nameof(Employee.BeneficiariesCount)
+                nameof(Employee.BeneficiariesCount),
+                nameof(Employee.Nationality),
+                nameof(Employee.Activity),
+                nameof(Employee.ContractType),
             };
         }
 

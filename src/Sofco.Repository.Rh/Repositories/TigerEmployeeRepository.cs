@@ -43,7 +43,10 @@ namespace Sofco.Repository.Rh.Repositories
             dbanc as bank,
             ayude,
             nuset,
-            nuse1
+            nuse1,
+            activ,
+            dsemi,
+            denac
         FROM
 	        View_A001
         ";

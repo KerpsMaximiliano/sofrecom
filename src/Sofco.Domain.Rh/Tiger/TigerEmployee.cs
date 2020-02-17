@@ -59,5 +59,11 @@ namespace Sofco.Domain.Rh.Tiger
         public decimal Nuse1 { get; set; }
 
         public int Ayude { get; set; }
+
+        public int Activ { get; set; }
+
+        public string Dsemi { get; set; }
+
+        public string Denac { get; set; }
     }
 }

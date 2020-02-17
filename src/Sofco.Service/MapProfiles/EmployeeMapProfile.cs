@@ -40,6 +40,9 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.Salary, s =>  s.MapFrom(x => CryptographyHelper.Encrypt(x.Nuse1.ToString())))
                 .ForMember(d => d.PrepaidAmount, s => s.MapFrom(x => CryptographyHelper.Encrypt(x.Nuset.ToString())))
                 .ForMember(d => d.BeneficiariesCount, s => s.MapFrom(x => x.Ayude))
+                .ForMember(d => d.Activity, s => s.MapFrom(x => x.Activ))
+                .ForMember(d => d.Nationality, s => s.MapFrom(x => x.Denac))
+                .ForMember(d => d.ContractType, s => s.MapFrom(x => x.Dsemi))
                 .ForMember(d => d.Email, s => s.MapFrom(x => x.Email.Trim()));
 
             CreateMap<RhproEmployeeLicense, EmployeeLicense>()
