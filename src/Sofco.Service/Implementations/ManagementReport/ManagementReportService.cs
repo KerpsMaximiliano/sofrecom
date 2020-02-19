@@ -1423,7 +1423,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                                                 auxTypeCost.Charges = (allocation.RealPercentage / 100) * charges;
                                                 auxTypeCost.Adjustment = monthValue.Adjustment ?? 0;
 
-                                                if (salary > 0)
+                                                if (salary > 0 && auxTypeCost.Value > 0)
                                                 {
                                                     monthDetail.ChargesPercentage = (decimal)(((auxTypeCost.Charges + auxTypeCost.Bono) / auxTypeCost.Value) * 100);
                                                 }
@@ -1475,10 +1475,9 @@ namespace Sofco.Service.Implementations.ManagementReport
                                             auxTypeCost.OriginalValue = (allocation.RealPercentage / 100) * salary;
                                             auxTypeCost.Charges = (allocation.RealPercentage / 100) * charges;
 
-                                            if (salary > 0)
+                                            if (salary > 0 && auxTypeCost.Value > 0)
                                             {
-                                                monthDetail.ChargesPercentage =
-                                                    (decimal)(((auxTypeCost.Charges + auxTypeCost.Bono) / auxTypeCost.Value) * 100);
+                                                monthDetail.ChargesPercentage = (decimal)(((auxTypeCost.Charges + auxTypeCost.Bono) / auxTypeCost.Value) * 100);
                                             }
                                         }
                                     }

@@ -234,7 +234,6 @@ export class ManagementReportBillingComponent implements OnInit, OnDestroy {
             });
 
             this.sendDataToDetailView();
-            this.messageService.closeLoading();
         },
         error => this.messageService.closeLoading());
     }

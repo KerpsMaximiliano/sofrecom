@@ -206,10 +206,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             this.calculateTotalCosts();
             this.sendDataToDetailView();
 
-            if(showLoading){
-                this.messageService.closeLoading();
-
-            }
+            this.messageService.closeLoading();
         },
         () => this.messageService.closeLoading());
     }
@@ -573,7 +570,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     getIdAnalytic() {
-        return this.model.analyticId || 0
+        return this.model.analyticId;
     }
 
     CalculateSalary(monthData, index) {
