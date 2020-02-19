@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Domain.Models.AllocationManagement;

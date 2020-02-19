@@ -48,8 +48,11 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public bool HasEndDate { get; set; }
 
         public int ManagerId { get; set; }
+
         public decimal DraftHours { get; set; }
+
         public decimal SentHours { get; set; }
+
         public int AllocationId { get; set; }
     }
 

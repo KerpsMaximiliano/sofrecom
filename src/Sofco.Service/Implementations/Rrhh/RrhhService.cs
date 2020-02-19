@@ -74,13 +74,32 @@ namespace Sofco.Service.Implementations.Rrhh
                     text.WriteLine(tigerReportItem.GetLine());
                     text.Flush();
 
-                    var allocation = new Allocation
+                    if (tigerReportItem.AllocationId > 0)
                     {
-                        Id = tigerReportItem.AllocationId,
-                        RealPercentage = Convert.ToDecimal(tigerReportItem.Percentage)
-                    };
+                        var allocation = new Allocation
+                        {
+                            Id = tigerReportItem.AllocationId,
+                            RealPercentage = Convert.ToDecimal(tigerReportItem.Percentage)
+                        };
 
-                    unitOfWork.AllocationRepository.UpdateRealPercentage(allocation);
+                        unitOfWork.AllocationRepository.UpdateRealPercentage(allocation);
+                    }
+                    else
+                    {
+                        var allocation = new Allocation
+                        {
+                            AnalyticId = tigerReportItem.AnalyticId,
+                            EmployeeId = tigerReportItem.EmployeeId,
+                            ModifiedAt = DateTime.UtcNow.Date,
+                            ModifiedBy = null,
+                            Percentage = -1,
+                            RealPercentage = Convert.ToDecimal(tigerReportItem.Percentage),
+                            StartDate = tigerReportItem.Date,
+                            ReleaseDate = tigerReportItem.Date.AddDays(-1)
+                        };
+                       
+                        unitOfWork.AllocationRepository.Insert(allocation);
+                    }
                 }
 
                 try

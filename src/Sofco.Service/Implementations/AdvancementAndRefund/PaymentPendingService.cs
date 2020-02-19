@@ -140,7 +140,6 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         {
             var advancementsAccounted = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkFlowStateAccounted);
             var advancementsPaid = unitOfWork.AdvancementRepository.GetAllPaymentPending(settings.WorkflowStatusApproveId);
-            
 
             foreach (var advancement in advancementsPaid)
             {

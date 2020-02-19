@@ -159,6 +159,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     allocationMonthDto.Percentage = allocationMonth?.Percentage ?? 0;
                     allocationMonthDto.ReleaseDate = allocationMonth?.ReleaseDate.Date.Date ?? DateTime.UtcNow.Date;
 
+                    if (allocationMonthDto.Percentage == -1)
+                    {
+                        allocationMonthDto.Percentage = 0;
+                    }
+
                     if (diccionary.ContainsKey(date))
                     {
                         diccionary[date] += allocationMonthDto.Percentage.GetValueOrDefault();

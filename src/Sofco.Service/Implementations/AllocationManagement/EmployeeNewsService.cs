@@ -191,6 +191,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 unitOfWork.EmployeeRepository.UpdateEndDate(employeeToChange);
 
+                var user = unitOfWork.UserRepository.GetByEmail(employeeToChange.Email);
+
+                if (user != null)
+                {
+                    user.Active = false;
+                    unitOfWork.UserRepository.Update(user);
+                }
+
                 // Delete news
                 unitOfWork.EmployeeSyncActionRepository.Delete(response.Data);
 

@@ -204,6 +204,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             }
         }
 
+        public IList<Allocation> GetByEmployeesAndDate(List<int> employeeIds, int year, int month)
+        {
+            return context.Allocations.Include(x => x.Analytic).Where(x => employeeIds.Contains(x.EmployeeId) && x.StartDate.Date == new DateTime(year, month, 1).Date).ToList();
+        }
+
         public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters, DateTime startDate, DateTime endDate)
         {
             if (!parameters.AnalyticId.Any() && (!parameters.EmployeeId.HasValue || parameters.EmployeeId.Value == 0) && !parameters.ManagerId.Any())

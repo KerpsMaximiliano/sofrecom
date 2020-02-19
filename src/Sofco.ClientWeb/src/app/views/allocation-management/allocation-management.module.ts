@@ -30,13 +30,16 @@ import { NumbersOnlyModule } from 'app/components/numbersOnly/numberOnly.directi
 import { NgSelectModule } from '@ng-select/ng-select';
 import { BsDatepickerModule } from 'ngx-bootstrap';
 import { RrhhService } from 'app/services/human-resources/rrhh.service';
+import { ContractService } from 'app/services/allocation-management/contract.service';
+import { AccountInfoComponent } from './account-info/account-info';
+import { UtilsService } from 'app/services/common/utils.service';
 
 @NgModule({
   declarations: [
     AddAllocationByResourceComponent,
     ResourceSearchComponent, 
     AllocationReportComponent,
-    ExternalUserComponent,
+    ExternalUserComponent
   ],
   imports: [
     CommonModule,
@@ -60,7 +63,7 @@ import { RrhhService } from 'app/services/human-resources/rrhh.service';
     AllocationRouter,
     NgSelectModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService, RrhhService ],
+  providers: [ AnalyticService, AllocationService, EmployeeService, CategoryService, LicenseService, EmployeeProfileHistoryService, RrhhService, ContractService, UtilsService ],
 
   exports: [],
 })

@@ -300,7 +300,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             {
                 var tigerReport = new List<TigerReportItem>();
 
-                SaveTigerTxt(response, tigerReport);
+                SaveTigerTxt(response, tigerReport, new DateTime(parameters.EndYear, parameters.EndMonth, 1));
 
                 response.Data.IsCompleted = (response.Data.EmployeesMissingHours == null || !response.Data.EmployeesMissingHours.Any()) &&
                                             response.Data.EmployeesAllocationResume.All(x =>
@@ -565,7 +565,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             }
         }
 
-        private void SaveTigerTxt(Response<WorkTimeReportModel> response, List<TigerReportItem> tigerReport)
+        private void SaveTigerTxt(Response<WorkTimeReportModel> response, List<TigerReportItem> tigerReport, DateTime date)
         {
             var i = 1;
             foreach (var item in response.Data.Items)
@@ -582,8 +582,6 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     }
                     else
                     {
-                 
-
                         if (response.Data.Items.Where(x => x.EmployeeId == item.EmployeeId)
                                 .Sum(x => x.AllocationPercentage) == 100)
                         {
@@ -610,7 +608,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         item.Activity, item.Title)
                     {
                         Id = i,
-                        AllocationId = item.AllocationId
+                        AllocationId = item.AllocationId,
+                        Date = date,
+                        AnalyticId = item.AnalyticId,
+                        EmployeeId = item.EmployeeId
                     };
                     i++;
 
@@ -624,7 +625,10 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         item.Activity, item.Title)
                     {
                         Id = i,
-                        AllocationId = item.AllocationId
+                        AllocationId = item.AllocationId,
+                        Date = date,
+                        AnalyticId = item.AnalyticId,
+                        EmployeeId = item.EmployeeId
                     };
                     i++;
 

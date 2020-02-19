@@ -77,6 +77,10 @@
           <li [ngClass]="{active: activeRoute('currencyExchange')}"
             *ngIf="menuService.hasFunctionality('CONTR', 'CURRENCY-EXCHANGE')"><a
               [routerLink]="['/contracts/currencyExchange']">Cotizaciones</a></li>
+
+          <li [ngClass]="{active: activeRoute('accounts-info')}" *ngIf="menuService.hasFunctionality('ALLOC', 'PMORP')"><a
+            [routerLink]="['/contracts/accounts-info']">Información Cuentas</a>
+          </li>
         </ul>
       </li>
 
@@ -130,6 +134,7 @@
           <li [ngClass]="{active: activeRoute('updown')}" *ngIf="menuService.hasFunctionality('ALLOC', 'SALARY-REPORT')"><a
             [routerLink]="['/rrhh/updown']">Reporte Salarios</a>
           </li>
+
           <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('CTRLI', 'QUERY')"><a
               [routerLink]="['/rrhh/licenses']">{{'rrhh.licenses' | translate }} (RRHH)</a></li>
           <li [ngClass]="{active: activeRoute('licenses/managers')}"
