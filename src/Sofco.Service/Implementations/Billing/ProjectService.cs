@@ -83,21 +83,47 @@ namespace Sofco.Service.Implementations.Billing
 
                 foreach (var project in projectsModel)
                 {
-                    var crmProjectHitos = projectData.GetHitos(project.CrmId);
+                    var ocInfo = GetPurchaseOrders(project.CrmId);
 
-                    foreach (var hitoCrm in crmProjectHitos)
+                    project.Billings = new List<ProjectBillingItem>();
+
+                    foreach (var purchaseOrderWidgetModel in ocInfo)
                     {
-                        if (hitoCrm.Status.ToLower().Equals("a ser facturado") || hitoCrm.Status.ToLower().Equals("facturado") 
-                            || hitoCrm.Status.ToLower().Equals("pagado"))
-                        {
-                            project.HitosBilled += hitoCrm.Ammount;
-                        }
+                        var item = project.Billings.SingleOrDefault(x => x.Currency.Equals(purchaseOrderWidgetModel.Currency));
 
-                        if (hitoCrm.Status.ToLower().Equals("pendiente"))
+                        if (item != null)
                         {
-                            project.HitosPending += hitoCrm.Ammount;
+                            item.Billed += purchaseOrderWidgetModel.AmmountCashed + purchaseOrderWidgetModel.CashPendingAmmount;
+                            item.BillingPending += purchaseOrderWidgetModel.BillingPendingAmmount;
+                        }
+                        else
+                        {
+                            var newItem = new ProjectBillingItem
+                            {
+                                Currency = purchaseOrderWidgetModel.Currency,
+                                Billed = purchaseOrderWidgetModel.AmmountCashed + purchaseOrderWidgetModel.CashPendingAmmount,
+                                BillingPending = purchaseOrderWidgetModel.BillingPendingAmmount
+                            };
+
+                            project.Billings.Add(newItem);
                         }
                     }
+
+                    //var crmProjectHitos = projectData.GetHitos(project.CrmId);
+
+                    //foreach (var hitoCrm in crmProjectHitos)
+                    //{
+                    //    if (hitoCrm.Status.ToLower().Equals("a ser facturado") || hitoCrm.Status.ToLower().Equals("facturado") 
+                    //        || hitoCrm.Status.ToLower().Equals("pagado"))
+                    //    {
+                    //        project.HitosBilled += hitoCrm.Ammount;
+                    //    }
+
+                    //    if (hitoCrm.Status.ToLower().Equals("pendiente"))
+                    //    {
+                    //        project.HitosPending += hitoCrm.Ammount;
+                    //    }
+                    //}
                 }
 
                 response.Data = projectsModel;

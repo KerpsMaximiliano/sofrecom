@@ -65,24 +65,47 @@
                     <table class="table table-striped" id="projectTable" width="100%">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>{{"billing.project.grid.name" | translate}}</th>
                                 <th>{{"billing.project.grid.opportunity" | translate}}</th>
                                 <th>{{"billing.project.grid.incomes" | translate}}</th>
-                                <th>{{"billing.project.grid.totalCharged" | translate}}</th>
-                                <th>{{"billing.project.grid.billPending" | translate}}</th>
                                 <th>{{"billing.project.grid.startDate" | translate}}</th>
                                 <th>{{"billing.project.grid.endDate" | translate}}</th>
+                                <th>Accion</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let project of projects" (click)="goToProjectDetail(project)" class="pointer">
-                                <td>{{project.name}}</td>
-                                <td>{{ project.opportunityNumber }} - {{ project.opportunityName }}</td>
-                                <td>{{ getCurrencySymbol(project.currency) }} {{project.incomes | number: '1.2-2' }}</td>
-                                <td>{{ getCurrencySymbol(project.currency) }} {{ project.hitosBilled | number: '1.2-2' }}</td>
-                                <td>{{ getCurrencySymbol(project.currency) }} {{ project.hitosPending | number: '1.2-2' }}</td>
-                                <td> {{ project.startDate | date:'dd/MM/yyyy' }} </td>
-                                <td> {{ project.endDate | date:'dd/MM/yyyy' }} </td>
+                            <tr *ngFor="let project of projects" class="pointer">
+                                <td style="width:20px" (click)="expand(project)" *ngIf="project.type == 'item'">
+                                    <i [ngClass]="getIconClass(project)"></i>
+                                </td>
+                                <td *ngIf="project.type == 'item'"> {{project.data.name}}</td>
+                                <td *ngIf="project.type == 'item'"> {{ project.data.opportunityNumber }} - {{ project.data.opportunityName }}</td>
+                                <td *ngIf="project.type == 'item'"> {{ getCurrencySymbol(project.data.currency) }} {{project.data.incomes | number: '1.2-2' }}</td>
+                                <td *ngIf="project.type == 'item'"> {{ project.data.startDate | date:'dd/MM/yyyy' }} </td>
+                                <td *ngIf="project.type == 'item'"> {{ project.data.endDate | date:'dd/MM/yyyy' }} </td>
+                                <td *ngIf="project.type == 'item'">
+                                    <button type="button" class="btn btn-success btn-xs" (click)="goToProjectDetail(project.data)"><i class="fa fa-eye"></i></button>
+                                </td>
+
+                                <td colspan="5" *ngIf="project.type == 'detail' && project.show == true">
+                                    <table class="table dataTable" role="grid">
+                                        <thead>
+                                            <tr>
+                                                <th>Moneda</th>
+                                                <th>Total Facturado</th>
+                                                <th>Pendiente a Facturar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody> 
+                                            <tr *ngFor="let billing of project.data">
+                                                <td>{{ billing.currency }}</td>
+                                                <td>{{ billing.billed | number: '1.2-2' }} </td>
+                                                <td>{{ billing.billingPending | number: '1.2-2' }} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table> 
+                                </td>
                             </tr>
                         </tbody>
                     </table>        

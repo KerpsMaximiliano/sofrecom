@@ -39,6 +39,8 @@ namespace Sofco.Domain.Models.Reports
 
         public string ManagerIds { get; set; }
 
+        public string ManagerNames { get; set; }
+
         public string CommercialManagerIds { get; set; }
 
         public string AccountManagerNames { get; set; }

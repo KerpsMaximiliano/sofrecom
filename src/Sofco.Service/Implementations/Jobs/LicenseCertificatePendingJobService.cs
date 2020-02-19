@@ -54,9 +54,13 @@ namespace Sofco.Service.Implementations.Jobs
                 content.AppendLine($"<li>{item.Employee.Name} - {item.Type.Description}");
             }
 
+            var rrhhAbMail = unitOfWork.GroupRepository.GetEmail(emailConfig.RRhhAb);
+            var rrhhLMail = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhL);
+
             return mailBuilder.GetEmail(new LicensePendingCertificateData
             {
-                Recipient = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode),
+            
+                Recipient = $"{rrhhAbMail};{rrhhLMail}",
                 Message = $"<ul>{content}</ul>"
             });
         }

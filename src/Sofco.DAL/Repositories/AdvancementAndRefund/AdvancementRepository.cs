@@ -63,7 +63,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                     .ThenInclude(x => x.ActualTransitions)
                         .ThenInclude(x => x.WorkflowStateAccesses)
                             .ThenInclude(x => x.UserSource)
-                .Where(x => x.StatusId != workflowStatusDraft);
+                .Where(x => x.StatusId != workflowStatusDraft && x.UserApplicant.Active);
 
             if (model.StateIds != null && model.StateIds.Any())
                 query = query.Where(x => model.StateIds.Contains(x.StatusId));
@@ -114,7 +114,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.AdvancementRefunds)
                     .ThenInclude(x => x.Refund)
                 .Include(x => x.Status).ThenInclude(x => x.ActualTransitions)
-                .Where(x => x.StatusId == workFlowStatePaymentPending);
+                .Where(x => x.StatusId == workFlowStatePaymentPending && x.UserApplicant.Active);
 
             return query.ToList();
         }

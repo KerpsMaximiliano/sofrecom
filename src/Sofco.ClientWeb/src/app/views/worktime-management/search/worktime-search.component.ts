@@ -36,6 +36,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     getCustomerSubscrip: Subscription;
     getManagersSubscrip: Subscription;
     getStatusSubscrip: Subscription;
+    deleteSubscription: Subscription;
 
     public searchModel = {
         startDate: null,
@@ -80,6 +81,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         if(this.getCustomerSubscrip) this.getCustomerSubscrip.unsubscribe();
         if(this.getManagersSubscrip) this.getManagersSubscrip.unsubscribe();
         if(this.getStatusSubscrip) this.getStatusSubscrip.unsubscribe();
+        if(this.deleteSubscription) this.deleteSubscription.unsubscribe();
     }
 
     getStatus(){
@@ -224,5 +226,27 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
 
     canSeeManagers(){
         return this.menuService.userIsDirector || this.menuService.userIsRrhh || this.menuService.userIsCdg;
+    }
+
+    canDelete(){
+        return this.menuService.hasAdminMenu();
+    }
+
+    delete(item){
+        this.messageService.showConfirm(() => {
+            this.messageService.showLoading();
+
+            this.deleteSubscription = this.worktimeService.delete(item.id).subscribe(response => {
+                this.messageService.closeLoading();
+
+                var index = this.data.findIndex(x => x.id == item.id);
+
+                if(index > -1){
+                    this.data.splice(index, 1);
+                    this.initGrid();
+                }
+            },
+            error => this.messageService.closeLoading());
+        });
     }
 }

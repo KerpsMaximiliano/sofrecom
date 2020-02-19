@@ -41,11 +41,14 @@ import { CurrencyExchangeComponent } from './currency-exchange/currency-exchange
 import { CategoryService } from 'app/services/admin/category.service';
 import { ResourceByServiceComponent } from '../allocation-management/resources/by-service/resource-by-service.component';
 import { DelegationService } from 'app/services/admin/delegation.service';
+import { AccountInfoComponent } from '../allocation-management/account-info/account-info';
+import { ContractService } from 'app/services/allocation-management/contract.service';
+import { UtilsService } from 'app/services/common/utils.service';
 
 @NgModule({
   declarations: [
     AnalyticSearchComponent, AddCostCenterComponent, ListCostCenterComponent, NewAnalyticComponent, AnalyticFormComponent,
-    EditAnalyticComponent, ViewAnalyticComponent, EditCostCenterComponent, AddAllocationComponent,
+    EditAnalyticComponent, ViewAnalyticComponent, EditCostCenterComponent, AddAllocationComponent, AccountInfoComponent,
     ResourceTimelineComponent, AddCloseDateComponent, CurrencyExchangeComponent, ResourceByServiceComponent
   ],
   imports: [
@@ -68,7 +71,7 @@ import { DelegationService } from 'app/services/admin/delegation.service';
     ContractsRouter,
     NgSelectModule
   ],
-  providers: [ AnalyticService, AllocationService, EmployeeService,
+  providers: [ AnalyticService, AllocationService, EmployeeService, ContractService, UtilsService,
               CostCenterService, CustomerService, ServiceService, CloseDateService,
               CurrencyExchangeService, CategoryService ],
   exports: [],

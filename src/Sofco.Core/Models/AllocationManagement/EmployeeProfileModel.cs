@@ -84,5 +84,11 @@ namespace Sofco.Core.Models.AllocationManagement
         public string PhoneNumber { get; set; }
 
         public string Bank { get; set; }
+
+        public int Activity { get; set; }
+
+        public string ContractType { get; set; }
+
+        public string Nationality { get; set; }
     }
 }

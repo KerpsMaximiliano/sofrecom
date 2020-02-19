@@ -139,7 +139,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     var first = allocation.FirstOrDefault();
 
                     allocationDto.AnalyticId = analyticId;
-                    allocationDto.AnalyticTitle = first.Analytic.Title;
+                    allocationDto.AnalyticTitle = $"{first.Analytic.Title} - {first.Analytic.Name}";
                     allocationDto.Id = first.Id;
                 }
                 else
@@ -158,6 +158,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     allocationMonthDto.Date = date;
                     allocationMonthDto.Percentage = allocationMonth?.Percentage ?? 0;
                     allocationMonthDto.ReleaseDate = allocationMonth?.ReleaseDate.Date.Date ?? DateTime.UtcNow.Date;
+
+                    if (allocationMonthDto.Percentage == -1)
+                    {
+                        allocationMonthDto.Percentage = 0;
+                    }
 
                     if (diccionary.ContainsKey(date))
                     {

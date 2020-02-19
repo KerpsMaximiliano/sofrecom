@@ -58,6 +58,8 @@
     <Compile Remove="Migrations\20191129182406_Interview3.Designer.cs" />
     <Compile Remove="Migrations\20191206130247_AnalyticAudit.cs" />
     <Compile Remove="Migrations\20191206130247_AnalyticAudit.Designer.cs" />
+    <Compile Remove="Migrations\20200210152855_OcManagerNames.cs" />
+    <Compile Remove="Migrations\20200210152855_OcManagerNames.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

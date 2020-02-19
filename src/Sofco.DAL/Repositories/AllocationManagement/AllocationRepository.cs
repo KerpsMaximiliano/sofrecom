@@ -183,6 +183,32 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             }
         }
 
+        public bool ExistAllocationByEmployeeAndManagerId(int employeeId, int managerId, int? analyticId)
+        {
+            if (analyticId.HasValue)
+            {
+                return context.Allocations
+                    .Include(x => x.Analytic)
+                    .Any(x => x.EmployeeId == employeeId
+                              && x.Percentage > 0
+                              && x.Analytic.ManagerId.GetValueOrDefault() == managerId
+                              && x.AnalyticId == analyticId);
+            }
+            else
+            {
+                return context.Allocations
+                    .Include(x => x.Analytic)
+                    .Any(x => x.EmployeeId == employeeId
+                              && x.Percentage > 0
+                              && x.Analytic.ManagerId.GetValueOrDefault() == managerId);
+            }
+        }
+
+        public IList<Allocation> GetByEmployeesAndDate(List<int> employeeIds, int year, int month)
+        {
+            return context.Allocations.Include(x => x.Analytic).Where(x => employeeIds.Contains(x.EmployeeId) && x.StartDate.Date == new DateTime(year, month, 1).Date).ToList();
+        }
+
         public ICollection<Allocation> GetAllocationsForWorkTimeReport(ReportParams parameters, DateTime startDate, DateTime endDate)
         {
             if (!parameters.AnalyticId.Any() && (!parameters.EmployeeId.HasValue || parameters.EmployeeId.Value == 0) && !parameters.ManagerId.Any())

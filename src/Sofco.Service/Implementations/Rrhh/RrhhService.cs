@@ -74,13 +74,32 @@ namespace Sofco.Service.Implementations.Rrhh
                     text.WriteLine(tigerReportItem.GetLine());
                     text.Flush();
 
-                    var allocation = new Allocation
+                    if (tigerReportItem.AllocationId > 0)
                     {
-                        Id = tigerReportItem.AllocationId,
-                        RealPercentage = Convert.ToDecimal(tigerReportItem.Percentage)
-                    };
+                        var allocation = new Allocation
+                        {
+                            Id = tigerReportItem.AllocationId,
+                            RealPercentage = Convert.ToDecimal(tigerReportItem.Percentage)
+                        };
 
-                    unitOfWork.AllocationRepository.UpdateRealPercentage(allocation);
+                        unitOfWork.AllocationRepository.UpdateRealPercentage(allocation);
+                    }
+                    else
+                    {
+                        var allocation = new Allocation
+                        {
+                            AnalyticId = tigerReportItem.AnalyticId,
+                            EmployeeId = tigerReportItem.EmployeeId,
+                            ModifiedAt = DateTime.UtcNow.Date,
+                            ModifiedBy = null,
+                            Percentage = -1,
+                            RealPercentage = Convert.ToDecimal(tigerReportItem.Percentage),
+                            StartDate = tigerReportItem.Date,
+                            ReleaseDate = tigerReportItem.Date.AddDays(-1)
+                        };
+                       
+                        unitOfWork.AllocationRepository.Insert(allocation);
+                    }
                 }
 
                 try
@@ -139,11 +158,11 @@ namespace Sofco.Service.Implementations.Rrhh
                 foreach (var socialCharge in listToAdd)
                 {
                     var salaryTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber == 641100)
+                        .Where(x => x.AccountNumber == 641100 || x.AccountNumber == 641101)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     var chargesTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
+                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001 && x.AccountNumber != 641101)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));
@@ -153,11 +172,11 @@ namespace Sofco.Service.Implementations.Rrhh
                 foreach (var socialCharge in listToUpdate)
                 {
                     var salaryTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber == 641100)
+                        .Where(x => x.AccountNumber == 641100 || x.AccountNumber == 641101)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     var chargesTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
+                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001 && x.AccountNumber != 641101)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));

@@ -46,7 +46,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult GetUnemployees([FromBody] UnemployeeSearchParameters parameters)
         {
             var model = employeeService.GetUnemployees(parameters);
-
+             
             return Ok(model);
         }
 

@@ -66,8 +66,9 @@ export class ReportUpdownComponent implements OnDestroy {
     }
 
     initGrid(){
+        var date = new Date();
         var columns = [0, 1, 2, 3, 4, 5, 6];
-        var title = `Reporte altas y bajas`;
+        var title = `Reporte altas y bajas - ${date.getDay()}-${date.getMonth()+1}-${date.getFullYear()}`;
 
         var options = { 
             selector: "#resourcesTable", 

@@ -26,6 +26,26 @@
 
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body tab-primary">
+                    <div class="row"> 
+                        <div class="col-sm-4"> 
+                            <div class="form-group">
+                                <label class="control-label"> {{'rrhh.license.employee' | translate }} </label>
+                                <ng-select [items]="resources" bindLabel="name" bindValue="id" [(ngModel)]="employeeId"></ng-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4"> 
+                            <div class="form-group">
+                                <label class="control-label">{{ 'rrhh.license.reason' | translate }}</label>
+                                <ng-select [items]="licensesTypes" bindLabel="text" bindValue="id" [(ngModel)]="licensesTypeId"></ng-select>
+                            </div>
+                        </div>
+        
+                        <div class="col-sm-4 m-t-md">
+                            <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                            <button class="btn btn-success btn-sm" (click)="newSearch()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+
                     <table class="table table-striped" id="allLicenses" width="100%">
                         <thead>
                             <tr>
@@ -44,7 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of data" class="pointer" (click)="goToDetail(item)">
+                            <tr *ngFor="let item of dataFiltered" class="pointer" (click)="goToDetail(item)">
                                 <td class="column-lg"> {{ item.employeeName }} </td>
                                 <td class="column-lg"> {{ item.managerName }} </td>
                                 <td class="column-lg"> {{ item.authorizerName }} </td>

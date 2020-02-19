@@ -105,6 +105,7 @@
                             <th class="column-xs">{{'workTimeManagement.query.date' | translate }}</th>
                             <th class="column-xs text-center">{{'workTimeManagement.query.hours' | translate }}</th>
                             <th class="column-sm">{{'workTimeManagement.query.status' | translate }}</th>
+                            <th class="column-xs"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,6 +124,9 @@
                             <td class="column-xs text-center">{{ item.hours | number: '1.2-2'}}</td>
                             <td class="column-sm">
                                 <span class="label label-worktime-{{item.status}} font-11">{{ ('workTimeManagement.' + item.status) | translate  }}</span>
+                            </td>
+                            <td class="column-xs">
+                                <button type="button" class="btn btn-danger btn-xs" *ngIf="canDelete()" (click)="delete(item)"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
                     </tbody>

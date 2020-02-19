@@ -60,14 +60,27 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       this.messageService.showLoading();
 
       this.getAllSubscrip = this.service.getAll(this.serviceId).subscribe(d => {
-        this.projects = d.data;
 
-        this.initGrid();
+        if(d.data && d.data.length > 0){
+          d.data.forEach(x => {
+            this.projects.push({ type: "item", data: x, id: x.id, show: false });
+  
+            if (x.billings && x.billings.length > 0) {
+                x.billings.forEach(detail => {
+                    detail.selected = false;
+                });
+
+                this.projects.push({ type: "detail", data: x.billings, id: x.id, show: false });
+            }
+          });
+        }
+ 
+        // this.initGrid();
 
         this.messageService.closeLoading();
       },
       err => {
-        this.initGrid();
+        // this.initGrid();
         this.messageService.closeLoading();
       });
     }
@@ -77,7 +90,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         selector: '#projectTable',
         columnDefs: [ {"aTargets": [3, 4], "sType": "date-uk"} ]
       }
-
+ 
       this.datatableService.destroy(params.selector);
       this.datatableService.initialize(params);
     }
@@ -146,5 +159,25 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       error => {
         this.messageService.closeLoading();
       });
+    }
+
+    expand(item){
+        var row = this.projects.find(x => x.id == item.id && x.type == 'detail');
+
+        if(row){
+            row.show = !row.show;
+            item.show = row.show;
+        }
+    }
+
+    getIconClass(project){
+      if(project.data.billings.length == 0) return "";
+
+      if(project.type == 'item' && project.show == false){
+        return "fa fa-plus-square";
+      }
+      else{
+        return "fa fa-minus";
+      }
     }
 }

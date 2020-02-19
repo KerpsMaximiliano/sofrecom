@@ -16,7 +16,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let allocation of model.allocations">
-                        <td class="analytic-column headcol">{{ allocation.analyticTitle }}</td>
+                        <td class="analytic-column headcol text-ellipsis">{{ allocation.analyticTitle }}</td>
 
                         <td *ngFor="let month of allocation.months; let monthIndex = index">
                             <input type="number" min="0" max="100" [disabled]="!allocation.edit" [(ngModel)]="month.percentage" class="form-control" (ngModelChange)="updateMonth($event, monthIndex, month)">

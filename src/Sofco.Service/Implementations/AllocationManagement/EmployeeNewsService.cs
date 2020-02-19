@@ -104,7 +104,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                 if (string.IsNullOrWhiteSpace(employee.Email))
                 {
-                    response.AddError(Resources.AllocationManagement.Employee.MailEmpty);
+                    response.AddErrorAndNoTraslate($"Verificar el email del recurso {employee.Name} y volver a 'Actualizar datos' para confirmar la novedad");
+                    response.Data = null;
+                    return response;
+                }
+
+                if (!employee.Email.Contains("@sofrecom.com.ar"))
+                {
+                    response.AddErrorAndNoTraslate($"Verificar el email del recurso {employee.Name} y volver a 'Actualizar datos' para confirmar la novedad");
                     response.Data = null;
                     return response;
                 }
@@ -183,6 +190,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employeeToChange.TypeEndReasonId = model.Type.GetValueOrDefault();
 
                 unitOfWork.EmployeeRepository.UpdateEndDate(employeeToChange);
+
+                var user = unitOfWork.UserRepository.GetByEmail(employeeToChange.Email);
+
+                if (user != null)
+                {
+                    user.Active = false;
+                    unitOfWork.UserRepository.Update(user);
+                }
 
                 // Delete news
                 unitOfWork.EmployeeSyncActionRepository.Delete(response.Data);

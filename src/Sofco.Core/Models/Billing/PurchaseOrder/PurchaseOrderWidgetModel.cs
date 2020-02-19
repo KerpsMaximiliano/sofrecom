@@ -15,6 +15,7 @@
         public string Currency { get; set; }
 
         public decimal? AdjustmentBalance { get; set; }
+
         public decimal TotalAmmount { get; set; }
     }
 }

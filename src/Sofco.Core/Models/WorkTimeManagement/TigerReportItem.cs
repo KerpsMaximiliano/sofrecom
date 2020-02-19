@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace Sofco.Core.Models.WorkTimeManagement
@@ -27,6 +28,9 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public string Activity { get; set; }
 
         public int AllocationId { get; set; }
+        public DateTime Date { get; set; }
+        public int AnalyticId { get; set; }
+        public int EmployeeId { get; set; }
 
         private const string Column5 = "0";
 

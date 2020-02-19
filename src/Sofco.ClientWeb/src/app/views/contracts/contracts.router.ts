@@ -11,6 +11,7 @@ import { AuthGuard } from "../../guards/auth.guard";
 import { AddCloseDateComponent } from "app/views/contracts/closeDates/add/closeDate-add.component";
 import { CurrencyExchangeComponent } from "./currency-exchange/currency-exchange";
 import { ResourceByServiceComponent } from "../allocation-management/resources/by-service/resource-by-service.component";
+import { AccountInfoComponent } from "../allocation-management/account-info/account-info";
 
 const CONTRACTS_ROUTER: Routes = [
     { path: "analytics",
@@ -23,6 +24,8 @@ const CONTRACTS_ROUTER: Routes = [
         { path: ":id/resources", component: ResourceByServiceComponent, canActivate: [AuthGuard] },
     ]},
     
+    { path: "accounts-info", component: AccountInfoComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "ACCOUNT-INFO" } },
+
     {
       path: "costCenter",
       children: [

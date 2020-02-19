@@ -431,6 +431,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 model.Reference = worktime.Reference;
                 model.Comments = worktime.UserComment;
                 model.Status = worktime.Status.ToString();
+                model.Id = worktime.Id;
 
                 response.Data.Add(model);
             }

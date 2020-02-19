@@ -36,6 +36,8 @@
 
         public string RRhhAb { get; set; }
 
+        public string RrhhL { get; set; }
+
         public string ComplianceCode { get; set; }
 
         public string SellerCode { get; set; }

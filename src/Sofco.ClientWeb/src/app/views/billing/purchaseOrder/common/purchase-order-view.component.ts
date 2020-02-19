@@ -52,7 +52,7 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        const excelColumns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        const excelColumns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
         const title = `OrdenesDeCompra-${moment(new Date()).format("YYYYMMDD")}`;
 
@@ -68,8 +68,8 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
                 self.customizeExcelExportData(data);
             },
             columnDefs: [
-                { "targets": [ 1,11,12 ], "visible": false, "searchable": false },
-                { "aTargets": [6], "sType": "date-uk"},
+                { "targets": [ 1,12,13 ], "visible": false, "searchable": false },
+                { "aTargets": [7], "sType": "date-uk"},
             ]
         }
 

@@ -58,6 +58,7 @@ export class DataTableService {
                 if (params.withExport) {
                     const excelExport: any = {
                         extend: 'excelHtml5',
+                        footer: true,
                         title: params.title,
                         exportOptions: {
                             columns: params.columns,
