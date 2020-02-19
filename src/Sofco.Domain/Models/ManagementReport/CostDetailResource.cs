@@ -25,5 +25,7 @@ namespace Sofco.Domain.Models.ManagementReport
         public string Comments { get; set; }
 
         public decimal? PercentageModified { get; set; }
+
+        public string Bono { get; set; }
     }
 }

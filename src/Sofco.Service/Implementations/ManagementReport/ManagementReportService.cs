@@ -22,6 +22,7 @@ using Sofco.Framework.MailData;
 using Sofco.Resources.Mails;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
 using Sofco.Domain.Models.Rrhh;
@@ -519,6 +520,8 @@ namespace Sofco.Service.Implementations.ManagementReport
                     getReal = true;
                 }
 
+                var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDay(monthYear);
+
                 List<ContractedModel> listContracted = this.Translate(costDetail.ContratedDetails.ToList());
                 List<CostMonthOther> listOther = this.Translate(costDetail.CostDetailOthers.Where(x => x.IsReal == getReal).ToList());
 
@@ -567,6 +570,19 @@ namespace Sofco.Service.Implementations.ManagementReport
                             item.Value = CryptographyHelper.Decrypt(socialChargeItem.Value);
                             item.Year = pYear;
                             item.Month = pMonth;
+
+                            var resourceAllocation = allocations.SingleOrDefault(x => x.EmployeeId == socialCharge.EmployeeId && x.AnalyticId == analytic.Id && x.StartDate.Date == monthYear);
+
+                            if (resourceAllocation != null && resourceAllocation.RealPercentage > 0)
+                            {
+                                if (!decimal.TryParse(item.Value, out var valueDecimal)) valueDecimal = 0;
+
+                                if (valueDecimal > 0)
+                                {
+                                    valueDecimal *= resourceAllocation.RealPercentage / 100;
+                                    item.Value = valueDecimal.ToString(CultureInfo.InvariantCulture);
+                                }
+                            }
 
                             response.Data.SocialCharges.Add(item);
                         }
@@ -676,6 +692,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         month.Real.Id = employee.Id;
                         month.Real.Value = employee.Salary;
                         month.Real.Charges = employee.Charges;
+                        month.Real.Bono = employee.Bono.GetValueOrDefault();
                         month.Real.BudgetTypeId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
                     }
                     else
@@ -683,6 +700,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         month.Budget.Id = employee.Id;
                         month.Budget.Value = employee.Salary;
                         month.Budget.Charges = employee.Charges;
+                        month.Budget.Bono = 0;
 
                         month.PercentageModified = employee.PercentageModified;
                         month.Comments = employee.Comments;
@@ -1286,8 +1304,7 @@ namespace Sofco.Service.Implementations.ManagementReport
             return costEmployees.OrderBy(e => e.Display).ToList();
         }
 
-        private CostResourceEmployee FillEmployee(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails, Employee employee,
-            List<BudgetType> budgetTypes)
+        private CostResourceEmployee FillEmployee(int IdAnalytic, IList<MonthHeaderCost> Months, ICollection<CostDetail> costDetails, Employee employee, List<BudgetType> budgetTypes)
         {
             var employeeHasAllocation = false;
             var user = unitOfWork.UserRepository.GetByEmail(employee.Email);
@@ -1343,10 +1360,13 @@ namespace Sofco.Service.Implementations.ManagementReport
                                         salary = 0;
                                     if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Charges), out var charges))
                                         charges = 0;
+                                    if (!decimal.TryParse(CryptographyHelper.Decrypt(monthValue.Bono), out var bono))
+                                        bono = 0;
 
                                     auxTypeCost.Value = salary;
                                     auxTypeCost.OriginalValue = salary;
                                     auxTypeCost.Charges = charges;
+                                    auxTypeCost.Bono = bono;
                                     auxTypeCost.Adjustment = monthValue.Adjustment ?? 0;
 
                                     monthDetail.CanViewSensibleData = true;
@@ -1359,7 +1379,7 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                                 auxTypeCost.Id = monthValue.Id;
                             }
-                            else
+                            else 
                             {
                                 if (canViewSensibleData)
                                 {
@@ -1387,15 +1407,25 @@ namespace Sofco.Service.Implementations.ManagementReport
                                                 if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal),
                                                     out var charges)) charges = 0;
 
-                                                auxTypeCost.Value = (allocation.Percentage / 100) * salary;
-                                                auxTypeCost.OriginalValue = (allocation.Percentage / 100) * salary;
-                                                auxTypeCost.Charges = (allocation.Percentage / 100) * charges;
+                                                //641300 codigo gratificaciones
+                                                var bono = unitOfWork.RrhhRepository.GetSocialChargeItem(641300, socialCharge.Id);
+
+                                                if (bono != null)
+                                                {
+                                                    if (!decimal.TryParse(CryptographyHelper.Decrypt(bono?.Value),
+                                                        out var bonoValue)) bonoValue = 0;
+
+                                                    auxTypeCost.Bono = (allocation.RealPercentage / 100) * bonoValue;
+                                                }
+
+                                                auxTypeCost.Value = (allocation.RealPercentage / 100) * salary;
+                                                auxTypeCost.OriginalValue = (allocation.RealPercentage / 100) * salary;
+                                                auxTypeCost.Charges = (allocation.RealPercentage / 100) * charges;
                                                 auxTypeCost.Adjustment = monthValue.Adjustment ?? 0;
 
                                                 if (salary > 0)
                                                 {
-                                                    monthDetail.ChargesPercentage =
-                                                        (decimal)((auxTypeCost.Charges / auxTypeCost.Value) * 100);
+                                                    monthDetail.ChargesPercentage = (decimal)(((auxTypeCost.Charges + auxTypeCost.Bono) / auxTypeCost.Value) * 100);
                                                 }
                                             }
                                         }
@@ -1430,14 +1460,25 @@ namespace Sofco.Service.Implementations.ManagementReport
                                             if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal),
                                                 out var charges)) charges = 0;
 
-                                            auxTypeCost.Value = (allocation.Percentage / 100) * salary;
-                                            auxTypeCost.OriginalValue = (allocation.Percentage / 100) * salary;
-                                            auxTypeCost.Charges = (allocation.Percentage / 100) * charges;
+                                            //641300 codigo gratificaciones
+                                            var bono = unitOfWork.RrhhRepository.GetSocialChargeItem(641300, socialCharge.Id);
+
+                                            if (bono != null)
+                                            {
+                                                if (!decimal.TryParse(CryptographyHelper.Decrypt(bono?.Value),
+                                                    out var bonoValue)) bonoValue = 0;
+
+                                                auxTypeCost.Bono = (allocation.RealPercentage / 100) * bonoValue;
+                                            }
+
+                                            auxTypeCost.Value = (allocation.RealPercentage / 100) * salary;
+                                            auxTypeCost.OriginalValue = (allocation.RealPercentage / 100) * salary;
+                                            auxTypeCost.Charges = (allocation.RealPercentage / 100) * charges;
 
                                             if (salary > 0)
                                             {
                                                 monthDetail.ChargesPercentage =
-                                                    (decimal)((auxTypeCost.Charges / auxTypeCost.Value) * 100);
+                                                    (decimal)(((auxTypeCost.Charges + auxTypeCost.Bono) / auxTypeCost.Value) * 100);
                                             }
                                         }
                                     }
@@ -1756,13 +1797,14 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                                 if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Value), out var salary)) salary = 0;
                                 if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Charges), out var charges)) charges = 0;
+                                if (!decimal.TryParse(CryptographyHelper.Decrypt(entity.Bono), out var bono)) bono = 0;
 
-                                if (aux.Value != salary || aux.Charges != charges)
+                                if (aux.Value != salary || aux.Charges != charges || aux.Bono != bono)
                                 {
                                     entity.Value = CryptographyHelper.Encrypt(aux.Value.ToString());
                                     entity.Adjustment = aux.Adjustment ?? 0;
                                     entity.Charges = CryptographyHelper.Encrypt(aux.Charges.ToString());
-
+                                    entity.Bono = CryptographyHelper.Encrypt(aux.Bono.ToString());
 
                                     unitOfWork.CostDetailResourceRepository.Update(entity);
                                 }
@@ -1778,6 +1820,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                                     entity.EmployeeId = resource.EmployeeId;
                                     entity.UserId = resource?.UserId;
                                     entity.BudgetTypeId = aux.BudgetTypeId;
+                                    entity.Bono = CryptographyHelper.Encrypt(aux.Bono.ToString());
 
                                     if (month.PercentageModified != month.AllocationPercentage)
                                     {

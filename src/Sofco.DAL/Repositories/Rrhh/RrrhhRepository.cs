@@ -105,5 +105,10 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .OrderBy(x => new DateTime(x.Year, x.Month, 1))
                 .ToList();
         }
+
+        public SocialChargeItem GetSocialChargeItem(int accountNumber, int socialChargeId)
+        {
+            return context.SocialChargeItems.SingleOrDefault(x => x.AccountNumber == accountNumber && x.SocialChargeId == socialChargeId);
+        }
     }
 }

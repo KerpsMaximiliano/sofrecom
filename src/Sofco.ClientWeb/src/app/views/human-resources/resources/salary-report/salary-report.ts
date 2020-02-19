@@ -55,11 +55,14 @@ date: Date;
     initGrid(){
         var title = `Reporte Salarios`;
         var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        var currencyColumns = [];
 
         var index = 8;
 
         this.months.forEach(x => {
-            columns.push(++index);
+            index++;
+            columns.push(index);
+            currencyColumns.push(index);
         });
 
         var options = { 
@@ -67,6 +70,7 @@ date: Date;
             columns: columns,
             title: title,
             withExport: true,
+            currencyColumns: currencyColumns,
             columnDefs: [ {'aTargets': [7], "sType": "date-uk"} ] 
         };
 

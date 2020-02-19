@@ -131,8 +131,8 @@
           <li [ngClass]="{active: activeRoute('updown')}" *ngIf="menuService.hasFunctionality('ALLOC', 'UPDOWN')"><a
             [routerLink]="['/rrhh/updown']">Reporte Altas / Bajas</a>
           </li>
-          <li [ngClass]="{active: activeRoute('updown')}" *ngIf="menuService.hasFunctionality('ALLOC', 'SALARY-REPORT')"><a
-            [routerLink]="['/rrhh/updown']">Reporte Salarios</a>
+          <li [ngClass]="{active: activeRoute('salary-report')}" *ngIf="menuService.hasFunctionality('ALLOC', 'SALARY-REPORT')"><a
+            [routerLink]="['/rrhh/salary-report']">Reporte Salarios</a>
           </li>
 
           <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('CTRLI', 'QUERY')"><a

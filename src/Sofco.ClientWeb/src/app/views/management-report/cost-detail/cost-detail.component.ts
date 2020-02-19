@@ -546,11 +546,13 @@ export class CostDetailComponent implements OnInit, OnDestroy {
             var _salary = 0
             var _charges = 0
             var _total = 0
+            var _bono = 0
 
             _id = monthCost.real.id || 0
             _salary = monthCost.real.value || 0
             _charges = monthCost.real.charges || 0
-            _total = monthCost.real.value + monthCost.real.charges || 0
+            _bono = monthCost.real.bono || 0
+            _total = monthCost.real.value + monthCost.real.charges + _bono || 0
 
             return {
                 employeeId: element.employeeId,
@@ -560,6 +562,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
                 name: element.display,
                 id: _id,
                 salary: _salary,
+                bono: _bono,
                 charges: _charges,
                 chargesPercentage: monthCost.chargesPercentage,
                 total: _total
@@ -570,7 +573,7 @@ export class CostDetailComponent implements OnInit, OnDestroy {
     }
 
     getIdAnalytic() {
-        return this.model.analyticId
+        return this.model.analyticId || 0
     }
 
     CalculateSalary(monthData, index) {
