@@ -24,7 +24,7 @@ const CONTRACTS_ROUTER: Routes = [
         { path: ":id/resources", component: ResourceByServiceComponent, canActivate: [AuthGuard] },
     ]},
     
-    { path: "accounts-info", component: AccountInfoComponent, canActivate: [AuthGuard], data: { module: "ALLOC", functionality: "PMORP" } },
+    { path: "accounts-info", component: AccountInfoComponent, canActivate: [AuthGuard], data: { module: "CONTR", functionality: "ACCOUNT-INFO" } },
 
     {
       path: "costCenter",

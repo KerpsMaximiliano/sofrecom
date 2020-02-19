@@ -78,7 +78,7 @@
             *ngIf="menuService.hasFunctionality('CONTR', 'CURRENCY-EXCHANGE')"><a
               [routerLink]="['/contracts/currencyExchange']">Cotizaciones</a></li>
 
-          <li [ngClass]="{active: activeRoute('accounts-info')}" *ngIf="menuService.hasFunctionality('ALLOC', 'PMORP')"><a
+          <li [ngClass]="{active: activeRoute('accounts-info')}" *ngIf="menuService.hasFunctionality('CONTR', 'ACCOUNT-INFO')"><a
             [routerLink]="['/contracts/accounts-info']">Información Cuentas</a>
           </li>
         </ul>
