@@ -81,6 +81,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
                         domainDetail.Description = detail.Description;
                         domainDetail.Ammount = detail.Ammount;
                         domainDetail.CreationDate = detail.CreationDate.GetValueOrDefault();
+                        domainDetail.CostTypeId = detail.CostTypeId;
                     }
                 }
             }
@@ -111,6 +112,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public int Order { get; set; }
 
+        public int? CostTypeId { get; set; }
+
         public RefundDetail CreateDomain()
         {
             var domain = new RefundDetail();
@@ -119,6 +122,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             domain.Ammount = Ammount;
             domain.CreationDate = CreationDate.GetValueOrDefault();
             domain.Order = Order;
+            domain.CostTypeId = CostTypeId;
 
             return domain;
         }

@@ -23,6 +23,7 @@ export class GenericOptionComponent implements OnDestroy {
     private entity: string;
 
     isReasonCause: boolean;
+    isCostType: boolean;
     public title: string;
     public id: number = 0;
     public text = new FormControl('', [Validators.required, Validators.maxLength(75)]);
@@ -58,6 +59,10 @@ export class GenericOptionComponent implements OnDestroy {
 
         if(this.entity == GenericOptions.ReasonCause){
             this.isReasonCause = true;
+        }
+
+        if(this.entity == GenericOptions.CostType){
+            this.isCostType = true;
         }
     }
 

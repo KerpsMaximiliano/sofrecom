@@ -14,6 +14,7 @@ using Sofco.Core.Mail;
 using Sofco.Core.Services.Common;
 using Sofco.DAL;
 using Sofco.DAL.Repositories.Common;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Framework.Logger;
 using Sofco.Framework.Mail;
@@ -108,6 +109,9 @@ namespace Sofco.WebApi.Infrastructures
 
             builder.RegisterType<OptionRepository<ResourceAssignment>>().As<IOptionRepository<ResourceAssignment>>();
             builder.RegisterType<OptionService<ResourceAssignment>>().As<IOptionService<ResourceAssignment>>();
+
+            builder.RegisterType<OptionRepository<CostType>>().As<IOptionRepository<CostType>>();
+            builder.RegisterType<OptionService<CostType>>().As<IOptionService<CostType>>();
 
             RegisterRedisDependencies(builder);
 

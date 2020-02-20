@@ -7,6 +7,7 @@ export class RefundDetail extends FormGroup {
     private id: number;
     private refundId: number;
     public order: number;
+    public costTypeDesc: string;
 
     constructor(domain?) {
         super({
@@ -22,13 +23,16 @@ export class RefundDetail extends FormGroup {
                 Validators.required,
                 Validators.max(1000000),
                 Validators.min(1)
-            ])
+            ]),
+
+            costTypeId: new FormControl(domain && domain.costTypeId || null)
         });
 
         if(domain){
             this.id = domain.id || 0;
             this.refundId = domain.refundId || 0;
             this.order = domain.order || 0;
+            this.costTypeDesc = domain.costTypeDesc || "";
         }
     }
 
@@ -38,6 +42,7 @@ export class RefundDetail extends FormGroup {
             creationDate: this.controls.creationDate.value,
             description: this.controls.description.value,
             ammount: this.controls.ammount.value,
+            costTypeId: this.controls.costTypeId.value,
             refundId: this.refundId,
             order: this.order
         }

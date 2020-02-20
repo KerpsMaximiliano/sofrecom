@@ -13,6 +13,8 @@ import { MessageService } from "app/services/common/message.service";
 import { Validators } from "@angular/forms";
 import { UtilsService } from "app/services/common/utils.service";
 import { MenuService } from "app/services/admin/menu.service";
+import { GenericOptionService } from "app/services/admin/generic-option.service";
+import { GenericOptions } from "app/models/enums/genericOptions";
 
 @Component({
     selector: 'refund-form',
@@ -25,6 +27,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     public analytics: any[] = new Array();
     public users: any[] = new Array();
     public creditCards: any[] = new Array();
+    public costTypes: any[] = new Array();
 
     public userApplicantIdLogged: number;
     public userApplicantName: string;
@@ -60,7 +63,8 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     private detailFormAux = {
         creationDate: null,
         description: '',
-        ammount: null
+        ammount: null,
+        costTypeId: null
     };
 
     private indexAux: number;
@@ -82,6 +86,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     constructor(public formsService: FormsService,
         public advancementService: AdvancementService,
         private utilsService: UtilsService,
+        private genericOptionService: GenericOptionService,
         public messageService: MessageService,
         private menusService: MenuService,
         public analyticService: AnalyticService,
@@ -120,6 +125,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         this.getAnalytics();
         this.getCreditCards();
         this.getCurrencies();
+        this.getCostTypes();
     }
 
     ngOnDestroy(): void {
@@ -135,6 +141,13 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         this.getAdvancementsUnrelated(null, this.form.controls.userApplicantId.value);
     }
  
+    getCostTypes(){
+        this.genericOptionService.controller = GenericOptions.CostType;
+        this.getCurrenciesSubscrip = this.genericOptionService.getOptions().subscribe(response => {
+            this.costTypes = response.data;
+        });
+    }
+
     getCurrencies(){
         this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(response => {
             this.currencies = response;
@@ -175,6 +188,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
         this.detailFormAux.creationDate = detail.controls.creationDate.value;
         this.detailFormAux.description = detail.controls.description.value;
         this.detailFormAux.ammount = detail.controls.ammount.value;
+        this.detailFormAux.costTypeId = detail.controls.costTypeId.value;
         this.indexAux = index;
 
         this.detailModalForm = detail;
@@ -184,7 +198,19 @@ export class RefundFormComponent implements OnInit, OnDestroy {
     saveDetail(){
         if(this.isNewDetail){
             const detail = this.detailModalForm;
+
+            if(this.detailModalForm.controls.costTypeId.value > 0){
+                var costType = this.costTypes.find(x => x.id == this.detailModalForm.controls.costTypeId.value);
+                detail.costTypeDesc = costType.text;
+            }
+
             this.detailForms.push(detail);
+        }
+        else{
+            if(this.detailModalForm.controls.costTypeId.value > 0){
+                var costType = this.costTypes.find(x => x.id == this.detailModalForm.controls.costTypeId.value);
+                this.detailModalForm.costTypeDesc = costType.text;
+            }
         }
 
         this.detailModalForm = new RefundDetail();
@@ -206,6 +232,7 @@ export class RefundFormComponent implements OnInit, OnDestroy {
             detail.controls.creationDate.setValue(this.detailFormAux.creationDate);
             detail.controls.description.setValue(this.detailFormAux.description);
             detail.controls.ammount.setValue(this.detailFormAux.ammount);
+            detail.controls.costTypeId.setValue(this.detailFormAux.costTypeId);
         }
 
         this.detailModalForm = new RefundDetail();

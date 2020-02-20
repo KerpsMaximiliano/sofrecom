@@ -12,6 +12,12 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             Ammount = detail.Ammount;
             Description = detail.Description;
             Order = detail.Order;
+
+            if (detail.CostType != null)
+            {
+                CostTypeId = detail.CostTypeId;
+                CostTypeDesc = detail.CostType.Text;
+            }
         }
 
         public int Order { get; set; }
@@ -23,5 +29,9 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public decimal Ammount { get; set; }
 
         public string Description { get; set; }
+
+        public int? CostTypeId { get; set; }
+
+        public string CostTypeDesc { get; set; }
     }
 }

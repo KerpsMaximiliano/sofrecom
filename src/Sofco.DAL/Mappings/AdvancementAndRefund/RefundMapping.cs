@@ -31,6 +31,7 @@ namespace Sofco.DAL.Mappings.AdvancementAndRefund
             builder.Entity<RefundDetail>().HasKey(x => x.Id);
             builder.Entity<RefundDetail>().Property(x => x.Description).HasMaxLength(300);
             builder.Entity<RefundDetail>().HasOne(x => x.Refund).WithMany(x => x.Details).HasForeignKey(x => x.RefundId);
+            builder.Entity<RefundDetail>().HasOne(x => x.CostType).WithMany(x => x.RefundDetails).HasForeignKey(x => x.CostTypeId);
 
             builder.Entity<RefundFile>().HasKey(t => new { t.FileId, t.RefundId });
 
@@ -43,6 +44,9 @@ namespace Sofco.DAL.Mappings.AdvancementAndRefund
                 .HasOne(pt => pt.File)
                 .WithMany()
                 .HasForeignKey(pt => pt.FileId);
+
+            builder.Entity<CostType>().HasKey(x => x.Id);
+            builder.Entity<CostType>().Property(x => x.Text).HasMaxLength(200);
         }
     }
 }

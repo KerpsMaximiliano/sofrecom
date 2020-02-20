@@ -142,6 +142,7 @@
             <tr>
                 <th>{{ 'advancement.date' | translate }}</th>
                 <th>{{ 'advancement.description' | translate }}</th>
+                <th>Tipificación</th>
                 <th>{{ 'advancement.ammount' | translate }}</th>
                 <th *ngIf="canUpdate" class="text-center column-xs">{{ 'ACTIONS.title' | translate }}</th>
             </tr>
@@ -149,7 +150,8 @@
         <tbody>
             <tr *ngFor="let detail of detailForms; let i = index" class="pointer">
                 <td>{{ detail.controls.creationDate.value | date: 'dd/MM/yyyy' }}</td>
-                <td class="column-xlg text-word-break">{{ detail.controls.description.value }}</td>
+                <td class="column-lg text-word-break">{{ detail.controls.description.value }}</td>
+                <td class="column-lg text-word-break">{{ detail.costTypeDesc }}</td>
                 <td>{{ detail.controls.ammount.value | amountFormat }} {{ currencyDescription }}</td>
                 <td *ngIf="canUpdate" class="text-center column-xs">
                     <button class="btn btn-sm fa fa-pencil btn-warning" (click)="editDetail(detail, i)"></button>
@@ -200,6 +202,11 @@
                 <p *ngIf="formsService.hasError(detailModalForm, 'description', 'required')">{{ i18nService.translate('advancementAndRefund/refund','detailDescriptionRequired') }}</p>
                 <p *ngIf="formsService.hasError(detailModalForm, 'description', 'maxLength')">{{ i18nService.translate('advancementAndRefund/refund','descriptionItemMaxLength') }}</p>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label"> Tipificación </label>
+            <ng-select [items]="costTypes" bindValue="id" bindLabel="text" formControlName="costTypeId"></ng-select>
         </div>
     </form>
 </ng2-modal> 
