@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using ExcelDataReader;
+﻿using ExcelDataReader;
 using Microsoft.AspNetCore.Http;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
@@ -9,7 +6,9 @@ using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Utils;
-using Sofco.Framework.Helpers;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 {
@@ -76,7 +75,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
                         var credential = reader.GetString(CredentialColumn);
                         var type = reader.GetString(TypeColumn);
-                    
+
                         if (credential != credentialAux)
                         {
                             credentialAux = credential;
@@ -94,7 +93,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
                             itemToAdd.Dni = nroDoc;
                             itemToAdd.Cuil = reader.GetString(CuilColumn);
-                            itemToAdd.PrepaidBeneficiaries = Convert.ToInt32(reader.GetString( BeneficiariesColumn));
+                            itemToAdd.PrepaidBeneficiaries = Convert.ToInt32(reader.GetString(BeneficiariesColumn));
                             itemToAdd.Period = GetPeriod(reader.GetString(PeriodColumn), type);
                             itemToAdd.PrepaidCost = GetPrepaidCost(reader, type);
                             itemToAdd.PrepaidPlan = GetPlan(reader.GetString(PlanColumn), itemToAdd.PrepaidPlan);
@@ -112,7 +111,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                             {
                                 itemToAdd.EmployeeId = employee.Id;
                                 itemToAdd.EmployeeName = employee.Name;
-                                itemToAdd.TigerBeneficiaries = employee.BeneficiariesCount+1;
+                                itemToAdd.TigerBeneficiaries = employee.BeneficiariesCount + 1;
                                 itemToAdd.EmployeeNumber = employee.EmployeeNumber;
                                 itemToAdd.TigerPlan = employee.PrepaidPlan;
 
@@ -123,7 +122,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                         {
                             itemToAdd.PrepaidBeneficiaries = Convert.ToInt32(reader.GetString(BeneficiariesColumn));
                             itemToAdd.PrepaidCost += GetPrepaidCost(reader, type);
-                            itemToAdd.PrepaidPlan = GetPlan(reader.GetString( PlanColumn), itemToAdd.PrepaidPlan);
+                            itemToAdd.PrepaidPlan = GetPlan(reader.GetString(PlanColumn), itemToAdd.PrepaidPlan);
                             itemToAdd.Period = GetPeriod(reader.GetString(PeriodColumn), type);
                         }
 
@@ -169,7 +168,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
         private DateTime GetPeriod(string data, string type)
         {
-            if(string.IsNullOrWhiteSpace(type) || type == "APORTES") return DateTime.MinValue;
+            if (string.IsNullOrWhiteSpace(type) || type == "APORTES") return DateTime.MinValue;
 
             if (string.IsNullOrWhiteSpace(data)) return DateTime.MinValue;
 
