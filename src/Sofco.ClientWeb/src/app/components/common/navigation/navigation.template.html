@@ -104,9 +104,14 @@
           <li [ngClass]="{active: activeRoute('currentAccount')}"
             *ngIf="menuService.hasFunctionality('ADVAN', 'CURRENT-ACCOUNT')"><a
               [routerLink]="['/advancementAndRefund/currentAccount']">Cuenta Corriente</a></li>
+
           <li [ngClass]="{active: activeRoute('salaryReturns')}"
             *ngIf="menuService.hasFunctionality('ADVAN', 'SALARY-ADVANCEMENT')"><a
               [routerLink]="['/advancementAndRefund/salaryReturns']">Devoluciones</a></li>
+
+              <li [ngClass]="{active: activeRoute('costType')}"
+              *ngIf="menuService.hasFunctionality('ADVAN', 'CURRENT-ACCOUNT')"><a
+                [routerLink]="['/advancementAndRefund/costType']">Tipos de costos</a></li>
         </ul>
       </li>
 
@@ -131,23 +136,25 @@
           <li [ngClass]="{active: activeRoute('updown')}" *ngIf="menuService.hasFunctionality('ALLOC', 'UPDOWN')"><a
             [routerLink]="['/rrhh/updown']">Reporte Altas / Bajas</a>
           </li>
-          <li [ngClass]="{active: activeRoute('updown')}" *ngIf="menuService.hasFunctionality('ALLOC', 'SALARY-REPORT')"><a
-            [routerLink]="['/rrhh/updown']">Reporte Salarios</a>
+          <li [ngClass]="{active: activeRoute('salary-report')}" *ngIf="menuService.hasFunctionality('ALLOC', 'SALARY-REPORT')"><a
+            [routerLink]="['/rrhh/salary-report']">Reporte Salarios</a>
           </li>
 
           <li [ngClass]="{active: activeRoute('licenses')}" *ngIf="menuService.hasFunctionality('CTRLI', 'QUERY')"><a
               [routerLink]="['/rrhh/licenses']">{{'rrhh.licenses' | translate }} (RRHH)</a></li>
+
           <li [ngClass]="{active: activeRoute('licenses/managers')}"
             *ngIf="menuService.hasFunctionality('CTRLI', 'AUTH')"><a
               [routerLink]="['/rrhh/licenses/managers']">{{'rrhh.licenses' | translate }}</a></li>
-          
 
           <li [ngClass]="{active: activeRoute('endNotification')}"
             *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE_END_NOTIF')"><a
               [routerLink]="['/rrhh/endNotification']">{{'rrhh.endNotification.title' | translate }}</a></li>
+
           <li [ngClass]="{active: activeRoute('prepaid/import')}"
             *ngIf="menuService.hasFunctionality('ALLOC', 'PREPAID-IMPORT')"><a
               [routerLink]="['/rrhh/prepaid/import']">Importación Prepagas</a></li>
+
           <li [ngClass]="{active: activeRoute('prepaid/verification')}"
             *ngIf="menuService.hasFunctionality('ALLOC', 'PREPAID-CONTROL')"><a
               [routerLink]="['/rrhh/prepaid/verification']">Control Prepagas</a></li>

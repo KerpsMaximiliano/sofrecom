@@ -36,6 +36,7 @@
                         <th class="text-center">Código</th>
                         <th>Descripción</th>
                         <th *ngIf="isReasonCause">Tipo</th>
+                        <th *ngIf="isCostType">Categoria</th>
                         <th class="text-center">Activo</th>
                         <th class="text-center">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
@@ -44,6 +45,9 @@
                     <tr *ngFor="let item of listFiltered">
                         <td class="text-center">{{ item.id }}</td>
                         <td>{{ item.text }}</td>
+
+                        <td *ngIf="isCostType">{{ item.category }}</td>
+
                         <td *ngIf="isReasonCause">
                             <span *ngIf="item.type == 1">Busqueda Vigente</span>
                             <span *ngIf="item.type == 2">Busqueda Suspendida</span>
@@ -54,6 +58,7 @@
                             <span *ngIf="item.type == 7">Contacto Ingresado</span>
                             <span *ngIf="item.type == 8">Contacto Vigente/Entrevistado</span>
                         </td>
+
                         <td class="text-center">
                             <label *ngIf="item.active" class="label label-primary">Si</label>
                             <label *ngIf="!item.active" class="label label-danger">No</label>
@@ -76,6 +81,11 @@
     <div class="form-group">
         <label class="control-label">Descripción</label>
         <input class="form-control" type="text" [formControl]="text" maxlength="75">
+    </div>
+
+    <div class="form-group" *ngIf="isCostType">
+        <label class="control-label">Categoria</label>
+        <input class="form-control" type="number" [formControl]="category">
     </div>
 
     <div class="form-group" *ngIf="isReasonCause">

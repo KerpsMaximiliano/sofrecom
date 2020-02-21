@@ -1,4 +1,4 @@
-<ng2-modal [config]="costDetailMonthModalConfig" #costDetailMonthModal (accept)="save()" [size]="'modal-lg'"
+<ng2-modal [config]="costDetailMonthModalConfig" #costDetailMonthModal (accept)="save()" [size]="'modal-xlg'"
     [isSaveEnabled]="(f.form.valid || canSave) && !isReadOnly">
 
     <div class="row">
@@ -60,11 +60,14 @@
     </div>
 
     <div class="row border-bottom m-b-sm no-gutters">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <h4>Costos RD + P</h4>
         </div>
         <div class="col-sm-2">
-            <h4>Bruto</h4>
+            <h4>SB + Adicionales</h4>
+        </div>
+        <div class="col-sm-2">
+            <h4>Gratificaciones</h4>
         </div>
         <div class="col-sm-2">
             <h4>Cargas</h4>
@@ -75,19 +78,20 @@
         <div class="col-sm-1">
             <h4>%Cargas</h4>
         </div>
-        <div class="col-sm-1">
-
-        </div>
     </div>
 
     <div class="row m-t-xs no-gutters" *ngFor="let resource of resources; let i = index">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <span class="text-danger" *ngIf="!resource.hasAlocation || resource.modified"><strong>* </strong></span>
             <span class="text-warning" *ngIf="resource.id == 0"><strong>* </strong></span>
-            <span>{{ resource.name }}</span>
+            <span class="text-ellipsis">{{ resource.name }}</span>
         </div>
         <div class="col-sm-2">
             <math-input [(model)]="resource.salary" (modelChange)="resourceChange(resource)"
+                [(modelDisabled)]="isReadOnly"></math-input>
+        </div>
+        <div class="col-sm-2">
+            <math-input [(model)]="resource.bono" (modelChange)="resourceChange(resource)"
                 [(modelDisabled)]="isReadOnly"></math-input>
         </div>
         <div class="col-sm-2">
@@ -99,21 +103,28 @@
                 disabled>
         </div>
         <div class="col-sm-1">
-            <input type="text" decimalFormat class="percentageLoads form-control input-xs text-right"
-                [ngModel]="resource.chargesPercentage | number: '1.2'" disabled>
-        </div>
-        <div class="col-sm-1">
-            <button class="btn btn-danger btn-xs" *ngIf="resource.new == true && !isReadOnly"
-                (click)="deleteResource(i, resource)"><i class="fa fa-trash"></i></button>
+            <div class="row">
+                <div class="col-sm-10">
+                    <input type="text" decimalFormat class="percentageLoads form-control input-xs text-right"
+                    [ngModel]="resource.chargesPercentage | number: '1.2'" disabled>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-danger btn-xs" *ngIf="resource.new == true && !isReadOnly"
+                    (click)="deleteResource(i, resource)"><i class="fa fa-trash"></i></button>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="row m-t-xs no-gutters">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <strong>Sub Total</strong>
         </div>
         <div class="col-sm-2">
             <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesSalarySubTotal | number: '1.2'" disabled>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesBonoSubTotal | number: '1.2'" disabled>
         </div>
         <div class="col-sm-2">
             <input type="text" decimalFormat class="form-control input-xs text-right" [ngModel]="resourcesChargesSubTotal | number: '1.2'" disabled>

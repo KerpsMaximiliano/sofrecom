@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Sofco.DAL;
 
 namespace Sofco.WebApi.Migrations
 {
     [DbContext(typeof(SofcoContext))]
-    partial class SofcoContextModelSnapshot : ModelSnapshot
+    [Migration("20200219182932_Bono")]
+    partial class Bono
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -329,24 +331,6 @@ namespace Sofco.WebApi.Migrations
                     b.ToTable("AdvancementRefunds");
                 });
 
-            modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.CostType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<int>("Category");
-
-                    b.Property<string>("Text")
-                        .HasMaxLength(200);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CostTypes");
-                });
-
             modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.Refund", b =>
                 {
                     b.Property<int>("Id")
@@ -408,8 +392,6 @@ namespace Sofco.WebApi.Migrations
 
                     b.Property<decimal>("Ammount");
 
-                    b.Property<int?>("CostTypeId");
-
                     b.Property<DateTime>("CreationDate");
 
                     b.Property<string>("Description")
@@ -420,8 +402,6 @@ namespace Sofco.WebApi.Migrations
                     b.Property<int>("RefundId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CostTypeId");
 
                     b.HasIndex("RefundId");
 
@@ -3808,10 +3788,6 @@ namespace Sofco.WebApi.Migrations
 
             modelBuilder.Entity("Sofco.Domain.Models.AdvancementAndRefund.RefundDetail", b =>
                 {
-                    b.HasOne("Sofco.Domain.Models.AdvancementAndRefund.CostType", "CostType")
-                        .WithMany("RefundDetails")
-                        .HasForeignKey("CostTypeId");
-
                     b.HasOne("Sofco.Domain.Models.AdvancementAndRefund.Refund", "Refund")
                         .WithMany("Details")
                         .HasForeignKey("RefundId")

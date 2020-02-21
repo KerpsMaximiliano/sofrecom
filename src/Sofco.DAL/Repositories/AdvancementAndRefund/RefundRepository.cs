@@ -61,6 +61,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.Status)
                 .Include(x => x.CreditCard)
                 .Include(x => x.Details)
+                    .ThenInclude(x => x.CostType)
                 .Include(x => x.AdvancementRefunds)
                     .ThenInclude(x => x.Advancement)
                 .Include(x => x.Attachments)

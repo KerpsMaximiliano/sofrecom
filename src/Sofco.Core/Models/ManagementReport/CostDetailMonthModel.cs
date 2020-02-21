@@ -41,6 +41,7 @@ namespace Sofco.Core.Models.ManagementReport
         public int Id { get; set; }
         public decimal? Salary { get; set; }
         public decimal? Charges { get; set; }
+        public decimal? Bono { get; set; }
         public decimal? PercentageModified { get; set; }
         public string Comments { get; set; }
     }
@@ -54,6 +55,7 @@ namespace Sofco.Core.Models.ManagementReport
         public DateTime MonthYear { get; set; }
 
         public decimal ChargesPercentage { get; set; }
+        public decimal Bono { get; set; }
     }
 
     public class MonthOther

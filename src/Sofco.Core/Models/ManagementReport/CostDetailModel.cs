@@ -81,6 +81,7 @@ namespace Sofco.Core.Models.ManagementReport
         public decimal? TotalCost { get; set; }
         public decimal? TotalLoads { get; set; }
         public decimal? TotalSalary { get; set; }
+        public decimal Bono { get; set; }
     }
 
     public class CostResource

@@ -15,6 +15,7 @@ import { AdvancementService } from "app/services/advancement-and-refund/advancem
 import { RefundFormComponent } from "./refund-form.component";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { AmountFormatModule } from "app/pipes/amount-format.module";
+import { GenericOptionService } from "app/services/admin/generic-option.service";
 
 @NgModule({
     imports: [
@@ -25,7 +26,7 @@ import { AmountFormatModule } from "app/pipes/amount-format.module";
         RefundFormComponent
     ],
     providers: [
-        UtilsService, AdvancementService, FormsService, AnalyticService
+        UtilsService, AdvancementService, FormsService, AnalyticService, GenericOptionService,
     ],
     exports: [
         RefundFormComponent

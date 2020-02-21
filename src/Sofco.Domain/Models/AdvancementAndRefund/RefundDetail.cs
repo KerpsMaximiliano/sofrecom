@@ -15,5 +15,9 @@ namespace Sofco.Domain.Models.AdvancementAndRefund
         public Refund Refund { get; set; }
 
         public int Order { get; set; }
+
+        public int? CostTypeId { get; set; }
+
+        public CostType CostType { get; set; }
     }
 }

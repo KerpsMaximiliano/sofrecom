@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
@@ -235,6 +236,19 @@ namespace Sofco.Service.Implementations.ManagementReport
                             item.Year = year;
                             item.Month = month;
 
+                            var resourceAllocation = allocations.SingleOrDefault(x => x.EmployeeId == socialCharge.EmployeeId && x.AnalyticId == managementReport.AnalyticId && x.StartDate.Date == monthYear);
+
+                            if (resourceAllocation != null)
+                            {
+                                if (!decimal.TryParse(item.Value, out var valueDecimal)) valueDecimal = 0;
+
+                                if (valueDecimal > 0)
+                                {
+                                    valueDecimal *= resourceAllocation.RealPercentage / 100;
+                                    item.Value = valueDecimal.ToString(CultureInfo.InvariantCulture);
+                                }
+                            }
+
                             response.Data.SocialCharges.Add(item);
                         }
                     }
@@ -436,6 +450,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                         month.Real.Id = employee.Id;
                         month.Real.Value = employee.Salary;
                         month.Real.Charges = employee.Charges;
+                        month.Real.Bono = employee.Bono;
                         month.Real.BudgetTypeId = budgetTypes.Where(x => x.Name == EnumBudgetType.Real).FirstOrDefault().Id;
 
                         totalSalary += employee.Salary ?? 0;
@@ -869,19 +884,36 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         item.ChargesPercentage = (charges / salary) * 100;
                     }
+
+                    if (socialCharge != null)
+                    {
+                        //641300 codigo gratificaciones
+                        var bono = unitOfWork.RrhhRepository.GetSocialChargeItem(641300, socialCharge.Id);
+
+                        if (bono != null)
+                        {
+                            if (!decimal.TryParse(CryptographyHelper.Decrypt(bono?.Value),
+                                out var bonoValue)) bonoValue = 0;
+
+                            item.Bono = bonoValue;
+                            item.Total += bonoValue;
+                        }
+                    }
                 }
                 else
                 {
                     if (!decimal.TryParse(CryptographyHelper.Decrypt(resource.Value), out var salary)) salary = 0;
                     if (!decimal.TryParse(CryptographyHelper.Decrypt(resource.Charges), out var charges)) charges = 0;
+                    if (!decimal.TryParse(CryptographyHelper.Decrypt(resource.Bono), out var bono)) bono = 0;
 
                     item.Salary = salary;
                     item.Charges = charges;
+                    item.Bono = bono;
                     item.Total = salary + charges;
 
                     if (salary > 0)
                     {
-                        item.ChargesPercentage = (charges / salary) * 100;
+                        item.ChargesPercentage = ((charges + bono) / salary) * 100;
                     }
                 }
 
@@ -910,16 +942,28 @@ namespace Sofco.Service.Implementations.ManagementReport
                         if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.SalaryTotal), out var salary)) salary = 0;
                         if (!decimal.TryParse(CryptographyHelper.Decrypt(socialCharge?.ChargesTotal), out var charges)) charges = 0;
 
-                        var newValueCharges = (allocation.Percentage / 100) * charges;
-                        var newValueSalary = salary * (allocation.Percentage / 100);
+                        var newValueCharges = (allocation.RealPercentage / 100) * charges;
+                        var newValueSalary = salary * (allocation.RealPercentage / 100);
 
                         item.Salary = newValueSalary;
                         item.Charges = newValueCharges;
                         item.Total = newValueSalary + newValueCharges;
 
+                        //641300 codigo gratificaciones
+                        var bono = unitOfWork.RrhhRepository.GetSocialChargeItem(641300, socialCharge.Id);
+
+                        if (bono != null)
+                        {
+                            if (!decimal.TryParse(CryptographyHelper.Decrypt(bono?.Value),
+                                out var bonoValue)) bonoValue = 0;
+
+                            item.Bono = (allocation.RealPercentage / 100) * bonoValue;
+                            item.Total += item.Bono;
+                        }
+
                         if (salary > 0)
                         {
-                            item.ChargesPercentage = (newValueCharges / newValueSalary) * 100;
+                            item.ChargesPercentage = ((newValueCharges + item.Bono) / newValueSalary) * 100;
                         }
                     }
 

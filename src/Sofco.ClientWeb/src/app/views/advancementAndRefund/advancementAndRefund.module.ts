@@ -43,9 +43,11 @@ import { PCheckModule } from "app/components/pcheck/pcheck.module";
 import { PaymentPendingService } from "app/services/advancement-and-refund/paymentPending.service";
 import { SalaryAdvancementService } from "app/services/advancement-and-refund/salary-advancement";
 import { SalaryAdvancementComponent } from "./common/salary-advancement/salary-advancement";
+import { CostTypeComponent } from "../admin/options/costType";
+import { GenericOptionService } from "app/services/admin/generic-option.service";
 
 @NgModule({
-    declarations: [ AdvancementDetailComponent, AdvancementHistoryComponent, SalaryAdvancementComponent,
+    declarations: [ AdvancementDetailComponent, AdvancementHistoryComponent, SalaryAdvancementComponent, CostTypeComponent,
                     AdvancementSearchComponent, AdvancementListFinalizedComponent, RefundDetailComponent,
                     RefundListComponent, RefundListFilterComponent, RefundListGridComponent, RefundHistoryComponent,
                     ListPaymentPendingComponent, AdvancementRefundSettingComponent, RefundsRelatedComponent, CurrentAccountComponent
@@ -55,8 +57,8 @@ import { SalaryAdvancementComponent } from "./common/salary-advancement/salary-a
                    TranslateModule, FileUploadModule, LayoutsModule, SpinnerModule, DatePickerModule, ButtonsModule, WorkflowModule,
                    AdvancementAndRefundRouter, ReactiveFormsModule, BsDatepickerModule, AdvacementFormModule, NgSelectModule, AmountFormatModule ],
 
-    providers   : [ AdvancementService, UserService, RefundService, PaymentPendingService,  SalaryAdvancementService,
-                    AdvancementRefundSettingService, CurrentAccountService, UserApproverService ],
+    providers   : [ AdvancementService, UserService, RefundService, PaymentPendingService, SalaryAdvancementService,
+                    AdvancementRefundSettingService, CurrentAccountService, UserApproverService, GenericOptionService ],
 
     exports     : []
 })

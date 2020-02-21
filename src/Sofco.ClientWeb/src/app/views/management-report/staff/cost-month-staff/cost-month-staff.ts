@@ -40,6 +40,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
     categoriesSubTotal: number = 0;
     resourcesSalarySubTotal: number = 0;
     resourcesChargesSubTotal: number = 0;
+    resourcesBonoSubTotal: number = 0;
 
     totalProvisionedEditabled: boolean = false;
 
@@ -165,7 +166,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
 
     resourceChange(resource) {
         resource.modified = true
-        resource.total = resource.salary + resource.charges;
+        resource.total = resource.salary + resource.charges + resource.bono;
 
         if(resource.salary > 0){
             resource.chargesPercentage = (resource.charges/resource.salary)*100;
@@ -183,16 +184,20 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.resourcesSubTotal = 0;
         this.resourcesSalarySubTotal = 0;
         this.resourcesChargesSubTotal = 0;
+        this.resourcesBonoSubTotal = 0;
         var totalCharges = 0;
         var totalSalary= 0;
+        var totalBonos= 0;
 
         this.resources.forEach(element => {
             this.totalCosts += element.total;
             this.resourcesSubTotal += element.total;
             this.resourcesSalarySubTotal += element.salary;
             this.resourcesChargesSubTotal += element.charges;
+            this.resourcesBonoSubTotal += element.bono;
             totalCharges += element.charges;
             totalSalary += element.salary;
+            totalBonos += element.bono;
         });
 
         this.subCategoriesData.forEach(element => {
@@ -201,7 +206,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         });
         
         if(totalSalary > 0){
-            this.totalChargesPercentage = (totalCharges/totalSalary)*100;
+            this.totalChargesPercentage = ((totalCharges + totalBonos)/totalSalary)*100;
         }
     }
 
@@ -226,6 +231,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
                     charges: 0,
                     chargesPercentage: 0,
                     total: 0,
+                    bono: 0,
                     hasAlocation: false,
                     new: true
                 }
@@ -322,7 +328,9 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         { width: 25 },
         { width: 20 },
         { width: 15 }];
+
         worksheet.columns = columns;
+
         var row1 = ["REAL", this.totalProvisioned, "TOTAL COSTOS", "", this.totalCosts];
         var row1Added = worksheet.addRow(row1);
         this.setTitleStyles(row1Added.getCell(1));
@@ -332,10 +340,11 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
         this.drawBorders(row1Added, 'bottom');
         this.drawCellBorder(row1Added.getCell(2), 'right');
         this.drawCellBorder(row1Added.getCell(4), 'right');
+
         worksheet.mergeCells(`C1:D1`);
         if (this.resources && this.resources.length > 0) {
             worksheet.addRow([]);
-            var headerTable = ["Costos RD + P", "Bruto", "Cargas", "Total General", "% Cargas"];
+            var headerTable = ["Costos RD + P", "SB + Adicionales", "Gratificaciones", "Cargas", "Total General", "% Cargas"];
             var headerRow = worksheet.addRow(headerTable);
             headerRow.eachCell(cell => {
                 this.setTitleStyles(cell);
@@ -343,7 +352,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
             this.drawBorders(headerRow, 'bottom');
             this.drawBorders(headerRow, 'top');
             this.resources.forEach(resource => {
-                var rowToAdd = [resource.name, resource.salary, resource.charges, resource.total, resource.chargesPercentage];
+                var rowToAdd = [resource.name, resource.salary, resource.bono, resource.charges, resource.total, resource.chargesPercentage];
                 var rowAdded = worksheet.addRow(rowToAdd);
                 var first = true;
                 rowAdded.eachCell(cell => {
@@ -353,7 +362,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
                     first = false;
                 });
             });
-            var subtotal = ["Sub Total", this.resourcesSalarySubTotal, this.resourcesChargesSubTotal, this.resourcesSubTotal, this.totalChargesPercentage];
+            var subtotal = ["Sub Total", this.resourcesSalarySubTotal, this.resourcesBonoSubTotal, this.resourcesChargesSubTotal, this.resourcesSubTotal, this.totalChargesPercentage];
             var subTotalAdded = worksheet.addRow(subtotal);
             this.setTitleStyles(subTotalAdded.getCell(1));
             this.drawBorders(subTotalAdded, 'bottom');
@@ -365,6 +374,7 @@ export class CostDetailMonthStaffComponent implements OnInit, OnDestroy {
                 first = false;
             });
         }
+        
         if (this.subCategoriesData && this.subCategoriesData.length > 0) {
             worksheet.addRow([]);
             var headerTable = ["Categoria", "SubCategoria", "Descripcion", "Monto"];

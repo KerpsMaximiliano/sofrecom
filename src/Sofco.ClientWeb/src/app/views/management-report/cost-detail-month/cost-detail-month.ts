@@ -39,6 +39,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
     resourcesSubTotal: number = 0;
     resourcesSalarySubTotal: number = 0;
     resourcesChargesSubTotal: number = 0;
+    resourcesBonoSubTotal: number = 0;
     contractedsSubTotal: number = 0;
     contractedsHonorarySubTotal: number = 0;
     contractedsInsuranceSubTotal: number = 0;
@@ -240,10 +241,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.costDetailMonthModal.show();
         },
-            () => {
-                this.messageService.closeLoading();
-                this.costDetailMonthModal.hide();
-            });
+        () => {
+            this.messageService.closeLoading();
+            this.costDetailMonthModal.hide();
+        });
     }
 
     save() {
@@ -295,10 +296,10 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
 
     resourceChange(resource) {
         resource.modified = true
-        resource.total = resource.salary + resource.charges;
+        resource.total = resource.salary + resource.charges + resource.bono;
 
         if(resource.salary > 0){
-            resource.chargesPercentage = (resource.charges/resource.salary)*100;
+            resource.chargesPercentage = ((resource.charges + resource.bono)/resource.salary)*100;
         }
         else{
             resource.chargesPercentage = 0;
@@ -316,6 +317,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         this.contractedsInsuranceSubTotal = 0;
         this.resourcesSalarySubTotal = 0;
         this.resourcesChargesSubTotal = 0;
+        this.resourcesBonoSubTotal = 0;
         var totalCharges = 0;
         var totalSalary= 0;
 
@@ -329,6 +331,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.resourcesSubTotal += element.total;
             this.resourcesSalarySubTotal += element.salary;
             this.resourcesChargesSubTotal += element.charges;
+            this.resourcesBonoSubTotal += element.bono;
             totalCharges += element.charges;
             totalSalary += element.salary;
         });
@@ -457,7 +460,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
         worksheet.mergeCells(`C2:D2`);
         if (this.resources && this.resources.length > 0) {
             worksheet.addRow([]);
-            var headerTable = ["Costos RD + P", "Bruto", "Cargas", "Total General", "% Cargas"];
+            var headerTable = ["Costos RD + P", "SB + Adicionales", "Gratificaciones", "Cargas", "Total General", "% Cargas"];
             var headerRow = worksheet.addRow(headerTable);
             headerRow.eachCell(cell => {
                 this.setTitleStyles(cell);
@@ -465,7 +468,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
             this.drawBorders(headerRow, 'bottom');
             this.drawBorders(headerRow, 'top');
             this.resources.forEach(resource => {
-                var rowToAdd = [resource.name, resource.salary, resource.charges, resource.total, resource.chargesPercentage];
+                var rowToAdd = [resource.name, resource.salary, resource.bono, resource.charges, resource.total, resource.chargesPercentage];
                 var rowAdded = worksheet.addRow(rowToAdd);
                 var first = true;
                 rowAdded.eachCell(cell => {
@@ -475,7 +478,7 @@ export class CostDetailMonthComponent implements OnInit, OnDestroy {
                     first = false;
                 });
             });
-            var subtotal = ["Sub Total", this.resourcesSalarySubTotal, this.resourcesChargesSubTotal, this.resourcesSubTotal, this.totalChargesPercentage];
+            var subtotal = ["Sub Total", this.resourcesSalarySubTotal, this.resourcesBonoSubTotal, this.resourcesChargesSubTotal, this.resourcesSubTotal, this.totalChargesPercentage];
             var subTotalAdded = worksheet.addRow(subtotal);
             this.setTitleStyles(subTotalAdded.getCell(1));
             this.drawBorders(subTotalAdded, 'bottom');

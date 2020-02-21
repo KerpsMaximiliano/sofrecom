@@ -15,5 +15,6 @@ namespace Sofco.Core.DAL.Rrhh
         void Update(SocialCharge toUpdate);
         IList<SocialCharge> GetSocialCharges(int pYear, int pMonth, IList<int> employeesIds);
         IList<SocialCharge> GetSocialCharges(DateTime startDate, DateTime endDate);
+        SocialChargeItem GetSocialChargeItem(int accountNumber, int socialChargeId);
     }
 }
