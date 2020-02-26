@@ -49,7 +49,7 @@ export class CostTypeComponent extends GenericOptionComponent implements OnInit 
     }
 
     saveCallback(self, id){
-        self.list.push({ id: id, text: self.text.value, active: true, type: self.category.value });
+        self.list.push({ id: id, text: self.text.value, active: true, category: self.category.value });
     }
 
     updateCallback(self, item){

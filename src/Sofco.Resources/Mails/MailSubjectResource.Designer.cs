@@ -187,6 +187,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Empleados con VAP mayor a 35 días.
+        /// </summary>
+        public static string LicenseGreater35Title {
+            get {
+                return ResourceManager.GetString("LicenseGreater35Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Aprobación de licencia - {0}.
         /// </summary>
         public static string LicenseWorkflowTitle {

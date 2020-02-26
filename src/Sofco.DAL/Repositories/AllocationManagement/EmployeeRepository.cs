@@ -157,6 +157,17 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return up.Union(down).ToList();
         }
 
+        public IList<Employee> GetWithHolidaysPendingGreaterThen35()
+        {
+            return context.Employees.Where(x => x.HolidaysPending > 35).Select(x => new Employee
+                {
+                    EmployeeNumber = x.EmployeeNumber,
+                    Name = x.Name,
+                    HolidaysPending = x.HolidaysPending
+                })
+                .ToList();
+        }
+
         public ICollection<Employee> Search(EmployeeSearchParams parameters, DateTime startDate, DateTime endDate)
         {
             IQueryable<Employee> query = context.Employees.Include(x => x.Manager);
