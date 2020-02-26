@@ -159,7 +159,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> GetWithHolidaysPendingGreaterThen35()
         {
-            return context.Employees.Where(x => x.HolidaysPending > 35).Select(x => new Employee
+            return context.Employees.Where(x => x.HolidaysPending > 35 && !x.EndDate.HasValue).Select(x => new Employee
                 {
                     EmployeeNumber = x.EmployeeNumber,
                     Name = x.Name,
