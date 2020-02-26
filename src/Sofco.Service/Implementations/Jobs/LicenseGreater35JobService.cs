@@ -71,9 +71,9 @@ namespace Sofco.Service.Implementations.Jobs
             foreach (var employee in employees)
             {
                 text.Append($"<tr>" +
-                                $"<td class='td-sm'>{employee.EmployeeNumber}</td>" +
+                                $"<td class='td-md'>{employee.EmployeeNumber}</td>" +
                                 $"<td class='td-lg'>{employee.Name}</td>" +
-                                $"<td class='td-sm'>{employee.HolidaysPending} días</td>" +
+                                $"<td class='td-md'>{employee.HolidaysPending} días</td>" +
                             $"</tr>");
             }
 

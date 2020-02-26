@@ -233,9 +233,9 @@ namespace Sofco.Resources.Mails {
         ///&lt;table&gt;
         ///          &lt;thead&gt;
         ///            &lt;tr&gt;
-        ///              &lt;th class=td-sm&gt;Legajo&lt;/th&gt;
+        ///              &lt;th class=td-md&gt;Legajo&lt;/th&gt;
         ///              &lt;th class=td-lg&gt;Empleado&lt;/th&gt;
-        ///              &lt;th class=td-sm&gt;Días&lt;/th&gt;
+        ///              &lt;th class=td-md&gt;Días&lt;/th&gt;
         ///            &lt;/tr&gt;
         ///          &lt;/thead&gt;
         ///          &lt;tbody&gt;
