@@ -187,7 +187,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                         {
                             model.Facturability = 0;
                             model.RealPercentage = allocation.Percentage;
-                            model.AllocationPercentage = allocation.Percentage;
+                            model.AllocationPercentage = allocation.Percentage == -1 ? 0 : allocation.Percentage;
                         }
 
                         CalculateEmployeesAllocationResume(response, allocation, parameters, model);
@@ -484,13 +484,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     itemToAdd.LastMonth = allocation.StartDate.Month;
                     itemToAdd.LastMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
-                    itemToAdd.LastPercentage += allocation.Percentage;
+                    itemToAdd.LastPercentage += allocation.Percentage == -1 ? 0 : allocation.Percentage;
                 }
                 else
                 {
                     itemToAdd.CurrentMonth = allocation.StartDate.Month;
                     itemToAdd.CurrentMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
-                    itemToAdd.CurrentPercentage += allocation.Percentage;
+                    itemToAdd.CurrentPercentage += allocation.Percentage == -1 ? 0 : allocation.Percentage;
                 }
 
                 response.Data.EmployeesAllocationResume.Add(itemToAdd);
@@ -504,14 +504,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 {
                     employeeMissAllocation.LastMonth = allocation.StartDate.Month;
                     employeeMissAllocation.LastMonthDescription = DatesHelper.GetDateDescription(allocation.StartDate);
-                    employeeMissAllocation.LastPercentage += allocation.Percentage;
+                    employeeMissAllocation.LastPercentage += allocation.Percentage == -1 ? 0 : allocation.Percentage;
                 }
                 else
                 {
                     employeeMissAllocation.CurrentMonth = allocation.StartDate.Month;
                     employeeMissAllocation.CurrentMonthDescription =
                         DatesHelper.GetDateDescription(allocation.StartDate);
-                    employeeMissAllocation.CurrentPercentage += allocation.Percentage;
+                    employeeMissAllocation.CurrentPercentage += allocation.Percentage == -1 ? 0 : allocation.Percentage;
                 }
             }
         }

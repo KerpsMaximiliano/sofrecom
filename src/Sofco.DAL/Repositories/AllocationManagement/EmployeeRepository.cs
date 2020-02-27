@@ -437,7 +437,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             if (employeeId > 0)
             {
-                return context.Employees.Include(x => x.Manager).Where(x => x.Id == employeeId && x.EndDate == null && !x.IsExternal).ToList();
+                return context.Employees.Include(x => x.Manager).Where(x => x.Id == employeeId && x.EndDate == null && !x.IsExternal && x.StartDate.Date <= startDate.Date).ToList();
             }
             else
             {
@@ -447,7 +447,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
                 filter = filter.Distinct().ToList();
 
-                return context.Employees.Include(x => x.Manager).Where(x => !filter.Contains(x.Id) && x.EndDate == null && !x.IsExternal).ToList();
+                return context.Employees.Include(x => x.Manager).Where(x => !filter.Contains(x.Id) && x.EndDate == null && !x.IsExternal && x.StartDate.Date <= startDate.Date).ToList();
             }
         }
 
