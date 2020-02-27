@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Data.Admin;
@@ -565,6 +564,11 @@ namespace Sofco.Service.Implementations.Workflow
                         AddTransition(response, transition);
                     }
                 }
+            }
+
+            if (response.Data.Any())
+            {
+                response.Data = response.Data.OrderBy(x => x.WorkFlowStateType).ToList();
             }
 
             return response;

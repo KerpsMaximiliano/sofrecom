@@ -227,6 +227,29 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Existen empleados cuyo período vacacional supera los 35 días
+        ///&lt;br/&gt;
+        ///
+        ///&lt;table&gt;
+        ///          &lt;thead&gt;
+        ///            &lt;tr&gt;
+        ///              &lt;th class=td-md&gt;Legajo&lt;/th&gt;
+        ///              &lt;th class=td-lg&gt;Empleado&lt;/th&gt;
+        ///              &lt;th class=td-md&gt;Días&lt;/th&gt;
+        ///            &lt;/tr&gt;
+        ///          &lt;/thead&gt;
+        ///          &lt;tbody&gt;
+        ///              {0}
+        ///          &lt;/tbody&gt;
+        ///        &lt;/table&gt;.
+        /// </summary>
+        public static string LicenseGreater35Body {
+            get {
+                return ResourceManager.GetString("LicenseGreater35Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Tipo Licencia: &lt;b&gt;{1}&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;
         ///{2}
         ///RRHH: &lt;br/&gt;

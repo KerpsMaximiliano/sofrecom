@@ -1,0 +1,267 @@
+﻿ 2020-02-20 09:54:58,487 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Sequence contains more than one element
+System.InvalidOperationException: Sequence contains more than one element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.AllocationManagement.EmployeeRepository.GetByEmail(String email) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\AllocationManagement\EmployeeRepository.cs:line 396
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 91
+ 2020-02-20 09:57:55,149 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Sequence contains more than one element
+System.InvalidOperationException: Sequence contains more than one element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.AllocationManagement.EmployeeRepository.GetByEmail(String email) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\AllocationManagement\EmployeeRepository.cs:line 396
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 91
+ 2020-02-20 10:00:34,579 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Sequence contains more than one element
+System.InvalidOperationException: Sequence contains more than one element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.AllocationManagement.EmployeeRepository.GetByEmail(String email) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\AllocationManagement\EmployeeRepository.cs:line 396
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 91
+ 2020-02-20 10:04:18,406 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Sequence contains more than one element
+System.InvalidOperationException: Sequence contains more than one element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.AllocationManagement.EmployeeRepository.GetByEmail(String email) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\AllocationManagement\EmployeeRepository.cs:line 396
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 91
+ 2020-02-20 10:07:46,407 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Sequence contains more than one element
+System.InvalidOperationException: Sequence contains more than one element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.AllocationManagement.EmployeeRepository.GetByEmail(String email) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\AllocationManagement\EmployeeRepository.cs:line 396
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 91
+ 2020-02-20 10:08:42,172 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Sequence contains more than one element
+System.InvalidOperationException: Sequence contains more than one element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.AllocationManagement.EmployeeRepository.GetByEmail(String email) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\AllocationManagement\EmployeeRepository.cs:line 396
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 91
+ 2020-02-20 10:14:08,309 ERROR Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService Sequence contains more than one element
+System.InvalidOperationException: Sequence contains more than one element
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.AllocationManagement.EmployeeRepository.GetByEmail(String email) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\AllocationManagement\EmployeeRepository.cs:line 396
+   at Sofco.Service.Implementations.AdvancementAndRefund.CurrentAccountService.Get() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AdvancementAndRefund\CurrentAccountService.cs:line 91
+ 2020-02-20 11:09:45,601 ERROR Sofco.Service.Implementations.ManagementReport.ManagementReportStaffService Invalid column name 'Bono'.
+System.Data.SqlClient.SqlException (0x80131904): Invalid column name 'Bono'.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryBuffer.IncludeCollection[TEntity,TRelated,TElement](Int32 includeId, INavigation navigation, INavigation inverseNavigation, IEntityType targetEntityType, IClrCollectionAccessor clrCollectionAccessor, IClrPropertySetter inverseClrPropertySetter, Boolean tracking, TEntity entity, Func`1 relatedEntitiesFactory, Func`3 joinPredicate)
+   at lambda_method(Closure , QueryContext , CostDetail , Object[] )
+   at Microsoft.EntityFrameworkCore.Query.Internal.IncludeCompiler._Include[TEntity](QueryContext queryContext, TEntity entity, Object[] included, Action`3 fixup)
+   at lambda_method(Closure , QueryContext , CostDetail )
+   at Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal.ProjectionShaper.TypedProjectionShaper`3.Shape(QueryContext queryContext, ValueBuffer& valueBuffer)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryBuffer.IncludeCollection[TEntity,TRelated,TElement](Int32 includeId, INavigation navigation, INavigation inverseNavigation, IEntityType targetEntityType, IClrCollectionAccessor clrCollectionAccessor, IClrPropertySetter inverseClrPropertySetter, Boolean tracking, TEntity entity, Func`1 relatedEntitiesFactory, Func`3 joinPredicate)
+   at lambda_method(Closure , QueryContext , ManagementReport , Object[] )
+   at Microsoft.EntityFrameworkCore.Query.Internal.IncludeCompiler._Include[TEntity](QueryContext queryContext, TEntity entity, Object[] included, Action`3 fixup)
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.ManagementReport.ManagementReportRepository.GetById(Int32 IdManamentReport) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\ManagementReport\ManagementReportRepository.cs:line 20
+   at Sofco.Service.Implementations.ManagementReport.ManagementReportStaffService.GetCostDetailStaff(Int32 ManagementReportId) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\ManagementReport\ManagementReportStaffService.cs:line 271
+ClientConnectionId:102c0c17-73f2-453b-9182-78ae314ec993
+Error Number:207,State:1,Class:16
+ 2020-02-20 11:17:29,650 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware Timeout expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+System.Data.SqlClient.SqlException (0x80131904): Timeout expired.  The timeout period elapsed prior to completion of the operation or the server is not responding. ---> System.ComponentModel.Win32Exception (258): Tiempo de espera de la operación de espera agotado
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniError(TdsParserStateObject stateObj, UInt32 error)
+   at System.Data.SqlClient.TdsParserStateObject.ReadSniSyncOverAsync()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadNetworkPacket()
+   at System.Data.SqlClient.TdsParserStateObject.TryPrepareBuffer()
+   at System.Data.SqlClient.TdsParserStateObject.TryReadByte(Byte& value)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.Execute(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteReader(IRelationalConnection connection, IReadOnlyDictionary`2 parameterValues)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementation[TState,TResult](Func`3 operation, Func`3 verifySucceeded, TState state)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryBuffer.IncludeCollection[TEntity,TRelated,TElement](Int32 includeId, INavigation navigation, INavigation inverseNavigation, IEntityType targetEntityType, IClrCollectionAccessor clrCollectionAccessor, IClrPropertySetter inverseClrPropertySetter, Boolean tracking, TEntity entity, Func`1 relatedEntitiesFactory, Func`3 joinPredicate)
+   at lambda_method(Closure , QueryContext , Employee , Object[] )
+   at Microsoft.EntityFrameworkCore.Query.Internal.IncludeCompiler._Include[TEntity](QueryContext queryContext, TEntity entity, Object[] included, Action`3 fixup)
+   at lambda_method(Closure , TransparentIdentifier`2 )
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.MoveNext()
+   at System.Linq.Enumerable.SingleOrDefault[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ResultEnumerable`1.GetEnumerator()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Linq.Enumerable.TryGetFirst[TSource](IEnumerable`1 source, Boolean& found)
+   at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.<>c__DisplayClass15_1`1.<CompileQueryCore>b__0(QueryContext qc)
+   at System.Linq.Queryable.SingleOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   at Sofco.DAL.Repositories.AllocationManagement.EmployeeRepository.GetUserInfo(String email) in C:\Proyectos\GAPS\src\Sofco.DAL\Repositories\AllocationManagement\EmployeeRepository.cs:line 445
+   at Sofco.Service.Implementations.Admin.UserService.SetUserInfo(String email, Response`1 response) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Admin\UserService.cs:line 335
+   at Sofco.Service.Implementations.Admin.UserService.GetUserInfo(Int32 employeeId) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Admin\UserService.cs:line 296
+   at Sofco.WebApi.Controllers.AllocationManagement.EmployeeController.GetListItems() in C:\Proyectos\GAPS\src\Sofco.WebApi\Controllers\AllocationManagement\EmployeeController.cs:line 90
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Proyectos\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ClientConnectionId:afeead47-5a5b-4e33-ac30-e91c4547d408
+Error Number:-2,State:0,Class:11
+ 2020-02-20 16:24:26,666 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Index was outside the bounds of the array.
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ExcelDataReader.ExcelDataReader`2.GetValue(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 104
+   at ExcelDataReader.ExcelDataReader`2.IsDBNull(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 111
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 70
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
+ 2020-02-20 16:26:10,875 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Index was outside the bounds of the array.
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ExcelDataReader.ExcelDataReader`2.GetValue(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 104
+   at ExcelDataReader.ExcelDataReader`2.IsDBNull(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 111
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 70
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
+ 2020-02-20 16:26:28,657 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Index was outside the bounds of the array.
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ExcelDataReader.ExcelDataReader`2.GetValue(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 104
+   at ExcelDataReader.ExcelDataReader`2.IsDBNull(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 111
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 70
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
+ 2020-02-20 16:29:46,502 ERROR Sofco.Service.Implementations.Rrhh.PrepaidService Index was outside the bounds of the array.
+System.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at ExcelDataReader.ExcelDataReader`2.GetValue(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 104
+   at ExcelDataReader.ExcelDataReader`2.IsDBNull(Int32 i) in C:\projects\exceldatareader\src\ExcelDataReader\ExcelDataReader.cs:line 111
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.ProcessData(MemoryStream memoryStream, Int32 yearId, Int32 monthId, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 70
+   at Sofco.Framework.FileManager.Rrhh.Prepaids.MedicusPrepaidFileManager.Process(Int32 yearId, Int32 monthId, IFormFile file, Prepaid prepaid) in C:\Proyectos\GAPS\src\Sofco.Framework\FileManager\Rrhh\Prepaids\MedicusPrepaidFileManager.cs:line 43
+   at Sofco.Service.Implementations.Rrhh.PrepaidService.Import(Int32 prepaidId, Int32 yearId, Int32 monthId, IFormFile file) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\PrepaidService.cs:line 86
+ 2020-02-20 16:36:06,180 ERROR Sofco.Service.Implementations.AllocationManagement.EmployeeUpdateService A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server) ---> System.ComponentModel.Win32Exception (53): No se ha encontrado la ruta de acceso de la red
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenDbConnection(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.BufferlessMoveNext(DbContext _, Boolean buffer)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryingEnumerable`1.Enumerator.MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider._TrackEntities[TOut,TIn](IEnumerable`1 results, QueryContext queryContext, IList`1 entityTrackingInfos, IList`1 entityAccessors)+MoveNext()
+   at Microsoft.EntityFrameworkCore.Query.Internal.LinqOperatorProvider.ExceptionInterceptor`1.EnumeratorExceptionInterceptor.MoveNext()
+   at System.Collections.Generic.List`1.AddEnumerable(IEnumerable`1 enumerable)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at Sofco.Repository.Rh.Repositories.TigerEmployeeRepository.GetActive() in C:\Proyectos\GAPS\src\Sofco.Repository.Rh\Repositories\TigerEmployeeRepository.cs:line 107
+   at Sofco.Service.Implementations.Jobs.EmployeeSyncProfileJobService.Sync(Boolean all) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Jobs\EmployeeSyncProfileJobService.cs:line 35
+   at Sofco.Service.Implementations.AllocationManagement.EmployeeUpdateService.UpdateSalaryAndPrepaids() in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\AllocationManagement\EmployeeUpdateService.cs:line 51
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+ 2020-02-20 16:49:47,843 ERROR Sofco.WebApi.Filters.ErrorHandlingMiddleware A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server) ---> System.ComponentModel.Win32Exception (53): No se ha encontrado la ruta de acceso de la red
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenDbConnection(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.OpenConnection(DatabaseFacade databaseFacade)
+   at Sofco.Repository.Rh.Repositories.TigerEmployeeRepository.GetSocialCharges(Int32 year, Int32 month) in C:\Proyectos\GAPS\src\Sofco.Repository.Rh\Repositories\TigerEmployeeRepository.cs:line 122
+   at Sofco.Service.Implementations.Rrhh.RrhhService.UpdateSocialCharges(Int32 year, Int32 month) in C:\Proyectos\GAPS\src\Sofco.Service\Implementations\Rrhh\RrhhService.cs:line 139
+   at Sofco.WebApi.Controllers.Rrhh.RrhhController.SocialCharges(Int32 year, Int32 month) in C:\Proyectos\GAPS\src\Sofco.WebApi\Controllers\Rrhh\RrhhController.cs:line 37
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextResourceFilter()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Rethrow(ResourceExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeFilterPipelineAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeAsync()
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Sofco.WebApi.Filters.ErrorHandlingMiddleware.Invoke(HttpContext context) in C:\Proyectos\GAPS\src\Sofco.WebApi\Filters\ErrorHandlingMiddleware.cs:line 28
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20

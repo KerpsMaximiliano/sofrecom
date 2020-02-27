@@ -37,5 +37,7 @@
         public const string ApplicantInterviewNotificationBefore = "ApplicantInterviewNotificationBefore";
 
         public const string ApplicantInterviewNotificationAfter = "ApplicantInterviewNotificationAfter";
+
+        public const string LicenseGreater35 = "LicenseGreater35";
     }
 }

@@ -430,4 +430,21 @@ Recurso: {1}
           &lt;/tbody&gt;
         &lt;/table&gt;</value>
   </data>
+  <data name="LicenseGreater35Body" xml:space="preserve">
+    <value>Existen empleados cuyo período vacacional supera los 35 días
+&lt;br/&gt;
+
+&lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th class=td-md&gt;Legajo&lt;/th&gt;
+              &lt;th class=td-lg&gt;Empleado&lt;/th&gt;
+              &lt;th class=td-md&gt;Días&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+              {0}
+          &lt;/tbody&gt;
+        &lt;/table&gt;</value>
+  </data>
 </root>

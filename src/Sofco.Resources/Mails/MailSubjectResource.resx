@@ -222,4 +222,7 @@
   <data name="ScheduledInterviewsAfter" xml:space="preserve">
     <value>Entrevista RRHH/Técnica/Cliente vencida</value>
   </data>
+  <data name="LicenseGreater35Title" xml:space="preserve">
+    <value>Empleados con VAP mayor a 35 días</value>
+  </data>
 </root>

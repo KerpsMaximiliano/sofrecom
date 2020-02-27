@@ -25,7 +25,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
     acumulatedCostsEditabled: boolean = false;
     acumulatedSalesEditabled: boolean = false;
-
+ 
     acumulatedSales: string;
     acumulatedCosts: string;
     period: string;
@@ -39,6 +39,7 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
     private allMarginTrackings: any[] = new Array();
 
     @Output() getData: EventEmitter<any> = new EventEmitter();
+    @Output() callCalculateMarging: EventEmitter<any> = new EventEmitter();
 
     updateAcumulatedSuscrip: Subscription;
 
@@ -72,6 +73,10 @@ export class MarginTrackingComponent implements OnInit, OnDestroy {
 
         this.updateAcumulatedSuscrip = this.managementReportService.updateAcumulated(this.model.managementReportId, json).subscribe(() => {
             this.messageService.closeLoading();    
+
+            if(this.callCalculateMarging.observers.length > 0){
+                this.callCalculateMarging.emit();
+            }
         },
         () => this.messageService.closeLoading());
     }

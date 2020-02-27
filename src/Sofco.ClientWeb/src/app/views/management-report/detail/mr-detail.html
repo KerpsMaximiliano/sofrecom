@@ -175,7 +175,7 @@
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
-                            <margin-tracking #marginTracking (getData)="getMarginTracking($event)"></margin-tracking>
+                            <margin-tracking #marginTracking (getData)="getMarginTracking($event)" (callCalculateMarging)="updateMarginTracking()"></margin-tracking>
                         </div>
                     </div>
                     <div id="tab-2" class="tab-pane">

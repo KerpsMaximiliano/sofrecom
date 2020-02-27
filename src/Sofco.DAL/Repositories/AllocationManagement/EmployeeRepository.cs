@@ -157,6 +157,17 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return up.Union(down).ToList();
         }
 
+        public IList<Employee> GetWithHolidaysPendingGreaterThen35()
+        {
+            return context.Employees.Where(x => x.HolidaysPending > 35 && !x.EndDate.HasValue).Select(x => new Employee
+                {
+                    EmployeeNumber = x.EmployeeNumber,
+                    Name = x.Name,
+                    HolidaysPending = x.HolidaysPending
+                })
+                .ToList();
+        }
+
         public ICollection<Employee> Search(EmployeeSearchParams parameters, DateTime startDate, DateTime endDate)
         {
             IQueryable<Employee> query = context.Employees.Include(x => x.Manager);
@@ -426,7 +437,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
             if (employeeId > 0)
             {
-                return context.Employees.Include(x => x.Manager).Where(x => x.Id == employeeId && x.EndDate == null && !x.IsExternal).ToList();
+                return context.Employees.Include(x => x.Manager).Where(x => x.Id == employeeId && x.EndDate == null && !x.IsExternal && x.StartDate.Date <= startDate.Date).ToList();
             }
             else
             {
@@ -436,7 +447,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
                 filter = filter.Distinct().ToList();
 
-                return context.Employees.Include(x => x.Manager).Where(x => !filter.Contains(x.Id) && x.EndDate == null && !x.IsExternal).ToList();
+                return context.Employees.Include(x => x.Manager).Where(x => !filter.Contains(x.Id) && x.EndDate == null && !x.IsExternal && x.StartDate.Date <= startDate.Date).ToList();
             }
         }
 
