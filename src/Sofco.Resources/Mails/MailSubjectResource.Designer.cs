@@ -115,6 +115,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Fin período de prueba.
+        /// </summary>
+        public static string EmployeeTestPeriod {
+            get {
+                return ResourceManager.GetString("EmployeeTestPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a HITOS sin Solfac.
         /// </summary>
         public static string HitosWithoutSolfac {

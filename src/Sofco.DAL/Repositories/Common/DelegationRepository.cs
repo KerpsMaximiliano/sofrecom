@@ -38,7 +38,14 @@ namespace Sofco.DAL.Repositories.Common
             }
             else
             {
-                return context.Delegations.Any(x => x.UserId == userId && x.GrantedUserId == model.GrantedUserId && x.Type == model.Type && x.UserSourceId == userSourceId);
+                if (userSourceId.HasValue && userSourceId.Value > 0)
+                {
+                    return context.Delegations.Any(x => x.UserId == userId && x.GrantedUserId == model.GrantedUserId && x.Type == model.Type && x.UserSourceId == userSourceId);
+                }
+                else
+                {
+                    return context.Delegations.Any(x => x.UserId == userId && x.GrantedUserId == model.GrantedUserId && x.Type == model.Type);
+                }
             }
         }
 

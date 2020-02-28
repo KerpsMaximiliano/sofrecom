@@ -18,11 +18,11 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
     {
         private readonly IUnitOfWork unitOfWork;
 
-        private const int CuilColumn = 6;
-        private const int BeneficiariesColumn = 8;
-        private const int CostColumn = 2;
-        private const int PlanColumn = 9;
-        private const int PeriodColumn = 7;
+        private const int CuilColumn = 9;
+        private const int BeneficiariesColumn = 11;
+        private const int CostColumn = 3;
+        private const int PlanColumn = 12;
+        private const int PeriodColumn = 10;
 
         public MedifePrepaidFileManager(IUnitOfWork unitOfWork)
         {

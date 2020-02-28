@@ -62,13 +62,14 @@
     <div class="ibox" *ngIf="gridVisible"> 
         <div class="ibox-title">
             <div class="ibox-tools">
-                <button class="btn btn-success btn-sm pull-left" (click)="selectAllError()"> Seleccionar errores  <i class="fa fa-check"></i></button>
-                <button class="btn btn-success btn-sm pull-left" (click)="selectAllProvisioned()"> Seleccionar provisionados  <i class="fa fa-check"></i></button>
-                <button class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
+                <button class="btn btn-success btn-sm pull-left" (click)="selectAllError()"> Selec. errores  <i class="fa fa-check"></i></button>
+                <button class="btn btn-warning btn-sm pull-left" (click)="selectAllProvisioned()"> Selec. provisionados  <i class="fa fa-check"></i></button>
+                <button class="btn btn-primary btn-sm pull-left" (click)="selectAllSuccess()"> Selec. sin diferencias  <i class="fa fa-check"></i></button>
+                <button class="btn btn-danger btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
 
                 <button *ngIf="!itemsHasNoErrors()" [disabled]="noneItemsSelected()" class="btn btn-primary btn-sm" (click)="confirmAll()">Confirmar seleccionados <i class="fa fa-check"></i></button>  
                 <button *ngIf="!itemsHasNoErrors()" [disabled]="noneItemsSelected()" class="btn btn-warning btn-sm" (click)="toProvisionAll()">Provisionar seleccionados <i class="fa fa-warning"></i></button>  
-                <button *ngIf="itemsHasNoErrors() && !isClosed" class="btn btn-primary btn-sm" (click)="close()"> Cerrar mes <i class="fa fa-check"></i></button>  
+                <button *ngIf="allItemsAreConfirmed() && !isClosed" class="btn btn-primary btn-sm" (click)="close()"> Cerrar mes <i class="fa fa-check"></i></button>  
             </div>
         </div>
         <div class="ibox-content">
@@ -118,7 +119,7 @@
                     <tbody>
                         <tr *ngFor="let item of data">
                             <td class="column-xs text-center">
-                                <icheck *ngIf="item.status != 0" [(checked)]="item.selected"></icheck>
+                                <icheck *ngIf="item.status != 3" [(checked)]="item.selected"></icheck>
                             </td>
                             <td class="column-xs">{{ item.employeeNumber }}</td>
                             <td class="column-lg">{{ item.employeeName }}</td>

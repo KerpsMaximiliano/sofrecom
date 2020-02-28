@@ -5,5 +5,6 @@
         Success,
         Error,
         Provisioned,
+        Confirmed
     }
 }

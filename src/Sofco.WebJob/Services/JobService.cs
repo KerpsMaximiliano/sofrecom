@@ -81,6 +81,8 @@ namespace Sofco.WebJob.Services
             RecurringJob.AddOrUpdate<IPowerBiJob>(JobNames.PowerBi, j => j.Execute(), Cron.Hourly(5), localTimeZone);
 
             RecurringJob.AddOrUpdate<ILicenseGreater35Job>(JobNames.LicenseGreater35, j => j.Execute(), Cron.Yearly(10, 1, 9), localTimeZone);
+
+            RecurringJob.AddOrUpdate<IEmployeeTestPeriodJobService>(JobNames.EmployeeTestPeriod, j => j.Execute(), Cron.Daily(8), localTimeZone);
         }
 
         private void ClearJobs()

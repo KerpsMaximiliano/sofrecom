@@ -77,5 +77,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         SocialCharge GetSocialCharges(int employeeId, DateTime date);
         IList<Employee> GetUpdownReport(ReportUpdownParameters parameters);
         IList<Employee> GetWithHolidaysPendingGreaterThen35();
+        IList<Employee> GetOnTestPeriod(DateTime date);
+        void UpdateOnTestPeriod(Employee item);
     }
 }

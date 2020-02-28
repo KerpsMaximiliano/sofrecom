@@ -437,7 +437,7 @@ namespace Sofco.Service.Implementations.Common
 
             if (response.HasErrors()) return;
 
-            if (model.UserSourceIds != null)
+            if (model.UserSourceIds != null && model.UserSourceIds.Any())
             {
                 foreach (var userSourceId in model.UserSourceIds)
                 {
@@ -445,6 +445,13 @@ namespace Sofco.Service.Implementations.Common
                     {
                         response.AddError(Resources.Admin.Delegation.AlreadyExist);
                     }
+                }
+            }
+            else
+            {
+                if (unitOfWork.DelegationRepository.Exist(model, currentUserId, null))
+                {
+                    response.AddError(Resources.Admin.Delegation.AlreadyExist);
                 }
             }
     
