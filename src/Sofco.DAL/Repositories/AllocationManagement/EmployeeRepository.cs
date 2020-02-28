@@ -171,7 +171,9 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> GetOnTestPeriod(DateTime date)
         {
-            return context.Employees.Where(x => x.OnTestPeriod && !x.EndDate.HasValue && date.Subtract(x.StartDate.Date).TotalDays <= 15).Select(x => new Employee
+            return context.Employees.Where(x => x.OnTestPeriod && 
+                                                !x.EndDate.HasValue && 
+                                                date.Subtract(x.StartDate.AddDays(90).Date).TotalDays <= 15).Select(x => new Employee
                 {
                     EmployeeNumber = x.EmployeeNumber,
                     Name = x.Name,
