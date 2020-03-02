@@ -6,6 +6,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.DTO;
+using Sofco.Domain.Models.Admin;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Relationships;
@@ -166,6 +167,30 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     HolidaysPending = x.HolidaysPending
                 })
                 .ToList();
+        }
+
+        public IList<Employee> GetOnTestPeriod(DateTime date)
+        {
+            return context.Employees.Where(x => x.OnTestPeriod && 
+                                                !x.EndDate.HasValue && 
+                                                date.Subtract(x.StartDate.AddDays(90).Date).TotalDays <= 15).Select(x => new Employee
+                {
+                    EmployeeNumber = x.EmployeeNumber,
+                    Name = x.Name,
+                    Id = x.Id,
+                    OnTestPeriod = x.OnTestPeriod,
+                    Manager = new User
+                    {
+                        Email = x.Manager.Email,
+                        Name = x.Name
+                    }
+                })
+                .ToList();
+        }
+
+        public void UpdateOnTestPeriod(Employee item)
+        {
+            context.Entry(item).Property("OnTestPeriod").IsModified = true;
         }
 
         public ICollection<Employee> Search(EmployeeSearchParams parameters, DateTime startDate, DateTime endDate)

@@ -639,7 +639,12 @@
                 "holidaysPending": "Vacaciones Pendientes (habiles)",
                 "holidaysPendingByLaw": "Vacaciones Pendientes",
                 "seniority": "Seniority",
-                "bank": "Banco"
+                "bank": "Banco",
+                "salary": "Sueldo",
+                "prepaidAmount": "Prepaga",
+                "nationality": "Nacionalidad",
+                "activity": "Codigo actividad",
+                "contractType": "Tipo contrato"
             },
             "pendingWorkingHoursAlert": "Recurso con tareas/horas pendientes de aprobación a la fecha.",
             "phone": "Teléfono",

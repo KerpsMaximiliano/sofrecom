@@ -225,4 +225,7 @@
   <data name="LicenseGreater35Title" xml:space="preserve">
     <value>Empleados con VAP mayor a 35 días</value>
   </data>
+  <data name="EmployeeTestPeriod" xml:space="preserve">
+    <value>Fin período de prueba</value>
+  </data>
 </root>

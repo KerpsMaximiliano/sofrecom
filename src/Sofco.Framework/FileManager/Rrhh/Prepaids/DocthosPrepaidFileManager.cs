@@ -8,10 +8,8 @@ using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Domain.Enums;
-using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Utils;
-using Sofco.Framework.Helpers;
 
 namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 {

@@ -141,7 +141,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
     }
 
     initGrid(){
-        var columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+        var columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
         var title = "informacion-prepaga - " + this.monthId + "-" + this.yearId;
 
         var options = { 
@@ -167,7 +167,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
     }
 
     initProvisionedGrid(){
-        var columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+        var columns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
         var title = "provisionados meses anteriores";
 
         var options = { 
@@ -194,6 +194,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
 
     getStatusClass(status){
         switch(status){
+            case PrepaidImportedDataStatus.Confirmed: return "label-primary";
             case PrepaidImportedDataStatus.Success: return "label-primary";
             case PrepaidImportedDataStatus.Provisioned: return "label-warning";
             case PrepaidImportedDataStatus.Error: return "label-danger";
@@ -203,9 +204,10 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
 
     getStatusDesc(status){
         switch(status){
-            case PrepaidImportedDataStatus.Success: return this.i18nService.translateByKey("confirmed");
+            case PrepaidImportedDataStatus.Success: return "Sin diferencias";
             case PrepaidImportedDataStatus.Provisioned: return this.i18nService.translateByKey("provisioned");
             case PrepaidImportedDataStatus.Error: return this.i18nService.translateByKey("toVerify");
+            case PrepaidImportedDataStatus.Confirmed: return this.i18nService.translateByKey("confirmed");
             default: return '';
         }
     }
@@ -226,9 +228,17 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
         });
     }
 
+    selectAllSuccess(){
+        this.data.forEach((item, index) => {
+            if(item.status == PrepaidImportedDataStatus.Success){
+                item.selected = true;
+            }
+        });
+    }
+
     unselectAll(){
         this.data.forEach((item, index) => {
-            if(item.status != PrepaidImportedDataStatus.Success){
+            if(item.status != PrepaidImportedDataStatus.Confirmed){
                 item.selected = false;
             }
         });
@@ -242,10 +252,14 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
         return this.data.filter(x => x.status == PrepaidImportedDataStatus.Error).length == 0;
     }
 
+    allItemsAreConfirmed(){
+        return this.data.every(x => x.status == PrepaidImportedDataStatus.Confirmed);
+    }
+
     confirmAll(){
         var items = this.data.filter(x => x.selected == true).map(x => x.id);
         
-        this.update({ ids: items, status: PrepaidImportedDataStatus.Success });
+        this.update({ ids: items, status: PrepaidImportedDataStatus.Confirmed });
     }
 
     toProvisionAll(){
@@ -304,7 +318,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
     confirmProvisioned(){
         var items = this.provisioneds.filter(x => x.selected == true).map(x => x.id);
 
-        var model = { ids: items, status: PrepaidImportedDataStatus.Success };
+        var model = { ids: items, status: PrepaidImportedDataStatus.Confirmed };
 
         this.messageService.showLoading();
 

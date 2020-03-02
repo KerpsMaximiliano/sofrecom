@@ -108,6 +108,22 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Recursos en período de prueba por finalizar&lt;br/&gt;
+        ///Los siguientes recursos cumplen su período de prueba en menos de 15 días.
+        ///&lt;br/&gt;&lt;br/&gt;
+        ///Recursos:&lt;br/&gt;
+        ///{0}
+        ///&lt;br/&gt;
+        ///&lt;br/&gt;
+        ///&lt;strong&gt;Por favor completar la &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;Evaluacion de Ingresantes&lt;/a&gt;&lt;/strong&gt;.
+        /// </summary>
+        public static string EmployeeTestPeriod {
+            get {
+                return ResourceManager.GetString("EmployeeTestPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Se solicita la anulación de los siguientes remitos: &lt;br/&gt;
         ///{0}
         /// &lt;br/&gt; &lt;br/&gt;

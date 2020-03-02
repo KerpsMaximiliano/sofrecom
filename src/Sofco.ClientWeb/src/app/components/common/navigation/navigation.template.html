@@ -92,13 +92,16 @@
           <li [ngClass]="{active: activeRoute('advancement/search')}"
             *ngIf="menuService.hasFunctionality('ADVAN', 'QUERY')"><a
               [routerLink]="['/advancementAndRefund/advancement/search']">{{'advancement.search' | translate }}</a></li>
+              
           <li [ngClass]="{active: activeRoute('refund/search')}"
             *ngIf="menuService.hasFunctionality('ADVAN', 'REFUND-LIST-VIEW')"><a
               [routerLink]="['/advancementAndRefund/refund/search']">{{'refund.search' | translate }}</a></li>
+
           <li [ngClass]="{active: activeRoute('advancement/paymentPending')}"
             *ngIf="menuService.hasFunctionality('ADVAN', 'PAYMENT-PENDING-VIEW')"><a
               [routerLink]="['/advancementAndRefund/advancement/paymentPending']">{{'advancement.paymentPending' | translate }}</a>
           </li>
+
           <li [ngClass]="{active: activeRoute('setting')}" *ngIf="menuService.hasFunctionality('ADVAN', 'SETTING')"><a
               [routerLink]="['/advancementAndRefund/setting']">{{'advRefSetting.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('currentAccount')}"

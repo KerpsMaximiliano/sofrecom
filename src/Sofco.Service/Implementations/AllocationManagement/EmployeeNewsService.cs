@@ -120,6 +120,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.Modified = DateTime.UtcNow;
                 employee.CreatedByUser = userName;
                 employee.BusinessHours = 8;
+                employee.OnTestPeriod = true;
                 employee.BusinessHoursDescription = "09:00 hs a 18:00 hs";
 
                 SetEmployeeHistory(employee);

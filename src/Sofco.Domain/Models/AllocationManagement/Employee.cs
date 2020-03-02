@@ -131,5 +131,7 @@ namespace Sofco.Domain.Models.AllocationManagement
         public string ContractType { get; set; }
 
         public string Nationality { get; set; }
+
+        public bool OnTestPeriod { get; set; }
     }
 }
