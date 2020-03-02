@@ -28,9 +28,8 @@ export class DetailContactsComponent implements OnInit {
     firstName: new FormControl(null, [Validators.required, Validators.maxLength(75)]),
     comments: new FormControl(null, [Validators.maxLength(3000)]),
     email: new FormControl(null, [Validators.maxLength(75)]),
-    profiles: new FormControl(null),
-    skills: new FormControl(null),
-    clientId: new FormControl(null),
+    profiles: new FormControl(null, [Validators.required]),
+    skills: new FormControl(null, [Validators.required]),
     recommendedByUserId: new FormControl(null),
     countryCode1: new FormControl(null, [Validators.min(0), Validators.max(99)]),
     areaCode1: new FormControl(null, [Validators.min(0), Validators.max(999)]),
@@ -80,7 +79,6 @@ export class DetailContactsComponent implements OnInit {
   skillOptions: any[] = new Array();
   reasonOptions: any[] = new Array();
   applicantCloseReasons: any[] = new Array();
-  customerOptions: any[] = new Array();
   userOptions: any[] = new Array();
   history: any[] = new Array();
   analytics: any[] = new Array();
@@ -94,7 +92,6 @@ export class DetailContactsComponent implements OnInit {
   addSubscrip: Subscription;
   getUsersSubscrip: Subscription;
   getReasonsSubscrip: Subscription;
-  getClientsSubscrip: Subscription;
   getProfilesSubscrip: Subscription;
   getSkilsSubscrip: Subscription;
   getSubscrip: Subscription;
@@ -111,15 +108,13 @@ export class DetailContactsComponent implements OnInit {
     private analyticService: AnalyticService,
     private applicantService: ApplicantService,
     private dataTableService: DataTableService,
-    private router: Router,
-    private customerService: CustomerService){
+    private router: Router){
   }
 
   ngOnInit() {
     this.getProfiles();
     this.getSkills();
     this.getReasons();
-    this.getCustomers();
     this.getUsers();
     this.getAnalytics();
 
@@ -134,7 +129,6 @@ export class DetailContactsComponent implements OnInit {
     if (this.addSubscrip) this.addSubscrip.unsubscribe();
     if (this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe();
     if (this.getReasonsSubscrip) this.getReasonsSubscrip.unsubscribe();
-    if (this.getClientsSubscrip) this.getClientsSubscrip.unsubscribe();
     if (this.getProfilesSubscrip) this.getProfilesSubscrip.unsubscribe();
     if (this.getSkilsSubscrip) this.getSkilsSubscrip.unsubscribe();
     if (this.getSubscrip) this.getSubscrip.unsubscribe();
@@ -186,16 +180,10 @@ export class DetailContactsComponent implements OnInit {
   }
 
   getUsers() {
-    this.getClientsSubscrip = this.userService.getOptions().subscribe(d => {
+    this.getUsersSubscrip = this.userService.getOptions().subscribe(d => {
         this.userOptions = d;
         this.interview.userOptions = d;
     });
-  }
-
-  getCustomers() {
-      this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
-          this.customerOptions = d.data;
-      });
   }
 
   back(){
@@ -219,7 +207,6 @@ export class DetailContactsComponent implements OnInit {
         this.form.controls.email.setValue(response.data.email);
         this.form.controls.profiles.setValue(response.data.profiles);
         this.form.controls.skills.setValue(response.data.skills);
-        this.form.controls.clientId.setValue(response.data.clientId);
         this.form.controls.recommendedByUserId.setValue(response.data.recommendedByUserId);
         this.form.controls.countryCode1.setValue(response.data.countryCode1);
         this.form.controls.areaCode1.setValue(response.data.areaCode1);
@@ -298,7 +285,6 @@ export class DetailContactsComponent implements OnInit {
       firstName: this.form.controls.firstName.value,
       email: this.form.controls.email.value,
       comments: this.form.controls.comments.value,
-      clientCrmId: this.form.controls.clientId.value,
       recommendedByUserId: this.form.controls.recommendedByUserId.value,
       countryCode1: this.form.controls.countryCode1.value,
       countryCode2: this.form.controls.countryCode2.value,
@@ -307,8 +293,7 @@ export class DetailContactsComponent implements OnInit {
       telephone1: this.form.controls.telephone1.value,
       telephone2: this.form.controls.telephone2.value,
       skills: this.form.controls.skills.value,
-      profiles: this.form.controls.profiles.value,
-      clientId: 0
+      profiles: this.form.controls.profiles.value
     };
   }
 

@@ -32,16 +32,9 @@
               </div>
             </div>
             <div class="col-sm-4">
-                <div class="form-group">
-                  <label class="control-label">Apellido</label>
-                  <input class="form-control" type="text" [(ngModel)]="searchModel.lastName">
-                </div>
-              </div>
-            <div class="col-sm-4">
               <div class="form-group">
-                <label class="control-label">Cliente</label>
-                <ng-select [items]="customerOptions" bindLabel="text" bindValue="id" [(ngModel)]="searchModel.clientCrmId">
-                </ng-select>
+                <label class="control-label">Apellido</label>
+                <input class="form-control" type="text" [(ngModel)]="searchModel.lastName">
               </div>
             </div>
           </div>
@@ -84,7 +77,6 @@
               <th>Apellido</th>
               <th>Nombres</th>
               <th>Mail</th>
-              <th>Cliente</th>
               <th>Conocimientos</th>
               <th>Perfiles</th>
               <th>Estado</th>
@@ -95,7 +87,6 @@
               <td class="column-lg text-ellipsis">{{ item.lastName }}</td>
               <td class="column-lg text-ellipsis">{{ item.firstName }}</td>
               <td>{{ item.email }}</td>
-              <td>{{ item.client }}</td>
               <td>{{ item.skills }}</td>
               <td>{{ item.profiles }}</td>
               <td>{{ getStatusDesc(item.status) }}</td>

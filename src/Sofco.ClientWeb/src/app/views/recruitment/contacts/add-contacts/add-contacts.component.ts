@@ -22,9 +22,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     firstName: new FormControl(null, [Validators.required, Validators.maxLength(75)]),
     comments: new FormControl(null, [Validators.maxLength(3000)]),
     email: new FormControl(null, [Validators.maxLength(75)]),
-    profiles: new FormControl(null),
-    skills: new FormControl(null),
-    clientId: new FormControl(null),
+    profiles: new FormControl(null, [Validators.required]),
+    skills: new FormControl(null, [Validators.required]),
     recommendedByUserId: new FormControl(null),
     countryCode1: new FormControl(null, [Validators.min(0), Validators.max(99)]),
     areaCode1: new FormControl(null, [Validators.min(0), Validators.max(999)]),
@@ -36,12 +35,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
   profileOptions: any[] = new Array();
   skillOptions: any[] = new Array();
-  customerOptions: any[] = new Array();
   userOptions: any[] = new Array();
 
   addSubscrip: Subscription;
   getUsersSubscrip: Subscription;
-  getClientsSubscrip: Subscription;
   getProfilesSubscrip: Subscription;
   getSkilsSubscrip: Subscription;
 
@@ -50,8 +47,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     public formsService: FormsService,
     private userService: UserService,
     private applicantService: ApplicantService,
-    private router: Router,
-    private customerService: CustomerService){
+    private router: Router){
   }
 
   ngOnInit() {
@@ -61,12 +57,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     var promise1 = new Promise((resolve, reject) => this.getProfiles(resolve));
     var promise2 = new Promise((resolve, reject) => this.getSkills(resolve));
-    var promise4 = new Promise((resolve, reject) => this.getCustomers(resolve));
     var promise5 = new Promise((resolve, reject) => this.getUsers(resolve));
 
     promises.push(promise1);
     promises.push(promise2);
-    promises.push(promise4);
     promises.push(promise5);
 
     Promise.all(promises).then(data => { 
@@ -81,7 +75,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.addSubscrip) this.addSubscrip.unsubscribe();
     if (this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe();
-    if (this.getClientsSubscrip) this.getClientsSubscrip.unsubscribe();
     if (this.getProfilesSubscrip) this.getProfilesSubscrip.unsubscribe();
     if (this.getSkilsSubscrip) this.getSkilsSubscrip.unsubscribe();
   }
@@ -105,19 +98,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
   }
 
   getUsers(resolve) {
-    this.getClientsSubscrip = this.userService.getOptions().subscribe(d => {
+    this.getUsersSubscrip = this.userService.getOptions().subscribe(d => {
         resolve();
         this.userOptions = d;
     },
     () => resolve());
-  }
-
-  getCustomers(resolve) {
-      this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
-          resolve();
-          this.customerOptions = d.data;
-      },
-      () => resolve());
   }
 
   back(){
@@ -132,7 +117,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         firstName: this.form.controls.firstName.value,
         email: this.form.controls.email.value,
         comments: this.form.controls.comments.value,
-        clientCrmId: this.form.controls.clientId.value,
         recommendedByUserId: this.form.controls.recommendedByUserId.value,
         countryCode1: this.form.controls.countryCode1.value,
         countryCode2: this.form.controls.countryCode2.value,
@@ -141,8 +125,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         telephone1: this.form.controls.telephone1.value,
         telephone2: this.form.controls.telephone2.value,
         skills: this.form.controls.skills.value,
-        profiles: this.form.controls.profiles.value,
-        clientId: 0
+        profiles: this.form.controls.profiles.value
     }
 
     this.messageService.showLoading();

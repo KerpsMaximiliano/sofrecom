@@ -18,7 +18,6 @@ namespace Sofco.DAL.Repositories.Recruitment
         public IList<Applicant> Search(ApplicantSearchParameters parameter)
         {
             IQueryable<Applicant> query = context.Applicants
-                .Include(x => x.Client)
                 .Include(x => x.ApplicantSkills)
                     .ThenInclude(x => x.Skill)
                 .Include(x => x.ApplicantProfiles)
@@ -82,9 +81,6 @@ namespace Sofco.DAL.Repositories.Recruitment
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(parameter.ClientCrmId))
-                query = query.Where(x => x.Client.CrmId.Equals(parameter.ClientCrmId));
-
             if (parameter.Profiles != null && parameter.Profiles.Any())
                 query = query.Where(x => x.ApplicantProfiles.Any(s => parameter.Profiles.Contains(s.ProfileId)));
 
@@ -99,7 +95,6 @@ namespace Sofco.DAL.Repositories.Recruitment
             return context.Applicants
                 .Include(x => x.ApplicantProfiles)
                 .Include(x => x.ApplicantSkills)
-                .Include(x => x.Client)
                 .SingleOrDefault(x => x.Id == id);
         }
 

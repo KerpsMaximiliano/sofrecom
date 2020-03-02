@@ -38,8 +38,6 @@ namespace Sofco.Core.Models.Recruitment
 
             if (applicant.RecommendedByUserId.HasValue) RecommendedByUserId = applicant.RecommendedByUserId.Value.ToString();
 
-            if (applicant.Client != null) ClientId = applicant.Client.CrmId;
-
             if (applicant.ApplicantProfiles != null && applicant.ApplicantProfiles.Any())
                 Profiles = applicant.ApplicantProfiles.Select(x => x.ProfileId).ToList();
 

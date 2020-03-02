@@ -140,7 +140,6 @@ namespace Sofco.Service.Implementations.Recruitment
             ValidateEmail(model, response);
             ValidateTelephone1(model, response);
             ValidateTelephone2(model, response);
-            ValidateClient(model, response);
             ValidateRecommendedUser(model, response);
         }
 
@@ -166,23 +165,6 @@ namespace Sofco.Service.Implementations.Recruitment
             if (model.RecommendedByUserId.HasValue && !unitOfWork.UserRepository.ExistById(model.RecommendedByUserId.Value))
             {
                 response.AddError(Resources.Admin.User.NotFound);
-            }
-        }
-
-        private void ValidateClient(ApplicantAddModel model, Response response)
-        {
-            if (!string.IsNullOrWhiteSpace(model.ClientCrmId))
-            {
-                var customer = unitOfWork.CustomerRepository.GetByIdCrm(model.ClientCrmId);
-
-                if (customer == null)
-                {
-                    response.AddError(Resources.Billing.Customer.NotFound);
-                }
-                else
-                {
-                    model.ClientId = customer.Id;
-                }
             }
         }
 

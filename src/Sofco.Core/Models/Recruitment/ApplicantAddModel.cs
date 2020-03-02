@@ -15,8 +15,6 @@ namespace Sofco.Core.Models.Recruitment
 
         public string Comments { get; set; }
 
-        public int? ClientId { get; set; }
-
         public int? ReasonCauseId { get; set; }
 
         public int? RecommendedByUserId { get; set; }
@@ -36,8 +34,6 @@ namespace Sofco.Core.Models.Recruitment
         public IList<int> Skills { get; set; }
 
         public IList<int> Profiles { get; set; }
-
-        public string ClientCrmId { get; set; }
 
         public Applicant CreateDomain()
         {
@@ -61,7 +57,6 @@ namespace Sofco.Core.Models.Recruitment
             domain.AreaCode2 = AreaCode2;
             domain.Telephone2 = Telephone2;
 
-            if (ClientId.HasValue && ClientId > 0) domain.ClientId = ClientId.Value;
             if (RecommendedByUserId.HasValue && RecommendedByUserId > 0) domain.RecommendedByUserId = RecommendedByUserId.Value;
 
             if (Skills != null && Skills.Any())

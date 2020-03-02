@@ -22,9 +22,6 @@ namespace Sofco.Domain.Models.Recruitment
 
         public IList<ApplicantSkills> ApplicantSkills { get; set; }
 
-        public int? ClientId { get; set; }
-        public Customer Client { get; set; }
-
         public int? RecommendedByUserId { get; set; }
         public User RecommendedByUser { get; set; }
 

@@ -8,8 +8,6 @@ namespace Sofco.Core.Models.Recruitment
 
         public string LastName { get; set; }
 
-        public string ClientCrmId { get; set; }
-
         public IList<int> Skills { get; set; }
 
         public IList<int> Profiles { get; set; }

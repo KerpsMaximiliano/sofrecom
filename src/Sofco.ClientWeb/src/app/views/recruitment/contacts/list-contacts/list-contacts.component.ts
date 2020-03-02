@@ -5,7 +5,6 @@ import { GenericOptionService } from 'app/services/admin/generic-option.service'
 import { MessageService } from 'app/services/common/message.service';
 import { Router } from '@angular/router';
 import { GenericOptions } from 'app/models/enums/genericOptions';
-import { CustomerService } from 'app/services/billing/customer.service';
 import { ApplicantService } from 'app/services/recruitment/applicant.service';
 import { MenuService } from 'app/services/admin/menu.service';
 import { ApplicantStatus } from 'app/models/enums/applicantStatus';
@@ -21,47 +20,35 @@ export class ListContactsComponent implements OnInit, OnDestroy {
     firstName: null,
     lastName: null,
     skills: null,
-    profiles: null,
-    clientCrmId: null
+    profiles: null
   };
 
   public skillOptions: any[] = new Array()
-  public customerOptions: any[] = new Array()
   public profileOptions: any[] = new Array()
 
   public list: any[] = new Array();
 
   searchSubscrip: Subscription;
-  getClientsSubscrip: Subscription;
   getProfilesSubscrip: Subscription;
   getSkillsSubscrip: Subscription;
 
   constructor(private dataTableService: DataTableService,
     private genericOptionsService: GenericOptionService,
-    private customerService: CustomerService,
     private menuService: MenuService,
     private applicantService: ApplicantService,
     private router: Router,
     private messageService: MessageService) { }
 
   ngOnInit() {
-    this.getCustomers();
     this.getProfiles();
     this.getSkills();
   }
 
   ngOnDestroy(): void {
     if (this.searchSubscrip) this.searchSubscrip.unsubscribe();
-    if (this.getClientsSubscrip) this.getClientsSubscrip.unsubscribe();
     if (this.getProfilesSubscrip) this.getProfilesSubscrip.unsubscribe();
     if (this.getSkillsSubscrip) this.getSkillsSubscrip.unsubscribe();
 
-  }
-
-  getCustomers() {
-    this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
-        this.customerOptions = d.data;
-    });
   }
 
   getProfiles(){
@@ -83,8 +70,7 @@ export class ListContactsComponent implements OnInit, OnDestroy {
       firstName: this.searchModel.firstName,
       lastName: this.searchModel.lastName,
       skills: this.searchModel.skills,
-      profiles: this.searchModel.profiles,
-      clientCrmId: this.searchModel.clientCrmId,
+      profiles: this.searchModel.profiles
     };
 
     this.list = [];
@@ -110,11 +96,10 @@ export class ListContactsComponent implements OnInit, OnDestroy {
     this.searchModel.lastName = null;
     this.searchModel.skills = null;
     this.searchModel.profiles = null;
-    this.searchModel.clientCrmId = null;
   }
 
   initGrid() {
-    var columns = [0, 1, 2, 3 ,4, 5, 6];
+    var columns = [0, 1, 2, 3, 4, 5];
 
     var params = {
         selector: '#searchTable',

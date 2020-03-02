@@ -14,8 +14,6 @@ namespace Sofco.Core.Models.Recruitment
             Email = domain.Email;
             Status = domain.Status;
 
-            if (domain.Client != null) Client = domain.Client.Name;
-
             if (domain.ApplicantProfiles != null && domain.ApplicantProfiles.Any())
                 Profiles = string.Join(";", domain.ApplicantProfiles.Select(x => x.Profile.Text));
 
@@ -32,6 +30,5 @@ namespace Sofco.Core.Models.Recruitment
         public string Skills { get; set; }
         public string Profiles { get; set; }
         public string Email { get; set; }
-        public string Client { get; set; }
     }
 }
