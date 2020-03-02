@@ -114,7 +114,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     response.AddErrorAndNoTraslate($"Verificar el email del recurso {employee.Name} y volver a 'Actualizar datos' para confirmar la novedad");
                     response.Data = null;
                     return response;
-                }
+                } 
 
                 employee.Created = DateTime.UtcNow;
                 employee.Modified = DateTime.UtcNow;
@@ -123,6 +123,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.OnTestPeriod = true;
                 employee.BusinessHoursDescription = "09:00 hs a 18:00 hs";
 
+                if (employee.StartDate.Month == 10 || employee.StartDate.Month == 11 || employee.StartDate.Month == 12)
+                {
+                    CalculateDaysAfterSeptember30(employee);
+                }
+          
                 SetEmployeeHistory(employee);
 
                 // Add new/existing employee
@@ -143,6 +148,34 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
 
             return response;
+        }
+
+        private void CalculateDaysAfterSeptember30(Employee employee)
+        {
+            var daysWorked = new DateTime(DateTime.UtcNow.Year, 12, 31).Subtract(employee.StartDate.Date).Days + 1;
+
+            var daysAvg = (double)daysWorked / 20;
+
+            if (daysAvg % 1 >= 0.5)
+            {
+                daysAvg++;
+            }
+
+            var days = (int)daysAvg;
+
+            if (days > 6)
+            {
+                employee.HolidaysPendingByLaw = days;
+                days -= 2;
+            }
+            else if (days == 6)
+            {
+                employee.HolidaysPendingByLaw = days;
+                days--;
+            }
+
+            employee.HolidaysByLaw = days;
+            employee.HolidaysPending = days;
         }
 
         private void SetEmployeeHistory(Employee employee)
