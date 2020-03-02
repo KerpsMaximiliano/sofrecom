@@ -351,6 +351,8 @@ namespace Sofco.Service.Implementations.Admin
 
                 var delegations = unitOfWork.DelegationRepository.GetByUserId(employee.ManagerId.GetValueOrDefault(), DelegationType.LicenseAuthorizer);
 
+                delegations = delegations.Where(x => x.UserSourceId == model.Id).ToList();
+
                 if (delegations.Any())
                 {
                     var first = delegations.First();
