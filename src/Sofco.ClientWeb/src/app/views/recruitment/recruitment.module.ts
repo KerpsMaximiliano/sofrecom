@@ -38,6 +38,7 @@ import { JobSearchRelatedComponent } from './contacts/jobSearch-related/jobSearc
 import { RecruitmentReportComponent } from './reports/recruitment-report';
 import { ChartjsModule } from '@ctrl/ngx-chartjs';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { ApplicantsRelatedByJsComponent } from './job-search/applicants-by-js/applicants-by-js';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
     JobSearchHistoryComponent,
     ContactFileComponent,
     JobSearchRelatedComponent,
+    ApplicantsRelatedByJsComponent,
     RecruitmentReportComponent
   ],
 

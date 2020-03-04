@@ -126,5 +126,19 @@ namespace Sofco.DAL.Repositories.Recruitment
                             (x.ClientInterviewDate.HasValue && x.ClientInterviewDate.Value.Date < today.Date && x.ModifiedAt.Date < x.ClientInterviewDate.Value.Date))
                 .ToList();
         }
+
+        public IList<JobSearchApplicant> GetApplicantsByJobSearchId(int jobSearchId)
+        {
+            return context.JobSearchApplicants
+                .Where(x => x.JobSearchId == jobSearchId)
+                .Include(x => x.Reason)
+                .Include(x => x.Applicant)
+                    .ThenInclude(x => x.ApplicantProfiles)
+                        .ThenInclude(x => x.Profile)
+                .Include(x => x.Applicant)
+                    .ThenInclude(x => x.ApplicantSkills)
+                        .ThenInclude(x => x.Skill)
+                .ToList();
+        }
     }
 }

@@ -55,6 +55,14 @@ namespace Sofco.WebApi.Controllers.Recruitment
             return this.CreateResponse(response);
         }
 
+        [HttpGet("{jobSearchId}/applicants")]
+        public IActionResult GetApplicants(int jobSearchId)
+        {
+            var response = jobSearchService.GetByApplicantsRelated(jobSearchId);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("recruiters")]
         public IActionResult GetRecruiters()
         {

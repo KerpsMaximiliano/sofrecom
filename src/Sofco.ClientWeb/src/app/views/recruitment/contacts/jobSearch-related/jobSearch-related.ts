@@ -124,7 +124,10 @@ export class JobSearchRelatedComponent implements OnDestroy {
                     var itemData = this.data.find(s => s.id == s.id == x.id);
                     if(itemData){
                         itemData.date = moment().toDate();
+                        itemData.contactedBefore = true;
                     }
+
+                    x.contactedBefore = true;
                 }
             });
 

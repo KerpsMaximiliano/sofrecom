@@ -46,6 +46,10 @@ export class JobSearchService {
         return this.http.get<any>(`${this.baseUrl}/jobSearchApplicant?jobSearchId=${jobSearchId}&applicantId=${applicantId}`);
     }
 
+    getApplicantsRelatedByJobsearch(jobSearchId){
+        return this.http.get<any>(`${this.baseUrl}/jobSearch/${jobSearchId}/applicants`);
+    }
+
     addContacts(json) {
         return this.http.post<any>(`${this.baseUrl}/jobSearchApplicant`, json);
     }

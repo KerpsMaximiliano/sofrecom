@@ -136,6 +136,39 @@ namespace Sofco.Service.Implementations.Recruitment
                 response.AddError(Resources.Recruitment.JobSearch.LanguageRequired);
         }
 
+        public Response<IList<ApplicantRelatedModel>> GetByApplicantsRelated(int jobSearchId)
+        {
+            var response = new Response<IList<ApplicantRelatedModel>> { Data = new List<ApplicantRelatedModel>() };
+
+            var jobSearch = unitOfWork.JobSearchRepository.Get(jobSearchId);
+
+            if (jobSearch == null)
+            {
+                response.AddError(Resources.Recruitment.JobSearch.NotFound);
+                return response;
+            }
+
+            try
+            {
+                var jobSearchApplicants = unitOfWork.JobSearchApplicantRepository.GetApplicantsByJobSearchId(jobSearchId);
+
+                var applicantIds = jobSearchApplicants.Select(x => x.ApplicantId).Distinct();
+
+                foreach (var applicantId in applicantIds)
+                {
+                    var jobSearchApplicant = jobSearchApplicants.Where(x => x.ApplicantId == applicantId).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
+
+                    response.Data.Add(new ApplicantRelatedModel(jobSearchApplicant));
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+            }
+
+            return response;
+        }
+
         public Response ChangeStatus(int id, JobSearchChangeStatusModel parameter)
         {
             var response = new Response();

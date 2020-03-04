@@ -1,0 +1,24 @@
+<div class="table-responsive">
+    <table class="table table-striped dataTable table-font" role="grid" id="applicantsByJs">
+        <thead>
+            <tr>
+                <th>Nombre y Apellido</th>
+                <th>Perfiles</th>
+                <th>Conocimientos</th>
+                <th>Ultimo Contacto</th>
+                <th>Ultimo Motivo</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data" class="pointer">
+                <td>{{ item.applicant }}</td>
+                <td class="text-word-break">{{ item.profiles }}</td>
+                <td class="text-word-break">{{ item.skills }}</td>
+                <td>{{ item.date | date:'dd/MM/yyyy' }}</td>
+                <td>{{ item.reason }}</td>
+                <td>{{ getStatusDesc(item.status) }}</td>
+            </tr>
+        </tbody>
+    </table>       
+</div>

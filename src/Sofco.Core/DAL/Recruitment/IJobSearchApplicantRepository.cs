@@ -14,5 +14,6 @@ namespace Sofco.Core.DAL.Recruitment
         IList<JobSearchApplicant> GetByApplicant(int applicantId);
         IList<JobSearchApplicant> GetWithInterviewAfterToday();
         IList<JobSearchApplicant> GetWithInterviewABeforeToday();
+        IList<JobSearchApplicant> GetApplicantsByJobSearchId(int jobSearchId);
     }
 }

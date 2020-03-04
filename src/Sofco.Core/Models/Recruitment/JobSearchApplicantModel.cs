@@ -27,11 +27,48 @@ namespace Sofco.Core.Models.Recruitment
 
                 Reason = contact?.Reason?.Text;
             }
+
         }
+
+        public bool ApplicantInProgress { get; set; }
 
         public string Reason { get; set; }
 
-        public bool ApplicantInProgress { get; set; }
+        public int Id { get; set; }
+
+        public string Applicant { get; set; }
+
+        public string Skills { get; set; }
+
+        public string Profiles { get; set; }
+
+        public DateTime? Date { get; set; }
+    }
+
+    public class ApplicantRelatedModel
+    {
+        public ApplicantRelatedModel(JobSearchApplicant jobSearchApplicant)
+        {
+            Id = jobSearchApplicant.Applicant.Id;
+
+            Applicant = $"{jobSearchApplicant.Applicant.FirstName} {jobSearchApplicant.Applicant.LastName}";
+
+            if (jobSearchApplicant.Applicant.ApplicantProfiles != null && jobSearchApplicant.Applicant.ApplicantProfiles.Any())
+                Profiles = string.Join(";", jobSearchApplicant.Applicant.ApplicantProfiles.Select(x => x.Profile.Text));
+
+            if (jobSearchApplicant.Applicant.ApplicantSkills != null && jobSearchApplicant.Applicant.ApplicantSkills.Any())
+                Skills = string.Join(";", jobSearchApplicant.Applicant.ApplicantSkills.Select(x => x.Skill.Text));
+
+            Date = jobSearchApplicant?.CreatedDate;
+
+            Reason = jobSearchApplicant?.Reason?.Text;
+
+            Status = jobSearchApplicant.Applicant.Status;
+        }
+
+        public ApplicantStatus Status { get; set; }
+
+        public string Reason { get; set; }
 
         public int Id { get; set; }
 
