@@ -16,6 +16,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
         protected readonly int costTigerAccountNumber = 930;
         protected readonly int costoNetoAccountNumber = 962;
+        protected readonly int netoProviderAccountNumber = 960;
 
         public void CheckDifferencies(PrepaidImportedData itemToAdd)
         {
@@ -84,6 +85,7 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                     {
                         var item = charge.Items.FirstOrDefault(x => x.AccountNumber == costTigerAccountNumber);
                         var costoNetoItem = charge.Items.FirstOrDefault(x => x.AccountNumber == costoNetoAccountNumber);
+                        var netoProviderItem = charge.Items.FirstOrDefault(x => x.AccountNumber == netoProviderAccountNumber);
 
                         if (item != null)
                         {
@@ -111,6 +113,18 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                         else
                         {
                             itemToAdd.CostDifference = itemToAdd.PrepaidCost - itemToAdd.TigerCost;
+                        }
+
+                        if (netoProviderItem != null)
+                        {
+                            var valueString = CryptographyHelper.Decrypt(netoProviderItem.Value);
+
+                            if (!string.IsNullOrWhiteSpace(valueString))
+                            {
+                                if (!decimal.TryParse(valueString, out var prepaidAmount)) prepaidAmount = 0;
+
+                                itemToAdd.NetoProvider = prepaidAmount;
+                            }
                         }
                     }
                 }

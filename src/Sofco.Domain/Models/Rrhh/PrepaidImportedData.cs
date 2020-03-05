@@ -43,5 +43,7 @@ namespace Sofco.Domain.Models.Rrhh
         public Prepaid Prepaid { get; set; }
 
         public bool Closed { get; set; }
+
+        public decimal NetoProvider { get; set; }
     }
 }

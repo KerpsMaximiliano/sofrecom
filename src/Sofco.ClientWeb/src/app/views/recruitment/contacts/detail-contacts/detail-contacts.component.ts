@@ -272,6 +272,8 @@ export class DetailContactsComponent implements OnInit {
 
     this.addSubscrip = this.applicantService.put(this.entityId, json).subscribe(response => {
         this.messageService.closeLoading();
+
+        this.jobSearchRelated.init(this.entityId);
     }, 
     error => {
         this.messageService.closeLoading();

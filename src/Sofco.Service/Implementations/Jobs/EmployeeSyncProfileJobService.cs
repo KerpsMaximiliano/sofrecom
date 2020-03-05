@@ -114,6 +114,7 @@ namespace Sofco.Service.Implementations.Jobs
                 employee.PhoneNumber = employee.PhoneNumber?.Trim();
                 employee.Email = employee.Email?.Trim();
                 employee.Bank = employee.Bank?.Trim();
+                employee.PrepaidPlan = employee.PrepaidPlan?.Trim();
             }
         }
 

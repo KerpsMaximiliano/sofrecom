@@ -109,8 +109,9 @@
                             <th class="column-sm">Benef. (tiger)</th>
                             <th class="column-sm">Descripción Plan</th>
                             <th class="column-sm">Descripción Plan Tiger</th>
-                            <th class="column-xs">Valor Plan</th>
+                            <th class="column-xs">Valor Plan Factura</th>
                             <th class="column-xs">Valor Plan Tiger</th>
+                            <th class="column-xs">Neto Prestador</th>
                             <th class="column-xs">Diferencia costo</th>
                             <th class="column-xs">Estado</th>
                             <th class="column-xlg text-word-break">Error</th>
@@ -132,6 +133,7 @@
                             <td class="column-sm">{{ item.tigerPlan }}</td>
                             <td class="column-xs">{{ item.prepaidCost | amountFormat }}</td>
                             <td class="column-xs">{{ item.tigerCost | amountFormat }}</td>
+                            <td class="column-xs">{{ item.netoProvider | amountFormat }}</td>
                             <td class="column-xs">{{ item.costDifference | amountFormat }}</td>
                             <td class="column-xs">
                                 <label class="label" [ngClass]="getStatusClass(item.status)">{{ getStatusDesc(item.status) }}</label>
