@@ -30,6 +30,7 @@ namespace Sofco.Service.Implementations.Rrhh
 
         private readonly string contributionsName = "Prepagas (por asiento)";
         private readonly int contributionsNumber = 648000;
+        private readonly int costoNetoNumber = 962;
 
         public PrepaidService(IUnitOfWork unitOfWork,
             ILogMailer<PrepaidService> logger,
@@ -161,31 +162,33 @@ namespace Sofco.Service.Implementations.Rrhh
 
                     if (socialcharge != null)
                     {
-                        var item = socialcharge.Items.SingleOrDefault(x => x.AccountNumber == contributionsNumber);
+                        var item = socialcharge.Items.SingleOrDefault(x => x.AccountNumber == costoNetoNumber);
 
                         if (item != null)
                         {
-                            var encryptedValue = CryptographyHelper.Encrypt(prepaidImportedData.CostDifference.ToString(CultureInfo.InvariantCulture));
+                            //var encryptedValue = CryptographyHelper.Encrypt(prepaidImportedData.CostDifference.ToString(CultureInfo.InvariantCulture));
 
-                            if (!encryptedValue.Equals(item.Value))
-                            {
-                                item.Value = encryptedValue;
-                            }
+                            //if (!encryptedValue.Equals(item.Value))
+                            //{
+                            //    item.Value = encryptedValue;
+                            //}
+
+                            item.AccountNumber = contributionsNumber;
                         }
                         else
                         {
-                            var newItem = new SocialChargeItem
-                            {
-                                AccountName = contributionsName,
-                                AccountNumber = contributionsNumber,
-                                Value = CryptographyHelper.Encrypt(prepaidImportedData.CostDifference.ToString(CultureInfo.InvariantCulture))
-                            };
+                            //var newItem = new SocialChargeItem
+                            //{
+                            //    AccountName = contributionsName,
+                            //    AccountNumber = contributionsNumber,
+                            //    Value = CryptographyHelper.Encrypt(prepaidImportedData.CostDifference.ToString(CultureInfo.InvariantCulture))
+                            //};
 
-                            socialcharge.Items.Add(newItem);
+                            //socialcharge.Items.Add(newItem);
                         }
 
                         var chargesTotal = socialcharge.Items
-                            .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641101 && x.AccountNumber != 641300 && x.AccountNumber != 648001)
+                            .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641101 && x.AccountNumber != 641300 && x.AccountNumber != 960 && x.AccountNumber != 962 && x.AccountNumber != 930)
                             .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                         socialcharge.ChargesTotal = CryptographyHelper.Encrypt(chargesTotal.ToString(CultureInfo.InvariantCulture));

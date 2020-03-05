@@ -26,7 +26,7 @@ namespace Sofco.Domain.Models.Rrhh
 
         public decimal TigerCost { get; set; }
 
-        public decimal CostDifference => PrepaidCost - TigerCost;
+        public decimal CostDifference { get; set; }
 
         public string Dni { get; set; }
 

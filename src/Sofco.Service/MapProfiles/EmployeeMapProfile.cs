@@ -42,6 +42,7 @@ namespace Sofco.Service.MapProfiles
                 .ForMember(d => d.BeneficiariesCount, s => s.MapFrom(x => x.Ayude))
                 .ForMember(d => d.Activity, s => s.MapFrom(x => x.Activ))
                 .ForMember(d => d.Nationality, s => s.MapFrom(x => x.Denac))
+                .ForMember(d => d.PrepaidPlan, s => s.MapFrom(x => x.Dospl))
                 .ForMember(d => d.ContractType, s => s.MapFrom(x => x.Dsemi))
                 .ForMember(d => d.Email, s => s.MapFrom(x => x.Email.Trim()));
 

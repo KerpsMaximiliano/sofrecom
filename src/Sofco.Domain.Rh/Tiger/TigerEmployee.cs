@@ -32,6 +32,8 @@ namespace Sofco.Domain.Rh.Tiger
 
         public string Dprov { get; set; }
 
+        public string Dospl { get; set; }
+
         public int Obsoc { get; set; }
 
         public int Ospla { get; set; }

@@ -14,7 +14,8 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
     {
         protected string FileName;
 
-        protected readonly int contributionTotalsNumber = 648001;
+        protected readonly int costTigerAccountNumber = 930;
+        protected readonly int costoNetoAccountNumber = 962;
 
         public void CheckDifferencies(PrepaidImportedData itemToAdd)
         {
@@ -24,10 +25,19 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
                 itemToAdd.Comments = string.Concat(itemToAdd.Comments, Resources.Rrhh.Prepaid.DifferenceInBeneficiaires);
             }
 
-            //if (itemToAdd.TigerCost != itemToAdd.PrepaidCost)
+            if (itemToAdd.TigerCost != itemToAdd.PrepaidCost)
+            {
+                itemToAdd.Status = PrepaidImportedDataStatus.Error;
+                itemToAdd.Comments = string.Concat(itemToAdd.Comments, Resources.Rrhh.Prepaid.DifferenceInCosts);
+            }
+
+            //if (!string.IsNullOrWhiteSpace(itemToAdd.TigerPlan) && !string.IsNullOrWhiteSpace(itemToAdd.PrepaidPlan))
             //{
-            //    itemToAdd.Status = PrepaidImportedDataStatus.Error;
-            //    itemToAdd.Comments = string.Concat(itemToAdd.Comments, Resources.Rrhh.Prepaid.DifferenceInCosts);
+            //    if (itemToAdd.TigerPlan.Trim().ToLowerInvariant() != itemToAdd.PrepaidPlan.Trim().ToLowerInvariant())
+            //    {
+            //        itemToAdd.Status = PrepaidImportedDataStatus.Error;
+            //        itemToAdd.Comments = string.Concat(itemToAdd.Comments, Resources.Rrhh.Prepaid.DifferenceInPlan);
+            //    }
             //}
 
             if (itemToAdd.Date.Date != itemToAdd.Period.Date)
@@ -72,7 +82,8 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
                     foreach (var charge in socialCharge)
                     {
-                        var item = charge.Items.FirstOrDefault(x => x.AccountNumber == contributionTotalsNumber);
+                        var item = charge.Items.FirstOrDefault(x => x.AccountNumber == costTigerAccountNumber);
+                        var costoNetoItem = charge.Items.FirstOrDefault(x => x.AccountNumber == costoNetoAccountNumber);
 
                         if (item != null)
                         {
@@ -80,10 +91,26 @@ namespace Sofco.Framework.FileManager.Rrhh.Prepaids
 
                             if (!string.IsNullOrWhiteSpace(valueString))
                             {
-                                if (!decimal.TryParse(CryptographyHelper.Decrypt(employee.PrepaidAmount),
-                                    out var prepaidAmount)) prepaidAmount = 0;
+                                if (!decimal.TryParse(valueString, out var prepaidAmount)) prepaidAmount = 0;
+
                                 itemToAdd.TigerCost += prepaidAmount;
                             }
+                        }
+
+                        if (costoNetoItem != null)
+                        {
+                            var valueString = CryptographyHelper.Decrypt(costoNetoItem.Value);
+
+                            if (!string.IsNullOrWhiteSpace(valueString))
+                            {
+                                if (!decimal.TryParse(valueString, out var prepaidAmount)) prepaidAmount = 0;
+
+                                itemToAdd.CostDifference = prepaidAmount;
+                            }
+                        }
+                        else
+                        {
+                            itemToAdd.CostDifference = itemToAdd.PrepaidCost - itemToAdd.TigerCost;
                         }
                     }
                 }

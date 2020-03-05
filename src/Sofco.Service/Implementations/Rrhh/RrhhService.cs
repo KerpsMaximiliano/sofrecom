@@ -24,9 +24,6 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly ITigerEmployeeRepository tigerEmployeeRepository;
         private readonly IUnitOfWork unitOfWork;
 
-        private readonly string contributionsName = "Aportes y Contribuciones total";
-        private readonly int contributionsNumber = 648001;
-
         public RrhhService(IWorktimeData worktimeData, ILogMailer<RrhhService> logger, ITigerEmployeeRepository tigerEmployeeRepository, IUnitOfWork unitOfWork)
         {
             this.worktimeData = worktimeData;
@@ -162,7 +159,7 @@ namespace Sofco.Service.Implementations.Rrhh
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     var chargesTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001 && x.AccountNumber != 641101)
+                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 960 && x.AccountNumber != 962 && x.AccountNumber != 930 && x.AccountNumber != 641101)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));
@@ -176,7 +173,7 @@ namespace Sofco.Service.Implementations.Rrhh
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     var chargesTotal = socialCharge.Items
-                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 648001 && x.AccountNumber != 641101)
+                        .Where(x => x.AccountNumber != 641100 && x.AccountNumber != 641300 && x.AccountNumber != 641101 && x.AccountNumber != 960 && x.AccountNumber != 962 && x.AccountNumber != 930)
                         .Sum(x => Convert.ToDecimal(CryptographyHelper.Decrypt(x.Value)));
 
                     socialCharge.SalaryTotal = CryptographyHelper.Encrypt(salaryTotal.ToString(CultureInfo.InvariantCulture));
@@ -327,10 +324,14 @@ namespace Sofco.Service.Implementations.Rrhh
         private void FillData(int year, int month, IList<EmployeeSocialCharges> socialChargesData, List<SocialCharge> listToUpdate, List<SocialCharge> listToAdd, IList<Tuple<int, string, string>> employees)
         {
             var gapsSocialCharge = unitOfWork.RrhhRepository.GetSocialCharges(year, month);
-            var listEmployeeContributions = new List<string>();
+            //var listEmployeeContributions = new List<string>();
 
             foreach (var data in socialChargesData)
             {
+                var accountNumbers = new int[] { 641100, 641101, 641110, 641120, 641121, 641200, 641210, 641300, 645000, 645001, 645002, 648000, 960, 962, 930 };
+
+                if(!accountNumbers.Contains(data.AccountNumber)) continue;
+
                 var employeeSocialCharge = gapsSocialCharge.FirstOrDefault(x => x.Employee.EmployeeNumber == data.EmployeeNumber);
 
                 if (employeeSocialCharge != null)
@@ -347,49 +348,49 @@ namespace Sofco.Service.Implementations.Rrhh
                             listToUpdate.Add(employeeSocialCharge);
                         }
 
-                        if (!listEmployeeContributions.Contains(data.EmployeeNumber))
-                        {
-                            var contributionAccountToCompare = employeeSocialCharge.Items.FirstOrDefault(x => x.AccountNumber == contributionsNumber);
+                        //if (!listEmployeeContributions.Contains(data.EmployeeNumber))
+                        //{
+                        //    var contributionAccountToCompare = employeeSocialCharge.Items.FirstOrDefault(x => x.AccountNumber == contributionsNumber);
 
-                            if (contributionAccountToCompare != null)
-                            {
-                                var employee = employees.FirstOrDefault(x => x.Item2 == data.EmployeeNumber);
+                        //    if (contributionAccountToCompare != null)
+                        //    {
+                        //        var employee = employees.FirstOrDefault(x => x.Item2 == data.EmployeeNumber);
 
-                                if (employee != null)
-                                {
-                                    listEmployeeContributions.Add(data.EmployeeNumber);
+                        //        if (employee != null)
+                        //        {
+                        //            listEmployeeContributions.Add(data.EmployeeNumber);
 
-                                    var contributionValueToCompare = Convert.ToDecimal(CryptographyHelper.Decrypt(employee.Item3));
+                        //            var contributionValueToCompare = Convert.ToDecimal(CryptographyHelper.Decrypt(employee.Item3));
 
-                                    if (contributionValueToCompare != Convert.ToDecimal(CryptographyHelper.Decrypt(contributionAccountToCompare.Value)))
-                                    {
-                                        contributionAccountToCompare.Value = CryptographyHelper.Encrypt(employee.Item3.ToString(CultureInfo.InvariantCulture));
+                        //            if (contributionValueToCompare != Convert.ToDecimal(CryptographyHelper.Decrypt(contributionAccountToCompare.Value)))
+                        //            {
+                        //                contributionAccountToCompare.Value = CryptographyHelper.Encrypt(employee.Item3.ToString(CultureInfo.InvariantCulture));
 
-                                        if (listToUpdate.All(x => x.Id != employeeSocialCharge.Id))
-                                        {
-                                            listToUpdate.Add(employeeSocialCharge);
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                var employee = employees.FirstOrDefault(x => x.Item2 == data.EmployeeNumber);
+                        //                if (listToUpdate.All(x => x.Id != employeeSocialCharge.Id))
+                        //                {
+                        //                    listToUpdate.Add(employeeSocialCharge);
+                        //                }
+                        //            }
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        var employee = employees.FirstOrDefault(x => x.Item2 == data.EmployeeNumber);
 
-                                if (employee != null)
-                                {
-                                    employeeSocialCharge.Items.Add(new SocialChargeItem
-                                    {
-                                        Value = employee.Item3,
-                                        AccountName = contributionsName,
-                                        AccountNumber = contributionsNumber
-                                    });
+                        //        if (employee != null)
+                        //        {
+                        //            employeeSocialCharge.Items.Add(new SocialChargeItem
+                        //            {
+                        //                Value = employee.Item3,
+                        //                AccountName = contributionsName,
+                        //                AccountNumber = contributionsNumber
+                        //            });
 
-                                    listToUpdate.Add(employeeSocialCharge);
-                                    listEmployeeContributions.Add(data.EmployeeNumber);
-                                }
-                            }
-                        }
+                        //            listToUpdate.Add(employeeSocialCharge);
+                        //            listEmployeeContributions.Add(data.EmployeeNumber);
+                        //        }
+                        //    }
+                        //}
                     }
                     else
                     {
@@ -440,12 +441,12 @@ namespace Sofco.Service.Implementations.Rrhh
                             }
                         };
 
-                        itemToAdd.Items.Add(new SocialChargeItem
-                        {
-                            Value = employee.Item3,
-                            AccountName = contributionsName,
-                            AccountNumber = contributionsNumber
-                        });
+                        //itemToAdd.Items.Add(new SocialChargeItem
+                        //{
+                        //    Value = employee.Item3,
+                        //    AccountName = contributionsName,
+                        //    AccountNumber = contributionsNumber
+                        //});
 
                         listToAdd.Add(itemToAdd);
                     }
