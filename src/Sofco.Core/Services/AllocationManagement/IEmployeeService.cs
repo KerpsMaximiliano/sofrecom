@@ -57,5 +57,7 @@ namespace Sofco.Core.Services.AllocationManagement
         ICollection<Employee> GetAllForWorkTimeReport();
 
         Response<IList<ReportUpdownItemModel>> GetUpdownReport(ReportUpdownParameters parameters);
+
+        Response<byte[]> GetShortReport();
     }
 }

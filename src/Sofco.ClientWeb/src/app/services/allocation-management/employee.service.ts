@@ -135,6 +135,15 @@ export class EmployeeService {
     }));
   }
 
+  getShortReport(){
+    return this.http.get(`${this.baseUrl}/employees/report/short`, {
+      responseType: 'arraybuffer',
+      observe: 'response'
+    }).pipe(map((res: any) => {
+      return new Blob([res.body], { type: 'application/octet-stream' });
+    }));
+  }
+
   updateComments(json){
     return this.http.put<any>(`${this.baseUrl}/employees/updateAssingComment`, json);
   }

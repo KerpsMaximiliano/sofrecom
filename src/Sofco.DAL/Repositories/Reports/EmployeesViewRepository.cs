@@ -169,6 +169,24 @@ namespace Sofco.DAL.Repositories.Reports
             if (!reader.IsDBNull(reader.GetOrdinal("AccountName")))
                 employee.AccountName = reader.GetString(reader.GetOrdinal("AccountName"));
 
+            if (!reader.IsDBNull(reader.GetOrdinal("ServiceTypeName")))
+                employee.ServiceTypeName = reader.GetString(reader.GetOrdinal("ServiceTypeName"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("SolutionName")))
+                employee.SolutionName = reader.GetString(reader.GetOrdinal("SolutionName"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("TechnologyName")))
+                employee.TechnologyName = reader.GetString(reader.GetOrdinal("TechnologyName"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("SoftwareLawName")))
+                employee.SoftwareLawName = reader.GetString(reader.GetOrdinal("SoftwareLawName"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("ActivityName")))
+                employee.ActivityName = reader.GetString(reader.GetOrdinal("ActivityName"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("Activity")))
+                employee.Activity = reader.GetInt32(reader.GetOrdinal("Activity"));
+
             return employee;
         }
     }

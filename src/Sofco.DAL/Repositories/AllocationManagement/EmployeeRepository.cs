@@ -182,7 +182,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                     Manager = new User
                     {
                         Email = x.Manager.Email,
-                        Name = x.Name
+                        Name = x.Manager.Name
                     }
                 })
                 .ToList();

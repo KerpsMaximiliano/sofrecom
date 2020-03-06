@@ -257,6 +257,20 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return File(response.Data, "application/octet-stream", string.Empty);
         }
 
+        [HttpGet("report/short")]
+        public IActionResult ShortReport()
+        {
+            var response = employeeService.GetShortReport();
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            if (response.Data == null)
+                return Ok(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
+
         [HttpPut("updateAssingComment")]
         public IActionResult UpdateAssingComment([FromBody] UpdateAssingCommentModel model)
         {

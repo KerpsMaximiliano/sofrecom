@@ -74,7 +74,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var item in employees)
             {
-                text.AppendFormat("{0} - {1} / Superior: {2}",
+                text.AppendFormat("{0} - {1} / Superior: {2} <br/>",
                     item.EmployeeNumber,
                     item.Name,
                     item.Manager?.Name);

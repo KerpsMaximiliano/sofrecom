@@ -29,6 +29,7 @@ using Sofco.Framework.Helpers;
 using Sofco.Resources.Mails;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Services.AdvancementAndRefund;
+using Sofco.Domain.Models.Reports;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -599,6 +600,41 @@ namespace Sofco.Service.Implementations.AllocationManagement
             }
 
             response.Data = employeeFileManager.CreateReport(list).GetAsByteArray();
+
+            return response;
+        }
+
+        public Response<byte[]> GetShortReport()
+        {
+            var list = employeeViewRepository.Get();
+
+            var response = new Response<byte[]>();
+
+            if (!list.Any())
+            {
+                response.AddWarning(Resources.Common.SearchEmpty);
+                return response;
+            }
+
+            var items = new List<EmployeeView>();
+
+            list = list.OrderBy(x => x.Name).ThenByDescending(x => x.Percentage).ToList();
+
+            var employeeNumber = string.Empty;
+
+            foreach (var employeeView in list)
+            {
+                if (employeeView.EmployeeNumber != employeeNumber)
+                {
+                    var employeeItems = list.Where(x => x.EmployeeNumber == employeeView.EmployeeNumber);
+                    var first = employeeItems.FirstOrDefault();
+                    items.Add(first);
+
+                    employeeNumber = employeeView.EmployeeNumber;
+                }    
+            }
+
+            response.Data = employeeFileManager.CreateReport(items).GetAsByteArray();
 
             return response;
         }

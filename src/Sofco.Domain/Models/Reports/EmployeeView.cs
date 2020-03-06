@@ -95,5 +95,11 @@ namespace Sofco.Domain.Models.Reports
         public int Id { get; set; }
 
         public string AccountName { get; set; }
+        public string ServiceTypeName { get; set; }
+        public string SolutionName { get; set; }
+        public string TechnologyName { get; set; }
+        public string SoftwareLawName { get; set; }
+        public string ActivityName { get; set; }
+        public int Activity { get; set; }
     }
 }

@@ -424,4 +424,20 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         },
         error => this.messageService.closeLoading());
     }
+
+    shortReport(){
+        this.messageService.showLoading();
+
+        this.allocationsSubscrip = this.employeeService.getShortReport().subscribe(file => {
+            this.messageService.closeLoading()
+
+            if (file.size && file.size > 0) {
+                FileSaver.saveAs(file, 'reporte-empleados-abreviado.xlsx');
+            }
+            else {
+                this.messageService.showWarningByFolder('common', 'searchEmpty');
+            }
+        },
+        error => this.messageService.closeLoading());
+    }
 }

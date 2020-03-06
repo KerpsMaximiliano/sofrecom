@@ -76,6 +76,12 @@ namespace Sofco.Framework.FileManager.AllocationManagement
                 sheet.Cells[$"AL{i}"].Value = employeeView.AnalyticName;
                 sheet.Cells[$"AM{i}"].Value = employeeView.ServiceName;
                 sheet.Cells[$"AN{i}"].Value = employeeView.AccountName;
+                sheet.Cells[$"AO{i}"].Value = employeeView.ServiceTypeName;
+                sheet.Cells[$"AP{i}"].Value = employeeView.SolutionName;
+                sheet.Cells[$"AQ{i}"].Value = employeeView.TechnologyName;
+                sheet.Cells[$"AR{i}"].Value = employeeView.SoftwareLawName;
+                sheet.Cells[$"AS{i}"].Value = employeeView.ActivityName;
+                sheet.Cells[$"AT{i}"].Value = employeeView.Activity;
 
                 i++;
             }

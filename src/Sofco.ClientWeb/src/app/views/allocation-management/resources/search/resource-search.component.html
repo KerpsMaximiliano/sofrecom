@@ -108,13 +108,14 @@
                 </div>
                 <div class="panel-footer">
                     <external-user class="pull-left"></external-user>
-                    <button class="btn btn-success pull-left" *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE-REPORT')" (click)="report()"> Descargar reporte <i class="fa fa-download"></i></button>
-                    <button class="btn btn-success pull-left" *ngIf="menuService.hasFunctionality('ALLOC', 'UPDATE-MANAGERS')" (click)="updateManagers()"> Actualizar superior <i class="fa fa-refresh"></i></button>
+                    <button class="btn btn-success btn-sm pull-left" *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE-REPORT')" (click)="report()"> Descargar reporte <i class="fa fa-download"></i></button>
+                    <button class="btn btn-success btn-sm pull-left" *ngIf="menuService.hasFunctionality('ALLOC', 'EMPLOYEE-REPORT')" (click)="shortReport()"> Reporte abreviado <i class="fa fa-download"></i></button>
+                    <button class="btn btn-success btn-sm pull-left" *ngIf="menuService.hasFunctionality('ALLOC', 'UPDATE-MANAGERS')" (click)="updateManagers()"> Actualizar superior <i class="fa fa-refresh"></i></button>
 
                     <div class="text-right">
-                        <button class="btn btn-warning" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                        <button class="btn btn-success" (click)="search()" [disabled]="searchDisable()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
-                        <button class="btn btn-success" (click)="searchAll()"> {{ 'ACTIONS.searchAll' | translate }} <i class="fa fa-search"></i></button>
+                        <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                        <button class="btn btn-success btn-sm" (click)="search()" [disabled]="searchDisable()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                        <button class="btn btn-success btn-sm" (click)="searchAll()"> {{ 'ACTIONS.searchAll' | translate }} <i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </div>
