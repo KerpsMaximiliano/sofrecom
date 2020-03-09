@@ -101,7 +101,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             var list = unitOfWork.EmployeeRepository.GetUpdownReport(parameters);
 
-            response.Data = list.Select(x => new ReportUpdownItemModel(x)).ToList();
+            response.Data = list.Select(x => new ReportUpdownItemModel(x, parameters)).ToList();
 
             if (!response.Data.Any())
             {

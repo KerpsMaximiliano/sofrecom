@@ -50,6 +50,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     foreach (var socialChargeItem in socialCharge.Items)
                     {
+                        if(socialChargeItem.AccountNumber == 648001 || socialChargeItem.AccountNumber == 960 || socialChargeItem.AccountNumber == 930 || socialChargeItem.AccountNumber == 962) continue;
+
                         var itemToAdd = new AccountInfoModel();
 
                         itemToAdd.Year = year;

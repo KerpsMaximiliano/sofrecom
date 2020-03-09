@@ -34,7 +34,7 @@ namespace Sofco.Core.Models.AllocationManagement
 
     public class ReportUpdownItemModel
     {
-        public ReportUpdownItemModel(Employee employee)
+        public ReportUpdownItemModel(Employee employee, ReportUpdownParameters parameters)
         {
             Name = employee.Name;
             EmployeeNumber = employee.EmployeeNumber;
@@ -42,7 +42,23 @@ namespace Sofco.Core.Models.AllocationManagement
             StartDate = employee.StartDate;
             EndDate = employee.EndDate;
             Reason = employee.EndReason;
-            State = EndDate.HasValue ? "BAJA" : "ALTA";
+
+            if (EndDate.HasValue)
+            {
+                if (EndDate.Value >= parameters.StartDate.GetValueOrDefault().Date &&
+                    EndDate.Value <= parameters.EndDate.GetValueOrDefault().Date)
+                {
+                    State = "BAJA";
+                }
+                else
+                {
+                    State = "ALTA";
+                }
+            }
+            else
+            {
+                State = "ALTA";
+            }
         }
 
         public string Name { get; set; }

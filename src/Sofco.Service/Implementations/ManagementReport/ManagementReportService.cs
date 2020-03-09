@@ -559,7 +559,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         foreach (var socialChargeItem in socialCharge.Items)
                         {
-                            if(socialChargeItem.AccountNumber == 648001) continue;
+                            if (socialChargeItem.AccountNumber == 648001 || socialChargeItem.AccountNumber == 960 || socialChargeItem.AccountNumber == 930 || socialChargeItem.AccountNumber == 962) continue;
 
                             var item = new SocialChargeModelItem();
 
