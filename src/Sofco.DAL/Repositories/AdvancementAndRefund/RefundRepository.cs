@@ -30,7 +30,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.AdvancementRefunds)
                     .ThenInclude(x => x.Advancement)
                 .Include(x => x.Histories)
-                .Where(s => s.StatusId != workflowStatusDraft && s.UserApplicant.Active);
+                .Where(s => s.StatusId != workflowStatusDraft);
 
             if (model.DateSince.HasValue)
                 query = query.Where(x => x.CreationDate.Date >= model.DateSince.Value.Date);
@@ -121,7 +121,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                     .ThenInclude(x => x.Advancement)
                 .Include(x => x.Details)
                 .Include(x => x.Status).ThenInclude(x => x.ActualTransitions)
-                .Where(x => x.StatusId == workFlowStatePaymentPending && !x.CreditCardId.HasValue && x.UserApplicant.Active);
+                .Where(x => x.StatusId == workFlowStatePaymentPending && !x.CreditCardId.HasValue);
 
             return query.ToList();
         }
@@ -196,7 +196,7 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .Include(x => x.UserApplicant)
                 .Include(x => x.Currency)
                 .Include(x => x.AdvancementRefunds)
-                .Where(x => x.StatusId == workflowStatusCurrentAccount && !x.CreditCardId.HasValue && x.UserApplicant.Active)
+                .Where(x => x.StatusId == workflowStatusCurrentAccount && !x.CreditCardId.HasValue)
                 .ToList();
         }
 
