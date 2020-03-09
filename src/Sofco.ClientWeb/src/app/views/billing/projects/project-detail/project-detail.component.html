@@ -117,6 +117,7 @@
                                         <button *ngIf="canCreateDebitNote()" (click)="createDebitNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createDebitNote' | translate }}  <i class="fa fa-plus"></i></button> 
                                         <button *ngIf="canSplit()" (click)="split()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.split' | translate }}  <i class="fa fa-clone"></i></button> 
                                         <button *ngIf="canClose()" (click)="closeHitoModal.show()" type="button" class="btn btn-danger btn-sm">{{ 'billing.project.detail.milestone.close' | translate }}  <i class="fa fa-times"></i></button> 
+                                        <button class="btn btn-sm btn-danger" type="button" (click)="deleteHito()" *ngIf="canClose()">Eliminar <i class="fa fa-trash"></i></button>
                                     </div>
                                 </div>
 

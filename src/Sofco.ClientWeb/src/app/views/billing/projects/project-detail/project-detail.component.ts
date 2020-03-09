@@ -408,6 +408,26 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
         return isValid;
     }
 
+    deleteHito(){
+        var hito = this.getHitosSelected()[0];
+
+        this.messageService.showConfirm(() => {
+            this.messageService.showLoading();
+
+            this.projectService.deleteHito(hito.id, hito.projectId).subscribe(response => {
+                this.messageService.closeLoading();
+
+                 var indexToDelete = this.hitos.findIndex(x => x.id == hito.id);
+
+                 if(indexToDelete > -1){
+                     this.hitos.splice(indexToDelete, 1);
+                     this.initHitosGrid();
+                 }
+            },
+            error => this.messageService.closeLoading());
+        });
+    }
+
     canClose(){
         let hitos = this.getHitosSelected();
         let isValid = hitos.length == 1;

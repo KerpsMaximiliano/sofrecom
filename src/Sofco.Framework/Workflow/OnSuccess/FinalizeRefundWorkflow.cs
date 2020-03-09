@@ -34,7 +34,7 @@ namespace Sofco.Framework.Workflow.OnSuccess
             //Tuple1: Reintegros
             //Tuple2: Adelantos
             // Si diff > 0 tiene mas reintegros que adelantos. Reembolso usuario.
-            if (tuple.Item1.Any() && tuple.Item2.Any())
+            if (tuple.Item1.Any() && tuple.Item2.Any() && tuple.Item1.All(x => !x.InWorkflowProcess))
             {
                 var diff = tuple.Item1.Sum(x => x.TotalAmmount) - tuple.Item2.Sum(x => x.Ammount);
 
