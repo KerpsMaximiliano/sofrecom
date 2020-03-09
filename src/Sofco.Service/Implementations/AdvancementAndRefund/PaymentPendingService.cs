@@ -44,6 +44,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             FillAdvancements(employeeDicc, employeeManagerDicc, employeeNameManagerDicc, response, currencyPesos);
 
+            response.Data = response.Data.Where(x => x.Ammount > 0).ToList();
+
             foreach (var row in response.Data)
             {
                 var firstEntity = row.Entities.FirstOrDefault();
