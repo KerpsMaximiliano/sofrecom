@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Sofco.Core.DAL.WorkTimeManagement;
 
 namespace Sofco.UnitTest.Services.AllocationManagement
 {
@@ -31,6 +32,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
         private Mock<ILogMailer<AllocationService>> loggerMock;
         private Mock<IAllocationFileManager> fileManagerMock;
         private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeServiceMock;
+        private Mock<IWorkTimeRepository> workTimeRepositoryMock;
         private Mock<IUserData> userDataMock;
         private Mock<IOptions<AppSetting>> appSettingMock;
 
@@ -60,15 +62,19 @@ namespace Sofco.UnitTest.Services.AllocationManagement
 
             loggerMock = new Mock<ILogMailer<AllocationService>>();
 
+            workTimeRepositoryMock = new Mock<IWorkTimeRepository>();
+
             unitOfWork.Setup(x => x.AllocationRepository).Returns(allocationRepositoryMock.Object);
             unitOfWork.Setup(x => x.AnalyticRepository).Returns(analyticRepositoryMock.Object);
             unitOfWork.Setup(x => x.EmployeeRepository).Returns(employeeRepositoryMock.Object);
             unitOfWork.Setup(x => x.LicenseRepository).Returns(licenseRepositoryMock.Object);
+            unitOfWork.Setup(x => x.WorkTimeRepository).Returns(workTimeRepositoryMock.Object);
             appSettingMock.Setup(x => x.Value).Returns(new AppSetting());
 
             licenseRepositoryMock.Setup(x => x.GetByEmployeeAndDates(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new List<License>());
             employeeRepositoryMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Employee { StartDate = new DateTime(2017, 1, 1) });
             userDataMock.Setup(x => x.GetCurrentUser()).Returns(new UserLiteModel { UserName = "username" });
+            workTimeRepositoryMock.Setup(x => x.EmployeeHasHoursInDate(It.IsAny<DateTime>(), It.IsAny<int>())).Returns(false);
 
             sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, appSettingMock.Object, userDataMock.Object, fileManagerMock.Object);
         }

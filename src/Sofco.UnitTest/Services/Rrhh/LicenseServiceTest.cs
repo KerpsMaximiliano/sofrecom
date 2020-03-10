@@ -14,6 +14,7 @@ using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.Logger;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers.UserApprovers;
+using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Core.StatusHandlers;
@@ -80,6 +81,8 @@ namespace Sofco.UnitTest.Services.Rrhh
             workTimeRepositoryMock.Setup(s =>
                     s.GetByEmployeeId(It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .Returns(new List<WorkTime>());
+
+            userDataMock.Setup(x => x.GetCurrentUser()).Returns(new UserLiteModel { Id = 1, UserName = "username", Email = "asd@gmail.com" });
 
             sut = new LicenseService(unitOfWork.Object, loggerMock.Object,
                 licenseStatusFactory.Object, mailSender.Object,
@@ -300,7 +303,8 @@ namespace Sofco.UnitTest.Services.Rrhh
                 EndDate = new DateTime(2025, 1, 12),
                 Employee = new Employee { Name = "User Test", Email = "employee@mail.com", HolidaysPending = 10, ExamDaysTaken = 0 },
                 Type = new LicenseType { Description = "description", Days = 10 },
-                Manager = new User { Email = "manager@mail.com" },
+                Manager = new User { Email = "manager@mail.com", Id = 1 },
+                ManagerId = 1,
                 EmployeeId = 1,
                 TypeId = type,
                 DaysQuantity = 5,
