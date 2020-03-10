@@ -60,8 +60,8 @@ namespace Sofco.Service.Implementations.Jobs
             return mailBuilder.GetEmail(new LicensePendingCertificateData
             {
             
-                Recipient = $"{rrhhAbMail};{rrhhLMail}",
-                Message = $"<ul>{content}</ul>"
+                Message = $"<ul>{content}</ul>",
+                Recipients = new List<string>() { rrhhAbMail, rrhhLMail }
             });
         }
     }
