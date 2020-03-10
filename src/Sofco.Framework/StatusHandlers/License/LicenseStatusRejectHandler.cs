@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers.UserApprovers;
@@ -18,10 +20,13 @@ namespace Sofco.Framework.StatusHandlers.License
 
         private readonly ILicenseApproverManager licenseApproverManager;
 
-        public LicenseStatusRejectHandler(EmailConfig emailConfig, ILicenseApproverManager licenseApproverManager)
+        private readonly IUserData userData;
+
+        public LicenseStatusRejectHandler(EmailConfig emailConfig, ILicenseApproverManager licenseApproverManager, IUserData userData)
         {
             this.emailConfig = emailConfig;
             this.licenseApproverManager = licenseApproverManager;
+            this.userData = userData;
         }
 
         public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Domain.Models.Rrhh.License license)
@@ -30,6 +35,19 @@ namespace Sofco.Framework.StatusHandlers.License
             if (license.Status == LicenseStatus.Draft || license.Status == LicenseStatus.Approved)
             {
                 response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+            }
+
+            var currentUser = userData.GetCurrentUser();
+
+            if (license.ManagerId != currentUser.Id)
+            {
+                var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.LicenseAuthorizer);
+
+                if (!delegations.Any(x =>
+                    x.UserId == license.ManagerId && x.EmployeeSourceId.GetValueOrDefault() == license.EmployeeId))
+                {
+                    response.AddErrorAndNoTraslate("No tiene permisos para autorizar la licencia");
+                }
             }
         }
 

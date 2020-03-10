@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Mail;
 using Sofco.Core.Managers.UserApprovers;
@@ -18,6 +19,7 @@ namespace Sofco.Framework.StatusHandlers.License
         private readonly EmailConfig emailConfig;
 
         private readonly ILicenseApproverManager licenseApproverManager;
+
 
         public LicenseStatusAuthPendingHandler(EmailConfig emailConfig, ILicenseApproverManager licenseApproverManager)
         {

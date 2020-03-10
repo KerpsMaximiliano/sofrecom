@@ -25,9 +25,15 @@ namespace Sofco.Framework.Managers.UserApprovers
         {
             var approverUserId = userData.GetCurrentUser().Id;
 
+            var employeeWorkTimeIds = unitOfWork.DelegationRepository
+                .GetByGrantedUserIdAndType(approverUserId, DelegationType.WorkTime)
+                .Select(x => x.EmployeeSourceId.GetValueOrDefault()).ToList();
+
             var employeeIds = unitOfWork.DelegationRepository
                 .GetByGrantedUserIdAndType(approverUserId, DelegationType.LicenseAuthorizer)
                 .Select(x => x.EmployeeSourceId.GetValueOrDefault()).ToList();
+
+            employeeIds = employeeIds.Union(employeeWorkTimeIds).Distinct().ToList();
 
             var result = unitOfWork.LicenseRepository.GetByEmployee(employeeIds);
 

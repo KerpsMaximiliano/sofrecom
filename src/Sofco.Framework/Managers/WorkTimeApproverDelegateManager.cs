@@ -31,6 +31,7 @@ namespace Sofco.Framework.Managers
             return isValid
                 ? new List<Role> { unitOfWork.RoleRepository.GetByCode(appSetting.WorkTimeApprovalCode),
                                     unitOfWork.RoleRepository.GetByCode(appSetting.WorkTimeQuery),
+                                    unitOfWork.RoleRepository.GetByCode(appSetting.LicenseViewCode),
                                     unitOfWork.RoleRepository.GetByCode(appSetting.WorkTimeMassiveImportCode) }
                 : new List<Role>();
         }

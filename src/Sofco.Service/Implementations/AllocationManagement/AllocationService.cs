@@ -58,6 +58,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             AllocationValidationHelper.ValidateAnalyticClose(response, allocation, unitOfWork.AnalyticRepository);
             AllocationValidationHelper.ValidateEmployeeDates(response, allocation, unitOfWork.EmployeeRepository);
+            AllocationValidationHelper.ValidateWorkTimes(response, allocation, unitOfWork.WorkTimeRepository);
 
             if (response.HasErrors()) return response;
 

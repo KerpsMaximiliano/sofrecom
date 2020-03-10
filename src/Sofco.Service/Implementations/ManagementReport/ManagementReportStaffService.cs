@@ -224,7 +224,7 @@ namespace Sofco.Service.Implementations.ManagementReport
                     {
                         foreach (var socialChargeItem in socialCharge.Items)
                         {
-                            if (socialChargeItem.AccountNumber == 648001) continue;
+                            if (socialChargeItem.AccountNumber == 648001 || socialChargeItem.AccountNumber == 960 || socialChargeItem.AccountNumber == 930 || socialChargeItem.AccountNumber == 962) continue;
 
                             var item = new SocialChargeModelItem();
 
@@ -240,9 +240,11 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                             if (resourceAllocation != null)
                             {
-                                if (!decimal.TryParse(item.Value, out var valueDecimal)) valueDecimal = 0;
-
-                                if (valueDecimal > 0)
+                                if (!decimal.TryParse(item.Value, out var valueDecimal))
+                                {
+                                    item.Value = "0";
+                                }
+                                else
                                 {
                                     valueDecimal *= resourceAllocation.RealPercentage / 100;
                                     item.Value = valueDecimal.ToString(CultureInfo.InvariantCulture);

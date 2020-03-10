@@ -575,9 +575,11 @@ namespace Sofco.Service.Implementations.ManagementReport
 
                             if (resourceAllocation != null && resourceAllocation.RealPercentage > 0)
                             {
-                                if (!decimal.TryParse(item.Value, out var valueDecimal)) valueDecimal = 0;
-
-                                if (valueDecimal > 0)
+                                if (!decimal.TryParse(item.Value, out var valueDecimal))
+                                {
+                                    item.Value = "0";
+                                }
+                                else
                                 {
                                     valueDecimal *= resourceAllocation.RealPercentage / 100;
                                     item.Value = valueDecimal.ToString(CultureInfo.InvariantCulture);

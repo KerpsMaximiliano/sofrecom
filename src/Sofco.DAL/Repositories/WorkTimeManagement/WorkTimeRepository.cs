@@ -337,5 +337,10 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             return context.WorkTimes.Include(x => x.Analytic)
                 .Where(x => x.EmployeeId == currentEmployeeId && x.Status == WorkTimeStatus.Draft).Select(x => x.Analytic).Distinct().ToList();
         }
+
+        public bool EmployeeHasHoursInDate(DateTime monthDate, int allocationEmployeeId)
+        {
+            return context.WorkTimes.Any(x => x.Date.Month == monthDate.Month && x.Date.Year == monthDate.Year && x.EmployeeId == allocationEmployeeId);
+        }
     }
 }

@@ -57,5 +57,6 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         void RemoveAllOfDate(DateTime removeDate);
         void SendHours(int currentEmployeeId, int analyticId);
         IList<Analytic> GetAnalyticsToApproveHours(int currentEmployeeId);
+        bool EmployeeHasHoursInDate(DateTime monthDate, int allocationEmployeeId);
     }
 }

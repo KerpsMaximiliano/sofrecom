@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using Sofco.Core.Config;
+using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Admin;
 using Sofco.Core.DAL.AllocationManagement;
@@ -36,6 +37,7 @@ namespace Sofco.UnitTest.Services.Rrhh
         private Mock<IMailSender> mailSender;
         private Mock<ILicenseApproverManager> licenseApproverManager;
         private Mock<ILicenseGenerateWorkTimeService> licenseGenerateWorkTimeService;
+        private Mock<IUserData> userDataMock;
 
         private Mock<ILicenseRepository> licenseRepositoryMock;
         private Mock<IWorkTimeRepository> workTimeRepositoryMock;
@@ -56,6 +58,7 @@ namespace Sofco.UnitTest.Services.Rrhh
             licenseApproverManager = new Mock<ILicenseApproverManager>();
             licenseGenerateWorkTimeService = new Mock<ILicenseGenerateWorkTimeService>();
             emailConfigMock = new Mock<IOptions<EmailConfig>>();
+            userDataMock = new Mock<IUserData>();
 
             licenseRepositoryMock = new Mock<ILicenseRepository>();
             workTimeRepositoryMock = new Mock<IWorkTimeRepository>();
@@ -181,7 +184,7 @@ namespace Sofco.UnitTest.Services.Rrhh
         public void ShouldChangeStatusToAuthorize()
         {
             licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(GetLicense(LicenseStatus.AuthPending, 2));
-            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.Pending)).Returns(new LicenseStatusPendingHandler(emailConfigMock.Object.Value, licenseApproverManager.Object));
+            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.Pending)).Returns(new LicenseStatusPendingHandler(emailConfigMock.Object.Value, licenseApproverManager.Object, userDataMock.Object));
 
             var model = new LicenseStatusChangeModel
             {
@@ -270,7 +273,7 @@ namespace Sofco.UnitTest.Services.Rrhh
         public void ShouldChangeStatusToReject()
         {
             licenseRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(GetLicense(LicenseStatus.Pending, 2));
-            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.Rejected)).Returns(new LicenseStatusRejectHandler(emailConfigMock.Object.Value, licenseApproverManager.Object));
+            licenseStatusFactory.Setup(x => x.GetInstance(LicenseStatus.Rejected)).Returns(new LicenseStatusRejectHandler(emailConfigMock.Object.Value, licenseApproverManager.Object, userDataMock.Object));
             licenseApproverManager.Setup(x => x.HasUserAuthorizer()).Returns(true);
 
             var model = new LicenseStatusChangeModel

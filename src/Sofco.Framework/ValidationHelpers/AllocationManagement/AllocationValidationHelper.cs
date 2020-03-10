@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL.AllocationManagement;
+using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Domain.Utils;
 using Sofco.Domain.DTO;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Framework.Helpers;
 
 namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 {
@@ -110,6 +112,17 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                             response.AddError(Resources.AllocationManagement.Allocation.DateGreaterThanEmployeeEndDate);
                         }
                     }
+                }
+            }
+        }
+
+        public static void ValidateWorkTimes(Response<Allocation> response, AllocationDto allocation, IWorkTimeRepository workTimeRepository)
+        {
+            foreach (var month in allocation.Months)
+            {
+                if (month.Percentage == 0 && workTimeRepository.EmployeeHasHoursInDate(month.Date, allocation.EmployeeId))
+                {
+                    response.AddErrorAndNoTraslate($"El mes {DatesHelper.GetDateDescription(month.Date)} no puede tener asignación 0 porque ya contiene horas cargadas");
                 }
             }
         }
