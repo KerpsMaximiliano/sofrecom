@@ -49,7 +49,7 @@ namespace Sofco.Service.Implementations.Jobs
         {
             var content = new StringBuilder();
 
-            foreach (var item in licenses)
+            foreach (var item in licenses) 
             {
                 content.AppendLine($"<li>{item.Employee.Name} - {item.Type.Description}");
             }
