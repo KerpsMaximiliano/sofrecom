@@ -230,6 +230,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 if (user != null)
                 {
                     user.Active = false;
+                    user.EndDate = DateTime.UtcNow.Date;
                     unitOfWork.UserRepository.Update(user);
                 }
 
