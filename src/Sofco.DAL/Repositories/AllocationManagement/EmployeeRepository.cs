@@ -69,6 +69,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employeeToChange).Property("EndDate").IsModified = true;
             context.Entry(employeeToChange).Property("EndReason").IsModified = true;
             context.Entry(employeeToChange).Property("TypeEndReasonId").IsModified = true;
+            context.Entry(employeeToChange).Property("ExcludeForTigerReport").IsModified = true;
         }
 
         public IList<Employee> GetUnassignedBetweenDays(DateTime startDate, DateTime endDate,

@@ -222,6 +222,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employeeToChange.EndDate = response.Data.EndDate;
                 employeeToChange.EndReason = model.Comments;
                 employeeToChange.TypeEndReasonId = model.Type.GetValueOrDefault();
+                employeeToChange.ExcludeForTigerReport = true;
 
                 unitOfWork.EmployeeRepository.UpdateEndDate(employeeToChange);
 

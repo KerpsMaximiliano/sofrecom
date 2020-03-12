@@ -55,8 +55,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
             {
                 var employee = employeeData.GetByEmployeeId(x.EmployeeId);
 
-                x.EmployeeName = employee.Name;
-                x.EmployeeNumber = employee.EmployeeNumber;
+                x.EmployeeName = employee?.Name;
+                x.EmployeeNumber = employee?.EmployeeNumber;
                 x.ApplicantName = userData.GetById(x.ApplicantUserId).Name;
             });
 

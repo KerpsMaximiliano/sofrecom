@@ -4,6 +4,7 @@ import { MessageService } from "../../../services/common/message.service";
 import { DataTableService } from "../../../services/common/datatable.service";
 import { EmployeeService } from "../../../services/allocation-management/employee.service";
 import { I18nService } from "app/services/common/i18n.service";
+import { UserService } from "app/services/admin/user.service";
 declare var moment: any;
 declare var $: any;
 
@@ -39,11 +40,13 @@ export class EndNotificationComponent implements OnInit, OnDestroy {
 
     constructor(private messageService: MessageService,
         private employeeService: EmployeeService,
+        private userService: UserService,
         private dataTableService: DataTableService,
         private i18nService: I18nService){}
 
     ngOnInit(): void {
         this.getResources();
+        this.getUsers();
 
         let data = JSON.parse(sessionStorage.getItem(this.storageKey));
 
@@ -64,8 +67,13 @@ export class EndNotificationComponent implements OnInit, OnDestroy {
 
     getResources(){
         this.getResourcesSubscrip = this.employeeService.getOptions().subscribe(res => {
-            this.applicants = res;
             this.resources = res;
+        });
+    }
+
+    getUsers(){
+        this.getResourcesSubscrip = this.userService.getOptions().subscribe(res => {
+            this.applicants = res;
         });
     }
 
@@ -73,7 +81,7 @@ export class EndNotificationComponent implements OnInit, OnDestroy {
         const model = {
             startDate: moment(this.searchModel.startDate).format("YYYY-MM-DD"),
             endDate: moment(this.searchModel.endDate).format("YYYY-MM-DD"),
-            applicantEmployeeId: this.searchModel.applicantId,
+            applicantUserId: this.searchModel.applicantId,
             employeeId: this.searchModel.employeeId
         };
 
