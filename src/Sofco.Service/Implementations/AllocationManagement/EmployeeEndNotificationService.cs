@@ -37,8 +37,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 parameters = new EmployeeEndNotificationParameters();
             } 
 
-            ResolverApplicantUser(parameters);
-
             var result = repository.GetByParameters(parameters);
 
             return new Response<List<EmployeeEndNotificationModel>>
@@ -61,19 +59,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
             });
 
             return result;
-        }
-
-        private void ResolverApplicantUser(EmployeeEndNotificationParameters parameters)
-        {
-            if(!parameters.ApplicantEmployeeId.HasValue) return;
-
-            var applicantEmployee = employeeData.GetByEmployeeId(parameters.ApplicantEmployeeId.Value);
-
-            if(applicantEmployee == null) return;
-
-            var userName = applicantEmployee.Email.Split('@').First();
-
-            parameters.ApplicantUserId = userData.GetUserLiteByUserName(userName)?.Id;
         }
     }
 }
