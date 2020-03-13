@@ -27,6 +27,7 @@ export class RefundListComponent implements OnInit {
             this.gridFilter.dateSince = data.dateSince;
             this.gridFilter.dateTo = data.dateTo;
             this.gridFilter.bankId = data.bank;
+            this.gridFilter.analyticIds = data.analyticIds;
             this.gridFilter.setModel();
 
             this.getData();
@@ -46,6 +47,8 @@ export class RefundListComponent implements OnInit {
                 this.getData();
             }
         }
+
+        this.gridFilter.userIsCompliance = this.menuService.userIsCompliance;
     }
 
     getData() {

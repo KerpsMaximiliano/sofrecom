@@ -32,6 +32,7 @@
                         <th>{{'allocationManagement.resources.grid.senority' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.profile' | translate }}</th>
                         <th>{{'allocationManagement.resources.grid.technology' | translate }}</th>
+                        <th>Asignación</th>
                         <th class="column-sm">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
@@ -41,6 +42,7 @@
                         <td>{{ resource.senority}}</td>
                         <td>{{ resource.profile}}</td>
                         <td>{{ resource.technology}}</td>
+                        <td>{{ resource.percentageAllocation}} %</td>
                         <td class="column-sm">
                             <button class="btn btn-danger btn-xs" (click)="openEndEmployeeModal(resource)" *ngIf="canSendUnsubscribeNotification()" title="{{'ACTIONS.notifyUnsubscribe' | translate }}"><i class="fa fa-user-times"></i></button>
                             <button class="btn btn-success btn-xs" (click)="goToProfile(resource)" *ngIf="canViewProfile()" title="{{'allocationManagement.resources.profile' | translate }}"><i class="fa fa-eye"></i></button>

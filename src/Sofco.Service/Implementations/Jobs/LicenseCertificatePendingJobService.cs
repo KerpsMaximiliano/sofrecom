@@ -51,7 +51,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var item in licenses) 
             {
-                content.AppendLine($"<li>{item.Employee.Name} - {item.Type.Description}");
+                content.AppendLine($"<li>{item.Employee.Name} - {item.Type.Description} - {item.StartDate:d} a {item.EndDate:d}");
             }
 
             var rrhhAbMail = unitOfWork.GroupRepository.GetEmail(emailConfig.RRhhAb);

@@ -126,7 +126,7 @@
                                 <span class="label label-worktime-{{item.status}} font-11">{{ ('workTimeManagement.' + item.status) | translate  }}</span>
                             </td>
                             <td class="column-xs">
-                                <button type="button" class="btn btn-danger btn-xs" *ngIf="canDelete()" (click)="delete(item)"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="btn btn-danger btn-xs" *ngIf="canDelete(item)" (click)="delete(item)"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>
                     </tbody>

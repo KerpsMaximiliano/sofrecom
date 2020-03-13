@@ -246,7 +246,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public ICollection<Analytic> GetAll()
         {
-            return unitOfWork.AnalyticRepository.GetAllReadOnlyWithManagementReport();
+            return unitOfWork.AnalyticRepository.GetAllReadOnly();
         }
 
         public AnalyticOptions GetOptions()

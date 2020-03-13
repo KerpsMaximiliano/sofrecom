@@ -13,6 +13,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
 
         public int[] StateIds { get; set; }
 
+        public int[] AnalyticIds { get; set; }
+
         public bool InWorkflowProcess { get; set; }
 
         public List<int> UserApplicantIds { get; set; }

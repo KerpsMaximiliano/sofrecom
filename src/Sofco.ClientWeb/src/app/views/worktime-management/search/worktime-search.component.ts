@@ -228,8 +228,8 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         return this.menuService.userIsDirector || this.menuService.userIsRrhh || this.menuService.userIsCdg;
     }
 
-    canDelete(){
-        return this.menuService.hasAdminMenu();
+    canDelete(item){
+        return this.menuService.hasAdminMenu() || item.canDelete;
     }
 
     delete(item){

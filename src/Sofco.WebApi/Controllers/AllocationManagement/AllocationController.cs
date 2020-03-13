@@ -63,8 +63,26 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult GetByAnalytic(int analyticId)
         {
             var resources = allocationService.GetByEmployeesByAnalytic(analyticId);
+            var list = new List<EmployeeModel>();
 
-            return Ok(resources.Select(x => new EmployeeModel(x)));
+            foreach (var resource in resources)
+            {
+                if (resource.Allocations != null && resource.Allocations.Any())
+                {
+                    var allocation = resource.Allocations.FirstOrDefault(x => x.AnalyticId == analyticId && x.StartDate.Year == DateTime.Now.Year && x.StartDate.Month == DateTime.Now.Month);
+
+                    if (allocation != null && allocation.Percentage > 0)
+                    {
+                        var item = new EmployeeModel(resource);
+
+                        item.PercentageAllocation = allocation.Percentage;
+
+                        list.Add(item);
+                    }
+                }
+            }
+
+            return Ok(list);
         }
 
         [HttpPost("report")]

@@ -10,7 +10,7 @@
                     <tr>
                         <th class="analytic-column headcol"> {{ 'allocationManagement.allocation.analytic' | translate  }}</th>
                         <th *ngFor="let month of model.monthsHeader" [ngClass]="(month.employeeHasLicense == true) ? 'month-with-license ' : ''">{{ month.display }}</th>
-                        <th class="analytic-column">{{ 'allocationManagement.allocation.releaseDateShortDesc' | translate }}</th>
+                        <th class="release-date-column">{{ 'allocationManagement.allocation.releaseDateShortDesc' | translate }}</th>
                         <th class="buttons-column"></th>
                     </tr>
                 </thead>
@@ -22,7 +22,7 @@
                             <input type="number" min="0" max="100" [disabled]="!allocation.edit" [(ngModel)]="month.percentage" class="form-control" (ngModelChange)="updateMonth($event, monthIndex, month)">
                         </td>
 
-                        <td class="analytic-column"> <i *ngIf="allocation.releaseDate" class="fa fa-calendar"></i> {{ allocation.releaseDate | date: "dd/MM/yyyy" }}</td>
+                        <td class="release-date-column"> <i *ngIf="allocation.releaseDate" class="fa fa-calendar"></i> {{ allocation.releaseDate | date: "dd/MM/yyyy" }}</td>
 
                         <td class="buttons-column">
                             <button class="btn btn-primary btn-sm" type="button" [disabled]="isEditingAnyRow" (click)="edit(allocation)" *ngIf="!allocation.edit"> {{ 'ACTIONS.EDIT' | translate }} </button>

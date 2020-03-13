@@ -43,7 +43,10 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
             if (model.StateIds != null && model.StateIds.Any())
                 query = query.Where(x => model.StateIds.Contains(x.StatusId));
-          
+
+            if (model.AnalyticIds != null && model.AnalyticIds.Any())
+                query = query.Where(x => model.AnalyticIds.Contains(x.AnalyticId));
+
             return query.ToList();
         }
 

@@ -53,5 +53,7 @@ namespace Sofco.Core.Models.AllocationManagement
         public IList<int> Categories { get; set; }
 
         public string AssignComments { get; set; }
+
+        public decimal PercentageAllocation { get; set; }
     }
 }

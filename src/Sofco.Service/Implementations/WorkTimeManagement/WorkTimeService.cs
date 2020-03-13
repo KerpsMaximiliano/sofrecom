@@ -390,6 +390,13 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.WorkTime);
 
+            var closeDates = unitOfWork.CloseDateRepository.GetBeforeCurrentAndNext();
+            var period = closeDates.GetPeriodIncludeDays();
+
+            var startDate = period.Item1;
+
+            var endDate = period.Item2;
+
             foreach (var worktime in worktimes)
             {
                 var model = new WorkTimeSearchItemResult();
@@ -433,6 +440,14 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 model.Status = worktime.Status.ToString();
                 model.Id = worktime.Id;
 
+                if (!roleManager.IsPmo() && !roleManager.IsRrhh() && !roleManager.IsCdg())
+                {
+                    if (model.Date.Date >= startDate.Date && model.Date.Date <= endDate.Date && worktime.Status != WorkTimeStatus.License)
+                    {
+                        model.CanDelete = true;
+                    }
+                }
+  
                 response.Data.Add(model);
             }
 

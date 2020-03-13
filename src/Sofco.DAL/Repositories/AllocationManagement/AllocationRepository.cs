@@ -104,9 +104,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             return context.Allocations
                 .Include(x => x.Analytic)
                 .Include(x => x.Employee)
-                .Where(x => x.AnalyticId == analyticId)
+                .Where(x => x.AnalyticId == analyticId && x.Employee.EndDate == null)
                 .Select(x => x.Employee)
                 .Include(x => x.EmployeeCategories)
+                .Include(x => x.Allocations)
                 .Distinct()
                 .ToList();
         }

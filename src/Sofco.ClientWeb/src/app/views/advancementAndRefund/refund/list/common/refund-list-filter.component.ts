@@ -3,6 +3,7 @@ import { Subscription } from "rxjs";
 import { UserService } from "app/services/admin/user.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { UtilsService } from "app/services/common/utils.service";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
 
 @Component({
     selector: 'refund-list-filter',
@@ -20,20 +21,26 @@ export class RefundListFilterComponent implements OnInit {
     public dateSince: Date;
     public dateTo: Date;
     public states: any[] = new Array<any>();
+    public analytics: any[] = new Array<any>();
     public banks: any[] = new Array<any>();
     public stateIds: number[] = [];
     public bankId: number;
+    public analyticIds: number[] = [];
+    userIsCompliance: boolean;
+
     getResourcesSubscrip: Subscription;
     subscrip: Subscription;
 
     constructor(private userService: UserService,
         private utilsService: UtilsService,
+        private analyticService: AnalyticService,
         private refundService: RefundService) { }
 
     ngOnInit(): void {
         this.getResources(); 
         this.getStates();
         this.getBanks();
+        this.getAnalytics();
     }
 
     collapse() {
@@ -68,6 +75,12 @@ export class RefundListFilterComponent implements OnInit {
         });
     }
 
+    getAnalytics() {
+        this.subscrip = this.analyticService.getOptions().subscribe(res => {
+            this.analytics = res;
+        });
+    }
+
     getBanks() {
         this.getResourcesSubscrip = this.utilsService.getBanks().subscribe(response => {
             this.banks = response;
@@ -80,6 +93,7 @@ export class RefundListFilterComponent implements OnInit {
         this.dateSince = null;
         this.dateTo = null;
         this.bankId = null;
+        this.analyticIds = null;
 
         sessionStorage.removeItem('lastRefundQuery');
     }
@@ -90,7 +104,8 @@ export class RefundListFilterComponent implements OnInit {
             stateIds: this.stateIds,
             dateSince: this.dateSince,
             dateTo: this.dateTo,
-            bank: this.bankId
+            bank: this.bankId,
+            analyticIds: this.analyticIds
         }
 
         return this.model;
@@ -107,7 +122,8 @@ export class RefundListFilterComponent implements OnInit {
             stateIds: this.stateIds,
             dateSince: this.dateSince,
             dateTo: this.dateTo,
-            bank: this.bankId
+            bank: this.bankId,
+            analyticIds: this.analyticIds,
         }
     }
 }
