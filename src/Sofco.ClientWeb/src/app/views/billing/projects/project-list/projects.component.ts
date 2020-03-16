@@ -104,7 +104,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
 
     goToBillMultiple(){
-      sessionStorage.setItem('projectsToBillMultiple', JSON.stringify(this.projects));
+      var filtered = this.projects.filter(x => x.type == "item");
+
+      sessionStorage.setItem('projectsToBillMultiple', JSON.stringify(filtered.map(x => x.data)));
       this.router.navigate([`/billing/customers/${this.customerId}/services/${this.serviceId}/projects/billMultiple`]);
     }
 
