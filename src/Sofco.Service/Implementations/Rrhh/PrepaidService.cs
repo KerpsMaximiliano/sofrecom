@@ -31,6 +31,8 @@ namespace Sofco.Service.Implementations.Rrhh
         private readonly string contributionsName = "Prepagas (por asiento)";
         private readonly int contributionsNumber = 648000;
         private readonly int costoNetoNumber = 962;
+        protected readonly int costTigerAccountNumber = 930;
+        protected readonly int netoProviderAccountNumber = 960;
 
         public PrepaidService(IUnitOfWork unitOfWork,
             ILogMailer<PrepaidService> logger,
@@ -265,8 +267,6 @@ namespace Sofco.Service.Implementations.Rrhh
 
                 foreach (var employee in employeeMissingInFiles)
                 {
-                    if (!decimal.TryParse(CryptographyHelper.Decrypt(employee.PrepaidAmount), out var prepaidAmount)) prepaidAmount = 0;
-
                     var itemToAdd = new PrepaidImportedData
                     {
                         Date = new DateTime(yearId, monthId, 1).Date,
@@ -278,10 +278,64 @@ namespace Sofco.Service.Implementations.Rrhh
                         Period = new DateTime(yearId, monthId, 1).Date,
                         Status = PrepaidImportedDataStatus.Error,
                         TigerBeneficiaries = employee.BeneficiariesCount,
-                        TigerCost = prepaidAmount,
-                        TigerPlan = employee.PrepaidPlan,
                         Comments = Resources.Rrhh.Prepaid.EmployeeMissing
                     };
+
+                    var plan = unitOfWork.PrepaidHealthRepository.GetByCode(employee.HealthInsuranceCode, employee.PrepaidHealthCode);
+
+                    if (plan != null)
+                    {
+                        itemToAdd.TigerPlan = plan.Name;
+                    }
+
+                    var socialCharge = employee.SocialCharges.SingleOrDefault(x => x.Year == yearId && x.Month == monthId);
+
+                    if (socialCharge != null)
+                    {
+                        var item = socialCharge.Items.FirstOrDefault(x => x.AccountNumber == costTigerAccountNumber);
+                        var costoNetoItem = socialCharge.Items.FirstOrDefault(x => x.AccountNumber == costoNetoNumber);
+                        var netoProviderItem = socialCharge.Items.FirstOrDefault(x => x.AccountNumber == netoProviderAccountNumber);
+
+                        if (item != null)
+                        {
+                            var valueString = CryptographyHelper.Decrypt(item.Value);
+
+                            if (!string.IsNullOrWhiteSpace(valueString))
+                            {
+                                if (!decimal.TryParse(valueString, out var prepaidAmount)) prepaidAmount = 0;
+
+                                itemToAdd.TigerCost += prepaidAmount;
+                            }
+                        }
+
+                        if (costoNetoItem != null)
+                        {
+                            var valueString = CryptographyHelper.Decrypt(costoNetoItem.Value);
+
+                            if (!string.IsNullOrWhiteSpace(valueString))
+                            {
+                                if (!decimal.TryParse(valueString, out var prepaidAmount)) prepaidAmount = 0;
+
+                                itemToAdd.CostDifference = prepaidAmount;
+                            }
+                        }
+                        else
+                        {
+                            itemToAdd.CostDifference = itemToAdd.PrepaidCost - itemToAdd.TigerCost;
+                        }
+
+                        if (netoProviderItem != null)
+                        {
+                            var valueString = CryptographyHelper.Decrypt(netoProviderItem.Value);
+
+                            if (!string.IsNullOrWhiteSpace(valueString))
+                            {
+                                if (!decimal.TryParse(valueString, out var prepaidAmount)) prepaidAmount = 0;
+
+                                itemToAdd.NetoProvider = prepaidAmount;
+                            }
+                        }
+                    }
 
                     unitOfWork.PrepaidImportedDataRepository.Insert(itemToAdd);
                 }

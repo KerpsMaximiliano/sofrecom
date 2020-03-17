@@ -93,7 +93,7 @@ export class PrepaidVerificationComponent implements OnInit, OnDestroy {
                 this.allData = response.data.items.map(item => {
                     item.selected = false;
 
-                    if(!this.prepaids.includes(item.prepaid.text)){
+                    if(item.prepaid && item.prepaid.text && !this.prepaids.includes(item.prepaid.text)){
                         this.prepaids.push(item.prepaid.text);
                     }
 

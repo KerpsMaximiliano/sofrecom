@@ -135,7 +135,7 @@ export class PrepaidImportComponent implements OnInit, OnDestroy {
     canNotify(){
         if(!this.yearId || !this.monthId || this.yearId <= 0 || this.monthId <= 0 || !this.prepaids || !this.itemsDashboard) return false;
 
-        return this.yearId > 0 && this.monthId > 0 && this.itemsDashboard.length == this.prepaids.length;
+        return this.yearId > 0 && this.monthId > 0;
     }
 
     uploaderConfig(){

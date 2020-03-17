@@ -178,6 +178,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Licencia: se adjunto certificado.
+        /// </summary>
+        public static string LicenseAttachedFile {
+            get {
+                return ResourceManager.GetString("LicenseAttachedFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Cancelación de licencia - {0}.
         /// </summary>
         public static string LicenseCancelledTitle {

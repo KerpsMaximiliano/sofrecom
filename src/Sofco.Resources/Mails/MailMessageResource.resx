@@ -457,4 +457,7 @@ Recursos:&lt;br/&gt;
 &lt;br/&gt;
 &lt;strong&gt;Por favor completar la &lt;a href='{1}' target='_blank'&gt;Evaluacion de Ingresantes&lt;/a&gt;&lt;/strong&gt;</value>
   </data>
+  <data name="LicenseAttachedFile" xml:space="preserve">
+    <value>El recurso {0} actualizo la licencia #{1}, adjuntando un archivo a la misma. Para verificar acceda desde el siguiente &lt;a href='{2}' target='_blank'&gt;link&lt;/a&gt;</value>
+  </data>
 </root>

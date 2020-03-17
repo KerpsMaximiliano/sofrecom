@@ -228,4 +228,7 @@
   <data name="EmployeeTestPeriod" xml:space="preserve">
     <value>Fin período de prueba</value>
   </data>
+  <data name="LicenseAttachedFile" xml:space="preserve">
+    <value>Licencia: se adjunto certificado</value>
+  </data>
 </root>

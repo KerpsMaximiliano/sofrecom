@@ -213,6 +213,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a El recurso {0} actualizo la licencia #{1}, adjuntando un archivo a la misma. Para verificar acceda desde el siguiente &lt;a href=&apos;{2}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
+        /// </summary>
+        public static string LicenseAttachedFile {
+            get {
+                return ResourceManager.GetString("LicenseAttachedFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Tipo Licencia: &lt;b&gt;{2}&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;
         ///{3}
         ///RRHH: &lt;br/&gt;

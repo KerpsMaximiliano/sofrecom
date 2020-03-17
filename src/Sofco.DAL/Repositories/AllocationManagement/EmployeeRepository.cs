@@ -127,7 +127,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> GetMissingEmployess(IList<int> prepaidImportedDataIds)
         {
-            return context.Employees.Where(x => !prepaidImportedDataIds.Contains(x.Id) && x.EndDate == null).ToList();
+            return context.Employees.Include(x => x.SocialCharges).ThenInclude(x => x.Items).Where(x => !prepaidImportedDataIds.Contains(x.Id) && x.EndDate == null).ToList();
         }
 
         public IList<Tuple<int, string, string>> GetIdAndEmployeeNumber(int year, int month)

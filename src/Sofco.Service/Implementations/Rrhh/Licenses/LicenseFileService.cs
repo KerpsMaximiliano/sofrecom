@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +10,15 @@ using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh.Licenses;
+using Sofco.Domain.Models.Rrhh;
 using Sofco.Domain.Relationships;
 using Sofco.Domain.Utils;
+using Sofco.Framework.MailData;
 using Sofco.Framework.ValidationHelpers.Rrhh;
+using Sofco.Resources.Mails;
 using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.Rrhh.Licenses
@@ -25,11 +30,15 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
         private readonly FileConfig fileConfig;
         private readonly ISessionManager sessionManager;
         private readonly ILicenseFileManager licenseFileManager;
+        private readonly IMailSender mailSender;
+        private readonly EmailConfig emailConfig;
 
         public LicenseFileService(IUnitOfWork unitOfWork, 
             ILogMailer<LicenseFileService> logger, 
             IOptions<FileConfig> fileOptions,
-            ISessionManager sessionManager, 
+            IOptions<EmailConfig> emailOptions,
+            ISessionManager sessionManager,
+            IMailSender mailSender,
             ILicenseFileManager licenseFileManager)
         {
             this.unitOfWork = unitOfWork;
@@ -37,11 +46,13 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
             fileConfig = fileOptions.Value;
             this.sessionManager = sessionManager;
             this.licenseFileManager = licenseFileManager;
+            this.mailSender = mailSender;
+            this.emailConfig = emailOptions.Value;
         }
 
         public async Task<Response<File>> AttachFile(int id, Response<File> response, IFormFile file)
         {
-            LicenseValidationHandler.Find(id, response, unitOfWork);
+            var license = LicenseValidationHandler.FindFull(id, response, unitOfWork);
 
             if (response.HasErrors()) return response;
 
@@ -72,6 +83,8 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
 
                 response.Data = fileToAdd;
                 response.AddSuccess(Resources.Rrhh.License.FileAdded);
+
+                SendMail(license);
             }
             catch (Exception e)
             {
@@ -80,6 +93,33 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
             }
 
             return response;
+        }
+
+        private void SendMail(License license)
+        {
+            try
+            {
+                var subject = string.Format(MailSubjectResource.LicenseAttachedFile);
+                var body = string.Format(MailMessageResource.LicenseAttachedFile, license.Employee?.Name, license.Id, $"{emailConfig.SiteUrl}rrhh/licenses/{license.Id}/detail");
+
+                var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhL);
+
+                var receipt = mailRrhh;
+
+                var data = new LicenseStatusData
+                {
+                    Title = subject,
+                    Message = body,
+                    Recipients = new List<string> { receipt }
+                };
+
+                mailSender.Send(data);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+
+            }
         }
 
         public Response DeleteFile(int id)
