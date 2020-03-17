@@ -453,7 +453,7 @@
         </div>
     </form>
 
-    <job-search-applicants-related [hidden]="!canClose()" #applicantsRelated></job-search-applicants-related>
+    <job-search-applicants-related [hidden]="!canClose()" (onSave)="onNewContactAdded()" #applicantsRelated></job-search-applicants-related>
 </div>
 
 <ng2-modal [config]="dateModalConfig" #dateModal (accept)="changeStatus()" [isSaveEnabled]="dateModalForm.valid">

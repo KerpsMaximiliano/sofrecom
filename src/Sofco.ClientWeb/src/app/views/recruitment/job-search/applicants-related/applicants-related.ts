@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, Output, EventEmitter } from "@angular/core";
 import { Subscription } from "rxjs";
 import { JobSearchService } from "app/services/recruitment/jobsearch.service";
 import { DataTableService } from "app/services/common/datatable.service";
@@ -31,6 +31,8 @@ export class ApplicantsRelatedComponent implements OnDestroy {
 
     getSubscrip: Subscription;
     addSubscrip: Subscription;
+
+    @Output() onSave: EventEmitter<any> = new EventEmitter();
 
     constructor(private jobSearchService: JobSearchService,
                 public formsService: FormsService,
@@ -131,6 +133,8 @@ export class ApplicantsRelatedComponent implements OnDestroy {
             this.form.controls.reasonCauseId.setValue(null);
             this.form.controls.comments.setValue(null);
             this.form.reset();
+
+            if(this.onSave.observers.length > 0) this.onSave.emit();
         }, 
         error => this.messageService.closeLoading());
     }

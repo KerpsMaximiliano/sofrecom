@@ -50,5 +50,9 @@ export class ApplicantsRelatedByJsComponent implements OnDestroy {
             case ApplicantStatus.Contacted: return "Vigente/Contactado";
             default: return "";
         }
-      }
+    }
+
+      goToDetail(applicant){
+        window.open("/#/recruitment/contacts/" + applicant.id, "blank");
+    }
 }

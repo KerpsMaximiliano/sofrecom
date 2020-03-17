@@ -504,4 +504,8 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             }
         }
     }
+
+    onNewContactAdded(){
+        this.applicantsRelatedByJs.getApplicants(this.entityId);
+    }
 }

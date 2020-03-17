@@ -11,8 +11,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of data" class="pointer">
-                <td>{{ item.applicant }}</td>
+            <tr *ngFor="let item of data">
+                <td class="text-success applicant-name pointer" (click)="goToDetail(item)">{{ item.applicant }}</td>
                 <td class="text-word-break">{{ item.profiles }}</td>
                 <td class="text-word-break">{{ item.skills }}</td>
                 <td>{{ item.date | date:'dd/MM/yyyy' }}</td>

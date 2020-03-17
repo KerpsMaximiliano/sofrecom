@@ -254,7 +254,8 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
 
         var options = {
             selector: "#jobSearchTable",
-            columns: columns,
+            columns: columns, 
+            order: [[ 2, "desc" ]],
             title: title,
             columnDefs: [ { "aTargets": [2, 12, 13, 14], "sType": "date-uk" }],
             withExport: true,
