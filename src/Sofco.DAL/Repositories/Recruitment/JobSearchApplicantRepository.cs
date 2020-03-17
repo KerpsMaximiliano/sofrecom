@@ -16,26 +16,22 @@ namespace Sofco.DAL.Repositories.Recruitment
         {
         }
 
-        public IList<Applicant> Get(IList<int> skills, IList<int> profiles)
+        public IList<Applicant> Get(IList<int> skills)
         {
             var query = context.Applicants
                 .Include(x => x.JobSearchApplicants)
                     .ThenInclude(x => x.Reason)
-                .Include(x => x.ApplicantProfiles)
                 .Include(x => x.ApplicantSkills)
                 .Where(x => x.Status == ApplicantStatus.Valid || x.Status == ApplicantStatus.InProgress || x.Status == ApplicantStatus.Contacted);
 
-            if (skills.Any() && profiles.Any())
+            if (skills.Any())
             {
-                query = query.Where(x => x.ApplicantSkills.Any(s => skills.Contains(s.SkillId)) || x.ApplicantProfiles.Any(s => profiles.Contains(s.ProfileId)));
+                query = query.Where(x => x.ApplicantSkills.Any(s => skills.Contains(s.SkillId)));
             }
             else
             {
                 if (skills.Any())
                     query = query.Where(x => x.ApplicantSkills.Any(s => skills.Contains(s.SkillId)));
-
-                if (profiles.Any())
-                    query = query.Where(x => x.ApplicantProfiles.Any(s => skills.Contains(s.ProfileId)));
             }
 
             return query

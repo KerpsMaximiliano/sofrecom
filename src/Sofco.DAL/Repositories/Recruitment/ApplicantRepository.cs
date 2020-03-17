@@ -132,7 +132,6 @@ namespace Sofco.DAL.Repositories.Recruitment
         {
             return context.Applicants
                 .Include(x => x.ApplicantSkills)
-                .Include(x => x.ApplicantProfiles)
                 .SingleOrDefault(x => x.Id == applicantId);
         }
     }

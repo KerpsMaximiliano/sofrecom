@@ -83,8 +83,6 @@ namespace Sofco.DAL.Repositories.Recruitment
         public JobSearch GetWithProfilesAndSkills(int jobSearchId)
         {
             return context.JobSearchs
-                .Include(x => x.JobSearchProfiles)
-                    .ThenInclude(x => x.Profile)
                 .Include(x => x.JobSearchSkillsRequired)
                     .ThenInclude(x => x.Skill)
                 .SingleOrDefault(x => x.Id == jobSearchId);
@@ -110,27 +108,23 @@ namespace Sofco.DAL.Repositories.Recruitment
             return context.JobSearchHistories.Include(x => x.ReasonCause).Where(x => x.JobSearchId == id).ToList();
         }
 
-        public IList<JobSearch> Get(List<int> skills, List<int> profiles)
+        public IList<JobSearch> Get(List<int> skills)
         {
             var query = context.JobSearchs
                 .Include(x => x.Client)
                 .Include(x => x.JobSearchApplicants)
                     .ThenInclude(x => x.Reason)
-                .Include(x => x.JobSearchProfiles)
                 .Include(x => x.JobSearchSkillsRequired)
                 .Where(x => x.Status == JobSearchStatus.Open || x.Status == JobSearchStatus.Reopen);
 
-            if (skills.Any() && profiles.Any())
+            if (skills.Any())
             {
-                query = query.Where(x => x.JobSearchSkillsRequired.Any(s => skills.Contains(s.SkillId)) || x.JobSearchProfiles.Any(s => profiles.Contains(s.ProfileId)));
+                query = query.Where(x => x.JobSearchSkillsRequired.Any(s => skills.Contains(s.SkillId)));
             }
             else
             {
                 if (skills.Any())
                     query = query.Where(x => x.JobSearchSkillsRequired.Any(s => skills.Contains(s.SkillId)));
-
-                if (profiles.Any())
-                    query = query.Where(x => x.JobSearchProfiles.Any(s => skills.Contains(s.ProfileId)));
             }
 
             return query

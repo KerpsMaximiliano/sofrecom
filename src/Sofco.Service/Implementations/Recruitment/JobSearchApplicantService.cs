@@ -51,9 +51,8 @@ namespace Sofco.Service.Implementations.Recruitment
             try
             {
                 var skills = jobSearch.JobSearchSkillsRequired.Select(x => x.SkillId).ToList();
-                var profiles = jobSearch.JobSearchProfiles.Select(x => x.ProfileId).ToList();
 
-                var applicants = unitOfWork.JobSearchApplicantRepository.Get(skills, profiles);
+                var applicants = unitOfWork.JobSearchApplicantRepository.Get(skills);
 
                 response.Data = applicants.Select(x => new JobSearchApplicantModel(x)).ToList();
             }
@@ -283,9 +282,8 @@ namespace Sofco.Service.Implementations.Recruitment
             try
             {
                 var skills = applicant.ApplicantSkills.Select(x => x.SkillId).ToList();
-                var profiles = applicant.ApplicantProfiles.Select(x => x.ProfileId).ToList();
 
-                var jobSearchs = unitOfWork.JobSearchRepository.Get(skills, profiles);
+                var jobSearchs = unitOfWork.JobSearchRepository.Get(skills);
 
                 response.Data = jobSearchs.Select(x => new ApplicantJobSearchModel(x)).OrderBy(x => x.ContactedBefore).ToList();
             }
