@@ -92,7 +92,28 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
     }    
 
     ngAfterViewInit(): void {
-        this.statusId = [JobSearchStatus.Open, JobSearchStatus.Reopen];
+
+        const data = JSON.parse(sessionStorage.getItem('lastJobSearchQuery'));
+
+        if (data) {
+            this.id = data.id;
+            this.clientId = data.clientId;
+            this.skills = data.skills;
+            this.seniorities = data.seniorities;
+            this.profiles = data.profiles;
+            this.userId = data.userId;
+            this.statusId = data.status;
+            this.reasonCauseId = data.reasonId;
+            this.recruiterId = data.recruiterId;
+            this.startDate = data.startDate;
+            this.endDate = data.endDate;
+
+            this.filterByDates = data.filterByDates;
+        }
+        else{
+            this.statusId = [JobSearchStatus.Open, JobSearchStatus.Reopen];
+        }
+     
         this.search();
         this.collapse();
     }
@@ -227,9 +248,10 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
             reasonId: this.reasonCauseId,
             recruiterId: this.recruiterId,
             startDate: this.startDate,
-            endDate: this.endDate
+            endDate: this.endDate,
+            filterByDates: this.filterByDates
         };
-
+ 
         this.data = [];
 
         this.messageService.showLoading();
@@ -240,6 +262,8 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
             if(response && response.data && response.data.length > 0){
                 this.data = response.data;
                 this.initGrid();
+
+                sessionStorage.setItem('lastJobSearchQuery', JSON.stringify(json));
             }
             else{
                 this.messageService.showWarning("searchEmpty");

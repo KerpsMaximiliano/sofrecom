@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DataTableService } from 'app/services/common/datatable.service';
 import { GenericOptionService } from 'app/services/admin/generic-option.service';
@@ -14,7 +14,8 @@ import { ApplicantStatus } from 'app/models/enums/applicantStatus';
   templateUrl: './list-contacts.component.html',
   styleUrls: ['./list-contacts.component.scss']
 })
-export class ListContactsComponent implements OnInit, OnDestroy {
+export class ListContactsComponent implements OnInit, OnDestroy, AfterViewInit {
+
 
   public searchModel = {
     firstName: null,
@@ -42,6 +43,19 @@ export class ListContactsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getProfiles();
     this.getSkills();
+  }
+
+  ngAfterViewInit(): void {
+    const data = JSON.parse(sessionStorage.getItem('lastApplicantQuery'));
+
+    if (data) {
+        this.searchModel.firstName = data.firstName;
+        this.searchModel.lastName = data.lastName;
+        this.searchModel.skills = data.skills;
+        this.searchModel.profiles = data.profiles;
+
+        this.search();
+    }
   }
 
   ngOnDestroy(): void {
@@ -83,6 +97,8 @@ export class ListContactsComponent implements OnInit, OnDestroy {
         if(response && response.data && response.data.length > 0){
             this.list = response.data;
             this.initGrid();
+
+            sessionStorage.setItem('lastApplicantQuery', JSON.stringify(json));
         }
         else{
             this.messageService.showWarning("searchEmpty");

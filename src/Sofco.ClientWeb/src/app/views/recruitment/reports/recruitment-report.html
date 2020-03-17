@@ -198,34 +198,34 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-9">
-            <div class="ibox" *ngIf="contacts.length > 0">
-                <div class="ibox-title">
-                    <h4>Resultados por remuneración</h4>
-                </div>
-                <div class="ibox-content">
-                    <div class="table-responsive">
-                        <table class="table table-striped dataTable" role="grid" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Busqueda</th>
-                                    <th>Remuneracion</th>
-                                    <th>($) Pretendido Promedio</th>
-                                    <th>(%) Pretendido Promedio</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of salaryAverage">
-                                    <td># {{ item.jobsearchId }}</td>
-                                    <td>$ {{ item.salary | number: '1.2-2'  }}</td>
-                                    <td>$ {{ item.salaryValueAvg | number: '1.2-2' }}</td>
-                                    <td>{{ item.salaryPercentageAvg | number: '1.2-2' }} %</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <div class="ibox" *ngIf="contacts.length > 0">
+        <div class="ibox-title">
+            <h4>Resultados por remuneración</h4>
+        </div>
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped dataTable" role="grid" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Busqueda</th>
+                            <th>Remuneracion</th>
+                            <th>($) Pretendido Promedio</th>
+                            <th>(%) Pretendido Promedio</th>
+                            <th>Cantidad sobre Remuneración</th>
+                            <th>Cantidad contactados</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of salaryAverage">
+                            <td># {{ item.jobsearchId }}</td>
+                            <td>$ {{ item.salary | number: '1.2-2'  }}</td>
+                            <td>$ {{ item.salaryValueAvg | number: '1.2-2' }}</td>
+                            <td>{{ item.salaryPercentageAvg | number: '1.2-2' }} %</td>
+                            <td>{{ item.countOverAvg }}</td>
+                            <td>{{ item.count }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

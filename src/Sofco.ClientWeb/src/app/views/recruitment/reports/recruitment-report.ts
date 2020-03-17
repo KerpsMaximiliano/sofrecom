@@ -535,7 +535,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                     }
                 }
             }
-        }
+        } 
 
         this.salaryAverage = [];
 
@@ -559,6 +559,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                     salaryValue: contact.salary,
                     salary: null,
                     salaryValueAvg: 0,
+                    countOverAvg: 0,
                     salaryPercentageAvg: 0
                 }
 
@@ -572,6 +573,14 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 itemToAdd.salaryPercentageAvg = ((itemToAdd.salaryValueAvg - itemToAdd.salary) / itemToAdd.salaryValueAvg) * 100;
 
                 this.salaryAverage.push(itemToAdd);
+            }
+        });
+
+        this.salaryAverage.forEach(x => {
+            var contacts = this.contacts.filter(s => s.jobsearchId == x.jobsearchId && s.salary > x.salary);
+
+            if(contacts){
+                x.countOverAvg = contacts.length;
             }
         });
     }

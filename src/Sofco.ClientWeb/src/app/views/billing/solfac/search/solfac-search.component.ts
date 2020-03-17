@@ -65,7 +65,7 @@ export class SolfacSearchComponent implements OnInit, OnDestroy {
         const data = JSON.parse(sessionStorage.getItem('lastSolfacQuery'));
         if (data) {
             this.customerId = data.customerId;
-            this.serviceId = data.serviceId;
+            this.serviceId = data.serviceId; 
             this.projectId = data.projectId;
             this.userApplicantId = data.userApplicantId;
             this.analytic = data.analytic;
