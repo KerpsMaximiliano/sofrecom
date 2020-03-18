@@ -179,9 +179,9 @@ export class AllocationAssignmentTableComponent implements OnInit, OnDestroy {
         let date;
         let releaseDate;
 
-        if(allocation.releaseDate){
-            releaseDate = moment(allocation.releaseDate).toDate();
-        }
+        // if(allocation.releaseDate){
+        //     releaseDate = moment(allocation.releaseDate).toDate();
+        // }
 
         allocation.months.forEach(element => {
             if(element.percentage > 0){
