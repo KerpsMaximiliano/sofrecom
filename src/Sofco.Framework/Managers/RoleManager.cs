@@ -162,6 +162,13 @@ namespace Sofco.Framework.Managers
             return isDirector;
         }
 
+        public bool IsAdmin()
+        {
+            var isAdmin = unitOfWork.UserRepository.HasAdminGroup(CurrentUser.Email);
+
+            return isAdmin;
+        }
+
         public bool IsCdg()
         {
             var hasCdgGroup = unitOfWork.UserRepository.HasCdgGroup(CurrentUser.Email);

@@ -229,7 +229,7 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
     }
 
     canDelete(item){
-        return this.menuService.hasAdminMenu() || item.canDelete;
+        return item.canDelete == true;
     }
 
     delete(item){

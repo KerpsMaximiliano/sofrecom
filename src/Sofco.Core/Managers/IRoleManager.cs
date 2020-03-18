@@ -32,5 +32,7 @@ namespace Sofco.Core.Managers
         bool IsManagementReportDelegate();
 
         bool IsRecruiter(string recruitersCode);
+
+        bool IsAdmin();
     }
 }

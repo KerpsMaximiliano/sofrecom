@@ -39,6 +39,14 @@ namespace Sofco.DAL.Repositories.Admin
             return context.Set<User>().Where(x => x.Active).ToList().AsReadOnly();
         }
 
+        public bool HasAdminGroup(string userMail)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Any(x => x.Email.Equals(userMail) && x.UserGroups.Any(s => s.Group.Code == emailConfig.AdminCode));
+        }
+
         public bool HasDirectorGroup(string userMail)
         {
             return context.Users

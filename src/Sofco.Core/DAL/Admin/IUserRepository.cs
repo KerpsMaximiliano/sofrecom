@@ -66,5 +66,7 @@ namespace Sofco.Core.DAL.Admin
         bool HasManagementReportDelegateGroup(string currentUserEmail);
         bool IsRecruiter(string currentUserEmail, string recruitersCode);
         IList<User> GetByEmail(List<string> mails);
+
+        bool HasAdminGroup(string userMail);
     }
 }

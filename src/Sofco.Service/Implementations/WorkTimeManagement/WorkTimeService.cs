@@ -440,11 +440,18 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 model.Status = worktime.Status.ToString();
                 model.Id = worktime.Id;
 
-                if (!roleManager.IsPmo() && !roleManager.IsRrhh() && !roleManager.IsCdg())
+                if (roleManager.IsAdmin())
                 {
-                    if (model.Date.Date >= startDate.Date && model.Date.Date <= endDate.Date && worktime.Status != WorkTimeStatus.License)
+                    model.CanDelete = true;
+                }
+                else
+                {
+                    if (!roleManager.IsPmo() && !roleManager.IsRrhh() && !roleManager.IsCdg())
                     {
-                        model.CanDelete = true;
+                        if (model.Date.Date >= startDate.Date && model.Date.Date <= endDate.Date && worktime.Status != WorkTimeStatus.License)
+                        {
+                            model.CanDelete = true;
+                        }
                     }
                 }
   
