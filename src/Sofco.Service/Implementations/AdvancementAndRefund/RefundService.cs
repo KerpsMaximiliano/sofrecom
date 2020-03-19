@@ -608,11 +608,11 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                             }
                         }
                     }
-
-                    zipStream.Position = 0;
-
-                    response.Data = zipStream;
                 }
+
+                zipStream.Position = 0;
+
+                response.Data = zipStream;
             }
             catch (Exception e)
             {
