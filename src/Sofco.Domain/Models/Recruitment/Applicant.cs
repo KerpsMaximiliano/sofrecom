@@ -79,6 +79,14 @@ namespace Sofco.Domain.Models.Recruitment
 
         public string Aggreements { get; set; }
 
+        public int? SkillId { get; set; }
+
+        public Skill Skill { get; set; }
+
+        public int? SeniorityId { get; set; }
+
+        public Seniority Seniority { get; set; }
+
         public IList<ApplicantFile> Files { get; set; }
     }
 }

@@ -33,6 +33,8 @@ namespace Sofco.Core.Models.Recruitment
             if (domain.JobSearch.JobSearchSkillsRequired != null && domain.JobSearch.JobSearchSkillsRequired.Any())
                 Skills = string.Join(";", domain.JobSearch.JobSearchSkillsRequired.Select(x => x.Skill.Text));
 
+            HasPhoneInterview = domain.HasPhoneInterview;
+
             HasRrhhInterview = domain.HasRrhhInterview;
             RrhhInterviewDate = domain.RrhhInterviewDate;
             RrhhInterviewPlace = domain.RrhhInterviewPlace;
@@ -51,6 +53,8 @@ namespace Sofco.Core.Models.Recruitment
             ClientExternalInterviewer = domain.ClientExternalInterviewer;
             ClientInterviewComments = domain.ClientInterviewComments;
         }
+
+        public bool HasPhoneInterview { get; set; }
 
         public bool RemoteWork { get; set; }
 

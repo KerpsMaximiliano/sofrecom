@@ -331,6 +331,21 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group"> 
+                                    <label class="control-label"> Tecnologia </label>
+                                    <ng-select [items]="skillOptions" bindValue="id" bindLabel="text" formControlName="skillId"></ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group"> 
+                                    <label class="control-label"> Seniority </label>
+                                    <ng-select [items]="seniorityOptions" bindValue="id" bindLabel="text" formControlName="seniorityId"></ng-select>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'agreements')">
                             <label class="control-label">Acuerdos</label>
                             <textarea rows="6" class="form-control" formControlName="agreements" maxlength="3000"></textarea>

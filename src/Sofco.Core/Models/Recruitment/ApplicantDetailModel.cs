@@ -35,6 +35,8 @@ namespace Sofco.Core.Models.Recruitment
             AnalyticId = applicant.AnalyticId;
             ProjectId = applicant.ProjectId;
             Status = applicant.Status;
+            SkillId = applicant.SkillId;
+            SeniorityId = applicant.SeniorityId;
 
             if (applicant.RecommendedByUserId.HasValue) RecommendedByUserId = applicant.RecommendedByUserId.Value.ToString();
 
@@ -44,6 +46,10 @@ namespace Sofco.Core.Models.Recruitment
             if (applicant.ApplicantSkills != null && applicant.ApplicantSkills.Any())
                 Skills = applicant.ApplicantSkills.Select(x => x.SkillId).ToList();
         }
+
+        public int? SeniorityId { get; set; }
+
+        public int? SkillId { get; set; }
 
         public string Prepaid { get; set; }
 

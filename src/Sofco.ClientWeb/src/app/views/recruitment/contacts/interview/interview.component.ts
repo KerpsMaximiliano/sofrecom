@@ -21,6 +21,7 @@ export class InterviewComponent implements OnInit, OnDestroy {
     hasRrhhInterview: boolean = false;
     hasTechnicalInterview: boolean = false;
     hasClientInterview: boolean = false;
+    hasPhoneInterview: boolean = false;
     remoteWork: boolean = false;
 
     jobSearchId: number;
@@ -81,6 +82,7 @@ export class InterviewComponent implements OnInit, OnDestroy {
             hasClientInterview: this.hasClientInterview,
             hasRrhhInterview: this.hasRrhhInterview,
             hasTechnicalInterview: this.hasTechnicalInterview,
+            hasPhoneInterview: this.hasPhoneInterview,
             remoteWork: this.remoteWork,
 
             rrhhInterviewDate: this.form.controls.rrhhInterviewDate.value,
@@ -135,12 +137,14 @@ export class InterviewComponent implements OnInit, OnDestroy {
         this.hasClientInterview = history.hasClientInterview;
         this.hasRrhhInterview = history.hasRrhhInterview;
         this.hasTechnicalInterview = history.hasTechnicalInterview;
+        this.hasPhoneInterview = history.hasPhoneInterview;
         this.remoteWork = history.remoteWork;
 
         this.form.controls.reasonId.setValue(history.reasonId);
         this.form.controls.salary.setValue(history.salary);
 
         this.hasRrhhInterviewChanged(this.hasRrhhInterview);
+        this.hasPhoneInterviewChanged(this.hasPhoneInterview);
 
         // RRHH
         if(history.rrhhInterviewDate){
@@ -194,6 +198,16 @@ export class InterviewComponent implements OnInit, OnDestroy {
         this.form.controls.clientInterviewPlace.setValue(null);
         this.form.controls.clientInterviewComments.setValue(null);
         this.form.controls.clientExternalInterviewer.setValue(null);
+    }
+
+    hasPhoneInterviewChanged(value){
+        if(value){
+            this.form.controls.salary.setValidators([Validators.required]);
+            this.form.controls.salary.updateValueAndValidity();
+        }
+        else{
+            this.form.controls.salary.clearValidators();
+        }
     }
 
     hasRrhhInterviewChanged(value){

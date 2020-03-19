@@ -87,6 +87,9 @@ namespace Sofco.DAL.Repositories.Recruitment
             if (parameter.Skills != null && parameter.Skills.Any())
                 query = query.Where(x => x.ApplicantSkills.Any(s => parameter.Skills.Contains(s.SkillId)));
 
+            if (parameter.StatusIds != null && parameter.StatusIds.Any())
+                query = query.Where(x => parameter.StatusIds.Contains((int) x.Status));
+
             return query.ToList();
         }
 

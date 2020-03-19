@@ -11,5 +11,7 @@ namespace Sofco.Core.Models.Recruitment
         public IList<int> Skills { get; set; }
 
         public IList<int> Profiles { get; set; }
+
+        public IList<int> StatusIds { get; set; }
     }
 }

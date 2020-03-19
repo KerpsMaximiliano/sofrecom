@@ -10,5 +10,6 @@ namespace Sofco.Domain.Models.Recruitment
         public IList<ResourceBilling> ResourceBillings { get; set; }
 
         public IList<JobSearchSeniority> JobSearchSeniorities { get; set; }
+        public IList<Applicant> Applicants { get; set; }
     }
 }

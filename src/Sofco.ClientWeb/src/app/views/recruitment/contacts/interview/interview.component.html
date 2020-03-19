@@ -39,6 +39,18 @@
     <div class="row">
         <div class="col-md-3">
             <div class="form-group">
+                <icheck [(checked)]="hasPhoneInterview" (checkedChange)="hasPhoneInterviewChanged($event)">
+                    <label style="padding-left:20px;"> Entrev. Telefonica </label> 
+                </icheck>
+            </div> 
+        </div>
+    </div>
+
+    <hr class="hr-line-dashed">
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
                 <icheck [(checked)]="hasRrhhInterview" (checkedChange)="hasRrhhInterviewChanged($event)">
                     <label style="padding-left:20px;"> Entrev. RRHH </label> 
                 </icheck>

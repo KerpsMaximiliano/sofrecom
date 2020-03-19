@@ -54,6 +54,8 @@ export class DetailContactsComponent implements OnInit {
     managerId: new FormControl(null, [Validators.required]),
     analyticId: new FormControl(null, [Validators.required]),
     projectId: new FormControl(null),
+    skillId: new FormControl(null),
+    seniorityId: new FormControl(null),
   });
 
   dateModalForm: FormGroup = new FormGroup({
@@ -76,6 +78,7 @@ export class DetailContactsComponent implements OnInit {
   );
 
   profileOptions: any[] = new Array();
+  seniorityOptions: any[] = new Array();
   skillOptions: any[] = new Array();
   reasonOptions: any[] = new Array();
   applicantCloseReasons: any[] = new Array();
@@ -117,6 +120,7 @@ export class DetailContactsComponent implements OnInit {
     this.getReasons();
     this.getUsers();
     this.getAnalytics();
+    this.getSeniorities();
 
     this.activateRoute.params.subscribe(routeParams => {
         this.entityId = routeParams.id;
@@ -150,6 +154,13 @@ export class DetailContactsComponent implements OnInit {
           this.jobSearchRelated.skills = response.data;
       });
   }
+
+  getSeniorities(){
+    this.genericOptionsService.controller = GenericOptions.Seniority;
+    this.getProfilesSubscrip = this.genericOptionsService.getOptions().subscribe(response => {
+        this.seniorityOptions = response.data;
+    });
+}
 
   getReasons(){
       this.genericOptionsService.controller =  GenericOptions.ReasonCause;
@@ -228,6 +239,8 @@ export class DetailContactsComponent implements OnInit {
         this.newResourceForm.controls.salary.setValue(response.data.salary);
         if(response.data.managerId) this.newResourceForm.controls.managerId.setValue(response.data.managerId.toString());
         this.newResourceForm.controls.analyticId.setValue(response.data.analyticId);
+        this.newResourceForm.controls.seniorityId.setValue(response.data.seniorityId);
+        this.newResourceForm.controls.skillId.setValue(response.data.skillId);
         if(response.data.projectId) this.newResourceForm.controls.projectId.setValue(response.data.projectId.toString());
 
         if(response.data.analyticId && response.data.projectId){
@@ -333,7 +346,9 @@ export class DetailContactsComponent implements OnInit {
       salary: this.newResourceForm.controls.salary.value,
       managerId: this.newResourceForm.controls.managerId.value,
       analyticId: this.newResourceForm.controls.analyticId.value,
-      projectId: this.newResourceForm.controls.projectId.value
+      projectId: this.newResourceForm.controls.projectId.value,
+      seniorityId: this.newResourceForm.controls.seniorityId.value,
+      skillId: this.newResourceForm.controls.skillId.value
     };
   }
 

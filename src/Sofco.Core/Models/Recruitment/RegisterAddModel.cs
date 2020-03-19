@@ -33,6 +33,10 @@ namespace Sofco.Core.Models.Recruitment
 
         public int? ProjectId { get; set; }
 
+        public int? SkillId { get; set; }
+
+        public int? SeniorityId { get; set; }
+
         public void UpdateDomain(Applicant applicant)
         {
             applicant.Nationality = Nationality;
@@ -49,6 +53,8 @@ namespace Sofco.Core.Models.Recruitment
             applicant.ProjectId = ProjectId;
             applicant.BirthDate = BirthDate;
             applicant.StartDate = StartDate;
+            applicant.SkillId = SkillId;
+            applicant.SeniorityId = SeniorityId;
         }
     }
 

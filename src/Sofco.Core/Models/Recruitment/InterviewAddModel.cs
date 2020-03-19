@@ -9,6 +9,8 @@ namespace Sofco.Core.Models.Recruitment
 
         public bool RemoteWork { get; set; }
 
+        public bool HasPhoneInterview { get; set; }
+
         public bool HasRrhhInterview { get; set; }
 
         public DateTime? RrhhInterviewDate { get; set; }

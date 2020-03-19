@@ -34,6 +34,8 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<Applicant>().HasOne(x => x.Analytic).WithMany(x => x.Applicants).HasForeignKey(x => x.AnalyticId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Applicant>().HasOne(x => x.Project).WithMany(x => x.Applicants).HasForeignKey(x => x.ProjectId).OnDelete(DeleteBehavior.Restrict);
             builder.Entity<Applicant>().HasOne(x => x.Profile).WithMany(x => x.Applicants).HasForeignKey(x => x.ProfileId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Applicant>().HasOne(x => x.Seniority).WithMany(x => x.Applicants).HasForeignKey(x => x.SeniorityId).OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<Applicant>().HasOne(x => x.Skill).WithMany(x => x.Applicants).HasForeignKey(x => x.SkillId).OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<ApplicantProfile>().HasKey(t => new { t.ApplicantId, t.ProfileId });
 

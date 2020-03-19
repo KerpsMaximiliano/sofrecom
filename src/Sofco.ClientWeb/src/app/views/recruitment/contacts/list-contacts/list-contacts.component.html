@@ -47,6 +47,7 @@
                 </ng-select>
               </div>
             </div>
+            
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label">Conocimientos</label>
@@ -54,6 +55,13 @@
                 </ng-select>
               </div>
             </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                  <label class="control-label"> Estado </label>
+                  <ng-select [multiple]="true" [closeOnSelect]="false" [items]="statusOptions" bindValue="id" bindLabel="text" [(ngModel)]="searchModel.statusIds"></ng-select>
+              </div>
+          </div>
           </div>
         </div>
         <div class="panel-footer">

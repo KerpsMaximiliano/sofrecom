@@ -16,18 +16,19 @@ import { ApplicantStatus } from 'app/models/enums/applicantStatus';
 })
 export class ListContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
-
   public searchModel = {
     firstName: null,
     lastName: null,
     skills: null,
-    profiles: null
+    profiles: null,
+    statusIds: null
   };
 
   public skillOptions: any[] = new Array()
   public profileOptions: any[] = new Array()
 
   public list: any[] = new Array();
+  statusOptions: any[] = new Array();
 
   searchSubscrip: Subscription;
   getProfilesSubscrip: Subscription;
@@ -43,6 +44,12 @@ export class ListContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.getProfiles();
     this.getSkills();
+
+    this.statusOptions.push({ id: ApplicantStatus.Valid, text: "Vigente"});
+    this.statusOptions.push({ id: ApplicantStatus.InProgress, text: "En Curso"});
+    this.statusOptions.push({ id: ApplicantStatus.InCompany, text: "Ingresado"});
+    this.statusOptions.push({ id: ApplicantStatus.Contacted, text: "Vigente/Contactado"});
+    this.statusOptions.push({ id: ApplicantStatus.Close, text: "Deshabilitado"});
   }
 
   ngAfterViewInit(): void {
@@ -53,6 +60,7 @@ export class ListContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.searchModel.lastName = data.lastName;
         this.searchModel.skills = data.skills;
         this.searchModel.profiles = data.profiles;
+        this.searchModel.statusIds = data.statusIds;
 
         this.search();
     }
@@ -84,7 +92,8 @@ export class ListContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       firstName: this.searchModel.firstName,
       lastName: this.searchModel.lastName,
       skills: this.searchModel.skills,
-      profiles: this.searchModel.profiles
+      profiles: this.searchModel.profiles,
+      statusIds: this.searchModel.statusIds
     };
 
     this.list = [];
@@ -112,6 +121,7 @@ export class ListContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.searchModel.lastName = null;
     this.searchModel.skills = null;
     this.searchModel.profiles = null;
+    this.searchModel.statusIds = null;
   }
 
   initGrid() {

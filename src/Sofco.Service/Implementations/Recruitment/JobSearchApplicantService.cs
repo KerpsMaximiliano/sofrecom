@@ -158,7 +158,7 @@ namespace Sofco.Service.Implementations.Recruitment
             if(model.HasTechnicalInterview) Validate(model.TechnicalInterviewDate, model.TechnicalInterviewPlace, model.TechnicalExternalInterviewer, response, jobSearchApplicant.TechnicalInterviewDate);
             if(model.HasClientInterview) Validate(model.ClientInterviewDate, model.ClientInterviewPlace, model.ClientExternalInterviewer, response, jobSearchApplicant.ClientInterviewDate);
 
-            if (model.HasRrhhInterview && (!model.Salary.HasValue || model.Salary <= 0))
+            if ((model.HasRrhhInterview || model.HasPhoneInterview) && (!model.Salary.HasValue || model.Salary <= 0))
             {
                 response.AddError(Resources.Recruitment.JobSearchApplicant.SalaryRequired);
             }
@@ -174,6 +174,8 @@ namespace Sofco.Service.Implementations.Recruitment
 
             try
             {
+                jobSearchApplicant.HasPhoneInterview = model.HasPhoneInterview;
+
                 if (model.HasRrhhInterview)
                 {
                     jobSearchApplicant.HasRrhhInterview = model.HasRrhhInterview;

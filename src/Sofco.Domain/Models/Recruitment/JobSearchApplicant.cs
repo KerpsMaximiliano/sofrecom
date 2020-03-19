@@ -63,5 +63,7 @@ namespace Sofco.Domain.Models.Recruitment
         public decimal? Salary { get; set; }
 
         public DateTime ModifiedAt { get; set; }
+
+        public bool HasPhoneInterview { get; set; }
     }
 }
