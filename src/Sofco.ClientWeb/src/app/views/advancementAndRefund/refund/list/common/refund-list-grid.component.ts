@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
 import { Router } from "@angular/router";
 import { MessageService } from "app/services/common/message.service";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'refund-list-grid',
@@ -78,5 +79,18 @@ export class RefundListGridComponent implements OnInit {
             case WorkflowStateType.Success: return "label-primary";
             case WorkflowStateType.Danger: return "label-danger";
         }
+    }
+
+    downloadZip(item){
+        this.messageService.showLoading();
+ 
+        this.refundService.downloadZip(item.id).subscribe(file => {
+            this.messageService.closeLoading();
+            FileSaver.saveAs(file, `reint-${item.id}.zip`);
+        },
+        error => {
+            this.messageService.showMessage("Archivos no encontrados", 1);
+            this.messageService.closeLoading();
+        });
     }
 }

@@ -31,6 +31,7 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         Tuple<IList<Refund>, IList<Advancement>> GetAdvancementsAndRefundsByRefundId(int id);
 
         void UpdateStatus(Refund refund);
+
         void UpdateCurrencyExchange(Refund refund);
 
         IList<Refund> GetAllInCurrentAccount(int workflowStatusCurrentAccount);
@@ -38,6 +39,10 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         bool HasAttachments(int entityId);
 
         bool ExistAdvancementRefund(int advancement, int refund);
+
         void AddAdvancementRefund(AdvancementRefund advancementRefund);
+
+        IList<RefundFile> GetFiles(int id);
+        Refund GetFullByIdForZip(int id);
     }
 }

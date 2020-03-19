@@ -88,4 +88,13 @@ export class RefundService {
     deleteDelegate(ids): any {
         return this.http.post<any>(`${this.baseUrl}/refund/delegate`, ids);
     }
+
+    downloadZip(id){
+        return this.http.get(`${this.baseUrl}/refund/${id}/zip`, {
+          responseType: 'arraybuffer',
+          observe: 'response'
+        }).pipe(map((res: any) => {
+          return new Blob([res.body], { type: 'application/octet-stream' });
+        }));
+    }
 }

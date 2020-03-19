@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
-using Sofco.Domain.Models.Common;
 using Sofco.Domain.Utils;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Core.Services.AdvancementAndRefund
 {
@@ -31,5 +32,7 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response Delete(int id);
 
         Response<IList<Option>> GetAnalitycs();
+
+        Response<Stream> GetZip(int id);
     }
 }

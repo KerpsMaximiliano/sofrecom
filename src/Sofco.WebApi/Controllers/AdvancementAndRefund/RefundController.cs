@@ -173,5 +173,16 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("{id}/zip")]
+        public IActionResult GetZip(int id)
+        {
+            var response = refundService.GetZip(id);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
     }
 }

@@ -426,7 +426,7 @@ namespace Sofco.Service.Implementations.Billing
                     using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
                     {
                         foreach (var id in ids)
-                        {
+                        { 
                             var responseFile = fileService.GetFile(id, fileConfig.InvoicesPdfPath);
 
                             if (!responseFile.HasErrors())

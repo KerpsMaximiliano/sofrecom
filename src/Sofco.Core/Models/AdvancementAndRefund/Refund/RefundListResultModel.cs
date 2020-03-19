@@ -36,5 +36,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
         public string LastUpdate { get; set; }
 
         public decimal UserRefund { get; set; }
+
+        public bool InWorkflowProcess { get; set; }
     }
 }

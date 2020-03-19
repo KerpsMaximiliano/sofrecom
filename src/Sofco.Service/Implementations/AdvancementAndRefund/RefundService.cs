@@ -7,20 +7,22 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.AdvancementAndRefund;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Data.Admin;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
 using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Services.AdvancementAndRefund;
+using Sofco.Core.Services.Common;
 using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
-using Sofco.Domain.Models.Common;
 using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using File = Sofco.Domain.Models.Common.File;
@@ -39,6 +41,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly IRoleManager roleManager;
         private readonly IRefundRepository refundRepository;
         private readonly IUserData userData;
+        private readonly IFileService fileService;
+        private readonly IRefundFileManager refundFileManager;
 
         public RefundService(IUnitOfWork unitOfWork,
             ILogMailer<RefundService> logger,
@@ -47,7 +51,9 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             IWorkflowStateRepository workflowStateRepository,
             IOptions<FileConfig> fileOptions,
             IMapper mapper,
+            IRefundFileManager refundFileManager,
             IRoleManager roleManager,
+            IFileService fileService,
             IRefundRepository refundRepository,
             IUserData userData)
         {
@@ -61,6 +67,8 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             this.userData = userData;
             fileConfig = fileOptions.Value;
             settings = settingOptions.Value;
+            this.fileService = fileService;
+            this.refundFileManager = refundFileManager;
         }
 
         public Response<string> Add(RefundModel model)
@@ -457,6 +465,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 }
 
                 item.IsCreditCard = refund.CreditCardId > 0;
+                item.InWorkflowProcess = refund.InWorkflowProcess;
 
                 if (refund.Histories.Any())
                 {
@@ -559,6 +568,70 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
             return response;
+        }
+
+        public Response<Stream> GetZip(int id)
+        {
+            var response = new Response<Stream>();
+
+            var domain = unitOfWork.RefundRepository.GetFullByIdForZip(id);
+
+            if (domain == null)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.NotFound);
+                return response;
+            }
+
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(domain.UserApplicant.Email);
+
+            try
+            {
+                var zipStream = new MemoryStream();
+
+                using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
+                {
+                    var excel = refundFileManager.CreateExcel(domain, employee);
+
+                    CopyStream(zip, new Response<Tuple<byte[], string>> { Data = new Tuple<byte[], string>(excel.GetAsByteArray(), "reintegro.xlsx") });
+
+                    var files = unitOfWork.RefundRepository.GetFiles(id);
+
+                    if (files.Any())
+                    {
+                        foreach (var refundFile in files)
+                        {
+                            var responseFile = fileService.GetFile(refundFile.FileId, fileConfig.RefundPath);
+
+                            if (!responseFile.HasErrors())
+                            {
+                                CopyStream(zip, responseFile);
+                            }
+                        }
+                    }
+
+                    zipStream.Position = 0;
+
+                    response.Data = zipStream;
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ExportFileError);
+            }
+
+            return response;
+        }
+
+        private void CopyStream(ZipArchive zip, Response<Tuple<byte[], string>> responseFile)
+        {
+            var entry = zip.CreateEntry(responseFile.Data.Item2);
+
+            using (var entryStream = entry.Open())
+            {
+                var memoryStream = new MemoryStream(responseFile.Data.Item1);
+                memoryStream.CopyTo(entryStream);
+            }
         }
     }
 }

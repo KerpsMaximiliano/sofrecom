@@ -17,25 +17,29 @@
                         <th class="column-sm">Ultima modificación</th>
                         <th class="column-xs">Tarjeta credito</th>
                         <th class="column-sm">{{ 'refund.bank' | translate }}</th>
+                        <th class="column-xs">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of data" class="pointer" (click)="goToDetail(item.id)">
-                        <td class="column-xs text-center">{{ item.id }}</td>
-                        <td class="column-md text-ellipsis">
+                    <tr *ngFor="let item of data" class="pointer" >
+                        <td class="column-xs text-center" (click)="goToDetail(item.id)">{{ item.id }}</td>
+                        <td class="column-md text-ellipsis" (click)="goToDetail(item.id)">
                             <label class="label font-9" [ngClass]="getStatusClass(item.workflowStatusType)">{{ item.statusName }}</label>
                         </td>
-                        <td class="column-lg text-ellipsis">{{ item.userApplicantName }}</td>
-                        <td>{{ item.managerName }}</td>
-                        <td>{{ item.currencyName }}</td>
-                        <td>{{ item.refundItemTotal | amountFormat }}</td>
-                        <td>{{ item.currencyExchange | amountFormat }}</td>
-                        <td>{{ item.companyRefund | amountFormat }}</td>
-                        <td>{{ item.userRefund | amountFormat }}</td>
-                        <td class="column-sm">{{ item.creationDate }}</td>
-                        <td class="column-sm">{{ item.lastUpdate }}</td>
-                        <td class="column-xs text-center"><span class="fa" [ngClass]="item.isCreditCard ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
-                        <td class="column-sm">{{ item.bank }}</td>
+                        <td class="column-lg text-ellipsis" (click)="goToDetail(item.id)">{{ item.userApplicantName }}</td>
+                        <td (click)="goToDetail(item.id)">{{ item.managerName }}</td>
+                        <td (click)="goToDetail(item.id)">{{ item.currencyName }}</td>
+                        <td (click)="goToDetail(item.id)">{{ item.refundItemTotal | amountFormat }}</td>
+                        <td (click)="goToDetail(item.id)">{{ item.currencyExchange | amountFormat }}</td>
+                        <td (click)="goToDetail(item.id)">{{ item.companyRefund | amountFormat }}</td>
+                        <td (click)="goToDetail(item.id)">{{ item.userRefund | amountFormat }}</td>
+                        <td (click)="goToDetail(item.id)" class="column-sm">{{ item.creationDate }}</td>
+                        <td (click)="goToDetail(item.id)" class="column-sm">{{ item.lastUpdate }}</td>
+                        <td (click)="goToDetail(item.id)" class="column-xs text-center"><span class="fa" [ngClass]="item.isCreditCard ? 'fa-check text-success' : 'fa-close text-danger'"></span></td>
+                        <td (click)="goToDetail(item.id)" class="column-sm">{{ item.bank }}</td>
+                        <td class="column-xs">
+                            <button type="button" class="btn btn-sm btn-primary" *ngIf="!item.inWorkflowProcess" (click)="downloadZip(item)"><i class="fa fa-download"></i></button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

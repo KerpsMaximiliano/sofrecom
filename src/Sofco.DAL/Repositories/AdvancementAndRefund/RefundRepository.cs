@@ -217,5 +217,28 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
             context.AdvancementRefunds.Add(advancementRefund);
         }
+
+        public IList<RefundFile> GetFiles(int id)
+        {
+            return context.RefundFiles.Where(x => x.RefundId == id).ToList();
+        }
+
+        public Refund GetFullByIdForZip(int id)
+        {
+            return context.Refunds
+                .Include(x => x.Currency)
+                .Include(x => x.Analytic)
+                .Include(x => x.UserApplicant)
+                .Include(x => x.Status)
+                .Include(x => x.CreditCard)
+                .Include(x => x.Details)
+                    .ThenInclude(x => x.CostType)
+                .Include(x => x.AdvancementRefunds)
+                .Include(x => x.Histories)
+                    .ThenInclude(x => x.StatusFrom)
+                .Include(x => x.Histories)
+                    .ThenInclude(x => x.StatusTo)
+                .SingleOrDefault(x => x.Id == id);
+        }
     }
 }
