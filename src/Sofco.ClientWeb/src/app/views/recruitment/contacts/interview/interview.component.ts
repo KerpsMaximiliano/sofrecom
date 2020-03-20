@@ -291,7 +291,7 @@ export class InterviewComponent implements OnInit, OnDestroy {
     }
 
     canSave(){
-        if(this.form.valid && (this.hasRrhhInterview || this.hasTechnicalInterview || this.hasClientInterview)) return true;
+        if(this.form.valid && (this.hasPhoneInterview || this.hasRrhhInterview || this.hasTechnicalInterview || this.hasClientInterview)) return true;
 
         return false;
     }

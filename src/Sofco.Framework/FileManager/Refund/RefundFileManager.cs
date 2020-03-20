@@ -66,22 +66,23 @@ namespace Sofco.Framework.FileManager.Refund
                 sheet.Cells[$"C{index}"].Value = refundDetail.CostType?.Text;
                 sheet.Cells[$"D{index}"].Value = refundDetail.Ammount;
 
-                sheet.InsertRow(index, 1);
                 index++;
+                sheet.InsertRow(index, 1);
             }
 
-            index += 6;
+            sheet.DeleteRow(index, 1);
+            index += 4;
 
             foreach (var refundHistory in refund.Histories)
             {
-                sheet.Cells[$"A{index}"].Value = refundHistory.CreatedDate.ToString("d");
+                sheet.Cells[$"A{index}"].Value = refundHistory.CreatedDate.AddHours(-3).ToString("dd/MM/yyyy HH:mm");
                 sheet.Cells[$"B{index}"].Value = refundHistory.UserName;
                 sheet.Cells[$"C{index}"].Value = refundHistory.StatusFrom?.Name;
                 sheet.Cells[$"D{index}"].Value = refundHistory.StatusTo?.Name;
                 sheet.Cells[$"E{index}"].Value = refundHistory.Comment;
 
-                sheet.InsertRow(index, 1);
                 index++;
+                sheet.InsertRow(index, 1);
             }
 
             return excel;
