@@ -218,5 +218,19 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
         {
             context.AdvancementSalaryDiscounts.Add(domain);
         }
+
+        public Advancement GetFullByIdForZip(int id)
+        {
+            return context.Advancements
+                .Include(x => x.MonthsReturn)
+                .Include(x => x.UserApplicant)
+                .Include(x => x.AdvancementRefunds)
+                .Include(x => x.Currency)
+                .Include(x => x.Histories)
+                    .ThenInclude(x => x.StatusFrom)
+                .Include(x => x.Histories)
+                    .ThenInclude(x => x.StatusTo)
+                .SingleOrDefault(x => x.Id == id);
+        }
     }
 }

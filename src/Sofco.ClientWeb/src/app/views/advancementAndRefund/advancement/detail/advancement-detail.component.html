@@ -26,6 +26,8 @@
             <button type="button" class="btn btn-sm btn-outline dim btn-success" (click)="back()" *ngIf="canBack()">
                 <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }}
             </button>
+            
+            <button type="button" class="btn btn-sm btn-outline dim btn-primary" *ngIf="canDownload()" (click)="downloadZip()">Descargar <i class="fa fa-download"></i></button>
 
             <btn-confirm *ngIf="canDelete()" [class]="'btn-danger btn-outline dim btn-sm'" [text]="'ACTIONS.DELETE'" [icon]="'fa-times'" (onConfirm)="delete(item)">
             </btn-confirm>  

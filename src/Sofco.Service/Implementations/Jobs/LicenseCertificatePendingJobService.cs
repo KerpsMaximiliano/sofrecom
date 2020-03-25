@@ -42,7 +42,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             if (!licenses.Any()) return;
 
-            mailSender.Send(GetEmail(licenses));
+            mailSender.Send(GetEmail(licenses.OrderBy(x => x.Employee.Name).ToList()));
         }
 
         private Email GetEmail(List<License> licenses)
@@ -51,7 +51,7 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var item in licenses) 
             {
-                content.AppendLine($"<li>{item.Employee.Name} - {item.Type.Description} - {item.StartDate:d} a {item.EndDate:d}");
+                content.AppendLine($"<li>{item.Employee.Name} - {item.Type.Description} - {item.StartDate.Day}/{item.StartDate.Month}/{item.StartDate.Year} a {item.EndDate.Day}/{item.EndDate.Month}/{item.EndDate.Year}");
             }
 
             var rrhhAbMail = unitOfWork.GroupRepository.GetEmail(emailConfig.RRhhAb);

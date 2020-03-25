@@ -25,6 +25,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
+using Sofco.Core.Models.AdvancementAndRefund.Common;
 using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
@@ -43,6 +44,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly IUserData userData;
         private readonly IFileService fileService;
         private readonly IRefundFileManager refundFileManager;
+        private readonly IAdvancementService advancementService;
 
         public RefundService(IUnitOfWork unitOfWork,
             ILogMailer<RefundService> logger,
@@ -54,6 +56,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             IRefundFileManager refundFileManager,
             IRoleManager roleManager,
             IFileService fileService,
+            IAdvancementService advancementService,
             IRefundRepository refundRepository,
             IUserData userData)
         {
@@ -69,6 +72,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             settings = settingOptions.Value;
             this.fileService = fileService;
             this.refundFileManager = refundFileManager;
+            this.advancementService = advancementService;
         }
 
         public Response<string> Add(RefundModel model)
@@ -584,13 +588,20 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
 
             var employee = unitOfWork.EmployeeRepository.GetByEmail(domain.UserApplicant.Email);
 
+            var responseResume = new Response<AdvancementRefundModel>();
+
+            if (domain.AdvancementRefunds != null && domain.AdvancementRefunds.Any())
+            {
+                responseResume = advancementService.GetResume(domain.AdvancementRefunds.Select(x => x.AdvancementId).ToList());
+            }
+
             try
             {
                 var zipStream = new MemoryStream();
 
                 using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
                 {
-                    var excel = refundFileManager.CreateExcel(domain, employee);
+                    var excel = refundFileManager.CreateExcel(domain, employee, responseResume.Data);
 
                     CopyStream(zip, new Response<Tuple<byte[], string>> { Data = new Tuple<byte[], string>(excel.GetAsByteArray(), "reintegro.xlsx") });
 

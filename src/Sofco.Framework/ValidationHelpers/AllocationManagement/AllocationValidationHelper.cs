@@ -120,7 +120,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
         {
             foreach (var month in allocation.Months)
             {
-                if (month.Percentage == 0 && workTimeRepository.EmployeeHasHoursInDate(month.Date, allocation.EmployeeId))
+                if (month.Percentage == 0 && workTimeRepository.EmployeeHasHoursInDate(month.Date, allocation.EmployeeId, allocation.AnalyticId))
                 {
                     response.AddErrorAndNoTraslate($"El mes {DatesHelper.GetDateDescription(month.Date)} no puede tener asignación 0 porque ya contiene horas cargadas");
                 }

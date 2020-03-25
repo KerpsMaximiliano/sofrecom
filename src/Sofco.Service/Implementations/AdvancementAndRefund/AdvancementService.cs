@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
+using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.DAL.Workflow;
+using Sofco.Core.FileManager;
 using Sofco.Core.Logger;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.Admin;
@@ -17,6 +20,7 @@ using Sofco.Core.Validations.AdvancementAndRefund;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
+using Spire.Pdf;
 
 namespace Sofco.Service.Implementations.AdvancementAndRefund
 {
@@ -26,16 +30,20 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly ILogMailer<AdvancementService> logger;
         private readonly IAdvancemenValidation validation;
         private readonly AppSetting settings;
+        private readonly FileConfig fileConfig;
         private readonly IUserData userData;
         private readonly IRoleManager roleManager;
         private readonly IWorkflowStateRepository workflowStateRepository;
+        private readonly IAdvancementFileManager advancementFileManager;
 
         public AdvancementService(IUnitOfWork unitOfWork,
             ILogMailer<AdvancementService> logger,
             IAdvancemenValidation validation,
             IWorkflowStateRepository workflowStateRepository,
+            IOptions<FileConfig> fileOptions,
             IUserData userData,
             IRoleManager roleManager,
+            IAdvancementFileManager advancementFileManager,
             IOptions<AppSetting> settingOptions)
         {
             this.unitOfWork = unitOfWork;
@@ -43,8 +51,10 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             this.workflowStateRepository = workflowStateRepository;
             this.validation = validation;
             this.roleManager = roleManager;
+            this.fileConfig = fileOptions.Value;
             this.settings = settingOptions.Value;
             this.userData = userData;
+            this.advancementFileManager = advancementFileManager;
         }
 
         public Response<string> Add(AdvancementModel model)
@@ -421,6 +431,42 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             }
 
 
+            return response;
+        }
+
+        public Response<byte[]> GetFile(int id)
+        {
+            var response = new Response<byte[]>();
+
+            try
+            {
+                var domain = unitOfWork.AdvancementRepository.GetFullByIdForZip(id);
+
+                if (domain == null)
+                {
+                    response.AddError(Resources.AdvancementAndRefund.Refund.NotFound);
+                    return response;
+                }
+
+                var employee = unitOfWork.EmployeeRepository.GetByEmail(domain.UserApplicant.Email);
+
+                var responseResume = new Response<AdvancementRefundModel>();
+
+                if (domain.AdvancementRefunds != null && domain.AdvancementRefunds.Any())
+                {
+                    responseResume = GetResume(domain.AdvancementRefunds.Select(x => x.AdvancementId).ToList());
+                }
+
+                var excel = advancementFileManager.CreateExcel(domain, employee, responseResume.Data);
+
+                response.Data = excel.GetAsByteArray();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.GeneralError);
+            }
+            
             return response;
         }
 

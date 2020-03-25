@@ -21,7 +21,10 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Advancement
             PaymentForm = advancement.PaymentForm;
             Description = advancement.Description;
             WorkflowId = advancement.WorkflowId;
+            InWorkflowProcess = advancement.InWorkflowProcess;
         }
+
+        public bool InWorkflowProcess { get; set; }
 
         public int StatusId { get; set; }
 

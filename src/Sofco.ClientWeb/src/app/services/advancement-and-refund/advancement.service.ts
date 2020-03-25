@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Service } from "../common/service";
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AdvancementService {
@@ -60,5 +61,14 @@ export class AdvancementService {
 
     getCashEnable(){
         return this.http.get<any>(`${this.baseUrl}/advancement/cashEnable`);
+    }
+
+    downloadZip(id){
+        return this.http.get(`${this.baseUrl}/advancement/${id}/export`, {
+          responseType: 'arraybuffer',
+          observe: 'response'
+        }).pipe(map((res: any) => {
+          return new Blob([res.body], { type: 'application/octet-stream' });
+        }));
     }
 }

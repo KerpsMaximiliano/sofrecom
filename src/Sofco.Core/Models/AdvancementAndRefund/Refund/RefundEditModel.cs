@@ -31,6 +31,7 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
             LastRefund = refund.LastRefund;
             CashReturn = refund.CashReturn;
             WorkflowId = refund.WorkflowId;
+            InWorkflowProcess = refund.InWorkflowProcess;
 
             CurrencyExchange = refund.CurrencyExchange;
 
@@ -63,6 +64,8 @@ namespace Sofco.Core.Models.AdvancementAndRefund.Refund
                 Files.Add(new Option { Id = refundAttachment.FileId, Text = refundAttachment.File.FileName });
             }
         }
+
+        public bool InWorkflowProcess { get; set; }
 
         public bool CashReturn { get; set; }
 

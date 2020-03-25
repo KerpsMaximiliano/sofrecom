@@ -18,5 +18,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<AdvancementRefundModel> GetResume(IList<int> id);
         Response<IList<Option>> GetStates();
         Response IsCashEnable();
+        Response<byte[]> GetFile(int id);
     }
 }

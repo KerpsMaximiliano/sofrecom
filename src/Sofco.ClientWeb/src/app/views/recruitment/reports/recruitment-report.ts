@@ -550,7 +550,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 itemAverage.count += 1;
 
                 itemAverage.salaryValueAvg = itemAverage.salaryValue / itemAverage.count;
-                itemAverage.salaryPercentageAvg = ((itemAverage.salaryValueAvg - itemAverage.salary) / itemAverage.salaryValueAvg) * 100;
+                itemAverage.salaryPercentageAvg = ((itemAverage.salaryValueAvg / itemAverage.salary) * 100) - 100;
             }
             else{
                 let itemToAdd = {
@@ -570,7 +570,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 }
 
                 itemToAdd.salaryValueAvg = itemToAdd.salaryValue / itemToAdd.count;
-                itemToAdd.salaryPercentageAvg = ((itemToAdd.salaryValueAvg - itemToAdd.salary) / itemToAdd.salaryValueAvg) * 100;
+                itemToAdd.salaryPercentageAvg = ((itemToAdd.salaryValueAvg / itemToAdd.salary) * 100 ) - 100;
 
                 this.salaryAverage.push(itemToAdd);
             }

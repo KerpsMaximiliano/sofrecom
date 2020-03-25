@@ -74,7 +74,7 @@ namespace Sofco.UnitTest.Services.AllocationManagement
             licenseRepositoryMock.Setup(x => x.GetByEmployeeAndDates(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<DateTime>())).Returns(new List<License>());
             employeeRepositoryMock.Setup(x => x.Get(It.IsAny<int>())).Returns(new Employee { StartDate = new DateTime(2017, 1, 1) });
             userDataMock.Setup(x => x.GetCurrentUser()).Returns(new UserLiteModel { UserName = "username" });
-            workTimeRepositoryMock.Setup(x => x.EmployeeHasHoursInDate(It.IsAny<DateTime>(), It.IsAny<int>())).Returns(false);
+            workTimeRepositoryMock.Setup(x => x.EmployeeHasHoursInDate(It.IsAny<DateTime>(), It.IsAny<int>(), It.IsAny<int>())).Returns(false);
 
             sut = new AllocationService(unitOfWork.Object, loggerMock.Object, licenseGenerateWorkTimeServiceMock.Object, appSettingMock.Object, userDataMock.Object, fileManagerMock.Object);
         }

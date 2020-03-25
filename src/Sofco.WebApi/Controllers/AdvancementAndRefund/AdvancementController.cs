@@ -135,5 +135,16 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
             else
                 return Ok();
         }
+
+        [HttpGet("{id}/export")]
+        public IActionResult ExportFile(int id)
+        {
+            var response = advancementService.GetFile(id);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
     }
 }

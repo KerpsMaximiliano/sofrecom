@@ -35,6 +35,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     public files: any[] = new Array();
 
     private workflowModel: any;
+    inWorkflowProcess: boolean;
 
     constructor(private refundService: RefundService,
                 private activateRoute: ActivatedRoute,
@@ -54,6 +55,10 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
         if(this.editSubscrip) this.editSubscrip.unsubscribe();
     }
 
+    canDownload(){
+        return this.menuService.userIsGaf && !this.inWorkflowProcess;
+    }
+
     getData(id){
         this.messageService.showLoading();
 
@@ -65,6 +70,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
             this.userApplicantId = response.data.userApplicantId;
             this.form.userOffice = response.data.office;
             this.form.userBank = response.data.bank;
+            this.inWorkflowProcess = response.data.inWorkflowProcess;
 
             this.form.setModel(response.data, this.canUpdate());
 
@@ -256,6 +262,19 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
             FileSaver.saveAs(response, file.text);
         },
         () => {
+            this.messageService.closeLoading();
+        });
+    }
+
+    downloadZip(){
+        this.messageService.showLoading();
+ 
+        this.refundService.downloadZip(this.entityId).subscribe(file => {
+            this.messageService.closeLoading();
+            FileSaver.saveAs(file, `reint-${this.entityId}.zip`);
+        },
+        error => {
+            this.messageService.showMessage("Archivos no encontrados", 1);
             this.messageService.closeLoading();
         });
     }

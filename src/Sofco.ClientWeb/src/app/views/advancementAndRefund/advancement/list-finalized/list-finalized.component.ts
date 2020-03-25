@@ -5,6 +5,7 @@ import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { WorkflowStateType } from "app/models/enums/workflowStateType";
 import { Router } from "@angular/router";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'list-finalized',
@@ -85,5 +86,17 @@ export class AdvancementListFinalizedComponent implements OnInit, OnDestroy {
             case WorkflowStateType.Danger: return "label-danger";
         }
     }
-
+ 
+    downloadZip(item){
+        this.messageService.showLoading();
+ 
+        this.advancementService.downloadZip(item.id).subscribe(file => {
+            this.messageService.closeLoading();
+            FileSaver.saveAs(file, `adel-${item.id}.xlsx`);
+        },
+        error => {
+            this.messageService.showMessage("Ocurrio un error al generar el excel", 1);
+            this.messageService.closeLoading();
+        });
+    }
 }

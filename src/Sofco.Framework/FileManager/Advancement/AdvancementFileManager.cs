@@ -5,77 +5,72 @@ using Microsoft.AspNetCore.Hosting;
 using OfficeOpenXml;
 using Sofco.Core.FileManager;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
+using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
+using Spire.Pdf;
 
-namespace Sofco.Framework.FileManager.Refund
+namespace Sofco.Framework.FileManager.Advancement
 {
-    public class RefundFileManager : IRefundFileManager
+    public class AdvancementFileManager : IAdvancementFileManager
     {
         private readonly IHostingEnvironment _hostingEnvironment;
 
-        public RefundFileManager(IHostingEnvironment hostingEnvironment)
+        public AdvancementFileManager(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public ExcelPackage CreateExcel(Domain.Models.AdvancementAndRefund.Refund refund, Employee employee, AdvancementRefundModel resume)
+        public ExcelPackage CreateExcel(Domain.Models.AdvancementAndRefund.Advancement advancement, Employee employee, AdvancementRefundModel resume)
         {
             var memoryStream = this.GetTemplateStream().Result;
 
             var excel = new ExcelPackage(memoryStream);
 
-            return Create(excel, refund, employee, resume);
+            return Create(excel, advancement, employee, resume);
         }
 
-        private ExcelPackage Create(ExcelPackage excel, Domain.Models.AdvancementAndRefund.Refund refund, Employee employee, AdvancementRefundModel resume)
+        private ExcelPackage Create(ExcelPackage excel, Domain.Models.AdvancementAndRefund.Advancement advancement, Employee employee, AdvancementRefundModel resume)
         {
             var sheet = excel.Workbook.Worksheets.First();
 
-            sheet.Cells["A1"].Value += $" {refund.Id.ToString()}";
-            sheet.Cells["B3"].Value = refund.Status?.Name;
-            sheet.Cells["B4"].Value = refund.UserApplicant?.Name;
-            sheet.Cells["B5"].Value = employee.OfficeAddress;
-            sheet.Cells["B6"].Value = employee.Bank;
-            sheet.Cells["B13"].Value = refund.TotalAmmount;
-            sheet.Cells["D13"].Value = refund.Currency?.Text;
+            sheet.Cells["A1"].Value += $" {advancement.Id.ToString()}";
+            sheet.Cells["B3"].Value = advancement.UserApplicant?.Name;
+            sheet.Cells["B4"].Value = employee.OfficeAddress;
+            sheet.Cells["B5"].Value = employee.Bank;
+            sheet.Cells["B7"].Value = advancement.Status?.Name;
 
-            if (refund.AdvancementRefunds != null && refund.AdvancementRefunds.Any())
+            var creationDate = advancement.CreationDate;
+            sheet.Cells["B6"].Value = $"{creationDate.Day}/{creationDate.Month}/{creationDate.Year}";
+
+            sheet.Cells["D5"].Value = advancement.Ammount;
+            sheet.Cells["D6"].Value = advancement.Currency?.Text;
+            sheet.Cells["D8"].Value = advancement.AdvancementReturnForm;
+            sheet.Cells["B15"].Value = advancement.Description;
+
+            sheet.Cells["D3"].Value = advancement.Type == AdvancementType.Salary ? "Sueldo" : "Viatico";
+
+            switch (advancement.PaymentForm)
             {
-                sheet.Cells["B7"].Value = string.Join(" - ", refund.AdvancementRefunds.Select(x => $"#{x.AdvancementId}").ToList());
+                case AdvancementPaymentForm.Cash: sheet.Cells["D4"].Value = "Efectivo"; break;
+                case AdvancementPaymentForm.ForeignCurrency: sheet.Cells["D4"].Value = "Moneda Extranjera"; break;
+                case AdvancementPaymentForm.OwnBank: sheet.Cells["D4"].Value = "Cuenta Sueldo"; break;
             }
 
-            sheet.Cells["B8"].Value = refund.Analytic.Title + " - " + refund.Analytic.Name;
-
-            sheet.Cells["B10"].Value = refund.LastRefund ? "Si" : "No";
-            sheet.Cells["B12"].Value = refund.CashReturn ? "Si" : "No";
-
-            if (refund.CreditCard != null)
+            if (advancement.Type == AdvancementType.Salary)
             {
-                sheet.Cells["B11"].Value = refund.CreditCard.Text;
+                sheet.Cells["C7"].Value = "Mes de Devolución";
+                sheet.Cells["D7"].Value = advancement.MonthsReturn.Text;
             }
             else
             {
-                sheet.Cells["B11"].Value = "No";
+                sheet.Cells["C7"].Value = "Fecha Aproximada de Devolución";
+                var date = advancement.StartDateReturn.GetValueOrDefault().AddHours(-3);
+                sheet.Cells["D7"].Value = $"{date.Day}/{date.Month}/{date.Year} {date.Hour}:{date.Minute}";
             }
 
-            var index = 18;
+            var index = 24;
 
-            foreach (var refundDetail in refund.Details)
-            {
-                var date = refundDetail.CreationDate;
-                sheet.Cells[$"A{index}"].Value = $"{date.Day}/{date.Month}/{date.Year}";
-                sheet.Cells[$"B{index}"].Value = refundDetail.Description;
-                sheet.Cells[$"C{index}"].Value = refundDetail.CostType?.Text;
-                sheet.Cells[$"D{index}"].Value = refundDetail.Ammount;
-
-                index++;
-                sheet.InsertRow(index, 1);
-            }
-
-            sheet.DeleteRow(index, 1);
-            index += 4;
-
-            foreach (var refundHistory in refund.Histories)
+            foreach (var refundHistory in advancement.Histories)
             {
                 var date = refundHistory.CreatedDate.AddHours(-3);
                 sheet.Cells[$"A{index}"].Value = $"{date.Day}/{date.Month}/{date.Year} {date.Hour}:{date.Minute}";
@@ -117,38 +112,30 @@ namespace Sofco.Framework.FileManager.Refund
                 var totalAdvancements = resume.Advancements.Sum(x => x.Total);
                 var totalRefunds = resume.Refunds.Sum(x => x.Total);
 
-                sheet.Cells[$"D3"].Value = totalAdvancements;
-                sheet.Cells[$"D4"].Value = totalRefunds;
+                sheet.Cells[$"B9"].Value = totalAdvancements;
+                sheet.Cells[$"B10"].Value = totalRefunds;
 
                 if (totalAdvancements < totalRefunds)
                 {
-                    sheet.Cells[$"D5"].Value = 0;
-                    sheet.Cells[$"D6"].Value = totalRefunds - totalAdvancements;
+                    sheet.Cells[$"B12"].Value = 0;
+                    sheet.Cells[$"B11"].Value = totalRefunds - totalAdvancements;
                 }
                 else
                 {
                     if (totalRefunds < totalAdvancements)
                     {
-                        sheet.Cells[$"D5"].Value = totalAdvancements - totalRefunds;
-                        sheet.Cells[$"D6"].Value = 0;
+                        sheet.Cells[$"B11"].Value = totalAdvancements - totalRefunds;
+                        sheet.Cells[$"B12"].Value = 0;
                     }
                 }
             }
-            else
-            {
-                sheet.Cells[$"D3"].Value = 0;
-                sheet.Cells[$"D4"].Value = refund.TotalAmmount;
-                sheet.Cells[$"D5"].Value = refund.TotalAmmount;
-                sheet.Cells[$"D6"].Value = 0;
-            }
-
 
             return excel;
         }
 
         private Task<MemoryStream> GetTemplateStream()
         {
-            var fileRoot = new FileInfo($"{_hostingEnvironment.ContentRootPath}/wwwroot/excelTemplates/reintegro-template.xlsx");
+            var fileRoot = new FileInfo($"{_hostingEnvironment.ContentRootPath}/wwwroot/excelTemplates/adelanto-template.xlsx");
 
             var template = new ExcelPackage(fileRoot, false);
 

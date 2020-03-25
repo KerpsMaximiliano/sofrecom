@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { environment } from 'environments/environment'
 import { MenuService } from "app/services/admin/menu.service";
 import { UserInfoService } from "app/services/common/user-info.service";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'advancement-detail',
@@ -21,6 +22,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
     public entityId: number;
     public actualStateId: number;
     public userApplicantId: number;
+    public inWorkflowProcess: boolean;
 
     getSubscrip: Subscription;
     editSubscrip: Subscription;
@@ -62,6 +64,7 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
             this.userApplicantId = response.data.userApplicantId;
             this.form.userOffice = response.data.office;
             this.form.userBank = response.data.bank;
+            this.inWorkflowProcess = response.data.inWorkflowProcess;
 
             this.form.setModel(response.data, this.canUpdate());
  
@@ -152,5 +155,22 @@ export class AdvancementDetailComponent implements OnInit, OnDestroy {
         }
 
         return false;
+    }
+
+    downloadZip(){
+        this.messageService.showLoading();
+ 
+        this.advancementService.downloadZip(this.entityId).subscribe(file => {
+            this.messageService.closeLoading();
+            FileSaver.saveAs(file, `adel-${this.entityId}.xlsx`);
+        },
+        error => {
+            this.messageService.showMessage("Ocurrio un error al generar el excel", 1);
+            this.messageService.closeLoading();
+        });
+    }
+
+    canDownload(){
+        return this.menuService.userIsGaf && !this.inWorkflowProcess;
     }
 }

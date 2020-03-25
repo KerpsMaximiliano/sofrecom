@@ -47,7 +47,7 @@ namespace Sofco.Service.Implementations.Common
 
         public Response<byte[]> ExportFile(int id, string path)
         {
-            var response = new Response<byte[]>();
+            var response = new Response<byte[]>(); 
 
             var file = unitOfWork.FileRepository.GetSingle(x => x.Id == id);
 

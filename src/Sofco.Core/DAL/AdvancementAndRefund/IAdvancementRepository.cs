@@ -25,5 +25,6 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
         int GetRefundWithLastRefundMarkedCount(int advancementId, int refundId);
         IList<Advancement> GetSalaryResume(int settingsSalaryWorkflowId, int settingsWorkflowStatusApproveId);
         void AddSalaryDiscount(SalaryDiscount domain);
+        Advancement GetFullByIdForZip(int id);
     }
 }

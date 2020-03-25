@@ -27,6 +27,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="MailKit" Version="2.1.5.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+    <PackageReference Include="Spire.PDF" Version="6.3.10" />
   </ItemGroup>
 
 </Project>
