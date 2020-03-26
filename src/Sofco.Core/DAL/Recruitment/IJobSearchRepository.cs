@@ -15,5 +15,6 @@ namespace Sofco.Core.DAL.Recruitment
         IList<JobSearchHistory> GetHistory(int id);
         IList<JobSearch> Get(List<int> skills);
         IList<JobSearch> SearchForReport(RecruitmentReportParameters parameter);
+        JobSearch GetByApplicantInCompany(int applicantId);
     }
 }

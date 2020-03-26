@@ -9,6 +9,7 @@ import { JobSearchStatus } from 'app/models/enums/jobSearchStatus';
 import { JobSearchService } from 'app/services/recruitment/jobsearch.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ReasonCauseType } from 'app/models/enums/reasonCauseType';
+import { ApplicantStatus } from 'app/models/enums/applicantStatus';
 
 @Component({
   selector: 'app-recruitment-report',
@@ -134,6 +135,33 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
             if(response && response.data && response.data.length > 0){
                 this.list = response.data.map(x => {
                     x.selected = false;
+
+                    x.contactsInCompany = 0;
+                    x.contactsClosed = 0;
+                    x.contactsInProgress = 0;
+                    x.contactsContacted = 0;
+
+                    if(x.contacts && x.contacts.length > 0){
+                        x.contacts.forEach(contact => {
+
+                            if(contact.status == ApplicantStatus.InCompany){
+                                x.contactsInCompany += 1;
+                            }
+
+                            if(contact.status == ApplicantStatus.Close){
+                                x.contactsClosed += 1;
+                            }
+
+                            if(contact.status == ApplicantStatus.InProgress){
+                                x.contactsInProgress += 1;
+                            }
+                            
+                            if(contact.status == ApplicantStatus.Valid || contact.status == ApplicantStatus.Contacted){
+                                x.contactsContacted += 1;
+                            }
+                        });
+                    }
+
                     return x;
                 });
 
@@ -157,13 +185,14 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     }
 
     initGrid() {
-        var columns = [0, 1, 2, 3 ,4, 5, 6, 7, 8, 9, 10, 11];
+        var columns = [0, 1, 2, 3 ,4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
         var params = {
             selector: '#searchTable',
             columns: columns,
             columnDefs: [ { "aTargets": [2], "sType": "date-uk" }],
             title: 'Reporte reclutamiento',
+            currencyColumns: [16],
             withExport: true,
         }
 
@@ -266,11 +295,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 }
             });
 
-            let listClosed = this.list.filter(x => x.selected && x.status == JobSearchStatus.Close);
-
-            if(listClosed.length > 0){
-                this.buildTimeAverageGraph(listClosed);
-            }
+            this.buildTimeAverageGraph();
 
             if(this.contacts.length > 0){
                 this.initContactGrid();
@@ -279,7 +304,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 this.buildSecondReport();
             }
 
-            if(listClosed.length == 0 && this.contacts.length == 0){
+            if(this.contacts.length == 0){
                 this.messageService.showWarningByFolder('common', 'searchEmpty');
             }
         }
@@ -594,8 +619,8 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         this.commentsModal.show();
     }
 
-    buildTimeAverageGraph(listClosed){
-        listClosed.forEach(x => {
+    buildTimeAverageGraph(){
+        this.list.forEach(x => {
 
             let existData = this.daysOpenedData.find(s => s.type == x.resourceAssignmentId);
 

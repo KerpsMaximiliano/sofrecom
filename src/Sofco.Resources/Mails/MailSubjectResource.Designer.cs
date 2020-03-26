@@ -70,6 +70,15 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Solicitud de Ingreso de postulante.
+        /// </summary>
+        public static string ApplicantInCompany {
+            get {
+                return ResourceManager.GetString("ApplicantInCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Cierre analítica {0}.
         /// </summary>
         public static string CloseAnalytic {

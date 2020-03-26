@@ -1,19 +1,21 @@
-﻿using Sofco.Core.DAL;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Sofco.Core.Config;
+using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Logger;
+using Sofco.Core.Mail;
 using Sofco.Core.Models.Recruitment;
 using Sofco.Core.Services.Recruitment;
+using Sofco.Domain.Enums;
+using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Utils;
+using Sofco.Framework.MailData;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
-using Sofco.Core.Config;
-using Sofco.Domain.Enums;
-using Sofco.Domain.Models.Recruitment;
 using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.Recruitment
@@ -24,13 +26,17 @@ namespace Sofco.Service.Implementations.Recruitment
         private readonly ILogMailer<ApplicantService> logger;
         private readonly IUserData userData;
         private readonly FileConfig fileConfig;
+        private readonly EmailConfig emailConfig;
+        private readonly IMailSender mailSender;
 
-        public ApplicantService(IUnitOfWork unitOfWork, ILogMailer<ApplicantService> logger, IUserData userData, IOptions<FileConfig> fileOptions)
+        public ApplicantService(IUnitOfWork unitOfWork, ILogMailer<ApplicantService> logger, IUserData userData, IOptions<FileConfig> fileOptions, IOptions<EmailConfig> emailConfigOptions, IMailSender mailSender)
         {
             this.logger = logger;
             this.unitOfWork = unitOfWork;
+            this.mailSender = mailSender;
             this.userData = userData;
             this.fileConfig = fileOptions.Value;
+            this.emailConfig = emailConfigOptions.Value;
         }
 
         public Response<int> Add(ApplicantAddModel model)
@@ -273,6 +279,40 @@ namespace Sofco.Service.Implementations.Recruitment
             {
                 logger.LogError(e);
                 response.AddError(Resources.Common.ErrorSave);
+            }
+
+            try
+            {
+                var rrhhGroup = unitOfWork.GroupRepository.GetByCode(emailConfig.RRhhAb);
+                var recruiterGroup = unitOfWork.GroupRepository.GetByCode(emailConfig.RecruitersCode);
+
+                var recipients = new List<string> { rrhhGroup.Email, recruiterGroup.Email };
+
+                var jobsearch = unitOfWork.JobSearchRepository.GetByApplicantInCompany(applicant.Id);
+
+                if (jobsearch != null)
+                {
+                    var user = unitOfWork.UserRepository.GetUserLiteByUserName(jobsearch.CreatedBy);
+
+                    if (user != null)
+                    {
+                        recipients.Add(user.Email);
+                    }
+                }
+
+                var data = new MailDefaultData()
+                {
+                    Title = Resources.Mails.MailSubjectResource.ApplicantInCompany,
+                    Message = string.Format(Resources.Mails.MailMessageResource.ApplicantInCompany, applicant.FirstName + " " + applicant.LastName, $"{emailConfig.SiteUrl}recruitment/contacts/{applicant.Id}"),
+                    Recipients = recipients
+                };
+
+                mailSender.Send(data);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddWarning(Resources.Common.ErrorSendMail);
             }
 
             return response;

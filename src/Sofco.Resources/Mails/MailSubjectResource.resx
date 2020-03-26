@@ -231,4 +231,7 @@
   <data name="LicenseAttachedFile" xml:space="preserve">
     <value>Licencia: se adjunto certificado</value>
   </data>
+  <data name="ApplicantInCompany" xml:space="preserve">
+    <value>Solicitud de Ingreso de postulante</value>
+  </data>
 </root>

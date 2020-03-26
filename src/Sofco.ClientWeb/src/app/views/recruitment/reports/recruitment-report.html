@@ -101,13 +101,17 @@
                                     <th class="column-sm">Estado</th>
                                     <th class="column-sm">Fecha Creación</th>
                                     <th class="column-lg">Cliente</th>
+                                    <th class="column-xs">Contactado</th>
+                                    <th class="column-xs">En Curso</th>
+                                    <th class="column-xs">Ingresados</th>
+                                    <th class="column-xs">Deshabilitados</th>
                                     <th class="column-md">Tipo/Razon</th>
                                     <th class="column-lg">Solicitante</th>
                                     <th class="column-lg">Selector</th>
                                     <th class="column-lg">Conocimientos</th>
                                     <th class="column-lg">Perfiles</th>
                                     <th class="column-lg">Seniority</th>
-                                    <th class="column-xs">Cantidad</th>
+                                    <th class="column-xs">Contactados</th>
                                     <th class="column-sm">Sueldo maximo</th>
                                 </tr>
                             </thead>
@@ -120,6 +124,10 @@
                                     <td class="column-sm">{{ getStatusDesc(item.status) }}</td>
                                     <td class="column-sm">{{ item.creationDate | date: 'dd/MM/yyyy' }}</td>
                                     <td class="column-lg">{{ item.client }}</td>
+                                    <td class="column-xs">{{ item.contactsContacted }}</td>
+                                    <td class="column-xs">{{ item.contactsInProgress }}</td>
+                                    <td class="column-xs">{{ item.contactsInCompany }}</td>
+                                    <td class="column-xs">{{ item.contactsContacted }}</td>
                                     <td class="column-md text-ellipsis">{{ item.reasonText }}</td>
                                     <td class="column-lg text-ellipsis">{{ item.userText }}</td>
                                     <td class="column-lg text-ellipsis">{{ item.recruiterText }}</td>

@@ -460,4 +460,9 @@ Recursos:&lt;br/&gt;
   <data name="LicenseAttachedFile" xml:space="preserve">
     <value>El recurso {0} actualizo la licencia #{1}, adjuntando un archivo a la misma. Para verificar acceda desde el siguiente &lt;a href='{2}' target='_blank'&gt;link&lt;/a&gt;</value>
   </data>
+  <data name="ApplicantInCompany" xml:space="preserve">
+    <value>Se solicita la incorporación del siguiente postulante a la plantilla de recursos de la empresa: &lt;br/&gt;
+{0} &lt;br/&gt;
+Puede acceder a los datos del mismo desde el siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;</value>
+  </data>
 </root>

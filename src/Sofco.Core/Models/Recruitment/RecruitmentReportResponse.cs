@@ -74,6 +74,10 @@ namespace Sofco.Core.Models.Recruitment
             {
                 DaysOpened = (jobSearch.CloseDate.Value - jobSearch.CreatedDate).TotalDays;
             }
+            else
+            {
+                DaysOpened = (DateTime.UtcNow - jobSearch.CreatedDate).TotalDays;
+            }
         }
 
         public string ResourceAssignmentText { get; set; }
@@ -120,6 +124,7 @@ namespace Sofco.Core.Models.Recruitment
             if (jobSearchApplicant.Applicant != null)
             {
                 Applicant = jobSearchApplicant.Applicant.LastName + " " + jobSearchApplicant.Applicant.FirstName;
+                Status = jobSearchApplicant.Applicant.Status;
             }
 
             if (jobSearchApplicant.Reason != null)
@@ -149,13 +154,15 @@ namespace Sofco.Core.Models.Recruitment
             Salary = jobSearchApplicant.Salary;
             RemoteWork = jobSearchApplicant.RemoteWork;
             TechnicalInterviewer = jobSearchApplicant.TechnicalExternalInterviewer;
-
+    
             HadInterview = jobSearchApplicant.HasClientInterview || jobSearchApplicant.HasTechnicalInterview || jobSearchApplicant.HasRrhhInterview;
 
             RrhhInterviewComments = jobSearchApplicant.RrhhInterviewComments;
             TechnicalInterviewComments = jobSearchApplicant.TechnicalInterviewComments;
             ClientInterviewComments = jobSearchApplicant.ClientInterviewComments;
         }
+
+        public ApplicantStatus Status { get; set; }
 
         public bool HadInterview { get; set; }
 

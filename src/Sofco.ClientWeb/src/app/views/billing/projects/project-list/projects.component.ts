@@ -57,6 +57,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
 
     getAll(){
+      this.projects = [];
+
       this.messageService.showLoading();
 
       this.getAllSubscrip = this.service.getAll(this.serviceId).subscribe(d => {

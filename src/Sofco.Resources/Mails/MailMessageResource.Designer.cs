@@ -70,6 +70,17 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Se solicita la incorporación del siguiente postulante a la plantilla de recursos de la empresa: &lt;br/&gt;
+        ///{0} &lt;br/&gt;
+        ///Puede acceder a los datos del mismo desde el siguiente &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;.
+        /// </summary>
+        public static string ApplicantInCompany {
+            get {
+                return ResourceManager.GetString("ApplicantInCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Estimados, &lt;/br&gt;&lt;/br&gt;Se ha dado el cierre de la analítica &lt;strong&gt;{0}&lt;/strong&gt;, del servicio &lt;strong&gt;{1}&lt;/strong&gt;, puede acceder a la misma desde el siguiente &lt;a href=&apos;{2}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; &lt;/br&gt;&lt;/br&gt;
         ///Saludos.
         /// </summary>

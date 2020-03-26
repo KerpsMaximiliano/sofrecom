@@ -194,5 +194,20 @@ namespace Sofco.DAL.Repositories.Recruitment
 
             return query.ToList();
         }
+
+        public JobSearch GetByApplicantInCompany(int applicantId)
+        {
+            var jobsearchApplicant = context.JobSearchApplicants
+                .Include(x => x.JobSearch)
+                .Include(x => x.Applicant)
+                .FirstOrDefault(x => x.ApplicantId == applicantId && x.Applicant.Status == ApplicantStatus.InCompany);
+
+            if (jobsearchApplicant != null && jobsearchApplicant.JobSearch != null)
+            {
+                return jobsearchApplicant.JobSearch;
+            }
+
+            return null;
+        }
     }
 }
