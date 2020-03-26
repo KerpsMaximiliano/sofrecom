@@ -70,4 +70,8 @@ export class ProjectService {
   update() {
     return this.http.put<any>(`${this.baseUrl}/projects`, {});
   }
+
+  delete(id) {
+    return this.http.delete<any>(`${this.baseUrl}/projects/${id}`);
+  }
 }

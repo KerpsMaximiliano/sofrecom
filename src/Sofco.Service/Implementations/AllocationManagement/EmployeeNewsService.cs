@@ -209,6 +209,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 return response;
             }
 
+            if (unitOfWork.LicenseRepository.HasAfterDateByEmployee(employeeToChange.Id,
+                response.Data.EndDate.GetValueOrDefault()))
+            {
+                response.AddErrorAndNoTraslate("El recurso tiene licencias cargadas con fecha posterior al momento de la baja, verificar para cancelar las mismas");
+            }
+
             if (response.HasErrors()) return response;
 
             try
@@ -222,7 +228,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employeeToChange.EndDate = response.Data.EndDate;
                 employeeToChange.EndReason = model.Comments;
                 employeeToChange.TypeEndReasonId = model.Type.GetValueOrDefault();
-                employeeToChange.ExcludeForTigerReport = true;
+                //employeeToChange.ExcludeForTigerReport = true;
 
                 unitOfWork.EmployeeRepository.UpdateEndDate(employeeToChange);
 

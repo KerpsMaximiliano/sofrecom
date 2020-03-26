@@ -113,7 +113,6 @@ namespace Sofco.DAL.Repositories.Recruitment
             var query = context.JobSearchs
                 .Include(x => x.Client)
                 .Include(x => x.JobSearchApplicants)
-                    .ThenInclude(x => x.Reason)
                 .Include(x => x.JobSearchSkillsRequired)
                 .Where(x => x.Status == JobSearchStatus.Open || x.Status == JobSearchStatus.Reopen);
 

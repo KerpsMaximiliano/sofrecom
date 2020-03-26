@@ -5,14 +5,14 @@ namespace Sofco.Core.Models.Recruitment
 {
     public class ApplicantJobSearchModel
     {
-        public ApplicantJobSearchModel(JobSearch jobSearch)
+        public ApplicantJobSearchModel(JobSearch jobSearch, int applicantId)
         {
             Id = jobSearch.Id;
             Client = jobSearch.Client?.Name;
             Reason = jobSearch.ReasonCause?.Text;
 
             if (jobSearch.JobSearchApplicants != null)
-                ContactedBefore = jobSearch.JobSearchApplicants.Any();
+                ContactedBefore = jobSearch.JobSearchApplicants.Any(x => x.ApplicantId == applicantId);
            
             if (jobSearch.JobSearchProfiles != null && jobSearch.JobSearchProfiles.Any())
                 Profiles = string.Join(";", jobSearch.JobSearchProfiles.Select(x => x.Profile.Text));

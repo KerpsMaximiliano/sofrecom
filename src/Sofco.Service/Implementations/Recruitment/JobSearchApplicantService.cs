@@ -287,7 +287,7 @@ namespace Sofco.Service.Implementations.Recruitment
 
                 var jobSearchs = unitOfWork.JobSearchRepository.Get(skills);
 
-                response.Data = jobSearchs.Select(x => new ApplicantJobSearchModel(x)).OrderBy(x => x.ContactedBefore).ToList();
+                response.Data = jobSearchs.Select(x => new ApplicantJobSearchModel(x, applicantId)).OrderBy(x => x.ContactedBefore).ToList();
             }
             catch (Exception e)
             {

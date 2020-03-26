@@ -255,6 +255,37 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public Response Delete(int id)
+        {
+            var response = new Response();
+
+            var project = unitOfWork.ProjectRepository.Get(id);
+
+            if (project == null)
+            {
+                response.AddError(Resources.Billing.Project.NotFound);
+                return response;
+            }
+
+            try
+            {
+                project.Active = false;
+                unitOfWork.ProjectRepository.Update(project);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.DeleteSuccess);
+
+                projectData.ClearKeys();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private void SetPurchaseOrderValues(Solfac solfac, PurchaseOrderWidgetModel newOc)
         {
             switch (solfac.Status)

@@ -75,7 +75,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let project of projects" class="pointer">
+                            <tr *ngFor="let project of projects; let i = index" class="pointer">
                                 <td style="width:20px" (click)="expand(project)" *ngIf="project.type == 'item'">
                                     <i [ngClass]="getIconClass(project)"></i>
                                 </td>
@@ -86,6 +86,7 @@
                                 <td *ngIf="project.type == 'item'"> {{ project.data.endDate | date:'dd/MM/yyyy' }} </td>
                                 <td *ngIf="project.type == 'item'">
                                     <button type="button" class="btn btn-success btn-xs" (click)="goToProjectDetail(project.data)"><i class="fa fa-eye"></i></button>
+                                    <button type="button" class="btn btn-danger btn-xs" (click)="delete(project.data.id, i)"><i class="fa fa-trash"></i></button>
                                 </td>
 
                                 <td colspan="5" *ngIf="project.type == 'detail' && project.show == true">

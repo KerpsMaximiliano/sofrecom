@@ -32,5 +32,6 @@ namespace Sofco.Core.DAL.Rrhh
         IList<License> GetLicensesReport(ReportParams parameters);
         bool AreDatesOverlaped(DateTime startDate, DateTime endDate, int employeeId);
         ICollection<License> GetByDateAndType(DateTime date, int typeLicense);
+        bool HasAfterDateByEmployee(int id, DateTime date);
     }
 }

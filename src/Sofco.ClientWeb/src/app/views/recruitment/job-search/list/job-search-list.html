@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-4" *ngIf="isRrhh()">
                             <div class="form-group">
                                 <label class="control-label"> Solicitante </label>
                                 <ng-select [items]="applicantOptions" bindValue="id" bindLabel="text" [(ngModel)]="userId"></ng-select>

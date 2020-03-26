@@ -184,4 +184,28 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         return "fa fa-minus";
       }
     }
+
+    delete(id, index){
+      this.messageService.showConfirm(() => {
+
+        this.messageService.showLoading();
+
+        this.updateSubscrip = this.service.delete(id).subscribe(data => {
+          this.messageService.closeLoading();
+  
+          var projects = this.projects.filter(x => x.id == id);
+
+          if(projects.length == 1){
+            this.projects.splice(index, 1);
+          }
+    
+          if(projects.length == 2){
+            this.projects.splice(index, 2);
+          }
+
+          this.initGrid();
+        },
+        error => this.messageService.closeLoading());
+      });
+    }
 }

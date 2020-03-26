@@ -16,7 +16,7 @@ declare var moment: any;
     selector: 'job-search-list',
     templateUrl: './job-search-list.html'
 })
-export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class JobSearchListComponent implements OnInit, OnDestroy {
     searchSubscrip: Subscription;
     getUsersSubscrip: Subscription;
     getReasonsSubscrip: Subscription;
@@ -89,9 +89,6 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
         this.statusOptions.push({ id: JobSearchStatus.Reopen, text: "Re-Abierta"});
         this.statusOptions.push({ id: JobSearchStatus.Suspended, text: "Suspendida"});
         this.statusOptions.push({ id: JobSearchStatus.Close, text: "Cerrada"});
-    }    
-
-    ngAfterViewInit(): void {
 
         const data = JSON.parse(sessionStorage.getItem('lastJobSearchQuery'));
 
@@ -116,8 +113,8 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
      
         this.search();
         this.collapse();
-    }
-    
+    }    
+
     ngOnDestroy(): void {
         if (this.searchSubscrip) this.searchSubscrip.unsubscribe();
         if (this.getUsersSubscrip) this.getUsersSubscrip.unsubscribe();
@@ -204,11 +201,24 @@ export class JobSearchListComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     getCustomers(resolve) {
-        this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
-            resolve();
-            this.customerOptions = d.data;
-        },
-        () => resolve());
+        if(this.isRrhh()){
+            this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
+                resolve();
+                this.customerOptions = d.data;
+            },
+            () => resolve());
+        }
+        else{
+            this.getClientsSubscrip = this.customerService.getOptionsByCurrentManager().subscribe(d => {
+                resolve();
+                this.customerOptions = d.data;
+            },
+            () => resolve());
+        }
+    }
+
+    isRrhh(){
+        return this.menuService.userIsRrhh;
     }
 
     clean(){

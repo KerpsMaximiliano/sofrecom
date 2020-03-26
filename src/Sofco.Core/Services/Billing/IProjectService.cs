@@ -23,5 +23,6 @@ namespace Sofco.Core.Services.Billing
         IList<PurchaseOrderWidgetModel> GetPurchaseOrders(string projectId);
 
         Response Update();
+        Response Delete(int id);
     }
 }

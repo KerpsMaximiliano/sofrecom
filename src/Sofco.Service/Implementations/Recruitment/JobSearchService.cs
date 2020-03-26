@@ -6,12 +6,14 @@ using Sofco.Core.Config;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Managers;
 using Sofco.Core.Models.Common;
 using Sofco.Core.Models.Recruitment;
 using Sofco.Core.Services.Recruitment;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Utils;
+using Sofco.Framework.Managers;
 
 namespace Sofco.Service.Implementations.Recruitment
 {
@@ -21,13 +23,15 @@ namespace Sofco.Service.Implementations.Recruitment
         private readonly ILogMailer<JobSearchService> logger;
         private readonly IUserData userData;
         private readonly EmailConfig emailConfig;
+        private readonly IRoleManager roleManager;
 
-        public JobSearchService(IUnitOfWork unitOfWork, ILogMailer<JobSearchService> logger, IUserData userData, IOptions<EmailConfig> emailConfigOptions)
+        public JobSearchService(IUnitOfWork unitOfWork, ILogMailer<JobSearchService> logger, IUserData userData, IOptions<EmailConfig> emailConfigOptions, IRoleManager roleManager)
         {
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
             this.emailConfig = emailConfigOptions.Value;
+            this.roleManager = roleManager;
         }
 
         public Response Add(JobSearchAddModel model)
@@ -345,7 +349,15 @@ namespace Sofco.Service.Implementations.Recruitment
 
             if (list.Any())
             {
-                response.Data = list.Select(x => new JobSearchResultModel(x)).ToList();
+                if (roleManager.IsRrhh())
+                {
+                    response.Data = list.Select(x => new JobSearchResultModel(x)).ToList();
+                }
+                else
+                {
+                    var currentUser = userData.GetCurrentUser();
+                    response.Data = list.Where(x => x.UserId == currentUser.Id).Select(x => new JobSearchResultModel(x)).ToList();
+                }
             }
 
             return response;

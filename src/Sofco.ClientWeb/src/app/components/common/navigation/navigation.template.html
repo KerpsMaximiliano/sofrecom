@@ -200,7 +200,7 @@
             [routerLink]="['/recruitment/jobSearch']">Busquedas</a>
           </li>
 
-          <li [ngClass]="{active: activeRoute('contacts')}"><a
+          <li [ngClass]="{active: activeRoute('contacts')}" *ngIf="menuService.hasFunctionality('RECRU', 'SEARCH-CANDIDATE')"><a
               [routerLink]="['/recruitment/contacts']">Postulantes</a>
           </li>
 

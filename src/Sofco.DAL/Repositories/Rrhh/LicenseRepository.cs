@@ -198,5 +198,10 @@ namespace Sofco.DAL.Repositories.Rrhh
                         && x.TypeId == typeLicense)
                 .ToList();
         }
+
+        public bool HasAfterDateByEmployee(int id, DateTime date)
+        {
+            return context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date);
+        }
     }
 }
