@@ -12,7 +12,7 @@ namespace Sofco.Core.Models.Recruitment
         {
             Code = jobSearch.Id;
             Status = jobSearch.Status;
-            Quantity = jobSearch.Quantity;
+            //Quantity = jobSearch.Quantity;
             MaximumSalary = jobSearch.MaximunSalary;
             CreationDate = jobSearch.CreatedDate;
            

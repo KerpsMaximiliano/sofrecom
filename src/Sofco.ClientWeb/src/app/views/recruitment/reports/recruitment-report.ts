@@ -159,6 +159,8 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                             if(contact.status == ApplicantStatus.Valid || contact.status == ApplicantStatus.Contacted){
                                 x.contactsContacted += 1;
                             }
+
+                            x.quantity += 1;
                         });
                     }
 
