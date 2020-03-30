@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
+using Sofco.Core.FileManager;
 using Sofco.Core.Managers;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Services.AdvancementAndRefund;
@@ -15,13 +17,16 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
         private readonly IUnitOfWork unitOfWork;
         private readonly AppSetting settings;
         private readonly IRoleManager roleManager;
+        private readonly IPaymentPendingFileManager paymentPendingFileManager;
 
         public PaymentPendingService(IUnitOfWork unitOfWork,
             IRoleManager roleManager,
+            IPaymentPendingFileManager paymentPendingFileManager,
             IOptions<AppSetting> settingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.roleManager = roleManager;
+            this.paymentPendingFileManager = paymentPendingFileManager;
             this.settings = settingOptions.Value;
         }
 
@@ -305,6 +310,26 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                     employeeManagerDictionary.Add(email, employee.Manager?.Name);
                 }
             }
+        }
+
+        public Response<byte[]> GetExcel()
+        {
+            var paymentResponse = GetAllPaymentPending();
+
+            var response = new Response<byte[]>();
+
+            try
+            {
+                var excel = paymentPendingFileManager.CreateExcel(paymentResponse.Data);
+
+                response.Data = excel.GetAsByteArray();
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.ExportFileError);
+            }
+
+            return response;
         }
     }
 }

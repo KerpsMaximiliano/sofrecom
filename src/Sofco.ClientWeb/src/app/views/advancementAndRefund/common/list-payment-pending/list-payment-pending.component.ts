@@ -5,6 +5,7 @@ import { MessageService } from "app/services/common/message.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { PaymentPendingService } from "app/services/advancement-and-refund/paymentPending.service";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'list-payment-pending',
@@ -350,5 +351,18 @@ export class ListPaymentPendingComponent  {
             row.show = !row.show;
             item.show = row.show;
         }
+    }
+
+    export(){
+        this.messageService.showLoading();
+
+        this.paymentPendingService.exportFile().subscribe(response => {
+            this.messageService.closeLoading();
+
+            FileSaver.saveAs(response, "pendientes de control.xlsx");
+        },
+        () => {
+            this.messageService.closeLoading();
+        });
     }
 }

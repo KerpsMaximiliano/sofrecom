@@ -7,5 +7,6 @@ namespace Sofco.Core.Services.AdvancementAndRefund
     public interface IPaymentPendingService
     {
         Response<IList<PaymentPendingModel>> GetAllPaymentPending();
+        Response<byte[]> GetExcel();
     }
 }

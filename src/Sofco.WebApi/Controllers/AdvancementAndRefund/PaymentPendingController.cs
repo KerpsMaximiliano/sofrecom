@@ -23,5 +23,16 @@ namespace Sofco.WebApi.Controllers.AdvancementAndRefund
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("excel")]
+        public IActionResult GetExcel()
+        {
+            var response = service.GetExcel();
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return File(response.Data, "application/octet-stream", string.Empty);
+        }
     }
 }

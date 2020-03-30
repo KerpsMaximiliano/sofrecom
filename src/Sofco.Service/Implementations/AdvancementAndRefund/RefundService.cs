@@ -600,7 +600,7 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
                 var zipStream = new MemoryStream();
 
                 using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
-                {
+                { 
                     var excel = refundFileManager.CreateExcel(domain, employee, responseResume.Data);
 
                     CopyStream(zip, new Response<Tuple<byte[], string>> { Data = new Tuple<byte[], string>(excel.GetAsByteArray(), "reintegro.xlsx") });

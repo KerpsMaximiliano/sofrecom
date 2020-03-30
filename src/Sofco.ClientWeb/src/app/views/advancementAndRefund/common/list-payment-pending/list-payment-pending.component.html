@@ -53,6 +53,7 @@
                 <button *ngIf="!areAllUnselected()" class="btn btn-warning btn-sm pull-left" (click)="unselectAll()"> {{ 'ACTIONS.removeAll' | translate }}  <i class="fa fa-times"></i></button>
 
                 <button *ngIf="menuService.hasFunctionality('ADVAN', 'PP-MASIVE-APPROVAL')" [disabled]="canApprove()" class="btn btn-primary btn-sm" (click)="approveAll()">Pagar seleccionados</button>  
+                <button [disabled]="modelFiltered.length == 0" class="btn btn-success btn-sm" (click)="export()">Exportar</button>  
             </div>
         </div>
         <div class="ibox-content">
