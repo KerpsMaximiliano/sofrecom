@@ -70,13 +70,42 @@ namespace Sofco.Core.Models.Recruitment
                 }
             }
 
-            if (jobSearch.CloseDate.HasValue)
+            if (jobSearch.Status == JobSearchStatus.Close)
             {
-                DaysOpened = (jobSearch.CloseDate.Value - jobSearch.CreatedDate).TotalDays;
+                if (jobSearch.CloseDate.HasValue)
+                {
+                    DaysOpened = (jobSearch.CloseDate.Value - jobSearch.CreatedDate).TotalDays;
+                }
             }
-            else
+
+            if (jobSearch.Status == JobSearchStatus.Suspended)
+            {
+                if (jobSearch.SuspendedDate.HasValue)
+                {
+                    DaysOpened = (jobSearch.SuspendedDate.Value - jobSearch.CreatedDate).TotalDays;
+                }
+            }
+
+            if (jobSearch.Status == JobSearchStatus.Open)
             {
                 DaysOpened = (DateTime.UtcNow - jobSearch.CreatedDate).TotalDays;
+            }
+
+            if (jobSearch.Status == JobSearchStatus.Reopen)
+            {
+                double totalDays = 0;
+
+                if (jobSearch.SuspendedDate.HasValue)
+                {
+                    totalDays += (jobSearch.SuspendedDate.Value - jobSearch.CreatedDate).TotalDays;
+                }
+
+                if (jobSearch.ReopenDate.HasValue)
+                {
+                    totalDays += (DateTime.UtcNow - jobSearch.ReopenDate.Value).TotalDays;
+                }
+
+                DaysOpened = totalDays;
             }
         }
 
