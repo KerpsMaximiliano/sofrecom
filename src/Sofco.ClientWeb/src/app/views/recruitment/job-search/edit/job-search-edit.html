@@ -460,15 +460,6 @@
 
     <form [formGroup]="dateModalForm" *ngIf="dateModalForm">   
 
-        <div class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'date')">
-            <label class="control-label">Fecha</label> 
-            <input type="text" class="form-control" #dp="bsDatepicker" bsDatepicker formControlName="date">
-    
-            <div class="form-control-feedback" *ngIf="formsService.hasErrors(dateModalForm, 'date')">
-                <p *ngIf="formsService.hasError(dateModalForm, 'date', 'required')">La fecha es requerida</p>
-            </div>
-        </div>
-
         <div class="form-group" [ngClass]="formsService.getClassProperty(dateModalForm, 'reasonCauseModalId')">
             <label class="control-label"> Tipo/Razon </label>
             <ng-select [items]="reasonOptionsModal" bindValue="id" bindLabel="text" formControlName="reasonCauseModalId"></ng-select>

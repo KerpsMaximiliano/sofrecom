@@ -7,6 +7,7 @@
         public string BusinessHoursDescription { get; set; }
 
         public string Office { get; set; }
+        public string Email { get; set; }
 
         public int? HolidaysPending { get; set; }
 

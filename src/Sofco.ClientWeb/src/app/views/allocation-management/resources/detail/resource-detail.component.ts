@@ -46,7 +46,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
         billingPercentage: 0,
         holidaysPending: null,
         extraHolidays: null,
-        hasCreditCard: false
+        hasCreditCard: false,
+        email: ""
     }
 
     public licenses: any[] = new Array();
@@ -133,6 +134,7 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             this.editModel.billingPercentage = response.data.percentage;
             this.editModel.hasCreditCard = response.data.hasCreditCard;
             this.editModel.extraHolidays = response.data.extraHolidaysQuantity;
+            this.editModel.email = response.data.email;
 
             this.messageService.closeLoading();
             this.initGrid();
@@ -241,7 +243,8 @@ export class ResourceDetailComponent implements OnInit, OnDestroy {
             billingPercentage: this.editModel.billingPercentage,
             managerId: this.editModel.managerId,
             extraHolidays: this.editModel.extraHolidays,
-            hasCreditCard: this.editModel.hasCreditCard
+            hasCreditCard: this.editModel.hasCreditCard,
+            email: this.editModel.email
         };
 
         this.finalizeExtraHolidaysSubscrip = this.employeeService.put(this.resourceId, json).subscribe(data => {

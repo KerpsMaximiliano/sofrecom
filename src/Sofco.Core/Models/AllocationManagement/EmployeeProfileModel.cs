@@ -51,6 +51,8 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public int HolidaysByLaw { get; set; }
 
+        public string Email { get; set; }
+
         public int ExtraHolidaysQuantity { get; set; }
 
         public int ExtraHolidaysQuantityByLaw { get; set; }
@@ -89,6 +91,6 @@ namespace Sofco.Core.Models.AllocationManagement
 
         public string ContractType { get; set; }
 
-        public string Nationality { get; set; }
+        public string Nationality { get; set; } 
     }
 }

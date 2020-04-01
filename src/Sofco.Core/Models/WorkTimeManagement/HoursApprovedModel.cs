@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Sofco.Domain;
-using Sofco.Domain.Enums;
 using Sofco.Domain.Models.WorkTimeManagement;
 
 namespace Sofco.Core.Models.WorkTimeManagement

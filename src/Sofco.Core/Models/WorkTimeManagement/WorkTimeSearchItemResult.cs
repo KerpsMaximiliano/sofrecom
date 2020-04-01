@@ -34,5 +34,7 @@ namespace Sofco.Core.Models.WorkTimeManagement
         public int Id { get; set; }
 
         public bool CanDelete { get; set; }
+        public int StatusId { get; set; }
+        public int AnalyticId { get; set; }
     }
 }

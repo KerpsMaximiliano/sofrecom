@@ -127,6 +127,7 @@
                             </td>
                             <td class="column-xs">
                                 <button type="button" class="btn btn-danger btn-xs" *ngIf="canDelete(item)" (click)="delete(item)"><i class="fa fa-trash"></i></button>
+                                <button type="button" class="btn btn-success btn-xs" *ngIf="canAdminUpdate(item)" (click)="setWorkTime(item)"><i class="fa fa-eye"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -134,4 +135,20 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
+
+<ng2-modal [config]="adminUpdateModalConfig" #adminUpdateModal (accept)="adminUpdateWorkTime()" [isSaveEnabled]="adminModel.analyticId.valid && adminModel.statusId.valid">
+
+    <div class="form-group">
+        <label class="control-label">Analitica</label>
+        <ng-select [items]="analytics" bindLabel="text" bindValue="id" [formControl]="adminModel.analyticId"></ng-select>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Estado</label>
+        <ng-select [formControl]="adminModel.statusId">
+            <ng-option *ngFor="let item of statuses" [value]="item.id">{{ item.text | translate }}</ng-option>
+        </ng-select>
+    </div>
+
+</ng2-modal> 

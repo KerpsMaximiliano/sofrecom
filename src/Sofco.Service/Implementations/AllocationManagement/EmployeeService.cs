@@ -333,6 +333,11 @@ namespace Sofco.Service.Implementations.AllocationManagement
             EmployeeValidationHelper.ValidateOffice(response, model);
             EmployeeValidationHelper.ValidateManager(response, model, unitOfWork);
 
+            if (string.IsNullOrWhiteSpace(model.Email))
+            {
+                response.AddError(Resources.AllocationManagement.Employee.MailEmpty);
+            }
+
             if (response.HasErrors()) return response;
 
             try
@@ -342,6 +347,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 employee.BusinessHours = model.BusinessHours.GetValueOrDefault();
                 employee.BusinessHoursDescription = model.BusinessHoursDescription;
                 employee.OfficeAddress = model.Office;
+                employee.Email = model.Email;
            
                 employee.ManagerId = model.ManagerId;
                 employee.BillingPercentage = model.BillingPercentage.GetValueOrDefault();

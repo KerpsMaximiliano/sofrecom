@@ -1,4 +1,4 @@
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Ng2DatatablesModule } from '../../components/datatables/ng2-datatables.module';
 import { CommonModule } from '@angular/common';
@@ -44,7 +44,7 @@ import { AmountFormatModule } from 'app/pipes/amount-format.module';
                  WorkTimeReportComponent, WorkTimeSearchComponent, HolidaysComponent, ImportWorkTimesComponent,
                 WorkTimeControlComponent],
 
-  imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule,
+  imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, ReactiveFormsModule,
              TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, 
              PCheckModule, WorkTimeRouter, DateRangePickerModule, TooltipModule, NgSelectModule, AmountFormatModule],
 

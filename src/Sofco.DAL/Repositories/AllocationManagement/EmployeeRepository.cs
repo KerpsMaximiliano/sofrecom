@@ -271,6 +271,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Entry(employee).Property("ExtraHolidaysQuantityByLaw").IsModified = true;
             context.Entry(employee).Property("ExtraHolidaysQuantity").IsModified = true;
             context.Entry(employee).Property("HasExtraHolidays").IsModified = true;
+            context.Entry(employee).Property("Email").IsModified = true;
         }
 
         public IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers)

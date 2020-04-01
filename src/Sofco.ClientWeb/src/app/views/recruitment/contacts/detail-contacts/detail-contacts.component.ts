@@ -172,8 +172,11 @@ export class DetailContactsComponent implements OnInit {
 
           this.applicantCloseReasons = response.data.filter(x => x.type == ReasonCauseType.ApplicantUnavailable);
 
-          this.interview.reasonOptions = response.data.filter(x => x.type != ReasonCauseType.ApplicantUnavailable);    
-          
+          this.interview.reasonOptions = response.data.filter(x => x.type == ReasonCauseType.ApplicantInProgress ||
+                                                                  x.type == ReasonCauseType.ApplicantInCompany ||
+                                                                  x.type == ReasonCauseType.ApplicantContacted ||
+                                                                  x.type == ReasonCauseType.ApplicantOpen);
+                                                                
           this.jobSearchRelated.setReasonOptions(response.data);
       });
   }
@@ -430,7 +433,7 @@ export class DetailContactsComponent implements OnInit {
       this.interview.setData(history);
     }
     else{
-      if(history.reasonType == ReasonCauseType.ApplicantInProgress){
+      if(history.reasonType == ReasonCauseType.ApplicantInProgress || history.reasonType == ReasonCauseType.ApplicantContacted){
         this.interview.setData(history);
       }
       else{

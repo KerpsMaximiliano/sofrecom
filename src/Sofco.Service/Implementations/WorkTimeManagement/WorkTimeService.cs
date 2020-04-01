@@ -415,6 +415,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                     model.AnalyticTitle = worktime.Analytic.Title;
                     model.Analytic = worktime.Analytic.Name;
                     model.Manager = worktime.Analytic?.Manager?.Name;
+                    model.AnalyticId = worktime.AnalyticId;
                 }
 
                 if (worktime.Employee != null)
@@ -438,6 +439,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 model.Reference = worktime.Reference;
                 model.Comments = worktime.UserComment;
                 model.Status = worktime.Status.ToString();
+                model.StatusId = (int)worktime.Status;
                 model.Id = worktime.Id;
 
                 if (roleManager.IsAdmin())
@@ -545,6 +547,37 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
             var excel = workTimeExportFileManager.CreateTemplateExcel(analyticId, periodId);
 
             return excel.GetAsByteArray();
+        }
+
+        public Response AdminUpdate(int id, AdminUpdateParams request)
+        {
+            var response = new Response();
+
+            var worktime = unitOfWork.WorkTimeRepository.Get(id);
+
+            if (worktime == null)
+            {
+                response.AddError(Resources.WorkTimeManagement.WorkTime.WorkTimeNotFound);
+                return response;
+            }
+
+            try
+            {
+                worktime.AnalyticId = request.AnalyticId;
+                worktime.Status = (WorkTimeStatus) request.StatusId;
+
+                unitOfWork.WorkTimeRepository.AdminUpdate(worktime);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.SaveSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
         }
 
         public IEnumerable<Option> GetStatus()

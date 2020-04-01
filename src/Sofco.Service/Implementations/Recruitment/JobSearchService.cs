@@ -177,8 +177,6 @@ namespace Sofco.Service.Implementations.Recruitment
         {
             var response = new Response();
 
-            if (!parameter.Date.HasValue) response.AddError(Resources.Recruitment.JobSearch.DateRequired);
-
             if(!parameter.Status.HasValue) response.AddError(Resources.Recruitment.JobSearch.StatusRequired);
 
             if(!parameter.ReasonCauseId.HasValue) response.AddError(Resources.Recruitment.JobSearch.ReasonCauseRequired);
@@ -201,13 +199,13 @@ namespace Sofco.Service.Implementations.Recruitment
                 }
                 else
                 {
-                    if (jobsearch.SuspendedDate.GetValueOrDefault().Date > parameter.Date.GetValueOrDefault())
+                    if (jobsearch.SuspendedDate.GetValueOrDefault().Date > DateTime.UtcNow.Date)
                     {
                         response.AddError(Resources.Recruitment.JobSearch.SuspendedDateGreaterThanReopenDate);
                     }
                     else
                     {
-                        jobsearch.ReopenDate = parameter.Date.GetValueOrDefault();
+                        jobsearch.ReopenDate = DateTime.UtcNow;
                     }
                 }
             }
@@ -225,13 +223,13 @@ namespace Sofco.Service.Implementations.Recruitment
                         response.AddError(Resources.Recruitment.JobSearch.ReasonCauseRequired);
                     }
 
-                    if (jobsearch.CreatedDate.Date > parameter.Date.GetValueOrDefault())
+                    if (jobsearch.CreatedDate.Date > DateTime.UtcNow.Date)
                     {
                         response.AddError(Resources.Recruitment.JobSearch.CreatedDateGreaterThanSuspendedDate);
                     }
                     else
                     {
-                        jobsearch.SuspendedDate = parameter.Date.GetValueOrDefault();
+                        jobsearch.SuspendedDate = DateTime.UtcNow;
                     }
                 }
             }
@@ -252,13 +250,13 @@ namespace Sofco.Service.Implementations.Recruitment
                     {
                         DateTime dateToCompare = jobsearch.ReopenDate ?? jobsearch.CreatedDate;
 
-                        if (dateToCompare.Date > parameter.Date.GetValueOrDefault())
+                        if (dateToCompare.Date > DateTime.UtcNow.Date)
                         {
                             response.AddError(Resources.Recruitment.JobSearch.CreatedDateGreaterThanSuspendedDate);
                         }
                         else
                         {
-                            jobsearch.CloseDate = parameter.Date.GetValueOrDefault();
+                            jobsearch.CloseDate = DateTime.UtcNow;
                             jobsearch.ReasonComments = parameter.Reason;
                         }
                     }

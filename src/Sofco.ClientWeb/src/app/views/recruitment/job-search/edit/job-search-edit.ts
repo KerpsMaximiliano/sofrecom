@@ -51,7 +51,6 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     });
 
     dateModalForm: FormGroup = new FormGroup({
-        date: new FormControl(null, [Validators.required]),
         reasonCauseModalId: new FormControl(null, [Validators.required]),
         comments: new FormControl(null, [Validators.maxLength(1000)]),
     });
@@ -401,7 +400,6 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
     changeStatus(){
         var json = {
             status: this.statusSelected,
-            date: this.dateModalForm.controls.date.value,
             reasonCauseId: this.dateModalForm.controls.reasonCauseModalId.value,
             reason: this.dateModalForm.controls.comments.value
         }
@@ -411,7 +409,6 @@ export class JobSearchEditComponent implements OnInit, OnDestroy {
             this.status = this.statusSelected;
             this.form.controls.reasonCauseId.setValue(this.dateModalForm.controls.reasonCauseModalId.value);
 
-            this.dateModalForm.controls.date.setValue(null);
             this.dateModalForm.controls.comments.setValue(null);
             this.dateModalForm.controls.reasonCauseModalId.setValue(null);
 

@@ -7,6 +7,8 @@ import { EmployeeService } from "../../../services/allocation-management/employe
 import { AnalyticService } from "../../../services/allocation-management/analytic.service";
 import { MenuService } from "app/services/admin/menu.service";
 import { WorkTimeStatus } from "app/models/enums/worktimestatus";
+import { FormControl, Validators } from "@angular/forms";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -46,6 +48,22 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
         analyticId: null,
         employeeId: null
     };
+
+    adminModel = {
+        analyticId: new FormControl(null, [Validators.required]),
+        statusId: new FormControl(null, [Validators.required]),
+        id: null
+    }
+
+    @ViewChild('adminUpdateModal') adminUpdateModal;
+    public adminUpdateModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Actualizar hora",
+        "adminUpdateModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
 
     constructor(private messageService: MessageService,
         private worktimeService: WorktimeService,
@@ -248,5 +266,53 @@ export class WorkTimeSearchComponent implements OnInit, OnDestroy {
             },
             error => this.messageService.closeLoading());
         });
+    }
+
+    canAdminUpdate(){
+        return this.menuService.hasAdminMenu();
+    }
+
+    adminUpdateWorkTime(){
+        var json = {
+            analyticId: this.adminModel.analyticId.value,
+            statusId: this.adminModel.statusId.value,
+        }
+
+        this.deleteSubscription = this.worktimeService.adminUpdate(this.adminModel.id, json).subscribe(response => {
+            this.adminUpdateModal.resetButtons();
+
+            var worktime = this.data.find(x => x.id == this.adminModel.id);
+
+            if(worktime){
+                var statusOption = this.statuses.find(x => x.id == this.adminModel.statusId.value);
+
+                if(statusOption){
+                    worktime.status = statusOption.text;
+                    worktime.statusId = this.adminModel.statusId.value;
+                }
+
+                var analyticOption = this.analytics.find(x => x.id == this.adminModel.analyticId.value);
+
+                if(analyticOption){
+                    worktime.analyticId = this.adminModel.analyticId.value;
+
+                    var text = analyticOption.text.split(' - ');
+
+                    if(text && text.length > 1){
+                        worktime.analytic = text[text.length-1];
+                        worktime.analyticTitle = text[text.length-2];
+                    }
+                }
+            }
+        },
+        error => this.adminUpdateModal.resetButtons());
+    }
+
+    setWorkTime(item){
+        this.adminModel.analyticId.setValue(item.analyticId);
+        this.adminModel.statusId.setValue(item.statusId);
+        this.adminModel.id = item.id;
+
+        this.adminUpdateModal.show();
     }
 }

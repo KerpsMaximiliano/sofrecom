@@ -170,6 +170,12 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             context.Entry(worktime).Property("ApprovalUserId").IsModified = true;
         }
 
+        public void AdminUpdate(WorkTime worktime)
+        {
+            context.Entry(worktime).Property("Status").IsModified = true;
+            context.Entry(worktime).Property("AnalyticId").IsModified = true;
+        }
+
         public void UpdateApprovalComment(WorkTime worktime)
         {
             context.Entry(worktime).Property("ApprovalComment").IsModified = true;

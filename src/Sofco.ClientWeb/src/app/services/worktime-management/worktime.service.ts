@@ -80,4 +80,8 @@ export class WorktimeService {
       return new Blob([res.body], { type: 'application/octet-stream' });
     }));
   }
+
+  adminUpdate(id, json) {
+    return this.http.put<any>(`${this.apiUrl}/${id}/admin`, json);
+  }
 }

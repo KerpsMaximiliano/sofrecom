@@ -161,5 +161,13 @@ namespace Sofco.WebApi.Controllers.WorkTimeManagement
 
             return File(file, "application/octet-stream", string.Empty);
         }
+
+        [HttpPut("{id}/admin")]
+        public IActionResult AdminUpdate(int id, [FromBody] AdminUpdateParams request)
+        {
+            var response = workTimeService.AdminUpdate(id, request);
+
+            return this.CreateResponse(response);
+        }
     }
 }
