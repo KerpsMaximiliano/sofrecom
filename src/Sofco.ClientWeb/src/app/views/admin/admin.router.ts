@@ -32,6 +32,7 @@ import { WorkflowTransitionEditComponent } from "./workflow/transition-edit/tran
 import { WorkflowStateListComponent } from "./workflow/state-list/state-list.component";
 import { WorkflowStateAddComponent } from "./workflow/state-add/state-add.component";
 import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
+import { SolfacAdminComponent } from "./solfac/solfac-admin.component";
 
 const ADMIN_ROUTER: Routes = [
     { path: 'roles', children:[
@@ -93,6 +94,8 @@ const ADMIN_ROUTER: Routes = [
         { path: '', component: SettingsComponent, canActivate: [AuthGuard], data: { module: "PARMS", functionality: "UPDAT" } }
       ]},
 
+      { path: "solfac", component: SolfacAdminComponent, canActivate: [AuthGuard], data: { module: "USR", functionality: "QUERY" } },
+      
       { path: "workflows", children: [
         { path: '', component: WorkflowListComponent, canActivate: [AuthGuard] },
         { path: ':id', component: WorkflowDetailComponent, canActivate: [AuthGuard] },

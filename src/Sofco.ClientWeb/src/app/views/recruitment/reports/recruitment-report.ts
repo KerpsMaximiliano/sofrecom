@@ -10,6 +10,7 @@ import { JobSearchService } from 'app/services/recruitment/jobsearch.service';
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 import { ReasonCauseType } from 'app/models/enums/reasonCauseType';
 import { ApplicantStatus } from 'app/models/enums/applicantStatus';
+import { MenuService } from 'app/services/admin/menu.service';
 
 @Component({
   selector: 'app-recruitment-report',
@@ -70,6 +71,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
 
     constructor(private dataTableService: DataTableService,
         private genericOptionsService: GenericOptionService,
+        private menuService: MenuService,
         private customerService: CustomerService,
         private jobSearchService: JobSearchService,
         private messageService: MessageService) { }
@@ -91,9 +93,20 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
     }
 
     getCustomers() {
-        this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
-            this.customerOptions = d.data;
-        });
+        if(this.isRrhh()){
+            this.getClientsSubscrip = this.customerService.getAllOptions().subscribe(d => {
+                this.customerOptions = d.data;
+            });
+        }
+        else{
+            this.getClientsSubscrip = this.customerService.getOptionsByCurrentManager().subscribe(d => {
+                this.customerOptions = d.data;
+            });
+        }
+    }
+
+    isRrhh(){
+        return this.menuService.userIsRrhh;
     }
 
     getSkills(){

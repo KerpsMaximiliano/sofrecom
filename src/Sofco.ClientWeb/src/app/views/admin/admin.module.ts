@@ -61,9 +61,11 @@ import { WorkflowTransitionEditComponent } from './workflow/transition-edit/tran
 import { WorkflowStateListComponent } from './workflow/state-list/state-list.component';
 import { WorkflowStateAddComponent } from './workflow/state-add/state-add.component';
 import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
+import { SolfacService } from 'app/services/billing/solfac.service';
+import { SolfacAdminComponent } from './solfac/solfac-admin.component';
 
 @NgModule({
-  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent,
+  declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, SolfacAdminComponent,
                  UserDetailComponent, GroupEditComponent, GroupAddComponent, ModulesComponent, ModuleEditComponent, UserAddComponent, 
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
                  TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent, WorkflowTransitionEditComponent,
@@ -74,7 +76,7 @@ import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.com
                  SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule, ReactiveFormsModule],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService,
-                 TaskService, AreaService, SectorService, WorkflowService, UtilsService],
+                 TaskService, AreaService, SectorService, WorkflowService, UtilsService, SolfacService],
 
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, SettingsComponent]

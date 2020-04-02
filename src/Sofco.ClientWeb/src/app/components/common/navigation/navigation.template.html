@@ -38,6 +38,8 @@
               [routerLink]="['/admin/settings']">{{'ADMIN.settings.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('workflows')}" *ngIf="menuService.hasFunctionality('WORKF', 'QUERY')"><a
               [routerLink]="['/admin/workflows']">Workflows</a></li>
+              <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a
+                [routerLink]="['/admin/solfac']">Solfac</a></li>
         </ul>
       </li>
 

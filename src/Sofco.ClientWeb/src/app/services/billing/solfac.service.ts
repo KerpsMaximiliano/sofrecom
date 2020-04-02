@@ -127,4 +127,8 @@ export class SolfacService {
   getFile(id) {
     return this.http.get<any>(`${this.baseUrl}/solfacs/file/${id}`);
   }
+
+  adminUpdate(id, model) {
+    return this.http.put<any>(`${this.baseUrl}/solfacs/${id}/admin`, model);
+  }
 }

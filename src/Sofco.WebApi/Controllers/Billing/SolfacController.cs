@@ -442,6 +442,14 @@ namespace Sofco.WebApi.Controllers.Billing
             return Ok(responseModel);
         }
 
+        [HttpPut("{id}/admin")]
+        public IActionResult AdminUpdate(int id, [FromBody] SolfacAdminUpdate request)
+        {
+            var response = solfacService.AdminUpdate(id, request);
+
+            return this.CreateResponse(response);
+        }
+
         private IEnumerable<Option> GetStatuses()
         {
             yield return new Option { Id = (int)SolfacStatus.SendPending, Text = SolfacStatus.SendPending.ToString() };

@@ -4,6 +4,7 @@ using System.Linq;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Managers;
 using Sofco.Core.Models.Recruitment;
 using Sofco.Core.Services.Recruitment;
 using Sofco.Domain.Utils;
@@ -15,12 +16,14 @@ namespace Sofco.Service.Implementations.Recruitment
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<RecruitmentReportService> logger;
         private readonly IUserData userData;
+        private readonly IRoleManager roleManager;
 
-        public RecruitmentReportService(IUnitOfWork unitOfWork, ILogMailer<RecruitmentReportService> logger, IUserData userData)
+        public RecruitmentReportService(IUnitOfWork unitOfWork, ILogMailer<RecruitmentReportService> logger, IUserData userData, IRoleManager roleManager)
         {
             this.logger = logger;
             this.unitOfWork = unitOfWork;
             this.userData = userData;
+            this.roleManager = roleManager;
         }
 
         public Response<IList<RecruitmentReportResponse>> Search(RecruitmentReportParameters parameter)
@@ -31,7 +34,15 @@ namespace Sofco.Service.Implementations.Recruitment
             {
                 var list = unitOfWork.JobSearchRepository.SearchForReport(parameter);
 
-                response.Data = list.Select(x => new RecruitmentReportResponse(x)).ToList();
+                if (roleManager.IsRrhh())
+                {
+                    response.Data = list.Select(x => new RecruitmentReportResponse(x)).ToList();
+                }
+                else
+                {
+                    var currentUser = userData.GetCurrentUser();
+                    response.Data = list.Where(x => x.UserId == currentUser.Id).Select(x => new RecruitmentReportResponse(x)).ToList();
+                }
             }
             catch (Exception e)
             {

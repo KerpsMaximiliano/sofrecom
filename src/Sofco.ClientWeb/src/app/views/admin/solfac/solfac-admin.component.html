@@ -1,0 +1,97 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-xs-12">
+        <h2>Administrar Solfac</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
+            </li>
+            <li>
+                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
+            </li>
+            <li class="active">
+                <strong>Solfac</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+
+            <div class="row">
+                <div class="col-lg-2">
+                    <label class="control-label">Id de Solfac</label>
+                    <div class="input-group m-b">
+                        <input type="number" class="form-control" min="0" [(ngModel)]="solfacId"> 
+                        <span class="input-group-addon" (click)="search()"><i class="fa fa-search"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="solfacFound">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Cliente</label>
+                        <input type="text" class="form-control" [(ngModel)]="accountName">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Código</label>
+                        <input type="text" class="form-control" [(ngModel)]="accountId">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="solfacFound">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Servicio</label>
+                        <input type="text" class="form-control" [(ngModel)]="serviceName">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Código</label>
+                        <input type="text" class="form-control" [(ngModel)]="serviceId">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="solfacFound">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Proyecto</label>
+                        <input type="text" class="form-control" [(ngModel)]="projectName">
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Código</label>
+                        <input type="text" class="form-control" [(ngModel)]="projectId">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="solfacFound">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label">Analitica</label>
+                        <input type="text" class="form-control" [(ngModel)]="analytic">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="control-label">Oportunidad</label>
+                        <input type="text" class="form-control" [(ngModel)]="opportunity">
+                    </div>
+                </div>
+            </div>
+
+            <hr class="hr-line-dashed" *ngIf="solfacFound">
+
+            <button (click)="save()" class="btn btn-primary" type="button" *ngIf="solfacFound">{{'ACTIONS.ACCEPT' | translate }}</button>
+        </div>
+    </div>
+</div>

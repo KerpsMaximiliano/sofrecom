@@ -794,6 +794,43 @@ namespace Sofco.Service.Implementations.Billing
             return response;
         }
 
+        public Response AdminUpdate(int id, SolfacAdminUpdate request)
+        {
+            var response = new Response();
+
+            var solfac = unitOfWork.SolfacRepository.Get(id);
+
+            if (solfac == null)
+            {
+                response.AddError(Resources.Billing.Solfac.NotFound);
+                return response;
+            }
+
+            try
+            {
+                solfac.AccountId = request.AccountId;
+                solfac.BusinessName = request.AccountName;
+                solfac.ServiceId = request.ServiceId;
+                solfac.Service = request.ServiceName;
+                solfac.ProjectId = request.ProjectId;
+                solfac.Project = request.ProjectName;
+                solfac.Analytic = request.Analytic;
+                solfac.OpportunityNumber = request.Opportunity;
+
+                unitOfWork.SolfacRepository.Update(solfac);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.Common.UpdateSuccess);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e);
+                response.AddError(Resources.Common.ErrorSave);
+            }
+
+            return response;
+        }
+
         private void CreateHitoOnCrm(Solfac solfac, Response response)
         {
             if (!SolfacHelper.IsCreditNote(solfac) && !SolfacHelper.IsDebitNote(solfac))

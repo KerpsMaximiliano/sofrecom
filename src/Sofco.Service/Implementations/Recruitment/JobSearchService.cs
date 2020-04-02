@@ -347,7 +347,7 @@ namespace Sofco.Service.Implementations.Recruitment
 
             if (list.Any())
             {
-                if (roleManager.IsRrhh())
+                if (roleManager.IsRrhh()) 
                 {
                     response.Data = list.Select(x => new JobSearchResultModel(x)).ToList();
                 }
