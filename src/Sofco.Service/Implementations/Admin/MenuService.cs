@@ -18,71 +18,69 @@ namespace Sofco.Service.Implementations.Admin
 
         private readonly IUserService userService;
 
-        //private readonly IRoleManager roleManager;
+        private readonly IRoleManager roleManager;
 
-        //private readonly IAreaData areaData;
+        private readonly IAreaData areaData;
 
-        //private readonly ISectorData sectorData;
+        private readonly ISectorData sectorData;
 
         private readonly EmailConfig emailConfig;
 
-        //private readonly IUserData userData;
+        private readonly IUserData userData;
 
-        public MenuService(IUnitOfWork unitOfWork, IUserService userService, IOptions<EmailConfig> emailConfig)
-        //public MenuService(IUnitOfWork unitOfWork, IUserService userService, IOptions<EmailConfig> emailConfig, IAreaData areaData, ISectorData sectorData, IRoleManager roleManager, IUserData userData)
+        public MenuService(IUnitOfWork unitOfWork, IUserService userService, IOptions<EmailConfig> emailConfig, IAreaData areaData, ISectorData sectorData, IRoleManager roleManager, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
             this.userService = userService;
-            //this.areaData = areaData;
-            //this.sectorData = sectorData;
-            //this.roleManager = roleManager;
+            this.areaData = areaData;
+            this.sectorData = sectorData;
+            this.roleManager = roleManager;
             this.emailConfig = emailConfig.Value;
-            //this.userData = userData;
+            this.userData = userData;
         }
 
         public Response<MenuResponseModel> GetFunctionalitiesByUserName()
         {
-            //var roles = roleManager.GetRoles();
+            var roles = roleManager.GetRoles();
 
-            //var modules = unitOfWork.MenuRepository.GetFunctionalitiesByRoles(roles.Select(x => x.Id));
+            var modules = unitOfWork.MenuRepository.GetFunctionalitiesByRoles(roles.Select(x => x.Id));
 
             var model = new MenuResponseModel();
 
-            //foreach (var item in modules)
-            //{
-            //    if (!item.Functionality.Active || !item.Functionality.Module.Active) continue;
+            foreach (var item in modules)
+            {
+                if (!item.Functionality.Active || !item.Functionality.Module.Active) continue;
 
-            //    if (model.Menus.Any(x => x.Module == item.Functionality.Module.Code && x.Functionality == item.Functionality.Code)) continue;
+                if (model.Menus.Any(x => x.Module == item.Functionality.Module.Code && x.Functionality == item.Functionality.Code)) continue;
 
-            //    var menu = new MenuModel
-            //    {
-            //        Description = item.Functionality.Description,
-            //        Functionality = item.Functionality.Code,
-            //        Module = item.Functionality.Module.Code
-            //    };
+                var menu = new MenuModel
+                {
+                    Description = item.Functionality.Description,
+                    Functionality = item.Functionality.Code,
+                    Module = item.Functionality.Module.Code
+                };
 
-            //    model.Menus.Add(menu);
-            //}
+                model.Menus.Add(menu);
+            }
 
             model.IsDirector = userService.HasDirectorGroup();
             model.IsManager = userService.HasManagerGroup();
-            //model.IsManagementReportDelegate = roleManager.IsManagementReportDelegate();
+            model.IsManagementReportDelegate = roleManager.IsManagementReportDelegate();
             model.IsDaf = userService.HasDafGroup();
             model.IsGaf = userService.HasGafGroup();
             model.IsCdg = userService.HasCdgGroup();
             model.IsRrhh = userService.HasRrhhGroup();
-            //model.IsRecruiter = roleManager.IsRecruiter(emailConfig.RecruitersCode);
+            model.IsRecruiter = roleManager.IsRecruiter(emailConfig.RecruitersCode);
             model.IsCompliance = userService.HasComplianceGroup();
             model.DafMail = GetGroupMail(emailConfig.DafCode);
             model.CdgMail = GetGroupMail(emailConfig.CdgCode);
             model.PmoMail = GetGroupMail(emailConfig.PmoCode);
             model.RrhhMail = GetGroupMail(emailConfig.RrhhCode);
             model.SellerMail = GetGroupMail(emailConfig.SellerCode);
-            //model.AreaIds = areaData.GetIdByCurrent();
-            //model.SectorIds = sectorData.GetIdByCurrent();
+            model.AreaIds = areaData.GetIdByCurrent();
+            model.SectorIds = sectorData.GetIdByCurrent();
              
-            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(5, DelegationType.RefundAdd);
-            //var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.RefundAdd);
+            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.RefundAdd);
 
             foreach (var userDelegate in delegations)
             {
