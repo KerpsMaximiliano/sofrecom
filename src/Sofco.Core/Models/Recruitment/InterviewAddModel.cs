@@ -15,6 +15,8 @@ namespace Sofco.Core.Models.Recruitment
 
         public DateTime? RrhhInterviewDate { get; set; }
 
+        public string PhoneInterviewComments { get; set; }
+
         public string RrhhInterviewPlace { get; set; }
 
         public int? RrhhInterviewerId { get; set; }

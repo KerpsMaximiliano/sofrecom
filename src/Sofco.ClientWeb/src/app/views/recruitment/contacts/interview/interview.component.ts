@@ -32,6 +32,7 @@ export class InterviewComponent implements OnInit, OnDestroy {
 
     form: FormGroup = new FormGroup({
         salary: new FormControl(null),
+        phoneInterviewComments: new FormControl(null, [Validators.maxLength(1000)]),
 
         rrhhInterviewDate: new FormControl(null),
         rrhhInterviewPlace: new FormControl(null),
@@ -90,6 +91,8 @@ export class InterviewComponent implements OnInit, OnDestroy {
             rrhhInterviewerId: this.form.controls.rrhhInterviewerId.value,
             rrhhInterviewComments: this.form.controls.rrhhInterviewComments.value,
 
+            phoneInterviewComments: this.form.controls.phoneInterviewComments.value,
+
             technicalInterviewDate: this.form.controls.technicalInterviewDate.value,
             technicalInterviewPlace: this.form.controls.technicalInterviewPlace.value,
             technicalExternalInterviewer: this.form.controls.technicalExternalInterviewer.value,
@@ -146,6 +149,9 @@ export class InterviewComponent implements OnInit, OnDestroy {
         this.hasRrhhInterviewChanged(this.hasRrhhInterview);
         this.hasPhoneInterviewChanged(this.hasPhoneInterview);
 
+        // Phone
+        this.form.controls.phoneInterviewComments.setValue(history.phoneInterviewComments);
+
         // RRHH
         if(history.rrhhInterviewDate){
             this.form.controls.rrhhInterviewDate.setValue(moment(history.rrhhInterviewDate).toDate());
@@ -184,6 +190,8 @@ export class InterviewComponent implements OnInit, OnDestroy {
 
         this.form.controls.salary.setValue(null);
 
+        this.form.controls.phoneInterviewComments.setValue(null);
+
         this.form.controls.rrhhInterviewDate.setValue(null);
         this.form.controls.rrhhInterviewPlace.setValue(null);
         this.form.controls.rrhhInterviewerId.setValue(null);
@@ -207,6 +215,8 @@ export class InterviewComponent implements OnInit, OnDestroy {
         }
         else{
             this.form.controls.salary.clearValidators();
+
+            this.form.controls.phoneInterviewComments.setValue(null);
         }
     }
 

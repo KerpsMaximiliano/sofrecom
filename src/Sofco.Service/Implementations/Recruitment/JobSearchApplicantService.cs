@@ -175,6 +175,7 @@ namespace Sofco.Service.Implementations.Recruitment
             try
             {
                 jobSearchApplicant.HasPhoneInterview = model.HasPhoneInterview;
+                jobSearchApplicant.PhoneInterviewComments = model.PhoneInterviewComments;
 
                 if (model.HasRrhhInterview)
                 {

@@ -34,13 +34,14 @@ namespace Sofco.Core.Models.Recruitment
                 Skills = string.Join(";", domain.JobSearch.JobSearchSkillsRequired.Select(x => x.Skill.Text));
 
             HasPhoneInterview = domain.HasPhoneInterview;
+            PhoneInterviewComments = domain.PhoneInterviewComments;
 
             HasRrhhInterview = domain.HasRrhhInterview;
             RrhhInterviewDate = domain.RrhhInterviewDate;
             RrhhInterviewPlace = domain.RrhhInterviewPlace;
             RrhhInterviewerId = domain.RrhhInterviewerId;
             RrhhInterviewComments = domain.RrhhInterviewComments;
-
+     
             HasTechnicalInterview = domain.HasTechnicalInterview;
             TechnicalInterviewDate = domain.TechnicalInterviewDate;
             TechnicalInterviewPlace = domain.TechnicalInterviewPlace;
@@ -52,7 +53,34 @@ namespace Sofco.Core.Models.Recruitment
             ClientInterviewPlace = domain.ClientInterviewPlace;
             ClientExternalInterviewer = domain.ClientExternalInterviewer;
             ClientInterviewComments = domain.ClientInterviewComments;
+
+            if (domain.HasClientInterview)
+            {
+                ContactType = "Entrev. Cliente";
+            }
+            else
+            {
+                if (domain.HasTechnicalInterview)
+                {
+                    ContactType = "Entrev. Técnica";
+                }
+                else
+                {
+                    if (domain.HasRrhhInterview)
+                    {
+                        ContactType = "Entrev. RRHH";
+                    }
+                    else if (domain.HasPhoneInterview)
+                    {
+                        ContactType = "Contacto inicial";
+                    }
+                }
+            }
         }
+
+        public string PhoneInterviewComments { get; set; }
+
+        public string ContactType { get; set; }
 
         public bool HasPhoneInterview { get; set; }
 

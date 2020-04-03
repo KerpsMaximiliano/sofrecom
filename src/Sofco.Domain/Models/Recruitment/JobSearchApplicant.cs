@@ -65,5 +65,6 @@ namespace Sofco.Domain.Models.Recruitment
         public DateTime ModifiedAt { get; set; }
 
         public bool HasPhoneInterview { get; set; }
+        public string PhoneInterviewComments { get; set; }
     }
 }

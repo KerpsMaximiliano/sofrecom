@@ -184,12 +184,15 @@ namespace Sofco.Core.Models.Recruitment
             RemoteWork = jobSearchApplicant.RemoteWork;
             TechnicalInterviewer = jobSearchApplicant.TechnicalExternalInterviewer;
     
-            HadInterview = jobSearchApplicant.HasClientInterview || jobSearchApplicant.HasTechnicalInterview || jobSearchApplicant.HasRrhhInterview;
+            HadInterview = jobSearchApplicant.HasClientInterview || jobSearchApplicant.HasTechnicalInterview || jobSearchApplicant.HasRrhhInterview || jobSearchApplicant.HasPhoneInterview;
 
             RrhhInterviewComments = jobSearchApplicant.RrhhInterviewComments;
             TechnicalInterviewComments = jobSearchApplicant.TechnicalInterviewComments;
             ClientInterviewComments = jobSearchApplicant.ClientInterviewComments;
+            PhoneInterviewComments = jobSearchApplicant.PhoneInterviewComments;
         }
+
+        public string PhoneInterviewComments { get; set; }
 
         public ApplicantStatus Status { get; set; }
 

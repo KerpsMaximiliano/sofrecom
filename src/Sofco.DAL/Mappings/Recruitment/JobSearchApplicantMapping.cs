@@ -11,9 +11,10 @@ namespace Sofco.DAL.Mappings.Recruitment
             builder.Entity<JobSearchApplicant>().Property(x => x.RrhhInterviewPlace).HasMaxLength(100);
             builder.Entity<JobSearchApplicant>().Property(x => x.TechnicalInterviewPlace).HasMaxLength(100);
             builder.Entity<JobSearchApplicant>().Property(x => x.ClientInterviewPlace).HasMaxLength(100);
-            builder.Entity<JobSearchApplicant>().Property(x => x.RrhhInterviewComments).HasMaxLength(100);
-            builder.Entity<JobSearchApplicant>().Property(x => x.TechnicalInterviewComments).HasMaxLength(100);
-            builder.Entity<JobSearchApplicant>().Property(x => x.ClientInterviewComments).HasMaxLength(100);
+            builder.Entity<JobSearchApplicant>().Property(x => x.RrhhInterviewComments).HasMaxLength(1000);
+            builder.Entity<JobSearchApplicant>().Property(x => x.TechnicalInterviewComments).HasMaxLength(1000);
+            builder.Entity<JobSearchApplicant>().Property(x => x.ClientInterviewComments).HasMaxLength(1000);
+            builder.Entity<JobSearchApplicant>().Property(x => x.PhoneInterviewComments).HasMaxLength(1000);
 
             builder.Entity<JobSearchApplicant>()
                 .HasOne(pt => pt.RrhhInterviewer)
