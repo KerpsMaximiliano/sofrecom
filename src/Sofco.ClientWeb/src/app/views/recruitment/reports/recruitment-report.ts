@@ -310,7 +310,7 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
                 }
             });
 
-            this.buildTimeAverageGraph();
+            this.buildTimeAverageGraph(jobsearchSelected);
 
             if(this.contacts.length > 0){
                 this.initContactGrid();
@@ -634,8 +634,8 @@ export class RecruitmentReportComponent implements OnInit, OnDestroy {
         this.commentsModal.show();
     }
 
-    buildTimeAverageGraph(){
-        this.list.forEach(x => {
+    buildTimeAverageGraph(jobsearchSelected){
+        jobsearchSelected.forEach(x => {
 
             let existData = this.daysOpenedData.find(s => s.type == x.resourceAssignmentId);
 

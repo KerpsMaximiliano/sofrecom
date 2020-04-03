@@ -368,10 +368,13 @@ export class DetailContactsComponent implements OnInit {
 
   initGrid() {
     var columns = [0, 1, 2, 3, 4, 5, 6, 7];
+    var title = `${this.form.controls.lastName} - historial de contactos`;
 
     var options = {
         selector: "#historyTable",
         columns: columns,
+        title: title,
+        withExport: true,
         order: [[ 0, "desc" ]],
         columnDefs: [ { "aTargets": [0], "sType": "date-uk" }],
     };

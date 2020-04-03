@@ -8,6 +8,7 @@
                 <th>Ultimo Contacto</th>
                 <th>Ultimo Motivo</th>
                 <th>Estado</th>
+                <th>Tipo Contacto</th>
             </tr>
         </thead>
         <tbody>
@@ -18,6 +19,7 @@
                 <td>{{ item.date | date:'dd/MM/yyyy' }}</td>
                 <td>{{ item.reason }}</td>
                 <td>{{ getStatusDesc(item.status) }}</td>
+                <td>{{ item.contactType }}</td>
             </tr>
         </tbody>
     </table>       

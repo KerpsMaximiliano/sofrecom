@@ -24,6 +24,9 @@ export class ApplicantsRelatedByJsComponent implements OnDestroy {
 
         var options = {
             selector: "#applicantsByJs",
+            columns: [0, 1, 2, 3, 4, 5, 6],
+            title: `Busqueda #${id} - postulantes contactados`,
+            withExport: true,
             columnDefs: [ { "aTargets": [3], "sType": "date-uk" }],
         };
 

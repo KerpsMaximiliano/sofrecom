@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using Sofco.Domain.Enums;
+﻿using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Recruitment;
+using System;
+using System.Linq;
 
 namespace Sofco.Core.Models.Recruitment
 {
@@ -64,7 +64,32 @@ namespace Sofco.Core.Models.Recruitment
             Reason = jobSearchApplicant?.Reason?.Text;
 
             Status = jobSearchApplicant.Applicant.Status;
+
+            if (jobSearchApplicant.HasClientInterview)
+            {
+                ContactType = "Entrev. Cliente";
+            }
+            else
+            {
+                if (jobSearchApplicant.HasTechnicalInterview)
+                {
+                    ContactType = "Entrev. Técnica";
+                }
+                else
+                {
+                    if (jobSearchApplicant.HasRrhhInterview)
+                    {
+                        ContactType = "Entrev. RRHH";
+                    }
+                    else if (jobSearchApplicant.HasPhoneInterview)
+                    {
+                        ContactType = "Contacto inicial";
+                    }
+                }
+            }
         }
+
+        public string ContactType { get; set; }
 
         public ApplicantStatus Status { get; set; }
 
