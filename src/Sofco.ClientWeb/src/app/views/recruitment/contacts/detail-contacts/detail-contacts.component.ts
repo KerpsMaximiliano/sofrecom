@@ -368,7 +368,7 @@ export class DetailContactsComponent implements OnInit {
 
   initGrid() {
     var columns = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-    var title = `${this.form.controls.lastName} - historial de contactos`;
+    var title = `${this.form.controls.lastName.value} - historial de contactos`;
 
     var options = {
         selector: "#historyTable",
