@@ -179,14 +179,16 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
         const idPos = 1;
         //const receptionDatePos = 4;
         const statusTextPos = 5;
-        const ammountNumberPos = 7;
-        const balanceNumberPos = 8;
+        const currencyTextPos = 7;
+        const ammountNumberPos = 8;
         data.header.splice(0, 2);
         const dataBody = data.body;
         const result = [];
         for(let index = 0; index < dataBody.length; index++) {
             const dataBodyItem = dataBody[index];
+
             const itemId = dataBodyItem[idPos];
+
             dataBodyItem.splice(0, 2);
             const item = self.data.find(x => x.id == itemId);
             if(item === undefined) continue;
@@ -194,7 +196,10 @@ export class PurchaseOrderViewComponent implements OnInit, OnDestroy {
             //dataBodyItem[receptionDatePos] = this.getReceptionDate(statusText, item);
             dataBodyItem[ammountNumberPos] = this.getAmmount(statusText, item);
             // dataBodyItem[balanceNumberPos] = item.balance;
+            dataBodyItem[currencyTextPos] = item.currencyText;
+
             result.push(dataBodyItem);
+
             const details = item.details;
             if(details.length == 0) continue;
             let rowItem = this.getExportSubHeader();
