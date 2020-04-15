@@ -185,14 +185,17 @@ namespace Sofco.Service.Implementations.Billing
                 return response;
             }
 
-            if (string.IsNullOrWhiteSpace(solfac.OpportunityNumber))
-            {
-                var project = unitOfWork.ProjectRepository.GetByIdCrm(solfac.ProjectId);
+            var project = unitOfWork.ProjectRepository.GetByIdCrm(solfac.ProjectId);
 
-                if (project != null)
+            if (project != null)
+            {
+                if (string.IsNullOrWhiteSpace(solfac.OpportunityNumber))
                 {
                     solfac.OpportunityNumber = project.OpportunityNumber;
                 }
+
+                solfac.Integrator = project.Integrator;
+                solfac.IntegratorId = project.IntegratorId;
             }
 
             response.Data = solfac;
