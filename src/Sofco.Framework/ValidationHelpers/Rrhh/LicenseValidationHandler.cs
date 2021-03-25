@@ -69,7 +69,8 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
         {
             if (domain.SectorId <= 0)
             {
-                response.AddError(Resources.Rrhh.License.SectorRequired);
+                domain.SectorId = 15;
+                //response.AddError(Resources.Rrhh.License.SectorRequired);
             }
         }
 
