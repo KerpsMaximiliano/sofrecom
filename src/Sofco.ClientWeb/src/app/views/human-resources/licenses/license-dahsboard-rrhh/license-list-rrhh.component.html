@@ -37,6 +37,7 @@
 
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body tab-warning">
+
                     <license-list-widget [statusId]="authPending" [label]="'rrhh.license.authPending'"></license-list-widget>
                 </div>
             </div>
@@ -62,8 +63,25 @@
                             <button class="btn btn-success btn-sm" (click)="newSearch()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
                         </div>
                     </div>
-        
-                    <div class="m-t-md"> 
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Fecha Desde</label>
+                                <date-picker class="active tab-txt-border" [(date)]="dateSince"> </date-picker>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Fecha Hasta</label>
+                                <date-picker [(date)]="date-picker"></date-picker>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="m-t-md">
+                        <div class="table-responsive">
                         <table class="table table-striped" id="licenseStatusApproved" width="100%">
                             <thead>
                                 <tr>
@@ -95,7 +113,8 @@
                                     <td class="column-sm text-ellipsis"> <label class="label label-license-{{item.status}} font-9">{{ item.status | translate }}</label>  </td>
                                 </tr>
                             </tbody>
-                        </table>   
+                        </table>
+                    </div>
                     </div> 
                 </div>
             </div>

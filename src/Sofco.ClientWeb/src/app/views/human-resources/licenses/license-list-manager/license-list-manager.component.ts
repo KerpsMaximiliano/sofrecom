@@ -31,6 +31,9 @@ export class LicenseListManager implements OnInit, OnDestroy {
     public employeeId: any;
     public managerId: number = 0;
 
+    public dateSince: Date = moment(new Date()).format("YYYY-MM-DD");
+    public dateTo: Date = moment(new Date()).format("YYYY-MM-DD");
+
     constructor(private licenseService: LicenseService,
         private router: Router,
         private employeeService: EmployeeService,
@@ -51,9 +54,14 @@ export class LicenseListManager implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if(this.getDataSubscrip) this.getDataSubscrip.unsubscribe();
-        if(this.getLicenseTypeSubscrip) this.getLicenseTypeSubscrip.unsubscribe();
-        if(this.getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe();
+        if(this.getDataSubscrip)
+            this.getDataSubscrip.unsubscribe();
+
+        if(this.getLicenseTypeSubscrip) 
+            this.getLicenseTypeSubscrip.unsubscribe();
+    
+        if(this.getEmployeesSubscrip)
+            this.getEmployeesSubscrip.unsubscribe();
     }
 
     getEmployees(){
@@ -120,6 +128,14 @@ export class LicenseListManager implements OnInit, OnDestroy {
                 addItem = false;
             }
 
+            if(this.dateSince >= x.startDate){
+                addItem = false;
+            }
+
+            if(this.dateTo <= x.toDate){
+                addItem = false;
+            }
+
             if(addItem){
                 this.dataFiltered.push(x);
             }
@@ -131,5 +147,7 @@ export class LicenseListManager implements OnInit, OnDestroy {
     clean(){
         this.employeeId = null;
         this.licensesTypeId = null;
+        this.dateSince = moment(new Date()).format("YYYY/MM/DD");
+        this.dateTo = moment(new Date()).format("YYYY/MM/DD");
     }
 }

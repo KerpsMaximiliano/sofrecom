@@ -29,6 +29,9 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    public dateSince: Date = moment(new Date()).format("YYYY/MM/DD");
+    public dateTo: Date = moment(new Date()).format("YYYY/MM/DD");
+
     public pending: number = LicenseStatus.Pending;
     public authPending: number = LicenseStatus.AuthPending;
     public approved: number = LicenseStatus.Approved;
@@ -65,6 +68,8 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         this.getLicenceTypes();
 
         if(data){
+            this.dateSince = moment(data.startDate).toDate();
+
             this.searchLastQuery(data);
         }
         else{
@@ -113,6 +118,10 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         var params = {
             employeeId: this.employeeId,
             licenseTypeId: this.licensesTypeId
+            
+            ,
+            dateSince: this.dateSince,
+            dateTo: this.dateTo
         }
 
         this.search(params);
@@ -129,6 +138,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
             sessionStorage.setItem('lastLicenseQuery', JSON.stringify(params));
         },
         error => {});
+
     }
 
     initGrid(){
@@ -151,6 +161,8 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         sessionStorage.removeItem('lastLicenseQuery');
         this.employeeId = null;
         this.licensesTypeId = null;
+        this.dateSince = moment(new Date()).format("YYYY/MM/DD");
+        this.dateTo = moment(new Date()).format("YYYY/MM/DD");
     }
 
     goToDetail(item){
