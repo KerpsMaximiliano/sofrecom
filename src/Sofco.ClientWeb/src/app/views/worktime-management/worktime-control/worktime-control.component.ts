@@ -65,6 +65,15 @@ export class WorkTimeControlComponent implements OnDestroy  {
         if(this.closeMonths && this.closeMonths.length > 0){
             let data = this.closeMonths[0];
             this.closeMonthId = data.id;
+
+            const monthToday : Date = moment(new Date()).format("MM");
+
+            for(let i = 0; i < this.closeMonths.length; i++){
+                if(this.closeMonths[i].month == monthToday){
+                    this.closeMonthId = this.closeMonths[i].id;
+                }
+            }
+            
         }
     }
 

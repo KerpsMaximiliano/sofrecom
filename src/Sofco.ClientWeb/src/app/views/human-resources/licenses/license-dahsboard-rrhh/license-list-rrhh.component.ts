@@ -29,8 +29,8 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
-    public dateSince: Date = moment(new Date()).format("YYYY/MM/DD");
-    public dateTo: Date = moment(new Date()).format("YYYY/MM/DD");
+    public dateSince: Date = null;
+    public dateTo: Date = null;
 
     public pending: number = LicenseStatus.Pending;
     public authPending: number = LicenseStatus.AuthPending;
@@ -68,12 +68,10 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         this.getLicenceTypes();
 
         if(data){
-            this.dateSince = moment(data.startDate).toDate();
-
             this.searchLastQuery(data);
         }
         else{
-            this.initGrid();
+            this.newSearch();
         }
     }
 
@@ -91,7 +89,6 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
     getLicenceTypes(){
         this.getLicenseTypeSubscrip = this.licenseService.getLicenceTypes().subscribe(data => {
-
             var list = [];
             data.optionsWithPayment.forEach(element => {
                 list.push(element);
@@ -117,13 +114,10 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     newSearch(){
         var params = {
             employeeId: this.employeeId,
-            licenseTypeId: this.licensesTypeId
-            
-            ,
+            licenseTypeId: this.licensesTypeId,
             dateSince: this.dateSince,
             dateTo: this.dateTo
         }
-
         this.search(params);
     }
 
@@ -134,7 +128,6 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
             this.messageService.closeLoading();
             this.data = data;
             this.initGrid();
-
             sessionStorage.setItem('lastLicenseQuery', JSON.stringify(params));
         },
         error => {});
@@ -161,8 +154,9 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         sessionStorage.removeItem('lastLicenseQuery');
         this.employeeId = null;
         this.licensesTypeId = null;
-        this.dateSince = moment(new Date()).format("YYYY/MM/DD");
-        this.dateTo = moment(new Date()).format("YYYY/MM/DD");
+        this.dateSince = null;
+        this.dateTo = null;
+        this.newSearch();
     }
 
     goToDetail(item){

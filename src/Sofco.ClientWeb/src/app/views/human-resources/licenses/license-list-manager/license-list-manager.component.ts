@@ -31,8 +31,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
     public employeeId: any;
     public managerId: number = 0;
 
-    public dateSince: Date = moment(new Date()).format("YYYY-MM-DD");
-    public dateTo: Date = moment(new Date()).format("YYYY-MM-DD");
+    public dateSince: Date = null;
+    public dateTo: Date = null;
 
     constructor(private licenseService: LicenseService,
         private router: Router,
@@ -147,7 +147,7 @@ export class LicenseListManager implements OnInit, OnDestroy {
     clean(){
         this.employeeId = null;
         this.licensesTypeId = null;
-        this.dateSince = moment(new Date()).format("YYYY/MM/DD");
-        this.dateTo = moment(new Date()).format("YYYY/MM/DD");
+        this.dateSince = null;
+        this.dateTo = null;
     }
 }

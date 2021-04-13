@@ -84,7 +84,8 @@ namespace Sofco.Service.Implementations.Common
             yield return new Option { Id = 11, Text = Resources.Months.November };
             yield return new Option { Id = 12, Text = Resources.Months.December };
         }
-        public IEnumerable<Option> GetCloseMonths()
+        
+        public IEnumerable<MonthsReturn> GetCloseMonths()
         {
             var closeDates = unitOfWork.CloseDateRepository.GetAllBeforeNextMonth();
 
@@ -93,8 +94,13 @@ namespace Sofco.Service.Implementations.Common
                 var closeDateBefore = closeDates[i - 1];
                 var closeDate = closeDates[i];
 
-                yield return new Option { Id = closeDateBefore.Id, Text = $"{ closeDate.Day+1 } { DatesHelper.GetMonthDesc(closeDate.Month) } {closeDate.Year} al " +
-                                                         $"{ closeDateBefore.Day } { DatesHelper.GetMonthDesc(closeDateBefore.Month) } {closeDateBefore.Year}" };
+                yield return new MonthsReturn
+                {
+                    Id = closeDateBefore.Id,
+                    Text = $"{ closeDate.Day + 1 } { DatesHelper.GetMonthDesc(closeDate.Month) } {closeDate.Year} al " +
+                                                         $"{ closeDateBefore.Day } { DatesHelper.GetMonthDesc(closeDateBefore.Month) } {closeDateBefore.Year}",
+                    Month = closeDate.Month
+                };
             }
         }
 

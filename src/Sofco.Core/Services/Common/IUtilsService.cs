@@ -33,7 +33,7 @@ namespace Sofco.Core.Services.Common
 
         List<object> GetUserDelegateType();
 
-        IEnumerable<Option> GetCloseMonths();
+        IEnumerable<MonthsReturn> GetCloseMonths();
 
         IList<MonthsReturn> GetMonthsReturn();
         IList<Option> GetCreditCards();
