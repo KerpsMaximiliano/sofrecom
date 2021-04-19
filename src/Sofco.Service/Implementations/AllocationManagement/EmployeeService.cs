@@ -79,7 +79,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             return unitOfWork.EmployeeRepository.GetAll();
         }
-
+        
         public ICollection<Employee> GetAllForWorkTimeReport()
         {
             return unitOfWork.EmployeeRepository.GetAllForWorkTimeReport();

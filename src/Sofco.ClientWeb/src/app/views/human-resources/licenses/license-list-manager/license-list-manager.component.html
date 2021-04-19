@@ -46,21 +46,21 @@
         
                         <div class="col-sm-4 m-t-md">
                             <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                            <button class="btn btn-success btn-sm" (click)="newSearch()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                            <button class="btn btn-success btn-sm" (click)="newSearchItem()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="control-label">Fecha Desde</label>
+                                <label class="control-label">Fecha Inicio</label>
                                 <date-picker class="active tab-txt-border" [(date)]="dateSince"></date-picker>
                             </div>
                         </div>
 
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="control-label">Fecha Hasta</label>
+                                <label class="control-label">Fecha Fin</label>
                                 <date-picker [(date)]="dateTo"></date-picker>
                             </div>
                         </div>

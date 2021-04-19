@@ -15,7 +15,7 @@ namespace Sofco.Core.DAL.AllocationManagement
     public interface IEmployeeRepository : IBaseRepository<Employee>
     {
         new ICollection<Employee> GetAll();
-
+        
         bool Exist(int employeeId);
 
         Employee GetById(int id);
@@ -35,7 +35,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         void UpdateEndDate(Employee employeeToChange);
 
         ICollection<Employee> Search(EmployeeSearchParams parameters, DateTime startDate, DateTime endDate);
-
+        
         void ResetAllExamDays();
 
         IList<EmployeeCategory> GetEmployeeCategories(int employeeId);
@@ -45,7 +45,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> GetByEmployeeNumbers(IEnumerable<string> employeeNumbers);
 
         IList<Employee> SearchUnemployees(UnemployeeSearchParameters parameters);
-
+        
         void Save(List<Employee> employees);
 
         void Save(Employee employee);

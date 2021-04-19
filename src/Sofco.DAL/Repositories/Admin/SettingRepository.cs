@@ -18,7 +18,7 @@ namespace Sofco.DAL.Repositories.Admin
         {
             return context.Settings.ToList();
         }
-
+        
         public void Save(List<Setting> globalSettings)
         {
             var items = context.Settings.Where(s => globalSettings.Select(x => x.Id).Contains(s.Id));

@@ -28,12 +28,12 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
         [HttpGet]
         public IActionResult Get()
-        {
+      {
             var model = employeeService.GetAll().Select(x => new EmployeeModel(x));
 
             return Ok(model.OrderBy(x => x.Name));
         }
-
+        
         [HttpGet("worktimeReport")]
         public IActionResult GetAllForWorkTimeReport()
         {

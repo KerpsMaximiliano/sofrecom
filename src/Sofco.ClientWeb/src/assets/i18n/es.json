@@ -773,7 +773,7 @@
             "type": "Licencia",
             "start": "Inicio",
             "end": "Fin",
-            "creation": "Alta",
+            "creation": "Carga",
             "days": "Días Corridos",
             "workDays": "Días Hábiles",
             "goce": "Goce",

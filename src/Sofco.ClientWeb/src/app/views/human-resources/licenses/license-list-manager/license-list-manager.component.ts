@@ -114,6 +114,58 @@ export class LicenseListManager implements OnInit, OnDestroy {
         this.router.navigate([`/rrhh/licenses/${item.id}/detail`])
     }
 
+    newSearchItem(){
+        this.dataFiltered = [];
+
+        const newDateSince = moment(this.dateSince).format('YYYY-MM-DD');
+        const newDateto = moment(this.dateTo).format('YYYY-MM-DD');
+
+        if(this.dateSince != null && this.dateTo != null){
+
+            for(let i = 0; i < this.data.length; i++){
+                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto){            
+                    
+                    if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
+                        this.dataFiltered.push(this.data[i]);
+                    }else{
+
+                        if(this.licensesTypeId != 0 && this.licensesTypeId == this.data[i].licenseTypeId){
+                            this.dataFiltered.push(this.data[i]);
+                        }
+
+                    }
+                    
+                }
+            }
+
+            this.dataFiltered.push(this.data);
+            this.initGrid();
+
+        }else if(this.dateSince != null && this.dateTo == null ){
+            
+            for(let i = 0 ; i < this.data.length; i++){
+                
+                if(this.data[i].startDate >= newDateSince){
+                    if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
+                        this.dataFiltered.push(this.data[i]);
+                    }else{
+
+                        if(this.licensesTypeId != 0 && this.licensesTypeId == this.data[i].licenseTypeId){
+                            this.dataFiltered.push(this.data[i]);
+                        }
+                    }
+            
+                }
+            }
+            
+            this.dataFiltered.push(this.data);
+            this.initGrid();
+        }else{
+            this.newSearch();
+        }
+
+    }
+
     newSearch(){
         this.dataFiltered = [];
 
@@ -125,14 +177,6 @@ export class LicenseListManager implements OnInit, OnDestroy {
             }
 
             if(this.licensesTypeId && this.licensesTypeId > 0 && this.licensesTypeId  != x.licenseTypeId){
-                addItem = false;
-            }
-
-            if(this.dateSince >= x.startDate){
-                addItem = false;
-            }
-
-            if(this.dateTo <= x.toDate){
                 addItem = false;
             }
 
@@ -149,5 +193,7 @@ export class LicenseListManager implements OnInit, OnDestroy {
         this.licensesTypeId = null;
         this.dateSince = null;
         this.dateTo = null;
+
+        this.newSearch();
     }
 }

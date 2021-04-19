@@ -27,9 +27,10 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public new ICollection<Employee> GetAll()
         {
-            return context.Employees.Include(x => x.Manager).Where(x => x.EndDate == null && !x.IsExternal).ToList();
+            var query = context.Employees.Include(x => x.Manager).Where(x => x.EndDate == null && !x.IsExternal).ToList();
+            return query;
         }
-
+        
         public ICollection<Employee> GetAllForWorkTimeReport()
         {
             var now = DateTime.UtcNow.AddMonths(-3);
@@ -486,5 +487,6 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                         .ThenInclude(x => x.Sector)
                 .SingleOrDefault(x => x.Email == email);
         }
+        
     }
 }
