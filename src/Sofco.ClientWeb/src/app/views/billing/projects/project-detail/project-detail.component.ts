@@ -386,7 +386,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
     canCreateHito(){
         if(!this.menuService.hasFunctionality('SOLFA', 'NEW-HITO')) return false;
-
+        
         let hitos = this.getHitosSelected();
         return hitos.length == 0;
     }

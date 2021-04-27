@@ -11,6 +11,8 @@ namespace Sofco.Core.DAL.Common
         IList<Delegation> GetByUserId(int userId);
         IList<Delegation> GetByUserId(int userId, DelegationType type);
         IList<Delegation> GetByGrantedUserIdAndType(int currentUserId, DelegationType type);
+        IList<Delegation> GetByGrantedUserIdAndTypeDelegation(int currentUserId);
+
         bool ExistByGrantedUserIdAndType(int userId, DelegationType type);
         IList<Delegation> GetByEmployeeSourceId(int employeeId, DelegationType licenseAuthorizer);
         IList<Delegation> GetByEmployeeSourceId(List<int> employeeIds, DelegationType type);
