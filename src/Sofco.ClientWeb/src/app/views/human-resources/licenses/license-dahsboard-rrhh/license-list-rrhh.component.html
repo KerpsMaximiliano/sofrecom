@@ -78,6 +78,11 @@
                                 <date-picker class="active tab-txt-border" [(date)]="dateTo"> </date-picker>
                             </div>
                         </div>
+
+                        <div class="col-sm-12">
+                            <label *ngIf="lblDate">La Fecha de Inicio no puede ser mayor que la Fecha Fin</label>
+                        </div>
+                        
                     </div>
 
                     <div class="m-t-md">

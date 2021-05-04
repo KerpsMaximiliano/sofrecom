@@ -49,6 +49,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
     public startDate: Date = new Date();
     public endDate: Date = new Date();
+    public lblDate: boolean;
 
     constructor(private licenseService: LicenseService,
         private employeeService: EmployeeService,
@@ -112,6 +113,11 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     newSearch(){
+        if(this.dateSince > this.dateTo){
+            this.lblDate = true;
+            return;
+        }
+
         var params = {
             employeeId: this.employeeId,
             licenseTypeId: this.licensesTypeId,
@@ -122,6 +128,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     search(params){
+        this.lblDate = false;
         this.messageService.showLoading();
 
         this.getDataSubscrip = this.licenseService.search(params).subscribe(data => {
