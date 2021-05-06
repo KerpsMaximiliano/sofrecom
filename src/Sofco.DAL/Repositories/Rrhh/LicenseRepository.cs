@@ -96,7 +96,7 @@ namespace Sofco.DAL.Repositories.Rrhh
                         .Include(x => x.Employee)
                         .Include(x => x.Manager)
                         .Include(x => x.Type)
-                        .Where(x => x.EmployeeId == parameters.EmployeeId && x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.TypeId == parameters.LicenseTypeId);
+                        .Where(x => x.EmployeeId == parameters.EmployeeId && x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.TypeId == parameters.LicenseTypeId && x.Status == LicenseStatus.Approved);
 
                 return qry.ToList();
             }else if (parameters.EmployeeId != null && parameters.dateSince != null && parameters.dateTo != null){
@@ -104,7 +104,7 @@ namespace Sofco.DAL.Repositories.Rrhh
                         .Include(x => x.Employee)
                         .Include(x => x.Manager)
                         .Include(x => x.Type)
-                        .Where(x => x.EmployeeId == parameters.EmployeeId && x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date);
+                        .Where(x => x.EmployeeId == parameters.EmployeeId && x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.Status == LicenseStatus.Approved);
 
                 return qry.ToList();
             }else if (parameters.LicenseTypeId.HasValue && parameters.LicenseTypeId > 0 && parameters.dateSince != null && parameters.dateTo != null){
@@ -112,7 +112,7 @@ namespace Sofco.DAL.Repositories.Rrhh
                     .Include(x => x.Employee)
                     .Include(x => x.Manager)
                     .Include(x => x.Type)
-                    .Where(x => x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.TypeId == parameters.LicenseTypeId);
+                    .Where(x => x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.TypeId == parameters.LicenseTypeId && x.Status == LicenseStatus.Approved);
                 
                 return qry.ToList();
             }else if (parameters.dateSince != null && parameters.dateTo != null) {
@@ -120,7 +120,7 @@ namespace Sofco.DAL.Repositories.Rrhh
                     .Include(x => x.Employee)
                     .Include(x => x.Manager)
                     .Include(x => x.Type)
-                    .Where(x => x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date);
+                    .Where(x => x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.Status == LicenseStatus.Approved);
 
                 return qry.ToList();
             }else{
@@ -131,7 +131,7 @@ namespace Sofco.DAL.Repositories.Rrhh
                     .Include(x => x.Employee)
                     .Include(x => x.Manager)
                     .Include(x => x.Type)
-                    .Where(x => x.EmployeeId == parameters.EmployeeId && x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date);
+                    .Where(x => x.EmployeeId == parameters.EmployeeId && x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.Status == LicenseStatus.Approved);
                 
                 return queryII.ToList();
             }
