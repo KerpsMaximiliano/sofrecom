@@ -144,7 +144,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
 
             return result;
         }
-
+        
         private List<WorkTimeControlResourceModel> GetResources(List<WorkTime> workTimes, DateTime startDate,
             DateTime endDate, List<Holiday> daysoff)
         {
@@ -231,7 +231,7 @@ namespace Sofco.Service.Implementations.WorkTimeManagement
                 return availableAnalyticIds;
             }
         }
-
+        
         private List<WorkTimeControlResourceDetailModel> Translate(List<WorkTime> workTimes)
         {
             var categoryIds = workTimes.Select(s => s.Task.CategoryId).Distinct().ToList();

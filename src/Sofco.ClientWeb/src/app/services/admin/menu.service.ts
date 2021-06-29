@@ -157,4 +157,5 @@ export class MenuService {
     hasSectors():boolean {
         return this.sectorIds.length > 0;
     }
+
 }

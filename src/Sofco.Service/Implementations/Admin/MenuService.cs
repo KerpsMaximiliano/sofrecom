@@ -27,7 +27,7 @@ namespace Sofco.Service.Implementations.Admin
         private readonly EmailConfig emailConfig;
 
         private readonly IUserData userData;
-
+        
         public MenuService(IUnitOfWork unitOfWork, IUserService userService, IOptions<EmailConfig> emailConfig, IAreaData areaData, ISectorData sectorData, IRoleManager roleManager, IUserData userData)
         {
             this.unitOfWork = unitOfWork;
@@ -79,9 +79,9 @@ namespace Sofco.Service.Implementations.Admin
             model.SellerMail = GetGroupMail(emailConfig.SellerCode);
             model.AreaIds = areaData.GetIdByCurrent();
             model.SectorIds = sectorData.GetIdByCurrent();
-             
-            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.RefundAdd);
 
+            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(userData.GetCurrentUser().Id, DelegationType.RefundAdd);
+            
             foreach (var userDelegate in delegations)
             {
                 model.RefundDelegates.Add(new Option
@@ -90,10 +90,25 @@ namespace Sofco.Service.Implementations.Admin
                     Text = userDelegate.User.Name
                 });
             }
+            
+            if (delegations.Count == 0)
+            {
+                var delegationItem = unitOfWork.DelegationRepository.GetByGrantedUserIdAndTypeDelegation(userData.GetCurrentUser().Id);
 
+                if(delegationItem.Count != 0)
+                {
+                    model.Menus.Add(new MenuModel
+                    {
+                        Functionality = "NEW-HITO",
+                        Module = "SOLFA"
+                    });
+                }
+                
+            }
+            
             return new Response<MenuResponseModel> { Data = model };
         }
-
+        
         public string GetGroupMail(string code)
         {
             return unitOfWork.GroupRepository.GetEmail(code);

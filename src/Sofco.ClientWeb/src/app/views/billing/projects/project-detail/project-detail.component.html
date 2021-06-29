@@ -72,7 +72,7 @@
                         <div class="panel-heading">
                             <div class="panel-options"> 
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a href="#tab-1" data-toggle="tab">{{'billing.project.detail.milestone.title' | translate }}</a></li>
+                                    <li class="active"><a href="#tab-1" data-toggle="tab">{{'billing.project.detail.milestone.title' | translate }} </a></li>
                                     <li class="" *ngIf="canSeeSolfacs()"><a href="#tab-2" data-toggle="tab" aria-expanded="true">{{'billing.project.detail.requests.title' | translate }}</a></li>
                                     <li class="" *ngIf="canSeeInvoices()"><a href="#tab-3" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.invoices.title' | translate }}</a></li>
                                     <li class=""><a href="#tab-4" data-toggle="tab" aria-expanded="false">{{'billing.project.detail.balance' | translate }}</a></li>
@@ -111,7 +111,7 @@
                                     </table>
 
                                     <div class="button-group">
-                                        <button *ngIf="canCreateHito()" (click)="createHito()" type="button" class="btn btn-success btn-sm">{{ 'billing.project.detail.milestone.create' | translate }}  <i class="fa fa-plus"></i></button> 
+                                        <button *ngIf="canCreateHito()" (click)="createHito()" type="button" class="btn btn-success btn-sm">{{ 'billing.project.detail.milestone.create' | translate }} <i class="fa fa-plus"></i></button>
                                         <button *ngIf="generateSolfacVisible() && canCreateSolfac()" (click)="createSolfac()" class="btn btn-primary btn-sm"> {{'billing.project.detail.milestone.new' | translate }} <i class="fa fa-plus"></i></button>
                                         <button *ngIf="canCreateCreditNote()" (click)="createCreditNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createCreditNote' | translate }}  <i class="fa fa-plus"></i></button> 
                                         <button *ngIf="canCreateDebitNote()" (click)="createDebitNote()" type="button" class="btn btn-primary btn-sm">{{ 'billing.project.detail.milestone.createDebitNote' | translate }}  <i class="fa fa-plus"></i></button> 

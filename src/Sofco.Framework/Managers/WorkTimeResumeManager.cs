@@ -8,6 +8,7 @@ using Sofco.Core.Managers;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Framework.Managers
 {
@@ -42,7 +43,10 @@ namespace Sofco.Framework.Managers
                 HoursWithLicense = calendarModels.Where(x => x.Status == WorkTimeStatus.License).Sum(x => x.Hours)
             };
 
-            var maxHourPerDay = GetMaxHourPerDay();
+            var currentUser = userData.GetCurrentUser();
+            var employee = unitOfWork.EmployeeRepository.GetByEmail(currentUser.Email);
+
+            var maxHourPerDay = GetMaxHourPerDay(employee);
 
             var startDate = startDateTime.Date;
 
@@ -74,6 +78,7 @@ namespace Sofco.Framework.Managers
             if (holidays.Any())
             {
                 result.BusinessHours -= holidays.Count * maxHourPerDay;
+                result.HoursUntilToday -= holidays.Count * maxHourPerDay;
             }
 
             return result;
@@ -98,8 +103,13 @@ namespace Sofco.Framework.Managers
             return GetResume(calendars, startDate, endDate);
         }
 
-        private int GetMaxHourPerDay()
+        private int GetMaxHourPerDay(Employee employee)
         {
+            if(employee != null && employee.BusinessHours > 0)
+            {
+                return employee.BusinessHours;
+            }
+
             var hourSetting = settingData.GetByKey(SettingConstant.WorkingHoursPerDaysMaxKey);
 
             if (hourSetting == null) return DefaultMaxHourPerDay;

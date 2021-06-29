@@ -6,5 +6,7 @@ namespace Sofco.Domain.Utils
     public class MonthsReturn : Option
     {
         public IList<Advancement> Advancements { get; set; }
-    } 
+        
+        public int? Month { get; set; }
+    }
 }

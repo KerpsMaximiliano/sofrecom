@@ -31,6 +31,9 @@ export class LicenseListManager implements OnInit, OnDestroy {
     public employeeId: any;
     public managerId: number = 0;
 
+    public dateSince: Date = null;
+    public dateTo: Date = null;
+
     constructor(private licenseService: LicenseService,
         private router: Router,
         private employeeService: EmployeeService,
@@ -51,9 +54,14 @@ export class LicenseListManager implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if(this.getDataSubscrip) this.getDataSubscrip.unsubscribe();
-        if(this.getLicenseTypeSubscrip) this.getLicenseTypeSubscrip.unsubscribe();
-        if(this.getEmployeesSubscrip) this.getEmployeesSubscrip.unsubscribe();
+        if(this.getDataSubscrip)
+            this.getDataSubscrip.unsubscribe();
+
+        if(this.getLicenseTypeSubscrip) 
+            this.getLicenseTypeSubscrip.unsubscribe();
+    
+        if(this.getEmployeesSubscrip)
+            this.getEmployeesSubscrip.unsubscribe();
     }
 
     getEmployees(){
@@ -106,6 +114,93 @@ export class LicenseListManager implements OnInit, OnDestroy {
         this.router.navigate([`/rrhh/licenses/${item.id}/detail`])
     }
 
+    newSearchItem(){
+        this.dataFiltered = [];
+
+        const newDateSince = moment(this.dateSince).format('YYYY-MM-DD');
+        const newDateto = moment(this.dateTo).format('YYYY-MM-DD');
+
+        if(this.dateSince != null && this.dateTo != null && this.employeeId != null && this.licensesTypeId != null){
+            
+            for(let i = 0; i < this.data.length; i++){
+                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto && this.data[i].employeeId == this.employeeId && this.data[i].licenseTypeId == this.licensesTypeId){
+                    this.dataFiltered.push(this.data[i]);
+                }    
+            }
+
+            this.initGrid();
+            return;
+        }
+
+        if(this.dateSince != null && this.dateTo != null && this.employeeId != null){
+
+            for(let i = 0; i < this.data.length; i++){
+                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto && this.data[i].employeeId == this.employeeId){
+                    this.dataFiltered.push(this.data[i]);
+                }    
+            }
+
+            this.initGrid();
+            return;
+        }
+
+        if(this.dateSince != null && this.dateTo != null && this.licensesTypeId != null){
+            
+            for(let i = 0; i < this.data.length; i++){
+                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto && this.licensesTypeId == this.data[i].licenseTypeId){
+                    this.dataFiltered.push(this.data[i]);
+                }
+            }
+
+            this.initGrid();
+            return;
+        }
+
+        if(this.dateSince != null && this.dateTo != null){
+
+            for(let i = 0; i < this.data.length; i++){
+                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto){            
+                    
+                    if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
+                        this.dataFiltered.push(this.data[i]);
+                    }else{
+                        if(this.licensesTypeId != 0 && this.licensesTypeId == this.data[i].licenseTypeId){
+                            this.dataFiltered.push(this.data[i]);
+                        }
+                    }
+                    
+                }
+            }
+
+            this.dataFiltered.push(this.data);
+            this.initGrid();
+
+        }else if(this.dateSince != null && this.dateTo == null ){
+            
+            for(let i = 0 ; i < this.data.length; i++){
+                
+                if(this.data[i].startDate >= newDateSince){
+                    
+                    if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
+                        this.dataFiltered.push(this.data[i]);
+                    }else{
+
+                        if(this.licensesTypeId != 0 && this.licensesTypeId == this.data[i].licenseTypeId){
+                            this.dataFiltered.push(this.data[i]);
+                        }
+                    }
+
+                }
+            }
+            
+            this.dataFiltered.push(this.data);
+            this.initGrid();
+        }else{
+            this.newSearch();
+        }
+
+    }
+
     newSearch(){
         this.dataFiltered = [];
 
@@ -131,5 +226,9 @@ export class LicenseListManager implements OnInit, OnDestroy {
     clean(){
         this.employeeId = null;
         this.licensesTypeId = null;
+        this.dateSince = null;
+        this.dateTo = null;
+
+        this.newSearch();
     }
 }

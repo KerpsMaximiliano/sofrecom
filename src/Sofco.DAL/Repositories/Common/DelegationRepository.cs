@@ -71,6 +71,13 @@ namespace Sofco.DAL.Repositories.Common
             return context.Delegations.Include(x => x.User).Include(x => x.GrantedUser).Where(x => x.GrantedUserId == userId && x.Type == type).ToList();
         }
 
+        public IList<Delegation> GetByGrantedUserIdAndTypeDelegation(int userId)
+        {
+            var response = context.Delegations.Include(x => x.User).Include(x => x.GrantedUser).Where(x => x.GrantedUserId == userId).ToList();
+
+            return response;
+        }
+
         public bool ExistByGrantedUserIdAndType(int userId, DelegationType type)
         {
             return context.Delegations.Include(x => x.User).Include(x => x.GrantedUser).Any(x => x.GrantedUserId == userId && x.Type == type);

@@ -1,4 +1,5 @@
-﻿namespace Sofco.Domain.DTO
+﻿
+namespace Sofco.Domain.DTO
 {
     public class EmployeeSearchParams
     {

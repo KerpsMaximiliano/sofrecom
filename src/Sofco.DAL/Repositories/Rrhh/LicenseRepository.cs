@@ -76,19 +76,66 @@ namespace Sofco.DAL.Repositories.Rrhh
 
         public ICollection<License> Search(LicenseSearchParams parameters)
         {
-            var query = context.Licenses
-                .Include(x => x.Employee)
-                .Include(x => x.Manager)
-                .Include(x => x.Type)
-                .Where(x => x.Status == LicenseStatus.Approved || x.Status == LicenseStatus.ApprovePending);
+            if (parameters.dateSince == null && parameters.dateTo == null)
+            {
+                var queryI = context.Licenses
+               .Include(x => x.Employee)
+               .Include(x => x.Manager)
+               .Include(x => x.Type)
+               .Where(x => x.Status == LicenseStatus.Approved || x.Status == LicenseStatus.ApprovePending);
 
-            if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
-                query = query.Where(x => x.EmployeeId == parameters.EmployeeId);
+                if (parameters.EmployeeId.HasValue && parameters.EmployeeId > 0)
+                    queryI = queryI.Where(x => x.EmployeeId == parameters.EmployeeId);
 
-            if (parameters.LicenseTypeId.HasValue && parameters.LicenseTypeId > 0)
-                query = query.Where(x => x.TypeId == parameters.LicenseTypeId);
+                if (parameters.LicenseTypeId.HasValue && parameters.LicenseTypeId > 0)
+                    queryI = queryI.Where(x => x.TypeId == parameters.LicenseTypeId);
 
-            return query.ToList();
+                return queryI.ToList();
+            }else if (parameters.EmployeeId != null && parameters.LicenseTypeId.HasValue && parameters.LicenseTypeId > 0 && parameters.dateSince != null && parameters.dateTo != null){
+                var qry = context.Licenses
+                        .Include(x => x.Employee)
+                        .Include(x => x.Manager)
+                        .Include(x => x.Type)
+                        .Where(x => x.EmployeeId == parameters.EmployeeId && x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.TypeId == parameters.LicenseTypeId && x.Status == LicenseStatus.Approved);
+
+                return qry.ToList();
+            }else if (parameters.EmployeeId != null && parameters.dateSince != null && parameters.dateTo != null){
+                var qry = context.Licenses
+                        .Include(x => x.Employee)
+                        .Include(x => x.Manager)
+                        .Include(x => x.Type)
+                        .Where(x => x.EmployeeId == parameters.EmployeeId && x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.Status == LicenseStatus.Approved);
+
+                return qry.ToList();
+            }else if (parameters.LicenseTypeId.HasValue && parameters.LicenseTypeId > 0 && parameters.dateSince != null && parameters.dateTo != null){
+                var qry = context.Licenses
+                    .Include(x => x.Employee)
+                    .Include(x => x.Manager)
+                    .Include(x => x.Type)
+                    .Where(x => x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.TypeId == parameters.LicenseTypeId && x.Status == LicenseStatus.Approved);
+                
+                return qry.ToList();
+            }else if (parameters.dateSince != null && parameters.dateTo != null) {
+                var qry = context.Licenses
+                    .Include(x => x.Employee)
+                    .Include(x => x.Manager)
+                    .Include(x => x.Type)
+                    .Where(x => x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.Status == LicenseStatus.Approved);
+
+                return qry.ToList();
+            }else{
+                if (parameters.dateTo == null)
+                    parameters.dateTo = DateTime.Now;
+                
+                var queryII = context.Licenses
+                    .Include(x => x.Employee)
+                    .Include(x => x.Manager)
+                    .Include(x => x.Type)
+                    .Where(x => x.EmployeeId == parameters.EmployeeId && x.StartDate.Date >= Convert.ToDateTime(parameters.dateSince).Date && x.EndDate.Date <= Convert.ToDateTime(parameters.dateTo).Date && x.Status == LicenseStatus.Approved);
+                
+                return queryII.ToList();
+            }
+            
         }
 
         public ICollection<License> GetByManager(int managerId)

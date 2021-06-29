@@ -1,5 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
+                
         <h2> {{'rrhh.licenses' | translate }} </h2>
 
         <ol class="breadcrumb">
@@ -7,6 +8,7 @@
             <li> {{'rrhh.title' | translate }} </li>
             <li class="active"><strong> {{'rrhh.licenses' | translate }} </strong></li>
         </ol>
+        
     </div>
 </div>
 
@@ -20,14 +22,16 @@
         <div class="tab-content">
             <div id="tab-1" class="tab-pane active">
                 <div class="panel-body tab-warning">
-                    <license-list-widget [managerId]="managerId" [statusId]="authPending" [label]="'rrhh.license.authPending'"></license-list-widget>
+                    <div class="table-responsive">    
+                        <license-list-widget [managerId]="managerId" [statusId]="authPending" [label]="'rrhh.license.authPending'"></license-list-widget>
+                    </div>
                 </div>
             </div>
 
             <div id="tab-2" class="tab-pane">
                 <div class="panel-body tab-primary">
                     <div class="row"> 
-                        <div class="col-sm-4"> 
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label"> {{'rrhh.license.employee' | translate }} </label>
                                 <ng-select [items]="resources" bindLabel="name" bindValue="id" [(ngModel)]="employeeId"></ng-select>
@@ -42,10 +46,26 @@
         
                         <div class="col-sm-4 m-t-md">
                             <button class="btn btn-warning btn-sm" (click)="clean()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
-                            <button class="btn btn-success btn-sm" (click)="newSearch()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                            <button class="btn btn-success btn-sm" (click)="newSearchItem()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Fecha Inicio</label>
+                                <date-picker class="active tab-txt-border" [(date)]="dateSince"></date-picker>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Fecha Fin</label>
+                                <date-picker [(date)]="dateTo"></date-picker>
+                            </div>
+                        </div>
+                    </div>
+        <div class="table-responsive">
                     <table class="table table-striped" id="allLicenses" width="100%">
                         <thead>
                             <tr>
@@ -79,7 +99,8 @@
                                 <td class="column-xs text-center"> <span class="fa" [ngClass]="(item.hasCertificate) ? 'fa-check text-success' : 'fa-close text-danger'"></span> </td>
                             </tr>
                         </tbody>
-                    </table>   
+                    </table>
+        </div>
                 </div>
             </div>
         </div>

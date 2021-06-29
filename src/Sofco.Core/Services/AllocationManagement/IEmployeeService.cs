@@ -13,13 +13,13 @@ namespace Sofco.Core.Services.AllocationManagement
     public interface IEmployeeService
     {
         ICollection<Employee> GetAll();
-
+        
         Response<EmployeeModel> GetById(int id);
 
         Response<EmployeeModel> GetByMail(string email);
 
         Response<ICollection<Employee>> Search(EmployeeSearchParams parameters);
-
+        
         Response SendUnsubscribeNotification(EmployeeEndNotificationModel model);
 
         Response<EmployeeProfileModel> GetProfile(int id);

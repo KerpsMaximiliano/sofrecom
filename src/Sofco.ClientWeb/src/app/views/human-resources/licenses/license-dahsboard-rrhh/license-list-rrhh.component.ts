@@ -29,6 +29,9 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         "ACTIONS.cancel"
     );
 
+    public dateSince: Date = null;
+    public dateTo: Date = null;
+
     public pending: number = LicenseStatus.Pending;
     public authPending: number = LicenseStatus.AuthPending;
     public approved: number = LicenseStatus.Approved;
@@ -46,6 +49,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
     public startDate: Date = new Date();
     public endDate: Date = new Date();
+    public lblDate: boolean;
 
     constructor(private licenseService: LicenseService,
         private employeeService: EmployeeService,
@@ -68,7 +72,7 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
             this.searchLastQuery(data);
         }
         else{
-            this.initGrid();
+            this.newSearch();
         }
     }
 
@@ -86,7 +90,6 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
 
     getLicenceTypes(){
         this.getLicenseTypeSubscrip = this.licenseService.getLicenceTypes().subscribe(data => {
-
             var list = [];
             data.optionsWithPayment.forEach(element => {
                 list.push(element);
@@ -110,25 +113,32 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
     }
 
     newSearch(){
-        var params = {
-            employeeId: this.employeeId,
-            licenseTypeId: this.licensesTypeId
+        if(this.dateSince > this.dateTo){
+            this.lblDate = true;
+            return;
         }
 
+        var params = {
+            employeeId: this.employeeId,
+            licenseTypeId: this.licensesTypeId,
+            dateSince: this.dateSince,
+            dateTo: this.dateTo
+        }
         this.search(params);
     }
 
     search(params){
+        this.lblDate = false;
         this.messageService.showLoading();
 
         this.getDataSubscrip = this.licenseService.search(params).subscribe(data => {
             this.messageService.closeLoading();
             this.data = data;
             this.initGrid();
-
             sessionStorage.setItem('lastLicenseQuery', JSON.stringify(params));
         },
         error => {});
+
     }
 
     initGrid(){
@@ -151,6 +161,9 @@ export class LicenseListRrhh implements OnInit, OnDestroy {
         sessionStorage.removeItem('lastLicenseQuery');
         this.employeeId = null;
         this.licensesTypeId = null;
+        this.dateSince = null;
+        this.dateTo = null;
+        this.newSearch();
     }
 
     goToDetail(item){
