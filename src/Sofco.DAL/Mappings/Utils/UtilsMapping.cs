@@ -74,6 +74,7 @@ namespace Sofco.DAL.Mappings.Utils
             // Primary Key
             builder.Entity<MonthsReturn>().HasKey(_ => _.Id);
             builder.Entity<MonthsReturn>().Property(_ => _.Text).HasMaxLength(100);
+            builder.Entity<MonthsReturn>().Ignore(_ => _.Month);
 
             // Primary Key
             builder.Entity<CreditCard>().HasKey(_ => _.Id);
