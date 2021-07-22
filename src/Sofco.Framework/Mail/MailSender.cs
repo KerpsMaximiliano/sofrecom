@@ -59,7 +59,7 @@ namespace Sofco.Framework.Mail
         /// </summary>
         /// <param name="recipients">Lista de destinatarios separados por ';'</param>
         /// <param name="subject">Asunto del mail</param>
-        /// <param name="body">cuerpo del mail</param>
+        /// <param name="body">Cuerpo del mail</param>
         public void Send(string recipients, string subject, string body)
         {
             var message = new MimeMessage();
@@ -79,6 +79,7 @@ namespace Sofco.Framework.Mail
 
         private void AddRecipients(MimeMessage message, string recipients)
         {
+            //Se agrega destinatarios
             var recipientsMails = recipients.Split(MailDelimiter);
             foreach(var item in recipientsMails)
             {
