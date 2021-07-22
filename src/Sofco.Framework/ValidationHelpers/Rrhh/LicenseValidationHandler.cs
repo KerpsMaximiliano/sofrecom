@@ -67,10 +67,12 @@ namespace Sofco.Framework.ValidationHelpers.Rrhh
 
         public static void ValidateSector(Response response, License domain)
         {
+            //Validación para cuando la persona no tiene sector asignado
+            //En el caso que no tenga sector, se le asigna el sector con id 9999 por defecto
             if (domain.SectorId <= 0)
             {
                 //  Add Generic Sector
-                domain.SectorId = 15;
+                domain.SectorId = 9999;
             }
         }
 
