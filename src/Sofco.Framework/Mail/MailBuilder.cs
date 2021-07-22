@@ -23,7 +23,6 @@ namespace Sofco.Framework.Mail
         {
             emailConfig = emailConfigOptions.Value;
 
-
             templatesDicts = new Dictionary<MailType, string>
             {
                 { MailType.Default, MailResource.Default },
