@@ -19,6 +19,7 @@
     <div class="row">
         <div class="col-lg-12">
             <button class="btn btn-success btn-outline dim" (click)="back()"> <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate }} </button>
+            <button class="btn btn-success btn-outline dim" (click)="openForReopen()" *ngIf="form.model.status == 2 && isCdg" > <i class="fa fa-unlock-alt"></i> {{ 'ACTIONS.reabrir' | translate }} </button>
 
             <div class="btn-right">
                 <button class="btn btn-success btn-outline dim" (click)="goToProjects()" *ngIf="showClientButton && menuService.hasFunctionality('SOLFA', 'ALTA')"> 
@@ -48,5 +49,9 @@
 </div>
 
 <ng2-modal [config]="confirmModalConfig" #confirmModal (accept)="close()">
+    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+</ng2-modal>
+
+<ng2-modal [config]="confirmModalReopenConfig" #confirmModalReopen (accept)="reabrirAnalytic()">
     <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>
