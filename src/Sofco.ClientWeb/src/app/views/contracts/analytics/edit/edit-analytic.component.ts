@@ -23,7 +23,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getByIdSubscrip: Subscription;
     closeSubscrip: Subscription;
-    refunds: any[] = [];
+    refunds: number[] = [];
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
