@@ -102,4 +102,7 @@ export class AnalyticService {
       return new Blob([res.body], { type: 'application/octet-stream' });
     }));
   }
+  reopen(id) {
+    return this.http.put<any>(`${this.baseUrl}/analytics/${id}/reopen`, {});
+  }
 }

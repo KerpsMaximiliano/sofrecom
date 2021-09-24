@@ -210,5 +210,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return this.CreateResponse(response);
         }
+
+        [HttpPut("{id}/reopen")]
+        public IActionResult Reopen(int id)
+        {
+            var response = analyticService.Reopen(id, AnalyticStatus.Open);
+
+            return this.CreateResponse(response);
+        }
     }
 }

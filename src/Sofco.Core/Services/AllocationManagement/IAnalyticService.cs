@@ -26,6 +26,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<Analytic> Update(AnalyticModel domain);
 
         Response Close(int analyticId, AnalyticStatus status);
+        Response Reopen(int analyticId, AnalyticStatus status);
 
         ICollection<Analytic> GetAllActives();
 
