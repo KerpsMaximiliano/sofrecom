@@ -24,7 +24,7 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 var opportunities = projects.Select(x => $"{x.OpportunityNumber} {x.OpportunityName}");
 
                 analytic.Proposal = string.Join(";", opportunities);
-                analytic.Refund = unitOfWork.RefundRepository.GetRefundsByAnalytics(id);
+                analytic.Refunds = unitOfWork.RefundRepository.GetRefundsByAnalytics(id);
             }
 
             return analytic;

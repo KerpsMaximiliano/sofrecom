@@ -241,12 +241,11 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                 .SingleOrDefault(x => x.Id == id);
         }
 
-        public List<Refund> GetRefundsByAnalytics(int id)
+        public IList<Refund> GetRefundsByAnalytics(int id)
         {
-            //var prueba = context.Refunds.Include(x => x.Analytic);
-            //var pruebaDOs = prueba.Where(x => x.Analytic.Id == id);
-            return context.Refunds
-               .ToList();
+            return context.Refunds.Where(x => x.Analytic.Id == id)
+               .ToList()
+               .AsReadOnly();
 
         }
     }

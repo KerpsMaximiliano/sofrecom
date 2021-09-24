@@ -16,5 +16,6 @@
 	"closeForExpensesSuccess": "Analytics has been closed for costs successfully",
 	"serviceAlreadyRelated": "There is already an analytics related to the service",
 	"wrongMonthQuantity": "Months to show must be greater than or equal to 1 and less than or equal to 36",
-	"noCrmUpdateNullManagerId": "An update on CRM was not processed due to a missing ManagerId value."
+	"noCrmUpdateNullManagerId": "An update on CRM was not processed due to a missing ManagerId value.",
+    "withRefund": "Exists refund workflow in open state"
 }

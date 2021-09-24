@@ -683,6 +683,7 @@
             "assigned": "Analíticas Asignadas",
             "close": "Cerrar Analitica",
             "closeForExpenses": "Cerrar para costos",
+            "withRefund": "Existe un flujo de reintegro abierto",
             "add": {
                 "title": "Titulo",
                 "startDate":"Fecha de Inicio",

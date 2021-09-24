@@ -127,10 +127,16 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
 
     close(){
         if(this.statusClose){
-            this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
+            if (this.form.model.refund && this.form.model.refund.filter(f => f.statusId != 20).length != 0) {
+                // Alert
+                this.messageService.showWarning('allocationManagement.analytics.withRefund')
                 this.confirmModal.hide();
-                this.form.model.status = 2;
-            });
+            } else {
+                this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
+                    this.confirmModal.hide();
+                    this.form.model.status = 2;
+                });
+            }
         }
         else {
             this.closeSubscrip = this.analyticService.closeForExpenses(this.form.model.id).subscribe(response => {
