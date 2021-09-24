@@ -243,7 +243,8 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
 
         public IList<Refund> GetRefundsByAnalytics(int id)
         {
-            return context.Refunds.Where(x => x.Analytic.Id == id)
+            return context.Refunds.Include(x => x.UserApplicant)
+                .Where(x => x.Analytic.Id == id)
                .ToList()
                .AsReadOnly();
 

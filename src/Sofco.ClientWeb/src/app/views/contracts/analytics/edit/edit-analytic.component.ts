@@ -23,7 +23,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getByIdSubscrip: Subscription;
     closeSubscrip: Subscription;
-    refunds: any[] = [];
+    refunds: string[] = [];
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -133,7 +133,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
             if (this.form.model.refund && this.form.model.refund.filter(f => f.statusId != 20).length != 0) {
                 // Alert
                 this.getRefunds();
-                var msj = `${this.i18nService.translateByKey("allocationManagement.analytics.withRefund")} ${this.refunds.join(',')}`
+                var msj = `${this.i18nService.translateByKey("allocationManagement.analytics.withRefund")} ${this.refunds.join(', ')}`
                 this.messageService.showMessage(msj, 2)
 
                 this.confirmModal.hide();
@@ -155,8 +155,8 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     getRefunds() {
         this.form.model.refund.filter(f => f.statusId != 20)
         .forEach(element => {
-            if (this.refunds.indexOf(element.analytic.id) == -1)
-                this.refunds.push(element.analytic.id);
+            if (this.refunds.indexOf(element.userApplicant.name) == -1)
+                this.refunds.push(element.userApplicant.name);
         });
     }
 
