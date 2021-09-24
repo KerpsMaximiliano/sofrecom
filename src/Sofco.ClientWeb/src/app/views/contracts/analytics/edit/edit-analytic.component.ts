@@ -6,6 +6,8 @@ import { Subscription } from "rxjs";
 import { I18nService } from "../../../../services/common/i18n.service";
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 import { MenuService } from "../../../../services/admin/menu.service";
+import { Message } from "app/models/message";
+import { getNumberOfCurrencyDigits } from "@angular/common";
 
 declare var $: any;
 
@@ -21,6 +23,7 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
     paramsSubscrip: Subscription;
     getByIdSubscrip: Subscription;
     closeSubscrip: Subscription;
+    refunds: any[] = [];
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -129,7 +132,10 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
         if(this.statusClose){
             if (this.form.model.refund && this.form.model.refund.filter(f => f.statusId != 20).length != 0) {
                 // Alert
-                this.messageService.showWarning('allocationManagement.analytics.withRefund')
+                this.getRefunds();
+                var msj = `${this.i18nService.translateByKey("allocationManagement.analytics.withRefund")} ${this.refunds.join(',')}`
+                this.messageService.showMessage(msj, 2)
+
                 this.confirmModal.hide();
             } else {
                 this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
@@ -144,6 +150,14 @@ export class EditAnalyticComponent implements OnInit, OnDestroy {
                 this.form.model.status = 3;
             });
         }
+    }
+
+    getRefunds() {
+        this.form.model.refund.filter(f => f.statusId != 20)
+        .forEach(element => {
+            if (this.refunds.indexOf(element.analytic.id) == -1)
+                this.refunds.push(element.analytic.id);
+        });
     }
 
     goToProjects(){
