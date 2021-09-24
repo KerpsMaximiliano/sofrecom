@@ -835,6 +835,7 @@
         "search": "Buscar",
         "close": "Cerrar",
         "back": "Volver",
+        "reabrir": "Reabrir",
         "approve": "Aprobar",
         "reject": "Rechazar",
         "sendToDaf": "Enviar a DAF",
