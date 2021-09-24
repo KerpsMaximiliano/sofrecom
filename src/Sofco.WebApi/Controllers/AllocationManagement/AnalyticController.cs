@@ -82,7 +82,6 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             if (response.HasErrors())
                 return BadRequest(response);
-            var prueba = new AnalyticModel(response.Data);
 
             return Ok(new AnalyticModel(response.Data));
         }
@@ -158,7 +157,7 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
         [HttpPut("{id}/close")]
         public IActionResult Close(int id)
-        {   
+        {
             var analityc= analyticService.GetByIdWhitRefund(id);
             if (analityc.HasErrors())
                 return BadRequest(analityc);
@@ -166,9 +165,9 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             var pendingRefund = analityc.Data.Refunds.Any(x => x.StatusId != 20);
             if (pendingRefund)
                 return BadRequest(new AnalyticModel(analityc.Data));
-            
+
             var response = analyticService.Close(id, AnalyticStatus.Close);
-            
+
             return this.CreateResponse(response);
         }
 
