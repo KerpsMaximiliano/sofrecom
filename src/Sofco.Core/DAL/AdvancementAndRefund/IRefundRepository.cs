@@ -44,5 +44,7 @@ namespace Sofco.Core.DAL.AdvancementAndRefund
 
         IList<RefundFile> GetFiles(int id);
         Refund GetFullByIdForZip(int id);
+
+        IList<Refund> GetRefundsByAnalytics(int id);
     }
 }

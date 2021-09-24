@@ -11,6 +11,7 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 import { AuthService } from "app/services/common/auth.service";
 import * as FileSaver from "file-saver";
 
+
 @Component({
     selector: 'refund-refund',
     templateUrl: './refund-detail.component.html'
@@ -26,6 +27,7 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
     public entityId: number;
     public actualStateId: number;
     public userApplicantId: number;
+   
 
     getSubscrip: Subscription;
     editSubscrip: Subscription;
@@ -136,10 +138,14 @@ export class RefundDetailComponent implements OnInit, OnDestroy {
             this.messageService.closeLoading();
         });
     }
-
+    
     onTransitionSuccess(){
+        
+        if(this.workflowModel.actualStateId == 10)
+         {
+             this.downloadZip()
+         }
         const userInfo = UserInfoService.getUserInfo();
-
         if(userInfo.id == this.form.form.controls.userApplicantId.value){
             if(userInfo && userInfo.employeeId){
                 this.router.navigate(['/profile/' + userInfo.employeeId]);

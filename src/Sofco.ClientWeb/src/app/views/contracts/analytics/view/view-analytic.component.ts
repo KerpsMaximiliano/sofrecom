@@ -34,6 +34,9 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
     );
+    StatusID: any;
+    InworkFlowProcess: number;
+    refunds: string[] = [];
 
     @ViewChild('confirmModalReopen') confirmModalReopen;
     public confirmModalReopenConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -106,20 +109,37 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         this.router.navigate(['/contracts/analytics']);
     }
 
-    close() {
+    
+    close(){
         if(this.statusClose){
-            this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
-                this.closeSuccess(response, 2);
-            });
+            if (this.form.model.refund && this.form.model.refund.filter(f => f.statusId != 20).length != 0) {
+                // Alert
+                this.getRefunds();
+                var msj = `${this.i18nService.translateByKey("allocationManagement.analytics.withRefund")} ${this.refunds.join(', ')}`
+                this.messageService.showMessage(msj, 2)
+
+                this.confirmModal.hide();
+            } else {
+                this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
+                    this.confirmModal.hide();
+                    this.form.model.status = 2;
+                });
+            }
         }
         else {
             this.closeSubscrip = this.analyticService.closeForExpenses(this.form.model.id).subscribe(response => {
-                this.closeSuccess(response, 3);
-            },
-            err => {
                 this.confirmModal.hide();
+                this.form.model.status = 3;
             });
         }
+    }
+
+    getRefunds() {
+        this.form.model.refund.filter(f => f.statusId != 20)
+        .forEach(element => {
+            if (this.refunds.indexOf(element.userApplicant.name) == -1)
+                this.refunds.push(element.userApplicant.name);
+        });
     }
 
     closeSuccess(response, status){
@@ -160,8 +180,13 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     openForClose(){
+        // debugger;
+        // if(this.StatusID == 20 && this.InworkFlowProcess == 0)
+        // {
         this.statusClose = true;
         this.confirmModal.show();
+        //}
+        //else{ console.log("Agregar alerta")}
     }
 
     openForCloseForExpenses(){

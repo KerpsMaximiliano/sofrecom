@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.AllocationManagement;
 using Sofco.Core.Models.Billing;
+using Sofco.Core.Services.AdvancementAndRefund;
 using Sofco.Core.Services.AllocationManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
@@ -18,10 +19,12 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
     public class AnalyticController : Controller
     {
         private readonly IAnalyticService analyticService;
+        private readonly IRefundService refundService;
 
-        public AnalyticController(IAnalyticService analyticServ)
+        public AnalyticController(IAnalyticService analyticServ, IRefundService refundService)
         {
             analyticService = analyticServ;
+            this.refundService = refundService ?? throw new ArgumentNullException(nameof(refundService));
         }
 
         [HttpGet]
@@ -155,6 +158,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPut("{id}/close")]
         public IActionResult Close(int id)
         {
+            var analityc= analyticService.GetByIdWhitRefund(id);
+            if (analityc.HasErrors())
+                return BadRequest(analityc);
+
+            var pendingRefund = analityc.Data.Refunds.Any(x => x.StatusId != 20);
+            if (pendingRefund)
+                return BadRequest(new AnalyticModel(analityc.Data));
+
             var response = analyticService.Close(id, AnalyticStatus.Close);
 
             return this.CreateResponse(response);

@@ -7,6 +7,7 @@ using Sofco.Core.Models.AllocationManagement;
 using Sofco.DAL.Repositories.Common;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
 
@@ -271,7 +272,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public Analytic GetById(int allocationAnalyticId)
         {
-            return context.Analytics.Include(x => x.Manager).SingleOrDefault(x => x.Id == allocationAnalyticId);
+            return context.Analytics.Include(x => x.Manager).Include(x=>x.Refunds).SingleOrDefault(x => x.Id == allocationAnalyticId);
         }
 
         public ICollection<Analytic> GetAnalyticsByManagerId(int managerId)
@@ -430,5 +431,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .Distinct()
                 .ToList();
         }
+
+        
     }
 }

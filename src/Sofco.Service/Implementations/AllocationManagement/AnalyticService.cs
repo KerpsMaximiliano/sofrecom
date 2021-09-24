@@ -580,5 +580,18 @@ namespace Sofco.Service.Implementations.AllocationManagement
         {
             return data.Select(x => new AnalyticSearchViewModel(x)).ToList();
         }
+        public Response<Analytic> GetByIdWhitRefund(int id)
+        {
+            var response = new Response<Analytic>();
+            var result = unitOfWork.AnalyticRepository.GetById(id);
+            if (result == null)
+            {
+                response.Messages.Add(new Message(Resources.AllocationManagement.Analytic.ResourcesNotFound, MessageType.Warning));
+            }
+            
+            response.Data = result;
+
+            return response;
+        }
     }
 }

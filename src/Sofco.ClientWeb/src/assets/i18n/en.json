@@ -641,6 +641,7 @@
 			"assigned": "Assigned Analytics",
 			"close": "Close Analytic",
 			"closeForExpenses": "Close for expenses",
+            "withRefund": "Exists refund workflow in open state. Refunds:",
 			"add": {
 				"title": "Title",
 				"startDate": "Start date",
