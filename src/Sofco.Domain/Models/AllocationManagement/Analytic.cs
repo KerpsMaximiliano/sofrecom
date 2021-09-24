@@ -86,5 +86,6 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public ManagementReport.ManagementReport ManagementReport { get; set; }
         public ICollection<Applicant> Applicants { get; set; }
+        public IList<Refund> Refund { get; set; }
     }
 }

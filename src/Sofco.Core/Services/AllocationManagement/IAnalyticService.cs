@@ -15,6 +15,8 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response<Analytic> GetById(int id);
 
+        Response<Analytic> GetByIdWhitRefund(int id);
+
         Response<IList<Allocation>> GetTimelineResources(int id, DateTime dateSince, int months);
 
         AnalyticOptions GetOptions();

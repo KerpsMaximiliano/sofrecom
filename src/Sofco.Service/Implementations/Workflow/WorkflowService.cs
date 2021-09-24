@@ -143,7 +143,7 @@ namespace Sofco.Service.Implementations.Workflow
             }
 
             // Save change status
-            SaveEntity<TEntity, THistory>(parameters, response, entity, currentUser);
+           SaveEntity<TEntity, THistory>(parameters, response, entity, currentUser);
 
             // Custom Success Process
             if (!string.IsNullOrWhiteSpace(transition.OnSuccessCode))
@@ -173,7 +173,7 @@ namespace Sofco.Service.Implementations.Workflow
             if (!response.Data.MustDoNextTransition)
             {
                 // Send Notification
-                SendNotification(entity, response, transition, parameters);
+                   SendNotification(entity, response, transition, parameters);
             }
         }
 

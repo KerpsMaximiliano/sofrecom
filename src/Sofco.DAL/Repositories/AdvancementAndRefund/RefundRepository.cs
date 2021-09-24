@@ -240,5 +240,14 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                     .ThenInclude(x => x.StatusTo)
                 .SingleOrDefault(x => x.Id == id);
         }
+
+        public List<Refund> GetRefundsByAnalytics(int id)
+        {
+            //var prueba = context.Refunds.Include(x => x.Analytic);
+            //var pruebaDOs = prueba.Where(x => x.Analytic.Id == id);
+            return context.Refunds
+               .ToList();
+
+        }
     }
 }

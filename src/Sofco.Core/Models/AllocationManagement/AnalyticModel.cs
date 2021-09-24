@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Domain;
 using Sofco.Domain.Enums;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.AllocationManagement;
 
 namespace Sofco.Core.Models.AllocationManagement
@@ -34,6 +36,7 @@ namespace Sofco.Core.Models.AllocationManagement
             ClientGroupId = domain.ClientGroupId;
             ServiceTypeId = domain.ServiceTypeId;
             Description = domain.Description;
+            Refund = domain.Refunds;
 
             if (!string.IsNullOrWhiteSpace(domain.UsersQv))
             {
@@ -92,6 +95,8 @@ namespace Sofco.Core.Models.AllocationManagement
         public AnalyticStatus Status { get; set; }
 
         public int TitleId { get; set; }
+
+        public ICollection<Refund> Refund { get; set; }
 
         public virtual Analytic CreateDomain()
         {

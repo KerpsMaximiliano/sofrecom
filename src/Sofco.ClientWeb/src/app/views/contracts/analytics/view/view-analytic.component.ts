@@ -32,6 +32,8 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
     );
+    StatusID: any;
+    InworkFlowProcess: number;
 
     constructor(private analyticService: AnalyticService,
                 private router: Router,
@@ -147,8 +149,13 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     openForClose(){
+        // debugger;
+        // if(this.StatusID == 20 && this.InworkFlowProcess == 0)
+        // {
         this.statusClose = true;
         this.confirmModal.show();
+        //}
+        //else{ console.log("Agregar alerta")}
     }
 
     openForCloseForExpenses(){
