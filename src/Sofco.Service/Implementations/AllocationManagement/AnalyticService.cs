@@ -40,13 +40,12 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly ICustomerData customerData;
         private readonly IRoleManager roleManager;
         private readonly IAnalyticCloseManager analyticCloseManager;
-        private readonly IAnalyticReopenManager analyticReopenManager;
 
         public AnalyticService(IUnitOfWork unitOfWork, IMailSender mailSender, ILogMailer<AnalyticService> logger,
             IOptions<EmailConfig> emailOptions, IMailBuilder mailBuilder, IServiceData serviceData,
             IEmployeeData employeeData, IAnalyticFileManager analyticFileManager,
             IUserData userData, IAnalyticManager analyticManager, IRoleManager roleManager,
-            IAnalyticCloseManager analyticCloseManager, ICustomerData customerData,IAnalyticReopenManager analyticReopenManager)
+            IAnalyticCloseManager analyticCloseManager, ICustomerData customerData)
         {
             this.unitOfWork = unitOfWork;
             this.mailSender = mailSender;
@@ -61,7 +60,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.analyticCloseManager = analyticCloseManager;
             this.serviceData = serviceData;
             this.customerData = customerData;
-            this.analyticReopenManager = analyticReopenManager;
         }
 
         public ICollection<Analytic> GetAllActives()
@@ -514,10 +512,6 @@ namespace Sofco.Service.Implementations.AllocationManagement
         public Response Close(int analyticId, AnalyticStatus status)
         {
             return analyticCloseManager.Close(analyticId, status);
-        }
-        public Response Reopen(int analyticId, AnalyticStatus status)
-        {
-            return analyticReopenManager.Reopen(analyticId, status);
         }
 
         private void SendMail(Analytic analytic, Response response)

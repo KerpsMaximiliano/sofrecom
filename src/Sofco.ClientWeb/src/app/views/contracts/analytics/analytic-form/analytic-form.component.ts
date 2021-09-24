@@ -33,7 +33,7 @@ export class AnalyticFormComponent implements OnInit, OnDestroy {
     getOptionsSubscrip: Subscription;
     getCostCenterOptionsSubscrip: Subscription;
     getNewTitleSubscrip: Subscription;
-    
+
     @Input() mode: string;
 
     constructor(private analyticService: AnalyticService,

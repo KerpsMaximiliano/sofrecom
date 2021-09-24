@@ -22,23 +22,11 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     editSubscrip: Subscription;
     public showClientButton = true;
     private statusClose: boolean = true;
-    isCdg: boolean = false;
-
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
         "ACTIONS.confirmTitle",
         "confirmModal",
-        true,
-        true,
-        "ACTIONS.ACCEPT",
-        "ACTIONS.cancel"
-    );
-
-    @ViewChild('confirmModalReopen') confirmModalReopen;
-    public confirmModalReopenConfig: Ng2ModalConfig = new Ng2ModalConfig(
-        "ACTIONS.confirmTitle",
-        "confirmModalReopen",
         true,
         true,
         "ACTIONS.ACCEPT",
@@ -55,7 +43,6 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getAnalytic();
-        this.isCdg = this.menuService.userIsCdg;
 
         $('input').attr('disabled', 'disabled');
         $('textarea').attr('disabled', 'disabled');
@@ -173,22 +160,5 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         if(this.menuService.hasFunctionality('CONTR', 'CLOSE-EXP') && this.form.model.status == 1) return true;
 
         return false;
-    }
-    openForReopen(){
-        this.statusClose = true;
-        this.confirmModalReopen.show();
-        console.log("Se abrio el reopen")
-    }
-
-    reabrirAnalytic(){
-        console.log("Llame al reopen")
-        this.form.model.status = 1;
-        this.analyticService.reopen(this.form.model.id).subscribe(response => {
-            console.log(response)
-            this.confirmModalReopen.hide();
-        });
-        
-        console.log("Este es el objeto: ",this.paramsSubscrip);
-        //this.back();
     }
 }
