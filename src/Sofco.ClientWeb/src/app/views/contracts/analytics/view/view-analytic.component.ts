@@ -22,6 +22,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     editSubscrip: Subscription;
     public showClientButton = true;
     private statusClose: boolean = true;
+    refunds: number[] = [];
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -97,18 +98,33 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
 
     close() {
         if(this.statusClose){
-            this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
-                this.closeSuccess(response, 2);
-            });
+            if (this.form.model.refund && this.form.model.refund.filter(f => f.statusId != 20).length != 0) {
+                // Alert
+                this.getRefunds();
+                var msj = `${this.i18nService.translateByKey("allocationManagement.analytics.withRefund")} ${this.refunds.join(',')}`
+                this.messageService.showMessage(msj, 2)
+
+                this.confirmModal.hide();
+            } else {
+                this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
+                    this.confirmModal.hide();
+                    this.form.model.status = 2;
+                });
+            }
         }
         else {
             this.closeSubscrip = this.analyticService.closeForExpenses(this.form.model.id).subscribe(response => {
-                this.closeSuccess(response, 3);
-            },
-            err => {
                 this.confirmModal.hide();
+                this.form.model.status = 3;
             });
         }
+    }
+    getRefunds() {
+        this.form.model.refund.filter(f => f.statusId != 20)
+        .forEach(element => {
+            if (this.refunds.indexOf(element.analytic.id) == -1)
+                this.refunds.push(element.analytic.id);
+        });
     }
 
     closeSuccess(response, status){
