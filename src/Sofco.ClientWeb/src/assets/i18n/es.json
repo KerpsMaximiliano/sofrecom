@@ -299,9 +299,9 @@
             "pendings": "Pendientes",
             "fileMissing": "Para completar el proceso de carga de la Orden de Compra debe subir el archivo (pdf) de la misma",
             "fields": {
-                "number": "Numero",
+                "number": "Número",
                 "client": "Cliente",
-                "receptionDate": "Fecha Recepcion",
+                "receptionDate": "Fecha Recepción",
                 "year": "Año",
                 "area": "Area",
                 "status": "Estado",
