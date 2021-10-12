@@ -47,12 +47,30 @@ namespace Sofco.Framework.StatusHandlers.License
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
 
+            //Status = 7 (Cancelado)
+            if(licenseToModif.Status == LicenseStatus.Cancelled)
+            {
+                //Borramos todos los WorkTime de la Licencia
+                DeleteWorkTimeByLicense(license, unitOfWork);
+            }
+
             if (license.TypeId == 7)
             {
                 license.Employee.ExamDaysTaken -= license.DaysQuantity;
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
         }
+        private void DeleteWorkTimeByLicense(Domain.Models.Rrhh.License license, IUnitOfWork unitOfWork)
+        {
+            var listWorkTimes = unitOfWork.WorkTimeRepository.GetByEmployeeId(license.StartDate, license.EndDate, license.EmployeeId);
+
+            for(int i = 0; i < listWorkTimes.Count;i++)
+            {
+                unitOfWork.WorkTimeRepository.Delete(listWorkTimes[i]);
+            }
+        }
+
+
 
         public string GetSuccessMessage()
         {

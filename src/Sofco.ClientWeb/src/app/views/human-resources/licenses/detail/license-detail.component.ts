@@ -16,7 +16,7 @@ import { LicenseStatus } from "../../../../models/enums/licenseStatus";
     selector: 'license-detail',
     templateUrl: './license-detail.component.html',
     styleUrls: ['./license-detail.component.scss']
-})
+})              
 export class LicenseDetailComponent implements OnInit, OnDestroy {
 
     @ViewChild('selectedFile') selectedFile: any;
@@ -58,7 +58,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
 
             this.getSubscrip = this.licenseService.getById(params['id']).subscribe(response => {
                 this.model = response.data;
-
+                console.log(this.model);
                 this.configUploader();
 
                 this.history.getHistories(params['id']);
