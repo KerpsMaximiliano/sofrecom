@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Common;
 using Sofco.Core.Models.Rrhh;
 using Sofco.Core.Services.Rrhh;
 using Sofco.Domain;
@@ -16,6 +17,7 @@ namespace Sofco.Service.Implementations.Rrhh
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILogMailer<CloseDateService> logger;
+        //private readonly ICloseDateApproverManager closeDateApproverManager;
 
         public CloseDateService(IUnitOfWork unitOfWork, ILogMailer<CloseDateService> logger)
         {
@@ -103,6 +105,13 @@ namespace Sofco.Service.Implementations.Rrhh
             }
 
             return response;
+        }
+
+        public IList<CloseDate> GetFirstBeforeNextMonth()
+        {
+            var closeDates = this.unitOfWork.CloseDateRepository.GetFirstBeforeNextMonth();
+
+            return closeDates;
         }
     }
 }

@@ -11,11 +11,14 @@ import { LicenseDetail } from "../../../../models/rrhh/licenseDetail";
 import * as FileSaver from "file-saver";
 import { AuthService } from "../../../../services/common/auth.service";
 import { LicenseStatus } from "../../../../models/enums/licenseStatus";
+import { CloseDateService } from "app/services/human-resources/closeDate.service";
+
 
 @Component({
     selector: 'license-detail',
     templateUrl: './license-detail.component.html',
-    styleUrls: ['./license-detail.component.scss']
+    styleUrls: ['./license-detail.component.scss'],
+    providers: [CloseDateService]
 })              
 export class LicenseDetailComponent implements OnInit, OnDestroy {
 
@@ -31,6 +34,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
     public showUploader: boolean = false;
     public fileIdToDelete: number;
     public indexToDelete: number;
+    public showCancelLicense: boolean = true;
 
     public model: LicenseDetail = new LicenseDetail();
 
@@ -48,20 +52,22 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
                 public menuService: MenuService,
                 private authService: AuthService,
                 private activatedRoute: ActivatedRoute,
-                private messageService: MessageService){
+                private messageService: MessageService,
+                private closeDateService: CloseDateService){
     }
 
     ngOnInit(): void {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
 
             this.messageService.showLoading();
-
+            
             this.getSubscrip = this.licenseService.getById(params['id']).subscribe(response => {
                 this.model = response.data;
-                console.log(this.model);
+                console.log("Model 2: ",this.model);
                 this.configUploader();
-
+                
                 this.history.getHistories(params['id']);
+                this.showButtonCancelLicense();
             },
             () => { },
             () => this.messageService.closeLoading());
@@ -131,7 +137,12 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
           () => { },
          () => this.confirmModal.hide());
     }
-
+    async showButtonCancelLicense(){
+        this.closeDateService.getAllBeforeNextMonth().subscribe(retorno => {
+            if(this.model.startDate <  new Date(retorno[0].year,retorno[0].month,retorno[0].day))
+                    this.showCancelLicense = false;
+        });
+    }
     
     updateStatus(event){
         if(event.statusId) this.model.status = event.statusId;
