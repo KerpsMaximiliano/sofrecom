@@ -107,7 +107,7 @@ namespace Sofco.Service.Implementations.Rrhh
             return response;
         }
 
-        public IList<CloseDate> GetFirstBeforeNextMonth()
+        public CloseDate GetFirstBeforeNextMonth()
         {
             var closeDates = this.unitOfWork.CloseDateRepository.GetFirstBeforeNextMonth();
 

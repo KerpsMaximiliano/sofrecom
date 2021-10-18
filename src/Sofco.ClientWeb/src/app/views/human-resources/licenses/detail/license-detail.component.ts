@@ -12,7 +12,7 @@ import * as FileSaver from "file-saver";
 import { AuthService } from "../../../../services/common/auth.service";
 import { LicenseStatus } from "../../../../models/enums/licenseStatus";
 import { CloseDateService } from "app/services/human-resources/closeDate.service";
-
+declare var moment: any;
 
 @Component({
     selector: 'license-detail',
@@ -137,9 +137,9 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
           () => { },
          () => this.confirmModal.hide());
     }
-    async showButtonCancelLicense(){
+    showButtonCancelLicense(){
         this.closeDateService.getAllBeforeNextMonth().subscribe(retorno => {
-            if(this.model.startDate <  new Date(retorno[0].year,retorno[0].month,retorno[0].day))
+            if(new Date(this.model.startDate) <  new Date(retorno.year,retorno.month,retorno.day))
                     this.showCancelLicense = false;
         });
     }

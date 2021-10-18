@@ -10,7 +10,7 @@ namespace Sofco.Core.Services.Rrhh
     {
         Response Add(IList<CloseDate> model);
         Response<CloseDateModel> Get(int startMonth, int startYear, int endMonth, int endYear);
-        IList<CloseDate> GetFirstBeforeNextMonth();
+        CloseDate GetFirstBeforeNextMonth();
 
     }
 }

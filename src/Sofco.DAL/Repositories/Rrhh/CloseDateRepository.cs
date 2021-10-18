@@ -103,27 +103,16 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Take(5)
                 .ToList();
         }
-        public IList<CloseDate> GetFirstBeforeNextMonth()
+        public CloseDate GetFirstBeforeNextMonth()
         {
             var today = DateTime.UtcNow.Date;
-            var prevToday = context.CloseDates.Where(x => new DateTime(x.Year, x.Month, x.Day).Date <= today)
+
+            return context.CloseDates.Where(x => new DateTime(x.Year, x.Month, x.Day).Date <= today)
                 .OrderByDescending(x => x.Year)
                 .ThenByDescending(x => x.Month)
+                .ThenByDescending(x => x.Day)
                 .Take(1)
                 .FirstOrDefault();
-
-            var nextToday = context.CloseDates.Where(x => new DateTime(x.Year, x.Month, x.Day).Date >= today)
-                .OrderByDescending(x => x.Year)
-                .OrderByDescending(x => x.Month)
-                .Take(1)
-                .FirstOrDefault();
-
-            List<CloseDate> dates = new List<CloseDate>();
-
-            dates.Add(prevToday);
-            dates.Add(nextToday);
-
-            return dates;
         }
     }
 }
