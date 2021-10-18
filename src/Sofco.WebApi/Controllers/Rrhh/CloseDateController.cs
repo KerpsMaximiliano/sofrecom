@@ -33,5 +33,13 @@ namespace Sofco.WebApi.Controllers.Rrhh
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("GetFirstBeforeNextMonth")]
+        public IActionResult GetFirstBeforeNextMonth()
+        {
+            var response = closeDateService.GetFirstBeforeNextMonth();
+
+            return Ok(response);
+        }
     }
 }

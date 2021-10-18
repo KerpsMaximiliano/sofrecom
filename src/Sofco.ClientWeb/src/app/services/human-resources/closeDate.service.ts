@@ -17,4 +17,7 @@ export class CloseDateService {
   post(model) {
     return this.http.post<any>(`${this.baseUrl}/closeDate`, model);
   }
+  getAllBeforeNextMonth(){
+    return this.http.get<any>(`${this.baseUrl}/closeDate/GetFirstBeforeNextMonth`);
+  }
 }
