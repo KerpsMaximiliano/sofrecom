@@ -42,11 +42,13 @@ namespace Sofco.Framework.StatusHandlers.License
             if (license.ManagerId != currentUser.Id)
             {
                 var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.LicenseAuthorizer);
+                if(unitOfWork.UserRepository.HasPermission(currentUser.Id, "RECHAZAR", "LICENCIA_RRHH")) { 
 
                 if (!delegations.Any(x =>
                     x.UserId == license.ManagerId && x.EmployeeSourceId.GetValueOrDefault() == license.EmployeeId))
                 {
                     response.AddErrorAndNoTraslate("No tiene permisos para autorizar la licencia");
+                }
                 }
             }
         }
