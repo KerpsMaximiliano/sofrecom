@@ -139,7 +139,7 @@ export class LicenseDetailComponent implements OnInit, OnDestroy {
     }
     showButtonCancelLicense(){
         this.closeDateService.getAllBeforeNextMonth().subscribe(retorno => {
-            if(new Date(this.model.startDate) <  new Date(retorno.year,retorno.month,retorno.day))
+            if(new Date(this.model.startDate) >=  new Date(retorno.year,retorno.month,retorno.day))
                     this.showCancelLicense = false;
         });
     }

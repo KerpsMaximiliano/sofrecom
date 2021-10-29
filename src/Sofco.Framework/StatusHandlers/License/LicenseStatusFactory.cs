@@ -31,7 +31,7 @@ namespace Sofco.Framework.StatusHandlers.License
                 case LicenseStatus.Rejected: return new LicenseStatusRejectHandler(emailConfig, licenseApproverManager, userData);
                 case LicenseStatus.Approved: return new LicenseStatusApproveHandler(emailConfig, licenseApproverManager);
                 case LicenseStatus.ApprovePending: return new LicenseStatusApprovePendingHandler(emailConfig, licenseApproverManager);
-                case LicenseStatus.Cancelled: return new LicenseStatusCancelledHandler(emailConfig, licenseApproverManager);
+                case LicenseStatus.Cancelled: return new LicenseStatusCancelledHandler(emailConfig, licenseApproverManager, userData);
                 default: return null;
             }
         }
