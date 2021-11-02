@@ -41,15 +41,9 @@ namespace Sofco.Framework.StatusHandlers.License
 
             if (license.ManagerId != currentUser.Id)
             {
-                var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.LicenseAuthorizer);
                 var permiso = unitOfWork.UserRepository.HasPermission(currentUser.Id, "REJECRRHH", "CTRLI");
                 if (!permiso) { 
-
-                //if (!delegations.Any(x =>
-                  //  x.UserId == license.ManagerId && x.EmployeeSourceId.GetValueOrDefault() == license.EmployeeId))
-                //{
                     response.AddErrorAndNoTraslate("No tiene permisos para autorizar la licencia");
-               // }
                 }
             }
         }
