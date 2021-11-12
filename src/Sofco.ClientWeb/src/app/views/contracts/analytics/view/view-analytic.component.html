@@ -30,7 +30,7 @@
                     {{ 'allocationManagement.analytics.close' | translate }} <i class="fa fa-times-circle"></i> 
                 </button>   
 
-                <button class="btn btn-warning btn-outline dim" (click)="openForCloseForExpenses()" *ngIf="canForCloseForExpenses()"> 
+                <button class="btn btn-warning btn-outline dim" (click)="close()" *ngIf="canForCloseForExpenses()"> 
                     {{ 'allocationManagement.analytics.closeForExpenses' | translate }} <i class="fa fa-times-circle"></i> 
                 </button>
 
