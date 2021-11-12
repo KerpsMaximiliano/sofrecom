@@ -149,7 +149,7 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
                 license = LicenseValidationHandler.FindFull(id, response, unitOfWork);
 
             var licenseStatusHandler = licenseStatusFactory.GetInstance(model.Status);
-
+            if (DateTime.Now < license.StartDate) { 
             try
             {
                 // Validate Status
@@ -200,6 +200,11 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
             }
 
             SendMail(license, response, licenseStatusHandler, model);
+            }
+            else
+            {
+                response.AddError(Resources.Rrhh.License.ChangeStatusError);
+            }
 
             return response;
         }
