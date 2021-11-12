@@ -9,6 +9,7 @@ using Sofco.Framework.MailData;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Resources.Mails;
+using Sofco.Core.Data.Admin;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
@@ -17,20 +18,22 @@ namespace Sofco.Framework.StatusHandlers.License
         private readonly EmailConfig emailConfig;
 
         private readonly ILicenseApproverManager licenseApproverManager;
+		private readonly IUserData userData;
 
-        public LicenseStatusCancelledHandler(EmailConfig emailConfig, ILicenseApproverManager licenseApproverManager)
+		public LicenseStatusCancelledHandler(EmailConfig emailConfig, ILicenseApproverManager licenseApproverManager, IUserData userData)
         {
             this.emailConfig = emailConfig;
             this.licenseApproverManager = licenseApproverManager;
-        }
+			this.userData = userData ?? throw new System.ArgumentNullException(nameof(userData));
+		}
 
         public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Domain.Models.Rrhh.License license)
         {
-            if (!parameters.IsRrhh) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
-
-            if (parameters.IsRrhh && license.Status != LicenseStatus.Approved)
+            var currentUser = userData.GetCurrentUser();
+            var permiso = unitOfWork.UserRepository.HasPermission(currentUser.Id, "REMOV", "CTRLI");
+            if (!permiso)
             {
-                response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+                response.AddErrorAndNoTraslate("No tiene permisos para cancelar la licencia");
             }
         }
          
