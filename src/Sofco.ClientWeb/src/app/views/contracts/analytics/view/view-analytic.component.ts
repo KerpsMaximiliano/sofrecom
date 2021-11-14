@@ -190,7 +190,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     openForCloseForExpenses(){
-        this.statusClose = false;
+        this.statusClose = true;
         this.confirmModal.show();
     }
     
