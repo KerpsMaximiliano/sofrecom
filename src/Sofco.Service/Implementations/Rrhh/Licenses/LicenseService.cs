@@ -144,12 +144,17 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
         public Response ChangeStatus(int id, LicenseStatusChangeModel model, License license)
         {
             var response = new Response();
+            var closeDates = unitOfWork.CloseDateRepository.GetFirstBeforeNextMonth();
+
+            DateTime closeDate = new DateTime(closeDates.Year,closeDates.Month,closeDates.Day);
+
+
 
             if (license == null)
                 license = LicenseValidationHandler.FindFull(id, response, unitOfWork);
 
             var licenseStatusHandler = licenseStatusFactory.GetInstance(model.Status);
-            if (DateTime.Now < license.StartDate) { 
+             if (closeDate < license.StartDate) { 
             try
             {
                 // Validate Status
