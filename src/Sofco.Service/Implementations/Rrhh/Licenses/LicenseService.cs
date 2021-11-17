@@ -208,7 +208,7 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
             }
             else
             {
-                response.AddError(Resources.Rrhh.License.ChangeStatusError);
+                response.AddError(Resources.Rrhh.License.periodBefore);
             }
 
             return response;
