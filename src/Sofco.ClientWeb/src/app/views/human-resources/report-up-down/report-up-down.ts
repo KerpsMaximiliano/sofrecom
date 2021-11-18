@@ -47,10 +47,10 @@ export class ReportUpdownComponent implements OnDestroy {
             if(this.resources.length > 0){
                 this.resources.forEach(x => {
 
-                    if(x.state == "ALTA"){
+                    if(x.startDate != null){
                         this.upTotal += 1;
                     }
-                    else{
+                    if(x.endDate != null){
                         this.downTotal += 1;
                     }
                 });
