@@ -51,6 +51,8 @@ namespace Sofco.Service.Implementations.Billing
 
             result.AddRange(serviceData.GetServices(customerId, userName));
 
+            result.ForEach(x=> Console.WriteLine(x.Name));
+
             var delegates = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(user.Id, DelegationType.Solfac);
 
             foreach (var delegation in delegates)

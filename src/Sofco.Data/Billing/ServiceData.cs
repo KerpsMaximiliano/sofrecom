@@ -37,10 +37,13 @@ namespace Sofco.Data.Billing
                 {
                     var hasAllAccess = roleManager.HasFullAccess();
 
-                    if (hasAllAccess)
+                    if (hasAllAccess) { 
+                        Console.WriteLine("Tengo full access");
                         return unitOfWork.ServiceRepository.GetAllActives(customerId);
+                    }
                     else
                     {
+                        Console.WriteLine("NO NO NO Tengo full access");
                         var user = unitOfWork.UserRepository.GetByEmail(email);
                         return unitOfWork.ServiceRepository.GetAllByManager(customerId, user.ExternalManagerId);
                     }
