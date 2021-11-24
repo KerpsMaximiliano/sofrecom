@@ -3,6 +3,9 @@ import { Subscription } from "rxjs";
 import { MessageService } from "app/services/common/message.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { DataTableService } from "app/services/common/datatable.service";
+import { DATE, YEAR } from "ngx-bootstrap/chronos/units/constants";
+import { Console } from "console";
+import { data } from "jquery";
 
 declare var $: any;
 
@@ -23,7 +26,8 @@ export class ReportUpdownComponent implements OnDestroy {
 
     public searchModel = {
         startDate: null,
-        endDate: null
+        endDate: null,
+        
     };
 
     constructor(
@@ -43,14 +47,18 @@ export class ReportUpdownComponent implements OnDestroy {
 
             this.upTotal = 0;
             this.downTotal = 0;
-
+            var starDate = new Date(this.searchModel.startDate)
+            var endDate = new Date(this.searchModel.endDate)
+            
             if(this.resources.length > 0){
                 this.resources.forEach(x => {
-
-                    if(x.startDate != null){
+                    var startdates = new Date (x.startDate);
+                    var endDates = new Date (x.endDate);
+                  
+                    if(startdates > starDate && startdates < endDate ){
                         this.upTotal += 1;
                     }
-                    if(x.endDate != null){
+                    if(endDates > starDate && endDates < endDate){
                         this.downTotal += 1;
                     }
                 });
