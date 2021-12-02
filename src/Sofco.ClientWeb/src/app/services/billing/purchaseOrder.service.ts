@@ -40,6 +40,7 @@ export class PurchaseOrderService {
 
   add(model) {
     return this.http.post<any>(`${this.baseUrl}/purchaseOrders`, model);
+
   }
 
   search(params) {

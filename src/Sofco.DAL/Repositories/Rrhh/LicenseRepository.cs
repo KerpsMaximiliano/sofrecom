@@ -252,6 +252,10 @@ namespace Sofco.DAL.Repositories.Rrhh
         }
         public bool HasAfterDateByEmployeeCancelled(int id, DateTime date)
         {
+            var lista = context.Licenses.Where(x => x.EmployeeId == id && x.StartDate.Date >= date.Date).ToList();
+
+            var puedeCancelar = context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date && x.Status != LicenseStatus.Cancelled);
+
             return context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date && x.Status != LicenseStatus.Cancelled);
         }
     }

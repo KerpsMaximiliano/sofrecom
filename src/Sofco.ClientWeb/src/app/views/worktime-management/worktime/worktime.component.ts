@@ -41,6 +41,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
   public allTasks: any[] = new Array();
   public tasks: any[] = new Array();
   public recentAnalyticTasks: any[] = new Array();
+  public taskEdit: any = {};
   public holidays: any[] = new Array();
 
   private idKey = 'id';
@@ -669,6 +670,7 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
     this.recentTaskModel.hours = taskItem.hours;
     this.editRecentTaskModalConfig.cancelButtonText = 'ACTIONS.cancel';
     this.editRecentTaskModalConfig.acceptButton = true;
+    this.taskEdit = taskItem;
     this.editRecentTaskModal.show();
   }
 
@@ -679,12 +681,13 @@ export class WorkTimeComponent implements OnInit, OnDestroy {
 
     this.recentAnalyticTasks.forEach(x => {
       x.tasks.forEach(s => {
-        if(s.taskId === self.recentTaskModel.taskId) {
+        if(s.taskId === self.taskEdit.taskId && s.analyticId === self.taskEdit.analyticId){
           s.hours = self.recentTaskModel.hours;
         }
       });
     });
 
+    console.log(this.recentAnalyticTasks);
     this.updateLocalStorage();
     this.messageService.succes('ADMIN.settings.saveSuccess', {timeOut: 1000});
   }
