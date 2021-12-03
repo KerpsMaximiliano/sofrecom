@@ -19,7 +19,7 @@ namespace Sofco.Resources.Rrhh {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class License {
@@ -318,6 +318,15 @@ namespace Sofco.Resources.Rrhh {
         public static string PendingSuccess {
             get {
                 return ResourceManager.GetString("PendingSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.periodBefore.
+        /// </summary>
+        public static string periodBefore {
+            get {
+                return ResourceManager.GetString("periodBefore", resourceCulture);
             }
         }
         

@@ -115,7 +115,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
 			if (this.form.model.refund && this.form.model.refund.filter(f => f.statusId != 20).length != 0) {
                 // Alert
                 this.getRefunds();
-                var msj = `${this.i18nService.translateByKey("allocationManagement.analytics.withRefund")} ${this.refunds.join(', ')}`
+                var msj = this.i18nService.translateByKey("allocationManagement.analytics.withRefund");
                 this.messageService.showMessage(msj, 2)
 
                 this.confirmModal.hide();
@@ -189,7 +189,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     openForCloseForExpenses(){
-        this.statusClose = false;
+        this.statusClose = true;
         this.confirmModal.show();
     }
     
