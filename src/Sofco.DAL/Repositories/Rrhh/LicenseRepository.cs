@@ -171,8 +171,8 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Include(x => x.Employee)
                 .Include(x => x.Manager)
                 .Include(x => x.Type)
-                .Where(x => x.EmployeeId == employeeId && ((x.StartDate.Date >= startDate.Date && x.StartDate.Date <= endDate.Date) ||
-                                                           (x.EndDate.Date >= startDate.Date && x.EndDate.Date <= endDate.Date))).ToList();
+                .Where(x => x.EmployeeId == employeeId && (startDate.Date  <= x.EndDate.Date  && endDate.Date >= x.StartDate.Date)).ToList();
+
         }
 
         public ICollection<License> GetByEmployeeAndStartDate(int employeeId, DateTime startDate)
