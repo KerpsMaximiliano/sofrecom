@@ -63,6 +63,8 @@ namespace Sofco.Service.Implementations.Billing
                     {
                         var serviceDelegated = unitOfWork.ServiceRepository.GetByIdCrm(analytic.ServiceId);
 
+                        if (serviceDelegated == null) continue;
+
                         if (result.All(x => x.Id != serviceDelegated.Id))
                         {
                             result.Add(serviceDelegated);

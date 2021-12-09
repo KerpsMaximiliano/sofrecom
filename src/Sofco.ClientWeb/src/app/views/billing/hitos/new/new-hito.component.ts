@@ -5,6 +5,7 @@ import { ProjectService } from '../../../../services/billing/project.service';
 import { NewHito } from '../../../../models/billing/solfac/newHito';
 import { UtilsService } from '../../../../services/common/utils.service';
 import { Option } from '../../../../models/option';
+import { Hito } from 'app/models/billing/solfac/hito';
 
 @Component({
   selector: 'new-hito',
@@ -35,6 +36,7 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
     private projectService: ProjectService) {}
 
     ngOnInit(): void {
+        
         this.getCurrenciesSubscrip = this.utilsService.getCurrencies().subscribe(d => {
             this.currencies = d;
         });
@@ -47,7 +49,8 @@ export class NewHitoComponent implements OnDestroy, OnInit  {
 
     openModal(hito){
         var today = new Date();
-
+        this.hito = new NewHito();
+        
         this.hito.month = today.getMonth()+1;
         this.hito.startDate = today;
         this.hito.moneyId = 1;
