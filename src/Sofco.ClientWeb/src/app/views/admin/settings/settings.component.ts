@@ -115,12 +115,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   saveSetting2(item) {
-    this.service.put({ key: "JobRecursosSinAsignacionDia", value: item}).subscribe(
-      response => { 
-        this.messageService.closeLoading();
-        this.messageService.succes('ADMIN.settings.saveSuccess');
-    },
-    err => this.messageService.closeLoading());
+    if (item < 1 || item > 31) {
+      this.messageService.showMessage("El día del mes de Job de Recurso SIN Asignación debe ser del 1 al 31", 1);
+    } else {
+      this.service.put({ key: "JobRecursosSinAsignacionDia", value: item}).subscribe(
+        response => { 
+          this.messageService.closeLoading();
+          this.messageService.succes('ADMIN.settings.saveSuccess');
+      },
+      err => this.messageService.closeLoading());
+    }
   } 
 
   saveSetting3(item) {
