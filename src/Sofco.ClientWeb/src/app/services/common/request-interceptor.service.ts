@@ -3,6 +3,7 @@ import {take, filter, catchError, switchMap, finalize} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpSentEvent, HttpHeaderResponse, HttpProgressEvent, HttpResponse, HttpUserEvent, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class RequestInterceptorService implements HttpInterceptor {
@@ -11,10 +12,11 @@ export class RequestInterceptorService implements HttpInterceptor {
     userLoggedIn = false;
     tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService,
+        private authenticationService: AuthenticationService) {}
 
     addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
-        if(token == null && this.userLoggedIn == true) {
+        if((token == null || token == '') && this.userLoggedIn == true) {
             this.logoutUser();
         } else {
             return req.clone({ setHeaders: { Authorization: 'Bearer ' + token }});
@@ -87,6 +89,7 @@ export class RequestInterceptorService implements HttpInterceptor {
 
     logoutUser(err?) {
         this.userLoggedIn = false;
+        this.authenticationService.logout()
         return observableThrowError(err);
     }
 }
