@@ -1259,6 +1259,11 @@
         "seniority": "Seniority",
         "contacts": {
             "title": "Contactos"
-        }
+        },
+        "Proveedores":{
+            "title": "Proveedores"
+            
+            }
     }
+    
 }

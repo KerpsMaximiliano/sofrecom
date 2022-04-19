@@ -258,6 +258,18 @@
               [routerLink]="['/profile/refund/add']">{{'refund.addTitle' | translate }}</a></li>
         </ul>
       </li>
+      
+<!-- Recruitment -->
+<li [ngClass]="{active: activeRoute('Proveedores')}" *ngIf="menuService.hasRecruitment()">
+  <a href="#"><i class="fa fa-user-plus"></i> <span class="nav-label">{{'Proveedores' | translate }}</span> <span
+      class="fa arrow"></span></a>
+  <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('Proveedores')}">
+    <li [ngClass]="{active: activeRoute('Proveedores')}" ><a
+      [routerLink]="['/recruitment/jobSearch']">Proveedores</a>
+    </li>
+  </ul>
+</li>
+      
 
     </ul>
 
