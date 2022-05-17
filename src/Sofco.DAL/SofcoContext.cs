@@ -23,6 +23,7 @@ using Sofco.Domain.Models.ManagementReport;
 using Sofco.DAL.Mappings.ManagementReport;
 using Sofco.DAL.Mappings.Recruitment;
 using Sofco.Domain.Models.Recruitment;
+using Sofco.Domain.Models.Providers;
 
 namespace Sofco.DAL
 {
@@ -182,6 +183,11 @@ namespace Sofco.DAL
         public DbSet<JobSearchHistory> JobSearchHistories { get; set; }
         public DbSet<ApplicantHistory> ApplicantHistories { get; set; }
         public DbSet<ApplicantFile> ApplicantFiles { get; set; }
+
+        //Providers
+
+        public DbSet<Providers> Providers { get; set; }
+        public DbSet<ProvidersArea> ProvidersArea { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

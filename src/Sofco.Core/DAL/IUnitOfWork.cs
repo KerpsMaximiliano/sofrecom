@@ -4,6 +4,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.ManagementReport;
+using Sofco.Core.DAL.Provider;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
@@ -127,6 +128,10 @@ namespace Sofco.Core.DAL
         IJobSearchApplicantRepository JobSearchApplicantRepository { get; }
 
         #endregion
+
+         IProviderAreaRepository ProviderAreaRepository { get; }
+
+         IProvidersRepository ProvidersRepository { get; }
 
         void BeginTransaction();
         void Rollback();

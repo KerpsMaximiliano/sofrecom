@@ -9,6 +9,7 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.ManagementReport;
+using Sofco.Core.DAL.Provider;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.DAL.Report;
 using Sofco.Core.DAL.Rrhh;
@@ -21,6 +22,7 @@ using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.DAL.Repositories.ManagementReport;
+using Sofco.DAL.Repositories.Providers;
 using Sofco.DAL.Repositories.Recruitment;
 using Sofco.DAL.Repositories.Reports;
 using Sofco.DAL.Repositories.Rrhh;
@@ -129,6 +131,7 @@ namespace Sofco.DAL
 
         private IUserSourceRepository userSourceRepository;
 
+
         #region Advancements
 
         private IAdvancementRepository advancementRepository;
@@ -149,6 +152,9 @@ namespace Sofco.DAL
 
 
         #endregion
+        private IProviderAreaRepository providerAreaRepository;
+
+        private IProvidersRepository providersRepository;
 
         public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig, IOptions<AppSetting> appSettingOptions)
         {
@@ -278,6 +284,10 @@ namespace Sofco.DAL
 
         #endregion
 
+        public IProviderAreaRepository ProviderAreaRepository => providerAreaRepository ?? (providerAreaRepository = new ProviderAreaRepository(context));
+
+        public IProvidersRepository ProvidersRepository => providersRepository ?? (providersRepository = new ProvidersRepository(context));
+
         public void Save()
         {
             context.SaveChanges();
@@ -297,5 +307,6 @@ namespace Sofco.DAL
         {
             contextTransaction?.Commit();
         }
+
     }
 }
