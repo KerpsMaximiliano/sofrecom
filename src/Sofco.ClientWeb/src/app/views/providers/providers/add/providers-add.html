@@ -22,41 +22,17 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">#</label>
-                        <input type="number" class="form-control" formControlName="id">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label">Activo</label>
-                        <input type="boolean" class="form-control" formControlName="active">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
                         <label class="control-label">Razón social</label>
                         <input type="text" class="form-control" formControlName="businessName">
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label">Rubro</label>
-                        <input type="text" class="form-control" formControlName="area">
-                    </div>
+                    <label class="control-label">Rubro</label>
+                    <ng-select [items]="activeProvidersArea" bindLabel="description" bindValue="id" formControlName="area" (change)="change($event)"></ng-select>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label">Fecha Alta</label>
-                        <input type="text" class="form-control" formControlName="initialDate">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="control-label">Fecha Baja</label>
-                        <input type="text" class="form-control" formControlName="finalDate">
-                    </div>
+                <div class="col-md-4" *ngIf="critical != null">
+                    <label class="control-label">Crítico</label>
+                    <input type="text" class="form-control" disabled [placeholder]="critical">
                 </div>
             </div>
             <div class="row">
@@ -69,13 +45,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Ing. Brutos</label>
-                        <input type="number" class="form-control" formControlName="income">
+                        <ng-select [items]="incomeTypes" bindLabel="description" bindValue="id" formControlName="income"></ng-select>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Condición IVA</label>
-                        <input type="text" class="form-control" formControlName="iva">
+                        <ng-select [items]="IVAConditions" bindLabel="description" bindValue="id" formControlName="iva"></ng-select>
                     </div>
                 </div>
             </div>

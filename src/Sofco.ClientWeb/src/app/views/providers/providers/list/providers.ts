@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
-import { ProvidersService } from "../../providers.service";
+import { ProvidersService } from "app/services/admin/providers.service";
 
 @Component({
     selector: 'providers',
