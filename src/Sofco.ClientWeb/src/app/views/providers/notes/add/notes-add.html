@@ -1,0 +1,393 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Agregar Nota de Pedido </h2>
+
+        <ol class="breadcrumb">
+            <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
+            <li> Proveedores </li>
+            <li><a [routerLink]="['/providers/notes']">Notas de Pedido</a></li>
+            <li class="active"><strong> Crear Nota de Pedido </strong></li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12 row">
+            <div class="pull-left">
+                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']"> 
+                    <i class="fa fa-arrow-left"></i>Volver
+                </button>
+                <button class="btn btn-danger btn-outline dim"> 
+                    Eliminar<i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="btn-right">
+                <button class="btn btn-success btn-outline dim"> 
+                    Enviar<i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <form class="form-horizontal" [formGroup]="formNota">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Solicitante: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Campo">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Descripción: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Texto 1000 requerido" formControlName="description">
+                            </div>
+                        </div>
+                        <div class="form-group" [formGroup]="formProductoServicio">
+                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                                (click)="agregarProductoServicio()">Agregar<i class="fa fa-plus"></i>
+                            </button>
+                            <div class="col-sm-5">
+                                <label>Productos/Servicios</label>
+                                <input type="text" class="form-control" placeholder="Productos/Servicios" formControlName="productService">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Cantidad</label>
+                                <input type="number" class="form-control" placeholder="Cantidad" formControlName="quantity">
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="productosServicios.length > 0">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Producto/Servicio</th>
+                                        <th>Cantidad</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of productosServicios; let i = index">
+                                        <td>{{ item.productService }} </td>
+                                        <td>{{ item.quantity }} </td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarProductoServicio(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Rubro: </label>
+                            <div class="col-sm-8">
+                                <ng-select [items]="providerAreas"></ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Crítico: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Se carga a partir del rubro seleccionado. Es readonly. Si/No">
+                            </div>
+                        </div>
+                        <div class="form-group" [formGroup]="formAnaliticas">
+                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                                (click)="agregarAnalitica()">Agregar<i class="fa fa-plus"></i>
+                            </button>
+                            <div class="col-sm-5">
+                                <label>Analítica</label>
+                                <ng-select [items]="analiticas" formControlName="analytic"></ng-select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>% de asignación</label>
+                                <input type="number" class="form-control" placeholder="Cantidad" formControlName="asigned">
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="analiticasTable.length > 0">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Analítica</th>
+                                        <th>% de asignación</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of analiticasTable; let i = index">
+                                        <td>{{ item.analytic }} </td>
+                                        <td>{{ item.asigned }} </td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarAnalitica(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-1">
+                                <input type="checkbox" class="form-control w-2" placeholder="Checkbox" formControlName="critical">
+                            </div>
+                            <label class="col-sm-8 control-label text-left">Requiere personal trabajando en/por Sofrecom o en Cliente</label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Proveedores: </label>
+                            <div class="col-sm-8">
+                                <ng-select [items]="providers" [multiple]="true"></ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-1">
+                                <input type="checkbox" class="form-control w-2" placeholder="Checkbox" formControlName="evaluationProposal">
+                            </div>
+                            <label class="col-sm-8 control-label text-left">Previsto en el presupuesto / Evaluación de propuesta</label>
+                        </div>
+                        <div class="form-group" *ngIf="formNota.controls.evaluationProposal.value">
+                            <label class="col-sm-4 control-label text-left">Nro Evalprop: </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Nro Evalprop" formControlName="numberEvalprop">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Observaciones: </label>
+                            <div class="col-sm-8">
+                                <textarea cols="30" rows="5" class="form-control" placeholder="Textarea" formControlName="observations"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-5" style="display: flex; flex-direction: row;">
+                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem;" placeholder="Checkbox" (change)="openTravelModal()" formControlName="travel">
+                                <label class="control-label text-left" style="min-width: fit-content; margin-right: 5rem;">Apartado de Viajes</label>
+                            </div>
+                            <div class="col-sm-5" style="display: flex; flex-direction: row;">
+                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem;" placeholder="Checkbox" (change)="openTrainingModal()" formControlName="training">
+                                <label class="control-label text-left" style="min-width: fit-content;">Apartado de Capacitación</label>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group" style="display: flex; justify-content: center;">
+                            <button class="btn btn-primary" type="button" (click)="saveNote()">Guardar <i class="fa fa-save"></i> </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <h3>{{'billing.solfac.import' | translate }}</h3>
+            <!--
+            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+    
+            <div class="uploader-margin-top">
+                <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+                <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                </div>
+    
+                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length || model.files.length >= 5">
+                    <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+                </button>
+                
+                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                </button>
+            </div>
+    
+            <div class="panel panel-primary m-t-lg" *ngIf="model.files.length > 0">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle"></i> {{'rrhh.license.attachments' | translate }}
+                </div>
+                <div class="panel-body">
+                    <ul class="todo-list small-list">
+                        <li *ngFor="let file of model.files; let i = index" (click)="exportExcel(file.id, file.text)">
+                            <span class="m-l-xs pointer">{{file.text}}</span>
+                            <i class="fa fa-download"></i>
+                            <a class="pull-right" (click)="openConfirmModal(file.id, i)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            -->
+        </div>
+    </div>
+    <div class="row" *ngIf="travelFormShow">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h1>Ficha del Viaje</h1>
+                    <form class="form-horizontal mt-3" [formGroup]="formViaje">
+                        <div class="form-group">
+                            <h3 style="margin-left: 8rem;">Pasajeros</h3>
+                        </div>
+                        <div class="form-group" [formGroup]="formParticipanteViaje">
+                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem;"
+                                (click)="agregarParticipanteViaje()">Agregar<i class="fa fa-plus"></i></button>
+                            <div class="col-sm-4">
+                                <label>Nombre</label>
+                                <ng-select [items]="participantes" formControlName="name"></ng-select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Fecha de Nacimiento</label>
+                                <input type="text" class="form-control" placeholder="Fecha" formControlName="birth">
+                            </div>
+                            <div class="col-sm-3">
+                                <label>CUIT / CUIL</label>
+                                <input type="text" class="form-control" placeholder="Formato xx-xxxxxxxx-x" formControlName="cuit">
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="participantesViaje.length > 0">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Fecha de Nacimiento</th>
+                                        <th>CUIT/CUIL</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of participantesViaje; let i = index">
+                                        <td>{{ item.name }} </td>
+                                        <td>{{ item.birth }} </td>
+                                        <td>{{ item.cuit }} </td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarParticipanteViaje(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-5" style="display: flex; flex-direction: row;">
+                                <label class="control-label" style="min-width: fit-content; margin-right: 3rem;">Fecha de Salida</label>
+                                <input type="text" class="form-control" placeholder="Fecha" formControlName="departureDate">
+                            </div>
+                            <div class="col-sm-5" style="display: flex; flex-direction: row;">
+                                <label class="control-label" style="min-width: fit-content; margin-right: 3rem;">Fecha de Regreso</label>
+                                <input type="text" class="form-control" placeholder="Fecha" formControlName="returnDate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Ciudad del destino</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Texto" formControlName="destination">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Medio de transporte</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Texto" formControlName="transportation">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Alojamiento</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Texto" formControlName="accommodation">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Detalle del intinerario</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" placeholder="Varias líneas de texto" cols="30" rows="5" formControlName="details"></textarea>
+                            </div>
+                        </div>
+                        <!--
+                            <input class="form-control" type="text" [formControl]="code" disabled>
+                        -->
+                        <!--
+                            <ng-select [items]="typesIdName" [(ngModel)]="workflowType"></ng-select>
+                        -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="trainingFormShow">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h1>Datos de la Capacitación</h1>
+                    <form class="form-horizontal mt-3" [formGroup]="formCapacitacion">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Nombre del curso</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Texto" formControlName="name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Tema de la capacitación</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Texto" formControlName="subject">
+                            </div>
+                            <!--
+                                <input class="form-control" type="text" [formControl]="code" disabled>
+                            -->
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Lugar</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Texto" formControlName="location">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Fecha de la capacitación</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Fecha" formControlName="date">
+                            </div>
+                            <!--
+                                <ng-select [items]="typesIdName" [(ngModel)]="workflowType"></ng-select>
+                            -->
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Duración</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Texto" formControlName="duration">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-left">Monto aproximado del curso</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" placeholder="Número" formControlName="ammount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h3 style="margin-left: 8rem;">Participantes (posibilidad de agregar registros)</h3>
+                        </div>
+                        <div class="form-group" [formGroup]="formParticipanteCapacitacion">
+                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem;" (click)="agregarParticipanteCapacitacion()">Agregar<i
+                                    class="fa fa-plus"></i></button>
+                            <div class="col-sm-5">
+                                <label>Nombre</label>
+                                <ng-select [items]="participantes" formControlName="name"></ng-select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Proyecto / Sector</label>
+                                <input type="text" class="form-control" formControlName="sector">
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="participantesCapacitacion.length > 0">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Sector</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of participantesCapacitacion; let i = index">
+                                        <td>{{ item.name }} </td>
+                                        <td>{{ item.sector }} </td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarParticipanteCapacitacion(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

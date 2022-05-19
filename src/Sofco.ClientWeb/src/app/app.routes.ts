@@ -94,6 +94,12 @@ export const ROUTES:Routes = [
     loadChildren: 'app/views/recruitment/recruitment.module#RecruitmentModule'
   },
 
+  {
+    path: 'providers',
+    component: BasicLayoutComponent,
+    loadChildren: 'app/views/providers/providers.module#ProvidersModule'
+  },
+
   // Handle all other routes
   { path: '**',  redirectTo: 'inicio' }
 ];
