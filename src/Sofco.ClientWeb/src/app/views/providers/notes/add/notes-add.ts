@@ -1,5 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ProvidersService } from "app/services/admin/providers.service";
+import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { EmployeeService } from "app/services/allocation-management/employee.service";
 
 @Component({
     selector: 'notes-add',
@@ -7,22 +10,25 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
     styleUrls: ['./notes-add.scss']
 })
 
-export class NotesAddComponent {
+export class NotesAddComponent implements OnInit{
 
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
 
-    providerAreas = ['area 1', 'area 2', 'area 3'];
+    providerAreas = [];
     //Combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos
     providers = ['proveedor 1', 'proveedor 2', 'proveedor 3'];
     //Participantes ficha del viaje
     //Combo agregar participantes (Texto 100 caracteres)
     participantes = ['participante 1', 'participante 2', 'participante 3'];
+    participants = [];
+    filteredParticipants = [];
     analiticas = ['Uno', 'Dos', 'Tres', 'Cuatro'];
     participantesViaje = [];
     participantesCapacitacion = [];
     productosServicios = [];
     analiticasTable = [];
+    critical: string = null;
 
     formNota: FormGroup = new FormGroup({
         description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),//Descripcion
@@ -85,7 +91,49 @@ export class NotesAddComponent {
         sector: new FormControl (null, [Validators.required])
     })
 
-    constructor() {}
+    constructor(
+        private providersService: ProvidersService,
+        private providersAreaService: ProvidersAreaService,
+        private employeeService: EmployeeService
+    ) {}
+
+    ngOnInit(): void {
+        this.inicializar();
+    }
+
+    inicializar() {
+        this.providersAreaService.getAll().subscribe(d => {
+            console.log(d)
+            d.data.forEach(providerArea => {
+                if(providerArea.active) {
+                    this.providerAreas.push(providerArea);
+                    this.providerAreas = [...this.providerAreas]
+                }
+            });
+        });
+        this.employeeService.getAll().subscribe(d => {
+            console.log(d);
+            this.participants = d;
+            d.forEach(user => {
+                if(user.isExternal == 0 && user.endDate == null) {
+                    this.filteredParticipants.push(user);
+                    this.filteredParticipants = [...this.filteredParticipants]
+                }
+            });
+        })
+    }
+
+    change(event) {
+        if(event != undefined) {
+            this.critical = (event.critical) ? "Si" : "No"
+        } else {
+            this.critical = null
+        }
+    }
+
+    travelChange(event) {
+        console.log(event)
+    }
 
     openTravelModal() {
         this.travelFormShow = !this.travelFormShow;
