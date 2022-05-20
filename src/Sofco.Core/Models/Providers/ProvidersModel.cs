@@ -6,6 +6,10 @@ namespace Sofco.Core.Models.Providers
 {
     public class ProvidersModel
     {
+        public ProvidersModel()
+            {
+
+        }
         public ProvidersModel(Sofco.Domain.Models.Providers.Providers providers)
         {
             Id = providers.Id;

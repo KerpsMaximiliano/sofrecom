@@ -22,10 +22,11 @@ using Sofco.Framework.Workflow.Notifications;
 using Sofco.Core.Services;
 using Sofco.Core.DAL.Provider;
 using Sofco.Core.Models.Providers;
+using Sofco.Core.Services.Providers;
 
 namespace Sofco.Service.Implementations.providers
 {
-    public class ProvidersService
+    public class ProvidersService: IprovidersService
     {
         private readonly IProvidersRepository providersRepository;
         private readonly IUnitOfWork unitOfWork;
