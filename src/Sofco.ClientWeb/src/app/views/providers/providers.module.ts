@@ -11,6 +11,7 @@ import { ICheckModule } from "app/components/icheck/icheck.module";
 import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
 import { Select2Module } from "app/components/select2/select2";
 import { SpinnerModule } from "app/components/spinner/spinner.module";
+import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { FileUploadModule } from "ng2-file-upload";
 import { ButtonsModule } from "ngx-bootstrap";
 import { NotesAddComponent } from "./notes/add/notes-add";
@@ -47,7 +48,9 @@ import { ProvidersComponent } from "./providers/list/providers";
         Ng2ModalModule,
         FileUploadModule,
     ],
-    providers: [],
+    providers: [
+        EmployeeService
+    ],
     exports: []
 })
 

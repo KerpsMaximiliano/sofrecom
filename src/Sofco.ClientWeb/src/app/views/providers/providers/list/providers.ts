@@ -1,28 +1,23 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 
 @Component({
     selector: 'providers',
     templateUrl: './providers.html'
 })
 
-export class ProvidersComponent {
+export class ProvidersComponent implements OnInit{
 
     states = [
         { id: 0, text: "Todos" },
-        { id: 1, text: "Activo (Default)" },
-        { id: 0, text: "Inactivo" },
+        { id: 1, text: "Activo" },
+        { id: 2, text: "Inactivo" },
     ];
-    stateId: number;
+    stateId: number = 1;
     businessName: string;
-    areas = [
-        //Combo de ProvidersAreas con Active = true
-        { id: 0, text: "Rubro 1" },
-        { id: 1, text: "Rubro 2" },
-        { id: 2, text: "Rubro 3" },
-        { id: 3, text: "Rubro 4" },
-    ];
+    areas = [];
     areaId: number;
     data = [
         {
@@ -54,7 +49,19 @@ export class ProvidersComponent {
     constructor(
         private router: Router,
         private providersService: ProvidersService,
+        private providersArea: ProvidersAreaService
     ) {}
+
+    ngOnInit(): void {
+        this.providersArea.getAll().subscribe(d => {
+            d.data.forEach(providerArea => {
+                if(providerArea.active) {
+                    this.areas.push(providerArea);
+                    this.areas = [...this.areas]
+                }
+            })
+        });
+    }
 
     view(id) {
         this.providersService.setMode("View");

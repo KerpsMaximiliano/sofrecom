@@ -37,13 +37,13 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Solicitante: </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Campo">
+                                <input type="text" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Descripción: </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Texto 1000 requerido" formControlName="description">
+                                <input type="text" class="form-control" formControlName="description">
                             </div>
                         </div>
                         <div class="form-group" [formGroup]="formProductoServicio">
@@ -52,11 +52,11 @@
                             </button>
                             <div class="col-sm-5">
                                 <label>Productos/Servicios</label>
-                                <input type="text" class="form-control" placeholder="Productos/Servicios" formControlName="productService">
+                                <input type="text" class="form-control" formControlName="productService">
                             </div>
                             <div class="col-sm-4">
                                 <label>Cantidad</label>
-                                <input type="number" class="form-control" placeholder="Cantidad" formControlName="quantity">
+                                <input type="number" class="form-control" formControlName="quantity">
                             </div>
                         </div>
                         <div class="form-group" *ngIf="productosServicios.length > 0">
@@ -82,13 +82,13 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Rubro: </label>
                             <div class="col-sm-8">
-                                <ng-select [items]="providerAreas"></ng-select>
+                                <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" (change)="change($event)"></ng-select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" *ngIf="critical != null">
                             <label class="col-sm-4 control-label text-left">Crítico: </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Se carga a partir del rubro seleccionado. Es readonly. Si/No">
+                                <input type="text" class="form-control" disabled [placeholder]="critical">
                             </div>
                         </div>
                         <div class="form-group" [formGroup]="formAnaliticas">
@@ -101,7 +101,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <label>% de asignación</label>
-                                <input type="number" class="form-control" placeholder="Cantidad" formControlName="asigned">
+                                <input type="number" class="form-control" formControlName="asigned">
                             </div>
                         </div>
                         <div class="form-group" *ngIf="analiticasTable.length > 0">
@@ -126,7 +126,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-1">
-                                <input type="checkbox" class="form-control w-2" placeholder="Checkbox" formControlName="critical">
+                                <input type="checkbox" class="form-control w-2" formControlName="critical">
                             </div>
                             <label class="col-sm-8 control-label text-left">Requiere personal trabajando en/por Sofrecom o en Cliente</label>
                         </div>
@@ -138,29 +138,29 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-1">
-                                <input type="checkbox" class="form-control w-2" placeholder="Checkbox" formControlName="evaluationProposal">
+                                <input type="checkbox" class="form-control w-2" formControlName="evaluationProposal">
                             </div>
                             <label class="col-sm-8 control-label text-left">Previsto en el presupuesto / Evaluación de propuesta</label>
                         </div>
                         <div class="form-group" *ngIf="formNota.controls.evaluationProposal.value">
                             <label class="col-sm-4 control-label text-left">Nro Evalprop: </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Nro Evalprop" formControlName="numberEvalprop">
+                                <input type="text" class="form-control" formControlName="numberEvalprop">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Observaciones: </label>
                             <div class="col-sm-8">
-                                <textarea cols="30" rows="5" class="form-control" placeholder="Textarea" formControlName="observations"></textarea>
+                                <textarea cols="30" rows="5" class="form-control" formControlName="observations"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-5" style="display: flex; flex-direction: row;">
-                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem;" placeholder="Checkbox" (change)="openTravelModal()" formControlName="travel">
+                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem;" (change)="openTravelModal()" formControlName="travel">
                                 <label class="control-label text-left" style="min-width: fit-content; margin-right: 5rem;">Apartado de Viajes</label>
                             </div>
                             <div class="col-sm-5" style="display: flex; flex-direction: row;">
-                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem;" placeholder="Checkbox" (change)="openTrainingModal()" formControlName="training">
+                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem;" (change)="openTrainingModal()" formControlName="training">
                                 <label class="control-label text-left" style="min-width: fit-content;">Apartado de Capacitación</label>
                             </div>
                         </div>
@@ -224,15 +224,15 @@
                                 (click)="agregarParticipanteViaje()">Agregar<i class="fa fa-plus"></i></button>
                             <div class="col-sm-4">
                                 <label>Nombre</label>
-                                <ng-select [items]="participantes" formControlName="name"></ng-select>
+                                <ng-select [items]="participants" bindLabel="name" bindValue="name" formControlName="name" (change)="travelChange($event)"></ng-select>
                             </div>
                             <div class="col-sm-3">
                                 <label>Fecha de Nacimiento</label>
-                                <input type="text" class="form-control" placeholder="Fecha" formControlName="birth">
+                                <input type="text" class="form-control" formControlName="birth">
                             </div>
                             <div class="col-sm-3">
                                 <label>CUIT / CUIL</label>
-                                <input type="text" class="form-control" placeholder="Formato xx-xxxxxxxx-x" formControlName="cuit">
+                                <input type="text" class="form-control" formControlName="cuit">
                             </div>
                         </div>
                         <div class="form-group" *ngIf="participantesViaje.length > 0">
@@ -260,35 +260,35 @@
                         <div class="form-group">
                             <div class="col-sm-5" style="display: flex; flex-direction: row;">
                                 <label class="control-label" style="min-width: fit-content; margin-right: 3rem;">Fecha de Salida</label>
-                                <input type="text" class="form-control" placeholder="Fecha" formControlName="departureDate">
+                                <input type="text" class="form-control" formControlName="departureDate">
                             </div>
                             <div class="col-sm-5" style="display: flex; flex-direction: row;">
                                 <label class="control-label" style="min-width: fit-content; margin-right: 3rem;">Fecha de Regreso</label>
-                                <input type="text" class="form-control" placeholder="Fecha" formControlName="returnDate">
+                                <input type="text" class="form-control" formControlName="returnDate">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Ciudad del destino</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Texto" formControlName="destination">
+                                <input type="text" class="form-control" formControlName="destination">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Medio de transporte</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Texto" formControlName="transportation">
+                                <input type="text" class="form-control" formControlName="transportation">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Alojamiento</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Texto" formControlName="accommodation">
+                                <input type="text" class="form-control" formControlName="accommodation">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Detalle del intinerario</label>
                             <div class="col-sm-8">
-                                <textarea class="form-control" placeholder="Varias líneas de texto" cols="30" rows="5" formControlName="details"></textarea>
+                                <textarea class="form-control" cols="30" rows="5" formControlName="details"></textarea>
                             </div>
                         </div>
                         <!--
@@ -311,13 +311,13 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Nombre del curso</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Texto" formControlName="name">
+                                <input type="text" class="form-control" formControlName="name">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Tema de la capacitación</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Texto" formControlName="subject">
+                                <input type="text" class="form-control" formControlName="subject">
                             </div>
                             <!--
                                 <input class="form-control" type="text" [formControl]="code" disabled>
@@ -326,13 +326,13 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Lugar</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Texto" formControlName="location">
+                                <input type="text" class="form-control" formControlName="location">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Fecha de la capacitación</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Fecha" formControlName="date">
+                                <input type="text" class="form-control" formControlName="date">
                             </div>
                             <!--
                                 <ng-select [items]="typesIdName" [(ngModel)]="workflowType"></ng-select>
@@ -341,13 +341,13 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Duración</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Texto" formControlName="duration">
+                                <input type="text" class="form-control" formControlName="duration">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Monto aproximado del curso</label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control" placeholder="Número" formControlName="ammount">
+                                <input type="number" class="form-control" formControlName="ammount">
                             </div>
                         </div>
                         <div class="form-group">
@@ -358,7 +358,7 @@
                                     class="fa fa-plus"></i></button>
                             <div class="col-sm-5">
                                 <label>Nombre</label>
-                                <ng-select [items]="participantes" formControlName="name"></ng-select>
+                                <ng-select [items]="filteredParticipants" bindLabel="name" bindValue="name" formControlName="name"></ng-select>
                             </div>
                             <div class="col-sm-4">
                                 <label>Proyecto / Sector</label>
