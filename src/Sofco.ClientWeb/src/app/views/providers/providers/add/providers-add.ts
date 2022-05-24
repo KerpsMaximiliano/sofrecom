@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { GrossIncomeTypes } from "app/models/enums/GrossIncomeTypes";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { MessageService } from "app/services/common/message.service"
 
 @Component({
     selector: 'providers-add',
@@ -29,36 +30,32 @@ export class ProvidersAddComponent implements OnInit{
 
     form: FormGroup = new FormGroup({
         id: new FormControl(0),
-        active: new FormControl(true),
-        businessName: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
-        area: new FormControl(null),
-        initialDate: new FormControl(Date()),//fecha y hora actual
-        finalDate: new FormControl(null),//vacio
-        cuit: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11)]),
-        income: new FormControl(null),
-        iva: new FormControl(null),
-        addressStreet: new FormControl(null, [Validators.maxLength(1000)]),
-        addressCity: new FormControl(null, [Validators.maxLength(1000)]),
-        addressPC: new FormControl(null, [Validators.maxLength(10)]),
-        addressProvince: new FormControl(null, [Validators.maxLength(20)]),
-        addressCountry: new FormControl(null, [Validators.maxLength(20)]),
+        name: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
+        providerAreaId: new FormControl(null),
+        CUIT: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11)]),
+        ingresosBrutos: new FormControl(null),
+        condicionIVA: new FormControl(null),
+        address: new FormControl(null, [Validators.maxLength(1000)]),
+        city: new FormControl(null, [Validators.maxLength(1000)]),
+        ZIPCode: new FormControl(null, [Validators.maxLength(10)]),
+        province: new FormControl(null, [Validators.maxLength(20)]),
+        country: new FormControl(null, [Validators.maxLength(20)]),
         contactName: new FormControl(null, [Validators.maxLength(100)]),
-        contactPhone: new FormControl(null, [Validators.maxLength(50)]),
-        contactMail: new FormControl(null, [Validators.maxLength(100)]),
-        web: new FormControl(null, [Validators.maxLength(1000)]),
+        phone: new FormControl(null, [Validators.maxLength(50)]),
+        email: new FormControl(null, [Validators.maxLength(100)]),
+        website: new FormControl(null, [Validators.maxLength(1000)]),
         comments: new FormControl(null, [Validators.maxLength(5000)])
     });
 
     constructor(
         private providersAreaService: ProvidersAreaService,
-        private providersService: ProvidersService
+        private providersService: ProvidersService,
+        private messageService: MessageService
     ) {
         
     }
 
     ngOnInit(): void {
-        this.form.controls.id.disable();
-        this.form.controls.active.disable();
         this.providersAreaService.getAll().subscribe(d => {
             d.data.forEach(area => {
                 if(area.active) {
@@ -67,16 +64,18 @@ export class ProvidersAddComponent implements OnInit{
                 }
             });
         });
-        //this.providersService.getAll().subscribe(d=>console.log(d))
     }
 
     save() {
-        console.log(this.form.value)
+        if(!this.form.valid) {
+            return;
+        }
         let model = this.form.value;
-        model.id = 0;
-        model.active = true;
-        console.log(model);
-        this.providersService.post(model).subscribe(d=>console.log(d));
+        this.providersService.post(model).subscribe(response=>{
+            if(response.status == 200) {
+                this.messageService.showMessage("Proveedor guardado", 0)
+            }
+        });
     }
 
     change(event) {

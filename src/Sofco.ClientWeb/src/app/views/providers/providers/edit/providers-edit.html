@@ -36,7 +36,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Razón social</label>
-                        <input type="text" class="form-control" formControlName="businessName">
+                        <input type="text" class="form-control" formControlName="name">
                     </div>
                 </div>
             </div>
@@ -44,19 +44,19 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Rubro</label>
-                        <input type="text" class="form-control" formControlName="area">
+                        <ng-select formControlName="providerAreaId" [items]="providerAreas" bindLabel="description" bindValue="id"></ng-select>
                     </div>
                 </div>
                 <div class="col-md-4" *ngIf="mode == 'Edit'">
                     <div class="form-group">
                         <label class="control-label">Fecha Alta</label>
-                        <input type="text" class="form-control" formControlName="initialDate">
+                        <input type="text" class="form-control" formControlName="startDate">
                     </div>
                 </div>
                 <div class="col-md-4" *ngIf="mode == 'Edit'">
                     <div class="form-group">
                         <label class="control-label">Fecha Baja</label>
-                        <input type="text" class="form-control" formControlName="finalDate">
+                        <input type="text" class="form-control" formControlName="endDate">
                     </div>
                 </div>
             </div>
@@ -70,13 +70,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Ing. Brutos</label>
-                        <input type="number" class="form-control" formControlName="income">
+                        <ng-select formControlName="ingresosBrutos" [items]="incomeTypes" bindLabel="description" bindValue="id"></ng-select>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Condición IVA</label>
-                        <input type="text" class="form-control" formControlName="iva">
+                        <ng-select formControlName="condicionIVA" [items]="IVAConditions" bindLabel="description" bindValue="id"></ng-select>
                     </div>
                 </div>
             </div>
@@ -87,31 +87,31 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Calle</label>
-                        <input type="text" class="form-control" formControlName="addressStreet">
+                        <input type="text" class="form-control" formControlName="address">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Localidad</label>
-                        <input type="text" class="form-control" formControlName="addressCity">
+                        <input type="text" class="form-control" formControlName="city">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Código postal</label>
-                        <input type="text" class="form-control" formControlName="addressPC">
+                        <input type="text" class="form-control" formControlName="ZIPCode">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Provincia</label>
-                        <input type="text" class="form-control" formControlName="addressProvince">
+                        <input type="text" class="form-control" formControlName="province">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">País</label>
-                        <input type="text" class="form-control" formControlName="addressCountry">
+                        <input type="text" class="form-control" formControlName="country">
                     </div>
                 </div>
             </div>
@@ -128,13 +128,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Teléfono</label>
-                        <input type="text" class="form-control" formControlName="contactPhone">
+                        <input type="text" class="form-control" formControlName="phone">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Email</label>
-                        <input type="text" class="form-control" formControlName="contactMail">
+                        <input type="text" class="form-control" formControlName="email">
                     </div>
                 </div>
             </div>
@@ -142,7 +142,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Web</label>
-                        <input type="text" class="form-control" formControlName="web">
+                        <input type="text" class="form-control" formControlName="website">
                     </div>
                 </div>
                 <div class="col-md-4">

@@ -41,23 +41,23 @@ namespace Sofco.Service.Implementations.providers
 
 
         }
-        public Response<IList<ProvidersModel>> GetAll()
+        public Response<IList<ProvidersModelGet>> GetAll()
         {
-            var response = new Response<IList<ProvidersModel>>();
+            var response = new Response<IList<ProvidersModelGet>>();
 
-            response.Data = providersRepository.GetAll().Select(x => new ProvidersModel(x)).ToList();
+            response.Data = providersRepository.GetAll().Select(x => new ProvidersModelGet(x)).ToList();
 
             return response;
         }
 
-        public Response<ProvidersModel> GetById(int providersid)
+        public Response<ProvidersModelGet> GetById(int providersid)
         {
 
-            var response = new Response<ProvidersModel>();
+            var response = new Response<ProvidersModelGet>();
             var provider = providersRepository.GetById(providersid);
             if (provider != null)
             {
-                response.Data = new ProvidersModel(provider);
+                response.Data = new ProvidersModelGet(provider);
             }
 
             return response;
@@ -72,7 +72,7 @@ namespace Sofco.Service.Implementations.providers
             providers.ProviderAreaId = provider.ProviderAreaId;
             providers.UserApplicantId = provider.UserApplicantId;
             providers.Score = provider.Score;
-            providers.StartDate = provider.StartDate;
+            providers.StartDate = (DateTime)provider.StartDate;
             providers.EndDate = provider.EndDate;
             providers.Active = provider.Active;
             providers.CUIT = provider.CUIT;
@@ -82,14 +82,18 @@ namespace Sofco.Service.Implementations.providers
             providers.City = provider.City;
             providers.ZIPCode = provider.ZIPCode;
             providers.Province = provider.Province;
+            providers.Country = provider.Country;
             providers.ContactName = provider.ContactName;
             providers.Phone = provider.Phone;
             providers.Email = provider.Email;
             providers.WebSite = provider.WebSite;
             providers.Comments = provider.Comments;
+            providers.Id = id;
 
-            providers.Id = provider.Id;
-            providersRepository.Update(providers);
+            //providersRepository.Update(providers);
+            unitOfWork.ProvidersRepository.Update(providers);
+            unitOfWork.Save();
+
 
             response.Data = provider;
 
@@ -108,9 +112,11 @@ namespace Sofco.Service.Implementations.providers
                 providers.ProviderAreaId = provider.ProviderAreaId;
                 providers.UserApplicantId = provider.UserApplicantId;
                 providers.Score = provider.Score;
-                providers.StartDate = provider.StartDate;
+                provider.StartDate = DateTime.Now;
+                providers.StartDate = provider.StartDate.Value;
                 providers.EndDate = provider.EndDate;
-                providers.Active = provider.Active;
+                provider.Active = true;
+                providers.Active = true;
                 providers.CUIT = provider.CUIT;
                 providers.IngresosBrutos = provider.IngresosBrutos;
                 providers.CondicionIVA = provider.CondicionIVA;
@@ -118,6 +124,7 @@ namespace Sofco.Service.Implementations.providers
                 providers.City = provider.City;
                 providers.ZIPCode = provider.ZIPCode;
                 providers.Province = provider.Province;
+                providers.Country = provider.Country;
                 providers.ContactName = provider.ContactName;
                 providers.Phone = provider.Phone;
                 providers.Email = provider.Email;
@@ -129,7 +136,7 @@ namespace Sofco.Service.Implementations.providers
 
                 unitOfWork.Save();
 
-                response.Data = new ProvidersModel(providers);
+                response.Data = provider;
 
             }
             catch (Exception e)

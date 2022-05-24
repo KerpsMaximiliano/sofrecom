@@ -1,1 +1,82 @@
-<button [routerLink]="['/providers/notes/add']">Agregar</button>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Notas de pedido </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">Inicio</a>
+            </li>
+            <li>
+                <a>Abastecimiento y Proveedores</a>
+            </li>
+            <li class="active">
+                <strong>Búsqueda</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Estado</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Razón Social</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Rubro</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel-footer">
+                    <button class="btn btn-success pull-left" routerLink="./add"> Nueva <i class="fa fa-plus"></i></button>
+
+                    <div class="text-right">
+                        <button class="btn btn-warning" (click)="refreshSearch()"> {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i></button>
+                        <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="ibox"> 
+        <div class="ibox-content">
+            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Razón social</th>
+                        <th>Rubro</th>
+                        <th>CUIT</th>
+                        <th>Ing. Brutos</th>
+                        <th>Condición IVA</th>
+                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Id </td>
+                        <td>Nombre </td>
+                        <td>Rubro</td>
+                        <td>CUIT</td>
+                        <td>Ingresos Brutos</td>
+                        <td>IVA</td>
+                        <td class="column-sm text-center">
+                            <button title="ver" class="btn btn-primary btn-xs" (click)="view(1)"><i class="fa fa-eye"></i></button>
+                            <button title="editar" class="btn btn-warning btn-xs" (click)="edit(1)"><i class="fa fa-edit"></i></button>
+                        </td>
+                    </tr> 
+                </tbody>
+            </table>       
+        </div>
+    </div>
+</div>

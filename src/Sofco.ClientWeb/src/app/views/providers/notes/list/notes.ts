@@ -9,4 +9,20 @@ export class NotesComponent {
 
 
     constructor(){}
+
+    view() {
+
+    }
+
+    edit(id: number) {
+
+    }
+
+    search() {
+
+    }
+
+    refreshSearch() {
+        
+    }
 }

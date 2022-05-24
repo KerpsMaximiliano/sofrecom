@@ -23,12 +23,12 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Razón social</label>
-                        <input type="text" class="form-control" formControlName="businessName">
+                        <input type="text" class="form-control" formControlName="name">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <label class="control-label">Rubro</label>
-                    <ng-select [items]="activeProvidersArea" bindLabel="description" bindValue="id" formControlName="area" (change)="change($event)"></ng-select>
+                    <ng-select [items]="activeProvidersArea" bindLabel="description" bindValue="id" formControlName="providerAreaId" (change)="change($event)"></ng-select>
                 </div>
                 <div class="col-md-4" *ngIf="critical != null">
                     <label class="control-label">Crítico</label>
@@ -39,19 +39,19 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">CUIT</label>
-                        <input type="text" class="form-control" formControlName="cuit">
+                        <input type="text" class="form-control" formControlName="CUIT">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Ing. Brutos</label>
-                        <ng-select [items]="incomeTypes" bindLabel="description" bindValue="id" formControlName="income"></ng-select>
+                        <ng-select [items]="incomeTypes" bindLabel="description" bindValue="id" formControlName="ingresosBrutos"></ng-select>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Condición IVA</label>
-                        <ng-select [items]="IVAConditions" bindLabel="description" bindValue="id" formControlName="iva"></ng-select>
+                        <ng-select [items]="IVAConditions" bindLabel="description" bindValue="id" formControlName="condicionIVA"></ng-select>
                     </div>
                 </div>
             </div>
@@ -62,31 +62,31 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Calle</label>
-                        <input type="text" class="form-control" formControlName="addressStreet">
+                        <input type="text" class="form-control" formControlName="address">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Localidad</label>
-                        <input type="text" class="form-control" formControlName="addressCity">
+                        <input type="text" class="form-control" formControlName="city">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Código postal</label>
-                        <input type="text" class="form-control" formControlName="addressPC">
+                        <input type="text" class="form-control" formControlName="ZIPCode">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Provincia</label>
-                        <input type="text" class="form-control" formControlName="addressProvince">
+                        <input type="text" class="form-control" formControlName="province">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">País</label>
-                        <input type="text" class="form-control" formControlName="addressCountry">
+                        <input type="text" class="form-control" formControlName="country">
                     </div>
                 </div>
             </div>
@@ -103,13 +103,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Teléfono</label>
-                        <input type="text" class="form-control" formControlName="contactPhone">
+                        <input type="text" class="form-control" formControlName="phone">
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Email</label>
-                        <input type="text" class="form-control" formControlName="contactMail">
+                        <input type="text" class="form-control" formControlName="email">
                     </div>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Web</label>
-                        <input type="text" class="form-control" formControlName="web">
+                        <input type="text" class="form-control" formControlName="website">
                     </div>
                 </div>
                 <div class="col-md-4">

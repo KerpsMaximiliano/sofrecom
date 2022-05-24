@@ -8,9 +8,9 @@ namespace Sofco.Core.Services.Providers
 {
     public interface IprovidersService
     {
-        Response<IList<ProvidersModel>> GetAll();
+        Response<IList<ProvidersModelGet>> GetAll();
 
-        Response<ProvidersModel> GetById(int providersAreaid);
+        Response<ProvidersModelGet> GetById(int providersAreaid);
 
         Response<ProvidersModel> Post(ProvidersModel model);
 

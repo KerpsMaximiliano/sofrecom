@@ -27,11 +27,11 @@ export class ProvidersService {
     }
 
     public edit(id: number, provider: any) {
-        return this.http.put<any>(`${this.baseUrl}/providers/${id}`, provider);
+        return this.http.put<any>(`${this.baseUrl}/providers/${id}`, provider, {observe: 'response'});
     }
 
     public post(provider: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/providers`, provider);
+        return this.http.post<any>(`${this.baseUrl}/providers`, provider, {observe: 'response'});
     }
 
     public getMode() {
