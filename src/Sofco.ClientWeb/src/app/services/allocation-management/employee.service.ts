@@ -18,6 +18,10 @@ export class EmployeeService {
     return this.http.get<any>(`${this.baseUrl}/employees`);
   }
 
+  getEveryone() {
+    return this.http.get<any>(`${this.baseUrl}/employees/everyone`);
+  }
+
   getManagers() {
     return this.http.get<any>(`${this.baseUrl}/users/managers`);
   }

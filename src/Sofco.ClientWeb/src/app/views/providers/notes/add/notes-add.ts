@@ -111,7 +111,7 @@ export class NotesAddComponent implements OnInit{
                 }
             });
         });
-        this.employeeService.getAll().subscribe(d => {
+        this.employeeService.getEveryone().subscribe(d => {
             console.log(d);
             this.participants = d;
             d.forEach(user => {

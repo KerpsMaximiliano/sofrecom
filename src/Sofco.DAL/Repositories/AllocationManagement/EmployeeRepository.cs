@@ -30,7 +30,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             var query = context.Employees.Include(x => x.Manager).Where(x => x.EndDate == null && !x.IsExternal).ToList();
             return query;
         }
-        
+
+        public IList<Employee> GetEveryone()
+        {
+            var query = context.Employees.ToList();
+            return query;
+        }
+
         public ICollection<Employee> GetAllForWorkTimeReport()
         {
             var now = DateTime.UtcNow.AddMonths(-3);

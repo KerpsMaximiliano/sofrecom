@@ -15,6 +15,7 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 import { FileUploadModule } from "ng2-file-upload";
 import { ButtonsModule } from "ngx-bootstrap";
 import { NotesAddComponent } from "./notes/add/notes-add";
+import { NotesEditComponent } from "./notes/edit/notes-edit";
 import { NotesComponent } from "./notes/list/notes";
 import { ProvidersRouter } from "./providers.router";
 import { ProvidersAddComponent } from "./providers/add/providers-add";
@@ -28,7 +29,8 @@ import { ProvidersComponent } from "./providers/list/providers";
         ProvidersAddComponent,
         ProvidersEditComponent,
         NotesComponent,
-        NotesAddComponent
+        NotesAddComponent,
+        NotesEditComponent
     ],
     imports: [
         CommonModule,
