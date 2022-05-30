@@ -21,17 +21,34 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label">Estado</label>
+                        <label class="control-label">Solicitante</label>
+                        <ng-select [items]="applicants" bindLabel="name" bindValue="id" [(ngModel)]="applicantId"></ng-select>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label">Razón Social</label>
+                        <label class="control-label">Fecha desde</label>
+                        <date-picker [(date)]="dateSince"></date-picker>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="control-label">Rubro</label>
+                        <label class="control-label">Fecha hasta</label>
+                        <date-picker [(date)]="dateTo"></date-picker>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Estados</label>
+                        <ng-select [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateId"></ng-select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Proveedor</label>
+                        <ng-select [items]="providers" bindLabel="name" bindValue="id" [(ngModel)]="providerId"></ng-select>
                     </div>
                 </div>
             </div>
@@ -53,23 +70,21 @@
             <table class="table table-striped dataTable" role="grid" id="dataTable">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Razón social</th>
-                        <th>Rubro</th>
-                        <th>CUIT</th>
-                        <th>Ing. Brutos</th>
-                        <th>Condición IVA</th>
+                        <th>#</th>
+                        <th>Estado</th>
+                        <th>Solicitante</th>
+                        <th>Fecha Creación</th>
+                        <th>Analítica</th>
                         <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Id </td>
-                        <td>Nombre </td>
-                        <td>Rubro</td>
-                        <td>CUIT</td>
-                        <td>Ingresos Brutos</td>
-                        <td>IVA</td>
+                        <td>Id</td>
+                        <td>Estado</td>
+                        <td>Solicitante</td>
+                        <td>Fecha Creación</td>
+                        <td>Analítica</td>
                         <td class="column-sm text-center">
                             <button title="ver" class="btn btn-primary btn-xs" (click)="view(1)"><i class="fa fa-eye"></i></button>
                             <button title="editar" class="btn btn-warning btn-xs" (click)="edit(1)"><i class="fa fa-edit"></i></button>

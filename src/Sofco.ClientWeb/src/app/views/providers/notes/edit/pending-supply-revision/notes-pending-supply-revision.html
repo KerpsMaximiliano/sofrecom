@@ -1,0 +1,150 @@
+<h1>Pendiente Revisión Abastecimiento</h1>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12 row">
+            <div class="pull-left">
+                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']">
+                    <i class="fa fa-arrow-left"></i>Volver
+                </button>
+            </div>
+            <div class="btn-right">
+                <button class="btn btn-danger btn-outline dim" (click)="reject()">
+                    Rechazar<i class="fa fa-times"></i>
+                </button>
+                <button class="btn btn-success btn-outline dim" (click)="send()">
+                    Enviar<i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-content">
+                <form class="form-horizontal" [formGroup]="formNota">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Descripción: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" formControlName="descripcion">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Grilla Productos/Servicios: </label>
+                        <div class="col-sm-8">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Producto/Servicio</th>
+                                        <th>Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of productosServicios; let i = index">
+                                        <td>{{ item.productService }} </td>
+                                        <td>{{ item.quantity }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Rubro: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" formControlName="rubro">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Crítico: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" formControlName="critico">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Grilla Analiticas: </label>
+                        <div class="col-sm-8">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Analítica</th>
+                                        <th>% de asignación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of analiticas; let i = index">
+                                        <td>{{ item.analytic }} </td>
+                                        <td>{{ item.asigned }} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Requiere personal: </label>
+                        <div class="col-sm-1">
+                            <input type="checkbox" class="form-control w-2" formControlName="requierePersonal">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Proveedores: </label>
+                        <div class="col-sm-5">
+                            <label>Proveedor</label>
+                            <ng-select [items]="providers" bindLabel="name" bindValue="id"
+                                formControlName="proveedores"></ng-select>
+                        </div>
+                        <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                            (click)="agregarProveedor()">Agregar<i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left"></label>
+                        <div class="col-sm-8">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Presupuesto</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of providersGrid; let i = index">
+                                        <td>{{ item.name }} </td>
+                                        <td><button>Adjuntar archivo</button></td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarProveedor(i)"
+                                                class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Previsto en el presupuesto: </label>
+                        <div class="col-sm-1">
+                            <input type="checkbox" class="form-control w-2" formControlName="previstoPresupuesto">
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="formNota.controls.previstoPresupuesto.value">
+                        <label class="col-sm-3 control-label text-left">Nro Evalprop: </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" formControlName="nroEvalprop">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Observaciones: </label>
+                        <div class="col-sm-8">
+                            <textarea cols="30" rows="5" class="form-control"
+                                formControlName="observaciones"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Monto final de la OC: </label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" formControlName="montoOC">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

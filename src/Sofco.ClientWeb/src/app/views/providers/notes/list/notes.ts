@@ -1,17 +1,61 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ProvidersService } from "app/services/admin/providers.service";
+import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'notes',
     templateUrl: './notes.html'
 })
 
-export class NotesComponent {
+export class NotesComponent implements OnInit{
 
+    applicants = [];
+    applicantId: number;
+    states = [
+        { id: 0, text: "Todos" },
+        { id: 1, text: "Activo" },
+        { id: 2, text: "Inactivo" },
+    ];
+    stateId: number;
+    providers = [];
+    providerId: number;
+    dateSince;
+    dateTo;
 
-    constructor(){}
+    constructor(
+        private employeeService: EmployeeService,
+        private messageService: MessageService,
+        private providerService: ProvidersService,
+        private router: Router
+    ){}
 
-    view() {
+    ngOnInit(): void {
+        this.inicializar()
+    }
 
+    inicializar() {
+        this.employeeService.getEveryone().subscribe(d => {
+            d.forEach(employee => {
+                if(employee.endDate == null && employee.isExternal == 0) {
+                    this.applicants.push(employee);
+                    this.applicants = [...this.applicants]
+                }
+            });
+        });
+        this.providerService.getAll().subscribe(d => {
+            d.data.forEach(provider => {
+                if(provider.active == true) {
+                    this.providers.push(provider);
+                    this.providers = [...this.providers]
+                }
+            })
+        })
+    }
+
+    view(id: number) {
+        this.router.navigate([`providers/notes/edit/${id}`]);
     }
 
     edit(id: number) {
@@ -19,10 +63,20 @@ export class NotesComponent {
     }
 
     search() {
-
+        if(this.dateTo != null && this.dateTo != undefined && this.dateSince != null && this.dateSince != undefined) {
+            if(this.dateTo < this.dateSince) {
+                this.messageService.showMessage("La fecha hasta no puede ser anterior a la fecha desde", 2);
+                return;
+            }
+        }
+        console.log("Búsqueda")
     }
 
     refreshSearch() {
-        
+        this.stateId = null;
+        this.applicantId = null;
+        this.dateSince = null;
+        this.dateTo = null;
+        this.providerId = null;
     }
 }
