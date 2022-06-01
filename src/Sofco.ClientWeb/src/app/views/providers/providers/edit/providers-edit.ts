@@ -35,19 +35,19 @@ export class ProvidersEditComponent implements OnInit{
         active: new FormControl(null),
         name: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
         providerAreaId: new FormControl(null),
-        cuit: new FormControl(null),
+        cuit: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required]),
         startDate: new FormControl(null),
         endDate: new FormControl(null),
-        ingresosBrutos: new FormControl(null),
-        condicionIVA: new FormControl(null),
-        address: new FormControl(null, [Validators.maxLength(1000)]),
-        city: new FormControl(null, [Validators.maxLength(1000)]),
-        ZIPCode: new FormControl(null, [Validators.maxLength(10)]),
-        province: new FormControl(null, [Validators.maxLength(20)]),
-        country: new FormControl(null, [Validators.maxLength(20)]),
-        contactName: new FormControl(null, [Validators.maxLength(100)]),
-        phone: new FormControl(null, [Validators.maxLength(50)]),
-        email: new FormControl(null, [Validators.maxLength(100)]),
+        ingresosBrutos: new FormControl(null, [Validators.required]),
+        condicionIVA: new FormControl(null, [Validators.required]),
+        address: new FormControl(null, [Validators.maxLength(1000), Validators.required]),
+        city: new FormControl(null, [Validators.maxLength(1000), Validators.required]),
+        ZIPCode: new FormControl(null, [Validators.maxLength(10), Validators.required]),
+        province: new FormControl(null, [Validators.maxLength(20), Validators.required]),
+        country: new FormControl(null, [Validators.maxLength(20), Validators.required]),
+        contactName: new FormControl(null, [Validators.maxLength(100), Validators.required]),
+        phone: new FormControl(null, [Validators.maxLength(50), Validators.required]),
+        email: new FormControl(null, [Validators.maxLength(100), Validators.required]),
         website: new FormControl(null, [Validators.maxLength(1000)]),
         comments: new FormControl(null, [Validators.maxLength(5000)])
     });
@@ -111,9 +111,13 @@ export class ProvidersEditComponent implements OnInit{
         }
         this.form.enable();
         let model = this.form.value;
+        this.form.controls.id.disable();
+        this.form.controls.active.disable();
+        this.form.controls.startDate.disable();
+        this.form.controls.endDate.disable();
         this.providersService.edit(this.id, model).subscribe(response => {
-            if(response.status == 200) {
-                this.messageService.showMessage("Proveedor guardado", 0)
+            if (response.status == 200) {
+                this.messageService.showMessage("Proveedor guardado", 0);
             }
         })
     }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { GrossIncomeTypes } from "app/models/enums/GrossIncomeTypes";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
@@ -32,17 +33,17 @@ export class ProvidersAddComponent implements OnInit{
         id: new FormControl(0),
         name: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
         providerAreaId: new FormControl(null),
-        CUIT: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11)]),
-        ingresosBrutos: new FormControl(null),
-        condicionIVA: new FormControl(null),
-        address: new FormControl(null, [Validators.maxLength(1000)]),
-        city: new FormControl(null, [Validators.maxLength(1000)]),
-        ZIPCode: new FormControl(null, [Validators.maxLength(10)]),
-        province: new FormControl(null, [Validators.maxLength(20)]),
-        country: new FormControl(null, [Validators.maxLength(20)]),
-        contactName: new FormControl(null, [Validators.maxLength(100)]),
-        phone: new FormControl(null, [Validators.maxLength(50)]),
-        email: new FormControl(null, [Validators.maxLength(100)]),
+        CUIT: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required]),
+        ingresosBrutos: new FormControl(null, [Validators.required]),
+        condicionIVA: new FormControl(null, [Validators.required]),
+        address: new FormControl(null, [Validators.maxLength(1000), Validators.required]),
+        city: new FormControl(null, [Validators.maxLength(1000), Validators.required]),
+        ZIPCode: new FormControl(null, [Validators.maxLength(10), Validators.required]),
+        province: new FormControl(null, [Validators.maxLength(20), Validators.required]),
+        country: new FormControl(null, [Validators.maxLength(20), Validators.required]),
+        contactName: new FormControl(null, [Validators.maxLength(100), Validators.required]),
+        phone: new FormControl(null, [Validators.maxLength(50), Validators.required]),
+        email: new FormControl(null, [Validators.maxLength(100), Validators.required]),
         website: new FormControl(null, [Validators.maxLength(1000)]),
         comments: new FormControl(null, [Validators.maxLength(5000)])
     });
@@ -50,7 +51,8 @@ export class ProvidersAddComponent implements OnInit{
     constructor(
         private providersAreaService: ProvidersAreaService,
         private providersService: ProvidersService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router
     ) {
         
     }
@@ -67,13 +69,25 @@ export class ProvidersAddComponent implements OnInit{
     }
 
     save() {
+        this.markFormGroupTouched(this.form)
         if(!this.form.valid) {
             return;
         }
         let model = this.form.value;
         this.providersService.post(model).subscribe(response=>{
             if(response.status == 200) {
-                this.messageService.showMessage("Proveedor guardado", 0)
+                this.messageService.showMessage("Proveedor guardado", 0);
+                this.router.navigate([`providers/providers`]);
+            }
+        });
+    }
+
+    markFormGroupTouched(formGroup: FormGroup) {
+        (<any>Object).values(formGroup.controls).forEach(control => {
+            control.markAsTouched();
+
+            if (control.controls) {
+                this.markFormGroupTouched(control);
             }
         });
     }

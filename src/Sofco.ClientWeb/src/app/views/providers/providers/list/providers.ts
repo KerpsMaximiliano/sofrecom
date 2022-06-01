@@ -126,7 +126,7 @@ export class ProvidersComponent implements OnInit{
         if(this.businessName != null && this.businessName.length > 0) {
             let search = [];
             searchData.forEach(entry => {
-                let result = entry.name.includes(this.businessName);
+                let result = entry.name.toLowerCase().includes(this.businessName.toLocaleLowerCase());
                 if(result) {
                     search.push(entry);
                 }
