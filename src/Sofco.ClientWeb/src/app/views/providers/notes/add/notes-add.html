@@ -97,7 +97,7 @@
                             </button>
                             <div class="col-sm-5">
                                 <label>Analítica</label>
-                                <ng-select [items]="analiticas" formControlName="analytic"></ng-select>
+                                <ng-select [items]="analiticas" bindLabel="name" bindValue="id" formControlName="analytic"></ng-select>
                             </div>
                             <div class="col-sm-4">
                                 <label>% de asignación</label>
@@ -115,7 +115,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of analiticasTable; let i = index">
-                                        <td>{{ item.analytic }} </td>
+                                        <td>{{ item.analytic.name }} </td>
                                         <td>{{ item.asigned }} </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarAnalitica(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
@@ -130,11 +130,32 @@
                             </div>
                             <label class="col-sm-8 control-label text-left">Requiere personal trabajando en/por Sofrecom o en Cliente</label>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label text-left">Proveedores: </label>
-                            <div class="col-sm-8">
-                                <ng-select [items]="providers" [multiple]="true"></ng-select>
+                        <div class="form-group" [formGroup]="formProveedores">
+                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                                (click)="agregarProveedor()">Agregar<i class="fa fa-plus"></i>
+                            </button>
+                            <div class="col-sm-5">
+                                <label>Proveedor</label>
+                                <ng-select [items]="providers" bindLabel="name" bindValue="id" formControlName="provider"></ng-select>
                             </div>
+                        </div>
+                        <div class="form-group" *ngIf="proveedoresTable.length > 0">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Proveedor</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of proveedoresTable; let i = index">
+                                        <td>{{ item.name }} </td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarProveedor(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-1">

@@ -10,7 +10,7 @@ import { ProvidersService } from "app/services/admin/providers.service";
 export class NotesReceivedConformable {
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];
+    providersGrid = [];//proveedor seleccionado etapas anteriores
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -52,20 +52,22 @@ export class NotesReceivedConformable {
         this.formNota.controls.facturas.enable();
     }
 
-    descargarArchivo() {
-        
+    downloadOC() {
+        //descargar archivo orden de compra
     }
 
-    descargarArchivoProveedor() {
-        
+    downloadProviderDoc() {
+        //descargar archivos documentacion para proveedor
+        //ver lista
     }
 
-    descargarArchivoRecibidoConforme() {
-        
+    downloadRC() {
+        //descargar archivos documentacion recibido conforme
+        //ver lista
     }
 
-    agregarArchivo() {
-        
+    uploadBills() {
+        //subir archivos facturas
     }
 
     addBill() {

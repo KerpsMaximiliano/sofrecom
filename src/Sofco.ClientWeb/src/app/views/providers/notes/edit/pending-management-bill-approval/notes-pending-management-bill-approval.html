@@ -87,18 +87,11 @@
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
-                                        <th>Presupuesto</th>
-                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of providersGrid; let i = index">
                                         <td>{{ item.name }} </td>
-                                        <td><button>Adjuntar archivo</button></td>
-                                        <td class="column-sm text-center">
-                                            <button title="eliminar" (click)="eliminarProveedor(i)"
-                                                class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -132,7 +125,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label text-left">Orden de compra: </label>
                         <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
-                            (click)="descargarArchivo()">Descargar Archivo Adjunto  <i class="fa fa-plus"></i>
+                            (click)="downloadOC()">Descargar Archivo Adjunto  <i class="fa fa-plus"></i>
                         </button>
                         <div class="col-sm-5">
                             <label>Número de OC</label>
@@ -142,19 +135,19 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label text-left">Documentación para Proveedor: </label>
                         <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
-                            (click)="descargarArchivoProveedor()">Descargar archivos adjuntos  <i class="fa fa-plus"></i>
+                            (click)="downloadProviderDoc()">Descargar archivos adjuntos  <i class="fa fa-plus"></i>
                         </button>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label text-left">Documentación Recibido Conforme: </label>
                         <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
-                            (click)="descargarArchivoRecibidoConforme()">Descargar archivos adjuntos  <i class="fa fa-plus"></i>
+                            (click)="downloadRC()">Descargar archivos adjuntos  <i class="fa fa-plus"></i>
                         </button>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label text-left">Facturas: </label>
                         <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
-                            (click)="descargarFacturas()">Descargar archivos adjuntos  <i class="fa fa-plus"></i>
+                            (click)="downloadBills()">Descargar archivos adjuntos  <i class="fa fa-plus"></i>
                         </button>
                     </div>
                 </form>

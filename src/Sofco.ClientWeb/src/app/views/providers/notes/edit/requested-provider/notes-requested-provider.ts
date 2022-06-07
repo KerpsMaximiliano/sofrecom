@@ -1,6 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 
 @Component({
     selector: 'notes-requested-provider',
@@ -8,9 +9,21 @@ import { ProvidersService } from "app/services/admin/providers.service";
 })
 
 export class NotesRequestedProvider {
+
+    @ViewChild('closeModal') modal;
+    public closeModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "rejectModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+    rejectComments;
+
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];
+    providersGrid = [];//proveedor seleccionado etapas anteriores
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -51,16 +64,22 @@ export class NotesRequestedProvider {
         this.formNota.controls.documentacionRecibidoConforme.enable();
     }
 
-    descargarArchivo() {
-        
+    downloadOC() {
+        //descargar archivo orden de compra
     }
 
-    descargarArchivoProveedor() {
-        
+    downloadProviderDoc() {
+        //descargar archivos documentacion para proveedor
+        //ver lista
     }
 
-    agregarArchivo() {
-        
+    uploadRC() {
+        //subir archivos documentacion recibido conforme
+    }
+
+    closeM() {
+        //abrir modal
+        this.modal.show()
     }
 
     close() {
