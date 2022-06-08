@@ -10,7 +10,7 @@ import { ProvidersService } from "app/services/admin/providers.service";
 export class NotesPendingGAFProcessing {
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];
+    providersGrid = [];//proveedor seleccionado etapas anteriores
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -51,20 +51,22 @@ export class NotesPendingGAFProcessing {
         this.formNota.disable();
     }
 
-    descargarArchivo() {
-        
+    downloadOC() {
+        //descargar archivo orden de compra
     }
 
-    descargarArchivoProveedor() {
-        
+    downloadProviderDoc() {
+        //descargar archivos documentacion para proveedor
+        //ver lista
     }
 
-    descargarArchivoRecibidoConforme() {
-        
+    downloadRC() {
+        //descargar archivos documentacion recibido conforme
+        //ver lista
     }
 
-    descargarFacturas() {
-
+    downloadBills() {
+        //descargar archivos facturas
     }
 
     close() {

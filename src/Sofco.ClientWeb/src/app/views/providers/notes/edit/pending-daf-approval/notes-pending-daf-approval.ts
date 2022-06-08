@@ -1,6 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
 
 @Component({
     selector: 'notes-pending-daf-approval',
@@ -8,9 +9,21 @@ import { ProvidersService } from "app/services/admin/providers.service";
 })
 
 export class NotesPendingDAFApproval {
+
+    @ViewChild('rejectModal') modal;
+    public rejectModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "ACTIONS.confirmTitle",
+        "rejectModal",
+        true,
+        true,
+        "ACTIONS.ACCEPT",
+        "ACTIONS.cancel"
+    );
+    rejectComments;
+
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];
+    providersGrid = [];//Proveedor seleccionado en etapa anterior
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -49,8 +62,13 @@ export class NotesPendingDAFApproval {
         this.formNota.controls.observaciones.enable();
     }
 
-    descargarArchivo() {
-        
+    downloadOC() {
+        //Descargar orden de compra
+    }
+
+    rejectM() {
+        //abrir modal rechazar
+        this.modal.show()
     }
 
     reject() {

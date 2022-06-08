@@ -53,8 +53,8 @@ export class NotesPendingSupplyApproval implements OnInit{
         this.formNota.controls.ordenCompra.enable()
     }
 
-    agregarArchivo() {
-        
+    uploadOC() {
+        //subir archivo orden de compra
     }
 
     reject() {

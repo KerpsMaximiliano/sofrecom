@@ -10,7 +10,7 @@ import { ProvidersService } from "app/services/admin/providers.service";
 export class NotesApproved {
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];
+    providersGrid = [];//proveedor seleccionado etapas anteriores
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -50,12 +50,12 @@ export class NotesApproved {
         this.formNota.controls.documentacionProveedor.enable();
     }
 
-    descargarArchivo() {
-        
+    downloadOC() {
+        //descargar archivo orden de compre
     }
 
-    agregarArchivo() {
-        
+    uploadProviderDoc() {
+        //subir archivos documentacion para proveedor
     }
 
     request() {

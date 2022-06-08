@@ -72,4 +72,8 @@ export class UserService {
     getCommercialManagers() {
         return this.http.get<any>(`${this.baseUrl}/users/commercialManagers`);
     }
+
+    getManagers() {
+        return this.http.get<any>(`${this.baseUrl}/users/managers`);
+    }
 }

@@ -2,7 +2,12 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { SettingsService } from "app/services/admin/settings.service";
+import { UserService } from "app/services/admin/user.service";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { UserInfoService } from "app/services/common/user-info.service";
+import { forkJoin } from "rxjs";
 
 @Component({
     selector: 'notes-add',
@@ -17,17 +22,19 @@ export class NotesAddComponent implements OnInit{
 
     providerAreas = [];
     //Combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos
-    providers = ['proveedor 1', 'proveedor 2', 'proveedor 3'];
     //Participantes ficha del viaje
     //Combo agregar participantes (Texto 100 caracteres)
     participantes = ['participante 1', 'participante 2', 'participante 3'];
     participants = [];
     filteredParticipants = [];
-    analiticas = ['Uno', 'Dos', 'Tres', 'Cuatro'];
+    analiticas = [];
+    analiticasTable = [];
+    allProviders = [];
+    providers = [];
+    proveedoresTable = [];
+    productosServicios = [];
     participantesViaje = [];
     participantesCapacitacion = [];
-    productosServicios = [];
-    analiticasTable = [];
     critical: string = null;
 
     formNota: FormGroup = new FormGroup({
@@ -58,6 +65,10 @@ export class NotesAddComponent implements OnInit{
     formAnaliticas: FormGroup = new FormGroup({
         analytic: new FormControl(null, [Validators.required]),
         asigned: new FormControl(null, [Validators.required, Validators.min(1)])
+    });
+
+    formProveedores: FormGroup = new FormGroup({
+        provider: new FormControl(null, [Validators.required])
     })
     
     formCapacitacion: FormGroup = new FormGroup({
@@ -94,11 +105,15 @@ export class NotesAddComponent implements OnInit{
     constructor(
         private providersService: ProvidersService,
         private providersAreaService: ProvidersAreaService,
-        private employeeService: EmployeeService
+        private employeeService: EmployeeService,
+        private analyticService: AnalyticService,
+        private userService: UserService
     ) {}
 
     ngOnInit(): void {
         this.inicializar();
+        const userInfo = UserInfoService.getUserInfo();
+        console.log(userInfo);
     }
 
     inicializar() {
@@ -120,12 +135,28 @@ export class NotesAddComponent implements OnInit{
                     this.filteredParticipants = [...this.filteredParticipants]
                 }
             });
+        });
+        forkJoin([this.analyticService.getAll(), this.userService.getManagers(), this.userService.getManagersAndDirectors()]).subscribe(results => {
+            console.log(results[0]);
+            this.analiticas = results[0];
+            console.log(results[1]);
+            console.log(results[2]);
+        });
+        this.providersService.getAll().subscribe(d => {
+            this.allProviders = d.data;
         })
     }
 
     change(event) {
         if(event != undefined) {
-            this.critical = (event.critical) ? "Si" : "No"
+            this.critical = (event.critical) ? "Si" : "No";
+            this.providers = [];
+            this.allProviders.forEach(prov => {
+                if(prov.providerAreaId == event.id) {
+                    this.providers.push(prov);
+                    this.providers = [...this.providers];
+                }
+            })
         } else {
             this.critical = null
         }
@@ -193,16 +224,28 @@ export class NotesAddComponent implements OnInit{
         if(this.formAnaliticas.invalid) {
             return;
         }
+        let busqueda = this.analiticas.find(analytic => analytic.id == this.formAnaliticas.controls.analytic.value)
         let analitica = {
-            analytic: this.formAnaliticas.controls.analytic.value,
+            analytic: busqueda,
             asigned: this.formAnaliticas.controls.asigned.value
         }
         this.analiticasTable.push(analitica)
-
     }
 
     eliminarAnalitica(index: number) {
         this.analiticasTable.splice(index, 1);
+    }
+
+    agregarProveedor() {
+        if(this.formProveedores.invalid) {
+            return;
+        }
+        let busqueda = this.allProviders.find(prov => prov.id == this.formProveedores.controls.provider.value);
+        this.proveedoresTable.push(busqueda)
+    }
+
+    eliminarProveedor(index: number) {
+        this.proveedoresTable.splice(index, 1);
     }
 
     saveNote() {
