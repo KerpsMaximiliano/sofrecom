@@ -8,12 +8,12 @@ using System.Text;
 
 namespace Sofco.Service.Implementations.RequestNote
 {
-    public class RequestNoteEnviarPendienteRevisionAbastecimientoCommand : IRequestNoteCommand<RequestNoteSubmitPendienteRevisionAbastecimientoDTO>
+    public class RequestNoteRechazarPendienteRevisionAbastecimientoCommand : IRequestNoteCommand<RequestNoteSubmitPendienteRevisionAbastecimientoDTO>
     {
 
         private readonly IRequestNoteService _requestNoteService;
 
-        public RequestNoteEnviarPendienteRevisionAbastecimientoCommand(IRequestNoteService requestNoteService)
+        public RequestNoteRechazarPendienteRevisionAbastecimientoCommand(IRequestNoteService requestNoteService)
         {
             this._requestNoteService = requestNoteService;
         }

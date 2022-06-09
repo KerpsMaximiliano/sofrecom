@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sofco.Domain.DTO.NotaPedido
 {
-    public class RequestNoteLoadNuevoDTO : RequestNoteLoadDTO
+    public class RequestNoteSubmitBorradorDTO : RequestNoteSubmitDTO
     {
         public string Description { get; set; }
         public int ProviderAreaId { get; set; }

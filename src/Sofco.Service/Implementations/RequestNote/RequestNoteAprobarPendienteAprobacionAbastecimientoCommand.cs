@@ -8,32 +8,32 @@ using System.Text;
 
 namespace Sofco.Service.Implementations.RequestNote
 {
-    public class RequestNoteEnviarPendienteRevisionAbastecimientoCommand : IRequestNoteCommand<RequestNoteSubmitPendienteRevisionAbastecimientoDTO>
+    public class RequestNoteAprobarPendienteAprobacionAbastecimientoCommand : IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionAbastecimientoDTO>
     {
 
         private readonly IRequestNoteService _requestNoteService;
 
-        public RequestNoteEnviarPendienteRevisionAbastecimientoCommand(IRequestNoteService requestNoteService)
+        public RequestNoteAprobarPendienteAprobacionAbastecimientoCommand(IRequestNoteService requestNoteService)
         {
             this._requestNoteService = requestNoteService;
         }
 
-        public Response CanExecute(RequestNoteSubmitPendienteRevisionAbastecimientoDTO dto)
+        public Response CanExecute(RequestNoteSubmitPendienteAprobacionAbastecimientoDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Response Execute(RequestNoteSubmitPendienteRevisionAbastecimientoDTO dto)
+        public Response Execute(RequestNoteSubmitPendienteAprobacionAbastecimientoDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Response Notify(RequestNoteSubmitPendienteRevisionAbastecimientoDTO dto)
+        public Response Notify(RequestNoteSubmitPendienteAprobacionAbastecimientoDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Response Validate(RequestNoteSubmitPendienteRevisionAbastecimientoDTO dto)
+        public Response Validate(RequestNoteSubmitPendienteAprobacionAbastecimientoDTO dto)
         {
             throw new NotImplementedException();
         }

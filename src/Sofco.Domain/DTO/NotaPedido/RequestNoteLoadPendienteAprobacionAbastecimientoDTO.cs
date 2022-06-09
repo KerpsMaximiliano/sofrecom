@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sofco.Domain.DTO.NotaPedido
 {
-    public class RequestNoteSubmitEnviarPendienteRevisionAbastecimientoDTO : RequestNoteSubmitDTO
+    public class RequestNoteLoadPendienteAprobacionAbastecimientoDTO : RequestNoteLoadDTO
     {
         // Completar resto de campos
     }
