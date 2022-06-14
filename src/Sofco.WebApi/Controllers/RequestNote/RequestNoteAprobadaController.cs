@@ -10,26 +10,42 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
-    public class RequestNoteAprobadaController : RequestNoteAbstractWorkflowController<RequestNoteSubmitAprobadaDTO, RequestNoteLoadAprobadaDTO>
+    [Route("api/RequestNoteAprobada")]
+    public class RequestNoteAprobadaController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
+        private readonly IRequestNoteAnalitycService _requestNoteAnalitycService;
 
-        public RequestNoteAprobadaController(IRequestNoteService requestNoteService)
+        public RequestNoteAprobadaController(IRequestNoteService requestNoteService, IRequestNoteAnalitycService requestNoteAnalityc)
         {
             this._requestNoteService = requestNoteService;
+            this._requestNoteAnalitycService = requestNoteAnalityc;
         }
 
-        protected override Response<RequestNoteLoadAprobadaDTO> Get(int id)
+        [HttpPost("AprobarRequestNote")]
+        protected IActionResult AprobarRequestNote(int id)
         {
-            throw new NotImplementedException();
+            this._requestNoteService.CambiarAPendienteApobacionGerenteAnalitica(id);
+            this._requestNoteAnalitycService.CambiarAPendienteAprobacion(id);
+
+            return Ok();
         }
 
-        protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitAprobadaDTO>> GetActionDictionary()
+        [HttpPost("RechazarRequestNode")]
+        protected IActionResult RechazarRequestNode(int id)
         {
-            Dictionary<string, IRequestNoteCommand<RequestNoteSubmitAprobadaDTO>> map = 
-                new Dictionary<string, IRequestNoteCommand<RequestNoteSubmitAprobadaDTO>>();
-            map.Add("Solicitar", new RequestNoteSolicitarAprobadaCommand(_requestNoteService));
-            return map;
-    }
+            this._requestNoteService.RechazarRequestNote(id);
+            this._requestNoteAnalitycService.Rechazar(id);
+
+            return Ok();
+        }
+
+        [HttpPost("GuardarBorrador")]
+        protected IActionResult GuardarBorrador([FromBody] RequestNoteSubmitBorradorDTO requestNote)
+        {
+            this._requestNoteService.GuardarBorrador(requestNote);
+
+            return Ok();
+        }
     }
 }

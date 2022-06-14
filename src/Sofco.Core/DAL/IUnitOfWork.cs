@@ -7,6 +7,7 @@ using Sofco.Core.DAL.ManagementReport;
 using Sofco.Core.DAL.Provider;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.DAL.RequestNote;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.DAL.WorkTimeManagement;
@@ -129,9 +130,12 @@ namespace Sofco.Core.DAL
 
         #endregion
 
-         IProviderAreaRepository ProviderAreaRepository { get; }
+        IProviderAreaRepository ProviderAreaRepository { get; }
 
-         IProvidersRepository ProvidersRepository { get; }
+        IProvidersRepository ProvidersRepository { get; }
+
+        IRequestNoteRepository RequestNoteRepository { get; }
+        IRequestNoteAnalitycRepository RequestNoteAnalitycRepository { get; }
 
         void BeginTransaction();
         void Rollback();

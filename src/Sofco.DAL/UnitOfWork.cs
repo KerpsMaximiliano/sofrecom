@@ -12,6 +12,7 @@ using Sofco.Core.DAL.ManagementReport;
 using Sofco.Core.DAL.Provider;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.DAL.RequestNote;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.Views;
 using Sofco.Core.DAL.Workflow;
@@ -25,6 +26,7 @@ using Sofco.DAL.Repositories.ManagementReport;
 using Sofco.DAL.Repositories.Providers;
 using Sofco.DAL.Repositories.Recruitment;
 using Sofco.DAL.Repositories.Reports;
+using Sofco.DAL.Repositories.RequestNote;
 using Sofco.DAL.Repositories.Rrhh;
 using Sofco.DAL.Repositories.Workflow;
 using Sofco.DAL.Repositories.WorkTimeManagement;
@@ -155,6 +157,8 @@ namespace Sofco.DAL
         private IProviderAreaRepository providerAreaRepository;
 
         private IProvidersRepository providersRepository;
+
+        private IRequestNoteRepository requestNoteRepository;
 
         public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig, IOptions<AppSetting> appSettingOptions)
         {
@@ -287,6 +291,8 @@ namespace Sofco.DAL
         public IProviderAreaRepository ProviderAreaRepository => providerAreaRepository ?? (providerAreaRepository = new ProviderAreaRepository(context));
 
         public IProvidersRepository ProvidersRepository => providersRepository ?? (providersRepository = new ProvidersRepository(context));
+
+        public IRequestNoteRepository RequestNoteRepository => requestNoteRepository ?? (requestNoteRepository = new RequestNoteRepository(context));
 
         public void Save()
         {

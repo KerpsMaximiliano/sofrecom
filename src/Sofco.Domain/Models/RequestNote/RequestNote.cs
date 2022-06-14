@@ -36,12 +36,5 @@ namespace Sofco.Domain.Models.RequestNote
         public IList<RequestNoteFile> Attachments { get; set; }
         public IList<RequestNoteAnalytic> Analytics { get; set; }
         public IList<RequestNoteProvider> Providers { get; set; }
-
-
-
-
-
-
-
     }
 }

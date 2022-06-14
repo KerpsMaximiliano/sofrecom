@@ -1,4 +1,5 @@
 ﻿using Sofco.Domain.DTO;
+using Sofco.Domain.DTO.NotaPedido;
 using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,9 @@ namespace Sofco.Core.Services.RequestNote
         Response SaveBorrador(RequestNoteSubmitDTO dto);
         Response Get(int id);
         Response SavePendienteRevisionAbastecimiento(RequestNoteSubmitDTO dto);
+        //
+        void CambiarAPendienteApobacionGerenteAnalitica(int requestNodeId);
+        void RechazarRequestNote(int requestNodeId);
+        void GuardarBorrador(RequestNoteSubmitBorradorDTO requestNoteBorrador);
     }
 }
