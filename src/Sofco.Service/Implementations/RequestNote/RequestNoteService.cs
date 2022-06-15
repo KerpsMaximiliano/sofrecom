@@ -22,13 +22,6 @@ namespace Sofco.Service.Implementations.RequestNote
             this.logger = logger;
         }
 
-        public Response Get(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-
         public Response SaveBorrador(RequestNoteSubmitDTO dto)
         {
             throw new NotImplementedException();
@@ -73,6 +66,11 @@ namespace Sofco.Service.Implementations.RequestNote
 
             this.unitOfWork.RequestNoteRepository.InsertRequestNote(requestNote);
             this.unitOfWork.RequestNoteRepository.Save();
+        }
+
+        public Domain.Models.RequestNote.RequestNote GetById(int id)
+        {
+            return this.unitOfWork.RequestNoteRepository.GetById(id);
         }
     }
 }

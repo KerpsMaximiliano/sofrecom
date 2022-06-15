@@ -10,11 +10,11 @@ namespace Sofco.Core.Services.RequestNote
     public interface IRequestNoteService
     {
         Response SaveBorrador(RequestNoteSubmitDTO dto);
-        Response Get(int id);
         Response SavePendienteRevisionAbastecimiento(RequestNoteSubmitDTO dto);
         //
         void CambiarAPendienteApobacionGerenteAnalitica(int requestNodeId);
         void RechazarRequestNote(int requestNodeId);
         void GuardarBorrador(RequestNoteSubmitBorradorDTO requestNoteBorrador);
+        Domain.Models.RequestNote.RequestNote GetById(int id);
     }
 }
