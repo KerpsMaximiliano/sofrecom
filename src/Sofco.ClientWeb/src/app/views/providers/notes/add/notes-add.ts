@@ -22,7 +22,7 @@ export class NotesAddComponent implements OnInit{
 
     providerAreas = [];
     //Combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos
-    providers = ['proveedor 1', 'proveedor 2', 'proveedor 3'];
+    //providers = ['proveedor 1', 'proveedor 2', 'proveedor 3'];
     //Participantes ficha del viaje
     //Combo agregar participantes (Texto 100 caracteres)
     participantes = ['participante 1', 'participante 2', 'participante 3'];

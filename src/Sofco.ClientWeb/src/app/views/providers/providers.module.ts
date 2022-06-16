@@ -77,7 +77,6 @@ import { ProvidersComponent } from "./providers/list/providers";
         EmployeeService,
         AnalyticService
     ],
-    providers: [],
     exports: []
 })
 

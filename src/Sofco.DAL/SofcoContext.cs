@@ -198,6 +198,8 @@ namespace Sofco.DAL
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<RequestNoteFile>().HasKey(ba => new { ba.FileId, ba.RequestNoteId });
+
             builder.HasDefaultSchema(AppSchemaName);
 
             builder.MapRoles();
