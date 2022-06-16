@@ -33,7 +33,15 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
 
             return Ok(model.OrderBy(x => x.Name));
         }
-        
+
+        [HttpGet("everyone")]
+        public IActionResult GetEveryone()
+        {
+            var model = employeeService.GetEveryone();
+
+            return Ok(model.OrderBy(x => x.Name));
+        }
+
         [HttpGet("worktimeReport")]
         public IActionResult GetAllForWorkTimeReport()
         {

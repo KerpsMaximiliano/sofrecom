@@ -34,7 +34,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="control-label">Rubro</label>
-                        <ng-select [items]="areas" bindLabel="text" bindValue="id" [(ngModel)]="areaId"></ng-select>
+                        <ng-select [items]="areas" bindLabel="description" bindValue="id" [(ngModel)]="areaId"></ng-select>
                     </div>
                 </div>
             </div>
@@ -73,11 +73,11 @@
                 <tbody>
                     <tr *ngFor="let item of data">
                         <td>{{ item.id }} </td>
-                        <td>{{ item.businessName }} </td>
-                        <td>{{ item.area }} </td>
-                        <td>{{ item.cuit }} </td>
-                        <td>{{ item.income }} </td>
-                        <td>{{ item.iva }} </td>
+                        <td>{{ item.name }} </td>
+                        <td>{{ item.providerArea }} </td>
+                        <td>{{ item.CUIT }} </td>
+                        <td>{{ item.ingresosBrutos }} </td>
+                        <td>{{ item.condicionIVA }} </td>
                         <td class="column-sm text-center">
                             <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i class="fa fa-eye"></i></button>
                             <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i class="fa fa-edit"></i></button>

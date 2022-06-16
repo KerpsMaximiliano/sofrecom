@@ -1,60 +1,84 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { ProvidersService } from "../../providers.service";
+import { IVAConditions } from "app/models/enums/IVAConditions";
+import { ProvidersService } from "app/services/admin/providers.service";
+import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { forkJoin } from "rxjs";
 
 @Component({
     selector: 'providers',
     templateUrl: './providers.html'
 })
 
-export class ProvidersComponent {
+export class ProvidersComponent implements OnInit{
 
+
+    ivaConditions = [
+        'Resp. Inscripto',
+        'Resp. No Inscripto',
+        'Monotributo',
+        'Exento/No Resp.'
+    ];
+    grossIncome = [
+        'Inscripto en régimen local General',
+        'Inscripto en régimen local simplificado',
+        'Inscripto Convenio Multilateral',
+        'Exento',
+        'No aplica'
+    ]
     states = [
         { id: 0, text: "Todos" },
-        { id: 1, text: "Activo (Default)" },
-        { id: 0, text: "Inactivo" },
+        { id: 1, text: "Activo" },
+        { id: 2, text: "Inactivo" },
     ];
-    stateId: number;
+    stateId: number = 1;
     businessName: string;
-    areas = [
-        //Combo de ProvidersAreas con Active = true
-        { id: 0, text: "Rubro 1" },
-        { id: 1, text: "Rubro 2" },
-        { id: 2, text: "Rubro 3" },
-        { id: 3, text: "Rubro 4" },
-    ];
+    areas = [];
     areaId: number;
-    data = [
-        {
-            id: 1,
-            businessName: "Test",
-            area: "Test",
-            cuit: "Test",
-            income: "Test",
-            iva: "Test"
-        },
-        {
-            id: 2,
-            businessName: "Test1",
-            area: "Test1",
-            cuit: "Test1",
-            income: "Test1",
-            iva: "Test1"
-        },
-        {
-            id: 3,
-            businessName: "Test2",
-            area: "Test2",
-            cuit: "Test2",
-            income: "Test2",
-            iva: "Test2"
-        }
-    ]
+    data = [];
+    dataBackup = [];
 
     constructor(
         private router: Router,
         private providersService: ProvidersService,
+        private providersArea: ProvidersAreaService
     ) {}
+
+    ngOnInit(): void {
+        this.providersArea.getAll().subscribe(d => {
+            d.data.forEach(providerArea => {
+                if(providerArea.active) {
+                    this.areas.push(providerArea);
+                    this.areas = [...this.areas]
+                }
+            })
+        });
+        forkJoin([
+            this.providersService.getAll(),
+            this.providersArea.getAll()
+        ]).subscribe(res => {
+            res[0].data.forEach(provider => {
+                let area = res[1].data.find(provArea => provArea.id == provider.providerAreaId);
+                let model = {
+                    id: provider.id,
+                    name: provider.name,
+                    providerArea: null,
+                    providerAreaId: null,
+                    CUIT: provider.cuit,
+                    ingresosBrutos: this.grossIncome[provider.ingresosBrutos + 1],
+                    condicionIVA: this.ivaConditions[provider.condicionIVA + 1],
+                    active: provider.active
+                }
+                if(area != undefined) {
+                    model.providerArea = area.description,
+                    model.providerAreaId = area.id
+                }
+                this.data.push(model);
+                this.data = [...this.data]
+            });
+            this.dataBackup = this.data;
+        })
+    }
 
     view(id) {
         this.providersService.setMode("View");
@@ -73,8 +97,42 @@ export class ProvidersComponent {
     }
 
     search() {
-        console.log(this.stateId);
-        console.log(this.businessName);
-        console.log(this.areaId)
+        let searchData = [];
+        if (this.stateId == 0 || this.stateId == null) {
+            searchData = this.dataBackup;
+        } else {
+            let estado;
+            if (this.stateId == 1) {
+                estado = true;
+            }
+            if (this.stateId == 2) {
+                estado = false
+            }
+            this.dataBackup.forEach(entry => {
+                if(entry.active == estado) {
+                    searchData.push(entry)
+                }
+            })
+        };
+        if(this.areaId != null) {
+            let search = [];
+            searchData.forEach(entry => {
+                if(entry.providerAreaId == this.areaId) {
+                    search.push(entry)
+                }
+            });
+            searchData = search;
+        };
+        if(this.businessName != null && this.businessName.length > 0) {
+            let search = [];
+            searchData.forEach(entry => {
+                let result = entry.name.toLowerCase().includes(this.businessName.toLocaleLowerCase());
+                if(result) {
+                    search.push(entry);
+                }
+            });
+            searchData = search;
+        }
+        this.data = searchData;
     }
 }

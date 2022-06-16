@@ -136,6 +136,24 @@
                                 <ng-select [items]="providers" [multiple]="true"></ng-select>
                             </div>
                         </div>
+                        <div class="form-group" *ngIf="proveedoresTable.length > 0">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Proveedor</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of proveedoresTable; let i = index">
+                                        <td>{{ item.name }} </td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarProveedor(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="form-group">
                             <div class="col-sm-1">
                                 <input type="checkbox" class="form-control w-2" placeholder="Checkbox" formControlName="evaluationProposal">

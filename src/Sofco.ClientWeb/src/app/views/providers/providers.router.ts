@@ -1,6 +1,7 @@
 import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "app/guards/auth.guard";
 import { NotesAddComponent } from "./notes/add/notes-add";
+import { NotesEditComponent } from "./notes/edit/notes-edit";
 import { NotesComponent } from "./notes/list/notes";
 import { ProvidersAddComponent } from "./providers/add/providers-add";
 import { ProvidersEditComponent } from "./providers/edit/providers-edit";
@@ -22,6 +23,7 @@ const PROVIDERS_ROUTER: Routes = [
         children: [
             { path: "", component: NotesComponent, canActivate: [AuthGuard] },
             { path: "add", component: NotesAddComponent, canActivate: [AuthGuard] },
+            { path: "edit/:id", component: NotesEditComponent, canActivate: [AuthGuard] },
         ]
     }
 ]
