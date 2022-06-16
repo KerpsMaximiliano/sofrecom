@@ -2,8 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { RequestNoteService } from "app/services/admin/request-note.service";
 import { SettingsService } from "app/services/admin/settings.service";
 import { UserService } from "app/services/admin/user.service";
+import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { UserInfoService } from "app/services/common/user-info.service";
@@ -22,7 +24,6 @@ export class NotesAddComponent implements OnInit{
 
     providerAreas = [];
     //Combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos
-    //providers = ['proveedor 1', 'proveedor 2', 'proveedor 3'];
     //Participantes ficha del viaje
     //Combo agregar participantes (Texto 100 caracteres)
     participantes = ['participante 1', 'participante 2', 'participante 3'];
@@ -37,6 +38,7 @@ export class NotesAddComponent implements OnInit{
     participantesViaje = [];
     participantesCapacitacion = [];
     critical: string = null;
+    userInfo;
 
     formNota: FormGroup = new FormGroup({
         description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),//Descripcion
@@ -44,18 +46,18 @@ export class NotesAddComponent implements OnInit{
         //2 campos
         //Productos/Servicios - texto 5000 requerido
         //Cantidad - numero mayor a 0 requerido
-        area: new FormControl(null, []),//Rubro - Combo de ProvidersAreas con Active = true
+        providerArea: new FormControl(null, [Validators.required]),//Rubro - Combo de ProvidersAreas con Active = true
         critical: new FormControl(null, []),//Se carga a partir del rubro seleccionado. Es readonly. 
         //Asociado a la columna Critical del Rubro seleccionado. Es Si o No. Va al lado del Combo de Rubro.
         analytics: new FormControl(null, []),//Grilla editable de Analíticas
         requiresPersonel: new FormControl(null, []),
         providers: new FormControl(null, []),//combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos. 
         //Es opcional, puede no elegir ninguno. 
-        evaluationProposal: new FormControl(null, []),//Checkbox
+        evaluationProposal: new FormControl(false, []),//Checkbox
         numberEvalprop: new FormControl(null, [Validators.maxLength(100)]),
         observations: new FormControl(null, []),
-        travel: new FormControl(null, []),//Checkbox
-        training: new FormControl(null, []),//Checkbox
+        travel: new FormControl(false, []),//Checkbox
+        training: new FormControl(false, []),//Checkbox
     });
 
     formProductoServicio: FormGroup = new FormGroup({
@@ -73,22 +75,22 @@ export class NotesAddComponent implements OnInit{
     })
     
     formCapacitacion: FormGroup = new FormGroup({
-        name: new FormControl(null),
-        subject: new FormControl(null),
-        location: new FormControl(null),
-        date: new FormControl(null),
-        duration: new FormControl(null),
-        ammount: new FormControl(null),
+        name: new FormControl(null, [Validators.required]),
+        subject: new FormControl(null, [Validators.required]),
+        location: new FormControl(null, [Validators.required]),
+        date: new FormControl(null, [Validators.required]),
+        duration: new FormControl(null, [Validators.required]),
+        ammount: new FormControl(null, [Validators.required]),
         participants: new FormControl(null)
     });
 
     formViaje: FormGroup = new FormGroup({
         passengers: new FormControl(null),
-        departureDate: new FormControl(null),
-        returnDate: new FormControl(null),
-        destination: new FormControl(null),
-        transportation: new FormControl(null),
-        accommodation: new FormControl(null),
+        departureDate: new FormControl(null, [Validators.required]),
+        returnDate: new FormControl(null, [Validators.required]),
+        destination: new FormControl(null, [Validators.required]),
+        transportation: new FormControl(null, [Validators.required]),
+        accommodation: new FormControl(null, [Validators.required]),
         details: new FormControl(null)
     });
 
@@ -108,18 +110,22 @@ export class NotesAddComponent implements OnInit{
         private providersAreaService: ProvidersAreaService,
         private employeeService: EmployeeService,
         private analyticService: AnalyticService,
-        private userService: UserService
+        private userService: UserService,
+        private refundService: RefundService,
+        private requestNoteService: RequestNoteService
     ) {}
 
     ngOnInit(): void {
         this.inicializar();
-        const userInfo = UserInfoService.getUserInfo();
-        console.log(userInfo);
+        this.userInfo = UserInfoService.getUserInfo();
+        console.log(this.userInfo);
+        this.analyticService.getByCurrentUser().subscribe(d=>console.log(d))
+        this.refundService.getAnalytics().subscribe(d=>console.log(d))
     }
 
     inicializar() {
         this.providersAreaService.getAll().subscribe(d => {
-            console.log(d)
+            //console.log(d)
             d.data.forEach(providerArea => {
                 if(providerArea.active) {
                     this.providerAreas.push(providerArea);
@@ -128,7 +134,7 @@ export class NotesAddComponent implements OnInit{
             });
         });
         this.employeeService.getEveryone().subscribe(d => {
-            console.log(d);
+            //console.log(d);
             this.participants = d;
             d.forEach(user => {
                 if(user.isExternal == 0 && user.endDate == null) {
@@ -138,11 +144,31 @@ export class NotesAddComponent implements OnInit{
             });
         });
         forkJoin([this.analyticService.getAll(), this.userService.getManagers(), this.userService.getManagersAndDirectors()]).subscribe(results => {
-            console.log(results[0]);
-            this.analiticas = results[0];
-            console.log(results[1]);
-            console.log(results[2]);
+            console.log(results[0]);//Analiticas
+            let managers = results[1];
+            let managersAndDirectors = results[2];
+            let directors = [];
+            managersAndDirectors.forEach(item => {
+                let directorSearch = managers.find(x => x.id == item.id);
+                if(directorSearch == undefined) {
+                    directors.push(item)
+                }
+            });
+            let isManager = managers.find(employee => Number(employee.id) == this.userInfo.id);
+            if(isManager != undefined) {
+                results[0].forEach(analytic => {
+                    if(analytic.managerId == this.userInfo.id) {
+                        this.analiticas.push(analytic);
+                        this.analiticas = [...this.analiticas]
+                    }
+                })
+            }
+            let isDirector = directors.find(employee => Number(employee.id) == this.userInfo.id);
+            if(isDirector != undefined) {
+                console.log("Es director")
+            };
         });
+        
         this.providersService.getAll().subscribe(d => {
             this.allProviders = d.data;
         })
@@ -164,7 +190,7 @@ export class NotesAddComponent implements OnInit{
     }
 
     travelChange(event) {
-        console.log(event)
+        //console.log(event)
     }
 
     openTravelModal() {
@@ -251,9 +277,64 @@ export class NotesAddComponent implements OnInit{
     }
 
     saveNote() {
-        console.log(this.formNota.value),
-        console.log(this.formViaje.value),
-        console.log(this.formCapacitacion.value)
+        console.log(this.formNota.value);
+        console.log(this.formViaje.value);
+        console.log(this.formCapacitacion.value);
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0) {
+            console.log("Invalid nota");
+            return;
+        }
+        if(this.formNota.controls.travel.value == true) {
+            if(!this.formViaje.valid || this.participantesViaje.length <= 0) {
+                console.log("Invalid viaje");
+                return;
+            }
+        }
+        if(this.formNota.controls.training.value == true) {
+            if(!this.formCapacitacion.valid || this.participantesCapacitacion.length <= 0) {
+                console.log("Invalid capacitacion");
+                return;
+            }
+            
+        }
+        let finalProductsAndServices = this.productosServicios;
+        let finalAnalytics = this.analiticasTable;
+        let finalProviders = this.proveedoresTable;
+        let finalTrainingPassengers = this.participantesCapacitacion;
+        let finalTravelPassengers = this.participantesViaje;
+        let model = {
+            description: this.formNota.controls.description.value,
+            productsAndServicies: finalProductsAndServices,
+            providerArea: this.formNota.controls.providerArea.value,
+            analytics: finalAnalytics,
+            requiresPersonel: this.formNota.controls.requiresPersonel.value,
+            providers: finalProviders,
+            evaluationProposal: this.formNota.controls.evaluationProposal.value,
+            numberEvalprop: this.formNota.controls.numberEvalprop.value,
+            observations: this.formNota.controls.observations.value,
+            travelCheck: this.formNota.controls.travel.value,
+            trainingCheck: this.formNota.controls.training.value,
+            training: {
+                name: this.formCapacitacion.controls.name.value,
+                subject: this.formCapacitacion.controls.subject.value,
+                location: this.formCapacitacion.controls.location.value,
+                date: this.formCapacitacion.controls.date.value,
+                duration: this.formCapacitacion.controls.duration.value,
+                ammount: this.formCapacitacion.controls.ammount.value,
+                participants: finalTrainingPassengers
+            },
+            travel: {
+                passengers: finalTravelPassengers,
+                departureDate: this.formViaje.controls.departureDate.value,
+                returnDate: this.formViaje.controls.returnDate.value,
+                destination: this.formViaje.controls.destination.value,
+                transportation: this.formViaje.controls.transportation.value,
+                accommodation: this.formViaje.controls.accommodation.value,
+                details: this.formViaje.controls.details.value
+            }
+        };
+        console.log(model);
+        this.requestNoteService.save(model).subscribe(d=>console.log(d))
     }
 
 }

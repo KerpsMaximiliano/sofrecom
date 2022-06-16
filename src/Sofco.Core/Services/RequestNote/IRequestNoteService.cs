@@ -16,5 +16,6 @@ namespace Sofco.Core.Services.RequestNote
         void RechazarRequestNote(int requestNodeId);
         void GuardarBorrador(RequestNoteSubmitBorradorDTO requestNoteBorrador);
         Domain.Models.RequestNote.RequestNote GetById(int id);
+        IList<Domain.Models.RequestNote.RequestNote> GetAll();
     }
 }

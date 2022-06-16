@@ -53,5 +53,11 @@ namespace Sofco.WebApi.Controllers.RequestNote
         {
             return Ok(this._requestNoteService.GetById(id));
         }
+
+        [HttpGet("GetAll")]
+        protected IActionResult GetAll(int id)
+        {
+            return Ok(this._requestNoteService.GetAll());
+        }
     }
 }

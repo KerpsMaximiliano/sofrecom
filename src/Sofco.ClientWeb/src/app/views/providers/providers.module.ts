@@ -12,6 +12,7 @@ import { ICheckModule } from "app/components/icheck/icheck.module";
 import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
 import { Select2Module } from "app/components/select2/select2";
 import { SpinnerModule } from "app/components/spinner/spinner.module";
+import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { FileUploadModule } from "ng2-file-upload";
@@ -75,7 +76,8 @@ import { ProvidersComponent } from "./providers/list/providers";
     ],
     providers: [
         EmployeeService,
-        AnalyticService
+        AnalyticService,
+        RefundService
     ],
     exports: []
 })

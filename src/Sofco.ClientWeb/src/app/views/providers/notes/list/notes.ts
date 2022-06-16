@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { RequestNoteService } from "app/services/admin/request-note.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { MessageService } from "app/services/common/message.service";
 
@@ -28,11 +29,13 @@ export class NotesComponent implements OnInit{
         private employeeService: EmployeeService,
         private messageService: MessageService,
         private providerService: ProvidersService,
-        private router: Router
+        private router: Router,
+        private requestNoteService: RequestNoteService
     ){}
 
     ngOnInit(): void {
         this.inicializar()
+        this.requestNoteService.getAll().subscribe(d=>console.log(d))
     }
 
     inicializar() {
@@ -69,7 +72,7 @@ export class NotesComponent implements OnInit{
                 return;
             }
         }
-        console.log("Búsqueda")
+        console.log("Bï¿½squeda")
     }
 
     refreshSearch() {

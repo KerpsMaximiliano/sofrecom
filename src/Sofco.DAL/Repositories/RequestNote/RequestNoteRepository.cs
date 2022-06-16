@@ -24,6 +24,11 @@ namespace Sofco.DAL.Repositories.RequestNote
             return this.context.RequestNotes.Where(x => x.Id == id).ToList().FirstOrDefault();
         }
 
+        public IList<Domain.Models.RequestNote.RequestNote> GetAll()
+        {
+            return this.context.RequestNotes.ToList();
+        }
+
         public void UpdateRequestNote(Domain.Models.RequestNote.RequestNote requestNote)
         {
             this.context.RequestNotes.Update(requestNote);
