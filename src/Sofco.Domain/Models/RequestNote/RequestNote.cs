@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Models.Providers;
@@ -16,9 +17,9 @@ namespace Sofco.Domain.Models.RequestNote
         public bool ConsideredInBudget { get; set; }
         public int EvalpropNumber { get; set; }
         public string Comments { get; set; }
-        
+
         public bool TravelSection { get; set; }
-        //public int RequestNoteTravelId { get; set; }
+        // public int RequestNoteTravelId { get; set; }
         //public RequestNoteTravel RequestNoteTravel { get; set; }
 
         public bool TrainingSection { get; set; }
@@ -28,7 +29,7 @@ namespace Sofco.Domain.Models.RequestNote
         public decimal PurchaseOrderAmmount { get; set; }
         public int PurchaseOrderNumber { get; set; }
         public DateTime CreationDate { get; set; }
-        public int CreationUserId {get; set;}
+        public int CreationUserId { get; set; }
         public Admin.User CreationUser { get; set; }
         public int WorkflowId { get; set; }
         public Workflow.Workflow Workflow { get; set; }
@@ -36,5 +37,7 @@ namespace Sofco.Domain.Models.RequestNote
         public IList<RequestNoteFile> Attachments { get; set; }
         public IList<RequestNoteAnalytic> Analytics { get; set; }
         public IList<RequestNoteProvider> Providers { get; set; }
+        [NotMapped]
+        public string UsersAlreadyApproved { get; set; }
     }
 }
