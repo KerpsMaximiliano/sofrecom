@@ -21,22 +21,22 @@ namespace Sofco.DAL.Repositories.RequestNote
 
         public Domain.Models.RequestNote.RequestNote GetById(int id)
         {
-            return this.context.RequestNotes.Where(x => x.Id == id).ToList().FirstOrDefault();
+            return this.context.RequestNote.Where(x => x.Id == id).ToList().FirstOrDefault();
         }
 
         public IList<Domain.Models.RequestNote.RequestNote> GetAll()
         {
-            return this.context.RequestNotes.ToList();
+            return this.context.RequestNote.ToList();
         }
 
         public void UpdateRequestNote(Domain.Models.RequestNote.RequestNote requestNote)
         {
-            this.context.RequestNotes.Update(requestNote);
+            this.context.RequestNote.Update(requestNote);
         }
 
         public void InsertRequestNote(Domain.Models.RequestNote.RequestNote requestNote)
         {
-            this.context.RequestNotes.Add(requestNote);
+            this.context.RequestNote.Add(requestNote);
         }
 
         public void Save()

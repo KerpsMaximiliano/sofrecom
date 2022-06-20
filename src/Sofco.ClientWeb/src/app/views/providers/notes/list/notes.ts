@@ -35,7 +35,7 @@ export class NotesComponent implements OnInit{
 
     ngOnInit(): void {
         this.inicializar()
-        this.requestNoteService.getAll().subscribe(d=>console.log(d))
+        //this.requestNoteService.getAll().subscribe(d=>console.log(d))
     }
 
     inicializar() {

@@ -23,7 +23,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         }
 
         [HttpPost("AprobarRequestNote")]
-        protected IActionResult AprobarRequestNote(int id)
+        public IActionResult AprobarRequestNote(int id)
         {
             this._requestNoteService.CambiarAPendienteApobacionGerenteAnalitica(id);
             this._requestNoteAnalitycService.CambiarAPendienteAprobacion(id);
@@ -32,7 +32,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         }
 
         [HttpPost("RechazarRequestNode")]
-        protected IActionResult RechazarRequestNode(int id)
+        public IActionResult RechazarRequestNode(int id)
         {
             this._requestNoteService.RechazarRequestNote(id);
             this._requestNoteAnalitycService.Rechazar(id);
@@ -41,7 +41,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         }
 
         [HttpPost("GuardarBorrador")]
-        protected IActionResult GuardarBorrador([FromBody] RequestNoteSubmitBorradorDTO requestNote)
+        public IActionResult GuardarBorrador([FromBody] RequestNoteSubmitBorradorDTO requestNote)
         {
             this._requestNoteService.GuardarBorrador(requestNote);
 
@@ -49,13 +49,13 @@ namespace Sofco.WebApi.Controllers.RequestNote
         }
 
         [HttpGet("GetById")]
-        protected IActionResult GetById(int id)
+        public IActionResult GetById(int id)
         {
             return Ok(this._requestNoteService.GetById(id));
         }
 
         [HttpGet("GetAll")]
-        protected IActionResult GetAll(int id)
+        public IActionResult GetAll(int id)
         {
             return Ok(this._requestNoteService.GetAll());
         }

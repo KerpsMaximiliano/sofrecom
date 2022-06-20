@@ -11,7 +11,7 @@ namespace Sofco.Domain.Models.RequestNote
     {
         public string Description { get; set; }
         public int ProviderAreaId { get; set; }
-        public ProvidersArea ProvidersArea { get; set; }
+        //public ProvidersArea ProvidersArea { get; set; }
         public bool RequiresEmployeeClient { get; set; }
         public bool ConsideredInBudget { get; set; }
         public int EvalpropNumber { get; set; }
@@ -19,7 +19,7 @@ namespace Sofco.Domain.Models.RequestNote
         
         public bool TravelSection { get; set; }
         //public int RequestNoteTravelId { get; set; }
-        public RequestNoteTravel RequestNoteTravel { get; set; }
+        //public RequestNoteTravel RequestNoteTravel { get; set; }
 
         public bool TrainingSection { get; set; }
         public int RequestNoteTrainingId { get; set; }

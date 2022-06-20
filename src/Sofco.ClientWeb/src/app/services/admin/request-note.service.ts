@@ -18,7 +18,7 @@ export class RequestNoteService {
     }
 
     public getById(id: number): Observable<any> {
-        return this.http.get<any>(``)
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/GetById`)
     }
 
     public getAll(): Observable<any> {

@@ -121,6 +121,7 @@ export class NotesAddComponent implements OnInit{
         console.log(this.userInfo);
         this.analyticService.getByCurrentUser().subscribe(d=>console.log(d))
         this.refundService.getAnalytics().subscribe(d=>console.log(d))
+        //this.requestNoteService.getById(1).subscribe(d=>console.log(d))
     }
 
     inicializar() {
@@ -305,13 +306,13 @@ export class NotesAddComponent implements OnInit{
         let model = {
             description: this.formNota.controls.description.value,
             productsAndServicies: finalProductsAndServices,
-            providerArea: this.formNota.controls.providerArea.value,
+            providerAreaId: this.formNota.controls.providerArea.value,
             analytics: finalAnalytics,
-            requiresPersonel: this.formNota.controls.requiresPersonel.value,
+            requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
             providers: finalProviders,
-            evaluationProposal: this.formNota.controls.evaluationProposal.value,
-            numberEvalprop: this.formNota.controls.numberEvalprop.value,
-            observations: this.formNota.controls.observations.value,
+            consideredInBudget: this.formNota.controls.evaluationProposal.value,
+            evalpropNumber: this.formNota.controls.numberEvalprop.value,
+            comments: this.formNota.controls.observations.value,
             travelCheck: this.formNota.controls.travel.value,
             trainingCheck: this.formNota.controls.training.value,
             training: {
