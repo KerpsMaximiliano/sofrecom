@@ -41,7 +41,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         }
 
         [HttpPost("GuardarBorrador")]
-        public IActionResult GuardarBorrador([FromBody] RequestNoteSubmitBorradorDTO requestNote)
+        public IActionResult GuardarBorrador([FromBody] Domain.Models.RequestNote.RequestNote requestNote)
         {
             this._requestNoteService.GuardarBorrador(requestNote);
 

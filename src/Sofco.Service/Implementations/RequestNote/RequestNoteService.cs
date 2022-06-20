@@ -4,6 +4,7 @@ using Sofco.Core.Services.RequestNote;
 using Sofco.Domain.DTO;
 using Sofco.Domain.DTO.NotaPedido;
 using Sofco.Domain.Models.Workflow;
+using Sofco.Domain.RequestNoteStates;
 using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace Sofco.Service.Implementations.RequestNote
         {
             Domain.Models.RequestNote.RequestNote requestNote = this.unitOfWork.RequestNoteRepository.GetById(requestNodeId);
 
-            requestNote.StatusId = 8; //Pendiente Aprobación Gerente Analíticas MATOO
+            requestNote.StatusId = (int)RequestNoteStates.Reachazada;
 
             this.unitOfWork.RequestNoteRepository.UpdateRequestNote(requestNote);
             this.unitOfWork.RequestNoteRepository.Save();
@@ -46,25 +47,15 @@ namespace Sofco.Service.Implementations.RequestNote
         public void CambiarAPendienteApobacionGerenteAnalitica(int requestNodeId)
         {
             Domain.Models.RequestNote.RequestNote requestNote = this.unitOfWork.RequestNoteRepository.GetById(requestNodeId);
-            requestNote.StatusId = 9; //Pendiente Aprobación Gerente Analíticas MATOO
+            requestNote.StatusId = (int)RequestNoteStates.PendienteAprobaciónGerentesAnalítica;
 
             this.unitOfWork.RequestNoteRepository.UpdateRequestNote(requestNote);
             this.unitOfWork.RequestNoteRepository.Save();
         }
 
-        public void GuardarBorrador(RequestNoteSubmitBorradorDTO requestNoteBorrador)
+        public void GuardarBorrador(Domain.Models.RequestNote.RequestNote requestNoteBorrador)
         {
-            Domain.Models.RequestNote.RequestNote requestNote = new Domain.Models.RequestNote.RequestNote();
-            //mapeamos el objeto que llega al que se usa
-            requestNote.Comments = requestNoteBorrador.Comments;
-            requestNote.ConsideredInBudget = requestNoteBorrador.ConsideredInBudget;
-            requestNote.Description = requestNoteBorrador.Description;
-            requestNote.EvalpropNumber = requestNoteBorrador.EvalpropNumber;
-            requestNote.ProviderAreaId = requestNoteBorrador.ProviderAreaId;
-            requestNote.RequiresEmployeeClient = requestNoteBorrador.RequiresEmployeeClient;
-
-
-            this.unitOfWork.RequestNoteRepository.InsertRequestNote(requestNote);
+            this.unitOfWork.RequestNoteRepository.InsertRequestNote(requestNoteBorrador);
             this.unitOfWork.RequestNoteRepository.Save();
         }
 

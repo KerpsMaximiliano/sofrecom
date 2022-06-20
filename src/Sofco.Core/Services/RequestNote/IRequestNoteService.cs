@@ -14,7 +14,7 @@ namespace Sofco.Core.Services.RequestNote
         //
         void CambiarAPendienteApobacionGerenteAnalitica(int requestNodeId);
         void RechazarRequestNote(int requestNodeId);
-        void GuardarBorrador(RequestNoteSubmitBorradorDTO requestNoteBorrador);
+        void GuardarBorrador(Domain.Models.RequestNote.RequestNote requestNoteBorrador);
         Domain.Models.RequestNote.RequestNote GetById(int id);
         IList<Domain.Models.RequestNote.RequestNote> GetAll();
     }
