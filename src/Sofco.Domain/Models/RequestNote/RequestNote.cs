@@ -35,7 +35,8 @@ namespace Sofco.Domain.Models.RequestNote
         public Workflow.Workflow Workflow { get; set; }
         public IList<RequestNoteProductService> ProductsServices { get; set; }
         public IList<RequestNoteFile> Attachments { get; set; }
-        public IList<RequestNoteAnalytic> Analytics { get; set; }
+        public int AnalyticId { get; set; }
+        //public IList<RequestNoteAnalytic> Analytics { get; set; }
         public IList<RequestNoteProvider> Providers { get; set; }
         [NotMapped]
         public string UsersAlreadyApproved { get; set; }
