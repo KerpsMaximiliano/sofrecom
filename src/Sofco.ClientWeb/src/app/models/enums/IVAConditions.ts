@@ -2,5 +2,5 @@ export enum IVAConditions {
     RespInscripto = 1,
     RespNoInscripto = 2,
     Monotributo = 3,
-    Extento = 4
+    Exempt = 4
 } 

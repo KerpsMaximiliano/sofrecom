@@ -49,6 +49,11 @@
                 </div>
                 
             </div>
+            <!--
+                *Estado: Todos, Activo(Default), Inactivo
+                *Razón Social (Texto)
+                *Rubro (Combo de ProvidersAreas con Active = true)
+            -->
         </div>
     </div>
     <div class="ibox"> 
@@ -76,6 +81,7 @@
                         <td class="column-sm text-center">
                             <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i class="fa fa-eye"></i></button>
                             <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i class="fa fa-edit"></i></button>
+                            <button title="eliminar" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr> 
                 </tbody>

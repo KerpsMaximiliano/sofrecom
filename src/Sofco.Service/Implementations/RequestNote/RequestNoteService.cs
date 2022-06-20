@@ -72,5 +72,10 @@ namespace Sofco.Service.Implementations.RequestNote
         {
             return this.unitOfWork.RequestNoteRepository.GetById(id);
         }
+
+        public IList<Domain.Models.RequestNote.RequestNote> GetAll()
+        {
+            return this.unitOfWork.RequestNoteRepository.GetAll();
+        }
     }
 }

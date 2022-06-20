@@ -191,7 +191,7 @@ namespace Sofco.DAL
         public DbSet<ProvidersArea> ProvidersArea { get; set; }
 
         //request 
-        public DbSet<RequestNote> RequestNotes { get; set; }
+        public DbSet<RequestNote> RequestNote { get; set; }
         public DbSet<RequestNoteAnalytic> RequestNoteAnalytics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

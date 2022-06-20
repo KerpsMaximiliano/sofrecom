@@ -18,17 +18,20 @@ export class RequestNoteService {
     }
 
     public getById(id: number): Observable<any> {
-        return this.http.get<any>(``)
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/GetById`)
     }
 
-    public RequestNoteNew = {
-        //Pantalla 1
-        approve(id: number): Observable<any> {
-            return this.http.post(`${this.baseUrl}/RequestNoteAprobada/AprobarRequestNote`, id);
-        },
-        save(requestNote: any): Observable<any> {
-            return this.http.post(`${this.baseUrl}/RequestNoteAprobada/GuardarBorrador`, requestNote);
-        }
+    public getAll(): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/GetAll`);
+    }
+
+    //New Request Note
+    public approve(id: number): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteAprobada/AprobarRequestNote`, id);
+    };
+
+    public save(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteAprobada/GuardarBorrador`, requestNote);
     }
 
     public RequestNotePendingSupplyRevision = {
