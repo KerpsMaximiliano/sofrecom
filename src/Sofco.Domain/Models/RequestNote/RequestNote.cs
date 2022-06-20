@@ -23,7 +23,7 @@ namespace Sofco.Domain.Models.RequestNote
         //public RequestNoteTravel RequestNoteTravel { get; set; }
 
         public bool TrainingSection { get; set; }
-        public int RequestNoteTrainingId { get; set; }
+        //public int RequestNoteTrainingId { get; set; }
         //public RequestNoteTraining RequestNoteTraining { get; set; }
 
         public decimal PurchaseOrderAmmount { get; set; }

@@ -22,6 +22,9 @@ export class NotesAddComponent implements OnInit{
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
 
+    analyticError: boolean = false;
+    productsServicesError: boolean = false;
+
     providerAreas = [];
     //Combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos
     //Participantes ficha del viaje
@@ -39,6 +42,11 @@ export class NotesAddComponent implements OnInit{
     participantesCapacitacion = [];
     critical: string = null;
     userInfo;
+
+    travelBirthday;
+    travelDepartureDate;
+    travelReturnDate;
+    trainingDate;
 
     formNota: FormGroup = new FormGroup({
         description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),//Descripcion
@@ -241,11 +249,15 @@ export class NotesAddComponent implements OnInit{
             productService: this.formProductoServicio.controls.productService.value,
             quantity: this.formProductoServicio.controls.quantity.value
         }
-        this.productosServicios.push(productoServicio)
+        this.productosServicios.push(productoServicio);
+        this.productsServicesError = false;
     }
 
     eliminarProductoServicio(index: number) {
         this.productosServicios.splice(index, 1);
+        if(this.productosServicios.length <= 0) {
+            this.productsServicesError = true;
+        }
     }
 
     agregarAnalitica() {
@@ -258,11 +270,14 @@ export class NotesAddComponent implements OnInit{
             asigned: this.formAnaliticas.controls.asigned.value
         }
         this.analiticasTable.push(analitica)
-
+        this.analyticError = false;
     }
 
     eliminarAnalitica(index: number) {
         this.analiticasTable.splice(index, 1);
+        if(this.analiticasTable.length <= 0) {
+            this.analyticError = true;
+        }
     }
 
     agregarProveedor() {
@@ -281,7 +296,16 @@ export class NotesAddComponent implements OnInit{
         console.log(this.formNota.value);
         console.log(this.formViaje.value);
         console.log(this.formCapacitacion.value);
+        this.markFormGroupTouched(this.formNota);
+        this.markFormGroupTouched(this.formViaje);
+        this.markFormGroupTouched(this.formCapacitacion);
         if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0) {
+            if(this.productosServicios.length <= 0) {
+                this.productsServicesError = true;
+            }
+            if(this.analiticasTable.length <= 0) {
+                this.analyticError = true;
+            }
             console.log("Invalid nota");
             return;
         }
@@ -313,8 +337,8 @@ export class NotesAddComponent implements OnInit{
             consideredInBudget: this.formNota.controls.evaluationProposal.value,
             evalpropNumber: this.formNota.controls.numberEvalprop.value,
             comments: this.formNota.controls.observations.value,
-            travelCheck: this.formNota.controls.travel.value,
-            trainingCheck: this.formNota.controls.training.value,
+            travelSection: this.formNota.controls.travel.value,
+            trainingSection: this.formNota.controls.training.value,
             training: {
                 name: this.formCapacitacion.controls.name.value,
                 subject: this.formCapacitacion.controls.subject.value,
@@ -334,8 +358,58 @@ export class NotesAddComponent implements OnInit{
                 details: this.formViaje.controls.details.value
             }
         };
+        let model2 = {
+            description: this.formNota.controls.description.value,
+            productsAndServicies: finalProductsAndServices,
+            providerAreaId: this.formNota.controls.providerArea.value,
+            analytics: finalAnalytics,
+            requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
+            providers: finalProviders,
+            consideredInBudget: this.formNota.controls.evaluationProposal.value,
+            evalpropNumber: this.formNota.controls.numberEvalprop.value,
+            comments: this.formNota.controls.observations.value,
+            travelSection: this.formNota.controls.travel.value,
+            trainingSection: this.formNota.controls.training.value,
+            creationUserId: 0,
+            creationUser: "X",
+            workflowId: 0,
+            workflow: "X",
+            attachments: "X"
+        };
         console.log(model);
         this.requestNoteService.save(model).subscribe(d=>console.log(d))
+    }
+
+    markFormGroupTouched(formGroup: FormGroup) {
+        (<any>Object).values(formGroup.controls).forEach(control => {
+            control.markAsTouched();
+
+            if (control.controls) {
+                this.markFormGroupTouched(control);
+            }
+        });
+    }
+
+    dateChange(number, event) {
+        console.log(event)
+        if(number == 1) {
+            this.formParticipanteViaje.controls.birth.setValue(this.travelBirthday);
+        }
+        if(number == 2) {
+            this.formViaje.controls.departureDate.setValue(this.travelDepartureDate);
+            this.formViaje.controls.departureDate.markAsDirty();
+            this.formViaje.controls.departureDate.markAsTouched();
+        }
+        if(number == 3) {
+            this.formViaje.controls.returnDate.setValue(this.travelReturnDate);
+            this.formViaje.controls.returnDate.markAsDirty();
+            this.formViaje.controls.returnDate.markAsTouched();
+        }
+        if(number == 4) {
+            this.formCapacitacion.controls.date.setValue(this.trainingDate);
+            this.formCapacitacion.controls.date.markAsDirty();
+            this.formCapacitacion.controls.date.markAsTouched();
+        }        
     }
 
 }

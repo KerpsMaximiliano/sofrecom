@@ -59,6 +59,11 @@
                                 <input type="number" class="form-control" formControlName="quantity">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <span *ngIf="productsServicesError" style="color: red;">
+                                Al menos un producto o servicio es requerido
+                            </span>
+                        </div>
                         <div class="form-group" *ngIf="productosServicios.length > 0">
                             <table class="table table-striped dataTable" role="grid" id="dataTable">
                                 <thead>
@@ -83,6 +88,9 @@
                             <label class="col-sm-4 control-label text-left">Rubro: </label>
                             <div class="col-sm-8">
                                 <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea" (change)="change($event)"></ng-select>
+                                <span *ngIf="!formNota.get('providerArea')?.valid && (formNota.get('providerArea')?.touched || formNota.get('providerArea')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                         </div>
                         <div class="form-group" *ngIf="critical != null">
@@ -103,6 +111,11 @@
                                 <label>% de asignación</label>
                                 <input type="number" class="form-control" formControlName="asigned">
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <span *ngIf="analyticError" style="color: red;">
+                                Al menos una analítica es requerida
+                            </span>
                         </div>
                         <div class="form-group" *ngIf="analiticasTable.length > 0">
                             <table class="table table-striped dataTable" role="grid" id="dataTable">
@@ -252,7 +265,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <label>Fecha de Nacimiento</label>
-                                <input type="text" class="form-control" formControlName="birth">
+                                <date-picker [(date)]="travelBirthday" (dateChange)="dateChange(1, $event)"></date-picker>
                             </div>
                             <div class="col-sm-3">
                                 <label>CUIT / CUIL</label>
@@ -284,29 +297,44 @@
                         <div class="form-group">
                             <div class="col-sm-5" style="display: flex; flex-direction: row;">
                                 <label class="control-label" style="min-width: fit-content; margin-right: 3rem;">Fecha de Salida</label>
-                                <input type="text" class="form-control" formControlName="departureDate">
+                                <date-picker [(date)]="travelDepartureDate" (dateChange)="dateChange(2, $event)"></date-picker>
+                                <span *ngIf="!formViaje.get('departureDate')?.valid && (formViaje.get('departureDate')?.touched || formViaje.get('departureDate')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                             <div class="col-sm-5" style="display: flex; flex-direction: row;">
                                 <label class="control-label" style="min-width: fit-content; margin-right: 3rem;">Fecha de Regreso</label>
-                                <input type="text" class="form-control" formControlName="returnDate">
+                                <date-picker [(date)]="travelReturnDate" (dateChange)="dateChange(3, $event)"></date-picker>
+                                <span *ngIf="!formViaje.get('returnDate')?.valid && (formViaje.get('returnDate')?.touched || formViaje.get('returnDate')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Ciudad del destino</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" formControlName="destination">
+                                <span *ngIf="!formViaje.get('destination')?.valid && (formViaje.get('destination')?.touched || formViaje.get('destination')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Medio de transporte</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" formControlName="transportation">
+                                <span *ngIf="!formViaje.get('transportation')?.valid && (formViaje.get('transportation')?.touched || formViaje.get('transportation')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Alojamiento</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" formControlName="accommodation">
+                                <span *ngIf="!formViaje.get('accommodation')?.valid && (formViaje.get('accommodation')?.touched || formViaje.get('accommodation')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -336,12 +364,18 @@
                             <label class="col-sm-4 control-label text-left">Nombre del curso</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" formControlName="name">
+                                <span *ngIf="!formCapacitacion.get('name')?.valid && (formCapacitacion.get('name')?.touched || formCapacitacion.get('name')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Tema de la capacitación</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" formControlName="subject">
+                                <span *ngIf="!formCapacitacion.get('subject')?.valid && (formCapacitacion.get('subject')?.touched || formCapacitacion.get('subject')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                             <!--
                                 <input class="form-control" type="text" [formControl]="code" disabled>
@@ -351,12 +385,18 @@
                             <label class="col-sm-4 control-label text-left">Lugar</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" formControlName="location">
+                                <span *ngIf="!formCapacitacion.get('location')?.valid && (formCapacitacion.get('location')?.touched || formCapacitacion.get('location')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Fecha de la capacitación</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" formControlName="date">
+                                <date-picker [(date)]="trainingDate" (dateChange)="dateChange(4, $event)"></date-picker>
+                                <span *ngIf="!formCapacitacion.get('date')?.valid && (formCapacitacion.get('date')?.touched || formCapacitacion.get('date')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                             <!--
                                 <ng-select [items]="typesIdName" [(ngModel)]="workflowType"></ng-select>
@@ -366,16 +406,22 @@
                             <label class="col-sm-4 control-label text-left">Duración</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" formControlName="duration">
+                                <span *ngIf="!formCapacitacion.get('duration')?.valid && (formCapacitacion.get('duration')?.touched || formCapacitacion.get('duration')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label text-left">Monto aproximado del curso</label>
                             <div class="col-sm-8">
                                 <input type="number" class="form-control" formControlName="ammount">
+                                <span *ngIf="!formCapacitacion.get('ammount')?.valid && (formCapacitacion.get('ammount')?.touched || formCapacitacion.get('ammount')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <h3 style="margin-left: 8rem;">Participantes (posibilidad de agregar registros)</h3>
+                            <h3 style="margin-left: 8rem;">Participantes</h3>
                         </div>
                         <div class="form-group" [formGroup]="formParticipanteCapacitacion">
                             <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem;" (click)="agregarParticipanteCapacitacion()">Agregar<i
