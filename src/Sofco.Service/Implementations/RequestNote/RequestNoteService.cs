@@ -3,6 +3,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Services.RequestNote;
 using Sofco.Domain.DTO;
 using Sofco.Domain.DTO.NotaPedido;
+using Sofco.Domain.Models.RequestNote;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.RequestNoteStates;
 using Sofco.Domain.Utils;
@@ -56,6 +57,12 @@ namespace Sofco.Service.Implementations.RequestNote
         public void GuardarBorrador(Domain.Models.RequestNote.RequestNote requestNoteBorrador)
         {
             requestNoteBorrador.StatusId = (int)RequestNoteStates.Borrador;
+
+            foreach(RequestNoteAnalytic requestNoteAnalytic in requestNoteBorrador.Analytics)
+            {
+                requestNoteAnalytic.Id = 0;
+            }
+
             this.unitOfWork.RequestNoteRepository.InsertRequestNote(requestNoteBorrador);
             this.unitOfWork.RequestNoteRepository.Save();
         }

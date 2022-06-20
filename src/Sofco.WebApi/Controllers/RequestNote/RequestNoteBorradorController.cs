@@ -25,7 +25,6 @@ namespace Sofco.WebApi.Controllers.RequestNote
         {
             this._requestNoteService.GuardarBorrador(requestNote);
 
-
             return Ok();
         }
 
@@ -43,6 +42,18 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Reachazada);
 
             return Ok();
+        }
+
+        [HttpGet("GetById")]
+        public IActionResult GetById(int id)
+        {
+            return Ok(this._requestNoteService.GetById(id));
+        }
+
+        [HttpGet("GetAll")]
+        public IActionResult GetAll(int id)
+        {
+            return Ok(this._requestNoteService.GetAll());
         }
     }
 }
