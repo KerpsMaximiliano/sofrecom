@@ -10,7 +10,8 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
-    public class RequestNotePendienteAprobacionGerentesAnaliticaController : RequestNoteAbstractWorkflowController<RequestNoteSubmitPendienteAprobacionGerentesAnaliticaDTO, RequestNoteLoadPendienteAprobacionGerentesAnaliticaDTO>
+    [Route("api/RequestNotePendienteAprobacionGerentesAnalitica")]
+    public class RequestNotePendienteAprobacionGerentesAnaliticaController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
 
@@ -19,20 +20,20 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteService = requestNoteService;
         }
 
-        protected override Response<RequestNoteLoadPendienteAprobacionGerentesAnaliticaDTO> Get(int id)
+        [HttpPost("AprobarPendienteAprobacionGerentesAnalitica")]
+        public IActionResult PasarPendienteAprobacionAbastecimiento(int id)
         {
-            throw new NotImplementedException();
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónAbastecimiento);
+
+            return Ok();
         }
 
-        protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionGerentesAnaliticaDTO>> GetActionDictionary()
+        [HttpPost("RechazarPendienteAprobacionGerentesAnalitica")]
+        public IActionResult RechazarPendienteAprobacionGerentesAnalitica(int id)
         {
-            Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionGerentesAnaliticaDTO>> map =
-                new Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionGerentesAnaliticaDTO>>
-                {
-                    { "Aprobar", new RequestNoteAprobarPendienteAprobacionGerentesAnaliticaCommand(_requestNoteService) },
-                    { "Rechazar", new RequestNoteRechazarPendienteAprobacionGerentesAnaliticaCommand(_requestNoteService) }
-                };
-            return map;
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteRevisiónAbastecimiento);
+
+            return Ok();
         }
     }
 }

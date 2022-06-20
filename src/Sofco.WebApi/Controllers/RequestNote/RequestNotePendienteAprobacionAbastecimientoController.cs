@@ -10,7 +10,8 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
-    public class RequestNotePendienteAprobacionAbastecimientoController : RequestNoteAbstractWorkflowController<RequestNoteSubmitPendienteAprobacionAbastecimientoDTO, RequestNoteLoadPendienteAprobacionAbastecimientoDTO>
+    [Route("api/RequestNotePendienteAprobacionAbastecimiento")]
+    public class RequestNotePendienteAprobacionAbastecimientoController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
 
@@ -19,20 +20,20 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteService = requestNoteService;
         }
 
-        protected override Response<RequestNoteLoadPendienteAprobacionAbastecimientoDTO> Get(int id)
+        [HttpPost("AprobarPendienteAprobacionAbastecimiento")]
+        public IActionResult AprobarPendienteAprobacionAbastecimiento(int id)
         {
-            throw new NotImplementedException();
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónDAF);
+
+            return Ok();
         }
 
-        protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionAbastecimientoDTO>> GetActionDictionary()
+        [HttpPost("RechazarPendienteAprobacionAbastecimiento")]
+        public IActionResult RechazarPendienteAprobacionAbastecimiento(int id)
         {
-            Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionAbastecimientoDTO>> map =
-                 new Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionAbastecimientoDTO>>
-                 {
-                    { "Aprobar", new RequestNoteAprobarPendienteAprobacionAbastecimientoCommand(_requestNoteService) },
-                    { "Rechazar", new RequestNoteRechazarPendienteAprobacionAbastecimientoCommand(_requestNoteService) }
-                 };
-            return map;
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Reachazada);
+
+            return Ok();
         }
     }
 }

@@ -10,7 +10,8 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
-    public class RequestNoteSolicitadaProveedorController : RequestNoteAbstractWorkflowController<RequestNoteSubmitSolicitadaProveedorDTO, RequestNoteLoadSolicitadaProveedorDTO>
+    [Route("api/RequestNoteSolicitadaProveedor")]
+    public class RequestNoteSolicitadaProveedorController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
 
@@ -19,19 +20,20 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteService = requestNoteService;
         }
 
-        protected override Response<RequestNoteLoadSolicitadaProveedorDTO> Get(int id)
+        [HttpPost("AprobarSolicitadaProveedor")]
+        public IActionResult AprobarSolicitadaProveedor(int id)
         {
-            throw new NotImplementedException();
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.RecibidoConforme);
+
+            return Ok();
         }
 
-        protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitSolicitadaProveedorDTO>> GetActionDictionary()
+        [HttpPost("CerrarSolicitadaProveedor")]
+        public IActionResult CerradaSolicitadaProveedor(int id)
         {
-            Dictionary<string, IRequestNoteCommand<RequestNoteSubmitSolicitadaProveedorDTO>> map =
-               new Dictionary<string, IRequestNoteCommand<RequestNoteSubmitSolicitadaProveedorDTO>>
-               {
-                    { "Confirmar", new RequestNoteConfirmarRecepcionSolicitadaProveedorCommand(_requestNoteService) }
-               };
-            return map;
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Cerrada);
+
+            return Ok();
         }
     }
 }

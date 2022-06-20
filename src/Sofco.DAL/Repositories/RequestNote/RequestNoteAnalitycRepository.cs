@@ -1,4 +1,6 @@
 ﻿using Sofco.Core.DAL.RequestNote;
+using Sofco.Domain.Models.RequestNote;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Sofco.DAL.Repositories.RequestNote
@@ -30,6 +32,11 @@ namespace Sofco.DAL.Repositories.RequestNote
         public void Save()
         {
             context.SaveChanges();
+        }
+
+        public List<RequestNoteAnalytic> GetByRequestNoteId(int requestNoteId)
+        {
+            return this.context.RequestNoteAnalytics.Where(x => x.RequestNoteId == requestNoteId).ToList();
         }
     }
 }

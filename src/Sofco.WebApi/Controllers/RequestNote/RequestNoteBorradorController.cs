@@ -10,7 +10,8 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
-    public class RequestNoteBorradorController : RequestNoteAbstractWorkflowController<RequestNoteSubmitBorradorDTO, RequestNoteLoadBorradorDTO>
+    [Route("api/RequestNoteBorrador")]
+    public class RequestNoteBorradorController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
 
@@ -19,20 +20,29 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteService = requestNoteService;
         }
 
-        protected override Response<RequestNoteLoadBorradorDTO> Get(int id)
+        [HttpPost("GuardarBorrador")]
+        public IActionResult GuardarBorrador([FromBody] Domain.Models.RequestNote.RequestNote requestNote)
         {
-            throw new NotImplementedException();
+            this._requestNoteService.GuardarBorrador(requestNote);
+
+
+            return Ok();
         }
 
-        protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitBorradorDTO>> GetActionDictionary()
+        [HttpPost("AprobarBorrador")]
+        public IActionResult AprobarBorrador(int id)
         {
-            Dictionary<string, IRequestNoteCommand<RequestNoteSubmitBorradorDTO>> map =
-                new Dictionary<string, IRequestNoteCommand<RequestNoteSubmitBorradorDTO>>
-                {
-                    { "Grabar", new RequestNoteGrabarBorradorCommand(_requestNoteService) },
-                    { "Enviar", new RequestNoteEnviarBorradorCommand(_requestNoteService) }
-                };
-            return map;
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteRevisiónAbastecimiento);
+
+            return Ok();
+        }
+
+        [HttpPost("RechazarBorrador")]
+        public IActionResult RechazarBorrador(int id)
+        {
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Reachazada);
+
+            return Ok();
         }
     }
 }

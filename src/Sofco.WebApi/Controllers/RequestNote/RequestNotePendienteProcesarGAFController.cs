@@ -10,7 +10,8 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
-    public class RequestNotePendienteProcesarGAFController : RequestNoteAbstractWorkflowController<RequestNoteSubmitPendienteProcesarGAFDTO, RequestNoteLoadPendienteProcesarGAFDTO>
+    [Route("api/RequestNotePendienteProcesarGAF")]
+    public class RequestNotePendienteProcesarGAFController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
 
@@ -19,19 +20,12 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteService = requestNoteService;
         }
 
-        protected override Response<RequestNoteLoadPendienteProcesarGAFDTO> Get(int id)
+        [HttpPost("AprobarPendienteProcesarGAF")]
+        public IActionResult AprobarRecibidoConforme(int id)
         {
-            throw new NotImplementedException();
-        }
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Cerrada);
 
-        protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteProcesarGAFDTO>> GetActionDictionary()
-        {
-            Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteProcesarGAFDTO>> map =
-                new Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteProcesarGAFDTO>>
-                {
-                    { "Cerrar", new RequestNoteCerrarPendienteProcesarGAFCommand(_requestNoteService) }
-                };
-            return map;
+            return Ok();
         }
     }
 }

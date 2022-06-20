@@ -12,6 +12,7 @@
         RecibidoConforme = 8,
         FacturaPendienteAprobaciónGerente=9,
         PendienteProcesarGAF= 10,
-        Reachazada=11
+        Reachazada=11,
+        Cerrada=12
     }
 }

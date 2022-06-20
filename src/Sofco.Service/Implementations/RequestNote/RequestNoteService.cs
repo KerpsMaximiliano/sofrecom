@@ -55,6 +55,7 @@ namespace Sofco.Service.Implementations.RequestNote
 
         public void GuardarBorrador(Domain.Models.RequestNote.RequestNote requestNoteBorrador)
         {
+            requestNoteBorrador.StatusId = (int)RequestNoteStates.Borrador;
             this.unitOfWork.RequestNoteRepository.InsertRequestNote(requestNoteBorrador);
             this.unitOfWork.RequestNoteRepository.Save();
         }
@@ -67,6 +68,16 @@ namespace Sofco.Service.Implementations.RequestNote
         public IList<Domain.Models.RequestNote.RequestNote> GetAll()
         {
             return this.unitOfWork.RequestNoteRepository.GetAll();
+        }
+
+        public void ChangeStatus(int requestNodeId, RequestNoteStates requestNoteStates)
+        {
+            Domain.Models.RequestNote.RequestNote requestNote = this.unitOfWork.RequestNoteRepository.GetById(requestNodeId);
+
+            requestNote.StatusId = (int)requestNoteStates;
+
+            this.unitOfWork.RequestNoteRepository.UpdateRequestNote(requestNote);
+            this.unitOfWork.RequestNoteRepository.Save();
         }
     }
 }

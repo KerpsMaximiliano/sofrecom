@@ -6,7 +6,8 @@ namespace Sofco.Core.Services.RequestNote
 {
     public interface IRequestNoteAnalitycService
     {
-        void CambiarAPendienteAprobacion(int id);
-        void Rechazar(int id);
+        void ChangeStatusByRequestNodeId(int requestNoteId, string status);
+        List<Domain.Models.RequestNote.RequestNoteAnalytic> GetByRequestNoteId(int requestNoteId);
+        void ChangeStatus(int id, string status);
     }
 }

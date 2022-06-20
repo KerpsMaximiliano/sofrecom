@@ -10,7 +10,8 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
-    public class RequestNoteRecibidoConformeController : RequestNoteAbstractWorkflowController<RequestNoteSubmitRecibidoConformeDTO, RequestNoteLoadRecibidoConformeDTO>
+    [Route("api/RequestNoteRecibidoConforme")]
+    public class RequestNoteRecibidoConformeController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
 
@@ -19,19 +20,12 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteService = requestNoteService;
         }
 
-        protected override Response<RequestNoteLoadRecibidoConformeDTO> Get(int id)
+        [HttpPost("AprobarRecibidoConforme")]
+        public IActionResult AprobarRecibidoConforme(int id)
         {
-            throw new NotImplementedException();
-        }
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.FacturaPendienteAprobaciónGerente);
 
-        protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitRecibidoConformeDTO>> GetActionDictionary()
-        {
-            Dictionary<string, IRequestNoteCommand<RequestNoteSubmitRecibidoConformeDTO>> map =
-                new Dictionary<string, IRequestNoteCommand<RequestNoteSubmitRecibidoConformeDTO>>
-                {
-                    { "Adjuntar", new RequestNoteAdjuntarFacturaRecibidoConformeCommand(_requestNoteService) }
-                };
-            return map;
+            return Ok();
         }
     }
 }

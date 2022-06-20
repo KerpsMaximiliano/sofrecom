@@ -1,5 +1,6 @@
 ﻿using Sofco.Domain.DTO;
 using Sofco.Domain.DTO.NotaPedido;
+using Sofco.Domain.RequestNoteStates;
 using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,6 @@ namespace Sofco.Core.Services.RequestNote
         void GuardarBorrador(Domain.Models.RequestNote.RequestNote requestNoteBorrador);
         Domain.Models.RequestNote.RequestNote GetById(int id);
         IList<Domain.Models.RequestNote.RequestNote> GetAll();
+        void ChangeStatus(int requestNodeId, RequestNoteStates requestNoteStates);
     }
 }

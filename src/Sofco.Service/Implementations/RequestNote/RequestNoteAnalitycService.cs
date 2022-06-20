@@ -1,6 +1,7 @@
 ﻿using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.RequestNote;
+using Sofco.Domain.Models.RequestNote;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,24 +19,29 @@ namespace Sofco.Service.Implementations.RequestNote
             this.logger = logger;
         }
 
-        public void CambiarAPendienteAprobacion(int id)
+        public void ChangeStatus(int id, string status)
         {
             Domain.Models.RequestNote.RequestNoteAnalytic requestNoteAnalityc = this.unitOfWork.RequestNoteAnalitycRepository.GetById(id);
 
-            requestNoteAnalityc.Status = "Pendiente Aprobación";
+            requestNoteAnalityc.Status = status;
 
             this.unitOfWork.RequestNoteAnalitycRepository.UpdateAnalityc(requestNoteAnalityc);
             this.unitOfWork.RequestNoteAnalitycRepository.Save();
         }
 
-        public void Rechazar(int id)
+        public void ChangeStatusByRequestNodeId(int requestNoteId, string status)
         {
-            Domain.Models.RequestNote.RequestNoteAnalytic requestNoteAnalityc = this.unitOfWork.RequestNoteAnalitycRepository.GetById(id);
+            List<RequestNoteAnalytic> requestNoteAnalytics = GetByRequestNoteId(requestNoteId);
 
-            requestNoteAnalityc.Status = "Rechazado";
+            foreach(RequestNoteAnalytic requestNoteAnalytic in requestNoteAnalytics)
+            {
+                ChangeStatus(requestNoteAnalytic.Id, status);
+            }
+        }
 
-            this.unitOfWork.RequestNoteAnalitycRepository.UpdateAnalityc(requestNoteAnalityc);
-            this.unitOfWork.RequestNoteAnalitycRepository.Save();
+        public List<RequestNoteAnalytic> GetByRequestNoteId(int requestNoteId)
+        {
+            return this.unitOfWork.RequestNoteAnalitycRepository.GetByRequestNoteId(requestNoteId);
         }
     }
 }

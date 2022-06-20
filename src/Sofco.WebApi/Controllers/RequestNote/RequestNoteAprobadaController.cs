@@ -22,28 +22,18 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteAnalitycService = requestNoteAnalityc;
         }
 
-        [HttpPost("AprobarRequestNote")]
+        [HttpPost("AprobarAprobada")]
         public IActionResult AprobarRequestNote(int id)
         {
-            this._requestNoteService.CambiarAPendienteApobacionGerenteAnalitica(id);
-            this._requestNoteAnalitycService.CambiarAPendienteAprobacion(id);
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.SolicitadaAProveedor);
 
             return Ok();
         }
 
-        [HttpPost("RechazarRequestNode")]
+        [HttpPost("RechazarAprobada")]
         public IActionResult RechazarRequestNode(int id)
         {
-            this._requestNoteService.RechazarRequestNote(id);
-            this._requestNoteAnalitycService.Rechazar(id);
-
-            return Ok();
-        }
-
-        [HttpPost("GuardarBorrador")]
-        public IActionResult GuardarBorrador([FromBody] Domain.Models.RequestNote.RequestNote requestNote)
-        {
-            this._requestNoteService.GuardarBorrador(requestNote);
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Reachazada);
 
             return Ok();
         }

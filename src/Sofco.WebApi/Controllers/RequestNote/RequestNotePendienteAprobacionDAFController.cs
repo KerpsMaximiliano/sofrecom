@@ -10,7 +10,8 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
-    public class RequestNotePendienteAprobacionDAFController : RequestNoteAbstractWorkflowController<RequestNoteSubmitPendienteAprobacionDAFDTO, RequestNoteLoadPendienteAprobacionDAFDTO>
+    [Route("api/RequestNotePendienteAprobacionDAF")]
+    public class RequestNotePendienteAprobacionDAFController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
 
@@ -19,20 +20,20 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteService = requestNoteService;
         }
 
-        protected override Response<RequestNoteLoadPendienteAprobacionDAFDTO> Get(int id)
+        [HttpPost("AprobarPendienteAprobacionDAF")]
+        public IActionResult AprobarPendienteAprobacionDAF(int id)
         {
-            throw new NotImplementedException();
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Aprobada);
+
+            return Ok();
         }
 
-        protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionDAFDTO>> GetActionDictionary()
+        [HttpPost("RechazarPendienteAprobacionDAF")]
+        public IActionResult RechazarPendienteAprobacionDAF(int id)
         {
-            Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionDAFDTO>> map =
-                new Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteAprobacionDAFDTO>>
-                {
-                    { "Aprobar", new RequestNoteAprobarPendienteAprobacionDAFCommand(_requestNoteService) },
-                    { "Rechazar", new RequestNoteRechazarPendienteAprobacionDAFCommand(_requestNoteService) }
-                };
-            return map;
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónAbastecimiento);
+
+            return Ok();
         }
     }
 }

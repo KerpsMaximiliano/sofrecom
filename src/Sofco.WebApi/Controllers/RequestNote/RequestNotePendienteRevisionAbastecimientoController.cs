@@ -10,29 +10,32 @@ using Sofco.WebApi.Extensions;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
-    public class RequestNotePendienteRevisionAbastecimientoController : RequestNoteAbstractWorkflowController<RequestNoteSubmitPendienteRevisionAbastecimientoDTO, RequestNoteLoadPendienteRevisionAbastecimientoDTO>
+    [Route("api/RequestNotePendienteRevisionAbastecimiento")]
+    public class RequestNotePendienteRevisionAbastecimientoController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
+        private readonly IRequestNoteAnalitycService _requestNoteAnalitycService;
 
         public RequestNotePendienteRevisionAbastecimientoController(IRequestNoteService requestNoteService)
         {
             this._requestNoteService = requestNoteService;
         }
 
-        protected override Response<RequestNoteLoadPendienteRevisionAbastecimientoDTO> Get(int id)
+        [HttpPost("AprobarPendienteRevisionAbastecimiento")]
+        public IActionResult AprobarBorrador(int id)
         {
-            throw new NotImplementedException();
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónGerentesAnalítica);
+            this._requestNoteAnalitycService.ChangeStatusByRequestNodeId(id, "Pendiende Aprobación");
+
+            return Ok();
         }
 
-        protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteRevisionAbastecimientoDTO>> GetActionDictionary()
+        [HttpPost("RechazarPendienteRevisionAbastecimiento")]
+        public IActionResult RechazarBorrador(int id)
         {
-            Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteRevisionAbastecimientoDTO>> map =
-                new Dictionary<string, IRequestNoteCommand<RequestNoteSubmitPendienteRevisionAbastecimientoDTO>>
-                {
-                    { "Enviar", new RequestNoteEnviarPendienteRevisionAbastecimientoCommand(_requestNoteService) },
-                    { "Rechazar", new RequestNoteRechazarPendienteRevisionAbastecimientoCommand(_requestNoteService) }
-                };
-            return map;
+            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Reachazada);
+
+            return Ok();
         }
     }
 }
