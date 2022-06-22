@@ -18,7 +18,7 @@ export class RequestNoteService {
     }
 
     public getById(id: number): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/GetById`)
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/GetById`);
     }
 
     public getAll(): Observable<any> {
@@ -31,7 +31,7 @@ export class RequestNoteService {
     };
 
     public save(requestNote: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteAprobada/GuardarBorrador`, requestNote);
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteBorrador/GuardarBorrador`, requestNote);
     }
 
     public RequestNotePendingSupplyRevision = {
