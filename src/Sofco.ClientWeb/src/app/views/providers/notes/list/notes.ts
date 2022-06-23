@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 
 @Component({
@@ -30,7 +31,8 @@ export class NotesComponent implements OnInit{
         private messageService: MessageService,
         private providerService: ProvidersService,
         private router: Router,
-        private requestNoteService: RequestNoteService
+        private requestNoteService: RequestNoteService,
+        private dataTableService: DataTableService
     ){}
 
     ngOnInit(): void {
@@ -54,7 +56,10 @@ export class NotesComponent implements OnInit{
                     this.providers = [...this.providers]
                 }
             })
-        })
+        });
+        //busqueda vacía
+        this.initGrid(1);
+        this.collapse();
     }
 
     view(id: number) {
@@ -72,7 +77,7 @@ export class NotesComponent implements OnInit{
                 return;
             }
         }
-        console.log("B�squeda")
+        console.log("Búsqueda")
     }
 
     refreshSearch() {
@@ -81,5 +86,47 @@ export class NotesComponent implements OnInit{
         this.dateSince = null;
         this.dateTo = null;
         this.providerId = null;
+    }
+
+    collapse() {
+        if ($("#collapseOne").hasClass('in')) {
+            $("#collapseOne").removeClass('in');
+        }
+        else {
+            $("#collapseOne").addClass('in');
+        }
+
+        this.changeIcon();
+    }
+
+    changeIcon() {
+        if ($("#collapseOne").hasClass('in')) {
+            $("#search-icon").toggleClass('fa-caret-down').toggleClass('fa-caret-up');
+        }
+        else {
+            $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+        }
+    }
+
+    initGrid(tab: number) {
+        var columns = [0, 1, 2, 3, 4, 5];
+    
+        var params = {
+            selector: '#dataTable',
+            columns: columns,
+            title: 'Notas',
+            withExport: true,
+        }
+
+        if(tab == 2) {
+            params.selector = '#dataTable2'
+        }
+    
+        this.dataTableService.destroy(params.selector);
+        this.dataTableService.initialize(params);
+    }
+
+    changeTab(tab: number) {
+        this.initGrid(tab)
     }
 }
