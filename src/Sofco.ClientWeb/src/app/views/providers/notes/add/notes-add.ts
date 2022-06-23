@@ -337,7 +337,7 @@ export class NotesAddComponent implements OnInit{
         let finalTravelPassengers = this.participantesViaje;
         let model = {
             description: this.formNota.controls.description.value,
-            productsAndServicies: finalProductsAndServices,
+            productsServices: finalProductsAndServices,
             providerAreaId: this.formNota.controls.providerArea.value,
             analytics: analytics,
             requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
