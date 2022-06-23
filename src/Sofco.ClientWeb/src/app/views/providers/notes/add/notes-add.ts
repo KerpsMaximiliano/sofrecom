@@ -323,9 +323,13 @@ export class NotesAddComponent implements OnInit{
             
         }
         let finalProductsAndServices = this.productosServicios;
-        let analyticIds: Array<number> = [];
+        let analytics = [];
         this.analiticasTable.forEach(analytic => {
-            analyticIds.push(analytic.id)
+            let push = {
+                analyticId: analytic.analytic.id,
+                asigned: analytic.asigned
+            }
+            analytics.push(push)
         });
         let finalAnalytics = this.analiticasTable;
         let finalProviders = this.proveedoresTable;
@@ -335,7 +339,7 @@ export class NotesAddComponent implements OnInit{
             description: this.formNota.controls.description.value,
             productsAndServicies: finalProductsAndServices,
             providerAreaId: this.formNota.controls.providerArea.value,
-            analytics: this.analiticasTable,
+            analytics: analytics,
             requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
             providers: finalProviders,
             consideredInBudget: this.formNota.controls.evaluationProposal.value,
