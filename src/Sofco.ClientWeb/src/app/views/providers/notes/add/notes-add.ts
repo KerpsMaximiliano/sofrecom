@@ -386,7 +386,7 @@ export class NotesAddComponent implements OnInit{
             attachments: "X"
         };
         console.log(model);
-        this.requestNoteService.save(model).subscribe(d=>console.log(d))
+        this.requestNoteService.saveDraft(model).subscribe(d=>console.log(d))
     }
 
     markFormGroupTouched(formGroup: FormGroup) {
@@ -419,6 +419,12 @@ export class NotesAddComponent implements OnInit{
             this.formCapacitacion.controls.date.markAsDirty();
             this.formCapacitacion.controls.date.markAsTouched();
         }        
+    }
+
+    sendDraft() {
+        //guardar como borrador
+        //pasar de estado
+        //this.requestNoteService.approveDraft(id)
     }
 
 }
