@@ -14,16 +14,19 @@ namespace Sofco.WebApi.Controllers.RequestNote
     public class RequestNotePendienteAprobacionGerentesAnaliticaController : ControllerBase
     {
         private readonly IRequestNoteService _requestNoteService;
+        private readonly IRequestNoteAnalitycService _requestNoteAnalitycService;
 
-        public RequestNotePendienteAprobacionGerentesAnaliticaController(IRequestNoteService requestNoteService)
+        public RequestNotePendienteAprobacionGerentesAnaliticaController(IRequestNoteService requestNoteService, IRequestNoteAnalitycService requestNoteAnalitycService)
         {
             this._requestNoteService = requestNoteService;
+            this._requestNoteAnalitycService = requestNoteAnalitycService;
         }
 
         [HttpPost("AprobarPendienteAprobacionGerentesAnalitica")]
         public IActionResult PasarPendienteAprobacionAbastecimiento(int id)
         {
             this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónAbastecimiento);
+            this._requestNoteAnalitycService.ChangeStatusByRequestNodeId(id, "Aprobado");
 
             return Ok();
         }
@@ -32,6 +35,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         public IActionResult RechazarPendienteAprobacionGerentesAnalitica(int id)
         {
             this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteRevisiónAbastecimiento);
+            this._requestNoteAnalitycService.ChangeStatusByRequestNodeId(id, "Rechazado");
 
             return Ok();
         }

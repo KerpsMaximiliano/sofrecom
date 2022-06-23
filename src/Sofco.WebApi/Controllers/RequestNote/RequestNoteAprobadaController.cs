@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Services.RequestNote;
 using Sofco.Domain.DTO;
 using Sofco.Domain.DTO.NotaPedido;
+using Sofco.Domain.Models.RequestNote;
 using Sofco.Domain.Utils;
 using Sofco.Service.Implementations.RequestNote;
 using Sofco.WebApi.Extensions;
@@ -15,11 +16,13 @@ namespace Sofco.WebApi.Controllers.RequestNote
     {
         private readonly IRequestNoteService _requestNoteService;
         private readonly IRequestNoteAnalitycService _requestNoteAnalitycService;
+        private readonly IRequestNoteProviderService _requestNoteProviderService;
 
-        public RequestNoteAprobadaController(IRequestNoteService requestNoteService, IRequestNoteAnalitycService requestNoteAnalityc)
+        public RequestNoteAprobadaController(IRequestNoteService requestNoteService, IRequestNoteAnalitycService requestNoteAnalityc, IRequestNoteProviderService requestNoteProviderService)
         {
             this._requestNoteService = requestNoteService;
             this._requestNoteAnalitycService = requestNoteAnalityc;
+            this._requestNoteProviderService = requestNoteProviderService;
         }
 
         [HttpPost("AprobarAprobada")]
@@ -48,6 +51,19 @@ namespace Sofco.WebApi.Controllers.RequestNote
         public IActionResult GetAll(int id)
         {
             return Ok(this._requestNoteService.GetAll());
+        }
+
+        [HttpGet("ListarArchivos")]
+        public IActionResult ListarArchivos(int providerId)
+        {
+            return Ok(this._requestNoteProviderService.GetFilesByProviderId(providerId));
+        }
+
+        [HttpPost("CargarArchivosProveedor")]
+        public IActionResult CargarArchivosProveedor([FromBody] List<RequestNoteProvider> requestNoteProviders)
+        {
+            this._requestNoteProviderService.GuardarArchivosProvider(requestNoteProviders);
+            return Ok();
         }
     }
 }
