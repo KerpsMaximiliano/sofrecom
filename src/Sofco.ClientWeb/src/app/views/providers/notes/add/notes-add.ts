@@ -323,6 +323,10 @@ export class NotesAddComponent implements OnInit{
             
         }
         let finalProductsAndServices = this.productosServicios;
+        let analyticIds: Array<number> = [];
+        this.analiticasTable.forEach(analytic => {
+            analyticIds.push(analytic.id)
+        });
         let finalAnalytics = this.analiticasTable;
         let finalProviders = this.proveedoresTable;
         let finalTrainingPassengers = this.participantesCapacitacion;
@@ -331,7 +335,7 @@ export class NotesAddComponent implements OnInit{
             description: this.formNota.controls.description.value,
             productsAndServicies: finalProductsAndServices,
             providerAreaId: this.formNota.controls.providerArea.value,
-            analytics: finalAnalytics,
+            analytics: this.analiticasTable,
             requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
             providers: finalProviders,
             consideredInBudget: this.formNota.controls.evaluationProposal.value,
@@ -358,6 +362,7 @@ export class NotesAddComponent implements OnInit{
                 details: this.formViaje.controls.details.value
             }
         };
+        
         let model2 = {
             description: this.formNota.controls.description.value,
             productsAndServicies: finalProductsAndServices,
