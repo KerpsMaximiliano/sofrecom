@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -15,7 +16,11 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
     @Input() currentNote;
     show = false;
     productosServicios = [];
-    analiticas = [];
+    analiticas = [
+        {analytic: "Analítica 1", asigned: 10},
+        {analytic: "Analítica 2", asigned: 30},
+        {analytic: "Analítica 3", asigned: 5}
+    ];
     gerenteLogueado;//Solo mostrar las analiticas asociadas al gerente logueado
 
     formNota: FormGroup = new FormGroup({
@@ -34,7 +39,8 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
     constructor(
         private providersAreaService: ProvidersAreaService,
         private requestNoteService: RequestNoteService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -74,13 +80,15 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
         //si todas están aprobadas, entonces la nota de pedido pasa a estado “Pendiente Aprobación Abastecimiento”. 
         //Si hay al menos una que esté en estado “Pendiente de Aprobación”, se mantiene el estado actual.
         //this.requestNoteService.approvePendingApprovalManagementAnalytic
-        this.messageService.showMessage("Las analíticas asociadas han sido aprobadas", 0)
+        this.messageService.showMessage("Las analíticas asociadas han sido aprobadas", 0);
+        this.router.navigate(['/providers/notes']);
     }
 
     reject() {
         //Se marcan las analíticas del gerente logueado como “Rechazada”. 
         //Se cambia el estado de la nota de pedido a estado “Pendiente Revisión Abastecimiento” sin importar el estado del resto de las analíticas.
         //this.requestNoteService.rejectPendingApprovalManagementAnalytic
-        this.messageService.showMessage("Las analíticas asociadas han sido rechazada", 0)
+        this.messageService.showMessage("Las analíticas asociadas han sido rechazadas", 0);
+        this.router.navigate(['/providers/notes']);
     }
 }

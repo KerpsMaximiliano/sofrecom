@@ -141,6 +141,12 @@
                         <label class="col-sm-3 control-label text-left">Monto final de la OC: </label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control" formControlName="montoOC">
+                            <span *ngIf="!formNota.get('montoOC')?.valid && (formNota.get('montoOC')?.touched || formNota.get('montoOC')?.dirty)" style="color: red;">
+                                El campo es requerido
+                            </span>
+                            <span *ngIf="formNota.controls.montoOC.errors?.min" style="color: red;">
+                                Debe ser mayor que 0
+                            </span>
                         </div>
                     </div>
                 </form>

@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -16,7 +17,11 @@ export class NotesPendingSupplyRevision implements OnInit {
     @Input() currentNote;
     show = false;
     productosServicios = [];
-    analiticas = [];
+    analiticas = [
+        {analytic: "Analítica 1", asigned: 10},
+        {analytic: "Analítica 2", asigned: 30},
+        {analytic: "Analítica 3", asigned: 5}
+    ];
     providers = [];
     selectedProviderId: number;
     providersGrid = [];
@@ -35,14 +40,15 @@ export class NotesPendingSupplyRevision implements OnInit {
         previstoPresupuesto: new FormControl(true),
         nroEvalprop: new FormControl(null),
         observaciones: new FormControl(null),
-        montoOC: new FormControl(null, [Validators.required]),
+        montoOC: new FormControl(null, [Validators.required, Validators.min(1)]),
     })
 
     constructor(
         private providerService: ProvidersService,
         private providersAreaService: ProvidersAreaService,
         private requestNoteService: RequestNoteService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router
     ) { }
 
     ngOnInit(): void{
@@ -101,7 +107,8 @@ export class NotesPendingSupplyRevision implements OnInit {
 
     reject() {
         //this.requestNoteService.rejectPendingSupplyRevision(this.currentNote.id).subscribe(d=>console.log(d))
-        this.messageService.showMessage("La nota de pedido ha sido rechazada", 0)
+        this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);
+        this.router.navigate(['/providers/notes']);
     }
 
     send() {
@@ -110,7 +117,12 @@ export class NotesPendingSupplyRevision implements OnInit {
         //Se cambia al estado “Pendiente Aprobación Gerente Analíticas”
         //Se asignan a todas las analíticas asociadas el estado “Pendiente Aprobación”
         //this.requestNoteService.approvePendingSupplyRevision()
-        this.messageService.showMessage("La nota de pedido ha sido enviada", 0)
+        this.markFormGroupTouched(this.formNota);
+        if(this.formNota.invalid) {
+            return;
+        }
+        this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+        this.router.navigate(['/providers/notes']);
         //subir archivos al guardar
     }
 
@@ -128,6 +140,16 @@ export class NotesPendingSupplyRevision implements OnInit {
             file: {}//Ver
         }
         //upload file
+    }
+
+    markFormGroupTouched(formGroup: FormGroup) {
+        (<any>Object).values(formGroup.controls).forEach(control => {
+            control.markAsTouched();
+
+            if (control.controls) {
+                this.markFormGroupTouched(control);
+            }
+        });
     }
 
     //Debe ser llamado al iniciar para configurar el file uploader

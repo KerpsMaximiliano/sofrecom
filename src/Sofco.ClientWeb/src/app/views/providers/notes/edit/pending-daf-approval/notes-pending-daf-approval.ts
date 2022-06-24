@@ -2,6 +2,10 @@ import { Component, Input, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
+import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { RequestNoteService } from "app/services/admin/request-note.service";
+import { MessageService } from "app/services/common/message.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'notes-pending-daf-approval',
@@ -20,10 +24,14 @@ export class NotesPendingDAFApproval {
         "ACTIONS.cancel"
     );
     @Input() currentNote;
-    rejectComments;
+    rejectComments = null;
 
     productosServicios = [];
-    analiticas = [];
+    analiticas = [
+        {analytic: "Analítica 1", asigned: 10},
+        {analytic: "Analítica 2", asigned: 30},
+        {analytic: "Analítica 3", asigned: 5}
+    ];
     providersGrid = [];//Proveedor seleccionado en etapa anterior
 
     formNota: FormGroup = new FormGroup({
@@ -42,7 +50,11 @@ export class NotesPendingDAFApproval {
     })
 
     constructor(
-        private providerService: ProvidersService
+        private providerService: ProvidersService,
+        private providersAreaService: ProvidersAreaService,
+        private requestNoteService: RequestNoteService,
+        private messageService: MessageService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -50,6 +62,21 @@ export class NotesPendingDAFApproval {
     }
 
     inicializar() {
+        this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
+            console.log(d);
+            this.formNota.patchValue({
+                descripcion: this.currentNote.description,
+                rubro: d.data.description,
+                critico: (d.data.critical) ? "Si" : "No",
+                requierePersonal: this.currentNote.requiresEmployeeClient,
+                previstoPresupuesto: this.currentNote.consideredInBudget,
+                nroEvalprop: this.currentNote.evalpropNumber,
+                observaciones: this.currentNote.comments,
+                montoOC: this.currentNote.purchaseOrderAmmount,
+                ordenCompra: this.currentNote.purchaseOrderNumber
+            });
+            //asignar analíticas
+        })
         this.checkFormStatus()
         this.providerService.getAll().subscribe(d => {
             console.log(d.data)
@@ -64,7 +91,11 @@ export class NotesPendingDAFApproval {
     }
 
     downloadOC() {
-        //Descargar orden de compra
+        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 0).subscribe(d=>{
+            if(d == null) {
+                this.messageService.showMessage("No hay archivos para descargar", 2);
+            }
+        })
     }
 
     rejectM() {
@@ -77,9 +108,17 @@ export class NotesPendingDAFApproval {
         //debajo un botón de Aceptar y otro de Cancelar. 
         //Si presiona Cancelar, se cierra el modal. Si presiona Aceptar se invoca al método rechazar de la api.
         //Si rechaza se guarda la observación asociada y se cambia el estado de la nota de pedido a “Pendiente Aprobación Abastecimiento”.
+        if(this.rejectComments == null || this.rejectComments.length == 0) {
+            this.messageService.showMessage("Debe dejar una observación si desea rechazar la nota de pedido", 2);
+            return;
+        }
+        this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);
+        this.router.navigate(['/providers/notes']);
     }
 
     approve() {
         //Si Aprueba se cambia el estado a “Aprobada”
+        this.messageService.showMessage("La nota de pedido ha sido aprobada", 0);
+        this.router.navigate(['/providers/notes']);
     }
 }

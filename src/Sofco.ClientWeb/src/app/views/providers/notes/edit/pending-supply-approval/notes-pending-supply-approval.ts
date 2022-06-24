@@ -1,6 +1,11 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { RequestNoteService } from "app/services/admin/request-note.service";
+import { MessageService } from "app/services/common/message.service";
+import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'notes-pending-supply-approval',
@@ -11,8 +16,18 @@ export class NotesPendingSupplyApproval implements OnInit{
 
     @Input() currentNote;
     productosServicios = [];
-    analiticas = [];
+    analiticas = [
+        {analytic: "Analítica 1", asigned: 10},
+        {analytic: "Analítica 2", asigned: 30},
+        {analytic: "Analítica 3", asigned: 5}
+    ];
     providersGrid = [];
+    show = false;
+    fileSelected = false;
+    providerSelected = null;
+
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({url:""});
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -26,11 +41,15 @@ export class NotesPendingSupplyApproval implements OnInit{
         nroEvalprop: new FormControl(null),
         observaciones: new FormControl(null),
         montoOC: new FormControl(null),
-        ordenCompra: new FormControl(null)
+        ordenCompra: new FormControl(null, Validators.required)
     })
 
     constructor(
-        private providerService: ProvidersService
+        private providerService: ProvidersService,
+        private providersAreaService: ProvidersAreaService,
+        private messageService: MessageService,
+        private requestNoteService: RequestNoteService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -43,6 +62,20 @@ export class NotesPendingSupplyApproval implements OnInit{
             console.log(d.data)
             this.providersGrid = d.data;
             this.providersGrid = [...this.providersGrid]
+        });
+        this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
+            this.formNota.patchValue({
+                descripcion: this.currentNote.description,
+                rubro: d.data.description,
+                critico: (d.data.critical) ? "Si" : "No",
+                requierePersonal: this.currentNote.requiresEmployeeClient,
+                previstoPresupuesto: this.currentNote.consideredInBudget,
+                nroEvalprop: this.currentNote.evalpropNumber,
+                observaciones: this.currentNote.comments,
+                montoOC: this.currentNote.purchaseOrderAmmount
+            });
+            //asignar analíticas
+            this.show = true;
         })
     }
 
@@ -50,22 +83,51 @@ export class NotesPendingSupplyApproval implements OnInit{
         this.formNota.disable();
         this.formNota.controls.proveedores.enable();
         this.formNota.controls.observaciones.enable();
-        this.formNota.controls.montoOC.enable();
         this.formNota.controls.ordenCompra.enable()
-    }
-
-    uploadOC() {
-        //subir archivo orden de compra
     }
 
     reject() {
         //Si Rechaza, se cambia el estado de la nota de pedido a Rechazada y finaliza el workflow.
+        this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);
+        this.router.navigate(['/providers/notes']);
     }
 
     approve() {
         //se debe validar que haya elegido un proveedor del listado de proveedores.
-        //se debe validar que haya un archivo de orden de compra adjunto
-        //se debe validar que haya ingresado un número de orden de compra.
         //Se cambia el estado de la nota de pedido a “Pendiente Aprobación DAF”
+        this.markFormGroupTouched(this.formNota);
+        if(this.fileSelected == false) {
+            this.messageService.showMessage("Debe seleccionar un archivo orden de compra para subir", 2);
+        }
+        if(this.providerSelected == null) {
+            this.messageService.showMessage("Debe seleccionar un proveedor", 2);
+        }
+        if(this.formNota.invalid) {
+            return;
+        }
+        this.messageService.showMessage("La nota de pedido ha sido aprobada", 0);
+        this.router.navigate(['/providers/notes']);
+    }
+
+    fileCheck(event) {
+        if(event.length == 1) {
+            this.fileSelected = true;
+        } else {
+            this.fileSelected = false;
+        }
+    }
+
+    selectProvider(item) {
+        this.providerSelected = item;
+    }
+
+    markFormGroupTouched(formGroup: FormGroup) {
+        (<any>Object).values(formGroup.controls).forEach(control => {
+            control.markAsTouched();
+
+            if (control.controls) {
+                this.markFormGroupTouched(control);
+            }
+        });
     }
 }
