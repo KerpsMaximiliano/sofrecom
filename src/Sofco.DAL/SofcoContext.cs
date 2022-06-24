@@ -193,7 +193,7 @@ namespace Sofco.DAL
         //request 
         public DbSet<RequestNote> RequestNote { get; set; }
         public DbSet<RequestNoteAnalytic> RequestNoteAnalytics { get; set; }
-        public DbSet<RequestNoteProvider> RequestNoteProviders { get; set; }
+        public DbSet<RequestNoteProvider> RequestNoteProvider { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

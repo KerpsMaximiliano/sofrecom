@@ -18,22 +18,22 @@ namespace Sofco.DAL.Repositories.RequestNote
 
         public RequestNoteProvider GetById(int id)
         {
-            return this.context.RequestNoteProviders.Where(x => x.Id == id).ToList().FirstOrDefault();
+            return this.context.RequestNoteProvider.Where(x => x.Id == id).ToList().FirstOrDefault();
         }
 
         public List<RequestNoteProvider> GetAll()
         {
-            return this.context.RequestNoteProviders.ToList();
+            return this.context.RequestNoteProvider.ToList();
         }
 
         public List<RequestNoteProvider> GetFilesByProviderId(int providerId)
         {
-            return this.context.RequestNoteProviders.Where(x => x.ProviderId == providerId).ToList();
+            return this.context.RequestNoteProvider.Where(x => x.ProviderId == providerId).ToList();
         }
 
         public void InsertarRequestNoteProvider(RequestNoteProvider requestNoteProvider)
         {
-            context.RequestNoteProviders.Add(requestNoteProvider);
+            context.RequestNoteProvider.Add(requestNoteProvider);
         }
 
         public void Save()
