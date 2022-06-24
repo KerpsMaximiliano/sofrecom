@@ -72,7 +72,7 @@ export class NotesComponent implements OnInit{
     }
 
     edit(id: number) {
-
+        this.router.navigate([`providers/notes/edit/${id}`]);
     }
 
     search() {
