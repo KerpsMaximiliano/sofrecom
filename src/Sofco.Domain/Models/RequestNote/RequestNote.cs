@@ -19,15 +19,15 @@ namespace Sofco.Domain.Models.RequestNote
         public string Comments { get; set; }
 
         public bool TravelSection { get; set; }
-        public int RequestNoteTravelId { get; set; }
+        //public int RequestNoteTravelId { get; set; }
         //public RequestNoteTravel RequestNoteTravel { get; set; }
 
         public bool TrainingSection { get; set; }
-        public int RequestNoteTrainingId { get; set; }
+        //public int RequestNoteTrainingId { get; set; }
         //public RequestNoteTraining RequestNoteTraining { get; set; }
 
-        public decimal PurchaseOrderAmmount { get; set; }
-        public int PurchaseOrderNumber { get; set; }
+        public decimal? PurchaseOrderAmmount { get; set; }
+        public int? PurchaseOrderNumber { get; set; }
         public DateTime CreationDate { get; set; }
         public int CreationUserId { get; set; }
         public Admin.User CreationUser { get; set; }
@@ -35,7 +35,7 @@ namespace Sofco.Domain.Models.RequestNote
         public Workflow.Workflow Workflow { get; set; }
         public IList<RequestNoteProductService> ProductsServices { get; set; }
         public IList<RequestNoteFile> Attachments { get; set; }
-        public int AnalyticId { get; set; }
+        //public int AnalyticId { get; set; }
         //public IList<RequestNoteAnalytic> Analytics { get; set; }
         public IList<RequestNoteProvider> Providers { get; set; }
         [NotMapped]
