@@ -14,25 +14,27 @@
 <input type="number" [(ngModel)]="estado">
 <button (click)="setEstado()">Mock estado</button>
 
-<notes-pending-supply-revision *ngIf="estadoSeleccionado == 1"></notes-pending-supply-revision>
+<div *ngIf="showEdit">
+    <notes-pending-supply-revision [currentNote]="currentNote" *ngIf="estadoSeleccionado == 1"></notes-pending-supply-revision>
 
-<notes-pending-approval-management-analytic *ngIf="estadoSeleccionado == 2"></notes-pending-approval-management-analytic>
+    <notes-pending-approval-management-analytic [currentNote]="currentNote" *ngIf="estadoSeleccionado == 2"></notes-pending-approval-management-analytic>
+    
+    <notes-pending-supply-approval [currentNote]="currentNote" *ngIf="estadoSeleccionado == 3"></notes-pending-supply-approval>
+    
+    <notes-pending-daf-approval [currentNote]="currentNote" *ngIf="estadoSeleccionado == 4"></notes-pending-daf-approval>
+    
+    <notes-approved [currentNote]="currentNote" *ngIf="estadoSeleccionado == 5"></notes-approved>
+    
+    <notes-requested-provider [currentNote]="currentNote" *ngIf="estadoSeleccionado == 6"></notes-requested-provider>
+    
+    <notes-received-conformable [currentNote]="currentNote" *ngIf="estadoSeleccionado == 7"></notes-received-conformable>
+    
+    <notes-pending-management-bill-approval [currentNote]="currentNote" *ngIf="estadoSeleccionado == 8"></notes-pending-management-bill-approval>
+    
+    <notes-pending-gaf-processing [currentNote]="currentNote" *ngIf="estadoSeleccionado == 9"></notes-pending-gaf-processing>
+</div>
 
-<notes-pending-supply-approval *ngIf="estadoSeleccionado == 3"></notes-pending-supply-approval>
-
-<notes-pending-daf-approval *ngIf="estadoSeleccionado == 4"></notes-pending-daf-approval>
-
-<notes-approved *ngIf="estadoSeleccionado == 5"></notes-approved>
-
-<notes-requested-provider *ngIf="estadoSeleccionado == 6"></notes-requested-provider>
-
-<notes-received-conformable *ngIf="estadoSeleccionado == 7"></notes-received-conformable>
-
-<notes-pending-management-bill-approval *ngIf="estadoSeleccionado == 8"></notes-pending-management-bill-approval>
-
-<notes-pending-gaf-processing *ngIf="estadoSeleccionado == 9"></notes-pending-gaf-processing>
-
-<div class="ibox" *ngIf="histories.length > 0">
+<div class="ibox" *ngIf="histories.length > 0 && false">
     <div class="ibox-content">
         <table class="table table-striped" id="historyTable" width="100%">
             <thead>

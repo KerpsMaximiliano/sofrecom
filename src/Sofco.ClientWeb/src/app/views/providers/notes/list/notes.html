@@ -97,23 +97,21 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Descripción</th>
                                     <th>Estado</th>
-                                    <th>Solicitante</th>
                                     <th>Fecha Creación</th>
-                                    <th>Analítica</th>
                                     <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Id</td>
-                                    <td>Estado</td>
-                                    <td>Solicitante</td>
-                                    <td>Fecha Creación</td>
-                                    <td>Analítica</td>
+                                <tr *ngFor="let note of notes">
+                                    <td>{{note.id}}</td>
+                                    <td>{{note.description}}</td>
+                                    <td>{{note.status}}</td>
+                                    <td>{{note.creationDate}}</td>
                                     <td class="column-sm text-center">
-                                        <button title="ver" class="btn btn-primary btn-xs" (click)="view(1)"><i class="fa fa-eye"></i></button>
-                                        <button title="editar" class="btn btn-warning btn-xs" (click)="edit(1)"><i class="fa fa-edit"></i></button>
+                                        <button title="ver" class="btn btn-primary btn-xs" (click)="view(note.id)"><i class="fa fa-eye"></i></button>
+                                        <button title="editar" class="btn btn-warning btn-xs" (click)="edit(note.id)"><i class="fa fa-edit"></i></button>
                                     </td>
                                 </tr> 
                             </tbody>

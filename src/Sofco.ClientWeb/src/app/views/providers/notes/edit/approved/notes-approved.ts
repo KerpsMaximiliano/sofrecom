@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
 
@@ -8,6 +8,7 @@ import { ProvidersService } from "app/services/admin/providers.service";
 })
 
 export class NotesApproved {
+    @Input() currentNote;
     productosServicios = [];
     analiticas = [];
     providersGrid = [];//proveedor seleccionado etapas anteriores

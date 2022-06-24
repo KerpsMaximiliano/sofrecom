@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { RequestNoteService } from "app/services/admin/request-note.service";
 
 
 @Component({
@@ -20,7 +22,7 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
         9 - Cerrar
 */
 
-export class NotesEditComponent{
+export class NotesEditComponent implements OnInit{
 
     estado: number;
     estadoSeleccionado: number = 1;
@@ -62,6 +64,8 @@ export class NotesEditComponent{
             comment: "comentario razón rechazo"
         }
     ];
+    currentNote;
+    showEdit = false;
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -74,7 +78,19 @@ export class NotesEditComponent{
         "ACTIONS.close" 
     );
 
-    constructor(){}
+    constructor(
+        private requestNoteService: RequestNoteService,
+        private route: ActivatedRoute
+    ){}
+
+    ngOnInit(): void {
+        this.requestNoteService.getById(this.route.snapshot.params['id']).subscribe(d => {
+            console.log(d);
+            this.currentNote = d;
+            this.estado = this.currentNote.statusId;
+            this.showEdit = true;
+        })
+    }
 
     setEstado() {
         this.estadoSeleccionado = this.estado;

@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="show">
         <div class="ibox">
             <div class="ibox-content">
                 <form class="form-horizontal" [formGroup]="formNota">
@@ -69,7 +69,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of analiticas; let i = index">
+                                    <tr *ngFor="let item of analiticas">
                                         <td>{{ item.analytic }} </td>
                                         <td>{{ item.asigned }} </td>
                                     </tr>
@@ -108,7 +108,7 @@
                                 <tbody>
                                     <tr *ngFor="let item of providersGrid; let i = index">
                                         <td>{{ item.name }} </td>
-                                        <td><button>Adjuntar archivo</button></td>
+                                        <td><input #selectedFile type="file" ng2FileSelect [uploader]="uploader" /></td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarProveedor(i)"
                                                 class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>

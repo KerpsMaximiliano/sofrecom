@@ -1,6 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { RequestNoteService } from "app/services/admin/request-note.service";
+import { MessageService } from "app/services/common/message.service";
+import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'notes-pending-supply-revision',
@@ -9,11 +13,16 @@ import { ProvidersService } from "app/services/admin/providers.service";
 
 export class NotesPendingSupplyRevision implements OnInit {
 
+    @Input() currentNote;
+    show = false;
     productosServicios = [];
     analiticas = [];
     providers = [];
     selectedProviderId: number;
     providersGrid = [];
+
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({url:""});
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -31,19 +40,42 @@ export class NotesPendingSupplyRevision implements OnInit {
 
     constructor(
         private providerService: ProvidersService,
+        private providersAreaService: ProvidersAreaService,
+        private requestNoteService: RequestNoteService,
+        private messageService: MessageService
     ) { }
 
-    ngOnInit(): void {
+    ngOnInit(): void{
         this.inicializar();
     }
 
     inicializar() {
-        this.checkFormStatus()
+        console.log(this.currentNote)
+        let providerArea;
+        this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
+            console.log(d);
+            providerArea = d.data;
+            this.formNota.patchValue({
+                descripcion: this.currentNote.description,
+                rubro: providerArea.description,
+                critico: (providerArea.critical) ? "Si" : "No",
+                requierePersonal: this.currentNote.requiresEmployeeClient,
+                previstoPresupuesto: this.currentNote.consideredInBudget,
+                nroEvalprop: this.currentNote.evalpropNumber,
+                observaciones: this.currentNote.comments
+            });
+            //asignar analíticas
+            this.show = true;
+        })
+        this.checkFormStatus();
         this.providerService.getAll().subscribe(d => {
             console.log(d.data)
-            //check providerAreaId que sea igual al rubro
-            this.providers = d.data;
-            this.providers = [...this.providers]
+            d.data.forEach(prov => {
+                if(prov.providerAreaId == this.currentNote.providerAreaId) {
+                    this.providers.push(prov);
+                    this.providers = [...this.providers]
+                }
+            });
         })
     }
 
@@ -68,7 +100,8 @@ export class NotesPendingSupplyRevision implements OnInit {
     }
 
     reject() {
-        //Si presiona rechazar se cambia al estado “Rechazado”
+        //this.requestNoteService.rejectPendingSupplyRevision(this.currentNote.id).subscribe(d=>console.log(d))
+        this.messageService.showMessage("La nota de pedido ha sido rechazada", 0)
     }
 
     send() {
@@ -76,5 +109,71 @@ export class NotesPendingSupplyRevision implements OnInit {
         //Se debe validar que haya ingresado un valor para el monto final de la OC.
         //Se cambia al estado “Pendiente Aprobación Gerente Analíticas”
         //Se asignan a todas las analíticas asociadas el estado “Pendiente Aprobación”
+        //this.requestNoteService.approvePendingSupplyRevision()
+        this.messageService.showMessage("La nota de pedido ha sido enviada", 0)
+        //subir archivos al guardar
     }
+
+    addFile(provider: any) {
+        //Agregar archivo al proveedor
+        console.log(provider)
+        let model = {
+            requestNoteId: this.currentNote.id,
+            requestNote: this.currentNote,
+            providerId: provider.id,
+            provider: provider,
+            productService: "",//Ver
+            quantity: 0,//Ver
+            fileId: 0,//Ver
+            file: {}//Ver
+        }
+        //upload file
+    }
+
+    //Debe ser llamado al iniciar para configurar el file uploader
+    /*
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.salaryAdvancementService.getUrlForImportFile(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+            maxFileSize: 50*1024*1024,
+            allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+          });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            var dataJson = JSON.parse(response);
+
+            this.getData();
+
+            if(dataJson.messages){
+                this.messageService.showMessages(dataJson.messages);
+            }
+
+            this.clearSelectedFile();
+        };
+
+        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
+    } 
+    */
 }

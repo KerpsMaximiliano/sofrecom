@@ -25,6 +25,8 @@ export class NotesComponent implements OnInit{
     providerId: number;
     dateSince;
     dateTo;
+    notes = [];
+    finalizedNotes = [];
 
     constructor(
         private employeeService: EmployeeService,
@@ -37,7 +39,10 @@ export class NotesComponent implements OnInit{
 
     ngOnInit(): void {
         this.inicializar()
-        //this.requestNoteService.getAll().subscribe(d=>console.log(d))
+        this.requestNoteService.getAll().subscribe(d=>{
+            console.log(d);
+            this.notes = d;
+        })
     }
 
     inicializar() {

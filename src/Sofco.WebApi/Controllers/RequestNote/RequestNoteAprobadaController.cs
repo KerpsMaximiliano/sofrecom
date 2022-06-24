@@ -41,7 +41,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
             return Ok();
         }
 
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)
         {
             return Ok(this._requestNoteService.GetById(id));

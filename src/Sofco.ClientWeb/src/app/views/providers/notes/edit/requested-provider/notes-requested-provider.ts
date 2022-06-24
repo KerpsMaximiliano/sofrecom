@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, Input, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { Ng2ModalConfig } from 'app/components/modal/ng2modal-config';
@@ -20,6 +20,7 @@ export class NotesRequestedProvider {
         "ACTIONS.cancel"
     );
     rejectComments;
+    @Input() currentNote;
 
     productosServicios = [];
     analiticas = [];

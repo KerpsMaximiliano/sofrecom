@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
 
@@ -9,6 +9,7 @@ import { ProvidersService } from "app/services/admin/providers.service";
 
 export class NotesPendingSupplyApproval implements OnInit{
 
+    @Input() currentNote;
     productosServicios = [];
     analiticas = [];
     providersGrid = [];
