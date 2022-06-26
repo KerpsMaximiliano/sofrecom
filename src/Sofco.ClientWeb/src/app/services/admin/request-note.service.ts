@@ -108,7 +108,7 @@ export class RequestNoteService {
         return this.http.post<any>(`${this.baseUrl}/RequestNoteSolicitadaProveedor/CerrarSolicitadaProveedor`, id);
     }
 
-    downloadFileRequestedProvicer(): Observable<any> {
+    downloadFileRequestedProvider(): Observable<any> {
         return this.http.get<any>(`${this.baseUrl}/RequestNoteSolicitadaProveedor/DescargarArchivo`);
     }
 

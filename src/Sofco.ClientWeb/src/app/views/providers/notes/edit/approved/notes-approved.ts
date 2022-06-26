@@ -1,6 +1,11 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { RequestNoteService } from "app/services/admin/request-note.service";
+import { MessageService } from "app/services/common/message.service";
+import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'notes-approved',
@@ -10,8 +15,16 @@ import { ProvidersService } from "app/services/admin/providers.service";
 export class NotesApproved {
     @Input() currentNote;
     productosServicios = [];
-    analiticas = [];
+    analiticas = [
+        {analytic: "Analítica 1", asigned: 10},
+        {analytic: "Analítica 2", asigned: 30},
+        {analytic: "Analítica 3", asigned: 5}
+    ];
     providersGrid = [];//proveedor seleccionado etapas anteriores
+    fileSelected = false;
+
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({url:""});
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -30,7 +43,11 @@ export class NotesApproved {
     })
 
     constructor(
-        private providerService: ProvidersService
+        private providerService: ProvidersService,
+        private providersAreaService: ProvidersAreaService,
+        private messageService: MessageService,
+        private requestNoteService: RequestNoteService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -38,6 +55,21 @@ export class NotesApproved {
     }
 
     inicializar() {
+        this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
+            console.log(d);
+            this.formNota.patchValue({
+                descripcion: this.currentNote.description,
+                rubro: d.data.description,
+                critico: (d.data.critical) ? "Si" : "No",
+                requierePersonal: this.currentNote.requiresEmployeeClient,
+                previstoPresupuesto: this.currentNote.consideredInBudget,
+                nroEvalprop: this.currentNote.evalpropNumber,
+                observaciones: this.currentNote.comments,
+                montoOC: this.currentNote.purchaseOrderAmmount,
+                ordenCompra: this.currentNote.purchaseOrderNumber
+            });
+            //asignar analíticas
+        })
         this.checkFormStatus()
         this.providerService.getAll().subscribe(d => {
             console.log(d.data)
@@ -52,15 +84,29 @@ export class NotesApproved {
     }
 
     downloadOC() {
-        //descargar archivo orden de compre
-    }
-
-    uploadProviderDoc() {
-        //subir archivos documentacion para proveedor
+        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 0).subscribe(d=>{
+            if(d == null) {
+                this.messageService.showMessage("No hay archivos para descargar", 2);
+            }
+        })
     }
 
     request() {
         //Validar que se haya adjuntado al menos un archivo adjunto para el proveedor y notificar al mismo seleccionado en la nota de pedido. 
         //Se cambia el estado a “Solicitada a Proveedor”.
+        if(this.fileSelected == false) {
+            this.messageService.showMessage("Debe seleccionar la documentación para el proveedor para subir", 2);
+            return;
+        };
+        this.messageService.showMessage("La nota de pedido ha sido solicitada", 0);
+        this.router.navigate(['/providers/notes']);
+    }
+
+    fileCheck(event) {
+        if(event.length >= 1) {
+            this.fileSelected = true;
+        } else {
+            this.fileSelected = false;
+        }
     }
 }

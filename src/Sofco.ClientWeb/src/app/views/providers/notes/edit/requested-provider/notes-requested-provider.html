@@ -8,8 +8,11 @@
                 </button>
             </div>
             <div class="btn-right">
-                <button class="btn btn-success btn-outline dim" (click)="closeM()">
-                    Cerrar<i class="fa fa-arrow-right"></i>
+                <button class="btn btn-danger btn-outline dim" (click)="closeM()">
+                    Cerrar<i class="fa fa-times"></i>
+                </button>
+                <button class="btn btn-success btn-outline dim" (click)="confirm()">
+                    Confirmar Recepción<i class="fa fa-arrow-right"></i>
                 </button>
             </div>
         </div>
@@ -140,9 +143,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label text-left">Documentación Recibido Conforme: </label>
-                        <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
-                            (click)="uploadRC()">Agregar archivos adjuntos  <i class="fa fa-plus"></i>
-                        </button>
+                        <input #selectedFile type="file" ng2FileSelect [uploader]="uploader"/>
                     </div>
                 </form>
             </div>

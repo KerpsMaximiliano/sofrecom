@@ -95,14 +95,18 @@ export class NotesPendingSupplyApproval implements OnInit{
     approve() {
         //se debe validar que haya elegido un proveedor del listado de proveedores.
         //Se cambia el estado de la nota de pedido a “Pendiente Aprobación DAF”
+        let fileError = false;
+        let providerError = false;
         this.markFormGroupTouched(this.formNota);
         if(this.fileSelected == false) {
             this.messageService.showMessage("Debe seleccionar un archivo orden de compra para subir", 2);
+            fileError = true;
         }
         if(this.providerSelected == null) {
             this.messageService.showMessage("Debe seleccionar un proveedor", 2);
+            providerError = true;
         }
-        if(this.formNota.invalid) {
+        if(this.formNota.invalid || providerError || fileError) {
             return;
         }
         this.messageService.showMessage("La nota de pedido ha sido aprobada", 0);

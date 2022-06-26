@@ -134,9 +134,7 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label text-left">Documentación para Proveedor: </label>
-                        <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
-                            (click)="uploadProviderDoc()">Agregar archivos adjuntos  <i class="fa fa-plus"></i>
-                        </button>
+                        <input #selectedFile type="file" ng2FileSelect (onFileSelected)="fileCheck($event)" [uploader]="uploader"/>
                     </div>
                 </form>
             </div>

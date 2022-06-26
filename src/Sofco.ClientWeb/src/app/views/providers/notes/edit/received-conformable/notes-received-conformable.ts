@@ -1,6 +1,11 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { RequestNoteService } from "app/services/admin/request-note.service";
+import { MessageService } from "app/services/common/message.service";
+import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'notes-received-conformable',
@@ -10,8 +15,16 @@ import { ProvidersService } from "app/services/admin/providers.service";
 export class NotesReceivedConformable {
     @Input() currentNote;
     productosServicios = [];
-    analiticas = [];
+    analiticas = [
+        {analytic: "Analítica 1", asigned: 10},
+        {analytic: "Analítica 2", asigned: 30},
+        {analytic: "Analítica 3", asigned: 5}
+    ];
     providersGrid = [];//proveedor seleccionado etapas anteriores
+    fileSelected = false;
+
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({url:""});
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -28,11 +41,16 @@ export class NotesReceivedConformable {
         ordenCompra: new FormControl(null),
         documentacionProveedor: new FormControl(null),
         documentacionRecibidoConforme: new FormControl(null),
-        facturas: new FormControl(null)
+        facturas: new FormControl(null),
+        campoFactura: new FormControl(null)
     })
 
     constructor(
-        private providerService: ProvidersService
+        private providerService: ProvidersService,
+        private providersAreaService: ProvidersAreaService,
+        private messageService: MessageService,
+        private requestNoteService: RequestNoteService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -40,6 +58,21 @@ export class NotesReceivedConformable {
     }
 
     inicializar() {
+        this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
+            console.log(d);
+            this.formNota.patchValue({
+                descripcion: this.currentNote.description,
+                rubro: d.data.description,
+                critico: (d.data.critical) ? "Si" : "No",
+                requierePersonal: this.currentNote.requiresEmployeeClient,
+                previstoPresupuesto: this.currentNote.consideredInBudget,
+                nroEvalprop: this.currentNote.evalpropNumber,
+                observaciones: this.currentNote.comments,
+                montoOC: this.currentNote.purchaseOrderAmmount,
+                ordenCompra: this.currentNote.purchaseOrderNumber
+            });
+            //asignar analíticas
+        })
         this.checkFormStatus()
         this.providerService.getAll().subscribe(d => {
             console.log(d.data)
@@ -54,25 +87,41 @@ export class NotesReceivedConformable {
     }
 
     downloadOC() {
-        //descargar archivo orden de compra
+        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 0).subscribe(d=>{
+            if(d == null) {
+                this.messageService.showMessage("No hay archivos para descargar", 2);
+            }
+        })
     }
 
     downloadProviderDoc() {
         //descargar archivos documentacion para proveedor
         //ver lista
+        this.requestNoteService.downloadFileRequestedProvider().subscribe(d=>{})
     }
 
     downloadRC() {
         //descargar archivos documentacion recibido conforme
         //ver lista
-    }
-
-    uploadBills() {
-        //subir archivos facturas
+        this.requestNoteService.downloadFileReceivedConformable().subscribe(d=>{})
     }
 
     addBill() {
         //Se valida que se hayan adjuntado archivos y se hayan completados los campos en el formulario de la factura. 
         //Se cambia el estado a “Factura Pendiente Aprobación Gerente”
+        if(this.fileSelected == false) {
+            this.messageService.showMessage("Debe seleccionar una factura para subir", 2);
+            return;
+        };
+        this.messageService.showMessage("La factura ha sido adjuntada a la nota de pedido", 0);
+        this.router.navigate(['/providers/notes']);
+    }
+
+    fileCheck(event) {
+        if(event.length >= 1) {
+            this.fileSelected = true;
+        } else {
+            this.fileSelected = false;
+        }
     }
 }

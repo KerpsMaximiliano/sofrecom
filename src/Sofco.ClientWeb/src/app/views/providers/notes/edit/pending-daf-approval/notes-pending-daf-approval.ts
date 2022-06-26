@@ -110,6 +110,7 @@ export class NotesPendingDAFApproval {
         //Si rechaza se guarda la observación asociada y se cambia el estado de la nota de pedido a “Pendiente Aprobación Abastecimiento”.
         if(this.rejectComments == null || this.rejectComments.length == 0) {
             this.messageService.showMessage("Debe dejar una observación si desea rechazar la nota de pedido", 2);
+            this.modal.hide();
             return;
         }
         this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);

@@ -1,6 +1,10 @@
 import { Component, Input } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { RequestNoteService } from "app/services/admin/request-note.service";
+import { MessageService } from "app/services/common/message.service";
 
 @Component({
     selector: 'notes-pending-management-bill-approval',
@@ -10,7 +14,11 @@ import { ProvidersService } from "app/services/admin/providers.service";
 export class NotesPendingManagementBillApproval {
     @Input() currentNote;
     productosServicios = [];
-    analiticas = [];
+    analiticas = [
+        {analytic: "Analítica 1", asigned: 10},
+        {analytic: "Analítica 2", asigned: 30},
+        {analytic: "Analítica 3", asigned: 5}
+    ];
     providersGrid = [];//proveedor seleccionado etapas anteriores
 
     formNota: FormGroup = new FormGroup({
@@ -32,7 +40,11 @@ export class NotesPendingManagementBillApproval {
     })
 
     constructor(
-        private providerService: ProvidersService
+        private providerService: ProvidersService,
+        private providersAreaService: ProvidersAreaService,
+        private messageService: MessageService,
+        private requestNoteService: RequestNoteService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -40,6 +52,21 @@ export class NotesPendingManagementBillApproval {
     }
 
     inicializar() {
+        this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
+            console.log(d);
+            this.formNota.patchValue({
+                descripcion: this.currentNote.description,
+                rubro: d.data.description,
+                critico: (d.data.critical) ? "Si" : "No",
+                requierePersonal: this.currentNote.requiresEmployeeClient,
+                previstoPresupuesto: this.currentNote.consideredInBudget,
+                nroEvalprop: this.currentNote.evalpropNumber,
+                observaciones: this.currentNote.comments,
+                montoOC: this.currentNote.purchaseOrderAmmount,
+                ordenCompra: this.currentNote.purchaseOrderNumber
+            });
+            //asignar analíticas
+        })
         this.checkFormStatus()
         this.providerService.getAll().subscribe(d => {
             console.log(d.data)
@@ -54,24 +81,34 @@ export class NotesPendingManagementBillApproval {
 
     downloadOC() {
         //descargar archivo orden de compra
+        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 0).subscribe(d=>{
+            if(d == null) {
+                this.messageService.showMessage("No hay archivos para descargar", 2);
+            }
+        })
     }
 
     downloadProviderDoc() {
         //descargar archivos documentacion para proveedor
         //ver lista
+        this.requestNoteService.downloadFileRequestedProvider().subscribe(d=>{})
     }
 
     downloadRC() {
         //descargar archivos documentacion recibido conforme
         //ver lista
+        this.requestNoteService.downloadFileReceivedConformable().subscribe(d=>{})
     }
 
     downloadBills() {
         //descargar archivos facturas
+        this.requestNoteService.downloadFilePendingManagementBillApproval().subscribe(d=>{})
     }
 
     approve() {
         //Al aprobar se tomarán las analíticas asociadas al gerente logueado y se pasarán al estado “Aprobada Facturación”. 
         //Se realizará un barrido de todas las analiticas y si todas están en “Aprobada Facturación”, se cambiará el estado de la nota de pedido a “Pendiente Procesar GAF”.
+        this.messageService.showMessage("El estado de sus analíticas asociadas ha sido cambiado", 0);
+        this.router.navigate(['/providers/notes']);
     }
 }
