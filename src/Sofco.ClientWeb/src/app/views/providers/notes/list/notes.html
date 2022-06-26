@@ -86,8 +86,8 @@
         <div class="ibox-content">
             <div class="tabs-container">
                 <ul class="nav nav-pills" role="tablist">
-                    <li class="active"><a class="nav-link" data-toggle="tab" href="#tab-1" (click)="changeTab(1)"> En proceso de aprobación </a></li>
-                    <li><a class="nav-link" data-toggle="tab" href="#tab-2" (click)="changeTab(2)"> Aprobados o Finalizados </a></li>
+                    <li class="active"><a class="nav-link" data-toggle="tab" (click)="changeTab(1)"> En proceso de aprobación </a></li>
+                    <li><a class="nav-link" data-toggle="tab" (click)="changeTab(2)"> Aprobados o Finalizados </a></li>
                 </ul>
             </div>
             <div class="tab-content">
@@ -112,35 +112,6 @@
                                     <td class="column-sm text-center">
                                         <button title="ver" class="btn btn-primary btn-xs" (click)="view(note.id)"><i class="fa fa-eye"></i></button>
                                         <button title="editar" class="btn btn-warning btn-xs" (click)="edit(note.id)"><i class="fa fa-edit"></i></button>
-                                    </td>
-                                </tr> 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div role="tabpanel" id="tab-2" class="tab-pane">
-                    <div class="panel-body table-responsive">
-                        <table class="table table-striped dataTable" role="grid" id="dataTable2">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Estado</th>
-                                    <th>Solicitante</th>
-                                    <th>Fecha Creación</th>
-                                    <th>Analítica</th>
-                                    <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Id</td>
-                                    <td>Estado</td>
-                                    <td>Solicitante</td>
-                                    <td>Fecha Creación</td>
-                                    <td>Analítica</td>
-                                    <td class="column-sm text-center">
-                                        <button title="ver" class="btn btn-primary btn-xs" (click)="view(1)"><i class="fa fa-eye"></i></button>
-                                        <button title="editar" class="btn btn-warning btn-xs" (click)="edit(1)"><i class="fa fa-edit"></i></button>
                                     </td>
                                 </tr> 
                             </tbody>

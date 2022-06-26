@@ -17,8 +17,18 @@ export class NotesComponent implements OnInit{
     applicantId: number;
     states = [
         { id: 0, text: "Todos" },
-        { id: 1, text: "Activo" },
-        { id: 2, text: "Inactivo" },
+        { id: 1, text: "Borrador" },
+        { id: 2, text: "Pendiente Revisión Abastecimiento" },
+        { id: 3, text: "Pendiente Aprobación Gerentes Analítica" },
+        { id: 4, text: "Pendiente Aprobación Abastecimiento" },
+        { id: 5, text: "Pendiente Aprobación DAF" },
+        { id: 6, text: "Aprobada" },
+        { id: 7, text: "Solicitada a Proveedor" },
+        { id: 8, text: "Recibido Conforme" },
+        { id: 9, text: "Factura Pendiente Aprobación Gerente" },
+        { id: 10, text: "Pendiente Procesar GAF" },
+        { id: 11, text: "Rechazada" },
+        { id: 12, text: "Cerrada" },
     ];
     stateId: number;
     providers = [];
@@ -26,6 +36,15 @@ export class NotesComponent implements OnInit{
     dateSince;
     dateTo;
     notes = [];
+    notesInProcess = [];
+    notesEnded = [
+        {
+            id: 1,
+            description: "Descripción",
+            status: null,
+            creationDate: "2022-6-24"
+        }
+    ];
     finalizedNotes = [];
 
     constructor(
@@ -38,14 +57,15 @@ export class NotesComponent implements OnInit{
     ){}
 
     ngOnInit(): void {
-        this.inicializar()
-        this.requestNoteService.getAll().subscribe(d=>{
-            console.log(d);
-            this.notes = d;
-        })
+        this.inicializar();
     }
 
     inicializar() {
+        this.requestNoteService.getAll().subscribe(d=>{
+            console.log(d);
+            this.notes = d;
+            this.notesInProcess = d;
+        });
         this.employeeService.getEveryone().subscribe(d => {
             d.forEach(employee => {
                 if(employee.endDate == null && employee.isExternal == 0) {
@@ -62,8 +82,7 @@ export class NotesComponent implements OnInit{
                 }
             })
         });
-        //busqueda vacía
-        this.initGrid(1);
+        this.initGrid();
         this.collapse();
     }
 
@@ -82,7 +101,16 @@ export class NotesComponent implements OnInit{
                 return;
             }
         }
-        console.log("Búsqueda")
+        var json = {
+            stateId: this.stateId,
+            applicantId: this.applicantId,
+            dateSince: this.dateSince,
+            dateTo: this.dateTo,
+            providerId: this.providerId,
+        };
+        console.log("Búsqueda");
+        console.log(json)
+
     }
 
     refreshSearch() {
@@ -113,18 +141,14 @@ export class NotesComponent implements OnInit{
         }
     }
 
-    initGrid(tab: number) {
-        var columns = [0, 1, 2, 3, 4, 5];
+    initGrid() {
+        var columns = [0, 1, 2, 3, 4];
     
         var params = {
             selector: '#dataTable',
             columns: columns,
             title: 'Notas',
-            withExport: true,
-        }
-
-        if(tab == 2) {
-            params.selector = '#dataTable2'
+            withExport: true
         }
     
         this.dataTableService.destroy(params.selector);
@@ -132,6 +156,12 @@ export class NotesComponent implements OnInit{
     }
 
     changeTab(tab: number) {
-        this.initGrid(tab)
+        if(tab == 2) {
+            this.notes = this.notesEnded;
+        }
+        if(tab == 1) {
+            this.notes = this.notesInProcess;
+        }
+        this.initGrid();
     }
 }
