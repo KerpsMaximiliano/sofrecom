@@ -332,7 +332,35 @@ export class NotesAddComponent implements OnInit{
             analytics.push(push)
         });
         let finalAnalytics = this.analiticasTable;
-        let finalProviders = this.proveedoresTable;
+        //let finalProviders = this.proveedoresTable;
+        let finalProviders = [];
+        this.proveedoresTable.forEach(prov => {
+            let mock = {
+                providerId: prov.id,
+                name: prov.name,
+                providerAreaId: prov.providerAreaId,
+                userApplicantId: prov.userApplicantId,
+                score: prov.score,
+                startDate: prov.startDate,
+                endDate: prov.endDate,
+                active: prov.active,
+                cuit: prov.cuit,
+                ingresosBrutos: prov.ingresosBrutos,
+                condicionIVA: prov.condicionIVA,
+                address: prov.address,
+                city: prov.city,
+                zipCode: prov.zipCode,
+                province: prov.province,
+                contactName: prov.contactName,
+                phone: prov.phone,
+                email: prov.email,
+                webSite: prov.webSite,
+                comments: prov.comments,
+                country: prov.country,
+                fileId: 18
+            };
+            finalProviders.push(mock);
+        })
         let finalTrainingPassengers = this.participantesCapacitacion;
         let finalTravelPassengers = this.participantesViaje;
         let model = {
@@ -364,7 +392,10 @@ export class NotesAddComponent implements OnInit{
                 transportation: this.formViaje.controls.transportation.value,
                 accommodation: this.formViaje.controls.accommodation.value,
                 details: this.formViaje.controls.details.value
-            }
+            },
+            creationUserId: 5,
+            creationUserApplicantId: 3,
+            workflowId: 2,
         };
         
         let model2 = {

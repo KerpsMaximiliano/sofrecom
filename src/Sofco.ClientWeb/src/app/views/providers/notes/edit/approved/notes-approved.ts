@@ -84,7 +84,7 @@ export class NotesApproved {
     }
 
     downloadOC() {
-        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 0).subscribe(d=>{
+        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 1).subscribe(d=>{
             if(d == null) {
                 this.messageService.showMessage("No hay archivos para descargar", 2);
             }

@@ -29,6 +29,7 @@ import { NotesPendingSupplyRevision } from "./notes/edit/pending-supply-revision
 import { NotesReceivedConformable } from "./notes/edit/received-conformable/notes-received-conformable";
 import { NotesRequestedProvider } from "./notes/edit/requested-provider/notes-requested-provider";
 import { NotesComponent } from "./notes/list/notes";
+import { NotesNoAccessComponent } from "./notes/no-access/notes-no-access";
 import { ProvidersRouter } from "./providers.router";
 import { ProvidersAddComponent } from "./providers/add/providers-add";
 import { ProvidersEditComponent } from "./providers/edit/providers-edit";
@@ -51,7 +52,8 @@ import { ProvidersComponent } from "./providers/list/providers";
         NotesRequestedProvider,
         NotesReceivedConformable,
         NotesPendingManagementBillApproval,
-        NotesPendingGAFProcessing
+        NotesPendingGAFProcessing,
+        NotesNoAccessComponent
     ],
     imports: [
         CommonModule,
