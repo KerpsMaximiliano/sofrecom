@@ -13,6 +13,7 @@ import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
 import { Select2Module } from "app/components/select2/select2";
 import { SpinnerModule } from "app/components/spinner/spinner.module";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
+import { SalaryAdvancementService } from "app/services/advancement-and-refund/salary-advancement";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { FileUploadModule } from "ng2-file-upload";
@@ -81,7 +82,8 @@ import { ProvidersComponent } from "./providers/list/providers";
     providers: [
         EmployeeService,
         AnalyticService,
-        RefundService
+        RefundService,
+        SalaryAdvancementService
     ],
     exports: []
 })

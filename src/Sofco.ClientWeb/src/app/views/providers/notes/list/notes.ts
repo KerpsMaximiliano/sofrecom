@@ -87,10 +87,12 @@ export class NotesComponent implements OnInit{
     }
 
     view(id: number) {
+        this.requestNoteService.setMode("View");
         this.router.navigate([`providers/notes/edit/${id}`]);
     }
 
     edit(id: number) {
+        this.requestNoteService.setMode("Edit");
         this.router.navigate([`providers/notes/edit/${id}`]);
     }
 

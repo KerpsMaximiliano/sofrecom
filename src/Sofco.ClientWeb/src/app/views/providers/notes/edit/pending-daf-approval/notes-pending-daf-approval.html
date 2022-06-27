@@ -7,7 +7,7 @@
                     <i class="fa fa-arrow-left"></i>Volver
                 </button>
             </div>
-            <div class="btn-right">
+            <div class="btn-right" *ngIf="mode == 'Edit'">
                 <button class="btn btn-danger btn-outline dim" (click)="rejectM()">
                     Rechazar<i class="fa fa-times"></i>
                 </button>

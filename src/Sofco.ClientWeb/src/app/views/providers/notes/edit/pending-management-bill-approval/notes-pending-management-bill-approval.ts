@@ -13,6 +13,7 @@ import { MessageService } from "app/services/common/message.service";
 
 export class NotesPendingManagementBillApproval {
     @Input() currentNote;
+    mode;
     productosServicios = [];
     analiticas = [
         {analytic: "Analítica 1", asigned: 10},
@@ -52,6 +53,7 @@ export class NotesPendingManagementBillApproval {
     }
 
     inicializar() {
+        this.mode = this.requestNoteService.getMode();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             console.log(d);
             this.formNota.patchValue({

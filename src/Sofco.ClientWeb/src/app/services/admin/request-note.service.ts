@@ -10,11 +10,20 @@ import { Service } from "../common/service";
 export class RequestNoteService {
 
     private baseUrl: string;
+    private mode = "View";
 
     constructor(
         private http: HttpClient,
         private service: Service) {
         this.baseUrl = this.service.UrlApi;
+    }
+
+    setMode(mode: string) {
+        this.mode = mode;
+    }
+
+    getMode() {
+        return this.mode;
     }
 
     public getById(id: number): Observable<any> {

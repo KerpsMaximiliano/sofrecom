@@ -13,6 +13,7 @@ import { MessageService } from "app/services/common/message.service";
 
 export class NotesPendingGAFProcessing {
     @Input() currentNote;
+    mode;
     productosServicios = [];
     analiticas = [];
     providersGrid = [];//proveedor seleccionado etapas anteriores
@@ -48,6 +49,7 @@ export class NotesPendingGAFProcessing {
     }
 
     inicializar() {
+        this.mode = this.requestNoteService.getMode();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             console.log(d);
             this.formNota.patchValue({

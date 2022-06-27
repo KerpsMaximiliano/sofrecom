@@ -15,6 +15,7 @@ import { FileUploader } from "ng2-file-upload";
 export class NotesPendingSupplyRevision implements OnInit {
 
     @Input() currentNote;
+    mode;
     show = false;
     productosServicios = [];
     analiticas = [
@@ -56,6 +57,7 @@ export class NotesPendingSupplyRevision implements OnInit {
     }
 
     inicializar() {
+        this.mode = this.requestNoteService.getMode();
         console.log(this.currentNote)
         let providerArea;
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
@@ -87,9 +89,11 @@ export class NotesPendingSupplyRevision implements OnInit {
 
     checkFormStatus() {
         this.formNota.disable();
-        this.formNota.controls.proveedores.enable();
-        this.formNota.controls.observaciones.enable();
-        this.formNota.controls.montoOC.enable();
+        if (this.mode == "Edit") {
+            this.formNota.controls.proveedores.enable();
+            this.formNota.controls.observaciones.enable();
+            this.formNota.controls.montoOC.enable();
+        }
     }
 
     agregarProveedor() {

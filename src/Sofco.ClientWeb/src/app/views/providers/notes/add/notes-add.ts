@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
@@ -6,10 +6,15 @@ import { RequestNoteService } from "app/services/admin/request-note.service";
 import { SettingsService } from "app/services/admin/settings.service";
 import { UserService } from "app/services/admin/user.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
+import { SalaryAdvancementService } from "app/services/advancement-and-refund/salary-advancement";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { AuthService } from "app/services/common/auth.service";
+import { MessageService } from "app/services/common/message.service";
 import { UserInfoService } from "app/services/common/user-info.service";
+import { FileUploader } from "ng2-file-upload";
 import { forkJoin } from "rxjs";
+import { Cookie } from "ng2-cookies/ng2-cookies";
 
 @Component({
     selector: 'notes-add',
@@ -18,6 +23,9 @@ import { forkJoin } from "rxjs";
 })
 
 export class NotesAddComponent implements OnInit{
+
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({url:""});
 
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
@@ -120,7 +128,10 @@ export class NotesAddComponent implements OnInit{
         private analyticService: AnalyticService,
         private userService: UserService,
         private refundService: RefundService,
-        private requestNoteService: RequestNoteService
+        private requestNoteService: RequestNoteService,
+        private messageService: MessageService,
+        private authService: AuthService,
+        private salaryAdvancementService: SalaryAdvancementService
     ) {}
 
     ngOnInit(): void {
@@ -457,6 +468,49 @@ export class NotesAddComponent implements OnInit{
         //pasar de estado
         //this.requestNoteService.approveDraft(id)
         //this.requestNoteService.approveDraft(40).subscribe(d=>console.log(d));
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
+    }
+
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.salaryAdvancementService.getUrlForImportFile(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+            maxFileSize: 50*1024*1024,
+            allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+          });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+
+                return;
+            }
+
+            var dataJson = JSON.parse(response);
+
+
+            if(dataJson.messages){
+                this.messageService.showMessages(dataJson.messages);
+            }
+
+            this.clearSelectedFile();
+        };
+
+        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     }
 
 }

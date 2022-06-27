@@ -25,6 +25,7 @@ export class NotesPendingDAFApproval {
     );
     @Input() currentNote;
     rejectComments = null;
+    mode;
 
     productosServicios = [];
     analiticas = [
@@ -62,6 +63,7 @@ export class NotesPendingDAFApproval {
     }
 
     inicializar() {
+        this.mode = this.requestNoteService.getMode();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             console.log(d);
             this.formNota.patchValue({
@@ -87,7 +89,9 @@ export class NotesPendingDAFApproval {
 
     checkFormStatus() {
         this.formNota.disable();
-        this.formNota.controls.observaciones.enable();
+        if(this.mode == "Edit") {
+            this.formNota.controls.observaciones.enable();
+        }
     }
 
     downloadOC() {

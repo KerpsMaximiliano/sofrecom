@@ -7,7 +7,7 @@
                     <i class="fa fa-arrow-left"></i>Volver
                 </button>
             </div>
-            <div class="btn-right">
+            <div class="btn-right" *ngIf="mode == 'Edit'">
                 <button class="btn btn-success btn-outline dim" (click)="close()">
                     Cerrar<i class="fa fa-arrow-right"></i>
                 </button>

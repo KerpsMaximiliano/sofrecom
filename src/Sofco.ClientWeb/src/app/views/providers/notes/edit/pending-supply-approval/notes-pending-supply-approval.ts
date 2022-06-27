@@ -22,6 +22,7 @@ export class NotesPendingSupplyApproval implements OnInit{
         {analytic: "Analítica 3", asigned: 5}
     ];
     providersGrid = [];
+    mode;
     show = false;
     fileSelected = false;
     providerSelected = null;
@@ -57,6 +58,7 @@ export class NotesPendingSupplyApproval implements OnInit{
     }
 
     inicializar() {
+        this.mode = this.requestNoteService.getMode()
         this.checkFormStatus()
         this.providerService.getAll().subscribe(d => {
             console.log(d.data)
@@ -81,9 +83,11 @@ export class NotesPendingSupplyApproval implements OnInit{
 
     checkFormStatus() {
         this.formNota.disable();
-        this.formNota.controls.proveedores.enable();
-        this.formNota.controls.observaciones.enable();
-        this.formNota.controls.ordenCompra.enable()
+        if(this.mode == 'Edit') {
+            this.formNota.controls.proveedores.enable();
+            this.formNota.controls.observaciones.enable();
+            this.formNota.controls.ordenCompra.enable();
+        }
     }
 
     reject() {

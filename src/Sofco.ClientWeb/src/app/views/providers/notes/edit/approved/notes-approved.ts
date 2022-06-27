@@ -14,6 +14,7 @@ import { FileUploader } from "ng2-file-upload";
 
 export class NotesApproved {
     @Input() currentNote;
+    mode;
     productosServicios = [];
     analiticas = [
         {analytic: "Analítica 1", asigned: 10},
@@ -55,6 +56,7 @@ export class NotesApproved {
     }
 
     inicializar() {
+        this.mode = this.requestNoteService.getMode();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             console.log(d);
             this.formNota.patchValue({
@@ -80,7 +82,9 @@ export class NotesApproved {
 
     checkFormStatus() {
         this.formNota.disable();
-        this.formNota.controls.documentacionProveedor.enable();
+        if(this.mode == "Edit") {
+            this.formNota.controls.documentacionProveedor.enable();
+        }
     }
 
     downloadOC() {

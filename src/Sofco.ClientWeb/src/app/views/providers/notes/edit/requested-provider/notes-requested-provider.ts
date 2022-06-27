@@ -30,6 +30,7 @@ export class NotesRequestedProvider {
     
     rejectComments;
     @Input() currentNote;
+    mode;
 
     productosServicios = [];
     analiticas = [
@@ -69,6 +70,7 @@ export class NotesRequestedProvider {
     }
 
     inicializar() {
+        this.mode = this.requestNoteService.getMode();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             console.log(d);
             this.formNota.patchValue({
@@ -94,7 +96,9 @@ export class NotesRequestedProvider {
 
     checkFormStatus() {
         this.formNota.disable();
-        this.formNota.controls.documentacionRecibidoConforme.enable();
+        if(this.mode == 'Edit') {
+            this.formNota.controls.documentacionRecibidoConforme.enable();
+        }
     }
 
     downloadOC() {

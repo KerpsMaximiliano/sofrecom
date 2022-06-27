@@ -7,7 +7,7 @@
                     <i class="fa fa-arrow-left"></i>Volver
                 </button>
             </div>
-            <div class="btn-right">
+            <div class="btn-right" *ngIf="mode == 'Edit'">
                 <button class="btn btn-danger btn-outline dim" (click)="reject()">
                     Rechazar<i class="fa fa-times"></i>
                 </button>
@@ -90,7 +90,7 @@
                             <ng-select [items]="providers" bindLabel="name" bindValue="id"
                                 formControlName="proveedores"></ng-select>
                         </div>
-                        <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                        <button *ngIf="mode == 'Edit'" type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
                             (click)="agregarProveedor()">Agregar<i class="fa fa-plus"></i>
                         </button>
                     </div>
@@ -110,7 +110,7 @@
                                         <td>{{ item.name }} </td>
                                         <td><input #selectedFile type="file" ng2FileSelect [uploader]="uploader" /></td>
                                         <td class="column-sm text-center">
-                                            <button title="eliminar" (click)="eliminarProveedor(i)"
+                                            <button title="eliminar" *ngIf="mode == 'Edit'" (click)="eliminarProveedor(i)"
                                                 class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>

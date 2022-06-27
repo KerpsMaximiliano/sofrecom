@@ -14,6 +14,7 @@ import { MessageService } from "app/services/common/message.service";
 export class NotesPendingApprovalManagementAnalytic implements OnInit{
 
     @Input() currentNote;
+    mode;
     show = false;
     productosServicios = [];
     analiticas = [
@@ -48,6 +49,7 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
     }
 
     inicializar() {
+        this.mode = this.requestNoteService.getMode();
         console.log(this.currentNote)
         let providerArea;
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
@@ -71,7 +73,9 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
 
     checkFormStatus() {
         this.formNota.disable();
-        this.formNota.controls.observaciones.enable();
+        if(this.mode == "Edit") {
+            this.formNota.controls.observaciones.enable();
+        }
     }
 
     approve() {
