@@ -27,7 +27,7 @@ export class RequestNoteService {
 
     //New Request Note
     public approveDraft(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteBorrador/AprobarRequestNote`, id);
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteBorrador/AprobarBorrador?id=${id}`, null);
     };
 
     public saveDraft(requestNote: any): Observable<any> {

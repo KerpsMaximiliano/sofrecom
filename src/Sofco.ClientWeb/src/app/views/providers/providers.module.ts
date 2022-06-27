@@ -19,6 +19,7 @@ import { FileUploadModule } from "ng2-file-upload";
 import { BsDatepickerModule, ButtonsModule, ModalModule } from "ngx-bootstrap";
 import { NotesAddComponent } from "./notes/add/notes-add";
 import { NotesApproved } from "./notes/edit/approved/notes-approved";
+import { NotesDraftComponent } from "./notes/edit/draft/notes-draft";
 import { NotesEditComponent } from "./notes/edit/notes-edit";
 import { NotesPendingApprovalManagementAnalytic } from "./notes/edit/pending-approval-management-analytic/notes-pending-approval-management-analytic";
 import { NotesPendingDAFApproval } from "./notes/edit/pending-daf-approval/notes-pending-daf-approval";
@@ -44,6 +45,7 @@ import { ProvidersComponent } from "./providers/list/providers";
         NotesComponent,
         NotesAddComponent,
         NotesEditComponent,
+        NotesDraftComponent,
         NotesPendingSupplyRevision,
         NotesPendingApprovalManagementAnalytic,
         NotesPendingSupplyApproval,

@@ -57,7 +57,7 @@ namespace Sofco.Service.Implementations.RequestNote
         public void GuardarBorrador(Domain.Models.RequestNote.RequestNote requestNoteBorrador)
         {
             requestNoteBorrador.StatusId = (int)RequestNoteStates.Borrador;
-            
+            requestNoteBorrador.CreationDate = DateTime.Now;
 
             this.unitOfWork.RequestNoteRepository.InsertRequestNote(requestNoteBorrador);
             this.unitOfWork.RequestNoteRepository.Save();

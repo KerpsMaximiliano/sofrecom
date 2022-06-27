@@ -15,23 +15,25 @@
 <button (click)="setEstado()">Mock estado</button>
 
 <div *ngIf="showEdit">
-    <notes-pending-supply-revision [currentNote]="currentNote" *ngIf="estadoSeleccionado == 1"></notes-pending-supply-revision>
+    <notes-draft [currentNote]="currentNote" *ngIf="estadoSeleccionado == 1"></notes-draft>
 
-    <notes-pending-approval-management-analytic [currentNote]="currentNote" *ngIf="estadoSeleccionado == 2"></notes-pending-approval-management-analytic>
+    <notes-pending-supply-revision [currentNote]="currentNote" *ngIf="estadoSeleccionado == 2"></notes-pending-supply-revision>
+
+    <notes-pending-approval-management-analytic [currentNote]="currentNote" *ngIf="estadoSeleccionado == 3"></notes-pending-approval-management-analytic>
     
-    <notes-pending-supply-approval [currentNote]="currentNote" *ngIf="estadoSeleccionado == 3"></notes-pending-supply-approval>
+    <notes-pending-supply-approval [currentNote]="currentNote" *ngIf="estadoSeleccionado == 4"></notes-pending-supply-approval>
     
-    <notes-pending-daf-approval [currentNote]="currentNote" *ngIf="estadoSeleccionado == 4"></notes-pending-daf-approval>
+    <notes-pending-daf-approval [currentNote]="currentNote" *ngIf="estadoSeleccionado == 5"></notes-pending-daf-approval>
     
-    <notes-approved [currentNote]="currentNote" *ngIf="estadoSeleccionado == 5"></notes-approved>
+    <notes-approved [currentNote]="currentNote" *ngIf="estadoSeleccionado == 6"></notes-approved>
     
-    <notes-requested-provider [currentNote]="currentNote" *ngIf="estadoSeleccionado == 6"></notes-requested-provider>
+    <notes-requested-provider [currentNote]="currentNote" *ngIf="estadoSeleccionado == 7"></notes-requested-provider>
     
-    <notes-received-conformable [currentNote]="currentNote" *ngIf="estadoSeleccionado == 7"></notes-received-conformable>
+    <notes-received-conformable [currentNote]="currentNote" *ngIf="estadoSeleccionado == 8"></notes-received-conformable>
     
-    <notes-pending-management-bill-approval [currentNote]="currentNote" *ngIf="estadoSeleccionado == 8"></notes-pending-management-bill-approval>
+    <notes-pending-management-bill-approval [currentNote]="currentNote" *ngIf="estadoSeleccionado == 9"></notes-pending-management-bill-approval>
     
-    <notes-pending-gaf-processing [currentNote]="currentNote" *ngIf="estadoSeleccionado == 9"></notes-pending-gaf-processing>
+    <notes-pending-gaf-processing [currentNote]="currentNote" *ngIf="estadoSeleccionado == 10"></notes-pending-gaf-processing>
 </div>
 
 <div class="ibox" *ngIf="histories.length > 0 && false">

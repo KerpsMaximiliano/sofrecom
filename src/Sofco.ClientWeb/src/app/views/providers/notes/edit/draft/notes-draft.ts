@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
@@ -12,12 +12,13 @@ import { UserInfoService } from "app/services/common/user-info.service";
 import { forkJoin } from "rxjs";
 
 @Component({
-    selector: 'notes-add',
-    templateUrl: './notes-add.html',
-    styleUrls: ['./notes-add.scss']
+    selector: 'notes-draft',
+    templateUrl: './notes-draft.html',
+    styleUrls: ['./notes-draft.scss']
 })
 
-export class NotesAddComponent implements OnInit{
+export class NotesDraftComponent implements OnInit{
+    @Input() currentNote;
 
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
@@ -142,6 +143,7 @@ export class NotesAddComponent implements OnInit{
                 }
             });
         });
+        this.existingData();
         this.employeeService.getEveryone().subscribe(d => {
             //console.log(d);
             this.participants = d;
@@ -181,6 +183,23 @@ export class NotesAddComponent implements OnInit{
         this.providersService.getAll().subscribe(d => {
             this.allProviders = d.data;
         })
+    }
+
+    existingData() {
+        console.log(this.currentNote)
+        this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
+            this.formNota.patchValue({
+                description: this.currentNote.description,
+                providerArea: this.currentNote.providerAreaId,
+                requiresPersonel: this.currentNote.requiresEmployeeClient,
+                evaluationProposal: this.currentNote.consideredInBudget,
+                numberEvalprop: this.currentNote.evalpropNumber,
+                observations: this.currentNote.comments,
+                travel: this.currentNote.travelSection,
+                training: this.currentNote.trainingSection
+            });
+            this.critical = (d.data.critical) ? "Si" : "No";
+        });
     }
 
     change(event) {
@@ -456,7 +475,6 @@ export class NotesAddComponent implements OnInit{
         //guardar como borrador
         //pasar de estado
         //this.requestNoteService.approveDraft(id)
-        //this.requestNoteService.approveDraft(40).subscribe(d=>console.log(d));
+        this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
     }
-
 }

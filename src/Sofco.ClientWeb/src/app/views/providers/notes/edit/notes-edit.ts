@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -25,7 +25,7 @@ import { RequestNoteService } from "app/services/admin/request-note.service";
 export class NotesEditComponent implements OnInit{
 
     estado: number;
-    estadoSeleccionado: number = 1;
+    estadoSeleccionado: number;
     historyComments: string;
     histories = [
         {
@@ -88,8 +88,10 @@ export class NotesEditComponent implements OnInit{
             console.log(d);
             this.currentNote = d;
             this.estado = this.currentNote.statusId;
+            this.estadoSeleccionado = this.estado;
             this.showEdit = true;
-        })
+        });
+        
     }
 
     setEstado() {
