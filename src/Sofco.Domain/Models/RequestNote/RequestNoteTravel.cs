@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 
 namespace Sofco.Domain.Models.RequestNote
 {
@@ -13,6 +13,9 @@ namespace Sofco.Domain.Models.RequestNote
         public string Conveyance { get; set; }
         public string Accommodation { get; set; }
         public string ItineraryDetail { get; set; }
+
+
+        public IList<RequestNoteTravelEmployee> Employees { get; set; }
     }
 }
 

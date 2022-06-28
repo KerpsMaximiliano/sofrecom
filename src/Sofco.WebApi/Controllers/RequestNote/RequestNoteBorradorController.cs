@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Sofco.Core.Models.RequestNote;
 using Sofco.Core.Services.RequestNote;
 using Sofco.Domain.DTO;
 using Sofco.Domain.DTO.NotaPedido;
@@ -11,7 +12,7 @@ using Sofco.WebApi.Extensions;
 namespace Sofco.WebApi.Controllers.RequestNote
 {
     [Route("api/RequestNoteBorrador")]
-    public class RequestNoteBorradorController : ControllerBase
+    public class RequestNoteBorradorController : Controller
     {
         private readonly IRequestNoteService _requestNoteService;
 
@@ -21,11 +22,11 @@ namespace Sofco.WebApi.Controllers.RequestNote
         }
 
         [HttpPost("GuardarBorrador")]
-        public IActionResult GuardarBorrador([FromBody] Domain.Models.RequestNote.RequestNote requestNote)
+        public IActionResult GuardarBorrador([FromBody] RequestNoteModel requestNote)
         {
-            this._requestNoteService.GuardarBorrador(requestNote);
+            var response = this._requestNoteService.GuardarBorrador(requestNote);
 
-            return Ok();
+            return this.CreateResponse(response);
         }
 
         [HttpPost("AprobarBorrador")]

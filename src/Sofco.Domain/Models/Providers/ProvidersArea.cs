@@ -13,5 +13,7 @@ namespace Sofco.Domain.Models.Providers
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
+        public IList<RequestNote.RequestNote> RequestNotes { get; set; }
+
     }
 }

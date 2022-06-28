@@ -16,17 +16,17 @@ namespace Sofco.DAL.Repositories.RequestNote
 
         public Domain.Models.RequestNote.RequestNoteAnalytic GetById(int id)
         {
-            return this.context.RequestNoteAnalytics.Where(x => x.AnalyticId == id).ToList().FirstOrDefault();
+            return this.context.RequestNoteAnalytic.Where(x => x.AnalyticId == id).ToList().FirstOrDefault();
         }
 
         public void UpdateAnalityc(Domain.Models.RequestNote.RequestNoteAnalytic requestNoteAnalityc)
         {
-            this.context.RequestNoteAnalytics.Update(requestNoteAnalityc);
+            this.context.RequestNoteAnalytic.Update(requestNoteAnalityc);
         }
 
         public void InsertAnalityc(Domain.Models.RequestNote.RequestNoteAnalytic requestNoteAnalityc)
         {
-            this.context.RequestNoteAnalytics.Add(requestNoteAnalityc);
+            this.context.RequestNoteAnalytic.Add(requestNoteAnalityc);
         }
 
         public void Save()
@@ -36,7 +36,7 @@ namespace Sofco.DAL.Repositories.RequestNote
 
         public List<RequestNoteAnalytic> GetByRequestNoteId(int requestNoteId)
         {
-            return this.context.RequestNoteAnalytics.Where(x => x.RequestNoteId == requestNoteId).ToList();
+            return this.context.RequestNoteAnalytic.Where(x => x.RequestNoteId == requestNoteId).ToList();
         }
     }
 }

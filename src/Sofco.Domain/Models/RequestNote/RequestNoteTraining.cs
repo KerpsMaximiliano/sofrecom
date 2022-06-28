@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 
 namespace Sofco.Domain.Models.RequestNote
 {
@@ -13,6 +13,8 @@ namespace Sofco.Domain.Models.RequestNote
         public string Place { get; set; }
         public string Duration { get; set; }
         public decimal Ammount { get; set; }
+
+        public IList<RequestNoteTrainingEmployee> Employees { get; set; }
     }
 
 }

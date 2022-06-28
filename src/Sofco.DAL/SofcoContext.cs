@@ -25,6 +25,7 @@ using Sofco.DAL.Mappings.Recruitment;
 using Sofco.Domain.Models.Recruitment;
 using Sofco.Domain.Models.Providers;
 using Sofco.Domain.Models.RequestNote;
+using Sofco.DAL.Mappings.RequestNote;
 
 namespace Sofco.DAL
 {
@@ -192,14 +193,22 @@ namespace Sofco.DAL
 
         //request 
         public DbSet<RequestNote> RequestNote { get; set; }
-        public DbSet<RequestNoteAnalytic> RequestNoteAnalytics { get; set; }
+        public DbSet<RequestNoteAnalytic> RequestNoteAnalytic { get; set; }
         public DbSet<RequestNoteProvider> RequestNoteProvider { get; set; }
-
+        public DbSet<RequestNoteFile> RequestNoteFiles { get; set; }
+        public DbSet<RequestNoteHistory> RequestNoteHistories { get; set; }
+        public DbSet<RequestNoteProductService> RequestNoteProductService { get; set; }
+        public DbSet<RequestNoteTraining> RequestNoteTraining { get; set; }
+        public DbSet<RequestNoteTrainingEmployee> RequestNoteTrainingEmployee { get; set; }
+        public DbSet<RequestNoteTravel> RequestNoteTravel { get; set; }
+        public DbSet<RequestNoteTravelEmployee> RequestNoteTravelEmployee { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<RequestNoteFile>().HasKey(ba => new { ba.FileId, ba.RequestNoteId });
+            builder.Entity<RequestNoteTrainingEmployee>().HasKey(x => new { x.EmployeeId, x.RequestNoteTainingId });
+            builder.Entity<RequestNoteTravelEmployee>().HasKey(x => new { x.EmployeeId, x.RequestNoteTravelId });
 
             builder.HasDefaultSchema(AppSchemaName);
 
@@ -266,6 +275,7 @@ namespace Sofco.DAL
             builder.MapJobSearch();
             builder.MapApplicant();
             builder.MapJobSearchApplicant();
+            builder.MapRequestNote();
         }
     }
 }
