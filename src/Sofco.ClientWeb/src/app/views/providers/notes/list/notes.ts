@@ -63,8 +63,12 @@ export class NotesComponent implements OnInit{
     inicializar() {
         this.requestNoteService.getAll().subscribe(d=>{
             console.log(d);
-            this.notes = d;
-            this.notesInProcess = d;
+            d.forEach(note => {
+                note.status = this.states[note.statusId].text;
+                this.notes.push(note);
+                this.notes = [...this.notes]
+            })
+            this.notesInProcess = this.notes;
         });
         this.employeeService.getEveryone().subscribe(d => {
             d.forEach(employee => {

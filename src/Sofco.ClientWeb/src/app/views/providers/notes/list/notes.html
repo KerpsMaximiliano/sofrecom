@@ -107,7 +107,7 @@
                                 <tr *ngFor="let note of notes">
                                     <td>{{note.id}}</td>
                                     <td>{{note.description}}</td>
-                                    <td>{{note.status}}</td>
+                                    <td><span class="label">{{note.status}}</span></td>
                                     <td>{{note.creationDate}}</td>
                                     <td class="column-sm text-center">
                                         <button title="ver" class="btn btn-primary btn-xs" (click)="view(note.id)"><i class="fa fa-eye"></i></button>
