@@ -1,14 +1,93 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Sofco.Core.Models.RequestNote
 {
+    
     public class RequestNoteModel
     {
+        public RequestNoteModel(Domain.Models.RequestNote.RequestNote note)
+        {
+            Id = note.Id;
+            Description = note.Description;
+            ProviderAreaId = note.ProviderAreaId;
+            RequiresEmployeeClient = note.RequiresEmployeeClient;
+            ConsideredInBudget = note.ConsideredInBudget;
+            EvalpropNumber = note.EvalpropNumber;
+            Comments = note.Comments;
+            TravelSection = note.TravelSection;
+            TrainingSection = note.TrainingSection;
+            CreationUserId = note.CreationUserId;
+            UserApplicantId = note.UserApplicantId;
+            WorkflowId = note.WorkflowId;
+            ProviderAreaDescription = note.ProviderArea?.Description;
+            CreationUserDescription = note.CreationUser?.UserName;
+            UserApplicantDescription = note.UserApplicant?.UserName;
+            WorkflowDescription = note.Workflow?.Description;
+            ProductsServices = new List<ProductsService>();
+            Analytics = new List<Analytic>();
+            Providers = new List<Provider>();
+            if (note.Providers != null)
+                Providers = note.Providers.Select(p => new Provider()
+                {
+                    FileId = p.FileId,
+                    FileDescription = p.File?.FileName,
+                    ProviderId = p.ProviderId,
+                    ProviderDescription = p.Provider?.Name
+                }).ToList();
+            if (note.ProductsServices != null)
+                ProductsServices = note.ProductsServices.Select(p => new ProductsService()
+                {
+                    ProductService = p.ProductService,
+                    Quantity = p.Quantity
+                }).ToList();
+            if(note.Analytics != null)
+                Analytics = note.Analytics.Select(p=> new Analytic()
+                {
+                    AnalyticId = p.AnalyticId,
+                    Asigned = p.Percentage,
+                    Description = p.Analytic?.Name,
+                    Status = p.Status
+                }).ToList();
+            if (note.Trainings != null && note.Trainings.Any())
+                Training = note.Trainings.Select(t => new Training()
+                {
+                    Ammount = t.Ammount,
+                    Date = t.TrainingDate,
+                    Duration = t.Duration,
+                    Location = t.Place,
+                    Name = t.Topic,
+                    Subject = t.Subject,
+                    Participants = t.Employees.Select(e=> new Employee()
+                    {
+                        EmployeeId = e.EmployeeId,
+                        Name = e.Employee?.Name
+                    }).ToList()
+                }).FirstOrDefault();
+            if (note.Travels != null && note.Travels.Any())
+                Travel = note.Travels.Select(t => new Travel()
+                {
+                    Accommodation = t.Accommodation,
+                    DepartureDate = t.DepartureDate,
+                    ReturnDate = t.ReturnDate,
+                    Destination = t.Destination,
+                    Details = t.ItineraryDetail,
+                    Transportation = t.Conveyance,
+                    Passengers = t.Employees.Select(e => new Employee()
+                    {
+                        EmployeeId = e.EmployeeId,
+                        Name = e.Employee?.Name
+                    }).ToList()
+                }).FirstOrDefault();
+        }
+        public int? Id { get; set; }
         public string Description { get; set; }
         public List<ProductsService> ProductsServices { get; set; }
         public int ProviderAreaId { get; set; }
+
+        public string ProviderAreaDescription { get; set; }
         public List<Analytic> Analytics { get; set; }
         public bool RequiresEmployeeClient { get; set; }
         public List<Provider> Providers { get; set; }
@@ -20,14 +99,21 @@ namespace Sofco.Core.Models.RequestNote
         public Training Training { get; set; }
         public Travel Travel { get; set; }
         public int CreationUserId { get; set; }
+        public string CreationUserDescription { get; set; }
         public int UserApplicantId { get; set; }
+
+        public string UserApplicantDescription { get; set; }
         public int WorkflowId { get; set; }
+        public string WorkflowDescription { get; set; }
     }
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class Analytic
     {
         public int AnalyticId { get; set; }
+
+        public string Description { get; set; }
         public int Asigned { get; set; }
+
+        public string Status { get; set; }
     }
 
     public class Employee
@@ -45,7 +131,9 @@ namespace Sofco.Core.Models.RequestNote
     public class Provider
     {
         public int ProviderId { get; set; }
+        public string ProviderDescription { get; set; }
         public int? FileId { get; set; }
+        public string FileDescription { get; set; }
     }
 
     public class Training
@@ -55,7 +143,7 @@ namespace Sofco.Core.Models.RequestNote
         public string Location { get; set; }
         public DateTime Date { get; set; }
         public string Duration { get; set; }
-        public int Ammount { get; set; }
+        public decimal Ammount { get; set; }
         public List<Employee> Participants { get; set; }
     }
 

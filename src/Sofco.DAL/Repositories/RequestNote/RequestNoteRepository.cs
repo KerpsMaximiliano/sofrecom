@@ -21,7 +21,26 @@ namespace Sofco.DAL.Repositories.RequestNote
 
         public Domain.Models.RequestNote.RequestNote GetById(int id)
         {
-            return this.context.RequestNote.Where(x => x.Id == id).ToList().FirstOrDefault();
+            return this.context.RequestNote.Where(x => x.Id == id)
+                .Include(x=> x.ProviderArea)
+                .Include(x => x.ProductsServices)
+                .Include(x => x.Providers)
+                    .ThenInclude(p => p.File)
+                .Include(x => x.Providers)
+                    .ThenInclude(p => p.Provider)
+                .Include(x => x.Analytics)
+                    .ThenInclude(p => p.Analytic)
+                .Include(x => x.Trainings)
+                    .ThenInclude(e => e.Employees)
+                        .ThenInclude(n => n.Employee)
+                .Include(x => x.Travels)
+                    .ThenInclude(e => e.Employees)
+                        .ThenInclude(n => n.Employee)
+                .Include(x => x.Workflow)
+                .Include(x => x.Status)
+                .Include(x => x.CreationUser)
+                .Include(x => x.UserApplicant)
+                .FirstOrDefault();
         }
 
         public IList<Domain.Models.RequestNote.RequestNote> GetAll()

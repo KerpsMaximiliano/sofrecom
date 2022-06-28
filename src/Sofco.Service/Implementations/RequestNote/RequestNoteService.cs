@@ -156,9 +156,19 @@ namespace Sofco.Service.Implementations.RequestNote
             response.AddSuccess(Resources.Recruitment.Applicant.AddSuccess);
             return response;
         }
-        public Domain.Models.RequestNote.RequestNote GetById(int id)
+        public Response<RequestNoteModel> GetById(int id)
         {
-            return this.unitOfWork.RequestNoteRepository.GetById(id);
+            var response = new Response<RequestNoteModel>();
+
+            var note =  this.unitOfWork.RequestNoteRepository.GetById(id);
+            if (note == null)
+            {
+                response.AddError(Resources.AdvancementAndRefund.Refund.NotFound);
+                return response;
+            }
+            response.Data = new RequestNoteModel(note);
+
+            return response;
         }
 
         public IList<Domain.Models.RequestNote.RequestNote> GetAll()
