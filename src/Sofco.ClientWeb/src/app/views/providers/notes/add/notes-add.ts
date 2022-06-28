@@ -304,6 +304,8 @@ export class NotesAddComponent implements OnInit{
     }
 
     saveNote() {
+        
+        
         console.log(this.formNota.value);
         console.log(this.formViaje.value);
         console.log(this.formCapacitacion.value);
@@ -343,11 +345,11 @@ export class NotesAddComponent implements OnInit{
             analytics.push(push)
         });
         let finalAnalytics = this.analiticasTable;
-        //let finalProviders = this.proveedoresTable;
         let finalProviders = [];
         this.proveedoresTable.forEach(prov => {
             let mock = {
                 providerId: prov.id,
+                /*
                 name: prov.name,
                 providerAreaId: prov.providerAreaId,
                 userApplicantId: prov.userApplicantId,
@@ -368,12 +370,29 @@ export class NotesAddComponent implements OnInit{
                 webSite: prov.webSite,
                 comments: prov.comments,
                 country: prov.country,
-                fileId: 18
+                */
+                
+                fileId: null
             };
             finalProviders.push(mock);
         })
-        let finalTrainingPassengers = this.participantesCapacitacion;
-        let finalTravelPassengers = this.participantesViaje;
+        let finalTrainingPassengers = [];
+        this.participantesCapacitacion.forEach(employee => {
+            let search = this.filteredParticipants.find(emp => emp.name == employee.name);
+            finalTrainingPassengers.push({
+                employeeId: search.id,
+                sector: employee.sector
+            });
+        });
+        let finalTravelPassengers = [];
+        this.participantesViaje.forEach(employee => {
+            let search = this.participants.find(emp => emp.name == employee.name);
+            finalTravelPassengers.push({
+                employeeId: search.id,
+                cuit: employee.cuit,
+                birth: employee.birth
+            });
+        });
         let model = {
             description: this.formNota.controls.description.value,
             productsServices: finalProductsAndServices,
