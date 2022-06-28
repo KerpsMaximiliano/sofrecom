@@ -8,6 +8,7 @@ namespace Sofco.Core.Models.RequestNote
     
     public class RequestNoteModel
     {
+        public RequestNoteModel() { }
         public RequestNoteModel(Domain.Models.RequestNote.RequestNote note)
         {
             Id = note.Id;
@@ -26,6 +27,8 @@ namespace Sofco.Core.Models.RequestNote
             CreationUserDescription = note.CreationUser?.UserName;
             UserApplicantDescription = note.UserApplicant?.UserName;
             WorkflowDescription = note.Workflow?.Description;
+            StatusId = note.StatusId;
+            StatusDescription = note.Status?.Name;
             ProductsServices = new List<ProductsService>();
             Analytics = new List<Analytic>();
             Providers = new List<Provider>();
@@ -105,6 +108,9 @@ namespace Sofco.Core.Models.RequestNote
         public string UserApplicantDescription { get; set; }
         public int WorkflowId { get; set; }
         public string WorkflowDescription { get; set; }
+
+        public int StatusId { get; set; }
+        public string StatusDescription { get; set; }
     }
     public class Analytic
     {
