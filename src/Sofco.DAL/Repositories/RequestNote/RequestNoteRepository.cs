@@ -23,6 +23,8 @@ namespace Sofco.DAL.Repositories.RequestNote
         {
             return this.context.RequestNote.Where(x => x.Id == id)
                 .Include(x=> x.ProviderArea)
+                .Include(x => x.Attachments)
+                    .ThenInclude(p => p.File)
                 .Include(x => x.ProductsServices)
                 .Include(x => x.Providers)
                     .ThenInclude(p => p.File)
