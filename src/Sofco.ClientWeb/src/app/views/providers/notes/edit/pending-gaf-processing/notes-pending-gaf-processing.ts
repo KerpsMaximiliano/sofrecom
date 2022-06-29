@@ -63,14 +63,11 @@ export class NotesPendingGAFProcessing {
                 montoOC: this.currentNote.purchaseOrderAmmount,
                 ordenCompra: this.currentNote.purchaseOrderNumber
             });
-            //asignar analíticas
+            this.analiticas = this.currentNote.analytics;
+            this.productosServicios = this.currentNote.productsServices;
+            this.providersGrid = this.currentNote.providers;
         })
         this.checkFormStatus()
-        this.providerService.getAll().subscribe(d => {
-            console.log(d.data)
-            this.providersGrid = d.data;
-            this.providersGrid = [...this.providersGrid]
-        })
     }
 
     checkFormStatus() {

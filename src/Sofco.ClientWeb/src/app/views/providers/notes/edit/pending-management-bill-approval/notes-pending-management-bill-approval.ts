@@ -15,11 +15,7 @@ export class NotesPendingManagementBillApproval {
     @Input() currentNote;
     mode;
     productosServicios = [];
-    analiticas = [
-        {analytic: "Analítica 1", asigned: 10},
-        {analytic: "Analítica 2", asigned: 30},
-        {analytic: "Analítica 3", asigned: 5}
-    ];
+    analiticas = [];
     providersGrid = [];//proveedor seleccionado etapas anteriores
 
     formNota: FormGroup = new FormGroup({
@@ -67,14 +63,11 @@ export class NotesPendingManagementBillApproval {
                 montoOC: this.currentNote.purchaseOrderAmmount,
                 ordenCompra: this.currentNote.purchaseOrderNumber
             });
-            //asignar analíticas
+            this.analiticas = this.currentNote.analytics;
+            this.productosServicios = this.currentNote.productsServices;
+            this.providersGrid = this.currentNote.providers;
         })
         this.checkFormStatus()
-        this.providerService.getAll().subscribe(d => {
-            console.log(d.data)
-            this.providersGrid = d.data;
-            this.providersGrid = [...this.providersGrid]
-        })
     }
 
     checkFormStatus() {

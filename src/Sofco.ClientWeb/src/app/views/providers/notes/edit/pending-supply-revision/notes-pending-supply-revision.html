@@ -70,7 +70,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of analiticas">
-                                        <td>{{ item.analytic }} </td>
+                                        <td>{{ item.description }} </td>
                                         <td>{{ item.asigned }} </td>
                                     </tr>
                                 </tbody>
@@ -85,16 +85,18 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label text-left">Proveedores: </label>
-                        <div class="col-sm-5">
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-5">
                             <label>Proveedor</label>
                             <ng-select [items]="providers" bindLabel="name" bindValue="id"
                                 formControlName="proveedores"></ng-select>
                         </div>
-                        <button *ngIf="mode == 'Edit'" type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                        <button *ngIf="mode == 'Edit'" type="button" class="col-xs-2 btn btn-success" style="margin-top: 2.2rem;"
                             (click)="agregarProveedor()">Agregar<i class="fa fa-plus"></i>
                         </button>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" *ngIf="providersGrid.length > 0">
                         <label class="col-sm-3 control-label text-left"></label>
                         <div class="col-sm-8">
                             <table class="table table-striped dataTable" role="grid" id="dataTable">
@@ -107,7 +109,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of providersGrid; let i = index">
-                                        <td>{{ item.name }} </td>
+                                        <td>{{ item.providerDescription }} </td>
                                         <td><input #selectedFile type="file" ng2FileSelect [uploader]="uploader" /></td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" *ngIf="mode == 'Edit'" (click)="eliminarProveedor(i)"

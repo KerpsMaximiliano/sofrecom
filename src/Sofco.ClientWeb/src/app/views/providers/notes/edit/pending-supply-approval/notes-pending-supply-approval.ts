@@ -16,11 +16,7 @@ export class NotesPendingSupplyApproval implements OnInit{
 
     @Input() currentNote;
     productosServicios = [];
-    analiticas = [
-        {analytic: "Analítica 1", asigned: 10},
-        {analytic: "Analítica 2", asigned: 30},
-        {analytic: "Analítica 3", asigned: 5}
-    ];
+    analiticas = [];
     providersGrid = [];
     mode;
     show = false;
@@ -58,13 +54,9 @@ export class NotesPendingSupplyApproval implements OnInit{
     }
 
     inicializar() {
-        this.mode = this.requestNoteService.getMode()
+        this.mode = this.requestNoteService.getMode();
+        console.log(this.currentNote)
         this.checkFormStatus()
-        this.providerService.getAll().subscribe(d => {
-            console.log(d.data)
-            this.providersGrid = d.data;
-            this.providersGrid = [...this.providersGrid]
-        });
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             this.formNota.patchValue({
                 descripcion: this.currentNote.description,
@@ -76,7 +68,9 @@ export class NotesPendingSupplyApproval implements OnInit{
                 observaciones: this.currentNote.comments,
                 montoOC: this.currentNote.purchaseOrderAmmount
             });
-            //asignar analíticas
+            this.analiticas = this.currentNote.analytics;
+            this.productosServicios = this.currentNote.productsServices;
+            this.providersGrid = this.currentNote.providers;
             this.show = true;
         })
     }

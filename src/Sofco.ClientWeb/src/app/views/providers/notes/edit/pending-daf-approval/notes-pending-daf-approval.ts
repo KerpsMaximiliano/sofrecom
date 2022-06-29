@@ -28,11 +28,7 @@ export class NotesPendingDAFApproval {
     mode;
 
     productosServicios = [];
-    analiticas = [
-        {analytic: "Analítica 1", asigned: 10},
-        {analytic: "Analítica 2", asigned: 30},
-        {analytic: "Analítica 3", asigned: 5}
-    ];
+    analiticas = [];
     providersGrid = [];//Proveedor seleccionado en etapa anterior
 
     formNota: FormGroup = new FormGroup({
@@ -59,11 +55,16 @@ export class NotesPendingDAFApproval {
     ) {}
 
     ngOnInit(): void {
+        console.log(this.providersGrid)
         this.inicializar();
     }
 
     inicializar() {
         this.mode = this.requestNoteService.getMode();
+        this.analiticas = this.currentNote.analytics;
+        this.productosServicios = this.currentNote.productsServices;
+        this.providersGrid = this.currentNote.providers;
+        console.log(this.currentNote)
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             console.log(d);
             this.formNota.patchValue({
@@ -77,14 +78,8 @@ export class NotesPendingDAFApproval {
                 montoOC: this.currentNote.purchaseOrderAmmount,
                 ordenCompra: this.currentNote.purchaseOrderNumber
             });
-            //asignar analíticas
         })
         this.checkFormStatus()
-        this.providerService.getAll().subscribe(d => {
-            console.log(d.data)
-            this.providersGrid = d.data;
-            this.providersGrid = [...this.providersGrid]
-        })
     }
 
     checkFormStatus() {

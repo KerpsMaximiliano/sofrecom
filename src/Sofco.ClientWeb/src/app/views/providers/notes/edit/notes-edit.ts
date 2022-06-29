@@ -85,8 +85,8 @@ export class NotesEditComponent implements OnInit{
 
     ngOnInit(): void {
         this.requestNoteService.getById(this.route.snapshot.params['id']).subscribe(d => {
-            console.log(d);
-            this.currentNote = d;
+            console.log(d.data);
+            this.currentNote = d.data;
             this.estado = this.currentNote.statusId;
             this.estadoSeleccionado = this.estado;
             this.showEdit = true;

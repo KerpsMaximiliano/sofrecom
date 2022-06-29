@@ -17,11 +17,7 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
     mode;
     show = false;
     productosServicios = [];
-    analiticas = [
-        {analytic: "Analítica 1", asigned: 10},
-        {analytic: "Analítica 2", asigned: 30},
-        {analytic: "Analítica 3", asigned: 5}
-    ];
+    analiticas = [];
     gerenteLogueado;//Solo mostrar las analiticas asociadas al gerente logueado
 
     formNota: FormGroup = new FormGroup({
@@ -65,7 +61,8 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
                 observaciones: this.currentNote.comments,
                 montoOC: this.currentNote.purchaseOrderAmmount
             });
-            //asignar analíticas
+            this.analiticas = this.currentNote.analytics;
+            this.productosServicios = this.currentNote.productsServices;
             this.show = true;
         })
         this.checkFormStatus()

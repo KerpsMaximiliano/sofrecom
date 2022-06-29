@@ -15,6 +15,7 @@ import { UserInfoService } from "app/services/common/user-info.service";
 import { FileUploader } from "ng2-file-upload";
 import { forkJoin } from "rxjs";
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'notes-add',
@@ -26,6 +27,8 @@ export class NotesAddComponent implements OnInit{
 
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({url:""});
+
+    requestNoteId: number = null;
 
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
@@ -131,7 +134,8 @@ export class NotesAddComponent implements OnInit{
         private requestNoteService: RequestNoteService,
         private messageService: MessageService,
         private authService: AuthService,
-        private salaryAdvancementService: SalaryAdvancementService
+        private salaryAdvancementService: SalaryAdvancementService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -393,10 +397,12 @@ export class NotesAddComponent implements OnInit{
                 birth: employee.birth
             });
         });
+        let provAreaSearch = this.providerAreas.find(prov => prov.id == this.formNota.controls.providerArea.value);
         let model = {
             description: this.formNota.controls.description.value,
             productsServices: finalProductsAndServices,
             providerAreaId: this.formNota.controls.providerArea.value,
+            providerAreaDescription: provAreaSearch.description,
             analytics: analytics,
             requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
             providers: finalProviders,
@@ -423,7 +429,7 @@ export class NotesAddComponent implements OnInit{
                 accommodation: this.formViaje.controls.accommodation.value,
                 details: this.formViaje.controls.details.value
             },
-            creationUserId: this.userInfo.id,
+            //creationUserId: this.userInfo.id,
             userApplicantId: this.userInfo.id,
             workflowId: 2,
         };
@@ -447,7 +453,9 @@ export class NotesAddComponent implements OnInit{
             attachments: "X"
         };
         console.log(model);
-        this.requestNoteService.saveDraft(model).subscribe(d=>console.log(d))
+        this.requestNoteService.saveDraft(model).subscribe(d=>{
+            this.requestNoteId = d.data;
+        })
     }
 
     markFormGroupTouched(formGroup: FormGroup) {
@@ -486,7 +494,42 @@ export class NotesAddComponent implements OnInit{
         //guardar como borrador
         //pasar de estado
         //this.requestNoteService.approveDraft(id)
-        //this.requestNoteService.approveDraft(40).subscribe(d=>console.log(d));
+        
+        this.markFormGroupTouched(this.formNota);
+        this.markFormGroupTouched(this.formViaje);
+        this.markFormGroupTouched(this.formCapacitacion);
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0) {
+            if(this.productosServicios.length <= 0) {
+                this.productsServicesError = true;
+            }
+            if(this.analiticasTable.length <= 0) {
+                this.analyticError = true;
+            }
+            console.log("Invalid nota");
+            return;
+        }
+        if(this.formNota.controls.travel.value == true) {
+            if(!this.formViaje.valid || this.participantesViaje.length <= 0) {
+                console.log("Invalid viaje");
+                return;
+            }
+        }
+        if(this.formNota.controls.training.value == true) {
+            if(!this.formCapacitacion.valid || this.participantesCapacitacion.length <= 0) {
+                console.log("Invalid capacitacion");
+                return;
+            }
+            
+        }
+        if(this.requestNoteId == null) {
+            this.messageService.showMessage("Debe guardar la nota antes de enviarla", 2)
+        }
+
+        this.requestNoteService.approveDraft(this.requestNoteId).subscribe(d=>{
+            console.log(d);
+            this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+            this.router.navigate(['/providers/notes']);
+        });
     }
 
     clearSelectedFile(){

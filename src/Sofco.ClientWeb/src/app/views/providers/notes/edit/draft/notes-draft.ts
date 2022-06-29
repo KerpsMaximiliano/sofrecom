@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -8,6 +9,7 @@ import { UserService } from "app/services/admin/user.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { MessageService } from "app/services/common/message.service";
 import { UserInfoService } from "app/services/common/user-info.service";
 import { forkJoin } from "rxjs";
 
@@ -121,7 +123,9 @@ export class NotesDraftComponent implements OnInit{
         private analyticService: AnalyticService,
         private userService: UserService,
         private refundService: RefundService,
-        private requestNoteService: RequestNoteService
+        private requestNoteService: RequestNoteService,
+        private messageService: MessageService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -133,7 +137,11 @@ export class NotesDraftComponent implements OnInit{
         //this.requestNoteService.getById(1).subscribe(d=>console.log(d))
     }
 
+
     inicializar() {
+        console.log(this.currentNote)
+        this.travelFormShow = this.currentNote.travelSection;
+        this.trainingFormShow = this.currentNote.trainingSection;
         this.providersAreaService.getAll().subscribe(d => {
             //console.log(d)
             d.data.forEach(providerArea => {
@@ -200,6 +208,30 @@ export class NotesDraftComponent implements OnInit{
             });
             this.critical = (d.data.critical) ? "Si" : "No";
         });
+        this.analiticasTable = this.currentNote.analytics;
+        this.productosServicios = this.currentNote.productsServices;
+        this.proveedoresTable = this.currentNote.providers;
+        this.formViaje.patchValue({
+            destination: this.currentNote.travel.destination,
+            transportation: this.currentNote.travel.transportation,
+            accommodation: this.currentNote.travel.accommodation,
+            details: this.currentNote.travel.details,
+            departureDate: this.currentNote.travel.departureDate,
+            returnDate: this.currentNote.travel.returnDate
+        });
+        this.travelDepartureDate = this.currentNote.travel.departureDate;
+        this.travelReturnDate = this.currentNote.travel.returnDate;
+        this.participantesViaje = this.currentNote.travel.passengers;
+        this.formCapacitacion.patchValue({
+            name: this.currentNote.training.name,
+            subject: this.currentNote.training.subject,
+            location: this.currentNote.training.location,
+            date: this.currentNote.training.date,
+            duration: this.currentNote.training.duration,
+            ammount: this.currentNote.training.ammount
+        });
+        this.trainingDate = this.currentNote.training.date;
+        this.participantesCapacitacion = this.currentNote.training.participants;
     }
 
     change(event) {
@@ -339,7 +371,6 @@ export class NotesDraftComponent implements OnInit{
                 console.log("Invalid capacitacion");
                 return;
             }
-            
         }
         let finalProductsAndServices = this.productosServicios;
         let analytics = [];
@@ -475,6 +506,33 @@ export class NotesDraftComponent implements OnInit{
         //guardar como borrador
         //pasar de estado
         //this.requestNoteService.approveDraft(id)
+        this.markFormGroupTouched(this.formNota);
+        this.markFormGroupTouched(this.formViaje);
+        this.markFormGroupTouched(this.formCapacitacion);
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0) {
+            if(this.productosServicios.length <= 0) {
+                this.productsServicesError = true;
+            }
+            if(this.analiticasTable.length <= 0) {
+                this.analyticError = true;
+            }
+            console.log("Invalid nota");
+            return;
+        }
+        if(this.formNota.controls.travel.value == true) {
+            if(!this.formViaje.valid || this.participantesViaje.length <= 0) {
+                console.log("Invalid viaje");
+                return;
+            }
+        }
+        if(this.formNota.controls.training.value == true) {
+            if(!this.formCapacitacion.valid || this.participantesCapacitacion.length <= 0) {
+                console.log("Invalid capacitacion");
+                return;
+            }
+        }
         this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
+        this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+        this.router.navigate(['/providers/notes']);
     }
 }

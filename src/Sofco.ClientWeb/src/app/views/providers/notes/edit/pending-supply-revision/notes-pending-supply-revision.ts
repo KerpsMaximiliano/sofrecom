@@ -18,11 +18,7 @@ export class NotesPendingSupplyRevision implements OnInit {
     mode;
     show = false;
     productosServicios = [];
-    analiticas = [
-        {analytic: "Analítica 1", asigned: 10},
-        {analytic: "Analítica 2", asigned: 30},
-        {analytic: "Analítica 3", asigned: 5}
-    ];
+    analiticas = [];
     providers = [];
     selectedProviderId: number;
     providersGrid = [];
@@ -72,7 +68,9 @@ export class NotesPendingSupplyRevision implements OnInit {
                 nroEvalprop: this.currentNote.evalpropNumber,
                 observaciones: this.currentNote.comments
             });
-            //asignar analíticas
+            this.analiticas = this.currentNote.analytics;
+            this.productosServicios = this.currentNote.productsServices;
+            this.providersGrid = this.currentNote.providers;
             this.show = true;
         })
         this.checkFormStatus();
@@ -84,7 +82,7 @@ export class NotesPendingSupplyRevision implements OnInit {
                     this.providers = [...this.providers]
                 }
             });
-        })
+        });
     }
 
     checkFormStatus() {

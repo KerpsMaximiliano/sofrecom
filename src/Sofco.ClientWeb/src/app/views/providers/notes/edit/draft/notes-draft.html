@@ -113,7 +113,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of analiticasTable; let i = index">
-                                        <td>{{ item.analytic.name }} </td>
+                                        <td>{{ item.description }} </td>
                                         <td>{{ item.asigned }} </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarAnalitica(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
@@ -147,7 +147,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of proveedoresTable; let i = index">
-                                        <td>{{ item.name }} </td>
+                                        <td>{{ item.providerDescription }} </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarProveedor(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>
