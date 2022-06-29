@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
@@ -61,7 +62,12 @@ namespace Sofco.WebApi
             {
                 options.Filters.Add(new VersionHeaderFilter());
             });
-
+            //Multipart
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 60000000;
+                options.MemoryBufferThreshold = int.MaxValue;
+            });
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

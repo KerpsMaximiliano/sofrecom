@@ -40,6 +40,14 @@ namespace Sofco.Core.Models.RequestNote
                     ProviderId = p.ProviderId,
                     ProviderDescription = p.Provider?.Name
                 }).ToList();
+            if (note.Attachments != null)
+                Attachments = note.Attachments.Select(p => new File()
+                {
+                    FileId = p.FileId,
+                    FileDescription = p.File?.FileName,
+                    Type = p.Type,
+                    TypeDescription = "Ya te voy a poner la enum con la descripción!"
+                }).ToList();
             if (note.ProductsServices != null)
                 ProductsServices = note.ProductsServices.Select(p => new ProductsService()
                 {
@@ -94,6 +102,8 @@ namespace Sofco.Core.Models.RequestNote
         public List<Analytic> Analytics { get; set; }
         public bool RequiresEmployeeClient { get; set; }
         public List<Provider> Providers { get; set; }
+
+        public List<File> Attachments { get; set; }
         public bool ConsideredInBudget { get; set; }
         public int EvalpropNumber { get; set; }
         public string Comments { get; set; }
@@ -138,6 +148,13 @@ namespace Sofco.Core.Models.RequestNote
     {
         public int ProviderId { get; set; }
         public string ProviderDescription { get; set; }
+        public int? FileId { get; set; }
+        public string FileDescription { get; set; }
+    }
+    public class File
+    {
+        public int Type { get; set; }
+        public string TypeDescription { get; set; }
         public int? FileId { get; set; }
         public string FileDescription { get; set; }
     }

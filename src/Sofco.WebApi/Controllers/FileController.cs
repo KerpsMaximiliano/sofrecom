@@ -47,6 +47,7 @@ namespace Sofco.WebApi.Controllers
                 case 2: return fileConfig.CertificatesPath;
                 case 3: return fileConfig.InvoicesPdfPath;
                 case 4: return fileConfig.RecruitmentPath;
+                case 5: return fileConfig.RequestNotePath;
                 default: return string.Empty;
             }
         }

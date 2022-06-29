@@ -11,5 +11,7 @@ namespace Sofco.Domain.Models.RequestNote
         [Key]
         public int RequestNoteId { get; set; }
         public RequestNote RequestNote { get; set; }
+
+        public int Type { get; set; }
     }
 }

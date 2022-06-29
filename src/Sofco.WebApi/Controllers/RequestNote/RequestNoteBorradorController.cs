@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.RequestNote;
 using Sofco.Core.Services.RequestNote;
@@ -8,6 +10,7 @@ using Sofco.Domain.DTO.NotaPedido;
 using Sofco.Domain.Utils;
 using Sofco.Service.Implementations.RequestNote;
 using Sofco.WebApi.Extensions;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.WebApi.Controllers.RequestNote
 {
@@ -28,6 +31,24 @@ namespace Sofco.WebApi.Controllers.RequestNote
 
             return this.CreateResponse(response);
         }
+
+        [HttpPost("UploadFiles")]
+        public async Task<IActionResult> MultipleFile()
+        {
+            var response = new Response<List<File>>();
+
+            if (Request.Form.Files.Any())
+            {
+                await _requestNoteService.AttachFiles(response, Request.Form.Files.ToList());
+            }
+            else
+            {
+                response.AddError(Resources.Common.SaveFileError);
+            }
+
+            return this.CreateResponse(response);
+        }
+
 
         [HttpPost("AprobarBorrador")]
         public IActionResult AprobarBorrador(int id)
