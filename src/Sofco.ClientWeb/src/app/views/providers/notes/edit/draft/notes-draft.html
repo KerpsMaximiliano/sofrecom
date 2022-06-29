@@ -48,6 +48,9 @@
                             <span *ngIf="productsServicesError" style="color: red;">
                                 Al menos un producto o servicio es requerido
                             </span>
+                            <span *ngIf="productsServicesQuantityError" style="color: red;">
+                                La suma de cantidades debe ser mayor a 0.
+                            </span>
                         </div>
                         <div class="form-group" *ngIf="productosServicios.length > 0">
                             <table class="table table-striped dataTable" role="grid" id="dataTable">
@@ -100,6 +103,9 @@
                         <div class="form-group">
                             <span *ngIf="analyticError" style="color: red;">
                                 Al menos una analítica es requerida
+                            </span>
+                            <span *ngIf="analyticPercentageError" style="color: red;">
+                                La suma de porcentajes debe ser 100.
                             </span>
                         </div>
                         <div class="form-group" *ngIf="analiticasTable.length > 0">
@@ -196,9 +202,8 @@
         </div>
 
         <div class="col-sm-5">
-            <h3>{{'billing.solfac.import' | translate }}</h3>
-            <!--
-            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+            <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}} archivos subidos</p></h3>
+            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple/>
     
             <div class="uploader-margin-top">
                 <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
@@ -206,7 +211,7 @@
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                 </div>
     
-                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length || model.files.length >= 5">
+                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
                     <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
                 </button>
                 
@@ -214,22 +219,6 @@
                     <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
                 </button>
             </div>
-    
-            <div class="panel panel-primary m-t-lg" *ngIf="model.files.length > 0">
-                <div class="panel-heading">
-                    <i class="fa fa-info-circle"></i> {{'rrhh.license.attachments' | translate }}
-                </div>
-                <div class="panel-body">
-                    <ul class="todo-list small-list">
-                        <li *ngFor="let file of model.files; let i = index" (click)="exportExcel(file.id, file.text)">
-                            <span class="m-l-xs pointer">{{file.text}}</span>
-                            <i class="fa fa-download"></i>
-                            <a class="pull-right" (click)="openConfirmModal(file.id, i)"><i class="check-link fa fa-times icon-danger margin-left-s"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            -->
         </div>
     </div>
     <div class="row" *ngIf="travelFormShow">

@@ -22,24 +22,28 @@ import { Router } from "@angular/router";
     templateUrl: './notes-add.html',
     styleUrls: ['./notes-add.scss']
 })
+//Validar suma total productos/servicios sea mayor a 0
+//Validar % analíticas sea 100
 
 export class NotesAddComponent implements OnInit{
 
     @ViewChild('selectedFile') selectedFile: any;
-    public uploader: FileUploader = new FileUploader({url:""});
-
+    public uploader: FileUploader = new FileUploader({
+        url: this.requestNoteService.uploadDraftFiles(),
+        authToken: 'Bearer ' + Cookie.get('access_token'), 
+    });
     requestNoteId: number = null;
+    uploadedFilesId = [];
 
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
 
     analyticError: boolean = false;
+    analyticPercentageError: boolean = false;
     productsServicesError: boolean = false;
+    productsServicesQuantityError: boolean = false;
 
     providerAreas = [];
-    //Combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos
-    //Participantes ficha del viaje
-    //Combo agregar participantes (Texto 100 caracteres)
     participantes = ['participante 1', 'participante 2', 'participante 3'];
     participants = [];
     filteredParticipants = [];
@@ -60,23 +64,18 @@ export class NotesAddComponent implements OnInit{
     trainingDate;
 
     formNota: FormGroup = new FormGroup({
-        description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),//Descripcion
-        productsAndServicies: new FormControl(null),//Combo editable productos/servicios
-        //2 campos
-        //Productos/Servicios - texto 5000 requerido
-        //Cantidad - numero mayor a 0 requerido
-        providerArea: new FormControl(null, [Validators.required]),//Rubro - Combo de ProvidersAreas con Active = true
-        critical: new FormControl(null, []),//Se carga a partir del rubro seleccionado. Es readonly. 
-        //Asociado a la columna Critical del Rubro seleccionado. Es Si o No. Va al lado del Combo de Rubro.
-        analytics: new FormControl(null, []),//Grilla editable de Analíticas
+        description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),
+        productsAndServicies: new FormControl(null),
+        providerArea: new FormControl(null, [Validators.required]),
+        critical: new FormControl(null, []),
+        analytics: new FormControl(null, []),
         requiresPersonel: new FormControl(null, []),
-        providers: new FormControl(null, []),//combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos. 
-        //Es opcional, puede no elegir ninguno. 
-        evaluationProposal: new FormControl(false, []),//Checkbox
+        providers: new FormControl(null, []),
+        evaluationProposal: new FormControl(false, []),
         numberEvalprop: new FormControl(null, [Validators.maxLength(100)]),
         observations: new FormControl(null, []),
-        travel: new FormControl(false, []),//Checkbox
-        training: new FormControl(false, []),//Checkbox
+        travel: new FormControl(false, []),
+        training: new FormControl(false, []),
     });
 
     formProductoServicio: FormGroup = new FormGroup({
@@ -134,7 +133,6 @@ export class NotesAddComponent implements OnInit{
         private requestNoteService: RequestNoteService,
         private messageService: MessageService,
         private authService: AuthService,
-        private salaryAdvancementService: SalaryAdvancementService,
         private router: Router
     ) {}
 
@@ -144,12 +142,11 @@ export class NotesAddComponent implements OnInit{
         console.log(this.userInfo);
         this.analyticService.getByCurrentUser().subscribe(d=>console.log(d))
         this.refundService.getAnalytics().subscribe(d=>console.log(d))
-        //this.requestNoteService.getById(1).subscribe(d=>console.log(d))
     }
 
     inicializar() {
+        this.uploaderConfig();
         this.providersAreaService.getAll().subscribe(d => {
-            //console.log(d)
             d.data.forEach(providerArea => {
                 if(providerArea.active) {
                     this.providerAreas.push(providerArea);
@@ -158,7 +155,6 @@ export class NotesAddComponent implements OnInit{
             });
         });
         this.employeeService.getEveryone().subscribe(d => {
-            //console.log(d);
             this.participants = d;
             d.forEach(user => {
                 if(user.isExternal == 0 && user.endDate == null) {
@@ -266,12 +262,30 @@ export class NotesAddComponent implements OnInit{
         }
         this.productosServicios.push(productoServicio);
         this.productsServicesError = false;
+        let totalQuantity = 0;
+        this.productosServicios.forEach(product => {
+            totalQuantity = totalQuantity + product.quantity;
+        });
+        if(totalQuantity <= 0) {
+            this.productsServicesQuantityError = true;
+        } else {
+            this.productsServicesQuantityError = false;
+        }
     }
 
     eliminarProductoServicio(index: number) {
         this.productosServicios.splice(index, 1);
         if(this.productosServicios.length <= 0) {
             this.productsServicesError = true;
+        }
+        let totalQuantity = 0;
+        this.productosServicios.forEach(product => {
+            totalQuantity = totalQuantity + product.quantity;
+        });
+        if(totalQuantity <= 0) {
+            this.productsServicesQuantityError = true;
+        } else {
+            this.productsServicesQuantityError = false;
         }
     }
 
@@ -286,12 +300,30 @@ export class NotesAddComponent implements OnInit{
         }
         this.analiticasTable.push(analitica)
         this.analyticError = false;
+        let totalPercentage = 0;
+        this.analiticasTable.forEach(analytic => {
+            totalPercentage = totalPercentage + analytic.asigned;
+        });
+        if(totalPercentage != 100) {
+            this.analyticPercentageError = true;
+        } else {
+            this.analyticPercentageError = false;
+        }
     }
 
     eliminarAnalitica(index: number) {
         this.analiticasTable.splice(index, 1);
         if(this.analiticasTable.length <= 0) {
             this.analyticError = true;
+        };
+        let totalPercentage = 0;
+        this.analiticasTable.forEach(analytic => {
+            totalPercentage = totalPercentage + analytic.asigned;
+        });
+        if(totalPercentage != 100) {
+            this.analyticPercentageError = true;
+        } else {
+            this.analyticPercentageError = false;
         }
     }
 
@@ -308,15 +340,13 @@ export class NotesAddComponent implements OnInit{
     }
 
     saveNote() {
-        
-        
         console.log(this.formNota.value);
         console.log(this.formViaje.value);
         console.log(this.formCapacitacion.value);
         this.markFormGroupTouched(this.formNota);
         this.markFormGroupTouched(this.formViaje);
         this.markFormGroupTouched(this.formCapacitacion);
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0) {
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
             }
@@ -337,7 +367,6 @@ export class NotesAddComponent implements OnInit{
                 console.log("Invalid capacitacion");
                 return;
             }
-            
         }
         let finalProductsAndServices = this.productosServicios;
         let analytics = [];
@@ -348,34 +377,10 @@ export class NotesAddComponent implements OnInit{
             }
             analytics.push(push)
         });
-        let finalAnalytics = this.analiticasTable;
         let finalProviders = [];
         this.proveedoresTable.forEach(prov => {
             let mock = {
                 providerId: prov.id,
-                /*
-                name: prov.name,
-                providerAreaId: prov.providerAreaId,
-                userApplicantId: prov.userApplicantId,
-                score: prov.score,
-                startDate: prov.startDate,
-                endDate: prov.endDate,
-                active: prov.active,
-                cuit: prov.cuit,
-                ingresosBrutos: prov.ingresosBrutos,
-                condicionIVA: prov.condicionIVA,
-                address: prov.address,
-                city: prov.city,
-                zipCode: prov.zipCode,
-                province: prov.province,
-                contactName: prov.contactName,
-                phone: prov.phone,
-                email: prov.email,
-                webSite: prov.webSite,
-                comments: prov.comments,
-                country: prov.country,
-                */
-                
                 fileId: null
             };
             finalProviders.push(mock);
@@ -397,6 +402,15 @@ export class NotesAddComponent implements OnInit{
                 birth: employee.birth
             });
         });
+        let finalAttachments = [];
+        if(this.uploadedFilesId.length > 0) {
+            this.uploadedFilesId.forEach(id => {
+                finalAttachments.push({
+                    fileId: id,
+                    type: 1,
+                })
+            })
+        };
         let provAreaSearch = this.providerAreas.find(prov => prov.id == this.formNota.controls.providerArea.value);
         let model = {
             description: this.formNota.controls.description.value,
@@ -407,7 +421,7 @@ export class NotesAddComponent implements OnInit{
             requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
             providers: finalProviders,
             consideredInBudget: this.formNota.controls.evaluationProposal.value,
-            evalpropNumber: this.formNota.controls.numberEvalprop.value,
+            evalpropNumber: Number(this.formNota.controls.numberEvalprop.value),
             comments: this.formNota.controls.observations.value,
             travelSection: this.formNota.controls.travel.value,
             trainingSection: this.formNota.controls.training.value,
@@ -429,29 +443,16 @@ export class NotesAddComponent implements OnInit{
                 accommodation: this.formViaje.controls.accommodation.value,
                 details: this.formViaje.controls.details.value
             },
-            //creationUserId: this.userInfo.id,
             userApplicantId: this.userInfo.id,
             workflowId: 2,
+            attachments: finalAttachments
         };
-        
-        let model2 = {
-            description: this.formNota.controls.description.value,
-            productsAndServicies: finalProductsAndServices,
-            providerAreaId: this.formNota.controls.providerArea.value,
-            analytics: finalAnalytics,
-            requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
-            providers: finalProviders,
-            consideredInBudget: this.formNota.controls.evaluationProposal.value,
-            evalpropNumber: this.formNota.controls.numberEvalprop.value,
-            comments: this.formNota.controls.observations.value,
-            travelSection: this.formNota.controls.travel.value,
-            trainingSection: this.formNota.controls.training.value,
-            creationUserId: 0,
-            creationUser: "X",
-            workflowId: 0,
-            workflow: "X",
-            attachments: "X"
+        if(!model.travelSection) {
+            model.travel = null;
         };
+        if(!model.trainingSection) {
+            model.training = null;
+        }
         console.log(model);
         this.requestNoteService.saveDraft(model).subscribe(d=>{
             this.requestNoteId = d.data;
@@ -491,14 +492,10 @@ export class NotesAddComponent implements OnInit{
     }
 
     sendDraft() {
-        //guardar como borrador
-        //pasar de estado
-        //this.requestNoteService.approveDraft(id)
-        
         this.markFormGroupTouched(this.formNota);
         this.markFormGroupTouched(this.formViaje);
         this.markFormGroupTouched(this.formCapacitacion);
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0) {
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
             }
@@ -541,11 +538,9 @@ export class NotesAddComponent implements OnInit{
     }
 
     uploaderConfig(){
-        this.uploader = new FileUploader({url: this.salaryAdvancementService.getUrlForImportFile(),
+        this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
             authToken: 'Bearer ' + Cookie.get('access_token') ,
-            maxFileSize: 50*1024*1024,
-            allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-          });
+        });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
             if(status == 401){
@@ -558,20 +553,13 @@ export class NotesAddComponent implements OnInit{
                         this.uploaderConfig();
                     }
                 });
-
                 return;
             }
-
-            var dataJson = JSON.parse(response);
-
-
-            if(dataJson.messages){
-                this.messageService.showMessages(dataJson.messages);
-            }
-
+            let jsonResponse = JSON.parse(response);
+            this.uploadedFilesId.push(jsonResponse.data[0].id);
+            console.log(this.uploadedFilesId)
             this.clearSelectedFile();
         };
-
         this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     }
 

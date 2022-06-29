@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
@@ -9,8 +9,11 @@ import { UserService } from "app/services/admin/user.service";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { AuthService } from "app/services/common/auth.service";
 import { MessageService } from "app/services/common/message.service";
 import { UserInfoService } from "app/services/common/user-info.service";
+import { Cookie } from "ng2-cookies";
+import { FileUploader } from "ng2-file-upload";
 import { forkJoin } from "rxjs";
 
 @Component({
@@ -21,17 +24,23 @@ import { forkJoin } from "rxjs";
 
 export class NotesDraftComponent implements OnInit{
     @Input() currentNote;
+    uploadedFilesId = [];
+    requestNoteId;
 
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({
+        url: this.requestNoteService.uploadDraftFiles(),
+        authToken: 'Bearer ' + Cookie.get('access_token'), 
+    });
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
 
     analyticError: boolean = false;
+    analyticPercentageError: boolean = false;
     productsServicesError: boolean = false;
+    productsServicesQuantityError: boolean = false;
 
     providerAreas = [];
-    //Combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos
-    //Participantes ficha del viaje
-    //Combo agregar participantes (Texto 100 caracteres)
     participantes = ['participante 1', 'participante 2', 'participante 3'];
     participants = [];
     filteredParticipants = [];
@@ -125,6 +134,7 @@ export class NotesDraftComponent implements OnInit{
         private refundService: RefundService,
         private requestNoteService: RequestNoteService,
         private messageService: MessageService,
+        private authService: AuthService,
         private router: Router
     ) {}
 
@@ -139,7 +149,8 @@ export class NotesDraftComponent implements OnInit{
 
 
     inicializar() {
-        console.log(this.currentNote)
+        console.log(this.currentNote);
+        this.uploaderConfig();
         this.travelFormShow = this.currentNote.travelSection;
         this.trainingFormShow = this.currentNote.trainingSection;
         this.providersAreaService.getAll().subscribe(d => {
@@ -194,7 +205,10 @@ export class NotesDraftComponent implements OnInit{
     }
 
     existingData() {
-        console.log(this.currentNote)
+        console.log(this.currentNote);
+        if(this.currentNote.attachments != null) {
+            this.uploadedFilesId = this.currentNote.attachments;
+        }
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             this.formNota.patchValue({
                 description: this.currentNote.description,
@@ -211,27 +225,31 @@ export class NotesDraftComponent implements OnInit{
         this.analiticasTable = this.currentNote.analytics;
         this.productosServicios = this.currentNote.productsServices;
         this.proveedoresTable = this.currentNote.providers;
-        this.formViaje.patchValue({
-            destination: this.currentNote.travel.destination,
-            transportation: this.currentNote.travel.transportation,
-            accommodation: this.currentNote.travel.accommodation,
-            details: this.currentNote.travel.details,
-            departureDate: this.currentNote.travel.departureDate,
-            returnDate: this.currentNote.travel.returnDate
-        });
-        this.travelDepartureDate = this.currentNote.travel.departureDate;
-        this.travelReturnDate = this.currentNote.travel.returnDate;
-        this.participantesViaje = this.currentNote.travel.passengers;
-        this.formCapacitacion.patchValue({
-            name: this.currentNote.training.name,
-            subject: this.currentNote.training.subject,
-            location: this.currentNote.training.location,
-            date: this.currentNote.training.date,
-            duration: this.currentNote.training.duration,
-            ammount: this.currentNote.training.ammount
-        });
-        this.trainingDate = this.currentNote.training.date;
-        this.participantesCapacitacion = this.currentNote.training.participants;
+        if(this.currentNote.travelSection) {
+            this.formViaje.patchValue({
+                destination: this.currentNote.travel.destination,
+                transportation: this.currentNote.travel.transportation,
+                accommodation: this.currentNote.travel.accommodation,
+                details: this.currentNote.travel.details,
+                departureDate: this.currentNote.travel.departureDate,
+                returnDate: this.currentNote.travel.returnDate
+            });
+            this.travelDepartureDate = this.currentNote.travel.departureDate;
+            this.travelReturnDate = this.currentNote.travel.returnDate;
+            this.participantesViaje = this.currentNote.travel.passengers;
+        }
+        if(this.currentNote.trainingSection) {
+            this.formCapacitacion.patchValue({
+                name: this.currentNote.training.name,
+                subject: this.currentNote.training.subject,
+                location: this.currentNote.training.location,
+                date: this.currentNote.training.date,
+                duration: this.currentNote.training.duration,
+                ammount: this.currentNote.training.ammount
+            });
+            this.trainingDate = this.currentNote.training.date;
+            this.participantesCapacitacion = this.currentNote.training.participants;
+        }
     }
 
     change(event) {
@@ -270,7 +288,7 @@ export class NotesDraftComponent implements OnInit{
             birth: this.formParticipanteViaje.controls.birth.value,
             cuit: this.formParticipanteViaje.controls.cuit.value,
         }
-        this.participantesViaje.push(participante)
+        this.participantesViaje.push(participante);
     }
 
     eliminarParticipanteViaje(index: number) {
@@ -302,12 +320,30 @@ export class NotesDraftComponent implements OnInit{
         }
         this.productosServicios.push(productoServicio);
         this.productsServicesError = false;
+        let totalQuantity = 0;
+        this.productosServicios.forEach(product => {
+            totalQuantity = totalQuantity + product.quantity;
+        });
+        if(totalQuantity <= 0) {
+            this.productsServicesQuantityError = true;
+        } else {
+            this.productsServicesQuantityError = false;
+        }
     }
 
     eliminarProductoServicio(index: number) {
         this.productosServicios.splice(index, 1);
         if(this.productosServicios.length <= 0) {
             this.productsServicesError = true;
+        }
+        let totalQuantity = 0;
+        this.productosServicios.forEach(product => {
+            totalQuantity = totalQuantity + product.quantity;
+        });
+        if(totalQuantity <= 0) {
+            this.productsServicesQuantityError = true;
+        } else {
+            this.productsServicesQuantityError = false;
         }
     }
 
@@ -322,12 +358,30 @@ export class NotesDraftComponent implements OnInit{
         }
         this.analiticasTable.push(analitica)
         this.analyticError = false;
+        let totalPercentage = 0;
+        this.analiticasTable.forEach(analytic => {
+            totalPercentage = totalPercentage + analytic.asigned;
+        });
+        if(totalPercentage != 100) {
+            this.analyticPercentageError = true;
+        } else {
+            this.analyticPercentageError = false;
+        }
     }
 
     eliminarAnalitica(index: number) {
         this.analiticasTable.splice(index, 1);
         if(this.analiticasTable.length <= 0) {
             this.analyticError = true;
+        };
+        let totalPercentage = 0;
+        this.analiticasTable.forEach(analytic => {
+            totalPercentage = totalPercentage + analytic.asigned;
+        });
+        if(totalPercentage != 100) {
+            this.analyticPercentageError = true;
+        } else {
+            this.analyticPercentageError = false;
         }
     }
 
@@ -350,7 +404,7 @@ export class NotesDraftComponent implements OnInit{
         this.markFormGroupTouched(this.formNota);
         this.markFormGroupTouched(this.formViaje);
         this.markFormGroupTouched(this.formCapacitacion);
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0) {
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
             }
@@ -381,38 +435,31 @@ export class NotesDraftComponent implements OnInit{
             }
             analytics.push(push)
         });
-        let finalAnalytics = this.analiticasTable;
-        //let finalProviders = this.proveedoresTable;
         let finalProviders = [];
         this.proveedoresTable.forEach(prov => {
             let mock = {
                 providerId: prov.id,
-                name: prov.name,
-                providerAreaId: prov.providerAreaId,
-                userApplicantId: prov.userApplicantId,
-                score: prov.score,
-                startDate: prov.startDate,
-                endDate: prov.endDate,
-                active: prov.active,
-                cuit: prov.cuit,
-                ingresosBrutos: prov.ingresosBrutos,
-                condicionIVA: prov.condicionIVA,
-                address: prov.address,
-                city: prov.city,
-                zipCode: prov.zipCode,
-                province: prov.province,
-                contactName: prov.contactName,
-                phone: prov.phone,
-                email: prov.email,
-                webSite: prov.webSite,
-                comments: prov.comments,
-                country: prov.country,
-                fileId: 18
+                fileId: null
             };
             finalProviders.push(mock);
         })
-        let finalTrainingPassengers = this.participantesCapacitacion;
-        let finalTravelPassengers = this.participantesViaje;
+        let finalTrainingPassengers = [];
+        this.participantesCapacitacion.forEach(employee => {
+            let search = this.filteredParticipants.find(emp => emp.name == employee.name);
+            finalTrainingPassengers.push({
+                employeeId: search.id,
+                sector: employee.sector
+            });
+        });
+        let finalTravelPassengers = [];
+        this.participantesViaje.forEach(employee => {
+            let search = this.participants.find(emp => emp.name == employee.name);
+            finalTravelPassengers.push({
+                employeeId: search.id,
+                cuit: employee.cuit,
+                birth: employee.birth
+            });
+        });
         let model = {
             description: this.formNota.controls.description.value,
             productsServices: finalProductsAndServices,
@@ -443,31 +490,20 @@ export class NotesDraftComponent implements OnInit{
                 accommodation: this.formViaje.controls.accommodation.value,
                 details: this.formViaje.controls.details.value
             },
-            creationUserId: this.userInfo.id,
             userApplicantId: this.userInfo.id,
             workflowId: 2,
+            attachments: this.uploadedFilesId
         };
-        
-        let model2 = {
-            description: this.formNota.controls.description.value,
-            productsAndServicies: finalProductsAndServices,
-            providerAreaId: this.formNota.controls.providerArea.value,
-            analytics: finalAnalytics,
-            requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
-            providers: finalProviders,
-            consideredInBudget: this.formNota.controls.evaluationProposal.value,
-            evalpropNumber: this.formNota.controls.numberEvalprop.value,
-            comments: this.formNota.controls.observations.value,
-            travelSection: this.formNota.controls.travel.value,
-            trainingSection: this.formNota.controls.training.value,
-            creationUserId: 0,
-            creationUser: "X",
-            workflowId: 0,
-            workflow: "X",
-            attachments: "X"
+        if(!model.travelSection) {
+            model.travel = null;
         };
+        if(!model.trainingSection) {
+            model.training = null;
+        }
         console.log(model);
-        this.requestNoteService.saveDraft(model).subscribe(d=>console.log(d))
+        this.requestNoteService.saveDraft(model).subscribe(d=>{
+            this.requestNoteId = d.data;
+        })
     }
 
     markFormGroupTouched(formGroup: FormGroup) {
@@ -503,13 +539,10 @@ export class NotesDraftComponent implements OnInit{
     }
 
     sendDraft() {
-        //guardar como borrador
-        //pasar de estado
-        //this.requestNoteService.approveDraft(id)
         this.markFormGroupTouched(this.formNota);
         this.markFormGroupTouched(this.formViaje);
         this.markFormGroupTouched(this.formCapacitacion);
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0) {
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
             }
@@ -534,5 +567,42 @@ export class NotesDraftComponent implements OnInit{
         this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
         this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
         this.router.navigate(['/providers/notes']);
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
+    }
+
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+        });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+                return;
+            }
+            let jsonResponse = JSON.parse(response);
+            this.uploadedFilesId.push({
+                type: 1,
+                fileId: jsonResponse.data[0].id
+            });
+            console.log(this.uploadedFilesId)
+            this.clearSelectedFile();
+        };
+        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     }
 }

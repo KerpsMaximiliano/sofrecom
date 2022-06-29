@@ -43,6 +43,10 @@ export class RequestNoteService {
         return this.http.post<any>(`${this.baseUrl}/RequestNoteBorrador/GuardarBorrador`, requestNote);
     }
 
+    public uploadDraftFiles() {
+        return `${this.baseUrl}/RequestNoteBorrador/UploadFiles`
+    }
+
     //Request Notes Pending Supply Revision - Pendiente Revisión Abastecimiento
     approvePendingSupplyRevision(id: number): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteRevisionAbastecimiento/AprobarPendienteRevisionAbastecimiento`, id);
