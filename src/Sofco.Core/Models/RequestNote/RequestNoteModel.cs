@@ -18,6 +18,8 @@ namespace Sofco.Core.Models.RequestNote
             ConsideredInBudget = note.ConsideredInBudget;
             EvalpropNumber = note.EvalpropNumber;
             Comments = note.Comments;
+            PurchaseOrderAmmount = note.PurchaseOrderAmmount;
+            PurchaseOrderNumber = note.PurchaseOrderNumber;
             TravelSection = note.TravelSection;
             TrainingSection = note.TrainingSection;
             CreationUserId = note.CreationUserId;
@@ -97,7 +99,7 @@ namespace Sofco.Core.Models.RequestNote
         public string Description { get; set; }
         public List<ProductsService> ProductsServices { get; set; }
         public int ProviderAreaId { get; set; }
-
+        public int? ProviderSelectedId { get; set; }
         public string ProviderAreaDescription { get; set; }
         public List<Analytic> Analytics { get; set; }
         public bool RequiresEmployeeClient { get; set; }
@@ -107,6 +109,9 @@ namespace Sofco.Core.Models.RequestNote
         public bool ConsideredInBudget { get; set; }
         public int EvalpropNumber { get; set; }
         public string Comments { get; set; }
+        public decimal? PurchaseOrderAmmount { get; set; }
+
+        public int? PurchaseOrderNumber { get; set; }
         public bool TravelSection { get; set; }
         public bool TrainingSection { get; set; }
         public Training Training { get; set; }

@@ -10,9 +10,9 @@
         Aprobada = 6,
         SolicitadaAProveedor = 7,
         RecibidoConforme = 8,
-        FacturaPendienteAprobaciónGerente=9,
-        PendienteProcesarGAF= 10,
-        Reachazada=11,
-        Cerrada=12
+        FacturaPendienteAprobaciónGerente = 9,
+        PendienteProcesarGAF = 10,
+        Rechazada = 11,
+        Cerrada = 12
     }
 }

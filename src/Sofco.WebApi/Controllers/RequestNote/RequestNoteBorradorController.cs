@@ -33,7 +33,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         }
 
         [HttpPost("UploadFiles")]
-        public async Task<IActionResult> MultipleFile()
+        public async Task<IActionResult> UploadFiles()
         {
             var response = new Response<List<File>>();
 
@@ -53,7 +53,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarBorrador")]
         public IActionResult AprobarBorrador(int id)
         {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteRevisiónAbastecimiento);
+            this._requestNoteService.ChangeStatus(new RequestNoteModel() { Id = id }, Domain.RequestNoteStates.RequestNoteStates.PendienteRevisiónAbastecimiento);
 
             return Ok();
         }
@@ -61,7 +61,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("RechazarBorrador")]
         public IActionResult RechazarBorrador(int id)
         {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Reachazada);
+            this._requestNoteService.ChangeStatus(new RequestNoteModel() { Id = id }, Domain.RequestNoteStates.RequestNoteStates.Rechazada);
 
             return Ok();
         }

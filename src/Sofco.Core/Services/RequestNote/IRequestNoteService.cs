@@ -23,6 +23,6 @@ namespace Sofco.Core.Services.RequestNote
         Response<int> GuardarBorrador(RequestNoteModel requestNoteBorrador);
         Response<RequestNoteModel> GetById(int id);
         IList<Domain.Models.RequestNote.RequestNote> GetAll();
-        void ChangeStatus(int requestNodeId, RequestNoteStates requestNoteStates);
+        void ChangeStatus(RequestNoteModel requestNote, RequestNoteStates requestNoteStates);
     }
 }

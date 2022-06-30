@@ -25,21 +25,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteProviderService = requestNoteProviderService;
         }
 
-        [HttpPost("AprobarAprobada")]
-        public IActionResult AprobarRequestNote(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.SolicitadaAProveedor);
-
-            return Ok();
-        }
-
-        [HttpPost("RechazarAprobada")]
-        public IActionResult RechazarRequestNode(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Reachazada);
-
-            return Ok();
-        }
+       
 
         [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)

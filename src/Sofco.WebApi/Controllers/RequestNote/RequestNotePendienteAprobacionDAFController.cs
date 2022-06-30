@@ -27,21 +27,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this.fileConfig = fileOptions.Value;
         }
 
-        [HttpPost("AprobarPendienteAprobacionDAF")]
-        public IActionResult AprobarPendienteAprobacionDAF(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Aprobada);
-
-            return Ok();
-        }
-
-        [HttpPost("RechazarPendienteAprobacionDAF")]
-        public IActionResult RechazarPendienteAprobacionDAF(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónAbastecimiento);
-
-            return Ok();
-        }
+        
 
         [HttpPost("DescargarArchivo")]
         public IActionResult DescargarArchivo(int id, int type)

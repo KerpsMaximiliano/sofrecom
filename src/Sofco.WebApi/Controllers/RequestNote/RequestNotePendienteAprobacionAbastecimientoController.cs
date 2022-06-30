@@ -23,22 +23,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteProviderService = requestNoteProviderService;
         }
 
-        [HttpPost("AprobarPendienteAprobacionAbastecimiento")]
-        public IActionResult AprobarPendienteAprobacionAbastecimiento(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónDAF);
-
-            return Ok();
-        }
-
-        [HttpPost("RechazarPendienteAprobacionAbastecimiento")]
-        public IActionResult RechazarPendienteAprobacionAbastecimiento(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Reachazada);
-
-            return Ok();
-        }
-
+        
         [HttpPost("AdjuntarArchivo")]
         public IActionResult AdjuntarArchivo(RequestNoteProvider requestNoteProvider)
         {

@@ -21,23 +21,5 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteService = requestNoteService;
             this._requestNoteAnalitycService = requestNoteAnalitycService;
         }
-
-        [HttpPost("AprobarPendienteAprobacionGerentesAnalitica")]
-        public IActionResult PasarPendienteAprobacionAbastecimiento(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónAbastecimiento);
-            this._requestNoteAnalitycService.ChangeStatusByRequestNodeId(id, "Aprobado");
-
-            return Ok();
-        }
-
-        [HttpPost("RechazarPendienteAprobacionGerentesAnalitica")]
-        public IActionResult RechazarPendienteAprobacionGerentesAnalitica(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.PendienteRevisiónAbastecimiento);
-            this._requestNoteAnalitycService.ChangeStatusByRequestNodeId(id, "Rechazado");
-
-            return Ok();
-        }
     }
 }

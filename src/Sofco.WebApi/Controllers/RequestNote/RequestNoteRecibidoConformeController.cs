@@ -30,21 +30,6 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteProviderService = requestNoteProviderService;
         }
 
-        [HttpPost("AprobarRecibidoConforme")]
-        public IActionResult AprobarRecibidoConforme(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.FacturaPendienteAprobaciónGerente);
-
-            return Ok();
-        }
-
-        [HttpPost("CerrarSolicitadaProveedor")]
-        public IActionResult CerradaSolicitadaProveedor(int id)
-        {
-            this._requestNoteService.ChangeStatus(id, Domain.RequestNoteStates.RequestNoteStates.Cerrada);
-            return Ok();
-        }
-
         [HttpGet("DescargarArchivo")]
         public IActionResult DescargarArchivo(int fileId)
         {

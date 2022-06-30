@@ -42,6 +42,7 @@ namespace Sofco.DAL.Repositories.RequestNote
                 .Include(x => x.Status)
                 .Include(x => x.CreationUser)
                 .Include(x => x.UserApplicant)
+                .Include(x=> x.Histories)
                 .FirstOrDefault();
         }
 
