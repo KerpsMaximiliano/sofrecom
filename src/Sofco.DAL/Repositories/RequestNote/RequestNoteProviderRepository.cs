@@ -20,7 +20,10 @@ namespace Sofco.DAL.Repositories.RequestNote
         {
             return this.context.RequestNoteProvider.Where(x => x.Id == id).ToList().FirstOrDefault();
         }
-
+        public void Delete(RequestNoteProvider provider)
+        {
+            this.context.RequestNoteProvider.Remove(provider);
+        }
         public List<RequestNoteProvider> GetAll()
         {
             return this.context.RequestNoteProvider.ToList();

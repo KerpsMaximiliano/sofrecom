@@ -12,6 +12,7 @@ using Sofco.WebApi.Extensions;
 namespace Sofco.WebApi.Controllers.RequestNote
 {
     [Route("api/RequestNoteCambiosEstado")]
+    [ApiController]
     public class RequestNoteCambiosEstadoController : ControllerBase
     {
         private readonly IRequestNoteService requestNoteService;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sofco.Domain.RequestNoteStates;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,7 @@ namespace Sofco.Core.Models.RequestNote
             Analytics = new List<Analytic>();
             Providers = new List<Provider>();
             if (note.Providers != null)
+            {
                 Providers = note.Providers.Select(p => new Provider()
                 {
                     FileId = p.FileId,
@@ -42,13 +44,15 @@ namespace Sofco.Core.Models.RequestNote
                     ProviderId = p.ProviderId,
                     ProviderDescription = p.Provider?.Name
                 }).ToList();
+                ProviderSelectedId = note.Providers.FirstOrDefault(p => p.IsSelected)?.ProviderId;
+            }
             if (note.Attachments != null)
                 Attachments = note.Attachments.Select(p => new File()
                 {
                     FileId = p.FileId,
                     FileDescription = p.File?.FileName,
                     Type = p.Type,
-                    TypeDescription = "Ya te voy a poner la enum con la descripción!"
+                    TypeDescription = Enum.GetName(RequestNoteFileTypes.Borrador.GetType(), p.Type).ToString()
                 }).ToList();
             if (note.ProductsServices != null)
                 ProductsServices = note.ProductsServices.Select(p => new ProductsService()
@@ -110,7 +114,7 @@ namespace Sofco.Core.Models.RequestNote
         public int EvalpropNumber { get; set; }
         public string Comments { get; set; }
         public decimal? PurchaseOrderAmmount { get; set; }
-
+        public string Remarks { get; set; }
         public int? PurchaseOrderNumber { get; set; }
         public bool TravelSection { get; set; }
         public bool TrainingSection { get; set; }

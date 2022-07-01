@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sofco.Domain.Models.RequestNote;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,5 +12,7 @@ namespace Sofco.Core.DAL.RequestNote
         List<Domain.Models.RequestNote.RequestNoteProvider> GetFilesByProviderId(int providerId);
         void InsertarRequestNoteProvider(Domain.Models.RequestNote.RequestNoteProvider requestNoteProvider);
         void Save();
+
+        void Delete(RequestNoteProvider provider);
     }
 }

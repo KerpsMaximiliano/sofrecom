@@ -263,6 +263,25 @@ namespace Sofco.Service.Implementations.RequestNote
                     //Se manda una lista de providers(como en la instancia borrador), deben reemplazar a los ya existentes
                     //en la requestNote.Se manda un campo monto final OC(number) para agregarse a la requestNote.
                     //Se debe asignar el estado de todas las analíticas asociadas a la requestNote como “Pendiente Aprobación”.
+                    if (requestNote.Providers == null)
+                        requestNote.Providers = new List<Provider>();
+
+                    foreach (var prov in req.Providers.ToList())
+                    {
+                        if (!requestNote.Providers.Any(a => a.ProviderId == prov.ProviderId))
+                            unitOfWork.RequestNoteProviderRepository.Delete(prov);
+                    }
+                    foreach (var provNuevo in requestNote.Providers)
+                    {
+                        var prov = req.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
+                        if(prov == null)
+                        {
+                            prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId };
+                            req.Providers.Add(prov);
+                        }
+                        prov.FileId = provNuevo.FileId;
+                        prov.IsSelected = false;
+                    }
                     req.PurchaseOrderAmmount = requestNote.PurchaseOrderAmmount;
                     foreach (var analitica in req.Analytics)
                     {
@@ -297,8 +316,11 @@ namespace Sofco.Service.Implementations.RequestNote
                     //que lo identifique para solo mostrar ese).
                     //Se manda un campo numeroOC y un fileId para la orden de compra. 
                     req.PurchaseOrderNumber = requestNote.PurchaseOrderNumber;
-                    var provider = req.Providers.SingleOrDefault(p => p.ProviderId == requestNote.ProviderSelectedId);
-                    //Agregar campo en la tabla y ponerlo selected
+                    
+                    foreach (var prov in req.Providers)
+                    {
+                        prov.IsSelected = prov.ProviderId == requestNote.ProviderSelectedId;
+                    }
 
                     if (requestNote.Attachments != null && requestNote.Attachments.Any(f => f.FileId.HasValue))
                         req.Attachments.Add(requestNote.Attachments.Where(f => f.FileId.HasValue).Select(p => new RequestNoteFile()
@@ -380,7 +402,7 @@ namespace Sofco.Service.Implementations.RequestNote
 
                 req.Histories.Add(new RequestNoteHistory()
                 {
-                    Comment = requestNote.Comments,
+                    Comment = requestNote.Remarks,
                     CreatedDate = DateTime.UtcNow,
                     StatusFromId = req.StatusId,
                     StatusToId = nuevoEstado,
@@ -388,7 +410,7 @@ namespace Sofco.Service.Implementations.RequestNote
                 });
             }
             req.StatusId = nuevoEstado;
-
+            req.Comments = requestNote.Comments;
             this.unitOfWork.RequestNoteRepository.UpdateRequestNote(req);
             this.unitOfWork.RequestNoteRepository.Save();
         }
