@@ -15,6 +15,7 @@ using File = Sofco.Domain.Models.Common.File;
 namespace Sofco.WebApi.Controllers.RequestNote
 {
     [Route("api/RequestNoteBorrador")]
+    [ApiController]
     public class RequestNoteBorradorController : Controller
     {
         private readonly IRequestNoteService _requestNoteService;

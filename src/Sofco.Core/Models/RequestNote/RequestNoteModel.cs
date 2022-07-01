@@ -1,4 +1,5 @@
-﻿using Sofco.Domain.RequestNoteStates;
+﻿using Newtonsoft.Json;
+using Sofco.Domain.RequestNoteStates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +67,8 @@ namespace Sofco.Core.Models.RequestNote
                     AnalyticId = p.AnalyticId,
                     Asigned = p.Percentage,
                     Description = p.Analytic?.Name,
-                    Status = p.Status
+                    Status = p.Status,
+                    ManagerId = p.Analytic?.ManagerId
                 }).ToList();
             if (note.Trainings != null && note.Trainings.Any())
                 Training = note.Trainings.Select(t => new Training()
@@ -139,6 +141,9 @@ namespace Sofco.Core.Models.RequestNote
         public int Asigned { get; set; }
 
         public string Status { get; set; }
+
+        [JsonIgnore]
+        public int? ManagerId { get; set; }
     }
 
     public class Employee
@@ -190,5 +195,18 @@ namespace Sofco.Core.Models.RequestNote
         public string Details { get; set; }
     }
 
+    public class History
+    {
+        public DateTime CreatedDate { get; set; }
 
+        public string UserName { get; set; }
+
+        public int StatusFromId { get; set; }
+        public string StatusFromDescription { get; set; }
+
+        public int StatusToId { get; set; }
+        public string StatusToDescription { get; set; }
+
+        public string Comment { get; set; }
+    }
 }

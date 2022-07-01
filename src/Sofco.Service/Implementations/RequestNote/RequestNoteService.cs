@@ -184,8 +184,20 @@ namespace Sofco.Service.Implementations.RequestNote
                 response.AddError(Resources.AdvancementAndRefund.Refund.NotFound);
                 return response;
             }
-            response.Data = new RequestNoteModel(note);
+            var user = userData.GetCurrentUser();
 
+            response.Data = new RequestNoteModel(note);
+            switch((RequestNoteStates) note.StatusId)
+            {
+                case RequestNoteStates.PendienteAprobaciónGerentesAnalítica:
+                case RequestNoteStates.FacturaPendienteAprobaciónGerente:
+                case RequestNoteStates.PendienteProcesarGAF:
+                    response.Data.Analytics = response.Data.Analytics.Where(a => a.ManagerId == user.Id).ToList();
+                    break;
+                case RequestNoteStates.PendienteAprobaciónDAF:
+                    response.Data.Providers = response.Data.Providers.Where(p => p.ProviderId == response.Data.ProviderSelectedId).ToList();
+                    break;
+            }
             return response;
         }
         public async Task<Response<List<File>>> AttachFiles(Response<List<File>> response, List<IFormFile> files)
@@ -245,18 +257,25 @@ namespace Sofco.Service.Implementations.RequestNote
         {
             Domain.Models.RequestNote.RequestNote req = this.unitOfWork.RequestNoteRepository.GetById(requestNote.Id.Value);
             var user = userData.GetCurrentUser();
-            int nuevoEstado = (int)status; 
+            int nuevoEstado = (int)status;
             switch (status)
             {
                 case RequestNoteStates.Borrador:
                     break;
                 case RequestNoteStates.PendienteRevisiónAbastecimiento:
-                    //Se marcan las analíticas del gerente logueado como “Rechazada”.
-                    //Se cambia el estado de la requestNote a “Pendiente Revisión Abastecimiento”
-                    //sin importar el estado de las demás analíticas.
-                    foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
+                    if (req.StatusId == (int)RequestNoteStates.PendienteAprobaciónGerentesAnalítica)
                     {
-                        analitica.Status = "Rechazada";
+                        //Se marcan las analíticas del gerente logueado como “Rechazada”.
+                        //Se cambia el estado de la requestNote a “Pendiente Revisión Abastecimiento”
+                        //sin importar el estado de las demás analíticas.
+                        foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
+                        {
+                            analitica.Status = "Rechazada";
+                        }
+                    }
+                    else if (req.StatusId == (int)RequestNoteStates.Borrador)
+                    {
+
                     }
                     break;
                 case RequestNoteStates.PendienteAprobaciónGerentesAnalítica:
@@ -274,7 +293,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     foreach (var provNuevo in requestNote.Providers)
                     {
                         var prov = req.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
-                        if(prov == null)
+                        if (prov == null)
                         {
                             prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId };
                             req.Providers.Add(prov);
@@ -316,7 +335,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     //que lo identifique para solo mostrar ese).
                     //Se manda un campo numeroOC y un fileId para la orden de compra. 
                     req.PurchaseOrderNumber = requestNote.PurchaseOrderNumber;
-                    
+
                     foreach (var prov in req.Providers)
                     {
                         prov.IsSelected = prov.ProviderId == requestNote.ProviderSelectedId;
@@ -325,7 +344,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     if (requestNote.Attachments != null && requestNote.Attachments.Any(f => f.FileId.HasValue))
                         req.Attachments.Add(requestNote.Attachments.Where(f => f.FileId.HasValue).Select(p => new RequestNoteFile()
                         {
-                            Type = (int) RequestNoteFileTypes.OrdenDeCompra,
+                            Type = (int)RequestNoteFileTypes.OrdenDeCompra,
                             FileId = p.FileId.Value
                         }).First());
                     break;
@@ -372,7 +391,7 @@ namespace Sofco.Service.Implementations.RequestNote
                                 FileId = file.FileId.Value
                             });
                         }
-                        
+
                     break;
                 case RequestNoteStates.PendienteProcesarGAF:
                     //Aprobar → Se manda un array de analíticas. Dichas analíticas pasan al estado “Aprobada Facturación”.
@@ -395,7 +414,7 @@ namespace Sofco.Service.Implementations.RequestNote
                 default:
                     break;
             }
-            if(req.StatusId != nuevoEstado) //Si cambia el estado, guardamos historial
+            if (req.StatusId != nuevoEstado) //Si cambia el estado, guardamos historial
             {
                 if (req.Histories == null)
                     req.Histories = new List<RequestNoteHistory>();

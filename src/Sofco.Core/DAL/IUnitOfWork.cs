@@ -138,6 +138,7 @@ namespace Sofco.Core.DAL
         IRequestNoteAnalitycRepository RequestNoteAnalitycRepository { get; }
         IRequestNoteProviderRepository RequestNoteProviderRepository { get; }
 
+        IRequestNoteHistoryRepository RequestNoteHistoryRepository { get; }
 
         void BeginTransaction();
         void Rollback();

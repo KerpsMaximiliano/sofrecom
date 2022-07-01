@@ -166,6 +166,8 @@ namespace Sofco.DAL
 
         private IRequestNoteProviderRepository requestNoteProviderRepository;
 
+        private IRequestNoteHistoryRepository requestNoteHistoryRepository;
+
         #endregion
 
         public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig, IOptions<AppSetting> appSettingOptions)
@@ -305,6 +307,8 @@ namespace Sofco.DAL
         public IRequestNoteAnalitycRepository RequestNoteAnalitycRepository => requestNoteAnalitycRepository ?? (requestNoteAnalitycRepository = new RequestNoteAnalitycRepository(context));
 
         public IRequestNoteProviderRepository RequestNoteProviderRepository => requestNoteProviderRepository ?? (requestNoteProviderRepository = new RequestNoteProviderRepository(context));
+
+        public IRequestNoteHistoryRepository RequestNoteHistoryRepository => requestNoteHistoryRepository ?? (requestNoteHistoryRepository = new RequestNoteHistoryRepository(context));
 
         public void Save()
         {
