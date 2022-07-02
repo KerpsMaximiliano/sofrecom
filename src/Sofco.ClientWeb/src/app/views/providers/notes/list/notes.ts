@@ -66,7 +66,7 @@ export class NotesComponent implements OnInit{
             d.forEach(note => {
                 note.status = this.states[note.statusId].text;
                 this.notes.push(note);
-                this.notes = [...this.notes]
+                this.notes = [...this.notes];
             })
             this.notesInProcess = this.notes;
         });

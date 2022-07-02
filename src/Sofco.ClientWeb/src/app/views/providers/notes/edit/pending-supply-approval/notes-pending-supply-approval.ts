@@ -4,7 +4,9 @@ import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
+import { AuthService } from "app/services/common/auth.service";
 import { MessageService } from "app/services/common/message.service";
+import { Cookie } from "ng2-cookies";
 import { FileUploader } from "ng2-file-upload";
 
 @Component({
@@ -22,6 +24,7 @@ export class NotesPendingSupplyApproval implements OnInit{
     show = false;
     fileSelected = false;
     providerSelected = null;
+    fileUploaded;
 
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({url:""});
@@ -46,6 +49,7 @@ export class NotesPendingSupplyApproval implements OnInit{
         private providersAreaService: ProvidersAreaService,
         private messageService: MessageService,
         private requestNoteService: RequestNoteService,
+        private authService: AuthService,
         private router: Router
     ) {}
 
@@ -55,8 +59,9 @@ export class NotesPendingSupplyApproval implements OnInit{
 
     inicializar() {
         this.mode = this.requestNoteService.getMode();
-        console.log(this.currentNote)
-        this.checkFormStatus()
+        console.log(this.currentNote);
+        this.checkFormStatus();
+        this.uploaderConfig();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             this.formNota.patchValue({
                 descripcion: this.currentNote.description,
@@ -85,9 +90,14 @@ export class NotesPendingSupplyApproval implements OnInit{
     }
 
     reject() {
-        //Si Rechaza, se cambia el estado de la nota de pedido a Rechazada y finaliza el workflow.
-        this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);
-        this.router.navigate(['/providers/notes']);
+        let model = {
+            id: this.currentNote.id
+        };
+        this.requestNoteService.rejectPendingSupplyApproval(model).subscribe(d => {
+            console.log(d);
+            this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);
+            this.router.navigate(['/providers/notes']);
+        })
     }
 
     approve() {
@@ -99,16 +109,15 @@ export class NotesPendingSupplyApproval implements OnInit{
         if(this.fileSelected == false) {
             this.messageService.showMessage("Debe seleccionar un archivo orden de compra para subir", 2);
             fileError = true;
-        }
+        };
         if(this.providerSelected == null) {
             this.messageService.showMessage("Debe seleccionar un proveedor", 2);
             providerError = true;
-        }
+        };
         if(this.formNota.invalid || providerError || fileError) {
             return;
-        }
-        this.messageService.showMessage("La nota de pedido ha sido aprobada", 0);
-        this.router.navigate(['/providers/notes']);
+        };
+        this.uploader.uploadAll();
     }
 
     fileCheck(event) {
@@ -131,5 +140,62 @@ export class NotesPendingSupplyApproval implements OnInit{
                 this.markFormGroupTouched(control);
             }
         });
+    }
+
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+        });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+                return;
+            }
+            let jsonResponse = JSON.parse(response);
+            let model = {
+                fileId: jsonResponse.data[0].id,
+                purchaseOrderNumber: this.formNota.controls.ordenCompra.value
+            };
+            this.fileUploaded = model;
+            this.clearSelectedFile();
+        };
+
+        this.uploader.onCompleteAll = () => {
+            let model = {
+                id: this.currentNote.id,
+                purchaseOrderNumber: this.fileUploaded.purchaseOrderNumber,
+                attachments: [{
+                    fileId: this.fileUploaded.fileId,
+                    type: 2
+                }],
+                providerSelectedId:  this.providerSelected.providerId,
+                comments: this.formNota.controls.observaciones.value
+            };
+            console.log(model);
+            this.requestNoteService.approvePendingSupplyApproval(model).subscribe(d => {
+                console.log(d);
+                this.messageService.showMessage("La nota de pedido ha sido aprobada", 0);
+                this.router.navigate(['/providers/notes']);
+            });
+        }
+
+        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
     }
 }

@@ -76,28 +76,20 @@ export class NotesPendingGAFProcessing {
 
     downloadOC() {
         //descargar archivo orden de compra
-        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 0).subscribe(d=>{
-            if(d == null) {
-                this.messageService.showMessage("No hay archivos para descargar", 2);
-            }
-        })
     }
 
     downloadProviderDoc() {
         //descargar archivos documentacion para proveedor
         //ver lista
-        this.requestNoteService.downloadFileRequestedProvider().subscribe(d=>{})
     }
 
     downloadRC() {
         //descargar archivos documentacion recibido conforme
         //ver lista
-        this.requestNoteService.downloadFileReceivedConformable().subscribe(d=>{})
     }
 
     downloadBills() {
         //descargar archivos facturas
-        this.requestNoteService.downloadFilePendingManagementBillApproval().subscribe(d=>{})
     }
 
     close() {

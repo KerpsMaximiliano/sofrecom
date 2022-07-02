@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { Service } from "../common/service";
 
 @Injectable({
@@ -26,6 +27,12 @@ export class RequestNoteService {
         return this.mode;
     }
 
+    //Request Notes Pending GAF Processing - Pendiente Procesar GAF
+    approvePendingGAFProcessing(id: number): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteProcesarGAF/AprobarPendienteProcesarGAF`, id);
+    }
+
+    //FINALES
     public getById(id: number): Observable<any> {
         return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/GetById/${id}`);
     }
@@ -34,7 +41,37 @@ export class RequestNoteService {
         return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/GetAll`);
     }
 
-    //New Request Note
+    public getHistories(id: number) {
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteHistories/?id=${id}`);
+    }
+
+    public downloadProviderFile(id: number, type: number) {
+        return this.http.get(`${this.baseUrl}/file/${id}/${type}`, {
+            responseType: 'arraybuffer',
+            observe: 'response'
+        }).pipe(map((res: any) => {
+            return new Blob([res.body], { type: 'application/octet-stream' });
+        }));
+    }
+
+    public downloadPurchaseOrder() {
+
+    }
+
+    public downloadProviderDocumentation() {
+
+    }
+
+    public downloadRecievedConformableDocumentation() {
+
+    }
+
+    public downloadBill() {
+
+    }
+
+    public 
+    //Borrador
     public approveDraft(id: number): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/RequestNoteBorrador/AprobarBorrador?id=${id}`, null);
     };
@@ -46,126 +83,60 @@ export class RequestNoteService {
     public uploadDraftFiles() {
         return `${this.baseUrl}/RequestNoteBorrador/UploadFiles`
     }
-
-    //Request Notes Pending Supply Revision - Pendiente Revisión Abastecimiento
-    approvePendingSupplyRevision(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteRevisionAbastecimiento/AprobarPendienteRevisionAbastecimiento`, id);
+    //Pendiente Revisión Abastecimiento
+    public sendPendingSupplyRevision(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarPendienteRevisionAbastecimiento`, requestNote)
     }
 
-    rejectPendingSupplyRevision(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteRevisionAbastecimiento/RechazarPendienteRevisionAbastecimiento`, id);
+    public rejectPendingSupplyRevision(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/RechazarPendienteRevisionAbastecimiento`, requestNote)
+    }
+    //Pendiente Aprobación Gerentes Analítica
+    public approvePendingApprovalManagementAnalytic(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarPendienteAprobacionGerentesAnalitica`, requestNote)
     }
 
-    saveNotePendingSupplyRevision(requestNote: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteRevisionAbastecimiento/GuardarArchivo`, requestNote);
+    public rejectPendingApprovalManagementAnalytic(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/RechazarPendienteAprobacionGerentesAnalitica`, requestNote)
+    }
+    //Pendiente Aprobación Abastecimiento
+    approvePendingSupplyApproval(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarPendienteAprobacionAbastecimiento`, requestNote);
     }
 
-    //Request Notes Pending Approval Management Analytic - Pendiente Aprobación Gerentes Analítica
-    approvePendingApprovalManagementAnalytic(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteAprobacionGerentesAnalitica/AprobarPendienteAprobacionGerentesAnalitica`, id);
+    rejectPendingSupplyApproval(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/RechazarPendienteAprobacionAbastecimiento`, requestNote);
+    }
+    //Pendiente Aprobación DAF
+    approvePendingDAFApproval(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarPendienteAprobacionDAF`, requestNote);
     }
 
-    rejectPendingApprovalManagementAnalytic(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteAprobacionGerentesAnalitica/RechazarPendienteAprobacionGerentesAnalitica`, id);
+    rejectPendingDAFApproval(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/RechazarPendienteAprobacionDAF`, requestNote);
     }
 
-    //Request Notes Pending Supply Approval - Pendiente Aprobación Abastecimiento
-    approvePendingSupplyApproval(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteAprobacionAbastecimiento/AprobarPendienteAprobacionAbastecimiento`, id);
-    }
-
-    rejectPendingSupplyApproval(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteAprobacionAbastecimiento/RechazarPendienteAprobacionAbastecimiento`, id);
-    }
-
-    uploadFilePendingSupplyApproval(requestNote: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteAprobacionAbastecimiento/AdjuntarArchivo`, requestNote);
-    }
-
-    //Request Notes Pending DAF Approval - Pendiente Aprobación DAF
-    approvePendingDAFApproval(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteAprobacionDAF/AprobarPendienteAprobacionDAF`, id);
-    }
-
-    rejectPendingDAFApproval(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteAprobacionDAF/RechazarPendienteAprobacionDAF`, id);
-    }
-
-    downloadFilePendingDAFApproval(id: number, type: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteAprobacionDAF/DescargarArchivo`, id, type);
-    }
-
-    //Request Notes Approved - Aprobada
-    approveApproved(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteAprobada/AprobarAprobada`, id);
-    }
-
-    rejectApproved(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteAprobada/RechazarAprobada`, id);
-    }
-
-    listFilesApproved(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/ListarArchivos`);
-    }
-
-    uploadProviderFilesApproved(requestNoteProvider: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteAprobada/CargarArchivosProveedor`, requestNoteProvider);
+    //Aprobada
+    applyApproved(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarAprobada`, requestNote);
     }
 
     //Request Notes Requested Provider - Solicitada a Proveedor
-    approveRequestedProvider(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteSolicitadaProveedor/AprobarSolicitadaProveedor`, id);
+    approveRequestedProvider(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarSolicitadaProveedor`, requestNote);
     }
 
-    closeRequestedProvider(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteSolicitadaProveedor/CerrarSolicitadaProveedor`, id);
+    closeRequestedProvider(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/CerrarSolicitadaProveedor`, requestNote);
     }
 
-    downloadFileRequestedProvider(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteSolicitadaProveedor/DescargarArchivo`);
+    //Recibido Conforme
+    approveReceivedConformable(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarRecibidoConforme`, requestNote);
     }
 
-    uploadRequestedProviderFilesApproved(requestNoteProviders: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteSolicitadaProveedor/CargarArchivosAdjuntos`, requestNoteProviders);
+    //Factura Pendiente Aprobación Gerente
+    approvePendingManagementBillApproval(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarFacturaPendienteAprobacion`, requestNote);
     }
-
-    //Request Notes Received Conformable - Recibido Conforme
-    approveReceivedConformable(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteRecibidoConforme/AprobarRecibidoConforme`, id);
-    }
-
-    closeReceivedConformable(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteRecibidoConforme/CerrarSolicitadaProveedor`, id);
-    }
-
-    downloadFileReceivedConformable(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteRecibidoConforme/DescargarArchivo`);
-    }
-
-    listFilesReceivedConformable(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteRecibidoConforme/ListarArchivos`);
-    }
-
-    uploadFilesReceivedConformable(requestNoteProviders: any): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteRecibidoConforme/CargarArchivosAdjuntos`, requestNoteProviders);
-    }
-
-    //Request Notes Pending Management Bill Approval - Factura Pendiente Aprobación Gerente
-    approvePendingManagementBillApproval(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNoteFacturaPendienteAprobacionGerente/AprobarRecibidoConforme`, id);
-    }
-
-    listFilesPendingManagementBillApproval(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteFacturaPendienteAprobacionGerente/ListarArchivos`);
-    }
-
-    downloadFilePendingManagementBillApproval(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteFacturaPendienteAprobacionGerente/DescargarArchivo`);
-    }
-
-    //Request Notes Pending GAF Processing - Pendiente Procesar GAF
-    approvePendingGAFProcessing(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteProcesarGAF/AprobarPendienteProcesarGAF`, id);
-    }
-
 }

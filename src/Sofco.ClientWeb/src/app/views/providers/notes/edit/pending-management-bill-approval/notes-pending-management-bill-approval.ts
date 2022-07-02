@@ -76,34 +76,33 @@ export class NotesPendingManagementBillApproval {
 
     downloadOC() {
         //descargar archivo orden de compra
-        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 0).subscribe(d=>{
-            if(d == null) {
-                this.messageService.showMessage("No hay archivos para descargar", 2);
-            }
-        })
     }
 
     downloadProviderDoc() {
         //descargar archivos documentacion para proveedor
         //ver lista
-        this.requestNoteService.downloadFileRequestedProvider().subscribe(d=>{})
     }
 
     downloadRC() {
         //descargar archivos documentacion recibido conforme
         //ver lista
-        this.requestNoteService.downloadFileReceivedConformable().subscribe(d=>{})
     }
 
     downloadBills() {
         //descargar archivos facturas
-        this.requestNoteService.downloadFilePendingManagementBillApproval().subscribe(d=>{})
     }
 
     approve() {
         //Al aprobar se tomarán las analíticas asociadas al gerente logueado y se pasarán al estado “Aprobada Facturación”. 
         //Se realizará un barrido de todas las analiticas y si todas están en “Aprobada Facturación”, se cambiará el estado de la nota de pedido a “Pendiente Procesar GAF”.
-        this.messageService.showMessage("El estado de sus analíticas asociadas ha sido cambiado", 0);
-        this.router.navigate(['/providers/notes']);
+        let model = {
+            id: this.currentNote.id,
+            comments: this.formNota.controls.observaciones.value
+        };
+        this.requestNoteService.approvePendingManagementBillApproval(model).subscribe(d => {
+            console.log(d);
+            this.messageService.showMessage("El estado de sus analíticas asociadas ha sido cambiado", 0);
+            this.router.navigate(['/providers/notes']);
+        })
     }
 }

@@ -16,6 +16,7 @@ import { RefundService } from "app/services/advancement-and-refund/refund.servic
 import { SalaryAdvancementService } from "app/services/advancement-and-refund/salary-advancement";
 import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { FileService } from "app/services/common/file.service";
 import { FileUploadModule } from "ng2-file-upload";
 import { BsDatepickerModule, ButtonsModule, ModalModule } from "ngx-bootstrap";
 import { NotesAddComponent } from "./notes/add/notes-add";
@@ -83,7 +84,8 @@ import { ProvidersComponent } from "./providers/list/providers";
         EmployeeService,
         AnalyticService,
         RefundService,
-        SalaryAdvancementService
+        SalaryAdvancementService,
+        FileService
     ],
     exports: []
 })

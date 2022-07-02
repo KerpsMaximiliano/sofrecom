@@ -4,8 +4,12 @@ import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
+import { AuthService } from "app/services/common/auth.service";
+import { FileService } from "app/services/common/file.service";
 import { MessageService } from "app/services/common/message.service";
+import { Cookie } from "ng2-cookies";
 import { FileUploader } from "ng2-file-upload";
+import * as FileSaver from "file-saver";
 
 @Component({
     selector: 'notes-approved',
@@ -19,6 +23,7 @@ export class NotesApproved {
     analiticas = [];
     providersGrid = [];//proveedor seleccionado etapas anteriores
     fileSelected = false;
+    uploadedFilesId = [];
 
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({url:""});
@@ -44,7 +49,9 @@ export class NotesApproved {
         private providersAreaService: ProvidersAreaService,
         private messageService: MessageService,
         private requestNoteService: RequestNoteService,
-        private router: Router
+        private authService: AuthService,
+        private router: Router,
+        private fileService: FileService
     ) {}
 
     ngOnInit(): void {
@@ -53,8 +60,8 @@ export class NotesApproved {
 
     inicializar() {
         this.mode = this.requestNoteService.getMode();
+        this.uploaderConfig();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
-            console.log(d);
             this.formNota.patchValue({
                 descripcion: this.currentNote.description,
                 rubro: d.data.description,
@@ -81,10 +88,13 @@ export class NotesApproved {
     }
 
     downloadOC() {
-        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 1).subscribe(d=>{
-            if(d == null) {
-                this.messageService.showMessage("No hay archivos para descargar", 2);
-            }
+        let files = this.currentNote.attachments.find(file => file.type == 2);
+        //this.fileService.getFile(files.fileId, 5).subscribe(d => {
+        //    console.log(d)
+        //})
+        this.requestNoteService.downloadProviderFile(files.fileId, 5).subscribe(d => {
+            console.log(d);
+            FileSaver.saveAs(d, "file.xlsx");
         })
     }
 
@@ -95,15 +105,64 @@ export class NotesApproved {
             this.messageService.showMessage("Debe seleccionar la documentación para el proveedor para subir", 2);
             return;
         };
-        this.messageService.showMessage("La nota de pedido ha sido solicitada", 0);
-        this.router.navigate(['/providers/notes']);
+        this.uploader.uploadAll();
     }
 
     fileCheck(event) {
+        console.log(event)
         if(event.length >= 1) {
             this.fileSelected = true;
         } else {
             this.fileSelected = false;
         }
+    }
+
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+        });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+                return;
+            }
+            let jsonResponse = JSON.parse(response);
+            this.uploadedFilesId.push({
+                type: 3,
+                fileId: jsonResponse.data[0].id
+            });
+            console.log(this.uploadedFilesId)
+            this.clearSelectedFile();
+        };
+        this.uploader.onCompleteAll = () => {
+            let model = {
+                id: this.currentNote.id,
+                attachments: this.uploadedFilesId,
+                comments: this.formNota.controls.observaciones.value
+            };
+            this.requestNoteService.applyApproved(model).subscribe(d => {
+                console.log(d);
+                this.messageService.showMessage("La nota de pedido ha sido solicitada", 0);
+                this.router.navigate(['/providers/notes']);
+            })
+        }
+        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
     }
 }

@@ -4,7 +4,9 @@ import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
+import { AuthService } from "app/services/common/auth.service";
 import { MessageService } from "app/services/common/message.service";
+import { Cookie } from "ng2-cookies";
 import { FileUploader } from "ng2-file-upload";
 
 @Component({
@@ -19,6 +21,7 @@ export class NotesReceivedConformable {
     analiticas = [];
     providersGrid = [];//proveedor seleccionado etapas anteriores
     fileSelected = false;
+    uploadedFilesId = [];
 
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({url:""});
@@ -47,6 +50,7 @@ export class NotesReceivedConformable {
         private providersAreaService: ProvidersAreaService,
         private messageService: MessageService,
         private requestNoteService: RequestNoteService,
+        private authService: AuthService,
         private router: Router
     ) {}
 
@@ -56,6 +60,7 @@ export class NotesReceivedConformable {
 
     inicializar() {
         this.mode = this.requestNoteService.getMode();
+        this.uploaderConfig();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             console.log(d);
             this.formNota.patchValue({
@@ -84,23 +89,17 @@ export class NotesReceivedConformable {
     }
 
     downloadOC() {
-        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 0).subscribe(d=>{
-            if(d == null) {
-                this.messageService.showMessage("No hay archivos para descargar", 2);
-            }
-        })
+        //descargar orden de compra
     }
 
     downloadProviderDoc() {
         //descargar archivos documentacion para proveedor
         //ver lista
-        this.requestNoteService.downloadFileRequestedProvider().subscribe(d=>{})
     }
 
     downloadRC() {
         //descargar archivos documentacion recibido conforme
         //ver lista
-        this.requestNoteService.downloadFileReceivedConformable().subscribe(d=>{})
     }
 
     addBill() {
@@ -110,8 +109,7 @@ export class NotesReceivedConformable {
             this.messageService.showMessage("Debe seleccionar una factura para subir", 2);
             return;
         };
-        this.messageService.showMessage("La factura ha sido adjuntada a la nota de pedido", 0);
-        this.router.navigate(['/providers/notes']);
+        this.uploader.uploadAll();
     }
 
     fileCheck(event) {
@@ -120,5 +118,54 @@ export class NotesReceivedConformable {
         } else {
             this.fileSelected = false;
         }
+    }
+
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+        });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+                return;
+            }
+            let jsonResponse = JSON.parse(response);
+            this.uploadedFilesId.push({
+                type: 5,
+                fileId: jsonResponse.data[0].id
+            });
+            console.log(this.uploadedFilesId)
+            this.clearSelectedFile();
+        };
+        this.uploader.onCompleteAll = () => {
+            let model = {
+                id: this.currentNote.id,
+                attachments: this.uploadedFilesId,
+                comments: this.formNota.controls.observaciones.value
+            };
+            this.requestNoteService.approveReceivedConformable(model).subscribe(d => {
+                console.log(d);
+                this.messageService.showMessage("Las facturas han sido adjuntadas a la nota de pedido", 0);
+                this.router.navigate(['/providers/notes']);
+            })
+        }
+        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
     }
 }

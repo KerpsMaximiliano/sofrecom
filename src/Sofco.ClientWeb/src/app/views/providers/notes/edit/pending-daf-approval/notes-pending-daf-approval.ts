@@ -90,11 +90,13 @@ export class NotesPendingDAFApproval {
     }
 
     downloadOC() {
-        this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 1).subscribe(d=>{
+        /*
+            this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 1).subscribe(d=>{
             if(d == null) {
                 this.messageService.showMessage("No hay archivos para descargar", 2);
             }
         })
+        */
     }
 
     rejectM() {
@@ -111,14 +113,27 @@ export class NotesPendingDAFApproval {
             this.messageService.showMessage("Debe dejar una observación si desea rechazar la nota de pedido", 2);
             this.modal.hide();
             return;
+        };
+        let model = {
+            id: this.currentNote.id,
+            remarks: this.rejectComments
         }
-        this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);
-        this.router.navigate(['/providers/notes']);
+        this.requestNoteService.rejectPendingDAFApproval(model).subscribe(d => {
+            console.log(d);
+            this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);
+            this.router.navigate(['/providers/notes']);
+        })
     }
 
     approve() {
-        //Si Aprueba se cambia el estado a “Aprobada”
-        this.messageService.showMessage("La nota de pedido ha sido aprobada", 0);
-        this.router.navigate(['/providers/notes']);
+        let model = {
+            id: this.currentNote.id,
+            comments: this.formNota.controls.observaciones.value
+        }
+        this.requestNoteService.approvePendingDAFApproval(model).subscribe(d => {
+            console.log(d);
+            this.messageService.showMessage("La nota de pedido ha sido aprobada", 0);
+            this.router.navigate(['/providers/notes']);
+        })
     }
 }

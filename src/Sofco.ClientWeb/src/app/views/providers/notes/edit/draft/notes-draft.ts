@@ -154,7 +154,6 @@ export class NotesDraftComponent implements OnInit{
         this.travelFormShow = this.currentNote.travelSection;
         this.trainingFormShow = this.currentNote.trainingSection;
         this.providersAreaService.getAll().subscribe(d => {
-            //console.log(d)
             d.data.forEach(providerArea => {
                 if(providerArea.active) {
                     this.providerAreas.push(providerArea);
@@ -164,7 +163,6 @@ export class NotesDraftComponent implements OnInit{
         });
         this.existingData();
         this.employeeService.getEveryone().subscribe(d => {
-            //console.log(d);
             this.participants = d;
             d.forEach(user => {
                 if(user.isExternal == 0 && user.endDate == null) {
@@ -209,6 +207,8 @@ export class NotesDraftComponent implements OnInit{
         if(this.currentNote.attachments != null) {
             this.uploadedFilesId = this.currentNote.attachments;
         }
+        //this.providers = this.currentNote.providers;
+        console.log(this.providers)
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             this.formNota.patchValue({
                 description: this.currentNote.description,
@@ -221,6 +221,15 @@ export class NotesDraftComponent implements OnInit{
                 training: this.currentNote.trainingSection
             });
             this.critical = (d.data.critical) ? "Si" : "No";
+        });
+        this.providersService.getAll().subscribe(d => {
+            console.log(d.data)
+            d.data.forEach(prov => {
+                if(prov.providerAreaId == this.currentNote.providerAreaId) {
+                    this.providers.push(prov);
+                    this.providers = [...this.providers]
+                }
+            });
         });
         this.analiticasTable = this.currentNote.analytics;
         this.productosServicios = this.currentNote.productsServices;
@@ -253,6 +262,7 @@ export class NotesDraftComponent implements OnInit{
     }
 
     change(event) {
+        console.log(event)
         if(event != undefined) {
             this.critical = (event.critical) ? "Si" : "No";
             this.providers = [];
@@ -551,18 +561,22 @@ export class NotesDraftComponent implements OnInit{
             }
             console.log("Invalid nota");
             return;
-        }
+        };
         if(this.formNota.controls.travel.value == true) {
             if(!this.formViaje.valid || this.participantesViaje.length <= 0) {
                 console.log("Invalid viaje");
                 return;
             }
-        }
+        };
         if(this.formNota.controls.training.value == true) {
             if(!this.formCapacitacion.valid || this.participantesCapacitacion.length <= 0) {
                 console.log("Invalid capacitacion");
                 return;
             }
+        };
+        let model = {
+            id: this.currentNote.id,
+            comments: this.formNota.controls.observaciones.value
         }
         this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
         this.messageService.showMessage("La nota de pedido ha sido enviada", 0);

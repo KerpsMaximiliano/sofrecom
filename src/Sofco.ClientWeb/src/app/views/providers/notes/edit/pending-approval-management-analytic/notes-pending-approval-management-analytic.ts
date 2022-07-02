@@ -81,15 +81,29 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
         //si todas están aprobadas, entonces la nota de pedido pasa a estado “Pendiente Aprobación Abastecimiento”. 
         //Si hay al menos una que esté en estado “Pendiente de Aprobación”, se mantiene el estado actual.
         //this.requestNoteService.approvePendingApprovalManagementAnalytic
-        this.messageService.showMessage("Las analíticas asociadas han sido aprobadas", 0);
-        this.router.navigate(['/providers/notes']);
+        let model = {
+            id: this.currentNote.id,
+            comments: this.formNota.controls.observaciones.value
+        };
+        this.requestNoteService.approvePendingApprovalManagementAnalytic(model).subscribe(d => {
+            console.log(d);
+            this.messageService.showMessage("Las analíticas asociadas han sido aprobadas", 0);
+            this.router.navigate(['/providers/notes']);
+        })
+        
     }
 
     reject() {
         //Se marcan las analíticas del gerente logueado como “Rechazada”. 
         //Se cambia el estado de la nota de pedido a estado “Pendiente Revisión Abastecimiento” sin importar el estado del resto de las analíticas.
         //this.requestNoteService.rejectPendingApprovalManagementAnalytic
-        this.messageService.showMessage("Las analíticas asociadas han sido rechazadas", 0);
-        this.router.navigate(['/providers/notes']);
+        let model = {
+            id: this.currentNote.id
+        };
+        this.requestNoteService.rejectPendingApprovalManagementAnalytic(model).subscribe(d => {
+            console.log(d);
+            this.messageService.showMessage("Las analíticas asociadas han sido aprobadas", 0);
+            this.router.navigate(['/providers/notes']);
+        })
     }
 }

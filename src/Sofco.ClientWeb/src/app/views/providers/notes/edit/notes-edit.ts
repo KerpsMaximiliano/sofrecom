@@ -20,6 +20,20 @@ import { RequestNoteService } from "app/services/admin/request-note.service";
         7 - Adjuntar Factura
         8 - Aprobar
         9 - Cerrar
+
+    ESTADOS:
+        1 - Borrador
+        2 - Pendiente Revisión Abastecimiento
+        3 - Pendiente Aprobación Gerentes Analítica
+        4 - Pendiente Aprobación Abastecimiento
+        5 - Pendiente Aprobación DAF
+        6 - Aprobada
+        7 - Solicitada a Proveedor
+        8 - Recibido Conforme
+        9 - Factura Pendiente Aprobación Gerente
+        10 - Pendiente Procesar GAF
+        11 - Cerrada
+        12 - Rechazada
 */
 
 export class NotesEditComponent implements OnInit{
@@ -91,7 +105,10 @@ export class NotesEditComponent implements OnInit{
             this.estadoSeleccionado = this.estado;
             this.showEdit = true;
         });
-        
+        //Histories
+        this.requestNoteService.getHistories(this.route.snapshot.params['id']).subscribe(d => {
+            console.log(d)
+        })
     }
 
     setEstado() {
