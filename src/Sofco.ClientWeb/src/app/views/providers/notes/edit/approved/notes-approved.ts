@@ -94,7 +94,7 @@ export class NotesApproved {
         //})
         this.requestNoteService.downloadProviderFile(files.fileId, 5).subscribe(d => {
             console.log(d);
-            FileSaver.saveAs(d, "file.xlsx");
+            FileSaver.saveAs(d, "file.txt");
         })
     }
 

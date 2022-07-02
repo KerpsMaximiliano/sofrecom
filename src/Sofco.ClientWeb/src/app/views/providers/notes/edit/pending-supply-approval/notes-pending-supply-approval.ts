@@ -170,6 +170,7 @@ export class NotesPendingSupplyApproval implements OnInit{
         };
 
         this.uploader.onCompleteAll = () => {
+            this.providerSelected.isSelected
             let model = {
                 id: this.currentNote.id,
                 purchaseOrderNumber: this.fileUploaded.purchaseOrderNumber,

@@ -576,7 +576,7 @@ export class NotesDraftComponent implements OnInit{
         };
         let model = {
             id: this.currentNote.id,
-            comments: this.formNota.controls.observaciones.value
+            comments: this.formNota.controls.observations.value
         }
         this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
         this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
