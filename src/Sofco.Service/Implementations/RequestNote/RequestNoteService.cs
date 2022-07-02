@@ -429,7 +429,8 @@ namespace Sofco.Service.Implementations.RequestNote
                 });
             }
             req.StatusId = nuevoEstado;
-            req.Comments = requestNote.Comments;
+            if (!string.IsNullOrEmpty(requestNote.Comments))
+                req.Comments = requestNote.Comments;
             this.unitOfWork.RequestNoteRepository.UpdateRequestNote(req);
             this.unitOfWork.RequestNoteRepository.Save();
         }
