@@ -69,7 +69,7 @@ export class NotesAddComponent implements OnInit{
         providerArea: new FormControl(null, [Validators.required]),
         critical: new FormControl(null, []),
         analytics: new FormControl(null, []),
-        requiresPersonel: new FormControl(null, []),
+        requiresPersonel: new FormControl(false, []),
         providers: new FormControl(null, []),
         evaluationProposal: new FormControl(false, []),
         numberEvalprop: new FormControl(null, [Validators.maxLength(100)]),
