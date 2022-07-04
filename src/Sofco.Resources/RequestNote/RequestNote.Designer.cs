@@ -68,5 +68,23 @@ namespace Sofco.Resources.RequestNote {
                 return ResourceManager.GetString("FileUpload", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a requestNote/requestNote.notAllowed.
+        /// </summary>
+        public static string NotAllowed {
+            get {
+                return ResourceManager.GetString("NotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a requestNote/requestNote.notFound.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
     }
 }

@@ -25,31 +25,5 @@ namespace Sofco.WebApi.Controllers.RequestNote
             this._requestNoteProviderService = requestNoteProviderService;
         }
 
-       
-
-        [HttpGet("GetById/{id}")]
-        public IActionResult GetById(int id)
-        {
-            return Ok(this._requestNoteService.GetById(id));
-        }
-
-        [HttpGet("GetAll")]
-        public IActionResult GetAll(int id)
-        {
-            return Ok(this._requestNoteService.GetAll());
-        }
-
-        [HttpGet("ListarArchivos")]
-        public IActionResult ListarArchivos(int providerId)
-        {
-            return Ok(this._requestNoteProviderService.GetFilesByProviderId(providerId));
-        }
-
-        [HttpPost("CargarArchivosProveedor")]
-        public IActionResult CargarArchivosProveedor([FromBody] List<RequestNoteProvider> requestNoteProviders)
-        {
-            this._requestNoteProviderService.GuardarArchivosProvider(requestNoteProviders);
-            return Ok();
-        }
     }
 }

@@ -70,6 +70,9 @@ namespace Sofco.Core.DAL.Admin
         bool HasAdminGroup(string userMail);
 
         bool HasPermission(int userId, string codigoFuncionalidad, string codigoModulo);
-        
+
+        List<string> GetPermissions(int userId, string codigoModulo);
+
+
     }
 }

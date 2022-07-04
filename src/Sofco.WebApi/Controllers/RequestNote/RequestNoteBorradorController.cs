@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.RequestNote;
 using Sofco.Core.Services.RequestNote;
@@ -74,9 +75,9 @@ namespace Sofco.WebApi.Controllers.RequestNote
         }
 
         [HttpGet("GetAll")]
-        public IActionResult GetAll(int id)
+        public IActionResult GetAll([FromUri] RequestNoteGridFilters filters)
         {
-            return Ok(this._requestNoteService.GetAll());
+            return Ok(this._requestNoteService.GetAll(filters));
         }
     }
 }

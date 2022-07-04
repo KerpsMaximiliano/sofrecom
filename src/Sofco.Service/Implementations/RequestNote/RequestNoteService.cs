@@ -181,23 +181,40 @@ namespace Sofco.Service.Implementations.RequestNote
             var note = this.unitOfWork.RequestNoteRepository.GetById(id);
             if (note == null)
             {
-                response.AddError(Resources.AdvancementAndRefund.Refund.NotFound);
+                response.AddError(Resources.RequestNote.RequestNote.NotFound);
                 return response;
             }
             var user = userData.GetCurrentUser();
-
-            response.Data = new RequestNoteModel(note);
-            switch((RequestNoteStates) note.StatusId)
+            var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOTAPES");
+            var datos = new RequestNoteModel(note, permisos, user.Id);
+            if (!datos.HasEditPermissions && !datos.HasReadPermissions)
             {
-                case RequestNoteStates.PendienteAprobaciónGerentesAnalítica:
-                case RequestNoteStates.FacturaPendienteAprobaciónGerente:
-                case RequestNoteStates.PendienteProcesarGAF:
-                    response.Data.Analytics = response.Data.Analytics.Where(a => a.ManagerId == user.Id).ToList();
-                    break;
-                case RequestNoteStates.PendienteAprobaciónDAF:
-                    response.Data.Providers = response.Data.Providers.Where(p => p.ProviderId == response.Data.ProviderSelectedId).ToList();
-                    break;
+                response.AddError(Resources.RequestNote.RequestNote.NotAllowed);
+                return response;
             }
+            response.Data = datos;
+            if (new List<RequestNoteStates>() {
+                RequestNoteStates.PendienteAprobaciónGerentesAnalítica,
+                RequestNoteStates.FacturaPendienteAprobaciónGerente,
+                RequestNoteStates.PendienteProcesarGAF
+                }
+            .Contains((RequestNoteStates)note.StatusId))
+            {
+                response.Data.Analytics = response.Data.Analytics.Where(a => a.ManagerId == user.Id).ToList();
+            }
+            if (new List<RequestNoteStates>() {
+                RequestNoteStates.PendienteAprobaciónDAF,
+                RequestNoteStates.FacturaPendienteAprobaciónGerente,
+                RequestNoteStates.PendienteProcesarGAF,
+                RequestNoteStates.Aprobada,
+                RequestNoteStates.SolicitadaAProveedor,
+                RequestNoteStates.RecibidoConforme
+                }
+            .Contains((RequestNoteStates)note.StatusId))
+            {
+                response.Data.Providers = response.Data.Providers.Where(p => p.ProviderId == response.Data.ProviderSelectedId).ToList();
+            }
+            
             return response;
         }
         public async Task<Response<List<File>>> AttachFiles(Response<List<File>> response, List<IFormFile> files)
@@ -248,9 +265,13 @@ namespace Sofco.Service.Implementations.RequestNote
             }
             return response;
         }
-        public IList<Domain.Models.RequestNote.RequestNote> GetAll()
+        public IList<RequestNoteGridModel> GetAll(RequestNoteGridFilters filters)
         {
-            return this.unitOfWork.RequestNoteRepository.GetAll();
+            var user = userData.GetCurrentUser();
+            var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOTAPES");
+            return this.unitOfWork.RequestNoteRepository.GetAll(filters)
+                    .Select(n=> new RequestNoteGridModel(n, permisos, user.Id))
+                    .Where(n=> n.HasEditPermissions || n.HasReadPermissions).ToList();
         }
 
         public void ChangeStatus(RequestNoteModel requestNote, RequestNoteStates status)

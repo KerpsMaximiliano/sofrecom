@@ -120,4 +120,10 @@
   <data name="FileUpload" xml:space="preserve">
     <value>requestNote/requestNote.fileUpload</value>
   </data>
+  <data name="NotAllowed" xml:space="preserve">
+    <value>requestNote/requestNote.notAllowed</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>requestNote/requestNote.notFound</value>
+  </data>
 </root>

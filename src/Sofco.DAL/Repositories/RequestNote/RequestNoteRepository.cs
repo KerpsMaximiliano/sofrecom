@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.RequestNote;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
+using Sofco.Core.Models.RequestNote;
 using Sofco.DAL.Repositories.Common;
 
 namespace Sofco.DAL.Repositories.RequestNote
@@ -46,9 +47,22 @@ namespace Sofco.DAL.Repositories.RequestNote
                 .FirstOrDefault();
         }
 
-        public IList<Domain.Models.RequestNote.RequestNote> GetAll()
+        public IList<Domain.Models.RequestNote.RequestNote> GetAll(RequestNoteGridFilters filters)
         {
-            return this.context.RequestNote.ToList();
+            if (filters == null)
+                filters = new RequestNoteGridFilters();
+            return this.context.RequestNote
+                .Where(n=> !filters.CreationUserId.HasValue || n.CreationUserId == filters.CreationUserId)
+                .Where(n=> !filters.StatusId.HasValue || n.StatusId == filters.StatusId)
+                .Where(n=> !filters.FromDate.HasValue || n.CreationDate >= filters.FromDate)
+                .Where(n => !filters.ToDate.HasValue || n.CreationDate <= filters.ToDate)
+                .Where(n => !filters.ProviderId.HasValue || n.Providers.Any(p=> p.ProviderId == filters.ProviderId))
+                //Provider? Quieren filtrar por todos o selected?
+                .Include(x => x.Status)
+                .Include(x => x.Analytics)
+                    .ThenInclude(p => p.Analytic)
+                .Include(x => x.CreationUser)
+                .ToList();
         }
 
         public void UpdateRequestNote(Domain.Models.RequestNote.RequestNote requestNote)

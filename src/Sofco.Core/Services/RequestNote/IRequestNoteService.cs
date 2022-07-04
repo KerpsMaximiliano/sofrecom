@@ -22,7 +22,7 @@ namespace Sofco.Core.Services.RequestNote
         void RechazarRequestNote(int requestNodeId);
         Response<int> GuardarBorrador(RequestNoteModel requestNoteBorrador);
         Response<RequestNoteModel> GetById(int id);
-        IList<Domain.Models.RequestNote.RequestNote> GetAll();
+        IList<RequestNoteGridModel> GetAll(RequestNoteGridFilters filters);
         void ChangeStatus(RequestNoteModel requestNote, RequestNoteStates requestNoteStates);
     }
 }

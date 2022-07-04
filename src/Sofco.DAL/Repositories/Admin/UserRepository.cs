@@ -378,5 +378,16 @@ namespace Sofco.DAL.Repositories.Admin
 
             return user;
         }
+        public List<string> GetPermissions(int userId, string codigoModulo)
+        {
+            var functionalities = context.Functionalities
+                                    .Where(f => f.Module.Code == codigoModulo)
+                                    .Where(f => f.RoleFunctionality.Any(rf => 
+                                                    rf.Role.Groups.Any(g => 
+                                                        g.UserGroups.Any(ug => ug.UserId == userId))))
+                        .Select(f => f.Code).ToList();
+
+            return functionalities;
+        }
     }
 }
