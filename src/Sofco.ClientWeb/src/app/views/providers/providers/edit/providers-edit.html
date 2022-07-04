@@ -52,6 +52,9 @@
                     <div class="form-group">
                         <label class="control-label">Rubro</label>
                         <ng-select formControlName="providerAreaId" [items]="providerAreas" bindLabel="description" bindValue="id"></ng-select>
+                        <span *ngIf="!form.get('providerAreaId')?.valid && (form.get('providerAreaId')?.touched || form.get('providerAreaId')?.dirty)" style="color: red;">
+                            El campo es requerido
+                        </span>
                     </div>
                 </div>
                 <div class="col-md-4" *ngIf="mode == 'Edit'">
@@ -218,7 +221,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Comentarios</label>
-                        <input type="text" class="form-control" formControlName="comments">
+                        <textarea class="form-control" formControlName="comments" cols="30" rows="10"></textarea>
                         <span *ngIf="form.controls.comments.errors?.maxlength" style="color: red;">
                             Máximo 5000 caracteres
                         </span>

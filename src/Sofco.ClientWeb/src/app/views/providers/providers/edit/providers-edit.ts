@@ -34,7 +34,7 @@ export class ProvidersEditComponent implements OnInit{
         id: new FormControl(null),
         active: new FormControl(null),
         name: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
-        providerAreaId: new FormControl(null),
+        providerAreaId: new FormControl(null, [Validators.required]),
         cuit: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required]),
         startDate: new FormControl(null),
         endDate: new FormControl(null),
