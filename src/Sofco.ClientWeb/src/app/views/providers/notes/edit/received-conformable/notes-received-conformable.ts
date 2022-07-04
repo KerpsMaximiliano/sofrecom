@@ -16,6 +16,7 @@ import { FileUploader } from "ng2-file-upload";
 
 export class NotesReceivedConformable {
     @Input() currentNote;
+    @Input() currentNoteStatusDescription;
     mode;
     productosServicios = [];
     analiticas = [];

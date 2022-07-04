@@ -339,7 +339,7 @@ export class NotesAddComponent implements OnInit{
         this.proveedoresTable.splice(index, 1);
     }
 
-    saveNote() {
+    saveNote(send: boolean) {
         console.log(this.formNota.value);
         console.log(this.formViaje.value);
         console.log(this.formCapacitacion.value);
@@ -456,6 +456,13 @@ export class NotesAddComponent implements OnInit{
         console.log(model);
         this.requestNoteService.saveDraft(model).subscribe(d=>{
             this.requestNoteId = d.data;
+            if(send) {
+                this.requestNoteService.approveDraft(this.requestNoteId).subscribe(d=>{
+                    console.log(d);
+                    this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+                    this.router.navigate(['/providers/notes']);
+                });
+            }
         })
     }
 
@@ -516,17 +523,8 @@ export class NotesAddComponent implements OnInit{
                 console.log("Invalid capacitacion");
                 return;
             }
-            
         }
-        if(this.requestNoteId == null) {
-            this.messageService.showMessage("Debe guardar la nota antes de enviarla", 2)
-        }
-
-        this.requestNoteService.approveDraft(this.requestNoteId).subscribe(d=>{
-            console.log(d);
-            this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
-            this.router.navigate(['/providers/notes']);
-        });
+        this.saveNote(true);
     }
 
     clearSelectedFile(){

@@ -14,6 +14,7 @@ import { MessageService } from "app/services/common/message.service";
 export class NotesPendingApprovalManagementAnalytic implements OnInit{
 
     @Input() currentNote;
+    @Input() currentNoteStatusDescription;
     mode;
     show = false;
     productosServicios = [];

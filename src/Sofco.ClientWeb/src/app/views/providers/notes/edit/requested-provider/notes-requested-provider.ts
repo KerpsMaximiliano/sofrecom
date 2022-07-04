@@ -32,6 +32,7 @@ export class NotesRequestedProvider {
     
     rejectComments;
     @Input() currentNote;
+    @Input() currentNoteStatusDescription;
     mode;
 
     productosServicios = [];
@@ -131,6 +132,7 @@ export class NotesRequestedProvider {
         };
         this.requestNoteService.closeRequestedProvider(model).subscribe(d => {{
             console.log(d);
+            this.modal.hide();
             this.messageService.showMessage("La nota de pedido ha sido cerrada", 0);
             this.router.navigate(['/providers/notes']);
         }})

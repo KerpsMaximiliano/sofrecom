@@ -407,7 +407,7 @@ export class NotesDraftComponent implements OnInit{
         this.proveedoresTable.splice(index, 1);
     }
 
-    saveNote() {
+    saveNote(send: boolean) {
         console.log(this.formNota.value);
         console.log(this.formViaje.value);
         console.log(this.formCapacitacion.value);
@@ -513,6 +513,11 @@ export class NotesDraftComponent implements OnInit{
         console.log(model);
         this.requestNoteService.saveDraft(model).subscribe(d=>{
             this.requestNoteId = d.data;
+            if(send) {
+                this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
+                this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+                this.router.navigate(['/providers/notes']);
+            }
         })
     }
 
@@ -574,13 +579,7 @@ export class NotesDraftComponent implements OnInit{
                 return;
             }
         };
-        let model = {
-            id: this.currentNote.id,
-            comments: this.formNota.controls.observations.value
-        }
-        this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
-        this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
-        this.router.navigate(['/providers/notes']);
+        this.saveNote(true);
     }
 
     clearSelectedFile(){

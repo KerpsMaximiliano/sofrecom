@@ -26,6 +26,7 @@ export class NotesPendingDAFApproval {
         "ACTIONS.cancel"
     );
     @Input() currentNote;
+    @Input() currentNoteStatusDescription;
     rejectComments = null;
     mode;
 
@@ -132,6 +133,7 @@ export class NotesPendingDAFApproval {
         }
         this.requestNoteService.rejectPendingDAFApproval(model).subscribe(d => {
             console.log(d);
+            this.modal.hide();
             this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);
             this.router.navigate(['/providers/notes']);
         })

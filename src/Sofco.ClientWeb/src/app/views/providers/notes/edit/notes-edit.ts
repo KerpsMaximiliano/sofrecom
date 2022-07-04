@@ -2,6 +2,7 @@ import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit,
 import { ActivatedRoute } from "@angular/router";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { RequestNoteService } from "app/services/admin/request-note.service";
+import { forkJoin } from "rxjs";
 
 
 @Component({
@@ -9,76 +10,31 @@ import { RequestNoteService } from "app/services/admin/request-note.service";
     templateUrl: './notes-edit.html'
 })
 
-/*
-    BOTONES:
-        1 - Rechazar / Enviar
-        2 - Aprobar / Rechazar
-        3 - Aprobar / Rechazar
-        4 - Aprobar / Rechazar(con modal)
-        5 - Solicitar
-        6 - Cerrar(con modal)
-        7 - Adjuntar Factura
-        8 - Aprobar
-        9 - Cerrar
-
-    ESTADOS:
-        1 - Borrador
-        2 - Pendiente Revisión Abastecimiento
-        3 - Pendiente Aprobación Gerentes Analítica
-        4 - Pendiente Aprobación Abastecimiento
-        5 - Pendiente Aprobación DAF
-        6 - Aprobada
-        7 - Solicitada a Proveedor
-        8 - Recibido Conforme
-        9 - Factura Pendiente Aprobación Gerente
-        10 - Pendiente Procesar GAF
-        11 - Cerrada
-        12 - Rechazada
-*/
-
 export class NotesEditComponent implements OnInit{
+
+    states = [
+        "", 
+        "Borrador",
+        "Pendiente Revisión Abastecimiento",
+        "Pendiente Aprobación Gerentes Analítica",
+        "Pendiente Aprobación Abastecimiento",
+        "Pendiente Aprobación DAF",
+        "Aprobada",
+        "Solicitada a Proveedor",
+        "Recibido Conforme",
+        "Factura Pendiente Aprobación Gerente",
+        "Pendiente Procesar GAF",
+        "Rechazada",
+        "Cerrada"
+    ]
 
     estado: number;
     estadoSeleccionado: number;
     historyComments: string;
     histories = [
-        {
-            createdDate: "02-2022",
-            userName: "usuario 1",
-            statusFrom: "Borrador",
-            statusTo: "Pendiente Revisión Abastecimiento",
-            comment: null
-        },
-        {
-            createdDate: "02-2022",
-            userName: "usuario 2",
-            statusFrom: "Pendiente Revisión Abastecimiento",
-            statusTo: "Pendiente Aprobación Gerentes Analítica",
-            comment: null
-        },
-        {
-            createdDate: "02-2022",
-            userName: "usuario 3",
-            statusFrom: "Pendiente Aprobación Gerentes Analítica",
-            statusTo: "Pendiente Aprobación Abastecimiento",
-            comment: null
-        },
-        {
-            createdDate: "02-2022",
-            userName: "usuario 4",
-            statusFrom: "Pendiente Aprobación Abastecimiento",
-            statusTo: "Pendiente Aprobación DAF",
-            comment: null
-        },
-        {
-            createdDate: "02-2022",
-            userName: "usuario 5",
-            statusFrom: "Pendiente Aprobación DAF",
-            statusTo: "Rechazada",
-            comment: "comentario razón rechazo"
-        }
     ];
     currentNote;
+    currentNoteStatusDescription;
     showEdit = false;
 
     @ViewChild('commentsModal') commentsModal;
@@ -98,16 +54,31 @@ export class NotesEditComponent implements OnInit{
     ){}
 
     ngOnInit(): void {
-        this.requestNoteService.getById(this.route.snapshot.params['id']).subscribe(d => {
-            console.log(d.data);
-            this.currentNote = d.data;
+        forkJoin([this.requestNoteService.getById(this.route.snapshot.params['id']), this.requestNoteService.getHistories(this.route.snapshot.params['id'])]).subscribe(results => {
+            //results[0] - RN
+            //results[1] - Histories
+            this.currentNote = results[0].data;
             this.estado = this.currentNote.statusId;
-            this.estadoSeleccionado = this.estado;
+            if(this.estado > 10) {
+                this.requestNoteService.setMode("View");
+                this.currentNoteStatusDescription = (this.estado == 11) ? "Rechazada" : "Cerrada"
+                this.estadoSeleccionado = results[1][results[1].length - 1].statusFromId
+            } else {
+                this.estadoSeleccionado = this.estado;
+                this.currentNoteStatusDescription = null;
+            }
             this.showEdit = true;
-        });
-        //Histories
-        this.requestNoteService.getHistories(this.route.snapshot.params['id']).subscribe(d => {
-            console.log(d)
+            results[1].forEach(history => {
+                let model = {
+                    createdDate: history.createdDate,
+                    userName: history.userName,
+                    statusFrom: this.states[history.statusFromId],
+                    statusTo: this.states[history.statusToId],
+                    comment: history.comment
+                }
+                this.histories.push(model);
+                this.histories = [...this.histories]
+            });
         })
     }
 
@@ -116,13 +87,8 @@ export class NotesEditComponent implements OnInit{
     }
 
     showComments(history) {
-        //on click en entrada de tabla mostrar modal con el comentario asociado, si es que lo hay
         this.historyComments = history.comment;
         this.commentsModal.show();
-    }
-
-    getHistories() {
-        //request get traer histories de nota pedido asociada
     }
     
 }

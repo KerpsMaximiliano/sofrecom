@@ -17,6 +17,7 @@ import { FileUploader } from "ng2-file-upload";
 export class NotesPendingSupplyApproval implements OnInit{
 
     @Input() currentNote;
+    @Input() currentNoteStatusDescription;
     productosServicios = [];
     analiticas = [];
     providersGrid = [];

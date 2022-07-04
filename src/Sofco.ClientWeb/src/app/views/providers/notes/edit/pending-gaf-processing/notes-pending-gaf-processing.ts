@@ -13,6 +13,7 @@ import { MessageService } from "app/services/common/message.service";
 
 export class NotesPendingGAFProcessing {
     @Input() currentNote;
+    @Input() currentNoteStatusDescription;
     mode;
     productosServicios = [];
     analiticas = [];

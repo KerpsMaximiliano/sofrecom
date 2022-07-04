@@ -18,6 +18,7 @@ import * as FileSaver from "file-saver";
 
 export class NotesApproved {
     @Input() currentNote;
+    @Input() currentNoteStatusDescription;
     mode;
     productosServicios = [];
     analiticas = [];
