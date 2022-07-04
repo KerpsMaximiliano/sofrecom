@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { forkJoin } from "rxjs";
@@ -56,7 +56,8 @@ export class ProvidersEditComponent implements OnInit{
         private activatedRoute: ActivatedRoute,
         private providersService: ProvidersService,
         private providersAreaService: ProvidersAreaService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -118,6 +119,7 @@ export class ProvidersEditComponent implements OnInit{
         this.providersService.edit(this.id, model).subscribe(response => {
             if (response.status == 200) {
                 this.messageService.showMessage("Proveedor guardado", 0);
+                this.router.navigate([`providers/providers`]);
             }
         })
     }
