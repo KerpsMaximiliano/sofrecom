@@ -86,92 +86,306 @@ namespace Sofco.Service.Implementations.RequestNote
             }
 
             var user = userData.GetCurrentUser();
+            if (requestNoteBorrador.Id.HasValue)
+            {
+                var domain = this.unitOfWork.RequestNoteRepository.GetById(requestNoteBorrador.Id.Value);
+                if (domain == null)
+                {
+                    response.AddError(Resources.RequestNote.RequestNote.NotFound);
+                    return response;
+                }
+                if (domain.StatusId != (int)RequestNoteStates.Borrador)
+                {
+                    response.AddError(Resources.RequestNote.RequestNote.NotFound);
+                    return response;
+                }
 
-            var domain = new Domain.Models.RequestNote.RequestNote()
-            {
-                Description = requestNoteBorrador.Description,
-                RequiresEmployeeClient = requestNoteBorrador.RequiresEmployeeClient,
-                ConsideredInBudget = requestNoteBorrador.ConsideredInBudget,
-                EvalpropNumber = requestNoteBorrador.EvalpropNumber,
-                Comments = requestNoteBorrador.Comments,
-                TravelSection = requestNoteBorrador.TravelSection,
-                TrainingSection = requestNoteBorrador.TrainingSection,
-                //PurchaseOrderAmmount = 
-                //PurchaseOrderNumber
-                CreationDate = DateTime.UtcNow,
-                WorkflowId = requestNoteBorrador.WorkflowId,
-                StatusId = (int)RequestNoteStates.Borrador,
-                UserApplicantId = requestNoteBorrador.UserApplicantId,
-                InWorkflowProcess = true,
-                CreationUserId = user.Id,
-                ProviderAreaId = requestNoteBorrador.ProviderAreaId
-            };
-            if (requestNoteBorrador.Providers != null)
-                domain.Providers = requestNoteBorrador.Providers.Select(p => new RequestNoteProvider()
-                {
-                    ProviderId = p.ProviderId,
-                    FileId = p.FileId
-                }).ToList();
-            if (requestNoteBorrador.Attachments != null)
-                domain.Attachments = requestNoteBorrador.Attachments.Where(f=> f.FileId.HasValue).Select(p => new RequestNoteFile()
-                {
-                    Type = 1, //Poner enum
-                    FileId = p.FileId.Value
-                }).ToList();
-            if (requestNoteBorrador.Analytics != null)
-                domain.Analytics = requestNoteBorrador.Analytics.Select(p => new RequestNoteAnalytic()
-                {
-                    AnalyticId = p.AnalyticId,
-                    Percentage = p.Asigned,
-                    Status = "Ninguno"
-                }).ToList();
-            if (requestNoteBorrador.ProductsServices != null)
-                domain.ProductsServices = requestNoteBorrador.ProductsServices.Select(p => new RequestNoteProductService()
-                {
-                    ProductService = p.ProductService,
-                    Quantity = p.Quantity
-                }).ToList();
-            if (requestNoteBorrador.Travel != null)
-            {
-                domain.Travels = new List<RequestNoteTravel>();
-                domain.Travels.Add(new RequestNoteTravel()
-                {
-                    Accommodation = requestNoteBorrador.Travel.Accommodation,
-                    Conveyance = requestNoteBorrador.Travel.Transportation,
-                    DepartureDate = requestNoteBorrador.Travel.DepartureDate,
-                    Destination = requestNoteBorrador.Travel.Destination,
-                    ItineraryDetail = requestNoteBorrador.Travel.Details,
-                    ReturnDate = requestNoteBorrador.Travel.ReturnDate,
-                    Employees = requestNoteBorrador.Travel.Passengers?.Select(p => new RequestNoteTravelEmployee()
-                    {
-                        EmployeeId = p.EmployeeId
-                    }).ToList()
-                });
-            }
-            if (requestNoteBorrador.Training != null)
-            {
-                domain.Trainings = new List<RequestNoteTraining>();
-                domain.Trainings.Add(new RequestNoteTraining()
-                {
-                    Duration = requestNoteBorrador.Training.Duration,
-                    TrainingDate = requestNoteBorrador.Training.Date,
-                    Ammount = requestNoteBorrador.Training.Ammount,
-                    Place = requestNoteBorrador.Training.Location,
-                    Subject = requestNoteBorrador.Training.Subject,
-                    Topic = requestNoteBorrador.Training.Name,
-                    Employees = requestNoteBorrador.Training.Participants?.Select(p => new RequestNoteTrainingEmployee()
-                    {
-                        EmployeeId = p.EmployeeId
-                    }).ToList()
-                });
-               
-            }
-            
-            this.unitOfWork.RequestNoteRepository.InsertRequestNote(domain);
-            this.unitOfWork.RequestNoteRepository.Save();
-            response.Data = domain.Id;
 
-            response.AddSuccess(Resources.Recruitment.Applicant.AddSuccess);
+                domain.Description = requestNoteBorrador.Description;
+                domain.RequiresEmployeeClient = requestNoteBorrador.RequiresEmployeeClient;
+                domain.ConsideredInBudget = requestNoteBorrador.ConsideredInBudget;
+                domain.EvalpropNumber = requestNoteBorrador.EvalpropNumber;
+                domain.Comments = requestNoteBorrador.Comments;
+                domain.TravelSection = requestNoteBorrador.Travel != null;
+                domain.TrainingSection = requestNoteBorrador.Training != null;
+                domain.WorkflowId = requestNoteBorrador.WorkflowId;
+                domain.UserApplicantId = requestNoteBorrador.UserApplicantId;
+                domain.ProviderAreaId = requestNoteBorrador.ProviderAreaId;
+
+                #region Providers
+                if (requestNoteBorrador.Providers == null)
+                    requestNoteBorrador.Providers = new List<Provider>();
+                foreach (var prov in domain.Providers.ToList())
+                {
+                    if (!requestNoteBorrador.Providers.Any(a => a.ProviderId == prov.ProviderId))
+                        unitOfWork.RequestNoteProviderRepository.Delete(prov);
+                }
+                foreach (var provNuevo in requestNoteBorrador.Providers)
+                {
+                    var prov = domain.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
+                    if (prov == null)
+                    {
+                        prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId };
+                        domain.Providers.Add(prov);
+                    }
+                    prov.FileId = provNuevo.FileId;
+                    prov.IsSelected = false;
+                }
+                #endregion
+                #region Analytics
+                if (requestNoteBorrador.Analytics == null)
+                    requestNoteBorrador.Analytics = new List<Analytic>();
+                foreach (var an in domain.Analytics.ToList())
+                {
+                    if (!requestNoteBorrador.Analytics.Any(a => a.AnalyticId == an.AnalyticId))
+                        unitOfWork.RequestNoteAnalitycRepository.Delete(an);
+                }
+                foreach (var a in requestNoteBorrador.Analytics)
+                {
+                    var an = domain.Analytics.SingleOrDefault(p => p.AnalyticId == a.AnalyticId);
+                    if (an == null)
+                    {
+                        an = new RequestNoteAnalytic() { AnalyticId = a.AnalyticId };
+                        domain.Analytics.Add(an);
+                    }
+                    an.Percentage = a.Asigned;
+                    an.Status = "Ninguno";
+                }
+                #endregion
+                #region Product Services
+                if (requestNoteBorrador.ProductsServices == null)
+                    requestNoteBorrador.ProductsServices = new List<ProductsService>();
+                foreach (var an in domain.ProductsServices.ToList())
+                {
+                    if (!requestNoteBorrador.ProductsServices.Any(a => a.ProductService == an.ProductService))
+                        unitOfWork.RequestNoteProductServiceRepository.Delete(an);
+                }
+                foreach (var a in requestNoteBorrador.ProductsServices)
+                {
+                    var an = domain.ProductsServices.SingleOrDefault(p => p.ProductService == a.ProductService);
+                    if (an == null)
+                    {
+                        an = new RequestNoteProductService() { ProductService = a.ProductService };
+                        domain.ProductsServices.Add(an);
+                    }
+                    an.Quantity = a.Quantity;
+                }
+                #endregion
+                #region Attachments
+                if (requestNoteBorrador.Attachments == null)
+                    requestNoteBorrador.Attachments = new List<Core.Models.RequestNote.File>();
+                foreach (var an in domain.Attachments.ToList())
+                {
+                    if (!requestNoteBorrador.Attachments.Any(a => a.FileId == an.FileId))
+                        unitOfWork.RequestNoteFileRepository.Delete(an);
+                }
+                foreach (var a in requestNoteBorrador.Attachments)
+                {
+                    var an = domain.Attachments.SingleOrDefault(p => p.FileId == a.FileId);
+                    if (an == null)
+                    {
+                        an = new RequestNoteFile() { FileId = a.FileId.Value, Type = 1 };
+                        domain.Attachments.Add(an);
+                    }
+                }
+                #endregion
+                #region Travel
+                if (requestNoteBorrador.Travel != null)
+                {
+                    var travel = domain.Travels.FirstOrDefault();
+                    if (travel == null)
+                    {
+                        travel = new RequestNoteTravel();
+                        domain.Travels = new List<RequestNoteTravel>();
+                        domain.Travels.Add(travel);
+                    }
+                    travel.Accommodation = requestNoteBorrador.Travel.Accommodation;
+                    travel.Conveyance = requestNoteBorrador.Travel.Transportation;
+                    travel.DepartureDate = requestNoteBorrador.Travel.DepartureDate;
+                    travel.Destination = requestNoteBorrador.Travel.Destination;
+                    travel.ItineraryDetail = requestNoteBorrador.Travel.Details;
+                    travel.ReturnDate = requestNoteBorrador.Travel.ReturnDate;
+                    if (travel.Employees == null)
+                        travel.Employees = new List<RequestNoteTravelEmployee>();
+                    if (travel.Employees?.Any() ?? false)
+                    {
+                        foreach (var an in travel.Employees.ToList())
+                        {
+                            if (!requestNoteBorrador.Travel.Passengers.Any(a => a.EmployeeId == an.EmployeeId))
+                                unitOfWork.RequestNoteTravelEmployeeRepository.Delete(an);
+                        }
+                    }
+                    foreach (var a in requestNoteBorrador.Travel.Passengers)
+                    {
+                        var an = travel.Employees.SingleOrDefault(p => p.EmployeeId == a.EmployeeId);
+                        if (an == null)
+                        {
+                            an = new RequestNoteTravelEmployee() { EmployeeId = a.EmployeeId };
+                            travel.Employees.Add(an);
+                        }
+                    }
+                }
+                else if (domain.Travels.Any())
+                {
+                    var travel = domain.Travels.FirstOrDefault();
+                    if (travel?.Employees?.Any() ?? false)
+                    {
+                        foreach (var an in travel.Employees.ToList())
+                        {
+                            if (!requestNoteBorrador.Travel.Passengers.Any(a => a.EmployeeId == an.EmployeeId))
+                                unitOfWork.RequestNoteTravelEmployeeRepository.Delete(an);
+                        }
+                    }
+                    unitOfWork.RequestNoteTravelRepository.Delete(travel);
+                }
+                #endregion
+                #region Training
+                if (requestNoteBorrador.Training != null)
+                {
+                    var training = domain.Trainings.FirstOrDefault();
+                    if (training == null)
+                    {
+                        training = new RequestNoteTraining();
+                        domain.Trainings = new List<RequestNoteTraining>();
+                        domain.Trainings.Add(training);
+                    }
+                   
+                    training.Duration = requestNoteBorrador.Training.Duration;
+                    training.TrainingDate = requestNoteBorrador.Training.Date;
+                    training.Ammount = requestNoteBorrador.Training.Ammount;
+                    training.Place = requestNoteBorrador.Training.Location;
+                    training.Subject = requestNoteBorrador.Training.Subject;
+                    training.Topic = requestNoteBorrador.Training.Name;
+                    if (training.Employees == null)
+                        training.Employees = new List<RequestNoteTrainingEmployee>();
+
+                    if (training.Employees?.Any() ?? false)
+                    {
+                        foreach (var an in training.Employees.ToList())
+                        {
+                            if (!requestNoteBorrador.Training.Participants.Any(a => a.EmployeeId == an.EmployeeId))
+                                unitOfWork.RequestNoteTrainingEmployeeRepository.Delete(an);
+                        }
+                    }
+                    foreach (var a in requestNoteBorrador.Training.Participants)
+                    {
+                        var an = training.Employees.SingleOrDefault(p => p.EmployeeId == a.EmployeeId);
+                        if (an == null)
+                        {
+                            an = new RequestNoteTrainingEmployee() { EmployeeId = a.EmployeeId };
+                            training.Employees.Add(an);
+                        }
+                    }
+                }
+                else if (domain.Trainings.Any())
+                {
+                    var training = domain.Trainings.FirstOrDefault();
+                    if (training?.Employees?.Any() ?? false)
+                    {
+                        foreach (var an in training.Employees.ToList())
+                        {
+                            if (!requestNoteBorrador.Training.Participants.Any(a => a.EmployeeId == an.EmployeeId))
+                                unitOfWork.RequestNoteTrainingEmployeeRepository.Delete(an);
+                        }
+                    }
+                    unitOfWork.RequestNoteTrainingRepository.Delete(training);
+                }
+                #endregion
+                this.unitOfWork.RequestNoteRepository.UpdateRequestNote(domain);
+                this.unitOfWork.RequestNoteRepository.Save();
+                response.Data = domain.Id;
+
+                response.AddSuccess(Resources.RequestNote.RequestNote.UpdateSuccess);
+            }
+            else
+            {
+
+                var domain = new Domain.Models.RequestNote.RequestNote()
+                {
+                    Description = requestNoteBorrador.Description,
+                    RequiresEmployeeClient = requestNoteBorrador.RequiresEmployeeClient,
+                    ConsideredInBudget = requestNoteBorrador.ConsideredInBudget,
+                    EvalpropNumber = requestNoteBorrador.EvalpropNumber,
+                    Comments = requestNoteBorrador.Comments,
+                    TravelSection = requestNoteBorrador.Travel != null,
+                    TrainingSection = requestNoteBorrador.Training != null,
+                    CreationDate = DateTime.UtcNow,
+                    WorkflowId = requestNoteBorrador.WorkflowId,
+                    StatusId = (int)RequestNoteStates.Borrador,
+                    UserApplicantId = requestNoteBorrador.UserApplicantId,
+                    InWorkflowProcess = true,
+                    CreationUserId = user.Id,
+                    ProviderAreaId = requestNoteBorrador.ProviderAreaId
+                };
+                if (requestNoteBorrador.Providers != null)
+                    domain.Providers = requestNoteBorrador.Providers.Select(p => new RequestNoteProvider()
+                    {
+                        ProviderId = p.ProviderId,
+                        FileId = p.FileId
+                    }).ToList();
+                if (requestNoteBorrador.Attachments != null)
+                    domain.Attachments = requestNoteBorrador.Attachments.Where(f => f.FileId.HasValue).Select(p => new RequestNoteFile()
+                    {
+                        Type = 1, //Poner enum
+                        FileId = p.FileId.Value
+                    }).ToList();
+                if (requestNoteBorrador.Analytics != null)
+                    domain.Analytics = requestNoteBorrador.Analytics.Select(p => new RequestNoteAnalytic()
+                    {
+                        AnalyticId = p.AnalyticId,
+                        Percentage = p.Asigned,
+                        Status = "Ninguno"
+                    }).ToList();
+                if (requestNoteBorrador.ProductsServices != null)
+                    domain.ProductsServices = requestNoteBorrador.ProductsServices.Select(p => new RequestNoteProductService()
+                    {
+                        ProductService = p.ProductService,
+                        Quantity = p.Quantity
+                    }).ToList();
+                if (requestNoteBorrador.Travel != null)
+                {
+                    domain.Travels = new List<RequestNoteTravel>();
+                    domain.Travels.Add(new RequestNoteTravel()
+                    {
+                        Accommodation = requestNoteBorrador.Travel.Accommodation,
+                        Conveyance = requestNoteBorrador.Travel.Transportation,
+                        DepartureDate = requestNoteBorrador.Travel.DepartureDate,
+                        Destination = requestNoteBorrador.Travel.Destination,
+                        ItineraryDetail = requestNoteBorrador.Travel.Details,
+                        ReturnDate = requestNoteBorrador.Travel.ReturnDate,
+                        Employees = requestNoteBorrador.Travel.Passengers?.Select(p => new RequestNoteTravelEmployee()
+                        {
+                            EmployeeId = p.EmployeeId
+                        }).ToList()
+                    });
+                }
+                if (requestNoteBorrador.Training != null)
+                {
+                    domain.Trainings = new List<RequestNoteTraining>();
+                    domain.Trainings.Add(new RequestNoteTraining()
+                    {
+                        Duration = requestNoteBorrador.Training.Duration,
+                        TrainingDate = requestNoteBorrador.Training.Date,
+                        Ammount = requestNoteBorrador.Training.Ammount,
+                        Place = requestNoteBorrador.Training.Location,
+                        Subject = requestNoteBorrador.Training.Subject,
+                        Topic = requestNoteBorrador.Training.Name,
+                        Employees = requestNoteBorrador.Training.Participants?.Select(p => new RequestNoteTrainingEmployee()
+                        {
+                            EmployeeId = p.EmployeeId
+                        }).ToList()
+                    });
+
+                }
+
+                this.unitOfWork.RequestNoteRepository.InsertRequestNote(domain);
+                this.unitOfWork.RequestNoteRepository.Save();
+                response.Data = domain.Id;
+
+                response.AddSuccess(Resources.RequestNote.RequestNote.AddSuccess);
+
+            }
+
             return response;
         }
         public Response<RequestNoteModel> GetById(int id)

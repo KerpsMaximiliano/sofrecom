@@ -61,6 +61,15 @@ namespace Sofco.Resources.RequestNote {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a requestNote/requestNote.addSuccess.
+        /// </summary>
+        public static string AddSuccess {
+            get {
+                return ResourceManager.GetString("AddSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a requestNote/requestNote.fileUpload.
         /// </summary>
         public static string FileUpload {
@@ -84,6 +93,15 @@ namespace Sofco.Resources.RequestNote {
         public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a requestNote/requestNote.updateSuccess.
+        /// </summary>
+        public static string UpdateSuccess {
+            get {
+                return ResourceManager.GetString("UpdateSuccess", resourceCulture);
             }
         }
     }

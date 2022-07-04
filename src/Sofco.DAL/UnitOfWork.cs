@@ -30,6 +30,7 @@ using Sofco.DAL.Repositories.RequestNote;
 using Sofco.DAL.Repositories.Rrhh;
 using Sofco.DAL.Repositories.Workflow;
 using Sofco.DAL.Repositories.WorkTimeManagement;
+using Sofco.Domain.Models.RequestNote;
 
 namespace Sofco.DAL
 {
@@ -167,6 +168,18 @@ namespace Sofco.DAL
         private IRequestNoteProviderRepository requestNoteProviderRepository;
 
         private IRequestNoteHistoryRepository requestNoteHistoryRepository;
+
+        private IBaseRepository<RequestNoteFile> requestNoteFileRepository;
+
+        private BaseRepository<RequestNoteProductService> requestNoteProductServiceRepository;
+
+        private BaseRepository<RequestNoteTravel> requestNoteTravelRepository;
+
+        private BaseRepository<RequestNoteTravelEmployee> requestNoteTravelEmployeeRepository;
+
+        private BaseRepository<RequestNoteTraining> requestNoteTrainingRepository;
+
+        private BaseRepository<RequestNoteTrainingEmployee> requestNoteTrainingEmployeeRepository;
 
         #endregion
 
@@ -309,6 +322,18 @@ namespace Sofco.DAL
         public IRequestNoteProviderRepository RequestNoteProviderRepository => requestNoteProviderRepository ?? (requestNoteProviderRepository = new RequestNoteProviderRepository(context));
 
         public IRequestNoteHistoryRepository RequestNoteHistoryRepository => requestNoteHistoryRepository ?? (requestNoteHistoryRepository = new RequestNoteHistoryRepository(context));
+
+        public IBaseRepository<RequestNoteFile> RequestNoteFileRepository => requestNoteFileRepository ?? (requestNoteFileRepository = new RequestNoteFileRepository(context));
+
+        public IBaseRepository<RequestNoteProductService> RequestNoteProductServiceRepository => requestNoteProductServiceRepository ?? (requestNoteProductServiceRepository = new BaseRepository<RequestNoteProductService>(context));
+
+        public IBaseRepository<RequestNoteTravel> RequestNoteTravelRepository => requestNoteTravelRepository ?? (requestNoteTravelRepository = new BaseRepository<RequestNoteTravel>(context));
+
+        public IBaseRepository<RequestNoteTravelEmployee> RequestNoteTravelEmployeeRepository => requestNoteTravelEmployeeRepository ?? (requestNoteTravelEmployeeRepository = new BaseRepository<RequestNoteTravelEmployee>(context));
+
+        public IBaseRepository<RequestNoteTraining> RequestNoteTrainingRepository => requestNoteTrainingRepository ?? (requestNoteTrainingRepository = new BaseRepository<RequestNoteTraining>(context));
+
+        public IBaseRepository<RequestNoteTrainingEmployee> RequestNoteTrainingEmployeeRepository => requestNoteTrainingEmployeeRepository ?? (requestNoteTrainingEmployeeRepository = new BaseRepository<RequestNoteTrainingEmployee>(context));
 
         public void Save()
         {

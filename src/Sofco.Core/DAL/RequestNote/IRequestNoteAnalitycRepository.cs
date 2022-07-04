@@ -8,6 +8,8 @@ namespace Sofco.Core.DAL.RequestNote
         List<Domain.Models.RequestNote.RequestNoteAnalytic> GetByRequestNoteId(int requestNoteId);
         void UpdateAnalityc(Domain.Models.RequestNote.RequestNoteAnalytic requestNoteAnalityc);
         void InsertAnalityc(Domain.Models.RequestNote.RequestNoteAnalytic requestNoteAnalityc);
+
+        void Delete(Domain.Models.RequestNote.RequestNoteAnalytic analytic);
         void Save();
     }
 }

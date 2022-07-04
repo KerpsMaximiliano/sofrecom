@@ -38,5 +38,10 @@ namespace Sofco.DAL.Repositories.RequestNote
         {
             return this.context.RequestNoteAnalytic.Where(x => x.RequestNoteId == requestNoteId).ToList();
         }
+
+        public void Delete(RequestNoteAnalytic analytic)
+        {
+            this.context.RequestNoteAnalytic.Remove(analytic);
+        }
     }
 }
