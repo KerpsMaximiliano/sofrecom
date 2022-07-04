@@ -10,6 +10,7 @@ import { Ng2DatatablesModule } from "app/components/datatables/ng2-datatables.mo
 import { DatePickerModule } from "app/components/date-picker/date-picker.module";
 import { ICheckModule } from "app/components/icheck/icheck.module";
 import { Ng2ModalModule } from "app/components/modal/ng2modal.module";
+import { PdfViewerModule } from "app/components/pdf-viewer/pdf-viewer.module";
 import { Select2Module } from "app/components/select2/select2";
 import { SpinnerModule } from "app/components/spinner/spinner.module";
 import { RefundService } from "app/services/advancement-and-refund/refund.service";
@@ -19,6 +20,7 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 import { FileService } from "app/services/common/file.service";
 import { FileUploadModule } from "ng2-file-upload";
 import { BsDatepickerModule, ButtonsModule, ModalModule } from "ngx-bootstrap";
+import { SolfacPdfViewerComponent } from "../billing/solfac/pdf-viewer/solfac-pdf-viewer.component";
 import { NotesAddComponent } from "./notes/add/notes-add";
 import { NotesApproved } from "./notes/edit/approved/notes-approved";
 import { NotesDraftComponent } from "./notes/edit/draft/notes-draft";
@@ -57,7 +59,8 @@ import { ProvidersComponent } from "./providers/list/providers";
         NotesReceivedConformable,
         NotesPendingManagementBillApproval,
         NotesPendingGAFProcessing,
-        NotesNoAccessComponent
+        NotesNoAccessComponent,
+        SolfacPdfViewerComponent
     ],
     imports: [
         CommonModule,
@@ -78,7 +81,8 @@ import { ProvidersComponent } from "./providers/list/providers";
         FileUploadModule,
         DatePickerModule,
         BsDatepickerModule,
-        ModalModule
+        ModalModule,
+        PdfViewerModule
     ],
     providers: [
         EmployeeService,

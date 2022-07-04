@@ -32,7 +32,7 @@ export class ProvidersAddComponent implements OnInit{
     form: FormGroup = new FormGroup({
         id: new FormControl(0),
         name: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
-        providerAreaId: new FormControl(null),
+        providerAreaId: new FormControl(null, [Validators.required]),
         CUIT: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required]),
         ingresosBrutos: new FormControl(null, [Validators.required]),
         condicionIVA: new FormControl(null, [Validators.required]),

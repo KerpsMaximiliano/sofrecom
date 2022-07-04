@@ -76,7 +76,8 @@ export class NotesPendingManagementBillApproval {
     }
 
     downloadOC() {
-        //descargar archivo orden de compra
+        let files = this.currentNote.attachments.find(file => file.type == 2);
+        this.requestNoteService.downloadProviderFile(files.fileId, 5);
     }
 
     downloadProviderDoc() {

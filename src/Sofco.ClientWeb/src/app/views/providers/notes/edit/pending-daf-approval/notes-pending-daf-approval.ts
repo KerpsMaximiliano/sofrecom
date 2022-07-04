@@ -7,7 +7,6 @@ import { RequestNoteService } from "app/services/admin/request-note.service";
 import { MessageService } from "app/services/common/message.service";
 import { Router } from "@angular/router";
 import * as FileSaver from "file-saver";
-import {saveAs as importedSaveAs} from "file-saver";
 
 @Component({
     selector: 'notes-pending-daf-approval',
@@ -25,6 +24,7 @@ export class NotesPendingDAFApproval {
         "ACTIONS.ACCEPT",
         "ACTIONS.cancel"
     );
+    @ViewChild('pdfViewer') pdfViewer;
     @Input() currentNote;
     @Input() currentNoteStatusDescription;
     rejectComments = null;
@@ -93,23 +93,8 @@ export class NotesPendingDAFApproval {
     }
 
     downloadOC() {
-        /*
-            this.requestNoteService.downloadFilePendingDAFApproval(this.currentNote.id, 1).subscribe(d=>{
-            if(d == null) {
-                this.messageService.showMessage("No hay archivos para descargar", 2);
-            }
-        })
-        */
         let files = this.currentNote.attachments.find(file => file.type == 2);
-        this.requestNoteService.downloadProviderFile(files.fileId, 5).subscribe(d => {
-            console.log(d);
-            //FileSaver.saveAs(d, "file.txt");
-            var fileName = 'test.txt';
-            importedSaveAs(d, fileName);
-            const blob = new Blob([d], { type: 'text/csv' });
-            const url= window.URL.createObjectURL(blob);
-            window.open(url);
-        })
+        this.requestNoteService.downloadProviderFile(files.fileId, 5);
     }
 
     rejectM() {

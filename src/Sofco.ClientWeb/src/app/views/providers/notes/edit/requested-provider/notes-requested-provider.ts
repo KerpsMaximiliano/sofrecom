@@ -102,7 +102,8 @@ export class NotesRequestedProvider {
     }
 
     downloadOC() {
-        
+        let files = this.currentNote.attachments.find(file => file.type == 2);
+        this.requestNoteService.downloadProviderFile(files.fileId, 5);
     }
 
     downloadProviderDoc() {
@@ -147,6 +148,7 @@ export class NotesRequestedProvider {
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
             authToken: 'Bearer ' + Cookie.get('access_token') ,
+            allowedMimeType: ['application/pdf'],
         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {

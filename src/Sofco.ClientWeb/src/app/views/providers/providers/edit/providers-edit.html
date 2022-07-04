@@ -16,7 +16,8 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-    <button class="btn btn-success" type="button" [routerLink]="['/providers/providers']"> <i class="fa fa-times"></i> Cancelar </button>
+    <button class="btn btn-success" type="button" [routerLink]="['/providers/providers']" *ngIf="mode == 'Edit'"> <i class="fa fa-times"></i> Cancelar </button>
+    <button class="btn btn-success" type="button" [routerLink]="['/providers/providers']" *ngIf="mode == 'View'"> <i class="fa fa-times"></i> Volver </button>
     <button class="btn btn-primary" type="button" *ngIf="mode != 'View'" (click)="save()">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
     <form class="m-t-md ibox-content" [formGroup]="form">
         <div class="panel-body">

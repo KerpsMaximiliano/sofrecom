@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { IVAConditions } from "app/models/enums/IVAConditions";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
+import { DataTableService } from "app/services/common/datatable.service";
 import { forkJoin } from "rxjs";
 
 @Component({
@@ -41,7 +42,8 @@ export class ProvidersComponent implements OnInit{
     constructor(
         private router: Router,
         private providersService: ProvidersService,
-        private providersArea: ProvidersAreaService
+        private providersArea: ProvidersAreaService,
+        private dataTableService: DataTableService
     ) {}
 
     ngOnInit(): void {
@@ -77,7 +79,8 @@ export class ProvidersComponent implements OnInit{
                 this.data = [...this.data]
             });
             this.dataBackup = this.data;
-        })
+            this.initGrid();
+        });
     }
 
     view(id) {
@@ -134,5 +137,20 @@ export class ProvidersComponent implements OnInit{
             searchData = search;
         }
         this.data = searchData;
+        this.initGrid();
+    }
+
+    initGrid() {
+        var columns = [0, 1, 2, 3, 4, 5, 6];
+    
+        var params = {
+            selector: '#dataTable',
+            columns: columns,
+            title: 'Proveedores',
+            withExport: true
+        }
+    
+        this.dataTableService.destroy(params.selector);
+        this.dataTableService.initialize(params);
     }
 }

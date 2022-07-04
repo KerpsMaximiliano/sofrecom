@@ -93,10 +93,7 @@ export class NotesApproved {
         //this.fileService.getFile(files.fileId, 5).subscribe(d => {
         //    console.log(d)
         //})
-        this.requestNoteService.downloadProviderFile(files.fileId, 5).subscribe(d => {
-            console.log(d);
-            FileSaver.saveAs(d, "file.txt");
-        })
+        this.requestNoteService.downloadProviderFile(files.fileId, 5)
     }
 
     request() {
@@ -121,6 +118,7 @@ export class NotesApproved {
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
             authToken: 'Bearer ' + Cookie.get('access_token') ,
+            allowedMimeType: ['application/pdf'],
         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {

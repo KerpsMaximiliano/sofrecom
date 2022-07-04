@@ -49,42 +49,39 @@
                 </div>
                 
             </div>
-            <!--
-                *Estado: Todos, Activo(Default), Inactivo
-                *Razón Social (Texto)
-                *Rubro (Combo de ProvidersAreas con Active = true)
-            -->
         </div>
     </div>
     <div class="ibox"> 
         <div class="ibox-content">
-            <table class="table table-striped dataTable" role="grid" id="dataTable">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Razón social</th>
-                        <th>Rubro</th>
-                        <th>CUIT</th>
-                        <th>Ing. Brutos</th>
-                        <th>Condición IVA</th>
-                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of data">
-                        <td>{{ item.id }} </td>
-                        <td>{{ item.name }} </td>
-                        <td>{{ item.providerArea }} </td>
-                        <td>{{ item.CUIT }} </td>
-                        <td>{{ item.ingresosBrutos }} </td>
-                        <td>{{ item.condicionIVA }} </td>
-                        <td class="column-sm text-center">
-                            <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i class="fa fa-eye"></i></button>
-                            <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i class="fa fa-edit"></i></button>
-                        </td>
-                    </tr> 
-                </tbody>
-            </table>       
+            <div class="panel-body table-responsive">
+                <table class="table table-striped dataTable" role="grid" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Razón social</th>
+                            <th>Rubro</th>
+                            <th>CUIT</th>
+                            <th>Ing. Brutos</th>
+                            <th>Condición IVA</th>
+                            <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of data">
+                            <td>{{ item.id }} </td>
+                            <td>{{ item.name }} </td>
+                            <td>{{ item.providerArea }} </td>
+                            <td>{{ item.CUIT }} </td>
+                            <td>{{ item.ingresosBrutos }} </td>
+                            <td>{{ item.condicionIVA }} </td>
+                            <td class="column-sm text-center">
+                                <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i class="fa fa-eye"></i></button>
+                                <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i class="fa fa-edit"></i></button>
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

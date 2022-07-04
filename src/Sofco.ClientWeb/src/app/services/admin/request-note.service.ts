@@ -1,8 +1,9 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Service } from "../common/service";
+import * as FileSaver from "file-saver";
 
 @Injectable({
     providedIn: 'root'
@@ -45,13 +46,29 @@ export class RequestNoteService {
         return this.http.get<any>(`${this.baseUrl}/RequestNoteHistories/?id=${id}`);
     }
 
+    private _getFile(id: number, type: number) {
+        return this.http.get<any>(`${this.baseUrl}/file/${id}/${type}`);
+    }
+
     public downloadProviderFile(id: number, type: number) {
-        return this.http.get(`${this.baseUrl}/file/${id}/${type}`, {
-            responseType: 'arraybuffer',
-            observe: 'response'
-        }).pipe(map((res: any) => {
-            return new Blob([res.body], { type: 'application/octet-stream' });
-        }));
+        //return this.http.get<any>(`${this.baseUrl}/file/${id}/${type}`);
+        this._getFile(id, type).subscribe(response => {
+            let fileData = this._base64ToArrayBuffer(response.data);
+            const blob = new Blob([fileData], { type: 'application/pdf' });
+            FileSaver.saveAs(blob)
+            //const url = URL.createObjectURL(blob);
+            //window.open(url, '_blank');
+        });
+    }
+
+    private _base64ToArrayBuffer(base64Data) {
+        const binary_string = window.atob(base64Data);
+        const len = binary_string.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes.buffer;
     }
 
     public downloadPurchaseOrder() {
