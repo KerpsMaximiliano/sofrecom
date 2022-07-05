@@ -22,7 +22,7 @@ export class NotesApproved {
     mode;
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];//proveedor seleccionado etapas anteriores
+    providersGrid = [];
     fileSelected = false;
     uploadedFilesId = [];
 
@@ -90,15 +90,10 @@ export class NotesApproved {
 
     downloadOC() {
         let files = this.currentNote.attachments.find(file => file.type == 2);
-        //this.fileService.getFile(files.fileId, 5).subscribe(d => {
-        //    console.log(d)
-        //})
-        this.requestNoteService.downloadProviderFile(files.fileId, 5)
+        this.requestNoteService.downloadFile(files.fileId, 5, files.fileDescription)
     }
 
     request() {
-        //Validar que se haya adjuntado al menos un archivo adjunto para el proveedor y notificar al mismo seleccionado en la nota de pedido. 
-        //Se cambia el estado a “Solicitada a Proveedor”.
         if(this.fileSelected == false) {
             this.messageService.showMessage("Debe seleccionar la documentación para el proveedor para subir", 2);
             return;
@@ -118,7 +113,6 @@ export class NotesApproved {
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
             authToken: 'Bearer ' + Cookie.get('access_token') ,
-            allowedMimeType: ['application/pdf'],
         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {

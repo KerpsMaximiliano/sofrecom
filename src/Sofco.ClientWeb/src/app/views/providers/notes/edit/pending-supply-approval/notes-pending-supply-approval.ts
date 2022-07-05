@@ -102,8 +102,6 @@ export class NotesPendingSupplyApproval implements OnInit{
     }
 
     approve() {
-        //se debe validar que haya elegido un proveedor del listado de proveedores.
-        //Se cambia el estado de la nota de pedido a “Pendiente Aprobación DAF”
         let fileError = false;
         let providerError = false;
         this.markFormGroupTouched(this.formNota);
@@ -146,7 +144,6 @@ export class NotesPendingSupplyApproval implements OnInit{
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
             authToken: 'Bearer ' + Cookie.get('access_token') ,
-            allowedMimeType: ['application/pdf'],
         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {

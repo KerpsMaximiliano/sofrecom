@@ -36,16 +36,9 @@ export class NotesComponent implements OnInit{
     dateSince;
     dateTo;
     notes = [];
+    notesBackup = [];
     notesInProcess = [];
-    notesEnded = [
-        {
-            id: 1,
-            description: "Descripción",
-            status: null,
-            creationDate: "2022-6-24"
-        }
-    ];
-    finalizedNotes = [];
+    notesEnded = [];
 
     constructor(
         private employeeService: EmployeeService,
@@ -61,14 +54,29 @@ export class NotesComponent implements OnInit{
     }
 
     inicializar() {
-        this.requestNoteService.getAll().subscribe(d=>{
+        var json = {
+            statusId: null,
+            creationUserId: null,
+            fromDate: null,
+            toDate: null,
+            providerId: null,
+        };
+        this.requestNoteService.getAll(json).subscribe(d=>{
             console.log(d);
             d.forEach(note => {
                 note.status = this.states[note.statusId].text;
-                this.notes.push(note);
-                this.notes = [...this.notes];
+                this.notesBackup.push(note);
+                this.notesBackup = [...this.notesBackup];
+                if(note.status == "Cerrada" || note.status == "Rechazada") {
+                    this.notesEnded.push(note);
+                    this.notesEnded = [...this.notesEnded];
+                } else {
+                    this.notesInProcess.push(note);
+                    this.notesInProcess = [...this.notesInProcess];
+                }
             })
-            this.notesInProcess = this.notes;
+            this.notes = this.notesInProcess;
+            this.initGrid();
         });
         this.employeeService.getEveryone().subscribe(d => {
             d.forEach(employee => {
@@ -86,7 +94,6 @@ export class NotesComponent implements OnInit{
                 }
             })
         });
-        this.initGrid();
         this.collapse();
     }
 
@@ -107,16 +114,40 @@ export class NotesComponent implements OnInit{
                 return;
             }
         }
-        var json = {
-            stateId: this.stateId,
-            applicantId: this.applicantId,
-            dateSince: this.dateSince,
-            dateTo: this.dateTo,
+        let json = {
+            statusId: (this.stateId == 0) ? null : this.stateId,
+            creationUserId: this.applicantId,
+            fromDate: this.dateSince,
+            toDate: this.dateTo,
             providerId: this.providerId,
         };
+        json.fromDate = (this.dateSince == null || this.dateSince == undefined) ? null : `${this.dateSince.getFullYear()}/${this.dateSince.getMonth() + 1}/${this.dateSince.getDate()}`;
+        json.toDate = (this.dateTo == null || this.dateTo == undefined) ? null : `${this.dateTo.getFullYear()}/${this.dateTo.getMonth() + 1}/${this.dateTo.getDate()}`;
         console.log("Búsqueda");
-        console.log(json)
-
+        console.log(json);
+        console.log(this.applicants);
+        this.requestNoteService.getAll(json).subscribe(d => {
+            console.log(d);
+            this.notes = [];
+            this.notesInProcess = [];
+            this.notesEnded = [];
+            if(d.length > 0) {
+                d.forEach(note => {
+                    note.status = this.states[note.statusId].text;
+                    this.notesBackup.push(note);
+                    this.notesBackup = [...this.notesBackup];
+                    if(note.status == "Cerrada" || note.status == "Rechazada") {
+                        this.notesEnded.push(note);
+                        this.notesEnded = [...this.notesEnded];
+                    } else {
+                        this.notesInProcess.push(note);
+                        this.notesInProcess = [...this.notesInProcess];
+                    }
+                })
+                this.notes = this.notesInProcess;
+            }
+            this.initGrid();
+        });
     }
 
     refreshSearch() {
@@ -169,5 +200,14 @@ export class NotesComponent implements OnInit{
             this.notes = this.notesInProcess;
         }
         this.initGrid();
+    }
+
+    formatDate(date: Date) {
+        let finalDate = {
+            day: '',
+            month: '',
+            year: ''
+        };
+        console.log(date)
     }
 }

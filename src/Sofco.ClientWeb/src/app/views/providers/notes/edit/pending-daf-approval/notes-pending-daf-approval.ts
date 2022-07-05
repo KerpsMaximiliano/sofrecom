@@ -32,7 +32,7 @@ export class NotesPendingDAFApproval {
 
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];//Proveedor seleccionado en etapa anterior
+    providersGrid = [];
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -94,19 +94,14 @@ export class NotesPendingDAFApproval {
 
     downloadOC() {
         let files = this.currentNote.attachments.find(file => file.type == 2);
-        this.requestNoteService.downloadProviderFile(files.fileId, 5);
+        this.requestNoteService.downloadFile(files.fileId, 5, files.fileDescription);
     }
 
     rejectM() {
-        //abrir modal rechazar
         this.modal.show()
     }
 
     reject() {
-        //Se muestra un modal para que introduzca una observación (requerida) 
-        //debajo un botón de Aceptar y otro de Cancelar. 
-        //Si presiona Cancelar, se cierra el modal. Si presiona Aceptar se invoca al método rechazar de la api.
-        //Si rechaza se guarda la observación asociada y se cambia el estado de la nota de pedido a “Pendiente Aprobación Abastecimiento”.
         if(this.rejectComments == null || this.rejectComments.length == 0) {
             this.messageService.showMessage("Debe dejar una observación si desea rechazar la nota de pedido", 2);
             this.modal.hide();

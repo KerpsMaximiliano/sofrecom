@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { Service } from "../common/service";
 import * as FileSaver from "file-saver";
+import { SearchFilters } from "app/models/admin/requestNote";
 
 @Injectable({
     providedIn: 'root'
@@ -28,18 +29,68 @@ export class RequestNoteService {
         return this.mode;
     }
 
-    //Request Notes Pending GAF Processing - Pendiente Procesar GAF
-    approvePendingGAFProcessing(id: number): Observable<any> {
-        return this.http.post<any>(`${this.baseUrl}/RequestNotePendienteProcesarGAF/AprobarPendienteProcesarGAF`, id);
-    }
+    
 
     //FINALES
     public getById(id: number): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/GetById/${id}`);
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteBorrador/GetById/?id=${id}`);
     }
 
-    public getAll(): Observable<any> {
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteAprobada/GetAll`);
+    public getAll(filters: SearchFilters): Observable<any> {
+        let finalFilters = {
+            startingSymbol: '',
+            id: '',
+            creationUserId: '',
+            fromDate: '',
+            toDate: '',
+            providerId: '',
+            statusId: ''
+        };
+        if(filters.id != undefined || filters.id != null) {
+            finalFilters.startingSymbol = '?';
+            finalFilters.id = `id=${filters.id}`;
+        };
+        if(filters.creationUserId != undefined || filters.creationUserId != null) {
+            if(finalFilters.startingSymbol == '?') {
+                finalFilters.creationUserId = `&creationUserId=${filters.creationUserId}`;
+            } else {
+                finalFilters.startingSymbol = '?';
+                finalFilters.creationUserId = `creationUserId=${filters.creationUserId}`;
+            }
+        };
+        if(filters.fromDate != undefined || filters.fromDate != null) {
+            if(finalFilters.startingSymbol == '?') {
+                finalFilters.fromDate = `&fromDate=${filters.fromDate}`;
+            } else {
+                finalFilters.startingSymbol = '?';
+                finalFilters.fromDate = `fromDate=${filters.fromDate}`;
+            }
+        };
+        if(filters.toDate != undefined || filters.toDate != null) {
+            if(finalFilters.startingSymbol == '?') {
+                finalFilters.toDate = `&toDate=${filters.toDate}`;
+            } else {
+                finalFilters.startingSymbol = '?';
+                finalFilters.toDate = `toDate=${filters.toDate}`;
+            }
+        };
+        if(filters.providerId != undefined || filters.providerId != null) {
+            if(finalFilters.startingSymbol == '?') {
+                finalFilters.providerId = `&providerId=${filters.providerId}`;
+            } else {
+                finalFilters.startingSymbol = '?';
+                finalFilters.providerId = `providerId=${filters.providerId}`;
+            }
+        };
+        if(filters.statusId != undefined || filters.statusId != null) {
+            if(finalFilters.startingSymbol == '?') {
+                finalFilters.statusId = `&statusId=${filters.statusId}`;
+            } else {
+                finalFilters.startingSymbol = '?';
+                finalFilters.statusId = `statusId=${filters.statusId}`;
+            }
+        };
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteBorrador/GetAll/${finalFilters.startingSymbol}${finalFilters.id}${finalFilters.creationUserId}${finalFilters.fromDate}${finalFilters.toDate}${finalFilters.providerId}${finalFilters.statusId}`);
     }
 
     public getHistories(id: number) {
@@ -50,12 +101,12 @@ export class RequestNoteService {
         return this.http.get<any>(`${this.baseUrl}/file/${id}/${type}`);
     }
 
-    public downloadProviderFile(id: number, type: number) {
+    public downloadFile(id: number, type: number, fileDescription: string) {
         //return this.http.get<any>(`${this.baseUrl}/file/${id}/${type}`);
         this._getFile(id, type).subscribe(response => {
             let fileData = this._base64ToArrayBuffer(response.data);
             const blob = new Blob([fileData], { type: 'application/pdf' });
-            FileSaver.saveAs(blob)
+            FileSaver.saveAs(blob, fileDescription)
             //const url = URL.createObjectURL(blob);
             //window.open(url, '_blank');
         });
@@ -155,5 +206,10 @@ export class RequestNoteService {
     //Factura Pendiente Aprobación Gerente
     approvePendingManagementBillApproval(requestNote: any): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarFacturaPendienteAprobacion`, requestNote);
+    }
+
+    //Pendiente Procesar GAF
+    approvePendingGAFProcessing(requestNote: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarPendienteProcesarGAF`, requestNote);
     }
 }

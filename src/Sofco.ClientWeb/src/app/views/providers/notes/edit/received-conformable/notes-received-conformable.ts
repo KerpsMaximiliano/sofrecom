@@ -20,7 +20,9 @@ export class NotesReceivedConformable {
     mode;
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];//proveedor seleccionado etapas anteriores
+    providersGrid = [];
+    providerDocFiles = [];
+    RCFiles = [];
     fileSelected = false;
     uploadedFilesId = [];
 
@@ -79,7 +81,17 @@ export class NotesReceivedConformable {
             this.productosServicios = this.currentNote.productsServices;
             this.providersGrid = this.currentNote.providers;
         })
-        this.checkFormStatus()
+        this.checkFormStatus();
+        this.currentNote.attachments.forEach(att => {
+            if(att.type == 3) {
+                this.providerDocFiles.push(att);
+                this.providerDocFiles = [...this.providerDocFiles];
+            };
+            if(att.type == 4) {
+                this.RCFiles.push(att);
+                this.RCFiles = [...this.RCFiles];
+            };
+        });
     }
 
     checkFormStatus() {
@@ -91,22 +103,20 @@ export class NotesReceivedConformable {
 
     downloadOC() {
         let files = this.currentNote.attachments.find(file => file.type == 2);
-        this.requestNoteService.downloadProviderFile(files.fileId, 5);
+        this.requestNoteService.downloadFile(files.fileId, 5, files.fileDescription);
     }
 
-    downloadProviderDoc() {
-        //descargar archivos documentacion para proveedor
-        //ver lista
+    downloadProviderDoc(item) {
+        console.log(item);
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
-    downloadRC() {
-        //descargar archivos documentacion recibido conforme
-        //ver lista
+    downloadRC(item) {
+        console.log(item);
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
     addBill() {
-        //Se valida que se hayan adjuntado archivos y se hayan completados los campos en el formulario de la factura. 
-        //Se cambia el estado a “Factura Pendiente Aprobación Gerente”
         if(this.fileSelected == false) {
             this.messageService.showMessage("Debe seleccionar una factura para subir", 2);
             return;
@@ -125,7 +135,6 @@ export class NotesReceivedConformable {
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
             authToken: 'Bearer ' + Cookie.get('access_token') ,
-            allowedMimeType: ['application/pdf'],
         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {

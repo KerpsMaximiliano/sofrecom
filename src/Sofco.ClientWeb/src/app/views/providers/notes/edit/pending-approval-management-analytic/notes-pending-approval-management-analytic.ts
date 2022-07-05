@@ -19,7 +19,7 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
     show = false;
     productosServicios = [];
     analiticas = [];
-    gerenteLogueado;//Solo mostrar las analiticas asociadas al gerente logueado
+    gerenteLogueado;
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -77,11 +77,6 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
     }
 
     approve() {
-        //Marca las analíticas del gerente logueado como “Aprobada”. 
-        //Luego se hace un barrido de todas las analíticas asociadas a la nota de pedido; 
-        //si todas están aprobadas, entonces la nota de pedido pasa a estado “Pendiente Aprobación Abastecimiento”. 
-        //Si hay al menos una que esté en estado “Pendiente de Aprobación”, se mantiene el estado actual.
-        //this.requestNoteService.approvePendingApprovalManagementAnalytic
         let model = {
             id: this.currentNote.id,
             comments: this.formNota.controls.observaciones.value
@@ -95,9 +90,6 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
     }
 
     reject() {
-        //Se marcan las analíticas del gerente logueado como “Rechazada”. 
-        //Se cambia el estado de la nota de pedido a estado “Pendiente Revisión Abastecimiento” sin importar el estado del resto de las analíticas.
-        //this.requestNoteService.rejectPendingApprovalManagementAnalytic
         let model = {
             id: this.currentNote.id
         };

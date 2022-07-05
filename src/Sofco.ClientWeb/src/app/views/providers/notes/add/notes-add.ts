@@ -413,6 +413,7 @@ export class NotesAddComponent implements OnInit{
         };
         let provAreaSearch = this.providerAreas.find(prov => prov.id == this.formNota.controls.providerArea.value);
         let model = {
+            id: null,
             description: this.formNota.controls.description.value,
             productsServices: finalProductsAndServices,
             providerAreaId: this.formNota.controls.providerArea.value,
@@ -454,8 +455,12 @@ export class NotesAddComponent implements OnInit{
             model.training = null;
         }
         console.log(model);
+        if(this.requestNoteId != null) {
+            model.id = this.requestNoteId;
+        }
         this.requestNoteService.saveDraft(model).subscribe(d=>{
             this.requestNoteId = d.data;
+            this.messageService.showMessage("La nota de pedido ha sido guardada", 0);
             if(send) {
                 this.requestNoteService.approveDraft(this.requestNoteId).subscribe(d=>{
                     console.log(d);

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
@@ -123,7 +123,7 @@ export class NotesDraftComponent implements OnInit{
     formParticipanteCapacitacion: FormGroup = new FormGroup({
         name: new FormControl (null, [Validators.required, Validators.maxLength(100)]),
         sector: new FormControl (null, [Validators.required])
-    })
+    });
 
     constructor(
         private providersService: ProvidersService,
@@ -135,8 +135,11 @@ export class NotesDraftComponent implements OnInit{
         private requestNoteService: RequestNoteService,
         private messageService: MessageService,
         private authService: AuthService,
-        private router: Router
-    ) {}
+        private router: Router,
+        private builder: FormBuilder
+    ) {
+
+    }
 
     ngOnInit(): void {
         this.inicializar();
@@ -144,7 +147,6 @@ export class NotesDraftComponent implements OnInit{
         console.log(this.userInfo);
         this.analyticService.getByCurrentUser().subscribe(d=>console.log(d))
         this.refundService.getAnalytics().subscribe(d=>console.log(d))
-        //this.requestNoteService.getById(1).subscribe(d=>console.log(d))
     }
 
 
@@ -207,8 +209,6 @@ export class NotesDraftComponent implements OnInit{
         if(this.currentNote.attachments != null) {
             this.uploadedFilesId = this.currentNote.attachments;
         }
-        //this.providers = this.currentNote.providers;
-        console.log(this.providers)
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             this.formNota.patchValue({
                 description: this.currentNote.description,
@@ -440,7 +440,7 @@ export class NotesDraftComponent implements OnInit{
         let analytics = [];
         this.analiticasTable.forEach(analytic => {
             let push = {
-                analyticId: analytic.analytic.id,
+                analyticId: analytic.analyticId,
                 asigned: analytic.asigned
             }
             analytics.push(push)
@@ -471,6 +471,7 @@ export class NotesDraftComponent implements OnInit{
             });
         });
         let model = {
+            id: this.currentNote.id,
             description: this.formNota.controls.description.value,
             productsServices: finalProductsAndServices,
             providerAreaId: this.formNota.controls.providerArea.value,
@@ -513,6 +514,7 @@ export class NotesDraftComponent implements OnInit{
         console.log(model);
         this.requestNoteService.saveDraft(model).subscribe(d=>{
             this.requestNoteId = d.data;
+            this.messageService.showMessage("La nota de pedido ha sido guardada", 0);
             if(send) {
                 this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
                 this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
@@ -593,7 +595,6 @@ export class NotesDraftComponent implements OnInit{
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
             authToken: 'Bearer ' + Cookie.get('access_token') ,
-            allowedMimeType: ['application/pdf'],
         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {

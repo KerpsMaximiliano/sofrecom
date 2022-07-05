@@ -17,7 +17,10 @@ export class NotesPendingGAFProcessing {
     mode;
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];//proveedor seleccionado etapas anteriores
+    providersGrid = [];
+    providerDocFiles = [];
+    RCFiles = [];
+    BillFiles = [];
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -67,8 +70,22 @@ export class NotesPendingGAFProcessing {
             this.analiticas = this.currentNote.analytics;
             this.productosServicios = this.currentNote.productsServices;
             this.providersGrid = this.currentNote.providers;
-        })
-        this.checkFormStatus()
+        });
+        this.checkFormStatus();
+        this.currentNote.attachments.forEach(att => {
+            if(att.type == 3) {
+                this.providerDocFiles.push(att);
+                this.providerDocFiles = [...this.providerDocFiles];
+            };
+            if(att.type == 4) {
+                this.RCFiles.push(att);
+                this.RCFiles = [...this.RCFiles];
+            };
+            if(att.type == 5) {
+                this.BillFiles.push(att);
+                this.BillFiles = [...this.BillFiles];
+            }
+        });
     }
 
     checkFormStatus() {
@@ -77,26 +94,33 @@ export class NotesPendingGAFProcessing {
 
     downloadOC() {
         let files = this.currentNote.attachments.find(file => file.type == 2);
-        this.requestNoteService.downloadProviderFile(files.fileId, 5);
+        this.requestNoteService.downloadFile(files.fileId, 5, files.fileDescription);
     }
 
-    downloadProviderDoc() {
-        //descargar archivos documentacion para proveedor
-        //ver lista
+    downloadProviderDoc(item) {
+        console.log(item);
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
-    downloadRC() {
-        //descargar archivos documentacion recibido conforme
-        //ver lista
+    downloadRC(item) {
+        console.log(item);
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
-    downloadBills() {
-        //descargar archivos facturas
+    downloadBills(item) {
+        console.log(item);
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
     close() {
-        //No hace ninguna acción sólo cambiar de estado a “Cerrado”
-        this.messageService.showMessage("La nota de pedido ha sido cerrada", 0);
-        this.router.navigate(['/providers/notes']);
+        let model = {
+            id: this.currentNote.id,
+            comments: this.currentNote.comments
+        };
+        this.requestNoteService.approvePendingGAFProcessing(model).subscribe(d => {
+            console.log(d);
+            this.messageService.showMessage("La nota de pedido ha sido cerrada", 0);
+            this.router.navigate(['/providers/notes']);
+        })
     }
 }

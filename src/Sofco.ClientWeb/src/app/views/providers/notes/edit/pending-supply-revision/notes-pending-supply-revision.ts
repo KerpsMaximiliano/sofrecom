@@ -136,7 +136,6 @@ export class NotesPendingSupplyRevision implements OnInit {
     }
 
     reject() {
-        //this.requestNoteService.rejectPendingSupplyRevision(this.currentNote.id).subscribe(d=>console.log(d))
         let model = {
             id: this.currentNote.id
         }
@@ -148,10 +147,6 @@ export class NotesPendingSupplyRevision implements OnInit {
     }
 
     send() {
-        //Se debe validar que haya al menos un proveedor con un archivo adjunto.
-        //Se debe validar que haya ingresado un valor para el monto final de la OC.
-        //Se cambia al estado “Pendiente Aprobación Gerente Analíticas”
-        //Se asignan a todas las analíticas asociadas el estado “Pendiente Aprobación”
         this.markFormGroupTouched(this.formNota);
         if(this.formNota.invalid) {
             return;
@@ -166,7 +161,6 @@ export class NotesPendingSupplyRevision implements OnInit {
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
             authToken: 'Bearer ' + Cookie.get('access_token') ,
-            allowedMimeType: ['application/pdf'],
         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
@@ -264,51 +258,4 @@ export class NotesPendingSupplyRevision implements OnInit {
             }
         });
     }
-
-    //Debe ser llamado al iniciar para configurar el file uploader
-    /*
-    uploaderConfig(){
-        this.uploader = new FileUploader({url: this.salaryAdvancementService.getUrlForImportFile(),
-            authToken: 'Bearer ' + Cookie.get('access_token') ,
-            maxFileSize: 50*1024*1024,
-            allowedMimeType: ['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-          });
-
-        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            if(status == 401){
-                this.authService.refreshToken().subscribe(token => {
-                    this.messageService.closeLoading();
-
-                    if(token){
-                        this.clearSelectedFile();
-                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
-                        this.uploaderConfig();
-                    }
-                });
-
-                return;
-            }
-
-            var dataJson = JSON.parse(response);
-
-            this.getData();
-
-            if(dataJson.messages){
-                this.messageService.showMessages(dataJson.messages);
-            }
-
-            this.clearSelectedFile();
-        };
-
-        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
-    }
-
-    clearSelectedFile(){
-        if(this.uploader.queue.length > 0){
-            this.uploader.queue[0].remove();
-        }
-  
-        this.selectedFile.nativeElement.value = '';
-    } 
-    */
 }

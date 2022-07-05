@@ -37,9 +37,10 @@ export class NotesRequestedProvider {
 
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];//proveedor seleccionado etapas anteriores
+    providersGrid = [];
     fileSelected = false;
     uploadedFilesId = [];
+    providerDocFiles = [];
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -91,7 +92,13 @@ export class NotesRequestedProvider {
             this.productosServicios = this.currentNote.productsServices;
             this.providersGrid = this.currentNote.providers;
         })
-        this.checkFormStatus()
+        this.checkFormStatus();
+        this.currentNote.attachments.forEach(att => {
+            if(att.type == 3) {
+                this.providerDocFiles.push(att);
+                this.providerDocFiles = [...this.providerDocFiles];
+            };
+        });
     }
 
     checkFormStatus() {
@@ -103,25 +110,19 @@ export class NotesRequestedProvider {
 
     downloadOC() {
         let files = this.currentNote.attachments.find(file => file.type == 2);
-        this.requestNoteService.downloadProviderFile(files.fileId, 5);
+        this.requestNoteService.downloadFile(files.fileId, 5, files.fileDescription);
     }
 
-    downloadProviderDoc() {
-        //descargar archivos documentacion para proveedor
-        //ver lista
+    downloadProviderDoc(item) {
+        console.log(item);
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
     closeM() {
-        //abrir modal
         this.modal.show()
     }
 
     close() {
-        //Cerrar: si cierra se muestra un modal con un input de texto para que cargue una observación. 
-        //Debajo los botones “Aceptar” y “Cancelar”. 
-        //Si cancela se cierra el modal, si acepta se invoca a la API.
-        //Si cierra se carga el comentario y pasa a estado Cerrada. 
-        //Fin del workflow.
         if(this.rejectComments == null || this.rejectComments.length == 0) {
             this.messageService.showMessage("Debe dejar una observación si desea cerrar la nota de pedido", 2);
             this.modal.hide();
@@ -140,15 +141,12 @@ export class NotesRequestedProvider {
     }
 
     confirm() {
-        //Confirmar Recepción
-        //Si Confirma Recepción se cambia a estado “Recibido Conforme” y se adjuntan archivos sobre la recepción (si es que se adjuntaron)
         this.uploader.uploadAll();
     }
 
     uploaderConfig(){
         this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
             authToken: 'Bearer ' + Cookie.get('access_token') ,
-            allowedMimeType: ['application/pdf'],
         });
 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {

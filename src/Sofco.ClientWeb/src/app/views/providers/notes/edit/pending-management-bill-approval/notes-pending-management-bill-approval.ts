@@ -17,7 +17,10 @@ export class NotesPendingManagementBillApproval {
     mode;
     productosServicios = [];
     analiticas = [];
-    providersGrid = [];//proveedor seleccionado etapas anteriores
+    providersGrid = [];
+    providerDocFiles = [];
+    RCFiles = [];
+    BillFiles = [];
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -68,7 +71,21 @@ export class NotesPendingManagementBillApproval {
             this.productosServicios = this.currentNote.productsServices;
             this.providersGrid = this.currentNote.providers;
         })
-        this.checkFormStatus()
+        this.checkFormStatus();
+        this.currentNote.attachments.forEach(att => {
+            if(att.type == 3) {
+                this.providerDocFiles.push(att);
+                this.providerDocFiles = [...this.providerDocFiles];
+            };
+            if(att.type == 4) {
+                this.RCFiles.push(att);
+                this.RCFiles = [...this.RCFiles];
+            };
+            if(att.type == 5) {
+                this.BillFiles.push(att);
+                this.BillFiles = [...this.BillFiles];
+            }
+        });
     }
 
     checkFormStatus() {
@@ -77,26 +94,22 @@ export class NotesPendingManagementBillApproval {
 
     downloadOC() {
         let files = this.currentNote.attachments.find(file => file.type == 2);
-        this.requestNoteService.downloadProviderFile(files.fileId, 5);
+        this.requestNoteService.downloadFile(files.fileId, 5, files.fileDescription);
     }
 
-    downloadProviderDoc() {
-        //descargar archivos documentacion para proveedor
-        //ver lista
+    downloadProviderDoc(item) {
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
-    downloadRC() {
-        //descargar archivos documentacion recibido conforme
-        //ver lista
+    downloadRC(item) {
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
-    downloadBills() {
-        //descargar archivos facturas
+    downloadBills(item) {
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
     approve() {
-        //Al aprobar se tomarán las analíticas asociadas al gerente logueado y se pasarán al estado “Aprobada Facturación”. 
-        //Se realizará un barrido de todas las analiticas y si todas están en “Aprobada Facturación”, se cambiará el estado de la nota de pedido a “Pendiente Procesar GAF”.
         let model = {
             id: this.currentNote.id,
             comments: this.formNota.controls.observaciones.value
