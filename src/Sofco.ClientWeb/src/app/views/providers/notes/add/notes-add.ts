@@ -22,8 +22,6 @@ import { Router } from "@angular/router";
     templateUrl: './notes-add.html',
     styleUrls: ['./notes-add.scss']
 })
-//Validar suma total productos/servicios sea mayor a 0
-//Validar % analíticas sea 100
 
 export class NotesAddComponent implements OnInit{
 
@@ -44,8 +42,10 @@ export class NotesAddComponent implements OnInit{
     productsServicesQuantityError: boolean = false;
 
     providerAreas = [];
-    participantes = ['participante 1', 'participante 2', 'participante 3'];
     participants = [];
+    participanteViajeSeleccionado = null;
+    participanteViajeSeleccionadoCuit = null;
+    participanteViajeSeleccionadoFecha = null;
     filteredParticipants = [];
     analiticas = [];
     analiticasTable = [];
@@ -114,8 +114,8 @@ export class NotesAddComponent implements OnInit{
 
     formParticipanteViaje: FormGroup = new FormGroup({
         name: new FormControl (null, [Validators.required, Validators.maxLength(100)]),
-        birth: new FormControl (null, [Validators.required]),
-        cuit: new FormControl (null, [Validators.required]),
+        //birth: new FormControl (null, [Validators.required]),
+        //cuit: new FormControl (null, [Validators.required]),
     });
 
     formParticipanteCapacitacion: FormGroup = new FormGroup({
@@ -155,6 +155,7 @@ export class NotesAddComponent implements OnInit{
             });
         });
         this.employeeService.getEveryone().subscribe(d => {
+            console.log(d)
             this.participants = d;
             d.forEach(user => {
                 if(user.isExternal == 0 && user.endDate == null) {
@@ -210,7 +211,16 @@ export class NotesAddComponent implements OnInit{
     }
 
     travelChange(event) {
-        //console.log(event)
+        console.log(event);
+        if(event == undefined) {
+            this.participanteViajeSeleccionado = null;
+            this.participanteViajeSeleccionadoCuit = null;
+            this.participanteViajeSeleccionadoFecha = null;
+        } else {
+            this.participanteViajeSeleccionado = event;
+            this.participanteViajeSeleccionadoCuit = event.cuil;
+            this.participanteViajeSeleccionadoFecha = event.birthday;
+        }
     }
 
     openTravelModal() {
@@ -224,13 +234,22 @@ export class NotesAddComponent implements OnInit{
     agregarParticipanteViaje() {
         if(this.formParticipanteViaje.invalid) {
             return;
+        };
+        if(this.participanteViajeSeleccionado == null) {
+            return;
         }
+        /*
         let participante = {
             name: this.formParticipanteViaje.controls.name.value,
             birth: this.formParticipanteViaje.controls.birth.value,
             cuit: this.formParticipanteViaje.controls.cuit.value,
         }
-        this.participantesViaje.push(participante)
+        */
+        
+        this.participantesViaje.push(this.participanteViajeSeleccionado);
+        this.participanteViajeSeleccionado = null;
+        this.participanteViajeSeleccionadoCuit = null;
+        this.participanteViajeSeleccionadoFecha = null;
     }
 
     eliminarParticipanteViaje(index: number) {
@@ -259,7 +278,12 @@ export class NotesAddComponent implements OnInit{
         let productoServicio = {
             productService: this.formProductoServicio.controls.productService.value,
             quantity: this.formProductoServicio.controls.quantity.value
-        }
+        };
+        let search = this.productosServicios.find(ps => ps.productService == productoServicio.productService);
+        if (search != undefined) {
+            this.messageService.showMessage("Ya existe este producto o servicio en la grilla", 2);
+            return;
+        };
         this.productosServicios.push(productoServicio);
         this.productsServicesError = false;
         let totalQuantity = 0;
@@ -297,7 +321,12 @@ export class NotesAddComponent implements OnInit{
         let analitica = {
             analytic: busqueda,
             asigned: this.formAnaliticas.controls.asigned.value
-        }
+        };
+        let search = this.analiticasTable.find(ps => ps.analytic == analitica.analytic);
+        if (search != undefined) {
+            this.messageService.showMessage("Ya existe esta analítica en la grilla", 2);
+            return;
+        };
         this.analiticasTable.push(analitica)
         this.analyticError = false;
         let totalPercentage = 0;
@@ -395,11 +424,11 @@ export class NotesAddComponent implements OnInit{
         });
         let finalTravelPassengers = [];
         this.participantesViaje.forEach(employee => {
-            let search = this.participants.find(emp => emp.name == employee.name);
+            //let search = this.participants.find(emp => emp.name == employee.name);
             finalTravelPassengers.push({
-                employeeId: search.id,
-                cuit: employee.cuit,
-                birth: employee.birth
+                employeeId: employee.id,
+                cuit: employee.cuil,
+                birth: employee.birthday
             });
         });
         let finalAttachments = [];

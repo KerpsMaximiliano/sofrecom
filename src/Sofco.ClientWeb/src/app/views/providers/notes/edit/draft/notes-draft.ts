@@ -41,7 +41,9 @@ export class NotesDraftComponent implements OnInit{
     productsServicesQuantityError: boolean = false;
 
     providerAreas = [];
-    participantes = ['participante 1', 'participante 2', 'participante 3'];
+    participanteViajeSeleccionado = null;
+    participanteViajeSeleccionadoCuit = null;
+    participanteViajeSeleccionadoFecha = null;
     participants = [];
     filteredParticipants = [];
     analiticas = [];
@@ -116,8 +118,8 @@ export class NotesDraftComponent implements OnInit{
 
     formParticipanteViaje: FormGroup = new FormGroup({
         name: new FormControl (null, [Validators.required, Validators.maxLength(100)]),
-        birth: new FormControl (null, [Validators.required]),
-        cuit: new FormControl (null, [Validators.required]),
+        //birth: new FormControl (null, [Validators.required]),
+        //cuit: new FormControl (null, [Validators.required]),
     });
 
     formParticipanteCapacitacion: FormGroup = new FormGroup({
@@ -245,7 +247,16 @@ export class NotesDraftComponent implements OnInit{
             });
             this.travelDepartureDate = this.currentNote.travel.departureDate;
             this.travelReturnDate = this.currentNote.travel.returnDate;
-            this.participantesViaje = this.currentNote.travel.passengers;
+            //this.participantesViaje = this.currentNote.travel.passengers;
+            this.employeeService.getEveryone().subscribe(d => {
+                this.currentNote.travel.passengers.forEach(ps => {
+                    let findPs = d.find(passenger => passenger.id == ps.employeeId);
+                    if(findPs != undefined) {
+                        this.participantesViaje.push(findPs);
+                        this.participantesViaje = [...this.participantesViaje]
+                    }
+                });
+            });
         }
         if(this.currentNote.trainingSection) {
             this.formCapacitacion.patchValue({
@@ -278,7 +289,16 @@ export class NotesDraftComponent implements OnInit{
     }
 
     travelChange(event) {
-        //console.log(event)
+        console.log(event);
+        if(event == undefined) {
+            this.participanteViajeSeleccionado = null;
+            this.participanteViajeSeleccionadoCuit = null;
+            this.participanteViajeSeleccionadoFecha = null;
+        } else {
+            this.participanteViajeSeleccionado = event;
+            this.participanteViajeSeleccionadoCuit = event.cuil;
+            this.participanteViajeSeleccionadoFecha = event.birthday;
+        }
     }
 
     openTravelModal() {
@@ -292,13 +312,22 @@ export class NotesDraftComponent implements OnInit{
     agregarParticipanteViaje() {
         if(this.formParticipanteViaje.invalid) {
             return;
+        };
+        if(this.participanteViajeSeleccionado == null) {
+            return;
         }
+        /*
         let participante = {
             name: this.formParticipanteViaje.controls.name.value,
             birth: this.formParticipanteViaje.controls.birth.value,
             cuit: this.formParticipanteViaje.controls.cuit.value,
         }
-        this.participantesViaje.push(participante);
+        */
+        
+        this.participantesViaje.push(this.participanteViajeSeleccionado);
+        this.participanteViajeSeleccionado = null;
+        this.participanteViajeSeleccionadoCuit = null;
+        this.participanteViajeSeleccionadoFecha = null;
     }
 
     eliminarParticipanteViaje(index: number) {
@@ -327,7 +356,12 @@ export class NotesDraftComponent implements OnInit{
         let productoServicio = {
             productService: this.formProductoServicio.controls.productService.value,
             quantity: this.formProductoServicio.controls.quantity.value
-        }
+        };
+        let search = this.productosServicios.find(ps => ps.productService == productoServicio.productService);
+        if (search != undefined) {
+            this.messageService.showMessage("Ya existe este producto o servicio en la grilla", 2);
+            return;
+        };
         this.productosServicios.push(productoServicio);
         this.productsServicesError = false;
         let totalQuantity = 0;
@@ -365,7 +399,12 @@ export class NotesDraftComponent implements OnInit{
         let analitica = {
             analytic: busqueda,
             asigned: this.formAnaliticas.controls.asigned.value
-        }
+        };
+        let search = this.analiticasTable.find(ps => ps.analytic == analitica.analytic);
+        if (search != undefined) {
+            this.messageService.showMessage("Ya existe esta analítica en la grilla", 2);
+            return;
+        };
         this.analiticasTable.push(analitica)
         this.analyticError = false;
         let totalPercentage = 0;
@@ -463,11 +502,11 @@ export class NotesDraftComponent implements OnInit{
         });
         let finalTravelPassengers = [];
         this.participantesViaje.forEach(employee => {
-            let search = this.participants.find(emp => emp.name == employee.name);
+            //let search = this.participants.find(emp => emp.name == employee.name);
             finalTravelPassengers.push({
-                employeeId: search.id,
-                cuit: employee.cuit,
-                birth: employee.birth
+                employeeId: employee.id,
+                cuit: employee.cuil,
+                birth: employee.birthday
             });
         });
         let model = {

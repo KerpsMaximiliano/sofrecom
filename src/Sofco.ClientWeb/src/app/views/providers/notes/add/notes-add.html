@@ -251,11 +251,13 @@
                             </div>
                             <div class="col-sm-3">
                                 <label>Fecha de Nacimiento</label>
-                                <date-picker [(date)]="travelBirthday" (dateChange)="dateChange(1, $event)"></date-picker>
+                                <!--<date-picker [(date)]="travelBirthday" (dateChange)="dateChange(1, $event)"></date-picker>-->
+                                <input type="text" class="form-control" [value]="participanteViajeSeleccionadoFecha" disabled>
                             </div>
                             <div class="col-sm-3">
                                 <label>CUIT / CUIL</label>
-                                <input type="text" class="form-control" formControlName="cuit">
+                                <!--<input type="text" class="form-control" formControlName="cuit">-->
+                                <input type="text" class="form-control" [value]="participanteViajeSeleccionadoCuit" disabled>
                             </div>
                         </div>
                         <div class="form-group" *ngIf="participantesViaje.length > 0">
@@ -271,8 +273,8 @@
                                 <tbody>
                                     <tr *ngFor="let item of participantesViaje; let i = index">
                                         <td>{{ item.name }} </td>
-                                        <td>{{ item.birth }} </td>
-                                        <td>{{ item.cuit }} </td>
+                                        <td>{{ item.birthday }} </td>
+                                        <td>{{ item.cuil }} </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarParticipanteViaje(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>

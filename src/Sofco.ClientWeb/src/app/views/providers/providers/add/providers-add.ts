@@ -33,7 +33,7 @@ export class ProvidersAddComponent implements OnInit{
         id: new FormControl(0),
         name: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
         providerAreaId: new FormControl(null, [Validators.required]),
-        CUIT: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required]),
+        CUIT: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required, Validators.pattern("^(20|23|27|30|33)([0-9]{8})([0-9]{1})$")]),
         ingresosBrutos: new FormControl(null, [Validators.required]),
         condicionIVA: new FormControl(null, [Validators.required]),
         address: new FormControl(null, [Validators.maxLength(1000), Validators.required]),
@@ -43,7 +43,7 @@ export class ProvidersAddComponent implements OnInit{
         country: new FormControl(null, [Validators.maxLength(20), Validators.required]),
         contactName: new FormControl(null, [Validators.maxLength(100), Validators.required]),
         phone: new FormControl(null, [Validators.maxLength(15), Validators.required]),
-        email: new FormControl(null, [Validators.maxLength(100), Validators.required]),
+        email: new FormControl(null, [Validators.maxLength(100), Validators.required, Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")]),
         website: new FormControl(null, [Validators.maxLength(1000)]),
         comments: new FormControl(null, [Validators.maxLength(5000)])
     });
