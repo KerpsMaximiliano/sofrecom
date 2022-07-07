@@ -246,11 +246,16 @@ export class NotesAddComponent implements OnInit{
             cuit: this.formParticipanteViaje.controls.cuit.value,
         }
         */
-        
+        let search = this.participantesViaje.find(part => part.id == this.participanteViajeSeleccionado.id);
+        if (search != undefined) {
+            this.messageService.showMessage("Ya existe este participante en la grilla", 2);
+            return;
+        };
         this.participantesViaje.push(this.participanteViajeSeleccionado);
         this.participanteViajeSeleccionado = null;
         this.participanteViajeSeleccionadoCuit = null;
         this.participanteViajeSeleccionadoFecha = null;
+        this.formParticipanteViaje.reset();
     }
 
     eliminarParticipanteViaje(index: number) {
