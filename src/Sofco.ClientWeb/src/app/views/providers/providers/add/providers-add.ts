@@ -42,7 +42,7 @@ export class ProvidersAddComponent implements OnInit{
         province: new FormControl(null, [Validators.maxLength(20), Validators.required]),
         country: new FormControl(null, [Validators.maxLength(20), Validators.required]),
         contactName: new FormControl(null, [Validators.maxLength(100), Validators.required]),
-        phone: new FormControl(null, [Validators.maxLength(15), Validators.required]),
+        phone: new FormControl(null, [Validators.maxLength(50), Validators.required]),
         email: new FormControl(null, [Validators.maxLength(100), Validators.required, Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")]),
         website: new FormControl(null, [Validators.maxLength(1000)]),
         comments: new FormControl(null, [Validators.maxLength(5000)])
