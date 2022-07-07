@@ -260,14 +260,14 @@
       </li>
       
 <!-- Providers -->
-<li [ngClass]="{active: activeRoute('providers')}" *ngIf="menuService.hasRecruitment()">
+<li [ngClass]="{active: activeRoute('providers')}" *ngIf="menuService.hasModule('NOPE') || menuService.hasModule('PROV')">
   <a href="#"><i class="fa fa-user-plus"></i> <span class="nav-label">{{'Abastecimiento y Proveedores' | translate }}</span> <span
       class="fa arrow"></span></a>
   <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('providers')}">
-    <li [ngClass]="{active: activeRoute('providers')}" ><a
+    <li [ngClass]="{active: activeRoute('providers')}" *ngIf="menuService.hasModule('PROV')"><a
       [routerLink]="['/providers/providers']">Proveedores</a>
     </li>
-    <li [ngClass]="{active: activeRoute('notes')}" ><a
+    <li [ngClass]="{active: activeRoute('notes')}" *ngIf="menuService.hasModule('NOPE')"><a
       [routerLink]="['/providers/notes']">Notas de Pedido</a>
     </li>
   </ul>
