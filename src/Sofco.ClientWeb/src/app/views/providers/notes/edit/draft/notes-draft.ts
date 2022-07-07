@@ -39,6 +39,7 @@ export class NotesDraftComponent implements OnInit{
     analyticPercentageError: boolean = false;
     productsServicesError: boolean = false;
     productsServicesQuantityError: boolean = false;
+    formParticipanteCapacitacionError: boolean = false;
 
     providerAreas = [];
     participanteViajeSeleccionado = null;
@@ -102,7 +103,7 @@ export class NotesDraftComponent implements OnInit{
         location: new FormControl(null, [Validators.required]),
         date: new FormControl(null, [Validators.required]),
         duration: new FormControl(null, [Validators.required]),
-        ammount: new FormControl(null, [Validators.required]),
+        ammount: new FormControl(null, [Validators.required, Validators.min(0)]),
         participants: new FormControl(null)
     });
 
@@ -335,18 +336,24 @@ export class NotesDraftComponent implements OnInit{
     }
 
     agregarParticipanteCapacitacion() {
+        this.markFormGroupTouched(this.formParticipanteCapacitacion);
         if(this.formParticipanteCapacitacion.invalid) {
             return;
-        }
+        };
         let participante = {
             name: this.formParticipanteCapacitacion.controls.name.value,
             sector: this.formParticipanteCapacitacion.controls.sector.value
-        }
-        this.participantesCapacitacion.push(participante)
+        };
+        this.participantesCapacitacion.push(participante);
+        this.formParticipanteCapacitacionError = false;
+        this.formParticipanteCapacitacion.reset();
     }
 
     eliminarParticipanteCapacitacion(index: number) {
         this.participantesCapacitacion.splice(index, 1);
+        if (this.participantesCapacitacion.length < 1) {
+            this.formParticipanteCapacitacionError = true;
+        };
     }
 
     agregarProductoServicio() {
@@ -453,7 +460,15 @@ export class NotesDraftComponent implements OnInit{
         this.markFormGroupTouched(this.formNota);
         this.markFormGroupTouched(this.formViaje);
         this.markFormGroupTouched(this.formCapacitacion);
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError) {
+        if(this.formNota.controls.training.value == true) {
+            if(this.participantesCapacitacion.length <= 0) {
+                this.formParticipanteCapacitacionError = true;
+            };
+        };
+        if(this.formNota.controls.training.value == false) {
+            this.formParticipanteCapacitacionError = false;
+        };
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError || this.formParticipanteCapacitacionError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
             }
@@ -467,14 +482,14 @@ export class NotesDraftComponent implements OnInit{
             if(!this.formViaje.valid || this.participantesViaje.length <= 0) {
                 console.log("Invalid viaje");
                 return;
-            }
-        }
+            };
+        };
         if(this.formNota.controls.training.value == true) {
-            if(!this.formCapacitacion.valid || this.participantesCapacitacion.length <= 0) {
+            if(!this.formCapacitacion.valid) {
                 console.log("Invalid capacitacion");
                 return;
-            }
-        }
+            };
+        };
         let finalProductsAndServices = this.productosServicios;
         let analytics = [];
         this.analiticasTable.forEach(analytic => {
@@ -600,7 +615,15 @@ export class NotesDraftComponent implements OnInit{
         this.markFormGroupTouched(this.formNota);
         this.markFormGroupTouched(this.formViaje);
         this.markFormGroupTouched(this.formCapacitacion);
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError) {
+        if(this.formNota.controls.training.value == true) {
+            if(this.participantesCapacitacion.length <= 0) {
+                this.formParticipanteCapacitacionError = true;
+            };
+        };
+        if(this.formNota.controls.training.value == false) {
+            this.formParticipanteCapacitacionError = false;
+        };
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError || this.formParticipanteCapacitacionError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
             }
@@ -617,7 +640,7 @@ export class NotesDraftComponent implements OnInit{
             }
         };
         if(this.formNota.controls.training.value == true) {
-            if(!this.formCapacitacion.valid || this.participantesCapacitacion.length <= 0) {
+            if(!this.formCapacitacion.valid) {
                 console.log("Invalid capacitacion");
                 return;
             }
