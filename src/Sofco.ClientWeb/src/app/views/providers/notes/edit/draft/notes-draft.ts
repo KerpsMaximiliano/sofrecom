@@ -557,7 +557,9 @@ export class NotesDraftComponent implements OnInit{
             if(send) {
                 this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
                 this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
-                this.router.navigate(['/providers/notes']);
+                setTimeout(() => {
+                    this.router.navigate(['/providers/notes']);
+                }, 1500);
             }
         })
     }

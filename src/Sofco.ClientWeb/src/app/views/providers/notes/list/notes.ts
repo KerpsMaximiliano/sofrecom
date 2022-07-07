@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -11,7 +11,7 @@ import { MessageService } from "app/services/common/message.service";
     templateUrl: './notes.html'
 })
 
-export class NotesComponent implements OnInit{
+export class NotesComponent implements OnInit, AfterViewInit{
 
     applicants = [];
     applicantId: number;
@@ -50,6 +50,10 @@ export class NotesComponent implements OnInit{
     ){}
 
     ngOnInit(): void {
+        //this.inicializar();
+    }
+
+    ngAfterViewInit(): void {
         this.inicializar();
     }
 
@@ -61,23 +65,26 @@ export class NotesComponent implements OnInit{
             toDate: null,
             providerId: null,
         };
-        this.requestNoteService.getAll(json).subscribe(d=>{
-            console.log(d);
-            d.forEach(note => {
-                note.status = this.states[note.statusId].text;
-                this.notesBackup.push(note);
-                this.notesBackup = [...this.notesBackup];
-                if(note.status == "Cerrada" || note.status == "Rechazada") {
-                    this.notesEnded.push(note);
-                    this.notesEnded = [...this.notesEnded];
-                } else {
-                    this.notesInProcess.push(note);
-                    this.notesInProcess = [...this.notesInProcess];
-                }
-            })
-            this.notes = this.notesInProcess;
-            this.initGrid();
-        });
+        setTimeout(() => {
+            this.requestNoteService.getAll(json).subscribe(d=>{
+                console.log(d);
+                d.forEach(note => {
+                    note.status = this.states[note.statusId].text;
+                    this.notesBackup.push(note);
+                    this.notesBackup = [...this.notesBackup];
+                    if(note.status == "Cerrada" || note.status == "Rechazada") {
+                        this.notesEnded.push(note);
+                        this.notesEnded = [...this.notesEnded];
+                    } else {
+                        this.notesInProcess.push(note);
+                        this.notesInProcess = [...this.notesInProcess];
+                    }
+                })
+                this.notes = this.notesInProcess;
+                this.initGrid();
+            });
+        }, 500);
+        
         this.employeeService.getEveryone().subscribe(d => {
             d.forEach(employee => {
                 if(employee.endDate == null && employee.isExternal == 0) {
