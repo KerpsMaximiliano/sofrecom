@@ -105,6 +105,7 @@ export class NotesRequestedProvider {
         this.formNota.disable();
         if(this.mode == 'Edit') {
             this.formNota.controls.documentacionRecibidoConforme.enable();
+            this.formNota.controls.observaciones.enable();
         }
     }
 

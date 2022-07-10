@@ -90,6 +90,9 @@ export class NotesPendingGAFProcessing {
 
     checkFormStatus() {
         this.formNota.disable();
+        if(this.mode == 'Edit') {
+            this.formNota.controls.observaciones.enable();
+        }
     }
 
     downloadOC() {

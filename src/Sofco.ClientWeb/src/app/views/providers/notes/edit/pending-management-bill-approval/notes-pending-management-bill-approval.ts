@@ -89,7 +89,9 @@ export class NotesPendingManagementBillApproval {
     }
 
     checkFormStatus() {
-        this.formNota.disable();
+        this.formNota.disable();if(this.mode == 'Edit') {
+            this.formNota.controls.observaciones.enable();
+        }
     }
 
     downloadOC() {

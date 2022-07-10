@@ -84,6 +84,7 @@ export class NotesApproved {
     checkFormStatus() {
         this.formNota.disable();
         if(this.mode == "Edit") {
+            this.formNota.controls.observaciones.enable();
             this.formNota.controls.documentacionProveedor.enable();
         }
     }

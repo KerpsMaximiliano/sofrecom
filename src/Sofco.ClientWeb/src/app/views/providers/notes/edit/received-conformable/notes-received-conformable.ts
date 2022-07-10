@@ -98,6 +98,7 @@ export class NotesReceivedConformable {
         this.formNota.disable();
         if(this.mode == 'Edit') {
             this.formNota.controls.facturas.enable();
+            this.formNota.controls.observaciones.enable();
         }
     }
 

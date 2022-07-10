@@ -5,15 +5,15 @@
         <div class="col-sm-12 row">
             <div class="pull-left">
                 <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']">
-                    <i class="fa fa-arrow-left"></i>Volver
+                    <i class="fa fa-arrow-left"></i>       Volver
                 </button>
             </div>
             <div class="btn-right" *ngIf="mode == 'Edit'">
                 <button class="btn btn-danger btn-outline dim" (click)="reject()">
-                    Rechazar<i class="fa fa-times"></i>
+                    Rechazar       <i class="fa fa-times"></i>
                 </button>
                 <button class="btn btn-success btn-outline dim" (click)="approve()">
-                    Aprobar<i class="fa fa-arrow-right"></i>
+                    Aprobar       <i class="fa fa-arrow-right"></i>
                 </button>
             </div>
         </div>

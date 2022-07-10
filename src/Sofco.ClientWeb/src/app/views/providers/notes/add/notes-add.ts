@@ -41,12 +41,14 @@ export class NotesAddComponent implements OnInit{
     productsServicesError: boolean = false;
     productsServicesQuantityError: boolean = false;
     formParticipanteCapacitacionError: boolean = false;
+    travelDateError: boolean = false;
 
     providerAreas = [];
     participants = [];
     participanteViajeSeleccionado = null;
     participanteViajeSeleccionadoCuit = null;
     participanteViajeSeleccionadoFecha = null;
+    participanteCapacitacionSeleccionado = null;
     filteredParticipants = [];
     analiticas = [];
     analiticasTable = [];
@@ -212,7 +214,6 @@ export class NotesAddComponent implements OnInit{
     }
 
     travelChange(event) {
-        console.log(event);
         if(event == undefined) {
             this.participanteViajeSeleccionado = null;
             this.participanteViajeSeleccionadoCuit = null;
@@ -221,6 +222,14 @@ export class NotesAddComponent implements OnInit{
             this.participanteViajeSeleccionado = event;
             this.participanteViajeSeleccionadoCuit = event.cuil;
             this.participanteViajeSeleccionadoFecha = event.birthday;
+        }
+    }
+
+    trainingChange(event) {
+        if(event == undefined) {
+            this.participanteCapacitacionSeleccionado = null;
+        } else {
+            this.participanteCapacitacionSeleccionado = event;
         }
     }
 
@@ -239,13 +248,6 @@ export class NotesAddComponent implements OnInit{
         if(this.participanteViajeSeleccionado == null) {
             return;
         }
-        /*
-        let participante = {
-            name: this.formParticipanteViaje.controls.name.value,
-            birth: this.formParticipanteViaje.controls.birth.value,
-            cuit: this.formParticipanteViaje.controls.cuit.value,
-        }
-        */
         let search = this.participantesViaje.find(part => part.id == this.participanteViajeSeleccionado.id);
         if (search != undefined) {
             this.messageService.showMessage("Ya existe este participante en la grilla", 2);
@@ -267,12 +269,21 @@ export class NotesAddComponent implements OnInit{
         if(this.formParticipanteCapacitacion.invalid) {
             return;
         };
+        if(this.participanteCapacitacionSeleccionado == null) {
+            return;
+        };
+        let search = this.participantesCapacitacion.find(part => part.data.id == this.participanteCapacitacionSeleccionado.id);
+        if (search != undefined) {
+            this.messageService.showMessage("Ya existe este participante en la grilla", 2);
+            return;
+        };
         let participante = {
-            name: this.formParticipanteCapacitacion.controls.name.value,
+            data: this.participanteCapacitacionSeleccionado,
             sector: this.formParticipanteCapacitacion.controls.sector.value
         };
         this.participantesCapacitacion.push(participante);
         this.formParticipanteCapacitacionError = false;
+        this.participanteCapacitacionSeleccionado = null;
         this.formParticipanteCapacitacion.reset();
     }
 
@@ -406,7 +417,7 @@ export class NotesAddComponent implements OnInit{
             return;
         }
         if(this.formNota.controls.travel.value == true) {
-            if(!this.formViaje.valid || this.participantesViaje.length <= 0) {
+            if(!this.formViaje.valid || this.participantesViaje.length <= 0 || this.travelDateError) {
                 console.log("Invalid viaje");
                 return;
             };
@@ -436,15 +447,13 @@ export class NotesAddComponent implements OnInit{
         })
         let finalTrainingPassengers = [];
         this.participantesCapacitacion.forEach(employee => {
-            let search = this.filteredParticipants.find(emp => emp.name == employee.name);
             finalTrainingPassengers.push({
-                employeeId: search.id,
+                employeeId: employee.data.id,
                 sector: employee.sector
             });
         });
         let finalTravelPassengers = [];
         this.participantesViaje.forEach(employee => {
-            //let search = this.participants.find(emp => emp.name == employee.name);
             finalTravelPassengers.push({
                 employeeId: employee.id,
                 cuit: employee.cuil,
@@ -541,17 +550,35 @@ export class NotesAddComponent implements OnInit{
             this.formViaje.controls.departureDate.setValue(this.travelDepartureDate);
             this.formViaje.controls.departureDate.markAsDirty();
             this.formViaje.controls.departureDate.markAsTouched();
+            if(this.travelDepartureDate != null && this.travelReturnDate != null) {
+                if (this.travelDepartureDate > this.travelReturnDate) {
+                    this.travelDateError = true;
+                } else {
+                    this.travelDateError = false;
+                }
+            } else {
+                this.travelDateError = false;
+            }
         }
         if(number == 3) {
             this.formViaje.controls.returnDate.setValue(this.travelReturnDate);
             this.formViaje.controls.returnDate.markAsDirty();
             this.formViaje.controls.returnDate.markAsTouched();
+            if(this.travelDepartureDate != null && this.travelReturnDate != null) {
+                if (this.travelDepartureDate > this.travelReturnDate) {
+                    this.travelDateError = true;
+                } else {
+                    this.travelDateError = false;
+                }
+            } else {
+                this.travelDateError = false;
+            }
         }
         if(number == 4) {
             this.formCapacitacion.controls.date.setValue(this.trainingDate);
             this.formCapacitacion.controls.date.markAsDirty();
             this.formCapacitacion.controls.date.markAsTouched();
-        }        
+        }
     }
 
     sendDraft() {
@@ -577,7 +604,7 @@ export class NotesAddComponent implements OnInit{
             return;
         }
         if(this.formNota.controls.travel.value == true) {
-            if(!this.formViaje.valid || this.participantesViaje.length <= 0) {
+            if(!this.formViaje.valid || this.participantesViaje.length <= 0 || this.travelDateError) {
                 console.log("Invalid viaje");
                 return;
             };

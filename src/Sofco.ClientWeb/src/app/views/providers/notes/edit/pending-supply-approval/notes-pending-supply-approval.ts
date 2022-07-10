@@ -42,7 +42,7 @@ export class NotesPendingSupplyApproval implements OnInit{
         nroEvalprop: new FormControl(null),
         observaciones: new FormControl(null),
         montoOC: new FormControl(null),
-        ordenCompra: new FormControl(null, Validators.required)
+        ordenCompra: new FormControl(null, [Validators.required, Validators.min(0)])
     })
 
     constructor(

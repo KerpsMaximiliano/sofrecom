@@ -40,11 +40,13 @@ export class NotesDraftComponent implements OnInit{
     productsServicesError: boolean = false;
     productsServicesQuantityError: boolean = false;
     formParticipanteCapacitacionError: boolean = false;
+    travelDateError: boolean = false;
 
     providerAreas = [];
     participanteViajeSeleccionado = null;
     participanteViajeSeleccionadoCuit = null;
     participanteViajeSeleccionadoFecha = null;
+    participanteCapacitacionSeleccionado = null;
     participants = [];
     filteredParticipants = [];
     analiticas = [];
@@ -64,23 +66,18 @@ export class NotesDraftComponent implements OnInit{
     trainingDate;
 
     formNota: FormGroup = new FormGroup({
-        description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),//Descripcion
-        productsAndServicies: new FormControl(null),//Combo editable productos/servicios
-        //2 campos
-        //Productos/Servicios - texto 5000 requerido
-        //Cantidad - numero mayor a 0 requerido
-        providerArea: new FormControl(null, [Validators.required]),//Rubro - Combo de ProvidersAreas con Active = true
-        critical: new FormControl(null, []),//Se carga a partir del rubro seleccionado. Es readonly. 
-        //Asociado a la columna Critical del Rubro seleccionado. Es Si o No. Va al lado del Combo de Rubro.
-        analytics: new FormControl(null, []),//Grilla editable de Analíticas
+        description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),
+        productsAndServicies: new FormControl(null),
+        providerArea: new FormControl(null, [Validators.required]),
+        critical: new FormControl(null, []),
+        analytics: new FormControl(null, []),
         requiresPersonel: new FormControl(null, []),
-        providers: new FormControl(null, []),//combo multiselección de la tabla Providers que sean del rubro seleccionado y estén activos. 
-        //Es opcional, puede no elegir ninguno. 
-        evaluationProposal: new FormControl(false, []),//Checkbox
+        providers: new FormControl(null, []),
+        evaluationProposal: new FormControl(false, []),
         numberEvalprop: new FormControl(null, [Validators.maxLength(100)]),
         observations: new FormControl(null, []),
-        travel: new FormControl(false, []),//Checkbox
-        training: new FormControl(false, []),//Checkbox
+        travel: new FormControl(false, []),
+        training: new FormControl(false, []),
     });
 
     formProductoServicio: FormGroup = new FormGroup({
@@ -302,6 +299,14 @@ export class NotesDraftComponent implements OnInit{
         }
     }
 
+    trainingChange(event) {
+        if(event == undefined) {
+            this.participanteCapacitacionSeleccionado = null;
+        } else {
+            this.participanteCapacitacionSeleccionado = event;
+        }
+    }
+
     openTravelModal() {
         this.travelFormShow = !this.travelFormShow;
     }
@@ -317,13 +322,6 @@ export class NotesDraftComponent implements OnInit{
         if(this.participanteViajeSeleccionado == null) {
             return;
         }
-        /*
-        let participante = {
-            name: this.formParticipanteViaje.controls.name.value,
-            birth: this.formParticipanteViaje.controls.birth.value,
-            cuit: this.formParticipanteViaje.controls.cuit.value,
-        }
-        */
         
         this.participantesViaje.push(this.participanteViajeSeleccionado);
         this.participanteViajeSeleccionado = null;
@@ -340,12 +338,21 @@ export class NotesDraftComponent implements OnInit{
         if(this.formParticipanteCapacitacion.invalid) {
             return;
         };
+        if(this.participanteCapacitacionSeleccionado == null) {
+            return;
+        };
+        let search = this.participantesCapacitacion.find(part => part.data.id == this.participanteCapacitacionSeleccionado.id);
+        if (search != undefined) {
+            this.messageService.showMessage("Ya existe este participante en la grilla", 2);
+            return;
+        };
         let participante = {
-            name: this.formParticipanteCapacitacion.controls.name.value,
+            data: this.participanteCapacitacionSeleccionado,
             sector: this.formParticipanteCapacitacion.controls.sector.value
         };
         this.participantesCapacitacion.push(participante);
         this.formParticipanteCapacitacionError = false;
+        this.participanteCapacitacionSeleccionado = null;
         this.formParticipanteCapacitacion.reset();
     }
 
@@ -479,7 +486,7 @@ export class NotesDraftComponent implements OnInit{
             return;
         }
         if(this.formNota.controls.travel.value == true) {
-            if(!this.formViaje.valid || this.participantesViaje.length <= 0) {
+            if(!this.formViaje.valid || this.participantesViaje.length <= 0 || this.travelDateError) {
                 console.log("Invalid viaje");
                 return;
             };
@@ -509,15 +516,13 @@ export class NotesDraftComponent implements OnInit{
         })
         let finalTrainingPassengers = [];
         this.participantesCapacitacion.forEach(employee => {
-            let search = this.filteredParticipants.find(emp => emp.name == employee.name);
             finalTrainingPassengers.push({
-                employeeId: search.id,
+                employeeId: employee.data.id,
                 sector: employee.sector
             });
         });
         let finalTravelPassengers = [];
         this.participantesViaje.forEach(employee => {
-            //let search = this.participants.find(emp => emp.name == employee.name);
             finalTravelPassengers.push({
                 employeeId: employee.id,
                 cuit: employee.cuil,
@@ -598,11 +603,29 @@ export class NotesDraftComponent implements OnInit{
             this.formViaje.controls.departureDate.setValue(this.travelDepartureDate);
             this.formViaje.controls.departureDate.markAsDirty();
             this.formViaje.controls.departureDate.markAsTouched();
+            if(this.travelDepartureDate != null && this.travelReturnDate != null) {
+                if (this.travelDepartureDate > this.travelReturnDate) {
+                    this.travelDateError = true;
+                } else {
+                    this.travelDateError = false;
+                }
+            } else {
+                this.travelDateError = false;
+            }
         }
         if(number == 3) {
             this.formViaje.controls.returnDate.setValue(this.travelReturnDate);
             this.formViaje.controls.returnDate.markAsDirty();
             this.formViaje.controls.returnDate.markAsTouched();
+            if(this.travelDepartureDate != null && this.travelReturnDate != null) {
+                if (this.travelDepartureDate > this.travelReturnDate) {
+                    this.travelDateError = true;
+                } else {
+                    this.travelDateError = false;
+                }
+            } else {
+                this.travelDateError = false;
+            }
         }
         if(number == 4) {
             this.formCapacitacion.controls.date.setValue(this.trainingDate);
@@ -634,7 +657,7 @@ export class NotesDraftComponent implements OnInit{
             return;
         };
         if(this.formNota.controls.travel.value == true) {
-            if(!this.formViaje.valid || this.participantesViaje.length <= 0) {
+            if(!this.formViaje.valid || this.participantesViaje.length <= 0 || this.travelDateError) {
                 console.log("Invalid viaje");
                 return;
             }
