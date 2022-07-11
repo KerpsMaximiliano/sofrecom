@@ -25,6 +25,7 @@ export class NotesReceivedConformable {
     RCFiles = [];
     fileSelected = false;
     uploadedFilesId = [];
+    filesToUpload = [];
 
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({url:""});
@@ -126,6 +127,11 @@ export class NotesReceivedConformable {
     }
 
     fileCheck(event) {
+        this.filesToUpload = [];
+        this.uploader.queue.forEach(file => {
+            this.filesToUpload.push(file.file.name);
+            this.filesToUpload = [...this.filesToUpload]
+        });
         if(event.length >= 1) {
             this.fileSelected = true;
         } else {
@@ -170,7 +176,7 @@ export class NotesReceivedConformable {
                 this.messageService.showMessage("Las facturas han sido adjuntadas a la nota de pedido", 0);
                 this.router.navigate(['/providers/notes']);
             })
-        }
+        };
         this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     }
 
