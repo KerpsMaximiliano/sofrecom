@@ -53,8 +53,8 @@
                                 La suma de cantidades debe ser mayor a 0.
                             </span>
                         </div>
-                        <div class="form-group" *ngIf="productosServicios.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                        <div class="form-group" *ngIf="productosServicios.length > 0" [formGroup]="formProductoServicioTable">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable" formArrayName="productoServicio">
                                 <thead>
                                     <tr>
                                         <th>Producto/Servicio</th>
@@ -62,10 +62,15 @@
                                         <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of productosServicios; let i = index">
-                                        <td>{{ item.productService }} </td>
-                                        <td>{{ item.quantity }} </td>
+                                <tbody *ngFor="let item of getProductoServicio().controls; let i = index">
+                                    <tr [formGroupName]="i">
+                                        <td>
+                                            <input type="text" formControlName="productService">
+                                            <span *ngIf="item.get('productService').value == '' || item.get('productService').value == null" style="color: red;">
+                                                No puede estar vacío
+                                            </span>
+                                        </td>
+                                        <td><input type="number" formControlName="quantity" (input)="productoServicioChange()"></td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarProductoServicio(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>

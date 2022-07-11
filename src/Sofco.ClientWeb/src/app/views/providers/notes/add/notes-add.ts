@@ -42,6 +42,7 @@ export class NotesAddComponent implements OnInit{
     productsServicesQuantityError: boolean = false;
     formParticipanteCapacitacionError: boolean = false;
     travelDateError: boolean = false;
+    productsServicesTableError: boolean = false;
 
     providerAreas = [];
     participants = [];
@@ -85,6 +86,8 @@ export class NotesAddComponent implements OnInit{
         productService: new FormControl(null, [Validators.required, Validators.maxLength(5000)]),
         quantity: new FormControl(null, [Validators.required, Validators.min(1)])
     });
+
+    formProductoServicioTable: FormGroup;
 
     formAnaliticas: FormGroup = new FormGroup({
         analytic: new FormControl(null, [Validators.required]),
@@ -143,6 +146,9 @@ export class NotesAddComponent implements OnInit{
     ) {
         this.formAnaliticasTable = this.builder.group({
             analiticas: this.builder.array([])
+        });
+        this.formProductoServicioTable = this.builder.group({
+            productoServicio: this.builder.array([])
         })
     }
 
@@ -314,10 +320,14 @@ export class NotesAddComponent implements OnInit{
             this.messageService.showMessage("Ya existe este producto o servicio en la grilla", 2);
             return;
         };
+        this.getProductoServicio().push(this.builder.group({
+            productService: productoServicio.productService,
+            quantity: productoServicio.quantity,
+        }));
         this.productosServicios.push(productoServicio);
         this.productsServicesError = false;
         let totalQuantity = 0;
-        this.productosServicios.forEach(product => {
+        this.getProductoServicio().value.forEach(product => {
             totalQuantity = totalQuantity + product.quantity;
         });
         if(totalQuantity <= 0) {
@@ -329,12 +339,29 @@ export class NotesAddComponent implements OnInit{
 
     eliminarProductoServicio(index: number) {
         this.productosServicios.splice(index, 1);
+        this.getProductoServicio().removeAt(index);
         if(this.productosServicios.length <= 0) {
             this.productsServicesError = true;
         }
         let totalQuantity = 0;
-        this.productosServicios.forEach(product => {
+        this.getProductoServicio().value.forEach(product => {
             totalQuantity = totalQuantity + product.quantity;
+        });
+        if(totalQuantity <= 0) {
+            this.productsServicesQuantityError = true;
+        } else {
+            this.productsServicesQuantityError = false;
+        }
+    }
+
+    getProductoServicio(): FormArray {
+        return this.formProductoServicioTable.get("productoServicio") as FormArray;
+    }
+
+    productoServicioChange() {
+        let totalQuantity = 0;
+        this.getProductoServicio().value.forEach(ps => {
+            totalQuantity = totalQuantity + ps.quantity;
         });
         if(totalQuantity <= 0) {
             this.productsServicesQuantityError = true;
@@ -435,7 +462,14 @@ export class NotesAddComponent implements OnInit{
         if(this.formNota.controls.training.value == false) {
             this.formParticipanteCapacitacionError = false;
         };
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError || this.formParticipanteCapacitacionError) {
+        this.productsServicesTableError = false;
+        this.getProductoServicio().value.forEach(ps => {
+            if(ps.productService == null || ps.productService == '') {
+                this.messageService.showMessage("El nombre de un prodcuto/servicio no puede estar vacío", 2);
+                this.productsServicesTableError = true;
+            };
+        });
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError || this.formParticipanteCapacitacionError || this.productsServicesTableError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
             }
@@ -457,7 +491,8 @@ export class NotesAddComponent implements OnInit{
                 return;
             };
         };
-        let finalProductsAndServices = this.productosServicios;
+        //let finalProductsAndServices = this.productosServicios;
+        let finalProductsAndServices = this.getProductoServicio().value;
         let analytics = [];
         this.getAnaliticas().value.forEach(analytic => {
             let push = {
@@ -622,7 +657,14 @@ export class NotesAddComponent implements OnInit{
         if(this.formNota.controls.training.value == false) {
             this.formParticipanteCapacitacionError = false;
         };
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError || this.formParticipanteCapacitacionError) {
+        this.productsServicesTableError = false;
+        this.getProductoServicio().value.forEach(ps => {
+            if(ps.productService == null || ps.productService == '') {
+                this.messageService.showMessage("El nombre de un prodcuto/servicio no puede estar vacío", 2);
+                this.productsServicesTableError = true;
+            };
+        })
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError || this.formParticipanteCapacitacionError || this.productsServicesTableError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
             }
