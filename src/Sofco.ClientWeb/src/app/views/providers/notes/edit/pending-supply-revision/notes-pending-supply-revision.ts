@@ -258,4 +258,8 @@ export class NotesPendingSupplyRevision implements OnInit {
             }
         });
     }
+
+    downloadProvFile(item) {
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
+    }
 }

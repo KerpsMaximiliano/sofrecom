@@ -64,6 +64,11 @@ export class NotesEditComponent implements OnInit{
                 }
             } else {
                 console.log(results[0])
+                //if(results[0].data.hasEditPermissions) {
+                //    this.requestNoteService.setMode("Edit")
+                //} else if (results[0].data.hasReadPermissions){
+                //    this.requestNoteService.setMode("View")
+                //}
                 this.currentNote = results[0].data;
                 this.estado = this.currentNote.statusId;
                 if(this.estado > 10) {
@@ -73,6 +78,7 @@ export class NotesEditComponent implements OnInit{
                 } else {
                     this.estadoSeleccionado = this.estado;
                     this.currentNoteStatusDescription = null;
+                    
                 };
                 if(this.requestNoteService.getMode() == "Edit" && results[0].hasEditPermissions == false) {
                     this.router.navigate(['/providers/notes/no-access']);
