@@ -110,8 +110,8 @@
                                     <td><span class="label">{{note.status}}</span></td>
                                     <td>{{note.creationDate}}</td>
                                     <td class="column-sm text-center">
-                                        <button title="ver" class="btn btn-primary btn-xs" (click)="view(note.id)" *ngIf="note.statusId != 1"><i class="fa fa-eye"></i></button>
-                                        <button title="editar" class="btn btn-warning btn-xs" (click)="edit(note.id)" *ngIf="note.statusId != 11 && note.statusId != 12"><i class="fa fa-edit"></i></button>
+                                        <button title="ver" class="btn btn-primary btn-xs" (click)="view(note.id)" *ngIf="note.statusId != 1 && note.hasReadPermissions"><i class="fa fa-eye"></i></button>
+                                        <button title="editar" class="btn btn-warning btn-xs" (click)="edit(note.id)" *ngIf="note.statusId != 11 && note.statusId != 12 && note.hasEditPermissions"><i class="fa fa-edit"></i></button>
                                     </td>
                                 </tr> 
                             </tbody>
