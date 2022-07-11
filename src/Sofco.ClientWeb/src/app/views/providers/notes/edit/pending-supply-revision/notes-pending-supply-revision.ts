@@ -74,7 +74,8 @@ export class NotesPendingSupplyRevision implements OnInit {
                 requierePersonal: this.currentNote.requiresEmployeeClient,
                 previstoPresupuesto: this.currentNote.consideredInBudget,
                 nroEvalprop: this.currentNote.evalpropNumber,
-                observaciones: this.currentNote.comments
+                observaciones: this.currentNote.comments,
+                montoOC: this.currentNote.purchaseOrderAmmount
             });
             this.analiticas = this.currentNote.analytics;
             this.productosServicios = this.currentNote.productsServices;
@@ -151,11 +152,32 @@ export class NotesPendingSupplyRevision implements OnInit {
         if(this.formNota.invalid) {
             return;
         };
-        if(this.filesToUpload.length < 1) {
-            this.messageService.showMessage("Al menos un proveedor debe tener un archivo adjunto", 2);
-            return;
-        };
-        this.uploader.uploadAll();
+        this.providersGrid.forEach(prov => {
+            if(prov.fileId == null) {
+                let search = this.filesToUpload.find(p => p.providerId == prov.providerId);
+                if(search == undefined) {
+                    this.messageService.showMessage("Todos los proveedores deben tener un archivo adjunto", 2);
+                    return;
+                }
+            }
+        });
+        if(this.filesToUpload.length > 0) {
+            this.uploader.uploadAll();
+        } else {
+            this.finalProviders = this.providersGrid
+            let model = {
+                id: this.currentNote.id,
+                purchaseOrderAmmount: this.formNota.controls.montoOC.value,
+                providers: this.finalProviders,
+                comments: this.formNota.controls.observaciones.value
+            }
+            this.requestNoteService.sendPendingSupplyRevision(model).subscribe(d=>{
+                if(d == null) {
+                    this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+                    this.router.navigate(['/providers/notes']);
+                }
+            });
+        }
     }
 
     uploaderConfig(){
