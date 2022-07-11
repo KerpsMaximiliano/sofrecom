@@ -163,7 +163,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Teléfono</label>
-                        <input type="text" class="form-control" formControlName="phone">
+                        <input type="number" class="form-control" formControlName="phone">
                         <span *ngIf="form.controls.phone.errors?.maxlength" style="color: red;">
                             Máximo 50 caracteres.
                         </span>
