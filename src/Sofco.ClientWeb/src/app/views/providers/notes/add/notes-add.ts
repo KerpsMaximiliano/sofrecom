@@ -180,11 +180,13 @@ export class NotesAddComponent implements OnInit{
                 }
             });
         });
-        forkJoin([this.analyticService.getAll(), this.userService.getManagers(), this.userService.getManagersAndDirectors()]).subscribe(results => {
+        forkJoin([this.analyticService.getByCurrentUser(), this.userService.getManagers(), this.userService.getManagersAndDirectors()]).subscribe(results => {
             console.log(results[0]);//Analiticas
+            this.analiticas = results[0].data;
             let managers = results[1];
             let managersAndDirectors = results[2];
             let directors = [];
+            /*
             managersAndDirectors.forEach(item => {
                 let directorSearch = managers.find(x => x.id == item.id);
                 if(directorSearch == undefined) {
@@ -204,6 +206,7 @@ export class NotesAddComponent implements OnInit{
             if(isDirector != undefined) {
                 console.log("Es director")
             };
+            */
         });
         
         this.providersService.getAll().subscribe(d => {
@@ -379,13 +382,13 @@ export class NotesAddComponent implements OnInit{
             analytic: busqueda,
             asigned: this.formAnaliticas.controls.asigned.value
         };
-        let search = this.analiticasTable.find(ps => ps.analytic == analitica.analytic);
+        let search = this.getAnaliticas().value.find(ps => ps.analyticId == analitica.analytic.id);
         if (search != undefined) {
             this.messageService.showMessage("Ya existe esta analítica en la grilla", 2);
             return;
         };
         this.getAnaliticas().push(this.builder.group({
-            analyticName: {value: busqueda.name, disabled: true },
+            analyticName: {value: busqueda.text, disabled: true },
             analyticId: busqueda.id,
             asigned: this.formAnaliticas.controls.asigned.value,
         }));
