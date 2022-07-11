@@ -198,4 +198,9 @@ export class NotesPendingSupplyApproval implements OnInit{
   
         this.selectedFile.nativeElement.value = '';
     }
+
+    downloadProvFile(item) {
+        console.log()
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
+    }
 }
