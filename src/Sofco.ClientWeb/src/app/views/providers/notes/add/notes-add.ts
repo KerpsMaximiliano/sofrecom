@@ -315,7 +315,7 @@ export class NotesAddComponent implements OnInit{
             productService: this.formProductoServicio.controls.productService.value,
             quantity: this.formProductoServicio.controls.quantity.value
         };
-        let search = this.productosServicios.find(ps => ps.productService == productoServicio.productService);
+        let search = this.getProductoServicio().value.find(ps => ps.productService == productoServicio.productService);
         if (search != undefined) {
             this.messageService.showMessage("Ya existe este producto o servicio en la grilla", 2);
             return;
