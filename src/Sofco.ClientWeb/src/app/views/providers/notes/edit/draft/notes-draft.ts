@@ -90,6 +90,8 @@ export class NotesDraftComponent implements OnInit{
         asigned: new FormControl(null, [Validators.required, Validators.min(1)])
     });
 
+    formAnaliticasTable: FormGroup;
+
     formProveedores: FormGroup = new FormGroup({
         provider: new FormControl(null, [Validators.required])
     })
@@ -138,7 +140,9 @@ export class NotesDraftComponent implements OnInit{
         private router: Router,
         private builder: FormBuilder
     ) {
-
+        this.formAnaliticasTable = this.builder.group({
+            analiticas: this.builder.array([])
+        })
     }
 
     ngOnInit(): void {
@@ -232,6 +236,13 @@ export class NotesDraftComponent implements OnInit{
             });
         });
         this.analiticasTable = this.currentNote.analytics;
+        this.analiticasTable.forEach(analytic => {
+            this.getAnaliticas().push(this.builder.group({
+                analyticName: {value: analytic.description, disabled: true },
+                analyticId: analytic.analyticId,
+                asigned: analytic.asigned,
+            }));
+        })
         this.productosServicios = this.currentNote.productsServices;
         this.proveedoresTable = this.currentNote.providers;
         if(this.currentNote.travelSection) {
@@ -414,15 +425,20 @@ export class NotesDraftComponent implements OnInit{
             analytic: busqueda,
             asigned: this.formAnaliticas.controls.asigned.value
         };
-        let search = this.analiticasTable.find(ps => ps.analytic == analitica.analytic);
+        let search = this.getAnaliticas().value.find(ps => ps.analyticId == analitica.analytic.id);
         if (search != undefined) {
             this.messageService.showMessage("Ya existe esta analítica en la grilla", 2);
             return;
         };
+        this.getAnaliticas().push(this.builder.group({
+            analyticName: {value: busqueda.name, disabled: true },
+            analyticId: busqueda.id,
+            asigned: this.formAnaliticas.controls.asigned.value,
+        }));
         this.analiticasTable.push(analitica)
         this.analyticError = false;
         let totalPercentage = 0;
-        this.analiticasTable.forEach(analytic => {
+        this.getAnaliticas().value.forEach(analytic => {
             totalPercentage = totalPercentage + analytic.asigned;
         });
         if(totalPercentage != 100) {
@@ -434,11 +450,28 @@ export class NotesDraftComponent implements OnInit{
 
     eliminarAnalitica(index: number) {
         this.analiticasTable.splice(index, 1);
+        this.getAnaliticas().removeAt(index);
         if(this.analiticasTable.length <= 0) {
             this.analyticError = true;
         };
         let totalPercentage = 0;
-        this.analiticasTable.forEach(analytic => {
+        this.getAnaliticas().value.forEach(analytic => {
+            totalPercentage = totalPercentage + analytic.asigned;
+        });
+        if(totalPercentage != 100) {
+            this.analyticPercentageError = true;
+        } else {
+            this.analyticPercentageError = false;
+        }
+    }
+
+    getAnaliticas(): FormArray {
+        return this.formAnaliticasTable.get("analiticas") as FormArray;
+    }
+
+    analyticChange() {
+        let totalPercentage = 0;
+        this.getAnaliticas().value.forEach(analytic => {
             totalPercentage = totalPercentage + analytic.asigned;
         });
         if(totalPercentage != 100) {
@@ -499,7 +532,7 @@ export class NotesDraftComponent implements OnInit{
         };
         let finalProductsAndServices = this.productosServicios;
         let analytics = [];
-        this.analiticasTable.forEach(analytic => {
+        this.getAnaliticas().value.forEach(analytic => {
             let push = {
                 analyticId: analytic.analyticId,
                 asigned: analytic.asigned

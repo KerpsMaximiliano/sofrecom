@@ -114,8 +114,8 @@
                                 La suma de porcentajes debe ser 100.
                             </span>
                         </div>
-                        <div class="form-group" *ngIf="analiticasTable.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                        <div class="form-group" *ngIf="analiticasTable.length > 0" [formGroup]="formAnaliticasTable">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable" formArrayName="analiticas">
                                 <thead>
                                     <tr>
                                         <th>Analítica</th>
@@ -123,10 +123,10 @@
                                         <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of analiticasTable; let i = index">
-                                        <td>{{ item.description }} </td>
-                                        <td>{{ item.asigned }} </td>
+                                <tbody *ngFor="let item of getAnaliticas().controls; let i = index">
+                                    <tr [formGroupName]="i">
+                                        <td><input type="text" formControlName="analyticName"></td>
+                                        <td><input type="number" formControlName="asigned" (input)="analyticChange()"></td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarAnalitica(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>
