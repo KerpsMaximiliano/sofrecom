@@ -28,6 +28,7 @@ export class NotesPendingSupplyRevision implements OnInit {
     filesToUpload = [];
     fileIdCounter = 0;
     finalProviders = [];
+    fileError: boolean = false;
 
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({url:""});
@@ -149,6 +150,7 @@ export class NotesPendingSupplyRevision implements OnInit {
 
     send() {
         this.markFormGroupTouched(this.formNota);
+        this.fileError = false;
         if(this.formNota.invalid) {
             return;
         };
@@ -157,13 +159,14 @@ export class NotesPendingSupplyRevision implements OnInit {
                 let search = this.filesToUpload.find(p => p.providerId == prov.providerId);
                 if(search == undefined) {
                     this.messageService.showMessage("Todos los proveedores deben tener un archivo adjunto", 2);
+                    this.fileError = true;
                     return;
                 }
             }
         });
-        if(this.filesToUpload.length > 0) {
+        if(this.filesToUpload.length > 0 && !this.fileError) {
             this.uploader.uploadAll();
-        } else {
+        } else if (!this.fileError){
             this.finalProviders = this.providersGrid
             let model = {
                 id: this.currentNote.id,
@@ -268,7 +271,6 @@ export class NotesPendingSupplyRevision implements OnInit {
                 })
             }
         }
-        
     }
 
     markFormGroupTouched(formGroup: FormGroup) {

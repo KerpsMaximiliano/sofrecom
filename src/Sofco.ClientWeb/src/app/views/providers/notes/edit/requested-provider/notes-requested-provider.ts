@@ -41,6 +41,7 @@ export class NotesRequestedProvider {
     fileSelected = false;
     uploadedFilesId = [];
     providerDocFiles = [];
+    filesToUpload = [];
 
     formNota: FormGroup = new FormGroup({
         descripcion: new FormControl(null),
@@ -143,6 +144,14 @@ export class NotesRequestedProvider {
 
     confirm() {
         this.uploader.uploadAll();
+    }
+
+    fileCheck(event) {
+        this.filesToUpload = [];
+        this.uploader.queue.forEach(file => {
+            this.filesToUpload.push(file.file.name);
+            this.filesToUpload = [...this.filesToUpload]
+        });
     }
 
     uploaderConfig(){

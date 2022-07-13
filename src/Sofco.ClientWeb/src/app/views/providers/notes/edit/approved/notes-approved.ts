@@ -25,6 +25,7 @@ export class NotesApproved {
     providersGrid = [];
     fileSelected = false;
     uploadedFilesId = [];
+    filesToUpload = [];
 
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({url:""});
@@ -103,7 +104,11 @@ export class NotesApproved {
     }
 
     fileCheck(event) {
-        console.log(event)
+        this.filesToUpload = [];
+        this.uploader.queue.forEach(file => {
+            this.filesToUpload.push(file.file.name);
+            this.filesToUpload = [...this.filesToUpload]
+        });
         if(event.length >= 1) {
             this.fileSelected = true;
         } else {

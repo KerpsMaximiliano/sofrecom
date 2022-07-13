@@ -137,6 +137,23 @@
                         <label class="col-sm-3 control-label text-left">Documentación para Proveedor: </label>
                         <input *ngIf="mode == 'Edit'" #selectedFile type="file" ng2FileSelect (onFileSelected)="fileCheck($event)" [uploader]="uploader" multiple/>
                     </div>
+                    <div class="form-group">
+                        <div class="col-sm-3 control-label"></div>
+                        <div class="col-sm-8">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable4" *ngIf="filesToUpload.length > 0">
+                                <thead>
+                                    <tr>
+                                        <th>Archivos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of filesToUpload">
+                                        <td>{{item}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

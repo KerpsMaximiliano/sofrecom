@@ -95,7 +95,7 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
         };
         this.requestNoteService.rejectPendingApprovalManagementAnalytic(model).subscribe(d => {
             console.log(d);
-            this.messageService.showMessage("Las analíticas asociadas han sido aprobadas", 0);
+            this.messageService.showMessage("Las analíticas asociadas han sido rechazadas", 0);
             this.router.navigate(['/providers/notes']);
         })
     }
