@@ -43,6 +43,8 @@ export class NotesAddComponent implements OnInit{
     formParticipanteCapacitacionError: boolean = false;
     travelDateError: boolean = false;
     productsServicesTableError: boolean = false;
+    productsServicesFormError: boolean = false;
+    analyticFormError: boolean = false;
 
     providerAreas = [];
     participants = [];
@@ -311,9 +313,11 @@ export class NotesAddComponent implements OnInit{
     }
 
     agregarProductoServicio() {
+        this.productsServicesTableError = false;
         if(this.formProductoServicio.invalid) {
+            this.productsServicesTableError = true;
             return;
-        }
+        };
         let productoServicio = {
             productService: this.formProductoServicio.controls.productService.value,
             quantity: this.formProductoServicio.controls.quantity.value
@@ -374,9 +378,11 @@ export class NotesAddComponent implements OnInit{
     }
 
     agregarAnalitica() {
+        this.analyticFormError = false;
         if(this.formAnaliticas.invalid) {
+            this.analyticFormError = true;
             return;
-        }
+        };
         let busqueda = this.analiticas.find(analytic => analytic.id == this.formAnaliticas.controls.analytic.value)
         let analitica = {
             analytic: busqueda,

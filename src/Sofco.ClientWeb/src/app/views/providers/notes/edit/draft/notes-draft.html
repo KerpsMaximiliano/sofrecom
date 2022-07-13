@@ -42,7 +42,10 @@
                             </div>
                             <div class="col-sm-4">
                                 <label>Cantidad</label>
-                                <input type="number" class="form-control" formControlName="quantity">
+                                <input type="number" class="form-control" [ngClass]="{'red-input-border' : (!formProductoServicio.get('quantity')?.valid && (formProductoServicio.get('quantity')?.touched || formProductoServicio.get('quantity')?.dirty)) && productsServicesTableError}" formControlName="quantity">
+                                <span *ngIf="(!formProductoServicio.get('quantity')?.valid && (formProductoServicio.get('quantity')?.touched || formProductoServicio.get('quantity')?.dirty)) && productsServicesTableError" style="color: red;">
+                                    Debe seleccionar una cantidad mayor a 0.
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -108,7 +111,10 @@
                             </div>
                             <div class="col-sm-4">
                                 <label>% de asignación</label>
-                                <input type="number" class="form-control" formControlName="asigned">
+                                <input type="number" class="form-control" [ngClass]="{'red-input-border' : (!formAnaliticas.get('asigned')?.valid && (formAnaliticas.get('asigned')?.touched || formAnaliticas.get('asigned')?.dirty)) && analyticFormError}" formControlName="asigned">
+                                <span *ngIf="(!formAnaliticas.get('asigned')?.valid && (formAnaliticas.get('asigned')?.touched || formAnaliticas.get('asigned')?.dirty)) && analyticFormError" style="color: red;">
+                                    Debe seleccionar un % de asignación para la analítica.
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
