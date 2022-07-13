@@ -45,6 +45,8 @@ export class NotesAddComponent implements OnInit{
     productsServicesTableError: boolean = false;
     productsServicesFormError: boolean = false;
     analyticFormError: boolean = false;
+    analyticErrorSend: boolean = false;
+    analyticPercentageErrorSend: boolean = false;
 
     providerAreas = [];
     participants = [];
@@ -379,6 +381,8 @@ export class NotesAddComponent implements OnInit{
 
     agregarAnalitica() {
         this.analyticFormError = false;
+        this.analyticErrorSend = false;
+        this.analyticPercentageErrorSend = false;
         if(this.formAnaliticas.invalid) {
             this.analyticFormError = true;
             return;
@@ -412,6 +416,8 @@ export class NotesAddComponent implements OnInit{
     }
 
     eliminarAnalitica(index: number) {
+        this.analyticErrorSend = false;
+        this.analyticPercentageErrorSend = false;
         this.analiticasTable.splice(index, 1);
         this.getAnaliticas().removeAt(index);
         if(this.analiticasTable.length <= 0) {
@@ -433,6 +439,7 @@ export class NotesAddComponent implements OnInit{
     }
 
     analyticChange() {
+        this.analyticPercentageErrorSend = false;
         let totalPercentage = 0;
         this.getAnaliticas().value.forEach(analytic => {
             totalPercentage = totalPercentage + analytic.asigned;
@@ -479,16 +486,13 @@ export class NotesAddComponent implements OnInit{
                 this.productsServicesTableError = true;
             };
         });
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError || this.formParticipanteCapacitacionError || this.productsServicesTableError) {
+        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.productsServicesQuantityError || this.formParticipanteCapacitacionError || this.productsServicesTableError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
-            }
-            if(this.analiticasTable.length <= 0) {
-                this.analyticError = true;
-            }
+            };
             console.log("Invalid nota");
             return;
-        }
+        };
         if(this.formNota.controls.travel.value == true) {
             if(!this.formViaje.valid || this.participantesViaje.length <= 0 || this.travelDateError) {
                 console.log("Invalid viaje");
@@ -501,16 +505,17 @@ export class NotesAddComponent implements OnInit{
                 return;
             };
         };
-        //let finalProductsAndServices = this.productosServicios;
         let finalProductsAndServices = this.getProductoServicio().value;
         let analytics = [];
-        this.getAnaliticas().value.forEach(analytic => {
-            let push = {
-                analyticId: analytic.analyticId,
-                asigned: analytic.asigned
-            }
-            analytics.push(push)
-        });
+        if(this.getAnaliticas().value.length > 0) {
+            this.getAnaliticas().value.forEach(analytic => {
+                let push = {
+                    analyticId: analytic.analyticId,
+                    asigned: analytic.asigned
+                }
+                analytics.push(push)
+            });
+        };
         let finalProviders = [];
         this.proveedoresTable.forEach(prov => {
             let mock = {
@@ -674,13 +679,23 @@ export class NotesAddComponent implements OnInit{
                 this.messageService.showMessage("El nombre de un prodcuto/servicio no puede estar vacío", 2);
                 this.productsServicesTableError = true;
             };
-        })
+        });
+        let totalPercentage = 0;
+        this.getAnaliticas().value.forEach(analytic => {
+            totalPercentage = totalPercentage + analytic.asigned;
+        });
+        if(totalPercentage != 100) {
+            this.analyticPercentageErrorSend = true;
+        } else {
+            this.analyticPercentageErrorSend = false;
+        };
         if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError || this.formParticipanteCapacitacionError || this.productsServicesTableError) {
             if(this.productosServicios.length <= 0) {
                 this.productsServicesError = true;
             }
             if(this.analiticasTable.length <= 0) {
                 this.analyticError = true;
+                this.analyticErrorSend = true;
             }
             console.log("Invalid nota");
             return;
