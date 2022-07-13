@@ -284,22 +284,26 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2 text-left" style="min-width: fit-content;">Fecha de
                                 Salida</label>
-                            <date-picker class="col-sm-3" [(date)]="travelDepartureDate" (dateChange)="dateChange(2, $event)"></date-picker>
-                            <span
-                                *ngIf="!formViaje.get('departureDate')?.valid && (formViaje.get('departureDate')?.touched || formViaje.get('departureDate')?.dirty)"
-                                style="color: red;">
-                                El campo es requerido.
-                            </span>
-                            <span *ngIf="travelDateError" style="color: red;">
-                                La fecha de salida debe ser anterior o igual a la fecha de regreso.
-                            </span>
+                            <div class="col-sm-3">
+                                <date-picker [(date)]="travelDepartureDate" (dateChange)="dateChange(2, $event)"></date-picker>
+                                <span
+                                    *ngIf="!formViaje.get('departureDate')?.valid && (formViaje.get('departureDate')?.touched || formViaje.get('departureDate')?.dirty)"
+                                    style="color: red;">
+                                    El campo es requerido.
+                                </span>
+                                <span *ngIf="travelDateError" style="color: red;">
+                                    La fecha de salida debe ser anterior o igual a la fecha de regreso.
+                                </span>
+                            </div>
                             <label class="control-label col-sm-2" style="min-width: fit-content;">Fecha de Regreso</label>
-                            <date-picker class="col-sm-3" [(date)]="travelReturnDate" (dateChange)="dateChange(3, $event)"></date-picker>
-                            <span
-                                *ngIf="!formViaje.get('returnDate')?.valid && (formViaje.get('returnDate')?.touched || formViaje.get('returnDate')?.dirty)"
-                                style="color: red;">
-                                El campo es requerido
-                            </span>
+                            <div class="col-sm-3">
+                                <date-picker [(date)]="travelReturnDate" (dateChange)="dateChange(3, $event)"></date-picker>
+                                <span
+                                    *ngIf="!formViaje.get('returnDate')?.valid && (formViaje.get('returnDate')?.touched || formViaje.get('returnDate')?.dirty)"
+                                    style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label text-left">Ciudad del destino</label>

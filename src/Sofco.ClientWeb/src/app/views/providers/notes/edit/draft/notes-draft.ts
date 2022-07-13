@@ -534,15 +534,16 @@ export class NotesDraftComponent implements OnInit{
         console.log(this.formViaje.value);
         console.log(this.formCapacitacion.value);
         this.markFormGroupTouched(this.formNota);
-        this.markFormGroupTouched(this.formViaje);
-        this.markFormGroupTouched(this.formCapacitacion);
         if(this.formNota.controls.training.value == true) {
+            this.markFormGroupTouched(this.formCapacitacion);
             if(this.participantesCapacitacion.length <= 0) {
                 this.formParticipanteCapacitacionError = true;
             };
         };
         if(this.formNota.controls.training.value == false) {
             this.formParticipanteCapacitacionError = false;
+        } else {
+            this.markFormGroupTouched(this.formViaje);
         };
         this.productsServicesTableError = false;
         this.getProductoServicio().value.forEach(ps => {
@@ -713,15 +714,16 @@ export class NotesDraftComponent implements OnInit{
 
     sendDraft() {
         this.markFormGroupTouched(this.formNota);
-        this.markFormGroupTouched(this.formViaje);
-        this.markFormGroupTouched(this.formCapacitacion);
         if(this.formNota.controls.training.value == true) {
+            this.markFormGroupTouched(this.formCapacitacion);
             if(this.participantesCapacitacion.length <= 0) {
                 this.formParticipanteCapacitacionError = true;
             };
         };
         if(this.formNota.controls.training.value == false) {
             this.formParticipanteCapacitacionError = false;
+        } else {
+            this.markFormGroupTouched(this.formViaje);
         };
         this.productsServicesTableError = false;
         this.getProductoServicio().value.forEach(ps => {
