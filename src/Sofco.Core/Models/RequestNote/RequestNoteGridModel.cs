@@ -44,7 +44,7 @@ namespace Sofco.Core.Models.RequestNote
                     hasPermission = permissions.Any(p => p == "NP_REVISION_ABAS");
                     break;
                 case RequestNoteStates.PendienteAprobaciónGerentesAnalítica:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_GERENTE") && AnalyticsManagers.Any(a=> a == userId);
+                    hasPermission = permissions.Any(p => p == "NP_APROBACION_GERE") && AnalyticsManagers.Any(a=> a == userId);
                     break;
                 case RequestNoteStates.PendienteAprobaciónAbastecimiento:
                     hasPermission = permissions.Any(p => p == "NP_APROBACION_ABAS");

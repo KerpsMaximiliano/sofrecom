@@ -399,7 +399,7 @@ namespace Sofco.Service.Implementations.RequestNote
                 return response;
             }
             var user = userData.GetCurrentUser();
-            var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOTAPES");
+            var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOPE");
             var datos = new RequestNoteModel(note, permisos, user.Id);
             if (!datos.HasEditPermissions && !datos.HasReadPermissions)
             {
@@ -482,7 +482,7 @@ namespace Sofco.Service.Implementations.RequestNote
         public IList<RequestNoteGridModel> GetAll(RequestNoteGridFilters filters)
         {
             var user = userData.GetCurrentUser();
-            var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOTAPES");
+            var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOPE");
             return this.unitOfWork.RequestNoteRepository.GetAll(filters)
                     .Select(n=> new RequestNoteGridModel(n, permisos, user.Id))
                     .Where(n=> n.HasEditPermissions || n.HasReadPermissions).ToList();
