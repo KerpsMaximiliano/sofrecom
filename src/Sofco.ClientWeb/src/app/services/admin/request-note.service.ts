@@ -6,6 +6,7 @@ import { Service } from "../common/service";
 import * as FileSaver from "file-saver";
 import { SearchFilters } from "app/models/admin/requestNote";
 
+declare const InstallTrigger: any;
 @Injectable({
     providedIn: 'root'
 })
@@ -102,14 +103,22 @@ export class RequestNoteService {
     }
 
     public downloadFile(id: number, type: number, fileDescription: string) {
-        //return this.http.get<any>(`${this.baseUrl}/file/${id}/${type}`);
-        this._getFile(id, type).subscribe(response => {
-            let fileData = this._base64ToArrayBuffer(response.data);
-            const blob = new Blob([fileData], { type: 'application/pdf' });
-            FileSaver.saveAs(blob, fileDescription)
-            //const url = URL.createObjectURL(blob);
-            //window.open(url, '_blank');
-        });
+        let isFirefox = typeof InstallTrigger !== 'undefined';
+        if (isFirefox) {
+            this._getFile(id, type).subscribe(response => {
+                let fileData = this._base64ToArrayBuffer(response.data);
+                const blob = new Blob([fileData], { type: 'application' });
+                FileSaver.saveAs(blob, fileDescription)
+            });
+        } else {
+            this._getFile(id, type).subscribe(response => {
+                let fileData = this._base64ToArrayBuffer(response.data);
+                const blob = new Blob([fileData], { type: 'application/pdf' });
+                FileSaver.saveAs(blob, fileDescription)
+                //const url = URL.createObjectURL(blob);
+                //window.open(url, '_blank');
+            });
+        }
     }
 
     private _base64ToArrayBuffer(base64Data) {
@@ -120,22 +129,6 @@ export class RequestNoteService {
           bytes[i] = binary_string.charCodeAt(i);
         }
         return bytes.buffer;
-    }
-
-    public downloadPurchaseOrder() {
-
-    }
-
-    public downloadProviderDocumentation() {
-
-    }
-
-    public downloadRecievedConformableDocumentation() {
-
-    }
-
-    public downloadBill() {
-
     }
 
     public 
