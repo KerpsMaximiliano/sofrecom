@@ -38,7 +38,10 @@
                             </button>
                             <div class="col-sm-5">
                                 <label>Productos/Servicios</label>
-                                <input type="text" class="form-control" formControlName="productService">
+                                <input type="text" class="form-control" formControlName="productService" [ngClass]="{'red-input-border' : (!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError }">
+                                <span *ngIf="(!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError" style="color: red;">
+                                    Debe ingresar un producto o servicio.
+                                </span>
                             </div>
                             <div class="col-sm-4">
                                 <label>Cantidad</label>
@@ -107,7 +110,10 @@
                             </button>
                             <div class="col-sm-5">
                                 <label>Analítica</label>
-                                <ng-select [items]="analiticas" bindLabel="text" bindValue="id" formControlName="analytic"></ng-select>
+                                <ng-select [items]="analiticas" bindLabel="text" bindValue="id" formControlName="analytic" [ngClass]="{'red-input-border' : (!formAnaliticas.get('analytic')?.valid && (formAnaliticas.get('analytic')?.touched || formAnaliticas.get('analytic')?.dirty)) && analyticFormError}"></ng-select>
+                                <span *ngIf="(!formAnaliticas.get('analytic')?.valid && (formAnaliticas.get('analytic')?.touched || formAnaliticas.get('analytic')?.dirty)) && analyticFormError" style="color: red;">
+                                    Debe seleccionar una analítica.
+                                </span>
                             </div>
                             <div class="col-sm-4">
                                 <label>% de asignación</label>

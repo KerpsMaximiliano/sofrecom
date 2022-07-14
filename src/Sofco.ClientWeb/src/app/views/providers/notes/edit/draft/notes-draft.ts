@@ -402,6 +402,7 @@ export class NotesDraftComponent implements OnInit{
         this.productsServicesTableError = false;
         if(this.formProductoServicio.invalid) {
             this.productsServicesTableError = true;
+            this.markFormGroupTouched(this.formProductoServicio);
             return;
         };
         let productoServicio = {
@@ -469,6 +470,7 @@ export class NotesDraftComponent implements OnInit{
         this.analyticPercentageErrorSend = false;
         if(this.formAnaliticas.invalid) {
             this.analyticFormError = true;
+            this.markFormGroupTouched(this.formAnaliticas);
             return;
         };
         let busqueda = this.analiticas.find(analytic => analytic.id == this.formAnaliticas.controls.analytic.value)
