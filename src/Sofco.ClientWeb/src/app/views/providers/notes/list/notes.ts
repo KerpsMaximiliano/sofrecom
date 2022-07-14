@@ -15,6 +15,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
 
     applicants = [];
     applicantId: number;
+    currentTab: number = 1;
     states = [
         { id: 0, text: "Todos" },
         { id: 1, text: "Borrador" },
@@ -152,8 +153,8 @@ export class NotesComponent implements OnInit, AfterViewInit{
                     }
                 })
                 this.notes = this.notesInProcess;
-            }
-            this.initGrid();
+            };
+            this.changeTab();
         });
     }
 
@@ -199,13 +200,16 @@ export class NotesComponent implements OnInit, AfterViewInit{
         this.dataTableService.initialize(params);
     }
 
-    changeTab(tab: number) {
-        if(tab == 2) {
+    changeTab(tab?: number) {
+        if(tab) {
+            this.currentTab = tab;
+        };
+        if(this.currentTab == 2) {
             this.notes = this.notesEnded;
-        }
-        if(tab == 1) {
+        };
+        if(this.currentTab == 1) {
             this.notes = this.notesInProcess;
-        }
+        };
         this.initGrid();
     }
 
