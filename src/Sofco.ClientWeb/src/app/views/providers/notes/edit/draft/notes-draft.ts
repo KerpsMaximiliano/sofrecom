@@ -40,6 +40,7 @@ export class NotesDraftComponent implements OnInit{
     productsServicesError: boolean = false;
     productsServicesQuantityError: boolean = false;
     formParticipanteCapacitacionError: boolean = false;
+    formParticipanteViajeError: boolean = false;
     travelDateError: boolean = false;
     productsServicesTableError: boolean = false;
     productsServicesFormError: boolean = false;
@@ -360,6 +361,7 @@ export class NotesDraftComponent implements OnInit{
         this.participanteViajeSeleccionado = null;
         this.participanteViajeSeleccionadoCuit = null;
         this.participanteViajeSeleccionadoFecha = null;
+        this.formParticipanteViajeError = false;
     }
 
     eliminarParticipanteViaje(index: number) {
@@ -536,7 +538,7 @@ export class NotesDraftComponent implements OnInit{
     agregarProveedor() {
         if(this.formProveedores.invalid) {
             return;
-        }
+        };
         let busqueda = this.allProviders.find(prov => prov.id == this.formProveedores.controls.provider.value);
         this.proveedoresTable.push(busqueda)
     }
@@ -732,6 +734,12 @@ export class NotesDraftComponent implements OnInit{
             this.markFormGroupTouched(this.formCapacitacion);
             if(this.participantesCapacitacion.length <= 0) {
                 this.formParticipanteCapacitacionError = true;
+            };
+        };
+        if(this.formNota.controls.travel.value == true) {
+            this.markFormGroupTouched(this.formViaje);
+            if(this.participantesViaje.length <= 0) {
+                this.formParticipanteViajeError = true;
             };
         };
         if(this.formNota.controls.training.value == false) {

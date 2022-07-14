@@ -2,7 +2,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12 row">
-            <div class="pull-left">
+            <div class="pull-left" style="margin-left: 2rem;">
                 <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']"> 
                     <i class="fa fa-arrow-left"></i>       Volver
                 </button>
@@ -170,7 +170,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of proveedoresTable; let i = index">
-                                        <td>{{ item.providerDescription }} </td>
+                                        <td>{{ item.name }} </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarProveedor(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>
@@ -264,6 +264,11 @@
                                 <!--<input type="text" class="form-control" formControlName="cuit">-->
                                 <input type="text" class="form-control" [value]="participanteViajeSeleccionadoCuit" disabled>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <span *ngIf="formParticipanteViajeError" style="color: red;">
+                                Al menos un pasajero es requerido.
+                            </span>
                         </div>
                         <div class="form-group" *ngIf="participantesViaje.length > 0">
                             <table class="table table-striped dataTable" role="grid" id="dataTable">
