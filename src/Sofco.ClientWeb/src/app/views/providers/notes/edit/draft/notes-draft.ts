@@ -727,6 +727,7 @@ export class NotesDraftComponent implements OnInit{
         this.markFormGroupTouched(this.formNota);
         this.travelFormError = true;
         this.trainingFormError = true;
+        this.descriptionError = true;
         if(this.formNota.controls.training.value == true) {
             this.markFormGroupTouched(this.formCapacitacion);
             if(this.participantesCapacitacion.length <= 0) {
