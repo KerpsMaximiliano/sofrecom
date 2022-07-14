@@ -54,11 +54,16 @@ namespace Sofco.DAL.Repositories.RequestNote
             string emailUsuario = "";
             if (filters.CreationUserId.HasValue)
                 emailUsuario = context.Employees.FirstOrDefault(u => u.Id == filters.CreationUserId)?.Email;
+            if (filters.FromDate.HasValue)
+                filters.FromDate = filters.FromDate.Value.Date;
+            if (filters.ToDate.HasValue)
+                filters.ToDate = filters.ToDate.Value.Date.AddDays(1);
+
             return this.context.RequestNote
                 .Where(n=> !filters.CreationUserId.HasValue || n.CreationUser.Email == emailUsuario)
                 .Where(n=> !filters.StatusId.HasValue || n.StatusId == filters.StatusId)
                 .Where(n=> !filters.FromDate.HasValue || n.CreationDate >= filters.FromDate)
-                .Where(n => !filters.ToDate.HasValue || n.CreationDate <= filters.ToDate)
+                .Where(n => !filters.ToDate.HasValue || n.CreationDate < filters.ToDate)
                 .Where(n => !filters.ProviderId.HasValue || n.Providers.Any(p=> p.ProviderId == filters.ProviderId))
                 //Provider? Quieren filtrar por todos o selected?
                 .Include(x => x.Status)
