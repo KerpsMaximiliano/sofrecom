@@ -760,8 +760,10 @@ export class NotesDraftComponent implements OnInit{
         });
         if(totalPercentage != 100) {
             this.analyticPercentageErrorSend = true;
+            this.analyticPercentageError = true;
         } else {
             this.analyticPercentageErrorSend = false;
+            this.analyticPercentageError = false;
         };
         if(!this.formNota.valid || this.productosServicios.length <= 0 || this.analiticasTable.length <= 0 || this.analyticPercentageError || this.productsServicesQuantityError || this.formParticipanteCapacitacionError || this.productsServicesTableError) {
             if(this.productosServicios.length <= 0) {
