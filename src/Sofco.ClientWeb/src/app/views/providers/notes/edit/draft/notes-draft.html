@@ -24,7 +24,7 @@
                             <label class="col-sm-2 control-label text-left">Descripción: </label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="description">
-                                <span *ngIf="!formNota.get('description')?.valid && (formNota.get('description')?.touched || formNota.get('description')?.dirty)" style="color: red;">
+                                <span *ngIf="(!formNota.get('description')?.valid && (formNota.get('description')?.touched || formNota.get('description')?.dirty) && descriptionError)" style="color: red;">
                                     El campo es requerido
                                 </span>
                                 <span *ngIf="formNota.controls.description.errors?.maxlength" style="color: red;">

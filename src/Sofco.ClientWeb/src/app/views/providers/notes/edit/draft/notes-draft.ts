@@ -46,6 +46,9 @@ export class NotesDraftComponent implements OnInit{
     analyticFormError: boolean = false;
     analyticErrorSend: boolean = false;
     analyticPercentageErrorSend: boolean = false;
+    descriptionError: boolean = false;
+    travelFormError: boolean = false;
+    trainingFormError: boolean = false;
 
     providerAreas = [];
     participanteViajeSeleccionado = null;
@@ -549,9 +552,9 @@ export class NotesDraftComponent implements OnInit{
         this.markFormGroupTouched(this.formNota);
         if(this.formNota.controls.training.value == true) {
             this.markFormGroupTouched(this.formCapacitacion);
-            if(this.participantesCapacitacion.length <= 0) {
-                this.formParticipanteCapacitacionError = true;
-            };
+            //if(this.participantesCapacitacion.length <= 0) {
+            //    this.formParticipanteCapacitacionError = true;
+            //};
         };
         if(this.formNota.controls.training.value == false) {
             this.formParticipanteCapacitacionError = false;
@@ -565,26 +568,22 @@ export class NotesDraftComponent implements OnInit{
                 this.productsServicesTableError = true;
             };
         });
-        if(!this.formNota.valid || this.productosServicios.length <= 0 || this.productsServicesQuantityError || this.formParticipanteCapacitacionError || this.productsServicesTableError) {
-            if(this.productosServicios.length <= 0) {
-                this.productsServicesError = true;
-            };
-            console.log("Invalid nota");
+        if(this.formNota.controls.providerArea.errors != null) {
             return;
         };
         if(this.formNota.controls.travel.value == true) {
-            if(!this.formViaje.valid || this.participantesViaje.length <= 0 || this.travelDateError) {
+            if(!this.formViaje.valid || this.travelDateError) {
                 console.log("Invalid viaje");
                 return;
             };
         };
         if(this.formNota.controls.training.value == true) {
             if(!this.formCapacitacion.valid) {
-                console.log("Invalid capacitacion");
+                console.log("Invalid capacitación");
                 return;
             };
         };
-        //let finalProductsAndServices = this.productosServicios;
+        this.descriptionError = true;
         let finalProductsAndServices = this.getProductoServicio().value;
         let analytics = [];
         if(this.getAnaliticas().value.length > 0) {
@@ -726,6 +725,8 @@ export class NotesDraftComponent implements OnInit{
 
     sendDraft() {
         this.markFormGroupTouched(this.formNota);
+        this.travelFormError = true;
+        this.trainingFormError = true;
         if(this.formNota.controls.training.value == true) {
             this.markFormGroupTouched(this.formCapacitacion);
             if(this.participantesCapacitacion.length <= 0) {
