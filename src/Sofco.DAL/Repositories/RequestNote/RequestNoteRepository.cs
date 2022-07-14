@@ -51,8 +51,11 @@ namespace Sofco.DAL.Repositories.RequestNote
         {
             if (filters == null)
                 filters = new RequestNoteGridFilters();
+            string emailUsuario = "";
+            if (filters.CreationUserId.HasValue)
+                emailUsuario = context.Employees.FirstOrDefault(u => u.Id == filters.CreationUserId)?.Email;
             return this.context.RequestNote
-                .Where(n=> !filters.CreationUserId.HasValue || n.CreationUserId == filters.CreationUserId)
+                .Where(n=> !filters.CreationUserId.HasValue || n.CreationUser.Email == emailUsuario)
                 .Where(n=> !filters.StatusId.HasValue || n.StatusId == filters.StatusId)
                 .Where(n=> !filters.FromDate.HasValue || n.CreationDate >= filters.FromDate)
                 .Where(n => !filters.ToDate.HasValue || n.CreationDate <= filters.ToDate)
