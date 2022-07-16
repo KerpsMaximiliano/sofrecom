@@ -64,11 +64,11 @@ export class NotesEditComponent implements OnInit{
                 }
             } else {
                 console.log(results[0])
-                //if(results[0].data.hasEditPermissions) {
-                //    this.requestNoteService.setMode("Edit")
-                //} else if (results[0].data.hasReadPermissions){
-                //    this.requestNoteService.setMode("View")
-                //}
+                if(results[0].data.hasEditPermissions) {
+                    this.requestNoteService.setMode("Edit")
+                } else if (results[0].data.hasReadPermissions){
+                    this.requestNoteService.setMode("View")
+                }
                 this.currentNote = results[0].data;
                 this.estado = this.currentNote.statusId;
                 if(this.estado > 10) {
