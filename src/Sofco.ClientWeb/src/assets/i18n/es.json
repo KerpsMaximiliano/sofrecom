@@ -837,6 +837,7 @@
         "close": "Cerrar",
         "back": "Volver",
         "reabrir": "Reabrir",
+        "REABRIR": "Reabrir",
         "approve": "Aprobar",
         "reject": "Rechazar",
         "sendToDaf": "Enviar a DAF",
