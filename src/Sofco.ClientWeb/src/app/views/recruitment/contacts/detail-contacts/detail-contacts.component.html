@@ -270,7 +270,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group" [ngClass]="formsService.getClassProperty(newResourceForm, 'managerId')">
-                                    <label class="control-label"> Superior/Gerente de proyecto </label>
+                                    <label class="control-label"> Superior/PM </label>
                                     <ng-select [items]="userOptions" bindValue="id" bindLabel="text" formControlName="managerId"></ng-select>
 
                                     <div class="form-control-feedback" *ngIf="formsService.hasErrors(newResourceForm, 'managerId')">
