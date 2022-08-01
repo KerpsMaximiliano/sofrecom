@@ -11,6 +11,7 @@ using Sofco.Framework.MailData;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Resources.Mails;
+using System;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
@@ -35,15 +36,27 @@ namespace Sofco.Framework.StatusHandlers.License
             if (license.Status == LicenseStatus.Draft || license.Status == LicenseStatus.Approved)
             {
                 response.AddError(Resources.Rrhh.License.CannotChangeStatus);
-            }
+            } else { 
 
-            var currentUser = userData.GetCurrentUser();
+                var closeDates = unitOfWork.CloseDateRepository.GetFirstBeforeNextMonth();
+                DateTime closeDate = new DateTime(closeDates.Year, closeDates.Month, closeDates.Day);
 
-            if (license.ManagerId != currentUser.Id)
-            {
-                var permiso = unitOfWork.UserRepository.HasPermission(currentUser.Id, "REJECRRHH", "CTRLI");
-                if (!permiso) { 
-                    response.AddErrorAndNoTraslate("No tiene permisos para autorizar la licencia");
+                if (license.StartDate < closeDate)
+                {
+                    response.AddError(Resources.Rrhh.License.periodBefore);
+                }
+                
+                if (!response.HasErrors()) { 
+
+                    var currentUser = userData.GetCurrentUser();
+
+                    if (license.ManagerId != currentUser.Id)
+                    {
+                        var permiso = unitOfWork.UserRepository.HasPermission(currentUser.Id, "REJECRRHH", "CTRLI");
+                        if (!permiso) { 
+                            response.AddErrorAndNoTraslate("No tiene permisos para autorizar la licencia");
+                        }
+                    }
                 }
             }
         }
