@@ -190,7 +190,7 @@ namespace Sofco.Framework.FileManager.Billing
 
             sheet.Cells[$"B{row}"].Value = "Analitica";
             sheet.Cells[$"C{row}"].Value = "Servicio";
-            sheet.Cells[$"D{row}"].Value = "Gerente Proyecto";
+            sheet.Cells[$"D{row}"].Value = "PM";
             sheet.Cells[$"E{row}"].Value = "Ejecutivo Cuenta";
             sheet.Cells[$"F{row}"].Value = "N° Propuesta";
             sheet.Cells[$"G{row}"].Value = "Propuesta";

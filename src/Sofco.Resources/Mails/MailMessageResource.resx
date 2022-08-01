@@ -408,7 +408,7 @@ Recurso: {1}
     <value>Por favor realizar las gestiones necesarias sobre el informe de gestión, finalizadas enviar la actualización a CDG</value>
   </data>
   <data name="ManagementReportManager" xml:space="preserve">
-    <value>Los datos del informe han sido gestionados por el Gerente de proyecto</value>
+    <value>Los datos del informe han sido gestionados por el PM</value>
   </data>
   <data name="SensibleData" xml:space="preserve">
     <value>Se le ha otorgado permiso de visualización de datos a: {0}</value>

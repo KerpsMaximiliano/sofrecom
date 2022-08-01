@@ -25,7 +25,7 @@
     "profileRequired": "El perfil es requerido",
     "officeRequired": "La oficina es requerida",
     "salaryRequired": "El sueldo bruto es requerido",
-    "managerRequired": "El superior/gerente de proyecto es requerido",
+    "managerRequired": "El superior/PM es requerido",
     "birthDateGreaterThanStartDate": "La fecha de nacimiento no puede ser superior a la fecha de ingreso",
     "analyticRequired": "La analitica es requerida"
 }

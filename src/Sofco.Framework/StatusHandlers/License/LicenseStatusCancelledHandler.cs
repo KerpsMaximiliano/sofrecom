@@ -10,6 +10,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Resources.Mails;
 using Sofco.Core.Data.Admin;
+using System;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
@@ -29,11 +30,21 @@ namespace Sofco.Framework.StatusHandlers.License
 
         public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Domain.Models.Rrhh.License license)
         {
-            var currentUser = userData.GetCurrentUser();
-            var permiso = unitOfWork.UserRepository.HasPermission(currentUser.Id, "REMOV", "CTRLI");
-            if (!permiso)
+
+            var closeDates = unitOfWork.CloseDateRepository.GetFirstBeforeNextMonth();
+            DateTime closeDate = new DateTime(closeDates.Year, closeDates.Month, closeDates.Day);
+
+            if (license.StartDate < closeDate)
             {
-                response.AddErrorAndNoTraslate("No tiene permisos para cancelar la licencia");
+                response.AddError(Resources.Rrhh.License.periodBefore);
+            } else { 
+
+                var currentUser = userData.GetCurrentUser();
+                var permiso = unitOfWork.UserRepository.HasPermission(currentUser.Id, "REMOV", "CTRLI");
+                if (!permiso)
+                {
+                    response.AddErrorAndNoTraslate("No tiene permisos para cancelar la licencia");
+                }
             }
         }
          
