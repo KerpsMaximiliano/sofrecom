@@ -16,6 +16,7 @@ using Sofco.Framework.ValidationHelpers.AllocationManagement;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
+using Sofco.Common.Settings;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -28,12 +29,14 @@ namespace Sofco.Service.Implementations.AllocationManagement
         private readonly IMapper mapper;
         private readonly IMailBuilder mailBuilder;
         private readonly ISessionManager sessionManager;
+        private readonly AppSetting appSetting;
 
         public EmployeeNewsService(IUnitOfWork unitOfWork, 
             ILogMailer<EmployeeNewsService> logger, 
             IMailSender mailSender, 
             IOptions<EmailConfig> emailOptions,
-            IMapper mapper, IMailBuilder mailBuilder, ISessionManager sessionManager)
+            IMapper mapper, IMailBuilder mailBuilder, ISessionManager sessionManager,
+            IOptions<AppSetting> appSetting)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -42,6 +45,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
             this.mapper = mapper;
             this.mailBuilder = mailBuilder;
             this.sessionManager = sessionManager;
+
+            this.appSetting = appSetting.Value;
         }
 
         public Response<IList<EmployeeNewsModel>> GetEmployeeNews()
@@ -109,7 +114,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
                     return response;
                 }
 
-                if (!employee.Email.Contains("@sofrecom.com.ar"))
+                if (!employee.Email.Contains($"@{appSetting.Domain}"))
                 {
                     response.AddErrorAndNoTraslate($"Verificar el email del recurso {employee.Name} y volver a 'Actualizar datos' para confirmar la novedad");
                     response.Data = null;
