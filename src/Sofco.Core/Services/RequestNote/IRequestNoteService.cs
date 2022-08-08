@@ -14,9 +14,6 @@ namespace Sofco.Core.Services.RequestNote
 {
     public interface IRequestNoteService
     {
-        Response SaveBorrador(RequestNoteSubmitDTO dto);
-        Response SavePendienteRevisionAbastecimiento(RequestNoteSubmitDTO dto);
-        //
         Task<Response<List<File>>> AttachFiles(Response<List<File>> response, List<IFormFile> files);
         void CambiarAPendienteApobacionGerenteAnalitica(int requestNodeId);
         void RechazarRequestNote(int requestNodeId);

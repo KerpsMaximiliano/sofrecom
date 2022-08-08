@@ -21,7 +21,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
 
         protected override Response<RequestNoteLoadRechazadaDTO> Get(int id)
         {
-            throw new NotImplementedException();
+            return new Response<RequestNoteLoadRechazadaDTO>();
         }
 
         protected override Dictionary<string, IRequestNoteCommand<RequestNoteSubmitRechazadaDTO>> GetActionDictionary()

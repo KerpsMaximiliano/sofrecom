@@ -40,17 +40,6 @@ namespace Sofco.Service.Implementations.RequestNote
             this.fileService = fileService;
         }
 
-        public Response SaveBorrador(RequestNoteSubmitDTO dto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Response SavePendienteRevisionAbastecimiento(RequestNoteSubmitDTO dto)
-        {
-            throw new NotImplementedException();
-        }
-
-
         public void RechazarRequestNote(int requestNodeId)
         {
             Domain.Models.RequestNote.RequestNote requestNote = this.unitOfWork.RequestNoteRepository.GetById(requestNodeId);
