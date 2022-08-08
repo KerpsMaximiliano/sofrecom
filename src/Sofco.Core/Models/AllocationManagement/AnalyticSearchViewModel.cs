@@ -23,6 +23,7 @@ namespace Sofco.Core.Models.AllocationManagement
             EndDate = domain.EndDateContract;
             Status = domain.Status;
             ManagerId = domain.ManagerId;
+            SectorId = domain.SectorId;
 
             if (domain.ManagementReport != null && string.IsNullOrWhiteSpace(domain.ServiceId))
             {
@@ -60,5 +61,7 @@ namespace Sofco.Core.Models.AllocationManagement
         public int? ManagerId { get; set; }
 
         public int ManagementReportId { get; set; }
+
+        public int SectorId { get; set; }
     }
 }

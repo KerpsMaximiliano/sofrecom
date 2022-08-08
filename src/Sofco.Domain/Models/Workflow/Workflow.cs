@@ -36,5 +36,7 @@ namespace Sofco.Domain.Models.Workflow
         public IList<Advancement> Advancements { get; set; }
 
         public IList<Refund> Refunds { get; set; }
+
+        public IList<RequestNote.RequestNote> RequestNotes { get; set; }
     }
 }

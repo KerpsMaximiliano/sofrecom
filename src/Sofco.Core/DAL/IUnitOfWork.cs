@@ -4,11 +4,14 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.ManagementReport;
+using Sofco.Core.DAL.Provider;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.DAL.RequestNote;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.DAL.WorkTimeManagement;
+using Sofco.Domain.Models.RequestNote;
 
 namespace Sofco.Core.DAL
 {
@@ -128,6 +131,22 @@ namespace Sofco.Core.DAL
 
         #endregion
 
+        IProviderAreaRepository ProviderAreaRepository { get; }
+
+        IProvidersRepository ProvidersRepository { get; }
+
+        IRequestNoteRepository RequestNoteRepository { get; }
+        IRequestNoteAnalitycRepository RequestNoteAnalitycRepository { get; }
+        IRequestNoteProviderRepository RequestNoteProviderRepository { get; }
+
+        IRequestNoteHistoryRepository RequestNoteHistoryRepository { get; }
+
+        IBaseRepository<RequestNoteFile> RequestNoteFileRepository { get; }
+        IBaseRepository<RequestNoteProductService> RequestNoteProductServiceRepository { get; }
+        IBaseRepository<RequestNoteTravel> RequestNoteTravelRepository { get; }
+        IBaseRepository<RequestNoteTravelEmployee> RequestNoteTravelEmployeeRepository { get; }
+        IBaseRepository<RequestNoteTraining> RequestNoteTrainingRepository { get; }
+        IBaseRepository<RequestNoteTrainingEmployee> RequestNoteTrainingEmployeeRepository { get; }
         void BeginTransaction();
         void Rollback();
         void Commit();

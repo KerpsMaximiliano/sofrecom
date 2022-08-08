@@ -13,7 +13,9 @@ namespace Sofco.Core.Services.AllocationManagement
     public interface IEmployeeService
     {
         ICollection<Employee> GetAll();
-        
+
+        IList<Employee> GetEveryone();
+
         Response<EmployeeModel> GetById(int id);
 
         Response<EmployeeModel> GetByMail(string email);

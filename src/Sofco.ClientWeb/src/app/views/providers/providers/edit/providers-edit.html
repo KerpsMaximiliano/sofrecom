@@ -1,0 +1,242 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2> Proveedores </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a [routerLink]="['/']">Inicio</a>
+            </li>
+            <li>
+                <a [routerLink]="['/providers/providers']">Abastecimiento y Proveedores</a>
+            </li>
+            <li class="active">
+                <strong *ngIf="mode == 'Edit'">Editar Proveedor</strong>
+                <strong *ngIf="mode == 'View'">Ver Proveedor</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <button class="btn btn-success" type="button" [routerLink]="['/providers/providers']" *ngIf="mode == 'Edit'"> <i class="fa fa-times"></i> Cancelar </button>
+    <button class="btn btn-success" type="button" [routerLink]="['/providers/providers']" *ngIf="mode == 'View'"> <i class="fa fa-times"></i> Volver </button>
+    <button class="btn btn-primary" type="button" *ngIf="mode != 'View'" (click)="save()">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
+    <form class="m-t-md ibox-content" [formGroup]="form">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4" *ngIf="mode == 'Edit'">
+                    <div class="form-group">
+                        <label class="control-label">#</label>
+                        <input type="number" class="form-control" formControlName="id">
+                    </div>
+                </div>
+                <div class="col-md-4" *ngIf="mode == 'Edit'">
+                    <div class="form-group">
+                        <label class="control-label">Activo</label>
+                        <input type="boolean" class="form-control" formControlName="active">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Razón social</label>
+                        <input type="text" class="form-control" formControlName="name">
+                        <span *ngIf="form.controls.name.errors?.maxlength" style="color: red;">
+                            Máximo 200 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('name')?.valid && (form.get('name')?.touched || form.get('name')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Rubro</label>
+                        <ng-select formControlName="providerAreaId" [items]="providerAreas" bindLabel="description" bindValue="id"></ng-select>
+                        <span *ngIf="!form.get('providerAreaId')?.valid && (form.get('providerAreaId')?.touched || form.get('providerAreaId')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4" *ngIf="mode == 'Edit'">
+                    <div class="form-group">
+                        <label class="control-label">Fecha Alta</label>
+                        <input type="text" class="form-control" formControlName="startDate">
+                    </div>
+                </div>
+                <div class="col-md-4" *ngIf="mode == 'Edit'">
+                    <div class="form-group">
+                        <label class="control-label">Fecha Baja</label>
+                        <input type="text" class="form-control" formControlName="endDate">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">CUIT</label>
+                        <input type="text" class="form-control" formControlName="cuit">
+                        <span *ngIf="form.controls.cuit.errors?.maxlength || form.controls.cuit.errors?.minlength" style="color: red;">
+                            El campo debe tener 11 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('cuit')?.valid && (form.get('cuit')?.touched || form.get('cuit')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                        <span *ngIf="form.controls.cuit.errors?.pattern" style="color: red;">
+                            Formato de CUIT inválido.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Ing. Brutos</label>
+                        <ng-select formControlName="ingresosBrutos" [items]="incomeTypes" bindLabel="description" bindValue="id"></ng-select>
+                        <span *ngIf="!form.get('ingresosBrutos')?.valid && (form.get('ingresosBrutos')?.touched || form.get('ingresosBrutos')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Condición IVA</label>
+                        <ng-select formControlName="condicionIVA" [items]="IVAConditions" bindLabel="description" bindValue="id"></ng-select>
+                        <span *ngIf="!form.get('condicionIVA')?.valid && (form.get('condicionIVA')?.touched || form.get('condicionIVA')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h4>Dirección:</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Calle</label>
+                        <input type="text" class="form-control" formControlName="address">
+                        <span *ngIf="form.controls.address.errors?.maxlength" style="color: red;">
+                            Máximo 1000 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('address')?.valid && (form.get('address')?.touched || form.get('address')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Localidad</label>
+                        <input type="text" class="form-control" formControlName="city">
+                        <span *ngIf="form.controls.city.errors?.maxlength" style="color: red;">
+                            Máximo 1000 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('city')?.valid && (form.get('city')?.touched || form.get('city')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Código postal</label>
+                        <input type="text" class="form-control" formControlName="ZIPCode">
+                        <span *ngIf="form.controls.ZIPCode.errors?.maxlength" style="color: red;">
+                            Máximo 10 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('ZIPCode')?.valid && (form.get('ZIPCode')?.touched || form.get('ZIPCode')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Provincia</label>
+                        <input type="text" class="form-control" formControlName="province">
+                        <span *ngIf="form.controls.province.errors?.maxlength" style="color: red;">
+                            Máximo 20 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('province')?.valid && (form.get('province')?.touched || form.get('province')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">País</label>
+                        <input type="text" class="form-control" formControlName="country">
+                        <span *ngIf="form.controls.country.errors?.maxlength" style="color: red;">
+                            Máximo 20 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('country')?.valid && (form.get('country')?.touched || form.get('country')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h4>Contacto:</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Nombre y Apellido</label>
+                        <input type="text" class="form-control" formControlName="contactName">
+                        <span *ngIf="form.controls.contactName.errors?.maxlength" style="color: red;">
+                            Máximo 100 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('contactName')?.valid && (form.get('contactName')?.touched || form.get('contactName')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Teléfono</label>
+                        <input type="text" class="form-control" formControlName="phone">
+                        <span *ngIf="form.controls.phone.errors?.pattern" style="color: red;">
+                            Ingrese sólo números.
+                        </span>
+                        <span *ngIf="form.controls.phone.errors?.maxlength" style="color: red;">
+                            Máximo 50 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('phone')?.valid && (form.get('phone')?.touched || form.get('phone')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Email</label>
+                        <input type="text" class="form-control" formControlName="email">
+                        <span *ngIf="form.controls.email.errors?.maxlength" style="color: red;">
+                            Máximo 100 caracteres.
+                        </span>
+                        <span *ngIf="!form.get('email')?.valid && (form.get('email')?.touched || form.get('email')?.dirty)" style="color: red;">
+                            El campo es requerido.
+                        </span>
+                        <span *ngIf="form.controls.email.errors?.pattern" style="color: red;">
+                            Formato de email inválido.
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Web</label>
+                        <input type="text" class="form-control" formControlName="website">
+                        <span *ngIf="form.controls.website.errors?.maxlength" style="color: red;">
+                            Máximo 1000 caracteres.
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Comentarios</label>
+                        <textarea class="form-control" formControlName="comments" cols="30" rows="10"></textarea>
+                        <span *ngIf="form.controls.comments.errors?.maxlength" style="color: red;">
+                            Máximo 5000 caracteres.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
