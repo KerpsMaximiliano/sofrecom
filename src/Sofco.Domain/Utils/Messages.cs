@@ -13,7 +13,7 @@ namespace Sofco.Domain.Utils
 
         public Message(string route, MessageType type)
         {
-            Translate = false;
+            Translate = true;
 
             SetMessage(route, type);
         }

@@ -601,7 +601,6 @@ export class NotesAddComponent implements OnInit{
         }
         this.requestNoteService.saveDraft(model).subscribe(d=>{
             this.requestNoteId = d.data;
-            this.messageService.showMessage("La nota de pedido ha sido guardada", 0);
             if(send) {
                 this.requestNoteService.approveDraft(this.requestNoteId).subscribe(d=>{
                     console.log(d);
