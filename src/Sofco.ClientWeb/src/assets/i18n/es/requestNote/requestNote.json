@@ -1,0 +1,7 @@
+{
+    "addSuccess": "La nota de pedido ha sido guardada",
+    "fileUpload": "Archivos subidos",
+    "notAllowed": "No posee los permisos necesarios para ver la nota de pedido",
+    "notFound": "La nota de pedido no fue encontrada",
+    "updateSuccess": "Los cambios a la nota de pedido han sido guardados"
+}
