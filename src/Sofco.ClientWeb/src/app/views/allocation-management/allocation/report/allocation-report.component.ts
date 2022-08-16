@@ -121,7 +121,8 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             selector: "#resourcesTable",
             title: title,
             order: [[ 2, "asc" ]],
-            withExport: true
+            withExport: true,
+            customNumberFormat: this.customFormat
         };
 
         setTimeout(() => {
@@ -144,6 +145,11 @@ export class AllocationReportComponent implements OnInit, OnDestroy {
             $("#resourcesTable_length").css("margin-right","10px");
             $("#resourcesTable_info").css("padding-top","4px");
         }, 1000);
+    };
+
+    customFormat(data, row, column, node) {
+        data = $('<p>' + data + '</p>').text();
+        return $.isNumeric(data.replace('.', '').replace(',', '.')) ? data.replace(',', '.') : data;
     }
 
     clean(){
