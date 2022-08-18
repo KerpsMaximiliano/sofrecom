@@ -22,9 +22,8 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     editSubscrip: Subscription;
     public showClientButton = true;
     private statusClose: boolean = true;
-	refunds: number[] = [];
+    refunds: number[] = [];
 	isCdg: boolean = false;
-
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
