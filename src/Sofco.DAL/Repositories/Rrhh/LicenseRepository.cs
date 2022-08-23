@@ -171,8 +171,8 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Include(x => x.Employee)
                 .Include(x => x.Manager)
                 .Include(x => x.Type)
-                .Where(x => x.EmployeeId == employeeId && (startDate.Date  <= x.EndDate.Date  && endDate.Date >= x.StartDate.Date)).ToList();
-
+                .Where(x => x.EmployeeId == employeeId && ((x.StartDate.Date >= startDate.Date && x.StartDate.Date <= endDate.Date) ||
+                                                           (x.EndDate.Date >= startDate.Date && x.EndDate.Date <= endDate.Date))).ToList();
         }
 
         public ICollection<License> GetByEmployeeAndStartDate(int employeeId, DateTime startDate)
@@ -250,13 +250,9 @@ namespace Sofco.DAL.Repositories.Rrhh
         {
             return context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date);
         }
-        public bool HasAfterDateByEmployeeCancelled(int id, DateTime date)
+        public bool HasAfterDateByEmployeeCancelledOrRejected(int id, DateTime date)
         {
-            var lista = context.Licenses.Where(x => x.EmployeeId == id && x.StartDate.Date >= date.Date).ToList();
-
-            var puedeCancelar = context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date && x.Status != LicenseStatus.Cancelled);
-
-            return context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date && x.Status != LicenseStatus.Cancelled);
+            return context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date && x.Status != LicenseStatus.Cancelled && x.Status != LicenseStatus.Rejected);
         }
     }
 }
