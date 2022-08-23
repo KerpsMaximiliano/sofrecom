@@ -250,9 +250,9 @@ namespace Sofco.DAL.Repositories.Rrhh
         {
             return context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date);
         }
-        public bool HasAfterDateByEmployeeCancelled(int id, DateTime date)
+        public bool HasAfterDateByEmployeeCancelledOrRejected(int id, DateTime date)
         {
-            return context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date && x.Status != LicenseStatus.Cancelled);
+            return context.Licenses.Any(x => x.EmployeeId == id && x.StartDate.Date >= date.Date && x.Status != LicenseStatus.Cancelled && x.Status != LicenseStatus.Rejected);
         }
     }
 }
