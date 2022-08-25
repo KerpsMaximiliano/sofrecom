@@ -214,10 +214,10 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 return response;
             }
 
-            if (unitOfWork.LicenseRepository.HasAfterDateByEmployeeCancelled(employeeToChange.Id,
+            if (unitOfWork.LicenseRepository.HasAfterDateByEmployeeCancelledOrRejected(employeeToChange.Id,
                 response.Data.EndDate.GetValueOrDefault()))
             {
-                response.AddErrorAndNoTraslate("El recurso tiene licencias cargadas con fecha posterior al momento de la baja, verificar para cancelar las mismas");
+                response.AddErrorAndNoTraslate("El recurso tiene licencias cargadas con fecha posterior al momento de la baja, verificar para cancelar o rechazar las mismas");
             }
 
             if (response.HasErrors()) return response;
