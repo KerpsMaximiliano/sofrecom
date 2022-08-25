@@ -159,9 +159,22 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Employee> GetUpdownReport(ReportUpdownParameters parameters)
         {
-            var up = context.Employees.Where(x => x.StartDate.Date >= parameters.StartDate.Value.Date && x.StartDate.Date <= parameters.EndDate.Value.Date).ToList();
 
-            var down = context.Employees.Where(x => x.EndDate.HasValue && x.EndDate.GetValueOrDefault().Date >= parameters.StartDate.Value.Date && x.EndDate.GetValueOrDefault().Date <= parameters.EndDate.Value.Date).ToList();
+            DateTime? startDate = null; 
+            if (parameters.StartDate.HasValue) 
+                startDate = new DateTime(
+                parameters.StartDate.Value.Year,parameters.StartDate.Value.Month,
+                parameters.StartDate.Value.Day,0, 0, 0);
+
+            DateTime? endDate = null;
+            if (parameters.EndDate.HasValue)
+                endDate = new DateTime(
+                parameters.EndDate.Value.Year, parameters.EndDate.Value.Month,
+                parameters.EndDate.Value.Day, 23, 59, 59);
+
+            var up = context.Employees.Where(x => x.StartDate.Date >= startDate && x.StartDate.Date <= endDate).ToList();
+
+            var down = context.Employees.Where(x => x.EndDate.HasValue && x.EndDate.GetValueOrDefault().Date >= startDate && x.EndDate.GetValueOrDefault().Date <= endDate).ToList();
 
             return up.Union(down).ToList();
         }
