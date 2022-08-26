@@ -47,15 +47,20 @@ export class ReportUpdownComponent implements OnDestroy {
 
             this.upTotal = 0;
             this.downTotal = 0;
-            var starDate = new Date(this.searchModel.startDate)
+
+            function addHours(hours, date: Date) {
+                date.setTime(date.getTime() + hours * 60 * 60 * 1000);
+                return date;
+            }
+
+            var starDate = new Date(this.searchModel.startDate);
             var endDate = new Date(this.searchModel.endDate)
             
             if(this.resources.length > 0){
                 this.resources.forEach(x => {
-                    var startdates = new Date (x.startDate);
-                    var endDates = new Date (x.endDate);
-                  
-                    if(startdates > starDate && startdates < endDate ){
+                    var startdates = addHours(3, new Date (x.startDate));
+                    var endDates = addHours(3, new Date (x.endDate));
+                    if(startdates >= starDate && startdates <= endDate ){
                         this.upTotal += 1;
                     }
                     if(endDates > starDate && endDates < endDate){
