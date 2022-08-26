@@ -279,4 +279,7 @@
   <data name="DateGreaterThanCurrent" xml:space="preserve">
     <value>workTimeManagement/workTime.dateGreaterThanCurrent</value>
   </data>
+  <data name="InactiveResourcce" xml:space="preserve">
+    <value>workTimeManagement/workTime.inactiveResource</value>
+  </data>
 </root>
