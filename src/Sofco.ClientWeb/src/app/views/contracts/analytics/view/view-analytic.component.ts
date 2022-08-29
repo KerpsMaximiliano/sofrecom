@@ -22,8 +22,8 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     editSubscrip: Subscription;
     public showClientButton = true;
     private statusClose: boolean = true;
-    isCdg: boolean = false;
-
+    refunds: number[] = [];
+	isCdg: boolean = false;
 
     @ViewChild('confirmModal') confirmModal;
     public confirmModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -36,7 +36,6 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     );
     StatusID: any;
     InworkFlowProcess: number;
-    refunds: string[] = [];
 
     @ViewChild('confirmModalReopen') confirmModalReopen;
     public confirmModalReopenConfig: Ng2ModalConfig = new Ng2ModalConfig(
@@ -112,10 +111,10 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     
     close(){
         if(this.statusClose){
-            if (this.form.model.refund && this.form.model.refund.filter(f => f.statusId != 20).length != 0) {
+			if (this.form.model.refund && this.form.model.refund.filter(f => f.statusId != 20).length != 0) {
                 // Alert
                 this.getRefunds();
-                var msj = `${this.i18nService.translateByKey("allocationManagement.analytics.withRefund")} ${this.refunds.join(', ')}`
+                var msj = this.i18nService.translateByKey("allocationManagement.analytics.withRefund");
                 this.messageService.showMessage(msj, 2)
 
                 this.confirmModal.hide();
@@ -124,8 +123,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
                     this.confirmModal.hide();
                     this.form.model.status = 2;
                 });
-            }
-        }
+            }        }
         else {
             this.closeSubscrip = this.analyticService.closeForExpenses(this.form.model.id).subscribe(response => {
                 this.confirmModal.hide();
@@ -133,14 +131,14 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
             });
         }
     }
-
     getRefunds() {
         this.form.model.refund.filter(f => f.statusId != 20)
         .forEach(element => {
-            if (this.refunds.indexOf(element.userApplicant.name) == -1)
-                this.refunds.push(element.userApplicant.name);
+            if (this.refunds.indexOf(element.analytic.id) == -1)
+                this.refunds.push(element.analytic.id);
         });
     }
+
 
     closeSuccess(response, status){
         this.form.model.status = status;
@@ -190,7 +188,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     openForCloseForExpenses(){
-        this.statusClose = false;
+        this.statusClose = true;
         this.confirmModal.show();
     }
     

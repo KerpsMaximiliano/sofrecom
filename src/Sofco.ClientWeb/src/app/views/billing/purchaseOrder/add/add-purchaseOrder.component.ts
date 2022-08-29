@@ -66,13 +66,13 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
         this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe(
             response => {
-                this.messageService.closeLoading();
+                // this.messageService.closeLoading();
 
-                this.form.model.id = response.data.id;
-                this.form.model.status = response.data.status;
-                this.uploaderConfig();
+                // this.form.model.id = response.data.id;
+                // this.form.model.status = response.data.status;
+                // this.uploaderConfig();
 
-                this.alertDisable = false;
+                // this.alertDisable = false;
             },
             err => {
                 this.messageService.closeLoading();

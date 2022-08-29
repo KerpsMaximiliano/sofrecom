@@ -68,5 +68,11 @@ namespace Sofco.Core.DAL.Admin
         IList<User> GetByEmail(List<string> mails);
 
         bool HasAdminGroup(string userMail);
+
+        bool HasPermission(int userId, string codigoFuncionalidad, string codigoModulo);
+
+        List<string> GetPermissions(int userId, string codigoModulo);
+
+
     }
 }

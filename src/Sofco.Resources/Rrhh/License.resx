@@ -231,4 +231,7 @@
   <data name="WrongCertificateMonthQuantity" xml:space="preserve">
     <value>rrhh/license.wrongCertificateMonthQuantity</value>
   </data>
+	<data name="periodBefore" xml:space="preserve">
+    <value>rrhh/license.periodBefore</value>
+  </data>
 </root>

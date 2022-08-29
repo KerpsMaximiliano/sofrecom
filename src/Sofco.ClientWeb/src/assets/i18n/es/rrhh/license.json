@@ -35,5 +35,6 @@
     "workTimeDateOverlap": "No se puede ingresar licencia con fecha que contiene horas cargadas.",
     "managerUpdatedRefreshNeeded": "El superior ha sido actualizado previamente, por favor efectue un nuevo login.",
     "detailPeriodRequired": "El detalle del periodo a recuperar es requerido",
-    "reportWithoutEmpty": "No se han encontrado datos para el reporte en las fechas seleccionadas"
+    "reportWithoutEmpty": "No se han encontrado datos para el reporte en las fechas seleccionadas",
+    "periodBefore": "No se pueden cancelar licencias anteriores al período vigente"
 }

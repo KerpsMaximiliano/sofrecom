@@ -71,6 +71,10 @@ export class DataTableService {
                         }
                     };
 
+                    if(params.customNumberFormat) {
+                        excelExport.exportOptions.format.body = params.customNumberFormat;
+                    }
+
                     if (params.customizeExcelExport) {
                         excelExport.customize = params.customizeExcelExport;
                     }

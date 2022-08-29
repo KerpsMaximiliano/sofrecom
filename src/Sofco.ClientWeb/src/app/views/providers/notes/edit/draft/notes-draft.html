@@ -1,0 +1,477 @@
+<h1>Borrador</h1>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12 row">
+            <div class="pull-left" style="margin-left: 2rem;">
+                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']"> 
+                    <i class="fa fa-arrow-left"></i>       Volver
+                </button>
+                <button class="btn btn-primary btn-outline dim" type="button" (click)="saveNote(false)">Guardar <i class="fa fa-save"></i> </button>
+            </div>
+            <div class="btn-right">
+                <button class="btn btn-success btn-outline dim" (click)="sendDraft()"> 
+                    Enviar       <i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-7">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <form class="form-horizontal" [formGroup]="formNota">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Descripción: </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="description">
+                                <span *ngIf="(!formNota.get('description')?.valid && (formNota.get('description')?.touched || formNota.get('description')?.dirty) && descriptionError)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                                <span *ngIf="formNota.controls.description.errors?.maxlength" style="color: red;">
+                                    Máximo 1000 caracteres
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group" [formGroup]="formProductoServicio" style="margin-right: .6rem;">
+                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem; margin-left: 1.5rem;"
+                                (click)="agregarProductoServicio()">Agregar       <i class="fa fa-plus"></i>
+                            </button>
+                            <div class="col-sm-5">
+                                <label>Productos/Servicios</label>
+                                <input type="text" class="form-control" formControlName="productService" [ngClass]="{'red-input-border' : (!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError }">
+                                <span *ngIf="(!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError" style="color: red;">
+                                    Debe ingresar un producto o servicio.
+                                </span>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Cantidad</label>
+                                <input type="number" class="form-control" [ngClass]="{'red-input-border' : (!formProductoServicio.get('quantity')?.valid && (formProductoServicio.get('quantity')?.touched || formProductoServicio.get('quantity')?.dirty)) && productsServicesTableError}" formControlName="quantity">
+                                <span *ngIf="(!formProductoServicio.get('quantity')?.valid && (formProductoServicio.get('quantity')?.touched || formProductoServicio.get('quantity')?.dirty)) && productsServicesTableError" style="color: red;">
+                                    Debe seleccionar una cantidad mayor a 0.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span *ngIf="productsServicesError" style="color: red;">
+                                Al menos un producto o servicio es requerido
+                            </span>
+                            <span *ngIf="productsServicesQuantityError" style="color: red;">
+                                La suma de cantidades debe ser mayor a 0.
+                            </span>
+                        </div>
+                        <div class="form-group" *ngIf="productosServicios.length > 0" [formGroup]="formProductoServicioTable">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable" formArrayName="productoServicio">
+                                <thead>
+                                    <tr>
+                                        <th>Producto/Servicio</th>
+                                        <th>Cantidad</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let item of getProductoServicio().controls; let i = index">
+                                    <tr [formGroupName]="i">
+                                        <td>
+                                            <input type="text" formControlName="productService">
+                                            <span *ngIf="item.get('productService').value == '' || item.get('productService').value == null" style="color: red;">
+                                                No puede estar vacío
+                                            </span>
+                                        </td>
+                                        <td><input type="number" formControlName="quantity" (input)="productoServicioChange()"></td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarProductoServicio(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Rubro: </label>
+                            <div class="col-sm-9">
+                                <div style="display: flex;">
+                                    <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea"
+                                        (change)="change($event)" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
+                                    <div *ngIf="critical != null" style="flex-shrink: 1;">
+                                        <label class="col-xs-4 control-label text-left">Crítico: </label>
+                                        <div class="col-xs-8">
+                                            <input type="text" class="form-control" disabled [placeholder]="critical">
+                                        </div>
+                                    </div>
+                                </div>
+                                <span
+                                    *ngIf="!formNota.get('providerArea')?.valid && (formNota.get('providerArea')?.touched || formNota.get('providerArea')?.dirty)"
+                                    style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group" [formGroup]="formAnaliticas" style="margin-right: .6rem;">
+                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem; margin-left: 1.5rem;"
+                                (click)="agregarAnalitica()">Agregar       <i class="fa fa-plus"></i>
+                            </button>
+                            <div class="col-sm-5">
+                                <label>Analítica</label>
+                                <ng-select [items]="analiticas" bindLabel="text" bindValue="id" formControlName="analytic" [ngClass]="{'red-input-border' : (!formAnaliticas.get('analytic')?.valid && (formAnaliticas.get('analytic')?.touched || formAnaliticas.get('analytic')?.dirty)) && analyticFormError}"></ng-select>
+                                <span *ngIf="(!formAnaliticas.get('analytic')?.valid && (formAnaliticas.get('analytic')?.touched || formAnaliticas.get('analytic')?.dirty)) && analyticFormError" style="color: red;">
+                                    Debe seleccionar una analítica.
+                                </span>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>% de asignación</label>
+                                <input type="number" class="form-control" [ngClass]="{'red-input-border' : (!formAnaliticas.get('asigned')?.valid && (formAnaliticas.get('asigned')?.touched || formAnaliticas.get('asigned')?.dirty)) && analyticFormError}" formControlName="asigned">
+                                <span *ngIf="(!formAnaliticas.get('asigned')?.valid && (formAnaliticas.get('asigned')?.touched || formAnaliticas.get('asigned')?.dirty)) && analyticFormError" style="color: red;">
+                                    Debe seleccionar un % de asignación para la analítica.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span *ngIf="analyticErrorSend" style="color: red;">
+                                Al menos una analítica es requerida
+                            </span>
+                            <span *ngIf="analyticPercentageErrorSend" style="color: red;">
+                                La suma de porcentajes debe ser 100.
+                            </span>
+                        </div>
+                        <div class="form-group" *ngIf="analiticasTable.length > 0" [formGroup]="formAnaliticasTable">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable" formArrayName="analiticas">
+                                <thead>
+                                    <tr>
+                                        <th>Analítica</th>
+                                        <th>% de asignación</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let item of getAnaliticas().controls; let i = index">
+                                    <tr [formGroupName]="i">
+                                        <td><input type="text" formControlName="analyticName"></td>
+                                        <td><input type="number" formControlName="asigned" (input)="analyticChange()"></td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarAnalitica(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-1">
+                                <input type="checkbox" class="form-control w-2" formControlName="requiresPersonel">
+                            </div>
+                            <label class="col-xs-8 control-label text-left">Requiere personal trabajando en/por Sofrecom o en Cliente</label>
+                        </div>
+                        <div class="form-group" [formGroup]="formProveedores" style="margin-right: .6rem;">
+                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem; margin-left: 1.5rem;"
+                                (click)="agregarProveedor()">Agregar       <i class="fa fa-plus"></i>
+                            </button>
+                            <div class="col-sm-9">
+                                <label>Proveedor</label>
+                                <ng-select [items]="providers" bindLabel="name" bindValue="id" formControlName="provider"></ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="proveedoresTable.length > 0">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Proveedor</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of proveedoresTable; let i = index">
+                                        <td>{{ item.name }} </td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarProveedor(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-1">
+                                <input type="checkbox" class="form-control w-2" placeholder="Checkbox" formControlName="evaluationProposal">
+                            </div>
+                            <label class="col-xs-8 control-label text-left">Previsto en el presupuesto / Evaluación de propuesta</label>
+                        </div>
+                        <div class="form-group" *ngIf="formNota.controls.evaluationProposal.value">
+                            <label class="col-sm-2 control-label text-left">Nro Evalprop: </label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" formControlName="numberEvalprop">
+                                <span *ngIf="formNota.controls.numberEvalprop.errors?.maxlength" style="color: red;">
+                                    Máximo 100 caracteres
+                                </span>
+                                <span *ngIf="(formNota.controls.numberEvalprop.value == null || formNota.controls.numberEvalprop.value == '') && (formNota.get('numberEvalprop')?.touched || formNota.get('numberEvalprop')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Observaciones: </label>
+                            <div class="col-sm-9">
+                                <textarea cols="30" rows="5" class="form-control" formControlName="observations"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-5" style="display: flex; flex-direction: row;">
+                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem; margin-right: 0.4rem;" (change)="openTravelModal()" formControlName="travel">
+                                <label class="control-label text-left" style="min-width: fit-content; margin-right: 5rem;">Apartado de Viajes</label>
+                            </div>
+                            <div class="col-xs-5" style="display: flex; flex-direction: row;">
+                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem; margin-right: 0.4rem;" (change)="openTrainingModal()" formControlName="training">
+                                <label class="control-label text-left" style="min-width: fit-content;">Apartado de Capacitación</label>
+                            </div>
+                        </div>
+                        <hr>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}} archivos subidos</p></h3>
+            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple/>
+    
+            <div class="uploader-margin-top">
+                <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+                <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                </div>
+    
+                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+                </button>
+                
+                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="travelFormShow">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h1>Ficha del Viaje</h1>
+                    <div class="form-group">
+                        <h3 style="margin-left: 8rem;" class="mt-3">Pasajeros</h3>
+                    </div>
+                    <form class="form-horizontal mt-3" [formGroup]="formViaje">
+                        <div class="form-group" [formGroup]="formParticipanteViaje">
+                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem; margin-left: 1rem;"
+                                (click)="agregarParticipanteViaje()">Agregar       <i class="fa fa-plus"></i></button>
+                            <div class="col-sm-4">
+                                <label>Nombre</label>
+                                <ng-select [items]="participants" bindLabel="name" bindValue="name" formControlName="name" (change)="travelChange($event)"></ng-select>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Fecha de Nacimiento</label>
+                                <!--<date-picker [(date)]="travelBirthday" (dateChange)="dateChange(1, $event)"></date-picker>-->
+                                <input type="text" class="form-control" [value]="participanteViajeSeleccionadoFecha" disabled>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>CUIT / CUIL</label>
+                                <!--<input type="text" class="form-control" formControlName="cuit">-->
+                                <input type="text" class="form-control" [value]="participanteViajeSeleccionadoCuit" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span *ngIf="formParticipanteViajeError" style="color: red;">
+                                Al menos un pasajero es requerido.
+                            </span>
+                        </div>
+                        <div class="form-group" *ngIf="participantesViaje.length > 0">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Fecha de Nacimiento</th>
+                                        <th>CUIT/CUIL</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of participantesViaje; let i = index">
+                                        <td>{{ item.name }} </td>
+                                        <td>{{ item.birthday }} </td>
+                                        <td>{{ item.cuil }} </td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarParticipanteViaje(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 text-left" style="min-width: fit-content;">Fecha de
+                                Salida</label>
+                            <div class="col-sm-3">
+                                <date-picker [(date)]="travelDepartureDate" (dateChange)="dateChange(2, $event)"></date-picker>
+                                <span
+                                    *ngIf="!formViaje.get('departureDate')?.valid && (formViaje.get('departureDate')?.touched || formViaje.get('departureDate')?.dirty)"
+                                    style="color: red;">
+                                    El campo es requerido.
+                                </span>
+                                <span *ngIf="travelDateError" style="color: red;">
+                                    La fecha de salida debe ser anterior o igual a la fecha de regreso.
+                                </span>
+                            </div>
+                            <label class="control-label col-sm-2" style="min-width: fit-content;">Fecha de Regreso</label>
+                            <div class="col-sm-3">
+                                <date-picker [(date)]="travelReturnDate" (dateChange)="dateChange(3, $event)"></date-picker>
+                                <span
+                                    *ngIf="!formViaje.get('returnDate')?.valid && (formViaje.get('returnDate')?.touched || formViaje.get('returnDate')?.dirty)"
+                                    style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Ciudad del destino</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="destination">
+                                <span *ngIf="!formViaje.get('destination')?.valid && (formViaje.get('destination')?.touched || formViaje.get('destination')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Medio de transporte</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="transportation">
+                                <span *ngIf="!formViaje.get('transportation')?.valid && (formViaje.get('transportation')?.touched || formViaje.get('transportation')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Alojamiento</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="accommodation">
+                                <span *ngIf="!formViaje.get('accommodation')?.valid && (formViaje.get('accommodation')?.touched || formViaje.get('accommodation')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Detalle del intinerario</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" cols="30" rows="5" formControlName="details"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="trainingFormShow">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h1 class="text-left">Datos de la Capacitación</h1>
+                    <form class="form-horizontal mt-3" [formGroup]="formCapacitacion">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Nombre del curso</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="name">
+                                <span *ngIf="!formCapacitacion.get('name')?.valid && (formCapacitacion.get('name')?.touched || formCapacitacion.get('name')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Tema de la capacitación</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="subject">
+                                <span *ngIf="!formCapacitacion.get('subject')?.valid && (formCapacitacion.get('subject')?.touched || formCapacitacion.get('subject')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Lugar</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="location">
+                                <span *ngIf="!formCapacitacion.get('location')?.valid && (formCapacitacion.get('location')?.touched || formCapacitacion.get('location')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Fecha de la capacitación</label>
+                            <div class="col-sm-9">
+                                <date-picker [(date)]="trainingDate" (dateChange)="dateChange(4, $event)"></date-picker>
+                                <span *ngIf="!formCapacitacion.get('date')?.valid && (formCapacitacion.get('date')?.touched || formCapacitacion.get('date')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Duración</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="duration">
+                                <span *ngIf="!formCapacitacion.get('duration')?.valid && (formCapacitacion.get('duration')?.touched || formCapacitacion.get('duration')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Monto aproximado del curso</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" formControlName="ammount">
+                                <span *ngIf="!formCapacitacion.get('ammount')?.valid && (formCapacitacion.get('ammount')?.touched || formCapacitacion.get('ammount')?.dirty)" style="color: red;">
+                                    El campo es requerido.
+                                </span>
+                                <span *ngIf="formCapacitacion.controls.ammount.errors?.min" style="color: red;">
+                                    El monto debe ser mayor o igual a 0.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h3 style="margin-left: 8rem;">Participantes</h3>
+                        </div>
+                        <div class="form-group" [formGroup]="formParticipanteCapacitacion">
+                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem; margin-left: 1rem;" (click)="agregarParticipanteCapacitacion()">Agregar       <i
+                                    class="fa fa-plus"></i></button>
+                            <div class="col-sm-5">
+                                <label>Nombre</label>
+                                <ng-select [items]="filteredParticipants" bindLabel="name" bindValue="name" formControlName="name" (change)="trainingChange($event)"></ng-select>
+                                <span *ngIf="!formParticipanteCapacitacion.get('name')?.valid && (formParticipanteCapacitacion.get('name')?.touched || formParticipanteCapacitacion.get('name')?.dirty)" style="color: red;">
+                                    El campo es requerido.
+                                </span>
+                            </div>
+                            <div class="col-sm-4">
+                                <label>Proyecto / Sector</label>
+                                <input type="text" class="form-control" formControlName="sector">
+                                <span *ngIf="!formParticipanteCapacitacion.get('sector')?.valid && (formParticipanteCapacitacion.get('sector')?.touched || formParticipanteCapacitacion.get('sector')?.dirty)" style="color: red;">
+                                    El campo es requerido.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span *ngIf="formParticipanteCapacitacionError" style="color: red;">
+                                Al menos un participante es requerido.
+                            </span>
+                        </div>
+                        <div class="form-group" *ngIf="participantesCapacitacion.length > 0">
+                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Sector</th>
+                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of participantesCapacitacion; let i = index">
+                                        <td>{{ item.data.name }} </td>
+                                        <td>{{ item.sector }} </td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" (click)="eliminarParticipanteCapacitacion(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

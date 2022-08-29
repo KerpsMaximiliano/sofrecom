@@ -32,6 +32,8 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         {
             var model = analyticService.GetAll().Select(x => new AnalyticSearchViewModel(x));
 
+            var res = analyticService.GetByCurrentUser();
+
             return Ok(model);
         }
 

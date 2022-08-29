@@ -15,7 +15,9 @@ namespace Sofco.Core.DAL.AllocationManagement
     public interface IEmployeeRepository : IBaseRepository<Employee>
     {
         new ICollection<Employee> GetAll();
-        
+
+        IList<Employee> GetEveryone();
+
         bool Exist(int employeeId);
 
         Employee GetById(int id);

@@ -9,8 +9,10 @@ using Sofco.Core.DAL.AllocationManagement;
 using Sofco.Core.DAL.Billing;
 using Sofco.Core.DAL.Common;
 using Sofco.Core.DAL.ManagementReport;
+using Sofco.Core.DAL.Provider;
 using Sofco.Core.DAL.Recruitment;
 using Sofco.Core.DAL.Report;
+using Sofco.Core.DAL.RequestNote;
 using Sofco.Core.DAL.Rrhh;
 using Sofco.Core.DAL.Views;
 using Sofco.Core.DAL.Workflow;
@@ -21,11 +23,14 @@ using Sofco.DAL.Repositories.AllocationManagement;
 using Sofco.DAL.Repositories.Billing;
 using Sofco.DAL.Repositories.Common;
 using Sofco.DAL.Repositories.ManagementReport;
+using Sofco.DAL.Repositories.Providers;
 using Sofco.DAL.Repositories.Recruitment;
 using Sofco.DAL.Repositories.Reports;
+using Sofco.DAL.Repositories.RequestNote;
 using Sofco.DAL.Repositories.Rrhh;
 using Sofco.DAL.Repositories.Workflow;
 using Sofco.DAL.Repositories.WorkTimeManagement;
+using Sofco.Domain.Models.RequestNote;
 
 namespace Sofco.DAL
 {
@@ -129,6 +134,7 @@ namespace Sofco.DAL
 
         private IUserSourceRepository userSourceRepository;
 
+
         #region Advancements
 
         private IAdvancementRepository advancementRepository;
@@ -147,6 +153,33 @@ namespace Sofco.DAL
         private ICostDetailResourceRepository costDetailResourceRepository;
         private ICostDetailStaffRepository costDetailStaffRepository;
 
+
+        #endregion
+        private IProviderAreaRepository providerAreaRepository;
+
+        private IProvidersRepository providersRepository;
+
+        #region Request Note
+
+        private IRequestNoteRepository requestNoteRepository;
+
+        private IRequestNoteAnalitycRepository requestNoteAnalitycRepository;
+
+        private IRequestNoteProviderRepository requestNoteProviderRepository;
+
+        private IRequestNoteHistoryRepository requestNoteHistoryRepository;
+
+        private IBaseRepository<RequestNoteFile> requestNoteFileRepository;
+
+        private BaseRepository<RequestNoteProductService> requestNoteProductServiceRepository;
+
+        private BaseRepository<RequestNoteTravel> requestNoteTravelRepository;
+
+        private BaseRepository<RequestNoteTravelEmployee> requestNoteTravelEmployeeRepository;
+
+        private BaseRepository<RequestNoteTraining> requestNoteTrainingRepository;
+
+        private BaseRepository<RequestNoteTrainingEmployee> requestNoteTrainingEmployeeRepository;
 
         #endregion
 
@@ -278,6 +311,30 @@ namespace Sofco.DAL
 
         #endregion
 
+        public IProviderAreaRepository ProviderAreaRepository => providerAreaRepository ?? (providerAreaRepository = new ProviderAreaRepository(context));
+
+        public IProvidersRepository ProvidersRepository => providersRepository ?? (providersRepository = new ProvidersRepository(context));
+
+        public IRequestNoteRepository RequestNoteRepository => requestNoteRepository ?? (requestNoteRepository = new RequestNoteRepository(context));
+
+        public IRequestNoteAnalitycRepository RequestNoteAnalitycRepository => requestNoteAnalitycRepository ?? (requestNoteAnalitycRepository = new RequestNoteAnalitycRepository(context));
+
+        public IRequestNoteProviderRepository RequestNoteProviderRepository => requestNoteProviderRepository ?? (requestNoteProviderRepository = new RequestNoteProviderRepository(context));
+
+        public IRequestNoteHistoryRepository RequestNoteHistoryRepository => requestNoteHistoryRepository ?? (requestNoteHistoryRepository = new RequestNoteHistoryRepository(context));
+
+        public IBaseRepository<RequestNoteFile> RequestNoteFileRepository => requestNoteFileRepository ?? (requestNoteFileRepository = new RequestNoteFileRepository(context));
+
+        public IBaseRepository<RequestNoteProductService> RequestNoteProductServiceRepository => requestNoteProductServiceRepository ?? (requestNoteProductServiceRepository = new BaseRepository<RequestNoteProductService>(context));
+
+        public IBaseRepository<RequestNoteTravel> RequestNoteTravelRepository => requestNoteTravelRepository ?? (requestNoteTravelRepository = new BaseRepository<RequestNoteTravel>(context));
+
+        public IBaseRepository<RequestNoteTravelEmployee> RequestNoteTravelEmployeeRepository => requestNoteTravelEmployeeRepository ?? (requestNoteTravelEmployeeRepository = new BaseRepository<RequestNoteTravelEmployee>(context));
+
+        public IBaseRepository<RequestNoteTraining> RequestNoteTrainingRepository => requestNoteTrainingRepository ?? (requestNoteTrainingRepository = new BaseRepository<RequestNoteTraining>(context));
+
+        public IBaseRepository<RequestNoteTrainingEmployee> RequestNoteTrainingEmployeeRepository => requestNoteTrainingEmployeeRepository ?? (requestNoteTrainingEmployeeRepository = new BaseRepository<RequestNoteTrainingEmployee>(context));
+
         public void Save()
         {
             context.SaveChanges();
@@ -297,5 +354,6 @@ namespace Sofco.DAL
         {
             contextTransaction?.Commit();
         }
+
     }
 }

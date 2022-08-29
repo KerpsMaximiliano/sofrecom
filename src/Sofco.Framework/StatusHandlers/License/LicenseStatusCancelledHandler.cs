@@ -9,6 +9,8 @@ using Sofco.Framework.MailData;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Utils;
 using Sofco.Resources.Mails;
+using Sofco.Core.Data.Admin;
+using System;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
@@ -17,20 +19,32 @@ namespace Sofco.Framework.StatusHandlers.License
         private readonly EmailConfig emailConfig;
 
         private readonly ILicenseApproverManager licenseApproverManager;
+		private readonly IUserData userData;
 
-        public LicenseStatusCancelledHandler(EmailConfig emailConfig, ILicenseApproverManager licenseApproverManager)
+		public LicenseStatusCancelledHandler(EmailConfig emailConfig, ILicenseApproverManager licenseApproverManager, IUserData userData)
         {
             this.emailConfig = emailConfig;
             this.licenseApproverManager = licenseApproverManager;
-        }
+			this.userData = userData ?? throw new System.ArgumentNullException(nameof(userData));
+		}
 
         public void Validate(Response response, IUnitOfWork unitOfWork, LicenseStatusChangeModel parameters, Domain.Models.Rrhh.License license)
         {
-            if (!parameters.IsRrhh) response.AddError(Resources.Rrhh.License.CannotChangeStatus);
 
-            if (parameters.IsRrhh && license.Status != LicenseStatus.Approved)
+            var closeDates = unitOfWork.CloseDateRepository.GetFirstBeforeNextMonth();
+            DateTime closeDate = new DateTime(closeDates.Year, closeDates.Month, closeDates.Day);
+
+            if (license.StartDate < closeDate)
             {
-                response.AddError(Resources.Rrhh.License.CannotChangeStatus);
+                response.AddError(Resources.Rrhh.License.periodBefore);
+            } else { 
+
+                var currentUser = userData.GetCurrentUser();
+                var permiso = unitOfWork.UserRepository.HasPermission(currentUser.Id, "REMOV", "CTRLI");
+                if (!permiso)
+                {
+                    response.AddErrorAndNoTraslate("No tiene permisos para cancelar la licencia");
+                }
             }
         }
          
@@ -47,12 +61,30 @@ namespace Sofco.Framework.StatusHandlers.License
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
 
+            //Status = 7 (Cancelado)
+            if(licenseToModif.Status == LicenseStatus.Cancelled)
+            {
+                //Borramos todos los WorkTime de la Licencia
+                DeleteWorkTimeByLicense(license, unitOfWork);
+            }
+
             if (license.TypeId == 7)
             {
                 license.Employee.ExamDaysTaken -= license.DaysQuantity;
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
         }
+        private void DeleteWorkTimeByLicense(Domain.Models.Rrhh.License license, IUnitOfWork unitOfWork)
+        {
+            var listWorkTimes = unitOfWork.WorkTimeRepository.GetByEmployeeId(license.StartDate, license.EndDate, license.EmployeeId);
+
+            for(int i = 0; i < listWorkTimes.Count;i++)
+            {
+                unitOfWork.WorkTimeRepository.Delete(listWorkTimes[i]);
+            }
+        }
+
+
 
         public string GetSuccessMessage()
         {

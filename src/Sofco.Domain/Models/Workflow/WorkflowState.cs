@@ -37,6 +37,11 @@ namespace Sofco.Domain.Models.Workflow
 
         public IEnumerable<RefundHistory> RefundHistories2 { get; set; }
 
+        public IEnumerable<RequestNote.RequestNote> RequestNotes { get; set; }
+
+        public IEnumerable<RequestNote.RequestNoteHistory> RequestNoteHistories { get; set; }
+
+        public IEnumerable<RequestNote.RequestNoteHistory> RequestNoteHistories2 { get; set; }
         public bool Active { get; set; }
     }
 }

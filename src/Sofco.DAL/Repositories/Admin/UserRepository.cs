@@ -361,5 +361,33 @@ namespace Sofco.DAL.Repositories.Admin
         {
             return context.Users.Where(x => mails.Contains(x.Email)).ToList();
         }
+
+        public bool HasPermission(int userId, string codigoFuncionalidad, string codigoModulo)
+        {
+            var user = context.Users
+                        .Include(x => x.UserGroups)
+                        .ThenInclude(x => x.Group)
+                        .ThenInclude(x => x.Role)
+                        .ThenInclude(x => x.RoleFunctionality)
+                        .ThenInclude(x => x.Functionality)
+                        .ThenInclude(x => x.Module)
+                        .Any(u => u.Id == userId &&
+                                 u.UserGroups.Any(ug => ug.Group.Role.RoleFunctionality
+                                                        .Any(rf => rf.Functionality.Code == codigoFuncionalidad &&
+                                                                   rf.Functionality.Module.Code == codigoModulo)));
+
+            return user;
+        }
+        public List<string> GetPermissions(int userId, string codigoModulo)
+        {
+            var functionalities = context.Functionalities
+                                    .Where(f => f.Module.Code == codigoModulo)
+                                    .Where(f => f.RoleFunctionality.Any(rf => 
+                                                    rf.Role.Groups.Any(g => 
+                                                        g.UserGroups.Any(ug => ug.UserId == userId))))
+                        .Select(f => f.Code).ToList();
+
+            return functionalities;
+        }
     }
 }
