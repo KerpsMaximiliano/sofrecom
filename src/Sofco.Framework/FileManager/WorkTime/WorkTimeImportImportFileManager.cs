@@ -103,6 +103,11 @@ namespace Sofco.Framework.FileManager.WorkTime
 
                     var employee = Employees.SingleOrDefault(x => x.EmployeeNumber.Equals(employeeNumber));
 
+                    if(employee.EndDate != null)
+                    {
+                        if (!ValidateEndDate(response, employee.EndDate, i, employeeNumber, employeeDesc, date)) continue;
+                    };
+
                     if (!ValidateEmployee(response, employee, employeeNumber, i, employeeDesc, date)) continue;
 
                     if (!ValidateDate(response, employee, datetime, i, employeeNumber, employeeDesc)) continue;
@@ -148,6 +153,20 @@ namespace Sofco.Framework.FileManager.WorkTime
                     logger.LogError(e);
                 }
             }
+        }
+
+        private bool ValidateEndDate(Response<IList<WorkTimeImportResult>> response, DateTime? employeeEndDate, int i, string employeeNumber, string employeeDesc, string date)
+        {
+            var dateNow = DateTime.Now;
+            if (employeeEndDate < dateNow)
+            {
+                var item = FillItemResult(i, employeeNumber, employeeDesc, date);
+                item.Error = Resources.WorkTimeManagement.WorkTime.InactiveResource;
+                response.Data.Add(item);
+                return false;
+            }
+
+            return true;
         }
 
         private bool ValidateReference(Response<IList<WorkTimeImportResult>> response, string reference, int i, string employeeNumber, string employeeDesc, string date)

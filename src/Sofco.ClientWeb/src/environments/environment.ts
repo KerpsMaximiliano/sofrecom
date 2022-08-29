@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  urlApi: 'http://localhost:9697/api',
+  urlApi: 'http://localhost:9696/api',
   crmCloseStatusCode: '717620004',
   currencyPesosId: 1,
   draftWorkflowStateId: 8,
