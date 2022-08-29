@@ -33,7 +33,7 @@ export class ProvidersAddComponent implements OnInit{
         id: new FormControl(0),
         name: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
         providerAreaId: new FormControl(null, [Validators.required]),
-        CUIT: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required, Validators.pattern("^(20|23|27|30|33)([0-9]{8})([0-9]{1})$")]),
+        CUIT: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required, Validators.pattern("^[0-9]*$")/*, Validators.pattern("^(20|23|27|30|33)([0-9]{8})([0-9]{1})$")*/]),
         ingresosBrutos: new FormControl(null, [Validators.required]),
         condicionIVA: new FormControl(null, [Validators.required]),
         address: new FormControl(null, [Validators.maxLength(1000), Validators.required]),
