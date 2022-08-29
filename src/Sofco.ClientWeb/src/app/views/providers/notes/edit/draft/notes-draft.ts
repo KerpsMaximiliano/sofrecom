@@ -90,7 +90,7 @@ export class NotesDraftComponent implements OnInit{
     });
 
     formProductoServicio: FormGroup = new FormGroup({
-        productService: new FormControl(null, [Validators.required, Validators.maxLength(5000)]),
+        productService: new FormControl(null, [Validators.required, Validators.maxLength(500)]),
         quantity: new FormControl(null, [Validators.required, Validators.min(1)])
     });
 
