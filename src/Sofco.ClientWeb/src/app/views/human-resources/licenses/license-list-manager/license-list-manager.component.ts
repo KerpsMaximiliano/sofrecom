@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { DataTableService } from "../../../../services/common/datatable.service";
 import { UserInfoService } from "../../../../services/common/user-info.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { MessageService } from "app/services/common/message.service";
 
 declare var moment: any;
 
@@ -37,7 +38,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
     constructor(private licenseService: LicenseService,
         private router: Router,
         private employeeService: EmployeeService,
-        private datatableService: DataTableService){
+        private datatableService: DataTableService,
+        private messageService: MessageService){
     }
 
     ngOnInit(): void {
@@ -115,6 +117,16 @@ export class LicenseListManager implements OnInit, OnDestroy {
     }
 
     newSearchItem(){
+        if(this.dateTo == null || this.dateSince == null) {
+            if(this.dateSince == null) {
+                this.messageService.showMessage("La Fecha Inicio es requerida", 1);
+            }
+            if(this.dateTo == null) {
+                this.messageService.showMessage("La Fecha Fin es requerida", 1);
+            }
+            return;
+        };
+        
         this.dataFiltered = [];
 
         const newDateSince = moment(this.dateSince).format('YYYY-MM-DD');
