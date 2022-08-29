@@ -120,10 +120,17 @@ export class LicenseListManager implements OnInit, OnDestroy {
         const newDateSince = moment(this.dateSince).format('YYYY-MM-DD');
         const newDateto = moment(this.dateTo).format('YYYY-MM-DD');
 
+        function verifyFilterDates(filterStart, filterEnd, license) {
+            if((filterStart <= license.startDate && license.startDate <= filterEnd) || (filterStart <= license.endDate && license.endDate <= filterEnd)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         if(this.dateSince != null && this.dateTo != null && this.employeeId != null && this.licensesTypeId != null){
-            
             for(let i = 0; i < this.data.length; i++){
-                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto && this.data[i].employeeId == this.employeeId && this.data[i].licenseTypeId == this.licensesTypeId){
+                if(verifyFilterDates(newDateSince, newDateto, this.data[i]) && this.data[i].employeeId == this.employeeId && this.data[i].licenseTypeId == this.licensesTypeId){
                     this.dataFiltered.push(this.data[i]);
                 }    
             }
@@ -133,9 +140,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
         }
 
         if(this.dateSince != null && this.dateTo != null && this.employeeId != null){
-
             for(let i = 0; i < this.data.length; i++){
-                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto && this.data[i].employeeId == this.employeeId){
+                if(verifyFilterDates(newDateSince, newDateto, this.data[i]) && this.data[i].employeeId == this.employeeId){
                     this.dataFiltered.push(this.data[i]);
                 }    
             }
@@ -145,9 +151,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
         }
 
         if(this.dateSince != null && this.dateTo != null && this.licensesTypeId != null){
-            
             for(let i = 0; i < this.data.length; i++){
-                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto && this.licensesTypeId == this.data[i].licenseTypeId){
+                if(verifyFilterDates(newDateSince, newDateto, this.data[i]) && this.licensesTypeId == this.data[i].licenseTypeId){
                     this.dataFiltered.push(this.data[i]);
                 }
             }
@@ -157,9 +162,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
         }
 
         if(this.dateSince != null && this.dateTo != null){
-
-            for(let i = 0; i < this.data.length; i++){
-                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto){            
+            for(let i = 0; i < this.data.length; i++){           
+                if(verifyFilterDates(newDateSince, newDateto, this.data[i])){
                     
                     if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
                         this.dataFiltered.push(this.data[i]);
@@ -175,11 +179,10 @@ export class LicenseListManager implements OnInit, OnDestroy {
             this.dataFiltered.push(this.data);
             this.initGrid();
 
-        }else if(this.dateSince != null && this.dateTo == null ){
-            
+        }else if(this.dateSince != null && this.dateTo == null){
             for(let i = 0 ; i < this.data.length; i++){
                 
-                if(this.data[i].startDate >= newDateSince){
+                if(this.data[i].endDate >= newDateSince){
                     
                     if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
                         this.dataFiltered.push(this.data[i]);
@@ -193,6 +196,20 @@ export class LicenseListManager implements OnInit, OnDestroy {
                 }
             }
             
+            this.dataFiltered.push(this.data);
+            this.initGrid();
+        }else if(this.dateSince == null && this.dateTo != null) {
+            for(let i = 0 ; i < this.data.length; i++){
+                if(this.data[i].endDate <= newDateto){
+                    if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
+                        this.dataFiltered.push(this.data[i]);
+                    }else{
+                        if(this.licensesTypeId != 0 && this.licensesTypeId == this.data[i].licenseTypeId){
+                            this.dataFiltered.push(this.data[i]);
+                        }
+                    }
+                }
+            }
             this.dataFiltered.push(this.data);
             this.initGrid();
         }else{
