@@ -63,7 +63,7 @@ export class ReportUpdownComponent implements OnDestroy {
                     if(startdates >= starDate && startdates <= endDate ){
                         this.upTotal += 1;
                     }
-                    if(endDates > starDate && endDates < endDate){
+                    if(endDates >= starDate && endDates <= endDate){
                         this.downTotal += 1;
                     }
                 });
