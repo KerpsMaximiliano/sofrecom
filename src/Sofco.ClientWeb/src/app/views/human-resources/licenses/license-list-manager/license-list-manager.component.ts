@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { DataTableService } from "../../../../services/common/datatable.service";
 import { UserInfoService } from "../../../../services/common/user-info.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { MessageService } from "app/services/common/message.service";
 
 declare var moment: any;
 
@@ -37,7 +38,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
     constructor(private licenseService: LicenseService,
         private router: Router,
         private employeeService: EmployeeService,
-        private datatableService: DataTableService){
+        private datatableService: DataTableService,
+        private messageService: MessageService){
     }
 
     ngOnInit(): void {
@@ -115,15 +117,32 @@ export class LicenseListManager implements OnInit, OnDestroy {
     }
 
     newSearchItem(){
+        if(this.dateTo == null || this.dateSince == null) {
+            if(this.dateSince == null) {
+                this.messageService.showMessage("La Fecha Inicio es requerida", 1);
+            }
+            if(this.dateTo == null) {
+                this.messageService.showMessage("La Fecha Fin es requerida", 1);
+            }
+            return;
+        };
+        
         this.dataFiltered = [];
 
         const newDateSince = moment(this.dateSince).format('YYYY-MM-DD');
         const newDateto = moment(this.dateTo).format('YYYY-MM-DD');
 
+        function verifyFilterDates(filterStart, filterEnd, license) {
+            if((filterStart <= license.startDate && license.startDate <= filterEnd) || (filterStart <= license.endDate && license.endDate <= filterEnd)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         if(this.dateSince != null && this.dateTo != null && this.employeeId != null && this.licensesTypeId != null){
-            
             for(let i = 0; i < this.data.length; i++){
-                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto && this.data[i].employeeId == this.employeeId && this.data[i].licenseTypeId == this.licensesTypeId){
+                if(verifyFilterDates(newDateSince, newDateto, this.data[i]) && this.data[i].employeeId == this.employeeId && this.data[i].licenseTypeId == this.licensesTypeId){
                     this.dataFiltered.push(this.data[i]);
                 }    
             }
@@ -133,9 +152,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
         }
 
         if(this.dateSince != null && this.dateTo != null && this.employeeId != null){
-
             for(let i = 0; i < this.data.length; i++){
-                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto && this.data[i].employeeId == this.employeeId){
+                if(verifyFilterDates(newDateSince, newDateto, this.data[i]) && this.data[i].employeeId == this.employeeId){
                     this.dataFiltered.push(this.data[i]);
                 }    
             }
@@ -145,9 +163,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
         }
 
         if(this.dateSince != null && this.dateTo != null && this.licensesTypeId != null){
-            
             for(let i = 0; i < this.data.length; i++){
-                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto && this.licensesTypeId == this.data[i].licenseTypeId){
+                if(verifyFilterDates(newDateSince, newDateto, this.data[i]) && this.licensesTypeId == this.data[i].licenseTypeId){
                     this.dataFiltered.push(this.data[i]);
                 }
             }
@@ -157,9 +174,8 @@ export class LicenseListManager implements OnInit, OnDestroy {
         }
 
         if(this.dateSince != null && this.dateTo != null){
-
-            for(let i = 0; i < this.data.length; i++){
-                if(this.data[i].startDate >= newDateSince && this.data[i].endDate <= newDateto){            
+            for(let i = 0; i < this.data.length; i++){           
+                if(verifyFilterDates(newDateSince, newDateto, this.data[i])){
                     
                     if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
                         this.dataFiltered.push(this.data[i]);
@@ -175,11 +191,10 @@ export class LicenseListManager implements OnInit, OnDestroy {
             this.dataFiltered.push(this.data);
             this.initGrid();
 
-        }else if(this.dateSince != null && this.dateTo == null ){
-            
+        }else if(this.dateSince != null && this.dateTo == null){
             for(let i = 0 ; i < this.data.length; i++){
                 
-                if(this.data[i].startDate >= newDateSince){
+                if(this.data[i].endDate >= newDateSince){
                     
                     if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
                         this.dataFiltered.push(this.data[i]);
@@ -193,6 +208,20 @@ export class LicenseListManager implements OnInit, OnDestroy {
                 }
             }
             
+            this.dataFiltered.push(this.data);
+            this.initGrid();
+        }else if(this.dateSince == null && this.dateTo != null) {
+            for(let i = 0 ; i < this.data.length; i++){
+                if(this.data[i].endDate <= newDateto){
+                    if(this.licensesTypeId == 0 || this.licensesTypeId == undefined){
+                        this.dataFiltered.push(this.data[i]);
+                    }else{
+                        if(this.licensesTypeId != 0 && this.licensesTypeId == this.data[i].licenseTypeId){
+                            this.dataFiltered.push(this.data[i]);
+                        }
+                    }
+                }
+            }
             this.dataFiltered.push(this.data);
             this.initGrid();
         }else{
