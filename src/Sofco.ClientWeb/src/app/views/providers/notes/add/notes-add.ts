@@ -178,6 +178,7 @@ export class NotesAddComponent implements OnInit{
                 }
             });
         });
+
         this.employeeService.getEveryone().subscribe(d => {
             console.log(d)
             this.participants = d;
@@ -188,38 +189,14 @@ export class NotesAddComponent implements OnInit{
                 }
             });
         });
-        forkJoin([this.analyticService.getByCurrentUser(), this.userService.getManagers(), this.userService.getManagersAndDirectors()]).subscribe(results => {
-            console.log(results[0]);//Analiticas
-            this.analiticas = results[0].data;
-            let managers = results[1];
-            let managersAndDirectors = results[2];
-            let directors = [];
-            /*
-            managersAndDirectors.forEach(item => {
-                let directorSearch = managers.find(x => x.id == item.id);
-                if(directorSearch == undefined) {
-                    directors.push(item)
-                }
-            });
-            let isManager = managers.find(employee => Number(employee.id) == this.userInfo.id);
-            if(isManager != undefined) {
-                results[0].forEach(analytic => {
-                    if(analytic.managerId == this.userInfo.id) {
-                        this.analiticas.push(analytic);
-                        this.analiticas = [...this.analiticas]
-                    }
-                })
-            }
-            let isDirector = directors.find(employee => Number(employee.id) == this.userInfo.id);
-            if(isDirector != undefined) {
-                console.log("Es director")
-            };
-            */
+
+        this.analyticService.getByCurrentUserRequestNote().subscribe(d => {
+            this.analiticas = d.data;
         });
         
         this.providersService.getAll().subscribe(d => {
             this.allProviders = d.data;
-        })
+        });
     }
 
     change(event) {
