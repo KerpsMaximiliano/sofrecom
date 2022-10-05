@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -40,6 +40,9 @@ export class NotesComponent implements OnInit, AfterViewInit{
     notesBackup = [];
     notesInProcess = [];
     notesEnded = [];
+
+    @ViewChild('tabOne') tabOne: ElementRef;
+    @ViewChild('tabTwo') tabTwo: ElementRef;
 
     constructor(
         private employeeService: EmployeeService,
@@ -154,7 +157,11 @@ export class NotesComponent implements OnInit, AfterViewInit{
                 })
                 this.notes = this.notesInProcess;
             };
-            this.changeTab();
+            if(json.statusId == 11 || json.statusId == 12) {
+                this.tabTwo.nativeElement.click();
+            } else {
+                this.tabOne.nativeElement.click();
+            }
         });
     }
 
