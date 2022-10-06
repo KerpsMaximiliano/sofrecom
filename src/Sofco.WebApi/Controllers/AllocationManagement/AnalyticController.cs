@@ -37,6 +37,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpGet("byManagerId")]
+        public IActionResult GetByLoggedManagerId()
+        {
+            var model = analyticService.GetAll().Select(x => new AnalyticSearchViewModel(x));
+
+            var res = analyticService.GetByLoggedManagerId();
+
+            return Ok(res);
+        }
+
         [HttpGet("options")]
         public IActionResult GetOptions()
         {

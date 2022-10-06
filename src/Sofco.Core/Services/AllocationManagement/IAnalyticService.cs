@@ -48,5 +48,7 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response<List<Option>> GetByCurrentManager();
         Response<Analytic> GetByTitle(string title);
+
+        Response<List<Option>> GetByLoggedManagerId();
     }
 }
