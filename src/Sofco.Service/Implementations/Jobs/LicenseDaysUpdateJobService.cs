@@ -6,6 +6,7 @@ using Sofco.Core.Logger;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
+using Sofco.Framework.Helpers;
 
 namespace Sofco.Service.Implementations.Jobs
 {
@@ -24,14 +25,15 @@ namespace Sofco.Service.Implementations.Jobs
 
         public void Run()
         {
-            var employees = unitOfWork.EmployeeRepository.GetAll();
+            var employees = unitOfWork.EmployeeRepository.GetAll().ToList();
+            
             GetHolidaysValues();
 
             try
             {
                 foreach (var employee in employees)
                 {
-                    var daysWorked = CalculateDaysWorked(employee);
+                    var daysWorked = DatesHelper.GetWorkedDays(employee);
 
                     if (daysWorked < 181)
                     {
@@ -64,11 +66,9 @@ namespace Sofco.Service.Implementations.Jobs
 
             foreach (var employeeHistory in history)
             {
-                if (employeeHistory.EndDate.HasValue && employeeHistory.StartDate.HasValue &&
-                    employeeHistory.EndDate.Value.Date > employeeHistory.StartDate.Value.Date)
-                {
-                    days += DateTime.UtcNow.Date.Subtract(employee.StartDate.Date).Days + 1;
-                }
+                var startDate = employeeHistory.StartDate.Value;
+                var endDate = employeeHistory.EndDate ?? employee.StartDate.AddDays(1);
+                days += endDate.Subtract(startDate).Days + 1;
             }
 
             return days;
@@ -83,28 +83,7 @@ namespace Sofco.Service.Implementations.Jobs
                 daysWorked -= licenses.Where(x => !x.WithPayment).Sum(x => x.DaysQuantity);
             }
 
-            var daysAvg = (double)daysWorked / 20;
-
-            if (daysAvg % 1 >= 0.5)
-            {
-                daysAvg++;
-            }
-
-            var days = (int) daysAvg;
-
-            if (days > 6)
-            {
-                employee.HolidaysPendingByLaw = days;
-                days -= 2;
-            }
-            else if (days == 6)
-            {
-                employee.HolidaysPendingByLaw = days;
-                days--;
-            }
-
-            employee.HolidaysByLaw = holidaysValues["Holidays10Days"];
-            employee.HolidaysPending = days;
+            DatesHelper.SetHolydayDays(employee, daysWorked);
         }
 
         private void CalculateNormalHolidays(Employee employee, int daysWorked)
@@ -154,13 +133,6 @@ namespace Sofco.Service.Implementations.Jobs
                 employee.HolidaysPending += employee.ExtraHolidaysQuantity;
                 employee.HolidaysPendingByLaw += employee.ExtraHolidaysQuantityByLaw;
             }
-        }
-
-        private int CalculateDaysWorked(Employee employee)
-        {
-            var days = new DateTime(DateTime.UtcNow.Year, 12, 31).Subtract(employee.StartDate.Date).Days + 1;
-
-            return days;
         }
 
         private int GetBusinessHolidyas(int days)
