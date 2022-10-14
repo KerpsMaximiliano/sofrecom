@@ -109,4 +109,8 @@ export class AnalyticService {
   reopen(id) {
     return this.http.put<any>(`${this.baseUrl}/analytics/${id}/reopen`, {});
   }
+
+  getByLoggedManagerId(){
+    return this.http.get<any>(`${this.baseUrl}/analytics/byManagerId`);
+  }
 }

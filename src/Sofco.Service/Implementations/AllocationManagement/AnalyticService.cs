@@ -145,6 +145,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return new Response<List<Option>> { Data = result };
         }
 
+        public Response<List<Option>> GetByLoggedManagerId()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+
+            var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+            return new Response<List<Option>> { Data = result };
+        }
+
         public Response<Analytic> GetByTitle(string title)
         {
             var response = new Response<Analytic>();
