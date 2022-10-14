@@ -67,6 +67,7 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
     public categories: any[] = new Array<any>();
     public resource: any;
     public resourceSelected: any;
+    public currentUserId: number;
 
     public searchModel = {
         name: "",
@@ -119,6 +120,8 @@ export class ResourceSearchComponent implements OnInit, OnDestroy {
         this.getUsersSubscrip = this.usersService.getOptions().subscribe(data => {
             this.users = data;
         });
+        
+        this.currentUserId = JSON.parse(localStorage.getItem('userInfo')).id;
 
         this.getAnalytics();
         this.getCategories();
