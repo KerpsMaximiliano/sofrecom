@@ -71,12 +71,27 @@
                 </div>
                 <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
                     <spinner></spinner>
-                    <div class="form-group" *ngFor="let item of jobSettings; let dataIndex = index">
-                        <label for="example-text-input" class="control-label">{{ 'ADMIN.settings.'+item.key | translate }}</label>
+                    <div class="form-group">
+                        <label for="example-text-input" class="control-label">{{ 'ADMIN.settings.'+jobSettings[0].key | translate }}</label>
                         <div class="input-group">
-                            <input class="form-control" [type]="item.type" [(ngModel)]="item.value" min="0">
+                            <input class="form-control" [type]="jobSettings[0].type" [(ngModel)]="jobSettings[0].value" min="0">
                             <span class="input-group-btn"> 
-                                <button class="btn btn-primary" type="button" (click)="saveSetting(item)">{{ 'ACTIONS.update' | translate }}</button>
+                                <button class="btn btn-primary" type="button" (click)="saveSetting(jobSettings[0])">{{ 'ACTIONS.update' | translate }}</button>
+                            </span>
+                        </div>
+                        <label for="example-text-input" class="control-label">Job de Recursos SIN Asignación (día del mes)</label>
+                        <div class="input-group">
+                            <input class="form-control" [type]="jobSettings[1].type" [(ngModel)]="jobSettings[1].value" min="1" max="31">
+                            <span class="input-group-btn"> 
+                                <button class="btn btn-primary" type="button" (click)="saveSetting2(jobSettings[1].value)">{{ 'ACTIONS.update' | translate }}</button>
+                            </span>
+                        </div>
+                        <label for="example-text-input" class="control-label">Job de Recursos SIN Asignación (destinatarios)</label>
+                        <div class="input-group">
+                            <ng-select placeholder="Seleccionar Usuario/s" [multiple]="true" [closeOnSelect]="true" [items]="usuarios" bindLabel="name" bindValue="id" [(ngModel)]="settingUsers">
+                            </ng-select>
+                            <span class="input-group-btn"> 
+                                <button class="btn btn-primary" type="button" (click)="saveSetting3(settingUsers)">{{ 'ACTIONS.update' | translate }}</button>
                             </span>
                         </div>
                     </div>
