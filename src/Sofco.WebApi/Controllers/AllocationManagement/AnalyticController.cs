@@ -37,6 +37,16 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(model);
         }
 
+        [HttpGet("byManagerId")]
+        public IActionResult GetByLoggedManagerId()
+        {
+            var model = analyticService.GetAll().Select(x => new AnalyticSearchViewModel(x));
+
+            var res = analyticService.GetByLoggedManagerId();
+
+            return Ok(res);
+        }
+
         [HttpGet("options")]
         public IActionResult GetOptions()
         {
@@ -185,6 +195,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         public IActionResult GetByCurrentUser()
         {
             var response = analyticService.GetByCurrentUser();
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpGet("options/currentUser/requestNote")]
+        public IActionResult GetByCurrentUserRequestNote()
+        {
+            var response = analyticService.GetByCurrentUserRequestNote();
 
             return this.CreateResponse(response);
         }

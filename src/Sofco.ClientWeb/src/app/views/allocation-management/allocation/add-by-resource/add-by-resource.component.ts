@@ -77,8 +77,14 @@ export class AddAllocationByResourceComponent implements OnInit, OnDestroy {
             });
         }
 
+        /*
         this.getAllSubscrip = this.analyticService.getOptions().subscribe(data => {
             this.analytics = data;
+        });
+        */
+        
+        this.analyticService.getByLoggedManagerId().subscribe(d => {
+            this.analytics = d.data;
         });
     }
 

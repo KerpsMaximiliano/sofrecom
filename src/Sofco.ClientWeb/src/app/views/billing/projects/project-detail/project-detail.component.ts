@@ -386,7 +386,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
 
     canCreateHito(){
         if(!this.menuService.hasFunctionality('SOLFA', 'NEW-HITO')) return false;
-        
+
         let hitos = this.getHitosSelected();
         return hitos.length == 0;
     }
@@ -513,7 +513,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     createHito(){
         var hito = new NewHito();
         hito = this.translateHito(hito);
-
+        console.log("Hito Padre: ", hito);
         this.newHito.openModal(hito);
     }
 

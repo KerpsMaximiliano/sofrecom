@@ -17,6 +17,7 @@ using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
 using Sofco.Domain.Utils;
 using Sofco.Common.Settings;
+using Sofco.Framework.Helpers;
 
 namespace Sofco.Service.Implementations.AllocationManagement
 {
@@ -157,30 +158,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         private void CalculateDaysAfterSeptember30(Employee employee)
         {
-            var daysWorked = new DateTime(DateTime.UtcNow.Year, 12, 31).Subtract(employee.StartDate.Date).Days + 1;
-
-            var daysAvg = (double)daysWorked / 20;
-
-            if (daysAvg % 1 >= 0.5)
-            {
-                daysAvg++;
-            }
-
-            var days = (int)daysAvg;
-
-            if (days > 6)
-            {
-                employee.HolidaysPendingByLaw = days;
-                days -= 2;
-            }
-            else if (days == 6)
-            {
-                employee.HolidaysPendingByLaw = days;
-                days--;
-            }
-
-            employee.HolidaysByLaw = days;
-            employee.HolidaysPending = days;
+            var daysWorked = DatesHelper.GetWorkedDays(employee);
+            DatesHelper.SetHolydayDays(employee, daysWorked);
         }
 
         private void SetEmployeeHistory(Employee employee)

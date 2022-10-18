@@ -197,7 +197,7 @@
                                 <span *ngIf="formNota.controls.numberEvalprop.errors?.maxlength" style="color: red;">
                                     Máximo 100 caracteres
                                 </span>
-                                <span *ngIf="(formNota.controls.numberEvalprop.value == null || formNota.controls.numberEvalprop.value == '') && (formNota.get('numberEvalprop')?.touched || formNota.get('numberEvalprop')?.dirty)" style="color: red;">
+                                <span *ngIf="!formNota.controls.numberEvalprop.errors?.maxlength && !formNota.controls.numberEvalprop.valid && (formNota.get('numberEvalprop')?.touched || formNota.get('numberEvalprop')?.dirty)" style="color: red;">
                                     El campo es requerido
                                 </span>
                             </div>

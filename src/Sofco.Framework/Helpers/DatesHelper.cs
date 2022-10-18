@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sofco.Domain.Models.AllocationManagement;
+using System;
 
 namespace Sofco.Framework.Helpers
 {
@@ -69,6 +70,33 @@ namespace Sofco.Framework.Helpers
             if (month < 1 || month > 12) return false;
 
             return true;
+        }
+
+        public static void SetHolydayDays(Employee employee, int daysWorked)
+        {
+            var daysAvg = (double)daysWorked / 25;
+
+            daysAvg = Math.Ceiling(daysAvg);
+
+            var days = (int)daysAvg;
+            employee.HolidaysPendingByLaw = days;
+            employee.HolidaysByLaw = days;
+
+            if (days > 6)
+            {
+                days -= 2;
+            }
+            else if (days == 6)
+            {
+                days--;
+            }
+
+            employee.HolidaysPending = days;
+        }
+
+        public static int GetWorkedDays(Employee employee)
+        {
+            return new DateTime(DateTime.UtcNow.Year, 12, 31).Subtract(employee.StartDate.Date).Days + 1;
         }
     }
 }

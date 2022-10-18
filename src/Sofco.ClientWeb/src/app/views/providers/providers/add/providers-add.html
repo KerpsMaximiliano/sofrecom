@@ -49,14 +49,11 @@
                     <div class="form-group">
                         <label class="control-label">CUIT</label>
                         <input type="text" class="form-control" formControlName="CUIT">
-                        <span *ngIf="form.controls.CUIT.errors?.maxlength || form.controls.CUIT.errors?.minlength" style="color: red;">
-                            El campo debe tener 11 caracteres.
+                        <span *ngIf="form.controls.CUIT.errors?.maxlength || form.controls.CUIT.errors?.minlength || form.controls.CUIT.errors?.pattern" style="color: red;">
+                            El campo debe tener 11 números.
                         </span>
-                        <span *ngIf="!form.get('CUIT')?.valid && (form.get('CUIT')?.touched || form.get('CUIT')?.dirty)" style="color: red;">
+                        <span *ngIf="!(form.controls.CUIT.errors?.maxlength || form.controls.CUIT.errors?.minlength || form.controls.CUIT.errors?.pattern) && !form.get('CUIT')?.valid && (form.get('CUIT')?.touched || form.get('CUIT')?.dirty)" style="color: red;">
                             El campo es requerido.
-                        </span>
-                        <span *ngIf="form.controls.CUIT.errors?.pattern" style="color: red;">
-                            Formato de CUIT inválido.
                         </span>
                     </div>
                 </div>

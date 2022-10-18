@@ -89,6 +89,23 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return list.Select(x => new Option { Id = x.Id, Text = $"{x.EmployeeNumber}-{x.Name}" }).ToList();
         }
 
+        public Response<List<Option>> GetByCurrentUserRequestNote()
+        {   
+            var userId = userData.GetCurrentUser().Id;
+            var result = unitOfWork.AnalyticRepository.GetAnalyticsRequestNote(userId).ToList();
+            var response = new Response<List<Option>> { Data = new List<Option>() };
+
+            foreach (var analytic in result)
+            {
+                if (response.Data.All(x => x.Id != analytic.Id))
+                {
+                    response.Data.Add(new Option { Id = analytic.Id, Text = $"{analytic.Title} - {analytic.Name}" });
+                }
+            }
+
+            return response;
+        }
+
         public Response<List<Option>> GetByCurrentUser()
         {
             var employeeId = employeeData.GetCurrentEmployee().Id;
@@ -122,6 +139,17 @@ namespace Sofco.Service.Implementations.AllocationManagement
             var analyticsByManagers = roleManager.HasFullAccess()
                 ? unitOfWork.AnalyticRepository.GetAll()
                 : unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+
+            var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+
+            return new Response<List<Option>> { Data = result };
+        }
+
+        public Response<List<Option>> GetByLoggedManagerId()
+        {
+            var currentUser = userData.GetCurrentUser();
+
+            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
 
             var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
 

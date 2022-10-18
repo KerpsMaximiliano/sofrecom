@@ -35,7 +35,7 @@ export class ProvidersEditComponent implements OnInit{
         active: new FormControl(null),
         name: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
         providerAreaId: new FormControl(null, [Validators.required]),
-        cuit: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required, Validators.pattern("^(20|23|27|30|33)([0-9]{8})([0-9]{1})$")]),
+        cuit: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required, Validators.pattern("^[0-9]*$")/*, Validators.pattern("^(20|23|27|30|33)([0-9]{8})([0-9]{1})$")*/]),
         startDate: new FormControl(null),
         endDate: new FormControl(null),
         ingresosBrutos: new FormControl(null, [Validators.required]),
@@ -73,7 +73,7 @@ export class ProvidersEditComponent implements OnInit{
             this.providerAreas = results[1].data;
             this.form.patchValue({
                 id: results[0].data.id,
-                active: results[0].data.active,
+                active: (results[0].data.active) ? "Activo": "Inactivo",
                 name: results[0].data.name,
                 providerAreaId: results[0].data.providerAreaId,
                 cuit: results[0].data.cuit,
@@ -112,6 +112,7 @@ export class ProvidersEditComponent implements OnInit{
         }
         this.form.enable();
         let model = this.form.value;
+        model.active = (model.active == "Activo") ? true : false;
         this.form.controls.id.disable();
         this.form.controls.active.disable();
         this.form.controls.startDate.disable();

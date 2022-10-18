@@ -78,6 +78,10 @@ export class AnalyticService {
     return this.http.put<any>(`${this.baseUrl}/analytics/${id}/closeForExpenses`, {});
   }
 
+  getByCurrentUserRequestNote() {
+    return this.http.get<any>(`${this.baseUrl}/analytics/options/currentUser/requestNote`);
+  }
+
   getByCurrentUser() {
     return this.http.get<any>(`${this.baseUrl}/analytics/options/currentUser`);
   }
@@ -104,5 +108,9 @@ export class AnalyticService {
   }
   reopen(id) {
     return this.http.put<any>(`${this.baseUrl}/analytics/${id}/reopen`, {});
+  }
+
+  getByLoggedManagerId(){
+    return this.http.get<any>(`${this.baseUrl}/analytics/byManagerId`);
   }
 }
