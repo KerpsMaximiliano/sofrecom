@@ -22,7 +22,6 @@ namespace Sofco.Core.Models.AllocationManagement
             Percentage = domain.BillingPercentage;
             StartDate = domain.StartDate;
             Manager = domain.Manager?.Name;
-            ManagerId = domain.Manager?.Id;
             AssignComments = domain.AssignComments;
 
             if (domain.EmployeeCategories != null && domain.EmployeeCategories.Any())
@@ -48,8 +47,6 @@ namespace Sofco.Core.Models.AllocationManagement
         public bool Selected { get; set; }
 
         public string Manager { get; set; }
-
-        public int? ManagerId { get; set; }
 
         public DateTime StartDate { get; set; }
 
