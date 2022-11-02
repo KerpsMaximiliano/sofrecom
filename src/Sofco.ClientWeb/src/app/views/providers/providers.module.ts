@@ -39,6 +39,8 @@ import { ProvidersRouter } from "./providers.router";
 import { ProvidersAddComponent } from "./providers/add/providers-add";
 import { ProvidersEditComponent } from "./providers/edit/providers-edit";
 import { ProvidersComponent } from "./providers/list/providers";
+import { PurchaseOrdersComponent } from "./purchase-orders/list/purchase-orders";
+import { PurchaseOrdersNoAccessComponent } from "./purchase-orders/no-access/purchase-orders-no-access";
 
 
 @NgModule({
@@ -60,7 +62,9 @@ import { ProvidersComponent } from "./providers/list/providers";
         NotesPendingManagementBillApproval,
         NotesPendingGAFProcessing,
         NotesNoAccessComponent,
-        SolfacPdfViewerComponent
+        SolfacPdfViewerComponent,
+        PurchaseOrdersComponent,
+        PurchaseOrdersNoAccessComponent
     ],
     imports: [
         CommonModule,
