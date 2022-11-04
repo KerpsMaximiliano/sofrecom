@@ -138,7 +138,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
                             withExport: true,
                             columnDefs: [ {'aTargets': [5], "sType": "date-uk"} ] 
                           };
-
             this.initGrid(options);
 
             sessionStorage.setItem('lastWorktimeQuery', JSON.stringify(json));
@@ -231,7 +230,13 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
     }
 
     selectAll(){
-        this.hoursPending.forEach((item, index) => {
+        let searchText= $("#hoursPending_filter input").val().toLowerCase();
+        this.hoursPending.filter(x => x.analytic.toLowerCase().includes(searchText) ||
+        x.employeeNumber.toLowerCase().includes(searchText) ||
+        x.employee.toLowerCase().includes(searchText) ||
+        x.task.toLowerCase().includes(searchText) ||
+        x.date.toLowerCase().includes(searchText)
+        ).forEach((item, index) => {
             item.selected = true;
         });
     }
@@ -267,7 +272,6 @@ export class WorkTimeApprovalComponent implements OnInit, OnDestroy {
             this.rejectAllModal.resetButtons();
             return;
         }
-
         var hoursSelected = this.hoursPending.filter(x => x.selected == true).map(item => item.id);
 
         if(hoursSelected.length == 0) return;
