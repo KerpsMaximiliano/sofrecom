@@ -158,7 +158,7 @@ namespace Sofco.Framework.FileManager.WorkTime
         private bool ValidateEndDate(Response<IList<WorkTimeImportResult>> response, DateTime? employeeEndDate, int i, string employeeNumber, string employeeDesc, string date)
         {
             var dateNow = DateTime.Now;
-            if (employeeEndDate < dateNow)
+            if (employeeEndDate <= dateNow)
             {
                 var item = FillItemResult(i, employeeNumber, employeeDesc, date);
                 item.Error = Resources.WorkTimeManagement.WorkTime.InactiveResource;
