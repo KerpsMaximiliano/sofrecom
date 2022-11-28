@@ -147,13 +147,19 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
         public Response<List<Option>> GetByLoggedManagerId()
         {
-            var currentUser = userData.GetCurrentUser();
+            List<Option> options = new List<Option>();
+            if (roleManager.IsPmo() || roleManager.IsRrhh())
+            {
+                options = this.GetAllActives().Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).OrderBy(y => y.Text).ToList();
+            } 
+            else
+            {
+                var currentUser = userData.GetCurrentUser();
+                var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
+                options = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
+            }
 
-            var analyticsByManagers = unitOfWork.AnalyticRepository.GetAnalyticsByManagerId(currentUser.Id);
-
-            var result = analyticsByManagers.Select(x => new Option { Id = x.Id, Text = $"{x.Title} - {x.Name}" }).ToList();
-
-            return new Response<List<Option>> { Data = result };
+            return new Response<List<Option>> { Data = options };
         }
 
         public Response<Analytic> GetByTitle(string title)
