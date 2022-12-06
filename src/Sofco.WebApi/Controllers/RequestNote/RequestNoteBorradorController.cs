@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models.RequestNote;
+using Sofco.Core.Models.Workflow;
 using Sofco.Core.Services.RequestNote;
+using Sofco.Core.Services.Workflow;
 using Sofco.Domain.DTO;
 using Sofco.Domain.DTO.NotaPedido;
 using Sofco.Domain.Utils;
@@ -17,13 +19,24 @@ namespace Sofco.WebApi.Controllers.RequestNote
 {
     [Route("api/RequestNoteBorrador")]
     [ApiController]
-    public class RequestNoteBorradorController : Controller
+    public class RequestNoteController : Controller
     {
         private readonly IRequestNoteService _requestNoteService;
 
-        public RequestNoteBorradorController(IRequestNoteService requestNoteService)
+        private readonly IWorkflowService workflowService;
+
+        public RequestNoteController(IRequestNoteService requestNoteService, IWorkflowService workflowService)
         {
             this._requestNoteService = requestNoteService;
+            this.workflowService = workflowService;
+        }
+
+        [HttpPost("possibleTransitions")]
+        public IActionResult GetPossibleTransitions([FromBody] TransitionParameters parameters)
+        {
+            var response = workflowService.GetPossibleTransitions<Sofco.Domain.Models.RequestNote.RequestNote>(parameters);
+
+            return this.CreateResponse(response);
         }
 
         [HttpPost("GuardarBorrador")]
@@ -55,7 +68,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarBorrador")]
         public IActionResult AprobarBorrador(int id)
         {
-            this._requestNoteService.ChangeStatus(new RequestNoteModel() { Id = id }, Domain.RequestNoteStates.RequestNoteStates.PendienteRevisiónAbastecimiento);
+            this._requestNoteService.ChangeStatus(new RequestNoteModel() { Id = id }, Domain.RequestNoteStates.RequestNoteStatus.PendienteRevisiónAbastecimiento);
 
             return Ok();
         }
@@ -63,7 +76,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("RechazarBorrador")]
         public IActionResult RechazarBorrador(int id)
         {
-            this._requestNoteService.ChangeStatus(new RequestNoteModel() { Id = id }, Domain.RequestNoteStates.RequestNoteStates.Rechazada);
+            this._requestNoteService.ChangeStatus(new RequestNoteModel() { Id = id }, Domain.RequestNoteStates.RequestNoteStatus.Rechazada);
 
             return Ok();
         }

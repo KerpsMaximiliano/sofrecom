@@ -147,6 +147,13 @@ namespace Sofco.Core.DAL
         IBaseRepository<RequestNoteTravelEmployee> RequestNoteTravelEmployeeRepository { get; }
         IBaseRepository<RequestNoteTraining> RequestNoteTrainingRepository { get; }
         IBaseRepository<RequestNoteTrainingEmployee> RequestNoteTrainingEmployeeRepository { get; }
+        IBuyOrderRepository BuyOrderRepository { get; }
+        IBaseRepository<BuyOrderHistory> BuyOrderHistoryRepository { get; }
+        IBaseRepository<BuyOrderInvoice> BuyOrderInvoiceRepository { get; }
+        IBaseRepository<BuyOrderProductService> BuyOrderProductServiceRepository { get; }
+        IBaseRepository<BuyOrderInvoiceProductService> BuyOrderInvoiceProductServiceRepository { get; }
+
+
         void BeginTransaction();
         void Rollback();
         void Commit();

@@ -147,41 +147,41 @@ namespace Sofco.Core.Models.RequestNote
         private bool ValidateEditPermissions(List<string> permissions, int userId)
         {
             var hasPermission = false;
-            switch ((RequestNoteStates)StatusId)
+            switch ((RequestNoteStatus)StatusId)
             {
-                case RequestNoteStates.Borrador:
+                case RequestNoteStatus.Borrador:
                     hasPermission = CreationUserId == userId;
                     break;
-                case RequestNoteStates.PendienteRevisiónAbastecimiento:
+                case RequestNoteStatus.PendienteRevisiónAbastecimiento:
                     hasPermission = permissions.Any(p => p == "NP_REVISION_ABAS");
                     break;
-                case RequestNoteStates.PendienteAprobaciónGerentesAnalítica:
+                case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
                     hasPermission = permissions.Any(p => p == "NP_APROBACION_GERE") && Analytics != null && Analytics.Any(a => a.ManagerId == userId);
                     break;
-                case RequestNoteStates.PendienteAprobaciónAbastecimiento:
+                case RequestNoteStatus.PendienteAprobaciónAbastecimiento:
                     hasPermission = permissions.Any(p => p == "NP_APROBACION_ABAS");
                     break;
-                case RequestNoteStates.PendienteAprobaciónDAF:
+                case RequestNoteStatus.PendienteAprobaciónDAF:
                     hasPermission = permissions.Any(p => p == "NP_APROBACION_DAF");
                     break;
-                case RequestNoteStates.Aprobada:
+                case RequestNoteStatus.Aprobada:
                     hasPermission = permissions.Any(p => p == "NP_ENVIO_PROV_ABAS");
                     break;
-                case RequestNoteStates.SolicitadaAProveedor:
+                case RequestNoteStatus.SolicitadaAProveedor:
                     hasPermission = permissions.Any(p => p == "NP_RECEP_ABAS");
                     break;
-                case RequestNoteStates.RecibidoConforme:
+                case RequestNoteStatus.RecibidoConforme:
                     hasPermission = permissions.Any(p => p == "NP_CONFORME_ABAS");
                     break;
-                case RequestNoteStates.FacturaPendienteAprobaciónGerente:
+                case RequestNoteStatus.FacturaPendienteAprobaciónGerente:
                     hasPermission = permissions.Any(p => p == "NP_FAC_APROB_GERENTE") && Analytics != null && Analytics.Any(a => a.ManagerId == userId);
                     break;
-                case RequestNoteStates.PendienteProcesarGAF:
+                case RequestNoteStatus.PendienteProcesarGAF:
                     hasPermission = permissions.Any(p => p == "NP_PROCESAR_GAF");
                     break;
-                case RequestNoteStates.Rechazada:
+                case RequestNoteStatus.Rechazada:
                     break;
-                case RequestNoteStates.Cerrada:
+                case RequestNoteStatus.Cerrada:
                     break;
                 default:
                     break;

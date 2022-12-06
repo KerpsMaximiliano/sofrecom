@@ -5,32 +5,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Sofco.Core.Models.RequestNote
+namespace Sofco.Core.Models.BuyOrder
 {
     
-    public class RequestNoteGridModel
+    public class BuyOrderGridModel
     {
-        public RequestNoteGridModel() { }
-        public RequestNoteGridModel(Domain.Models.RequestNote.RequestNote note, List<string> permissions, int userId)
+        public BuyOrderGridModel() { }
+        public BuyOrderGridModel(Domain.Models.RequestNote.BuyOrder order, List<string> permissions, int userId)
         {
-            Id = note.Id;
+            Id = order.Id;
             
-            Description = note.Description;
-            CreationUserId = note.CreationUserId;
-            CreationUserDescription = note.CreationUser?.UserName;
-            CreationDate = note.CreationDate;
-            AnalyticsManagers = note.Analytics != null 
-                ?  note.Analytics.Where(a=> a.Analytic?.ManagerId != null).Select(a => a.Analytic.ManagerId.Value).ToList() 
-                : new List<int>();
-            StatusId = note.StatusId;
-            StatusDescription = note.Status?.Name;
+            Number = order.BuyOrderNumber;
+            CreationUserId = order.CreationUserId;
+            CreationUserDescription = order.CreationUser?.UserName;
+            CreationDate = order.CreationDate;
+            RequestNoteId = order.RequestNoteId;
+            RequestNoteDescription = order.RequestNote?.Description;
+            StatusId = order.StatusId;
+            StatusDescription = order.Status?.Name;
             HasReadPermissions = ValidateReadPermissions(permissions, userId);
             HasEditPermissions = ValidateEditPermissions(permissions, userId);
             
         }
         private bool ValidateReadPermissions(List<string> permissions, int userId)
         {
-            return CreationUserId == userId || permissions.Any(p => p == "NP_READONLY");
+            return CreationUserId == userId || permissions.Any(p => p == "OC_READONLY");
         }
         private bool ValidateEditPermissions(List<string> permissions, int userId)
         {
@@ -80,7 +79,7 @@ namespace Sofco.Core.Models.RequestNote
 
         public bool HasEditPermissions { get; set; }
         public bool HasReadPermissions { get; set; }
-        public string Description { get; set; }
+        public string Number { get; set; }
         
         public int CreationUserId { get; set; }
         public string CreationUserDescription { get; set; }
@@ -88,6 +87,9 @@ namespace Sofco.Core.Models.RequestNote
 
         public int StatusId { get; set; }
         public string StatusDescription { get; set; }
+
+        public int RequestNoteId { get; set; }
+        public string RequestNoteDescription { get; set; }
 
         [JsonIgnore]
         public List<int> AnalyticsManagers { get; set; }

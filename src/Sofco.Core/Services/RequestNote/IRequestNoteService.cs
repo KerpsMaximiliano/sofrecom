@@ -20,6 +20,6 @@ namespace Sofco.Core.Services.RequestNote
         Response<int> GuardarBorrador(RequestNoteModel requestNoteBorrador);
         Response<RequestNoteModel> GetById(int id);
         IList<RequestNoteGridModel> GetAll(RequestNoteGridFilters filters);
-        void ChangeStatus(RequestNoteModel requestNote, RequestNoteStates requestNoteStates);
+        void ChangeStatus(RequestNoteModel requestNote, RequestNoteStatus requestNoteStates);
     }
 }

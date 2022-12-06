@@ -19,6 +19,7 @@ using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Workflow.Notifications;
+using Sofco.Domain.Models.RequestNote;
 
 namespace Sofco.Service.Implementations.Workflow
 {
@@ -606,6 +607,10 @@ namespace Sofco.Service.Implementations.Workflow
                         }
                     }
                 }
+            }
+            else if (entity is Sofco.Domain.Models.RequestNote.RequestNote reqNote)
+            {
+                
             }
         }
 
