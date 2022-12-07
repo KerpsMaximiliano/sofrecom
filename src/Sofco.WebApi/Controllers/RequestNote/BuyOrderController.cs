@@ -16,6 +16,13 @@ namespace Sofco.WebApi.Controllers.PurchaseOrders
             this.service = service;
         }
 
+        [HttpGet("States")]
+        public IActionResult Get()
+        {
+            var response = service.GetStates();
+
+            return this.CreateResponse(response);
+        }
 
         [HttpGet("GetAll")]
         public IActionResult GetAll([FromUri] BuyOrderGridFilters filters)

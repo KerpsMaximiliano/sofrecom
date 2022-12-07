@@ -81,6 +81,14 @@ namespace Sofco.WebApi.Controllers.RequestNote
             return Ok();
         }
 
+        [HttpGet("States")]
+        public IActionResult Get()
+        {
+            var response = _requestNoteService.GetStates();
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("GetById")]
         public IActionResult GetById(int id)
         {

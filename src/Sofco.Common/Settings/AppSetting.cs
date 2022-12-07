@@ -61,6 +61,9 @@
 
         public string SalaryWorkflowTypeCode { get; set; }
 
+        public string RequestNoteWorkflowTypeCode { get; set; }
+        public string BuyOrderWorkflowTypeCode { get; set; }
+
         public string AmmountAPesos { get; set; }
 
         public string AmmountADolares { get; set; }

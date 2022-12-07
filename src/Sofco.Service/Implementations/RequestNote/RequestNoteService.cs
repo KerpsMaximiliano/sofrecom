@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.RequestNote;
@@ -32,8 +33,9 @@ namespace Sofco.Service.Implementations.RequestNote
         private readonly FileConfig fileConfig;
         private readonly IFileService fileService;
         private readonly AppSetting settings;
+        private readonly IWorkflowStateRepository workflowStateRepository;
         public RequestNoteService(IUnitOfWork unitOfWork, ILogMailer<RequestNoteService> logger, IUserData userData,
-            IFileService fileService, IOptions<FileConfig> fileOptions, IOptions<AppSetting> settingOptions)
+            IFileService fileService, IOptions<FileConfig> fileOptions, IWorkflowStateRepository workflowStateRepository, IOptions<AppSetting> settingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
@@ -41,6 +43,8 @@ namespace Sofco.Service.Implementations.RequestNote
             fileConfig = fileOptions.Value;
             this.fileService = fileService;
             this.settings = settingOptions.Value;
+
+            this.workflowStateRepository = workflowStateRepository;
         }
 
         public void RechazarRequestNote(int requestNodeId)
@@ -467,6 +471,28 @@ namespace Sofco.Service.Implementations.RequestNote
                 }
             }
             return response;
+        }
+        public Response<IList<Option>> GetStates()
+        {
+            var states = workflowStateRepository.GetStateByWorkflowTypeCode(settings.RequestNoteWorkflowTypeCode);
+
+            var result = states.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+
+            if (result.All(x => x.Id != settings.WorkflowStatusNPCerrado))
+            {
+                var finalizeState = workflowStateRepository.Get(settings.WorkflowStatusNPCerrado);
+
+                result.Add(new Option { Id = finalizeState.Id, Text = finalizeState.Name });
+            }
+            /*
+            var draft = result.SingleOrDefault(x => x.Id == settings.WorkflowStatusNPBorrador);
+
+            if (draft != null) result.Remove(draft);
+            */
+            return new Response<IList<Option>>
+            {
+                Data = result
+            };
         }
         public IList<RequestNoteGridModel> GetAll(RequestNoteGridFilters filters)
         {
