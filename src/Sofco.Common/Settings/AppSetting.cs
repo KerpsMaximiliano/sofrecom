@@ -83,6 +83,10 @@
 
         public int ViaticumWorkflowId { get; set; }
 
+        public int RequestNoteWorkflowId { get; set; }
+
+        public int BuyOrderWorkflowId { get; set; }
+
         public int WorkflowStatusApproveId { get; set; }
 
         public int WorkflowStatusFinalizedId { get; set; }
@@ -126,5 +130,16 @@
         public string AdvancementDelegate { get; set; }
 
         public string RefundDelegate { get; set; }
+
+        public int WorkflowStatusNPBorrador { get; set; }
+        public int WorkflowStatusNPPendienteAprobacionGerente { get; set; }
+        public int WorkflowStatusNPPendienteAprobacionCompras { get; set; }
+        public int WorkflowStatusNPPendienteAprobacionDAF { get; set; }
+        public int WorkflowStatusNPPendienteAprobacionSAP { get; set; }
+        public int WorkflowStatusNPPendienteRecepcionMerc { get; set; }
+        public int WorkflowStatusNPRecepcionParcial { get; set; }
+        public int WorkflowStatusNPRechazado { get; set; }
+        public int WorkflowStatusNPCerrado { get; set; }
+       
     }
 }

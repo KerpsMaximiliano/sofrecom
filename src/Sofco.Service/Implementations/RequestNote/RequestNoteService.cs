@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
 using Sofco.Core.Data.Admin;
@@ -30,14 +31,16 @@ namespace Sofco.Service.Implementations.RequestNote
         private readonly IUserData userData;
         private readonly FileConfig fileConfig;
         private readonly IFileService fileService;
+        private readonly AppSetting settings;
         public RequestNoteService(IUnitOfWork unitOfWork, ILogMailer<RequestNoteService> logger, IUserData userData,
-            IFileService fileService, IOptions<FileConfig> fileOptions)
+            IFileService fileService, IOptions<FileConfig> fileOptions, IOptions<AppSetting> settingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
             fileConfig = fileOptions.Value;
             this.fileService = fileService;
+            this.settings = settingOptions.Value;
         }
 
         public void RechazarRequestNote(int requestNodeId)
@@ -59,14 +62,9 @@ namespace Sofco.Service.Implementations.RequestNote
             this.unitOfWork.RequestNoteRepository.Save();
         }
 
-        public Response<int> GuardarBorrador(RequestNoteModel requestNoteBorrador)
-        {/*
-            requestNoteBorrador.StatusId = (int)RequestNoteStates.Borrador;
-            requestNoteBorrador.CreationDate = DateTime.Now;
+        public Response<int> Add(RequestNoteModel requestNoteBorrador)
+        {
 
-            this.unitOfWork.RequestNoteRepository.InsertRequestNote(requestNoteBorrador);
-            this.unitOfWork.RequestNoteRepository.Save();*/
-            //TODO: Validar
             var response = new Response<int>();
             if (requestNoteBorrador == null)
             {
@@ -83,7 +81,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     response.AddError(Resources.RequestNote.RequestNote.NotFound);
                     return response;
                 }
-                if (domain.StatusId != (int)RequestNoteStatus.Borrador)
+                if (domain.StatusId != settings.WorkflowStatusNPBorrador)
                 {
                     response.AddError(Resources.RequestNote.RequestNote.NotFound);
                     return response;
@@ -288,6 +286,7 @@ namespace Sofco.Service.Implementations.RequestNote
             }
             else
             {
+                var workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.RequestNoteWorkflowId);
 
                 var domain = new Domain.Models.RequestNote.RequestNote()
                 {
@@ -299,8 +298,8 @@ namespace Sofco.Service.Implementations.RequestNote
                     TravelSection = requestNoteBorrador.Travel != null,
                     TrainingSection = requestNoteBorrador.Training != null,
                     CreationDate = DateTime.UtcNow,
-                    WorkflowId = requestNoteBorrador.WorkflowId,
-                    StatusId = (int)RequestNoteStatus.Borrador,
+                    WorkflowId = workflow.Id,
+                    StatusId = settings.WorkflowStatusNPBorrador,
                     UserApplicantId = requestNoteBorrador.UserApplicantId,
                     InWorkflowProcess = true,
                     CreationUserId = user.Id,
@@ -379,6 +378,7 @@ namespace Sofco.Service.Implementations.RequestNote
         }
         public Response<RequestNoteModel> GetById(int id)
         {
+            //TODO: acá hay que ver qué estados quedan, qué hace falta en cada uno, y cambiarlos por los ids de settings en vez de enum
             var response = new Response<RequestNoteModel>();
 
             var note = this.unitOfWork.RequestNoteRepository.GetById(id);
@@ -389,7 +389,7 @@ namespace Sofco.Service.Implementations.RequestNote
             }
             var user = userData.GetCurrentUser();
             var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOPE");
-            var datos = new RequestNoteModel(note, permisos, user.Id);
+            var datos = new RequestNoteModel(note, permisos, user.Id, settings);
             if (!datos.HasEditPermissions && !datos.HasReadPermissions)
             {
                 response.AddError(Resources.RequestNote.RequestNote.NotAllowed);
@@ -473,7 +473,7 @@ namespace Sofco.Service.Implementations.RequestNote
             var user = userData.GetCurrentUser();
             var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOPE");
             return this.unitOfWork.RequestNoteRepository.GetAll(filters)
-                    .Select(n=> new RequestNoteGridModel(n, permisos, user.Id))
+                    .Select(n=> new RequestNoteGridModel(n, permisos, user.Id, settings))
                     .Where(n=> n.HasEditPermissions || n.HasReadPermissions).ToList();
         }
 

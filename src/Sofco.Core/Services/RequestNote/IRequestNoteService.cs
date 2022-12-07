@@ -17,7 +17,7 @@ namespace Sofco.Core.Services.RequestNote
         Task<Response<List<File>>> AttachFiles(Response<List<File>> response, List<IFormFile> files);
         void CambiarAPendienteApobacionGerenteAnalitica(int requestNodeId);
         void RechazarRequestNote(int requestNodeId);
-        Response<int> GuardarBorrador(RequestNoteModel requestNoteBorrador);
+        Response<int> Add(RequestNoteModel requestNoteBorrador);
         Response<RequestNoteModel> GetById(int id);
         IList<RequestNoteGridModel> GetAll(RequestNoteGridFilters filters);
         void ChangeStatus(RequestNoteModel requestNote, RequestNoteStatus requestNoteStates);

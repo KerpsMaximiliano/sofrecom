@@ -42,7 +42,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("GuardarBorrador")]
         public IActionResult GuardarBorrador([FromBody] RequestNoteModel requestNote)
         {
-            var response = this._requestNoteService.GuardarBorrador(requestNote);
+            var response = this._requestNoteService.Add(requestNote);
 
             return this.CreateResponse(response);
         }
