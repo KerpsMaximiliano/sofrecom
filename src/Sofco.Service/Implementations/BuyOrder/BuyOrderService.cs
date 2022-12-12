@@ -64,5 +64,39 @@ namespace Sofco.Service.Implementations.BuyOrder
                 Data = result
             };
         }
+
+        public Response<string> Add(BuyOrderModel model)
+        {
+            var response = new Response<string>();
+            //TODO: agregar validaciones
+            //validation.ValidateAdd(model, response);
+
+            if (response.HasErrors()) return response;
+
+            try
+            {
+                var domain = model.CreateDomain();
+                domain.StatusId = settings.WorkflowStatusBOPendienteAprobacionDAF;
+                domain.InWorkflowProcess = true;
+
+                var workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.BuyOrderWorkflowId);
+
+                domain.WorkflowId = workflow.Id;
+
+                unitOfWork.BuyOrderRepository.Insert(domain);
+                unitOfWork.Save();
+
+                response.AddSuccess(Resources.RequestNote.BuyOrder.AddSuccess);
+
+                response.Data = domain.Id.ToString();
+            }
+            catch (Exception e)
+            {
+                response.AddError(Resources.Common.ErrorSave);
+                logger.LogError(e);
+            }
+
+            return response;
+        }
     }
 }

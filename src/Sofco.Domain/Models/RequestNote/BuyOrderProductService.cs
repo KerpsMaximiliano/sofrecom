@@ -13,6 +13,7 @@ namespace Sofco.Domain.Models.RequestNote
         public int BuyOrderId { get; set; }
         public BuyOrder BuyOrder { get; set; }
         public int Quantity { get; set; }
+        public decimal Price { get; set; }
         public int? DeliveredQuantity { get; set; }
     }
 }

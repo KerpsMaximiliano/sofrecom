@@ -10,6 +10,8 @@ namespace Sofco.Core.Services.RequestNote
     {
         IList<BuyOrderGridModel> GetAll(BuyOrderGridFilters filters);
 
+        Response<string> Add(BuyOrderModel model);
+
         Response<IList<Option>> GetStates();
     }
 }

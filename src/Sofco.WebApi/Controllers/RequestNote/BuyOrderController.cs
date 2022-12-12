@@ -29,5 +29,13 @@ namespace Sofco.WebApi.Controllers.PurchaseOrders
         {
             return Ok(this.service.GetAll(filters));
         }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] BuyOrderModel model)
+        {
+            var response = service.Add(model);
+
+            return this.CreateResponse(response);
+        }
     }
 }

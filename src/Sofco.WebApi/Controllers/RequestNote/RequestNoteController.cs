@@ -39,6 +39,19 @@ namespace Sofco.WebApi.Controllers.RequestNote
             return this.CreateResponse(response);
         }
 
+        [HttpPost("transition")]
+        public IActionResult DoTransition([FromBody] WorkflowChangeStatusParameters parameters)
+        {
+            var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel { MustDoNextTransition = true } };
+
+            while (response.Data.MustDoNextTransition)
+            {
+                workflowService.DoTransition<Domain.Models.RequestNote.RequestNote, Domain.Models.RequestNote.RequestNoteHistory>(parameters, response);
+            }
+
+            return this.CreateResponse(response);
+        }
+
         [HttpPost("GuardarBorrador")]
         public IActionResult GuardarBorrador([FromBody] RequestNoteModel requestNote)
         {
@@ -62,23 +75,6 @@ namespace Sofco.WebApi.Controllers.RequestNote
             }
 
             return this.CreateResponse(response);
-        }
-
-
-        [HttpPost("AprobarBorrador")]
-        public IActionResult AprobarBorrador(int id)
-        {
-            this._requestNoteService.ChangeStatus(new RequestNoteModel() { Id = id }, Domain.RequestNoteStates.RequestNoteStatus.PendienteRevisiónAbastecimiento);
-
-            return Ok();
-        }
-
-        [HttpPost("RechazarBorrador")]
-        public IActionResult RechazarBorrador(int id)
-        {
-            this._requestNoteService.ChangeStatus(new RequestNoteModel() { Id = id }, Domain.RequestNoteStates.RequestNoteStatus.Rechazada);
-
-            return Ok();
         }
 
         [HttpGet("States")]
