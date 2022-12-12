@@ -30,6 +30,7 @@ namespace Sofco.Service.Implementations.BuyOrder
             this.logger = logger;
             this.userData = userData;
             fileConfig = fileOptions.Value;
+            settings = settingOptions.Value;
         }
 
         public IList<BuyOrderGridModel> GetAll(BuyOrderGridFilters filters)
@@ -37,7 +38,7 @@ namespace Sofco.Service.Implementations.BuyOrder
             var user = userData.GetCurrentUser();
             var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOPE");
             return this.unitOfWork.BuyOrderRepository.GetAll(filters)
-                    .Select(n => new BuyOrderGridModel(n, permisos, user.Id))
+                    .Select(n => new BuyOrderGridModel(n, permisos, user.Id, settings))
                     .Where(n => n.HasEditPermissions || n.HasReadPermissions).ToList();
         }
 

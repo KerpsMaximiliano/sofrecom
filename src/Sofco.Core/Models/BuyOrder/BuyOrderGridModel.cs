@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Sofco.Common.Settings;
 using Sofco.Domain.RequestNoteStates;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,12 @@ namespace Sofco.Core.Models.BuyOrder
     
     public class BuyOrderGridModel
     {
+        private readonly AppSetting _settings;
         public BuyOrderGridModel() { }
-        public BuyOrderGridModel(Domain.Models.RequestNote.BuyOrder order, List<string> permissions, int userId)
+        public BuyOrderGridModel(Domain.Models.RequestNote.BuyOrder order, List<string> permissions, int userId, AppSetting settings)
         {
             Id = order.Id;
-            
+            _settings = settings;
             Number = order.BuyOrderNumber;
             CreationUserId = order.CreationUserId;
             CreationUserDescription = order.CreationUser?.UserName;
@@ -23,56 +25,25 @@ namespace Sofco.Core.Models.BuyOrder
             RequestNoteDescription = order.RequestNote?.Description;
             StatusId = order.StatusId;
             StatusDescription = order.Status?.Name;
+            ProviderId = order.ProviderId;
+            ProviderDescription = order.Provider?.Provider?.Name;
             HasReadPermissions = ValidateReadPermissions(permissions, userId);
             HasEditPermissions = ValidateEditPermissions(permissions, userId);
             
         }
         private bool ValidateReadPermissions(List<string> permissions, int userId)
         {
-            return CreationUserId == userId || permissions.Any(p => p == "OC_READONLY");
+            return permissions.Any(p => p == "OC_READONLY");
         }
         private bool ValidateEditPermissions(List<string> permissions, int userId)
         {
             var hasPermission = false;
-            switch ((RequestNoteStatus)StatusId)
-            {
-                case RequestNoteStatus.Borrador:
-                    hasPermission = CreationUserId == userId;
-                    break;
-                case RequestNoteStatus.PendienteRevisiónAbastecimiento:
-                    hasPermission = permissions.Any(p => p == "NP_REVISION_ABAS");
-                    break;
-                case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_GERE") && AnalyticsManagers.Any(a=> a == userId);
-                    break;
-                case RequestNoteStatus.PendienteAprobaciónAbastecimiento:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_ABAS");
-                    break;
-                case RequestNoteStatus.PendienteAprobaciónDAF:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_DAF");
-                    break;
-                case RequestNoteStatus.Aprobada:
-                    hasPermission = permissions.Any(p => p == "NP_ENVIO_PROV_ABAS");
-                    break;
-                case RequestNoteStatus.SolicitadaAProveedor:
-                    hasPermission = permissions.Any(p => p == "NP_RECEP_ABAS");
-                    break;
-                case RequestNoteStatus.RecibidoConforme:
-                    hasPermission = permissions.Any(p => p == "NP_CONFORME_ABAS");
-                    break;
-                case RequestNoteStatus.FacturaPendienteAprobaciónGerente:
-                    hasPermission = permissions.Any(p => p == "NP_FAC_APROB_GERENTE") && AnalyticsManagers.Any(a => a == userId);
-                    break;
-                case RequestNoteStatus.PendienteProcesarGAF:
-                    hasPermission = permissions.Any(p => p == "NP_PROCESAR_GAF");
-                    break;
-                case RequestNoteStatus.Rechazada:
-                    break;
-                case RequestNoteStatus.Cerrada:
-                    break;
-                default:
-                    break;
-            }
+            if (StatusId == _settings.WorkflowStatusBOPendienteAprobacionDAF)
+                hasPermission = permissions.Any(p => p == "OC_PEND_APR_DAF");
+            else if (StatusId == _settings.WorkflowStatusBOPendienteRecepcionMerc)
+                hasPermission = permissions.Any(p => p == "OC_PEND_REC_MERC");
+            else if (StatusId == _settings.WorkflowStatusBOPendienteRecepcionFact)
+                hasPermission = permissions.Any(p => p == "OC_PEND_REC_FACT");
             return hasPermission;
         }
         public int? Id { get; set; }
@@ -91,8 +62,9 @@ namespace Sofco.Core.Models.BuyOrder
         public int RequestNoteId { get; set; }
         public string RequestNoteDescription { get; set; }
 
-        [JsonIgnore]
-        public List<int> AnalyticsManagers { get; set; }
+        public int ProviderId { get; set; }
+        public string ProviderDescription { get; set; }
+
     }
    
 }

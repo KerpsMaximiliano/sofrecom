@@ -140,7 +140,7 @@ namespace Sofco.Service.Implementations.RequestNote
                         domain.Analytics.Add(an);
                     }
                     an.Percentage = a.Asigned;
-                    an.Status = "Ninguno";
+                    an.Status = "Pendiente de Aprobación";
                 }
                 #endregion
                 #region Product Services
@@ -326,7 +326,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     {
                         AnalyticId = p.AnalyticId,
                         Percentage = p.Asigned,
-                        Status = "Ninguno"
+                        Status = "Pendiente de Aprobación"
                     }).ToList();
                 if (requestNoteBorrador.ProductsServices != null)
                     domain.ProductsServices = requestNoteBorrador.ProductsServices.Select(p => new RequestNoteProductService()

@@ -33,6 +33,8 @@ namespace Sofco.DAL.Repositories.RequestNote
                 .Include(x => x.CreationUser)
                 .Include(x => x.UserApplicant)
                 .Include(x=> x.Histories)
+                .Include(x => x.Provider)
+                    .ThenInclude(z => z.Provider)
                 .FirstOrDefault();
         }
 
@@ -52,9 +54,11 @@ namespace Sofco.DAL.Repositories.RequestNote
                 .Where(n=> !filters.FromDate.HasValue || n.CreationDate >= filters.FromDate)
                 .Where(n => !filters.ToDate.HasValue || n.CreationDate < filters.ToDate)
                 .Where(n => !filters.RequestNoteId.HasValue || n.RequestNoteId == filters.RequestNoteId)
-                //Provider? Quieren filtrar por todos o selected?
+                .Where(n => !filters.ProviderId.HasValue || n.ProviderId == filters.ProviderId)
                 .Include(x => x.Status)
                 .Include(x => x.RequestNote)
+                .Include(x => x.Provider)
+                    .ThenInclude(z => z.Provider)
                 .ToList();
         }
 

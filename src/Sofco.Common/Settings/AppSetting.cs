@@ -143,6 +143,9 @@
         public int WorkflowStatusNPRecepcionParcial { get; set; }
         public int WorkflowStatusNPRechazado { get; set; }
         public int WorkflowStatusNPCerrado { get; set; }
-       
+
+        public int WorkflowStatusBOPendienteAprobacionDAF { get; set; }
+        public int WorkflowStatusBOPendienteRecepcionMerc { get; set; }
+        public int WorkflowStatusBOPendienteRecepcionFact { get; set; }
     }
 }
