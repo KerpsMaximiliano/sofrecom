@@ -26,6 +26,7 @@ namespace Sofco.DAL.Repositories.RequestNote
             return this.context.BuyOrders.Where(x => x.Id == id)
                 .Include(x=> x.RequestNote)
                 .Include(x => x.ProductsServices)
+                    .ThenInclude(p=> p.RequestNoteProductService)
                 .Include(x => x.Invoices)
                     .ThenInclude(p => p.File)
                 .Include(x => x.Workflow)

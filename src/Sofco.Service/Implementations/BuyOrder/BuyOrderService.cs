@@ -42,6 +42,51 @@ namespace Sofco.Service.Implementations.BuyOrder
                     .Where(n => n.HasEditPermissions || n.HasReadPermissions).ToList();
         }
 
+        public Response<BuyOrderModel> GetById(int id)
+        {
+            var response = new Response<BuyOrderModel>();
+
+            var order = this.unitOfWork.BuyOrderRepository.GetById(id);
+            if (order == null)
+            {
+                response.AddError(Resources.RequestNote.BuyOrder.NotFound);
+                return response;
+            }
+            var user = userData.GetCurrentUser();
+            var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOPE");
+            var datos = new BuyOrderModel(order, permisos, user.Id, settings);
+            if (!datos.HasEditPermissions && !datos.HasReadPermissions)
+            {
+                response.AddError(Resources.RequestNote.BuyOrder.NotAllowed);
+                return response;
+            }
+            response.Data = datos;
+            
+            /* Ver qué datos extra hay que mostrar en cada estado
+            if (new List<int>() {
+                settings.WorkflowStatusNPPendienteAprobacionGerente,
+                settings.WorkflowStatusNPPendienteAprobacionCompras,
+                settings.WorkflowStatusNPPendienteAprobacionSAP
+                //otros?
+                }
+            .Contains(order.StatusId))
+            {
+                response.Data.Analytics = response.Data.Analytics.Where(a => a.ManagerId == user.Id).ToList();
+            }
+            if (new List<int>() {
+                settings.WorkflowStatusNPPendienteAprobacionDAF,
+                settings.WorkflowStatusNPPendienteRecepcionMerc,
+                settings.WorkflowStatusNPRecepcionParcial,
+                settings.WorkflowStatusNPCerrado,
+                //otros?
+                }
+            .Contains(order.StatusId))
+            {
+                response.Data.Providers = response.Data.Providers.Where(p => p.ProviderId == response.Data.ProviderSelectedId).ToList();
+            }
+            */
+            return response;
+        }
         public Response<IList<Option>> GetStates()
         {
             var states = workflowStateRepository.GetStateByWorkflowTypeCode(settings.BuyOrderWorkflowTypeCode);

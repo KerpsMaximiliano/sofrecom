@@ -400,24 +400,24 @@ namespace Sofco.Service.Implementations.RequestNote
                 return response;
             }
             response.Data = datos;
-            if (new List<RequestNoteStatus>() {
-                RequestNoteStatus.PendienteAprobaciónGerentesAnalítica,
-                RequestNoteStatus.FacturaPendienteAprobaciónGerente,
-                RequestNoteStatus.PendienteProcesarGAF
+            if (new List<int>() {
+                settings.WorkflowStatusNPPendienteAprobacionGerente,
+                settings.WorkflowStatusNPPendienteAprobacionCompras,
+                settings.WorkflowStatusNPPendienteAprobacionSAP
+                //otros?
                 }
-            .Contains((RequestNoteStatus)note.StatusId))
+            .Contains(note.StatusId))
             {
                 response.Data.Analytics = response.Data.Analytics.Where(a => a.ManagerId == user.Id).ToList();
             }
-            if (new List<RequestNoteStatus>() {
-                RequestNoteStatus.PendienteAprobaciónDAF,
-                RequestNoteStatus.FacturaPendienteAprobaciónGerente,
-                RequestNoteStatus.PendienteProcesarGAF,
-                RequestNoteStatus.Aprobada,
-                RequestNoteStatus.SolicitadaAProveedor,
-                RequestNoteStatus.RecibidoConforme
+            if (new List<int>() {
+                settings.WorkflowStatusNPPendienteAprobacionDAF,
+                settings.WorkflowStatusNPPendienteRecepcionMerc,
+                settings.WorkflowStatusNPRecepcionParcial,
+                settings.WorkflowStatusNPCerrado,
+                //otros?
                 }
-            .Contains((RequestNoteStatus)note.StatusId))
+            .Contains(note.StatusId))
             {
                 response.Data.Providers = response.Data.Providers.Where(p => p.ProviderId == response.Data.ProviderSelectedId).ToList();
             }
