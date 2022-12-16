@@ -38,7 +38,7 @@
     "importHoursNull": "The hours are required",
     "importDatesOutOfRange": "The date does not correspond to the current period",
     "importEmployeeWithLicense": "Resource with a loaded license",
-    "importUserWithEmailNull": "The resource does not have mail. Communicate with gaps@sofrecom.com.ar",
+    "importUserWithEmailNull": "The resource does not have mail. Communicate with gaps@sofredigital.com.ar",
     "fileEmpty": "The imported file does not contain records",
 	"invalidAllocationAssignment": "Resource not assigned in selected analytic at the current period",
 	"noPendingHours": "Pending hours not found"

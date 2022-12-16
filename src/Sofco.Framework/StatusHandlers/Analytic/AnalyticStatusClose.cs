@@ -42,13 +42,13 @@ namespace Sofco.Framework.StatusHandlers.Analytic
 
             recipients.AddRange(new[] {
                 mailPmo,
-                "jberraz@sofrecom.com.ar",
-                "iaybar@sofrecom.com.ar",
-                "gperugorria@sofrecom.com.ar",
-                "mscovello@sofrecom.com.ar",
-                "fgiani@sofrecom.com.ar",
-                "NMiguez@sofrecom.com.ar",
-                "CPoquet@sofrecom.com.ar",
+                "jberraz@sofredigital.com.ar",
+                "iaybar@sofredigital.com.ar",
+                "gperugorria@sofredigital.com.ar",
+                "mscovello@sofredigital.com.ar",
+                "fgiani@sofredigital.com.ar",
+                "NMiguez@sofredigital.com.ar",
+                "CPoquet@sofredigital.com.ar",
                 mailRrhh,
                 mailCalidad });
 
