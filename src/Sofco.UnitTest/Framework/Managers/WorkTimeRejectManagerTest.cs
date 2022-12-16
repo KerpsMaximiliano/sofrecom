@@ -53,7 +53,7 @@ namespace Sofco.UnitTest.Framework.Managers
 
             currentUserModel = new UserLiteModel
             {
-                Id = 1, Email = "spawn@sofrecom.com.ar", ManagerId = "1",
+                Id = 1, Email = "spawn@sofredigital.com.ar", ManagerId = "1",
                 Name = "Spawn", UserName = "spawn"
             };
 

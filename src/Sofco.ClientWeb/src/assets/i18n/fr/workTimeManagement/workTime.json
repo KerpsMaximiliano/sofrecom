@@ -35,7 +35,7 @@
     "importHoursNull": "Heure requis.",
     "importDatesOutOfRange": "La date ne correspond pas à la période en cours.",
     "importEmployeeWithLicense": "Ressource avec une licence chargée.",
-    "importUserWithEmailNull": "L'employé n'a pas de email. Communiquez-vous avec gap@sofrecom.com.ar",
+    "importUserWithEmailNull": "L'employé n'a pas de email. Communiquez-vous avec gap@sofredigital.com.ar",
     "fileEmpty": "Le fichier importé ne contient pas de registre.",
 	"invalidAllocationAssignment": "L'employé n'est pas affectée à la analytic sélectionnée dans la période en cours.",
 	"noPendingHours": "Heures a envoyées non trouvées"

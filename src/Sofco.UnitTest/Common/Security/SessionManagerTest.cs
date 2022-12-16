@@ -12,9 +12,9 @@ namespace Sofco.UnitTest.Common.Security
 {
     public class SessionManagerTest
     {
-        private const string Email = "user1@sofrecom.com.ar";
+        private const string Email = "user1@sofredigital.com.ar";
 
-        private const string Domain = "sofrecom.com.ar";
+        private const string Domain = "sofredigital.com.ar";
 
         private readonly ISessionManager sut;
 

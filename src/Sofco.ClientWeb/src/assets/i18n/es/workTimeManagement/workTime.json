@@ -38,7 +38,7 @@
     "importHoursNull": "Las horas son requeridas",
     "importDatesOutOfRange": "La fecha no corresponde al periodo en curso",
     "importEmployeeWithLicense": "Recurso con licencia cargada",
-    "importUserWithEmailNull": "El recurso no posee mail. Comunicarse con gaps@sofrecom.com.ar",
+    "importUserWithEmailNull": "El recurso no posee mail. Comunicarse con gaps@sofredigital.com.ar",
     "fileEmpty": "El archivo importado no contiene registros",
     "invalidAllocationAssignment": "El recurso no está asignado a la analítica seleccionada en el periodo vigente.",
     "noPendingHours": "No se registraron horas pendientes.",
