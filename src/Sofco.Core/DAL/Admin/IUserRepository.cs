@@ -73,6 +73,8 @@ namespace Sofco.Core.DAL.Admin
 
         List<string> GetPermissions(int userId, string codigoModulo);
 
+        IList<User> GetActivesByGroup(string groupCode);
+
 
     }
 }

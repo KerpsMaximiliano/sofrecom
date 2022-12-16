@@ -144,7 +144,7 @@ namespace Sofco.Framework.Managers
 
             var mails = new List<string> { responsableUser.Email };
 
-            var userIds = unitOfWork.DelegationRepository.GetByUserId(responsableUser.Id, DelegationType.PurchaseOrderApprovalCommercial)
+            var userIds = unitOfWork.DelegationRepository.GetByUserId(responsableUser.Id, DelegationType.PurchaseOrderApprovalCommercial).Where(x=>x.User.Active)
                 .Select(s => s.UserId);
 
             mails.AddRange(userIds.Select(userId => userData.GetById(userId))
@@ -157,7 +157,7 @@ namespace Sofco.Framework.Managers
         {
             var mails = new List<string>();
 
-            var cdgUsers = unitOfWork.UserRepository.GetByGroup(emailConfig.CdgCode);
+            var cdgUsers = unitOfWork.UserRepository.GetActivesByGroup(emailConfig.CdgCode);
 
             mails.AddRange(cdgUsers.Select(s => s.Email).ToList());
 
@@ -176,7 +176,7 @@ namespace Sofco.Framework.Managers
 
             foreach (var user in users)
             {
-                var delegates = unitOfWork.DelegationRepository.GetByUserId(user.Id, DelegationType.PurchaseOrderApprovalOperation);
+                var delegates = unitOfWork.DelegationRepository.GetByUserId(user.Id, DelegationType.PurchaseOrderApprovalOperation).Where(x=>x.User.Active).ToList();
 
                 mails.AddRange(delegates.Select(x => x.GrantedUser.Email));
             }
@@ -206,13 +206,13 @@ namespace Sofco.Framework.Managers
         {
             var mails = new List<string>();
 
-            var users = unitOfWork.UserRepository.GetByGroup(emailConfig.GafCode);
+            var users = unitOfWork.UserRepository.GetActivesByGroup(emailConfig.GafCode);
 
             mails.AddRange(users.Select(s => s.Email).ToList());
 
             foreach (var user in users)
             {
-                var delegates = unitOfWork.DelegationRepository.GetByUserId(user.Id, DelegationType.PurchaseOrderApprovalDaf);
+                var delegates = unitOfWork.DelegationRepository.GetByUserId(user.Id, DelegationType.PurchaseOrderApprovalDaf).Where(x=>x.User.Active).ToList();
 
                 mails.AddRange(delegates.Select(x => x.GrantedUser.Email));
             }
@@ -224,13 +224,15 @@ namespace Sofco.Framework.Managers
         {
             var mails = new List<string>();
 
-            var users = unitOfWork.UserRepository.GetByGroup(emailConfig.ComplianceCode);
+            var users = unitOfWork.UserRepository.GetActivesByGroup(emailConfig.ComplianceCode);
 
             mails.AddRange(users.Select(s => s.Email).ToList());
 
             foreach (var user in users)
             {
                 var delegates = unitOfWork.DelegationRepository.GetByUserId(user.Id, DelegationType.PurchaseOrderApprovalCompliance);
+
+                delegates = delegates.Where(x => x.User.Active).ToList();
 
                 mails.AddRange(delegates.Select(delegat => userData.GetById(delegat.GrantedUserId))
                     .Select(delegated => delegated.Email));

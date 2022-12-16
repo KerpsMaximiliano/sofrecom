@@ -573,13 +573,9 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 //recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailGaf, mailCompliance, mailQuality, mailCdg });
                 recipientsList.AddRange(new[] {
                     mailPmo,
-                    "jberraz@sofredigital.com.ar",
-                    "iaybar@sofredigital.com.ar",
-                    "gperugorria@sofredigital.com.ar",
                     "mscovello@sofredigital.com.ar",
                     "fgiani@sofredigital.com.ar",
                     "NMiguez@sofredigital.com.ar",
-                    "CPoquet@sofredigital.com.ar",
                     mailRrhh,
                     mailQuality });
 

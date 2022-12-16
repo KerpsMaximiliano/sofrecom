@@ -217,6 +217,15 @@ namespace Sofco.DAL.Repositories.Admin
                 .ToList();
         }
 
+        public IList<User> GetActivesByGroup(string groupCode)
+        {
+            return context.Users
+                .Include(x => x.UserGroups)
+                .ThenInclude(x => x.Group)
+                .Where(x => x.UserGroups.Any(s => s.Group.Code == groupCode) && x.Active)
+                .ToList();
+        }
+
         public bool HasDafPurchaseOrderGroup(string userMail)
         {
             var dafCode = appSetting.DafPurchaseOrderGroupCode;
