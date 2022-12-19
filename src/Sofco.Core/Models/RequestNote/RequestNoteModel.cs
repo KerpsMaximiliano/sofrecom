@@ -86,7 +86,8 @@ namespace Sofco.Core.Models.RequestNote
                     Participants = t.Employees.Select(e=> new Employee()
                     {
                         EmployeeId = e.EmployeeId,
-                        Name = e.Employee?.Name
+                        Name = e.Employee?.Name,
+                        Sector = e.SectorProject
                     }).ToList()
                 }).FirstOrDefault();
             if (note.Travels != null && note.Travels.Any())
@@ -184,6 +185,7 @@ namespace Sofco.Core.Models.RequestNote
     {
         public int EmployeeId { get; set; }
         public string Name { get; set; }
+        public string Sector { get; set; }
     }
 
     public class ProductsService

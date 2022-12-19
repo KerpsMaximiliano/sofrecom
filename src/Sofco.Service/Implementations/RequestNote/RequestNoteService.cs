@@ -263,7 +263,7 @@ namespace Sofco.Service.Implementations.RequestNote
                         var an = training.Employees.SingleOrDefault(p => p.EmployeeId == a.EmployeeId);
                         if (an == null)
                         {
-                            an = new RequestNoteTrainingEmployee() { EmployeeId = a.EmployeeId };
+                            an = new RequestNoteTrainingEmployee() { EmployeeId = a.EmployeeId, SectorProject = a.Sector };
                             training.Employees.Add(an);
                         }
                     }
@@ -364,7 +364,7 @@ namespace Sofco.Service.Implementations.RequestNote
                         Topic = requestNoteBorrador.Training.Name,
                         Employees = requestNoteBorrador.Training.Participants?.Select(p => new RequestNoteTrainingEmployee()
                         {
-                            EmployeeId = p.EmployeeId
+                            EmployeeId = p.EmployeeId, SectorProject = p.Sector
                         }).ToList()
                     });
 

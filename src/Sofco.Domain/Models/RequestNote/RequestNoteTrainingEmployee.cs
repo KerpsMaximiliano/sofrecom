@@ -10,6 +10,7 @@ namespace Sofco.Domain.Models.RequestNote
         public RequestNoteTraining RequestNoteTraining { get; set; }
         public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
+        public string SectorProject { get; set; }
     }
 }
 
