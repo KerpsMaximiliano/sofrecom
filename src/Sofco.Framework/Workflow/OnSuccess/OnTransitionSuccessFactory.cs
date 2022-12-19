@@ -28,6 +28,7 @@ namespace Sofco.Framework.Workflow.OnSuccess
                 case "FINALIZE-ADVANCEMENT-WORKFLOW": return new FinalizeAdvancementWorkflow(workflowManager);
                 case "FINALIZE-REFUND-WORKFLOW": return new FinalizeRefundWorkflow(workflowManager, unitOfWork);
                 case "CLOSE-REFUND": return new OnCloseRefundSuccess(workflowManager, unitOfWork);
+                case "UPLOAD-FILES": return new UploadFilesRequestNote(unitOfWork, appSetting);
                 default: return null;
             }
         }

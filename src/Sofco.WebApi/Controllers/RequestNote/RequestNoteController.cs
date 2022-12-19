@@ -40,7 +40,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         }
 
         [HttpPost("transition")]
-        public IActionResult DoTransition([FromBody] WorkflowChangeStatusParameters parameters)
+        public IActionResult DoTransition([FromBody] WorkflowChangeRequestNoteParameters parameters)
         {
             var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel { MustDoNextTransition = true } };
 
