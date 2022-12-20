@@ -14,5 +14,7 @@ namespace Sofco.Core.DAL.RequestNote
         void Save();
 
         void Delete(RequestNoteProvider provider);
+
+        void Delete(RequestNoteProviderSugg provider);
     }
 }

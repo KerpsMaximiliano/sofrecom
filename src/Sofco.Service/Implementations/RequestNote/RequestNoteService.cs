@@ -106,21 +106,19 @@ namespace Sofco.Service.Implementations.RequestNote
                 #region Providers
                 if (requestNoteBorrador.Providers == null)
                     requestNoteBorrador.Providers = new List<Provider>();
-                foreach (var prov in domain.Providers.ToList())
+                foreach (var prov in domain.ProvidersSugg.ToList())
                 {
                     if (!requestNoteBorrador.Providers.Any(a => a.ProviderId == prov.ProviderId))
                         unitOfWork.RequestNoteProviderRepository.Delete(prov);
                 }
                 foreach (var provNuevo in requestNoteBorrador.Providers)
                 {
-                    var prov = domain.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
+                    var prov = domain.ProvidersSugg.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
                     if (prov == null)
                     {
-                        prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId };
-                        domain.Providers.Add(prov);
+                        prov = new RequestNoteProviderSugg() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId };
+                        domain.ProvidersSugg.Add(prov);
                     }
-                    prov.FileId = provNuevo.FileId;
-                    prov.IsSelected = false;
                 }
                 #endregion
                 #region Analytics
@@ -310,7 +308,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     ProviderAreaId = requestNoteBorrador.ProviderAreaId
                 };
                 if (requestNoteBorrador.Providers != null)
-                    domain.Providers = requestNoteBorrador.Providers.Select(p => new RequestNoteProvider()
+                    domain.ProvidersSugg = requestNoteBorrador.Providers.Select(p => new RequestNoteProviderSugg()
                     {
                         ProviderId = p.ProviderId,
                         FileId = p.FileId
@@ -530,6 +528,26 @@ namespace Sofco.Service.Implementations.RequestNote
                     }
                 }
             }
+            else if (req.StatusId == settings.WorkflowStatusNPPendienteAprobacionCompras 
+                && nextStatus == settings.WorkflowStatusNPPendienteAprobacionDAF) //Guardar providers
+            {
+                if (requestNote.ProvidersSelected == null)
+                    requestNote.ProvidersSelected = new List<Provider>();
+                foreach (var prov in req.Providers.ToList())
+                {
+                    if (!requestNote.ProvidersSelected.Any(a => a.ProviderId == prov.ProviderId))
+                        unitOfWork.RequestNoteProviderRepository.Delete(prov);
+                }
+                foreach (var provNuevo in requestNote.ProvidersSelected)
+                {
+                    var prov = req.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
+                    if (prov == null)
+                    {
+                        prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId };
+                        req.Providers.Add(prov);
+                    }
+                }
+            }
                 /*
                 case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
                     //Se manda una lista de providers(como en la instancia borrador), deben reemplazar a los ya existentes
@@ -667,7 +685,7 @@ namespace Sofco.Service.Implementations.RequestNote
                 default:
                     break;
             }*/
-            this.unitOfWork.RequestNoteRepository.UpdateRequestNote(req);
+                this.unitOfWork.RequestNoteRepository.UpdateRequestNote(req);
             this.unitOfWork.RequestNoteRepository.Save();
         }
     }

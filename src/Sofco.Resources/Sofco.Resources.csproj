@@ -212,15 +212,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>JobSearchApplicant.resx</DependentUpon>
     </Compile>
-    <Compile Update="RequestNote\RequestNote - Copia.Designer.cs">
+    <Compile Update="RequestNote\RequestNote.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>RequestNote.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="RequestNote\BuyOrder.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>BuyOrder.resx</DependentUpon>
     </Compile>
     <Compile Update="Rrhh\CloseDate.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -412,12 +407,12 @@
       <LastGenOutput>JobSearchApplicant.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="RequestNote\BuyOrder.resx">
-      <LastGenOutput>BuyOrder.Designer.cs</LastGenOutput>
+      <LastGenOutput>RequestNote.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="RequestNote\RequestNote.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>BuyOrder.Designer.cs</LastGenOutput>
+      <LastGenOutput>RequestNote.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Rrhh\CloseDate.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -39,7 +39,7 @@ namespace Sofco.Domain.Models.RequestNote
         //public int AnalyticId { get; set; }
         public IList<RequestNoteAnalytic> Analytics { get; set; }
         public IList<RequestNoteProvider> Providers { get; set; }
-        
+        public IList<RequestNoteProviderSugg> ProvidersSugg { get; set; }
         public IList<RequestNoteHistory> Histories { get; set; }
     }
 }

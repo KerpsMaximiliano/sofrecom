@@ -97,6 +97,15 @@ namespace Sofco.Resources.RequestNote {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a requestNote/requestNote.providersRequired.
+        /// </summary>
+        public static string ProvidersRequired {
+            get {
+                return ResourceManager.GetString("ProvidersRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a requestNote/requestNote.updateSuccess.
         /// </summary>
         public static string UpdateSuccess {

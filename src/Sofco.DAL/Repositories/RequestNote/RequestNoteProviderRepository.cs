@@ -24,6 +24,11 @@ namespace Sofco.DAL.Repositories.RequestNote
         {
             this.context.RequestNoteProvider.Remove(provider);
         }
+
+        public void Delete(RequestNoteProviderSugg provider)
+        {
+            this.context.RequestNoteProviderSugg.Remove(provider);
+        }
         public List<RequestNoteProvider> GetAll()
         {
             return this.context.RequestNoteProvider.ToList();

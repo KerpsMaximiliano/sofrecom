@@ -40,16 +40,28 @@ namespace Sofco.Core.Models.RequestNote
             ProductsServices = new List<ProductsService>();
             Analytics = new List<Analytic>();
             Providers = new List<Provider>();
+            ProvidersSelected = new List<Provider>();
             if (note.Providers != null)
             {
-                Providers = note.Providers.Select(p => new Provider()
+                ProvidersSelected = note.Providers.Select(p => new Provider()
                 {
                     FileId = p.FileId,
                     FileDescription = p.File?.FileName,
                     ProviderId = p.ProviderId,
                     ProviderDescription = p.Provider?.Name
                 }).ToList();
-                ProviderSelectedId = note.Providers.FirstOrDefault(p => p.IsSelected)?.ProviderId;
+                //ProviderSelectedId = note.Providers.FirstOrDefault(p => p.IsSelected)?.ProviderId;
+            }
+            if (note.ProvidersSugg != null)
+            {
+                Providers = note.ProvidersSugg.Select(p => new Provider()
+                {
+                    FileId = p.FileId,
+                    FileDescription = p.File?.FileName,
+                    ProviderId = p.ProviderId,
+                    ProviderDescription = p.Provider?.Name
+                }).ToList();
+                //ProviderSelectedId = note.Providers.FirstOrDefault(p => p.IsSelected)?.ProviderId;
             }
             if (note.Attachments != null)
                 Attachments = note.Attachments.Select(p => new File()
@@ -121,7 +133,7 @@ namespace Sofco.Core.Models.RequestNote
         public List<Analytic> Analytics { get; set; }
         public bool RequiresEmployeeClient { get; set; }
         public List<Provider> Providers { get; set; }
-
+        public List<Provider> ProvidersSelected { get; set; }
         public List<File> Attachments { get; set; }
         public bool ConsideredInBudget { get; set; }
         public int EvalpropNumber { get; set; }
