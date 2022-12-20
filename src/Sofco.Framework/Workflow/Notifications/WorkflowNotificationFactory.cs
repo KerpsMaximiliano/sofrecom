@@ -33,6 +33,11 @@ namespace Sofco.Framework.Workflow.Notifications
                 case "ADVANCEMENT-DEFAULT": return new WorkflowAdvancementNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork);
                 case "REFUND-DEFAULT": return new WorkflowRefundNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork);
                 case "REFUND-REJECT": return new WorkflowRefundNotificationReject(mailSender, emailConfig, appSetting, unitOfWork);
+                case "REQUEST-NOTE-DEFAULT": return new WorkflowRequestNoteNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork);
+                case "REQUEST-NOTE-REJECT": return new WorkflowRequestNoteNotificationReject(mailSender, emailConfig, appSetting, unitOfWork);
+                case "BUY-ORDER-DEFAULT": return new WorkflowBuyOrderNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork);
+                case "BUY-ORDER-REJECT": return new WorkflowBuyOrderNotificationReject(mailSender, emailConfig, appSetting, unitOfWork);
+
                 default: return null;
             }
         }

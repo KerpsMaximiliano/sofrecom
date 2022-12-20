@@ -19,7 +19,7 @@ namespace Sofco.Resources.Mails {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MailMessageResource {
@@ -326,7 +326,7 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Los datos del informe han sido gestionados por el Gerente de proyecto.
+        ///   Busca una cadena traducida similar a Los datos del informe han sido gestionados por el PM.
         /// </summary>
         public static string ManagementReportManager {
             get {
@@ -610,6 +610,26 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a La Orden de Compra {3} (&lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;) cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. .
+        /// </summary>
+        public static string WorkflowNotificationBuyOrder {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationBuyOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a La Orden de Compra {4} (&lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;) cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Motivo de rechazo: {3}.
+        /// </summary>
+        public static string WorkflowNotificationBuyOrderReject {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationBuyOrderReject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a El Reintegro &lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt; cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. .
         /// </summary>
         public static string WorkflowNotificationRefund {
@@ -626,6 +646,26 @@ namespace Sofco.Resources.Mails {
         public static string WorkflowNotificationReject {
             get {
                 return ResourceManager.GetString("WorkflowNotificationReject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a La Nota de Pedido {3} (&lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;) cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. .
+        /// </summary>
+        public static string WorkflowNotificationRequestNote {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationRequestNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a La Nota de Pedido {4} (&lt;a href=&apos;{0}&apos; target=&apos;_blank&apos;&gt;link&lt;/a&gt;) cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. 
+        ///&lt;/br&gt;&lt;/br&gt;
+        ///Motivo de rechazo: {3}.
+        /// </summary>
+        public static string WorkflowNotificationRequestNoteReject {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationRequestNoteReject", resourceCulture);
             }
         }
         

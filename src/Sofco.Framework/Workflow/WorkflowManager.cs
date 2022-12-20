@@ -7,6 +7,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.AdvancementAndRefund;
+using Sofco.Domain.Models.RequestNote;
 
 namespace Sofco.Framework.Workflow
 {
@@ -66,6 +67,32 @@ namespace Sofco.Framework.Workflow
             }
 
             unitOfWork.Save();
+        }
+
+        public void CloseRequestNote(RequestNote note)
+        {
+            if (note.StatusId != appSetting.WorkflowStatusNPCerrado)
+            {
+                note.StatusId = appSetting.WorkflowStatusNPCerrado;
+                note.InWorkflowProcess = false;
+
+                unitOfWork.WorkflowRepository.UpdateStatus(note);
+                unitOfWork.WorkflowRepository.UpdateInWorkflowProcess(note);
+
+
+                unitOfWork.Save();
+            }
+        }
+        public void PartialReceptionRequestNote(RequestNote note)
+        {
+            if (note.StatusId != appSetting.WorkflowStatusNPRecepcionParcial)
+            {
+                note.StatusId = appSetting.WorkflowStatusNPRecepcionParcial;
+                
+                unitOfWork.WorkflowRepository.UpdateStatus(note);
+                
+                unitOfWork.Save();
+            }
         }
 
         public void CloseEntity(WorkflowEntity entity)

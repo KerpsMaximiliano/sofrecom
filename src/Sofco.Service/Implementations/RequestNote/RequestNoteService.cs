@@ -99,7 +99,7 @@ namespace Sofco.Service.Implementations.RequestNote
                 domain.Comments = requestNoteBorrador.Comments;
                 domain.TravelSection = requestNoteBorrador.Travel != null;
                 domain.TrainingSection = requestNoteBorrador.Training != null;
-                domain.WorkflowId = requestNoteBorrador.WorkflowId;
+                //domain.WorkflowId = requestNoteBorrador.WorkflowId;
                 domain.UserApplicantId = requestNoteBorrador.UserApplicantId;
                 domain.ProviderAreaId = requestNoteBorrador.ProviderAreaId;
 
