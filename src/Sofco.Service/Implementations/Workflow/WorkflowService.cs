@@ -411,6 +411,23 @@ namespace Sofco.Service.Implementations.Workflow
                         }
                     }
                 }
+                else if (entity is Sofco.Domain.Models.RequestNote.RequestNote note)
+                {
+                    var analytics = unitOfWork.RequestNoteAnalitycRepository.GetByRequestNoteId(note.Id).ToList();
+                    if (analytics != null)
+                    {
+                        hasAccess = analytics.Any(a => a.Analytic.ManagerId == currentUser.Id);
+
+                        /*
+                        var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundApprovall);
+
+                        if (delegations.Any(x => x.UserId == analytic.ManagerId.Value))
+                        {
+                            hasAccess = true;
+                        }*/
+
+                    }
+                }
             }
 
             return hasAccess;

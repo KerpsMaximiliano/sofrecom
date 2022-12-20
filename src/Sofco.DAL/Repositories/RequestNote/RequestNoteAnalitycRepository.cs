@@ -1,4 +1,5 @@
-﻿using Sofco.Core.DAL.RequestNote;
+﻿using Microsoft.EntityFrameworkCore;
+using Sofco.Core.DAL.RequestNote;
 using Sofco.Domain.Models.RequestNote;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,9 @@ namespace Sofco.DAL.Repositories.RequestNote
 
         public List<RequestNoteAnalytic> GetByRequestNoteId(int requestNoteId)
         {
-            return this.context.RequestNoteAnalytic.Where(x => x.RequestNoteId == requestNoteId).ToList();
+            return this.context.RequestNoteAnalytic.Where(x => x.RequestNoteId == requestNoteId)
+                .Include(a=> a.Analytic)
+                .ToList();
         }
 
         public void Delete(RequestNoteAnalytic analytic)
