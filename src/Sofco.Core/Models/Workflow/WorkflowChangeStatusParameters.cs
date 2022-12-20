@@ -23,6 +23,6 @@ namespace Sofco.Core.Models.Workflow
 
     public class WorkflowChangeRequestNoteParameters : WorkflowChangeStatusParameters
     {
-        public List<File> Attachments { get; set; }
+        public RequestNoteModel RequestNote { get; set; }
     }
 }

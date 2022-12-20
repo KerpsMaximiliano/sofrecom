@@ -4,10 +4,13 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.DAL;
+using Sofco.Core.Models.Workflow;
+using Sofco.Core.Services.Workflow;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.RequestNote;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Framework.Workflow
 {
@@ -15,11 +18,12 @@ namespace Sofco.Framework.Workflow
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly AppSetting appSetting;
-
-        public WorkflowManager(IUnitOfWork unitOfWork, IOptions<AppSetting> appSetting)
+        private readonly IWorkflowService workflowService;
+        public WorkflowManager(IUnitOfWork unitOfWork, IWorkflowService workflowService, IOptions<AppSetting> appSetting)
         {
             this.unitOfWork = unitOfWork;
             this.appSetting = appSetting.Value;
+            this.workflowService = workflowService;
         }
 
         public void CloseAdvancementsAndRefunds(int entityId)
@@ -73,25 +77,48 @@ namespace Sofco.Framework.Workflow
         {
             if (note.StatusId != appSetting.WorkflowStatusNPCerrado)
             {
-                note.StatusId = appSetting.WorkflowStatusNPCerrado;
-                note.InWorkflowProcess = false;
+                //Vamos a hacerlo invocando a la transición de workflow (aunque los de refunds updatean a lo bruto)
+                var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel { MustDoNextTransition = true } };
+                WorkflowChangeStatusParameters parameters = new WorkflowChangeStatusParameters()
+                {
+                    EntityId = note.Id,
+                    WorkflowId = note.WorkflowId,
+                    NextStateId = appSetting.WorkflowStatusNPCerrado
+                };
+                while (response.Data.MustDoNextTransition)
+                {
+                    workflowService.DoTransition<RequestNote, RequestNoteHistory>(parameters, response);
+                }
+                /* note.StatusId = appSetting.WorkflowStatusNPCerrado;
+                 note.InWorkflowProcess = false;
 
-                unitOfWork.WorkflowRepository.UpdateStatus(note);
-                unitOfWork.WorkflowRepository.UpdateInWorkflowProcess(note);
+                 unitOfWork.WorkflowRepository.UpdateStatus(note);
+                 unitOfWork.WorkflowRepository.UpdateInWorkflowProcess(note);
 
 
-                unitOfWork.Save();
+                 unitOfWork.Save();*/
             }
         }
         public void PartialReceptionRequestNote(RequestNote note)
         {
             if (note.StatusId != appSetting.WorkflowStatusNPRecepcionParcial)
             {
-                note.StatusId = appSetting.WorkflowStatusNPRecepcionParcial;
+                var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel { MustDoNextTransition = true } };
+                WorkflowChangeStatusParameters parameters = new WorkflowChangeStatusParameters()
+                {
+                    EntityId = note.Id,
+                    WorkflowId = note.WorkflowId,
+                    NextStateId = appSetting.WorkflowStatusNPRecepcionParcial
+                };
+                while (response.Data.MustDoNextTransition)
+                {
+                    workflowService.DoTransition<RequestNote, RequestNoteHistory>(parameters, response);
+                }
+                /*note.StatusId = appSetting.WorkflowStatusNPRecepcionParcial;
                 
                 unitOfWork.WorkflowRepository.UpdateStatus(note);
                 
-                unitOfWork.Save();
+                unitOfWork.Save();*/
             }
         }
 

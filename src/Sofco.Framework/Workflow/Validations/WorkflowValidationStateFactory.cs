@@ -28,6 +28,7 @@ namespace Sofco.Framework.Workflow.Validations
                 case "CLOSE-REFUND": return new OnCloseRefundValidation(unitOfWork);
                 case "REFUND-ATTACHMENTS": return new RefundAttachmentsValidation(unitOfWork);
                 case "CASH-RETURN": return new CashReturnValidation(unitOfWork);
+                case "ANALYTICS-APPROVED": return new OnAnalyticManagerApprove(unitOfWork);
                 default: return null;
             }
         }

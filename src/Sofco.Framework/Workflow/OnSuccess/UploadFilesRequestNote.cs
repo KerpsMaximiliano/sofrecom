@@ -26,9 +26,9 @@ namespace Sofco.Framework.Workflow.OnSuccess
             var req = (RequestNote) entity;
             if (parameters is WorkflowChangeRequestNoteParameters)
             {
-                if (((WorkflowChangeRequestNoteParameters)parameters).Attachments == null)
-                    ((WorkflowChangeRequestNoteParameters)parameters).Attachments = new List<Core.Models.RequestNote.File>();
-                foreach (var a in ((WorkflowChangeRequestNoteParameters)parameters).Attachments)
+                if (((WorkflowChangeRequestNoteParameters)parameters).RequestNote?.Attachments == null)
+                    ((WorkflowChangeRequestNoteParameters)parameters).RequestNote.Attachments = new List<Core.Models.RequestNote.File>();
+                foreach (var a in ((WorkflowChangeRequestNoteParameters)parameters).RequestNote.Attachments)
                 {
                     var an = req.Attachments.SingleOrDefault(p => p.FileId == a.FileId);
                     if (an == null)

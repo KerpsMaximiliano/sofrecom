@@ -42,6 +42,8 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("transition")]
         public IActionResult DoTransition([FromBody] WorkflowChangeRequestNoteParameters parameters)
         {
+            this._requestNoteService.SaveChanges(parameters?.RequestNote, parameters.NextStateId);
+
             var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel { MustDoNextTransition = true } };
 
             while (response.Data.MustDoNextTransition)
@@ -96,13 +98,13 @@ namespace Sofco.WebApi.Controllers.RequestNote
         {
             return Ok(this._requestNoteService.GetAll(filters));
         }
-
+        /*
         [HttpPost("SaveChanges")]
         public IActionResult SaveChanges([FromBody] RequestNoteModel requestNote, int nextStatus)
         {
             this._requestNoteService.SaveChanges(requestNote, nextStatus);
 
             return Ok();
-        }
+        }*/
     }
 }
