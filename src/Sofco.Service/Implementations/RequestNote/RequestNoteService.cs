@@ -503,31 +503,34 @@ namespace Sofco.Service.Implementations.RequestNote
                     .Where(n=> n.HasEditPermissions || n.HasReadPermissions).ToList();
         }
 
-        public void ChangeStatus(RequestNoteModel requestNote, RequestNoteStatus status)
+        public void SaveChanges(RequestNoteModel requestNote, int nextStatus)
         {
             Domain.Models.RequestNote.RequestNote req = this.unitOfWork.RequestNoteRepository.GetById(requestNote.Id.Value);
             var user = userData.GetCurrentUser();
-            int nuevoEstado = (int)status;
-            switch (status)
+            if (req.StatusId == settings.WorkflowStatusNPPendienteAprobacionGerente) //Guardar analíticas
             {
-                case RequestNoteStatus.Borrador:
-                    break;
-                case RequestNoteStatus.PendienteRevisiónAbastecimiento:
-                    if (req.StatusId == (int)RequestNoteStatus.PendienteAprobaciónGerentesAnalítica)
+                if (nextStatus == settings.WorkflowStatusNPPendienteAprobacionCompras)
+                {
+                    //Se marcan las analíticas del gerente logueado como “Rechazada”.
+                    //Se cambia el estado de la requestNote a “PendienteAprobacionCompras”
+                    //sólo si están todas las analíticas.
+                    foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
                     {
-                        //Se marcan las analíticas del gerente logueado como “Rechazada”.
-                        //Se cambia el estado de la requestNote a “Pendiente Revisión Abastecimiento”
-                        //sin importar el estado de las demás analíticas.
-                        foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
-                        {
-                            analitica.Status = "Rechazada";
-                        }
+                        analitica.Status = "Aprobada";
                     }
-                    else if (req.StatusId == (int)RequestNoteStatus.Borrador)
+                }
+                else if (nextStatus == settings.WorkflowStatusNPRechazado)
+                {
+                    //Se marcan las analíticas del gerente logueado como “Rechazada”.
+                    //Se cambia el estado de la requestNote a “Rechazada”
+                    //sin importar el estado de las demás analíticas.
+                    foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
                     {
-
+                        analitica.Status = "Rechazada";
                     }
-                    break;
+                }
+            }
+                /*
                 case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
                     //Se manda una lista de providers(como en la instancia borrador), deben reemplazar a los ya existentes
                     //en la requestNote.Se manda un campo monto final OC(number) para agregarse a la requestNote.
@@ -663,24 +666,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     break;
                 default:
                     break;
-            }
-            if (req.StatusId != nuevoEstado) //Si cambia el estado, guardamos historial
-            {
-                if (req.Histories == null)
-                    req.Histories = new List<RequestNoteHistory>();
-
-                req.Histories.Add(new RequestNoteHistory()
-                {
-                    Comment = requestNote.Remarks,
-                    CreatedDate = DateTime.UtcNow,
-                    StatusFromId = req.StatusId,
-                    StatusToId = nuevoEstado,
-                    UserName = user.UserName
-                });
-            }
-            req.StatusId = nuevoEstado;
-            if (!string.IsNullOrEmpty(requestNote.Comments))
-                req.Comments = requestNote.Comments;
+            }*/
             this.unitOfWork.RequestNoteRepository.UpdateRequestNote(req);
             this.unitOfWork.RequestNoteRepository.Save();
         }
