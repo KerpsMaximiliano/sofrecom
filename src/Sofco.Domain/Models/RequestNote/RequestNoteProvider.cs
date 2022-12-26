@@ -12,5 +12,6 @@ namespace Sofco.Domain.Models.RequestNote
         //public int Quantity { get; set; }
         public int? FileId { get; set; }
         public File File { get; set; }
+        public decimal? Price { get; set; }
     }
 }

@@ -535,15 +535,21 @@ namespace Sofco.Service.Implementations.RequestNote
                     requestNote.ProvidersSelected = new List<Provider>();
                 foreach (var prov in req.Providers.ToList())
                 {
-                    if (!requestNote.ProvidersSelected.Any(a => a.ProviderId == prov.ProviderId))
+                    var nuevo = requestNote.ProvidersSelected.SingleOrDefault(a => a.ProviderId == prov.ProviderId);
+                    if (nuevo == null) //existía pero ahora no viene => kaput
                         unitOfWork.RequestNoteProviderRepository.Delete(prov);
+                    else
+                    {
+                        prov.FileId = nuevo.FileId;
+                        prov.Price = nuevo.Ammount;
+                    }
                 }
                 foreach (var provNuevo in requestNote.ProvidersSelected)
                 {
                     var prov = req.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
                     if (prov == null)
                     {
-                        prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId };
+                        prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId, Price = provNuevo.Ammount };
                         req.Providers.Add(prov);
                     }
                 }

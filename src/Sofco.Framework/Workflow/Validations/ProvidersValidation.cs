@@ -19,7 +19,7 @@ namespace Sofco.Framework.Workflow.Validations
         public bool Validate(WorkflowEntity entity, Response response, WorkflowChangeStatusParameters parameters)
         {
             var data = unitOfWork.RequestNoteRepository.GetById(entity.Id);
-            if (!data.Providers.Any(p => p.FileId.HasValue))
+            if (!data.Providers.Any(p => p.FileId.HasValue && p.Price.HasValue))
             {
                 response.AddError(Resources.RequestNote.RequestNote.ProvidersRequired);
                 return false;

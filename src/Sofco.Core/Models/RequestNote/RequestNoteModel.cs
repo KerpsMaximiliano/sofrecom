@@ -212,6 +212,7 @@ namespace Sofco.Core.Models.RequestNote
         public string ProviderDescription { get; set; }
         public int? FileId { get; set; }
         public string FileDescription { get; set; }
+        public decimal? Ammount { get; set; }
     }
     public class File
     {
