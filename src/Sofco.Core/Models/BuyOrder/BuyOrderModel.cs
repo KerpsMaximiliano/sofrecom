@@ -75,7 +75,7 @@ namespace Sofco.Core.Models.BuyOrder
                     Quantity = p.Quantity,
                     DeliveredQuantity = p.DeliveredQuantity,
                     Description = p.RequestNoteProductService?.ProductService,
-                    RequestNoteProductServiceId = p.RequestNoteProductServiceId                    
+                    RequestNoteProductServiceId = p.RequestNoteProductServiceId
                 }).ToList();
         }
         public Domain.Models.RequestNote.BuyOrder CreateDomain()
@@ -106,6 +106,10 @@ namespace Sofco.Core.Models.BuyOrder
         public int Quantity { get; set; }
 
         public int? DeliveredQuantity { get; set; }
+
+        public int? RequestedQuantity { get; set; }
+
+        public int? PendingQuantity { get; set; }
 
         public int RequestNoteProductServiceId { get; set; }
 

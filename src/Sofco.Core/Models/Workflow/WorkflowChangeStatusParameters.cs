@@ -25,4 +25,9 @@ namespace Sofco.Core.Models.Workflow
     {
         public RequestNoteModel RequestNote { get; set; }
     }
+
+    public class WorkflowChangeBuyOrderParameters : WorkflowChangeStatusParameters
+    {
+        public BuyOrder.BuyOrderModel BuyOrder { get; set; }
+    }
 }

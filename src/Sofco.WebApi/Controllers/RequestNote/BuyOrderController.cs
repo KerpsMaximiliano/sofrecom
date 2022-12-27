@@ -45,8 +45,10 @@ namespace Sofco.WebApi.Controllers.PurchaseOrders
         }
 
         [HttpPost("transition")]
-        public IActionResult DoTransition([FromBody] WorkflowChangeStatusParameters parameters)
+        public IActionResult DoTransition([FromBody] WorkflowChangeBuyOrderParameters parameters)
         {
+            this.service.SaveChanges(parameters?.BuyOrder, parameters.NextStateId);
+
             var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel { MustDoNextTransition = true } };
 
             while (response.Data.MustDoNextTransition)

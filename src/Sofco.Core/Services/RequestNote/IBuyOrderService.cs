@@ -11,7 +11,7 @@ namespace Sofco.Core.Services.RequestNote
         IList<BuyOrderGridModel> GetAll(BuyOrderGridFilters filters);
         Response<BuyOrderModel> GetById(int id);
         Response<string> Add(BuyOrderModel model);
-
+        void SaveChanges(BuyOrderModel model, int nextStatus);
         Response<IList<Option>> GetStates();
     }
 }

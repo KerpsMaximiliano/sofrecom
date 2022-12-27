@@ -60,31 +60,17 @@ namespace Sofco.Service.Implementations.BuyOrder
                 response.AddError(Resources.RequestNote.BuyOrder.NotAllowed);
                 return response;
             }
+            var productsNoteRequest = order.RequestNote.ProductsServices;
+            var productsOrders = this.unitOfWork.BuyOrderRepository.GetAll(new BuyOrderGridFilters() { RequestNoteId = order.RequestNoteId })
+                .Where(a => a.StatusId == settings.WorkflowStatusBOPendienteRecepcionFact || a.StatusId == settings.WorkflowStatusFinalizedId)
+                .SelectMany(a=> a.ProductsServices);
+            foreach (var item in datos.Items) //Calcularle las cantidades totales y pendientes (para la NP)
+            {
+                item.RequestedQuantity = productsNoteRequest.Where(a => a.Id == item.RequestNoteProductServiceId).Sum(a => a.Quantity);
+                item.PendingQuantity = productsOrders.Where(a => a.Id == item.RequestNoteProductServiceId).Sum(a => a.Quantity);
+            }
             response.Data = datos;
-            
-            /* Ver qué datos extra hay que mostrar en cada estado
-            if (new List<int>() {
-                settings.WorkflowStatusNPPendienteAprobacionGerente,
-                settings.WorkflowStatusNPPendienteAprobacionCompras,
-                settings.WorkflowStatusNPPendienteAprobacionSAP
-                //otros?
-                }
-            .Contains(order.StatusId))
-            {
-                response.Data.Analytics = response.Data.Analytics.Where(a => a.ManagerId == user.Id).ToList();
-            }
-            if (new List<int>() {
-                settings.WorkflowStatusNPPendienteAprobacionDAF,
-                settings.WorkflowStatusNPPendienteRecepcionMerc,
-                settings.WorkflowStatusNPRecepcionParcial,
-                settings.WorkflowStatusNPCerrado,
-                //otros?
-                }
-            .Contains(order.StatusId))
-            {
-                response.Data.Providers = response.Data.Providers.Where(p => p.ProviderId == response.Data.ProviderSelectedId).ToList();
-            }
-            */
+
             return response;
         }
         public Response<IList<Option>> GetStates()
@@ -92,13 +78,13 @@ namespace Sofco.Service.Implementations.BuyOrder
             var states = workflowStateRepository.GetStateByWorkflowTypeCode(settings.BuyOrderWorkflowTypeCode);
 
             var result = states.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
-/*
-            if (result.All(x => x.Id != settings.Buy))
-            {
-                var finalizeState = workflowStateRepository.Get(settings.WorkflowStatusNPCerrado);
+            /*
+                        if (result.All(x => x.Id != settings.Buy))
+                        {
+                            var finalizeState = workflowStateRepository.Get(settings.WorkflowStatusNPCerrado);
 
-                result.Add(new Option { Id = finalizeState.Id, Text = finalizeState.Name });
-            }*/
+                            result.Add(new Option { Id = finalizeState.Id, Text = finalizeState.Name });
+                        }*/
             /*
             var draft = result.SingleOrDefault(x => x.Id == settings.WorkflowStatusNPBorrador);
 
@@ -120,10 +106,10 @@ namespace Sofco.Service.Implementations.BuyOrder
 
             try
             {
-                var domain = model.CreateDomain();
+                var domain = model.CreateDomain(); //llena campos
                 domain.StatusId = settings.WorkflowStatusBOPendienteAprobacionDAF;
                 domain.InWorkflowProcess = true;
-
+                
                 var workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.BuyOrderWorkflowId);
 
                 domain.WorkflowId = workflow.Id;
@@ -142,6 +128,51 @@ namespace Sofco.Service.Implementations.BuyOrder
             }
 
             return response;
+        }
+        public void SaveChanges(BuyOrderModel model, int nextStatus)
+        {
+            Domain.Models.RequestNote.BuyOrder order = this.unitOfWork.BuyOrderRepository.GetById(model.Id);
+            var user = userData.GetCurrentUser();
+            if (order.StatusId == settings.WorkflowStatusBOPendienteAprobacionDAF)
+            {
+                if (nextStatus == settings.WorkflowStatusBOPendienteRecepcionMerc)
+                {
+                    //Guardar las cantidades/precios de cada ítem en BuyOrderProductService
+                    foreach (var item in order.ProductsServices)
+                    {
+                        var prod = model.Items.SingleOrDefault(p => p.RequestNoteProductServiceId == item.RequestNoteProductServiceId);
+                        if (prod != null)
+                        {
+                            item.Quantity = prod.Quantity;
+                            item.Price = prod.Amount;
+                        }
+                    }
+                }
+            }
+            else if (order.StatusId == settings.WorkflowStatusBOPendienteRecepcionMerc)
+            {
+                if (nextStatus == settings.WorkflowStatusBOPendienteRecepcionFact)
+                {
+                    //Guardar las cantidades recibidas de cada ítem en BuyOrderProductService
+                    foreach (var item in order.ProductsServices)
+                    {
+                        var prod = model.Items.SingleOrDefault(p => p.RequestNoteProductServiceId == item.RequestNoteProductServiceId);
+                        if (prod != null)
+                        {
+                            item.DeliveredQuantity = prod.DeliveredQuantity;
+                        }
+                    }
+                }
+            }
+            else if (order.StatusId == settings.WorkflowStatusBOPendienteRecepcionFact)
+            {
+                if (nextStatus == settings.WorkflowStatusFinalizedId)
+                {
+                    //Guardar los datos de las facturas
+                }
+            }
+            this.unitOfWork.BuyOrderRepository.UpdateBuyOrder(order);
+            this.unitOfWork.BuyOrderRepository.Save();
         }
     }
 }

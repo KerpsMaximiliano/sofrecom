@@ -25,6 +25,7 @@ namespace Sofco.DAL.Repositories.RequestNote
         {
             return this.context.BuyOrders.Where(x => x.Id == id)
                 .Include(x=> x.RequestNote)
+                    .ThenInclude(p=> p.ProductsServices)
                 .Include(x => x.ProductsServices)
                     .ThenInclude(p=> p.RequestNoteProductService)
                 .Include(x => x.Invoices)
@@ -57,6 +58,7 @@ namespace Sofco.DAL.Repositories.RequestNote
                 .Where(n => !filters.RequestNoteId.HasValue || n.RequestNoteId == filters.RequestNoteId)
                 .Where(n => !filters.ProviderId.HasValue || n.ProviderId == filters.ProviderId)
                 .Include(x => x.Status)
+                .Include(x => x.ProductsServices)
                 .Include(x => x.RequestNote)
                 .Include(x => x.Provider)
                     .ThenInclude(z => z.Provider)
