@@ -129,6 +129,9 @@
   <data name="NotFound" xml:space="preserve">
     <value>requestNote/requestNote.notFound</value>
   </data>
+  <data name="NullModel" xml:space="preserve">
+    <value>requestNote/requestNote.nullModel</value>
+  </data>
   <data name="ProvidersRequired" xml:space="preserve">
     <value>requestNote/requestNote.providersRequired</value>
   </data>

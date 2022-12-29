@@ -13,7 +13,8 @@ namespace Sofco.Core.Validations.Workflow
         void CloseRefunds(IList<Refund> refunds);
         void CloseEntity(WorkflowEntity entity);
         void PayRefunds(IList<Refund> refunds);
-        void CloseRequestNote(RequestNote note);
-        void PartialReceptionRequestNote(RequestNote note);
+        int? CloseRequestNote(RequestNote note);
+        int? PartialReceptionRequestNote(RequestNote note);
+        int? PendingReceptionRequestNote(RequestNote note, BuyOrder order);
     }
 }

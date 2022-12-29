@@ -13,6 +13,8 @@ namespace Sofco.Core.Models.BuyOrder
         private readonly AppSetting _settings;
         public int Id { get; set; }
 
+        public int RequestNoteId { get; set; }
+
         public int? UserApplicantId { get; set; }
 
         public string Number { get; set; }
@@ -58,6 +60,7 @@ namespace Sofco.Core.Models.BuyOrder
         {
             _settings = settings;
             Id = order.Id;
+            RequestNoteId = order.RequestNoteId;
             Number = order.BuyOrderNumber;
             ProviderId = order.ProviderId;
             ProviderDescription = order.Provider?.Provider?.Name;

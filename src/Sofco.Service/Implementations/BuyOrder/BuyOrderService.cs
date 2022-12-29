@@ -133,8 +133,8 @@ namespace Sofco.Service.Implementations.BuyOrder
         {
             Domain.Models.RequestNote.BuyOrder order = this.unitOfWork.BuyOrderRepository.GetById(model.Id);
             var user = userData.GetCurrentUser();
-            if (order.StatusId == settings.WorkflowStatusBOPendienteAprobacionDAF)
-            {
+            /*if (order.StatusId == settings.WorkflowStatusBOPendienteAprobacionDAF)
+            { //Acá al final no guarda nada
                 if (nextStatus == settings.WorkflowStatusBOPendienteRecepcionMerc)
                 {
                     //Guardar las cantidades/precios de cada ítem en BuyOrderProductService
@@ -149,7 +149,7 @@ namespace Sofco.Service.Implementations.BuyOrder
                     }
                 }
             }
-            else if (order.StatusId == settings.WorkflowStatusBOPendienteRecepcionMerc)
+            else*/ if (order.StatusId == settings.WorkflowStatusBOPendienteRecepcionMerc)
             {
                 if (nextStatus == settings.WorkflowStatusBOPendienteRecepcionFact)
                 {

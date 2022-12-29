@@ -29,5 +29,7 @@ namespace Sofco.Core.Models.Workflow
     public class WorkflowChangeBuyOrderParameters : WorkflowChangeStatusParameters
     {
         public BuyOrder.BuyOrderModel BuyOrder { get; set; }
+
+        public int? NextStateIdRequestNote { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace Sofco.Service.Implementations.RequestNote
             var response = new Response<int>();
             if (requestNoteBorrador == null)
             {
-                response.AddError(Resources.Recruitment.Applicant.ModelNull);
+                response.AddError(Resources.RequestNote.RequestNote.NullModel);
                 return response;
             }
 
@@ -503,6 +503,7 @@ namespace Sofco.Service.Implementations.RequestNote
 
         public void SaveChanges(RequestNoteModel requestNote, int nextStatus)
         {
+
             Domain.Models.RequestNote.RequestNote req = this.unitOfWork.RequestNoteRepository.GetById(requestNote.Id.Value);
             var user = userData.GetCurrentUser();
             if (req.StatusId == settings.WorkflowStatusNPPendienteAprobacionGerente) //Guardar analíticas

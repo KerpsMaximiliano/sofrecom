@@ -21,18 +21,23 @@ namespace Sofco.Framework.Workflow.OnSuccess
 
         public void Process(WorkflowEntity entity, WorkflowChangeStatusParameters parameters)
         {
-            var order = unitOfWork.BuyOrderRepository.GetById(entity.Id);
-            var isCompleted = unitOfWork.RequestNoteRepository.IsCompletelyDelivered(order.RequestNoteId);
-            var note = unitOfWork.RequestNoteRepository.GetById(order.RequestNoteId);
-            if (isCompleted)
+            if (parameters is WorkflowChangeBuyOrderParameters)
             {
-                workflowManager.CloseRequestNote(note);
+                var order = unitOfWork.BuyOrderRepository.GetById(entity.Id);
+                var isCompleted = unitOfWork.RequestNoteRepository.IsCompletelyDelivered(order.RequestNoteId);
+                var note = unitOfWork.RequestNoteRepository.GetById(order.RequestNoteId);
+                if (isCompleted)
+                {
+                    //Acá realmente validamos en cuál debe quedar y lo devolvemos al workflow original, para que desde allá vea si
+                    //hay algo, invoca al workflow de NP (si es null, por ej si ya tiene el estado al cual debería pasar, no hace nada)
+                    //workflowManager.CloseRequestNote(note);
+                    ((WorkflowChangeBuyOrderParameters)parameters).NextStateIdRequestNote = workflowManager.CloseRequestNote(note);
+                }
+                else
+                {
+                    ((WorkflowChangeBuyOrderParameters)parameters).NextStateIdRequestNote = workflowManager.PartialReceptionRequestNote(note);
+                }
             }
-            else
-            {
-                workflowManager.PartialReceptionRequestNote(note);
-            }
-            
         }
     }
 }

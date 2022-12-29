@@ -69,9 +69,10 @@ namespace Sofco.Framework.Workflow
             unitOfWork.Save();
         }
 
-        public void CloseRequestNote(RequestNote note)
+        public int? CloseRequestNote(RequestNote note)
         {
-            if (note.StatusId != appSetting.WorkflowStatusNPCerrado)
+            return (note.StatusId != appSetting.WorkflowStatusNPCerrado) ? appSetting.WorkflowStatusNPCerrado : (int?)null;
+            /*if (note.StatusId != appSetting.WorkflowStatusNPCerrado)
             {
                 note.StatusId = appSetting.WorkflowStatusNPCerrado;
                 note.InWorkflowProcess = false;
@@ -81,18 +82,25 @@ namespace Sofco.Framework.Workflow
 
 
                 unitOfWork.Save();
-            }
+            }*/
         }
-        public void PartialReceptionRequestNote(RequestNote note)
+        public int? PartialReceptionRequestNote(RequestNote note)
         {
-            if (note.StatusId != appSetting.WorkflowStatusNPRecepcionParcial)
+            return (note.StatusId != appSetting.WorkflowStatusNPRecepcionParcial) ? appSetting.WorkflowStatusNPRecepcionParcial : (int?)null;
+
+            /*if (note.StatusId != appSetting.WorkflowStatusNPRecepcionParcial)
             {
                 note.StatusId = appSetting.WorkflowStatusNPRecepcionParcial;
 
                 unitOfWork.WorkflowRepository.UpdateStatus(note);
 
                 unitOfWork.Save();
-            }
+            }*/
+        }
+        public int? PendingReceptionRequestNote(RequestNote note, BuyOrder order)
+        {
+            return (order.StatusId == appSetting.WorkflowStatusBOPendienteRecepcionMerc && note.StatusId != appSetting.WorkflowStatusNPPendienteRecepcionMerc) ? appSetting.WorkflowStatusNPPendienteRecepcionMerc : (int?)null;
+
         }
 
         public void CloseEntity(WorkflowEntity entity)

@@ -26,12 +26,7 @@ namespace Sofco.Framework.Workflow.OnSuccess
 
         public void Process(WorkflowEntity entity, WorkflowChangeStatusParameters parameters)
         {
-            var isCompleted = unitOfWork.RequestNoteRepository.IsCompletelyDelivered(entity.Id);
-            if (entity is RequestNote request && isCompleted)
-            {
-                this.workflowManager.CloseRequestNote(request);
-            }
-
+            this.workflowManager.CloseEntity(entity);
         }
     }
 }

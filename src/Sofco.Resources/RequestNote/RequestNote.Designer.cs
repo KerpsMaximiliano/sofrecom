@@ -97,6 +97,15 @@ namespace Sofco.Resources.RequestNote {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a requestNote/requestNote.nullModel.
+        /// </summary>
+        public static string NullModel {
+            get {
+                return ResourceManager.GetString("NullModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a requestNote/requestNote.providersRequired.
         /// </summary>
         public static string ProvidersRequired {
