@@ -23,11 +23,11 @@ namespace Sofco.Framework.Workflow.Conditions.RequestNote
             //suma total de los % de asignación sea 100.
             //Las analíticas seleccionadas deberán asociarse con el estado “Pendiente de Aprobación”. 
             
-            var req = unitOfWork.RequestNoteRepository.Get(entity.Id);
+            var req = unitOfWork.RequestNoteRepository.GetById(entity.Id);
 
             if (req == null) return false;
-            var hasProductServices = req.ProductsServices.Any() && req.ProductsServices.All(p => p.Quantity > 0);
-            var hasAnalytics = req.Analytics.Any() && req.Analytics.Sum(a => a.Percentage) == 100;
+            var hasProductServices = req.ProductsServices != null && req.ProductsServices.Any() && req.ProductsServices.All(p => p.Quantity > 0);
+            var hasAnalytics = req.Analytics != null && req.Analytics.Any() && req.Analytics.Sum(a => a.Percentage) == 100;
             return hasProductServices && hasAnalytics;
         }
     }
