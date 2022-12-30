@@ -1,0 +1,92 @@
+<h1>Carga Orden de Compra</h1>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12 row">
+            <div class="pull-left" style="margin-left: 2rem;">
+                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/purchase-orders']">
+                    <i class="fa fa-arrow-left"></i>       Volver
+                </button>
+            </div>
+            <div class="btn-right">
+                <button class="btn btn-success btn-outline dim" (click)="approve()">
+                    Guardar       <i class="fa fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ibox">
+            <div class="ibox-content">
+                <form class="form-horizontal" [formGroup]="ordenCompraForm">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Número Orden de Compra: </label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" formControlName="numberOC">
+                            <span
+                                *ngIf="!ordenCompraForm.get('numberOC')?.valid && (ordenCompraForm.get('numberOC')?.touched || ordenCompraForm.get('numberOC')?.dirty)"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Proveedor: </label>
+                        <div class="col-sm-8">
+                            <div style="display: flex;">
+                                <ng-select [items]="proveedores" bindLabel="nombre" bindValue="id" formControlName="proveedor"
+                                    (change)="change($event)" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
+                            </div>
+                            <span
+                                *ngIf="!ordenCompraForm.get('proveedor')?.valid && (ordenCompraForm.get('proveedor')?.touched || ordenCompraForm.get('proveedor')?.dirty)"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Nota de Pedido: </label>
+                        <div class="col-sm-8">
+                            <div style="display: flex;">
+                                <ng-select [items]="notasPedido" bindLabel="nombre" bindValue="id" formControlName="numberNP"
+                                    (change)="change($event)" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
+                            </div>
+                            <span
+                                *ngIf="!ordenCompraForm.get('numberNP')?.valid && (ordenCompraForm.get('numberNP')?.touched || ordenCompraForm.get('numberNP')?.dirty)"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="ordenCompraForm.get('numberNP')?.valid">
+                        <table class="table table-striped dataTable" role="grid" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>Id Producto/Servicio</th>
+                                    <th>Producto/Servicio</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let item of productosServicios; let i = index">
+                                <tr>
+                                    <td>{{item.id}}</td>
+                                    <td>
+                                        <input type="number" placeholder="Monto del item">
+                                    </td>
+                                    <td>
+                                        <input type="number" placeholder="Cantidad de items">
+                                    </td>
+                                </tr> 
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Monto total de la OC: </label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control" formControlName="montoOC">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

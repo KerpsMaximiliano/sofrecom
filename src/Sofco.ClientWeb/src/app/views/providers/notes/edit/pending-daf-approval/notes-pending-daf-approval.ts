@@ -7,6 +7,9 @@ import { RequestNoteService } from "app/services/admin/request-note.service";
 import { MessageService } from "app/services/common/message.service";
 import { Router } from "@angular/router";
 import * as FileSaver from "file-saver";
+import { FileUploader } from "ng2-file-upload";
+import { Cookie } from "ng2-cookies";
+import { AuthService } from "app/services/common/auth.service";
 
 @Component({
     selector: 'notes-pending-daf-approval',
@@ -27,6 +30,13 @@ export class NotesPendingDAFApproval {
     @ViewChild('pdfViewer') pdfViewer;
     @Input() currentNote;
     @Input() currentNoteStatusDescription;
+    
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({
+        url: this.requestNoteService.uploadDraftFiles(),
+        authToken: 'Bearer ' + Cookie.get('access_token'), 
+    });
+    uploadedFilesId = [];
     rejectComments = null;
     mode;
 
@@ -54,7 +64,8 @@ export class NotesPendingDAFApproval {
         private providersAreaService: ProvidersAreaService,
         private requestNoteService: RequestNoteService,
         private messageService: MessageService,
-        private router: Router
+        private router: Router,
+        private authService: AuthService,
     ) {}
 
     ngOnInit(): void {
@@ -128,6 +139,51 @@ export class NotesPendingDAFApproval {
             console.log(d);
             this.messageService.showMessage("La nota de pedido ha sido aprobada", 0);
             this.router.navigate(['/providers/notes']);
+        })
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
+    }
+
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+        });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+                return;
+            }
+            let jsonResponse = JSON.parse(response);
+            this.uploadedFilesId.push({
+                type: 1,
+                fileId: jsonResponse.data[0].id
+            });
+            console.log(this.uploadedFilesId)
+            this.clearSelectedFile();
+        };
+        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    }
+
+    downloadFiles() {
+        this.currentNote.attachments.forEach(file => {
+            if(file.fileDescription) {
+                this.requestNoteService.downloadFile(file.fileId, 5, file.fileDescription);
+            }
         })
     }
 }

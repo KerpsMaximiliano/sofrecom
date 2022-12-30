@@ -151,4 +151,8 @@ export class EmployeeService {
   updateComments(json){
     return this.http.put<any>(`${this.baseUrl}/employees/updateAssingComment`, json);
   }
+
+  getSectorName(id: number) {
+    return this.http.get<any>(`${this.baseUrl}/employees/${id}/sectorName`);
+  }
 }

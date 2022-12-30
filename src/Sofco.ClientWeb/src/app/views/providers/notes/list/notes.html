@@ -53,7 +53,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="control-label">Estados</label>
-                            <ng-select [items]="states" bindLabel="text" bindValue="id" [(ngModel)]="stateId">
+                            <ng-select [items]="states2" bindLabel="text" bindValue="id" [(ngModel)]="stateId">
                             </ng-select>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                                 <tr *ngFor="let note of notes">
                                     <td>{{note.id}}</td>
                                     <td>{{note.description}}</td>
-                                    <td><span class="label">{{note.status}}</span></td>
+                                    <td><span class="label">{{note.status | requestNoteState}}</span></td>
                                     <td>{{note.creationDate}}</td>
                                     <td class="column-sm text-center">
                                         <button title="ver" class="btn btn-primary btn-xs" (click)="view(note.id)" *ngIf="note.statusId != 1 && note.hasReadPermissions"><i class="fa fa-eye"></i></button>

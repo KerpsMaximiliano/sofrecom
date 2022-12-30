@@ -16,6 +16,8 @@ import { FileUploader } from "ng2-file-upload";
 import { forkJoin } from "rxjs";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { Router } from "@angular/router";
+import { WorkflowService } from "app/services/workflow/workflow.service";
+import { SectorService } from "app/services/admin/sector.service";
 
 @Component({
     selector: 'notes-add',
@@ -150,7 +152,9 @@ export class NotesAddComponent implements OnInit{
         private messageService: MessageService,
         private authService: AuthService,
         private router: Router,
-        private builder: FormBuilder
+        private builder: FormBuilder,
+        private workflowService: WorkflowService,
+        private sectorsService: SectorService
     ) {
         this.formAnaliticasTable = this.builder.group({
             analiticas: this.builder.array([])
@@ -164,8 +168,14 @@ export class NotesAddComponent implements OnInit{
         this.inicializar();
         this.userInfo = UserInfoService.getUserInfo();
         console.log(this.userInfo);
-        this.analyticService.getByCurrentUser().subscribe(d=>console.log(d))
-        this.refundService.getAnalytics().subscribe(d=>console.log(d))
+        //this.analyticService.getByCurrentUser().subscribe(d=>console.log(d));
+        //this.refundService.getAnalytics().subscribe(d=>console.log(d));
+        //id 3277 - "FLORES BENGOECHEA, RODRIGO XAVIER"
+        //this.employeeService.getInfo(3277).subscribe(d => console.log(d)); //id - 2550
+        this.employeeService.getSectorName(3277).subscribe(d => console.log(d))
+        //this.userService.get(2550).subscribe(d => console.log(d)); //sectorId
+        //this.sectorsService.get(1).subscribe(d => console.log(d));
+        //this.sectorsService.getAll().subscribe(d => console.log(d.data));
     }
 
     inicializar() {
@@ -231,6 +241,9 @@ export class NotesAddComponent implements OnInit{
             this.participanteCapacitacionSeleccionado = null;
         } else {
             this.participanteCapacitacionSeleccionado = event;
+            this.employeeService.getSectorName(event.id).subscribe(d => {
+                this.formParticipanteCapacitacion.controls.sector.setValue(d.data);
+            })
         }
     }
 
@@ -563,7 +576,7 @@ export class NotesAddComponent implements OnInit{
                 details: this.formViaje.controls.details.value
             },
             userApplicantId: this.userInfo.id,
-            workflowId: 2,
+            workflowId: 8, //9
             attachments: finalAttachments
         };
         if(!model.travelSection) {
@@ -578,14 +591,32 @@ export class NotesAddComponent implements OnInit{
         }
         this.requestNoteService.saveDraft(model).subscribe(d=>{
             this.requestNoteId = d.data;
+            model.id = this.requestNoteId;
             if(send) {
-                this.requestNoteService.approveDraft(this.requestNoteId).subscribe(d=>{
-                    console.log(d);
-                    this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
-                    setTimeout(() => {
-                        this.router.navigate(['/providers/notes']);
-                    }, 500);
+                this.requestNoteService.getById(this.requestNoteId).subscribe(res => {
+                    var modelWorkflow = {
+                        workflowId: res.data.workflowId,
+                        nextStateId: 29,
+                        entityId: this.requestNoteId,
+                        entityController: "RequestNoteBorrador",
+                        requestNote: model
+                    };
+                    this.workflowService.post(modelWorkflow).subscribe(response => {
+                        console.log(response);
+                        //this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+                        setTimeout(() => {
+                            this.router.navigate(['/providers/notes']);
+                        }, 500);
+                    });
                 });
+                
+                // this.requestNoteService.approveDraft(this.requestNoteId).subscribe(d=>{
+                //     console.log(d);
+                //     this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+                //     setTimeout(() => {
+                //         this.router.navigate(['/providers/notes']);
+                //     }, 500);
+                // });
             }
         })
     }

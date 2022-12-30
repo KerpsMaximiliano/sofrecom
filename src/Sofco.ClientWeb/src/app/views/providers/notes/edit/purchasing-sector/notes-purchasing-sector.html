@@ -1,5 +1,5 @@
 <h1 *ngIf="currentNoteStatusDescription != null"> {{currentNoteStatusDescription}} - Último estado: </h1>
-<h1>Pendiente Aprobación DAF</h1>
+<h1>Sector de Compras</h1>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12 row">
@@ -9,16 +9,13 @@
                 </button>
             </div>
             <div class="btn-right" *ngIf="mode == 'Edit'">
-                <button class="btn btn-danger btn-outline dim" (click)="rejectM()">
-                    Rechazar       <i class="fa fa-times"></i>
-                </button>
                 <button class="btn btn-success btn-outline dim" (click)="approve()">
                     Aprobar       <i class="fa fa-arrow-right"></i>
                 </button>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="show">
         <div class="ibox">
             <div class="ibox-content">
                 <form class="form-horizontal" [formGroup]="formNota">
@@ -70,7 +67,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of analiticas; let i = index">
+                                    <tr *ngFor="let item of analiticas">
                                         <td>{{ item.description }} </td>
                                         <td>{{ item.asigned }} </td>
                                     </tr>
@@ -85,17 +82,43 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label text-left">Proveedores:</label>
+                        <label class="col-sm-3 control-label text-left">Proveedores: </label>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3"></div>
+                        <div class="col-xs-5">
+                            <label>Proveedor</label>
+                            <ng-select [items]="providers" bindLabel="name" bindValue="id"
+                                formControlName="proveedores"></ng-select>
+                        </div>
+                        <button *ngIf="mode == 'Edit'" type="button" class="col-xs-2 btn btn-success" style="margin-top: 2.2rem;"
+                            (click)="agregarProveedor()">Agregar<i class="fa fa-plus" style="margin-left: 1rem"></i>
+                        </button>
+                    </div>
+                    <div class="form-group" *ngIf="providersGrid.length > 0">
+                        <label class="col-sm-3 control-label text-left"></label>
                         <div class="col-sm-8">
                             <table class="table table-striped dataTable" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
+                                        <th *ngIf="mode == 'Edit'">Presupuesto</th>
+                                        <th></th>
+                                        <th>Monto</th>
+                                        <th class="column-sm text-center" *ngIf="mode == 'Edit'">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of providersGrid">
+                                <tbody [formGroup]="formProviderGrid">
+                                    <tr *ngFor="let item of providersGrid; let i = index">
                                         <td>{{ item.providerDescription }} </td>
+                                        <td><input #selectedFile type="file" ng2FileSelect (onFileSelected)="selectedFileProvider(item.providerId, $event, i)" [uploader]="uploader" *ngIf="mode == 'Edit'"/></td>
+                                        <td><button type="button" class="btn btn-success"
+                                            (click)="downloadProvFile(item)" *ngIf="item.fileId != null">Descargar</button></td>
+                                        <td><input type="number" formControlName="{{item.providerId}}"></td>
+                                        <td class="column-sm text-center">
+                                            <button title="eliminar" *ngIf="mode == 'Edit'" (click)="eliminarProveedor(i)"
+                                                class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -124,16 +147,12 @@
                         <label class="col-sm-3 control-label text-left">Monto final de la OC: </label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control" formControlName="montoOC">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label text-left">Orden de compra: </label>
-                        <button type="button" class="col-sm-3 btn btn-success" style="margin-top: 2.2rem;"
-                            (click)="downloadOC()">Descargar Archivo<i class="fa fa-plus" style="margin-left: 1rem;"></i>
-                        </button>
-                        <div class="col-sm-5">
-                            <label>Número de OC</label>
-                            <input type="number" class="form-control" formControlName="ordenCompra">
+                            <span *ngIf="!formNota.get('montoOC')?.valid && (formNota.get('montoOC')?.touched || formNota.get('montoOC')?.dirty)" style="color: red;">
+                                El campo es requerido
+                            </span>
+                            <span *ngIf="formNota.controls.montoOC.errors?.min" style="color: red;">
+                                Debe ser mayor que 0
+                            </span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -144,42 +163,8 @@
                             </button>
                         </div>
                     </div>
-                    <div class="form-group" >
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-8">
-                            <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}}
-                                    archivos subidos</p>
-                            </h3>
-                            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple />
-                        
-                            <div class="uploader-margin-top">
-                                <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
-                                <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
-                                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                                </div>
-                        
-                                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
-                                    [disabled]="!uploader.getNotUploadedItems().length">
-                                    <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
-                                </button>
-                        
-                                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()"
-                                    [disabled]="!uploader.getNotUploadedItems().length">
-                                    <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<ng2-modal [config]="rejectModalConfig" #rejectModal (accept)="reject()">
-    <div class="form-group">
-        <label class="control-label">{{'comments' | translate }}</label>
-        <textarea class="form-control" name="rejectComments" rows="10" maxlength="1000" [(ngModel)]="rejectComments"></textarea>
-    </div>
-</ng2-modal> 
-
-<pdf-viewer #pdfViewer></pdf-viewer>

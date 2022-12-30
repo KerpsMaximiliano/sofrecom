@@ -29,6 +29,8 @@ export class WorkflowComponent implements OnDestroy {
     hasRejectCode: boolean = false;
     @ViewChild('wfreject') wfReject;
 
+    private requestNoteData;
+
     constructor(private workflowService: WorkflowService,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private messageService: MessageService){}
@@ -38,6 +40,7 @@ export class WorkflowComponent implements OnDestroy {
     }
 
     init(model){
+        console.log(model)
         this.transitions = [];
         this.container.clear();
 
@@ -45,6 +48,7 @@ export class WorkflowComponent implements OnDestroy {
         this.entityController = model.entityController;
 
         this.getTransitionsSubscrip = this.workflowService.getTransitions(model).subscribe(response => {
+            console.log(response)
             this.transitions = response.data.filter(x => !x.parameterCode);
 
             var transitionsWithParameters = response.data.filter(x => x.parameterCode);
@@ -81,13 +85,23 @@ export class WorkflowComponent implements OnDestroy {
     }
 
     save(item){
-        var model = {
-            workflowId: item.workflowId,
-            nextStateId: item.nextStateId,
-            entityId: this.entityId,
-            entityController: this.entityController
+        let model;
+        if(this.entityController == "RequestNoteBorrador") {
+            model = {
+                workflowId: item.workflowId,
+                nextStateId: item.nextStateId,
+                entityId: this.entityId,
+                entityController: this.entityController,
+                requestNote: this.requestNoteData
+            }
+        } else {
+            model = {
+                workflowId: item.workflowId,
+                nextStateId: item.nextStateId,
+                entityId: this.entityId,
+                entityController: this.entityController
+            }
         }
-
         this.messageService.showLoading();
 
         this.postSubscrip = this.workflowService.post(model).subscribe(response => {
@@ -95,6 +109,10 @@ export class WorkflowComponent implements OnDestroy {
             this.onSaveSuccess.emit();
         },
         error => this.messageService.closeLoading());
+    }
+
+    updateRequestNote(requestNote) {
+        this.requestNoteData = requestNote;
     }
 
     onTransitionCustomConfirm(){

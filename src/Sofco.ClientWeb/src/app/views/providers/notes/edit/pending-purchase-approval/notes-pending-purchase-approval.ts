@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, Input, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
@@ -16,13 +16,11 @@ import { Cookie } from "ng2-cookies";
 import { FileUploader } from "ng2-file-upload";
 
 @Component({
-    selector: 'notes-pending-approval-management-analytic',
-    templateUrl: './notes-pending-approval-management-analytic.html',
-    styleUrls: ['./notes-pending-approval-management-analytic.scss']
+    selector: 'notes-pending-purchase-approval',
+    templateUrl: './notes-pending-purchase-approval.html'
 })
 
-export class NotesPendingApprovalManagementAnalytic implements OnInit{
-
+export class NotesPendingPurchaseApproval {
     @Input() currentNote;
     @Input() currentNoteStatusDescription;
     uploadedFilesId = [];

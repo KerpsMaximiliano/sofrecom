@@ -21,14 +21,22 @@
                 <div class="ibox-content">
                     <form class="form-horizontal" [formGroup]="formNota">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Descripción: </label>
+                            <label class="col-sm-2 control-label text-left">Rubro: </label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" formControlName="description">
-                                <span *ngIf="(!formNota.get('description')?.valid && (formNota.get('description')?.touched || formNota.get('description')?.dirty) && descriptionError)" style="color: red;">
+                                <div style="display: flex;">
+                                    <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea"
+                                        (change)="change($event)" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
+                                    <div *ngIf="critical != null" style="flex-shrink: 1;">
+                                        <label class="col-xs-4 control-label text-left">Crítico: </label>
+                                        <div class="col-xs-8">
+                                            <input type="text" class="form-control" disabled [placeholder]="critical">
+                                        </div>
+                                    </div>
+                                </div>
+                                <span
+                                    *ngIf="!formNota.get('providerArea')?.valid && (formNota.get('providerArea')?.touched || formNota.get('providerArea')?.dirty)"
+                                    style="color: red;">
                                     El campo es requerido
-                                </span>
-                                <span *ngIf="formNota.controls.description.errors?.maxlength" style="color: red;">
-                                    Máximo 1000 caracteres
                                 </span>
                             </div>
                         </div>
@@ -37,7 +45,7 @@
                                 (click)="agregarProductoServicio()">Agregar       <i class="fa fa-plus"></i>
                             </button>
                             <div class="col-sm-5">
-                                <label>Productos/Servicios</label>
+                                <label>Productos/Servicios/Material</label>
                                 <input type="text" class="form-control" formControlName="productService" [ngClass]="{'red-input-border' : (!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError }">
                                 <span *ngIf="(!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError" style="color: red;">
                                     Debe ingresar un producto o servicio.
@@ -63,7 +71,7 @@
                             <table class="table table-striped dataTable" role="grid" id="dataTable" formArrayName="productoServicio">
                                 <thead>
                                     <tr>
-                                        <th>Producto/Servicio</th>
+                                        <th>Producto/Servicio/Material</th>
                                         <th>Cantidad</th>
                                         <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
@@ -150,6 +158,18 @@
                                     </tr> 
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Duración General: </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="description">
+                                <span *ngIf="(!formNota.get('description')?.valid && (formNota.get('description')?.touched || formNota.get('description')?.dirty) && descriptionError)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                                <span *ngIf="formNota.controls.description.errors?.maxlength" style="color: red;">
+                                    Máximo 1000 caracteres
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-1">
@@ -241,6 +261,10 @@
                 <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
                     <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
                 </button>
+            </div>
+
+            <div style="width: 100%; margin-top: 4rem">
+                <button type="button" class="btn btn-success btn-s" style="width: 50%;" (click)="downloadFiles()">Descargar archivos adjuntos</button>
             </div>
         </div>
     </div>
@@ -438,7 +462,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <label>Proyecto / Sector</label>
-                                <input type="text" class="form-control" formControlName="sector">
+                                <input type="text" class="form-control" formControlName="sector" disabled>
                                 <span *ngIf="!formParticipanteCapacitacion.get('sector')?.valid && (formParticipanteCapacitacion.get('sector')?.touched || formParticipanteCapacitacion.get('sector')?.dirty)" style="color: red;">
                                     El campo es requerido.
                                 </span>

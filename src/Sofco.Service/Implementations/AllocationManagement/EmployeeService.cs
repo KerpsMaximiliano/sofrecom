@@ -126,6 +126,25 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<string> GetSectorName(int id)
+        {
+            var response = new Response<string>();
+
+            var employee = EmployeeValidationHelper.Find(new Response<Core.Models.Admin.UserModel>(), unitOfWork.EmployeeRepository, id);
+
+            var user = unitOfWork.UserRepository.GetSingle(x => x.Email.Equals(employee.Email));
+
+            if(user.Sectors != null)
+            {
+                //Devolver nombre de sector
+                response.Data = "Tiene sector vinculado";
+            } else
+            {
+                response.Data = "No tiene sector vinculado";
+            }
+            return response;
+        }
+
         private EmployeeModel Translate(Employee employee)
         {
             return mapper.Map<Employee, EmployeeModel>(employee);

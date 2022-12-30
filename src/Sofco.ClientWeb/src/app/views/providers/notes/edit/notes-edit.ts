@@ -71,15 +71,16 @@ export class NotesEditComponent implements OnInit{
                 }
                 this.currentNote = results[0].data;
                 this.estado = this.currentNote.statusId;
-                if(this.estado > 10) {
-                    this.requestNoteService.setMode("View");
-                    this.currentNoteStatusDescription = (this.estado == 11) ? "Rechazada" : "Cerrada"
-                    this.estadoSeleccionado = results[1][results[1].length - 1].statusFromId
-                } else {
-                    this.estadoSeleccionado = this.estado;
-                    this.currentNoteStatusDescription = null;
-                    
-                };
+                // if(this.estado > 10) {
+                //     this.requestNoteService.setMode("View");
+                //     this.currentNoteStatusDescription = (this.estado == 11) ? "Rechazada" : "Cerrada"
+                //     this.estadoSeleccionado = results[1][results[1].length - 1].statusFromId
+                // } else {
+                //     this.estadoSeleccionado = this.estado;
+                //     this.currentNoteStatusDescription = null;
+                // };
+                this.estadoSeleccionado = this.estado;
+                this.currentNoteStatusDescription = null;
                 if(this.requestNoteService.getMode() == "Edit" && results[0].hasEditPermissions == false) {
                     this.router.navigate(['/providers/notes/no-access']);
                 };
@@ -91,8 +92,8 @@ export class NotesEditComponent implements OnInit{
                     let model = {
                         createdDate: history.createdDate,
                         userName: history.userName,
-                        statusFrom: this.states[history.statusFromId],
-                        statusTo: this.states[history.statusToId],
+                        statusFrom: history.statusFromId,
+                        statusTo: history.statusToId,
                         comment: history.comment
                     }
                     this.histories.push(model);

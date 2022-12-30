@@ -118,6 +118,14 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return this.CreateResponse(response);
         }
 
+        [HttpGet("{id}/sectorName")]
+        public IActionResult GetSectorName(int id)
+        {
+            var response = employeeService.GetSectorName(id);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("{id}/info")]
         public IActionResult GetInfo(int id)
         {

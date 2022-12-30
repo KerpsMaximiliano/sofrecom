@@ -91,6 +91,10 @@
                             <th>CUIT</th>
                             <th>Ing. Brutos</th>
                             <th>Condición IVA</th>
+                            <th>Fecha</th>
+                            <th>Número OC</th>
+                            <th>Número NP</th>
+                            <th>Estado</th>
                             <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                         </tr>
                     </thead>
@@ -102,6 +106,10 @@
                             <td>{{ item.CUIT }} </td>
                             <td>{{ item.ingresosBrutos }} </td>
                             <td>{{ item.condicionIVA }} </td>
+                            <td>{{ item.fecha }} </td>
+                            <td>{{ item.numeroOC }} </td>
+                            <td>{{ item.numeroNP }} </td>
+                            <td>{{ item.estado }} </td>
                             <td class="column-sm text-center">
                                 <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i class="fa fa-eye"></i></button>
                                 <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i class="fa fa-edit"></i></button>

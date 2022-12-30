@@ -32,10 +32,10 @@ export class PurchaseOrdersComponent implements OnInit{
         'No aplica'
     ];
     providers = [
-        {id: 1, name: "Uno"},
-        {id: 2, name: "Dos"},
-        {id: 3, name: "Tres"},
-        {id: 4, name: "Cuatro"},
+        {id: 1, name: "Proveedor Uno"},
+        {id: 2, name: "Proveedor Dos"},
+        {id: 3, name: "Proveedor Tres"},
+        {id: 4, name: "Proveedor Cuatro"},
     ];
     states = [
         { id: 0, name: "Todos" },
@@ -55,7 +55,45 @@ export class PurchaseOrdersComponent implements OnInit{
     businessName: string;
     areas = [];
     areaId: number;
-    data = [];
+    data = [
+        {
+            id: 1,
+            name: "Orden de Compra 1",
+            providerArea: "Uno",
+            CUIT: 20111111114,
+            ingresosBrutos: "Inscripto Convenio Multilateral",
+            condicionIVA: "Monotributo",
+            fecha: "2022-06-23",
+            numeroOC: 2,
+            numeroNP: 14,
+            estado: "Pendiente Aprobación DAF"
+        },
+        {
+            id: 2,
+            name: "Orden de Compra 2",
+            providerArea: "Dos",
+            CUIT: 20222222224,
+            ingresosBrutos: "Inscripto Convenio Multilateral",
+            condicionIVA: "Monotributo",
+            fecha: "2022-06-23",
+            numeroOC: 2,
+            numeroNP: 14,
+            estado: "Pendiente Recepción Mercadería"
+        },
+        {
+            id: 3,
+            name: "Orden de Compra 3",
+            providerArea: "Tres",
+            CUIT: 20333333334,
+            ingresosBrutos: "Inscripto Convenio Multilateral",
+            condicionIVA: "Monotributo",
+            fecha: "2022-06-23",
+            numeroOC: 2,
+            numeroNP: 14,
+            estado: "Pendiente Recepción Factura"
+        },
+
+    ];
     dataBackup = [];
 
     constructor(
@@ -76,32 +114,6 @@ export class PurchaseOrdersComponent implements OnInit{
                 }
             })
         });
-        forkJoin([
-            this.providersService.getAll(),
-            this.providersArea.getAll()
-        ]).subscribe(res => {
-            res[0].data.forEach(provider => {
-                let area = res[1].data.find(provArea => provArea.id == provider.providerAreaId);
-                let model = {
-                    id: provider.id,
-                    name: provider.name,
-                    providerArea: null,
-                    providerAreaId: null,
-                    CUIT: provider.cuit,
-                    ingresosBrutos: this.grossIncome[provider.ingresosBrutos + 1],
-                    condicionIVA: this.ivaConditions[provider.condicionIVA + 1],
-                    active: provider.active
-                }
-                if(area != undefined) {
-                    model.providerArea = area.description,
-                    model.providerAreaId = area.id
-                }
-                this.data.push(model);
-                this.data = [...this.data]
-            });
-            this.dataBackup = this.data;
-            this.initGrid();
-        });
     }
 
     view(id) {
@@ -111,7 +123,7 @@ export class PurchaseOrdersComponent implements OnInit{
 
     edit(id) {
         this.purchaseOrderService.setMode("Edit");
-        this.router.navigate([`providers/purchse-orders/edit/${id}`])
+        this.router.navigate([`providers/purchase-orders/edit/${id}`]);
     }
 
     refreshSearch() {

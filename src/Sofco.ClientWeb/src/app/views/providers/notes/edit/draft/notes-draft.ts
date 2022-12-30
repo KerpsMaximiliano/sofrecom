@@ -12,6 +12,7 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 import { AuthService } from "app/services/common/auth.service";
 import { MessageService } from "app/services/common/message.service";
 import { UserInfoService } from "app/services/common/user-info.service";
+import { WorkflowService } from "app/services/workflow/workflow.service";
 import { Cookie } from "ng2-cookies";
 import { FileUploader } from "ng2-file-upload";
 import { forkJoin } from "rxjs";
@@ -34,6 +35,8 @@ export class NotesDraftComponent implements OnInit{
     });
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
+
+    workflowId: number;
 
     analyticError: boolean = false;
     analyticPercentageError: boolean = false;
@@ -149,7 +152,8 @@ export class NotesDraftComponent implements OnInit{
         private messageService: MessageService,
         private authService: AuthService,
         private router: Router,
-        private builder: FormBuilder
+        private builder: FormBuilder,
+        private workflowService: WorkflowService
     ) {
         this.formAnaliticasTable = this.builder.group({
             analiticas: this.builder.array([])
@@ -160,11 +164,21 @@ export class NotesDraftComponent implements OnInit{
     }
 
     ngOnInit(): void {
+        console.log(this.currentNote);
+        this.workflowId = this.currentNote.workflowId;
         this.inicializar();
         this.userInfo = UserInfoService.getUserInfo();
         console.log(this.userInfo);
-        this.analyticService.getByCurrentUser().subscribe(d=>console.log(d))
-        this.refundService.getAnalytics().subscribe(d=>console.log(d))
+        this.analyticService.getByCurrentUser().subscribe(d=>console.log(d));
+        this.refundService.getAnalytics().subscribe(d=>console.log(d));
+        this.workflowService.getTransitions({
+            workflowId: this.workflowId,
+            entityController: "RequestNoteBorrador",
+            entityId: this.currentNote.id,
+            actualStateId: 8
+        }).subscribe(response => {
+            console.log(response)
+        });
     }
 
 
@@ -243,7 +257,13 @@ export class NotesDraftComponent implements OnInit{
                 quantity: ps.quantity,
             }));
         })
-        this.proveedoresTable = this.currentNote.providers;
+        this.currentNote.providers.forEach(prov => {
+            this.proveedoresTable.push({
+                id: prov.providerId,
+                name: prov.providerDescription
+            })
+        });
+        //this.proveedoresTable = this.currentNote.providers;
         if(this.currentNote.travelSection) {
             this.formViaje.patchValue({
                 destination: this.currentNote.travel.destination,
@@ -276,7 +296,17 @@ export class NotesDraftComponent implements OnInit{
                 ammount: this.currentNote.training.ammount
             });
             this.trainingDate = this.currentNote.training.date;
-            this.participantesCapacitacion = this.currentNote.training.participants;
+            this.currentNote.training.participants.forEach(participant => {
+                this.participantesCapacitacion.push({
+                    data: {
+                        id: participant.employeeId,
+                        name: participant.name
+                    },
+                    sector: participant.sector
+                })
+            });
+            //this.participantesCapacitacion = this.currentNote.training.participants;
+            console.log(this.participantesCapacitacion)
         }
     }
 
@@ -314,6 +344,9 @@ export class NotesDraftComponent implements OnInit{
             this.participanteCapacitacionSeleccionado = null;
         } else {
             this.participanteCapacitacionSeleccionado = event;
+            this.employeeService.getSectorName(event.id).subscribe(d => {
+                this.formParticipanteCapacitacion.controls.sector.setValue(d.data);
+            })
         }
     }
 
@@ -365,6 +398,7 @@ export class NotesDraftComponent implements OnInit{
         this.formParticipanteCapacitacionError = false;
         this.participanteCapacitacionSeleccionado = null;
         this.formParticipanteCapacitacion.reset();
+        console.log(this.participantesCapacitacion)
     }
 
     eliminarParticipanteCapacitacion(index: number) {
@@ -576,6 +610,7 @@ export class NotesDraftComponent implements OnInit{
             });
         };
         let finalProviders = [];
+        console.log(this.proveedoresTable)
         this.proveedoresTable.forEach(prov => {
             let mock = {
                 providerId: prov.id,
@@ -584,6 +619,7 @@ export class NotesDraftComponent implements OnInit{
             finalProviders.push(mock);
         })
         let finalTrainingPassengers = [];
+        console.log(this.participantesCapacitacion)
         this.participantesCapacitacion.forEach(employee => {
             finalTrainingPassengers.push({
                 employeeId: employee.data.id,
@@ -630,7 +666,7 @@ export class NotesDraftComponent implements OnInit{
                 details: this.formViaje.controls.details.value
             },
             userApplicantId: this.userInfo.id,
-            workflowId: 2,
+            workflowId: this.workflowId,
             attachments: this.uploadedFilesId
         };
         if(!model.travelSection) {
@@ -643,11 +679,25 @@ export class NotesDraftComponent implements OnInit{
         this.requestNoteService.saveDraft(model).subscribe(d=>{
             this.requestNoteId = d.data;
             if(send) {
-                this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
-                this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
-                setTimeout(() => {
-                    this.router.navigate(['/providers/notes']);
-                }, 1500);
+                var modelWorkflow = {
+                    workflowId: this.workflowId,
+                    nextStateId: 29,
+                    entityId: this.requestNoteId,
+                    entityController: "RequestNoteBorrador",
+                    requestNote: model
+                };
+                this.workflowService.post(modelWorkflow).subscribe(response => {
+                    console.log(response);
+                    //this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+                    setTimeout(() => {
+                        this.router.navigate(['/providers/notes']);
+                    }, 500);
+                });
+                // this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
+                // this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
+                // setTimeout(() => {
+                //     this.router.navigate(['/providers/notes']);
+                // }, 1500);
             }
         })
     }
@@ -803,5 +853,13 @@ export class NotesDraftComponent implements OnInit{
             this.clearSelectedFile();
         };
         this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    }
+
+    downloadFiles() {
+        this.currentNote.attachments.forEach(file => {
+            if(file.fileDescription) {
+                this.requestNoteService.downloadFile(file.fileId, 5, file.fileDescription);
+            }
+        })
     }
 }

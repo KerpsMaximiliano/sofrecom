@@ -1,5 +1,5 @@
 <h1 *ngIf="currentNoteStatusDescription != null"> {{currentNoteStatusDescription}} - Último estado: </h1>
-<h1>Pendiente Aprobación Gerentes Analítica</h1>
+<h1>Pendiente Aprobación Compras</h1>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12 row">
@@ -15,9 +15,9 @@
                 <button class="btn btn-success btn-outline dim" (click)="approve()"> 
                     Aprobar       <i class="fa fa-arrow-right"></i>
                 </button> -->
-                <div class="btn-right">
+                <!-- <div class="btn-right">
                     <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow (click)="workflowClick()"></workflow>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

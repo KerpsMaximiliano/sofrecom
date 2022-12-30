@@ -7,6 +7,7 @@ import { NotesNoAccessComponent } from "./notes/no-access/notes-no-access";
 import { ProvidersAddComponent } from "./providers/add/providers-add";
 import { ProvidersEditComponent } from "./providers/edit/providers-edit";
 import { ProvidersComponent } from "./providers/list/providers";
+import { PurchaseOrdersEditComponent } from "./purchase-orders/edit/purchase-orders-edit";
 import { PurchaseOrdersComponent } from "./purchase-orders/list/purchase-orders";
 import { PurchaseOrdersNoAccessComponent } from "./purchase-orders/no-access/purchase-orders-no-access";
 
@@ -34,7 +35,7 @@ const PROVIDERS_ROUTER: Routes = [
         path: 'purchase-orders',
         children: [
             { path: "", component: PurchaseOrdersComponent, canActivate: [AuthGuard] },
-            { path: "edit/:id", component: NotesEditComponent, canActivate: [AuthGuard] },
+            { path: "edit/:id", component: PurchaseOrdersEditComponent, canActivate: [AuthGuard] },
             { path: "no-access", component: PurchaseOrdersNoAccessComponent, canActivate: [AuthGuard] }
         ]
     }
