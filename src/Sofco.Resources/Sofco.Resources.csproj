@@ -212,7 +212,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>JobSearchApplicant.resx</DependentUpon>
     </Compile>
-    <Compile Update="RequestNote\RequestNote.Designer.cs">
+    <Compile Update="RequestNote\BuyOrder.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BuyOrder.resx</DependentUpon>
+    </Compile>
+	<Compile Update="RequestNote\RequestNote.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RequestNote.resx</DependentUpon>
@@ -407,7 +412,7 @@
       <LastGenOutput>JobSearchApplicant.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="RequestNote\BuyOrder.resx">
-      <LastGenOutput>RequestNote.Designer.cs</LastGenOutput>
+      <LastGenOutput>BuyOrder.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="RequestNote\RequestNote.resx">

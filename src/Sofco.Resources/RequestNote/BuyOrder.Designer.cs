@@ -79,6 +79,15 @@ namespace Sofco.Resources.RequestNote {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a requestNote/buyOrder.invoiceRequired.
+        /// </summary>
+        public static string InvoiceRequired {
+            get {
+                return ResourceManager.GetString("InvoiceRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a requestNote/buyOrder.notAllowed.
         /// </summary>
         public static string NotAllowed {

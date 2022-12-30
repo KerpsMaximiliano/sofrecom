@@ -35,7 +35,7 @@ namespace Sofco.Core.Models.BuyOrder
         public bool HasReadPermissions { get; set; }
 
         public IList<BuyOrderDetailModel> Items { get; set; }
-
+        public BuyOrderInvoiceModel Invoice { get; set; }
         private bool ValidateReadPermissions(List<string> permissions, int userId)
         {
             return permissions.Any(p => p == "OC_READONLY");
@@ -80,6 +80,10 @@ namespace Sofco.Core.Models.BuyOrder
                     Description = p.RequestNoteProductService?.ProductService,
                     RequestNoteProductServiceId = p.RequestNoteProductServiceId
                 }).ToList();
+            if(order.Invoices!= null && order.Invoices.Any())
+            {
+                Invoice = new BuyOrderInvoiceModel(order.Invoices.First());
+            }
         }
         public Domain.Models.RequestNote.BuyOrder CreateDomain()
         {
@@ -123,6 +127,87 @@ namespace Sofco.Core.Models.BuyOrder
             domain.Quantity = Quantity;
             domain.DeliveredQuantity = DeliveredQuantity;
             domain.RequestNoteProductServiceId = RequestNoteProductServiceId;
+
+            return domain;
+        }
+    }
+
+    public class BuyOrderInvoiceModel
+    {
+
+
+        public int Id { get; set; }
+
+        public int BuyOrderId { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public string Number { get; set; }
+
+        public string TaxCode { get; set; }
+
+        public int? FileId { get; set; }
+        public string FileDescription { get; set; }
+
+        public IList<BuyOrderInvoiceDetailModel> Items { get; set; }
+
+        public BuyOrderInvoiceModel()
+        {
+
+        }
+
+        public BuyOrderInvoiceModel(Domain.Models.RequestNote.BuyOrderInvoice invoice)
+        {
+            Id = invoice.Id;
+            BuyOrderId = invoice.BuyOrderId;
+            Number = invoice.InvoiceNumber;
+            TaxCode = invoice.TaxCode;
+            Date = invoice.InvoiceDate;
+            FileId = invoice.FileId;
+            FileDescription = invoice.File?.FileName;
+            if (invoice.ProductsServices != null)
+                Items = invoice.ProductsServices.Select(p => new BuyOrderInvoiceDetailModel()
+                {
+                    Id = p.Id,
+                    Amount = p.Price,
+                    Quantity = p.Quantity,
+                    BuyOrderProductServiceId = p.BuyOrderProductServiceId
+                }).ToList();
+        }
+        public Domain.Models.RequestNote.BuyOrderInvoice CreateDomain()
+        {
+            var domain = new Domain.Models.RequestNote.BuyOrderInvoice();
+
+            domain.InvoiceNumber = Number;
+            domain.TaxCode = TaxCode;
+            domain.InvoiceDate = Date;
+            domain.BuyOrderId = BuyOrderId;
+            domain.FileId = FileId;
+            foreach (var detail in Items)
+            {
+                domain.ProductsServices.Add(detail.CreateDomain());
+            }
+            return domain;
+        }
+    }
+    public class BuyOrderInvoiceDetailModel
+    {
+        public int Id { get; set; }
+
+        //public string Description { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public int Quantity { get; set; }
+
+        public int BuyOrderProductServiceId { get; set; }
+
+        public BuyOrderInvoiceProductService CreateDomain()
+        {
+            var domain = new BuyOrderInvoiceProductService();
+            domain.Price = Amount;
+            domain.Quantity = Quantity;
+            domain.BuyOrderProductServiceId = BuyOrderProductServiceId;
 
             return domain;
         }

@@ -30,9 +30,12 @@ namespace Sofco.Framework.Workflow.OnSuccess
                 case "CLOSE-REFUND": return new OnCloseRefundSuccess(workflowManager, unitOfWork);
                 case "UPLOAD-FILES": return new UploadFilesRequestNote(unitOfWork, appSetting);
                 case "CLOSE-REQUEST-NOTE": return new OnCloseBuyOrderSuccess(workflowManager, unitOfWork);
-                case "FINALIZE-REQUEST-NOTE": return new FinalizeRefundWorkflow(workflowManager, unitOfWork);
+                case "FINALIZE-REQUEST-NOTE": return new FinalizeRequestNoteWorkflow(workflowManager, unitOfWork);
+                case "FINALIZE-BUY-ORDER": return new FinalizeBuyOrderWorkflow(workflowManager, unitOfWork);
                 case "DAF-TO-RECEPTION": return new OnBuyOrderDafToReceptionSuccess(workflowManager, unitOfWork);
                 default: return null;
+
+
             }
         }
     }

@@ -11,6 +11,7 @@ using Sofco.Core.Data.Admin;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.BuyOrder;
 using Sofco.Core.Services.RequestNote;
+using Sofco.Domain.Models.RequestNote;
 using Sofco.Domain.Utils;
 
 namespace Sofco.Service.Implementations.BuyOrder
@@ -168,7 +169,19 @@ namespace Sofco.Service.Implementations.BuyOrder
             {
                 if (nextStatus == settings.WorkflowStatusFinalizedId)
                 {
-                    //Guardar los datos de las facturas
+                    if(model.Invoice != null) //Si esto no viene, debería validarlo antes de pasar de estado
+                    {
+                        if(order.Invoices!= null && order.Invoices.Any()) //Hay una factura... no debería, pero puede pasar! La piso
+                        {
+                            var inv = order.Invoices.First();
+                            inv = model.Invoice.CreateDomain();
+                        }
+                        else
+                        {
+                            var inv = model.Invoice.CreateDomain();
+                            order.Invoices.Add(inv);
+                        }
+                    }
                 }
             }
             this.unitOfWork.BuyOrderRepository.UpdateBuyOrder(order);

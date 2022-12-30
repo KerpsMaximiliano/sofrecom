@@ -17,5 +17,7 @@ namespace Sofco.Domain.Models.RequestNote
         public string TaxCode { get; set; }
         public int? FileId { get; set; }
         public File File { get; set; }
+
+        public IList<BuyOrderInvoiceProductService> ProductsServices { get; set; }
     }
 }

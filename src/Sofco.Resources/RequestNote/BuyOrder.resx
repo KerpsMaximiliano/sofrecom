@@ -123,6 +123,9 @@
   <data name="FileUpload" xml:space="preserve">
     <value>requestNote/buyOrder.fileUpload</value>
   </data>
+  <data name="InvoiceRequired" xml:space="preserve">
+    <value>requestNote/buyOrder.invoiceRequired</value>
+  </data>
   <data name="NotAllowed" xml:space="preserve">
     <value>requestNote/buyOrder.notAllowed</value>
   </data>

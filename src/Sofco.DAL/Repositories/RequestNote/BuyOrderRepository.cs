@@ -30,6 +30,8 @@ namespace Sofco.DAL.Repositories.RequestNote
                     .ThenInclude(p=> p.RequestNoteProductService)
                 .Include(x => x.Invoices)
                     .ThenInclude(p => p.File)
+                .Include(x => x.Invoices)
+                    .ThenInclude(p => p.ProductsServices)
                 .Include(x => x.Workflow)
                 .Include(x => x.Status)
                 .Include(x => x.CreationUser)
