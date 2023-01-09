@@ -52,10 +52,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group" [formGroup]="formProductoServicio" style="margin-right: .6rem;">
-                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem; margin-left: 1.5rem;"
-                                (click)="agregarProductoServicio()">Agregar       <i class="fa fa-plus"></i>
-                            </button>
+                        <div class="form-group" [formGroup]="formProductoServicio">
                             <div class="col-sm-5">
                                 <label>Productos/Servicios/Material</label>
                                 <input type="text" class="form-control" formControlName="productService" [ngClass]="{'red-input-border' : (!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError }">
@@ -70,6 +67,9 @@
                                     Debe seleccionar una cantidad mayor a 0.
                                 </span>
                             </div>
+                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                                (click)="agregarProductoServicio()">Agregar       <i class="fa fa-plus"></i>
+                            </button>
                         </div>
                         <div class="form-group">
                             <span *ngIf="productsServicesError" style="color: red;">
@@ -83,20 +83,20 @@
                             <table class="table table-striped dataTable" role="grid" id="dataTable" formArrayName="productoServicio">
                                 <thead>
                                     <tr>
-                                        <th>Producto/Servicio/Material</th>
-                                        <th>Cantidad</th>
-                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                        <th class="font-13">Producto/Servicio/Material</th>
+                                        <th class="font-13">Cantidad</th>
+                                        <th class="column-sm text-center font-13">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngFor="let item of getProductoServicio().controls; let i = index">
                                     <tr [formGroupName]="i">
                                         <td>
-                                            <input type="text" formControlName="productService">
+                                            <input type="text" formControlName="productService" class="form-control">
                                             <span *ngIf="item.get('productService').value == '' || item.get('productService').value == null" style="color: red;">
                                                 No puede estar vacío
                                             </span>
                                         </td>
-                                        <td><input type="number" formControlName="quantity" (input)="productoServicioChange()"></td>
+                                        <td><input type="number" formControlName="quantity" (input)="productoServicioChange()" class="form-control"></td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarProductoServicio(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>
@@ -104,10 +104,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="form-group" [formGroup]="formAnaliticas" style="margin-right: .6rem;">
-                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem; margin-left: 1.5rem;"
-                                (click)="agregarAnalitica()">Agregar       <i class="fa fa-plus"></i>
-                            </button>
+                        <div class="form-group" [formGroup]="formAnaliticas">
                             <div class="col-sm-5">
                                 <label>Analítica</label>
                                 <ng-select [items]="analiticas" bindLabel="text" bindValue="id" formControlName="analytic" [ngClass]="{'red-input-border' : (!formAnaliticas.get('analytic')?.valid && (formAnaliticas.get('analytic')?.touched || formAnaliticas.get('analytic')?.dirty)) && analyticFormError}"></ng-select>
@@ -122,6 +119,9 @@
                                     Debe seleccionar un % de asignación para la analítica.
                                 </span>
                             </div>
+                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem"
+                                (click)="agregarAnalitica()">Agregar       <i class="fa fa-plus"></i>
+                            </button>
                         </div>
                         <div class="form-group">
                             <span *ngIf="analyticErrorSend" style="color: red;">
@@ -135,15 +135,15 @@
                             <table class="table table-striped dataTable" role="grid" id="dataTable" formArrayName="analiticas">
                                 <thead>
                                     <tr>
-                                        <th>Analítica</th>
-                                        <th>% de asignación</th>
-                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                        <th class="font-13">Analítica</th>
+                                        <th class="font-13">% de asignación</th>
+                                        <th class="column-sm text-center font-13">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngFor="let item of getAnaliticas().controls; let i = index">
                                         <tr [formGroupName]="i">
-                                            <td><input type="text" formControlName="analyticName"></td>
-                                            <td><input type="number" formControlName="asigned" (input)="analyticChange()"></td>
+                                            <td><input type="text" formControlName="analyticName" class="form-control"></td>
+                                            <td><input type="number" formControlName="asigned" (input)="analyticChange()" class="form-control"></td>
                                             <td class="column-sm text-center">
                                                 <button title="eliminar" (click)="eliminarAnalitica(i)" class="btn btn-danger btn-xs"><i
                                                         class="fa fa-trash"></i></button>
@@ -153,8 +153,8 @@
                             </table>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Duración General: </label>
-                            <div class="col-sm-9">
+                            <label class="col-sm-3 control-label text-left">Duración General: </label>
+                            <div class="col-sm-8">
                                 <input type="text" class="form-control" formControlName="description">
                                 <span *ngIf="(!formNota.get('description')?.valid && (formNota.get('description')?.touched || formNota.get('description')?.dirty) && descriptionError)" style="color: red;">
                                     El campo es requerido
@@ -170,26 +170,26 @@
                             </div>
                             <label class="col-xs-8 control-label text-left">Requiere personal trabajando en/por Sofrecom o en Cliente</label>
                         </div>
-                        <div class="form-group" [formGroup]="formProveedores" style="margin-right: .6rem;">
-                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem; margin-left: 1.5rem;"
-                                (click)="agregarProveedor()">Agregar       <i class="fa fa-plus"></i>
-                            </button>
+                        <div class="form-group" [formGroup]="formProveedores">
                             <div class="col-sm-9">
                                 <label>Proveedor</label>
                                 <ng-select [items]="providers" bindLabel="name" bindValue="id" formControlName="provider"></ng-select>
                             </div>
+                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                                (click)="agregarProveedor()">Agregar       <i class="fa fa-plus"></i>
+                            </button>
                         </div>
                         <div class="form-group" *ngIf="proveedoresTable.length > 0">
                             <table class="table table-striped dataTable" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Proveedor</th>
-                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                        <th class="font-13">Proveedor</th>
+                                        <th class="column-sm text-center font-13">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of proveedoresTable; let i = index">
-                                        <td>{{ item.name }} </td>
+                                        <td class="font-13">{{ item.name }} </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarProveedor(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>
@@ -267,8 +267,6 @@
                     </div>
                     <form class="form-horizontal mt-3" [formGroup]="formViaje">
                         <div class="form-group" [formGroup]="formParticipanteViaje">
-                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem; margin-left: 1rem;"
-                                (click)="agregarParticipanteViaje()">Agregar       <i class="fa fa-plus"></i></button>
                             <div class="col-sm-4">
                                 <label>Nombre</label>
                                 <ng-select [items]="participants" bindLabel="name" bindValue="name" formControlName="name" (change)="travelChange($event)"></ng-select>
@@ -283,6 +281,8 @@
                                 <!--<input type="text" class="form-control" formControlName="cuit">-->
                                 <input type="text" class="form-control" [value]="participanteViajeSeleccionadoCuit" disabled>
                             </div>
+                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem;"
+                                (click)="agregarParticipanteViaje()">Agregar       <i class="fa fa-plus"></i></button>
                         </div>
                         <div class="form-group">
                             <span *ngIf="formParticipanteViajeError" style="color: red;">
@@ -293,17 +293,17 @@
                             <table class="table table-striped dataTable" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
-                                        <th>Fecha de Nacimiento</th>
-                                        <th>CUIT/CUIL</th>
-                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                        <th class="font-13">Nombre</th>
+                                        <th class="font-13">Fecha de Nacimiento</th>
+                                        <th class="font-13">CUIT/CUIL</th>
+                                        <th class="column-sm text-center font-13">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of participantesViaje; let i = index">
-                                        <td>{{ item.name }} </td>
-                                        <td>{{ item.birthday }} </td>
-                                        <td>{{ item.cuil }} </td>
+                                        <td class="font-13">{{ item.name }} </td>
+                                        <td class="font-13">{{ item.birthday }} </td>
+                                        <td class="font-13">{{ item.cuil }} </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarParticipanteViaje(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>
@@ -440,8 +440,6 @@
                             <h3 style="margin-left: 8rem;">Participantes</h3>
                         </div>
                         <div class="form-group" [formGroup]="formParticipanteCapacitacion">
-                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem; margin-left: 1rem;" (click)="agregarParticipanteCapacitacion()">Agregar       <i
-                                    class="fa fa-plus"></i></button>
                             <div class="col-sm-5">
                                 <label>Nombre</label>
                                 <ng-select [items]="filteredParticipants" bindLabel="name" bindValue="name" formControlName="name" (change)="trainingChange($event)"></ng-select>
@@ -456,6 +454,8 @@
                                     El campo es requerido.
                                 </span>
                             </div>
+                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem;" (click)="agregarParticipanteCapacitacion()">Agregar       <i
+                                class="fa fa-plus"></i></button>
                         </div>
                         <div class="form-group">
                             <span *ngIf="formParticipanteCapacitacionError" style="color: red;">
@@ -466,15 +466,15 @@
                             <table class="table table-striped dataTable" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
-                                        <th>Sector</th>
-                                        <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                                        <th class="font-13">Nombre</th>
+                                        <th class="font-13">Sector</th>
+                                        <th class="column-sm text-center font-13">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of participantesCapacitacion; let i = index">
-                                        <td>{{ item.data.name }} </td>
-                                        <td>{{ item.sector }} </td>
+                                        <td class="font-13">{{ item.data.name }} </td>
+                                        <td class="font-13">{{ item.sector }} </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarParticipanteCapacitacion(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>

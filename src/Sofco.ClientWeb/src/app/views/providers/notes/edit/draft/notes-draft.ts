@@ -438,7 +438,9 @@ export class NotesDraftComponent implements OnInit{
             this.productsServicesQuantityError = true;
         } else {
             this.productsServicesQuantityError = false;
-        }
+        };
+        this.formProductoServicio.get('productService').setValue(null);
+        this.formProductoServicio.get('quantity').setValue(null);
     }
 
     eliminarProductoServicio(index: number) {
@@ -508,7 +510,9 @@ export class NotesDraftComponent implements OnInit{
             this.analyticPercentageError = true;
         } else {
             this.analyticPercentageError = false;
-        }
+        };
+        this.formAnaliticas.get('analytic').setValue(null);
+        this.formAnaliticas.get('asigned').setValue(null);
     }
 
     eliminarAnalitica(index: number) {
@@ -552,7 +556,8 @@ export class NotesDraftComponent implements OnInit{
             return;
         };
         let busqueda = this.allProviders.find(prov => prov.id == this.formProveedores.controls.provider.value);
-        this.proveedoresTable.push(busqueda)
+        this.proveedoresTable.push(busqueda);
+        this.formProveedores.get('provider').setValue(null);
     }
 
     eliminarProveedor(index: number) {
@@ -597,7 +602,6 @@ export class NotesDraftComponent implements OnInit{
                 return;
             };
         };
-        this.descriptionError = true;
         let finalProductsAndServices = this.getProductoServicio().value;
         let analytics = [];
         if(this.getAnaliticas().value.length > 0) {
@@ -698,6 +702,10 @@ export class NotesDraftComponent implements OnInit{
                 // setTimeout(() => {
                 //     this.router.navigate(['/providers/notes']);
                 // }, 1500);
+            } else {
+                setTimeout(() => {
+                    this.router.navigate(['/providers/notes']);
+                }, 500);
             }
         })
     }
@@ -773,6 +781,11 @@ export class NotesDraftComponent implements OnInit{
             this.formParticipanteCapacitacionError = false;
         } else {
             this.markFormGroupTouched(this.formViaje);
+        };
+        if(this.formNota.controls.travel.value == false) {
+            this.formParticipanteViajeError = false;
+        } else {
+            this.markFormGroupTouched(this.formCapacitacion);
         };
         this.productsServicesTableError = false;
         this.getProductoServicio().value.forEach(ps => {
