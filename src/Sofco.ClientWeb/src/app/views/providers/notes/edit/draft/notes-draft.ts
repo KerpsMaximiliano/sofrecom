@@ -371,6 +371,7 @@ export class NotesDraftComponent implements OnInit{
         this.participanteViajeSeleccionadoCuit = null;
         this.participanteViajeSeleccionadoFecha = null;
         this.formParticipanteViajeError = false;
+        this.formParticipanteViaje.get('name').setValue(null);
     }
 
     eliminarParticipanteViaje(index: number) {

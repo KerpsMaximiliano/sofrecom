@@ -73,6 +73,7 @@ export class NotesPendingPurchaseApproval {
     travelReturnDate: string;
     trainingDate: string;
 
+    //FORMS
     formNota: FormGroup = new FormGroup({
         description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),
         productsAndServicies: new FormControl(null),
@@ -87,7 +88,6 @@ export class NotesPendingPurchaseApproval {
         travel: new FormControl(false, []),
         training: new FormControl(false, []),
     });
-    
     formCapacitacion: FormGroup = new FormGroup({
         name: new FormControl(null, [Validators.required]),
         subject: new FormControl(null, [Validators.required]),
@@ -97,7 +97,6 @@ export class NotesPendingPurchaseApproval {
         ammount: new FormControl(null, [Validators.required, Validators.min(0)]),
         participants: new FormControl(null)
     });
-
     formViaje: FormGroup = new FormGroup({
         passengers: new FormControl(null),
         departureDate: new FormControl(null, [Validators.required]),
@@ -109,6 +108,7 @@ export class NotesPendingPurchaseApproval {
     });
 
     private workflowModel: any;
+    finalProviders: any;
 
     constructor(
         private providersService: ProvidersService,
@@ -147,7 +147,7 @@ export class NotesPendingPurchaseApproval {
             entityId: this.currentNote.id,
             actualStateId: this.currentNote.statusId
         };
-        this.workflow.init(this.workflowModel);
+        //this.workflow.init(this.workflowModel);
     }
 
     workflowClick() {
@@ -340,4 +340,24 @@ export class NotesPendingPurchaseApproval {
             }
         })
     }
+
+    //Proveedores
+    agregarProveedor() {
+
+    }
+
+    selectedFileProvider(providerId: number, event: any, i: number) {
+        console.log(providerId);
+        console.log(event);
+        console.log(i)
+    }
+
+    downloadProvFile(item: any) {
+        console.log(item)
+    }
+
+    eliminarProveedor(i: number) {
+        console.log(i)
+    }
+
 }

@@ -27,7 +27,7 @@
                 <div class="ibox-content">
                     <form class="form-horizontal" [formGroup]="formNota">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Rubro: </label>
+                            <label class="col-sm-3 control-label text-left">Rubro: </label>
                             <div class="col-sm-9">
                                 <div style="display: flex;">
                                     <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
@@ -41,10 +41,10 @@
                             </div>
                         </div>
                         <div class="form-group" *ngIf="productosServicios.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Producto/Servicio</th>
+                                        <th>Producto/Servicio/Material</th>
                                         <th>Cantidad</th>
                                     </tr>
                                 </thead>
@@ -57,7 +57,7 @@
                             </table>
                         </div>
                         <div class="form-group" *ngIf="analiticasTable.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th>Analítica</th>
@@ -73,7 +73,7 @@
                             </table>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Duración General: </label>
+                            <label class="col-sm-3 control-label text-left">Duración General: </label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="description">
                                 <span *ngIf="(!formNota.get('description')?.valid && (formNota.get('description')?.touched || formNota.get('description')?.dirty) && descriptionError)" style="color: red;">
@@ -91,7 +91,7 @@
                             <label class="col-xs-8 control-label text-left">Requiere personal trabajando en/por Sofrecom o en Cliente</label>
                         </div>
                         <div class="form-group" *ngIf="proveedoresTable.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th>Proveedor</th>
@@ -111,7 +111,7 @@
                             <label class="col-xs-8 control-label text-left">Previsto en el presupuesto / Evaluación de propuesta</label>
                         </div>
                         <div class="form-group" *ngIf="formNota.controls.evaluationProposal.value">
-                            <label class="col-sm-2 control-label text-left">Nro Evalprop: </label>
+                            <label class="col-sm-3 control-label text-left">Nro Evalprop: </label>
                             <div class="col-sm-9">
                                 <input type="number" class="form-control" formControlName="numberEvalprop">
                                 <span *ngIf="formNota.controls.numberEvalprop.errors?.maxlength" style="color: red;">
@@ -123,13 +123,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Observaciones: </label>
+                            <label class="col-sm-3 control-label text-left">Observaciones: </label>
                             <div class="col-sm-9">
                                 <textarea cols="30" rows="5" class="form-control" formControlName="observations"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-xs-5" style="display: flex; flex-direction: row;">
+                            <div class="col-xs-6" style="display: flex; flex-direction: row;">
                                 <input type="checkbox" class="form-control w-2" style="margin-left: 4rem; margin-right: 0.4rem;" (change)="openTravelModal()" formControlName="travel">
                                 <label class="control-label text-left" style="min-width: fit-content; margin-right: 5rem;">Apartado de Viajes</label>
                             </div>
@@ -178,7 +178,7 @@
                     </div>
                     <form class="form-horizontal mt-3" [formGroup]="formViaje">
                         <div class="form-group" *ngIf="participantesViaje.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
@@ -281,7 +281,7 @@
                             <h3 style="margin-left: 8rem;">Participantes</h3>
                         </div>
                         <div class="form-group" *ngIf="participantesCapacitacion.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>

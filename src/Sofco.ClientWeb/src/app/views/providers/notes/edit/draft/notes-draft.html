@@ -16,12 +16,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-9">
             <div class="ibox">
                 <div class="ibox-content">
                     <form class="form-horizontal" [formGroup]="formNota">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Rubro: </label>
+                            <label class="col-sm-3 control-label text-left">Rubro: </label>
                             <div class="col-sm-9">
                                 <div style="display: flex;">
                                     <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea"
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="form-group" [formGroup]="formProductoServicio">
-                            <div class="col-sm-5">
+                            <div class="col-sm-6">
                                 <label>Productos/Servicios/Material</label>
                                 <input type="text" class="form-control" formControlName="productService" [ngClass]="{'red-input-border' : (!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError }">
                                 <span *ngIf="(!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError" style="color: red;">
@@ -55,9 +55,11 @@
                                     Debe seleccionar una cantidad mayor a 0.
                                 </span>
                             </div>
-                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-success" style="margin-top: 2.2rem;"
                                 (click)="agregarProductoServicio()">Agregar       <i class="fa fa-plus"></i>
-                            </button>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <span *ngIf="productsServicesError" style="color: red;">
@@ -68,7 +70,7 @@
                             </span>
                         </div>
                         <div class="form-group" *ngIf="productosServicios.length > 0" [formGroup]="formProductoServicioTable">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable" formArrayName="productoServicio">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable" formArrayName="productoServicio">
                                 <thead>
                                     <tr>
                                         <th class="font-13">Producto/Servicio/Material</th>
@@ -92,28 +94,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Rubro: </label>
-                            <div class="col-sm-9">
-                                <div style="display: flex;">
-                                    <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea"
-                                        (change)="change($event)" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
-                                    <div *ngIf="critical != null" style="flex-shrink: 1;">
-                                        <label class="col-xs-4 control-label text-left">Crítico: </label>
-                                        <div class="col-xs-8">
-                                            <input type="text" class="form-control" disabled [placeholder]="critical">
-                                        </div>
-                                    </div>
-                                </div>
-                                <span
-                                    *ngIf="!formNota.get('providerArea')?.valid && (formNota.get('providerArea')?.touched || formNota.get('providerArea')?.dirty)"
-                                    style="color: red;">
-                                    El campo es requerido
-                                </span>
-                            </div>
-                        </div>
                         <div class="form-group" [formGroup]="formAnaliticas">
-                            <div class="col-sm-5">
+                            <div class="col-sm-6">
                                 <label>Analítica</label>
                                 <ng-select [items]="analiticas" bindLabel="text" bindValue="id" formControlName="analytic" [ngClass]="{'red-input-border' : (!formAnaliticas.get('analytic')?.valid && (formAnaliticas.get('analytic')?.touched || formAnaliticas.get('analytic')?.dirty)) && analyticFormError}"></ng-select>
                                 <span *ngIf="(!formAnaliticas.get('analytic')?.valid && (formAnaliticas.get('analytic')?.touched || formAnaliticas.get('analytic')?.dirty)) && analyticFormError" style="color: red;">
@@ -127,9 +109,11 @@
                                     Debe seleccionar un % de asignación para la analítica.
                                 </span>
                             </div>
-                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-success" style="margin-top: 2.2rem;"
                                 (click)="agregarAnalitica()">Agregar       <i class="fa fa-plus"></i>
-                            </button>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <span *ngIf="analyticErrorSend" style="color: red;">
@@ -140,7 +124,7 @@
                             </span>
                         </div>
                         <div class="form-group" *ngIf="analiticasTable.length > 0" [formGroup]="formAnaliticasTable">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable" formArrayName="analiticas">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable" formArrayName="analiticas">
                                 <thead>
                                     <tr>
                                         <th class="font-13">Analítica</th>
@@ -161,7 +145,7 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label text-left">Duración General: </label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="description">
                                 <span *ngIf="(!formNota.get('description')?.valid && (formNota.get('description')?.touched || formNota.get('description')?.dirty) && descriptionError)" style="color: red;">
                                     El campo es requerido
@@ -178,16 +162,18 @@
                             <label class="col-xs-8 control-label text-left">Requiere personal trabajando en/por Sofrecom o en Cliente</label>
                         </div>
                         <div class="form-group" [formGroup]="formProveedores">
-                            <div class="col-sm-9">
+                            <div class="col-sm-10">
                                 <label>Proveedor</label>
                                 <ng-select [items]="providers" bindLabel="name" bindValue="id" formControlName="provider"></ng-select>
                             </div>
-                            <button type="button" class="col-sm-2 btn btn-success" style="margin-top: 2.2rem;"
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-success" style="margin-top: 2.2rem;"
                                 (click)="agregarProveedor()">Agregar       <i class="fa fa-plus"></i>
-                            </button>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group" *ngIf="proveedoresTable.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th class="font-13">Proveedor</th>
@@ -211,7 +197,7 @@
                             <label class="col-xs-8 control-label text-left">Previsto en el presupuesto / Evaluación de propuesta</label>
                         </div>
                         <div class="form-group" *ngIf="formNota.controls.evaluationProposal.value">
-                            <label class="col-sm-2 control-label text-left">Nro Evalprop: </label>
+                            <label class="col-sm-3 control-label text-left">Nro Evalprop: </label>
                             <div class="col-sm-9">
                                 <input type="number" class="form-control" formControlName="numberEvalprop">
                                 <span *ngIf="formNota.controls.numberEvalprop.errors?.maxlength" style="color: red;">
@@ -223,13 +209,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Observaciones: </label>
+                            <label class="col-sm-3 control-label text-left">Observaciones: </label>
                             <div class="col-sm-9">
                                 <textarea cols="30" rows="5" class="form-control" formControlName="observations"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-xs-5" style="display: flex; flex-direction: row;">
+                            <div class="col-xs-6" style="display: flex; flex-direction: row;">
                                 <input type="checkbox" class="form-control w-2" style="margin-left: 4rem; margin-right: 0.4rem;" (change)="openTravelModal()" formControlName="travel">
                                 <label class="control-label text-left" style="min-width: fit-content; margin-right: 5rem;">Apartado de Viajes</label>
                             </div>
@@ -244,7 +230,7 @@
             </div>
         </div>
 
-        <div class="col-sm-5">
+        <div class="col-sm-3">
             <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}} archivos subidos</p></h3>
             <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple/>
     
@@ -301,7 +287,7 @@
                             </span>
                         </div>
                         <div class="form-group" *ngIf="participantesViaje.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th class="font-13">Nombre</th>
@@ -474,7 +460,7 @@
                             </span>
                         </div>
                         <div class="form-group" *ngIf="participantesCapacitacion.length > 0">
-                            <table class="table table-striped dataTable" role="grid" id="dataTable">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th class="font-13">Nombre</th>
