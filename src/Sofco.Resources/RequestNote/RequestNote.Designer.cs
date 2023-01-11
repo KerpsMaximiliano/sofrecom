@@ -106,6 +106,15 @@ namespace Sofco.Resources.RequestNote {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a requestNote/requestNote.pendingAnalytics.
+        /// </summary>
+        public static string PendingAnalytics {
+            get {
+                return ResourceManager.GetString("PendingAnalytics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a requestNote/requestNote.providersRequired.
         /// </summary>
         public static string ProvidersRequired {

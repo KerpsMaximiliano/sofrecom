@@ -23,6 +23,22 @@ namespace Sofco.Domain.Utils
             return Messages.Any(x => x.Type == MessageType.Error);
         }
 
+        public bool HasWarnings()
+        {
+            return Messages.Any(x => x.Type == MessageType.Warning);
+        }
+
+        public bool HasWarningNoTransition()
+        {
+            return Messages.Any(x => x.Type == MessageType.WarningNoTransition);
+        }
+
+        public void AddWarningNoTransition(string msg)
+        {
+            if (!Messages.Any(x => x.Text.Equals(msg)))
+                Messages.Add(new Message(msg, MessageType.WarningNoTransition));
+        }
+
         public void AddError(string msg)
         {
             if (!Messages.Any(x => x.Text.Equals(msg)))

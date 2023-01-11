@@ -19,8 +19,9 @@ namespace Sofco.Framework.Workflow.Validations
         public bool Validate(WorkflowEntity entity, Response response, WorkflowChangeStatusParameters parameters)
         {
             var data = unitOfWork.RequestNoteAnalitycRepository.GetByRequestNoteId(entity.Id);
-            return data.All(a => a.Status == "Aprobada");
-
+            var ret = data.All(a => a.Status == "Aprobada");
+            if (!ret) response.AddWarningNoTransition(Resources.RequestNote.RequestNote.PendingAnalytics);
+            return ret;
         }
     }
 }

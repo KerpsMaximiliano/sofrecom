@@ -138,13 +138,17 @@ namespace Sofco.Service.Implementations.Workflow
                         response.Data.OnError.Invoke();
                         response.Messages = response.Messages.Where(x => x.Type != MessageType.Error).ToList();
                     }
-
                     return;
                 }
             }
 
+            if (response.HasWarningNoTransition()) {
+                response.Messages.ToList().ForEach(x => { if (x.Type.Equals(MessageType.WarningNoTransition)) x.Type = MessageType.Warning; });
+                return;
+            }
+
             // Save change status
-           SaveEntity<TEntity, THistory>(parameters, response, entity, currentUser);
+            SaveEntity<TEntity, THistory>(parameters, response, entity, currentUser);
 
             // Custom Success Process
             if (!string.IsNullOrWhiteSpace(transition.OnSuccessCode))
