@@ -17,7 +17,8 @@ import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'notes-pending-purchase-approval',
-    templateUrl: './notes-pending-purchase-approval.html'
+    templateUrl: './notes-pending-purchase-approval.html',
+    styleUrls: ['./notes-pending-purchase-approval.scss']
 })
 
 export class NotesPendingPurchaseApproval {
@@ -162,7 +163,15 @@ export class NotesPendingPurchaseApproval {
     }
 
     workflowClick() {
-        //Validaciones
+        this.markFormGroupTouched(this.formProvidersGrid);
+        if(!this.formProvidersGrid.valid) {
+            this.messageService.showMessage("Cada proveedor debe tener un monto", 2);
+            return;
+        };
+        if(this.proveedoresSelected.length != this.filesToUpload.length) {
+            this.messageService.showMessage("Cada proveedor debe tener un presupuesto cargado", 2);
+            return;
+        };
         this.workflow.setCustomValidations(false);
         this.uploaderProviders.uploadAll();
     }

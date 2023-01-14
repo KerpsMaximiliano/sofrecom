@@ -23,14 +23,14 @@
 
     <notes-pending-purchase-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 31"></notes-pending-purchase-approval>
 
+    <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 4"></notes-pending-daf-approval>
+
     <!---------->
     
     <!-- <notes-pending-supply-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 4"></notes-pending-supply-approval> -->
     <notes-pending-supply-revision [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 198"></notes-pending-supply-revision>
 
     <notes-purchasing-sector [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 103"></notes-purchasing-sector>
-    
-    <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 104"></notes-pending-daf-approval>
     
     <notes-approved [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 106"></notes-approved>
     

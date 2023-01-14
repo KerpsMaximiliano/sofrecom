@@ -44,14 +44,14 @@
                             <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Producto/Servicio/Material</th>
-                                        <th>Cantidad</th>
+                                        <th class="font-13">Producto/Servicio/Material</th>
+                                        <th class="font-13">Cantidad</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngFor="let item of currentNote.productsServices">
                                     <tr>
-                                        <th>{{item.productService}}</th>
-                                        <th>{{item.quantity}}</th>
+                                        <th class="font-13">{{item.productService}}</th>
+                                        <th class="font-13">{{item.quantity}}</th>
                                     </tr> 
                                 </tbody>
                             </table>
@@ -60,14 +60,14 @@
                             <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Analítica</th>
-                                        <th>% de asignación</th>
+                                        <th class="font-13">Analítica</th>
+                                        <th class="font-13">% de asignación</th>
                                     </tr>
                                 </thead>
                                 <tbody *ngFor="let item of currentNote.analytics">
                                     <tr>
-                                        <td>{{item.description}}</td>
-                                        <td>{{item.asigned}}</td>
+                                        <td class="font-13">{{item.description}}</td>
+                                        <td class="font-13">{{item.asigned}}</td>
                                     </tr> 
                                 </tbody>
                             </table>
@@ -94,12 +94,12 @@
                             <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Proveedor</th>
+                                        <th class="font-13">Proveedor</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of proveedoresTable; let i = index">
-                                        <td>{{ item.providerDescription }} </td>
+                                        <td class="font-13">{{ item.providerDescription }} </td>
                                     </tr> 
                                 </tbody>
                             </table>
@@ -181,16 +181,16 @@
                             <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
-                                        <th>Fecha de Nacimiento</th>
-                                        <th>CUIT/CUIL</th>
+                                        <th class="font-13">Nombre</th>
+                                        <th class="font-13">Fecha de Nacimiento</th>
+                                        <th class="font-13">CUIT/CUIL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of participantesViaje; let i = index">
-                                        <td>{{ item.name }} </td>
-                                        <td>{{ item.birthday }} </td>
-                                        <td>{{ item.cuil }} </td>
+                                        <td class="font-13">{{ item.name }} </td>
+                                        <td class="font-13">{{ item.birthday }} </td>
+                                        <td class="font-13">{{ item.cuil }} </td>
                                     </tr> 
                                 </tbody>
                             </table>
