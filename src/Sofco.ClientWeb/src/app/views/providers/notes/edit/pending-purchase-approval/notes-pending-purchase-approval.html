@@ -15,9 +15,9 @@
                 <button class="btn btn-success btn-outline dim" (click)="approve()"> 
                     Aprobar       <i class="fa fa-arrow-right"></i>
                 </button> -->
-                <!-- <div class="btn-right">
+                <div class="btn-right">
                     <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow (click)="workflowClick()"></workflow>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>
@@ -93,7 +93,7 @@
                         <div class="form-group">
                             <div class="col-sm-10">
                                 <label>Proveedor</label>
-                                <ng-select [items]="providers" bindLabel="name" bindValue="id"></ng-select>
+                                <ng-select [items]="providers" bindLabel="name" bindValue="id" formControlName="providers"></ng-select>
                             </div>
                             <div class="col-sm-2">
                                 <button type="button" class="btn btn-success" style="margin-top: 2.2rem;"
@@ -112,15 +112,15 @@
                                         <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr *ngFor="let item of proveedoresTable; let i = index">
+                                <tbody [formGroup]="formProvidersGrid">
+                                    <tr *ngFor="let item of proveedoresSelected; let i = index">
                                         <td>{{ item.providerDescription }} </td>
-                                        <td><input #selectedFile type="file" ng2FileSelect (onFileSelected)="selectedFileProvider(item.providerId, $event, i)" [uploader]="uploader"/></td>
+                                        <td><input #selectedFile type="file" ng2FileSelect (onFileSelected)="selectedFileProvider(item.providerId, $event, i)" [uploader]="uploaderProviders"/></td>
                                         <td><button type="button" class="btn btn-success"
                                             (click)="downloadProvFile(item)" *ngIf="item.fileId != null && mode == 'Edit'">Descargar</button></td>
-                                        <td><input type="number"></td>
+                                        <td><input type="number" [formControlName]="'control' + item.providerId"></td>
                                         <td class="column-sm text-center">
-                                            <button title="eliminar" (click)="eliminarProveedor(i)"
+                                            <button title="eliminar" (click)="eliminarProveedor(i, item)"
                                                 class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr> 

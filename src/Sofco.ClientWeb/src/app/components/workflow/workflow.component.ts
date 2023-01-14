@@ -24,6 +24,9 @@ export class WorkflowComponent implements OnDestroy {
     getTransitionsSubscrip: Subscription;
     postSubscrip: Subscription;
 
+    awaitFiles: boolean = false;
+    customValidation: boolean = false;
+
     @Output() onSaveSuccess = new EventEmitter<any>();
 
     hasRejectCode: boolean = false;
@@ -55,7 +58,19 @@ export class WorkflowComponent implements OnDestroy {
 
             this.buildComponents(transitionsWithParameters);
         });
-    } 
+    }
+
+    filesToUpload() {
+        this.awaitFiles = true;
+    }
+
+    filesUploaded() {
+        this.awaitFiles = false;
+    }
+
+    setCustomValidations(status: boolean) {
+        this.customValidation = status;
+    }
 
     buildComponents(transitionsWithParameters){
         transitionsWithParameters.forEach(item => {
@@ -85,30 +100,39 @@ export class WorkflowComponent implements OnDestroy {
     }
 
     save(item){
-        let model;
-        if(this.entityController == "RequestNoteBorrador") {
-            model = {
-                workflowId: item.workflowId,
-                nextStateId: item.nextStateId,
-                entityId: this.entityId,
-                entityController: this.entityController,
-                requestNote: this.requestNoteData
-            }
+        if(this.customValidation) {
+            return;
+        };
+        if(this.awaitFiles) {
+            setTimeout(() => {
+                this.save(item)
+            }, 100);
         } else {
-            model = {
-                workflowId: item.workflowId,
-                nextStateId: item.nextStateId,
-                entityId: this.entityId,
-                entityController: this.entityController
+            let model;
+            if(this.entityController == "RequestNoteBorrador") {
+                model = {
+                    workflowId: item.workflowId,
+                    nextStateId: item.nextStateId,
+                    entityId: this.entityId,
+                    entityController: this.entityController,
+                    requestNote: this.requestNoteData
+                }
+            } else {
+                model = {
+                    workflowId: item.workflowId,
+                    nextStateId: item.nextStateId,
+                    entityId: this.entityId,
+                    entityController: this.entityController
+                }
             }
+            this.messageService.showLoading();
+    
+            this.postSubscrip = this.workflowService.post(model).subscribe(response => {
+                this.messageService.closeLoading();
+                this.onSaveSuccess.emit();
+            },
+            error => this.messageService.closeLoading());
         }
-        this.messageService.showLoading();
-
-        this.postSubscrip = this.workflowService.post(model).subscribe(response => {
-            this.messageService.closeLoading();
-            this.onSaveSuccess.emit();
-        },
-        error => this.messageService.closeLoading());
     }
 
     updateRequestNote(requestNote) {

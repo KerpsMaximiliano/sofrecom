@@ -33,6 +33,10 @@ export class NotesPendingPurchaseApproval {
         url: this.requestNoteService.uploadDraftFiles(),
         authToken: 'Bearer ' + Cookie.get('access_token'), 
     });
+    public uploaderProviders: FileUploader = new FileUploader({
+        url: this.requestNoteService.uploadDraftFiles(),
+        authToken: 'Bearer ' + Cookie.get('access_token'), 
+    });
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
 
@@ -62,6 +66,7 @@ export class NotesPendingPurchaseApproval {
     allProviders = [];
     providers = [];
     proveedoresTable = [];
+    proveedoresSelected = [] as Array<any>;
     productosServicios = [];
     participantesViaje = [];
     participantesCapacitacion = [];
@@ -72,6 +77,9 @@ export class NotesPendingPurchaseApproval {
     travelDepartureDate: string;
     travelReturnDate: string;
     trainingDate: string;
+
+    filesToUpload = [] as Array<any>;
+    fileIdCounter = 0;
 
     //FORMS
     formNota: FormGroup = new FormGroup({
@@ -86,7 +94,7 @@ export class NotesPendingPurchaseApproval {
         numberEvalprop: new FormControl(null, [Validators.maxLength(100)]),
         observations: new FormControl(null, []),
         travel: new FormControl(false, []),
-        training: new FormControl(false, []),
+        training: new FormControl(false, [])
     });
     formCapacitacion: FormGroup = new FormGroup({
         name: new FormControl(null, [Validators.required]),
@@ -106,9 +114,10 @@ export class NotesPendingPurchaseApproval {
         accommodation: new FormControl(null, [Validators.required]),
         details: new FormControl(null)
     });
+    formProvidersGrid: FormGroup = new FormGroup({});
 
     private workflowModel: any;
-    finalProviders: any;
+    finalProviders = [] as Array<any>;
 
     constructor(
         private providersService: ProvidersService,
@@ -147,17 +156,22 @@ export class NotesPendingPurchaseApproval {
             entityId: this.currentNote.id,
             actualStateId: this.currentNote.statusId
         };
-        //this.workflow.init(this.workflowModel);
+        this.workflow.filesToUpload();
+        this.workflow.setCustomValidations(true);
+        this.workflow.init(this.workflowModel);
     }
 
     workflowClick() {
-        this.workflow.updateRequestNote(this.currentNote);
+        //Validaciones
+        this.workflow.setCustomValidations(false);
+        this.uploaderProviders.uploadAll();
     }
 
 
     inicializar() {
         console.log(this.currentNote);
         this.uploaderConfig();
+        this.uploaderProviderConfig();
         this.travelFormShow = this.currentNote.travelSection;
         this.trainingFormShow = this.currentNote.trainingSection;
         this.providersAreaService.getAll().subscribe(d => {
@@ -218,6 +232,10 @@ export class NotesPendingPurchaseApproval {
         this.analiticasTable = this.currentNote.analytics;
         this.productosServicios = this.currentNote.productsServices;
         this.proveedoresTable = this.currentNote.providers;
+        this.proveedoresTable.forEach(prov => {
+            this.formProvidersGrid.addControl(`control${prov.providerId}`, new FormControl(null, Validators.required));
+        });
+        this.proveedoresSelected = this.proveedoresTable;
         if(this.currentNote.travelSection) {
             this.formViaje.patchValue({
                 destination: this.currentNote.travel.destination,
@@ -255,7 +273,8 @@ export class NotesPendingPurchaseApproval {
         //Disablear formularios
         this.formNota.disable();
         this.formCapacitacion.disable();
-        this.formViaje.disable()
+        this.formViaje.disable();
+        this.formNota.get('providers').enable();
     }
 
     change(event) {
@@ -333,6 +352,48 @@ export class NotesPendingPurchaseApproval {
         this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     }
 
+    uploaderProviderConfig(){
+        this.uploaderProviders = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+        });
+
+        this.uploaderProviders.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderProviderConfig();
+                    }
+                });
+                return;
+            }
+            let jsonResponse = JSON.parse(response);
+            this.filesToUpload[this.fileIdCounter].fileId = jsonResponse.data[0].id;
+            this.fileIdCounter++;
+            console.log(jsonResponse);
+            this.clearSelectedFile();
+        };
+        this.uploaderProviders.onCompleteAll = () => {
+            this.proveedoresSelected.forEach(prov => {
+                let search = this.filesToUpload.find(provFile => provFile.providerId == prov.providerId);
+                    this.finalProviders.push({
+                        fileDescription: null,
+                        fileId: search.fileId,
+                        providerDescription: prov.providerDescription,
+                        providerId: prov.providerId,
+                        ammount: this.formProvidersGrid.get(`control${prov.providerId}`).value
+                    });
+            });
+            this.currentNote.providersSelected = this.finalProviders;
+            this.workflow.updateRequestNote(this.currentNote);
+            this.workflow.filesUploaded();
+        };
+        this.uploaderProviders.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    }
+
     downloadFiles() {
         this.currentNote.attachments.forEach(file => {
             if(file.fileDescription) {
@@ -343,21 +404,78 @@ export class NotesPendingPurchaseApproval {
 
     //Proveedores
     agregarProveedor() {
-
+        if (this.formNota.controls.providers.value == null) {
+            return;
+        };
+        if(this.proveedoresSelected.find(prov => prov.providerId == this.formNota.controls.providers.value) != undefined) {
+            return;
+        }
+        let busqueda = this.providers.find(proveedor => proveedor.id == this.formNota.controls.providers.value);
+        this.proveedoresSelected.push({
+            providerId: busqueda.id,
+            providerDescription: busqueda.name,
+            fileId: null,
+            fileDescription: null,
+            ammount: null
+        });
+        this.proveedoresSelected = [...this.proveedoresSelected];
+        this.formProvidersGrid.addControl(`control${busqueda.id}`, new FormControl(null, Validators.required));
+        this.formNota.get('providers').setValue(null);
     }
 
     selectedFileProvider(providerId: number, event: any, i: number) {
         console.log(providerId);
         console.log(event);
-        console.log(i)
+        console.log(i);
+        let search = this.filesToUpload.find(file => file.providerId == providerId);
+        if(search == undefined) {
+            if(event.length == 1) {
+                let provData = {
+                    providerId: providerId,
+                    tableIndex: innerHeight,
+                    queueIndex: this.uploaderProviders.queue.length - 1,
+                    fileId: null
+                };
+                this.filesToUpload.push(provData);
+            }
+        } else {
+            if(event.length == 1) {
+                this.filesToUpload[search.queueIndex].tableIndex = i;
+                this.filesToUpload[search.queueIndex].queueIndex = this.uploaderProviders.queue.length - 1;
+            } else {
+                this.filesToUpload.splice(search.queueIndex ,1);
+                this.filesToUpload.forEach(file => {
+                    if(file.queueIndex > search.queueIndex) {
+                        file.queueIndex--;
+                    }
+                })
+            }
+        }
     }
 
     downloadProvFile(item: any) {
         console.log(item)
     }
 
-    eliminarProveedor(i: number) {
-        console.log(i)
+    eliminarProveedor(i: number, item: any) {
+        this.proveedoresSelected.splice(i, 1);
+        let search =  this.filesToUpload.find(file => file.tableIndex == i);
+        if (search != undefined) {
+            this.uploaderProviders.queue[search.queueIndex].remove();
+            this.filesToUpload.splice(search.queueIndex ,1);
+            this.filesToUpload.forEach(file => {
+                if(file.queueIndex > search.queueIndex) {
+                    file.queueIndex--;
+                }
+            });
+        };
+        this.filesToUpload.forEach(file => {
+            if(file.tableIndex > i) {
+                file.tableIndex--;
+            }
+        });
+        this.formProvidersGrid.removeControl(`control${item.providerId}`);
+        this.proveedoresSelected = [...this.proveedoresSelected];
     }
 
 }
