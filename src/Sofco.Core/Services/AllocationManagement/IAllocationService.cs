@@ -16,5 +16,6 @@ namespace Sofco.Core.Services.AllocationManagement
         IEnumerable<OptionPercentage> GetAllPercentages();
         ICollection<Employee> GetByEmployeesByAnalytic(int analyticId);
         Response<byte[]> AddMassive(AllocationMassiveAddModel model);
+        Response<String> GetSectorByEmployee(int employeeId, DateTime startDate, DateTime endDate);
     }
 }

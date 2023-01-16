@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +20,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
     {
         private readonly IEmployeeService employeeService;
         private readonly IUserService userService;
+        private readonly IAllocationService allocationService;
 
-        public EmployeeController(IEmployeeService employeeService, IUserService userService)
+        public EmployeeController(IEmployeeService employeeService, IUserService userService, IAllocationService allocationService)
         {
             this.employeeService = employeeService;
             this.userService = userService;
+            this.allocationService = allocationService;
         }
 
         [HttpGet]
@@ -121,8 +124,11 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpGet("{id}/sectorName")]
         public IActionResult GetSectorName(int id)
         {
-            var response = employeeService.GetSectorName(id);
-
+            var hoy00 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            var hoy23 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            hoy23 = hoy23.AddMonths(1);
+            hoy23 = hoy23.AddDays(-(hoy23.Day + 1));
+            var response = allocationService.GetSectorByEmployee(id, hoy00, hoy23);
             return this.CreateResponse(response);
         }
 
