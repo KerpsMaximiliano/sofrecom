@@ -48,7 +48,8 @@ namespace Sofco.Core.Models.RequestNote
                     FileId = p.FileId,
                     FileDescription = p.File?.FileName,
                     ProviderId = p.ProviderId,
-                    ProviderDescription = p.Provider?.Name
+                    ProviderDescription = p.Provider?.Name,
+                    Ammount = p.Price
                 }).ToList();
                 //ProviderSelectedId = note.Providers.FirstOrDefault(p => p.IsSelected)?.ProviderId;
             }

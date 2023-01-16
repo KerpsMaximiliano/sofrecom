@@ -55,7 +55,7 @@
                         <div class="form-group" [formGroup]="formProductoServicio">
                             <div class="col-sm-6">
                                 <label>Productos/Servicios/Material</label>
-                                <input type="text" class="form-control" formControlName="productService" [ngClass]="{'red-input-border' : (!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError }">
+                                <input type="text" class="form-control" maxlength="80" formControlName="productService" [ngClass]="{'red-input-border' : (!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError }">
                                 <span *ngIf="(!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError" style="color: red;">
                                     Debe ingresar un producto o servicio.
                                 </span>
@@ -93,7 +93,7 @@
                                 <tbody *ngFor="let item of getProductoServicio().controls; let i = index">
                                     <tr [formGroupName]="i">
                                         <td>
-                                            <input type="text" formControlName="productService" class="form-control">
+                                            <input type="text" maxlength="80" formControlName="productService" class="form-control">
                                             <span *ngIf="item.get('productService').value == '' || item.get('productService').value == null" style="color: red;">
                                                 No puede estar vacío
                                             </span>
