@@ -221,7 +221,7 @@ export class NotesPendingDAFApproval {
         });
         this.analiticasTable = this.currentNote.analytics;
         this.productosServicios = this.currentNote.productsServices;
-        this.proveedoresTable = this.currentNote.providers;
+        this.proveedoresTable = this.currentNote.providersSelected;
         if(this.currentNote.travelSection) {
             this.formViaje.patchValue({
                 destination: this.currentNote.travel.destination,
@@ -343,5 +343,9 @@ export class NotesPendingDAFApproval {
                 this.requestNoteService.downloadFile(file.fileId, 5, file.fileDescription);
             }
         })
+    }
+
+    downloadProvFile(item: any) {
+        this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 }

@@ -94,12 +94,17 @@
                             <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
                                 <thead>
                                     <tr>
-                                        <th class="font-13">Proveedor</th>
+                                        <th class="font-13">Nombre</th>
+                                        <th class="font-13">Presupuesto</th>
+                                        <th class="font-13">Monto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of proveedoresTable; let i = index">
                                         <td class="font-13">{{ item.providerDescription }} </td>
+                                        <td><button type="button" class="btn btn-success"
+                                            (click)="downloadProvFile(item)">Descargar</button></td>
+                                        <td class="font-13">{{item.ammount}}</td>
                                     </tr> 
                                 </tbody>
                             </table>

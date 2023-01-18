@@ -32,7 +32,7 @@ export class ProvidersComponent implements OnInit{
         { id: 1, text: "Activo" },
         { id: 2, text: "Inactivo" },
     ];
-    stateId: number = 1;
+    stateId: number = 0;
     businessName: string;
     areas = [];
     areaId: number;

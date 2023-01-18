@@ -197,6 +197,14 @@ export class NotesDraftComponent implements OnInit{
         });
         this.existingData();
         this.employeeService.getEveryone().subscribe(d => {
+            d.forEach(emp => {
+                if(emp.birthday != null) {
+                    let year = emp.birthday.split('-')[0];
+                    let month = emp.birthday.split('-')[1];
+                    let day = emp.birthday.split('-')[2];
+                    emp.birthday = `${day}/${month}/${year}`
+                }
+            });
             this.participants = d;
             d.forEach(user => {
                 if(user.isExternal == 0 && user.endDate == null) {

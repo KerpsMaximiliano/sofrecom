@@ -190,7 +190,15 @@ export class NotesAddComponent implements OnInit{
         });
 
         this.employeeService.getEveryone().subscribe(d => {
-            console.log(d)
+            console.log(d);
+            d.forEach(emp => {
+                if(emp.birthday != null) {
+                    let year = emp.birthday.split('-')[0];
+                    let month = emp.birthday.split('-')[1];
+                    let day = emp.birthday.split('-')[2];
+                    emp.birthday = `${day}/${month}/${year}`
+                }
+            });
             this.participants = d;
             d.forEach(user => {
                 if(user.isExternal == 0 && user.endDate == null) {
@@ -256,6 +264,7 @@ export class NotesAddComponent implements OnInit{
     }
 
     agregarParticipanteViaje() {
+        console.log(this.participanteViajeSeleccionado)
         if(this.formParticipanteViaje.invalid) {
             return;
         };
