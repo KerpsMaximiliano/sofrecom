@@ -25,6 +25,11 @@
 
     <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 4"></notes-pending-daf-approval>
 
+    <notes-pending-sap [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 33"></notes-pending-sap>
+
+    <notes-pending-merch-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 34"></notes-pending-merch-reception>
+
+    <notes-partial-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 35"></notes-partial-reception>
     <!---------->
     
     <!-- <notes-pending-supply-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 4"></notes-pending-supply-approval> -->

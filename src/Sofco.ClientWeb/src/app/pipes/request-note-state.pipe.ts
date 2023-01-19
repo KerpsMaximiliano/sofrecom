@@ -15,7 +15,7 @@ export class RequestNoteStatePipe implements PipeTransform {
         { id: 33, text: "Pendiente Generación SAP" },
         { id: 34, text: "Pendiente Recepción Mercadería" },
         { id: 35, text: "Recepción Parcial" },
-        { id: 11, text: "Cerrada" },
+        { id: 36, text: "Cerrada" },
         { id: 30, text: "Rechazada" }
     ];
 

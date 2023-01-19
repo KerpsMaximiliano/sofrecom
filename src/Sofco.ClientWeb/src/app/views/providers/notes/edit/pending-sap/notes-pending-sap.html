@@ -1,0 +1,309 @@
+<h1 *ngIf="currentNoteStatusDescription != null"> {{currentNoteStatusDescription}} - Último estado: </h1>
+<h1>Pendiente Generación SAP</h1>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12 row">
+            <div class="pull-left" style="margin-left: 2rem;">
+                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']"> 
+                    <i class="fa fa-arrow-left"></i>       Volver
+                </button>
+            </div>
+            <div class="btn-right">
+                <!-- <button class="btn btn-danger btn-outline dim" (click)="reject()">
+                    Rechazar       <i class="fa fa-times"></i>
+                </button>
+                <button class="btn btn-success btn-outline dim" (click)="approve()"> 
+                    Aprobar       <i class="fa fa-arrow-right"></i>
+                </button> -->
+                <div class="btn-right">
+                    <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow (click)="workflowClick()"></workflow>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <form class="form-horizontal" [formGroup]="formNota">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label text-left">Rubro: </label>
+                            <div class="col-sm-9">
+                                <div style="display: flex;">
+                                    <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
+                                    <div *ngIf="critical != null" style="flex-shrink: 1;">
+                                        <label class="col-xs-4 control-label text-left">Crítico: </label>
+                                        <div class="col-xs-8">
+                                            <input type="text" class="form-control" disabled [placeholder]="critical">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="productosServicios.length > 0">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th class="font-13">Producto/Servicio/Material</th>
+                                        <th class="font-13">Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let item of currentNote.productsServices">
+                                    <tr>
+                                        <th class="font-13">{{item.productService}}</th>
+                                        <th class="font-13">{{item.quantity}}</th>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group" *ngIf="analiticasTable.length > 0">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th class="font-13">Analítica</th>
+                                        <th class="font-13">% de asignación</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let item of currentNote.analytics">
+                                    <tr>
+                                        <td class="font-13">{{item.description}}</td>
+                                        <td class="font-13">{{item.asigned}}</td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label text-left">Duración General: </label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="description">
+                                <span *ngIf="(!formNota.get('description')?.valid && (formNota.get('description')?.touched || formNota.get('description')?.dirty) && descriptionError)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                                <span *ngIf="formNota.controls.description.errors?.maxlength" style="color: red;">
+                                    Máximo 1000 caracteres
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-1">
+                                <input type="checkbox" class="form-control w-2" formControlName="requiresPersonel">
+                            </div>
+                            <label class="col-xs-8 control-label text-left">Requiere personal trabajando en/por Sofrecom o en Cliente</label>
+                        </div>
+                        <div class="form-group" *ngIf="proveedoresTable.length > 0">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th class="font-13">Nombre</th>
+                                        <th class="font-13">Presupuesto</th>
+                                        <th class="font-13">Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of proveedoresTable; let i = index">
+                                        <td class="font-13">{{ item.providerDescription }} </td>
+                                        <td><button type="button" class="btn btn-success"
+                                            (click)="downloadProvFile(item)">Descargar</button></td>
+                                        <td class="font-13">{{item.ammount}}</td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-1">
+                                <input type="checkbox" class="form-control w-2" placeholder="Checkbox" formControlName="evaluationProposal">
+                            </div>
+                            <label class="col-xs-8 control-label text-left">Previsto en el presupuesto / Evaluación de propuesta</label>
+                        </div>
+                        <div class="form-group" *ngIf="formNota.controls.evaluationProposal.value">
+                            <label class="col-sm-3 control-label text-left">Nro Evalprop: </label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" formControlName="numberEvalprop">
+                                <span *ngIf="formNota.controls.numberEvalprop.errors?.maxlength" style="color: red;">
+                                    Máximo 100 caracteres
+                                </span>
+                                <span *ngIf="!formNota.controls.numberEvalprop.errors?.maxlength && !formNota.controls.numberEvalprop.valid && (formNota.get('numberEvalprop')?.touched || formNota.get('numberEvalprop')?.dirty)" style="color: red;">
+                                    El campo es requerido
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label text-left">Observaciones: </label>
+                            <div class="col-sm-9">
+                                <textarea cols="30" rows="5" class="form-control" formControlName="observations"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-6" style="display: flex; flex-direction: row;">
+                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem; margin-right: 0.4rem;" (change)="openTravelModal()" formControlName="travel">
+                                <label class="control-label text-left" style="min-width: fit-content; margin-right: 5rem;">Apartado de Viajes</label>
+                            </div>
+                            <div class="col-xs-5" style="display: flex; flex-direction: row;">
+                                <input type="checkbox" class="form-control w-2" style="margin-left: 4rem; margin-right: 0.4rem;" (change)="openTrainingModal()" formControlName="training">
+                                <label class="control-label text-left" style="min-width: fit-content;">Apartado de Capacitación</label>
+                            </div>
+                        </div>
+                        <hr>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}} archivos subidos</p></h3>
+            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple/>
+    
+            <div class="uploader-margin-top">
+                <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
+                <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                </div>
+    
+                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
+                </button>
+                
+                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+                </button>
+            </div>
+
+            <div style="width: 100%; margin-top: 4rem">
+                <button type="button" class="btn btn-success btn-s" (click)="downloadFiles()">Descargar archivos adjuntos</button>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="travelFormShow">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h1>Ficha del Viaje</h1>
+                    <div class="form-group">
+                        <h3 style="margin-left: 8rem;" class="mt-3">Pasajeros</h3>
+                    </div>
+                    <form class="form-horizontal mt-3" [formGroup]="formViaje">
+                        <div class="form-group" *ngIf="participantesViaje.length > 0">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th class="font-13">Nombre</th>
+                                        <th class="font-13">Fecha de Nacimiento</th>
+                                        <th class="font-13">CUIT/CUIL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of participantesViaje; let i = index">
+                                        <td class="font-13">{{ item.name }} </td>
+                                        <td class="font-13">{{ item.birthday }} </td>
+                                        <td class="font-13">{{ item.cuil }} </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 text-left">Fecha de
+                                Salida</label>
+                            <div class="col-sm-4">
+                                <input [value]="travelDepartureDate" disabled class="form-control">
+                            </div>
+                            <label class="control-label col-sm-2">Fecha de Regreso</label>
+                            <div class="col-sm-4">
+                                <input [value]="travelReturnDate" disabled class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Ciudad del destino</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="destination">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Medio de transporte</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="transportation">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Alojamiento</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="accommodation">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Detalle del intinerario</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" cols="30" rows="5" formControlName="details"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row" *ngIf="trainingFormShow">
+        <div class="col-sm-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h1 class="text-left">Datos de la Capacitación</h1>
+                    <form class="form-horizontal mt-3" [formGroup]="formCapacitacion">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Nombre del curso</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Tema de la capacitación</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="subject">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Lugar</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="location">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Fecha de la capacitación</label>
+                            <div class="col-sm-9">
+                                <date-picker [(date)]="trainingDate"></date-picker>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Duración</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" formControlName="duration">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label text-left">Monto aproximado del curso</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control" formControlName="ammount">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <h3 style="margin-left: 8rem;">Participantes</h3>
+                        </div>
+                        <div class="form-group" *ngIf="participantesCapacitacion.length > 0">
+                            <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Sector</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of participantesCapacitacion; let i = index">
+                                        <td>{{ item.data.name }} </td>
+                                        <td>{{ item.sector }} </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>

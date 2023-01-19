@@ -28,11 +28,14 @@ import { NotesAddComponent } from "./notes/add/notes-add";
 import { NotesApproved } from "./notes/edit/approved/notes-approved";
 import { NotesDraftComponent } from "./notes/edit/draft/notes-draft";
 import { NotesEditComponent } from "./notes/edit/notes-edit";
+import { NotesPartialReception } from "./notes/edit/partial-reception/notes-partial-reception";
 import { NotesPendingApprovalManagementAnalytic } from "./notes/edit/pending-approval-management-analytic/notes-pending-approval-management-analytic";
 import { NotesPendingDAFApproval } from "./notes/edit/pending-daf-approval/notes-pending-daf-approval";
 import { NotesPendingGAFProcessing } from "./notes/edit/pending-gaf-processing/notes-pending-gaf-processing";
 import { NotesPendingManagementBillApproval } from "./notes/edit/pending-management-bill-approval/notes-pending-management-bill-approval";
+import { NotesPendingMerchReception } from "./notes/edit/pending-merch-reception/notes-pending-merch-reception";
 import { NotesPendingPurchaseApproval } from "./notes/edit/pending-purchase-approval/notes-pending-purchase-approval";
+import { NotesPendingSAP } from "./notes/edit/pending-sap/notes-pending-sap";
 import { NotesPendingSupplyApproval } from "./notes/edit/pending-supply-approval/notes-pending-supply-approval";
 import { NotesPendingSupplyRevision } from "./notes/edit/pending-supply-revision/notes-pending-supply-revision";
 import { NotesPurchasingSector } from "./notes/edit/purchasing-sector/notes-purchasing-sector";
@@ -81,7 +84,10 @@ import { PurchaseOrdersNoAccessComponent } from "./purchase-orders/no-access/pur
         PurchaseOrdersPendingMerchandiseReception,
         PurchaseOrdersNew,
         NotesPurchasingSector,
-        NotesPendingPurchaseApproval
+        NotesPendingPurchaseApproval,
+        NotesPendingSAP,
+        NotesPendingMerchReception,
+        NotesPartialReception
     ],
     imports: [
         CommonModule,
