@@ -27,6 +27,8 @@ export class NotesPartialReception {
 
     @Input() currentNote;
     @Input() currentNoteStatusDescription;
+    @Input() closed: boolean;
+    @Input() rejected: boolean;
     uploadedFilesId = [];
     requestNoteId;
 

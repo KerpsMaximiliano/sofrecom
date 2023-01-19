@@ -1,4 +1,5 @@
-<h1 *ngIf="currentNoteStatusDescription != null"> {{currentNoteStatusDescription}} - Último estado: </h1>
+<h1 *ngIf="closed"> Cerrada - Último estado: </h1>
+<h1 *ngIf="rejected"> Rechazada - Último estado: </h1>
 <h1>Pendiente Recepción Mercadería</h1>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
@@ -151,9 +152,9 @@
 
         <div class="col-sm-3">
             <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}} archivos subidos</p></h3>
-            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple/>
+            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple [disabled]="closed || rejected"/>
     
-            <div class="uploader-margin-top">
+            <div class="uploader-margin-top" *ngIf="!closed && !rejected">
                 <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
                 <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>

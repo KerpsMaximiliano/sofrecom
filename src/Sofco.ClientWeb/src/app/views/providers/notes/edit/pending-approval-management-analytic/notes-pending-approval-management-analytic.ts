@@ -25,6 +25,8 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
 
     @Input() currentNote;
     @Input() currentNoteStatusDescription;
+    @Input() closed: boolean;
+    @Input() rejected: boolean;
     uploadedFilesId = [];
     requestNoteId;
 
@@ -257,7 +259,7 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
         //Disablear formularios
         this.formNota.disable();
         this.formCapacitacion.disable();
-        this.formViaje.disable()
+        this.formViaje.disable();
     }
 
     change(event) {

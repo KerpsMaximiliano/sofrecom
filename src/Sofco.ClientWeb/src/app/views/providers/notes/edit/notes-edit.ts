@@ -37,6 +37,9 @@ export class NotesEditComponent implements OnInit{
     currentNote;
     currentNoteStatusDescription;
     showEdit = false;
+    lastStatusId: number = 0;
+    closed: boolean = false;
+    rejected: boolean = false;
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -87,7 +90,6 @@ export class NotesEditComponent implements OnInit{
                 if(this.requestNoteService.getMode() == "View" && results[0].hasReadPermissions == false) {
                     this.router.navigate(['/providers/notes/no-access']);
                 };
-                this.showEdit = true;
                 results[1].forEach(history => {
                     let model = {
                         createdDate: history.createdDate,
@@ -99,6 +101,12 @@ export class NotesEditComponent implements OnInit{
                     this.histories.push(model);
                     this.histories = [...this.histories]
                 });
+                if(this.currentNote.statusId == 36) {
+                    console.log(this.histories);
+                    this.closed = true;
+                    this.lastStatusId = this.histories[this.histories.length - 1].statusFrom;
+                };
+                this.showEdit = true;
             }
         })
     }

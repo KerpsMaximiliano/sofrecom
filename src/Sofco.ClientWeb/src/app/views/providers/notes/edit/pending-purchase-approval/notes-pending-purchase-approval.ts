@@ -24,6 +24,8 @@ import { FileUploader } from "ng2-file-upload";
 export class NotesPendingPurchaseApproval {
     @Input() currentNote;
     @Input() currentNoteStatusDescription;
+    @Input() closed: boolean;
+    @Input() rejected: boolean;
     uploadedFilesId = [];
     requestNoteId;
 
@@ -283,7 +285,9 @@ export class NotesPendingPurchaseApproval {
         this.formNota.disable();
         this.formCapacitacion.disable();
         this.formViaje.disable();
-        this.formNota.get('providers').enable();
+        if(!this.closed && !this.rejected) {
+            this.formNota.get('providers').enable();
+        }
     }
 
     change(event) {

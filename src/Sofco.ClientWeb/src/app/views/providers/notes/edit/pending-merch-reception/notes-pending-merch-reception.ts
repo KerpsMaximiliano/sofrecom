@@ -27,6 +27,8 @@ export class NotesPendingMerchReception {
 
     @Input() currentNote;
     @Input() currentNoteStatusDescription;
+    @Input() closed: boolean;
+    @Input() rejected: boolean;
     uploadedFilesId = [];
     requestNoteId;
 
