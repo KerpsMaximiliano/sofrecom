@@ -417,19 +417,22 @@ namespace Sofco.Service.Implementations.Workflow
                 }
                 else if (entity is Sofco.Domain.Models.RequestNote.RequestNote note)
                 {
-                    var analytics = unitOfWork.RequestNoteAnalitycRepository.GetByRequestNoteId(note.Id).ToList();
-                    if (analytics != null)
+                    if (transition.ActualWorkflowState.Name.Equals("Pendiente Aprobación Gerente Analíticas"))
                     {
-                        hasAccess = analytics.Any(a => a.Analytic.ManagerId == currentUser.Id);
-
-                        /*
-                        var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundApprovall);
-
-                        if (delegations.Any(x => x.UserId == analytic.ManagerId.Value))
+                        var analytics = unitOfWork.RequestNoteAnalitycRepository.GetByRequestNoteId(note.Id).ToList();
+                        if (analytics != null)
                         {
-                            hasAccess = true;
-                        }*/
+                            hasAccess = analytics.Any(a => a.Analytic.ManagerId == currentUser.Id);
 
+                            /*
+                            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundApprovall);
+
+                            if (delegations.Any(x => x.UserId == analytic.ManagerId.Value))
+                            {
+                                hasAccess = true;
+                            }*/
+
+                        }
                     }
                 }
             }

@@ -171,6 +171,8 @@ namespace Sofco.Core.Models.RequestNote
                 hasPermission = permissions.Any(p => p == "NP_APROBACION_GERE") && Analytics != null && Analytics.Any(a => a.ManagerId == userId);
             else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionDAF) // case RequestNoteStatus.PendienteAprobaciónDAF:
                 hasPermission = permissions.Any(p => p == "NP_APROBACION_DAF");
+            else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionCompras)
+                hasPermission = permissions.Any(p => p == "NP_APROBACION_COMPRA");
             else if (new List<int>() {
                     _settings.WorkflowStatusNPPendienteAprobacionSAP,
                     _settings.WorkflowStatusNPPendienteRecepcionMerc,
