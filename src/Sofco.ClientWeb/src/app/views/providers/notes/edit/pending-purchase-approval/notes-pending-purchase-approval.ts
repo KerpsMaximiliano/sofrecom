@@ -164,18 +164,25 @@ export class NotesPendingPurchaseApproval {
         this.workflow.init(this.workflowModel);
     }
 
-    workflowClick() {
-        this.markFormGroupTouched(this.formProvidersGrid);
-        if(!this.formProvidersGrid.valid) {
-            this.messageService.showMessage("Cada proveedor debe tener un monto", 2);
-            return;
-        };
-        if(this.proveedoresSelected.length != this.filesToUpload.length) {
-            this.messageService.showMessage("Cada proveedor debe tener un presupuesto cargado", 2);
-            return;
-        };
-        this.workflow.setCustomValidations(false);
-        this.uploaderProviders.uploadAll();
+    workflowClick(event: any) {
+        console.log(event.target.innerText)
+        if(event.target.innerText == "RECHAZAR ") {
+            this.workflow.setCustomValidations(false);
+        } else {
+            this.markFormGroupTouched(this.formProvidersGrid);
+            if(!this.formProvidersGrid.valid) {
+                this.messageService.showMessage("Cada proveedor debe tener un monto", 2);
+                this.workflow.setCustomValidations(true);
+                return;
+            };
+            if(this.proveedoresSelected.length != this.filesToUpload.length) {
+                this.messageService.showMessage("Cada proveedor debe tener un presupuesto cargado", 2);
+                this.workflow.setCustomValidations(true);
+                return;
+            };
+            this.workflow.setCustomValidations(false);
+            this.uploaderProviders.uploadAll();
+        }
     }
 
 

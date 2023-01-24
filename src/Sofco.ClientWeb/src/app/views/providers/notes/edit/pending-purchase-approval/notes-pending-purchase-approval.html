@@ -17,7 +17,7 @@
                     Aprobar       <i class="fa fa-arrow-right"></i>
                 </button> -->
                 <div class="btn-right">
-                    <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow (click)="workflowClick()"></workflow>
+                    <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow (click)="workflowClick($event)"></workflow>
                 </div>
             </div>
         </div>

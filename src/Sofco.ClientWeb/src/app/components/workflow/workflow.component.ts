@@ -100,7 +100,9 @@ export class WorkflowComponent implements OnDestroy {
     }
 
     save(item){
+        console.log(item)
         if(this.customValidation) {
+            this.messageService.closeLoading();
             return;
         };
         if(this.awaitFiles) {
