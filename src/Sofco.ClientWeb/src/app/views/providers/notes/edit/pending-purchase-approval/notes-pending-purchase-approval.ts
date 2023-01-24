@@ -165,11 +165,16 @@ export class NotesPendingPurchaseApproval {
     }
 
     workflowClick(event: any) {
-        console.log(event.target.innerText)
+        console.log(event.target.innerText);
         if(event.target.innerText == "RECHAZAR ") {
             this.workflow.setCustomValidations(false);
         } else {
             this.markFormGroupTouched(this.formProvidersGrid);
+            if(this.proveedoresSelected.length == 0) {
+                this.messageService.showMessage("Debe seleccionar al menos un proveedor", 2);
+                this.workflow.setCustomValidations(true);
+                return;
+            }
             if(!this.formProvidersGrid.valid) {
                 this.messageService.showMessage("Cada proveedor debe tener un monto", 2);
                 this.workflow.setCustomValidations(true);
