@@ -167,12 +167,20 @@ export class NotesPendingPurchaseApproval {
     workflowClick(event: any) {
         console.log(event.target.innerText);
         if(event.target.innerText == "RECHAZAR ") {
+            this.workflow.updateRequestNote(this.currentNote);
             this.workflow.setCustomValidations(false);
-        } else {
+            this.workflow.filesUploaded();
+        } else if(event.target.innerText == "ENVIAR A DAF ") {
             this.markFormGroupTouched(this.formProvidersGrid);
             if(this.proveedoresSelected.length == 0) {
                 this.messageService.showMessage("Debe seleccionar al menos un proveedor", 2);
                 this.workflow.setCustomValidations(true);
+                const event = new KeyboardEvent("keydown",{
+                    'key': 'Escape'
+                });
+                setTimeout(() => {
+                    document.getElementById('workflow').dispatchEvent(event);
+                }, 1000);
                 return;
             }
             if(!this.formProvidersGrid.valid) {
