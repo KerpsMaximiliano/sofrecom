@@ -399,9 +399,9 @@ namespace Sofco.Service.Implementations.RequestNote
             }
             response.Data = datos;
             if (new List<int>() {
-                settings.WorkflowStatusNPPendienteAprobacionGerente,
-                settings.WorkflowStatusNPPendienteAprobacionCompras,
-                settings.WorkflowStatusNPPendienteAprobacionSAP
+                settings.WorkflowStatusNPPendienteAprobacionGerente//,
+                //settings.WorkflowStatusNPPendienteAprobacionCompras,
+                //settings.WorkflowStatusNPPendienteAprobacionSAP
                 //otros?
                 }
             .Contains(note.StatusId))
