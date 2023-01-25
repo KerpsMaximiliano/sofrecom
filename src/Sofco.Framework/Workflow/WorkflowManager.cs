@@ -7,6 +7,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.Validations.Workflow;
 using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.AdvancementAndRefund;
+using Sofco.Domain.Models.RequestNote;
 
 namespace Sofco.Framework.Workflow
 {
@@ -25,7 +26,7 @@ namespace Sofco.Framework.Workflow
         {
             var data = unitOfWork.RefundRepository.GetAdvancementsAndRefundsByRefundId(entityId);
 
-            if(data.Item2.Any()) CloseAdvancements(data.Item2);
+            if (data.Item2.Any()) CloseAdvancements(data.Item2);
 
             CloseRefunds(data.Item1);
         }
@@ -66,6 +67,40 @@ namespace Sofco.Framework.Workflow
             }
 
             unitOfWork.Save();
+        }
+
+        public int? CloseRequestNote(RequestNote note)
+        {
+            return (note.StatusId != appSetting.WorkflowStatusNPCerrado) ? appSetting.WorkflowStatusNPCerrado : (int?)null;
+            /*if (note.StatusId != appSetting.WorkflowStatusNPCerrado)
+            {
+                note.StatusId = appSetting.WorkflowStatusNPCerrado;
+                note.InWorkflowProcess = false;
+
+                unitOfWork.WorkflowRepository.UpdateStatus(note);
+                unitOfWork.WorkflowRepository.UpdateInWorkflowProcess(note);
+
+
+                unitOfWork.Save();
+            }*/
+        }
+        public int? PartialReceptionRequestNote(RequestNote note)
+        {
+            return (note.StatusId != appSetting.WorkflowStatusNPRecepcionParcial) ? appSetting.WorkflowStatusNPRecepcionParcial : (int?)null;
+
+            /*if (note.StatusId != appSetting.WorkflowStatusNPRecepcionParcial)
+            {
+                note.StatusId = appSetting.WorkflowStatusNPRecepcionParcial;
+
+                unitOfWork.WorkflowRepository.UpdateStatus(note);
+
+                unitOfWork.Save();
+            }*/
+        }
+        public int? PendingReceptionRequestNote(RequestNote note, BuyOrder order)
+        {
+            return (order.StatusId == appSetting.WorkflowStatusBOPendienteRecepcionMerc && note.StatusId != appSetting.WorkflowStatusNPPendienteRecepcionMerc) ? appSetting.WorkflowStatusNPPendienteRecepcionMerc : (int?)null;
+
         }
 
         public void CloseEntity(WorkflowEntity entity)

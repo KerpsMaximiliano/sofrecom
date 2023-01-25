@@ -270,6 +270,9 @@
     <li [ngClass]="{active: activeRoute('notes')}" *ngIf="menuService.hasModule('NOPE')"><a
       [routerLink]="['/providers/notes']">Notas de Pedido</a>
     </li>
+    <li [ngClass]="{active: activeRoute('purchase-orders')}"><a
+      [routerLink]="['/providers/purchase-orders']">Ordenes de Compra</a>
+    </li>
   </ul>
 </li>
       

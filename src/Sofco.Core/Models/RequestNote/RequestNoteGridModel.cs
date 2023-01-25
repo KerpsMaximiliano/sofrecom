@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Sofco.Common.Settings;
 using Sofco.Domain.RequestNoteStates;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,12 @@ namespace Sofco.Core.Models.RequestNote
     
     public class RequestNoteGridModel
     {
+
+        private readonly AppSetting _settings;
         public RequestNoteGridModel() { }
-        public RequestNoteGridModel(Domain.Models.RequestNote.RequestNote note, List<string> permissions, int userId)
+        public RequestNoteGridModel(Domain.Models.RequestNote.RequestNote note, List<string> permissions, int userId, AppSetting settings)
         {
+            _settings = settings;
             Id = note.Id;
             
             Description = note.Description;
@@ -34,46 +38,23 @@ namespace Sofco.Core.Models.RequestNote
         }
         private bool ValidateEditPermissions(List<string> permissions, int userId)
         {
-            var hasPermission = false;
-            switch ((RequestNoteStates)StatusId)
-            {
-                case RequestNoteStates.Borrador:
-                    hasPermission = CreationUserId == userId;
-                    break;
-                case RequestNoteStates.PendienteRevisiónAbastecimiento:
-                    hasPermission = permissions.Any(p => p == "NP_REVISION_ABAS");
-                    break;
-                case RequestNoteStates.PendienteAprobaciónGerentesAnalítica:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_GERE") && AnalyticsManagers.Any(a=> a == userId);
-                    break;
-                case RequestNoteStates.PendienteAprobaciónAbastecimiento:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_ABAS");
-                    break;
-                case RequestNoteStates.PendienteAprobaciónDAF:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_DAF");
-                    break;
-                case RequestNoteStates.Aprobada:
-                    hasPermission = permissions.Any(p => p == "NP_ENVIO_PROV_ABAS");
-                    break;
-                case RequestNoteStates.SolicitadaAProveedor:
-                    hasPermission = permissions.Any(p => p == "NP_RECEP_ABAS");
-                    break;
-                case RequestNoteStates.RecibidoConforme:
-                    hasPermission = permissions.Any(p => p == "NP_CONFORME_ABAS");
-                    break;
-                case RequestNoteStates.FacturaPendienteAprobaciónGerente:
-                    hasPermission = permissions.Any(p => p == "NP_FAC_APROB_GERENTE") && AnalyticsManagers.Any(a => a == userId);
-                    break;
-                case RequestNoteStates.PendienteProcesarGAF:
-                    hasPermission = permissions.Any(p => p == "NP_PROCESAR_GAF");
-                    break;
-                case RequestNoteStates.Rechazada:
-                    break;
-                case RequestNoteStates.Cerrada:
-                    break;
-                default:
-                    break;
-            }
+            var hasPermission = CreationUserId == userId; //Si es suya, siempre la puede ver
+            if (hasPermission || StatusId == _settings.WorkflowStatusNPBorrador)
+                return hasPermission;
+
+            if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionGerente) //case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
+                hasPermission = hasPermission || (permissions.Any(p => p == "NP_APROBACION_GERE") && AnalyticsManagers.Any(a => a == userId));
+            else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionDAF) // case RequestNoteStatus.PendienteAprobaciónDAF:
+                hasPermission = permissions.Any(p => p == "NP_APROBACION_DAF");
+            else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionCompras) // case RequestNoteStatus.PendienteAprobaciónDAF:
+                hasPermission = permissions.Any(p => p == "NP_APROBACION_COMPRA");
+            else if (new List<int>() {
+                    _settings.WorkflowStatusNPPendienteAprobacionSAP,
+                    _settings.WorkflowStatusNPPendienteRecepcionMerc,
+                    _settings.WorkflowStatusNPRecepcionParcial
+            }.Contains(StatusId))
+                hasPermission = permissions.Any(p => p == "NP_CERRAR");
+
             return hasPermission;
         }
         public int? Id { get; set; }

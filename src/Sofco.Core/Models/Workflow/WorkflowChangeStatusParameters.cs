@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Sofco.Core.Models.RequestNote;
+using System.Collections.Generic;
 
 namespace Sofco.Core.Models.Workflow
 {
@@ -18,5 +19,17 @@ namespace Sofco.Core.Models.Workflow
         public string Type { get; set; }
 
         public string UserApplicantName { get; set; }
+    }
+
+    public class WorkflowChangeRequestNoteParameters : WorkflowChangeStatusParameters
+    {
+        public RequestNoteModel RequestNote { get; set; }
+    }
+
+    public class WorkflowChangeBuyOrderParameters : WorkflowChangeStatusParameters
+    {
+        public BuyOrder.BuyOrderModel BuyOrder { get; set; }
+
+        public int? NextStateIdRequestNote { get; set; }
     }
 }

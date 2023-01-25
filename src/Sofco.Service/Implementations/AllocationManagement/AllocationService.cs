@@ -685,5 +685,28 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
             unitOfWork.AllocationRepository.Insert(allocation);
         }
+
+
+        public Response<String> GetSectorByEmployee(int employeeId, DateTime startDate, DateTime endDate)
+        {
+            var response = new Response<string>();
+
+            var allocations = unitOfWork.AllocationRepository.GetAllocationsBetweenDays(employeeId, startDate, endDate);
+
+            string sector = "";
+            decimal perc = 0;
+            allocations.ToList().ForEach(x =>
+            {
+                if (string.IsNullOrWhiteSpace(sector) || perc < x.Percentage)
+                {
+                    perc = x.Percentage;
+                    sector = x.Analytic.Sector.Text;
+                }
+                
+            });
+            response.Data = sector;
+            return response;
+        }
+
     }
 }

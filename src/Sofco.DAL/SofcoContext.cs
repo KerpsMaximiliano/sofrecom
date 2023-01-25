@@ -202,6 +202,15 @@ namespace Sofco.DAL
         public DbSet<RequestNoteTrainingEmployee> RequestNoteTrainingEmployee { get; set; }
         public DbSet<RequestNoteTravel> RequestNoteTravel { get; set; }
         public DbSet<RequestNoteTravelEmployee> RequestNoteTravelEmployee { get; set; }
+        public DbSet<RequestNoteProviderSugg> RequestNoteProviderSugg { get; set; }
+
+        //buy order (de request note)
+
+        public DbSet<BuyOrder> BuyOrders { get; set; }
+        public DbSet<BuyOrderHistory> BuyOrderHistories { get; set; }
+        public DbSet<BuyOrderInvoice> BuyOrderInvoices { get; set; }
+        public DbSet<BuyOrderInvoiceProductService> BuyOrderInvoiceProductServices { get; set; }
+        public DbSet<BuyOrderProductService> BuyOrderProductServices { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

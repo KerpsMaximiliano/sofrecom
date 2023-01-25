@@ -465,4 +465,20 @@ Recursos:&lt;br/&gt;
 {0} &lt;br/&gt;
 Puede acceder a los datos del mismo desde el siguiente &lt;a href='{1}' target='_blank'&gt;link&lt;/a&gt;</value>
   </data>
+  <data name="WorkflowNotificationBuyOrder" xml:space="preserve">
+    <value>La Orden de Compra {3} (&lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;) cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. </value>
+  </data>
+  <data name="WorkflowNotificationBuyOrderReject" xml:space="preserve">
+    <value>La Orden de Compra {4} (&lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;) cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. 
+&lt;/br&gt;&lt;/br&gt;
+Motivo de rechazo: {3}</value>
+  </data>
+  <data name="WorkflowNotificationRequestNote" xml:space="preserve">
+    <value>La Nota de Pedido {3} (&lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;) cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. </value>
+  </data>
+  <data name="WorkflowNotificationRequestNoteReject" xml:space="preserve">
+    <value>La Nota de Pedido {4} (&lt;a href='{0}' target='_blank'&gt;link&lt;/a&gt;) cambió del estado &lt;strong&gt;{1}&lt;/strong&gt; al estado &lt;strong&gt;{2}&lt;/strong&gt;. 
+&lt;/br&gt;&lt;/br&gt;
+Motivo de rechazo: {3}</value>
+  </data>
 </root>

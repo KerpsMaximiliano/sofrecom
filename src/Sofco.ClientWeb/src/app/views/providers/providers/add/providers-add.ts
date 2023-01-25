@@ -19,7 +19,7 @@ export class ProvidersAddComponent implements OnInit{
         { id: 1, description: "Inscripto en régimen local General" },
         { id: 2, description: "Inscripto en régimen local simplificado" },
         { id: 3, description: "Inscripto Convenio Multilateral" },
-        { id: 4, description: "Extento" },
+        { id: 4, description: "Excento" },
         { id: 5, description: "No aplica" }
     ];
     IVAConditions = [

@@ -37,6 +37,9 @@ export class NotesEditComponent implements OnInit{
     currentNote;
     currentNoteStatusDescription;
     showEdit = false;
+    lastStatusId: number = 0;
+    closed: boolean = false;
+    rejected: boolean = false;
 
     @ViewChild('commentsModal') commentsModal;
 
@@ -71,33 +74,39 @@ export class NotesEditComponent implements OnInit{
                 }
                 this.currentNote = results[0].data;
                 this.estado = this.currentNote.statusId;
-                if(this.estado > 10) {
-                    this.requestNoteService.setMode("View");
-                    this.currentNoteStatusDescription = (this.estado == 11) ? "Rechazada" : "Cerrada"
-                    this.estadoSeleccionado = results[1][results[1].length - 1].statusFromId
-                } else {
-                    this.estadoSeleccionado = this.estado;
-                    this.currentNoteStatusDescription = null;
-                    
-                };
+                // if(this.estado > 10) {
+                //     this.requestNoteService.setMode("View");
+                //     this.currentNoteStatusDescription = (this.estado == 11) ? "Rechazada" : "Cerrada"
+                //     this.estadoSeleccionado = results[1][results[1].length - 1].statusFromId
+                // } else {
+                //     this.estadoSeleccionado = this.estado;
+                //     this.currentNoteStatusDescription = null;
+                // };
+                this.estadoSeleccionado = this.estado;
+                this.currentNoteStatusDescription = null;
                 if(this.requestNoteService.getMode() == "Edit" && results[0].hasEditPermissions == false) {
                     this.router.navigate(['/providers/notes/no-access']);
                 };
                 if(this.requestNoteService.getMode() == "View" && results[0].hasReadPermissions == false) {
                     this.router.navigate(['/providers/notes/no-access']);
                 };
-                this.showEdit = true;
                 results[1].forEach(history => {
                     let model = {
                         createdDate: history.createdDate,
                         userName: history.userName,
-                        statusFrom: this.states[history.statusFromId],
-                        statusTo: this.states[history.statusToId],
+                        statusFrom: history.statusFromId,
+                        statusTo: history.statusToId,
                         comment: history.comment
                     }
                     this.histories.push(model);
                     this.histories = [...this.histories]
                 });
+                if(this.currentNote.statusId == 36) {
+                    console.log(this.histories);
+                    this.closed = true;
+                    this.lastStatusId = this.histories[this.histories.length - 1].statusFrom;
+                };
+                this.showEdit = true;
             }
         })
     }

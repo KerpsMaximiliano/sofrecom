@@ -21,7 +21,7 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         {
             return context.Allocations
                 .Where(x => x.EmployeeId == employeeId && x.StartDate >= startDate && x.StartDate <= endDate)
-                .Include(x => x.Analytic)
+                .Include(x => x.Analytic).ThenInclude(x => x.Sector)
                 .Include(x => x.Employee)
                 .OrderBy(x => x.AnalyticId).ThenBy(x => x.StartDate)
                 .ToList();

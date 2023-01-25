@@ -17,25 +17,62 @@
 </div>
 
 <div *ngIf="showEdit">
-    <notes-draft [currentNote]="currentNote" *ngIf="estadoSeleccionado == 1"></notes-draft>
+    <notes-draft [currentNote]="currentNote" *ngIf="estadoSeleccionado == 8"></notes-draft>
 
-    <notes-pending-supply-revision [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 2"></notes-pending-supply-revision>
+    <notes-pending-approval-management-analytic [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 29"></notes-pending-approval-management-analytic>
 
-    <notes-pending-approval-management-analytic [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 3"></notes-pending-approval-management-analytic>
+    <notes-pending-purchase-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 31"></notes-pending-purchase-approval>
+
+    <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 4"></notes-pending-daf-approval>
+
+    <notes-pending-sap [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 33"></notes-pending-sap>
+
+    <notes-pending-merch-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 34"></notes-pending-merch-reception>
+
+    <notes-partial-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 35"></notes-partial-reception>
+
+    <div *ngIf="estadoSeleccionado == 36">
+        <notes-pending-approval-management-analytic [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 29"></notes-pending-approval-management-analytic>
+
+        <notes-pending-purchase-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 31"></notes-pending-purchase-approval>
+
+        <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 4"></notes-pending-daf-approval>
+
+        <notes-pending-sap [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 33"></notes-pending-sap>
+
+        <notes-pending-merch-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 34"></notes-pending-merch-reception>
+
+        <notes-partial-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 35"></notes-partial-reception>
+    </div>
+    <!---------->
     
-    <notes-pending-supply-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 4"></notes-pending-supply-approval>
+    <!-- <notes-pending-supply-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 4"></notes-pending-supply-approval> -->
+    <div *ngIf="false">
+        <notes-pending-supply-revision [currentNote]="currentNote"
+            [currentNoteStatusDescription]="currentNoteStatusDescription"
+            *ngIf="estadoSeleccionado == 198"></notes-pending-supply-revision>
     
-    <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 5"></notes-pending-daf-approval>
+        <notes-purchasing-sector [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription"
+            *ngIf="estadoSeleccionado == 103"></notes-purchasing-sector>
     
-    <notes-approved [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 6"></notes-approved>
+        <notes-approved [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription"
+            *ngIf="estadoSeleccionado == 106"></notes-approved>
     
-    <notes-requested-provider [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 7"></notes-requested-provider>
+        <notes-requested-provider [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription"
+            *ngIf="estadoSeleccionado == 107"></notes-requested-provider>
     
-    <notes-received-conformable [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 8"></notes-received-conformable>
+        <notes-received-conformable [currentNote]="currentNote"
+            [currentNoteStatusDescription]="currentNoteStatusDescription"
+            *ngIf="estadoSeleccionado == 108"></notes-received-conformable>
     
-    <notes-pending-management-bill-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 9"></notes-pending-management-bill-approval>
+        <notes-pending-management-bill-approval [currentNote]="currentNote"
+            [currentNoteStatusDescription]="currentNoteStatusDescription"
+            *ngIf="estadoSeleccionado == 109"></notes-pending-management-bill-approval>
     
-    <notes-pending-gaf-processing [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" *ngIf="estadoSeleccionado == 10"></notes-pending-gaf-processing>
+        <notes-pending-gaf-processing [currentNote]="currentNote"
+            [currentNoteStatusDescription]="currentNoteStatusDescription"
+            *ngIf="estadoSeleccionado == 110"></notes-pending-gaf-processing>
+    </div>
 </div>
 
 <div class="ibox" *ngIf="histories.length > 0">
@@ -56,8 +93,8 @@
                     <td class="text-center col-lg-1">{{i+1}}</td>
                     <td class="text-center col-lg-2">{{ history.createdDate }}</td>
                     <td class="text-center col-lg-2">{{ history.userName }}</td>
-                    <td class="text-center"><span class="label">{{ history.statusFrom }}</span></td>
-                    <td class="text-center"><span class="label">{{ history.statusTo }}</span></td>
+                    <td class="text-center"><span class="label">{{ history.statusFrom | requestNoteState}}</span></td>
+                    <td class="text-center"><span class="label">{{ history.statusTo | requestNoteState}}</span></td>
                     <td class="text-center col-lg-1">
                         <button *ngIf="history.comment" (click)="showComments(history)" class="btn btn-info btn-sm" type="button"><i class="fa fa-comments"></i> </button>
                     </td>

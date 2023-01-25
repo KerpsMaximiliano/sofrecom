@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Sofco.Common.Settings;
 using Sofco.Core.Config;
 using Sofco.Core.DAL;
+using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Logger;
 using Sofco.Core.Models.RequestNote;
@@ -30,21 +32,26 @@ namespace Sofco.Service.Implementations.RequestNote
         private readonly IUserData userData;
         private readonly FileConfig fileConfig;
         private readonly IFileService fileService;
+        private readonly AppSetting settings;
+        private readonly IWorkflowStateRepository workflowStateRepository;
         public RequestNoteService(IUnitOfWork unitOfWork, ILogMailer<RequestNoteService> logger, IUserData userData,
-            IFileService fileService, IOptions<FileConfig> fileOptions)
+            IFileService fileService, IOptions<FileConfig> fileOptions, IWorkflowStateRepository workflowStateRepository, IOptions<AppSetting> settingOptions)
         {
             this.unitOfWork = unitOfWork;
             this.logger = logger;
             this.userData = userData;
             fileConfig = fileOptions.Value;
             this.fileService = fileService;
+            this.settings = settingOptions.Value;
+
+            this.workflowStateRepository = workflowStateRepository;
         }
 
         public void RechazarRequestNote(int requestNodeId)
         {
             Domain.Models.RequestNote.RequestNote requestNote = this.unitOfWork.RequestNoteRepository.GetById(requestNodeId);
 
-            requestNote.StatusId = (int)RequestNoteStates.Rechazada;
+            requestNote.StatusId = (int)RequestNoteStatus.Rechazada;
 
             this.unitOfWork.RequestNoteRepository.UpdateRequestNote(requestNote);
             this.unitOfWork.RequestNoteRepository.Save();
@@ -53,24 +60,19 @@ namespace Sofco.Service.Implementations.RequestNote
         public void CambiarAPendienteApobacionGerenteAnalitica(int requestNodeId)
         {
             Domain.Models.RequestNote.RequestNote requestNote = this.unitOfWork.RequestNoteRepository.GetById(requestNodeId);
-            requestNote.StatusId = (int)RequestNoteStates.PendienteAprobaciónGerentesAnalítica;
+            requestNote.StatusId = (int)RequestNoteStatus.PendienteAprobaciónGerentesAnalítica;
 
             this.unitOfWork.RequestNoteRepository.UpdateRequestNote(requestNote);
             this.unitOfWork.RequestNoteRepository.Save();
         }
 
-        public Response<int> GuardarBorrador(RequestNoteModel requestNoteBorrador)
-        {/*
-            requestNoteBorrador.StatusId = (int)RequestNoteStates.Borrador;
-            requestNoteBorrador.CreationDate = DateTime.Now;
+        public Response<int> Add(RequestNoteModel requestNoteBorrador)
+        {
 
-            this.unitOfWork.RequestNoteRepository.InsertRequestNote(requestNoteBorrador);
-            this.unitOfWork.RequestNoteRepository.Save();*/
-            //TODO: Validar
             var response = new Response<int>();
             if (requestNoteBorrador == null)
             {
-                response.AddError(Resources.Recruitment.Applicant.ModelNull);
+                response.AddError(Resources.RequestNote.RequestNote.NullModel);
                 return response;
             }
 
@@ -83,7 +85,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     response.AddError(Resources.RequestNote.RequestNote.NotFound);
                     return response;
                 }
-                if (domain.StatusId != (int)RequestNoteStates.Borrador)
+                if (domain.StatusId != settings.WorkflowStatusNPBorrador)
                 {
                     response.AddError(Resources.RequestNote.RequestNote.NotFound);
                     return response;
@@ -97,28 +99,26 @@ namespace Sofco.Service.Implementations.RequestNote
                 domain.Comments = requestNoteBorrador.Comments;
                 domain.TravelSection = requestNoteBorrador.Travel != null;
                 domain.TrainingSection = requestNoteBorrador.Training != null;
-                domain.WorkflowId = requestNoteBorrador.WorkflowId;
+                //domain.WorkflowId = requestNoteBorrador.WorkflowId;
                 domain.UserApplicantId = requestNoteBorrador.UserApplicantId;
                 domain.ProviderAreaId = requestNoteBorrador.ProviderAreaId;
 
                 #region Providers
                 if (requestNoteBorrador.Providers == null)
                     requestNoteBorrador.Providers = new List<Provider>();
-                foreach (var prov in domain.Providers.ToList())
+                foreach (var prov in domain.ProvidersSugg.ToList())
                 {
                     if (!requestNoteBorrador.Providers.Any(a => a.ProviderId == prov.ProviderId))
                         unitOfWork.RequestNoteProviderRepository.Delete(prov);
                 }
                 foreach (var provNuevo in requestNoteBorrador.Providers)
                 {
-                    var prov = domain.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
+                    var prov = domain.ProvidersSugg.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
                     if (prov == null)
                     {
-                        prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId };
-                        domain.Providers.Add(prov);
+                        prov = new RequestNoteProviderSugg() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId };
+                        domain.ProvidersSugg.Add(prov);
                     }
-                    prov.FileId = provNuevo.FileId;
-                    prov.IsSelected = false;
                 }
                 #endregion
                 #region Analytics
@@ -138,7 +138,7 @@ namespace Sofco.Service.Implementations.RequestNote
                         domain.Analytics.Add(an);
                     }
                     an.Percentage = a.Asigned;
-                    an.Status = "Ninguno";
+                    an.Status = "Pendiente de Aprobación";
                 }
                 #endregion
                 #region Product Services
@@ -261,7 +261,7 @@ namespace Sofco.Service.Implementations.RequestNote
                         var an = training.Employees.SingleOrDefault(p => p.EmployeeId == a.EmployeeId);
                         if (an == null)
                         {
-                            an = new RequestNoteTrainingEmployee() { EmployeeId = a.EmployeeId };
+                            an = new RequestNoteTrainingEmployee() { EmployeeId = a.EmployeeId, SectorProject = a.Sector };
                             training.Employees.Add(an);
                         }
                     }
@@ -288,6 +288,7 @@ namespace Sofco.Service.Implementations.RequestNote
             }
             else
             {
+                var workflow = unitOfWork.WorkflowRepository.GetLastByType(settings.RequestNoteWorkflowId);
 
                 var domain = new Domain.Models.RequestNote.RequestNote()
                 {
@@ -299,15 +300,15 @@ namespace Sofco.Service.Implementations.RequestNote
                     TravelSection = requestNoteBorrador.Travel != null,
                     TrainingSection = requestNoteBorrador.Training != null,
                     CreationDate = DateTime.UtcNow,
-                    WorkflowId = requestNoteBorrador.WorkflowId,
-                    StatusId = (int)RequestNoteStates.Borrador,
+                    WorkflowId = workflow.Id,
+                    StatusId = settings.WorkflowStatusNPBorrador,
                     UserApplicantId = requestNoteBorrador.UserApplicantId,
                     InWorkflowProcess = true,
                     CreationUserId = user.Id,
                     ProviderAreaId = requestNoteBorrador.ProviderAreaId
                 };
                 if (requestNoteBorrador.Providers != null)
-                    domain.Providers = requestNoteBorrador.Providers.Select(p => new RequestNoteProvider()
+                    domain.ProvidersSugg = requestNoteBorrador.Providers.Select(p => new RequestNoteProviderSugg()
                     {
                         ProviderId = p.ProviderId,
                         FileId = p.FileId
@@ -323,7 +324,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     {
                         AnalyticId = p.AnalyticId,
                         Percentage = p.Asigned,
-                        Status = "Ninguno"
+                        Status = "Pendiente de Aprobación"
                     }).ToList();
                 if (requestNoteBorrador.ProductsServices != null)
                     domain.ProductsServices = requestNoteBorrador.ProductsServices.Select(p => new RequestNoteProductService()
@@ -361,7 +362,7 @@ namespace Sofco.Service.Implementations.RequestNote
                         Topic = requestNoteBorrador.Training.Name,
                         Employees = requestNoteBorrador.Training.Participants?.Select(p => new RequestNoteTrainingEmployee()
                         {
-                            EmployeeId = p.EmployeeId
+                            EmployeeId = p.EmployeeId, SectorProject = p.Sector
                         }).ToList()
                     });
 
@@ -379,6 +380,7 @@ namespace Sofco.Service.Implementations.RequestNote
         }
         public Response<RequestNoteModel> GetById(int id)
         {
+            //TODO: acá hay que ver qué estados quedan, qué hace falta en cada uno, y cambiarlos por los ids de settings en vez de enum
             var response = new Response<RequestNoteModel>();
 
             var note = this.unitOfWork.RequestNoteRepository.GetById(id);
@@ -389,31 +391,31 @@ namespace Sofco.Service.Implementations.RequestNote
             }
             var user = userData.GetCurrentUser();
             var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOPE");
-            var datos = new RequestNoteModel(note, permisos, user.Id);
+            var datos = new RequestNoteModel(note, permisos, user.Id, settings);
             if (!datos.HasEditPermissions && !datos.HasReadPermissions)
             {
                 response.AddError(Resources.RequestNote.RequestNote.NotAllowed);
                 return response;
             }
             response.Data = datos;
-            if (new List<RequestNoteStates>() {
-                RequestNoteStates.PendienteAprobaciónGerentesAnalítica,
-                RequestNoteStates.FacturaPendienteAprobaciónGerente,
-                RequestNoteStates.PendienteProcesarGAF
+            if (new List<int>() {
+                settings.WorkflowStatusNPPendienteAprobacionGerente//,
+                //settings.WorkflowStatusNPPendienteAprobacionCompras,
+                //settings.WorkflowStatusNPPendienteAprobacionSAP
+                //otros?
                 }
-            .Contains((RequestNoteStates)note.StatusId))
+            .Contains(note.StatusId))
             {
                 response.Data.Analytics = response.Data.Analytics.Where(a => a.ManagerId == user.Id).ToList();
             }
-            if (new List<RequestNoteStates>() {
-                RequestNoteStates.PendienteAprobaciónDAF,
-                RequestNoteStates.FacturaPendienteAprobaciónGerente,
-                RequestNoteStates.PendienteProcesarGAF,
-                RequestNoteStates.Aprobada,
-                RequestNoteStates.SolicitadaAProveedor,
-                RequestNoteStates.RecibidoConforme
+            if (new List<int>() {
+                settings.WorkflowStatusNPPendienteAprobacionDAF,
+                settings.WorkflowStatusNPPendienteRecepcionMerc,
+                settings.WorkflowStatusNPRecepcionParcial,
+                settings.WorkflowStatusNPCerrado,
+                //otros?
                 }
-            .Contains((RequestNoteStates)note.StatusId))
+            .Contains(note.StatusId))
             {
                 response.Data.Providers = response.Data.Providers.Where(p => p.ProviderId == response.Data.ProviderSelectedId).ToList();
             }
@@ -468,41 +470,93 @@ namespace Sofco.Service.Implementations.RequestNote
             }
             return response;
         }
+        public Response<IList<Option>> GetStates()
+        {
+            var states = workflowStateRepository.GetStateByWorkflowTypeCode(settings.RequestNoteWorkflowTypeCode);
+
+            var result = states.Select(x => new Option { Id = x.Id, Text = x.Name }).ToList();
+
+            if (result.All(x => x.Id != settings.WorkflowStatusNPCerrado))
+            {
+                var finalizeState = workflowStateRepository.Get(settings.WorkflowStatusNPCerrado);
+
+                result.Add(new Option { Id = finalizeState.Id, Text = finalizeState.Name });
+            }
+            /*
+            var draft = result.SingleOrDefault(x => x.Id == settings.WorkflowStatusNPBorrador);
+
+            if (draft != null) result.Remove(draft);
+            */
+            return new Response<IList<Option>>
+            {
+                Data = result
+            };
+        }
         public IList<RequestNoteGridModel> GetAll(RequestNoteGridFilters filters)
         {
             var user = userData.GetCurrentUser();
             var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOPE");
             return this.unitOfWork.RequestNoteRepository.GetAll(filters)
-                    .Select(n=> new RequestNoteGridModel(n, permisos, user.Id))
+                    .Select(n=> new RequestNoteGridModel(n, permisos, user.Id, settings))
                     .Where(n=> n.HasEditPermissions || n.HasReadPermissions).ToList();
         }
 
-        public void ChangeStatus(RequestNoteModel requestNote, RequestNoteStates status)
+        public void SaveChanges(RequestNoteModel requestNote, int nextStatus)
         {
+
             Domain.Models.RequestNote.RequestNote req = this.unitOfWork.RequestNoteRepository.GetById(requestNote.Id.Value);
             var user = userData.GetCurrentUser();
-            int nuevoEstado = (int)status;
-            switch (status)
+            if (req.StatusId == settings.WorkflowStatusNPPendienteAprobacionGerente) //Guardar analíticas
             {
-                case RequestNoteStates.Borrador:
-                    break;
-                case RequestNoteStates.PendienteRevisiónAbastecimiento:
-                    if (req.StatusId == (int)RequestNoteStates.PendienteAprobaciónGerentesAnalítica)
+                if (nextStatus == settings.WorkflowStatusNPPendienteAprobacionCompras)
+                {
+                    //Se marcan las analíticas del gerente logueado como “Rechazada”.
+                    //Se cambia el estado de la requestNote a “PendienteAprobacionCompras”
+                    //sólo si están todas las analíticas.
+                    foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
                     {
-                        //Se marcan las analíticas del gerente logueado como “Rechazada”.
-                        //Se cambia el estado de la requestNote a “Pendiente Revisión Abastecimiento”
-                        //sin importar el estado de las demás analíticas.
-                        foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
-                        {
-                            analitica.Status = "Rechazada";
-                        }
+                        analitica.Status = "Aprobada";
                     }
-                    else if (req.StatusId == (int)RequestNoteStates.Borrador)
+                }
+                else if (nextStatus == settings.WorkflowStatusNPRechazado)
+                {
+                    //Se marcan las analíticas del gerente logueado como “Rechazada”.
+                    //Se cambia el estado de la requestNote a “Rechazada”
+                    //sin importar el estado de las demás analíticas.
+                    foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
                     {
-
+                        analitica.Status = "Rechazada";
                     }
-                    break;
-                case RequestNoteStates.PendienteAprobaciónGerentesAnalítica:
+                }
+            }
+            else if (req.StatusId == settings.WorkflowStatusNPPendienteAprobacionCompras 
+                && nextStatus == settings.WorkflowStatusNPPendienteAprobacionDAF) //Guardar providers
+            {
+                if (requestNote.ProvidersSelected == null)
+                    requestNote.ProvidersSelected = new List<Provider>();
+                foreach (var prov in req.Providers.ToList())
+                {
+                    var nuevo = requestNote.ProvidersSelected.SingleOrDefault(a => a.ProviderId == prov.ProviderId);
+                    if (nuevo == null) //existía pero ahora no viene => kaput
+                        unitOfWork.RequestNoteProviderRepository.Delete(prov);
+                    else
+                    {
+                        prov.FileId = nuevo.FileId;
+                        prov.Price = nuevo.Ammount;
+                    }
+                }
+                foreach (var provNuevo in requestNote.ProvidersSelected)
+                {
+                    var prov = req.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
+                    if (prov == null)
+                    {
+                        prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId, Price = provNuevo.Ammount };
+                        req.Providers.Add(prov);
+                    }
+                }
+            }
+                /*
+                case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
                     //Se manda una lista de providers(como en la instancia borrador), deben reemplazar a los ya existentes
                     //en la requestNote.Se manda un campo monto final OC(number) para agregarse a la requestNote.
                     //Se debe asignar el estado de todas las analíticas asociadas a la requestNote como “Pendiente Aprobación”.
@@ -531,8 +585,8 @@ namespace Sofco.Service.Implementations.RequestNote
                         analitica.Status = "Pendiente Aprobación";
                     }
                     break;
-                case RequestNoteStates.PendienteAprobaciónAbastecimiento:
-                    if (req.StatusId == (int)RequestNoteStates.PendienteAprobaciónGerentesAnalítica)
+                case RequestNoteStatus.PendienteAprobaciónAbastecimiento:
+                    if (req.StatusId == (int)RequestNoteStatus.PendienteAprobaciónGerentesAnalítica)
                     {
                         //Se deben marcar todas las analíticas del gerente asociado como “Aprobada” 
                         //(son suyas si el userId es el managerId de la analítica)
@@ -546,14 +600,14 @@ namespace Sofco.Service.Implementations.RequestNote
                         if (req.Analytics.Any(a => a.Status != "Aprobada"))
                             nuevoEstado = req.StatusId; //Si alguna falta, dejo el estado como ya estaba
                     }
-                    else if (req.StatusId == (int)RequestNoteStates.PendienteAprobaciónDAF)
+                    else if (req.StatusId == (int)RequestNoteStatus.PendienteAprobaciónDAF)
                     {
                         //Se cambia el estado de la requestNote a “Pendiente Aprobación Abastecimiento”.
                         //Se manda un campo (string) con comentario para guardar en histories.
 
                     }
                     break;
-                case RequestNoteStates.PendienteAprobaciónDAF:
+                case RequestNoteStatus.PendienteAprobaciónDAF:
                     //Se manda un provider que va a quedar como seleccionado, de ahora en adelante es
                     //el único que se tiene que devolver (sino puede traer todos pero que tenga un campo
                     //que lo identifique para solo mostrar ese).
@@ -572,9 +626,9 @@ namespace Sofco.Service.Implementations.RequestNote
                             FileId = p.FileId.Value
                         }).First());
                     break;
-                case RequestNoteStates.Aprobada:
+                case RequestNoteStatus.Aprobada:
                     break;
-                case RequestNoteStates.SolicitadaAProveedor:
+                case RequestNoteStatus.SolicitadaAProveedor:
                     //Se manda un array con los fileIds de los archivos subidos, son documentación para proveedor.
                     //Se cambia el estado a “Solicitada a Proveedor”.
                     //Dice que se tiene que notificar al proveedor seleccionado
@@ -588,7 +642,7 @@ namespace Sofco.Service.Implementations.RequestNote
                             });
                         }
                     break;
-                case RequestNoteStates.RecibidoConforme:
+                case RequestNoteStatus.RecibidoConforme:
                     //Se manda un array con los fileIds de los archivos subidos, son documentación recibido conforme,
                     //puede ser null ya que es posible no subir archivos en esta instancia.
                     //Se cambia el estado de la requestNote a “Recibido Conforme”.
@@ -602,7 +656,7 @@ namespace Sofco.Service.Implementations.RequestNote
                             });
                         }
                     break;
-                case RequestNoteStates.FacturaPendienteAprobaciónGerente:
+                case RequestNoteStatus.FacturaPendienteAprobaciónGerente:
                     //Se manda un array de objetos, cada objeto tiene un fileId y un campo (es funcionalidad a futuro,
                     //el campo va a mandar siempre null pero creería que va a terminar mandando string después), estos son facturas.
                     //Se cambia el estado de la requestNote a “Factura Pendiente Aprobación Gerente”.
@@ -617,7 +671,7 @@ namespace Sofco.Service.Implementations.RequestNote
                         }
 
                     break;
-                case RequestNoteStates.PendienteProcesarGAF:
+                case RequestNoteStatus.PendienteProcesarGAF:
                     //Aprobar → Se manda un array de analíticas. Dichas analíticas pasan al estado “Aprobada Facturación”.
                     //Si todas las analíticas de la requestNote están con ese estado, se cambia el estado de la requestNote
                     //a “Pendiente Procesar GAF”.
@@ -629,33 +683,16 @@ namespace Sofco.Service.Implementations.RequestNote
                         nuevoEstado = req.StatusId; //Si alguna falta, dejo el estado como ya estaba
 
                     break;
-                case RequestNoteStates.Rechazada:
+                case RequestNoteStatus.Rechazada:
                     break;
-                case RequestNoteStates.Cerrada:
+                case RequestNoteStatus.Cerrada:
                     //Se cambia el estado de la requestNote a  “Cerrada”. Se manda un campo (string) con comentario para guardar en histories.
 
                     break;
                 default:
                     break;
-            }
-            if (req.StatusId != nuevoEstado) //Si cambia el estado, guardamos historial
-            {
-                if (req.Histories == null)
-                    req.Histories = new List<RequestNoteHistory>();
-
-                req.Histories.Add(new RequestNoteHistory()
-                {
-                    Comment = requestNote.Remarks,
-                    CreatedDate = DateTime.UtcNow,
-                    StatusFromId = req.StatusId,
-                    StatusToId = nuevoEstado,
-                    UserName = user.UserName
-                });
-            }
-            req.StatusId = nuevoEstado;
-            if (!string.IsNullOrEmpty(requestNote.Comments))
-                req.Comments = requestNote.Comments;
-            this.unitOfWork.RequestNoteRepository.UpdateRequestNote(req);
+            }*/
+                this.unitOfWork.RequestNoteRepository.UpdateRequestNote(req);
             this.unitOfWork.RequestNoteRepository.Save();
         }
     }

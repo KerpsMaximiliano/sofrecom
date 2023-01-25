@@ -31,6 +31,10 @@ namespace Sofco.DAL.Repositories.RequestNote
                     .ThenInclude(p => p.File)
                 .Include(x => x.Providers)
                     .ThenInclude(p => p.Provider)
+                .Include(x => x.ProvidersSugg)
+                    .ThenInclude(p => p.Provider)
+                .Include(x => x.ProvidersSugg)
+                    .ThenInclude(p => p.File)
                 .Include(x => x.Analytics)
                     .ThenInclude(p => p.Analytic)
                 .Include(x => x.Trainings)
@@ -86,6 +90,17 @@ namespace Sofco.DAL.Repositories.RequestNote
         public void Save()
         {
             context.SaveChanges();
+        }
+
+
+        public bool IsCompletelyDelivered(int requestNoteId)
+        {
+            var requested = context.RequestNoteProductService.Where(p => p.RequestNoteId == requestNoteId)
+                .Select(p=> new { Id = p.Id, Quantity = p.Quantity });
+            var delivered = context.BuyOrderProductServices.Where(p => p.BuyOrder.RequestNoteId == requestNoteId)
+                .Select(p => new { Id = p.RequestNoteProductServiceId, Quantity = p.DeliveredQuantity ?? 0 });
+            var pending = requested.Any(r=> r.Quantity < delivered.Where(d=> d.Id == r.Id).Sum(d=> d.Quantity));
+            return pending;
         }
     }   
 }

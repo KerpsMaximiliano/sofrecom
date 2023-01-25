@@ -1,0 +1,19 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>Ordenes de Compra </h2>
+
+        <ol class="breadcrumb">
+            <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
+            <li> Proveedores </li>
+            <li><a [routerLink]="['/providers/purchase-orders']">Ordenes de Compra</a></li>
+            <li class="active"><strong> Orden de Compra </strong></li>
+        </ol>
+    </div>
+</div>
+
+<div>
+    <purchase-orders-new *ngIf="estadoSeleccionado == 1"></purchase-orders-new>
+    <purchase-orders-pending-daf-approval *ngIf="estadoSeleccionado == 2"></purchase-orders-pending-daf-approval>
+    <purchase-orders-pending-merchandise-reception *ngIf="estadoSeleccionado == 3"></purchase-orders-pending-merchandise-reception>
+    <purchase-orders-pending-bill-reception *ngIf="estadoSeleccionado == 4"></purchase-orders-pending-bill-reception>
+</div>

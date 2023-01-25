@@ -18,6 +18,8 @@ namespace Sofco.Core.Services.AllocationManagement
 
         Response<EmployeeModel> GetById(int id);
 
+        Response<string> GetSectorName(int id);
+
         Response<EmployeeModel> GetByMail(string email);
 
         Response<ICollection<Employee>> Search(EmployeeSearchParams parameters);

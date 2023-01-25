@@ -183,6 +183,7 @@ namespace Sofco.DAL.Repositories.Workflow
         {
             return context.WorkflowStateTransitions
                 .Include(x => x.Workflow)
+                .Include(x => x.ActualWorkflowState)
                 .Include(x => x.NextWorkflowState)
                 .Include(x => x.WorkflowStateAccesses).ThenInclude(x => x.UserSource)
                 .Where(x => x.WorkflowId == workflowId && x.ActualWorkflowStateId == actualStateId)

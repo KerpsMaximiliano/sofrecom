@@ -19,7 +19,7 @@ namespace Sofco.Resources.Mails {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MailSubjectResource {
@@ -385,11 +385,29 @@ namespace Sofco.Resources.Mails {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Orden de Compra - {0}.
+        /// </summary>
+        public static string WorkflowNotificationBuyOrder {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationBuyOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Solicitud de Reintegro - {0}.
         /// </summary>
         public static string WorkflowNotificationRefund {
             get {
                 return ResourceManager.GetString("WorkflowNotificationRefund", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Nota de Pedido - {0}.
+        /// </summary>
+        public static string WorkflowNotificationRequestNote {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationRequestNote", resourceCulture);
             }
         }
         

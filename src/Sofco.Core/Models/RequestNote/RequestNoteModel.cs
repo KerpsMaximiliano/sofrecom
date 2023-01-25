@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Sofco.Common.Settings;
 using Sofco.Domain.RequestNoteStates;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,11 @@ namespace Sofco.Core.Models.RequestNote
     
     public class RequestNoteModel
     {
+        private readonly AppSetting _settings;
         public RequestNoteModel() { }
-        public RequestNoteModel(Domain.Models.RequestNote.RequestNote note, List<string> permissions, int userId)
+        public RequestNoteModel(Domain.Models.RequestNote.RequestNote note, List<string> permissions, int userId, AppSetting settings)
         {
+            _settings = settings;
             Id = note.Id;
             
             Description = note.Description;
@@ -37,16 +40,29 @@ namespace Sofco.Core.Models.RequestNote
             ProductsServices = new List<ProductsService>();
             Analytics = new List<Analytic>();
             Providers = new List<Provider>();
+            ProvidersSelected = new List<Provider>();
             if (note.Providers != null)
             {
-                Providers = note.Providers.Select(p => new Provider()
+                ProvidersSelected = note.Providers.Select(p => new Provider()
+                {
+                    FileId = p.FileId,
+                    FileDescription = p.File?.FileName,
+                    ProviderId = p.ProviderId,
+                    ProviderDescription = p.Provider?.Name,
+                    Ammount = p.Price
+                }).ToList();
+                //ProviderSelectedId = note.Providers.FirstOrDefault(p => p.IsSelected)?.ProviderId;
+            }
+            if (note.ProvidersSugg != null)
+            {
+                Providers = note.ProvidersSugg.Select(p => new Provider()
                 {
                     FileId = p.FileId,
                     FileDescription = p.File?.FileName,
                     ProviderId = p.ProviderId,
                     ProviderDescription = p.Provider?.Name
                 }).ToList();
-                ProviderSelectedId = note.Providers.FirstOrDefault(p => p.IsSelected)?.ProviderId;
+                //ProviderSelectedId = note.Providers.FirstOrDefault(p => p.IsSelected)?.ProviderId;
             }
             if (note.Attachments != null)
                 Attachments = note.Attachments.Select(p => new File()
@@ -83,7 +99,8 @@ namespace Sofco.Core.Models.RequestNote
                     Participants = t.Employees.Select(e=> new Employee()
                     {
                         EmployeeId = e.EmployeeId,
-                        Name = e.Employee?.Name
+                        Name = e.Employee?.Name,
+                        Sector = e.SectorProject
                     }).ToList()
                 }).FirstOrDefault();
             if (note.Travels != null && note.Travels.Any())
@@ -117,7 +134,7 @@ namespace Sofco.Core.Models.RequestNote
         public List<Analytic> Analytics { get; set; }
         public bool RequiresEmployeeClient { get; set; }
         public List<Provider> Providers { get; set; }
-
+        public List<Provider> ProvidersSelected { get; set; }
         public List<File> Attachments { get; set; }
         public bool ConsideredInBudget { get; set; }
         public int EvalpropNumber { get; set; }
@@ -147,45 +164,22 @@ namespace Sofco.Core.Models.RequestNote
         private bool ValidateEditPermissions(List<string> permissions, int userId)
         {
             var hasPermission = false;
-            switch ((RequestNoteStates)StatusId)
-            {
-                case RequestNoteStates.Borrador:
-                    hasPermission = CreationUserId == userId;
-                    break;
-                case RequestNoteStates.PendienteRevisiónAbastecimiento:
-                    hasPermission = permissions.Any(p => p == "NP_REVISION_ABAS");
-                    break;
-                case RequestNoteStates.PendienteAprobaciónGerentesAnalítica:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_GERE") && Analytics != null && Analytics.Any(a => a.ManagerId == userId);
-                    break;
-                case RequestNoteStates.PendienteAprobaciónAbastecimiento:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_ABAS");
-                    break;
-                case RequestNoteStates.PendienteAprobaciónDAF:
-                    hasPermission = permissions.Any(p => p == "NP_APROBACION_DAF");
-                    break;
-                case RequestNoteStates.Aprobada:
-                    hasPermission = permissions.Any(p => p == "NP_ENVIO_PROV_ABAS");
-                    break;
-                case RequestNoteStates.SolicitadaAProveedor:
-                    hasPermission = permissions.Any(p => p == "NP_RECEP_ABAS");
-                    break;
-                case RequestNoteStates.RecibidoConforme:
-                    hasPermission = permissions.Any(p => p == "NP_CONFORME_ABAS");
-                    break;
-                case RequestNoteStates.FacturaPendienteAprobaciónGerente:
-                    hasPermission = permissions.Any(p => p == "NP_FAC_APROB_GERENTE") && Analytics != null && Analytics.Any(a => a.ManagerId == userId);
-                    break;
-                case RequestNoteStates.PendienteProcesarGAF:
-                    hasPermission = permissions.Any(p => p == "NP_PROCESAR_GAF");
-                    break;
-                case RequestNoteStates.Rechazada:
-                    break;
-                case RequestNoteStates.Cerrada:
-                    break;
-                default:
-                    break;
-            }
+            if (StatusId == _settings.WorkflowStatusNPBorrador) //RequestNoteStatus.Borrador:
+                hasPermission = CreationUserId == userId;
+
+            else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionGerente) //case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
+                hasPermission = permissions.Any(p => p == "NP_APROBACION_GERE") && Analytics != null && Analytics.Any(a => a.ManagerId == userId);
+            else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionDAF) // case RequestNoteStatus.PendienteAprobaciónDAF:
+                hasPermission = permissions.Any(p => p == "NP_APROBACION_DAF");
+            else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionCompras)
+                hasPermission = permissions.Any(p => p == "NP_APROBACION_COMPRA");
+            else if (new List<int>() {
+                    _settings.WorkflowStatusNPPendienteAprobacionSAP,
+                    _settings.WorkflowStatusNPPendienteRecepcionMerc,
+                    _settings.WorkflowStatusNPRecepcionParcial
+            }.Contains(StatusId))
+                hasPermission = permissions.Any(p => p == "NP_CERRAR");
+
             return hasPermission;
         }
     }
@@ -206,6 +200,7 @@ namespace Sofco.Core.Models.RequestNote
     {
         public int EmployeeId { get; set; }
         public string Name { get; set; }
+        public string Sector { get; set; }
     }
 
     public class ProductsService
@@ -220,6 +215,7 @@ namespace Sofco.Core.Models.RequestNote
         public string ProviderDescription { get; set; }
         public int? FileId { get; set; }
         public string FileDescription { get; set; }
+        public decimal? Ammount { get; set; }
     }
     public class File
     {

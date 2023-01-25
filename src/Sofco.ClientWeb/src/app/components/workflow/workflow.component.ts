@@ -24,10 +24,15 @@ export class WorkflowComponent implements OnDestroy {
     getTransitionsSubscrip: Subscription;
     postSubscrip: Subscription;
 
+    awaitFiles: boolean = false;
+    customValidation: boolean = false;
+
     @Output() onSaveSuccess = new EventEmitter<any>();
 
     hasRejectCode: boolean = false;
     @ViewChild('wfreject') wfReject;
+
+    private requestNoteData;
 
     constructor(private workflowService: WorkflowService,
                 private componentFactoryResolver: ComponentFactoryResolver,
@@ -38,6 +43,7 @@ export class WorkflowComponent implements OnDestroy {
     }
 
     init(model){
+        console.log(model)
         this.transitions = [];
         this.container.clear();
 
@@ -45,13 +51,26 @@ export class WorkflowComponent implements OnDestroy {
         this.entityController = model.entityController;
 
         this.getTransitionsSubscrip = this.workflowService.getTransitions(model).subscribe(response => {
+            console.log(response)
             this.transitions = response.data.filter(x => !x.parameterCode);
 
             var transitionsWithParameters = response.data.filter(x => x.parameterCode);
 
             this.buildComponents(transitionsWithParameters);
         });
-    } 
+    }
+
+    filesToUpload() {
+        this.awaitFiles = true;
+    }
+
+    filesUploaded() {
+        this.awaitFiles = false;
+    }
+
+    setCustomValidations(status: boolean) {
+        this.customValidation = status;
+    }
 
     buildComponents(transitionsWithParameters){
         transitionsWithParameters.forEach(item => {
@@ -81,20 +100,45 @@ export class WorkflowComponent implements OnDestroy {
     }
 
     save(item){
-        var model = {
-            workflowId: item.workflowId,
-            nextStateId: item.nextStateId,
-            entityId: this.entityId,
-            entityController: this.entityController
-        }
-
-        this.messageService.showLoading();
-
-        this.postSubscrip = this.workflowService.post(model).subscribe(response => {
+        console.log(item)
+        if(this.customValidation) {
             this.messageService.closeLoading();
-            this.onSaveSuccess.emit();
-        },
-        error => this.messageService.closeLoading());
+            return;
+        };
+        if(this.awaitFiles) {
+            setTimeout(() => {
+                this.save(item)
+            }, 100);
+        } else {
+            let model;
+            if(this.entityController == "RequestNoteBorrador") {
+                model = {
+                    workflowId: item.workflowId,
+                    nextStateId: item.nextStateId,
+                    entityId: this.entityId,
+                    entityController: this.entityController,
+                    requestNote: this.requestNoteData
+                }
+            } else {
+                model = {
+                    workflowId: item.workflowId,
+                    nextStateId: item.nextStateId,
+                    entityId: this.entityId,
+                    entityController: this.entityController
+                }
+            }
+            this.messageService.showLoading();
+    
+            this.postSubscrip = this.workflowService.post(model).subscribe(response => {
+                this.messageService.closeLoading();
+                this.onSaveSuccess.emit();
+            },
+            error => this.messageService.closeLoading());
+        }
+    }
+
+    updateRequestNote(requestNote) {
+        this.requestNoteData = requestNote;
     }
 
     onTransitionCustomConfirm(){

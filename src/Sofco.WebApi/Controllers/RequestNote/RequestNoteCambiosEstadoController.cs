@@ -21,13 +21,13 @@ namespace Sofco.WebApi.Controllers.RequestNote
         {
             this.requestNoteService = requestNoteService;
         }
-
+        /*
         #region Pendiente Procesar GAF
 
         [HttpPost("AprobarPendienteProcesarGAF")]
         public IActionResult AprobarPendienteProcesarGAF([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.Cerrada);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.Cerrada);
 
             return Ok();
         }
@@ -37,7 +37,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarAprobada")]
         public IActionResult AprobarRequestNote([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.SolicitadaAProveedor);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.SolicitadaAProveedor);
 
             return Ok();
         }
@@ -45,7 +45,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("RechazarAprobada")]
         public IActionResult RechazarRequestNode([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.Rechazada);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.Rechazada);
 
             return Ok();
         }
@@ -55,7 +55,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarFacturaPendienteAprobacion")]
         public IActionResult AprobarFacturaPendienteAprobacion([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.PendienteProcesarGAF);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.PendienteProcesarGAF);
 
             return Ok();
         }
@@ -65,7 +65,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarPendienteAprobacionAbastecimiento")]
         public IActionResult AprobarPendienteAprobacionAbastecimiento([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónDAF);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.PendienteAprobaciónDAF);
 
             return Ok();
         }
@@ -73,7 +73,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("RechazarPendienteAprobacionAbastecimiento")]
         public IActionResult RechazarPendienteAprobacionAbastecimiento([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.Rechazada);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.Rechazada);
 
             return Ok();
         }
@@ -83,7 +83,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarPendienteAprobacionDAF")]
         public IActionResult AprobarPendienteAprobacionDAF([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.Aprobada);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.Aprobada);
 
             return Ok();
         }
@@ -91,7 +91,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("RechazarPendienteAprobacionDAF")]
         public IActionResult RechazarPendienteAprobacionDAF([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónAbastecimiento);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.PendienteAprobaciónAbastecimiento);
 
             return Ok();
         }
@@ -101,7 +101,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarPendienteAprobacionGerentesAnalitica")]
         public IActionResult AprobarPendienteAprobacionGerentesAnalitica([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónAbastecimiento);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.PendienteAprobaciónAbastecimiento);
 
             return Ok();
         }
@@ -109,7 +109,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("RechazarPendienteAprobacionGerentesAnalitica")]
         public IActionResult RechazarPendienteAprobacionGerentesAnalitica([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.PendienteRevisiónAbastecimiento);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.PendienteRevisiónAbastecimiento);
 
             return Ok();
         }
@@ -119,7 +119,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarPendienteRevisionAbastecimiento")]
         public IActionResult AprobarPendienteRevisionAbastecimiento([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.PendienteAprobaciónGerentesAnalítica);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.PendienteAprobaciónGerentesAnalítica);
 
             return Ok();
         }
@@ -127,7 +127,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("RechazarPendienteRevisionAbastecimiento")]
         public IActionResult RechazarPendienteRevisionAbastecimiento([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.Rechazada);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.Rechazada);
 
             return Ok();
         }
@@ -137,7 +137,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarRecibidoConforme")]
         public IActionResult AprobarRecibidoConforme([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.FacturaPendienteAprobaciónGerente);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.FacturaPendienteAprobaciónGerente);
 
             return Ok();
         }
@@ -147,7 +147,7 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("CerrarSolicitadaProveedor")]
         public IActionResult CerradaSolicitadaProveedor([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.Cerrada);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.Cerrada);
             return Ok();
         }
 
@@ -155,9 +155,10 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("AprobarSolicitadaProveedor")]
         public IActionResult AprobarSolicitadaProveedor([FromBody] RequestNoteModel requestNote)
         {
-            this.requestNoteService.ChangeStatus(requestNote, Domain.RequestNoteStates.RequestNoteStates.RecibidoConforme);
+            this.requestNoteService.SaveChanges(requestNote, Domain.RequestNoteStates.RequestNoteStatus.RecibidoConforme);
             return Ok();
         }
         #endregion
+        */
     }
 }

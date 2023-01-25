@@ -19,6 +19,7 @@ using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Domain.Utils;
 using Sofco.Framework.Workflow.Notifications;
+using Sofco.Domain.Models.RequestNote;
 
 namespace Sofco.Service.Implementations.Workflow
 {
@@ -137,13 +138,17 @@ namespace Sofco.Service.Implementations.Workflow
                         response.Data.OnError.Invoke();
                         response.Messages = response.Messages.Where(x => x.Type != MessageType.Error).ToList();
                     }
-
                     return;
                 }
             }
 
+            if (response.HasWarningNoTransition()) {
+                response.Messages.ToList().ForEach(x => { if (x.Type.Equals(MessageType.WarningNoTransition)) x.Type = MessageType.Warning; });
+                return;
+            }
+
             // Save change status
-           SaveEntity<TEntity, THistory>(parameters, response, entity, currentUser);
+            SaveEntity<TEntity, THistory>(parameters, response, entity, currentUser);
 
             // Custom Success Process
             if (!string.IsNullOrWhiteSpace(transition.OnSuccessCode))
@@ -410,6 +415,26 @@ namespace Sofco.Service.Implementations.Workflow
                         }
                     }
                 }
+                else if (entity is Sofco.Domain.Models.RequestNote.RequestNote note)
+                {
+                    if (transition.ActualWorkflowState.Name.Equals("Pendiente Aprobación Gerente Analíticas"))
+                    {
+                        var analytics = unitOfWork.RequestNoteAnalitycRepository.GetByRequestNoteId(note.Id).ToList();
+                        if (analytics != null)
+                        {
+                            hasAccess = analytics.Any(a => a.Analytic.ManagerId == currentUser.Id);
+
+                            /*
+                            var delegations = unitOfWork.DelegationRepository.GetByGrantedUserIdAndType(currentUser.Id, DelegationType.RefundApprovall);
+
+                            if (delegations.Any(x => x.UserId == analytic.ManagerId.Value))
+                            {
+                                hasAccess = true;
+                            }*/
+
+                        }
+                    }
+                }
             }
 
             return hasAccess;
@@ -606,6 +631,10 @@ namespace Sofco.Service.Implementations.Workflow
                         }
                     }
                 }
+            }
+            else if (entity is Sofco.Domain.Models.RequestNote.RequestNote reqNote)
+            {
+                
             }
         }
 

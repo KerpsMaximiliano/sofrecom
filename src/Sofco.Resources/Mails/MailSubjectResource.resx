@@ -234,4 +234,10 @@
   <data name="ApplicantInCompany" xml:space="preserve">
     <value>Solicitud de Ingreso de postulante</value>
   </data>
+  <data name="WorkflowNotificationBuyOrder" xml:space="preserve">
+    <value>Orden de Compra - {0}</value>
+  </data>
+  <data name="WorkflowNotificationRequestNote" xml:space="preserve">
+    <value>Nota de Pedido - {0}</value>
+  </data>
 </root>

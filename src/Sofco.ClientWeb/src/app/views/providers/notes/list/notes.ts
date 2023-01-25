@@ -31,6 +31,18 @@ export class NotesComponent implements OnInit, AfterViewInit{
         { id: 11, text: "Rechazada" },
         { id: 12, text: "Cerrada" },
     ];
+    states2 = [
+        { id: 0, text: "Todos" },
+        { id: 8, text: "Borrador" },
+        { id: 29, text: "Pendiente Aprobación Gerentes Analítica" },
+        { id: 31, text: "Pendiente Aprobación Compras" },
+        { id: 4, text: "Pendiente Aprobación DAF" },
+        { id: 33, text: "Pendiente Generación SAP" },
+        { id: 34, text: "Pendiente Recepción Mercadería" },
+        { id: 35, text: "Recepción Parcial" },
+        { id: 11, text: "Cerrada" },
+        { id: 30, text: "Rechazada" }
+    ];
     stateId: number;
     providers = [];
     providerId: number;
@@ -73,7 +85,12 @@ export class NotesComponent implements OnInit, AfterViewInit{
             this.requestNoteService.getAll(json).subscribe(d=>{
                 console.log(d);
                 d.forEach(note => {
-                    note.status = this.states[note.statusId].text;
+                    // if(note.statusId <= 12) {
+                    //     note.status = this.states[note.statusId].text;
+                    // } else {
+                    //     note.status = note.statusId;
+                    // }
+                    note.status = note.statusId;
                     this.notesBackup.push(note);
                     this.notesBackup = [...this.notesBackup];
                     if(note.status == "Cerrada" || note.status == "Rechazada") {
@@ -144,7 +161,8 @@ export class NotesComponent implements OnInit, AfterViewInit{
             this.notesEnded = [];
             if(d.length > 0) {
                 d.forEach(note => {
-                    note.status = this.states[note.statusId].text;
+                    //note.status = this.states[note.statusId].text;
+                    note.status = note.statusId;
                     this.notesBackup.push(note);
                     this.notesBackup = [...this.notesBackup];
                     if(note.status == "Cerrada" || note.status == "Rechazada") {

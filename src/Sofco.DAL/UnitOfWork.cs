@@ -181,8 +181,18 @@ namespace Sofco.DAL
 
         private BaseRepository<RequestNoteTrainingEmployee> requestNoteTrainingEmployeeRepository;
 
+        private BaseRepository<RequestNoteProviderSugg> requestNoteProviderSuggRepository;
+
         #endregion
 
+        #region Buy Order
+        private IBuyOrderRepository buyOrderRepository;
+        private BaseRepository<BuyOrderHistory> buyOrderHistoryRepository;
+        private BaseRepository<BuyOrderInvoice> buyOrderInvoiceRepository;
+        private BaseRepository<BuyOrderProductService> buyOrderProductServiceRepository;
+
+        private BaseRepository<BuyOrderInvoiceProductService> buyOrderInvoiceProductServiceRepository;
+        #endregion
         public UnitOfWork(SofcoContext context, IOptions<EmailConfig> emailConfig, IOptions<AppSetting> appSettingOptions)
         {
             this.context = context;
@@ -311,6 +321,7 @@ namespace Sofco.DAL
 
         #endregion
 
+        #region Request Note
         public IProviderAreaRepository ProviderAreaRepository => providerAreaRepository ?? (providerAreaRepository = new ProviderAreaRepository(context));
 
         public IProvidersRepository ProvidersRepository => providersRepository ?? (providersRepository = new ProvidersRepository(context));
@@ -335,6 +346,16 @@ namespace Sofco.DAL
 
         public IBaseRepository<RequestNoteTrainingEmployee> RequestNoteTrainingEmployeeRepository => requestNoteTrainingEmployeeRepository ?? (requestNoteTrainingEmployeeRepository = new BaseRepository<RequestNoteTrainingEmployee>(context));
 
+        public IBaseRepository<RequestNoteProviderSugg> RequestNoteProviderSuggRepository => requestNoteProviderSuggRepository ?? (requestNoteProviderSuggRepository = new BaseRepository<RequestNoteProviderSugg>(context));
+        #endregion
+        #region Buy Order (Req. Note)
+        public IBuyOrderRepository BuyOrderRepository => buyOrderRepository ?? (buyOrderRepository = new BuyOrderRepository(context));
+        public IBaseRepository<BuyOrderHistory> BuyOrderHistoryRepository => buyOrderHistoryRepository ?? (buyOrderHistoryRepository = new BaseRepository<BuyOrderHistory>(context));
+        public IBaseRepository<BuyOrderInvoice> BuyOrderInvoiceRepository => buyOrderInvoiceRepository ?? (buyOrderInvoiceRepository = new BaseRepository<BuyOrderInvoice>(context));
+        public IBaseRepository<BuyOrderProductService> BuyOrderProductServiceRepository => buyOrderProductServiceRepository ?? (buyOrderProductServiceRepository = new BaseRepository<BuyOrderProductService>(context));
+        public IBaseRepository<BuyOrderInvoiceProductService> BuyOrderInvoiceProductServiceRepository => buyOrderInvoiceProductServiceRepository ?? (buyOrderInvoiceProductServiceRepository = new BaseRepository<BuyOrderInvoiceProductService>(context));
+
+        #endregion
         public void Save()
         {
             context.SaveChanges();

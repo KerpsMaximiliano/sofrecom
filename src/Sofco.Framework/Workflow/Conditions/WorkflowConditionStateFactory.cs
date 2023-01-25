@@ -47,6 +47,8 @@ namespace Sofco.Framework.Workflow.Conditions
                 case "DRAFT-TO-MANAGER": return new DraftToManagerCondition(unitOfWork);
                 case "IS-NOT-FOREIGN-CURRENCY": return new IsNotForeignCurrencyCondition(settings);
                 case "IS-FOREIGN-CURRENCY": return new IsForeignCurrencyCondition(settings);
+                //RequestNote
+                case "RN-DRAFT-TO-MANAGER": return new RequestNote.DraftToManagerCondition(unitOfWork);
                 default: return null;
             }
         }

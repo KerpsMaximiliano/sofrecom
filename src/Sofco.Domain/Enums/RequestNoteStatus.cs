@@ -1,6 +1,6 @@
 ﻿namespace Sofco.Domain.RequestNoteStates
 {
-    public enum RequestNoteStates
+    public enum RequestNoteStatus
     {
         Borrador = 1,
         PendienteRevisiónAbastecimiento = 2,

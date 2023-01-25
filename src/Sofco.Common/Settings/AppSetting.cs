@@ -61,6 +61,9 @@
 
         public string SalaryWorkflowTypeCode { get; set; }
 
+        public string RequestNoteWorkflowTypeCode { get; set; }
+        public string BuyOrderWorkflowTypeCode { get; set; }
+
         public string AmmountAPesos { get; set; }
 
         public string AmmountADolares { get; set; }
@@ -82,6 +85,10 @@
         public int RefundWorkflowId { get; set; }
 
         public int ViaticumWorkflowId { get; set; }
+
+        public int RequestNoteWorkflowId { get; set; }
+
+        public int BuyOrderWorkflowId { get; set; }
 
         public int WorkflowStatusApproveId { get; set; }
 
@@ -126,5 +133,19 @@
         public string AdvancementDelegate { get; set; }
 
         public string RefundDelegate { get; set; }
+
+        public int WorkflowStatusNPBorrador { get; set; }
+        public int WorkflowStatusNPPendienteAprobacionGerente { get; set; }
+        public int WorkflowStatusNPPendienteAprobacionCompras { get; set; }
+        public int WorkflowStatusNPPendienteAprobacionDAF { get; set; }
+        public int WorkflowStatusNPPendienteAprobacionSAP { get; set; }
+        public int WorkflowStatusNPPendienteRecepcionMerc { get; set; }
+        public int WorkflowStatusNPRecepcionParcial { get; set; }
+        public int WorkflowStatusNPRechazado { get; set; }
+        public int WorkflowStatusNPCerrado { get; set; }
+
+        public int WorkflowStatusBOPendienteAprobacionDAF { get; set; }
+        public int WorkflowStatusBOPendienteRecepcionMerc { get; set; }
+        public int WorkflowStatusBOPendienteRecepcionFact { get; set; }
     }
 }

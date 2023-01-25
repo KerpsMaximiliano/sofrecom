@@ -1,102 +1,347 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
+import { UserService } from "app/services/admin/user.service";
+import { RefundService } from "app/services/advancement-and-refund/refund.service";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
+import { EmployeeService } from "app/services/allocation-management/employee.service";
+import { AuthService } from "app/services/common/auth.service";
 import { MessageService } from "app/services/common/message.service";
+import { UserInfoService } from "app/services/common/user-info.service";
+import { WorkflowService } from "app/services/workflow/workflow.service";
+import { Cookie } from "ng2-cookies";
+import { FileUploader } from "ng2-file-upload";
 
 @Component({
     selector: 'notes-pending-approval-management-analytic',
-    templateUrl: './notes-pending-approval-management-analytic.html'
+    templateUrl: './notes-pending-approval-management-analytic.html',
+    styleUrls: ['./notes-pending-approval-management-analytic.scss']
 })
 
 export class NotesPendingApprovalManagementAnalytic implements OnInit{
 
     @Input() currentNote;
     @Input() currentNoteStatusDescription;
-    mode;
-    show = false;
-    productosServicios = [];
+    @Input() closed: boolean;
+    @Input() rejected: boolean;
+    uploadedFilesId = [];
+    requestNoteId;
+
+    @ViewChild('workflow') workflow;
+
+    @ViewChild('selectedFile') selectedFile: any;
+    public uploader: FileUploader = new FileUploader({
+        url: this.requestNoteService.uploadDraftFiles(),
+        authToken: 'Bearer ' + Cookie.get('access_token'), 
+    });
+    travelFormShow: boolean = false;
+    trainingFormShow: boolean = false;
+
+    analyticError: boolean = false;
+    analyticPercentageError: boolean = false;
+    productsServicesError: boolean = false;
+    productsServicesQuantityError: boolean = false;
+    travelDateError: boolean = false;
+    productsServicesTableError: boolean = false;
+    productsServicesFormError: boolean = false;
+    analyticFormError: boolean = false;
+    analyticErrorSend: boolean = false;
+    analyticPercentageErrorSend: boolean = false;
+    descriptionError: boolean = false;
+    travelFormError: boolean = false;
+    trainingFormError: boolean = false;
+
+    providerAreas = [];
+    participanteViajeSeleccionado = null;
+    participanteViajeSeleccionadoCuit = null;
+    participanteViajeSeleccionadoFecha = null;
+    participanteCapacitacionSeleccionado = null;
+    participants = [];
+    filteredParticipants = [];
     analiticas = [];
-    gerenteLogueado;
+    analiticasTable = [];
+    allProviders = [];
+    providers = [];
+    proveedoresTable = [];
+    productosServicios = [];
+    participantesViaje = [];
+    participantesCapacitacion = [];
+    critical: string = null;
+    userInfo;
+
+    travelBirthday: string;
+    travelDepartureDate: string;
+    travelReturnDate: string;
+    trainingDate: string;
 
     formNota: FormGroup = new FormGroup({
-        descripcion: new FormControl(null),
-        grillaProductosServicios: new FormControl(null),
-        rubro: new FormControl(null),
-        critico: new FormControl(null),
-        grillaAnaliticas: new FormControl(null),
-        requierePersonal: new FormControl(true),
-        previstoPresupuesto: new FormControl(true),
-        nroEvalprop: new FormControl(null),
-        observaciones: new FormControl(null),
-        montoOC: new FormControl(null)
-    })
+        description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),
+        productsAndServicies: new FormControl(null),
+        providerArea: new FormControl(null, [Validators.required]),
+        critical: new FormControl(null, []),
+        analytics: new FormControl(null, []),
+        requiresPersonel: new FormControl(null, []),
+        providers: new FormControl(null, []),
+        evaluationProposal: new FormControl(false, []),
+        numberEvalprop: new FormControl(null, [Validators.maxLength(100)]),
+        observations: new FormControl(null, []),
+        travel: new FormControl(false, []),
+        training: new FormControl(false, []),
+    });
+    
+    formCapacitacion: FormGroup = new FormGroup({
+        name: new FormControl(null, [Validators.required]),
+        subject: new FormControl(null, [Validators.required]),
+        location: new FormControl(null, [Validators.required]),
+        date: new FormControl(null, [Validators.required]),
+        duration: new FormControl(null, [Validators.required]),
+        ammount: new FormControl(null, [Validators.required, Validators.min(0)]),
+        participants: new FormControl(null)
+    });
+
+    formViaje: FormGroup = new FormGroup({
+        passengers: new FormControl(null),
+        departureDate: new FormControl(null, [Validators.required]),
+        returnDate: new FormControl(null, [Validators.required]),
+        destination: new FormControl(null, [Validators.required]),
+        transportation: new FormControl(null, [Validators.required]),
+        accommodation: new FormControl(null, [Validators.required]),
+        details: new FormControl(null)
+    });
+
+    private workflowModel: any;
 
     constructor(
+        private providersService: ProvidersService,
         private providersAreaService: ProvidersAreaService,
+        private employeeService: EmployeeService,
+        private analyticService: AnalyticService,
+        private userService: UserService,
+        private refundService: RefundService,
         private requestNoteService: RequestNoteService,
         private messageService: MessageService,
-        private router: Router
+        private authService: AuthService,
+        private router: Router,
+        private workflowService: WorkflowService
     ) {}
 
     ngOnInit(): void {
         this.inicializar();
+        this.userInfo = UserInfoService.getUserInfo();
+        this.analyticService.getByCurrentUser().subscribe(d=>console.log(d));
+        this.refundService.getAnalytics().subscribe(d=>console.log(d));
+        this.workflowService.getTransitions({
+            workflowId: this.currentNote.workflowId,
+            entityController: "RequestNoteBorrador",
+            entityId: this.currentNote.id,
+            actualStateId: this.currentNote.statusId
+        }).subscribe(response => {
+            console.log(response)
+        });
+        this.workflowModel = {
+            //workflowId: response.data.workflowId,
+            //entityController: "refund",
+            //entityId: response.data.id,
+            //actualStateId: response.data.statusId
+            workflowId: this.currentNote.workflowId,
+            entityController: "RequestNoteBorrador",
+            entityId: this.currentNote.id,
+            actualStateId: this.currentNote.statusId
+        };
+        this.workflow.init(this.workflowModel);
     }
+
+    workflowClick() {
+        this.workflow.updateRequestNote(this.currentNote);
+    }
+
 
     inicializar() {
-        this.mode = this.requestNoteService.getMode();
-        console.log(this.currentNote)
-        let providerArea;
-        this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
-            console.log(d);
-            providerArea = d.data;
-            this.formNota.patchValue({
-                descripcion: this.currentNote.description,
-                rubro: providerArea.description,
-                critico: (providerArea.critical) ? "Si" : "No",
-                requierePersonal: this.currentNote.requiresEmployeeClient,
-                previstoPresupuesto: this.currentNote.consideredInBudget,
-                nroEvalprop: this.currentNote.evalpropNumber,
-                observaciones: this.currentNote.comments,
-                montoOC: this.currentNote.purchaseOrderAmmount
+        console.log(this.currentNote);
+        this.uploaderConfig();
+        this.travelFormShow = this.currentNote.travelSection;
+        this.trainingFormShow = this.currentNote.trainingSection;
+        this.providersAreaService.getAll().subscribe(d => {
+            d.data.forEach(providerArea => {
+                if(providerArea.active) {
+                    this.providerAreas.push(providerArea);
+                    this.providerAreas = [...this.providerAreas]
+                }
             });
-            this.analiticas = this.currentNote.analytics;
-            this.productosServicios = this.currentNote.productsServices;
-            this.show = true;
+        });
+        this.existingData();
+        this.employeeService.getEveryone().subscribe(d => {
+            this.participants = d;
+            d.forEach(user => {
+                if(user.isExternal == 0 && user.endDate == null) {
+                    this.filteredParticipants.push(user);
+                    this.filteredParticipants = [...this.filteredParticipants]
+                }
+            });
+        });
+
+        this.analyticService.getByCurrentUserRequestNote().subscribe(d => {
+            this.analiticas = d.data;
+        });
+        
+        this.providersService.getAll().subscribe(d => {
+            this.allProviders = d.data;
         })
-        this.checkFormStatus()
     }
 
-    checkFormStatus() {
+    existingData() {
+        console.log(this.currentNote);
+        if(this.currentNote.attachments != null) {
+            this.uploadedFilesId = this.currentNote.attachments;
+        }
+        this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
+            this.formNota.patchValue({
+                description: this.currentNote.description,
+                providerArea: this.currentNote.providerAreaId,
+                requiresPersonel: this.currentNote.requiresEmployeeClient,
+                evaluationProposal: this.currentNote.consideredInBudget,
+                numberEvalprop: this.currentNote.evalpropNumber,
+                observations: this.currentNote.comments,
+                travel: this.currentNote.travelSection,
+                training: this.currentNote.trainingSection
+            });
+            this.critical = (d.data.critical) ? "Si" : "No";
+        });
+        this.providersService.getAll().subscribe(d => {
+            console.log(d.data)
+            d.data.forEach(prov => {
+                if(prov.providerAreaId == this.currentNote.providerAreaId) {
+                    this.providers.push(prov);
+                    this.providers = [...this.providers]
+                }
+            });
+        });
+        this.analiticasTable = this.currentNote.analytics;
+        this.productosServicios = this.currentNote.productsServices;
+        this.proveedoresTable = this.currentNote.providers;
+        if(this.currentNote.travelSection) {
+            this.formViaje.patchValue({
+                destination: this.currentNote.travel.destination,
+                transportation: this.currentNote.travel.transportation,
+                accommodation: this.currentNote.travel.accommodation,
+                details: this.currentNote.travel.details,
+                departureDate: this.currentNote.travel.departureDate,
+                returnDate: this.currentNote.travel.returnDate
+            });
+            this.travelDepartureDate = this.currentNote.travel.departureDate;
+            this.travelReturnDate = this.currentNote.travel.returnDate;
+            this.employeeService.getEveryone().subscribe(d => {
+                this.currentNote.travel.passengers.forEach(ps => {
+                    let findPs = d.find(passenger => passenger.id == ps.employeeId);
+                    console.log(findPs)
+                    if(findPs != undefined) {
+                        this.participantesViaje.push(findPs);
+                        this.participantesViaje = [...this.participantesViaje]
+                    }
+                });
+            });
+        }
+        if(this.currentNote.trainingSection) {
+            this.formCapacitacion.patchValue({
+                name: this.currentNote.training.name,
+                subject: this.currentNote.training.subject,
+                location: this.currentNote.training.location,
+                date: this.currentNote.training.date,
+                duration: this.currentNote.training.duration,
+                ammount: this.currentNote.training.ammount
+            });
+            this.trainingDate = this.currentNote.training.date;
+            this.participantesCapacitacion = this.currentNote.training.participants;
+        }
+        //Disablear formularios
         this.formNota.disable();
-        if(this.mode == "Edit") {
-            this.formNota.controls.observaciones.enable();
+        this.formCapacitacion.disable();
+        this.formViaje.disable();
+    }
+
+    change(event) {
+        console.log(event)
+        if(event != undefined) {
+            this.critical = (event.critical) ? "Si" : "No";
+            this.providers = [];
+            this.allProviders.forEach(prov => {
+                if(prov.providerAreaId == event.id) {
+                    this.providers.push(prov);
+                    this.providers = [...this.providers];
+                }
+            })
+        } else {
+            this.critical = null
         }
     }
 
-    approve() {
-        let model = {
-            id: this.currentNote.id,
-            comments: this.formNota.controls.observaciones.value
-        };
-        this.requestNoteService.approvePendingApprovalManagementAnalytic(model).subscribe(d => {
-            console.log(d);
-            this.messageService.showMessage("Las analíticas asociadas han sido aprobadas", 0);
-            this.router.navigate(['/providers/notes']);
-        })
-        
+    openTravelModal() {
+        this.travelFormShow = !this.travelFormShow;
     }
 
-    reject() {
-        let model = {
-            id: this.currentNote.id
+    openTrainingModal() {
+        this.trainingFormShow = !this.trainingFormShow;
+    }
+
+    markFormGroupTouched(formGroup: FormGroup) {
+        (<any>Object).values(formGroup.controls).forEach(control => {
+            control.markAsTouched();
+
+            if (control.controls) {
+                this.markFormGroupTouched(control);
+            }
+        });
+    }
+
+    onTransitionSuccess() {
+        this.router.navigate(["/providers/notes"]);
+    }
+
+    clearSelectedFile(){
+        if(this.uploader.queue.length > 0){
+            this.uploader.queue[0].remove();
+        }
+  
+        this.selectedFile.nativeElement.value = '';
+    }
+
+    uploaderConfig(){
+        this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
+            authToken: 'Bearer ' + Cookie.get('access_token') ,
+        });
+
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+            if(status == 401){
+                this.authService.refreshToken().subscribe(token => {
+                    this.messageService.closeLoading();
+
+                    if(token){
+                        this.clearSelectedFile();
+                        this.messageService.showErrorByFolder('common', 'fileMustReupload');
+                        this.uploaderConfig();
+                    }
+                });
+                return;
+            }
+            let jsonResponse = JSON.parse(response);
+            this.uploadedFilesId.push({
+                type: 1,
+                fileId: jsonResponse.data[0].id
+            });
+            console.log(this.uploadedFilesId)
+            this.clearSelectedFile();
         };
-        this.requestNoteService.rejectPendingApprovalManagementAnalytic(model).subscribe(d => {
-            console.log(d);
-            this.messageService.showMessage("Las analíticas asociadas han sido rechazadas", 0);
-            this.router.navigate(['/providers/notes']);
+        this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    }
+
+    downloadFiles() {
+        this.currentNote.attachments.forEach(file => {
+            if(file.fileDescription) {
+                this.requestNoteService.downloadFile(file.fileId, 5, file.fileDescription);
+            }
         })
     }
 }
