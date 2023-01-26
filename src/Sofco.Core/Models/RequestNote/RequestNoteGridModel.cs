@@ -39,7 +39,7 @@ namespace Sofco.Core.Models.RequestNote
         private bool ValidateEditPermissions(List<string> permissions, int userId)
         {
             var hasPermission = CreationUserId == userId; //Si es suya, siempre la puede ver
-            if (hasPermission || StatusId == _settings.WorkflowStatusNPBorrador)
+            if (hasPermission && StatusId == _settings.WorkflowStatusNPBorrador)
                 return hasPermission;
 
             if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionGerente) //case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
@@ -48,8 +48,9 @@ namespace Sofco.Core.Models.RequestNote
                 hasPermission = permissions.Any(p => p == "NP_APROBACION_DAF");
             else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionCompras) // case RequestNoteStatus.PendienteAprobaciónDAF:
                 hasPermission = permissions.Any(p => p == "NP_APROBACION_COMPRA");
+            else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionSAP) // case RequestNoteStatus.PendienteAprobaciónDAF:
+                hasPermission = permissions.Any(p => p == "NP_PEND_GENE_SAP");
             else if (new List<int>() {
-                    _settings.WorkflowStatusNPPendienteAprobacionSAP,
                     _settings.WorkflowStatusNPPendienteRecepcionMerc,
                     _settings.WorkflowStatusNPRecepcionParcial
             }.Contains(StatusId))
