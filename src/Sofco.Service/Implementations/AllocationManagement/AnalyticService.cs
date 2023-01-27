@@ -103,6 +103,8 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 }
             }
 
+            response.Data.OrderBy(x => x.Text);
+
             return response;
         }
 

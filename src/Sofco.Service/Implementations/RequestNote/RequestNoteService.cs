@@ -498,7 +498,8 @@ namespace Sofco.Service.Implementations.RequestNote
             var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "NOPE");
             return this.unitOfWork.RequestNoteRepository.GetAll(filters)
                     .Select(n=> new RequestNoteGridModel(n, permisos, user.Id, settings))
-                    .Where(n=> n.HasEditPermissions || n.HasReadPermissions).ToList();
+                    .Where(n=> n.HasEditPermissions || n.HasReadPermissions).OrderByDescending(x=>x.Id)
+                    .ToList();
         }
 
         public void SaveChanges(RequestNoteModel requestNote, int nextStatus)
