@@ -6,10 +6,10 @@
                 <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']"> 
                     <i class="fa fa-arrow-left"></i>       Volver
                 </button>
-                <button class="btn btn-primary btn-outline dim" type="button" (click)="saveNote(false)">Guardar <i class="fa fa-save"></i> </button>
+                <button class="btn btn-primary btn-outline dim" type="button" (click)="saveNote(false)" *ngIf="mode == 'Edit'">Guardar <i class="fa fa-save"></i> </button>
             </div>
             <div class="btn-right">
-                <button class="btn btn-success btn-outline dim" (click)="sendDraft()"> 
+                <button class="btn btn-success btn-outline dim" (click)="sendDraft()" *ngIf="mode == 'Edit'"> 
                     Enviar       <i class="fa fa-arrow-right"></i>
                 </button>
             </div>
@@ -232,7 +232,7 @@
 
         <div class="col-sm-3">
             <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}} archivos subidos</p></h3>
-            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple/>
+            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple *ngIf="mode == 'Edit'"/>
     
             <div class="uploader-margin-top">
                 <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
@@ -240,17 +240,17 @@
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                 </div>
     
-                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length" *ngIf="mode == 'Edit'">
                     <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
                 </button>
                 
-                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length" *ngIf="mode == 'Edit'">
                     <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
                 </button>
             </div>
 
             <div style="width: 100%; margin-top: 4rem">
-                <button type="button" class="btn btn-success btn-s" style="width: 50%;" (click)="downloadFiles()">Descargar archivos adjuntos</button>
+                <button type="button" class="btn btn-success btn-s" (click)="downloadFiles()">Descargar archivos adjuntos</button>
             </div>
         </div>
     </div>
