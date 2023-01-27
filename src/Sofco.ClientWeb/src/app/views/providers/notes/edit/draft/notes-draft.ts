@@ -38,6 +38,8 @@ export class NotesDraftComponent implements OnInit{
 
     workflowId: number;
 
+    mode: string = "View";
+
     analyticError: boolean = false;
     analyticPercentageError: boolean = false;
     productsServicesError: boolean = false;
@@ -165,6 +167,7 @@ export class NotesDraftComponent implements OnInit{
 
     ngOnInit(): void {
         console.log(this.currentNote);
+        this.mode = this.requestNoteService.getMode();
         this.workflowId = this.currentNote.workflowId;
         this.inicializar();
         this.userInfo = UserInfoService.getUserInfo();
