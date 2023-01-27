@@ -399,7 +399,7 @@ namespace Sofco.Service.Implementations.RequestNote
             }
             response.Data = datos;
             if (new List<int>() {
-                settings.WorkflowStatusNPPendienteAprobacionGerente//,
+                //settings.WorkflowStatusNPPendienteAprobacionGerente,
                 //settings.WorkflowStatusNPPendienteAprobacionCompras,
                 //settings.WorkflowStatusNPPendienteAprobacionSAP
                 //otros?
