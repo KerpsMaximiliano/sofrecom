@@ -131,6 +131,7 @@ export class NotesPendingSAP {
     ) {}
 
     ngOnInit(): void {
+        console.log(this.requestNoteService.getMode())
         this.inicializar();
         this.userInfo = UserInfoService.getUserInfo();
         this.analyticService.getByCurrentUser().subscribe(d=>console.log(d));
@@ -143,17 +144,20 @@ export class NotesPendingSAP {
         }).subscribe(response => {
             console.log(response)
         });
-        this.workflowModel = {
-            //workflowId: response.data.workflowId,
-            //entityController: "refund",
-            //entityId: response.data.id,
-            //actualStateId: response.data.statusId
-            workflowId: this.currentNote.workflowId,
-            entityController: "RequestNoteBorrador",
-            entityId: this.currentNote.id,
-            actualStateId: this.currentNote.statusId
-        };
-        this.workflow.init(this.workflowModel);
+        if(this.requestNoteService.getMode() == "Edit") {
+            this.workflowModel = {
+                //workflowId: response.data.workflowId,
+                //entityController: "refund",
+                //entityId: response.data.id,
+                //actualStateId: response.data.statusId
+                workflowId: this.currentNote.workflowId,
+                entityController: "RequestNoteBorrador",
+                entityId: this.currentNote.id,
+                actualStateId: this.currentNote.statusId
+            };
+            this.workflow.init(this.workflowModel);
+        }
+        
     }
 
     workflowClick() {

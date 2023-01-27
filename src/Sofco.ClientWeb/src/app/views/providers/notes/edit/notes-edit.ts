@@ -68,7 +68,7 @@ export class NotesEditComponent implements OnInit{
             } else {
                 console.log(results[0])
                 if(results[0].data.hasEditPermissions) {
-                    this.requestNoteService.setMode("Edit")
+                    //this.requestNoteService.setMode("Edit")
                 } else if (results[0].data.hasReadPermissions){
                     this.requestNoteService.setMode("View")
                 }

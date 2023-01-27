@@ -149,19 +149,21 @@ export class NotesPendingPurchaseApproval {
         }).subscribe(response => {
             console.log(response)
         });
-        this.workflowModel = {
-            //workflowId: response.data.workflowId,
-            //entityController: "refund",
-            //entityId: response.data.id,
-            //actualStateId: response.data.statusId
-            workflowId: this.currentNote.workflowId,
-            entityController: "RequestNoteBorrador",
-            entityId: this.currentNote.id,
-            actualStateId: this.currentNote.statusId
-        };
-        this.workflow.filesToUpload();
-        this.workflow.setCustomValidations(true);
-        this.workflow.init(this.workflowModel);
+        if(this.requestNoteService.getMode() == "Edit") {
+            this.workflowModel = {
+                //workflowId: response.data.workflowId,
+                //entityController: "refund",
+                //entityId: response.data.id,
+                //actualStateId: response.data.statusId
+                workflowId: this.currentNote.workflowId,
+                entityController: "RequestNoteBorrador",
+                entityId: this.currentNote.id,
+                actualStateId: this.currentNote.statusId
+            };
+            this.workflow.filesToUpload();
+            this.workflow.setCustomValidations(true);
+            this.workflow.init(this.workflowModel);
+        }
     }
 
     workflowClick(event: any) {
