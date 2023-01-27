@@ -314,8 +314,8 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public IList<Analytic> GetAnalyticsRequestNote(int userId)
         {
-            var analyticsByManagers = context.Analytics
-                .Where(x => x.ManagerId.GetValueOrDefault() == userId && x.Status == AnalyticStatus.Open)
+            return context.Analytics
+                .Where(x => x.Status == AnalyticStatus.Open)
                 .Select(x => new Analytic
                 {
                     Id = x.Id,
@@ -324,25 +324,35 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 })
                 .ToList();
 
-            var sectors = context.Sectors.Where(x => x.ResponsableUserId == userId).Select(x => new Sector
-            {
-                Analytics = x.Analytics,
-                ResponsableUser = x.ResponsableUser,
-                ResponsableUserId = x.ResponsableUserId,
+            //var analyticsByManagers = context.Analytics
+            //    .Where(x => x.ManagerId.GetValueOrDefault() == userId && x.Status == AnalyticStatus.Open)
+            //    .Select(x => new Analytic
+            //    {
+            //        Id = x.Id,
+            //        Title = x.Title,
+            //        Name = x.Name
+            //    })
+            //    .ToList();
 
-            }).ToList();
+            //var sectors = context.Sectors.Where(x => x.ResponsableUserId == userId).Select(x => new Sector
+            //{
+            //    Analytics = x.Analytics,
+            //    ResponsableUser = x.ResponsableUser,
+            //    ResponsableUserId = x.ResponsableUserId,
 
-            var analyticsByDirector = new List<Analytic>();
+            //}).ToList();
 
-            foreach (Sector sector in sectors)
-            {
-                foreach(Analytic analytic in sector.Analytics)
-                {
-                    analyticsByDirector.Add(analytic);
-                }
-            }
+            //var analyticsByDirector = new List<Analytic>();
 
-            return analyticsByDirector.Union(analyticsByManagers).ToList();
+            //foreach (Sector sector in sectors)
+            //{
+            //    foreach(Analytic analytic in sector.Analytics)
+            //    {
+            //        analyticsByDirector.Add(analytic);
+            //    }
+            //}
+
+            //return analyticsByDirector.Union(analyticsByManagers).ToList();
         }
 
         public IList<Analytic> GetAnalyticsLiteByEmployee(int employeeId, int userId, DateTime dateFrom, DateTime dateTo)
