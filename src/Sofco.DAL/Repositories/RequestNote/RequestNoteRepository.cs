@@ -74,6 +74,7 @@ namespace Sofco.DAL.Repositories.RequestNote
                 .Include(x => x.Analytics)
                     .ThenInclude(p => p.Analytic)
                 .Include(x => x.CreationUser)
+                .OrderByDescending(x=>x.Id)
                 .ToList();
         }
 
