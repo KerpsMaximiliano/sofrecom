@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { RequestNoteService } from "app/services/admin/request-note.service";
 import { MessageService } from "app/services/common/message.service";
+import { environment } from "environments/environment";
 import { forkJoin } from "rxjs";
 
 
@@ -118,6 +119,10 @@ export class NotesEditComponent implements OnInit{
     showComments(history) {
         this.historyComments = history.comment;
         this.commentsModal.show();
+    }
+
+    get currentEnviroment() {
+        return environment;
     }
     
 }

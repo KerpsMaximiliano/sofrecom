@@ -13,6 +13,7 @@ import { AuthService } from "app/services/common/auth.service";
 import { MessageService } from "app/services/common/message.service";
 import { UserInfoService } from "app/services/common/user-info.service";
 import { WorkflowService } from "app/services/workflow/workflow.service";
+import { environment } from "environments/environment";
 import { Cookie } from "ng2-cookies";
 import { FileUploader } from "ng2-file-upload";
 import { forkJoin } from "rxjs";
@@ -697,7 +698,7 @@ export class NotesDraftComponent implements OnInit{
             if(send) {
                 var modelWorkflow = {
                     workflowId: this.workflowId,
-                    nextStateId: 29,
+                    nextStateId: environment.PENDIENTE_APROBACION_GERENTE_ANALITICA_STATE_ID,
                     entityId: this.requestNoteId,
                     entityController: "RequestNoteBorrador",
                     requestNote: model

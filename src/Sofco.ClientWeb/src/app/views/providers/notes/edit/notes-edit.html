@@ -17,32 +17,32 @@
 </div>
 
 <div *ngIf="showEdit">
-    <notes-draft [currentNote]="currentNote" *ngIf="estadoSeleccionado == 8"></notes-draft>
+    <notes-draft [currentNote]="currentNote" *ngIf="estadoSeleccionado == currentEnviroment.NP_BORRADOR"></notes-draft>
 
-    <notes-pending-approval-management-analytic [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 29"></notes-pending-approval-management-analytic>
+    <notes-pending-approval-management-analytic [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == currentEnviroment.NP_PEND_APRO_GER_AN"></notes-pending-approval-management-analytic>
 
-    <notes-pending-purchase-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 31"></notes-pending-purchase-approval>
+    <notes-pending-purchase-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == currentEnviroment.NP_PEND_APRO_COMP"></notes-pending-purchase-approval>
 
-    <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 4"></notes-pending-daf-approval>
+    <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == currentEnviroment.NP_PEND_APRO_DAF"></notes-pending-daf-approval>
 
-    <notes-pending-sap [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 33"></notes-pending-sap>
+    <notes-pending-sap [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == currentEnviroment.NP_PEND_GEN_SAP"></notes-pending-sap>
 
-    <notes-pending-merch-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 34"></notes-pending-merch-reception>
+    <notes-pending-merch-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == currentEnviroment.NP_PEND_RECEP_MERC"></notes-pending-merch-reception>
 
-    <notes-partial-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == 35"></notes-partial-reception>
+    <notes-partial-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == currentEnviroment.NP_RECEP_PARCIAL"></notes-partial-reception>
 
-    <div *ngIf="estadoSeleccionado == 36">
-        <notes-pending-approval-management-analytic [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 29"></notes-pending-approval-management-analytic>
+    <div *ngIf="estadoSeleccionado == currentEnviroment.NP_CERRADA"> <!--cerrada-->
+        <notes-pending-approval-management-analytic [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == currentEnviroment.NP_PEND_APRO_GER_AN"></notes-pending-approval-management-analytic>
 
-        <notes-pending-purchase-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 31"></notes-pending-purchase-approval>
+        <notes-pending-purchase-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == currentEnviroment.NP_PEND_APRO_COMP"></notes-pending-purchase-approval>
 
-        <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 4"></notes-pending-daf-approval>
+        <notes-pending-daf-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == currentEnviroment.NP_PEND_APRO_DAF"></notes-pending-daf-approval>
 
-        <notes-pending-sap [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 33"></notes-pending-sap>
+        <notes-pending-sap [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == currentEnviroment.NP_PEND_GEN_SAP"></notes-pending-sap>
 
-        <notes-pending-merch-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 34"></notes-pending-merch-reception>
+        <notes-pending-merch-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == currentEnviroment.NP_PEND_RECEP_MERC"></notes-pending-merch-reception>
 
-        <notes-partial-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == 35"></notes-partial-reception>
+        <notes-partial-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == currentEnviroment.NP_RECEP_PARCIAL"></notes-partial-reception>
     </div>
     <!---------->
     

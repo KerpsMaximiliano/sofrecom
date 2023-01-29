@@ -14,5 +14,25 @@ export const environment = {
   pendingComplianceDWorkflowStateId: 18,
   pendingComplianceDGWorkflowStateId: 19,
   redCategoryId: 22,
-  infrastructureCategoryId: 14
+  infrastructureCategoryId: 14,
+  PENDIENTE_APROBACION_GERENTE_ANALITICA_STATE_ID: 32,
+  REQUEST_NOTE_STATES: [
+    { id: 0, text: "Todos" },
+    { id: 29, text: "Borrador" },
+    { id: 32, text: "Pendiente Aprobación Gerentes Analítica" },
+    { id: 31, text: "Pendiente Aprobación Compras" },
+    { id: 33, text: "Pendiente Aprobación DAF" },
+    { id: 34, text: "Pendiente Generación SAP" },
+    // { id: 34, text: "Pendiente Recepción Mercadería" },
+    // { id: 35, text: "Recepción Parcial" },
+    { id: 35, text: "Cerrada" },
+    { id: 36, text: "Rechazada" }
+],
+  NP_BORRADOR: 29,
+  NP_PEND_APRO_GER_AN: 32,
+  NP_PEND_APRO_COMP: 31,
+  NP_PEND_APRO_DAF: 33,
+  NP_PEND_GEN_SAP: 34,
+  NP_CERRADA: 35,
+  NP_RECHAZADA: 36
 };

@@ -5,6 +5,7 @@ import { RequestNoteService } from "app/services/admin/request-note.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
+import { environment } from "environments/environment";
 
 @Component({
     selector: 'notes',
@@ -16,33 +17,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
     applicants = [];
     applicantId: number;
     currentTab: number = 1;
-    states = [
-        { id: 0, text: "Todos" },
-        { id: 1, text: "Borrador" },
-        { id: 2, text: "Pendiente Revisión Abastecimiento" },
-        { id: 3, text: "Pendiente Aprobación Gerentes Analítica" },
-        { id: 4, text: "Pendiente Aprobación Abastecimiento" },
-        { id: 5, text: "Pendiente Aprobación DAF" },
-        { id: 6, text: "Aprobada" },
-        { id: 7, text: "Solicitada a Proveedor" },
-        { id: 8, text: "Recibido Conforme" },
-        { id: 9, text: "Factura Pendiente Aprobación Gerente" },
-        { id: 10, text: "Pendiente Procesar GAF" },
-        { id: 11, text: "Rechazada" },
-        { id: 12, text: "Cerrada" },
-    ];
-    states2 = [
-        { id: 0, text: "Todos" },
-        { id: 8, text: "Borrador" },
-        { id: 29, text: "Pendiente Aprobación Gerentes Analítica" },
-        { id: 31, text: "Pendiente Aprobación Compras" },
-        { id: 4, text: "Pendiente Aprobación DAF" },
-        { id: 33, text: "Pendiente Generación SAP" },
-        { id: 34, text: "Pendiente Recepción Mercadería" },
-        { id: 35, text: "Recepción Parcial" },
-        { id: 11, text: "Cerrada" },
-        { id: 30, text: "Rechazada" }
-    ];
+    states2 = environment.REQUEST_NOTE_STATES;
     stateId: number;
     providers = [];
     providerId: number;
