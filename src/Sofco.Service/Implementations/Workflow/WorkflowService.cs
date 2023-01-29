@@ -173,7 +173,9 @@ namespace Sofco.Service.Implementations.Workflow
             // Create history
             CreateHistory<TEntity, THistory>(entity, transition, currentUser, parameters);
 
-            CheckIfMustGoToNextStep<TEntity, THistory>(parameters, response, transition, entity);
+            if (transition.Workflow.WorkflowTypeId != appSetting.RequestNoteWorkflowId) { 
+                CheckIfMustGoToNextStep<TEntity, THistory>(parameters, response, transition, entity);
+            }
 
             if (!response.Data.MustDoNextTransition)
             {
