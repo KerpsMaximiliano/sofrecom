@@ -42,14 +42,16 @@ namespace Sofco.WebApi.Controllers.RequestNote
         [HttpPost("transition")]
         public IActionResult DoTransition([FromBody] WorkflowChangeRequestNoteParameters parameters)
         {
-            if (parameters?.RequestNote == null)
+            if (parameters?.RequestNote == null && !parameters.Parameters.ContainsKey("comments"))
             {
                 var r = new Response<int>();
                 r.AddError(Resources.RequestNote.RequestNote.NullModel);
                 return this.CreateResponse(r);
             }
 
-            this._requestNoteService.SaveChanges(parameters?.RequestNote, parameters.NextStateId);
+            if (parameters?.RequestNote != null) { 
+                this._requestNoteService.SaveChanges(parameters?.RequestNote, parameters.NextStateId);
+            }
 
             var response = new Response<TransitionSuccessModel> { Data = new TransitionSuccessModel { MustDoNextTransition = true } };
 
