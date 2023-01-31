@@ -83,7 +83,7 @@ namespace Sofco.Core.Models.RequestNote
                 {
                     AnalyticId = p.AnalyticId,
                     Asigned = p.Percentage,
-                    Description = p.Analytic?.Name,
+                    Description = p.Analytic?.Title + " - " + p.Analytic?.Name,
                     Status = p.Status,
                     ManagerId = p.Analytic?.ManagerId
                 }).ToList();
