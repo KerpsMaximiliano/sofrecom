@@ -15,8 +15,7 @@ export const environment = {
   pendingComplianceDGWorkflowStateId: 23,
   redCategoryId: 22,
   infrastructureCategoryId: 14,
-  BORRADOR_STATE_ID: 29,
-  PENDIENTE_APROBACION_GERENTE_ANALITICA_STATE_ID: 32,
+  PENDIENTE_APROBACION_GERENTE_ANALITICA_STATE_ID: 29,
   REQUEST_NOTE_STATES: [
     { id: 0, text: "Todos" },
     { id: 8, text: "Borrador" },
