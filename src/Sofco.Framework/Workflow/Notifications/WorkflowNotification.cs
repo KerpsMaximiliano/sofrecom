@@ -10,6 +10,8 @@ using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Models.Workflow;
 using Sofco.Framework.MailData;
+using Sofco.Domain.Models.RequestNote;
+using Sofco.Core.Models.RequestNote;
 
 namespace Sofco.Framework.Workflow.Notifications
 {
@@ -160,6 +162,19 @@ namespace Sofco.Framework.Workflow.Notifications
                             foreach (var userDelegation in userDelegations)
                             {
                                 recipientsList.Add(userDelegation.GrantedUser.Email);
+                            }
+                        }
+                    }
+
+                    if (entity is RequestNote requestNote)
+                    {
+                        foreach (RequestNoteAnalytic analityc in requestNote.Analytics)
+                        {
+                            var manager = unitOfWork.AnalyticRepository.GetManager(analityc.AnalyticId);
+
+                            if (manager != null)
+                            {
+                                recipientsList.Add(manager.Email);
                             }
                         }
                     }
