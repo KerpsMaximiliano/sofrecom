@@ -28,4 +28,12 @@ export const environment = {
     // { id: 35, text: "Recepción Parcial" },
     { id: 20, text: "Cerrada" },
     { id: 25, text: "Rechazada" }
+  ],
+  NP_BORRADOR: 19,
+  NP_PEND_APRO_GER_AN: 23,
+  NP_PEND_APRO_COMP: 21,
+  NP_PEND_APRO_DAF: 22,
+  NP_PEND_GEN_SAP: 24,
+  NP_CERRADA: 20,
+  NP_RECHAZADA: 25
 };
