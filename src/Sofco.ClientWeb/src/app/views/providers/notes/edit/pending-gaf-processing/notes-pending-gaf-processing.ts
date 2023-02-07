@@ -55,7 +55,6 @@ export class NotesPendingGAFProcessing {
     inicializar() {
         this.mode = this.requestNoteService.getMode();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
-            console.log(d);
             this.formNota.patchValue({
                 descripcion: this.currentNote.description,
                 rubro: d.data.description,
@@ -101,17 +100,14 @@ export class NotesPendingGAFProcessing {
     }
 
     downloadProviderDoc(item) {
-        console.log(item);
         this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
     downloadRC(item) {
-        console.log(item);
         this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
     downloadBills(item) {
-        console.log(item);
         this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
     }
 
@@ -121,7 +117,6 @@ export class NotesPendingGAFProcessing {
             comments: this.currentNote.comments
         };
         this.requestNoteService.approvePendingGAFProcessing(model).subscribe(d => {
-            console.log(d);
             this.messageService.showMessage("La nota de pedido ha sido cerrada", 0);
             this.router.navigate(['/providers/notes']);
         })

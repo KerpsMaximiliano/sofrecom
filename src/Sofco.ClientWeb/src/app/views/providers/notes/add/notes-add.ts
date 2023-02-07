@@ -168,15 +168,6 @@ export class NotesAddComponent implements OnInit{
     ngOnInit(): void {
         this.inicializar();
         this.userInfo = UserInfoService.getUserInfo();
-        console.log(this.userInfo);
-        //this.analyticService.getByCurrentUser().subscribe(d=>console.log(d));
-        //this.refundService.getAnalytics().subscribe(d=>console.log(d));
-        //id 3277 - "FLORES BENGOECHEA, RODRIGO XAVIER"
-        //this.employeeService.getInfo(3277).subscribe(d => console.log(d)); //id - 2550
-        this.employeeService.getSectorName(3277).subscribe(d => console.log(d))
-        //this.userService.get(2550).subscribe(d => console.log(d)); //sectorId
-        //this.sectorsService.get(1).subscribe(d => console.log(d));
-        //this.sectorsService.getAll().subscribe(d => console.log(d.data));
     }
 
     inicializar() {
@@ -191,7 +182,6 @@ export class NotesAddComponent implements OnInit{
         });
 
         this.employeeService.getEveryone().subscribe(d => {
-            console.log(d);
             d.forEach(emp => {
                 if(emp.birthday != null) {
                     let year = emp.birthday.split('-')[0];
@@ -265,7 +255,6 @@ export class NotesAddComponent implements OnInit{
     }
 
     agregarParticipanteViaje() {
-        console.log(this.participanteViajeSeleccionado)
         if(this.formParticipanteViaje.invalid) {
             return;
         };
@@ -476,9 +465,6 @@ export class NotesAddComponent implements OnInit{
     }
 
     saveNote(send: boolean) {
-        console.log(this.formNota.value);
-        console.log(this.formViaje.value);
-        console.log(this.formCapacitacion.value);
         this.markFormGroupTouched(this.formNota);
         if(this.formNota.controls.training.value == true) {
             this.markFormGroupTouched(this.formCapacitacion);
@@ -503,13 +489,11 @@ export class NotesAddComponent implements OnInit{
         };
         if(this.formNota.controls.travel.value == true) {
             if(!this.formViaje.valid || this.travelDateError) {
-                console.log("Invalid viaje");
                 return;
             };
         };
         if(this.formNota.controls.training.value == true) {
             if(!this.formCapacitacion.valid) {
-                console.log("Invalid capacitación");
                 return;
             };
         };
@@ -599,7 +583,6 @@ export class NotesAddComponent implements OnInit{
         if(!model.trainingSection) {
             model.training = null;
         }
-        console.log(model);
         if(this.requestNoteId != null) {
             model.id = this.requestNoteId;
         }
@@ -616,21 +599,11 @@ export class NotesAddComponent implements OnInit{
                         requestNote: model
                     };
                     this.workflowService.post(modelWorkflow).subscribe(response => {
-                        console.log(response);
-                        //this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
                         setTimeout(() => {
                             this.router.navigate(['/providers/notes']);
                         }, 500);
                     });
                 });
-                
-                // this.requestNoteService.approveDraft(this.requestNoteId).subscribe(d=>{
-                //     console.log(d);
-                //     this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
-                //     setTimeout(() => {
-                //         this.router.navigate(['/providers/notes']);
-                //     }, 500);
-                // });
             } else {
                 setTimeout(() => {
                     this.router.navigate(['/providers/notes']);
@@ -650,7 +623,6 @@ export class NotesAddComponent implements OnInit{
     };
 
     dateChange(number, event) {
-        console.log(event)
         if(number == 1) {
             this.formParticipanteViaje.controls.birth.setValue(this.travelBirthday);
         }
@@ -742,18 +714,15 @@ export class NotesAddComponent implements OnInit{
                 this.analyticError = true;
                 this.analyticErrorSend = true;
             }
-            console.log("Invalid nota");
             return;
         }
         if(this.formNota.controls.travel.value == true) {
             if(!this.formViaje.valid || this.participantesViaje.length <= 0 || this.travelDateError) {
-                console.log("Invalid viaje");
                 return;
             };
         }
         if(this.formNota.controls.training.value == true) {
             if(!this.formCapacitacion.valid) {
-                console.log("Invalid capacitación");
                 return;
             };
         }
@@ -788,7 +757,6 @@ export class NotesAddComponent implements OnInit{
             }
             let jsonResponse = JSON.parse(response);
             this.uploadedFilesId.push(jsonResponse.data[0].id);
-            console.log(this.uploadedFilesId)
             this.clearSelectedFile();
         };
         this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };

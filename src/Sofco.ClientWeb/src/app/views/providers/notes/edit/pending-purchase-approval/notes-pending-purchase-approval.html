@@ -174,7 +174,7 @@
 
         <div class="col-sm-3">
             <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}} archivos subidos</p></h3>
-            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple [disabled]="closed || rejected"/>
+            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple [disabled]="closed || rejected" *ngIf="mode == 'Edit'"/>
     
             <div class="uploader-margin-top" *ngIf="!closed && !rejected">
                 <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
@@ -182,11 +182,11 @@
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                 </div>
     
-                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length" *ngIf="mode == 'Edit'">
                     <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
                 </button>
                 
-                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length">
+                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length" *ngIf="mode == 'Edit'">
                     <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
                 </button>
             </div>

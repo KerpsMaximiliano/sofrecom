@@ -39,7 +39,7 @@ export class NotesDraftComponent implements OnInit{
 
     workflowId: number;
 
-    mode: string = "View";
+    mode: string;
 
     analyticError: boolean = false;
     analyticPercentageError: boolean = false;
@@ -167,27 +167,14 @@ export class NotesDraftComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        console.log(this.currentNote);
         this.mode = this.requestNoteService.getMode();
         this.workflowId = this.currentNote.workflowId;
         this.inicializar();
         this.userInfo = UserInfoService.getUserInfo();
-        console.log(this.userInfo);
-        this.analyticService.getByCurrentUser().subscribe(d=>console.log(d));
-        this.refundService.getAnalytics().subscribe(d=>console.log(d));
-        this.workflowService.getTransitions({
-            workflowId: this.workflowId,
-            entityController: "RequestNoteBorrador",
-            entityId: this.currentNote.id,
-            actualStateId: 8
-        }).subscribe(response => {
-            console.log(response)
-        });
     }
 
 
     inicializar() {
-        console.log(this.currentNote);
         this.uploaderConfig();
         this.travelFormShow = this.currentNote.travelSection;
         this.trainingFormShow = this.currentNote.trainingSection;
@@ -228,7 +215,6 @@ export class NotesDraftComponent implements OnInit{
     }
 
     existingData() {
-        console.log(this.currentNote);
         if(this.currentNote.attachments != null) {
             this.uploadedFilesId = this.currentNote.attachments;
         }
@@ -246,7 +232,6 @@ export class NotesDraftComponent implements OnInit{
             this.critical = (d.data.critical) ? "Si" : "No";
         });
         this.providersService.getAll().subscribe(d => {
-            console.log(d.data)
             d.data.forEach(prov => {
                 if(prov.providerAreaId == this.currentNote.providerAreaId) {
                     this.providers.push(prov);
@@ -275,7 +260,6 @@ export class NotesDraftComponent implements OnInit{
                 name: prov.providerDescription
             })
         });
-        //this.proveedoresTable = this.currentNote.providers;
         if(this.currentNote.travelSection) {
             this.formViaje.patchValue({
                 destination: this.currentNote.travel.destination,
@@ -287,7 +271,6 @@ export class NotesDraftComponent implements OnInit{
             });
             this.travelDepartureDate = this.currentNote.travel.departureDate;
             this.travelReturnDate = this.currentNote.travel.returnDate;
-            //this.participantesViaje = this.currentNote.travel.passengers;
             this.employeeService.getEveryone().subscribe(d => {
                 this.currentNote.travel.passengers.forEach(ps => {
                     let findPs = d.find(passenger => passenger.id == ps.employeeId);
@@ -317,13 +300,10 @@ export class NotesDraftComponent implements OnInit{
                     sector: participant.sector
                 })
             });
-            //this.participantesCapacitacion = this.currentNote.training.participants;
-            console.log(this.participantesCapacitacion)
         }
     }
 
     change(event) {
-        console.log(event)
         if(event != undefined) {
             this.critical = (event.critical) ? "Si" : "No";
             this.providers = [];
@@ -339,7 +319,6 @@ export class NotesDraftComponent implements OnInit{
     }
 
     travelChange(event) {
-        console.log(event);
         if(event == undefined) {
             this.participanteViajeSeleccionado = null;
             this.participanteViajeSeleccionadoCuit = null;
@@ -411,7 +390,6 @@ export class NotesDraftComponent implements OnInit{
         this.formParticipanteCapacitacionError = false;
         this.participanteCapacitacionSeleccionado = null;
         this.formParticipanteCapacitacion.reset();
-        console.log(this.participantesCapacitacion)
     }
 
     eliminarParticipanteCapacitacion(index: number) {
@@ -578,15 +556,9 @@ export class NotesDraftComponent implements OnInit{
     }
 
     saveNote(send: boolean) {
-        console.log(this.formNota.value);
-        console.log(this.formViaje.value);
-        console.log(this.formCapacitacion.value);
         this.markFormGroupTouched(this.formNota);
         if(this.formNota.controls.training.value == true) {
             this.markFormGroupTouched(this.formCapacitacion);
-            //if(this.participantesCapacitacion.length <= 0) {
-            //    this.formParticipanteCapacitacionError = true;
-            //};
         };
         if(this.formNota.controls.training.value == false) {
             this.formParticipanteCapacitacionError = false;
@@ -605,13 +577,11 @@ export class NotesDraftComponent implements OnInit{
         };
         if(this.formNota.controls.travel.value == true) {
             if(!this.formViaje.valid || this.travelDateError) {
-                console.log("Invalid viaje");
                 return;
             };
         };
         if(this.formNota.controls.training.value == true) {
             if(!this.formCapacitacion.valid) {
-                console.log("Invalid capacitación");
                 return;
             };
         };
@@ -627,7 +597,6 @@ export class NotesDraftComponent implements OnInit{
             });
         };
         let finalProviders = [];
-        console.log(this.proveedoresTable)
         this.proveedoresTable.forEach(prov => {
             let mock = {
                 providerId: prov.id,
@@ -636,7 +605,6 @@ export class NotesDraftComponent implements OnInit{
             finalProviders.push(mock);
         })
         let finalTrainingPassengers = [];
-        console.log(this.participantesCapacitacion)
         this.participantesCapacitacion.forEach(employee => {
             finalTrainingPassengers.push({
                 employeeId: employee.data.id,
@@ -692,7 +660,6 @@ export class NotesDraftComponent implements OnInit{
         if(!model.trainingSection) {
             model.training = null;
         }
-        console.log(model);
         this.requestNoteService.saveDraft(model).subscribe(d=>{
             this.requestNoteId = d.data;
             if(send) {
@@ -704,17 +671,10 @@ export class NotesDraftComponent implements OnInit{
                     requestNote: model
                 };
                 this.workflowService.post(modelWorkflow).subscribe(response => {
-                    console.log(response);
-                    //this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
                     setTimeout(() => {
                         this.router.navigate(['/providers/notes']);
                     }, 500);
                 });
-                // this.requestNoteService.approveDraft(this.currentNote.id).subscribe(d=>console.log(d));
-                // this.messageService.showMessage("La nota de pedido ha sido enviada", 0);
-                // setTimeout(() => {
-                //     this.router.navigate(['/providers/notes']);
-                // }, 1500);
             } else {
                 setTimeout(() => {
                     this.router.navigate(['/providers/notes']);
@@ -726,7 +686,6 @@ export class NotesDraftComponent implements OnInit{
     markFormGroupTouched(formGroup: FormGroup) {
         (<any>Object).values(formGroup.controls).forEach(control => {
             control.markAsTouched();
-
             if (control.controls) {
                 this.markFormGroupTouched(control);
             }
@@ -734,7 +693,6 @@ export class NotesDraftComponent implements OnInit{
     }
 
     dateChange(number, event) {
-        console.log(event)
         if(number == 1) {
             this.formParticipanteViaje.controls.birth.setValue(this.travelBirthday);
         }
@@ -826,18 +784,15 @@ export class NotesDraftComponent implements OnInit{
                 this.analyticError = true;
                 this.analyticErrorSend = true;
             }
-            console.log("Invalid nota");
             return;
         };
         if(this.formNota.controls.travel.value == true) {
             if(!this.formViaje.valid || this.participantesViaje.length <= 0 || this.travelDateError) {
-                console.log("Invalid viaje");
                 return;
             }
         };
         if(this.formNota.controls.training.value == true) {
             if(!this.formCapacitacion.valid) {
-                console.log("Invalid capacitacion");
                 return;
             }
         };
@@ -875,7 +830,6 @@ export class NotesDraftComponent implements OnInit{
                 type: 1,
                 fileId: jsonResponse.data[0].id
             });
-            console.log(this.uploadedFilesId)
             this.clearSelectedFile();
         };
         this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };

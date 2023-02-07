@@ -67,9 +67,8 @@ export class NotesEditComponent implements OnInit{
                     this.router.navigate(['/providers/notes/no-access']);
                 }
             } else {
-                console.log(results[0])
                 if(results[0].data.hasEditPermissions) {
-                    //this.requestNoteService.setMode("Edit")
+                    
                 } else if (results[0].data.hasReadPermissions){
                     this.requestNoteService.setMode("View")
                 }
@@ -103,7 +102,6 @@ export class NotesEditComponent implements OnInit{
                     this.histories = [...this.histories]
                 });
                 if(this.currentNote.statusId == 36) {
-                    console.log(this.histories);
                     this.closed = true;
                     this.lastStatusId = this.histories[this.histories.length - 1].statusFrom;
                 };

@@ -79,6 +79,8 @@ export class NotesPendingSAP {
     travelReturnDate: string;
     trainingDate: string;
 
+    mode: string;
+
     formNota: FormGroup = new FormGroup({
         description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),
         productsAndServicies: new FormControl(null),
@@ -131,25 +133,11 @@ export class NotesPendingSAP {
     ) {}
 
     ngOnInit(): void {
-        console.log(this.requestNoteService.getMode())
         this.inicializar();
+        this.mode = this.requestNoteService.getMode();
         this.userInfo = UserInfoService.getUserInfo();
-        this.analyticService.getByCurrentUser().subscribe(d=>console.log(d));
-        this.refundService.getAnalytics().subscribe(d=>console.log(d));
-        this.workflowService.getTransitions({
-            workflowId: this.currentNote.workflowId,
-            entityController: "RequestNoteBorrador",
-            entityId: this.currentNote.id,
-            actualStateId: this.currentNote.statusId
-        }).subscribe(response => {
-            console.log(response)
-        });
         if(this.requestNoteService.getMode() == "Edit") {
             this.workflowModel = {
-                //workflowId: response.data.workflowId,
-                //entityController: "refund",
-                //entityId: response.data.id,
-                //actualStateId: response.data.statusId
                 workflowId: this.currentNote.workflowId,
                 entityController: "RequestNoteBorrador",
                 entityId: this.currentNote.id,
@@ -166,7 +154,6 @@ export class NotesPendingSAP {
 
 
     inicializar() {
-        console.log(this.currentNote);
         this.uploaderConfig();
         this.travelFormShow = this.currentNote.travelSection;
         this.trainingFormShow = this.currentNote.trainingSection;
@@ -199,7 +186,6 @@ export class NotesPendingSAP {
     }
 
     existingData() {
-        console.log(this.currentNote);
         if(this.currentNote.attachments != null) {
             this.uploadedFilesId = this.currentNote.attachments;
         }
@@ -217,7 +203,6 @@ export class NotesPendingSAP {
             this.critical = (d.data.critical) ? "Si" : "No";
         });
         this.providersService.getAll().subscribe(d => {
-            console.log(d.data)
             d.data.forEach(prov => {
                 if(prov.providerAreaId == this.currentNote.providerAreaId) {
                     this.providers.push(prov);
@@ -242,7 +227,6 @@ export class NotesPendingSAP {
             this.employeeService.getEveryone().subscribe(d => {
                 this.currentNote.travel.passengers.forEach(ps => {
                     let findPs = d.find(passenger => passenger.id == ps.employeeId);
-                    console.log(findPs)
                     if(findPs != undefined) {
                         this.participantesViaje.push(findPs);
                         this.participantesViaje = [...this.participantesViaje]
@@ -269,7 +253,6 @@ export class NotesPendingSAP {
     }
 
     change(event) {
-        console.log(event)
         if(event != undefined) {
             this.critical = (event.critical) ? "Si" : "No";
             this.providers = [];
@@ -337,7 +320,6 @@ export class NotesPendingSAP {
                 type: 1,
                 fileId: jsonResponse.data[0].id
             });
-            console.log(this.uploadedFilesId)
             this.clearSelectedFile();
         };
         this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };

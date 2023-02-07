@@ -43,7 +43,6 @@ export class WorkflowComponent implements OnDestroy {
     }
 
     init(model){
-        console.log(model)
         this.transitions = [];
         this.container.clear();
 
@@ -51,7 +50,6 @@ export class WorkflowComponent implements OnDestroy {
         this.entityController = model.entityController;
 
         this.getTransitionsSubscrip = this.workflowService.getTransitions(model).subscribe(response => {
-            console.log(response)
             this.transitions = response.data.filter(x => !x.parameterCode);
 
             var transitionsWithParameters = response.data.filter(x => x.parameterCode);
@@ -100,7 +98,6 @@ export class WorkflowComponent implements OnDestroy {
     }
 
     save(item){
-        console.log(item)
         if(this.customValidation) {
             this.messageService.closeLoading();
             return;

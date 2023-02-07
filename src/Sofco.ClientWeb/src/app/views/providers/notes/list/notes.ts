@@ -58,7 +58,6 @@ export class NotesComponent implements OnInit, AfterViewInit{
         };
         setTimeout(() => {
             this.requestNoteService.getAll(json).subscribe(d=>{
-                console.log(d);
                 d.forEach(note => {
                     // if(note.statusId <= 12) {
                     //     note.status = this.states[note.statusId].text;
@@ -126,11 +125,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
         };
         json.fromDate = (this.dateSince == null || this.dateSince == undefined) ? null : `${this.dateSince.getFullYear()}/${this.dateSince.getMonth() + 1}/${this.dateSince.getDate()}`;
         json.toDate = (this.dateTo == null || this.dateTo == undefined) ? null : `${this.dateTo.getFullYear()}/${this.dateTo.getMonth() + 1}/${this.dateTo.getDate()}`;
-        console.log("Búsqueda");
-        console.log(json);
-        console.log(this.applicants);
         this.requestNoteService.getAll(json).subscribe(d => {
-            console.log(d);
             this.notes = [];
             this.notesInProcess = [];
             this.notesEnded = [];
@@ -219,6 +214,5 @@ export class NotesComponent implements OnInit, AfterViewInit{
             month: '',
             year: ''
         };
-        console.log(date)
     }
 }

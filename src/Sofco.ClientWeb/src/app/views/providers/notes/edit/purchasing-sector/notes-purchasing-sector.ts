@@ -71,11 +71,9 @@ export class NotesPurchasingSector {
     inicializar() {
         this.mode = this.requestNoteService.getMode();
         this.mode = "Edit"
-        console.log(this.currentNote);
         this.uploaderConfig();
         let providerArea;
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
-            console.log(d);
             providerArea = d.data;
             this.formNota.patchValue({
                 descripcion: this.currentNote.description,
@@ -97,7 +95,6 @@ export class NotesPurchasingSector {
         })
         this.checkFormStatus();
         this.providerService.getAll().subscribe(d => {
-            console.log(d.data)
             d.data.forEach(prov => {
                 if(prov.providerAreaId == this.currentNote.providerAreaId) {
                     this.providers.push(prov);
@@ -156,7 +153,6 @@ export class NotesPurchasingSector {
             id: this.currentNote.id
         }
         this.requestNoteService.rejectPendingSupplyRevision(model).subscribe(d=>{
-            console.log(d);
             this.messageService.showMessage("La nota de pedido ha sido rechazada", 0);
             this.router.navigate(['/providers/notes']);
         })
@@ -218,7 +214,6 @@ export class NotesPurchasingSector {
             let jsonResponse = JSON.parse(response);
             this.filesToUpload[this.fileIdCounter].fileId = jsonResponse.data[0].id;
             this.fileIdCounter++;
-            console.log(jsonResponse);
             this.clearSelectedFile();
         };
 

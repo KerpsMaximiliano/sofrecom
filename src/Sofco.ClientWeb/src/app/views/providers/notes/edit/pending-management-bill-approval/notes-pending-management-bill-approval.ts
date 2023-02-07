@@ -55,7 +55,6 @@ export class NotesPendingManagementBillApproval {
     inicializar() {
         this.mode = this.requestNoteService.getMode();
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
-            console.log(d);
             this.formNota.patchValue({
                 descripcion: this.currentNote.description,
                 rubro: d.data.description,
@@ -117,7 +116,6 @@ export class NotesPendingManagementBillApproval {
             comments: this.formNota.controls.observaciones.value
         };
         this.requestNoteService.approvePendingManagementBillApproval(model).subscribe(d => {
-            console.log(d);
             this.messageService.showMessage("El estado de sus analíticas asociadas ha sido cambiado", 0);
             this.router.navigate(['/providers/notes']);
         })

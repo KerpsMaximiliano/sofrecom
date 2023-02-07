@@ -14,7 +14,7 @@ declare const InstallTrigger: any;
 export class RequestNoteService {
 
     private baseUrl: string;
-    private mode = "View";
+    private mode = "Edit";
 
     constructor(
         private http: HttpClient,

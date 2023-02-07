@@ -139,7 +139,6 @@ export class NotesApproved {
                 type: 3,
                 fileId: jsonResponse.data[0].id
             });
-            console.log(this.uploadedFilesId)
             this.clearSelectedFile();
         };
         this.uploader.onCompleteAll = () => {
@@ -149,7 +148,6 @@ export class NotesApproved {
                 comments: this.formNota.controls.observaciones.value
             };
             this.requestNoteService.applyApproved(model).subscribe(d => {
-                console.log(d);
                 this.messageService.showMessage("La nota de pedido ha sido solicitada", 0);
                 this.router.navigate(['/providers/notes']);
             })
