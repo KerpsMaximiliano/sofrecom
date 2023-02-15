@@ -168,13 +168,17 @@ namespace Sofco.Framework.Workflow.Notifications
 
                     if (entity is RequestNote requestNote)
                     {
-                        foreach (RequestNoteAnalytic analityc in requestNote.Analytics)
+                        var analytics = unitOfWork.RequestNoteAnalitycRepository.GetByRequestNoteId(entity.Id);
+                        if (analytics != null)
                         {
-                            var manager = unitOfWork.AnalyticRepository.GetManager(analityc.AnalyticId);
-
-                            if (manager != null)
+                            foreach (RequestNoteAnalytic analityc in analytics)
                             {
-                                recipientsList.Add(manager.Email);
+                                var manager = unitOfWork.AnalyticRepository.GetManager(analityc.AnalyticId);
+
+                                if (manager != null)
+                                {
+                                    recipientsList.Add(manager.Email);
+                                }
                             }
                         }
                     }
