@@ -75,6 +75,7 @@ namespace Sofco.Core.Models.RequestNote
             if (note.ProductsServices != null)
                 ProductsServices = note.ProductsServices.Select(p => new ProductsService()
                 {
+                    Id = p.Id,
                     ProductService = p.ProductService,
                     Quantity = p.Quantity
                 }).ToList();
@@ -205,6 +206,7 @@ namespace Sofco.Core.Models.RequestNote
 
     public class ProductsService
     {
+        public int Id { get; set; }
         public string ProductService { get; set; }
         public int Quantity { get; set; }
     }
