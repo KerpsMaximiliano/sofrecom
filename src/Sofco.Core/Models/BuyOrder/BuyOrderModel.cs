@@ -95,6 +95,7 @@ namespace Sofco.Core.Models.BuyOrder
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
             domain.InWorkflowProcess = true;
             domain.CreationDate = DateTime.UtcNow;
+            domain.ProductsServices = new List<BuyOrderProductService>();
             foreach (var detail in Items)
             {
                 domain.ProductsServices.Add(detail.CreateDomain());
@@ -183,6 +184,7 @@ namespace Sofco.Core.Models.BuyOrder
             domain.InvoiceDate = Date;
             domain.BuyOrderId = BuyOrderId;
             domain.FileId = FileId;
+            domain.ProductsServices = new List<BuyOrderInvoiceProductService>();
             foreach (var detail in Items)
             {
                 domain.ProductsServices.Add(detail.CreateDomain());
