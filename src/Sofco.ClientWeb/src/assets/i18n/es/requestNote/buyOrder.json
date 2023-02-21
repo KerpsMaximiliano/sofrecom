@@ -1,0 +1,8 @@
+{
+    "addSuccess": "La orden de compra ha sido guardada",
+    "fileUpload": "Archivos subidos",
+    "notAllowed": "No posee los permisos necesarios para ver la orden de compra",
+    "notFound": "La orden de compra no fue encontrada",
+    "updateSuccess": "Los cambios a orden de compra han sido guardados",
+    "invoiceRequired": "Invoice requerido"
+}

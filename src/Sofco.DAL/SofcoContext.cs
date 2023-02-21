@@ -206,11 +206,11 @@ namespace Sofco.DAL
 
         //buy order (de request note)
 
-        public DbSet<BuyOrder> BuyOrders { get; set; }
+        public DbSet<BuyOrder> BuyOrder { get; set; }
         public DbSet<BuyOrderHistory> BuyOrderHistories { get; set; }
         public DbSet<BuyOrderInvoice> BuyOrderInvoices { get; set; }
         public DbSet<BuyOrderInvoiceProductService> BuyOrderInvoiceProductServices { get; set; }
-        public DbSet<BuyOrderProductService> BuyOrderProductServices { get; set; }
+        public DbSet<BuyOrderProductService> BuyOrderProductService { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

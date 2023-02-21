@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
+import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { DataTableService } from "app/services/common/datatable.service";
@@ -37,7 +38,8 @@ export class NotesComponent implements OnInit, AfterViewInit{
         private providerService: ProvidersService,
         private router: Router,
         private requestNoteService: RequestNoteService,
-        private dataTableService: DataTableService
+        private dataTableService: DataTableService,
+        private purchaseOrderService: PurchaseOrderService
     ){}
 
     ngOnInit(): void {
@@ -107,6 +109,11 @@ export class NotesComponent implements OnInit, AfterViewInit{
     edit(id: number) {
         this.requestNoteService.setMode("Edit");
         this.router.navigate([`providers/notes/edit/${id}`]);
+    }
+
+    addOC(id: number) {
+        this.purchaseOrderService.setId(id);
+        this.router.navigate([`providers/purchase-orders/nueva`]);
     }
 
     search() {
@@ -214,5 +221,9 @@ export class NotesComponent implements OnInit, AfterViewInit{
             month: '',
             year: ''
         };
+    }
+
+    get currentEnviroment() {
+        return environment;
     }
 }

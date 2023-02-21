@@ -58,7 +58,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="control-label">Número de OC</label>
-                            <input type="number" [(ngModel)]="numberOC" class="form-control">
+                            <input type="text" [(ngModel)]="numberOC" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -113,6 +113,7 @@
                             <td class="column-sm text-center">
                                 <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i class="fa fa-eye"></i></button>
                                 <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i class="fa fa-edit"></i></button>
+                                <button title="recepcionar mercadería" class="btn btn-default btn-xs" (click)="extra(item.id)"><i class="fa fa-barcode"></i></button>
                             </td>
                         </tr> 
                     </tbody>

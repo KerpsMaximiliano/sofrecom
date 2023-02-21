@@ -98,7 +98,7 @@ namespace Sofco.DAL.Repositories.RequestNote
         {
             var requested = context.RequestNoteProductService.Where(p => p.RequestNoteId == requestNoteId)
                 .Select(p=> new { Id = p.Id, Quantity = p.Quantity });
-            var delivered = context.BuyOrderProductServices.Where(p => p.BuyOrder.RequestNoteId == requestNoteId)
+            var delivered = context.BuyOrderProductService.Where(p => p.BuyOrder.RequestNoteId == requestNoteId)
                 .Select(p => new { Id = p.RequestNoteProductServiceId, Quantity = p.DeliveredQuantity ?? 0 });
             var pending = requested.Any(r=> r.Quantity < delivered.Where(d=> d.Id == r.Id).Sum(d=> d.Quantity));
             return pending;

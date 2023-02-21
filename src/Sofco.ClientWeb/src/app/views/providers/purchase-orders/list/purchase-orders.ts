@@ -31,12 +31,7 @@ export class PurchaseOrdersComponent implements OnInit{
         'Exento',
         'No aplica'
     ];
-    providers = [
-        {id: 1, name: "Proveedor Uno"},
-        {id: 2, name: "Proveedor Dos"},
-        {id: 3, name: "Proveedor Tres"},
-        {id: 4, name: "Proveedor Cuatro"},
-    ];
+    providers = [];
     states = [
         { id: 0, name: "Todos" },
         { id: 1, name: "Pendiente Aprobación DAF" },
@@ -46,10 +41,10 @@ export class PurchaseOrdersComponent implements OnInit{
         { id: 5, name: "Rechazado" },
     ];
     providerId: number;
-    numberOC: number = null;
+    numberOC: string = null;
     numberNP: number = null;
-    dateSince: Date;
-    dateTo: Date;
+    dateSince: Date | string;
+    dateTo: Date | string;
     stateId: number = 0;
 
     businessName: string;
@@ -57,7 +52,7 @@ export class PurchaseOrdersComponent implements OnInit{
     areaId: number;
     data = [
         {
-            id: 1,
+            id: 4,
             name: "Orden de Compra 1",
             providerArea: "Uno",
             CUIT: 20111111114,
@@ -69,7 +64,7 @@ export class PurchaseOrdersComponent implements OnInit{
             estado: "Pendiente Aprobación DAF"
         },
         {
-            id: 2,
+            id: 10,
             name: "Orden de Compra 2",
             providerArea: "Dos",
             CUIT: 20222222224,
@@ -81,7 +76,7 @@ export class PurchaseOrdersComponent implements OnInit{
             estado: "Pendiente Recepción Mercadería"
         },
         {
-            id: 3,
+            id: 11,
             name: "Orden de Compra 3",
             providerArea: "Tres",
             CUIT: 20333333334,
@@ -114,6 +109,19 @@ export class PurchaseOrdersComponent implements OnInit{
                 }
             })
         });
+        this.providersService.getAll().subscribe(d => {
+            console.log(d);
+            this.providers = d.data;
+        })
+        this.purchaseOrderService.getAll({}).subscribe(d => {
+            console.log(d);
+        });
+        // this.purchaseOrderService.getOCById(6).subscribe(d => {
+        //     console.log(d)
+        // })
+        // this.purchaseOrderService.getStates().subscribe(d => {
+        //     console.log(d)
+        // })
     }
 
     view(id) {
@@ -124,6 +132,11 @@ export class PurchaseOrdersComponent implements OnInit{
     edit(id) {
         this.purchaseOrderService.setMode("Edit");
         this.router.navigate([`providers/purchase-orders/edit/${id}`]);
+    }
+
+    extra(id) {
+        this.purchaseOrderService.setMode("Edit");
+        this.router.navigate([`providers/purchase-orders/edit/10`]);
     }
 
     refreshSearch() {
@@ -138,7 +151,18 @@ export class PurchaseOrdersComponent implements OnInit{
     search() {
         if(this.dateTo <= this.dateSince) {
             this.messageService.showMessage("Fecha Hasta debe ser mayor a Fecha Desde", 2);
-        }
+            return;
+        };
+        this.purchaseOrderService.getAll({
+            requestNoteId: this.numberNP,
+            fromDate: this.dateSince,
+            toDate: this.dateTo,
+            providerId: this.providerId,
+            statusId: this.stateId,
+            number: this.numberOC
+        }).subscribe(d => {
+            console.log(d);
+        });
     }
 
     initGrid() {

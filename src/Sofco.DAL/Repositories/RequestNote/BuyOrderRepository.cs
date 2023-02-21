@@ -23,7 +23,7 @@ namespace Sofco.DAL.Repositories.RequestNote
 
         public Domain.Models.RequestNote.BuyOrder GetById(int id)
         {
-            return this.context.BuyOrders.Where(x => x.Id == id)
+            return this.context.BuyOrder.Where(x => x.Id == id)
                 .Include(x=> x.RequestNote)
                     .ThenInclude(p=> p.ProductsServices)
                 .Include(x => x.ProductsServices)
@@ -51,7 +51,7 @@ namespace Sofco.DAL.Repositories.RequestNote
             if (filters.ToDate.HasValue)
                 filters.ToDate = filters.ToDate.Value.Date.AddDays(1);
 
-            return this.context.BuyOrders
+            return this.context.BuyOrder
                 .Where(n=> !filters.Id.HasValue || n.Id == filters.Id)
                 .Where(n => !string.IsNullOrEmpty(filters.Number) || n.BuyOrderNumber == filters.Number)
                 .Where(n=> !filters.StatusId.HasValue || n.StatusId == filters.StatusId)
@@ -69,12 +69,12 @@ namespace Sofco.DAL.Repositories.RequestNote
 
         public void UpdateBuyOrder(Domain.Models.RequestNote.BuyOrder buyOrder)
         {
-            this.context.BuyOrders.Update(buyOrder);
+            this.context.BuyOrder.Update(buyOrder);
         }
 
         public void InsertBuyOrder(Domain.Models.RequestNote.BuyOrder buyOrder)
         {
-            this.context.BuyOrders.Add(buyOrder);
+            this.context.BuyOrder.Add(buyOrder);
         }
 
         public void Save()

@@ -19,21 +19,16 @@
             <div class="ibox-content">
                 <form class="form-horizontal" [formGroup]="ordenCompraForm">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label text-left">Número Orden de Compra: </label>
+                        <label class="col-sm-3 control-label text-left">Nota de Pedido: </label>
                         <div class="col-sm-8">
-                            <input type="number" class="form-control" formControlName="numberOC">
-                            <span
-                                *ngIf="!ordenCompraForm.get('numberOC')?.valid && (ordenCompraForm.get('numberOC')?.touched || ordenCompraForm.get('numberOC')?.dirty)"
-                                style="color: red;">
-                                El campo es requerido
-                            </span>
+                            <input class="form-control" formControlName="notape">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label text-left">Proveedor: </label>
                         <div class="col-sm-8">
                             <div style="display: flex;">
-                                <ng-select [items]="proveedores" bindLabel="nombre" bindValue="id" formControlName="proveedor"
+                                <ng-select [items]="proveedores" bindLabel="providerDescription" bindValue="providerId" formControlName="proveedor"
                                     (change)="change($event)" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
                             </div>
                             <span
@@ -43,46 +38,94 @@
                             </span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label text-left">Nota de Pedido: </label>
-                        <div class="col-sm-8">
+                    <div class="form-group" [formGroup]="formProductoServicio">
+                        <div class="col-sm-4">
+                            <label>Productos/Servicios/Material</label>
                             <div style="display: flex;">
-                                <ng-select [items]="notasPedido" bindLabel="nombre" bindValue="id" formControlName="numberNP"
+                                <ng-select [items]="productosServicios" bindLabel="productService" bindValue="id" formControlName="productService"
                                     (change)="change($event)" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
                             </div>
-                            <span
-                                *ngIf="!ordenCompraForm.get('numberNP')?.valid && (ordenCompraForm.get('numberNP')?.touched || ordenCompraForm.get('numberNP')?.dirty)"
-                                style="color: red;">
-                                El campo es requerido
+                            <span *ngIf="(!formProductoServicio.get('productService')?.valid && (formProductoServicio.get('productService')?.touched || formProductoServicio.get('productService')?.dirty)) && productsServicesTableError" style="color: red;">
+                                Debe ingresar un producto o servicio.
                             </span>
                         </div>
+                        <div class="col-sm-3">
+                            <label>Cantidad</label>
+                            <input type="number" class="form-control" [ngClass]="{'red-input-border' : (!formProductoServicio.get('quantity')?.valid && (formProductoServicio.get('quantity')?.touched || formProductoServicio.get('quantity')?.dirty)) && productsServicesTableError}" formControlName="quantity">
+                            <span *ngIf="(!formProductoServicio.get('quantity')?.valid && (formProductoServicio.get('quantity')?.touched || formProductoServicio.get('quantity')?.dirty)) && productsServicesTableError" style="color: red;">
+                                Debe seleccionar una cantidad mayor o igual 0.
+                            </span>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Monto</label>
+                            <input type="number" class="form-control" [ngClass]="{'red-input-border' : (!formProductoServicio.get('ammount')?.valid && (formProductoServicio.get('ammount')?.touched || formProductoServicio.get('ammount')?.dirty)) && productsServicesTableError}" formControlName="ammount">
+                            <span *ngIf="(!formProductoServicio.get('ammount')?.valid && (formProductoServicio.get('ammount')?.touched || formProductoServicio.get('ammount')?.dirty)) && productsServicesTableError" style="color: red;">
+                                Debe seleccionar un monto mayor o igual 0.
+                            </span>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-success" style="margin-top: 2.3rem;"
+                            (click)="agregarProductoServicio()">Agregar       <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="form-group" *ngIf="ordenCompraForm.get('numberNP')?.valid">
-                        <table class="table table-striped dataTable" role="grid" id="dataTable">
+                    <div class="form-group" *ngIf="finalProductosServicios.length > 0" [formGroup]="formProductoServicioTable">
+                        <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable" formArrayName="productoServicio">
                             <thead>
                                 <tr>
-                                    <th>Id Producto/Servicio</th>
-                                    <th>Producto/Servicio</th>
-                                    <th>Cantidad</th>
+                                    <th class="font-13">Producto/Servicio/Material</th>
+                                    <th class="font-13">Cantidad</th>
+                                    <th class="font-13">Monto</th>
+                                    <th class="column-sm text-center font-13">{{ 'ACTIONS.title' | translate }}</th>
                                 </tr>
                             </thead>
-                            <tbody *ngFor="let item of productosServicios; let i = index">
-                                <tr>
-                                    <td>{{item.id}}</td>
+                            <tbody *ngFor="let item of getProductoServicio().controls; let i = index">
+                                <tr [formGroupName]="i">
                                     <td>
-                                        <input type="number" placeholder="Monto del item">
+                                        <input type="text" maxlength="80" formControlName="productService" class="form-control">
+                                        <span *ngIf="item.get('productService').value == '' || item.get('productService').value == null" style="color: red;">
+                                            No puede estar vacío
+                                        </span>
                                     </td>
-                                    <td>
-                                        <input type="number" placeholder="Cantidad de items">
+                                    <td><input type="number" formControlName="quantity" class="form-control"></td>
+                                    <td><input type="number" formControlName="ammount" class="form-control"></td>
+                                    <td class="column-sm text-center">
+                                        <button title="eliminar" (click)="eliminarProductoServicio(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                                     </td>
                                 </tr> 
                             </tbody>
                         </table>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label text-left">Monto total de la OC: </label>
+                        <label class="col-sm-3 control-label text-left">Número Orden de Compra: </label>
+                        <div class="col-sm-8">
+                            <input class="form-control" formControlName="numberOC">
+                            <span
+                                *ngIf="!ordenCompraForm.get('numberOC')?.valid && (ordenCompraForm.get('numberOC')?.touched || ordenCompraForm.get('numberOC')?.dirty) && !ordenCompraForm.get('numberOC').errors.maxlength"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                            <span
+                                *ngIf="!ordenCompraForm.get('numberOC')?.valid && (ordenCompraForm.get('numberOC')?.touched || ordenCompraForm.get('numberOC')?.dirty) && ordenCompraForm.get('numberOC').errors.maxlength"
+                                style="color: red;">
+                                Hasta 10 caracteres
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Monto Total de Orden de Compra: </label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control" formControlName="montoOC">
+                            <span
+                                *ngIf="!ordenCompraForm.get('montoOC')?.valid && (ordenCompraForm.get('montoOC')?.touched || ordenCompraForm.get('montoOC')?.dirty) && !ordenCompraForm.get('montoOC').errors.max"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                            <span
+                                *ngIf="!ordenCompraForm.get('montoOC')?.valid && (ordenCompraForm.get('montoOC')?.touched || ordenCompraForm.get('montoOC')?.dirty) && ordenCompraForm.get('montoOC').errors.max"
+                                style="color: red;">
+                                Valor máximo 999999999.99
+                            </span>
                         </div>
                     </div>
                 </form>

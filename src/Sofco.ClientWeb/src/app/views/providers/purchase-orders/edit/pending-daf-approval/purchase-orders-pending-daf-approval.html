@@ -19,6 +19,12 @@
             <div class="ibox-content">
                 <form class="form-horizontal" [formGroup]="ordenCompraForm">
                     <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Nota de Pedido: </label>
+                        <div class="col-sm-8">
+                            <input class="form-control" formControlName="numberNP">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-3 control-label text-left">Número Orden de Compra: </label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control" formControlName="numberOC">
@@ -38,20 +44,6 @@
                             </div>
                             <span
                                 *ngIf="!ordenCompraForm.get('proveedor')?.valid && (ordenCompraForm.get('proveedor')?.touched || ordenCompraForm.get('proveedor')?.dirty)"
-                                style="color: red;">
-                                El campo es requerido
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label text-left">Nota de Pedido: </label>
-                        <div class="col-sm-8">
-                            <div style="display: flex;">
-                                <ng-select [items]="notasPedido" bindLabel="nombre" bindValue="id" formControlName="numberNP"
-                                    (change)="change($event)" style="flex-grow: 3; flex-shrink: 1;"></ng-select>
-                            </div>
-                            <span
-                                *ngIf="!ordenCompraForm.get('numberNP')?.valid && (ordenCompraForm.get('numberNP')?.touched || ordenCompraForm.get('numberNP')?.dirty)"
                                 style="color: red;">
                                 El campo es requerido
                             </span>

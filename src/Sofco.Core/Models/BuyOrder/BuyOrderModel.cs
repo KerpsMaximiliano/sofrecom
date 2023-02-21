@@ -93,6 +93,8 @@ namespace Sofco.Core.Models.BuyOrder
             domain.ProviderId = ProviderId;
             domain.TotalAmmount = TotalAmount;
             domain.UserApplicantId = UserApplicantId.GetValueOrDefault();
+            domain.CreationUserId = UserApplicantId.GetValueOrDefault();
+            domain.RequestNoteId = RequestNoteId;
             domain.InWorkflowProcess = true;
             domain.CreationDate = DateTime.UtcNow;
             domain.ProductsServices = new List<BuyOrderProductService>();

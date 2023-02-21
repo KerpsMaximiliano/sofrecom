@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
+import { RequestNoteService } from "app/services/admin/request-note.service";
 
 @Component({
     selector: 'purchase-orders-pending-daf-approval',
@@ -30,18 +32,26 @@ export class PurchaseOrdersPendingDAFApproval implements OnInit {
     ordenCompraForm: FormGroup = new FormGroup({
         numberOC: new FormControl(2, Validators.required),
         proveedor: new FormControl(2, Validators.required),
-        numberNP: new FormControl(2, Validators.required),
+        numberNP: new FormControl(null, Validators.required),
         montoOC: new FormControl(12312, Validators.required)
     });
 
+    requestNote: any;
+
     constructor(
-        private builder: FormBuilder
+        private requestNoteService: RequestNoteService,
+        private purchaseOrderService: PurchaseOrderService
     ) {
 
     }
 
     ngOnInit(): void {
         this.ordenCompraForm.disable();
+        this.requestNoteService.getById(222).subscribe(d => {
+            this.requestNote = d.data;
+            console.log(this.requestNote);
+            this.ordenCompraForm.get('numberNP').setValue(this.requestNote.description)
+        })
     }
 
     change(event: any) {

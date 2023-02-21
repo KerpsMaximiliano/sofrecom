@@ -26,7 +26,7 @@ export class PurchaseOrdersEditComponent implements OnInit{
 
     data = [
         {
-            id: 1,
+            id: 4,
             name: "Orden de Compra 1",
             providerArea: "Uno",
             CUIT: 20111111114,
@@ -38,7 +38,7 @@ export class PurchaseOrdersEditComponent implements OnInit{
             estado: "Pendiente Aprobación DAF"
         },
         {
-            id: 2,
+            id: 10,
             name: "Orden de Compra 2",
             providerArea: "Dos",
             CUIT: 20222222224,
@@ -50,7 +50,7 @@ export class PurchaseOrdersEditComponent implements OnInit{
             estado: "Pendiente Recepción Mercadería"
         },
         {
-            id: 3,
+            id: 11,
             name: "Orden de Compra 3",
             providerArea: "Tres",
             CUIT: 20333333334,
@@ -71,14 +71,14 @@ export class PurchaseOrdersEditComponent implements OnInit{
 
     ngOnInit(): void {
         this.id = this.activatedRoute.snapshot.params['id'];
-        if(this.id == 1) {
-            this.estadoSeleccionado = 1;
-        } else if (this.id == 2) {
-            this.estadoSeleccionado = 2;
-        } else if(this.id == 3){
-            this.estadoSeleccionado = 3;
-        } else {
+        if(this.id == 4) {
             this.estadoSeleccionado = 4;
+        } else if (this.id == 10) {
+            this.estadoSeleccionado = 10;
+        } else if(this.id == 11){
+            this.estadoSeleccionado = 11;
+        } else {
+            this.estadoSeleccionado = 12;
         }
         this.mode  = this.purchaseOrderService.getMode();
         
