@@ -208,8 +208,8 @@ namespace Sofco.DAL
 
         public DbSet<BuyOrder> BuyOrder { get; set; }
         public DbSet<BuyOrderHistory> BuyOrderHistories { get; set; }
-        public DbSet<BuyOrderInvoice> BuyOrderInvoices { get; set; }
-        public DbSet<BuyOrderInvoiceProductService> BuyOrderInvoiceProductServices { get; set; }
+        public DbSet<BuyOrderInvoice> BuyOrderInvoice { get; set; }
+        public DbSet<BuyOrderInvoiceProductService> BuyOrderInvoiceProductService { get; set; }
         public DbSet<BuyOrderProductService> BuyOrderProductService { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {

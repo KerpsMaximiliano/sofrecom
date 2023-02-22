@@ -51,6 +51,8 @@ namespace Sofco.DAL.Repositories.RequestNote
             if (filters.ToDate.HasValue)
                 filters.ToDate = filters.ToDate.Value.Date.AddDays(1);
 
+            //return this.context.BuyOrder.ToList();
+
             return this.context.BuyOrder
                 .Where(n=> !filters.Id.HasValue || n.Id == filters.Id)
                 .Where(n => !string.IsNullOrEmpty(filters.Number) || n.BuyOrderNumber == filters.Number)
