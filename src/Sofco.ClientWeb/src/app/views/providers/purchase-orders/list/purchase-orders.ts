@@ -33,62 +33,24 @@ export class PurchaseOrdersComponent implements OnInit{
     ];
     providers = [];
     states = [
-        { id: 0, name: "Todos" },
-        { id: 1, name: "Pendiente Aprobación DAF" },
-        { id: 2, name: "Pendiente Recepción Mercadería" },
-        { id: 3, name: "Pendiente Recepción Factura" },
-        { id: 4, name: "Cerrado" },
-        { id: 5, name: "Rechazado" },
+        { id: null, name: "Todos" },
+        { id: 4, name: "Pendiente Aprobación DAF" },
+        { id: 34, name: "Pendiente Recepción Mercadería" },
+        { id: 37, name: "Pendiente Recepción Factura" },
+        //{ id: 4, name: "Cerrado" },
+        //{ id: 5, name: "Rechazado" },
     ];
     providerId: number;
     numberOC: string = null;
     numberNP: number = null;
     dateSince: Date | string;
     dateTo: Date | string;
-    stateId: number = 0;
+    stateId: number = null;
 
     businessName: string;
     areas = [];
     areaId: number;
-    data = [
-        {
-            id: 4,
-            name: "Orden de Compra 1",
-            providerArea: "Uno",
-            CUIT: 20111111114,
-            ingresosBrutos: "Inscripto Convenio Multilateral",
-            condicionIVA: "Monotributo",
-            fecha: "2022-06-23",
-            numeroOC: 2,
-            numeroNP: 14,
-            estado: "Pendiente Aprobación DAF"
-        },
-        {
-            id: 10,
-            name: "Orden de Compra 2",
-            providerArea: "Dos",
-            CUIT: 20222222224,
-            ingresosBrutos: "Inscripto Convenio Multilateral",
-            condicionIVA: "Monotributo",
-            fecha: "2022-06-23",
-            numeroOC: 2,
-            numeroNP: 14,
-            estado: "Pendiente Recepción Mercadería"
-        },
-        {
-            id: 11,
-            name: "Orden de Compra 3",
-            providerArea: "Tres",
-            CUIT: 20333333334,
-            ingresosBrutos: "Inscripto Convenio Multilateral",
-            condicionIVA: "Monotributo",
-            fecha: "2022-06-23",
-            numeroOC: 2,
-            numeroNP: 14,
-            estado: "Pendiente Recepción Factura"
-        },
-
-    ];
+    purchaseOrders = [];
     dataBackup = [];
 
     constructor(
@@ -115,10 +77,11 @@ export class PurchaseOrdersComponent implements OnInit{
         })
         this.purchaseOrderService.getAll({}).subscribe(d => {
             console.log(d);
+            this.purchaseOrders = d;
         });
-        // this.purchaseOrderService.getOCById(6).subscribe(d => {
-        //     console.log(d)
-        // })
+        this.purchaseOrderService.getOCById(6).subscribe(d => {
+            console.log(d);
+        })
         // this.purchaseOrderService.getStates().subscribe(d => {
         //     console.log(d)
         // })
@@ -145,11 +108,11 @@ export class PurchaseOrdersComponent implements OnInit{
         this.numberNP = null;
         this.dateSince = null;
         this.dateTo = null;
-        this.stateId = 0;
+        this.stateId = null;
     }
 
     search() {
-        if(this.dateTo <= this.dateSince) {
+        if(this.dateTo != null && this.dateSince != null && this.dateTo <= this.dateSince) {
             this.messageService.showMessage("Fecha Hasta debe ser mayor a Fecha Desde", 2);
             return;
         };
@@ -162,6 +125,7 @@ export class PurchaseOrdersComponent implements OnInit{
             number: this.numberOC
         }).subscribe(d => {
             console.log(d);
+            this.purchaseOrders = d;
         });
     }
 
