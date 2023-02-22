@@ -13,7 +13,7 @@ namespace Sofco.Domain.Models.RequestNote
         public int RequestNoteId { get; set; }
         public RequestNote RequestNote { get; set; }
         public int ProviderId { get; set; }
-        public RequestNoteProvider Provider { get; set; }
+        public Providers.Providers Provider { get; set; }
         public decimal? TotalAmmount { get; set; }
         public string BuyOrderNumber { get; set; }
         public DateTime CreationDate { get; set; }

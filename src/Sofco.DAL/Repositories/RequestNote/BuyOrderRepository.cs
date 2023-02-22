@@ -38,7 +38,6 @@ namespace Sofco.DAL.Repositories.RequestNote
                 .Include(x => x.UserApplicant)
                 .Include(x=> x.Histories)
                 .Include(x => x.Provider)
-                    .ThenInclude(z => z.Provider)
                 .FirstOrDefault();
         }
 
@@ -51,11 +50,9 @@ namespace Sofco.DAL.Repositories.RequestNote
             if (filters.ToDate.HasValue)
                 filters.ToDate = filters.ToDate.Value.Date.AddDays(1);
 
-            //return this.context.BuyOrder.ToList();
-
             return this.context.BuyOrder
                 .Where(n=> !filters.Id.HasValue || n.Id == filters.Id)
-                .Where(n => !string.IsNullOrEmpty(filters.Number) || n.BuyOrderNumber == filters.Number)
+                .Where(n => string.IsNullOrEmpty(filters.Number) || n.BuyOrderNumber == filters.Number)
                 .Where(n=> !filters.StatusId.HasValue || n.StatusId == filters.StatusId)
                 .Where(n=> !filters.FromDate.HasValue || n.CreationDate >= filters.FromDate)
                 .Where(n => !filters.ToDate.HasValue || n.CreationDate < filters.ToDate)
@@ -65,7 +62,6 @@ namespace Sofco.DAL.Repositories.RequestNote
                 .Include(x => x.ProductsServices)
                 .Include(x => x.RequestNote)
                 .Include(x => x.Provider)
-                    .ThenInclude(z => z.Provider)
                 .ToList();
         }
 

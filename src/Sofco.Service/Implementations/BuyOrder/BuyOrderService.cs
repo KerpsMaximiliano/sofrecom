@@ -38,10 +38,9 @@ namespace Sofco.Service.Implementations.BuyOrder
         {
             var user = userData.GetCurrentUser();
             var permisos = unitOfWork.UserRepository.GetPermissions(user.Id, "ORCOM");
-            //var test = this.unitOfWork.BuyOrderRepository.GetAll(filters);
-            return this.unitOfWork.BuyOrderRepository.GetAll(filters)
-                    .Select(n => new BuyOrderGridModel(n, permisos, user.Id, settings))
-                    .Where(n => n.HasEditPermissions || n.HasReadPermissions).ToList();
+            var todas = this.unitOfWork.BuyOrderRepository.GetAll(filters);
+            var todasModel = todas.Select(n => new BuyOrderGridModel(n, permisos, user.Id, settings));
+            return todasModel.Where(n => n.HasEditPermissions || n.HasReadPermissions).ToList();
         }
 
         public Response<BuyOrderModel> GetById(int id)

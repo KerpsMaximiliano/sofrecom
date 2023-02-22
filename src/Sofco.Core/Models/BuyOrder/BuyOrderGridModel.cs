@@ -26,7 +26,7 @@ namespace Sofco.Core.Models.BuyOrder
             StatusId = order.StatusId;
             StatusDescription = order.Status?.Name;
             ProviderId = order.ProviderId;
-            ProviderDescription = order.Provider?.Provider?.Name;
+            ProviderDescription = order.Provider?.Name;
             HasReadPermissions = ValidateReadPermissions(permissions, userId);
             HasEditPermissions = ValidateEditPermissions(permissions, userId);
             

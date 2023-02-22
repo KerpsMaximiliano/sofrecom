@@ -63,7 +63,7 @@ namespace Sofco.Core.Models.BuyOrder
             RequestNoteId = order.RequestNoteId;
             Number = order.BuyOrderNumber;
             ProviderId = order.ProviderId;
-            ProviderDescription = order.Provider?.Provider?.Name;
+            ProviderDescription = order.Provider?.Name;
             HasReadPermissions = ValidateReadPermissions(permissions, userId);
             HasEditPermissions = ValidateEditPermissions(permissions, userId);
             TotalAmount = order.TotalAmmount;
