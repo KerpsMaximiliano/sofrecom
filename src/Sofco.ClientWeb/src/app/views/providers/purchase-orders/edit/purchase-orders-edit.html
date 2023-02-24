@@ -12,8 +12,7 @@
 </div>
 
 <div>
-    <!-- <purchase-orders-new *ngIf="estadoSeleccionado == 1"></purchase-orders-new> -->
-    <purchase-orders-pending-daf-approval *ngIf="estadoSeleccionado == 4"></purchase-orders-pending-daf-approval>
-    <purchase-orders-pending-merchandise-reception *ngIf="estadoSeleccionado == 10"></purchase-orders-pending-merchandise-reception>
-    <purchase-orders-pending-bill-reception *ngIf="estadoSeleccionado == 11"></purchase-orders-pending-bill-reception>
+    <purchase-orders-pending-daf-approval *ngIf="estadoSeleccionado == 4" [purchaseOrder]="purchaseOrder"></purchase-orders-pending-daf-approval>
+    <purchase-orders-pending-merchandise-reception *ngIf="estadoSeleccionado == 10" [purchaseOrder]="purchaseOrder"></purchase-orders-pending-merchandise-reception>
+    <purchase-orders-pending-bill-reception *ngIf="estadoSeleccionado == 11" [purchaseOrder]="purchaseOrder"></purchase-orders-pending-bill-reception>
 </div>

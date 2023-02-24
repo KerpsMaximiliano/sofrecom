@@ -33,6 +33,7 @@ export class WorkflowComponent implements OnDestroy {
     @ViewChild('wfreject') wfReject;
 
     private requestNoteData;
+    private purchaseOrderData;
 
     constructor(private workflowService: WorkflowService,
                 private componentFactoryResolver: ComponentFactoryResolver,
@@ -116,6 +117,14 @@ export class WorkflowComponent implements OnDestroy {
                     entityController: this.entityController,
                     requestNote: this.requestNoteData
                 }
+            } else if(this.entityController == "buyOrderRequestNote") {
+                model = {
+                    workflowId: item.workflowId,
+                    nextStateId: item.nextStateId,
+                    entityId: this.entityId,
+                    entityController: this.entityController,
+                    buyOrder: this.purchaseOrderData
+                }
             } else {
                 model = {
                     workflowId: item.workflowId,
@@ -136,6 +145,10 @@ export class WorkflowComponent implements OnDestroy {
 
     updateRequestNote(requestNote) {
         this.requestNoteData = requestNote;
+    }
+
+    updatePurchaseORder(purchaseOrder) {
+        this.purchaseOrderData = purchaseOrder;
     }
 
     onTransitionCustomConfirm(){

@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
 
@@ -9,6 +10,12 @@ import { RequestNoteService } from "app/services/admin/request-note.service";
 })
 
 export class PurchaseOrdersPendingDAFApproval implements OnInit {
+
+    @ViewChild('workflow') workflow;
+    private workflowModel: any;
+
+    @Input() purchaseOrder: any;
+    mode: string;
 
     proveedores = [
         {id: 1, nombre: "Uno"},
@@ -30,7 +37,7 @@ export class PurchaseOrdersPendingDAFApproval implements OnInit {
     ];
 
     ordenCompraForm: FormGroup = new FormGroup({
-        numberOC: new FormControl(2, Validators.required),
+        numberOC: new FormControl(null, Validators.required),
         proveedor: new FormControl(2, Validators.required),
         numberNP: new FormControl(null, Validators.required),
         montoOC: new FormControl(12312, Validators.required)
@@ -40,18 +47,40 @@ export class PurchaseOrdersPendingDAFApproval implements OnInit {
 
     constructor(
         private requestNoteService: RequestNoteService,
-        private purchaseOrderService: PurchaseOrderService
+        private purchaseOrderService: PurchaseOrderService,
+        private router: Router
     ) {
 
     }
 
     ngOnInit(): void {
+        console.log(this.purchaseOrder);
         this.ordenCompraForm.disable();
-        this.requestNoteService.getById(222).subscribe(d => {
+        this.mode = this.purchaseOrderService.getMode();
+        
+        this.requestNoteService.getById(this.purchaseOrder.requestNoteId).subscribe(d => {
             this.requestNote = d.data;
             console.log(this.requestNote);
-            this.ordenCompraForm.get('numberNP').setValue(this.requestNote.description)
-        })
+            if(this.mode == "Edit") {
+                this.workflowModel = {
+                    workflowId: this.purchaseOrder.workflowId,
+                    entityController: "buyOrderRequestNote",
+                    entityId: this.purchaseOrder.id,
+                    actualStateId: this.purchaseOrder.statusId
+                };
+                this.workflow.init(this.workflowModel);
+            }
+            this.ordenCompraForm.get('numberNP').setValue(this.requestNote.description);
+            this.ordenCompraForm.get('numberOC').setValue(this.purchaseOrder.number);
+            this.ordenCompraForm.get('proveedor').setValue(this.purchaseOrder.providerDescription);
+            this.ordenCompraForm.get('montoOC').setValue(this.purchaseOrder.totalAmount);
+            
+            this.purchaseOrderService.getAll({requestNoteId: this.purchaseOrder.requestNoteId}).subscribe(res => {
+                console.log(res);
+                //Filtrar por pendiente recepción factura (47) o finalizada (???)
+            });
+        });
+        
     }
 
     change(event: any) {
@@ -60,6 +89,14 @@ export class PurchaseOrdersPendingDAFApproval implements OnInit {
 
     approve() {
 
+    }
+
+    workflowClick() {
+        this.workflow.updatePurchaseORder(this.purchaseOrder);
+    }
+
+    onTransitionSuccess() {
+        this.router.navigate(["/providers/purchase-orders"]);
     }
     
 }

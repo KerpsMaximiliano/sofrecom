@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -9,6 +9,8 @@ import { RequestNoteService } from "app/services/admin/request-note.service";
 })
 
 export class PurchaseOrdersPendingMerchandiseReception {
+
+    @Input() purchaseOrder: any;
 
     proveedores = [
         {id: 1, nombre: "Uno"},
