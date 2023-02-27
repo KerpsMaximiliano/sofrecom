@@ -12,7 +12,7 @@
 </div>
 
 <div>
-    <purchase-orders-pending-daf-approval *ngIf="estadoSeleccionado == 4" [purchaseOrder]="purchaseOrder"></purchase-orders-pending-daf-approval>
-    <purchase-orders-pending-merchandise-reception *ngIf="estadoSeleccionado == 10" [purchaseOrder]="purchaseOrder"></purchase-orders-pending-merchandise-reception>
-    <purchase-orders-pending-bill-reception *ngIf="estadoSeleccionado == 11" [purchaseOrder]="purchaseOrder"></purchase-orders-pending-bill-reception>
+    <purchase-orders-pending-daf-approval *ngIf="estadoSeleccionado == currentEnvironment.OC_PEND_APRO_DAF" [purchaseOrder]="purchaseOrder"></purchase-orders-pending-daf-approval>
+    <purchase-orders-pending-merchandise-reception *ngIf="estadoSeleccionado == currentEnvironment.OC_PEND_RECEP_MERC" [purchaseOrder]="purchaseOrder"></purchase-orders-pending-merchandise-reception>
+    <purchase-orders-pending-bill-reception *ngIf="estadoSeleccionado == currentEnvironment.OC_PEND_RECEP_FAC" [purchaseOrder]="purchaseOrder"></purchase-orders-pending-bill-reception>
 </div>

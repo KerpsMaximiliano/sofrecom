@@ -8,6 +8,7 @@ import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
+import { environment } from "environments/environment";
 import { forkJoin } from "rxjs";
 
 @Component({
@@ -99,7 +100,7 @@ export class PurchaseOrdersComponent implements OnInit{
 
     extra(id) {
         this.purchaseOrderService.setMode("Edit");
-        this.router.navigate([`providers/purchase-orders/edit/10`]);
+        this.router.navigate([`providers/purchase-orders/edit/${id}`]);
     }
 
     refreshSearch() {
@@ -161,5 +162,9 @@ export class PurchaseOrdersComponent implements OnInit{
         else {
             $("#search-icon").toggleClass('fa-caret-up').toggleClass('fa-caret-down');
         }
+    }
+
+    get currentEnvironment() {
+        return environment
     }
 }

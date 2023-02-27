@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
+import { environment } from "environments/environment";
 
 
 @Component({
@@ -39,6 +40,10 @@ export class PurchaseOrdersEditComponent implements OnInit{
             this.purchaseOrder = d.data;
             this.showEdit = true;
         });
+    }
+
+    get currentEnvironment() {
+        return environment
     }
     
 }

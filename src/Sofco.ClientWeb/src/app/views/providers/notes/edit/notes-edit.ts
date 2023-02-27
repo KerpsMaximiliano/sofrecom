@@ -74,6 +74,7 @@ export class NotesEditComponent implements OnInit{
                 }
                 this.currentNote = results[0].data;
                 this.estado = this.currentNote.statusId;
+                console.log(results[0].data)
                 // if(this.estado > 10) {
                 //     this.requestNoteService.setMode("View");
                 //     this.currentNoteStatusDescription = (this.estado == 11) ? "Rechazada" : "Cerrada"
@@ -101,10 +102,14 @@ export class NotesEditComponent implements OnInit{
                     this.histories.push(model);
                     this.histories = [...this.histories]
                 });
-                if(this.currentNote.statusId == 36) {
+                if(this.currentNote.statusId == environment.NP_CERRADA) {
                     this.closed = true;
                     this.lastStatusId = this.histories[this.histories.length - 1].statusFrom;
                 };
+                if(this.currentNote.statusId == environment.NP_RECHAZADA) {
+                    this.rejected = true;
+                    this.lastStatusId = this.histories[this.histories.length - 1].statusFrom;
+                }
                 this.showEdit = true;
             }
         })

@@ -31,7 +31,7 @@
 
     <notes-partial-reception [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="estadoSeleccionado == currentEnviroment.NP_RECEP_PARCIAL"></notes-partial-reception>
 
-    <div *ngIf="estadoSeleccionado == currentEnviroment.NP_CERRADA"> <!--cerrada-->
+    <div *ngIf="estadoSeleccionado == currentEnviroment.NP_CERRADA || estadoSeleccionado == currentEnviroment.NP_RECHAZADA"> <!--cerrada-->
         <notes-pending-approval-management-analytic [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == currentEnviroment.NP_PEND_APRO_GER_AN"></notes-pending-approval-management-analytic>
 
         <notes-pending-purchase-approval [currentNote]="currentNote" [currentNoteStatusDescription]="currentNoteStatusDescription" [closed]="closed" [rejected]="rejected" *ngIf="lastStatusId == currentEnviroment.NP_PEND_APRO_COMP"></notes-pending-purchase-approval>

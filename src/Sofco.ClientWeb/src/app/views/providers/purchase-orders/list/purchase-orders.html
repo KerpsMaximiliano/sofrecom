@@ -105,7 +105,7 @@
                             <td class="column-sm text-center">
                                 <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i class="fa fa-eye"></i></button>
                                 <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i class="fa fa-edit"></i></button>
-                                <button title="recepcionar mercadería" class="btn btn-default btn-xs" (click)="extra(item.id)"><i class="fa fa-barcode"></i></button>
+                                <button title="recepcionar mercadería" class="btn btn-default btn-xs" (click)="extra(item.id)" *ngIf="item.statusId == currentEnvironment.OC_PEND_RECEP_MERC"><i class="fa fa-barcode"></i></button>
                             </td>
                         </tr> 
                     </tbody>
