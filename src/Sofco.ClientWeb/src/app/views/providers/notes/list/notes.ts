@@ -78,6 +78,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
                     }
                 })
                 this.notes = this.notesInProcess;
+                console.log(this.notes)
                 this.initGrid();
             });
         }, 500);

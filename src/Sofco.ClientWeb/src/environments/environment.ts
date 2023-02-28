@@ -32,8 +32,8 @@ export const environment = {
   NP_PEND_APRO_GER_AN: 29,
   NP_PEND_APRO_COMP: 31,
   NP_PEND_APRO_DAF: 4,
-  NP_PEND_GEN_SAP: 34, //prod
-  //NP_PEND_GEN_SAP: 33, //dev
+  //NP_PEND_GEN_SAP: 34, //prod
+  NP_PEND_GEN_SAP: 33, //dev
   NP_PEND_RECEP_MERC: 34,
   NP_RECEP_PARCIAL: 35,
   NP_CERRADA: 36, //prod
