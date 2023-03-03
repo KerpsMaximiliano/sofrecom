@@ -236,6 +236,23 @@
         </ul>
       </li>
 
+<!-- Providers -->
+<li [ngClass]="{active: activeRoute('providers')}" *ngIf="menuService.hasModule('NOPE') || menuService.hasModule('PROV')">
+  <a href="#"><i class="fa fa-user-plus"></i> <span class="nav-label">{{'Abastecimiento y Proveedores' | translate }}</span> <span
+      class="fa arrow"></span></a>
+  <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('providers')}">
+    <li [ngClass]="{active: activeRoute('providers')}" *ngIf="menuService.hasModule('PROV')"><a
+      [routerLink]="['/providers/providers']">Proveedores</a>
+    </li>
+    <li [ngClass]="{active: activeRoute('notes')}" *ngIf="menuService.hasModule('NOPE')"><a
+      [routerLink]="['/providers/notes']">Notas de Pedido</a>
+    </li>
+    <li [ngClass]="{active: activeRoute('purchase-orders')}"><a
+      [routerLink]="['/providers/purchase-orders']">Ordenes de Compra</a>
+    </li>
+  </ul>
+</li>
+
       <!-- Profile-->
       <li [ngClass]="{active: activeRoute('profile')}">
         <a href="#"><i class="fa fa-user"></i> <span class="nav-label"> {{ 'myActions' | translate }} </span> <span
@@ -259,22 +276,7 @@
         </ul>
       </li>
       
-<!-- Providers -->
-<li [ngClass]="{active: activeRoute('providers')}" *ngIf="menuService.hasModule('NOPE') || menuService.hasModule('PROV')">
-  <a href="#"><i class="fa fa-user-plus"></i> <span class="nav-label">{{'Abastecimiento y Proveedores' | translate }}</span> <span
-      class="fa arrow"></span></a>
-  <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('providers')}">
-    <li [ngClass]="{active: activeRoute('providers')}" *ngIf="menuService.hasModule('PROV')"><a
-      [routerLink]="['/providers/providers']">Proveedores</a>
-    </li>
-    <li [ngClass]="{active: activeRoute('notes')}" *ngIf="menuService.hasModule('NOPE')"><a
-      [routerLink]="['/providers/notes']">Notas de Pedido</a>
-    </li>
-    <li [ngClass]="{active: activeRoute('purchase-orders')}"><a
-      [routerLink]="['/providers/purchase-orders']">Ordenes de Compra</a>
-    </li>
-  </ul>
-</li>
+
       
 
     </ul>
