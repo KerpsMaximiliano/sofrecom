@@ -82,6 +82,7 @@ export class NotesPendingDAFApproval {
     mode: string;
 
     formNota: FormGroup = new FormGroup({
+        id: new FormControl(null),
         description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),
         productsAndServicies: new FormControl(null),
         providerArea: new FormControl(null, [Validators.required]),
@@ -190,6 +191,7 @@ export class NotesPendingDAFApproval {
         }
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             this.formNota.patchValue({
+                id: this.currentNote.id,
                 description: this.currentNote.description,
                 providerArea: this.currentNote.providerAreaId,
                 requiresPersonel: this.currentNote.requiresEmployeeClient,
@@ -200,6 +202,7 @@ export class NotesPendingDAFApproval {
                 training: this.currentNote.trainingSection
             });
             this.critical = (d.data.critical) ? "Si" : "No";
+            this.formNota.get('id').disable();
         });
         this.providersService.getAll().subscribe(d => {
             d.data.forEach(prov => {

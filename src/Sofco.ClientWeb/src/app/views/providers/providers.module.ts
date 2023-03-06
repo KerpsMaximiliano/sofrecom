@@ -23,7 +23,6 @@ import { EmployeeService } from "app/services/allocation-management/employee.ser
 import { FileService } from "app/services/common/file.service";
 import { FileUploadModule } from "ng2-file-upload";
 import { BsDatepickerModule, ButtonsModule, ModalModule } from "ngx-bootstrap";
-import { SolfacPdfViewerComponent } from "../billing/solfac/pdf-viewer/solfac-pdf-viewer.component";
 import { NotesAddComponent } from "./notes/add/notes-add";
 import { NotesApproved } from "./notes/edit/approved/notes-approved";
 import { NotesDraftComponent } from "./notes/edit/draft/notes-draft";
@@ -75,7 +74,6 @@ import { PurchaseOrdersNoAccessComponent } from "./purchase-orders/no-access/pur
         NotesPendingManagementBillApproval,
         NotesPendingGAFProcessing,
         NotesNoAccessComponent,
-        SolfacPdfViewerComponent,
         PurchaseOrdersComponent,
         PurchaseOrdersNoAccessComponent,
         PurchaseOrdersEditComponent,

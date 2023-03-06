@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="ibox">
+        <div class="ibox" style="margin: 0 1rem">
             <div class="ibox-content">
                 <form class="form-horizontal" [formGroup]="ordenCompraForm">
                     <div class="form-group">
@@ -62,7 +62,7 @@
                                     <td>{{item.id}}</td>
                                     <td>{{item.description}}</td>
                                     <td>{{item.amount}}</td>
-                                    <td>{{item.requestedQuantity}}</td>
+                                    <td>{{item.quantity}}</td>
                                     <td>
                                         <input type="number" [formControlName]="'control' + item.id">
                                     </td>

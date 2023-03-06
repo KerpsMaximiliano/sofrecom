@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="ibox">
+        <div class="ibox" style="margin: 0 1rem">
             <div class="ibox-content">
                 <form class="form-horizontal" [formGroup]="ordenCompraForm">
                     <div class="form-group">
@@ -54,16 +54,18 @@
                                     <th>Producto/Servicio</th>
                                     <th>Monto</th>
                                     <th>Cantidad</th>
+                                    <th>Solicitados</th>
                                     <th>Pendientes</th>
                                 </tr>
                             </thead>
                             <tbody *ngFor="let item of productosServicios; let i = index">
-                                <tr [ngStyle]="{'background-color': item.cantidad < item.pendientes ? 'rgba(255, 231, 0, 0.28)' : ''}">
+                                <tr [ngStyle]="{'background-color': item.quantity < item.pendingQuantity ? 'rgba(255, 231, 0, 0.28)' : ''}">
                                     <td>{{item.id}}</td>
-                                    <td>{{item.nombre}}</td>
-                                    <td>{{item.monto}}</td>
-                                    <td [ngStyle]="{'color': item.cantidad < item.pendientes ? 'red' : ''}">{{item.cantidad}}</td>
-                                    <td>{{item.pendientes}}</td>
+                                    <td>{{item.description}}</td>
+                                    <td>{{item.amount}}</td>
+                                    <td [ngStyle]="{'color': item.quantity < item.pendingQuantity ? 'red' : ''}">{{item.quantity}}</td>
+                                    <td>{{item.requestedQuantity}}</td>
+                                    <td>{{item.pendingQuantity}}</td>
                                 </tr> 
                             </tbody>
                         </table>

@@ -98,11 +98,6 @@ export class PurchaseOrdersComponent implements OnInit{
         this.router.navigate([`providers/purchase-orders/edit/${id}`]);
     }
 
-    extra(id) {
-        this.purchaseOrderService.setMode("Edit");
-        this.router.navigate([`providers/purchase-orders/edit/${id}`]);
-    }
-
     refreshSearch() {
         this.providerId = null;
         this.numberOC = null;

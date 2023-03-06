@@ -88,6 +88,7 @@ export class NotesPendingPurchaseApproval {
 
     //FORMS
     formNota: FormGroup = new FormGroup({
+        id: new FormControl(null),
         description: new FormControl(null, [Validators.required, Validators.maxLength(1000)]),
         productsAndServicies: new FormControl(null),
         providerArea: new FormControl(null, [Validators.required]),
@@ -183,6 +184,7 @@ export class NotesPendingPurchaseApproval {
                 this.workflow.setCustomValidations(true);
                 return;
             };
+            this.workflow.updateRequestNote(this.currentNote);
             this.workflow.setCustomValidations(false);
             this.uploaderProviders.uploadAll();
         }
@@ -228,6 +230,7 @@ export class NotesPendingPurchaseApproval {
         }
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
             this.formNota.patchValue({
+                id: this.currentNote.id,
                 description: this.currentNote.description,
                 providerArea: this.currentNote.providerAreaId,
                 requiresPersonel: this.currentNote.requiresEmployeeClient,
@@ -238,6 +241,7 @@ export class NotesPendingPurchaseApproval {
                 training: this.currentNote.trainingSection
             });
             this.critical = (d.data.critical) ? "Si" : "No";
+            this.formNota.get('id').disable();
         });
         this.providersService.getAll().subscribe(d => {
             d.data.forEach(prov => {
@@ -293,7 +297,8 @@ export class NotesPendingPurchaseApproval {
         this.formViaje.disable();
         if(!this.closed && !this.rejected) {
             this.formNota.get('providers').enable();
-        }
+        };
+        this.formNota.get('providerArea').enable();
     }
 
     change(event) {

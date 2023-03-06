@@ -24,11 +24,7 @@ export class PurchaseOrdersPendingDAFApproval implements OnInit {
         {id: 4, nombre: "Cuatro"},
         {id: 5, nombre: "Cinco"},
     ];
-    productosServicios = [
-        {id: 1, nombre: "Uno", monto: 10, cantidad: 10, pendientes: 10},
-        {id: 2, nombre: "Dos", monto: 20, cantidad: 20, pendientes: 21},
-        {id: 3, nombre: "Tres", monto: 34, cantidad: 45, pendientes: 55},
-    ];
+    productosServicios = [];
     notasPedido = [
         {id: 1, nombre: "Nota 1"},
         {id: 2, nombre: "Nota 2"},
@@ -74,6 +70,8 @@ export class PurchaseOrdersPendingDAFApproval implements OnInit {
             this.ordenCompraForm.get('numberOC').setValue(this.purchaseOrder.number);
             this.ordenCompraForm.get('proveedor').setValue(this.purchaseOrder.providerDescription);
             this.ordenCompraForm.get('montoOC').setValue(this.purchaseOrder.totalAmount);
+
+            this.productosServicios = this.purchaseOrder.items;
             
             this.purchaseOrderService.getAll({requestNoteId: this.purchaseOrder.requestNoteId}).subscribe(res => {
                 console.log(res);
