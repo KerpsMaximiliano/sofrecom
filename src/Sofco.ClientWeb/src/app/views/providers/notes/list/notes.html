@@ -16,72 +16,81 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="panel panel-success">
-        <div class="panel-heading">
-            <h5 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()"
-                    style="display: block">
-                    <span>Parámetros de Búsqueda</span>
-                    <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
-                </a>
-            </h5>
-        </div>
-        <div id="collapseOne" class="panel-collapse collapse in">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Solicitante</label>
-                            <ng-select [items]="applicants" bindLabel="name" bindValue="id" [(ngModel)]="applicantId">
-                            </ng-select>
+    <div style="display: flex; justify-content: space-between; gap: 1rem;">
+        <div class="panel panel-success" style="width: 92%;">
+            <div class="panel-heading">
+                <h5 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()"
+                        style="display: block">
+                        <span>Parámetros de Búsqueda</span>
+                        <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+                    </a>
+                </h5>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Solicitante</label>
+                                <ng-select [items]="applicants" bindLabel="name" bindValue="id" [(ngModel)]="applicantId">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Fecha desde</label>
+                                <date-picker [(date)]="dateSince"></date-picker>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Fecha hasta</label>
+                                <date-picker [(date)]="dateTo"></date-picker>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Fecha desde</label>
-                            <date-picker [(date)]="dateSince"></date-picker>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Estados</label>
+                                <ng-select [items]="states2" bindLabel="text" bindValue="id" [(ngModel)]="stateId">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Proveedor</label>
+                                <ng-select [items]="providers" bindLabel="name" bindValue="id" [(ngModel)]="providerId">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Número</label>
+                                <input type="text" [(ngModel)]="noteId" class="form-control">
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Fecha hasta</label>
-                            <date-picker [(date)]="dateTo"></date-picker>
+                    <div class="row">
+                        <div class="panel-footer">
+                            <div class="text-right">
+                                <button class="btn btn-warning" (click)="refreshSearch()"> {{ 'ACTIONS.clean' | translate }}
+                                    <i class="fa fa-refresh"></i></button>
+                                <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i
+                                        class="fa fa-search"></i></button>
+                            </div>
                         </div>
+    
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Estados</label>
-                            <ng-select [items]="states2" bindLabel="text" bindValue="id" [(ngModel)]="stateId">
-                            </ng-select>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <label class="control-label">Proveedor</label>
-                            <ng-select [items]="providers" bindLabel="name" bindValue="id" [(ngModel)]="providerId">
-                            </ng-select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="panel-footer">
-                        <button class="btn btn-success pull-left" routerLink="./add"> Nueva <i
-                                class="fa fa-plus"></i></button>
-
-                        <div class="text-right">
-                            <button class="btn btn-warning" (click)="refreshSearch()"> {{ 'ACTIONS.clean' | translate }}
-                                <i class="fa fa-refresh"></i></button>
-                            <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i
-                                    class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
+        <div>
+            <button class="btn btn-success pull-right" routerLink="./add" style="margin-top: .15rem"> Nueva <i class="fa fa-plus"></i></button>
+        </div>
     </div>
+    
     <div class="ibox"> 
         <div class="ibox-content">
             <div class="tabs-container">
@@ -100,6 +109,7 @@
                                     <th>Descripción</th>
                                     <th>Estado</th>
                                     <th>Fecha Creación</th>
+                                    <th>Creado por</th>
                                     <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                                 </tr>
                             </thead>
@@ -109,6 +119,7 @@
                                     <td>{{note.description}}</td>
                                     <td><span class="label">{{note.status | requestNoteState}}</span></td>
                                     <td>{{note.creationDate}}</td>
+                                    <td>{{note.creationUserDescription}}</td>
                                     <td class="column-sm text-center">
                                         <button title="ver" class="btn btn-primary btn-xs" (click)="view(note.id)" *ngIf="note.statusId != 1 && note.hasReadPermissions"><i class="fa fa-eye"></i></button>
                                         <button title="editar" class="btn btn-warning btn-xs" (click)="edit(note.id)" *ngIf="note.statusId != 11 && note.statusId != 12 && note.hasEditPermissions"><i class="fa fa-edit"></i></button>

@@ -24,6 +24,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
     providerId: number;
     dateSince;
     dateTo;
+    noteId;
     notes = [];
     notesBackup = [];
     notesInProcess = [];
@@ -78,8 +79,15 @@ export class NotesComponent implements OnInit, AfterViewInit{
                     }
                 })
                 this.notes = this.notesInProcess;
+                this.notes.sort(function(a, b) { 
+                    return b.id - a.id;
+                });
                 console.log(this.notes)
                 this.initGrid();
+                setTimeout(() => {
+                    let el: HTMLElement = document.getElementsByClassName('sorting_asc')[0] as HTMLElement;
+                    el.click()
+                }, 501);
             });
         }, 500);
         
@@ -125,6 +133,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
             }
         }
         let json = {
+            id: this.noteId,
             statusId: (this.stateId == 0) ? null : this.stateId,
             creationUserId: this.applicantId,
             fromDate: this.dateSince,
@@ -157,7 +166,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
                 this.tabTwo.nativeElement.click();
             } else {
                 this.tabOne.nativeElement.click();
-            }
+            };
         });
     }
 
@@ -190,7 +199,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
     }
 
     initGrid() {
-        var columns = [0, 1, 2, 3, 4];
+        var columns = [0, 1, 2, 3, 4, 5];
     
         var params = {
             selector: '#dataTable',

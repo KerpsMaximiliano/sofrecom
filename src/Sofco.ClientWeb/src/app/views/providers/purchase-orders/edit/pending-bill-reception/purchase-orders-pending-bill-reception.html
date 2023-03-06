@@ -1,1 +1,133 @@
-<h2>PENDIENTE RECEPCIÓN FACTURA</h2>
+<h1>Pendiente Recepción Factura</h1>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12 row">
+            <div class="pull-left" style="margin-left: 2rem;">
+                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/purchase-orders']">
+                    <i class="fa fa-arrow-left"></i>       Volver
+                </button>
+            </div>
+            <div class="btn-right">
+                <div class="btn-right">
+                    <workflow id="workflow" (onSaveSuccess)="onTransitionSuccess()" #workflow (click)="workflowClick()"></workflow>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ibox" style="margin: 0 1rem">
+            <div class="ibox-content">
+                <form class="form-horizontal" [formGroup]="ocForm">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Fecha factura</label>
+                        <div class="col-sm-8">
+                            <date-picker [(date)]="facturaDate" (dateChange)="dateChange()"></date-picker>
+                            <span
+                                *ngIf="!ocForm.get('fecha')?.valid && (ocForm.get('fecha')?.touched || ocForm.get('fecha')?.dirty)"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Número FC Legal: </label>
+                        <div class="col-sm-8">
+                            <input class="form-control" formControlName="numeroFC">
+                            <span
+                                *ngIf="!ocForm.get('numeroFC')?.valid && (ocForm.get('numeroFC')?.touched || ocForm.get('numeroFC')?.dirty) && !ocForm.controls.numeroFC.errors?.pattern"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                            <span *ngIf="ocForm.controls.numeroFC.errors?.pattern" style="color: red;">
+                                Formato incorrecto
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3>Detalle</h3>
+                    </div>
+                    <div class="form-group" [formGroup]="detalleForm">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-3">
+                            <label>Producto/Servicio/Material</label>
+                            <ng-select [items]="productosServicios" bindLabel="description" bindValue="id" formControlName="item"></ng-select>
+                            <span
+                                *ngIf="!detalleForm.get('item')?.valid && (detalleForm.get('item')?.touched || detalleForm.get('item')?.dirty)"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Precio</label>
+                            <input type="number" class="form-control"  formControlName="precio">
+                            <span
+                                *ngIf="!detalleForm.get('precio')?.valid && (detalleForm.get('precio')?.touched || detalleForm.get('precio')?.dirty) && !detalleForm.controls.precio.errors?.pattern"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                            <span *ngIf="detalleForm.controls.precio.errors?.pattern" style="color: red;">
+                                Formato incorrecto
+                            </span>
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Cantidad</label>
+                            <input type="number" class="form-control"  formControlName="cantidad">
+                            <span
+                                *ngIf="!detalleForm.get('cantidad')?.valid && (detalleForm.get('cantidad')?.touched || detalleForm.get('cantidad')?.dirty) && !detalleForm.controls.cantidad.errors?.pattern"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                            <span *ngIf="detalleForm.controls.cantidad.errors?.pattern" style="color: red;">
+                                Formato incorrecto
+                            </span>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-success" style="margin-top: 2.3rem;"
+                            (click)="addItem()">Agregar       <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="showGrid" [formGroup]="grillaForm">
+                        <table class="table table-striped dataTable col-sm-12" role="grid" id="dataTable" formArrayName="items">
+                            <thead>
+                                <tr>
+                                    <th class="font-13">Producto/Servicio/Material</th>
+                                    <th class="font-13">Precio</th>
+                                    <th class="font-13">Cantidad</th>
+                                    <th class="column-sm text-center font-13">{{ 'ACTIONS.title' | translate }}</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let item of getItems().controls; let i = index">
+                                <tr [formGroupName]="i">
+                                    <td>
+                                        <ng-select [items]="productosServicios" bindLabel="description" bindValue="id" formControlName="itemGrilla"></ng-select>
+                                    </td>
+                                    <td>
+                                        <input type="number" formControlName="precioGrilla" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="number" formControlName="cantidadGrilla" class="form-control">
+                                    </td>
+                                    <td class="column-sm text-center">
+                                        <button title="eliminar" (click)="deleteItem(i)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr> 
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label text-left">Código de impuesto: </label>
+                        <div class="col-sm-8">
+                            <input class="form-control" formControlName="impuesto">
+                            <span
+                                *ngIf="!ocForm.get('impuesto')?.valid && (ocForm.get('impuesto')?.touched || ocForm.get('impuesto')?.dirty)"
+                                style="color: red;">
+                                El campo es requerido
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
