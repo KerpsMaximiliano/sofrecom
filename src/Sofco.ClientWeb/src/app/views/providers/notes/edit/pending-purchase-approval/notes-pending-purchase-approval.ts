@@ -157,12 +157,25 @@ export class NotesPendingPurchaseApproval {
     }
 
     workflowClick(event: any) {
+        let find = this.providerAreas.find(p => p.id == this.formNota.get('providerArea').value);
+        this.currentNote.providerAreaId = this.formNota.get('providerArea').value;
+        this.currentNote.providerAreaDescription = find.description;
         if(event.target.innerText == "RECHAZAR ") {
+            if(this.formNota.get('providerArea').value == null) {
+                this.messageService.showMessage("Debe seleccionar un rubro", 2);
+                this.workflow.setCustomValidations(true);
+                return;
+            }
             this.workflow.updateRequestNote(this.currentNote);
             this.workflow.setCustomValidations(false);
             this.workflow.filesUploaded();
         } else if(event.target.innerText == "ENVIAR A DAF ") {
             this.markFormGroupTouched(this.formProvidersGrid);
+            if(this.formNota.get('providerArea').value == null) {
+                this.messageService.showMessage("Debe seleccionar un rubro", 2);
+                this.workflow.setCustomValidations(true);
+                return;
+            }
             if(this.proveedoresSelected.length == 0) {
                 this.messageService.showMessage("Debe seleccionar al menos un proveedor", 2);
                 this.workflow.setCustomValidations(true);

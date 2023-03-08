@@ -58,6 +58,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
             fromDate: null,
             toDate: null,
             providerId: null,
+            noteId: null
         };
         setTimeout(() => {
             this.requestNoteService.getAll(json).subscribe(d=>{
@@ -176,6 +177,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
         this.dateSince = null;
         this.dateTo = null;
         this.providerId = null;
+        this.noteId = null;
     }
 
     collapse() {
