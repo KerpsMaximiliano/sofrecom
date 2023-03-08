@@ -535,6 +535,7 @@ namespace Sofco.Service.Implementations.RequestNote
             {
                 if (requestNote.ProvidersSelected == null)
                     requestNote.ProvidersSelected = new List<Provider>();
+                req.ProviderAreaId = requestNote.ProviderAreaId;
                 foreach (var prov in req.Providers.ToList())
                 {
                     var nuevo = requestNote.ProvidersSelected.SingleOrDefault(a => a.ProviderId == prov.ProviderId);
@@ -556,144 +557,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     }
                 }
             }
-                /*
-                case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
-                    //Se manda una lista de providers(como en la instancia borrador), deben reemplazar a los ya existentes
-                    //en la requestNote.Se manda un campo monto final OC(number) para agregarse a la requestNote.
-                    //Se debe asignar el estado de todas las analíticas asociadas a la requestNote como “Pendiente Aprobación”.
-                    if (requestNote.Providers == null)
-                        requestNote.Providers = new List<Provider>();
-
-                    foreach (var prov in req.Providers.ToList())
-                    {
-                        if (!requestNote.Providers.Any(a => a.ProviderId == prov.ProviderId))
-                            unitOfWork.RequestNoteProviderRepository.Delete(prov);
-                    }
-                    foreach (var provNuevo in requestNote.Providers)
-                    {
-                        var prov = req.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
-                        if (prov == null)
-                        {
-                            prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId };
-                            req.Providers.Add(prov);
-                        }
-                        prov.FileId = provNuevo.FileId;
-                        prov.IsSelected = false;
-                    }
-                    req.PurchaseOrderAmmount = requestNote.PurchaseOrderAmmount;
-                    foreach (var analitica in req.Analytics)
-                    {
-                        analitica.Status = "Pendiente Aprobación";
-                    }
-                    break;
-                case RequestNoteStatus.PendienteAprobaciónAbastecimiento:
-                    if (req.StatusId == (int)RequestNoteStatus.PendienteAprobaciónGerentesAnalítica)
-                    {
-                        //Se deben marcar todas las analíticas del gerente asociado como “Aprobada” 
-                        //(son suyas si el userId es el managerId de la analítica)
-                        //Si todas las analíticas asociadas a la requestNote ya están con estado “Aprobada”,
-                        //entonces cambia el estado de la requestNote a “Pendiente Aprobación Abastecimiento”,
-                        //de lo contrario el estado de la requestNote no cambia
-                        foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
-                        {
-                            analitica.Status = "Aprobada";
-                        }
-                        if (req.Analytics.Any(a => a.Status != "Aprobada"))
-                            nuevoEstado = req.StatusId; //Si alguna falta, dejo el estado como ya estaba
-                    }
-                    else if (req.StatusId == (int)RequestNoteStatus.PendienteAprobaciónDAF)
-                    {
-                        //Se cambia el estado de la requestNote a “Pendiente Aprobación Abastecimiento”.
-                        //Se manda un campo (string) con comentario para guardar en histories.
-
-                    }
-                    break;
-                case RequestNoteStatus.PendienteAprobaciónDAF:
-                    //Se manda un provider que va a quedar como seleccionado, de ahora en adelante es
-                    //el único que se tiene que devolver (sino puede traer todos pero que tenga un campo
-                    //que lo identifique para solo mostrar ese).
-                    //Se manda un campo numeroOC y un fileId para la orden de compra. 
-                    req.PurchaseOrderNumber = requestNote.PurchaseOrderNumber;
-
-                    foreach (var prov in req.Providers)
-                    {
-                        prov.IsSelected = prov.ProviderId == requestNote.ProviderSelectedId;
-                    }
-
-                    if (requestNote.Attachments != null && requestNote.Attachments.Any(f => f.FileId.HasValue))
-                        req.Attachments.Add(requestNote.Attachments.Where(f => f.FileId.HasValue).Select(p => new RequestNoteFile()
-                        {
-                            Type = (int)RequestNoteFileTypes.OrdenDeCompra,
-                            FileId = p.FileId.Value
-                        }).First());
-                    break;
-                case RequestNoteStatus.Aprobada:
-                    break;
-                case RequestNoteStatus.SolicitadaAProveedor:
-                    //Se manda un array con los fileIds de los archivos subidos, son documentación para proveedor.
-                    //Se cambia el estado a “Solicitada a Proveedor”.
-                    //Dice que se tiene que notificar al proveedor seleccionado
-                    if (requestNote.Attachments != null)
-                        foreach (var file in requestNote.Attachments.Where(f => f.FileId.HasValue))
-                        {
-                            req.Attachments.Add(new RequestNoteFile()
-                            {
-                                Type = (int)RequestNoteFileTypes.DocumentacionParaProveedor,
-                                FileId = file.FileId.Value
-                            });
-                        }
-                    break;
-                case RequestNoteStatus.RecibidoConforme:
-                    //Se manda un array con los fileIds de los archivos subidos, son documentación recibido conforme,
-                    //puede ser null ya que es posible no subir archivos en esta instancia.
-                    //Se cambia el estado de la requestNote a “Recibido Conforme”.
-                    if (requestNote.Attachments != null)
-                        foreach (var file in requestNote.Attachments.Where(f => f.FileId.HasValue))
-                        {
-                            req.Attachments.Add(new RequestNoteFile()
-                            {
-                                Type = (int)RequestNoteFileTypes.DocumentacionRecibidoConforme,
-                                FileId = file.FileId.Value
-                            });
-                        }
-                    break;
-                case RequestNoteStatus.FacturaPendienteAprobaciónGerente:
-                    //Se manda un array de objetos, cada objeto tiene un fileId y un campo (es funcionalidad a futuro,
-                    //el campo va a mandar siempre null pero creería que va a terminar mandando string después), estos son facturas.
-                    //Se cambia el estado de la requestNote a “Factura Pendiente Aprobación Gerente”.
-                    if (requestNote.Attachments != null)
-                        foreach (var file in requestNote.Attachments.Where(f => f.FileId.HasValue))
-                        {
-                            req.Attachments.Add(new RequestNoteFile()
-                            {
-                                Type = (int)RequestNoteFileTypes.Facturas,
-                                FileId = file.FileId.Value
-                            });
-                        }
-
-                    break;
-                case RequestNoteStatus.PendienteProcesarGAF:
-                    //Aprobar → Se manda un array de analíticas. Dichas analíticas pasan al estado “Aprobada Facturación”.
-                    //Si todas las analíticas de la requestNote están con ese estado, se cambia el estado de la requestNote
-                    //a “Pendiente Procesar GAF”.
-                    foreach (var analitica in req.Analytics.Where(a => a.Analytic.ManagerId == user.Id))
-                    {
-                        analitica.Status = "Aprobada Facturación";
-                    }
-                    if (req.Analytics.Any(a => a.Status != "Aprobada Facturación"))
-                        nuevoEstado = req.StatusId; //Si alguna falta, dejo el estado como ya estaba
-
-                    break;
-                case RequestNoteStatus.Rechazada:
-                    break;
-                case RequestNoteStatus.Cerrada:
-                    //Se cambia el estado de la requestNote a  “Cerrada”. Se manda un campo (string) con comentario para guardar en histories.
-
-                    break;
-                default:
-                    break;
-            }*/
-                this.unitOfWork.RequestNoteRepository.UpdateRequestNote(req);
+            this.unitOfWork.RequestNoteRepository.UpdateRequestNote(req);
             this.unitOfWork.RequestNoteRepository.Save();
         }
     }
