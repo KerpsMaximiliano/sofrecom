@@ -22,6 +22,7 @@ namespace Sofco.Core.Models.RequestNote
             Description = note.Description;
             CreationUserId = note.CreationUserId;
             CreationUserDescription = note.CreationUser?.UserName;
+            CreationUserName = note.CreationUser.Name;
             CreationDate = note.CreationDate;
             AnalyticsManagers = note.Analytics != null 
                 ?  note.Analytics.Where(a=> a.Analytic?.ManagerId != null).Select(a => a.Analytic.ManagerId.Value).ToList() 
@@ -66,6 +67,8 @@ namespace Sofco.Core.Models.RequestNote
         
         public int CreationUserId { get; set; }
         public string CreationUserDescription { get; set; }
+
+        public string CreationUserName { get; set; }
         public DateTime CreationDate { get; set; }
 
         public int StatusId { get; set; }
