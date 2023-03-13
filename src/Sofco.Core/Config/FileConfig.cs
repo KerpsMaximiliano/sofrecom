@@ -12,5 +12,7 @@
         public string RecruitmentPath { get; set; }
 
         public string RequestNotePath { get; set; }
+
+        public string BuyOrderInvoice { get; set; }
     }
 }
