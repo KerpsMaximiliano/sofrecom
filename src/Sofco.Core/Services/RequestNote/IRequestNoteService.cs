@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Sofco.Core.Models.Providers;
 using Sofco.Core.Models.RequestNote;
 using Sofco.Domain.DTO;
 using Sofco.Domain.DTO.NotaPedido;
@@ -20,6 +21,7 @@ namespace Sofco.Core.Services.RequestNote
         Response<int> Add(RequestNoteModel requestNoteBorrador);
         Response<RequestNoteModel> GetById(int id);
         IList<RequestNoteGridModel> GetAll(RequestNoteGridFilters filters);
+        IList<ProviderMinModel> GetProviders(int RequestNoteID);
         void SaveChanges(RequestNoteModel requestNote, int nextStatus);
 
         Response<IList<Option>> GetStates();

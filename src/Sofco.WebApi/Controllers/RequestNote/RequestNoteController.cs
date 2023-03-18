@@ -107,6 +107,13 @@ namespace Sofco.WebApi.Controllers.RequestNote
         {
             return Ok(this._requestNoteService.GetAll(filters));
         }
+
+
+        [HttpGet("GetProviders")]
+        public IActionResult GetProviders(int requestNoteID)
+        {
+            return Ok(this._requestNoteService.GetProviders(requestNoteID));
+        }
         /*
         [HttpPost("SaveChanges")]
         public IActionResult SaveChanges([FromBody] RequestNoteModel requestNote, int nextStatus)

@@ -17,7 +17,7 @@ namespace Sofco.Domain.Models.RequestNote
         public bool ConsideredInBudget { get; set; }
         public int EvalpropNumber { get; set; }
         public string Comments { get; set; }
-
+        public string ProviderSuggested { get; set; }
         public bool TravelSection { get; set; }
         //public int RequestNoteTravelId { get; set; }
         //public RequestNoteTravel RequestNoteTravel { get; set; }
@@ -39,7 +39,7 @@ namespace Sofco.Domain.Models.RequestNote
         //public int AnalyticId { get; set; }
         public IList<RequestNoteAnalytic> Analytics { get; set; }
         public IList<RequestNoteProvider> Providers { get; set; }
-        public IList<RequestNoteProviderSugg> ProvidersSugg { get; set; }
+        //public IList<RequestNoteProviderSugg> ProvidersSugg { get; set; }
         public IList<RequestNoteHistory> Histories { get; set; }
     }
 }
