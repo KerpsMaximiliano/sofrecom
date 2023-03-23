@@ -197,6 +197,7 @@ namespace Sofco.DAL
         public DbSet<RequestNoteProvider> RequestNoteProvider { get; set; }
         public DbSet<RequestNoteFile> RequestNoteFiles { get; set; }
         public DbSet<RequestNoteHistory> RequestNoteHistories { get; set; }
+        public DbSet<RequestNoteComment> RequestNoteComment { get; set; }
         public DbSet<RequestNoteProductService> RequestNoteProductService { get; set; }
         public DbSet<RequestNoteTraining> RequestNoteTraining { get; set; }
         public DbSet<RequestNoteTrainingEmployee> RequestNoteTrainingEmployee { get; set; }

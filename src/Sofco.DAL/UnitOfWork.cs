@@ -169,6 +169,8 @@ namespace Sofco.DAL
 
         private IRequestNoteHistoryRepository requestNoteHistoryRepository;
 
+        private IRequestNoteCommentRepository requestNoteCommentRepository;
+        
         private IBaseRepository<RequestNoteFile> requestNoteFileRepository;
 
         private BaseRepository<RequestNoteProductService> requestNoteProductServiceRepository;
@@ -333,6 +335,7 @@ namespace Sofco.DAL
         public IRequestNoteProviderRepository RequestNoteProviderRepository => requestNoteProviderRepository ?? (requestNoteProviderRepository = new RequestNoteProviderRepository(context));
 
         public IRequestNoteHistoryRepository RequestNoteHistoryRepository => requestNoteHistoryRepository ?? (requestNoteHistoryRepository = new RequestNoteHistoryRepository(context));
+        public IRequestNoteCommentRepository RequestNoteCommentRepository => requestNoteCommentRepository ?? (requestNoteCommentRepository = new RequestNoteCommentRepository(context));
 
         public IBaseRepository<RequestNoteFile> RequestNoteFileRepository => requestNoteFileRepository ?? (requestNoteFileRepository = new RequestNoteFileRepository(context));
 

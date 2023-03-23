@@ -266,5 +266,14 @@ namespace Sofco.Core.Models.RequestNote
         public string Comment { get; set; }
     }
 
+    public class Comments
+    {
+        public int Id { get; set; }
+        public int RequestNoteId { get; set; }
+        public string UserName { get; set; }
+        public string Comment { get; set; }
+        public DateTime? Date { get; set; }
+
+    }
 
 }
