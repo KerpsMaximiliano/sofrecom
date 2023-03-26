@@ -96,6 +96,7 @@ export class NotesPendingPurchaseApproval {
         analytics: new FormControl(null, []),
         requiresPersonel: new FormControl(null, []),
         providers: new FormControl(null, []),
+        providersSuggested: new FormControl(null, []),
         evaluationProposal: new FormControl(false, []),
         numberEvalprop: new FormControl(null, [Validators.maxLength(100)]),
         observations: new FormControl(null, []),
@@ -251,7 +252,8 @@ export class NotesPendingPurchaseApproval {
                 numberEvalprop: this.currentNote.evalpropNumber,
                 observations: this.currentNote.comments,
                 travel: this.currentNote.travelSection,
-                training: this.currentNote.trainingSection
+                training: this.currentNote.trainingSection,
+                providersSuggested: this.currentNote.providerSuggested
             });
             this.critical = (d.data.critical) ? "Si" : "No";
             this.formNota.get('id').disable();
