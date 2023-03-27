@@ -79,6 +79,8 @@ export class NotesPendingSAP {
     travelReturnDate: string;
     trainingDate: string;
 
+    comments = [];
+
     mode: string;
 
     formNota: FormGroup = new FormGroup({
@@ -118,6 +120,10 @@ export class NotesPendingSAP {
         details: new FormControl(null)
     });
 
+    formComment: FormGroup = new FormGroup({
+        comment: new FormControl(null, Validators.required)
+    });
+
     private workflowModel: any;
 
     constructor(
@@ -135,6 +141,7 @@ export class NotesPendingSAP {
     ) {}
 
     ngOnInit(): void {
+        this.requestNoteId = this.currentNote.id;
         this.inicializar();
         this.mode = this.requestNoteService.getMode();
         this.userInfo = UserInfoService.getUserInfo();
@@ -184,7 +191,11 @@ export class NotesPendingSAP {
         
         this.providersService.getAll().subscribe(d => {
             this.allProviders = d.data;
-        })
+        });
+
+        this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+            this.comments = d;
+        });
     }
 
     existingData() {
@@ -340,5 +351,27 @@ export class NotesPendingSAP {
 
     downloadProvFile(item: any) {
         this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
+    }
+
+    saveComment() {
+        if(this.formComment.invalid) {
+            this.markFormGroupTouched(this.formComment);
+            return;
+        }
+        this.requestNoteService.postComment({requestNoteId: this.requestNoteId, comment: this.formComment.get('comment').value}).subscribe(d => {
+            this.formComment.reset();
+            this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+                this.comments = d;
+            });
+        })
+        
+    }
+
+    deleteComment(item: any) {
+        this.requestNoteService.deleteComment(item.id).subscribe(d => {
+            this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+                this.comments = d;
+            });
+        })
     }
 }

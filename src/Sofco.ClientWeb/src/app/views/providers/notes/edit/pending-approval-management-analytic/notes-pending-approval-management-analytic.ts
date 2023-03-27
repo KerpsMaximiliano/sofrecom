@@ -77,6 +77,8 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
     travelReturnDate: string;
     trainingDate: string;
 
+    comments = [];
+
     mode: string;
 
     formNota: FormGroup = new FormGroup({
@@ -115,6 +117,10 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
         details: new FormControl(null)
     });
 
+    formComment: FormGroup = new FormGroup({
+        comment: new FormControl(null, Validators.required)
+    });
+
     private workflowModel: any;
 
     constructor(
@@ -132,9 +138,11 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
     ) {}
 
     ngOnInit(): void {
+        this.requestNoteId = this.currentNote.id;
         this.inicializar();
         this.mode = this.requestNoteService.getMode();
         this.userInfo = UserInfoService.getUserInfo();
+        console.log(this.userInfo)
         if(this.requestNoteService.getMode() == "Edit") {
             this.workflowModel = {
                 workflowId: this.currentNote.workflowId,
@@ -180,7 +188,11 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
         
         this.providersService.getAll().subscribe(d => {
             this.allProviders = d.data;
-        })
+        });
+
+        this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+            this.comments = d;
+        });
     }
 
     existingData() {
@@ -330,6 +342,28 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
             if(file.fileDescription) {
                 this.requestNoteService.downloadFile(file.fileId, 5, file.fileDescription);
             }
+        })
+    }
+
+    saveComment() {
+        if(this.formComment.invalid) {
+            this.markFormGroupTouched(this.formComment);
+            return;
+        }
+        this.requestNoteService.postComment({requestNoteId: this.requestNoteId, comment: this.formComment.get('comment').value}).subscribe(d => {
+            this.formComment.reset();
+            this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+                this.comments = d;
+            });
+        })
+        
+    }
+
+    deleteComment(item: any) {
+        this.requestNoteService.deleteComment(item.id).subscribe(d => {
+            this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+                this.comments = d;
+            });
         })
     }
 }
