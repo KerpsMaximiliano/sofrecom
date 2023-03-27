@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
+import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -15,6 +16,7 @@ import { environment } from "environments/environment";
 
 export class NotesComponent implements OnInit, AfterViewInit{
 
+    modalProvidersList = [];
     applicants = [];
     applicantId: number;
     currentTab: number = 1;
@@ -32,6 +34,15 @@ export class NotesComponent implements OnInit, AfterViewInit{
 
     @ViewChild('tabOne') tabOne: ElementRef;
     @ViewChild('tabTwo') tabTwo: ElementRef;
+    @ViewChild('providersModal') providersModal;
+    public providersModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+        "Proveedores designados",
+        "rejectModal",
+        false,
+        true,
+        "",
+        "Cerrar"
+    );
 
     constructor(
         private employeeService: EmployeeService,
@@ -124,6 +135,22 @@ export class NotesComponent implements OnInit, AfterViewInit{
     addOC(id: number) {
         this.purchaseOrderService.setId(id);
         this.router.navigate([`providers/purchase-orders/nueva`]);
+    }
+
+    getProviders(id: number) {
+        this.modalProvidersList = [];
+        this.messageService.showLoading();
+        this.requestNoteService.getProviders(id).subscribe(d => {
+            console.log(d);
+            this.modalProvidersList = d;
+            this.modalProvidersList.sort((a, b) => {
+                const nameA = a.name.toUpperCase();
+                const nameB = b.name.toUpperCase();
+                return nameA < nameB ? -1 : 1
+              });
+            this.messageService.closeLoading();
+            this.providersModal.show();
+        });
     }
 
     search() {

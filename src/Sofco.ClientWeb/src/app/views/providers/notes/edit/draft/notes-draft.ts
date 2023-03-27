@@ -227,7 +227,8 @@ export class NotesDraftComponent implements OnInit{
                 numberEvalprop: this.currentNote.evalpropNumber,
                 observations: this.currentNote.comments,
                 travel: this.currentNote.travelSection,
-                training: this.currentNote.trainingSection
+                training: this.currentNote.trainingSection,
+                providers: this.currentNote.providerSuggested
             });
             this.critical = (d.data.critical) ? "Si" : "No";
         });
@@ -542,18 +543,18 @@ export class NotesDraftComponent implements OnInit{
         }
     }
 
-    agregarProveedor() {
-        if(this.formProveedores.invalid) {
-            return;
-        };
-        let busqueda = this.allProviders.find(prov => prov.id == this.formProveedores.controls.provider.value);
-        this.proveedoresTable.push(busqueda);
-        this.formProveedores.get('provider').setValue(null);
-    }
+    // agregarProveedor() {
+    //     if(this.formProveedores.invalid) {
+    //         return;
+    //     };
+    //     let busqueda = this.allProviders.find(prov => prov.id == this.formProveedores.controls.provider.value);
+    //     this.proveedoresTable.push(busqueda);
+    //     this.formProveedores.get('provider').setValue(null);
+    // }
 
-    eliminarProveedor(index: number) {
-        this.proveedoresTable.splice(index, 1);
-    }
+    // eliminarProveedor(index: number) {
+    //     this.proveedoresTable.splice(index, 1);
+    // }
 
     saveNote(send: boolean) {
         this.markFormGroupTouched(this.formNota);
@@ -596,14 +597,14 @@ export class NotesDraftComponent implements OnInit{
                 analytics.push(push)
             });
         };
-        let finalProviders = [];
-        this.proveedoresTable.forEach(prov => {
-            let mock = {
-                providerId: prov.id,
-                fileId: null
-            };
-            finalProviders.push(mock);
-        })
+        // let finalProviders = [];
+        // this.proveedoresTable.forEach(prov => {
+        //     let mock = {
+        //         providerId: prov.id,
+        //         fileId: null
+        //     };
+        //     finalProviders.push(mock);
+        // })
         let finalTrainingPassengers = [];
         this.participantesCapacitacion.forEach(employee => {
             finalTrainingPassengers.push({
@@ -626,7 +627,7 @@ export class NotesDraftComponent implements OnInit{
             providerAreaId: this.formNota.controls.providerArea.value,
             analytics: analytics,
             requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
-            providers: finalProviders,
+            providerSuggested: this.formNota.controls.providers.value,
             consideredInBudget: this.formNota.controls.evaluationProposal.value,
             evalpropNumber: this.formNota.controls.numberEvalprop.value,
             comments: this.formNota.controls.observations.value,

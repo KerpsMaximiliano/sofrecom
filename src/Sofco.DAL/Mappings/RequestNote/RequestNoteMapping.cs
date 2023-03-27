@@ -22,7 +22,7 @@ namespace Sofco.DAL.Mappings.RequestNote
             builder.Entity<Domain.Models.RequestNote.RequestNote>().HasMany(x => x.Trainings).WithOne(x => x.RequestNote).HasForeignKey(x => x.RequestNoteId);            
             builder.Entity<Domain.Models.RequestNote.RequestNote>().HasMany(x => x.Travels).WithOne(x => x.RequestNote).HasForeignKey(x => x.RequestNoteId);            
             builder.Entity<Domain.Models.RequestNote.RequestNote>().HasMany(x => x.Attachments).WithOne(x => x.RequestNote).HasForeignKey(x => x.RequestNoteId);
-            builder.Entity<Domain.Models.RequestNote.RequestNote>().HasMany(x => x.ProvidersSugg).WithOne(x => x.RequestNote).HasForeignKey(x => x.RequestNoteId);
+            //builder.Entity<Domain.Models.RequestNote.RequestNote>().HasMany(x => x.ProvidersSugg).WithOne(x => x.RequestNote).HasForeignKey(x => x.RequestNoteId);
 
             //RequestNoteHistory
             builder.Entity<RequestNoteHistory>().HasKey(x => x.Id);
