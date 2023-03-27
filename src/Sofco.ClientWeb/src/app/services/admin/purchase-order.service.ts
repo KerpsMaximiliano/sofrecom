@@ -121,4 +121,8 @@ export class PurchaseOrderService {
         return this.http.get<any>(`${this.baseUrl}/buyOrderRequestNote/States`);
     }
 
+    getUrlForImportFile(){
+        return `${this.baseUrl}/buyOrderRequestNote/UploadFiles`;
+    }
+
 }

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Config;
@@ -13,6 +16,7 @@ using Sofco.Core.Models.BuyOrder;
 using Sofco.Core.Services.RequestNote;
 using Sofco.Domain.Models.RequestNote;
 using Sofco.Domain.Utils;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.Service.Implementations.BuyOrder
 {
@@ -128,6 +132,54 @@ namespace Sofco.Service.Implementations.BuyOrder
                 logger.LogError(e);
             }
 
+            return response;
+        }
+
+        public async Task<Response<List<File>>> AttachFiles(Response<List<File>> response, List<IFormFile> files)
+        {
+            var user = userData.GetCurrentUser();
+
+            if (response.HasErrors()) return response;
+            response.Data = new List<File>();
+            foreach (var file in files)
+            {
+
+                var fileToAdd = new File();
+                var lastDotIndex = file.FileName.LastIndexOf('.');
+
+                fileToAdd.FileName = file.FileName;
+                fileToAdd.FileType = file.FileName.Substring(lastDotIndex);
+                fileToAdd.InternalFileName = Guid.NewGuid();
+                fileToAdd.CreationDate = DateTime.UtcNow;
+                fileToAdd.CreatedUser = user.UserName;
+
+                var path = fileConfig.BuyOrderInvoice;
+                var successMsg = Resources.RequestNote.BuyOrder.FileUpload;
+
+                if (string.IsNullOrWhiteSpace(path)) return response;
+
+                try
+                {
+                    var fileName = $"{fileToAdd.InternalFileName.ToString()}{fileToAdd.FileType}";
+
+                    using (var fileStream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    unitOfWork.FileRepository.Insert(fileToAdd);
+                    unitOfWork.Save();
+
+                    response.Data.Add(fileToAdd);
+                    response.AddSuccess(successMsg);
+
+                }
+                catch (Exception e)
+                {
+                    response.AddError(Resources.Common.SaveFileError);
+                    logger.LogError(e);
+                }
+            }
             return response;
         }
         public void SaveChanges(BuyOrderModel model, int nextStatus)

@@ -46,6 +46,7 @@ import { ProvidersRouter } from "./providers.router";
 import { ProvidersAddComponent } from "./providers/add/providers-add";
 import { ProvidersEditComponent } from "./providers/edit/providers-edit";
 import { ProvidersComponent } from "./providers/list/providers";
+import { PurchaseOrdersFinalised } from "./purchase-orders/edit/finalised/purchase-orders-finalised";
 import { PurchaseOrdersNew } from "./purchase-orders/edit/new-purcase-order/purchase-orders-new";
 import { PurchaseOrdersPendingBillReception } from "./purchase-orders/edit/pending-bill-reception/purchase-orders-pending-bill-reception";
 import { PurchaseOrdersPendingDAFApproval } from "./purchase-orders/edit/pending-daf-approval/purchase-orders-pending-daf-approval";
@@ -81,6 +82,7 @@ import { PurchaseOrdersNoAccessComponent } from "./purchase-orders/no-access/pur
         PurchaseOrdersPendingDAFApproval,
         PurchaseOrdersPendingMerchandiseReception,
         PurchaseOrdersNew,
+        PurchaseOrdersFinalised,
         NotesPurchasingSector,
         NotesPendingPurchaseApproval,
         NotesPendingSAP,

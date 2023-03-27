@@ -6,6 +6,7 @@ using Sofco.Core.DAL;
 using Sofco.Core.DAL.Workflow;
 using Sofco.Core.Data.Admin;
 using Sofco.Core.Logger;
+using Sofco.Core.Models.Providers;
 using Sofco.Core.Models.RequestNote;
 using Sofco.Core.Services.Common;
 using Sofco.Core.Services.RequestNote;
@@ -97,6 +98,7 @@ namespace Sofco.Service.Implementations.RequestNote
                 domain.ConsideredInBudget = requestNoteBorrador.ConsideredInBudget;
                 domain.EvalpropNumber = requestNoteBorrador.EvalpropNumber;
                 domain.Comments = requestNoteBorrador.Comments;
+                domain.ProviderSuggested = requestNoteBorrador.ProviderSuggested;
                 domain.TravelSection = requestNoteBorrador.Travel != null;
                 domain.TrainingSection = requestNoteBorrador.Training != null;
                 //domain.WorkflowId = requestNoteBorrador.WorkflowId;
@@ -106,20 +108,20 @@ namespace Sofco.Service.Implementations.RequestNote
                 #region Providers
                 if (requestNoteBorrador.Providers == null)
                     requestNoteBorrador.Providers = new List<Provider>();
-                foreach (var prov in domain.ProvidersSugg.ToList())
-                {
-                    if (!requestNoteBorrador.Providers.Any(a => a.ProviderId == prov.ProviderId))
-                        unitOfWork.RequestNoteProviderRepository.Delete(prov);
-                }
-                foreach (var provNuevo in requestNoteBorrador.Providers)
-                {
-                    var prov = domain.ProvidersSugg.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
-                    if (prov == null)
-                    {
-                        prov = new RequestNoteProviderSugg() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId };
-                        domain.ProvidersSugg.Add(prov);
-                    }
-                }
+                //foreach (var prov in domain.ProvidersSugg.ToList())
+                //{
+                //    if (!requestNoteBorrador.Providers.Any(a => a.ProviderId == prov.ProviderId))
+                //        unitOfWork.RequestNoteProviderRepository.Delete(prov);
+                //}
+                //foreach (var provNuevo in requestNoteBorrador.Providers)
+                //{
+                //    var prov = domain.ProvidersSugg.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
+                //    if (prov == null)
+                //    {
+                //        prov = new RequestNoteProviderSugg() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId };
+                //        domain.ProvidersSugg.Add(prov);
+                //    }
+                //}
                 #endregion
                 #region Analytics
                 if (requestNoteBorrador.Analytics == null)
@@ -297,6 +299,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     ConsideredInBudget = requestNoteBorrador.ConsideredInBudget,
                     EvalpropNumber = requestNoteBorrador.EvalpropNumber,
                     Comments = requestNoteBorrador.Comments,
+                    ProviderSuggested = requestNoteBorrador.ProviderSuggested,
                     TravelSection = requestNoteBorrador.Travel != null,
                     TrainingSection = requestNoteBorrador.Training != null,
                     CreationDate = DateTime.UtcNow,
@@ -307,12 +310,12 @@ namespace Sofco.Service.Implementations.RequestNote
                     CreationUserId = user.Id,
                     ProviderAreaId = requestNoteBorrador.ProviderAreaId
                 };
-                if (requestNoteBorrador.Providers != null)
-                    domain.ProvidersSugg = requestNoteBorrador.Providers.Select(p => new RequestNoteProviderSugg()
-                    {
-                        ProviderId = p.ProviderId,
-                        FileId = p.FileId
-                    }).ToList();
+                //if (requestNoteBorrador.Providers != null)
+                //    domain.ProvidersSugg = requestNoteBorrador.Providers.Select(p => new RequestNoteProviderSugg()
+                //    {
+                //        ProviderId = p.ProviderId,
+                //        FileId = p.FileId
+                //    }).ToList();
                 if (requestNoteBorrador.Attachments != null)
                     domain.Attachments = requestNoteBorrador.Attachments.Where(f => f.FileId.HasValue).Select(p => new RequestNoteFile()
                     {
@@ -499,6 +502,13 @@ namespace Sofco.Service.Implementations.RequestNote
             return this.unitOfWork.RequestNoteRepository.GetAll(filters)
                     .Select(n=> new RequestNoteGridModel(n, permisos, user.Id, settings))
                     .Where(n=> n.HasEditPermissions || n.HasReadPermissions).OrderByDescending(x=>x.Id)
+                    .ToList();
+        }
+        public IList<ProviderMinModel> GetProviders(int requestNoteID)
+        {
+            return this.unitOfWork.RequestNoteRepository.GetProviders(requestNoteID).Providers
+                    .Select(n => new ProviderMinModel(n.Provider))
+                    .OrderByDescending(x => x.Name)
                     .ToList();
         }
 

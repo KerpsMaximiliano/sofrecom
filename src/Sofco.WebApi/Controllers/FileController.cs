@@ -48,6 +48,7 @@ namespace Sofco.WebApi.Controllers
                 case 3: return fileConfig.InvoicesPdfPath;
                 case 4: return fileConfig.RecruitmentPath;
                 case 5: return fileConfig.RequestNotePath;
+                case 6: return fileConfig.BuyOrderInvoice;
                 default: return string.Empty;
             }
         }

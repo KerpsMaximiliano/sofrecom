@@ -121,6 +121,10 @@ export class RequestNoteService {
         }
     }
 
+    public getProviders(requestNoteId: number): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteBorrador/GetProviders?requestNoteId=${requestNoteId}`);
+    }
+
     private _base64ToArrayBuffer(base64Data) {
         const binary_string = window.atob(base64Data);
         const len = binary_string.length;

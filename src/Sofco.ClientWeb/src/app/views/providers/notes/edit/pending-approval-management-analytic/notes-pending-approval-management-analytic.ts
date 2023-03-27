@@ -197,7 +197,8 @@ export class NotesPendingApprovalManagementAnalytic implements OnInit{
                 numberEvalprop: this.currentNote.evalpropNumber,
                 observations: this.currentNote.comments,
                 travel: this.currentNote.travelSection,
-                training: this.currentNote.trainingSection
+                training: this.currentNote.trainingSection,
+                providers: this.currentNote.providerSuggested
             });
             this.critical = (d.data.critical) ? "Si" : "No";
             this.formNota.get('id').disable();
