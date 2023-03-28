@@ -141,4 +141,13 @@
   <data name="UpdateSuccess" xml:space="preserve">
     <value>requestNote/requestNote.updateSuccess</value>
   </data>
+  <data name="CommentDeleted" xml:space="preserve">
+    <value>requestNote/requestNote.commentDeleted</value>
+  </data>
+  <data name="CommentError" xml:space="preserve">
+    <value>requestNote/requestNote.commentError</value>
+  </data>
+  <data name="CommentSaved" xml:space="preserve">
+    <value>requestNote/requestNote.commentSaved</value>
+  </data>
 </root>

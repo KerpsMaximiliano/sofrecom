@@ -49,7 +49,7 @@ namespace Sofco.Service.Implementations.RequestNote
                 unitOfWork.Save();
 
                 response.Data = domain.Id;
-                response.AddSuccess(Resources.RequestNote.RequestNote.AddSuccess);
+                response.AddSuccess(Resources.RequestNote.RequestNote.CommentSaved);
             }
             catch (Exception e)
             {
@@ -70,7 +70,7 @@ namespace Sofco.Service.Implementations.RequestNote
                 this.ValidateDelete(entity);
                 unitOfWork.RequestNoteCommentRepository.Delete(entity);
                 unitOfWork.Save();
-                response.AddSuccess(Resources.RequestNote.RequestNote.UpdateSuccess);
+                response.AddSuccess(Resources.RequestNote.RequestNote.CommentDeleted);
                 return response;
             }
             catch(Exception ex)

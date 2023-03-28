@@ -4,5 +4,8 @@
     "notAllowed": "No posee los permisos necesarios para ver la nota de pedido",
     "notFound": "La nota de pedido no fue encontrada",
     "updateSuccess": "Los cambios a la nota de pedido han sido guardados",
-    "pendingAnalytics": "Aún quedan analiticas de otros gerentes por aprobar"
+    "pendingAnalytics": "Aún quedan analiticas de otros gerentes por aprobar",
+    "commentSaved": "Comentario guardado",
+    "commentDeleted": "Comentario eliminado",
+    "commentError": "Ocurrió un error al guardar el comentario"
 }
