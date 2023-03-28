@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Sofco.Common.Settings;
 using Sofco.Core.Models.BuyOrder;
@@ -7,7 +11,7 @@ using Sofco.Core.Services.RequestNote;
 using Sofco.Core.Services.Workflow;
 using Sofco.Domain.Utils;
 using Sofco.WebApi.Extensions;
-using System.Web.Http;
+using File = Sofco.Domain.Models.Common.File;
 
 namespace Sofco.WebApi.Controllers.PurchaseOrders
 {
@@ -107,6 +111,23 @@ namespace Sofco.WebApi.Controllers.PurchaseOrders
         public IActionResult Post([FromBody] BuyOrderModel model)
         {
             var response = service.Add(model);
+
+            return this.CreateResponse(response);
+        }
+
+        [HttpPost("UploadFiles")]
+        public async Task<IActionResult> UploadFiles()
+        {
+            var response = new Response<List<File>>();
+
+            if (Request.Form.Files.Any())
+            {
+                await service.AttachFiles(response, Request.Form.Files.ToList());
+            }
+            else
+            {
+                response.AddError(Resources.Common.SaveFileError);
+            }
 
             return this.CreateResponse(response);
         }

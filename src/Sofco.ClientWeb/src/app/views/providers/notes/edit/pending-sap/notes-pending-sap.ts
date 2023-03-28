@@ -79,6 +79,8 @@ export class NotesPendingSAP {
     travelReturnDate: string;
     trainingDate: string;
 
+    comments = [];
+
     mode: string;
 
     formNota: FormGroup = new FormGroup({
@@ -90,6 +92,7 @@ export class NotesPendingSAP {
         analytics: new FormControl(null, []),
         requiresPersonel: new FormControl(null, []),
         providers: new FormControl(null, []),
+        providersSuggested: new FormControl(null, []),
         evaluationProposal: new FormControl(false, []),
         numberEvalprop: new FormControl(null, [Validators.maxLength(100)]),
         observations: new FormControl(null, []),
@@ -117,6 +120,10 @@ export class NotesPendingSAP {
         details: new FormControl(null)
     });
 
+    formComment: FormGroup = new FormGroup({
+        comment: new FormControl(null, Validators.required)
+    });
+
     private workflowModel: any;
 
     constructor(
@@ -134,6 +141,7 @@ export class NotesPendingSAP {
     ) {}
 
     ngOnInit(): void {
+        this.requestNoteId = this.currentNote.id;
         this.inicializar();
         this.mode = this.requestNoteService.getMode();
         this.userInfo = UserInfoService.getUserInfo();
@@ -183,7 +191,11 @@ export class NotesPendingSAP {
         
         this.providersService.getAll().subscribe(d => {
             this.allProviders = d.data;
-        })
+        });
+
+        this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+            this.comments = d;
+        });
     }
 
     existingData() {
@@ -200,7 +212,8 @@ export class NotesPendingSAP {
                 numberEvalprop: this.currentNote.evalpropNumber,
                 observations: this.currentNote.comments,
                 travel: this.currentNote.travelSection,
-                training: this.currentNote.trainingSection
+                training: this.currentNote.trainingSection,
+                providersSuggested: this.currentNote.providerSuggested
             });
             this.critical = (d.data.critical) ? "Si" : "No";
             this.formNota.get('id').disable();
@@ -338,5 +351,27 @@ export class NotesPendingSAP {
 
     downloadProvFile(item: any) {
         this.requestNoteService.downloadFile(item.fileId, 5, item.fileDescription);
+    }
+
+    saveComment() {
+        if(this.formComment.invalid) {
+            this.markFormGroupTouched(this.formComment);
+            return;
+        }
+        this.requestNoteService.postComment({requestNoteId: this.requestNoteId, comment: this.formComment.get('comment').value}).subscribe(d => {
+            this.formComment.reset();
+            this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+                this.comments = d;
+            });
+        })
+        
+    }
+
+    deleteComment(item: any) {
+        this.requestNoteService.deleteComment(item.id).subscribe(d => {
+            this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+                this.comments = d;
+            });
+        })
     }
 }

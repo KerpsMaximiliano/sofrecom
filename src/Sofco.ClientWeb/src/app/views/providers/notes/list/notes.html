@@ -123,6 +123,7 @@
                                     <td class="column-sm text-center">
                                         <button title="ver" class="btn btn-primary btn-xs" (click)="view(note.id)" *ngIf="note.statusId != 1 && note.hasReadPermissions"><i class="fa fa-eye"></i></button>
                                         <button title="editar" class="btn btn-warning btn-xs" (click)="edit(note.id)" *ngIf="note.statusId != 11 && note.statusId != 12 && note.hasEditPermissions"><i class="fa fa-edit"></i></button>
+                                        <button title="proveedores" class="btn btn-info btn-xs" (click)="getProviders(note.id)" *ngIf="note.statusId == currentEnviroment.NP_PEND_APRO_DAF || note.statusId == currentEnviroment.NP_PEND_GEN_SAP || note.statusId == currentEnviroment.NP_PEND_RECEP_MERC || note.statusId == currentEnviroment.NP_RECEP_PARCIAL || note.statusId == currentEnviroment.NP_CERRADA"><i class="fa fa-suitcase"></i></button>
                                         <button title="agregar orden de compra" class="btn btn-default btn-xs" (click)="addOC(note.id)" *ngIf="(note.statusId == currentEnviroment.NP_PEND_GEN_SAP || note.statusId == currentEnviroment.NP_PEND_RECEP_MERC || note.statusId == currentEnviroment.NP_RECEP_PARCIAL) && note.hasEditPermissions"><i class="fa fa-barcode"></i></button>
                                     </td>
                                 </tr> 
@@ -134,3 +135,14 @@
         </div>
     </div>
 </div>
+
+<ng2-modal [config]="providersModalConfig" #providersModal>
+    <div *ngIf="modalProvidersList.length > 0">
+        <div *ngFor="let prov of modalProvidersList">
+            <h3>{{prov.name}} - {{prov.cuit}}</h3>
+        </div>
+    </div>
+    <div *ngIf="modalProvidersList.length == 0">
+        <h2>No hay proveedores seleccionados</h2>
+    </div>
+</ng2-modal> 

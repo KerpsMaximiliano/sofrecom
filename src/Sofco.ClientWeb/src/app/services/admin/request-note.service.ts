@@ -121,6 +121,10 @@ export class RequestNoteService {
         }
     }
 
+    public getProviders(requestNoteId: number): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteBorrador/GetProviders?requestNoteId=${requestNoteId}`);
+    }
+
     private _base64ToArrayBuffer(base64Data) {
         const binary_string = window.atob(base64Data);
         const len = binary_string.length;
@@ -204,5 +208,19 @@ export class RequestNoteService {
     //Pendiente Procesar GAF
     approvePendingGAFProcessing(requestNote: any): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/RequestNoteCambiosEstado/AprobarPendienteProcesarGAF`, requestNote);
+    }
+
+    //COMMENTS
+
+    getComments(requestNoteId: number): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteComment/GetByNoteRequest?id=${requestNoteId}`);
+    }
+
+    deleteComment(commentId: number): Observable<any> {
+        return this.http.delete<any>(`${this.baseUrl}/RequestNoteComment?id=${commentId}`);
+    }
+
+    postComment(comment: {requestNoteId: number, comment: string}): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/RequestNoteComment`, comment);
     }
 }

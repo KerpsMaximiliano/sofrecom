@@ -104,7 +104,7 @@
                             <td>{{ item.statusDescription }} </td>
                             <td class="column-sm text-center">
                                 <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i class="fa fa-eye"></i></button>
-                                <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i class="fa fa-edit"></i></button>
+                                <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)" *ngIf="item.statusId != currentEnvironment.OC_PEND_RECEP_FAC && item.statusId != currentEnvironment.OC_FINAL"><i class="fa fa-edit"></i></button>
                                 <button title="recepcionar mercadería" class="btn btn-default btn-xs" (click)="edit(item.id)" *ngIf="item.statusId == currentEnvironment.OC_PEND_RECEP_MERC"><i class="fa fa-barcode"></i></button>
                                 <button title="cargar factura" class="btn btn-default btn-xs" (click)="edit(item.id)" *ngIf="item.statusId == currentEnvironment.OC_PEND_RECEP_FAC"><i class="fa fa-file-text-o"></i></button>
                             </td>

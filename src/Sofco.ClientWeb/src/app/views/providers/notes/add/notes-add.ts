@@ -451,18 +451,18 @@ export class NotesAddComponent implements OnInit{
         }
     }
 
-    agregarProveedor() {
-        if(this.formProveedores.invalid) {
-            return;
-        }
-        let busqueda = this.allProviders.find(prov => prov.id == this.formProveedores.controls.provider.value);
-        this.proveedoresTable.push(busqueda);
-        this.formProveedores.get('provider').setValue(null);
-    }
+    // agregarProveedor() {
+    //     if(this.formProveedores.invalid) {
+    //         return;
+    //     }
+    //     let busqueda = this.allProviders.find(prov => prov.id == this.formProveedores.controls.provider.value);
+    //     this.proveedoresTable.push(busqueda);
+    //     this.formProveedores.get('provider').setValue(null);
+    // }
 
-    eliminarProveedor(index: number) {
-        this.proveedoresTable.splice(index, 1);
-    }
+    // eliminarProveedor(index: number) {
+    //     this.proveedoresTable.splice(index, 1);
+    // }
 
     saveNote(send: boolean) {
         this.markFormGroupTouched(this.formNota);
@@ -508,14 +508,14 @@ export class NotesAddComponent implements OnInit{
                 analytics.push(push)
             });
         };
-        let finalProviders = [];
-        this.proveedoresTable.forEach(prov => {
-            let mock = {
-                providerId: prov.id,
-                fileId: null
-            };
-            finalProviders.push(mock);
-        })
+        // let finalProviders = [];
+        // this.proveedoresTable.forEach(prov => {
+        //     let mock = {
+        //         providerId: prov.id,
+        //         fileId: null
+        //     };
+        //     finalProviders.push(mock);
+        // })
         let finalTrainingPassengers = [];
         this.participantesCapacitacion.forEach(employee => {
             finalTrainingPassengers.push({
@@ -549,7 +549,7 @@ export class NotesAddComponent implements OnInit{
             providerAreaDescription: provAreaSearch.description,
             analytics: analytics,
             requiresEmployeeClient: this.formNota.controls.requiresPersonel.value,
-            providers: finalProviders,
+            providerSuggested: this.formNota.controls.providers.value,
             consideredInBudget: this.formNota.controls.evaluationProposal.value,
             evalpropNumber: Number(this.formNota.controls.numberEvalprop.value),
             comments: this.formNota.controls.observations.value,

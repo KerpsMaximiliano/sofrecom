@@ -81,6 +81,8 @@ export class NotesPendingPurchaseApproval {
     travelReturnDate: string;
     trainingDate: string;
 
+    comments = [];
+
     filesToUpload = [] as Array<any>;
     fileIdCounter = 0;
 
@@ -96,6 +98,7 @@ export class NotesPendingPurchaseApproval {
         analytics: new FormControl(null, []),
         requiresPersonel: new FormControl(null, []),
         providers: new FormControl(null, []),
+        providersSuggested: new FormControl(null, []),
         evaluationProposal: new FormControl(false, []),
         numberEvalprop: new FormControl(null, [Validators.maxLength(100)]),
         observations: new FormControl(null, []),
@@ -120,6 +123,12 @@ export class NotesPendingPurchaseApproval {
         accommodation: new FormControl(null, [Validators.required]),
         details: new FormControl(null)
     });
+
+    formComment: FormGroup = new FormGroup({
+        comment: new FormControl(null, Validators.required)
+    });
+
+
     formProvidersGrid: FormGroup = new FormGroup({});
 
     private workflowModel: any;
@@ -140,6 +149,7 @@ export class NotesPendingPurchaseApproval {
     ) {}
 
     ngOnInit(): void {
+        this.requestNoteId = this.currentNote.id;
         this.inicializar();
         this.mode = this.requestNoteService.getMode();
         this.userInfo = UserInfoService.getUserInfo();
@@ -234,7 +244,11 @@ export class NotesPendingPurchaseApproval {
         
         this.providersService.getAll().subscribe(d => {
             this.allProviders = d.data;
-        })
+        });
+
+        this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+            this.comments = d;
+        });
     }
 
     existingData() {
@@ -251,7 +265,8 @@ export class NotesPendingPurchaseApproval {
                 numberEvalprop: this.currentNote.evalpropNumber,
                 observations: this.currentNote.comments,
                 travel: this.currentNote.travelSection,
-                training: this.currentNote.trainingSection
+                training: this.currentNote.trainingSection,
+                providersSuggested: this.currentNote.providerSuggested
             });
             this.critical = (d.data.critical) ? "Si" : "No";
             this.formNota.get('id').disable();
@@ -507,6 +522,28 @@ export class NotesPendingPurchaseApproval {
         });
         this.formProvidersGrid.removeControl(`control${item.providerId}`);
         this.proveedoresSelected = [...this.proveedoresSelected];
+    }
+
+    saveComment() {
+        if(this.formComment.invalid) {
+            this.markFormGroupTouched(this.formComment);
+            return;
+        }
+        this.requestNoteService.postComment({requestNoteId: this.requestNoteId, comment: this.formComment.get('comment').value}).subscribe(d => {
+            this.formComment.reset();
+            this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+                this.comments = d;
+            });
+        })
+        
+    }
+
+    deleteComment(item: any) {
+        this.requestNoteService.deleteComment(item.id).subscribe(d => {
+            this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
+                this.comments = d;
+            });
+        })
     }
 
 }

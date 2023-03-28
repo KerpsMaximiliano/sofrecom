@@ -40,5 +40,6 @@ export const environment = {
   NP_RECHAZADA: 30,
   OC_PEND_APRO_DAF: 4, //dev
   OC_PEND_RECEP_MERC: 34, //dev
-  OC_PEND_RECEP_FAC: 37 //dev
+  OC_PEND_RECEP_FAC: 37, //dev
+  OC_FINAL: 11 //dev
 }; 

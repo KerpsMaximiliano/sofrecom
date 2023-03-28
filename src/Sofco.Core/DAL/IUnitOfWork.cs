@@ -138,9 +138,8 @@ namespace Sofco.Core.DAL
         IRequestNoteRepository RequestNoteRepository { get; }
         IRequestNoteAnalitycRepository RequestNoteAnalitycRepository { get; }
         IRequestNoteProviderRepository RequestNoteProviderRepository { get; }
-
         IRequestNoteHistoryRepository RequestNoteHistoryRepository { get; }
-
+        IRequestNoteCommentRepository RequestNoteCommentRepository { get; }
         IBaseRepository<RequestNoteFile> RequestNoteFileRepository { get; }
         IBaseRepository<RequestNoteProductService> RequestNoteProductServiceRepository { get; }
         IBaseRepository<RequestNoteTravel> RequestNoteTravelRepository { get; }
