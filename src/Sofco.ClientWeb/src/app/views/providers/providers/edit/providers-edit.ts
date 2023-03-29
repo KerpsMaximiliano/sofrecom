@@ -29,12 +29,13 @@ export class ProvidersEditComponent implements OnInit{
         { id: 4, description: "Exento/No Resp." },
     ];
     providerAreas = [];
+    providerAreaProviders = [];
 
     form: FormGroup = new FormGroup({
         id: new FormControl(null),
         active: new FormControl(null),
         name: new FormControl(null, [Validators.required, Validators.maxLength(200)]),
-        providerAreaId: new FormControl(null, [Validators.required]),
+        providerAreaId: new FormControl([], [Validators.required]),
         cuit: new FormControl(null, [Validators.maxLength(11), Validators.minLength(11), Validators.required, Validators.pattern("^[0-9]*$")/*, Validators.pattern("^(20|23|27|30|33)([0-9]{8})([0-9]{1})$")*/]),
         startDate: new FormControl(null),
         endDate: new FormControl(null),
@@ -71,11 +72,12 @@ export class ProvidersEditComponent implements OnInit{
             this.providersAreaService.getAll()
         ]).subscribe(results => {
             this.providerAreas = results[1].data;
+            this.providerAreaProviders = results[0].data.providersAreaProviders;
             this.form.patchValue({
                 id: results[0].data.id,
                 active: (results[0].data.active) ? "Activo": "Inactivo",
                 name: results[0].data.name,
-                providerAreaId: results[0].data.providerAreaId,
+                //providerAreaId: results[0].data.providerAreaId,
                 cuit: results[0].data.cuit,
                 startDate: results[0].data.startDate,
                 endDate: results[0].data.endDate,
@@ -91,7 +93,12 @@ export class ProvidersEditComponent implements OnInit{
                 email: results[0].data.email,
                 website: results[0].data.webSite,
                 comments: results[0].data.comments,
-            })
+            });
+            let array = []
+            results[0].data.providersAreaProviders.forEach(pr => {
+                array.push(pr.providerAreaId);
+            });
+            this.form.get('providerAreaId').setValue(array);
         })
         this.mode = this.providersService.getMode();
         if(this.mode == undefined) {
@@ -111,12 +118,51 @@ export class ProvidersEditComponent implements OnInit{
             return;
         }
         this.form.enable();
-        let model = this.form.value;
+        //let model = this.form.value;
+        let model = {
+            id: this.form.get('id').value,
+            active: this.form.get('active').value,
+            name: this.form.get('name').value,
+            //providerAreaId: [],
+            providersAreaProviders: [],
+            cuit: this.form.get('cuit').value,
+            startDate: this.form.get('startDate').value,
+            endDate: this.form.get('endDate').value,
+            ingresosBrutos:this.form.get('ingresosBrutos').value,
+            condicionIVA:this.form.get('condicionIVA').value,
+            address:this.form.get('address').value,
+            city:this.form.get('city').value,
+            ZIPCode: this.form.get('ZIPCode').value,
+            province: this.form.get('province').value,
+            country: this.form.get('country').value,
+            contactName: this.form.get('contactName').value,
+            phone: this.form.get('phone').value,
+            email: this.form.get('email').value,
+            website: this.form.get('website').value,
+            comments: this.form.get('comments').value
+        };
+        this.form.get('providerAreaId').value.forEach(pr => {
+            let find = this.providerAreaProviders.find(prov => prov.providerAreaId == pr);
+            if (find != undefined) {
+                model.providersAreaProviders.push({
+                    id: find.id,
+                    providerAreaId: pr,
+                    providerId: model.id
+                })
+            } else {
+                model.providersAreaProviders.push({
+                    id: 0,
+                    providerAreaId: pr,
+                    providerId: model.id
+                })
+            }
+        });
         model.active = (model.active == "Activo") ? true : false;
         this.form.controls.id.disable();
         this.form.controls.active.disable();
         this.form.controls.startDate.disable();
         this.form.controls.endDate.disable();
+        console.log(model);
         this.providersService.edit(this.id, model).subscribe(response => {
             if (response.status == 200) {
                 this.messageService.showMessage("Proveedor guardado", 0);

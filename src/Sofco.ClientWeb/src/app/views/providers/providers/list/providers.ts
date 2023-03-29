@@ -35,7 +35,7 @@ export class ProvidersComponent implements OnInit{
     stateId: number = 0;
     businessName: string;
     areas = [];
-    areaId: number;
+    areaId = [];
     data = [];
     dataBackup = [];
 
@@ -59,6 +59,7 @@ export class ProvidersComponent implements OnInit{
             this.providersService.getAll(),
             this.providersArea.getAll()
         ]).subscribe(res => {
+            console.log(res[0])
             res[0].data.forEach(provider => {
                 let area = res[1].data.find(provArea => provArea.id == provider.providerAreaId);
                 let model = {
@@ -100,6 +101,9 @@ export class ProvidersComponent implements OnInit{
     }
 
     search() {
+        console.log(this.stateId);
+        console.log(this.areaId);
+        console.log(this.businessName);
         let searchData = [];
         if (this.stateId == 0 || this.stateId == null) {
             searchData = this.dataBackup;
@@ -117,15 +121,15 @@ export class ProvidersComponent implements OnInit{
                 }
             })
         };
-        if(this.areaId != null) {
-            let search = [];
-            searchData.forEach(entry => {
-                if(entry.providerAreaId == this.areaId) {
-                    search.push(entry)
-                }
-            });
-            searchData = search;
-        };
+        // if(this.areaId != null) {
+        //     let search = [];
+        //     searchData.forEach(entry => {
+        //         if(entry.providerAreaId == this.areaId) {
+        //             search.push(entry)
+        //         }
+        //     });
+        //     searchData = search;
+        // };
         if(this.businessName != null && this.businessName.length > 0) {
             let search = [];
             searchData.forEach(entry => {
