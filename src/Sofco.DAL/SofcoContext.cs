@@ -190,7 +190,7 @@ namespace Sofco.DAL
 
         public DbSet<Providers> Providers { get; set; }
         public DbSet<ProvidersArea> ProvidersArea { get; set; }
-
+        public DbSet<ProvidersAreaProviders> ProvidersAreaProviders { get; set; }
         //request 
         public DbSet<RequestNote> RequestNote { get; set; }
         public DbSet<RequestNoteAnalytic> RequestNoteAnalytic { get; set; }

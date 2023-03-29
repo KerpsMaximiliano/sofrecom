@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Sofco.Domain.Models.Providers;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Sofco.Core.Models.Providers
@@ -28,6 +30,7 @@ namespace Sofco.Core.Models.Providers
         public string WebSite { get; set; }
         public string Comments { get; set; }
         public string Country { get; set; }
+        public IList<ProvidersAreaProvidersModel> ProvidersAreaProviders { get; set; }
 
         public ProvidersModel(Sofco.Domain.Models.Providers.Providers providers)
         {
@@ -60,7 +63,6 @@ namespace Sofco.Core.Models.Providers
 
     public class ProvidersModelGet
     {
-
         public int? Id { get; set; }
         public string Name { get; set; }
         public int? ProviderAreaId { get; set; }
@@ -82,6 +84,8 @@ namespace Sofco.Core.Models.Providers
         public string WebSite { get; set; }
         public string Comments { get; set; }
         public string Country { get; set; }
+        public IList<ProvidersAreaProvidersModel> ProvidersAreaProviders { get; set; }
+
         public ProvidersModelGet(Sofco.Domain.Models.Providers.Providers providers)
         {
             Id = providers.Id;
@@ -104,10 +108,10 @@ namespace Sofco.Core.Models.Providers
             WebSite = providers.WebSite;
             Comments = providers.Comments;
             Country = providers.Country;
-
+            ProvidersAreaProviders = providers.ProvidersAreaProviders.Select(p => new ProvidersAreaProvidersModel { Id = p.Id, ProviderAreaId = p.ProviderAreaId, ProviderId = p.ProviderId }).ToList();
 
         }
-        
+
     }
     
 

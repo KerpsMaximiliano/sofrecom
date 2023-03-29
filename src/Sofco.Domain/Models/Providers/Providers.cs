@@ -1,5 +1,6 @@
 ﻿using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.RequestNote;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,6 +30,7 @@ namespace Sofco.Domain.Models.Providers
       public string WebSite { get; set; }
       public string Comments { get; set; }
       public string Country { get; set; }
+      public List<ProvidersAreaProviders> ProvidersAreaProviders { get; set; }
 
     }
 }

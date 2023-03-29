@@ -23,6 +23,7 @@ using Sofco.Core.Services;
 using Sofco.Core.DAL.Provider;
 using Sofco.Core.Models.Providers;
 using Sofco.Core.Services.Providers;
+using Sofco.Domain.Models.Providers;
 
 namespace Sofco.Service.Implementations.providers
 {
@@ -65,7 +66,8 @@ namespace Sofco.Service.Implementations.providers
 
         public Response Put(int id, ProvidersModel provider)
         {
-            var providers = new Domain.Models.Providers.Providers();
+            //var providers = new Domain.Models.Providers.Providers();
+            var providers = unitOfWork.ProvidersRepository.GetById(id);
             var response = new Response<ProvidersModel>();
 
             providers.Name = provider.Name;
@@ -83,20 +85,36 @@ namespace Sofco.Service.Implementations.providers
             providers.ZIPCode = provider.ZIPCode;
             providers.Province = provider.Province;
             providers.Country = provider.Country;
-            providers.ContactName = provider.ContactName;
+            providers.ContactName = provider.ContactName;   
             providers.Phone = provider.Phone;
             providers.Email = provider.Email;
             providers.WebSite = provider.WebSite;
             providers.Comments = provider.Comments;
             providers.Id = id;
 
-            //providersRepository.Update(providers);
-            unitOfWork.ProvidersRepository.Update(providers);
+            providers.ProvidersAreaProviders.RemoveAll(p => !provider.ProvidersAreaProviders.Any(pa => pa.Id == p.Id));
+            if (provider.ProvidersAreaProviders != null)
+            {
+                foreach (ProvidersAreaProvidersModel providerAreaProvider in provider.ProvidersAreaProviders)
+                {
+                    var providerAreaProviderExiste = providers.ProvidersAreaProviders.FirstOrDefault(p => p.Id == providerAreaProvider.Id);
+                    if (providerAreaProviderExiste != null)
+                        providerAreaProviderExiste.ProviderAreaId = providerAreaProvider.ProviderAreaId;
+                    else
+                    {
+                        providerAreaProviderExiste = new ProvidersAreaProviders();
+                        providerAreaProviderExiste.ProviderAreaId = providerAreaProvider.ProviderAreaId;
+                        providerAreaProviderExiste.Id = providerAreaProvider.Id;
+
+                        providers.ProvidersAreaProviders.Add(providerAreaProviderExiste);
+                    }
+
+                } 
+            }
+            //unitOfWork.ProvidersRepository.Update(providers);
             unitOfWork.Save();
 
-
             response.Data = provider;
-
             return response;
         }
 
@@ -132,6 +150,17 @@ namespace Sofco.Service.Implementations.providers
                 providers.Comments = provider.Comments;
                 providers.Id = provider.Id;
 
+                providers.ProvidersAreaProviders = new List<ProvidersAreaProviders>();
+                if (provider.ProvidersAreaProviders != null)
+                {
+                    foreach (ProvidersAreaProvidersModel providerAreaProvider in provider.ProvidersAreaProviders)
+                    {
+                        ProvidersAreaProviders providersAreaProviders = new ProvidersAreaProviders();
+                        providersAreaProviders.ProviderAreaId = providerAreaProvider.ProviderAreaId;
+
+                        providers.ProvidersAreaProviders.Add(providersAreaProviders);
+                    }
+                }
                 unitOfWork.ProvidersRepository.Add(providers);
 
                 unitOfWork.Save();
