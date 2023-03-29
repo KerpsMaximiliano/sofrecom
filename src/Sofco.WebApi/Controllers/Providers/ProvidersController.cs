@@ -30,6 +30,14 @@ namespace Sofco.WebApi.Controllers.Providers
             return this.CreateResponse(response);
         }
 
+        [HttpPost("GetByParams")]
+        public IActionResult GetByParams([FromBody] ProvidersGetByParamsModel param)
+        {
+            var response = providers.GetByParams(param);
+
+            return this.CreateResponse(response);
+        }
+
         [HttpGet("{providersId}")]
         public IActionResult Get(int providersid)
         {

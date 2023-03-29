@@ -51,6 +51,15 @@ namespace Sofco.Service.Implementations.providers
             return response;
         }
 
+        public Response<IList<ProvidersModelGet>> GetByParams(ProvidersGetByParamsModel param)
+        {
+            var response = new Response<IList<ProvidersModelGet>>();
+            List<ProvidersModelGet> providers = providersRepository.GetByParams(param).Select(x => new ProvidersModelGet(x)).ToList();
+
+            response.Data = providers.Where(x =>(param.providersArea == null || param.providersArea.Count ==0 || param.providersArea.Any(e => (x.ProvidersAreaProviders.Select(y => y.ProviderAreaId)).Contains(e)))).ToList();
+            return response;
+        }
+
         public Response<ProvidersModelGet> GetById(int providersid)
         {
 
@@ -71,7 +80,6 @@ namespace Sofco.Service.Implementations.providers
             var response = new Response<ProvidersModel>();
 
             providers.Name = provider.Name;
-            providers.ProviderAreaId = provider.ProviderAreaId;
             providers.UserApplicantId = provider.UserApplicantId;
             providers.Score = provider.Score;
             providers.StartDate = (DateTime)provider.StartDate;
@@ -127,7 +135,6 @@ namespace Sofco.Service.Implementations.providers
             try
             {
                 providers.Name = provider.Name;
-                providers.ProviderAreaId = provider.ProviderAreaId;
                 providers.UserApplicantId = provider.UserApplicantId;
                 providers.Score = provider.Score;
                 provider.StartDate = DateTime.Now;

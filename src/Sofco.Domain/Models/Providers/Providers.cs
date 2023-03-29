@@ -10,7 +10,6 @@ namespace Sofco.Domain.Models.Providers
     public class Providers : BaseEntity
     {
       public string  Name {get;set;}
-      public int? ProviderAreaId {get;set;}
       public int? UserApplicantId { get; set; }
       public int? UserEvaluatorId { get; set; }
       public int? Score { get; set; }

@@ -11,7 +11,6 @@ namespace Sofco.Core.Models.Providers
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public int? ProviderAreaId { get; set; }
         public int? UserApplicantId { get; set; }
         public int? Score { get; set; }
         public DateTime? StartDate { get; set; }
@@ -65,7 +64,6 @@ namespace Sofco.Core.Models.Providers
     {
         public int? Id { get; set; }
         public string Name { get; set; }
-        public int? ProviderAreaId { get; set; }
         public int? UserApplicantId { get; set; }
         public int? Score { get; set; }
         public DateTime? StartDate { get; set; }
@@ -84,13 +82,12 @@ namespace Sofco.Core.Models.Providers
         public string WebSite { get; set; }
         public string Comments { get; set; }
         public string Country { get; set; }
-        public IList<ProvidersAreaProvidersModel> ProvidersAreaProviders { get; set; }
+        public List<ProvidersAreaProvidersModel> ProvidersAreaProviders { get; set; }
 
         public ProvidersModelGet(Sofco.Domain.Models.Providers.Providers providers)
         {
             Id = providers.Id;
             Name = providers.Name;
-            ProviderAreaId = providers.ProviderAreaId;
             UserApplicantId = providers.UserEvaluatorId;
             Score = providers.Score;
             StartDate = providers.StartDate;
@@ -108,13 +105,18 @@ namespace Sofco.Core.Models.Providers
             WebSite = providers.WebSite;
             Comments = providers.Comments;
             Country = providers.Country;
-            ProvidersAreaProviders = providers.ProvidersAreaProviders.Select(p => new ProvidersAreaProvidersModel { Id = p.Id, ProviderAreaId = p.ProviderAreaId, ProviderId = p.ProviderId }).ToList();
+            ProvidersAreaProviders = providers.ProvidersAreaProviders ==null? null: providers.ProvidersAreaProviders.Select(p => new ProvidersAreaProvidersModel { Id = p.Id, ProviderAreaId = p.ProviderAreaId, ProviderId = p.ProviderId }).ToList();
 
         }
 
     }
     
-
+    public class ProvidersGetByParamsModel
+    {
+        public int? statusId { get; set; }
+        public List<int> providersArea { get; set; }
+        public string businessName { get; set; }
+    }
 
 
     /*
