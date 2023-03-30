@@ -22,6 +22,10 @@ export class ProvidersService {
         return this.http.get<any>(`${this.baseUrl}/providers`);
     }
 
+    public getByParams(params: {statusId: number, businessName: string, providersArea: Array<number>}): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/providers/GetByParams`, params);
+    }
+
     public get(id: number): Observable<any> {
         return this.http.get<any>(`${this.baseUrl}/providers/${id}`);
     }

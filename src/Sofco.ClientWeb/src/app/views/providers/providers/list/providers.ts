@@ -101,47 +101,24 @@ export class ProvidersComponent implements OnInit{
     }
 
     search() {
-        console.log(this.stateId);
-        console.log(this.areaId);
-        console.log(this.businessName);
-        let searchData = [];
-        if (this.stateId == 0 || this.stateId == null) {
-            searchData = this.dataBackup;
-        } else {
-            let estado;
-            if (this.stateId == 1) {
-                estado = true;
-            }
-            if (this.stateId == 2) {
-                estado = false
-            }
-            this.dataBackup.forEach(entry => {
-                if(entry.active == estado) {
-                    searchData.push(entry)
-                }
-            })
-        };
-        // if(this.areaId != null) {
-        //     let search = [];
-        //     searchData.forEach(entry => {
-        //         if(entry.providerAreaId == this.areaId) {
-        //             search.push(entry)
-        //         }
-        //     });
-        //     searchData = search;
-        // };
-        if(this.businessName != null && this.businessName.length > 0) {
-            let search = [];
-            searchData.forEach(entry => {
-                let result = entry.name.toLowerCase().includes(this.businessName.toLocaleLowerCase());
-                if(result) {
-                    search.push(entry);
-                }
+        this.providersService.getByParams({statusId: this.stateId == 0 ? null : this.stateId, businessName: this.businessName, providersArea: this.areaId}).subscribe(d => {
+            this.data = [];
+            d.data.forEach(prov => {
+                let model = {
+                    id: prov.id,
+                    name: prov.name,
+                    providerArea: null,
+                    providerAreaId: null,
+                    CUIT: prov.cuit,
+                    ingresosBrutos: this.grossIncome[prov.ingresosBrutos + 1],
+                    condicionIVA: this.ivaConditions[prov.condicionIVA + 1],
+                    active: prov.active
+                };
+                this.data.push(model);
+                this.data = [...this.data]
             });
-            searchData = search;
-        }
-        this.data = searchData;
-        this.initGrid();
+            this.initGrid();
+        })
     }
 
     initGrid() {
