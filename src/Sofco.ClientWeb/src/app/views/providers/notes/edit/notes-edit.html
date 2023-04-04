@@ -91,7 +91,7 @@
             <tbody>
                 <tr *ngFor="let history of histories; let i = index" class="pointer">
                     <td class="text-center col-lg-1">{{i+1}}</td>
-                    <td class="text-center col-lg-2">{{ history.createdDate }}</td>
+                    <td class="text-center col-lg-2">{{ history.createdDate | requestNoteDatePipe}}</td>
                     <td class="text-center col-lg-2">{{ history.userName }}</td>
                     <td class="text-center"><span class="label">{{ history.statusFrom | requestNoteState}}</span></td>
                     <td class="text-center"><span class="label">{{ history.statusTo | requestNoteState}}</span></td>
