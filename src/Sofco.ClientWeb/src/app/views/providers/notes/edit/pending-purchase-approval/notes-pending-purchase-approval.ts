@@ -271,13 +271,8 @@ export class NotesPendingPurchaseApproval {
             this.critical = (d.data.critical) ? "Si" : "No";
             this.formNota.get('id').disable();
         });
-        this.providersService.getAll().subscribe(d => {
-            d.data.forEach(prov => {
-                if(prov.providerAreaId == this.currentNote.providerAreaId) {
-                    this.providers.push(prov);
-                    this.providers = [...this.providers]
-                }
-            });
+        this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[this.currentNote.providerAreaId]}).subscribe(d => {
+            this.providers = d.data;
         });
         this.analiticasTable = this.currentNote.analytics;
         this.productosServicios = this.currentNote.productsServices;
@@ -333,12 +328,9 @@ export class NotesPendingPurchaseApproval {
         if(event != undefined) {
             this.critical = (event.critical) ? "Si" : "No";
             this.providers = [];
-            this.allProviders.forEach(prov => {
-                if(prov.providerAreaId == event.id) {
-                    this.providers.push(prov);
-                    this.providers = [...this.providers];
-                }
-            })
+            this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[event.id]}).subscribe(d => {
+                this.providers = d.data;
+            });
         } else {
             this.critical = null
         }

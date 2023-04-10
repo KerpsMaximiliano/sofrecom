@@ -38,6 +38,7 @@ export class ProvidersComponent implements OnInit{
     areaId = [];
     data = [];
     dataBackup = [];
+    backupProviderAreas = [];
 
     constructor(
         private router: Router,
@@ -59,9 +60,12 @@ export class ProvidersComponent implements OnInit{
             this.providersService.getAll(),
             this.providersArea.getAll()
         ]).subscribe(res => {
-            console.log(res[0])
+            this.backupProviderAreas = res[1].data;
             res[0].data.forEach(provider => {
-                let area = res[1].data.find(provArea => provArea.id == provider.providerAreaId);
+                let areas = [];
+                provider.providersAreaProviders.forEach(p => {
+                    areas.push(res[1].data.find(prov => prov.id == p.providerAreaId).description)
+                });
                 let model = {
                     id: provider.id,
                     name: provider.name,
@@ -72,9 +76,9 @@ export class ProvidersComponent implements OnInit{
                     condicionIVA: this.ivaConditions[provider.condicionIVA + 1],
                     active: provider.active
                 }
-                if(area != undefined) {
-                    model.providerArea = area.description,
-                    model.providerAreaId = area.id
+                if(areas.length > 0) {
+                    model.providerArea = areas
+                    //model.providerAreaId = area.id
                 }
                 this.data.push(model);
                 this.data = [...this.data]
@@ -104,6 +108,10 @@ export class ProvidersComponent implements OnInit{
         this.providersService.getByParams({statusId: this.stateId == 0 ? null : this.stateId, businessName: this.businessName, providersArea: this.areaId}).subscribe(d => {
             this.data = [];
             d.data.forEach(prov => {
+                let areas = [];
+                prov.providersAreaProviders.forEach(p => {
+                    areas.push(this.backupProviderAreas.find(provider => provider.id == p.providerAreaId).description)
+                });
                 let model = {
                     id: prov.id,
                     name: prov.name,
@@ -114,6 +122,10 @@ export class ProvidersComponent implements OnInit{
                     condicionIVA: this.ivaConditions[prov.condicionIVA + 1],
                     active: prov.active
                 };
+                if(areas.length > 0) {
+                    model.providerArea = areas
+                    //model.providerAreaId = area.id
+                }
                 this.data.push(model);
                 this.data = [...this.data]
             });
