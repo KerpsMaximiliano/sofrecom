@@ -73,7 +73,33 @@ export class ProvidersAddComponent implements OnInit{
         if(!this.form.valid) {
             return;
         }
-        let model = this.form.value;
+        //let model = this.form.value;
+        let model = {
+            id: 0,
+            name: this.form.get('name').value,
+            //providerAreaId: [],
+            providersAreaProviders: [],
+            CUIT: this.form.get('CUIT').value,
+            ingresosBrutos:this.form.get('ingresosBrutos').value,
+            condicionIVA:this.form.get('condicionIVA').value,
+            address:this.form.get('address').value,
+            city:this.form.get('city').value,
+            ZIPCode: this.form.get('ZIPCode').value,
+            province: this.form.get('province').value,
+            country: this.form.get('country').value,
+            contactName: this.form.get('contactName').value,
+            phone: this.form.get('phone').value,
+            email: this.form.get('email').value,
+            website: this.form.get('website').value,
+            comments: this.form.get('comments').value
+        };
+        this.form.get('providerAreaId').value.forEach(pr => {
+            model.providersAreaProviders.push({
+                id: 0,
+                providerAreaId: pr,
+                providerId: 0
+            })
+        });
         this.providersService.post(model).subscribe(response=>{
             if(response.status == 200) {
                 this.messageService.showMessage("Proveedor guardado", 0);

@@ -1,5 +1,6 @@
 ﻿using Sofco.Domain.Interfaces;
 using Sofco.Domain.Models.Admin;
+using Sofco.Domain.Models.RequestNote;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,6 @@ namespace Sofco.Domain.Models.Providers
     public class Providers : BaseEntity
     {
       public string  Name {get;set;}
-      public int? ProviderAreaId {get;set;}
       public int? UserApplicantId { get; set; }
       public int? UserEvaluatorId { get; set; }
       public int? Score { get; set; }
@@ -29,6 +29,7 @@ namespace Sofco.Domain.Models.Providers
       public string WebSite { get; set; }
       public string Comments { get; set; }
       public string Country { get; set; }
+      public List<ProvidersAreaProviders> ProvidersAreaProviders { get; set; }
 
     }
 }

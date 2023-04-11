@@ -25,7 +25,7 @@ namespace Sofco.Common.Security
             return identityName.Split('@')[0];
         }
 
-        public string GetUserEmail()
+        public string GetUserEmail() 
         {
             return $"{GetUserName()}@{currentDomain}";
         }

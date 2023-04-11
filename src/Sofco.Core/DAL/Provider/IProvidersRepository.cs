@@ -10,6 +10,7 @@ namespace Sofco.Core.DAL.Provider
     {
 
         IList<Domain.Models.Providers.Providers> GetAll();
+        IList<Domain.Models.Providers.Providers> GetByParams(ProvidersGetByParamsModel model);
 
         Domain.Models.Providers.Providers GetById(int providersId);
 

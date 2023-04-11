@@ -35,9 +35,10 @@ export class ProvidersComponent implements OnInit{
     stateId: number = 0;
     businessName: string;
     areas = [];
-    areaId: number;
+    areaId = [];
     data = [];
     dataBackup = [];
+    backupProviderAreas = [];
 
     constructor(
         private router: Router,
@@ -59,8 +60,12 @@ export class ProvidersComponent implements OnInit{
             this.providersService.getAll(),
             this.providersArea.getAll()
         ]).subscribe(res => {
+            this.backupProviderAreas = res[1].data;
             res[0].data.forEach(provider => {
-                let area = res[1].data.find(provArea => provArea.id == provider.providerAreaId);
+                let areas = [];
+                provider.providersAreaProviders.forEach(p => {
+                    areas.push(res[1].data.find(prov => prov.id == p.providerAreaId).description)
+                });
                 let model = {
                     id: provider.id,
                     name: provider.name,
@@ -71,9 +76,9 @@ export class ProvidersComponent implements OnInit{
                     condicionIVA: this.ivaConditions[provider.condicionIVA + 1],
                     active: provider.active
                 }
-                if(area != undefined) {
-                    model.providerArea = area.description,
-                    model.providerAreaId = area.id
+                if(areas.length > 0) {
+                    model.providerArea = areas
+                    //model.providerAreaId = area.id
                 }
                 this.data.push(model);
                 this.data = [...this.data]
@@ -100,44 +105,32 @@ export class ProvidersComponent implements OnInit{
     }
 
     search() {
-        let searchData = [];
-        if (this.stateId == 0 || this.stateId == null) {
-            searchData = this.dataBackup;
-        } else {
-            let estado;
-            if (this.stateId == 1) {
-                estado = true;
-            }
-            if (this.stateId == 2) {
-                estado = false
-            }
-            this.dataBackup.forEach(entry => {
-                if(entry.active == estado) {
-                    searchData.push(entry)
+        this.providersService.getByParams({statusId: this.stateId == 0 ? null : this.stateId, businessName: this.businessName, providersArea: this.areaId}).subscribe(d => {
+            this.data = [];
+            d.data.forEach(prov => {
+                let areas = [];
+                prov.providersAreaProviders.forEach(p => {
+                    areas.push(this.backupProviderAreas.find(provider => provider.id == p.providerAreaId).description)
+                });
+                let model = {
+                    id: prov.id,
+                    name: prov.name,
+                    providerArea: null,
+                    providerAreaId: null,
+                    CUIT: prov.cuit,
+                    ingresosBrutos: this.grossIncome[prov.ingresosBrutos + 1],
+                    condicionIVA: this.ivaConditions[prov.condicionIVA + 1],
+                    active: prov.active
+                };
+                if(areas.length > 0) {
+                    model.providerArea = areas
+                    //model.providerAreaId = area.id
                 }
-            })
-        };
-        if(this.areaId != null) {
-            let search = [];
-            searchData.forEach(entry => {
-                if(entry.providerAreaId == this.areaId) {
-                    search.push(entry)
-                }
+                this.data.push(model);
+                this.data = [...this.data]
             });
-            searchData = search;
-        };
-        if(this.businessName != null && this.businessName.length > 0) {
-            let search = [];
-            searchData.forEach(entry => {
-                let result = entry.name.toLowerCase().includes(this.businessName.toLocaleLowerCase());
-                if(result) {
-                    search.push(entry);
-                }
-            });
-            searchData = search;
-        }
-        this.data = searchData;
-        this.initGrid();
+            this.initGrid();
+        })
     }
 
     initGrid() {

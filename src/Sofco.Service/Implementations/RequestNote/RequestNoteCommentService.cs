@@ -13,6 +13,7 @@ using Sofco.Core.Models.Recruitment;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using Sofco.Data.Admin;
 using Sofco.Domain.Models.RequestNote;
+using System.Globalization;
 
 namespace Sofco.Service.Implementations.RequestNote
 {
@@ -100,13 +101,19 @@ namespace Sofco.Service.Implementations.RequestNote
             return coments.Select(h => new Comments()
             {
                 Comment = h.Comment,
-                UserName = h.UserName,
+                UserName = GetUserFullName(h.UserName),
                 RequestNoteId = h.RequestNoteId,
                 Id = h.Id,
-                Date =  h.Date
-               
-            }).ToList();
+                Date = h.Date.ToString("dd-MM-yyyy HH:mm")
 
+        }).ToList();
+
+        }
+
+        private string GetUserFullName(string username)
+        {
+            var user = unitOfWork.UserRepository.GetUserLiteByUserName(username);
+            return user.Name;
         }
 
 

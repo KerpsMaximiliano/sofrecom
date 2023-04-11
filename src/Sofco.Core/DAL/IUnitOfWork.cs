@@ -130,9 +130,7 @@ namespace Sofco.Core.DAL
         IJobSearchApplicantRepository JobSearchApplicantRepository { get; }
 
         #endregion
-
         IProviderAreaRepository ProviderAreaRepository { get; }
-
         IProvidersRepository ProvidersRepository { get; }
 
         IRequestNoteRepository RequestNoteRepository { get; }
