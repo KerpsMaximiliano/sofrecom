@@ -383,7 +383,7 @@ namespace Sofco.Service.Implementations.AllocationManagement
 
                     var allocations = employee.Allocations.Where(x => x.StartDate == date);
 
-                    var percentageSum = allocations.Where(x => !x.Analytic.Title.Equals(appSetting.AnalyticBank)).Sum(x => x.Percentage);
+                    var percentageSum = allocations.Sum(x => x.Percentage);
 
                     if (percentageSum < 100)
                     {
