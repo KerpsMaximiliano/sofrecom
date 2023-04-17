@@ -51,7 +51,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label class="control-label">Rubro</label>
-                        <ng-select formControlName="providerAreaId" [items]="providerAreas" bindLabel="description" bindValue="id" [multiple]="true"></ng-select>
+                        <ng-select formControlName="providerAreaId" [items]="providerAreas" bindLabel="description" bindValue="id" [multiple]="true" (change)="change($event)"></ng-select>
                         <span *ngIf="!form.get('providerAreaId')?.valid && (form.get('providerAreaId')?.touched || form.get('providerAreaId')?.dirty)" style="color: red;">
                             El campo es requerido.
                         </span>
