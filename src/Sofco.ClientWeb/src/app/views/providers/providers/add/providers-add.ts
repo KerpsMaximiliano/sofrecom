@@ -121,13 +121,10 @@ export class ProvidersAddComponent implements OnInit{
     change(event) {
         if(event.find(r => r.critical == true) == undefined) {
             this.updateFormValidators(false);
+            this.critical = "No"
         } else {
             this.updateFormValidators(true);
-        }
-        if(event != undefined) {
-            this.critical = (event.critical) ? "Si" : "No"
-        } else {
-            this.critical = null
+            this.critical = "Si"
         }
     }
 
