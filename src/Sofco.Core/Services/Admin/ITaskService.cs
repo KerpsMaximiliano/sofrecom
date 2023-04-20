@@ -9,6 +9,7 @@ namespace Sofco.Core.Services.Admin
     {
         Response Add(TaskModel model);
         IList<Task> GetAll(bool active);
+        IList<Task> GetByCategory(string descripcion);
         Response<TaskModel> GetById(int id);
         Response<Task> Active(int id, bool active);
         Response Update(TaskModel model);

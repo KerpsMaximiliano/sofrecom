@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Sofco.Core.Services.Admin;
 using Sofco.Core.Services.Jobs;
 using Sofco.Domain.Models.Admin;
+using Sofco.Service.Implementations.Jobs;
 using Sofco.Service.Settings.Jobs;
 using Sofco.WebJob.Helpers;
 using Sofco.WebJob.Jobs.Interfaces;
@@ -83,6 +84,9 @@ namespace Sofco.WebJob.Services
             RecurringJob.AddOrUpdate<ILicenseGreater35Job>(JobNames.LicenseGreater35, j => j.Execute(), Cron.Yearly(10, 1, 9), localTimeZone);
 
             RecurringJob.AddOrUpdate<IEmployeeTestPeriodJobService>(JobNames.EmployeeTestPeriod, j => j.Execute(), Cron.Daily(8), localTimeZone);
+
+            RecurringJob.AddOrUpdate<IEmployeeWorkTimesAddJob>(JobNames.EmployeeWorkTimesAdd, j => j.Execute(), Cron.Weekly(DayOfWeek.Friday, 21), localTimeZone);
+
         }
 
         private void ClearJobs()

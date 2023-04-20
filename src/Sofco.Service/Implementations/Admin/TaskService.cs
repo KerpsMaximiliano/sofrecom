@@ -60,6 +60,13 @@ namespace Sofco.Service.Implementations.Admin
             return list;
         }
 
+        public IList<Task> GetByCategory(string category)
+        {
+            var list = unitOfWork.TaskRepository.GetByCategory(category);
+            return list;
+        }
+        
+
         public Response<TaskModel> GetById(int id)
         {
             var response = new Response<TaskModel>();

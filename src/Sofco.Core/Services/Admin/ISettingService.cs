@@ -8,6 +8,7 @@ namespace Sofco.Core.Services.Admin
     public interface ISettingService
     {
         Response<List<Setting>> GetAll();
+        Response<Setting> GetByKey(string key);
 
         Response<List<Setting>> Save(List<Setting> settings);
 

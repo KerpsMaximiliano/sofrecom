@@ -35,5 +35,7 @@ namespace Sofco.Core.DAL.AllocationManagement
         void UpdateRealPercentage(Allocation allocation);
         bool ExistAllocationByEmployeeAndManagerId(int employeeId, int managerId, int? analyticId);
         IList<Allocation> GetByEmployeesAndDate(List<int> employeeIds, int year, int month);
+        IList<Allocation> GetAllocationsLiteBetweenStartReleaseDays(DateTime date);
+
     }
 }

@@ -42,6 +42,22 @@ namespace Sofco.Service.Implementations.Admin
             return new Response<List<Setting>> { Data = unitOfWork.SettingRepository.GetAll() };
         }
 
+        public Response<Setting> GetByKey(string key)
+        {
+            var response = new Response<Setting>();
+            var setting = unitOfWork.SettingRepository.GetSingle(x => x.Key == key);
+
+            if (setting != null)
+            {
+                response.Data = setting;
+                return response;
+            }
+
+            response.AddError(Resources.Admin.Setting.SettingNotFound);
+            return response;
+        }
+
+
         public Response<List<Setting>> Save(List<Setting> settings)
         {
             var response = ValidateSettings(settings);
