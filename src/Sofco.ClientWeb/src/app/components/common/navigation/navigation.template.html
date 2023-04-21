@@ -38,9 +38,11 @@
               [routerLink]="['/admin/settings']">{{'ADMIN.settings.title' | translate }}</a></li>
           <li [ngClass]="{active: activeRoute('workflows')}" *ngIf="menuService.hasFunctionality('WORKF', 'QUERY')"><a
               [routerLink]="['/admin/workflows']">Workflows</a></li>
-              <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a
-                [routerLink]="['/admin/solfac']">Solfac</a></li>
-        </ul>
+          <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a
+              [routerLink]="['/admin/solfac']">Solfac</a></li>
+          <li [ngClass]="{active: activeRoute('automatic-hours')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a
+              [routerLink]="['/admin/automatic-hours']">Carga de Hora Automáticas</a></li>
+          </ul>
       </li>
 
       <!--BILLING-->

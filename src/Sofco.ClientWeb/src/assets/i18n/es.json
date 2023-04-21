@@ -11,6 +11,9 @@
         "actions": "Acciones",
         "action": "Acción",
         "inactive": "Inactivo",
+        "AUTOMATICHOURS": {
+            "TITLE": "Carga de Hora Automáticas"
+        },
         "ROLES": {
             "TITLE": "Roles",
             "MANAGEMENT": "Administración de Roles",
