@@ -121,6 +121,7 @@ export class ProvidersEditComponent implements OnInit{
 
     save() {
         if(!this.form.valid) {
+            this.markFormGroupTouched(this.form)
             return;
         }
         this.form.enable();
@@ -275,4 +276,14 @@ export class ProvidersEditComponent implements OnInit{
             this.form.get('email').updateValueAndValidity();
         }
     }
+
+    markFormGroupTouched(formGroup: FormGroup) {
+        (<any>Object).values(formGroup.controls).forEach(control => {
+            control.markAsTouched();
+
+            if (control.controls) {
+                this.markFormGroupTouched(control);
+            }
+        });
+    };
 }
