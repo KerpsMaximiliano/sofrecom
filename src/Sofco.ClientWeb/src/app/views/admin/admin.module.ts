@@ -63,8 +63,6 @@ import { WorkflowStateAddComponent } from './workflow/state-add/state-add.compon
 import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
 import { SolfacService } from 'app/services/billing/solfac.service';
 import { SolfacAdminComponent } from './solfac/solfac-admin.component';
-import { AutomaticHoursComponent } from './automatic-hours/automatic-hours.component';
-import { AutomaticHoursService } from 'app/services/admin/automatic-hours.service';
 
 @NgModule({
   declarations: [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, SolfacAdminComponent,
@@ -72,13 +70,13 @@ import { AutomaticHoursService } from 'app/services/admin/automatic-hours.servic
                  SettingsComponent, CategoryAddComponent, CategoryEditComponent, CategoryListComponent, TaskAddComponent, TaskListComponent,
                  TaskEditComponent, AreaListComponent, AreaEditComponent, AreaAddComponent, SectorAddComponent, SectorEditComponent, WorkflowTransitionEditComponent,
                  SectorListComponent, WorkflowListComponent, WorkflowDetailComponent, WorkflowAddComponent, WorkflowTransitionAddComponent, WorkflowTransitionFormComponent,
-                 WorkflowStateListComponent, WorkflowStateAddComponent, WorkflowStateEditComponent, AutomaticHoursComponent],
+                 WorkflowStateListComponent, WorkflowStateAddComponent, WorkflowStateEditComponent],
 
   imports     : [CommonModule, Ng2DatatablesModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, TranslateModule, 
                  SpinnerModule, DatePickerModule, Select2Module, AdminRouter, NgSelectModule, ReactiveFormsModule],
 
   providers   : [RoleService, UserService, GroupService, FunctionalityService, ModuleService, SettingsService, CategoryService,
-                 TaskService, AreaService, SectorService, WorkflowService, UtilsService, SolfacService, AutomaticHoursService],
+                 TaskService, AreaService, SectorService, WorkflowService, UtilsService, SolfacService],
 
   exports     : [RolesComponent, RolAddComponent, RolEditComponent, UsersComponent, GroupsComponent, FunctionalitiesComponent, 
                  UserDetailComponent, SettingsComponent]

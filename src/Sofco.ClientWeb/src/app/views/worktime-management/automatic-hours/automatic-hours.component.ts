@@ -29,4 +29,22 @@ export class AutomaticHoursComponent implements OnInit {
             this.tasks = d;
         });
     }
+
+    save() {
+        if (this.form.invalid) {
+            this.markFormGroupTouched(this.form);
+            return;
+        }
+        
+    }
+
+    markFormGroupTouched(formGroup: FormGroup) {
+        (<any>Object).values(formGroup.controls).forEach(control => {
+            control.markAsTouched();
+
+            if (control.controls) {
+                this.markFormGroupTouched(control);
+            }
+        });
+    };
 }

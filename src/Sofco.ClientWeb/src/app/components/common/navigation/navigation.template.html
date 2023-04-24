@@ -40,8 +40,6 @@
               [routerLink]="['/admin/workflows']">Workflows</a></li>
           <li [ngClass]="{active: activeRoute('solfac')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a
               [routerLink]="['/admin/solfac']">Solfac</a></li>
-          <li [ngClass]="{active: activeRoute('automatic-hours')}" *ngIf="menuService.hasFunctionality('USR', 'QUERY')"><a
-              [routerLink]="['/admin/automatic-hours']">Carga de Hora Automáticas</a></li>
           </ul>
       </li>
 
@@ -192,6 +190,8 @@
           <li [ngClass]="{active: activeRoute('import')}" *ngIf="menuService.hasFunctionality('WOTIM', 'IMPORT')"><a
               [routerLink]="['/workTimeManagement/workTime/import']">{{ 'workTimeManagement.import.shortTitle' | translate }}</a>
           </li>
+          <li [ngClass]="{active: activeRoute('automatic-hours')}" *ngIf="menuService.hasFunctionality('WOTIM', 'IMPORT')"><a
+            [routerLink]="['/workTimeManagement/workTime/automatic-hours']">Carga de Hora Automáticas</a></li>
         </ul>
       </li>
 

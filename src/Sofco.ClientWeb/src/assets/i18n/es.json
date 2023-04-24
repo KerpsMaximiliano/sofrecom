@@ -11,9 +11,6 @@
         "actions": "Acciones",
         "action": "Acción",
         "inactive": "Inactivo",
-        "AUTOMATICHOURS": {
-            "TITLE": "Carga de Hora Automáticas"
-        },
         "ROLES": {
             "TITLE": "Roles",
             "MANAGEMENT": "Administración de Roles",
@@ -1088,6 +1085,9 @@
             "sentHours": "Horas pendientes de aprobación",
             "draftHours": "Horas en borrador",
             "pendingHours": "Horas pendientes de carga"
+        },
+        "automaticHours": {
+            "title": "Carga de Hora Automáticas"
         }
     },
     "months": {

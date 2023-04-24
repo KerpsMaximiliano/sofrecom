@@ -33,7 +33,6 @@ import { WorkflowStateListComponent } from "./workflow/state-list/state-list.com
 import { WorkflowStateAddComponent } from "./workflow/state-add/state-add.component";
 import { WorkflowStateEditComponent } from './workflow/state-edit/state-edit.component';
 import { SolfacAdminComponent } from "./solfac/solfac-admin.component";
-import { AutomaticHoursComponent } from "./automatic-hours/automatic-hours.component";
 
 const ADMIN_ROUTER: Routes = [
     { path: 'roles', children:[
@@ -102,10 +101,6 @@ const ADMIN_ROUTER: Routes = [
         { path: ':id', component: WorkflowDetailComponent, canActivate: [AuthGuard] },
         { path: ':workflowId/transition/new', component: WorkflowTransitionAddComponent, canActivate: [AuthGuard] },
         { path: ':workflowId/transition/:id', component: WorkflowTransitionEditComponent, canActivate: [AuthGuard] }
-      ]},
-
-      { path: 'automatic-hours', children:[
-        {path: '', component: AutomaticHoursComponent, canActivate: [AuthGuard]},
       ]},
 ];
 
