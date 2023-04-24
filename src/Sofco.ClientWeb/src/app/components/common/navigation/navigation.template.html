@@ -190,7 +190,7 @@
           <li [ngClass]="{active: activeRoute('import')}" *ngIf="menuService.hasFunctionality('WOTIM', 'IMPORT')"><a
               [routerLink]="['/workTimeManagement/workTime/import']">{{ 'workTimeManagement.import.shortTitle' | translate }}</a>
           </li>
-          <li [ngClass]="{active: activeRoute('automatic-hours')}" *ngIf="menuService.hasFunctionality('WOTIM', 'IMPORT')"><a
+          <li [ngClass]="{active: activeRoute('automatic-hours')}" *ngIf="menuService.hasFunctionality('WOTIM', 'PRE_CARGA_HORAS')"><a
             [routerLink]="['/workTimeManagement/workTime/automatic-hours']">Carga de Hora Automáticas</a></li>
         </ul>
       </li>
