@@ -72,8 +72,8 @@ export class ProvidersComponent implements OnInit{
                     providerArea: null,
                     providerAreaId: null,
                     CUIT: provider.cuit,
-                    ingresosBrutos: provider.ingresosBrutos ? this.grossIncome[provider.ingresosBrutos + 1] : '',
-                    condicionIVA: provider.condicionIVA ? this.ivaConditions[provider.condicionIVA + 1] : '',
+                    ingresosBrutos: provider.ingresosBrutos == null ? this.grossIncome[provider.ingresosBrutos - 1] : '',
+                    condicionIVA: provider.condicionIVA == null ? this.ivaConditions[provider.condicionIVA - 1] : '',
                     active: provider.active
                 }
                 if(areas.length > 0) {
