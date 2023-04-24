@@ -72,8 +72,8 @@ export class ProvidersComponent implements OnInit{
                     providerArea: null,
                     providerAreaId: null,
                     CUIT: provider.cuit,
-                    ingresosBrutos: provider.ingresosBrutos == null ? this.grossIncome[provider.ingresosBrutos - 1] : '',
-                    condicionIVA: provider.condicionIVA == null ? this.ivaConditions[provider.condicionIVA - 1] : '',
+                    ingresosBrutos: provider.ingresosBrutos != null ? this.grossIncome[provider.ingresosBrutos - 1] : '',
+                    condicionIVA: provider.condicionIVA != null ? this.ivaConditions[provider.condicionIVA - 1] : '',
                     active: provider.active
                 }
                 if(areas.length > 0) {
@@ -118,8 +118,8 @@ export class ProvidersComponent implements OnInit{
                     providerArea: null,
                     providerAreaId: null,
                     CUIT: prov.cuit,
-                    ingresosBrutos: this.grossIncome[prov.ingresosBrutos + 1],
-                    condicionIVA: this.ivaConditions[prov.condicionIVA + 1],
+                    ingresosBrutos: prov.ingresosBrutos != null ? this.grossIncome[prov.ingresosBrutos - 1] : '',
+                    condicionIVA: prov.condicionIVA != null ? this.ivaConditions[prov.condicionIVA - 1] : '',
                     active: prov.active
                 };
                 if(areas.length > 0) {
