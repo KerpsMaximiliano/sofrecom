@@ -495,6 +495,31 @@ namespace Sofco.Service.Implementations.RequestNote
                 Data = result
             };
         }
+        public Response<IList<Option>> GetUnits()
+        {
+            var enumValues = Enum.GetValues(typeof(RequestNoteUnit))
+                     .Cast<RequestNoteUnit>()
+                     .Select(x => new Option { Id = (int)x, Text = x.ToString() })
+                     .ToList();
+
+            return new Response<IList<Option>>
+            {
+                Data = enumValues
+            };
+        }
+
+        public Response<IList<Option>> GetCurrencies()
+        {
+            var enumValues = Enum.GetValues(typeof(RequestNoteCurrency))
+                     .Cast<RequestNoteCurrency>()
+                     .Select(x => new Option { Id = (int)x, Text = x.ToString() })
+                     .ToList();
+
+            return new Response<IList<Option>>
+            {
+                Data = enumValues
+            };
+        }
         public IList<RequestNoteGridModel> GetAll(RequestNoteGridFilters filters)
         {
             var user = userData.GetCurrentUser();
@@ -555,6 +580,9 @@ namespace Sofco.Service.Implementations.RequestNote
                     {
                         prov.FileId = nuevo.FileId;
                         prov.Price = nuevo.Ammount;
+                        prov.UnitID = nuevo.UnitID;
+                        prov.CurrencyID = nuevo.CurrencyID;
+
                     }
                 }
                 foreach (var provNuevo in requestNote.ProvidersSelected)
@@ -562,7 +590,7 @@ namespace Sofco.Service.Implementations.RequestNote
                     var prov = req.Providers.SingleOrDefault(p => p.ProviderId == provNuevo.ProviderId);
                     if (prov == null)
                     {
-                        prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId, Price = provNuevo.Ammount };
+                        prov = new RequestNoteProvider() { ProviderId = provNuevo.ProviderId, FileId = provNuevo.FileId, Price = provNuevo.Ammount, CurrencyID=provNuevo.CurrencyID, UnitID=provNuevo.UnitID };
                         req.Providers.Add(prov);
                     }
                 }

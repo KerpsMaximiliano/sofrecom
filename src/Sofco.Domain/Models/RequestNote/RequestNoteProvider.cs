@@ -13,5 +13,8 @@ namespace Sofco.Domain.Models.RequestNote
         public int? FileId { get; set; }
         public File File { get; set; }
         public decimal? Price { get; set; }
+        public int? CurrencyID { get; set; }
+        public int? UnitID { get; set; }
+
     }
 }
