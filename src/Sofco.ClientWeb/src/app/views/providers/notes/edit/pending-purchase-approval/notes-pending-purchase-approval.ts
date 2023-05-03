@@ -81,12 +81,23 @@ export class NotesPendingPurchaseApproval {
     travelReturnDate: string;
     trainingDate: string;
 
+    currencies: Array<{id: number, description: string}> = [{id: 1, description: '$'}, {id:2, description: 'u$s'}];
+    units: Array<{id: number, description: string}> = [
+        {id: 1, description: "Total"},
+        {id: 2, description: "Hora"},
+        {id: 3, description: "Diario"},
+        {id: 4, description: "Mensual"},
+        {id: 5, description: "Anual"}
+    ];
+
     comments = [];
 
     filesToUpload = [] as Array<any>;
     fileIdCounter = 0;
 
     mode: string;
+
+    ammountReq: boolean = true;
 
     //FORMS
     formNota: FormGroup = new FormGroup({
@@ -220,6 +231,7 @@ export class NotesPendingPurchaseApproval {
         this.travelFormShow = this.currentNote.travelSection;
         this.trainingFormShow = this.currentNote.trainingSection;
         this.providersAreaService.getAll().subscribe(d => {
+            this.ammountReq = d.data.find(rubro => rubro.id == this.currentNote.providerAreaId).rnAmmountReq;
             d.data.forEach(providerArea => {
                 if(providerArea.active) {
                     this.providerAreas.push(providerArea);
@@ -327,9 +339,16 @@ export class NotesPendingPurchaseApproval {
     change(event) {
         if(event != undefined) {
             this.critical = (event.critical) ? "Si" : "No";
+            this.ammountReq = event.rnAmmountReq;
             this.providers = [];
             this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[event.id]}).subscribe(d => {
                 this.providers = d.data;
+            });
+            Object.keys(this.formProvidersGrid.controls).forEach(key => {
+                this.formProvidersGrid.get(key).clearValidators();
+                if(this.ammountReq) {
+                    this.formProvidersGrid.get(key).setValidators(Validators.required);
+                }
             });
         } else {
             this.critical = null
@@ -425,7 +444,9 @@ export class NotesPendingPurchaseApproval {
                         fileId: search.fileId,
                         providerDescription: prov.providerDescription,
                         providerId: prov.providerId,
-                        ammount: this.formProvidersGrid.get(`control${prov.providerId}`).value
+                        ammount: this.formProvidersGrid.get(`control${prov.providerId}`).value,
+                        currencyID: this.formProvidersGrid.get(`control${prov.providerId}-currency`).value,
+                        unitID: this.formProvidersGrid.get(`control${prov.providerId}-unit`).value
                     });
             });
             this.currentNote.providersSelected = this.finalProviders;
@@ -460,7 +481,16 @@ export class NotesPendingPurchaseApproval {
             ammount: null
         });
         this.proveedoresSelected = [...this.proveedoresSelected];
-        this.formProvidersGrid.addControl(`control${busqueda.id}`, new FormControl(null, Validators.required));
+        if(this.ammountReq) {
+            this.formProvidersGrid.addControl(`control${busqueda.id}`, new FormControl(null, Validators.required));
+            this.formProvidersGrid.addControl(`control${busqueda.id}-currency`, new FormControl(null, Validators.required));
+            this.formProvidersGrid.addControl(`control${busqueda.id}-unit`, new FormControl(null, Validators.required));
+        } else {
+            this.formProvidersGrid.addControl(`control${busqueda.id}`, new FormControl(null));
+            this.formProvidersGrid.addControl(`control${busqueda.id}-currency`, new FormControl(null));
+            this.formProvidersGrid.addControl(`control${busqueda.id}-unit`, new FormControl(null));
+        }
+        
         this.formNota.get('providers').setValue(null);
     }
 

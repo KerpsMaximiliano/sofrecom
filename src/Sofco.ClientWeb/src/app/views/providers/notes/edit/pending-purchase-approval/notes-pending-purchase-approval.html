@@ -115,7 +115,9 @@
                                         <th class="font-13">Nombre</th>
                                         <th class="font-13">Presupuesto</th>
                                         <th></th>
+                                        <th class="font-13">Moneda</th>
                                         <th class="font-13">Monto</th>
+                                        <th class="font-13">Unidad</th>
                                         <th class="column-sm text-center font-13">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
@@ -126,9 +128,16 @@
                                             <input #selectedFile type="file" ng2FileSelect (onFileSelected)="selectedFileProvider(item.providerId, $event, i)" [uploader]="uploaderProviders" [disabled]="closed || rejected" />
                                         </td>
                                         <td><button type="button" class="btn btn-success"
-                                            (click)="downloadProvFile(item)" *ngIf="item.fileId != null && mode == 'Edit'">Descargar</button></td>
+                                            (click)="downloadProvFile(item)" *ngIf="item.fileId != null && mode == 'Edit'">Descargar</button>
+                                        </td>
                                         <td>
-                                            <input type="number" [formControlName]="'control' + item.providerId">
+                                            <ng-select [items]="currencies" bindLabel="description" bindValue="id" [formControlName]="'control' + item.providerId + '-currency'"></ng-select>
+                                        </td>
+                                        <td>
+                                            <input type="number" [formControlName]="'control' + item.providerId" class="form-control">
+                                        </td>
+                                        <td>
+                                            <ng-select [items]="units" bindLabel="description" bindValue="id" [formControlName]="'control' + item.providerId + '-unit'"></ng-select>
                                         </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarProveedor(i, item)"
