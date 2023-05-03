@@ -123,7 +123,7 @@ namespace Sofco.Service.Implementations.Jobs
         }
         private IList<Allocation> GetAllocations(DateTime day)
         {
-            IList<Allocation> allocations = this.unitOfWork.AllocationRepository.GetAllocationsLiteBetweenStartReleaseDays(day);
+            IList<Allocation> allocations = this.unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDatesAndFullBillingPercentage(day);
 
             // Filtrar registros  por combinación de id_empleado e id_analitic tomando  el que tiene startDate mas cercano de cada uno
             return allocations.GroupBy(a => new { a.EmployeeId, a.AnalyticId })

@@ -334,13 +334,13 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                 .ToList();
         }
 
-        public IList<Allocation> GetAllocationsLiteBetweenStartReleaseDays(DateTime date)
+        public IList<Allocation> GetAllocationsLiteBetweenDatesAndFullBillingPercentage(DateTime date)
         {
             return context.Allocations
                   .Include(x => x.Analytic)
                   .Include(x => x.Employee)
                   .Where(x => (x.StartDate.Date <= date.Date
-                               && x.ReleaseDate.Date >= date.Date)).AsNoTracking() 
+                               && x.ReleaseDate.Date >= date.Date) && x.Employee.BillingPercentage ==100).AsNoTracking() 
                   .ToList();
         }
     }
