@@ -78,7 +78,9 @@ namespace Sofco.Core.Models.RequestNote
                 {
                     Id = p.Id,
                     ProductService = p.ProductService,
-                    Quantity = p.Quantity
+                    Quantity = p.Quantity,
+                    EndDate = p.EndDate,
+                    StartDate= p.StartDate
                 }).ToList();
             if(note.Analytics != null)
                 Analytics = note.Analytics.Select(p=> new Analytic()
@@ -211,6 +213,8 @@ namespace Sofco.Core.Models.RequestNote
         public int Id { get; set; }
         public string ProductService { get; set; }
         public int Quantity { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 
     public class Provider

@@ -12,5 +12,8 @@ namespace Sofco.Domain.Models.RequestNote
         public RequestNote RequestNote { get; set; }
         public string ProductService { get; set; }
         public int Quantity { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+
     }
 }

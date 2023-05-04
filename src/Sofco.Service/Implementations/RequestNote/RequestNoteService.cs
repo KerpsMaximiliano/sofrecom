@@ -160,6 +160,8 @@ namespace Sofco.Service.Implementations.RequestNote
                         domain.ProductsServices.Add(an);
                     }
                     an.Quantity = a.Quantity;
+                    an.StartDate = a.StartDate;
+                    an.EndDate= a.EndDate;
                 }
                 #endregion
                 #region Attachments
@@ -333,7 +335,9 @@ namespace Sofco.Service.Implementations.RequestNote
                     domain.ProductsServices = requestNoteBorrador.ProductsServices.Select(p => new RequestNoteProductService()
                     {
                         ProductService = p.ProductService,
-                        Quantity = p.Quantity
+                        Quantity = p.Quantity,
+                        StartDate = p.StartDate,
+                        EndDate = p.EndDate
                     }).ToList();
                 if (requestNoteBorrador.Travel != null)
                 {
