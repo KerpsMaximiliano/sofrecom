@@ -1,9 +1,11 @@
 ﻿using Sofco.Core.DAL;
 using Sofco.Core.Logger;
 using Sofco.Core.Services.RequestNote;
+using Sofco.Domain.DTO;
 using Sofco.Domain.Models.RequestNote;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Sofco.Service.Implementations.RequestNote
@@ -37,6 +39,19 @@ namespace Sofco.Service.Implementations.RequestNote
             {
                 ChangeStatus(requestNoteAnalytic.Id, status);
             }
+        }
+
+        public List<ManagerAnalyticStatusDto> GetApprovedManageners(int requestNoteId)
+        {
+            List<RequestNoteAnalytic> requestNoteAnalytics = this.unitOfWork.RequestNoteAnalitycRepository.GetManagersByRequestNoteId(requestNoteId);
+            return requestNoteAnalytics.GroupBy(r => r.Analytic.Manager.Name)
+                                                          .Select(g => new ManagerAnalyticStatusDto
+                                                          {
+                                                              Name = g.Key,
+                                                              Status = g.FirstOrDefault()?.Status
+                                                          })
+                                                          .OrderByDescending(r => r.Status)
+                                                          .ToList();
         }
 
         public List<RequestNoteAnalytic> GetByRequestNoteId(int requestNoteId)

@@ -46,5 +46,12 @@ namespace Sofco.DAL.Repositories.RequestNote
         {
             this.context.RequestNoteAnalytic.Remove(analytic);
         }
+        public List<RequestNoteAnalytic> GetManagersByRequestNoteId(int requestNoteId)
+        {
+            return this.context.RequestNoteAnalytic.Where(x => x.RequestNoteId == requestNoteId)
+                .Include(a => a.Analytic).ThenInclude(navigationPropertyPath => navigationPropertyPath.Manager)
+                .ToList();
+        }
+
     }
 }
